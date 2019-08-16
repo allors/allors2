@@ -4,24 +4,22 @@ namespace Allors.Adapters.Object.SqlClient
 
     public class SchemaTable
     {
-        private readonly Schema schema;
-        private readonly string name;
         private readonly Dictionary<string, SchemaTableColumn> columnByLowercaseColumnName;
 
         public SchemaTable(Schema schema, string name)
         {
-            this.schema = schema;
-            this.name = name;
+            this.Schema = schema;
+            this.Name = name;
 
             this.columnByLowercaseColumnName = new Dictionary<string, SchemaTableColumn>();
         }
 
-        public string Name => this.name;
+        public string Name { get; }
 
         public Dictionary<string, SchemaTableColumn> ColumnByLowercaseColumnName => this.columnByLowercaseColumnName;
 
 
-        public Schema Schema => this.schema;
+        public Schema Schema { get; }
 
         public SchemaTableColumn GetColumn(string columnName)
         {

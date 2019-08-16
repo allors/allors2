@@ -34,9 +34,6 @@ namespace Allors.Workspace.Meta
 
         private Dictionary<string, Class> derivedClassByLowercaseName;
         private Composite[] derivedComposites;
-
-        private bool isBound;
-
         private bool isStale;
         private bool isDeriving;
 
@@ -79,7 +76,7 @@ namespace Allors.Workspace.Meta
             this.metaObjectById = new Dictionary<Guid, MetaObjectBase>();
         }
 
-        public bool IsBound => this.isBound;
+        public bool IsBound { get; private set; }
 
         public IEnumerable<Domain> Domains => this.domains;
 
@@ -272,7 +269,7 @@ namespace Allors.Workspace.Meta
             {
                 this.Derive();
 
-                this.isBound = true;
+                this.IsBound = true;
 
                 this.domains = this.domains.ToArray();
                 this.units = this.units.ToArray();

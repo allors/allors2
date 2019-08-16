@@ -27,15 +27,11 @@ namespace Allors.Adapters.Memory
 
     public abstract class Extent : Allors.Extent
     {
-        private readonly Session session;
-
         private IObject[] defaultObjectArray;
         private Extent parent;
-        private ExtentSort sorter;
-
         private List<Strategy> strategies;
 
-        protected Extent(Session session) => this.session = session;
+        protected Extent(Session session) => this.Session = session;
 
         public override int Count
         {
@@ -70,9 +66,9 @@ namespace Allors.Adapters.Memory
             }
         }
 
-        internal Session Session => this.session;
+        internal Session Session { get; }
 
-        internal ExtentSort Sorter => this.sorter;
+        internal ExtentSort Sorter { get; private set; }
 
         protected List<Strategy> Strategies
         {
@@ -84,13 +80,13 @@ namespace Allors.Adapters.Memory
 
         public override Allors.Extent AddSort(IRoleType roleType, SortDirection direction)
         {
-            if (this.sorter == null)
+            if (this.Sorter == null)
             {
-                this.sorter = new ExtentSort(roleType, direction);
+                this.Sorter = new ExtentSort(roleType, direction);
             }
             else
             {
-                this.sorter.AddSort(roleType, direction);
+                this.Sorter.AddSort(roleType, direction);
             }
 
             this.Invalidate();

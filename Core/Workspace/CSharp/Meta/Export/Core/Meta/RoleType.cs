@@ -38,8 +38,6 @@ namespace Allors.Workspace.Meta
 
         public string TextType { get; set; }
 
-        private readonly RelationType relationType;
-
         private ObjectType objectType;
 
         private string singularName;
@@ -55,7 +53,7 @@ namespace Allors.Workspace.Meta
         internal RoleType(RelationType relationType, Guid id)
             : base(relationType.MetaPopulation)
         {
-            this.relationType = relationType;
+            this.RelationType = relationType;
 
             this.Id = id;
 
@@ -110,7 +108,7 @@ namespace Allors.Workspace.Meta
         {
             get
             {
-                switch (this.relationType.Multiplicity)
+                switch (this.RelationType.Multiplicity)
                 {
                     case Multiplicity.OneToMany:
                     case Multiplicity.ManyToMany:
@@ -124,7 +122,7 @@ namespace Allors.Workspace.Meta
 
         IRelationType IRoleType.RelationType => this.RelationType;
 
-        public RelationType RelationType => this.relationType;
+        public RelationType RelationType { get; private set; }
 
         /// <summary>
         /// Gets the display name.

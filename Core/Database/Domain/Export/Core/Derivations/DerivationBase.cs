@@ -26,9 +26,6 @@ namespace Allors.Domain
         private readonly AccumulatedChangeSet accumulatedChangeSet;
 
         private Dictionary<string, object> properties;
-
-        private IValidation validation;
-
         private int generation;
 
         private HashSet<IObject> forced;
@@ -62,12 +59,7 @@ namespace Allors.Domain
 
         public ISession Session { get; }
 
-        public IValidation Validation
-        {
-            get => this.validation;
-
-            protected set => this.validation = value;
-        }
+        public IValidation Validation { get; protected set; }
 
         public IChangeSet ChangeSet => this.accumulatedChangeSet;
 
@@ -370,7 +362,7 @@ namespace Allors.Domain
                 this.derivationNodes = null;
             }
 
-            return this.validation;
+            return this.Validation;
         }
 
         internal void AddDerivedObject(Object derivable) => this.derivedObjects.Add(derivable);

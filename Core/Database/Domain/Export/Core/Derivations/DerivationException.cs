@@ -12,18 +12,16 @@ namespace Allors.Domain
 
     public class DerivationException : Exception
     {
-        private readonly IValidation validation;
+        public DerivationException(IValidation validation) => this.Validation = validation;
 
-        public DerivationException(IValidation validation) => this.validation = validation;
-
-        public IValidation Validation => this.validation;
+        public IValidation Validation { get; private set; }
 
         public override string Message
         {
             get
             {
                 var message = new StringBuilder();
-                foreach (var error in this.validation.Errors)
+                foreach (var error in this.Validation.Errors)
                 {
                     message.Append(error.Message + "\n");
                 }

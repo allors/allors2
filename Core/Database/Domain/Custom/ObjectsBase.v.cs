@@ -22,7 +22,7 @@ namespace Allors
             this.CoreSetup(setup);
             this.CustomSetup(setup);
 
-            this.session.Derive();
+            this.Session.Derive();
         }
 
         public void Secure(Security security)

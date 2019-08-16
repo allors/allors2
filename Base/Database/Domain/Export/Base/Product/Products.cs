@@ -95,7 +95,7 @@ namespace Allors.Domain
                             else
                             {
                                 var percentage = discountComponent.Percentage.HasValue ? discountComponent.Percentage.Value : 0;
-                                discount = Math.Round((productBasePrice * percentage) / 100, 2);
+                                discount = Math.Round(productBasePrice * percentage / 100, 2);
                                 productDiscount += discount;
                             }
                         }
@@ -113,7 +113,7 @@ namespace Allors.Domain
                             else
                             {
                                 var percentage = surchargeComponent.Percentage.HasValue ? surchargeComponent.Percentage.Value : 0;
-                                surcharge = Math.Round((productBasePrice * percentage) / 100, 2);
+                                surcharge = Math.Round(productBasePrice * percentage / 100, 2);
                                 productSurcharge += surcharge;
                             }
                         }

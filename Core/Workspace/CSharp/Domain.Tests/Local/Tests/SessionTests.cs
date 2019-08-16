@@ -129,7 +129,7 @@ namespace Tests.Local
 
             Assert.Equal(2, save.Objects.Length);
 
-            var savedKoen = save.Objects.First(v => (v.I == "1"));
+            var savedKoen = save.Objects.First(v => v.I == "1");
 
             Assert.Equal("1001", savedKoen.V);
             Assert.Equal(2, savedKoen.Roles.Length);

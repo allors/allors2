@@ -184,7 +184,7 @@ namespace Allors.Domain
 
                     var matchingAssignment = existingAssignments.FirstOrDefault
                         (a => a.Assignment.Equals(@this)
-                        && (a.Party.Equals(worker))
+                        && a.Party.Equals(worker)
                         && (a.ExistFacility && a.Facility.Equals(facility) || !a.ExistFacility && facility == null)
                         && (!a.ExistFromDate || (a.ExistFromDate && (a.FromDate <= from)))
                         && (!a.ExistThroughDate || (a.ExistThroughDate && (a.ThroughDate >= through))));
@@ -266,7 +266,7 @@ namespace Allors.Domain
             var session = @this.Strategy.Session;
 
             var timeEntriesByBillingRate = @this.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
-                .Where(v => v.IsBillable && (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
+                .Where(v => v.IsBillable && !v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue || v.BillableAmountOfTime.HasValue)
                 .GroupBy(v => v.BillingRate)
                 .Select(v => v)
                 .ToArray();

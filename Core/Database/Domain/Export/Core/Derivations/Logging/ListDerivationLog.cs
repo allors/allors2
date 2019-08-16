@@ -11,9 +11,9 @@ namespace Allors.Domain.Logging
 
     public class ListDerivationLog : IDerivationLog
     {
-        public List<string> List { get; }
-
         public ListDerivationLog() => this.List = new List<string>();
+
+        public List<string> List { get; }
 
         public string Text => string.Join("\n", this.List);
 

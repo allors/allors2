@@ -30,8 +30,6 @@ namespace Allors.Repository.Domain
     {
         private readonly Inflector.Inflector inflector;
 
-        private readonly string name;
-
         public Property(Inflector.Inflector inflector, Composite definingType, string name)
         {
             this.AttributeByName = new Dictionary<string, Attribute>();
@@ -39,7 +37,7 @@ namespace Allors.Repository.Domain
 
             this.DefiningType = definingType;
             this.inflector = inflector;
-            this.name = name;
+            this.RoleName = name;
         }
 
         public string Id => ((dynamic)this.AttributeByName.Get(AttributeNames.Id))?.Value;
@@ -115,7 +113,7 @@ namespace Allors.Repository.Domain
             }
         }
 
-        public string RoleName => this.name;
+        public string RoleName { get; }
 
         public string RoleSingularName
         {
@@ -123,12 +121,12 @@ namespace Allors.Repository.Domain
             {
                 if (this.IsRoleOne)
                 {
-                    return this.name;
+                    return this.RoleName;
                 }
                 else
                 {
                     dynamic attribute = this.AttributeByName.Get("Singular");
-                    return attribute != null ? attribute.Value : this.inflector.Singularize(this.name);
+                    return attribute != null ? attribute.Value : this.inflector.Singularize(this.RoleName);
                 }
             }
         }
@@ -139,12 +137,12 @@ namespace Allors.Repository.Domain
             {
                 if (this.IsRoleMany)
                 {
-                    return this.name;
+                    return this.RoleName;
                 }
                 else
                 {
                     dynamic attribute = this.AttributeByName.Get("Plural");
-                    return attribute != null ? attribute.Value : this.inflector.Pluralize(this.name);
+                    return attribute != null ? attribute.Value : this.inflector.Pluralize(this.RoleName);
                 }
             }
         }

@@ -29,26 +29,23 @@ namespace Allors.Meta
 
     public sealed partial class ConcreteMethodType
     {
-        private readonly Class @class;
         private readonly MethodType methodType;
-
-        private IList<Action<object, object>> actions;
 
         public ConcreteMethodType(Class @class, MethodType methodType)
         {
-            this.@class = @class;
+            this.Class = @class;
             this.methodType = methodType;
         }
 
         public MethodType MethodType => this.methodType;
 
-        public Class Class => this.@class;
+        public Class Class { get; private set; }
 
-        public IList<Action<object, object>> Actions => this.actions;
+        public IList<Action<object, object>> Actions { get; private set; }
 
         public void Bind(List<Domain> sortedDomains, MethodInfo[] extensionMethods, Dictionary<Type, Dictionary<MethodInfo, Action<object, object>>> actionByMethodInfoByType)
         {
-            this.actions = new List<Action<object, object>>();
+            this.Actions = new List<Action<object, object>>();
 
             var interfaces = new List<Interface>(this.Class.Supertypes);
 
@@ -106,7 +103,7 @@ namespace Allors.Meta
                             actionByMethodInfo[methodInfo] = action;
                         }
 
-                        this.actions.Add(action);
+                        this.Actions.Add(action);
                     }
                 }
             }
@@ -129,7 +126,7 @@ namespace Allors.Meta
                         Expression call = Expression.Call(castO, methodInfo, castP);
 
                         var action = Expression.Lambda<Action<object, object>>(call, o, p).Compile();
-                        this.actions.Add(action);
+                        this.Actions.Add(action);
                     }
                 }
             }

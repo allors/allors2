@@ -35,15 +35,12 @@ namespace Allors.Workspace.Meta
         /// Used to create property names.
         /// </summary>
         private const string Where = "Where";
-
-        private readonly RelationType relationType;
-
         private Composite objectType;
 
         internal AssociationType(RelationType relationType, Guid id)
             : base(relationType.MetaPopulation)
         {
-            this.relationType = relationType;
+            this.RelationType = relationType;
 
             this.Id = id;
 
@@ -62,7 +59,7 @@ namespace Allors.Workspace.Meta
         {
             get
             {
-                switch (this.relationType.Multiplicity)
+                switch (this.RelationType.Multiplicity)
                 {
                     case Multiplicity.ManyToOne:
                     case Multiplicity.ManyToMany:
@@ -88,7 +85,7 @@ namespace Allors.Workspace.Meta
 
         IRelationType IAssociationType.RelationType => this.RelationType;
 
-        public RelationType RelationType => this.relationType;
+        public RelationType RelationType { get; private set; }
 
         /// <summary>
         /// Gets the name.

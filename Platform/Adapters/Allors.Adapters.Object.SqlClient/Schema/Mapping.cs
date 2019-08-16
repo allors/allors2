@@ -134,11 +134,9 @@ namespace Allors.Adapters.Object.SqlClient
         private const string ProcedurePrefixForGetAssociation = "ga_";
         private const string ProcedurePrefixForPrefetchAssociation = "pa_";
 
-        private readonly Database database;
-
         public Mapping(Database database)
         {
-            this.database = database;
+            this.Database = database;
 
             // TableTypes
             // ----------
@@ -254,7 +252,7 @@ namespace Allors.Adapters.Object.SqlClient
 
             foreach (var @class in this.Database.MetaPopulation.Classes)
             {
-                this.TableNameForObjectByClass.Add(@class, this.database.SchemaName + "." + this.NormalizeName(@class.SingularName));
+                this.TableNameForObjectByClass.Add(@class, this.Database.SchemaName + "." + this.NormalizeName(@class.SingularName));
 
                 foreach (var associationType in @class.AssociationTypes)
                 {
@@ -297,7 +295,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                 if (!roleType.ObjectType.IsUnit && ((associationType.IsMany && roleType.IsMany) || !relationType.ExistExclusiveClasses))
                 {
-                    this.TableNameForRelationByRelationType.Add(relationType, this.database.SchemaName + "." + this.NormalizeName(relationType.RoleType.SingularFullName));
+                    this.TableNameForRelationByRelationType.Add(relationType, this.Database.SchemaName + "." + this.NormalizeName(relationType.RoleType.SingularFullName));
                 }
             }
 
@@ -427,7 +425,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        protected internal Database Database => this.database;
+        protected internal Database Database { get; }
 
         internal string NormalizeName(string name)
         {

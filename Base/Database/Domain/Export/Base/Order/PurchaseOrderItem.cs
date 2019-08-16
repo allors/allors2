@@ -294,7 +294,7 @@ namespace Allors.Domain
                 this.UnitBasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Part);
             }
 
-            this.UnitVat = this.ExistVatRate ? Math.Round((this.UnitPrice * this.VatRate.Rate) / 100, 2) : 0;
+            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
             this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
             this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
             this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;

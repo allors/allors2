@@ -68,7 +68,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal override void Append(string part) => this.sql.Append(part);
 
-        internal override string CreateAlias() => "alias" + (this.aliasIndex++);
+        internal override string CreateAlias() => "alias" + this.aliasIndex++;
 
         internal override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association) => new ExtentStatementChild(this, extent, association);
 

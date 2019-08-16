@@ -2,30 +2,25 @@ namespace Allors.Adapters.Object.SqlClient
 {
     public class SchemaTableColumn
     {
-        private readonly SchemaTable table;
-        private readonly string name;
-        private readonly string lowercaseName;
         private readonly string dataType;
-        private readonly int? characterMaximumLength;
-        private readonly int? numericPrecision;
         private readonly int? numericScale;
 
         public SchemaTableColumn(SchemaTable table, string name, string dataType, int? characterMaximumLength, int? numericPrecision, int? numericScale)
         {
-            this.table = table;
-            this.name = name;
-            this.lowercaseName = name.ToLowerInvariant();
+            this.Table = table;
+            this.Name = name;
+            this.LowercaseName = name.ToLowerInvariant();
             this.dataType = dataType;
-            this.characterMaximumLength = characterMaximumLength;
-            this.numericPrecision = numericPrecision;
+            this.CharacterMaximumLength = characterMaximumLength;
+            this.NumericPrecision = numericPrecision;
             this.numericScale = numericScale;
         }
 
-        public SchemaTable Table => this.table;
+        public SchemaTable Table { get; }
 
-        public string Name => this.name;
+        public string Name { get; }
 
-        public string LowercaseName => this.lowercaseName;
+        public string LowercaseName { get; }
 
         public string DataType => this.dataType;
 
@@ -48,16 +43,16 @@ namespace Allors.Adapters.Object.SqlClient
 
                 if (this.dataType.Equals("decimal"))
                 {
-                    return "decimal(" + this.numericPrecision + "," + this.numericScale + ")";
+                    return "decimal(" + this.NumericPrecision + "," + this.numericScale + ")";
                 }
 
                 return this.dataType;
             }
         }
 
-        public int? CharacterMaximumLength => this.characterMaximumLength;
+        public int? CharacterMaximumLength { get; }
 
-        public int? NumericPrecision => this.numericPrecision;
+        public int? NumericPrecision { get; }
 
         public int? NumericScale => this.numericScale;
 

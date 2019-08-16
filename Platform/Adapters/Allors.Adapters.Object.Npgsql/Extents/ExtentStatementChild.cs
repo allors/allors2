@@ -24,29 +24,27 @@ namespace Allors.Adapters.Object.Npgsql
 
     internal class ExtentStatementChild : ExtentStatement
     {
-        private readonly IAssociationType associationType;
-        private readonly IRoleType roleType;
         private readonly ExtentStatementRoot root;
 
         internal ExtentStatementChild(ExtentStatementRoot root, SqlExtent extent, IRoleType roleType)
             : base(extent)
         {
             this.root = root;
-            this.roleType = roleType;
+            this.RoleType = roleType;
         }
 
         internal ExtentStatementChild(ExtentStatementRoot root, SqlExtent extent, IAssociationType associationType)
             : base(extent)
         {
             this.root = root;
-            this.associationType = associationType;
+            this.AssociationType = associationType;
         }
 
-        internal IAssociationType AssociationType => this.associationType;
+        internal IAssociationType AssociationType { get; }
 
         internal override bool IsRoot => false;
 
-        internal IRoleType RoleType => this.roleType;
+        internal IRoleType RoleType { get; }
 
         public override string ToString() => this.root.ToString();
 

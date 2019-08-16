@@ -12,16 +12,13 @@ namespace Allors.Adapters.Object.Npgsql
         public Database Database { get; }
 
         public readonly bool Exists;
-
-        private readonly Dictionary<string, SchemaTable> tableByName;
-        private readonly Dictionary<string, SchemaProcedure> procedureByName;
         private readonly Dictionary<string, Dictionary<string, SchemaIndex>> indexByIndexNameByTableName;
 
         public Schema(Database database)
         {
             this.Database = database;
-            this.tableByName = new Dictionary<string, SchemaTable>();
-            this.procedureByName = new Dictionary<string, SchemaProcedure>();
+            this.TableByName = new Dictionary<string, SchemaTable>();
+            this.ProcedureByName = new Dictionary<string, SchemaProcedure>();
             this.indexByIndexNameByTableName = new Dictionary<string, Dictionary<string, SchemaIndex>>();
 
             using (var connection = new NpgsqlConnection(database.ConnectionString))
@@ -84,10 +81,10 @@ AND C.table_schema = @tableSchema";
                                 columnName = database.Mapping.NormalizeName(columnName);
 
                                 SchemaTable table;
-                                if (!this.tableByName.TryGetValue(fullyQualifiedTableName, out table))
+                                if (!this.TableByName.TryGetValue(fullyQualifiedTableName, out table))
                                 {
                                     table = new SchemaTable(this, fullyQualifiedTableName);
-                                    this.tableByName[fullyQualifiedTableName] = table;
+                                    this.TableByName[fullyQualifiedTableName] = table;
                                 }
 
                                 if (!reader.IsDBNull(columnNameOrdinal))
@@ -116,7 +113,7 @@ WHERE routine_schema = @routineSchema";
                                 var routineDefinition = (string)reader["routine_definition"];
                                 var lowercaseRoutineName = routineName.Trim().ToLowerInvariant();
                                 var fullyQualifiedName = database.SchemaName + "." + lowercaseRoutineName;
-                                this.procedureByName[fullyQualifiedName] = new SchemaProcedure(routineName, routineDefinition);
+                                this.ProcedureByName[fullyQualifiedName] = new SchemaProcedure(routineName, routineDefinition);
                             }
                         }
                     }
@@ -175,23 +172,23 @@ WHERE routine_schema = @routineSchema";
             }
         }
 
-        public Dictionary<string, SchemaTable> TableByName => this.tableByName;
+        public Dictionary<string, SchemaTable> TableByName { get; }
 
-        public Dictionary<string, SchemaProcedure> ProcedureByName => this.procedureByName;
+        public Dictionary<string, SchemaProcedure> ProcedureByName { get; }
 
         public Dictionary<string, Dictionary<string, SchemaIndex>> IndexByIndexNameByTableName => this.indexByIndexNameByTableName;
 
         public SchemaTable GetTable(string tableName)
         {
             SchemaTable table;
-            this.tableByName.TryGetValue(tableName.ToLowerInvariant(), out table);
+            this.TableByName.TryGetValue(tableName.ToLowerInvariant(), out table);
             return table;
         }
 
         public SchemaProcedure GetProcedure(string procedureName)
         {
             SchemaProcedure procedure;
-            this.procedureByName.TryGetValue(procedureName, out procedure);
+            this.ProcedureByName.TryGetValue(procedureName, out procedure);
             return procedure;
         }
 

@@ -25,33 +25,28 @@ namespace Allors.Adapters.Memory
     public class Database : IDatabase
     {
         public const long IntialVersion = 0;
-
-        private readonly IObjectFactory objectFactory;
         private readonly Dictionary<IObjectType, object> concreteClassesByObjectType;
-
-        private readonly string id;
-
         private Session session;
 
         public Database(IServiceProvider serviceProvider, Configuration configuration)
         {
             this.ServiceProvider = serviceProvider;
-            this.objectFactory = configuration.ObjectFactory;
-            if (this.objectFactory == null)
+            this.ObjectFactory = configuration.ObjectFactory;
+            if (this.ObjectFactory == null)
             {
                 throw new Exception("Configuration.ObjectFactory is missing");
             }
 
             this.concreteClassesByObjectType = new Dictionary<IObjectType, object>();
 
-            this.id = string.IsNullOrWhiteSpace(configuration.Id) ? Guid.NewGuid().ToString("N").ToLowerInvariant() : configuration.Id;
+            this.Id = string.IsNullOrWhiteSpace(configuration.Id) ? Guid.NewGuid().ToString("N").ToLowerInvariant() : configuration.Id;
         }
 
         public event ObjectNotLoadedEventHandler ObjectNotLoaded;
 
         public event RelationNotLoadedEventHandler RelationNotLoaded;
 
-        public string Id => this.id;
+        public string Id { get; }
 
         public bool IsDatabase => true;
 
@@ -59,9 +54,9 @@ namespace Allors.Adapters.Memory
 
         public bool IsShared => false;
 
-        public IObjectFactory ObjectFactory => this.objectFactory;
+        public IObjectFactory ObjectFactory { get; }
 
-        public IMetaPopulation MetaPopulation => this.objectFactory.MetaPopulation;
+        public IMetaPopulation MetaPopulation => this.ObjectFactory.MetaPopulation;
 
         public IServiceProvider ServiceProvider { get; }
 

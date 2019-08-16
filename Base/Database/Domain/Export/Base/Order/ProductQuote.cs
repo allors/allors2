@@ -181,7 +181,7 @@ namespace Allors.Domain
                 if (this.ExistDiscountAdjustment)
                 {
                     var discount = this.DiscountAdjustment.Percentage.HasValue ?
-                                           Math.Round((this.TotalExVat * this.DiscountAdjustment.Percentage.Value) / 100, 2) :
+                                           Math.Round(this.TotalExVat * this.DiscountAdjustment.Percentage.Value / 100, 2) :
                                            this.DiscountAdjustment.Amount ?? 0;
 
                     this.TotalDiscount += discount;
@@ -189,7 +189,7 @@ namespace Allors.Domain
 
                     if (this.ExistVatRegime)
                     {
-                        decimal vat = Math.Round((discount * this.VatRegime.VatRate.Rate) / 100, 2);
+                        decimal vat = Math.Round(discount * this.VatRegime.VatRate.Rate / 100, 2);
 
                         this.TotalVat -= vat;
                         this.TotalIncVat -= discount + vat;
@@ -199,7 +199,7 @@ namespace Allors.Domain
                 if (this.ExistSurchargeAdjustment)
                 {
                     decimal surcharge = this.SurchargeAdjustment.Percentage.HasValue ?
-                                            Math.Round((this.TotalExVat * this.SurchargeAdjustment.Percentage.Value) / 100, 2) :
+                                            Math.Round(this.TotalExVat * this.SurchargeAdjustment.Percentage.Value / 100, 2) :
                                             this.SurchargeAdjustment.Amount ?? 0;
 
                     this.TotalSurcharge += surcharge;
@@ -207,7 +207,7 @@ namespace Allors.Domain
 
                     if (this.ExistVatRegime)
                     {
-                        decimal vat = Math.Round((surcharge * this.VatRegime.VatRate.Rate) / 100, 2);
+                        decimal vat = Math.Round(surcharge * this.VatRegime.VatRate.Rate / 100, 2);
                         this.TotalVat += vat;
                         this.TotalIncVat += surcharge + vat;
                     }
@@ -216,7 +216,7 @@ namespace Allors.Domain
                 if (this.ExistFee)
                 {
                     decimal fee = this.Fee.Percentage.HasValue ?
-                                      Math.Round((this.TotalExVat * this.Fee.Percentage.Value) / 100, 2) :
+                                      Math.Round(this.TotalExVat * this.Fee.Percentage.Value / 100, 2) :
                                       this.Fee.Amount ?? 0;
 
                     this.TotalFee += fee;
@@ -224,7 +224,7 @@ namespace Allors.Domain
 
                     if (this.Fee.ExistVatRate)
                     {
-                        decimal vat1 = Math.Round((fee * this.Fee.VatRate.Rate) / 100, 2);
+                        decimal vat1 = Math.Round(fee * this.Fee.VatRate.Rate / 100, 2);
                         this.TotalVat += vat1;
                         this.TotalIncVat += fee + vat1;
                     }
@@ -233,7 +233,7 @@ namespace Allors.Domain
                 if (this.ExistShippingAndHandlingCharge)
                 {
                     decimal shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ?
-                                           Math.Round((this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value) / 100, 2) :
+                                           Math.Round(this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value / 100, 2) :
                                            this.ShippingAndHandlingCharge.Amount ?? 0;
 
                     this.TotalShippingAndHandling += shipping;
@@ -241,7 +241,7 @@ namespace Allors.Domain
 
                     if (this.ShippingAndHandlingCharge.ExistVatRate)
                     {
-                        decimal vat2 = Math.Round((shipping * this.ShippingAndHandlingCharge.VatRate.Rate) / 100, 2);
+                        decimal vat2 = Math.Round(shipping * this.ShippingAndHandlingCharge.VatRate.Rate / 100, 2);
                         this.TotalVat += vat2;
                         this.TotalIncVat += shipping + vat2;
                     }
@@ -390,14 +390,14 @@ namespace Allors.Domain
                 if (quoteItem.ExistDiscountAdjustment)
                 {
                     quoteItem.UnitDiscount += quoteItem.DiscountAdjustment.Percentage.HasValue ?
-                        Math.Round((quoteItem.UnitPrice * quoteItem.DiscountAdjustment.Percentage.Value) / 100, 2) :
+                        Math.Round(quoteItem.UnitPrice * quoteItem.DiscountAdjustment.Percentage.Value / 100, 2) :
                         quoteItem.DiscountAdjustment.Amount ?? 0;
                 }
 
                 if (quoteItem.ExistSurchargeAdjustment)
                 {
                     quoteItem.UnitSurcharge += quoteItem.SurchargeAdjustment.Percentage.HasValue ?
-                        Math.Round((quoteItem.UnitPrice * quoteItem.SurchargeAdjustment.Percentage.Value) / 100, 2) :
+                        Math.Round(quoteItem.UnitPrice * quoteItem.SurchargeAdjustment.Percentage.Value / 100, 2) :
                         quoteItem.SurchargeAdjustment.Amount ?? 0;
                 }
 
@@ -412,7 +412,7 @@ namespace Allors.Domain
                 quoteItem.UnitSurcharge += featureItem.UnitSurcharge;
             }
 
-            quoteItem.UnitVat = quoteItem.ExistVatRate ? Math.Round((quoteItem.UnitPrice * quoteItem.VatRate.Rate) / 100, 2) : 0;
+            quoteItem.UnitVat = quoteItem.ExistVatRate ? Math.Round(quoteItem.UnitPrice * quoteItem.VatRate.Rate / 100, 2) : 0;
 
             // Calculate Totals
             quoteItem.TotalBasePrice = quoteItem.UnitBasePrice * quoteItem.Quantity;
@@ -422,8 +422,8 @@ namespace Allors.Domain
 
             if (quoteItem.TotalBasePrice > 0)
             {
-                quoteItem.TotalDiscountAsPercentage = Math.Round((quoteItem.TotalDiscount / quoteItem.TotalBasePrice) * 100, 2);
-                quoteItem.TotalSurchargeAsPercentage = Math.Round((quoteItem.TotalSurcharge / quoteItem.TotalBasePrice) * 100, 2);
+                quoteItem.TotalDiscountAsPercentage = Math.Round(quoteItem.TotalDiscount / quoteItem.TotalBasePrice * 100, 2);
+                quoteItem.TotalSurchargeAsPercentage = Math.Round(quoteItem.TotalSurcharge / quoteItem.TotalBasePrice * 100, 2);
             }
             else
             {

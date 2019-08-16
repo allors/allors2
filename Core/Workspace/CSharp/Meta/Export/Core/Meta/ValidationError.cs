@@ -26,20 +26,6 @@ namespace Allors.Workspace.Meta
     /// </summary>
     public class ValidationError
     {
-        /// <summary>
-        /// The kind of validation.
-        /// </summary>
-        private readonly ValidationKind kind;
-
-        /// <summary>
-        /// The validated member.
-        /// </summary>
-        private readonly string[] members;
-
-        /// <summary>
-        /// The error message.
-        /// </summary>
-        private readonly string message;
 
         /// <summary>
         /// The object that contains the member.
@@ -56,28 +42,28 @@ namespace Allors.Workspace.Meta
         public ValidationError(string message, object source, ValidationKind kind, string[] members)
         {
             this.source = source;
-            this.members = members;
-            this.kind = kind;
-            this.message = message;
+            this.Members = members;
+            this.Kind = kind;
+            this.Message = message;
         }
 
         /// <summary>
         /// Gets the kind of validation.
         /// </summary>
         /// <value>The kind of validation.</value>
-        public ValidationKind Kind => this.kind;
+        public ValidationKind Kind { get; private set; }
 
         /// <summary>
         /// Gets the validated members.
         /// </summary>
         /// <value>The validated members.</value>
-        public string[] Members => this.members;
+        public string[] Members { get; private set; }
 
         /// <summary>
         /// Gets the error message.
         /// </summary>
         /// <value>The error message.</value>
-        public string Message => this.message;
+        public string Message { get; private set; }
 
         /// <summary>
         /// Gets the object that contains the member.
@@ -91,6 +77,6 @@ namespace Allors.Workspace.Meta
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString() => this.message;
+        public override string ToString() => this.Message;
     }
 }

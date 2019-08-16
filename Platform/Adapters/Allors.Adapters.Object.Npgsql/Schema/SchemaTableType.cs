@@ -4,16 +4,15 @@ namespace Allors.Adapters.Object.Npgsql
 
     public class SchemaTableType
     {
-        private readonly string name;
         private readonly Dictionary<string, SchemaTableTypeColumn> columnByLowercaseColumnName;
 
         public SchemaTableType(Schema schema, string name)
         {
-            this.name = name;
+            this.Name = name;
             this.columnByLowercaseColumnName = new Dictionary<string, SchemaTableTypeColumn>();
         }
 
-        public string Name => this.name;
+        public string Name { get; }
 
         public Dictionary<string, SchemaTableTypeColumn> ColumnByLowercaseColumnName => this.columnByLowercaseColumnName;
 

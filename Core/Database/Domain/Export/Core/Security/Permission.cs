@@ -40,7 +40,7 @@ namespace Allors.Domain
                     // Read Operations should only be allowed on AssociaitonTypes && RoleTypes
                     if (!(this.OperandType is RoleType || this.OperandType is AssociationType))
                     {
-                        derivation.Validation.AddError(this, Meta.OperationEnum, DomainErrors.PermissionOnlyReadForRoleOrAssociationType);
+                        derivation.Validation.AddError(this, this.Meta.OperationEnum, DomainErrors.PermissionOnlyReadForRoleOrAssociationType);
                     }
 
                     break;
@@ -49,7 +49,7 @@ namespace Allors.Domain
                     // Write Operations should only be allowed on RoleTypes
                     if (!(this.OperandType is RoleType))
                     {
-                        derivation.Validation.AddError(this, Meta.OperationEnum, DomainErrors.PermissionOnlyWriteForRoleType);
+                        derivation.Validation.AddError(this, this.Meta.OperationEnum, DomainErrors.PermissionOnlyWriteForRoleType);
                     }
 
                     break;
@@ -58,13 +58,13 @@ namespace Allors.Domain
                     // Execute Operations should only be allowed on MethodTypes
                     if (!(this.OperandType is MethodType))
                     {
-                        derivation.Validation.AddError(this, Meta.OperationEnum, DomainErrors.PermissionOnlyExecuteForMethodType);
+                        derivation.Validation.AddError(this, this.Meta.OperationEnum, DomainErrors.PermissionOnlyExecuteForMethodType);
                     }
 
                     break;
 
                 default:
-                    derivation.Validation.AddError(this, Meta.OperationEnum, "Illegal enum");
+                    derivation.Validation.AddError(this, this.Meta.OperationEnum, "Illegal enum");
                     break;
             }
         }

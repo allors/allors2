@@ -36,7 +36,7 @@ namespace Allors.Domain.Print.WorkTaskModel
 
             this.TotalLabour = Math.Round(workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
                 .Where(v => v.IsBillable &&
-                            (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
+                            !v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue || v.BillableAmountOfTime.HasValue)
                 .Sum(v => v.BillingAmount), 2);
 
             this.TotalParts = Math.Round(workTask.WorkEffortInventoryAssignmentsWhereAssignment

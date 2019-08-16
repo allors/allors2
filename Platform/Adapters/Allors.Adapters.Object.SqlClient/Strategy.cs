@@ -33,47 +33,45 @@ namespace Allors.Adapters.Object.SqlClient
 
     public class Strategy : IStrategy
     {
-        private readonly Reference reference;
-
         private IObject allorsObject;
         private Roles roles;
 
         internal Strategy(Reference reference)
         {
-            this.reference = reference;
+            this.Reference = reference;
             this.ObjectId = reference.ObjectId;
         }
 
-        ISession IStrategy.Session => this.reference.Session;
+        ISession IStrategy.Session => this.Reference.Session;
 
-        public Session Session => this.reference.Session;
+        public Session Session => this.Reference.Session;
 
         public IClass Class
         {
             get
             {
-                if (!this.reference.Exists)
+                if (!this.Reference.Exists)
                 {
-                    throw new Exception("Object that had  " + this.reference.Class.Name + " with id " + this.ObjectId + " does not exist");
+                    throw new Exception("Object that had  " + this.Reference.Class.Name + " with id " + this.ObjectId + " does not exist");
                 }
 
-                return this.reference.Class;
+                return this.Reference.Class;
             }
         }
 
         public long ObjectId { get; }
 
-        public long ObjectVersion => this.reference.Version;
+        public long ObjectVersion => this.Reference.Version;
 
-        public bool IsDeleted => !this.reference.Exists;
+        public bool IsDeleted => !this.Reference.Exists;
 
-        public bool IsNewInSession => this.reference.IsNew;
+        public bool IsNewInSession => this.Reference.IsNew;
 
-        internal Roles Roles => this.roles ?? (this.roles = this.reference.Session.State.GetOrCreateRoles(this.reference));
+        internal Roles Roles => this.roles ?? (this.roles = this.Reference.Session.State.GetOrCreateRoles(this.Reference));
 
-        internal Reference Reference => this.reference;
+        internal Reference Reference { get; }
 
-        public IObject GetObject() => this.allorsObject ?? (this.allorsObject = this.reference.Session.Database.ObjectFactory.Create(this));
+        public IObject GetObject() => this.allorsObject ?? (this.allorsObject = this.Reference.Session.Database.ObjectFactory.Create(this));
 
         public virtual void Delete()
         {
@@ -125,7 +123,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
 
             this.Session.Commands.DeleteObject(this);
-            this.reference.Exists = false;
+            this.Reference.Exists = false;
 
             this.Session.State.ChangeSet.OnDeleted(this.ObjectId);
         }
@@ -431,7 +429,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         protected virtual void AssertExist()
         {
-            if (!this.reference.Exists)
+            if (!this.Reference.Exists)
             {
                 throw new Exception("Object of class " + this.Class.Name + " with id " + this.ObjectId + " does not exist");
             }

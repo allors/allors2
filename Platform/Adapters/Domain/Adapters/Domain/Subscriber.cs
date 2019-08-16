@@ -23,12 +23,6 @@ namespace Allors.Domain
 {
     public class Subscriber
     {
-        private string message;
-
-        public string Message
-        {
-            get => message;
-            set => message = value;
-        }
+        public string Message { get; set; }
     }
 }

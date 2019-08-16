@@ -26,19 +26,18 @@ namespace Allors.Development.Repository.Storage
 
     public class AllorsDirectoryInfo
     {
-        private readonly DirectoryInfo directoryInfo;
         private readonly AllorsDirectoryInfo parent;
 
         public AllorsDirectoryInfo(DirectoryInfo directoryInfo)
         {
-            this.directoryInfo = directoryInfo;
+            this.DirectoryInfo = directoryInfo;
             if (directoryInfo.Parent != null)
             {
                 this.parent = new AllorsDirectoryInfo(directoryInfo.Parent);
             }
         }
 
-        internal DirectoryInfo DirectoryInfo => this.directoryInfo;
+        internal DirectoryInfo DirectoryInfo { get; private set; }
 
         internal AllorsDirectoryInfo Parent => this.parent;
 
@@ -47,16 +46,16 @@ namespace Allors.Development.Repository.Storage
         public string GetRelativeOrFullName(DirectoryInfo baseDirectoryInfo)
         {
             var relativeName = this.GetRelativeName(baseDirectoryInfo);
-            return relativeName ?? this.directoryInfo.FullName;
+            return relativeName ?? this.DirectoryInfo.FullName;
         }
 
-        public override string ToString() => this.directoryInfo.FullName;
+        public override string ToString() => this.DirectoryInfo.FullName;
 
         private void BuildAncestors(AllorsDirectoryInfo root, List<AllorsDirectoryInfo> ancestors)
         {
-            if (!this.directoryInfo.FullName.Equals(this.directoryInfo.Root.FullName))
+            if (!this.DirectoryInfo.FullName.Equals(this.DirectoryInfo.Root.FullName))
             {
-                if (!this.directoryInfo.FullName.Equals(root.directoryInfo.FullName))
+                if (!this.DirectoryInfo.FullName.Equals(root.DirectoryInfo.FullName))
                 {
                     ancestors.Add(this);
                     this.parent.BuildAncestors(root, ancestors);
@@ -68,7 +67,7 @@ namespace Allors.Development.Repository.Storage
 
         private bool IsAncestor(AllorsDirectoryInfo ancestor)
         {
-            if (this.directoryInfo.FullName.Equals(ancestor.directoryInfo.FullName))
+            if (this.DirectoryInfo.FullName.Equals(ancestor.DirectoryInfo.FullName))
             {
                 return true;
             }
@@ -83,7 +82,7 @@ namespace Allors.Development.Repository.Storage
 
         internal string GetRelativeName(AllorsDirectoryInfo baseDirectory)
         {
-            if (this.directoryInfo.Root.FullName.Equals(baseDirectory.directoryInfo.Root.FullName))
+            if (this.DirectoryInfo.Root.FullName.Equals(baseDirectory.DirectoryInfo.Root.FullName))
             {
                 var commonAncestor = this.GetCommonAncestor(baseDirectory);
 
@@ -112,7 +111,7 @@ namespace Allors.Development.Repository.Storage
                         relativePath.Append(Path.DirectorySeparatorChar);
                     }
 
-                    relativePath.Append(ancestor.directoryInfo.Name);
+                    relativePath.Append(ancestor.DirectoryInfo.Name);
                 }
 
                 return relativePath.ToString();

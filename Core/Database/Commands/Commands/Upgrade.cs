@@ -96,7 +96,7 @@ namespace Commands
             if (notLoadedObjectTypeIds.Count > 0)
             {
                 var notLoaded = notLoadedObjectTypeIds
-                    .Aggregate("Could not load following ObjectTypeIds: ", (current, objectTypeId) => current + ("- " + objectTypeId));
+                    .Aggregate("Could not load following ObjectTypeIds: ", (current, objectTypeId) => current + "- " + objectTypeId);
 
                 this.logger.LogError(notLoaded);
                 return 1;
@@ -105,7 +105,7 @@ namespace Commands
             if (notLoadedRelationTypeIds.Count > 0)
             {
                 var notLoaded = notLoadedRelationTypeIds
-                    .Aggregate("Could not load following RelationTypeIds: ", (current, relationTypeId) => current + ("- " + relationTypeId));
+                    .Aggregate("Could not load following RelationTypeIds: ", (current, relationTypeId) => current + "- " + relationTypeId);
 
                 this.logger.LogError(notLoaded);
                 return 1;

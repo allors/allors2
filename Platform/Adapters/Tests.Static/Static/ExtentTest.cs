@@ -258,7 +258,7 @@ namespace Allors.Adapters
                         var extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, enumerable);
                         }
                         else
@@ -284,7 +284,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, enumerable);
                         }
                         else
@@ -313,7 +313,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, enumerable);
                         }
                         else
@@ -343,7 +343,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, enumerable);
                         }
                         else
@@ -369,7 +369,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, enumerable);
                         }
                         else
@@ -398,7 +398,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, enumerable);
                         }
                         else
@@ -430,7 +430,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, enumerable);
                         }
                         else
@@ -456,7 +456,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, enumerable);
                         }
                         else
@@ -485,7 +485,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, enumerable);
                         }
                         else
@@ -515,7 +515,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, enumerable);
                         }
                         else
@@ -541,7 +541,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, enumerable);
                         }
                         else
@@ -570,7 +570,7 @@ namespace Allors.Adapters
                         extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                         if (useEnumerable)
                         {
-                            var enumerable = (IEnumerable<IObject>)((Extent<IObject>)inExtent);
+                            var enumerable = (IEnumerable<IObject>)(Extent<IObject>)inExtent;
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, enumerable);
                         }
                         else

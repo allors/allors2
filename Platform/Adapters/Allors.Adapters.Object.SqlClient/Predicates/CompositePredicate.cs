@@ -28,12 +28,11 @@ namespace Allors.Adapters.Object.SqlClient
 
     internal abstract class CompositePredicate : Predicate, ICompositePredicate
     {
-        private readonly ExtentFiltered extent;
         private readonly List<Predicate> filters;
 
         protected CompositePredicate(ExtentFiltered extent)
         {
-            this.extent = extent;
+            this.Extent = extent;
             this.filters = new List<Predicate>(4);
 
             if (extent.Strategy != null)
@@ -82,7 +81,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        protected ExtentFiltered Extent => this.extent;
+        protected ExtentFiltered Extent { get; }
 
         protected List<Predicate> Filters => this.filters;
 

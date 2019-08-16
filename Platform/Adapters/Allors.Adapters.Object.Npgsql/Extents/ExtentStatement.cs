@@ -31,11 +31,9 @@ namespace Allors.Adapters.Object.Npgsql
         private readonly List<IRoleType> referenceRoleInstances;
         private readonly List<IRoleType> referenceRoles;
 
-        private readonly SqlExtent extent;
-
         protected ExtentStatement(SqlExtent extent)
         {
-            this.extent = extent;
+            this.Extent = extent;
 
             this.referenceRoles = new List<IRoleType>();
             this.referenceAssociations = new List<IAssociationType>();
@@ -44,17 +42,17 @@ namespace Allors.Adapters.Object.Npgsql
             this.referenceAssociationInstances = new List<IAssociationType>();
         }
 
-        internal SqlExtent Extent => this.extent;
+        internal SqlExtent Extent { get; }
 
         internal abstract bool IsRoot { get; }
 
         internal Mapping Mapping => this.Session.Database.Mapping;
 
-        internal ExtentSort Sorter => this.extent.Sorter;
+        internal ExtentSort Sorter => this.Extent.Sorter;
 
-        protected Session Session => this.extent.Session;
+        protected Session Session => this.Extent.Session;
 
-        protected IObjectType Type => this.extent.ObjectType;
+        protected IObjectType Type => this.Extent.ObjectType;
 
         internal void AddJoins(IObjectType rootClass, string alias)
         {

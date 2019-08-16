@@ -36,8 +36,6 @@ namespace Allors.Meta
 
         public bool IsUnique { get; set; }
 
-        private readonly RelationType relationType;
-
         private ObjectType objectType;
 
         private string singularName;
@@ -53,7 +51,7 @@ namespace Allors.Meta
         internal RoleType(RelationType relationType, Guid id)
             : base(relationType.MetaPopulation)
         {
-            this.relationType = relationType;
+            this.RelationType = relationType;
 
             this.Id = id;
 
@@ -112,7 +110,7 @@ namespace Allors.Meta
         {
             get
             {
-                switch (this.relationType.Multiplicity)
+                switch (this.RelationType.Multiplicity)
                 {
                     case Multiplicity.OneToMany:
                     case Multiplicity.ManyToMany:
@@ -126,7 +124,7 @@ namespace Allors.Meta
 
         IRelationType IRoleType.RelationType => this.RelationType;
 
-        public RelationType RelationType => this.relationType;
+        public RelationType RelationType { get; private set; }
 
         /// <summary>
         /// Gets the display name.

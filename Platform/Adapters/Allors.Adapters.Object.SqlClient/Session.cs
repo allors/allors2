@@ -32,9 +32,6 @@ namespace Allors.Adapters.Object.SqlClient
     public sealed class Session : ISession
     {
         private static readonly IObject[] EmptyObjects = { };
-
-        private readonly Database database;
-
         private bool busyCommittingOrRollingBack;
 
         private Dictionary<string, object> properties;
@@ -45,7 +42,7 @@ namespace Allors.Adapters.Object.SqlClient
             var scope = serviceScopeFactory.CreateScope();
             this.ServiceProvider = scope.ServiceProvider;
 
-            this.database = database;
+            this.Database = database;
             this.Connection = connection;
 
             this.State = new State();
@@ -64,9 +61,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         private Prefetcher Prefetcher { get; }
 
-        IDatabase ISession.Database => this.database;
+        IDatabase ISession.Database => this.Database;
 
-        public Database Database => this.database;
+        public Database Database { get; }
 
         public object this[string name]
         {

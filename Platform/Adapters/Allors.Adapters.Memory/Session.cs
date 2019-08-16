@@ -35,9 +35,6 @@ namespace Allors.Adapters.Memory
         private static readonly IObject[] EmptyObjects = { };
 
         private readonly Dictionary<IObjectType, IObjectType[]> concreteClassesByObjectType;
-
-        private readonly Database database;
-
         private ChangeSet changeSet;
 
         private bool busyCommittingOrRollingBack;
@@ -53,7 +50,7 @@ namespace Allors.Adapters.Memory
             var scope = serviceScopeFactory.CreateScope();
             this.ServiceProvider = scope.ServiceProvider;
 
-            this.database = database;
+            this.MemoryDatabase = database;
             this.busyCommittingOrRollingBack = false;
 
             this.concreteClassesByObjectType = new Dictionary<IObjectType, IObjectType[]>();
@@ -65,15 +62,15 @@ namespace Allors.Adapters.Memory
 
         public IServiceProvider ServiceProvider { get; }
 
-        public IDatabase Population => this.database;
+        public IDatabase Population => this.MemoryDatabase;
 
-        public IDatabase Database => this.database;
+        public IDatabase Database => this.MemoryDatabase;
 
         public bool IsProfilingEnabled => false;
 
         internal ChangeSet MemoryChangeSet => this.changeSet;
 
-        internal Database MemoryDatabase => this.database;
+        internal Database MemoryDatabase { get; }
 
         public void Commit()
         {
@@ -160,7 +157,7 @@ namespace Allors.Adapters.Memory
 
         public T Create<T>() where T : IObject
         {
-            var objectType = this.database.ObjectFactory.GetObjectTypeForType(typeof(T));
+            var objectType = this.MemoryDatabase.ObjectFactory.GetObjectTypeForType(typeof(T));
 
             var @class = objectType as IClass;
             if (@class == null)
@@ -173,7 +170,7 @@ namespace Allors.Adapters.Memory
 
         public IObject[] Create(IClass objectType, int count)
         {
-            var arrayType = this.database.ObjectFactory.GetTypeForObjectType(objectType);
+            var arrayType = this.MemoryDatabase.ObjectFactory.GetTypeForObjectType(objectType);
             var allorsObjects = (IObject[])Array.CreateInstance(arrayType, count);
             for (var i = 0; i < count; i++)
             {
@@ -257,7 +254,7 @@ namespace Allors.Adapters.Memory
 
         public Extent<T> Extent<T>() where T : IObject
         {
-            var compositeType = this.database.ObjectFactory.GetObjectTypeForType(typeof(T)) as IComposite;
+            var compositeType = this.MemoryDatabase.ObjectFactory.GetObjectTypeForType(typeof(T)) as IComposite;
 
             if (compositeType == null)
             {
@@ -305,7 +302,7 @@ namespace Allors.Adapters.Memory
 
         internal void Init() => this.Reset();
 
-        internal Type GetTypeForObjectType(IObjectType objectType) => this.database.ObjectFactory.GetTypeForObjectType(objectType);
+        internal Type GetTypeForObjectType(IObjectType objectType) => this.MemoryDatabase.ObjectFactory.GetTypeForObjectType(objectType);
 
         internal virtual Strategy InsertStrategy(IClass objectType, long objectId, long objectVersion)
         {

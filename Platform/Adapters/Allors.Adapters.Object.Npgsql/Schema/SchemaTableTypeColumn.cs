@@ -2,26 +2,22 @@ namespace Allors.Adapters.Object.Npgsql
 {
     public class SchemaTableTypeColumn
     {
-        private readonly SchemaTableType table;
-        private readonly string name;
         private readonly string dataType;
-        private readonly int? maximumLength;
-        private readonly int? precision;
         private readonly int? scale;
 
         public SchemaTableTypeColumn(SchemaTableType table, string name, string dataType, int? maximumLength, int? precision, int? scale)
         {
-            this.table = table;
-            this.name = name;
+            this.Table = table;
+            this.Name = name;
             this.dataType = dataType;
-            this.maximumLength = maximumLength;
-            this.precision = precision;
+            this.MaximumLength = maximumLength;
+            this.Precision = precision;
             this.scale = scale;
         }
 
-        public SchemaTableType Table => this.table;
+        public SchemaTableType Table { get; }
 
-        public string Name => this.name;
+        public string Name { get; }
 
         public string DataType => this.dataType;
 
@@ -44,16 +40,16 @@ namespace Allors.Adapters.Object.Npgsql
 
                 if (this.dataType.Equals("decimal"))
                 {
-                    return "decimal(" + this.precision + "," + this.scale + ")";
+                    return "decimal(" + this.Precision + "," + this.scale + ")";
                 }
 
                 return this.dataType;
             }
         }
 
-        public int? MaximumLength => this.maximumLength;
+        public int? MaximumLength { get; }
 
-        public int? Precision => this.precision;
+        public int? Precision { get; }
 
         public int? Scale => this.scale;
 

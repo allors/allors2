@@ -32,9 +32,6 @@ namespace Allors.Adapters.Memory
 
     public sealed class Strategy : IStrategy
     {
-        private readonly Session session;
-        private readonly IClass objectType;
-
         private readonly Dictionary<IRoleType, object> unitRoleByRoleType;
         private readonly Dictionary<IRoleType, Strategy> compositeRoleByRoleType;
         private readonly Dictionary<IRoleType, HashSet<Strategy>> compositesRoleByRoleType;
@@ -46,27 +43,20 @@ namespace Allors.Adapters.Memory
         private Dictionary<IRoleType, HashSet<Strategy>> rollbackCompositesRoleByRoleType;
         private Dictionary<IAssociationType, Strategy> rollbackCompositeAssociationByAssociationType;
         private Dictionary<IAssociationType, HashSet<Strategy>> rollbackCompositesAssociationByAssociationType;
-
-        // TODO: move to a BitFlag
-        private bool isDeleted;
         private bool isDeletedOnRollback;
-        private bool isNew;
-
         private WeakReference allorizedObjectWeakReference;
-
-        private long version;
 
         internal Strategy(Session session, IClass objectType, long objectId, long version)
         {
-            this.session = session;
-            this.objectType = objectType;
+            this.MemorySession = session;
+            this.UncheckedObjectType = objectType;
             this.ObjectId = objectId;
 
-            this.isDeleted = false;
+            this.IsDeleted = false;
             this.isDeletedOnRollback = true;
-            this.isNew = true;
+            this.IsNewInSession = true;
 
-            this.version = version;
+            this.ObjectVersion = version;
 
             this.unitRoleByRoleType = new Dictionary<IRoleType, object>();
             this.compositeRoleByRoleType = new Dictionary<IRoleType, Strategy>();
@@ -81,28 +71,28 @@ namespace Allors.Adapters.Memory
             this.rollbackCompositesAssociationByAssociationType = null;
         }
 
-        public bool IsDeleted => this.isDeleted;
+        public bool IsDeleted { get; private set; }
 
-        public bool IsNewInSession => this.isNew;
+        public bool IsNewInSession { get; private set; }
 
         public long ObjectId { get; }
 
-        public long ObjectVersion => this.version;
+        public long ObjectVersion { get; private set; }
 
         public IClass Class
         {
             get
             {
                 this.AssertNotDeleted();
-                return this.objectType;
+                return this.UncheckedObjectType;
             }
         }
 
-        public ISession Session => this.session;
+        public ISession Session => this.MemorySession;
 
-        internal IClass UncheckedObjectType => this.objectType;
+        internal IClass UncheckedObjectType { get; }
 
-        internal Session MemorySession => this.session;
+        internal Session MemorySession { get; }
 
         private ChangeSet ChangeSet => this.MemorySession.MemoryChangeSet;
 
@@ -116,7 +106,7 @@ namespace Allors.Adapters.Memory
 
         private Dictionary<IAssociationType, HashSet<Strategy>> RollbackCompositesAssociationByAssociationType => this.rollbackCompositesAssociationByAssociationType ?? (this.rollbackCompositesAssociationByAssociationType = new Dictionary<IAssociationType, HashSet<Strategy>>());
 
-        public override string ToString() => this.objectType.Name + " " + this.ObjectId;
+        public override string ToString() => this.UncheckedObjectType.Name + " " + this.ObjectId;
 
         public object GetRole(IRelationType relationType)
         {
@@ -190,7 +180,7 @@ namespace Allors.Adapters.Memory
             this.AssertNotDeleted();
 
             var roleType = relationType.RoleType;
-            this.session.MemoryDatabase.UnitRoleChecks(this, roleType);
+            this.MemorySession.MemoryDatabase.UnitRoleChecks(this, roleType);
 
             var unitRole = this.GetInternalizedUnitRole(roleType);
             return unitRole;
@@ -200,7 +190,7 @@ namespace Allors.Adapters.Memory
         {
             this.AssertNotDeleted();
             var roleType = relationType.RoleType;
-            this.session.MemoryDatabase.UnitRoleChecks(this, roleType);
+            this.MemorySession.MemoryDatabase.UnitRoleChecks(this, roleType);
 
             if (!this.RollbackUnitRoleByRoleType.ContainsKey(roleType))
             {
@@ -226,7 +216,7 @@ namespace Allors.Adapters.Memory
         {
             this.AssertNotDeleted();
             var roleType = relationType.RoleType;
-            this.session.MemoryDatabase.UnitRoleChecks(this, roleType);
+            this.MemorySession.MemoryDatabase.UnitRoleChecks(this, roleType);
             return this.unitRoleByRoleType.ContainsKey(roleType);
         }
 
@@ -304,9 +294,9 @@ namespace Allors.Adapters.Memory
                 {
                     if (role != null)
                     {
-                        this.session.MemoryDatabase.CompositeRolesChecks(this, relationType.RoleType, role);
+                        this.MemorySession.MemoryDatabase.CompositeRolesChecks(this, relationType.RoleType, role);
 
-                        var roleStrategy = this.session.GetStrategy(role.Strategy.ObjectId);
+                        var roleStrategy = this.MemorySession.GetStrategy(role.Strategy.ObjectId);
                         newStrategies.Add(roleStrategy);
                     }
                 }
@@ -327,9 +317,9 @@ namespace Allors.Adapters.Memory
             this.AssertNotDeleted();
             if (role != null)
             {
-                this.session.MemoryDatabase.CompositeRolesChecks(this, relationType.RoleType, role);
+                this.MemorySession.MemoryDatabase.CompositeRolesChecks(this, relationType.RoleType, role);
 
-                var roleStrategy = this.session.GetStrategy(role.Strategy.ObjectId);
+                var roleStrategy = this.MemorySession.GetStrategy(role.Strategy.ObjectId);
 
                 if (relationType.AssociationType.IsMany)
                 {
@@ -347,9 +337,9 @@ namespace Allors.Adapters.Memory
             this.AssertNotDeleted();
             if (role != null)
             {
-                this.session.MemoryDatabase.CompositeRolesChecks(this, relationType.RoleType, role);
+                this.MemorySession.MemoryDatabase.CompositeRolesChecks(this, relationType.RoleType, role);
 
-                var roleStrategy = this.session.GetStrategy(role.Strategy.ObjectId);
+                var roleStrategy = this.MemorySession.GetStrategy(role.Strategy.ObjectId);
 
                 if (relationType.AssociationType.IsMany)
                 {
@@ -418,7 +408,7 @@ namespace Allors.Adapters.Memory
             this.AssertNotDeleted();
 
             // Roles
-            foreach (var roleType in this.objectType.RoleTypes)
+            foreach (var roleType in this.UncheckedObjectType.RoleTypes)
             {
                 var relationType = roleType.RelationType;
 
@@ -458,7 +448,7 @@ namespace Allors.Adapters.Memory
             }
 
             // Associations
-            foreach (var associationType in this.objectType.AssociationTypes)
+            foreach (var associationType in this.UncheckedObjectType.AssociationTypes)
             {
                 var relationType = associationType.RelationType;
                 var roleType = relationType.RoleType;
@@ -506,7 +496,7 @@ namespace Allors.Adapters.Memory
                 }
             }
 
-            this.isDeleted = true;
+            this.IsDeleted = true;
 
             this.ChangeSet.OnDeleted(this.ObjectId);
         }
@@ -516,7 +506,7 @@ namespace Allors.Adapters.Memory
             IObject allorsObject;
             if (this.allorizedObjectWeakReference == null)
             {
-                allorsObject = this.session.Database.ObjectFactory.Create(this);
+                allorsObject = this.MemorySession.Database.ObjectFactory.Create(this);
                 this.allorizedObjectWeakReference = new WeakReference(allorsObject);
             }
             else
@@ -524,7 +514,7 @@ namespace Allors.Adapters.Memory
                 allorsObject = (IObject)this.allorizedObjectWeakReference.Target;
                 if (allorsObject == null)
                 {
-                    allorsObject = this.session.Database.ObjectFactory.Create(this);
+                    allorsObject = this.MemorySession.Database.ObjectFactory.Create(this);
                     this.allorizedObjectWeakReference.Target = allorsObject;
                 }
             }
@@ -534,8 +524,8 @@ namespace Allors.Adapters.Memory
 
         internal void Commit()
         {
-            this.isDeletedOnRollback = this.isDeleted;
-            this.isNew = false;
+            this.isDeletedOnRollback = this.IsDeleted;
+            this.IsNewInSession = false;
 
             if (!this.IsDeleted && !this.MemorySession.MemoryDatabase.IsLoading)
             {
@@ -546,7 +536,7 @@ namespace Allors.Adapters.Memory
                     this.rollbackCompositeRoleByRoleType != null ||
                     this.rollbackCompositeRoleByRoleType != null)
                 {
-                    ++this.version;
+                    ++this.ObjectVersion;
                 }
             }
 
@@ -559,8 +549,8 @@ namespace Allors.Adapters.Memory
 
         internal void Rollback()
         {
-            this.isDeleted = this.isDeletedOnRollback;
-            this.isNew = false;
+            this.IsDeleted = this.isDeletedOnRollback;
+            this.IsNewInSession = false;
 
             foreach (var dictionaryItem in this.RollbackUnitRoleByRoleType)
             {
@@ -678,7 +668,7 @@ namespace Allors.Adapters.Memory
         internal void SetCompositeRoleOne2One(IRoleType roleType, IObject newRole)
         {
             this.AssertNotDeleted();
-            this.session.MemoryDatabase.CompositeRoleChecks(this, roleType, newRole);
+            this.MemorySession.MemoryDatabase.CompositeRoleChecks(this, roleType, newRole);
 
             var previousRole = this.GetCompositeRole(roleType.RelationType);
 
@@ -686,12 +676,12 @@ namespace Allors.Adapters.Memory
 
             if (!newRole.Equals(previousRole))
             {
-                var newRoleStrategy = this.session.GetStrategy(newRole);
+                var newRoleStrategy = this.MemorySession.GetStrategy(newRole);
 
                 if (previousRole != null)
                 {
                     // previous role
-                    var previousRoleStrategy = this.session.GetStrategy(previousRole);
+                    var previousRoleStrategy = this.MemorySession.GetStrategy(previousRole);
                     var associationType = roleType.AssociationType;
                     previousRoleStrategy.Backup(associationType);
                     previousRoleStrategy.compositeAssociationByAssociationType.Remove(associationType);
@@ -701,7 +691,7 @@ namespace Allors.Adapters.Memory
                 var newRolePreviousAssociation = newRoleStrategy.GetCompositeAssociation(roleType.RelationType);
                 if (newRolePreviousAssociation != null)
                 {
-                    var newRolePreviousAssociationStrategy = this.session.GetStrategy(newRolePreviousAssociation);
+                    var newRolePreviousAssociationStrategy = this.MemorySession.GetStrategy(newRolePreviousAssociation);
                     if (!this.Equals(newRolePreviousAssociationStrategy))
                     {
                         this.ChangeSet.OnChangingCompositeRole(newRolePreviousAssociationStrategy.ObjectId, roleType, previousRole?.Id, null);
@@ -725,7 +715,7 @@ namespace Allors.Adapters.Memory
         internal void SetCompositeRoleMany2One(IRoleType roleType, IObject newRole)
         {
             this.AssertNotDeleted();
-            this.session.MemoryDatabase.CompositeRoleChecks(this, roleType, newRole);
+            this.MemorySession.MemoryDatabase.CompositeRoleChecks(this, roleType, newRole);
 
             var previousRole = this.GetCompositeRole(roleType.RelationType);
 
@@ -738,7 +728,7 @@ namespace Allors.Adapters.Memory
                 // Update association of previous role
                 if (previousRole != null)
                 {
-                    var previousRoleStrategy = this.session.GetStrategy(previousRole);
+                    var previousRoleStrategy = this.MemorySession.GetStrategy(previousRole);
                     HashSet<Strategy> previousRoleStrategies;
                     previousRoleStrategy.compositesAssociationByAssociationType.TryGetValue(associationType, out previousRoleStrategies);
 
@@ -750,7 +740,7 @@ namespace Allors.Adapters.Memory
                     }
                 }
 
-                var newRoleStrategy = this.session.GetStrategy(newRole);
+                var newRoleStrategy = this.MemorySession.GetStrategy(newRole);
 
                 this.Backup(roleType);
                 this.compositeRoleByRoleType[roleType] = newRoleStrategy;
@@ -895,9 +885,9 @@ namespace Allors.Adapters.Memory
 
         private void AssertNotDeleted()
         {
-            if (this.isDeleted)
+            if (this.IsDeleted)
             {
-                throw new Exception("Object of class " + this.objectType.Name + " with id " + this.ObjectId +
+                throw new Exception("Object of class " + this.UncheckedObjectType.Name + " with id " + this.ObjectId +
                                     " has been deleted");
             }
         }
@@ -981,7 +971,7 @@ namespace Allors.Adapters.Memory
         private void RemoveCompositeRoleOne2One(IRoleType roleType)
         {
             this.AssertNotDeleted();
-            this.session.MemoryDatabase.CompositeRoleChecks(this, roleType);
+            this.MemorySession.MemoryDatabase.CompositeRoleChecks(this, roleType);
 
             var previousRole = this.GetCompositeRole(roleType.RelationType);
 
@@ -989,7 +979,7 @@ namespace Allors.Adapters.Memory
             {
                 this.ChangeSet.OnChangingCompositeRole(this.ObjectId, roleType, previousRole.Id, null);
 
-                var previousRoleStrategy = this.session.GetStrategy(previousRole);
+                var previousRoleStrategy = this.MemorySession.GetStrategy(previousRole);
                 var associationType = roleType.AssociationType;
                 previousRoleStrategy.Backup(associationType);
                 previousRoleStrategy.compositeAssociationByAssociationType.Remove(associationType);
@@ -1003,7 +993,7 @@ namespace Allors.Adapters.Memory
         private void RemoveCompositeRoleMany2One(IRoleType roleType)
         {
             this.AssertNotDeleted();
-            this.session.MemoryDatabase.CompositeRoleChecks(this, roleType);
+            this.MemorySession.MemoryDatabase.CompositeRoleChecks(this, roleType);
 
             var previousRole = this.GetCompositeRole(roleType.RelationType);
 
@@ -1011,7 +1001,7 @@ namespace Allors.Adapters.Memory
             {
                 this.ChangeSet.OnChangingCompositeRole(this.ObjectId, roleType, previousRole.Id, null);
 
-                var previousRoleStrategy = this.session.GetStrategy(previousRole);
+                var previousRoleStrategy = this.MemorySession.GetStrategy(previousRole);
                 var associationType = roleType.AssociationType;
 
                 previousRoleStrategy.compositesAssociationByAssociationType.TryGetValue(associationType, out var previousRoleStrategyAssociations);

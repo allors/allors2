@@ -24,14 +24,12 @@ namespace Allors.Meta
 
     public abstract partial class Method
     {
-        private readonly IObject @object;
-
         private string xmlDoc;
 
         protected Method(IObject @object)
         {
             this.Executed = false;
-            this.@object = @object;
+            this.Object = @object;
         }
 
         public string XmlDoc
@@ -57,7 +55,7 @@ namespace Allors.Meta
 
         public abstract MethodInvocation MethodInvocation { get; }
 
-        public IObject Object => this.@object;
+        public IObject Object { get; private set; }
 
         public bool Executed { get; set; }
 

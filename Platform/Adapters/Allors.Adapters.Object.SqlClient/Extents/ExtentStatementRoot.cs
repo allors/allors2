@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ExtentStatementRoot.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 // 
@@ -49,7 +49,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             if (!this.paramNameByParamValue.ContainsKey(obj))
             {
-                var param = string.Format(Mapping.ParamFormat, "p" + (this.parameterIndex++));
+                var param = string.Format(Mapping.ParamFormat, "p" + this.parameterIndex++);
                 this.paramNameByParamValue[obj] = param;
                 return param;
             }
@@ -59,7 +59,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal override void Append(string part) => this.sql.Append(part);
 
-        internal override string CreateAlias() => "alias" + (this.aliasIndex++);
+        internal override string CreateAlias() => "alias" + this.aliasIndex++;
 
         internal override ExtentStatement CreateChild(SqlExtent extent, IAssociationType association) => new ExtentStatementChild(this, extent, association);
 

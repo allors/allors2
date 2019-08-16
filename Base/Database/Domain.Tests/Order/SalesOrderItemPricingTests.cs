@@ -375,19 +375,19 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitPrice);
-            Assert.Equal(Math.Round(((item1.UnitPrice * this.vatRate21.Rate) / 100), 2), item1.UnitVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2), item1.UnitVat);
 
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, item1.TotalExVat);
-            Assert.Equal(Math.Round(((item1.UnitPrice * this.vatRate21.Rate) / 100), 2) * quantityOrdered, item1.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantityOrdered, item1.TotalVat);
 
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, this.order.TotalBasePrice);
             Assert.Equal(0, this.order.TotalDiscount);
             Assert.Equal(0, this.order.TotalSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, this.order.TotalExVat);
-            Assert.Equal(Math.Round(((item1.UnitPrice * this.vatRate21.Rate) / 100), 2) * quantityOrdered, this.order.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantityOrdered, this.order.TotalVat);
         }
 
         [Fact]
@@ -539,7 +539,7 @@ namespace Allors.Domain
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
-            Assert.Equal(Math.Round((amount * quantityOrdered / item1.TotalBasePrice) * 100, 2), item1.TotalDiscountAsPercentage);
+            Assert.Equal(Math.Round(amount * quantityOrdered / item1.TotalBasePrice * 100, 2), item1.TotalDiscountAsPercentage);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price - amount, item1.UnitPrice);
         }
@@ -570,7 +570,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount = Math.Round((price * percentage) / 100, 2);
+            var amount = Math.Round(price * percentage / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(percentage, item1.TotalDiscountAsPercentage);
@@ -609,7 +609,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var surcharge = Math.Round(((price - discountAmount) * surchargePercentage) / 100, 2);
+            var surcharge = Math.Round((price - discountAmount) * surchargePercentage / 100, 2);
             var adjustmentAmount = Math.Round(0 - discountAmount + surcharge, 2);
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
@@ -676,7 +676,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount = Math.Round((price * percentage) / 100, 2);
+            var amount = Math.Round(price * percentage / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
@@ -717,7 +717,7 @@ namespace Allors.Domain
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
-            Assert.Equal(Math.Round((amount * quantityOrdered / item1.TotalBasePrice) * 100, 2), item1.TotalDiscountAsPercentage);
+            Assert.Equal(Math.Round(amount * quantityOrdered / item1.TotalBasePrice * 100, 2), item1.TotalDiscountAsPercentage);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price - amount, item1.UnitPrice);
         }
@@ -755,7 +755,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount = Math.Round((price * percentage) / 100, 2);
+            var amount = Math.Round(price * percentage / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(percentage, item1.TotalDiscountAsPercentage);
@@ -834,7 +834,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount = Math.Round((price * percentage) / 100, 2);
+            var amount = Math.Round(price * percentage / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
@@ -869,7 +869,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(expected, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(Math.Round((expected * quantityOrdered / item1.TotalBasePrice) * 100, 2), item1.TotalDiscountAsPercentage);
+            Assert.Equal(Math.Round(expected * quantityOrdered / item1.TotalBasePrice * 100, 2), item1.TotalDiscountAsPercentage);
             Assert.Equal(this.currentGoodBasePrice.Price - expected, item1.UnitPrice);
         }
 
@@ -899,7 +899,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount = Math.Round((price * percentage) / 100, 2);
+            var amount = Math.Round(price * percentage / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(percentage, item1.TotalDiscountAsPercentage);
@@ -934,7 +934,7 @@ namespace Allors.Domain
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
-            Assert.Equal(Math.Round((amount * quantityOrdered / item1.TotalBasePrice) * 100, 2), item1.TotalDiscountAsPercentage);
+            Assert.Equal(Math.Round(amount * quantityOrdered / item1.TotalBasePrice * 100, 2), item1.TotalDiscountAsPercentage);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price - amount, item1.UnitPrice);
         }
@@ -965,7 +965,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount = Math.Round((price * percentage) / 100, 2);
+            var amount = Math.Round(price * percentage / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(percentage, item1.TotalDiscountAsPercentage);
@@ -1000,7 +1000,7 @@ namespace Allors.Domain
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
-            Assert.Equal(Math.Round((amount * quantityOrdered / item1.TotalBasePrice) * 100, 2), item1.TotalDiscountAsPercentage);
+            Assert.Equal(Math.Round(amount * quantityOrdered / item1.TotalBasePrice * 100, 2), item1.TotalDiscountAsPercentage);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price - amount, item1.UnitPrice);
         }
@@ -1031,7 +1031,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount = Math.Round((price * percentage) / 100, 2);
+            var amount = Math.Round(price * percentage / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount, item1.UnitDiscount);
             Assert.Equal(percentage, item1.TotalDiscountAsPercentage);
@@ -1096,7 +1096,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount = Math.Round((price * percentage) / 100, 2);
+            var amount = Math.Round(price * percentage / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
@@ -1235,7 +1235,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount1 = Math.Round((price * percentage1) / 100, 2);
+            var amount1 = Math.Round(price * percentage1 / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
@@ -1252,7 +1252,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
-            var amount2 = Math.Round((price2 * percentage2) / 100, 2);
+            var amount2 = Math.Round(price2 * percentage2 / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
@@ -1401,7 +1401,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount1 = Math.Round((price * percentage1) / 100, 2);
+            var amount1 = Math.Round(price * percentage1 / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
@@ -1418,7 +1418,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
-            var amount2 = Math.Round((price2 * percentage2) / 100, 2);
+            var amount2 = Math.Round(price2 * percentage2 / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
@@ -1567,7 +1567,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount1 = Math.Round((price * percentage1) / 100, 2);
+            var amount1 = Math.Round(price * percentage1 / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount1, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
@@ -1584,7 +1584,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
-            var amount2 = Math.Round((price2 * percentage2) / 100, 2);
+            var amount2 = Math.Round(price2 * percentage2 / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount2, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
@@ -1733,7 +1733,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount1 = Math.Round((price * percentage1) / 100, 2);
+            var amount1 = Math.Round(price * percentage1 / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount1, item1.UnitSurcharge);
@@ -1750,7 +1750,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price2 = this.currentGoodBasePrice.Price ?? 0;
-            var amount2 = Math.Round((price2 * percentage2) / 100, 2);
+            var amount2 = Math.Round(price2 * percentage2 / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount2, item1.UnitSurcharge);
@@ -1837,10 +1837,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var discount = Math.Round((price * percentage) / 100, 2);
+            var discount = Math.Round(price * percentage / 100, 2);
             var discountedprice = price - discount;
             var adjustmentPercentage = discountAdjustment.Percentage.HasValue ? discountAdjustment.Percentage.Value : 0;
-            discount += Math.Round((discountedprice * adjustmentPercentage) / 100, 2);
+            discount += Math.Round(discountedprice * adjustmentPercentage / 100, 2);
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(discount, item1.UnitDiscount);
@@ -1911,7 +1911,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var amount = Math.Round((price * percentage) / 100, 2);
+            var amount = Math.Round(price * percentage / 100, 2);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(amount, item1.UnitSurcharge);
@@ -1955,10 +1955,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var surcharge = Math.Round((price * percentage) / 100, 2);
+            var surcharge = Math.Round(price * percentage / 100, 2);
             var surchargedPrice = price + surcharge;
             var adjustmentPercentage = surchargeAdjustment.Percentage.HasValue ? surchargeAdjustment.Percentage.Value : 0;
-            surcharge += Math.Round((surchargedPrice * adjustmentPercentage) / 100, 2);
+            surcharge += Math.Round(surchargedPrice * adjustmentPercentage / 100, 2);
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
@@ -2022,19 +2022,19 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitPrice);
-            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2), item1.UnitVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2), item1.UnitVat);
 
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, item1.TotalExVat);
-            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2) * quantityOrdered, item1.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantityOrdered, item1.TotalVat);
 
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, this.order.TotalBasePrice);
             Assert.Equal(0, this.order.TotalDiscount);
             Assert.Equal(0, this.order.TotalSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, this.order.TotalExVat);
-            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2) * quantityOrdered, this.order.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantityOrdered, this.order.TotalVat);
         }
 
         [Fact]
@@ -2068,7 +2068,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var price = this.currentGoodBasePrice.Price ?? 0;
-            var adjustmentAmount = Math.Round(((price - amount) * adjustmentPercentage) / 100, 2);
+            var adjustmentAmount = Math.Round((price - amount) * adjustmentPercentage / 100, 2);
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
             Assert.Equal(amount + adjustmentAmount, item1.UnitDiscount);
@@ -2142,19 +2142,19 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitPrice);
-            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2), item1.UnitVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2), item1.UnitVat);
 
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, item1.TotalExVat);
-            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2) * quantityOrdered, item1.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantityOrdered, item1.TotalVat);
 
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, this.order.TotalBasePrice);
             Assert.Equal(0, this.order.TotalDiscount);
             Assert.Equal(0, this.order.TotalSurcharge);
             Assert.Equal(this.currentGoodBasePrice.Price * quantityOrdered, this.order.TotalExVat);
-            Assert.Equal(Math.Round((item1.UnitPrice * this.vatRate21.Rate) / 100, 2) * quantityOrdered, this.order.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantityOrdered, this.order.TotalVat);
 
             var purchasePrice = this.goodPurchasePrice.Price * 0.5M;
         }

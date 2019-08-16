@@ -31,8 +31,6 @@ namespace Allors
 
     public sealed class PrefetchPolicy : IEnumerable<PrefetchRule>
     {
-        private readonly PrefetchRule[] prefetchRules;
-
         private readonly Guid id;
 
         internal PrefetchPolicy(PrefetchRule[] rules)
@@ -42,13 +40,13 @@ namespace Allors
                 throw new ArgumentNullException("rules");
             }
 
-            this.prefetchRules = new List<PrefetchRule>(rules).ToArray();
+            this.PrefetchRules = new List<PrefetchRule>(rules).ToArray();
             this.id = Guid.NewGuid();
         }
 
         public Guid Id => this.id;
 
-        public PrefetchRule[] PrefetchRules => this.prefetchRules;
+        public PrefetchRule[] PrefetchRules { get; }
 
         public bool AllowCompilation { get; set; }
 
@@ -70,9 +68,9 @@ namespace Allors
             };
         }
 
-        public IEnumerator<PrefetchRule> GetEnumerator() => ((IEnumerable<PrefetchRule>)this.prefetchRules).GetEnumerator();
+        public IEnumerator<PrefetchRule> GetEnumerator() => ((IEnumerable<PrefetchRule>)this.PrefetchRules).GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => this.prefetchRules.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => this.PrefetchRules.GetEnumerator();
 
         public string DebugView
         {

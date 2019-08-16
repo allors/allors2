@@ -26,8 +26,6 @@ namespace Allors.Workspace.Meta
 
     public abstract partial class Composite : ObjectType, IComposite
     {
-        private bool derivedWorkspace;
-
         private bool assignedIsSynced;
         private bool isSynced;
 
@@ -40,7 +38,7 @@ namespace Allors.Workspace.Meta
 
         private string xmlDoc;
 
-        public bool Workspace => this.derivedWorkspace;
+        public bool Workspace { get; private set; }
 
         public string XmlDoc
         {
@@ -383,7 +381,7 @@ namespace Allors.Workspace.Meta
             this.derivedAssociationTypes = new LazySet<AssociationType>(associations);
         }
 
-        internal void DeriveWorkspace() => this.derivedWorkspace = this.RoleTypes.Any(v => v.Workspace) || this.AssociationTypes.Any(v => v.Workspace) || this.MethodTypes.Any(v => v.Workspace);
+        internal void DeriveWorkspace() => this.Workspace = this.RoleTypes.Any(v => v.Workspace) || this.AssociationTypes.Any(v => v.Workspace) || this.MethodTypes.Any(v => v.Workspace);
 
         internal void DeriveIsSynced() => this.isSynced = this.assignedIsSynced || this.derivedSupertypes.Any(v => v.assignedIsSynced);
 

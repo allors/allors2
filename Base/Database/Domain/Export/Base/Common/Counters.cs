@@ -67,7 +67,7 @@ namespace Allors.Domain
             for (var i = 0; i <= numberString.Length - 1; i++)
             {
                 var nummertje = Convert.ToInt32(numberString[i].ToString());
-                total += (nummertje * length);
+                total += nummertje * length;
                 length--;
             }
 

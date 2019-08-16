@@ -36,15 +36,6 @@ namespace Allors
     /// </summary>
     public class RelationNotLoadedEventArgs
     {
-        /// <summary>
-        /// The relation type id.
-        /// </summary>
-        private readonly Guid relationTypeId;
-
-        /// <summary>
-        /// The association id.
-        /// </summary>
-        private readonly long associationId;
 
         /// <summary>
         /// The contents of the role.
@@ -59,8 +50,8 @@ namespace Allors
         /// <param name="roleContents">The role contents.</param>
         public RelationNotLoadedEventArgs(Guid relationTypeId, long associationId, string roleContents)
         {
-            this.relationTypeId = relationTypeId;
-            this.associationId = associationId;
+            this.RelationTypeId = relationTypeId;
+            this.AssociationId = associationId;
             this.roleContents = roleContents;
         }
 
@@ -68,13 +59,13 @@ namespace Allors
         /// Gets the relation type id.
         /// </summary>
         /// <value>The relation type id.</value>
-        public Guid RelationTypeId => this.relationTypeId;
+        public Guid RelationTypeId { get; }
 
         /// <summary>
         /// Gets the association id.
         /// </summary>
         /// <value>The association id.</value>
-        public long AssociationId => this.associationId;
+        public long AssociationId { get; }
 
         /// <summary>
         /// Gets the role contents.
@@ -88,6 +79,6 @@ namespace Allors
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString() => "RelationType: " + this.relationTypeId + ", Association: " + this.AssociationId + ", Role: " + this.roleContents;
+        public override string ToString() => "RelationType: " + this.RelationTypeId + ", Association: " + this.AssociationId + ", Role: " + this.roleContents;
     }
 }

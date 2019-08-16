@@ -37,9 +37,6 @@ namespace Allors.Adapters.Object.Npgsql
         public static readonly long[] EmptyObjectIds = { };
 
         private readonly object lockObject = new object();
-
-        private readonly IObjectFactory objectFactory;
-
         private readonly Dictionary<IObjectType, HashSet<IObjectType>> concreteClassesByObjectType;
 
         private readonly Dictionary<IObjectType, IRoleType[]> sortedUnitRolesByObjectType;
@@ -59,8 +56,8 @@ namespace Allors.Adapters.Object.Npgsql
         public Database(IServiceProvider serviceProvider, Configuration configuration)
         {
             this.ServiceProvider = serviceProvider;
-            this.objectFactory = configuration.ObjectFactory;
-            if (!this.objectFactory.MetaPopulation.IsValid)
+            this.ObjectFactory = configuration.ObjectFactory;
+            if (!this.ObjectFactory.MetaPopulation.IsValid)
             {
                 throw new ArgumentException("Domain is invalid");
             }
@@ -135,9 +132,9 @@ namespace Allors.Adapters.Object.Npgsql
 
         public string SchemaName { get; }
 
-        public IObjectFactory ObjectFactory => this.objectFactory;
+        public IObjectFactory ObjectFactory { get; }
 
-        public IMetaPopulation MetaPopulation => this.objectFactory.MetaPopulation;
+        public IMetaPopulation MetaPopulation => this.ObjectFactory.MetaPopulation;
 
         public bool IsDatabase => true;
 

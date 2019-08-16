@@ -24,11 +24,9 @@ namespace Allors.Meta
 
     public partial class MethodInvocation
     {
-        private readonly ConcreteMethodType concreteMethodType;
+        public MethodInvocation(Class @class, MethodType methodType) => this.ConcreteConcreteMethodType = @class.ConcreteMethodTypeByMethodType[methodType];
 
-        public MethodInvocation(Class @class, MethodType methodType) => this.concreteMethodType = @class.ConcreteMethodTypeByMethodType[methodType];
-
-        public ConcreteMethodType ConcreteConcreteMethodType => this.concreteMethodType;
+        public ConcreteMethodType ConcreteConcreteMethodType { get; private set; }
 
         public void Execute(Method method)
         {
@@ -39,7 +37,7 @@ namespace Allors.Meta
 
             method.Executed = true;
 
-            foreach (var action in this.concreteMethodType.Actions)
+            foreach (var action in this.ConcreteConcreteMethodType.Actions)
             {
                 // TODO: Add test for deletion
                 if (!method.Object.Strategy.IsDeleted)

@@ -31,16 +31,13 @@ namespace Allors.Adapters
     {
         private readonly ObjectFactory objectFactory;
 
-        private IDatabase database;
-        private ISession session;
-
         protected Profile() => this.objectFactory = this.CreateObjectFactory(MetaPopulation.Instance);
 
         public IObjectFactory ObjectFactory => this.objectFactory;
 
-        public ISession Session => this.session;
+        public ISession Session { get; private set; }
 
-        public IDatabase Database => this.database;
+        public IDatabase Database { get; private set; }
 
         public abstract Action[] Markers { get; }
 
@@ -61,36 +58,36 @@ namespace Allors.Adapters
 
         public void SwitchDatabase()
         {
-            this.session.Rollback();
-            this.database = this.CreateDatabase();
-            this.session = this.database.CreateSession();
-            this.session.Commit();
+            this.Session.Rollback();
+            this.Database = this.CreateDatabase();
+            this.Session = this.Database.CreateSession();
+            this.Session.Commit();
         }
 
         public virtual void Dispose()
         {
-            this.session?.Rollback();
+            this.Session?.Rollback();
 
-            this.session = null;
-            this.database = null;
+            this.Session = null;
+            this.Database = null;
         }
 
         public abstract IDatabase CreatePopulation();
 
         public abstract IDatabase CreateDatabase();
 
-        internal ISession CreateSession() => this.database.CreateSession();
+        internal ISession CreateSession() => this.Database.CreateSession();
 
         protected internal void Init()
         {
             try
             {
-                this.session?.Rollback();
+                this.Session?.Rollback();
 
-                this.database = this.CreateDatabase();
-                this.database.Init();
-                this.session = this.database.CreateSession();
-                this.session.Commit();
+                this.Database = this.CreateDatabase();
+                this.Database.Init();
+                this.Session = this.Database.CreateSession();
+                this.Session.Commit();
             }
             catch (Exception e)
             {

@@ -37,15 +37,6 @@ namespace Allors
     /// </summary>
     public class ObjectNotLoadedEventArgs
     {
-        /// <summary>
-        /// The object id.
-        /// </summary>
-        private readonly long objectId;
-
-        /// <summary>
-        /// The object type id.
-        /// </summary>
-        private readonly Guid objectTypeId;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectNotLoadedEventArgs"/> class.
@@ -54,21 +45,21 @@ namespace Allors
         /// <param name="objectId">The object id.</param>
         public ObjectNotLoadedEventArgs(Guid objectTypeId, long objectId)
         {
-            this.objectTypeId = objectTypeId;
-            this.objectId = objectId;
+            this.ObjectTypeId = objectTypeId;
+            this.ObjectId = objectId;
         }
 
         /// <summary>
         /// Gets the object id.
         /// </summary>
         /// <value>The object id.</value>
-        public long ObjectId => this.objectId;
+        public long ObjectId { get; }
 
         /// <summary>
         /// Gets the object type id.
         /// </summary>
         /// <value>The object type id.</value>
-        public Guid ObjectTypeId => this.objectTypeId;
+        public Guid ObjectTypeId { get; }
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
@@ -76,6 +67,6 @@ namespace Allors
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString() => this.objectTypeId + ":" + this.objectId;
+        public override string ToString() => this.ObjectTypeId + ":" + this.ObjectId;
     }
 }

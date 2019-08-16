@@ -4,16 +4,15 @@ namespace Allors.Adapters.Object.SqlClient
 
     public class SchemaProcedure
     {
-        private readonly string name;
         private readonly string definition;
 
         public SchemaProcedure(Schema schema, string name, string definition)
         {
-            this.name = name;
+            this.Name = name;
             this.definition = definition;
         }
 
-        public string Name => this.name;
+        public string Name { get; }
 
         public string Definition => this.definition;
 

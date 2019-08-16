@@ -11,12 +11,10 @@ namespace Allors
 
     public abstract class ObjectBuilder<T> : ObjectBuilder where T : Domain.Object
     {
-        private readonly ISession session;
-
         private bool built;
         private Exception exception;
 
-        protected ObjectBuilder(ISession session) => this.session = session;
+        protected ObjectBuilder(ISession session) => this.DatabaseSession = session;
 
         ~ObjectBuilder()
         {
@@ -26,9 +24,9 @@ namespace Allors
             }
         }
 
-        protected ISession Session => this.session;
+        protected ISession Session => this.DatabaseSession;
 
-        protected ISession DatabaseSession => this.session;
+        protected ISession DatabaseSession { get; private set; }
 
         public override void Dispose() => this.Build();
 
@@ -42,7 +40,7 @@ namespace Allors
 
             try
             {
-                var instance = this.session.Create<T>();
+                var instance = this.DatabaseSession.Create<T>();
                 this.OnBuild(instance);
 
                 instance.OnBuild(x => x.WithBuilder(this));
