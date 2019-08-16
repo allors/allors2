@@ -661,7 +661,7 @@ line2")
             var quoteItem = new QuoteItemBuilder(this.Session)
                 .WithProduct(new Goods(this.Session).Extent().First)
                 .WithQuantity(1)
-                .WithUnitPrice(10)
+                .WithAssignedUnitPrice(10)
                 .Build();
 
             quote.AddQuoteItem(quoteItem);
