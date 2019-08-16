@@ -493,6 +493,7 @@ namespace Allors
                     .WithProduct(serialisedItem.PartWhereSerialisedItem.NonUnifiedGoodsWherePart.FirstOrDefault())
                     .WithComment($"Comment {i}")
                     .WithQuantity(1)
+                    .WithAssignedUnitPrice(100)
                     .Build();
 
                 productQuote.AddQuoteItem(quoteItem);
