@@ -1,49 +1,49 @@
-//------------------------------------------------------------------------------------------------- 
+//-------------------------------------------------------------------------------------------------
 // <copyright file="PredicateKind.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
-// 
+//
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
 //   b) the Allors License
-// 
+//
 // The LGPL License is included in the file lgpl.txt.
 // The Allors License is an addendum to your contract.
-// 
+//
 // Allors Platform is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // For more information visit http://www.allors.com/legal
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
 namespace Allors.Protocol.Data
 {
-    public static class PredicateKind
+    public enum PredicateKind
     {
-        public const string And = "And";
+        And = 1,
 
-        public const string Or = "Or";
+        Or = 2,
 
-        public const string Not = "Not";
+        Not = 3,
 
-        public const string Instanceof = "Instanceof";
+        Instanceof = 4,
 
-        public const string Exists = "Exists";
+        Exists = 5,
 
-        public const string Equals = "Equals";
+        Equals = 6,
 
-        public const string Contains = "Contains";
+        Contains = 7,
 
-        public const string ContainedIn = "ContainedIn";
+        ContainedIn = 8,
 
-        public const string Between = "Between";
+        Between = 9,
 
-        public const string GreaterThan = "GreaterThan";
+        GreaterThan = 10,
 
-        public const string LessThan = "LessThan";
+        LessThan = 11,
 
-        public const string Like = "Like";
+        Like = 12
     }
 }
