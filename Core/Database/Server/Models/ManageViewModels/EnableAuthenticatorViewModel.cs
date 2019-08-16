@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿// <copyright file="EnableAuthenticatorViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Identity.Models.ManageViewModels

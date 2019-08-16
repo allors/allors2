@@ -1,3 +1,7 @@
+// <copyright file="LoginComponent.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace src.app.auth
 {
     using Components;

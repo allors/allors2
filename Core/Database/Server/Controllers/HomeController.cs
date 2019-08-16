@@ -1,4 +1,8 @@
-﻿namespace Identity.Controllers
+﻿// <copyright file="HomeController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace Identity.Controllers
 {
     using System.Diagnostics;
 

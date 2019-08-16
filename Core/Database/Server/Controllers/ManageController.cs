@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="ManageController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;

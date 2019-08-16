@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Allors" Description="Default Rules for Allors Projects." ToolsVersion="15.0">
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA1600" Action="Hidden" />
+    <Rule Id="SA1601" Action="Hidden" />
+  </Rules>
+</RuleSet>

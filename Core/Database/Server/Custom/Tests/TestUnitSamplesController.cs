@@ -1,4 +1,8 @@
-﻿namespace Allors.Server.Controllers
+﻿// <copyright file="TestUnitSamplesController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace Allors.Server.Controllers
 {
     using System;
     using System.Threading.Tasks;

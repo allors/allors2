@@ -1,3 +1,7 @@
+// <copyright file="MatFactoryFab.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 using System.Linq;
 using Allors.Meta;
 using OpenQA.Selenium.Support.PageObjects;

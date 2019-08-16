@@ -1,3 +1,7 @@
+// <copyright file="TestMailService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace Allors.Services
 {
     using System.Collections.Generic;

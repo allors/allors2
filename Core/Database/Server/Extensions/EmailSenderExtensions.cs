@@ -1,3 +1,7 @@
+// <copyright file="EmailSenderExtensions.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 

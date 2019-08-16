@@ -1,3 +1,7 @@
+// <copyright file="WebDriverExtensions.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 using System.Threading;
 
 namespace Components

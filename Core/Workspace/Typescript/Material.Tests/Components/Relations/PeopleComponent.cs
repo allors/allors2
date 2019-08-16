@@ -1,3 +1,7 @@
+// <copyright file="PeopleComponent.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace src.allors.material.custom.relations.people
 {
     using src.allors.material.custom.relations.people.person;

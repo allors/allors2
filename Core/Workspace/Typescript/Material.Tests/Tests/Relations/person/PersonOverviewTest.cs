@@ -1,3 +1,7 @@
+// <copyright file="PersonOverviewTest.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 using src.allors.material.custom.relations.people;
 
 namespace Tests.Relations

@@ -1,4 +1,8 @@
-﻿namespace Allors.Server
+﻿// <copyright file="ApplicationBuilderExtension.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace Allors.Server
 {
     using Allors.Services;
     using Microsoft.AspNetCore.Builder;

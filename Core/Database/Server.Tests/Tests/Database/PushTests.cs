@@ -1,3 +1,7 @@
+// <copyright file="PushTests.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace Server.Tests
 {
     using System;

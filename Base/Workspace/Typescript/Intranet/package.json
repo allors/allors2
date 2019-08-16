@@ -14,7 +14,7 @@
     "build-stats": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod --stats-json",
     "stats": "webpack-bundle-analyzer dist/intranet/stats.json",
     "autotest": "npx tsc --project ./autotest/tsconfig.autotest.json && node ./out-tsc/autotest/autotest/main && npx rimraf ./out-tsc"
-    },
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~8.2.0",

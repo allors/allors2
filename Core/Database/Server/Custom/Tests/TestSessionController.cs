@@ -1,4 +1,8 @@
-﻿namespace Allors.Server.Controllers
+﻿// <copyright file="TestSessionController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace Allors.Server.Controllers
 {
     using Allors.Domain;
     using Allors.Services;

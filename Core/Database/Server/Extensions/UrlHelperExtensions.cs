@@ -1,3 +1,7 @@
+// <copyright file="UrlHelperExtensions.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace Microsoft.AspNetCore.Mvc
 {
     using global::Identity.Controllers;

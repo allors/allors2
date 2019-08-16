@@ -1,3 +1,7 @@
+// <copyright file="MatFiles.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace Components
 {
     using System.Diagnostics.CodeAnalysis;

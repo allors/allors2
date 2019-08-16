@@ -1,3 +1,7 @@
+// <copyright file="Button.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 using OpenQA.Selenium.Support.PageObjects;
 
 namespace Components

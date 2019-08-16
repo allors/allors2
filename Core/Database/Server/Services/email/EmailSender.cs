@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿// <copyright file="EmailSender.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.Threading.Tasks;
 
 namespace Identity.Services
 {

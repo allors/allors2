@@ -1,3 +1,7 @@
+// <copyright file="SelectTest.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 using src.allors.material.custom.tests.form;
 
 namespace Tests

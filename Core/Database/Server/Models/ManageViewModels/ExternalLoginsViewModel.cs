@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="ExternalLoginsViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;

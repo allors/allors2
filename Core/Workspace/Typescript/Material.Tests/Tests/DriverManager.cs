@@ -1,4 +1,8 @@
-﻿using System.Runtime.InteropServices;
+﻿// <copyright file="DriverManager.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using System.Runtime.InteropServices;
 
 namespace Tests
 {

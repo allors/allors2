@@ -1,4 +1,8 @@
-﻿namespace Allors.Server
+﻿// <copyright file="Startup.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace Allors.Server
 {
     using System.Data;
     using System.Text;
