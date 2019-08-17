@@ -1069,7 +1069,7 @@ namespace Allors.Adapters
             IObject[] everyObject =
                                     {
                                         c1ACopy, c1BCopy, c1CCopy, c1DCopy, c2ACopy, c2BCopy, c2CCopy, c2DCopy, c3ACopy,
-                                        c3BCopy, c3CCopy, c3DCopy, c4ACopy, c4BCopy, c4CCopy, c4DCopy
+                                        c3BCopy, c3CCopy, c3DCopy, c4ACopy, c4BCopy, c4CCopy, c4DCopy,
                                     };
 
             foreach (var allorsObject in everyObject)
@@ -1142,7 +1142,7 @@ namespace Allors.Adapters
             IObject[] allObjects =
                                    {
                                        this.c1A, this.c1B, this.c1C, this.c1D, this.c2A, this.c2B, this.c2C, this.c2D,
-                                       this.c3A, this.c3B, this.c3C, this.c3D, this.c4A, this.c4B, this.c4C, this.c4D
+                                       this.c3A, this.c3B, this.c3C, this.c3D, this.c4A, this.c4B, this.c4C, this.c4D,
                                    };
 
             this.c1A.C1AllorsString = string.Empty; // emtpy string

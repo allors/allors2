@@ -7,7 +7,7 @@ namespace Allors.Repository
 {
     using System;
 
-    using Attributes;
+    using Allors.Repository.Attributes;
 
     public partial class Singleton : Auditable
     {

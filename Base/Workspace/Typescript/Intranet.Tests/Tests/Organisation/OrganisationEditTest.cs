@@ -68,7 +68,7 @@ namespace Tests.OrganisationTests
             Assert.Equal("new organisation", organisation.Name);
             Assert.Equal("BE 123 456 789 01", organisation.TaxNumber);
             Assert.Equal(legalForm, organisation.LegalForm);
-            Assert.Equal(Session.GetSingleton().AdditionalLocales.First, organisation.Locale);
+            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, organisation.Locale);
             Assert.Contains(industryClassification, organisation.IndustryClassifications);
             Assert.Contains(customOrganisationClassification, organisation.CustomClassifications);
             Assert.True(organisation.IsManufacturer);

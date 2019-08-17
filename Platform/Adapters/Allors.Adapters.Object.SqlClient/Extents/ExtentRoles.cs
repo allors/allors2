@@ -8,7 +8,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System;
     using System.Collections;
 
-    using Meta;
+    using Allors.Meta;
 
     internal class ExtentRoles : Extent
     {

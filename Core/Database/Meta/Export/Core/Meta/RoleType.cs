@@ -236,8 +236,7 @@ namespace Allors.Meta
         /// <paramref name="obj"/> is not the same type as this instance. </exception>
         public int CompareTo(object obj)
         {
-            var that = obj as RoleType;
-            if (that != null)
+            if (obj is RoleType that)
             {
                 return this.RelationType.Id.CompareTo(that.RelationType.Id);
             }
@@ -298,8 +297,7 @@ namespace Allors.Meta
         /// </summary>
         internal void DeriveScaleAndSize()
         {
-            var unitType = this.ObjectType as IUnit;
-            if (unitType != null)
+            if (this.ObjectType is IUnit unitType)
             {
                 switch (unitType.UnitTag)
                 {

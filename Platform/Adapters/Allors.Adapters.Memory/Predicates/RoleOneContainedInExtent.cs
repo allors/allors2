@@ -6,7 +6,7 @@
 namespace Allors.Adapters.Memory
 {
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class RoleOneContainedInExtent : Predicate
     {

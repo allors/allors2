@@ -33,7 +33,7 @@ namespace Allors.Data
                 Extent = this.Extent?.Save(),
                 ObjectType = this.ObjectType?.Id,
                 Object = this.Object?.Id.ToString(),
-                Results = this.Results?.Select(v => v.Save()).ToArray()
+                Results = this.Results?.Select(v => v.Save()).ToArray(),
             };
     }
 }

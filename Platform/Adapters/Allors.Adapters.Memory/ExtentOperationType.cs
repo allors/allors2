@@ -20,6 +20,6 @@ namespace Allors.Adapters.Memory
         /// <summary>
         /// The except operation.
         /// </summary>
-        Except
+        Except,
     }
 }

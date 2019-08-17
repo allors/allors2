@@ -8,7 +8,7 @@
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
     using Xunit;
 
     public class PurchaseOrderItemTests : DomainTest
@@ -34,7 +34,7 @@ namespace Allors.Domain
             this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 
-            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(this.supplier).Build();
 
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
             this.finishedGood = good1.Part;
@@ -294,7 +294,7 @@ namespace Allors.Domain
             this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 
-            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(this.supplier).Build();
 
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
             this.finishedGood = good1.Part;
@@ -433,7 +433,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(order.TakenViaSupplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.order.TakenViaSupplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).Build();
             shipment.AddShipmentItem(shipmentItem);
 
@@ -660,7 +660,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(order.TakenViaSupplier).Build();
+            var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.order.TakenViaSupplier).Build();
             var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).Build();
             shipment.AddShipmentItem(shipmentItem);
 

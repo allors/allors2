@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
 
     public partial class PostalAddress
     {

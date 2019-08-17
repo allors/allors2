@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
 
     using Xunit;
 
@@ -71,7 +71,7 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 

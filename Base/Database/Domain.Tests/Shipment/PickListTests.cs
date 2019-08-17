@@ -11,7 +11,7 @@ using System.Linq;
 namespace Allors.Domain
 {
     using System;
-    using Meta;
+    using Allors.Meta;
     using Xunit;
 
     public class PickListTests : DomainTest
@@ -260,7 +260,7 @@ namespace Allors.Domain
                 this.Session,
                 new DerivationConfig
                 {
-                    DerivationLogFunc = () => new CustomListDerivationLog()
+                    DerivationLogFunc = () => new CustomListDerivationLog(),
                 });
 
             derivation.Derive();

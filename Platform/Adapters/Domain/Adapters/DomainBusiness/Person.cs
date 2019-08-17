@@ -32,6 +32,6 @@ namespace Allors.Domain
             return person;
         }
 
-        public override string ToString() => Name;
+        public override string ToString() => this.Name;
     }
 }

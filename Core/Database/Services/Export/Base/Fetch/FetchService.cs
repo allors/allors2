@@ -32,7 +32,7 @@ namespace Allors.Services
                 {
                     var filter = new Filter(M.PreparedFetch.Class)
                     {
-                        Predicate = new Equals(M.PreparedFetch.UniqueId.RoleType) { Value = id }
+                        Predicate = new Equals(M.PreparedFetch.UniqueId.RoleType) { Value = id },
                     };
 
                     var preparedFetch = (PreparedFetch)filter.Build(session).First;

@@ -5,7 +5,7 @@
 
 namespace Allors.Adapters.Object.SqlClient
 {
-    using Meta;
+    using Allors.Meta;
 
     internal class ExtentSort
     {

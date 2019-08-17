@@ -49,7 +49,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
             {
                 ObjectFactory = this.ObjectFactory,
                 ConnectionString = this.ConnectionString,
-                IsolationLevel = IsolationLevel.Serializable
+                IsolationLevel = IsolationLevel.Serializable,
             };
 
             var database = new Database(this.ServiceProvider, configuration);
@@ -67,7 +67,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
             var configuration = new Configuration
             {
                 ObjectFactory = this.ObjectFactory,
-                ConnectionString = this.ConnectionString
+                ConnectionString = this.ConnectionString,
             };
 
             var database = new Database(this.ServiceProvider, configuration);

@@ -9,7 +9,7 @@
 namespace Allors.Domain
 {
     using System;
-    using Meta;
+    using Allors.Meta;
     using Xunit;
 
     public class InternalOrganisationTests : DomainTest
@@ -258,7 +258,7 @@ namespace Allors.Domain
 
             var acmeRelation = new CustomerRelationshipBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation).WithCustomer(acme)
-                .WithFromDate(Session.Now().AddDays(-10))
+                .WithFromDate(this.Session.Now().AddDays(-10))
                 .Build();
 
             var nikeRelation = new CustomerRelationshipBuilder(this.Session)
@@ -279,7 +279,7 @@ namespace Allors.Domain
             Assert.Equal(3, this.InternalOrganisation.ActiveCustomers.Count);
 
             // Ending a RelationShip affects the ActiveCustomers
-            acmeRelation.ThroughDate = Session.Now().AddDays(-1).Date;
+            acmeRelation.ThroughDate = this.Session.Now().AddDays(-1).Date;
 
             this.Session.Derive();
 

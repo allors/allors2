@@ -8,7 +8,7 @@
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
     using System.Linq;
     using Xunit;
 
@@ -24,7 +24,7 @@ namespace Allors.Domain
             var piece = new UnitsOfMeasure(this.Session).Piece;
             var category = this.Session.Extent<ProductCategory>().First;
 
-            var finishedGood = CreatePart("FG1", nonSerialized);
+            var finishedGood = this.CreatePart("FG1", nonSerialized);
 
             this.Session.Derive(true);
             this.Session.Commit();
@@ -34,7 +34,7 @@ namespace Allors.Domain
             Assert.Equal(0, finishedGood.QuantityOnHand);
             Assert.Equal(0, inventoryItem.QuantityOnHand);
 
-            var transaction = CreateInventoryTransaction(10, unknown, finishedGood);
+            var transaction = this.CreateInventoryTransaction(10, unknown, finishedGood);
             this.Session.Derive(true);
 
             Assert.Equal(10, finishedGood.QuantityOnHand);
@@ -51,10 +51,10 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            var finishedGood = CreatePart("FG1", kinds.Serialised);
-            var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
+            var finishedGood = this.CreatePart("FG1", kinds.Serialised);
+            var good = this.CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
             var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
-            var variance = CreateInventoryTransaction(10, unknown, finishedGood, serialItem);
+            var variance = this.CreateInventoryTransaction(10, unknown, finishedGood, serialItem);
 
             // Act
             var derivation = this.Session.Derive(false);

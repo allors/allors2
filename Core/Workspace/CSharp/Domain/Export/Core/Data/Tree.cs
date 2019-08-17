@@ -62,7 +62,7 @@ namespace Allors.Workspace.Data
             new Protocol.Data.Tree
             {
                 Composite = this.Composite.Id,
-                Nodes = this.Nodes.Select(v => v.ToJson()).ToArray()
+                Nodes = this.Nodes.Select(v => v.ToJson()).ToArray(),
             };
 
         public string DebugView

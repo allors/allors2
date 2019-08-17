@@ -5,7 +5,7 @@
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
     using Resources;
 
     public partial class PackagingContent

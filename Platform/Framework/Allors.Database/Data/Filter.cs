@@ -12,7 +12,7 @@ namespace Allors.Data
 
     using Allors.Protocol.Data;
 
-    using Meta;
+    using Allors.Meta;
 
     public class Filter : IExtent, IPredicateContainer
     {
@@ -54,7 +54,7 @@ namespace Allors.Data
                 Kind = ExtentKind.Filter,
                 ObjectType = this.ObjectType?.Id,
                 Predicate = this.Predicate?.Save(),
-                Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+                Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray(),
             };
     }
 }

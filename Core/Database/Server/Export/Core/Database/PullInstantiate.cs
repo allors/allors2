@@ -38,10 +38,9 @@ namespace Allors.Server
         {
             var @object = this.session.Instantiate(this.pull.Object);
 
-            var objectType = this.pull.ObjectType as IComposite;
             var @class = @object.Strategy?.Class;
 
-            if (@class != null && objectType != null)
+            if (@class != null && this.pull.ObjectType is IComposite objectType)
             {
                 if (!objectType.IsAssignableFrom(@class))
                 {

@@ -54,9 +54,8 @@ namespace Allors.Adapters
             foreach (var init in this.Inits)
             {
                 init();
-                var database = this.Population as IDatabase;
 
-                if (database != null)
+                if (this.Population is IDatabase database)
                 {
                     for (var i = 0; i < 100; i++)
                     {
@@ -96,7 +95,7 @@ namespace Allors.Adapters
 
                 var extent = new Filter(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
+                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
                 };
 
                 var objects = this.Session.Resolve<C1>(extent, new { pString = "ᴀbra" });
@@ -115,7 +114,7 @@ namespace Allors.Adapters
 
                 var extent = new Filter(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
+                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
                 };
 
                 var objects = this.Session.Resolve<C1>(extent);
@@ -141,7 +140,7 @@ namespace Allors.Adapters
                         Kind = Protocol.Data.PredicateKind.Equals,
                         PropertyType = M.C1.C1AllorsString.Id,
                         Value = "ᴀbra"
-                    }
+                    },
                 };
 
                 var extent = schemaExtent.Load(this.Session);
@@ -162,7 +161,7 @@ namespace Allors.Adapters
 
                 var extent = new Filter(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
+                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
                 };
 
                 var schemaExtent = extent.Save();

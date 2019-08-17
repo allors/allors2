@@ -9,7 +9,7 @@ namespace Allors.Adapters.Object.Npgsql
     using System.Collections.Generic;
     using System.Linq;
 
-    using Adapters.Object.Npgsql.Caching;
+    using Allors.Adapters.Object.Npgsql.Caching;
 
     using Allors;
     using Allors.Meta;

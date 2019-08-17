@@ -8,7 +8,7 @@ using Xunit;
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
     using System;
-    using Adapters;
+    using Allors.Adapters;
 
     [Collection(Fixture.Collection)]
     public class ChangesTest : Adapters.ChangesTest, IDisposable

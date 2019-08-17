@@ -28,14 +28,14 @@ namespace Allors.Data
             {
                 Kind = ExtentKind.Intersect,
                 Operands = this.Operands.Select(v => v.Save()).ToArray(),
-                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray(),
             };
 
         bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.Any(v => v.HasMissingArguments(arguments));
 
         Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
         {
-            var extent = session.Intersect(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
+            var extent = session.Intersect(this.Operands[0].Build(session, arguments), this.Operands[1].Build(session, arguments));
             foreach (var sort in this.Sorting)
             {
                 sort.Build(extent);

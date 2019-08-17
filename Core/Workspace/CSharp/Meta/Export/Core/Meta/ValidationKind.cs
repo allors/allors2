@@ -51,6 +51,6 @@ namespace Allors.Workspace.Meta
         /// <summary>
         /// Should not have a cycle.
         /// </summary>
-        Cyclic
+        Cyclic,
     }
 }

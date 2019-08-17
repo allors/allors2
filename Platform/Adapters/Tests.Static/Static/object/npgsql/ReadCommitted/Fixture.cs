@@ -22,7 +22,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
             var pgServerParams = new Dictionary<string, string>
             {
                 {"timezone", "UTC"},
-                {"synchronous_commit", "off"}
+                {"synchronous_commit", "off"},
             };
 
             this.Server = new PgServer(

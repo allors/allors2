@@ -22,19 +22,19 @@ namespace Allors.Protocol.Data
                 case PredicateKind.And:
                     return new And
                     {
-                        Operands = @this.Operands.Select(v => v.Load(session)).ToArray()
+                        Operands = @this.Operands.Select(v => v.Load(session)).ToArray(),
                     };
 
                 case PredicateKind.Or:
                     return new Or
                     {
-                        Operands = @this.Operands.Select(v => v.Load(session)).ToArray()
+                        Operands = @this.Operands.Select(v => v.Load(session)).ToArray(),
                     };
 
                 case PredicateKind.Not:
                     return new Not
                     {
-                        Operand = @this.Operand.Load(session)
+                        Operand = @this.Operand.Load(session),
                     };
 
                 default:
@@ -47,7 +47,7 @@ namespace Allors.Protocol.Data
 
                             return new Instanceof(@this.ObjectType != null ? (IComposite)session.Database.MetaPopulation.Find(@this.ObjectType.Value) : null)
                             {
-                                PropertyType = propertyType
+                                PropertyType = propertyType,
                             };
 
                         case PredicateKind.Exists:
@@ -55,7 +55,7 @@ namespace Allors.Protocol.Data
                             return new Exists
                             {
                                 PropertyType = propertyType,
-                                Parameter = @this.Parameter
+                                Parameter = @this.Parameter,
                             };
 
                         case PredicateKind.Equals:
@@ -79,7 +79,7 @@ namespace Allors.Protocol.Data
                             {
                                 PropertyType = propertyType,
                                 Parameter = @this.Parameter,
-                                Object = session.Instantiate(@this.Object)
+                                Object = session.Instantiate(@this.Object),
                             };
 
                         case PredicateKind.ContainedIn:
@@ -101,7 +101,7 @@ namespace Allors.Protocol.Data
                             return new Between(roleType)
                             {
                                 Parameter = @this.Parameter,
-                                Values = @this.Values.Select(v => Convert.ToValue((IUnit)roleType?.ObjectType, v)).ToArray()
+                                Values = @this.Values.Select(v => Convert.ToValue((IUnit)roleType?.ObjectType, v)).ToArray(),
                             };
 
                         case PredicateKind.GreaterThan:
@@ -109,7 +109,7 @@ namespace Allors.Protocol.Data
                             return new GreaterThan(roleType)
                             {
                                 Parameter = @this.Parameter,
-                                Value = Convert.ToValue((IUnit)roleType?.ObjectType, @this.Value)
+                                Value = Convert.ToValue((IUnit)roleType?.ObjectType, @this.Value),
                             };
 
                         case PredicateKind.LessThan:
@@ -117,7 +117,7 @@ namespace Allors.Protocol.Data
                             return new LessThan(roleType)
                             {
                                 Parameter = @this.Parameter,
-                                Value = Convert.ToValue((IUnit)roleType?.ObjectType, @this.Value)
+                                Value = Convert.ToValue((IUnit)roleType?.ObjectType, @this.Value),
                             };
 
                         case PredicateKind.Like:
@@ -125,7 +125,7 @@ namespace Allors.Protocol.Data
                             return new Like(roleType)
                             {
                                 Parameter = @this.Parameter,
-                                Value = @this.Value
+                                Value = @this.Value,
                             };
 
                         default:

@@ -5,7 +5,7 @@
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
 
     public partial class SurchargeAdjustment
     {
@@ -18,15 +18,12 @@ namespace Allors.Domain
             {
                 if (this.ExistPriceableWhereSurchargeAdjustment)
                 {
-                    var salesInvoiceItem = this.PriceableWhereSurchargeAdjustment as SalesInvoiceItem;
-                    var salesOrderItem = this.PriceableWhereSurchargeAdjustment as SalesOrderItem;
-
-                    if (salesInvoiceItem != null)
+                    if (this.PriceableWhereSurchargeAdjustment is SalesInvoiceItem salesInvoiceItem)
                     {
                         derivation.AddDependency(this, salesInvoiceItem);
                     }
 
-                    if (salesOrderItem != null)
+                    if (this.PriceableWhereSurchargeAdjustment is SalesOrderItem salesOrderItem)
                     {
                         derivation.AddDependency(this, salesOrderItem);
                     }

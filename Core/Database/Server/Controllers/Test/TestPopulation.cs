@@ -29,14 +29,14 @@ namespace Allors.Server.Controllers
 
         private void Full()
         {
-            var c1A = new C1Builder(session).WithName("c1A").Build();
-            var c1B = new C1Builder(session).WithName("c1B").Build();
-            var c1C = new C1Builder(session).WithName("c1C").Build();
-            var c1D = new C1Builder(session).WithName("c1D").Build();
-            var c2A = new C2Builder(session).WithName("c2A").Build();
-            var c2B = new C2Builder(session).WithName("c2B").Build();
-            var c2C = new C2Builder(session).WithName("c2C").Build();
-            var c2D = new C2Builder(session).WithName("c2D").Build();
+            var c1A = new C1Builder(this.session).WithName("c1A").Build();
+            var c1B = new C1Builder(this.session).WithName("c1B").Build();
+            var c1C = new C1Builder(this.session).WithName("c1C").Build();
+            var c1D = new C1Builder(this.session).WithName("c1D").Build();
+            var c2A = new C2Builder(this.session).WithName("c2A").Build();
+            var c2B = new C2Builder(this.session).WithName("c2B").Build();
+            var c2C = new C2Builder(this.session).WithName("c2C").Build();
+            var c2D = new C2Builder(this.session).WithName("c2D").Build();
 
             #region String
             // class

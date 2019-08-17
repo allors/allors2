@@ -12,7 +12,7 @@ namespace Allors.Domain
 {
     using System;
 
-    using Meta;
+    using Allors.Meta;
 
     using Resources;
 
@@ -441,7 +441,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(billToContactMechanismMechelen)
                 .Build();
 
-            Session.Derive();
+            this.Session.Derive();
 
             Assert.Equal(euro, invoice.Currency);
         }
@@ -501,7 +501,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .Build();
 
-            Session.Derive();
+            this.Session.Derive();
 
             Assert.Equal(euro, invoice.Currency);
         }
@@ -1152,7 +1152,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            SetIdentity("administrator");
+            this.SetIdentity("administrator");
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")

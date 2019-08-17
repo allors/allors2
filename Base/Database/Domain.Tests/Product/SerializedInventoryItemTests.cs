@@ -8,7 +8,7 @@
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
     using Xunit;
     using System.Linq;
 
@@ -61,7 +61,7 @@ namespace Allors.Domain
             var kinds = new InventoryItemKinds(this.Session);
 
             var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
-            var finishedGood = CreatePart("1", kinds.Serialised);
+            var finishedGood = this.CreatePart("1", kinds.Serialised);
             finishedGood.AddSerialisedItem(serialItem);
             var serialInventoryItem = new SerialisedInventoryItemBuilder(this.Session).WithSerialisedItem(serialItem).WithPart(finishedGood).Build();
 
@@ -86,7 +86,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            var serialPart = CreatePart("FG1", kinds.Serialised);
+            var serialPart = this.CreatePart("FG1", kinds.Serialised);
             var serialItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
             var serialItem2 = new SerialisedItemBuilder(this.Session).WithSerialNumber("2").Build();
             var serialItem3 = new SerialisedItemBuilder(this.Session).WithSerialNumber("3").Build();
@@ -95,14 +95,14 @@ namespace Allors.Domain
             serialPart.AddSerialisedItem(serialItem2);
             serialPart.AddSerialisedItem(serialItem3);
 
-            var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, serialPart);
+            var good = this.CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, serialPart);
 
             // Act
             this.Session.Derive(true);
 
-            CreateInventoryTransaction(1, unknown, serialPart, serialItem1);
-            CreateInventoryTransaction(1, unknown, serialPart, serialItem2);
-            CreateInventoryTransaction(1, unknown, serialPart, serialItem3);
+            this.CreateInventoryTransaction(1, unknown, serialPart, serialItem1);
+            this.CreateInventoryTransaction(1, unknown, serialPart, serialItem2);
+            this.CreateInventoryTransaction(1, unknown, serialPart, serialItem3);
 
             this.Session.Derive(true);
 
@@ -115,8 +115,8 @@ namespace Allors.Domain
         {
             // Arrange
             var warehouseType = new FacilityTypes(this.Session).Warehouse;
-            var warehouse1 = CreateFacility("WH1", warehouseType, this.InternalOrganisation);
-            var warehouse2 = CreateFacility("WH2", warehouseType, this.InternalOrganisation);
+            var warehouse1 = this.CreateFacility("WH1", warehouseType, this.InternalOrganisation);
+            var warehouse2 = this.CreateFacility("WH2", warehouseType, this.InternalOrganisation);
 
             var serialized = new InventoryItemKinds(this.Session).Serialised;
             var piece = new UnitsOfMeasure(this.Session).Piece;
@@ -124,20 +124,20 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            var finishedGood = CreatePart("FG1", serialized);
+            var finishedGood = this.CreatePart("FG1", serialized);
             var serialItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
             var serialItem2 = new SerialisedItemBuilder(this.Session).WithSerialNumber("2").Build();
 
             finishedGood.AddSerialisedItem(serialItem1);
             finishedGood.AddSerialisedItem(serialItem2);
 
-            var good = CreateGood("10101", vatRate21, "good1", piece, category, finishedGood);
+            var good = this.CreateGood("10101", vatRate21, "good1", piece, category, finishedGood);
 
             // Act
             this.Session.Derive(true);
 
-            CreateInventoryTransaction(1, unknown, finishedGood, serialItem1, warehouse1);
-            CreateInventoryTransaction(1, unknown, finishedGood, serialItem2, warehouse2);
+            this.CreateInventoryTransaction(1, unknown, finishedGood, serialItem1, warehouse1);
+            this.CreateInventoryTransaction(1, unknown, finishedGood, serialItem2, warehouse2);
 
             this.Session.Derive(true);
 

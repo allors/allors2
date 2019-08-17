@@ -11,7 +11,7 @@ using System.Linq;
 namespace Allors.Domain
 {
     using System;
-    using Meta;
+    using Allors.Meta;
     using Xunit;
 
     public class SupplierRelationshipTests : DomainTest
@@ -220,7 +220,7 @@ namespace Allors.Domain
             this.supplierRelationship.FromDate = this.Session.Now().AddDays(1);
             this.Session.Derive();
 
-            Assert.False(InternalOrganisation.ActiveSuppliers.Contains(supplier));
+            Assert.False(this.InternalOrganisation.ActiveSuppliers.Contains(this.supplier));
         }
 
         [Fact]
@@ -231,7 +231,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.False(InternalOrganisation.ActiveSuppliers.Contains(supplier));
+            Assert.False(this.InternalOrganisation.ActiveSuppliers.Contains(this.supplier));
         }
 
         private void InstantiateObjects(ISession session)

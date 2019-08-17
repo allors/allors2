@@ -8,7 +8,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System;
 
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class RoleEqualsValue : Predicate
     {

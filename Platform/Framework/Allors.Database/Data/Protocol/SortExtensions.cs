@@ -15,7 +15,7 @@ namespace Allors.Protocol.Data
             new Allors.Data.Sort
             {
                 Descending = @this.Descending,
-                RoleType = @this.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(@this.RoleType.Value) : null
+                RoleType = @this.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(@this.RoleType.Value) : null,
             };
     }
 }

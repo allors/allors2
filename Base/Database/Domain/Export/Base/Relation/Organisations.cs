@@ -8,7 +8,7 @@ namespace Allors.Domain
     using System;
     using System.IO;
 
-    using Meta;
+    using Allors.Meta;
 
     public partial class Organisations
     {

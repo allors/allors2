@@ -5,7 +5,7 @@
 
 namespace Allors.Adapters.Memory
 {
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class Equals : Predicate
     {

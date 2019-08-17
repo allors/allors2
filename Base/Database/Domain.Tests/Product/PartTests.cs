@@ -10,7 +10,7 @@ namespace Allors.Domain
 {
     using System.Linq;
 
-    using Meta;
+    using Allors.Meta;
     using Xunit;
 
     public class PartTests : DomainTest

@@ -11,8 +11,8 @@ namespace Allors.Workspace.Data
     using System.Linq;
     using Allors.Protocol.Data;
 
-    using Meta;
-    using Protocol;
+    using Allors.Workspace.Meta;
+    using Allors.Protocol;
 
     public class Filter : IExtent, IPredicateContainer
     {
@@ -34,7 +34,7 @@ namespace Allors.Workspace.Data
                 Kind = ExtentKind.Filter,
                 ObjectType = this.ObjectType?.Id,
                 Predicate = this.Predicate?.ToJson(),
-                Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+                Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray(),
             };
     }
 }

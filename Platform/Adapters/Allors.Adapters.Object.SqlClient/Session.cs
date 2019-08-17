@@ -132,7 +132,8 @@ namespace Allors.Adapters.Object.SqlClient
             if (long.TryParse(objectId, out var id))
             {
                 return this.Instantiate(id);
-            };
+            }
+;
 
             return null;
         }

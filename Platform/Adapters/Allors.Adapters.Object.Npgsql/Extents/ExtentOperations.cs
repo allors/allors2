@@ -20,6 +20,6 @@ namespace Allors.Adapters.Object.Npgsql
         /// <summary>
         /// The Difference of two Extents.
         /// </summary>
-        Except
+        Except,
     }
 }

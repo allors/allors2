@@ -5,7 +5,7 @@
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
 
     public partial class DiscountAdjustment
     {
@@ -17,15 +17,12 @@ namespace Allors.Domain
             {
                 if (this.ExistPriceableWhereDiscountAdjustment)
                 {
-                    var salesInvoiceItem = this.PriceableWhereDiscountAdjustment as SalesInvoiceItem;
-                    var salesOrderItem = this.PriceableWhereDiscountAdjustment as SalesOrderItem;
-
-                    if (salesInvoiceItem != null)
+                    if (this.PriceableWhereDiscountAdjustment is SalesInvoiceItem salesInvoiceItem)
                     {
                         derivation.AddDependency(this, salesInvoiceItem);
                     }
 
-                    if (salesOrderItem != null)
+                    if (this.PriceableWhereDiscountAdjustment is SalesOrderItem salesOrderItem)
                     {
                         derivation.AddDependency(this, salesOrderItem);
                     }
@@ -64,7 +61,7 @@ namespace Allors.Domain
             {
                 if (this.ExistAmount && this.ExistPercentage)
                 {
-                    var version = CurrentVersion;
+                    var version = this.CurrentVersion;
                     if (version.ExistAmount)
                     {
                         this.RemoveAmount();

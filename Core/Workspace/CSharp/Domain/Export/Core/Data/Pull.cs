@@ -34,7 +34,7 @@ namespace Allors.Workspace.Data
                 Extent = this.Extent?.ToJson(),
                 ObjectType = this.ObjectType?.Id,
                 Object = this.Object?.Id.ToString(),
-                Results = this.Results?.Select(v => v.ToJson()).ToArray()
+                Results = this.Results?.Select(v => v.ToJson()).ToArray(),
             };
     }
 }

@@ -61,8 +61,7 @@ namespace Allors.Domain
             {
                 if (acl.CanRead(step.PropertyType))
                 {
-                    var property = step.PropertyType.Get(allorsObject.Strategy) as IObject;
-                    if (property != null)
+                    if (step.PropertyType.Get(allorsObject.Strategy) is IObject property)
                     {
                         step.Next.Set(property, aclFactory, value);
                         return true;
@@ -72,8 +71,7 @@ namespace Allors.Domain
                 return false;
             }
 
-            var roleType = step.PropertyType as RoleType;
-            if (roleType != null)
+            if (step.PropertyType is RoleType roleType)
             {
                 if (acl.CanWrite(roleType))
                 {
@@ -89,8 +87,7 @@ namespace Allors.Domain
         {
             var acl = aclFactory.Create(allorsObject);
 
-            var roleType = step.PropertyType as RoleType;
-            if (roleType != null)
+            if (step.PropertyType is RoleType roleType)
             {
                 if (roleType.IsMany)
                 {
@@ -113,8 +110,7 @@ namespace Allors.Domain
 
                         if (step.ExistNext)
                         {
-                            var next = role as IObject;
-                            if (next != null)
+                            if (role is IObject next)
                             {
                                 step.Next.Ensure(next, aclFactory);
                             }
@@ -132,8 +128,7 @@ namespace Allors.Domain
 
                 if (acl.CanRead(associationType))
                 {
-                    var association = associationType.Get(allorsObject.Strategy) as IObject;
-                    if (association != null)
+                    if (associationType.Get(allorsObject.Strategy) is IObject association)
                     {
                         if (step.ExistNext)
                         {

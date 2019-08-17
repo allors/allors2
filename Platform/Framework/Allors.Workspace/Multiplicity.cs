@@ -27,6 +27,6 @@ namespace Allors.Workspace
         /// <summary>
         /// Many to Many.
         /// </summary>
-        ManyToMany = 3
+        ManyToMany = 3,
     }
 }

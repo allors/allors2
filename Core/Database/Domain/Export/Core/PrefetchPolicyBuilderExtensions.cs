@@ -8,7 +8,7 @@
 
 namespace Allors
 {
-    using Meta;
+    using Allors.Meta;
 
     public static partial class PrefetchPolicyBuilderExtensions
     {

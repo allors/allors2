@@ -11,9 +11,9 @@ namespace Allors.Adapters.Object.Npgsql
     using System;
     using System.Xml;
 
-    using Adapters;
+    using Allors.Adapters;
 
-    using Meta;
+    using Allors.Meta;
 
     /// <summary>
     /// Writes all relations from a <see cref="IRelationType"/> with a Role

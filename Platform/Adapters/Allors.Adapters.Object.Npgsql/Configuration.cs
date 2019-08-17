@@ -7,7 +7,7 @@ namespace Allors.Adapters.Object.Npgsql
 {
     using System.Data;
 
-    using Caching;
+    using Allors.Adapters.Object.Npgsql.Caching;
 
     public class Configuration : Adapters.Configuration
     {

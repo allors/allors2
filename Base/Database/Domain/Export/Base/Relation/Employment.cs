@@ -8,7 +8,7 @@ using System.Linq;
 namespace Allors.Domain
 {
     using System;
-    using Meta;
+    using Allors.Meta;
     using Resources;
 
     public partial class Employment

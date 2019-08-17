@@ -11,7 +11,7 @@ using System.Linq;
 namespace Allors.Domain
 {
     using System;
-    using Meta;
+    using Allors.Meta;
     using Xunit;
 
     public class NonSerialisedInventoryItemTests : DomainTest
@@ -63,7 +63,7 @@ namespace Allors.Domain
                                 .Build())
                 .Build();
 
-            Session.Derive();
+            this.Session.Derive();
 
             Assert.Equal(0M, item.AvailableToPromise);
             Assert.Equal(0M, item.QuantityCommittedOut);
@@ -119,34 +119,34 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
-            var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
+            var finishedGood = this.CreatePart("1", inventoryItemKinds.NonSerialised);
+            var good = this.CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
 
             this.Session.Derive();
 
-            CreateInventoryTransaction(5, varianceReasons.Unknown, finishedGood);
+            this.CreateInventoryTransaction(5, varianceReasons.Unknown, finishedGood);
 
             this.Session.Derive();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
+            var shipToMechelen = this.CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             this.Session.Derive();
             this.Session.Commit();
 
-            var order1 = CreateSalesOrder(customer, customer, this.Session.Now());
-            var salesItem1 = CreateSalesOrderItem("item1", good, 10, 15);
-            var salesItem2 = CreateSalesOrderItem("item2", good, 20, 15);
+            var order1 = this.CreateSalesOrder(customer, customer, this.Session.Now());
+            var salesItem1 = this.CreateSalesOrderItem("item1", good, 10, 15);
+            var salesItem2 = this.CreateSalesOrderItem("item2", good, 20, 15);
 
             order1.AddSalesOrderItem(salesItem1);
             order1.AddSalesOrderItem(salesItem2);
 
-            var order2 = CreateSalesOrder(customer, customer, this.Session.Now().AddDays(1));
-            var salesItem3 = CreateSalesOrderItem("item3", good, 10, 15);
-            var salesItem4 = CreateSalesOrderItem("item4", good, 20, 15);
+            var order2 = this.CreateSalesOrder(customer, customer, this.Session.Now().AddDays(1));
+            var salesItem3 = this.CreateSalesOrderItem("item3", good, 10, 15);
+            var salesItem4 = this.CreateSalesOrderItem("item4", good, 20, 15);
 
             order2.AddSalesOrderItem(salesItem3);
             order2.AddSalesOrderItem(salesItem4);
@@ -193,7 +193,7 @@ namespace Allors.Domain
             Assert.Equal(5, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             // Re-arrange
-            CreateInventoryTransaction(15, varianceReasons.Unknown, finishedGood);
+            this.CreateInventoryTransaction(15, varianceReasons.Unknown, finishedGood);
 
             // Act
             this.Session.Derive(true);
@@ -225,7 +225,7 @@ namespace Allors.Domain
             Assert.Equal(20, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             // Re-arrange
-            CreateInventoryTransaction(85, varianceReasons.Unknown, finishedGood);
+            this.CreateInventoryTransaction(85, varianceReasons.Unknown, finishedGood);
 
             // Act
             this.Session.Derive();
@@ -268,26 +268,26 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
-            var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
+            var finishedGood = this.CreatePart("1", inventoryItemKinds.NonSerialised);
+            var good = this.CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
 
             this.Session.Derive();
 
-            CreateInventoryTransaction(5, varianceReasons.Unknown, finishedGood);
+            this.CreateInventoryTransaction(5, varianceReasons.Unknown, finishedGood);
 
             this.Session.Derive();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
+            var shipToMechelen = this.CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             this.Session.Derive();
 
-            var order = CreateSalesOrder(customer, customer, this.Session.Now(), false);
-            var salesItem = CreateSalesOrderItem("item1", good, 10, 15);
+            var order = this.CreateSalesOrder(customer, customer, this.Session.Now(), false);
+            var salesItem = this.CreateSalesOrderItem("item1", good, 10, 15);
 
             // Act
             order.AddSalesOrderItem(salesItem);
@@ -303,7 +303,7 @@ namespace Allors.Domain
             Assert.Equal(5, salesItem.QuantityShortFalled);
 
             // Rearrange
-            CreateInventoryTransaction(-2, varianceReasons.Unknown, finishedGood);
+            this.CreateInventoryTransaction(-2, varianceReasons.Unknown, finishedGood);
 
             // Act
             this.Session.Derive();

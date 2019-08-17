@@ -6,7 +6,7 @@
 namespace Allors.Domain
 {
     using Allors;
-    using Meta;
+    using Allors.Meta;
 
     public partial class SalesInvoiceItems
     {

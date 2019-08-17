@@ -209,7 +209,7 @@ namespace Allors.Adapters.Object.SqlClient
                  {
                      this.TableTypeNameForBinaryRelation,
                      $@"CREATE TYPE {this.TableTypeNameForBinaryRelation} AS TABLE ({this.TableTypeColumnNameForAssociation} {SqlTypeForObject}, {this.TableTypeColumnNameForRole} varbinary(max))"
-                 }
+                 },
              };
 
             foreach (var precisionEntry in this.TableTypeNameForDecimalRelationByScaleByPrecision)

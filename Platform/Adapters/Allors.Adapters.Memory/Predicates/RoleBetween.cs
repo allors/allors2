@@ -7,7 +7,7 @@ namespace Allors.Adapters.Memory
 {
     using System;
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class RoleBetween : Predicate
     {
@@ -33,8 +33,7 @@ namespace Allors.Adapters.Memory
             var firstValue = this.first;
             var secondValue = this.second;
 
-            var firstRole = this.first as IRoleType;
-            if (firstRole != null)
+            if (this.first is IRoleType firstRole)
             {
                 firstValue = strategy.GetInternalizedUnitRole(firstRole);
             }
@@ -46,8 +45,7 @@ namespace Allors.Adapters.Memory
                 }
             }
 
-            var secondRole = this.second as IRoleType;
-            if (secondRole != null)
+            if (this.second is IRoleType secondRole)
             {
                 secondValue = strategy.GetInternalizedUnitRole(secondRole);
             }
@@ -59,9 +57,8 @@ namespace Allors.Adapters.Memory
                 }
             }
 
-            var comparable = strategy.GetInternalizedUnitRole(this.roleType) as IComparable;
 
-            if (comparable == null)
+            if (!(strategy.GetInternalizedUnitRole(this.roleType) is IComparable comparable))
             {
                 return ThreeValuedLogic.Unknown;
             }

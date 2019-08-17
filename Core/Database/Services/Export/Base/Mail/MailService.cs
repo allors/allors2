@@ -22,7 +22,7 @@ namespace Allors.Services
             var message = new MimeMessage
             {
                 Subject = emailMesssage.Subject,
-                Body = new TextPart("html") { Text = emailMesssage.Body }
+                Body = new TextPart("html") { Text = emailMesssage.Body },
             };
 
             var sender = emailMesssage.Sender?.UserEmail ?? this.DefaultSender;

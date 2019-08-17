@@ -28,7 +28,7 @@ namespace Allors.Adapters.Object.SqlClient
             var metaData = new SqlMetaData[]
             {
                 new SqlMetaData(objectArrayElement, SqlDbType.BigInt),
-                new SqlMetaData(objectArrayElement, SqlDbType.BigInt)
+                new SqlMetaData(objectArrayElement, SqlDbType.BigInt),
             };
             var sqlDataRecord = new SqlDataRecord(metaData);
 

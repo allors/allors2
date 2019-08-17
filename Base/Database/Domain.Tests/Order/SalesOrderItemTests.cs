@@ -12,7 +12,7 @@ namespace Allors.Domain
 {
     using System;
 
-    using Meta;
+    using Allors.Meta;
     using Xunit;
 
     public class SalesOrderItemTests : DomainTest
@@ -843,7 +843,7 @@ namespace Allors.Domain
 
             var derivation = new Logging.Derivation(this.Session, new DerivationConfig
             {
-                DerivationLogFunc = () => new CustomListDerivationLog()
+                DerivationLogFunc = () => new CustomListDerivationLog(),
             }
             );
 
@@ -1502,7 +1502,7 @@ namespace Allors.Domain
             Assert.True(derivationLog.HasErrors);
             Assert.Contains(M.OrderShipment.Quantity, derivationLog.Errors[0].RoleTypes);
 
-            Session.Rollback();
+            this.Session.Rollback();
 
             shipment = new CustomerShipmentBuilder(this.Session)
                 .WithShipFromAddress(this.order.TakenBy.ShippingAddress)

@@ -11,10 +11,10 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using System.Linq;
 
-    using NonLogging;
+    using Allors.Domain.NonLogging;
     using Allors.Services;
 
-    using Meta;
+    using Allors.Meta;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -576,7 +576,7 @@ namespace Allors.Domain
 
             this.SecurityTokens = new[]
             {
-                singleton.DefaultSecurityToken
+                singleton.DefaultSecurityToken,
             };
 
             if (this.ExistTakenBy)
@@ -689,7 +689,7 @@ namespace Allors.Domain
 
         public void BaseCancel(OrderCancel method)
         {
-            OnCancelOrReject();
+            this.OnCancelOrReject();
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Cancelled;
         }
 
@@ -713,7 +713,7 @@ namespace Allors.Domain
 
         public void BaseReject(OrderReject method)
         {
-            OnCancelOrReject();
+            this.OnCancelOrReject();
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
         }
 

@@ -43,7 +43,7 @@ namespace Allors.Domain
 
             @this.SecurityTokens = new[]
             {
-                singleton.DefaultSecurityToken
+                singleton.DefaultSecurityToken,
             };
 
             if (@this.ExistIssuer)

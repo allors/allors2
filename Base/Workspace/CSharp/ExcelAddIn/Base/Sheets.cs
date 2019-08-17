@@ -30,7 +30,7 @@ namespace Allors.Excel
         {
             var worksheet = this.Host.ActiveWorksheet;
 
-            AddCustomStyles();
+            this.AddCustomStyles();
 
             worksheet.SetCustomPropertyValue("AllorsType", nameof(PurchaseInvoicesSheet));
 
@@ -45,7 +45,7 @@ namespace Allors.Excel
         {
             var worksheet = this.Host.ActiveWorksheet;
 
-            AddCustomStyles();
+            this.AddCustomStyles();
 
             worksheet.SetCustomPropertyValue("AllorsType", nameof(CustomersSheet));
 
@@ -58,7 +58,7 @@ namespace Allors.Excel
         {
             var worksheet = this.Host.ActiveWorksheet;
 
-            AddCustomStyles();
+            this.AddCustomStyles();
 
             worksheet.SetCustomPropertyValue("AllorsType", nameof(SalesInvoicesOverdueSheet));
 

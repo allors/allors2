@@ -11,7 +11,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using Meta;
+    using Allors.Meta;
     using Resources;
 
     public partial class PurchaseOrder
@@ -158,11 +158,10 @@ namespace Allors.Domain
             {
                 this.strategy.Session.GetSingleton().DefaultSecurityToken,
                 this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken,
-                this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken
+                this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken,
             };
 
-            var supplier = this.TakenViaSupplier as Organisation;
-            if (supplier != null)
+            if (this.TakenViaSupplier is Organisation supplier)
             {
                 if (!this.OrderedBy.ActiveSuppliers.Contains(supplier))
                 {
@@ -299,7 +298,7 @@ namespace Allors.Domain
 
             this.SecurityTokens = new[]
             {
-                singleton.DefaultSecurityToken
+                singleton.DefaultSecurityToken,
             };
 
             if (this.ExistOrderedBy)

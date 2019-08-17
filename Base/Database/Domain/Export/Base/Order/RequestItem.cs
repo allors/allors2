@@ -7,7 +7,7 @@ using System;
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
 
     public partial class RequestItem
     {

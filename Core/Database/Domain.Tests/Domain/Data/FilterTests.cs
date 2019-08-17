@@ -35,7 +35,7 @@ namespace Tests
                 {
                     PropertyType = M.Person.FirstName,
                     Value = "John"
-                }
+                },
             };
 
             var queryExtent = filter.Build(this.Session);
@@ -67,7 +67,7 @@ namespace Tests
                                                                                 Value = "Doe"
                                                                             }
                                                                     }
-                }
+                },
             };
 
             var queryExtent = filter.Build(this.Session);

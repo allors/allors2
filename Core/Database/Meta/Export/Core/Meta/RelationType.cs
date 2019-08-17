@@ -149,8 +149,7 @@ namespace Allors.Meta
             {
                 if (this.AssociationType?.ObjectType != null && this.RoleType?.ObjectType != null)
                 {
-                    var roleCompositeType = this.RoleType.ObjectType as Composite;
-                    return this.AssociationType.ObjectType.ExistExclusiveClass && roleCompositeType != null && roleCompositeType.ExistExclusiveClass;
+                    return this.AssociationType.ObjectType.ExistExclusiveClass && this.RoleType.ObjectType is Composite roleCompositeType && roleCompositeType.ExistExclusiveClass;
                 }
 
                 return false;
@@ -218,8 +217,7 @@ namespace Allors.Meta
         /// <paramref name="obj"/> is not the same type as this instance. </exception>
         public int CompareTo(object obj)
         {
-            var that = obj as RelationType;
-            return that != null ? this.Id.CompareTo(that.Id) : -1;
+            return obj is RelationType that ? this.Id.CompareTo(that.Id) : -1;
         }
 
         /// <summary>

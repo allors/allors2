@@ -59,7 +59,7 @@ namespace Allors.Document.OpenDocument
                                     var group = MainTemplateName + "(" + arguments + ")" + stringTemplate;
                                     this.templateGroup = new TemplateGroupString(MainTemplateName, group, leftDelimiter, rightDelimiter)
                                     {
-                                        ErrorManager = new ErrorManager(errorBuffer)
+                                        ErrorManager = new ErrorManager(errorBuffer),
                                     };
 
                                     // Force a compilation of the templates to check for errors

@@ -9,7 +9,7 @@ using Allors.Workspace.Meta;
 
 namespace Allors.Workspace
 {
-    using Domain;
+    using Allors.Workspace.Domain;
 
     public static partial class Config
     {

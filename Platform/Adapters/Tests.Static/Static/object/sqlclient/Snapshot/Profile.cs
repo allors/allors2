@@ -8,7 +8,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
     using System;
     using System.Collections.Generic;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors.Adapters.Object.SqlClient.Caching;
     using Allors.Adapters.Object.SqlClient.Debug;
@@ -85,7 +85,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
                 ObjectFactory = this.CreateObjectFactory(metaPopulation),
                 ConnectionString = this.ConnectionString,
                 ConnectionFactory = this.connectionFactory,
-                CacheFactory = this.cacheFactory
+                CacheFactory = this.cacheFactory,
             };
             var database = new Database(this.ServiceProvider, configuration);
 
@@ -106,7 +106,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
                 ObjectFactory = this.ObjectFactory,
                 ConnectionString = this.ConnectionString,
                 ConnectionFactory = this.connectionFactory,
-                CacheFactory = this.cacheFactory
+                CacheFactory = this.cacheFactory,
             };
 
             var database = new Database(this.ServiceProvider, configuration);

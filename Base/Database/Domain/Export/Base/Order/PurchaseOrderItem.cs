@@ -9,7 +9,7 @@ namespace Allors.Domain
 {
     using System.Linq;
 
-    using Meta;
+    using Allors.Meta;
 
     public partial class PurchaseOrderItem
     {
@@ -138,6 +138,7 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this.PurchaseOrderWherePurchaseOrderItem, this);
             }
+
             //}
         }
 

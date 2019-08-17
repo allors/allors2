@@ -9,7 +9,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Collections.Generic;
     using System.Linq;
 
-    using Adapters.Object.SqlClient.Caching;
+    using Allors.Adapters.Object.SqlClient.Caching;
 
     using Allors;
     using Allors.Meta;

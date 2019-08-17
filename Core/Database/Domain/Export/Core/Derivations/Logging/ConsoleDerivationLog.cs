@@ -7,7 +7,7 @@ namespace Allors.Domain.Logging
 {
     using System;
 
-    using Object = Object;
+    using Object = Allors.Domain.Object;
 
     public class ConsoleDerivationLog : IDerivationLog
     {

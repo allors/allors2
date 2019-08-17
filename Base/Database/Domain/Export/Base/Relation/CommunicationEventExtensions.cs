@@ -35,8 +35,7 @@ namespace Allors.Domain
 
             if (!@this.ExistOwner)
             {
-                var owner = @this.Strategy.Session.GetUser() as Person;
-                if (owner == null)
+                if (!(@this.Strategy.Session.GetUser() is Person owner))
                 {
                     owner = @this.Strategy.Session.GetSingleton().Guest as Person;
                 }

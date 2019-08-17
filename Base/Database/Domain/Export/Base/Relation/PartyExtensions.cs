@@ -9,7 +9,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using Meta;
+    using Allors.Meta;
 
     public static class PartyExtensions
     {

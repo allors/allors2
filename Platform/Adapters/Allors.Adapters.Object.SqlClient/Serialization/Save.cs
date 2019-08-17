@@ -9,7 +9,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Xml;
 
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal class Save
     {

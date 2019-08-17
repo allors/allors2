@@ -5,7 +5,7 @@
 
 namespace Allors.Repository
 {
-    using Attributes;
+    using Allors.Repository.Attributes;
 
     /// <summary>
     /// A <see cref="Task"/> that can be approved or rejected.

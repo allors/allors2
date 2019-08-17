@@ -41,7 +41,7 @@ namespace Server.Tests
                               {
                                   Extent = extent.Save(),
                               },
-                      }
+                      },
             };
 
             var response = await this.PostAsJsonAsync(uri, pullRequest);
@@ -82,7 +82,7 @@ namespace Server.Tests
                                                                             new Result { Name = "Datas" },
                                                                         },
                                                       }
-                                              }
+                                              },
             };
 
             var response = await this.PostAsJsonAsync(uri, pullRequest);
@@ -116,7 +116,7 @@ namespace Server.Tests
                               ExtentRef = Organisations.ExtentByName,
                               Arguments = new Dictionary<string, object> { ["name"] = "Acme" },
                           }
-                  }
+                  },
             };
 
             var response = await this.PostAsJsonAsync(uri, pullRequest);
@@ -146,7 +146,7 @@ namespace Server.Tests
                               ExtentRef = Organisations.ExtentByName,
                               Arguments = new Dictionary<string, object> { ["name"] = "Acme" },
                           }
-                  }
+                  },
             };
 
             var response = await this.PostAsJsonAsync(uri, pullRequest);

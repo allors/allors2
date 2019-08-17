@@ -32,7 +32,7 @@ namespace Allors.Workspace
                             var version = long.Parse(v[1]);
                             this.workspaceObjectById.TryGetValue(id, out var workspaceObject);
                             return workspaceObject == null || !workspaceObject.Version.Equals(version) || !workspaceObject.UserSecurityHash.Equals(userSecurityHash);
-                        }).Select(v => v[0]).ToArray()
+                        }).Select(v => v[0]).ToArray(),
             };
 
             return requireLoadIds;

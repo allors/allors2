@@ -939,11 +939,11 @@ namespace Allors.Adapters
                     var nrOfRuns = Settings.NumberOfRuns;
                     for (var i = 0; i < nrOfRuns; i++)
                     {
-                        var from = C1.Create(Session);
-                        var fromAnother = C1.Create(Session);
+                        var from = C1.Create(this.Session);
+                        var fromAnother = C1.Create(this.Session);
 
-                        var to = C1.Create(Session);
-                        var toAnother = C2.Create(Session);
+                        var to = C1.Create(this.Session);
+                        var toAnother = C2.Create(this.Session);
 
                         // To 1 and back
                         // Get
@@ -2171,11 +2171,11 @@ namespace Allors.Adapters
 
                 foreach (var mark in this.Markers)
                 {
-                    var from = C1.Create(Session);
-                    var fromAnother = C1.Create(Session);
+                    var from = C1.Create(this.Session);
+                    var fromAnother = C1.Create(this.Session);
 
-                    var to = C2.Create(Session);
-                    var toAnother = C2.Create(Session);
+                    var to = C2.Create(this.Session);
+                    var toAnother = C2.Create(this.Session);
 
                     // To 1 and back
                     mark();

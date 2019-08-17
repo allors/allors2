@@ -22,7 +22,7 @@ namespace Tests.Remote
 
             var pull = new Pull
             {
-                Extent = new Filter(M.Person.ObjectType)
+                Extent = new Filter(M.Person.ObjectType),
             };
 
             var result = context.Load(pull).Result;

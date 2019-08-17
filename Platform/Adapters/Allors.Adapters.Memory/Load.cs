@@ -9,7 +9,7 @@ namespace Allors.Adapters.Memory
     using System.Collections.Generic;
     using System.Xml;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors.Meta;
 
@@ -69,9 +69,9 @@ namespace Allors.Adapters.Memory
                                 this.LoadObjects();
                             }
                         }
-                        else if (reader.Name.Equals(Serialization.Relations))
+                        else if (this.reader.Name.Equals(Serialization.Relations))
                         {
-                            if (!reader.IsEmptyElement)
+                            if (!this.reader.IsEmptyElement)
                             {
                                 this.LoadRelations();
                             }
@@ -107,7 +107,7 @@ namespace Allors.Adapters.Memory
                                 this.LoadObjectTypes();
                             }
                         }
-                        else if (reader.Name.Equals(Serialization.Workspace))
+                        else if (this.reader.Name.Equals(Serialization.Workspace))
                         {
                             throw new Exception("Can not load workspace objects in a database.");
                         }
@@ -174,8 +174,8 @@ namespace Allors.Adapters.Memory
                                     }
                                 }
 
-                                skip = reader.IsStartElement() ||
-                                       (reader.NodeType == XmlNodeType.EndElement && this.reader.Name.Equals(Serialization.Database));
+                                skip = this.reader.IsStartElement() ||
+                                       (this.reader.NodeType == XmlNodeType.EndElement && this.reader.Name.Equals(Serialization.Database));
                             }
                         }
                         else
@@ -210,7 +210,7 @@ namespace Allors.Adapters.Memory
                                 this.LoadDatabaseRelationTypes();
                             }
                         }
-                        else if (reader.Name.Equals(Serialization.Workspace))
+                        else if (this.reader.Name.Equals(Serialization.Workspace))
                         {
                             throw new Exception("Can not load workspace relations in a database.");
                         }
@@ -319,8 +319,8 @@ namespace Allors.Adapters.Memory
                             {
                                 value = this.reader.ReadElementContentAsString();
 
-                                skip = reader.IsStartElement() ||
-                                       (reader.NodeType == XmlNodeType.EndElement &&
+                                skip = this.reader.IsStartElement() ||
+                                       (this.reader.NodeType == XmlNodeType.EndElement &&
                                         this.reader.Name.Equals(Serialization.RelationTypeUnit));
                             }
 
@@ -401,8 +401,8 @@ namespace Allors.Adapters.Memory
                             {
                                 value = this.reader.ReadElementContentAsString();
 
-                                skip = reader.IsStartElement() ||
-                                       (reader.NodeType == XmlNodeType.EndElement &&
+                                skip = this.reader.IsStartElement() ||
+                                       (this.reader.NodeType == XmlNodeType.EndElement &&
                                         this.reader.Name.Equals(Serialization.RelationTypeComposite));
 
                                 var roleIdsString = value;

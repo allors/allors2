@@ -7,7 +7,7 @@ namespace Allors.Adapters.Memory
 {
     using System;
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class RoleLessThan : Predicate
     {
@@ -29,8 +29,7 @@ namespace Allors.Adapters.Memory
         {
             var compareValue = this.compare;
 
-            var compareRole = this.compare as IRoleType;
-            if (compareRole != null)
+            if (this.compare is IRoleType compareRole)
             {
                 compareValue = strategy.GetInternalizedUnitRole(compareRole);
             }
@@ -42,9 +41,8 @@ namespace Allors.Adapters.Memory
                 }
             }
 
-            var comparable = strategy.GetInternalizedUnitRole(this.roleType) as IComparable;
 
-            if (comparable == null)
+            if (!(strategy.GetInternalizedUnitRole(this.roleType) is IComparable comparable))
             {
                 return ThreeValuedLogic.Unknown;
             }

@@ -34,7 +34,7 @@ namespace Commands
                 ConnectionString = configuration["ConnectionStrings:DefaultConnection"],
                 ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User)),
                 IsolationLevel = this.IsolationLevel,
-                CommandTimeout = this.CommandTimeout
+                CommandTimeout = this.CommandTimeout,
             };
 
             databaseService.Database = new Database(serviceProvider, databaseConfiguration);

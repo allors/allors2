@@ -76,7 +76,7 @@ namespace Allors.Workspace
             var data = new PushRequest
             {
                 NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew()).ToArray(),
-                Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray()
+                Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray(),
             };
             return data;
         }
@@ -109,7 +109,7 @@ namespace Allors.Workspace
                                                                    Roles = new object[0][],
                                                                    Methods = new string[0][]
                                                                }
-                                                       }
+                                                       },
                     };
 
                     this.newSessionObjectById.Remove(newId);

@@ -13,8 +13,8 @@ namespace Allors.Server
     using Allors.Protocol.Remote;
     using Allors.Protocol.Remote.Pull;
 
-    using Domain;
-    using Meta;
+    using Allors.Domain;
+    using Allors.Meta;
 
     public class PullResponseBuilder
     {

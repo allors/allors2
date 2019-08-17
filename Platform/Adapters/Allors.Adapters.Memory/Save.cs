@@ -9,7 +9,7 @@ namespace Allors.Adapters.Memory
     using System.Xml;
 
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     public class Save
     {

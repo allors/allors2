@@ -6,7 +6,7 @@
 namespace Allors.Adapters.Memory
 {
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class RoleInstanceof : Predicate
     {
@@ -38,8 +38,7 @@ namespace Allors.Adapters.Memory
                 return ThreeValuedLogic.True;
             }
 
-            var @interface = this.objectType as IInterface;
-            return (@interface != null && roleObjectType.ExistSupertype(@interface))
+            return (this.objectType is IInterface @interface && roleObjectType.ExistSupertype(@interface))
                        ? ThreeValuedLogic.True
                        : ThreeValuedLogic.False;
         }

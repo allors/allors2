@@ -31,23 +31,23 @@ namespace Allors.Adapters.Object.Npgsql
 
         private bool FlagIsNew
         {
-            get { return flags.HasFlag(Flags.MaskIsNew); }
+            get { return this.flags.HasFlag(Flags.MaskIsNew); }
 
-            set { flags = value ? flags | Flags.MaskIsNew : flags & ~Flags.MaskIsNew; }
+            set { this.flags = value ? this.flags | Flags.MaskIsNew : this.flags & ~Flags.MaskIsNew; }
         }
 
         private bool FlagExists
         {
-            get { return flags.HasFlag(Flags.MaskExists); }
+            get { return this.flags.HasFlag(Flags.MaskExists); }
 
-            set { flags = value ? flags | Flags.MaskExists : flags & ~Flags.MaskExists; }
+            set { this.flags = value ? this.flags | Flags.MaskExists : this.flags & ~Flags.MaskExists; }
         }
 
         private bool FlagExistsKnown
         {
-            get { return flags.HasFlag(Flags.MaskExistsKnown); }
+            get { return this.flags.HasFlag(Flags.MaskExistsKnown); }
 
-            set { flags = value ? flags | Flags.MaskExistsKnown : flags & ~Flags.MaskExistsKnown; }
+            set { this.flags = value ? this.flags | Flags.MaskExistsKnown : this.flags & ~Flags.MaskExistsKnown; }
         }
 
         internal Reference(Session session, IClass @class, long objectId, bool isNew)

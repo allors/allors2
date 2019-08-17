@@ -16,7 +16,7 @@ namespace Allors.Development.Repository.Generation
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Misc;
 
-    using Storage;
+    using Allors.Development.Repository.Storage;
     using System.Xml;
 
     using Autotest;
@@ -84,7 +84,7 @@ namespace Allors.Development.Repository.Generation
             {
                 TemplateGroup templateGroup = new TemplateGroupFile(this.fileInfo.FullName, '$', '$')
                 {
-                    ErrorManager = new ErrorManager(new LogAdapter(log))
+                    ErrorManager = new ErrorManager(new LogAdapter(log)),
                 };
                 templateGroup.RegisterRenderer(typeof(string), new StringRenderer());
 

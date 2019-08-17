@@ -60,7 +60,7 @@ namespace Allos.Document.OpenDocument.Tests
                                  { "logo2", this.GetResource("logo.png") },
                                  { "number1", this.GetResource("1.png") },
                                  { "number2", this.GetResource("2.png") },
-                                 { "number3", this.GetResource("3.png") }
+                                 { "number3", this.GetResource("3.png") },
                              };
 
             var result = template.Render(model, images);
@@ -96,7 +96,7 @@ namespace Allos.Document.OpenDocument.Tests
                                  { "logo2", this.GetResource("logo.png") },
                                  { "number1", this.GetResource("1.png") },
                                  { "number2", this.GetResource("2.png") },
-                                 { "number3", this.GetResource("3.png") }
+                                 { "number3", this.GetResource("3.png") },
                              };
 
             // warmup

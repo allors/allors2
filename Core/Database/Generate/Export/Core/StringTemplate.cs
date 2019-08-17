@@ -16,7 +16,7 @@ namespace Allors.Development.Repository.Generation
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Misc;
 
-    using Storage;
+    using Allors.Development.Repository.Storage;
     using System.Xml;
 
     public class StringTemplate
@@ -106,29 +106,25 @@ namespace Allors.Development.Repository.Generation
                     if (generation.HasAttribute(InputKey))
                     {
                         var input = new Guid(generation.GetAttribute(InputKey));
-                        var objectType = metaPopulation.Find(input) as IObjectType;
-                        if (objectType != null)
+                        if (metaPopulation.Find(input) is IObjectType objectType)
                         {
                             template.Add(ObjectTypeKey, objectType);
                         }
                         else
                         {
-                            var relationType = metaPopulation.Find(input) as RelationType;
-                            if (relationType != null)
+                            if (metaPopulation.Find(input) is RelationType relationType)
                             {
                                 template.Add(RelationTypeKey, relationType);
                             }
                             else
                             {
-                                var inheritance = metaPopulation.Find(input) as Inheritance;
-                                if (inheritance != null)
+                                if (metaPopulation.Find(input) is Inheritance inheritance)
                                 {
                                     template.Add(InheritanceKey, inheritance);
                                 }
                                 else
                                 {
-                                    var methodType = metaPopulation.Find(input) as MethodType;
-                                    if (methodType != null)
+                                    if (metaPopulation.Find(input) is MethodType methodType)
                                     {
                                         template.Add(MethodTypeKey, methodType);
                                     }
@@ -139,6 +135,7 @@ namespace Allors.Development.Repository.Generation
                                 }
                             }
                         }
+
                         //TODO: Super Domains
                     }
 

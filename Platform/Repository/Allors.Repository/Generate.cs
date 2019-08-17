@@ -25,7 +25,7 @@ namespace Allors.Repository.Roslyn
             var analyzerManager = new AnalyzerManager(
                 new AnalyzerManagerOptions
                 {
-                    LogWriter = log
+                    LogWriter = log,
                 });
 
             var projectAnalyzer = analyzerManager.GetProject(projectPath);

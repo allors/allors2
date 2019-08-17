@@ -23,8 +23,7 @@ namespace Allors
 
             if (prefetchPolicy != null)
             {
-                var roleType = propertyType as IRoleType;
-                if (roleType != null && roleType.ObjectType.IsUnit)
+                if (propertyType is IRoleType roleType && roleType.ObjectType.IsUnit)
                 {
                     throw new ArgumentException("prefetchPolicy");
                 }

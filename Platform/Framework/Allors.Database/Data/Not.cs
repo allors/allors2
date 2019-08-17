@@ -27,7 +27,7 @@ namespace Allors.Data
             new Predicate()
             {
                 Kind = PredicateKind.Not,
-                Operand = this.Operand?.Save()
+                Operand = this.Operand?.Save(),
             };
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)

@@ -16,7 +16,7 @@ namespace Allors.Protocol.Data
             {
                 PropertyType = @this.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(@this.PropertyType.Value) : null,
                 Next = @this.Next?.Load(session),
-                Include = @this.Include?.Load(session)
+                Include = @this.Include?.Load(session),
             };
     }
 }

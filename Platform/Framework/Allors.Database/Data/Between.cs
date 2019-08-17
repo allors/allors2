@@ -29,7 +29,7 @@ namespace Allors.Data
                 Kind = PredicateKind.Between,
                 RoleType = this.RoleType?.Id,
                 Values = this.Values.Select(DataConvert.ToString).ToArray(),
-                Parameter = this.Parameter
+                Parameter = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);

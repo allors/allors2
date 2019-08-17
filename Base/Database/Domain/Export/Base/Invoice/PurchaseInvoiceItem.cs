@@ -128,7 +128,7 @@ namespace Allors.Domain
             if (this.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsCreated)
             {
                 this.PurchaseInvoiceWherePurchaseInvoiceItem.RemovePurchaseInvoiceItem(this);
-                foreach (OrderItemBilling orderItemBilling in OrderItemBillingsWhereInvoiceItem)
+                foreach (OrderItemBilling orderItemBilling in this.OrderItemBillingsWhereInvoiceItem)
                 {
                     orderItemBilling.Delete();
                 }

@@ -10,7 +10,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors.Meta;
 

@@ -24,7 +24,7 @@ namespace Allors.Domain
                 var minutes = (decimal)(through - this.FromDate).Value.TotalMinutes;
                 var hours = (decimal)frequencies.Minute.ConvertToFrequency((decimal)minutes, frequencies.Hour);
 
-                return Math.Round(hours, DecimalScale);
+                return Math.Round(hours, this.DecimalScale);
             }
         }
 

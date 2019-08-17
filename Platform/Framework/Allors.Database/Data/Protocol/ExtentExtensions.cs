@@ -42,7 +42,7 @@ namespace Allors.Protocol.Data
                     var objectType = (IComposite)session.Database.ObjectFactory.MetaPopulation.Find(@this.ObjectType.Value);
                     extent = new Filter(objectType)
                     {
-                        Predicate = @this.Predicate?.Load(session)
+                        Predicate = @this.Predicate?.Load(session),
                     };
 
                     break;

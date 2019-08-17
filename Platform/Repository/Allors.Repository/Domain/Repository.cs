@@ -337,7 +337,7 @@ namespace Allors.Repository.Domain
 
                                 var property = new Property(this.inflector, composite, propertyRoleName)
                                 {
-                                    XmlDoc = xmlDoc
+                                    XmlDoc = xmlDoc,
                                 };
 
                                 partialType.PropertyByName.Add(propertyRoleName, property);
@@ -355,7 +355,7 @@ namespace Allors.Repository.Domain
 
                                 var method = new Method(composite, methodName)
                                 {
-                                    XmlDoc = xmlDoc
+                                    XmlDoc = xmlDoc,
                                 };
 
                                 partialType.MethodByName.Add(methodName, method);

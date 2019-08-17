@@ -91,8 +91,7 @@ namespace Allors.Meta
         /// <paramref name="obj"/> is not the same type as this instance. </exception>
         public int CompareTo(object obj)
         {
-            var that = obj as Domain;
-            if (that != null)
+            if (obj is Domain that)
             {
                 return string.CompareOrdinal(this.Name, that.Name);
             }

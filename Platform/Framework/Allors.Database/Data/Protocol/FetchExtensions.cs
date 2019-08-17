@@ -13,7 +13,7 @@ namespace Allors.Protocol.Data
             new Allors.Data.Fetch(session.Database.MetaPopulation)
             {
                 Step = @this.Step?.Load(session),
-                Include = @this.Include?.Load(session)
+                Include = @this.Include?.Load(session),
             };
     }
 }

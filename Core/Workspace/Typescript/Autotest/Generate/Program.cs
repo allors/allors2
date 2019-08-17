@@ -23,10 +23,10 @@ namespace Allors
                 string[,] config =
                 {
                     {
-                        "./Workspace/Typescript/Autotest/Templates/sidenav.cs.stg", "./Workspace/Typescript/Material.Tests/generated/sidenav"
+                        "./Workspace/Typescript/Autotest/Templates/sidenav.cs.stg", "./Workspace/Typescript/Material.Tests/generated/sidenav",
                     },
                     {
-                        "./Workspace/Typescript/Autotest/Templates/component.cs.stg", "./Workspace/Typescript/Material.Tests/generated/components"
+                        "./Workspace/Typescript/Autotest/Templates/component.cs.stg", "./Workspace/Typescript/Material.Tests/generated/components",
                     },
                 };
 
@@ -60,7 +60,7 @@ namespace Allors
             {
                 var model = new Model
                 {
-                    MetaPopulation = MetaPopulation.Instance
+                    MetaPopulation = MetaPopulation.Instance,
                 };
 
                 model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/Material/dist/autotest/meta.json"));

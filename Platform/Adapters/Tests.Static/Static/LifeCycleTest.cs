@@ -430,8 +430,7 @@ namespace Allors.Adapters
                 this.Session.Commit();
 
                 // Strategy
-                var databaseSession = this.Session as ISession;
-                if (databaseSession != null)
+                if (this.Session is ISession databaseSession)
                 {
                     var aStrategy = C1.Create(this.Session).Strategy;
 

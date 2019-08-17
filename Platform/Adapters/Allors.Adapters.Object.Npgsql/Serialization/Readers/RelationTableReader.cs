@@ -60,8 +60,7 @@ namespace Allors.Adapters.Object.Npgsql
                 var assciationId = pair.Key;
                 var role = pair.Value;
 
-                var roleIds = role as long[];
-                if (roleIds != null)
+                if (role is long[] roleIds)
                 {
                     foreach (var roleId in roleIds)
                     {

@@ -21,8 +21,8 @@ namespace Allors.Excel.Relations.CustomersOverdue
     using Microsoft.Office.Interop.Excel;
 
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
-    using Result = Workspace.Client.Result;
-    using Sheets = Sheets;
+    using Result = Allors.Workspace.Client.Result;
+    using Sheets = Allors.Excel.Sheets;
     using Task = System.Threading.Tasks.Task;
     using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
 
@@ -189,7 +189,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
 
                         }
                     }
-                }
+                },
             };
             this.result = await this.Load(pull);
             this.SalesInvoices = this.result.GetCollection<SalesInvoice>("SalesInvoices");

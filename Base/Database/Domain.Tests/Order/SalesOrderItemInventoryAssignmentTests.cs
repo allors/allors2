@@ -70,7 +70,7 @@ namespace Allors.Domain
                 .WithAssignedUnitPrice(5)
                 .Build();
 
-            salesOrder.AddSalesOrderItem(salesOrderItem);
+            salesOrder.AddSalesOrderItem(this.salesOrderItem);
 
             this.Session.Derive();
 
@@ -83,24 +83,24 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderItem_WhenAddedToOrder_ThenInventoryReservationCreated()
         {
-            Assert.True(salesOrderItem.SalesOrderItemState.InProcess);
-            Assert.Single(salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem);
-            var transactions = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.First.InventoryItemTransactions;
+            Assert.True(this.salesOrderItem.SalesOrderItemState.InProcess);
+            Assert.Single(this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem);
+            var transactions = this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.First.InventoryItemTransactions;
 
             Assert.Single(transactions);
             var transaction = transactions[0];
-            Assert.Equal(part, transaction.Part);
+            Assert.Equal(this.part, transaction.Part);
             Assert.Equal(3, transaction.Quantity);
-            Assert.Equal(reasons.Reservation, transaction.Reason);
+            Assert.Equal(this.reasons.Reservation, transaction.Reason);
 
-            Assert.Equal(3, salesOrderItem.QuantityReserved);
-            Assert.Equal(3, salesOrderItem.QuantityCommittedOut);
+            Assert.Equal(3, this.salesOrderItem.QuantityReserved);
+            Assert.Equal(3, this.salesOrderItem.QuantityCommittedOut);
 
-            Assert.Equal(3, ((NonSerialisedInventoryItem)part.InventoryItemsWherePart.First()).QuantityCommittedOut);
-            Assert.Equal(11, ((NonSerialisedInventoryItem)part.InventoryItemsWherePart.First()).QuantityOnHand);
+            Assert.Equal(3, ((NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First()).QuantityCommittedOut);
+            Assert.Equal(11, ((NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First()).QuantityOnHand);
 
-            Assert.Equal(3, part.QuantityCommittedOut);
-            Assert.Equal(11, part.QuantityOnHand);
+            Assert.Equal(3, this.part.QuantityCommittedOut);
+            Assert.Equal(11, this.part.QuantityOnHand);
         }
 
         [Fact]
@@ -125,11 +125,11 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.True(salesOrderItem.SalesOrderItemState.InProcess);
-            Assert.Equal(2, salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.Count);
+            Assert.True(this.salesOrderItem.SalesOrderItemState.InProcess);
+            Assert.Equal(2, this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.Count);
 
             var previousInventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.FirstOrDefault(v => v.Facility.Name.Equals("facility"));
-            var currentInventoryItem = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
+            var currentInventoryItem = this.salesOrderItem.ReservedFromNonSerialisedInventoryItem;
 
             Assert.Equal(11, previousInventoryItem.QuantityOnHand);
             Assert.Equal(0, previousInventoryItem.QuantityCommittedOut);
@@ -139,10 +139,10 @@ namespace Allors.Domain
             Assert.Equal(3, currentInventoryItem.QuantityCommittedOut);
             Assert.Equal(7, currentInventoryItem.AvailableToPromise);
 
-            Assert.Equal(3, salesOrderItem.QuantityReserved);
+            Assert.Equal(3, this.salesOrderItem.QuantityReserved);
 
-            Assert.Equal(3, part.QuantityCommittedOut);
-            Assert.Equal(21, part.QuantityOnHand);
+            Assert.Equal(3, this.part.QuantityCommittedOut);
+            Assert.Equal(21, this.part.QuantityOnHand);
         }
 
         [Fact]
@@ -152,13 +152,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.True(salesOrderItem.SalesOrderItemState.InProcess);
-            Assert.Single(salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem);
+            Assert.True(this.salesOrderItem.SalesOrderItemState.InProcess);
+            Assert.Single(this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem);
 
-            var transaction = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.First.InventoryItemTransactions.Last();
-            Assert.Equal(part, transaction.Part);
+            var transaction = this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.First.InventoryItemTransactions.Last();
+            Assert.Equal(this.part, transaction.Part);
             Assert.Equal(-2, transaction.Quantity);
-            Assert.Equal(reasons.Reservation, transaction.Reason);
+            Assert.Equal(this.reasons.Reservation, transaction.Reason);
 
             var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First();
 
@@ -166,10 +166,10 @@ namespace Allors.Domain
             Assert.Equal(1, inventoryItem.QuantityCommittedOut);
             Assert.Equal(10, inventoryItem.AvailableToPromise);
 
-            Assert.Equal(1, salesOrderItem.QuantityReserved);
+            Assert.Equal(1, this.salesOrderItem.QuantityReserved);
 
-            Assert.Equal(1, part.QuantityCommittedOut);
-            Assert.Equal(11, part.QuantityOnHand);
+            Assert.Equal(1, this.part.QuantityCommittedOut);
+            Assert.Equal(11, this.part.QuantityOnHand);
         }
     }
 }

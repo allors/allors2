@@ -28,7 +28,7 @@ namespace Server.Tests
 
             var syncRequest = new SyncRequest
             {
-                Objects = new[] { person.Id.ToString() }
+                Objects = new[] { person.Id.ToString() },
             };
             var response = await this.PostAsJsonAsync(uri, syncRequest);
             var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
@@ -54,7 +54,7 @@ namespace Server.Tests
 
             var syncRequest = new SyncRequest
             {
-                Objects = new[] { organisation.Id.ToString() }
+                Objects = new[] { organisation.Id.ToString() },
             };
             var response = await this.PostAsJsonAsync(uri, syncRequest);
 

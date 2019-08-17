@@ -35,6 +35,7 @@ namespace Allors.Repository.Generation
             {
                 return this.DirectoryInfo.FullName;
             }
+
             return relativeName;
         }
 

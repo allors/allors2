@@ -37,7 +37,7 @@ namespace Allors.Domain
                 records.Add(new Credentials.Record
                 {
                     UserName = user.UserName,
-                    PasswordHash = user.UserPasswordHash
+                    PasswordHash = user.UserPasswordHash,
                 });
             }
 

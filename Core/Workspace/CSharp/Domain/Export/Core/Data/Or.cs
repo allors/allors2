@@ -28,7 +28,7 @@ namespace Allors.Workspace.Data
             new Predicate()
             {
                 Kind = PredicateKind.Or,
-                Operands = this.Operands.Select(v => v.ToJson()).ToArray()
+                Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
             };
     }
 }

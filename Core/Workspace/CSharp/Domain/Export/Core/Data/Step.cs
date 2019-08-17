@@ -54,7 +54,7 @@ namespace Allors.Workspace.Data
             {
                 Include = this.Include?.ToJson(),
                 PropertyType = this.PropertyType.Id,
-                Next = this.Next.ToJson()
+                Next = this.Next.ToJson(),
             };
 
         public IObjectType GetObjectType()

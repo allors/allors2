@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
 
     public partial class SupplierOffering
     {

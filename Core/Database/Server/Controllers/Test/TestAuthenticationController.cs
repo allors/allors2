@@ -43,7 +43,7 @@ namespace Allors.Server
                     {
                         Authenticated = true,
                         UserId = user.Id,
-                        Token = token
+                        Token = token,
                     };
                     return this.Ok(response);
                 }

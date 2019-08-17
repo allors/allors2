@@ -8,7 +8,7 @@ namespace Allors.Adapters.Object.Npgsql
     using System;
     using System.Collections.Generic;
 
-    using Meta;
+    using Allors.Meta;
 
     internal sealed class Not : Predicate, ICompositePredicate
     {
@@ -62,15 +62,11 @@ namespace Allors.Adapters.Object.Npgsql
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            var betweenRoleA = firstValue as IRoleType;
-            var betweenRoleB = secondValue as IRoleType;
-            var betweenAssociationA = firstValue as IAssociationType;
-            var betweenAssociationB = secondValue as IAssociationType;
-            if (betweenRoleA != null && betweenRoleB != null)
+            if (firstValue is IRoleType betweenRoleA && secondValue is IRoleType betweenRoleB)
             {
                 this.filter = new RoleBetweenRole(this.extent, role, betweenRoleA, betweenRoleB);
             }
-            else if (betweenAssociationA != null && betweenAssociationB != null)
+            else if (firstValue is IAssociationType betweenAssociationA && secondValue is IAssociationType betweenAssociationB)
             {
                 throw new NotImplementedException();
             }
@@ -142,13 +138,11 @@ namespace Allors.Adapters.Object.Npgsql
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            var equalsRole = obj as IRoleType;
-            var equalsAssociation = obj as IAssociationType;
-            if (equalsRole != null)
+            if (obj is IRoleType equalsRole)
             {
                 this.filter = new RoleEqualsRole(this.extent, role, equalsRole);
             }
-            else if (equalsAssociation != null)
+            else if (obj is IAssociationType equalsAssociation)
             {
                 throw new NotImplementedException();
             }
@@ -188,13 +182,11 @@ namespace Allors.Adapters.Object.Npgsql
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            var greaterThanRole = value as IRoleType;
-            var greaterThanAssociation = value as IAssociationType;
-            if (greaterThanRole != null)
+            if (value is IRoleType greaterThanRole)
             {
                 this.filter = new RoleGreaterThanRole(this.extent, role, greaterThanRole);
             }
-            else if (greaterThanAssociation != null)
+            else if (value is IAssociationType greaterThanAssociation)
             {
                 throw new NotImplementedException();
             }
@@ -234,13 +226,11 @@ namespace Allors.Adapters.Object.Npgsql
         {
             this.CheckUnarity();
             this.extent.FlushCache();
-            var lessThanRole = value as IRoleType;
-            var lessThanAssociation = value as IAssociationType;
-            if (lessThanRole != null)
+            if (value is IRoleType lessThanRole)
             {
                 this.filter = new RoleLessThanRole(this.extent, role, lessThanRole);
             }
-            else if (lessThanAssociation != null)
+            else if (value is IAssociationType lessThanAssociation)
             {
                 throw new NotImplementedException();
             }

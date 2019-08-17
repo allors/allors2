@@ -10,7 +10,7 @@ namespace Allors.Adapters.Memory
 {
     using System;
 
-    using Adapters;
+    using Allors.Adapters;
 
     public class Many2ManyTest : Adapters.Many2ManyTest, IDisposable
     {

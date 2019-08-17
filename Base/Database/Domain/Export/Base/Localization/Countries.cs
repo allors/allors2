@@ -66,7 +66,7 @@ namespace Allors.Domain
                 { "SK", new IbanData(24, @"\d{20}") },
                 { "SM", new IbanData(27, @"[A-Z]\d{10}[a-zA-Z0-9]{12}") },
                 { "TN", new IbanData(24, @"\d{20}") },
-                { "TR", new IbanData(26, @"\d{5}[a-zA-Z0-9]{17}") }
+                { "TR", new IbanData(26, @"\d{5}[a-zA-Z0-9]{17}") },
             };
     }
 

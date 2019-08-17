@@ -60,8 +60,7 @@ namespace Allors.Domain
                     var associationType = relationType.AssociationType;
                     permissionByOperationByConcreteClassByOperandType.TryGetValue(associationType, out var permissionByOperationByConcreteClass);
 
-                    var composite = associationType.RelationType.RoleType.ObjectType as Composite;
-                    if (composite != null)
+                    if (associationType.RelationType.RoleType.ObjectType is Composite composite)
                     {
                         foreach (var concreteClass in composite.Classes)
                         {

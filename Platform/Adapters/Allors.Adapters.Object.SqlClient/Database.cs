@@ -13,7 +13,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Xml;
     using System.Xml.Serialization;
 
-    using Adapters.Object.SqlClient.Caching;
+    using Allors.Adapters.Object.SqlClient.Caching;
 
     using Allors;
     using Allors.Adapters.Schema;

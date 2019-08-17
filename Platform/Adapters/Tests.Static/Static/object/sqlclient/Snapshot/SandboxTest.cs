@@ -9,7 +9,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
 
-    using Adapters;
+    using Allors.Adapters;
 
     public class SandboxTest : Adapters.SandboxTest, IDisposable
     {

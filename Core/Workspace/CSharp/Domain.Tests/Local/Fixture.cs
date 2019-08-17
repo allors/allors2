@@ -98,7 +98,7 @@ namespace Tests.Local
                             new[] { "JustDoIt", "" }
                         }
                     }
-                }
+                },
         };
     }
 }

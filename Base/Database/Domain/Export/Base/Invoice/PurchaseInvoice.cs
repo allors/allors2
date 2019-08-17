@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Allors.Domain
 {
     using System;
-    using Meta;
+    using Allors.Meta;
     using Resources;
 
     public partial class PurchaseInvoice
@@ -97,8 +97,7 @@ namespace Allors.Domain
                 this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber(this.InvoiceDate.Year);
             }
 
-            var supplier = this.BilledFrom as Organisation;
-            if (supplier != null)
+            if (this.BilledFrom is Organisation supplier)
             {
                 if (!this.BilledTo.ActiveSuppliers.Contains(supplier))
                 {
@@ -201,7 +200,7 @@ namespace Allors.Domain
 
             this.SecurityTokens = new[]
             {
-                singleton.DefaultSecurityToken
+                singleton.DefaultSecurityToken,
             };
 
             if (this.ExistBilledTo)

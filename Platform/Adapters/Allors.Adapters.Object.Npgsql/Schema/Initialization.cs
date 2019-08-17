@@ -252,6 +252,7 @@ $@"CREATE TABLE {tableName}(
     {(relationType.RoleType.IsOne
           ? $"CONSTRAINT {primaryKeyName} PRIMARY KEY ({Mapping.ColumnNameForAssociation})\n"
           : $"CONSTRAINT {primaryKeyName} PRIMARY KEY ({Mapping.ColumnNameForAssociation}, {Mapping.ColumnNameForRole})\n")}
+
 )";
 
                             using (var command = new NpgsqlCommand(sql.ToString(), connection))

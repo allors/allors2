@@ -42,7 +42,7 @@ namespace Tests.Local
                                                 new[] { "1", "1001" },
                                                 new[] { "2", "1002" },
                                                 new[] { "3", "1004" }
-                                           }
+                                           },
             };
 
             var requireLoad = this.Workspace.Diff(required);
@@ -64,7 +64,7 @@ namespace Tests.Local
                                                 new[] { "1", "1001" },
                                                 new[] { "2", "1002" },
                                                 new[] { "3", "1004" }
-                                           }
+                                           },
             };
 
             var requireLoad = this.Workspace.Diff(required);

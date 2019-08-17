@@ -33,7 +33,7 @@ namespace Allors.Data
             new Protocol.Data.TreeNode
             {
                 RoleType = this.RoleType.Id,
-                Nodes = this.Nodes.Select(v => v.Save()).ToArray()
+                Nodes = this.Nodes.Select(v => v.Save()).ToArray(),
             };
 
         public void Resolve(IObject obj, HashSet<IObject> objects)

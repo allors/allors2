@@ -5,9 +5,9 @@
 
 namespace Allors.Adapters.Object.Npgsql
 {
-    using Adapters;
+    using Allors.Adapters;
 
-    using Meta;
+    using Allors.Meta;
 
     internal sealed class NotAssociationContainedInExtent : In
     {

@@ -13,7 +13,7 @@ namespace Allors.Adapters.Object.Npgsql
     using global::Npgsql;
     using System.Xml;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors.Meta;
 

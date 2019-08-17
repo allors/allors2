@@ -8,7 +8,7 @@ namespace Allors.Adapters.Object.Npgsql
     using System;
     using System.Collections.Generic;
 
-    using Meta;
+    using Allors.Meta;
 
     internal class ExtentOperation : SqlExtent
     {

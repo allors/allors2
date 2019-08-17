@@ -20,8 +20,7 @@ namespace Allors
                 if (concreteRoleType.IsRequired)
                 {
                     var relationType = concreteRoleType.RelationType;
-                    var unit = relationType.RoleType.ObjectType as IUnit;
-                    if (unit != null && !@this.Strategy.ExistRole(relationType))
+                    if (relationType.RoleType.ObjectType is IUnit unit && !@this.Strategy.ExistRole(relationType))
                     {
                         switch (unit.UnitTag)
                         {

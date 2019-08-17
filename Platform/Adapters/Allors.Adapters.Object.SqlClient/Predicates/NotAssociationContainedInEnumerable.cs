@@ -8,9 +8,9 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Collections.Generic;
     using System.Text;
 
-    using Adapters;
+    using Allors.Adapters;
 
-    using Meta;
+    using Allors.Meta;
 
     internal sealed class NotAssociationContainedInEnumerable : In
     {
@@ -24,6 +24,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.association = association;
             this.enumerable = enumerable;
         }
+
         internal override bool IsNotFilter => true;
 
         internal override bool BuildWhere(ExtentStatement statement, string alias)

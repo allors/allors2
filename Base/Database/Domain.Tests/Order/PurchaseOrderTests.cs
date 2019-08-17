@@ -10,7 +10,7 @@ using Resources;
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
     using Xunit;
 
     public class PurchaseOrderTests : DomainTest

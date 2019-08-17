@@ -11,7 +11,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Data.SqlClient;
     using System.Xml;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors.Meta;
 

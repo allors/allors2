@@ -28,18 +28,19 @@ namespace Allors.Data
                 Fetch = this.Fetch?.Save(),
                 Name = this.Name,
                 Skip = this.Skip,
-                Take = this.Take
+                Take = this.Take,
             };
 
         public override string ToString()
         {
             if (this.FetchRef != null)
             {
-                return $"Result: [FetchRef: {FetchRef}]";
+                return $"Result: [FetchRef: {this.FetchRef}]";
             }
+
             if (this.Name != null)
             {
-                return $"Result: [Name: {Name}]";
+                return $"Result: [Name: {this.Name}]";
             }
 
             return $"Result: [Fetch: {this.Fetch}]";

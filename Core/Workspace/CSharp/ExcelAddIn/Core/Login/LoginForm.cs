@@ -21,7 +21,7 @@ namespace BaseExcelAddIn.Base
     {
         public LoginForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this.button1.Enabled = false;
         }
@@ -31,6 +31,7 @@ namespace BaseExcelAddIn.Base
         public Database Database { get; set; }
 
         public bool IsLoggedIn { get; set; }
+
         private async void Button1_Click(object sender, EventArgs e)
         {
             this.HideError();
@@ -48,10 +49,10 @@ namespace BaseExcelAddIn.Base
             AsyncContext.Run(
                 async () =>
                 {
-                    IsLoggedIn = await this.Database.Login(this.Uri, this.textBoxUser.Text,this.textBoxPassword.Text);
+                    this.IsLoggedIn = await this.Database.Login(this.Uri, this.textBoxUser.Text,this.textBoxPassword.Text);
                 });
 
-            if (IsLoggedIn)
+            if (this.IsLoggedIn)
             {
                 this.UserName = this.textBoxUser.Text;
                 // Close the dialog

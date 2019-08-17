@@ -149,7 +149,7 @@ namespace Allors.Domain
                 .WithFromDate(this.Session.Now())
                 .Build();
 
-            Session.Derive();
+            this.Session.Derive();
 
             var partyFinancial = customer2.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship2.InternalOrganisation));
             partyFinancial.SubAccountNumber = 19;
@@ -164,7 +164,7 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
-            Session.Derive();
+            this.Session.Derive();
 
             var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
@@ -230,7 +230,7 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now().AddDays(-31)).WithCustomer(customer).Build();
 
-            Session.Derive();
+            this.Session.Derive();
 
             var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 

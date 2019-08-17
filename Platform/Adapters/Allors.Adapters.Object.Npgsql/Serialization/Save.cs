@@ -10,7 +10,7 @@ namespace Allors.Adapters.Object.Npgsql
     using System.Xml;
 
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal class Save
     {

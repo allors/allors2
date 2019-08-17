@@ -69,8 +69,8 @@ namespace Allors.Domain
                 .WithPreferredCurrency(euro)
                 .Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(shipToCustomer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(this.billToCustomer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(this.shipToCustomer).Build();
 
             this.ancestorProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("ancestor")

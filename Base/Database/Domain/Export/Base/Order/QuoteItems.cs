@@ -6,7 +6,7 @@
 namespace Allors.Domain
 {
     using System;
-    using Meta;
+    using Allors.Meta;
 
     public partial class QuoteItems
     {

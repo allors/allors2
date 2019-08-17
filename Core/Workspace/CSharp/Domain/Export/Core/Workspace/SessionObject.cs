@@ -333,7 +333,7 @@ namespace Allors.Workspace
                 {
                     I = this.Id.ToString(),
                     V = this.Version.ToString(),
-                    Roles = this.SaveRoles()
+                    Roles = this.SaveRoles(),
                 };
 
                 return data;
@@ -347,7 +347,7 @@ namespace Allors.Workspace
             var data = new PushRequestNewObject
             {
                 NI = this.NewId.ToString(),
-                T = this.ObjectType.Name
+                T = this.ObjectType.Name,
             };
 
             if (this.changedRoleByRoleType != null)

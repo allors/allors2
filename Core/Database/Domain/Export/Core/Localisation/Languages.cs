@@ -196,7 +196,7 @@ namespace Allors.Domain
                 { "xh", "Xhosa", "isiXhosa" },
                 { "yi", "Yiddish", "ייִדיש" },
                 { "yo", "Yoruba", "Yorùbá" },
-                { "za", "Zhuang, Chuang", "Saɯ cueŋƅ, Saw cuengh" }
+                { "za", "Zhuang, Chuang", "Saɯ cueŋƅ, Saw cuengh" },
             };
 
             var count = data.Length / 3;

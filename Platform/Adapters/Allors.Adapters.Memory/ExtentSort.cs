@@ -24,9 +24,8 @@ namespace Allors.Adapters.Memory
         public int Compare(Strategy thisStrategy, Strategy thatStrategy)
         {
             var thisValue = thisStrategy.GetInternalizedUnitRole(this.roleType) as IComparable;
-            var thatValue = thatStrategy.GetInternalizedUnitRole(this.roleType) as IComparable;
 
-            if (thisValue == null || thatValue == null)
+            if (thisValue == null || !(thatStrategy.GetInternalizedUnitRole(this.roleType) is IComparable thatValue))
             {
                 // Ascending
                 if (this.direction == SortDirection.Ascending)

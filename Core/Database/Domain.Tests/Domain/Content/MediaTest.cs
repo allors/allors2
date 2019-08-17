@@ -55,7 +55,7 @@ namespace Tests
         [Fact]
         public void BuilderWithPng()
         {
-            var resource = GetResource("Domain.Tests.Resources.logo.png");
+            var resource = this.GetResource("Domain.Tests.Resources.logo.png");
 
             byte[] content;
             using (var output = new MemoryStream())
@@ -76,7 +76,7 @@ namespace Tests
         [Fact]
         public void BuilderWithPdfWithJpegExtension()
         {
-            var resource = GetResource("Domain.Tests.Resources.PdfAs.jpg");
+            var resource = this.GetResource("Domain.Tests.Resources.PdfAs.jpg");
 
             byte[] content;
             using (var output = new MemoryStream())

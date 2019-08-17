@@ -1307,7 +1307,7 @@ namespace Allors.Adapters
                     Assert.Empty(from.C1I1one2manies);
 
                     // Very Big Array
-                    var bigArray = C1.Create(Session, Settings.LargeArraySize);
+                    var bigArray = C1.Create(this.Session, Settings.LargeArraySize);
                     from.C1I1one2manies = bigArray;
                     I1[] getBigArray = from.C1I1one2manies;
 
@@ -1622,7 +1622,7 @@ namespace Allors.Adapters
                     Assert.Empty(from.C1I2one2manies);
 
                     // Very Big Array
-                    var bigArray = C2.Create(Session, Settings.LargeArraySize);
+                    var bigArray = C2.Create(this.Session, Settings.LargeArraySize);
                     from.C1I2one2manies = bigArray;
                     I2[] getBigArray = from.C1I2one2manies;
 
@@ -1936,7 +1936,7 @@ namespace Allors.Adapters
                     Assert.Empty(from.C3C4one2manies);
 
                     // Very Big Array
-                    var bigArray = C4.Create(Session, Settings.LargeArraySize);
+                    var bigArray = C4.Create(this.Session, Settings.LargeArraySize);
                     from.C3C4one2manies = bigArray;
                     C4[] getBigArray = from.C3C4one2manies;
 
@@ -2826,7 +2826,7 @@ namespace Allors.Adapters
                     Assert.Empty(from.I1I1one2manies);
 
                     // Very Big Array
-                    var bigArray = C1.Create(Session, Settings.LargeArraySize);
+                    var bigArray = C1.Create(this.Session, Settings.LargeArraySize);
                     from.I1I1one2manies = bigArray;
                     I1[] getBigArray = from.I1I1one2manies;
 
@@ -3152,7 +3152,7 @@ namespace Allors.Adapters
                     Assert.Empty(from.I1I2one2manies);
 
                     // Very Big Array
-                    var bigArray = C2.Create(Session, Settings.LargeArraySize);
+                    var bigArray = C2.Create(this.Session, Settings.LargeArraySize);
                     from.I1I2one2manies = bigArray;
                     I2[] getBigArray = from.I1I2one2manies;
 

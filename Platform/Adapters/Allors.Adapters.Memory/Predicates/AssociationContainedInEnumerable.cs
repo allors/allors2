@@ -8,7 +8,7 @@ namespace Allors.Adapters.Memory
     using System.Collections.Generic;
 
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class AssociationContainedInEnumerable : Predicate
     {

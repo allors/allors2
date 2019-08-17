@@ -11,10 +11,10 @@ namespace Allors.Workspace.Client
 
     using Allors.Workspace.Data;
 
-    using Protocol.Remote.Invoke;
-    using Protocol.Remote.Pull;
-    using Protocol.Remote.Push;
-    using Protocol.Remote.Sync;
+    using Allors.Protocol.Remote.Invoke;
+    using Allors.Protocol.Remote.Pull;
+    using Allors.Protocol.Remote.Push;
+    using Allors.Protocol.Remote.Sync;
 
     public class Context
     {
@@ -75,7 +75,7 @@ namespace Allors.Workspace.Client
 
                 var requireLoadIds = new SyncRequest
                 {
-                    Objects = objects
+                    Objects = objects,
                 };
 
                 var loadResponse = await this.database.Sync(requireLoadIds);

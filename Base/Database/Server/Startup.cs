@@ -102,7 +102,7 @@ namespace Allors.Server
                     {
                         ValidIssuer = this.Configuration["Tokens:Issuer"],
                         ValidAudience = this.Configuration["Tokens:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"])),
                     };
                 });
 
@@ -154,7 +154,7 @@ namespace Allors.Server
                 {
                     ObjectFactory = objectFactory,
                     ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
-                    CommandTimeout = 600
+                    CommandTimeout = 600,
                 });
 
             app.UseAllors(database);

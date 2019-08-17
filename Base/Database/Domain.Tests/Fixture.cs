@@ -7,8 +7,8 @@ namespace Allors
 {
     using System;
     using System.Globalization;
-    using Domain;
-    using Meta;
+    using Allors.Domain;
+    using Allors.Meta;
 
     public class Fixture
     {

@@ -34,6 +34,7 @@ namespace Allors.Repository.Generation
             {
                 return this.fileInfo.FullName;
             }
+
             return relativeName;
         }
     }

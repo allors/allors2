@@ -13,7 +13,7 @@ namespace Autotest.Html
         public Attribute(JToken json, Template template, INode parent)
         {
             this.Json = json;
-            Template = template;
+            this.Template = template;
             this.Parent = parent;
         }
 

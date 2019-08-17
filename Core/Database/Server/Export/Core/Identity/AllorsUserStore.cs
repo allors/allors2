@@ -170,7 +170,7 @@ namespace Identity
                         UserName = user.UserName,
                         PasswordHash = user.UserPasswordHash,
                         Email = user.UserEmail,
-                        EmailConfirmed = user.UserEmailConfirmed ?? false
+                        EmailConfirmed = user.UserEmailConfirmed ?? false,
                     };
 
                     return (TUser)identityUser;
@@ -195,7 +195,7 @@ namespace Identity
                         UserName = user.UserName,
                         PasswordHash = user.UserPasswordHash,
                         Email = user.UserEmail,
-                        EmailConfirmed = user.UserEmailConfirmed ?? false
+                        EmailConfirmed = user.UserEmailConfirmed ?? false,
                     };
 
                     return (TUser)identityUser;

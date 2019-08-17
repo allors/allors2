@@ -15,18 +15,15 @@ namespace Allors.Domain
 
             @this.SecurityTokens = new[]
             {
-                singleton.DefaultSecurityToken
+                singleton.DefaultSecurityToken,
             };
 
-            var from = @this.ShipFromParty as InternalOrganisation;
-            var to = @this.ShipToParty as InternalOrganisation;
-
-            if (@this.ExistShipFromParty && from != null)
+            if (@this.ExistShipFromParty && @this.ShipFromParty is InternalOrganisation from)
             {
                 @this.AddSecurityToken(from.LocalAdministratorSecurityToken);
             }
 
-            if (@this.ExistShipToParty && to != null)
+            if (@this.ExistShipToParty && @this.ShipToParty is InternalOrganisation to)
             {
                 @this.AddSecurityToken(to.LocalAdministratorSecurityToken);
             }

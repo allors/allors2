@@ -41,7 +41,7 @@ namespace Allors.Adapters.Object.Npgsql
                                              "TEXTSIZE", "THEN", "TO", "TOP", "TRAN", "TRANSACTION", "TRIGGER", "TRUNCATE",
                                              "TSEQUAL", "UNION", "UNIQUE", "UNPIVOT", "UPDATE", "UPDATETEXT", "USE",
                                              "USER", "VALUES", "VARYING", "VIEW", "WAITFOR", "WHEN", "WHERE", "WHILE",
-                                             "WITH", "WRITETEXT"
+                                             "WITH", "WRITETEXT",
                                          };
 
         internal static readonly string[] Future =
@@ -94,7 +94,7 @@ namespace Allors.Adapters.Object.Npgsql
                                                      "XMLCAST", "XMLCOMMENT", "XMLCONCAT", "XMLDOCUMENT", "XMLELEMENT",
                                                      "XMLEXISTS", "XMLFOREST", "XMLITERATE", "XMLNAMESPACES", "XMLPARSE",
                                                      "XMLPI", "XMLQUERY", "XMLSERIALIZE", "XMLTABLE", "XMLTEXT",
-                                                     "XMLVALIDATE", "YEAR", "ZONE"
+                                                     "XMLVALIDATE", "YEAR", "ZONE",
                                                  };
 
         static ReservedWords()

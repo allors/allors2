@@ -18,6 +18,6 @@ namespace Allors.Workspace
         /// <summary>
         /// Sort in descending order (large to small)
         /// </summary>
-        Descending
+        Descending,
     }
 }

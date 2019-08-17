@@ -23,7 +23,7 @@ namespace Tests
         {
             var filter = new Filter(M.Person.ObjectType)
             {
-                Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" }
+                Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" },
             };
 
             var arguments = new Dictionary<string, object> { { "firstName", "John" } };
@@ -40,7 +40,7 @@ namespace Tests
         {
             var filter = new Filter(M.Person.ObjectType)
             {
-                Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" }
+                Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" },
             };
 
             var queryExtent = filter.Build(this.Session);
@@ -71,13 +71,13 @@ namespace Tests
                                             Parameter = "lastName"
                                         }
                                 }
-                }
+                },
             };
 
             var arguments = new Dictionary<string, object>
                                 {
                                     { "firstName", "John" },
-                                    { "lastName", "Doe" }
+                                    { "lastName", "Doe" },
                                 };
             var queryExtent = filter.Build(this.Session, arguments);
 
@@ -110,7 +110,7 @@ namespace Tests
                                     Parameter = "lastName"
                                 }
                         }
-                }
+                },
             };
 
             {
@@ -151,7 +151,7 @@ namespace Tests
                             Parameter = "gender"
                         }
                     }
-                }
+                },
             };
 
             var male = new Genders(this.Session).Male;
@@ -183,7 +183,7 @@ namespace Tests
                             Parameter = "gender"
                         }
                     }
-                }
+                },
             };
 
             var arguments = new Dictionary<string, object>();
@@ -216,7 +216,7 @@ namespace Tests
                             }
                         }
                     }
-                }
+                },
             };
 
             var arguments = new Dictionary<string, object>();
@@ -249,7 +249,7 @@ namespace Tests
                                                                                              }
                                                                             }
                                                                     }
-                }
+                },
             };
 
             var arguments = new Dictionary<string, object>();

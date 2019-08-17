@@ -8,7 +8,7 @@ namespace Allors.Adapters.Memory
     using System;
     using System.Collections.Generic;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -27,7 +27,7 @@ namespace Allors.Adapters.Memory
                 var markers = new List<Action>
                 {
                     () => { },
-                    () => this.Session.Commit()
+                    () => this.Session.Commit(),
                 };
 
                 if (Settings.ExtraMarkers)

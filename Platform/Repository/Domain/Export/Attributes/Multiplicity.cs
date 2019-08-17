@@ -27,6 +27,6 @@ namespace Allors.Repository.Attributes
         /// <summary>
         /// Many to Many.
         /// </summary>
-        ManyToMany = 3
+        ManyToMany = 3,
     }
 }

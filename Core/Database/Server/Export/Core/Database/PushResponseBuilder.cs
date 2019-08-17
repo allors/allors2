@@ -138,7 +138,7 @@ namespace Allors.Server
                     pushResponse.NewObjects = objectByNewId.Select(dictionaryEntry => new PushResponseNewObject
                     {
                         I = dictionaryEntry.Value.Id.ToString(),
-                        NI = dictionaryEntry.Key
+                        NI = dictionaryEntry.Key,
                     }).ToArray();
                 }
 

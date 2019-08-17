@@ -12,9 +12,9 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Collections.Generic;
     using System.Linq;
 
-    using Adapters;
+    using Allors.Adapters;
 
-    using Meta;
+    using Allors.Meta;
 
     public class Strategy : IStrategy
     {
@@ -382,6 +382,7 @@ namespace Allors.Adapters.Object.SqlClient
                 {
                     return i;
                 }
+
                 ++i;
             }
 
@@ -397,6 +398,7 @@ namespace Allors.Adapters.Object.SqlClient
                 {
                     return this.Session.State.GetOrCreateReferenceForExistingObject(oid, this.Session).Strategy.GetObject();
                 }
+
                 ++i;
             }
 

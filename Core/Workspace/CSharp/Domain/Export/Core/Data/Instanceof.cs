@@ -27,7 +27,7 @@ namespace Allors.Workspace.Data
             {
                 Kind = PredicateKind.Instanceof,
                 ObjectType = this.ObjectType?.Id,
-                PropertyType = this.PropertyType?.Id
+                PropertyType = this.PropertyType?.Id,
             };
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);

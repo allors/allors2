@@ -86,7 +86,7 @@ namespace Allors.Services
 
             var barcodeWriter = new ZXing.ImageSharp.BarcodeWriter<Rgba32>
             {
-                Format = barcodeFormat
+                Format = barcodeFormat,
             };
 
             if (width.HasValue || height.HasValue || margin.HasValue)

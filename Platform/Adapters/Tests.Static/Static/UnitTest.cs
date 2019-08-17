@@ -9,7 +9,7 @@ namespace Allors.Adapters
     using System.Collections;
     using System.Text;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors;
     using Allors.Domain;

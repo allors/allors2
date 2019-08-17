@@ -7,7 +7,7 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors;
     using Allors.Domain;

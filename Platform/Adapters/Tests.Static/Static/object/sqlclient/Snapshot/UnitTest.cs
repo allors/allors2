@@ -7,7 +7,7 @@ using Allors.Adapters;
 
 namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
-    using Adapters;
+    using Allors.Adapters;
 
     using System;
 

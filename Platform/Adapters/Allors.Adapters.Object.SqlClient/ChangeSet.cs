@@ -10,7 +10,7 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System.Collections.Generic;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors.Meta;
 

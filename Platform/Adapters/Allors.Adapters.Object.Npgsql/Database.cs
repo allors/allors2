@@ -13,7 +13,7 @@ namespace Allors.Adapters.Object.Npgsql
     using System.Xml;
     using System.Xml.Serialization;
 
-    using Adapters.Object.Npgsql.Caching;
+    using Allors.Adapters.Object.Npgsql.Caching;
 
     using Allors;
     using Allors.Adapters.Schema;

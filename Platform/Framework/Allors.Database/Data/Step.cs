@@ -53,7 +53,7 @@ namespace Allors.Data
             {
                 Include = this.Include?.Save(),
                 PropertyType = this.PropertyType.Id,
-                Next = this.Next.Save()
+                Next = this.Next.Save(),
             };
 
         public IObjectType GetObjectType()

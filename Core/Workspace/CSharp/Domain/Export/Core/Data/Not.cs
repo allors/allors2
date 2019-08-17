@@ -27,7 +27,7 @@ namespace Allors.Workspace.Data
             new Predicate()
             {
                 Kind = PredicateKind.Not,
-                Operand = this.Operand?.ToJson()
+                Operand = this.Operand?.ToJson(),
             };
     }
 }

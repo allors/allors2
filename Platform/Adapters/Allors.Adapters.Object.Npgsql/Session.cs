@@ -132,7 +132,8 @@ namespace Allors.Adapters.Object.Npgsql
             if (long.TryParse(objectId, out var id))
             {
                 return this.Instantiate(id);
-            };
+            }
+;
 
             return null;
         }

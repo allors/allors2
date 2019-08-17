@@ -85,7 +85,7 @@ namespace Allors.Data
             new Protocol.Data.Tree
             {
                 Composite = this.Composite.Id,
-                Nodes = this.Nodes.Select(v => v.Save()).ToArray()
+                Nodes = this.Nodes.Select(v => v.Save()).ToArray(),
             };
 
         public string DebugView

@@ -42,7 +42,7 @@ namespace Allors
             var rules = new[] { prefetchRule };
             return new PrefetchPolicy(rules)
             {
-                AllowCompilation = false
+                AllowCompilation = false,
             };
         }
 
@@ -51,7 +51,7 @@ namespace Allors
             var rules = propertyTypes.Select(x => new PrefetchRule(x, null)).ToArray();
             return new PrefetchPolicy(rules)
             {
-                AllowCompilation = false
+                AllowCompilation = false,
             };
         }
 

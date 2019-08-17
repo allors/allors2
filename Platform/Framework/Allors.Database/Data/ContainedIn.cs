@@ -68,7 +68,7 @@ namespace Allors.Data
                 PropertyType = this.PropertyType?.Id,
                 Extent = this.Extent?.Save(),
                 Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
-                Parameter = this.Parameter
+                Parameter = this.Parameter,
             };
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)

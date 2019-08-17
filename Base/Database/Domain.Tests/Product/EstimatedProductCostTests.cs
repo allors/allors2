@@ -9,7 +9,7 @@
 namespace Allors.Domain
 {
     using System;
-    using Meta;
+    using Allors.Meta;
     using Xunit;
 
     public class EstimatedProductCostTests : DomainTest

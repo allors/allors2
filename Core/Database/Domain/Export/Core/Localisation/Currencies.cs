@@ -186,7 +186,7 @@ namespace Allors.Domain
                 { "ZAR", "South African Rand" },
                 { "ZMK", "Zambian Kwacha (pre-2013)" },
                 { "ZMW", "Zambian Kwacha" },
-                { "ZWL", "Zimbabwean Dollar" }
+                { "ZWL", "Zimbabwean Dollar" },
             };
 
             var count = data.Length / 2;

@@ -10,7 +10,7 @@ namespace Allors.Adapters.Memory
     using System.Linq;
     using System.Xml;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors;
     using Allors.Meta;
@@ -115,8 +115,7 @@ namespace Allors.Adapters.Memory
             {
                 if (relationType.RoleType.IsMany)
                 {
-                    var roles = value as Allors.Extent;
-                    if (roles == null)
+                    if (!(value is Allors.Extent roles))
                     {
                         var roleList = new List<IObject>((IEnumerable<IObject>)value);
                         roles = roleList.ToArray();

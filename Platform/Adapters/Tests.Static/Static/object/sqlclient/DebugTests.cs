@@ -10,7 +10,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Reflection;
     using System.Text;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors;
     using Allors.Adapters.Object.SqlClient.Caching;

@@ -20,6 +20,6 @@ namespace Allors.Adapters.Memory
         /// <summary>
         /// unknown  boolean value
         /// </summary>
-        Unknown
+        Unknown,
     }
 }

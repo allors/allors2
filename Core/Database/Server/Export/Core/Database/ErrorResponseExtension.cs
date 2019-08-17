@@ -20,7 +20,7 @@ namespace Allors.Server
                 var derivationErrorResponse = new DerivationErrorResponse
                 {
                     M = derivationError.Message,
-                    R = derivationError.Relations.Select(x => new[] { x.Association.Id.ToString(), x.RoleType.Name }).ToArray()
+                    R = derivationError.Relations.Select(x => new[] { x.Association.Id.ToString(), x.RoleType.Name }).ToArray(),
                 };
 
                 @this.DerivationErrors = @this.DerivationErrors != null ?

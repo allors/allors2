@@ -12,7 +12,7 @@ namespace Allors.Adapters
 
     using Xunit;
 
-    using IDatabase = IDatabase;
+    using IDatabase = Allors.IDatabase;
 
     public enum ColumnTypes
     {

@@ -10,7 +10,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Collections.Generic;
     using System.Linq;
 
-    using Meta;
+    using Allors.Meta;
 
     internal abstract class SqlExtent : Extent
     {

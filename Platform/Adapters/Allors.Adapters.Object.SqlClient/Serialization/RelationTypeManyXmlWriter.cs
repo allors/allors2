@@ -11,9 +11,9 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Text;
     using System.Xml;
 
-    using Adapters;
+    using Allors.Adapters;
 
-    using Meta;
+    using Allors.Meta;
 
     /// <summary>
     /// Writes all relations from a <see cref="IRelationType"/> with a <see cref="IRoleType"/> with multiplicity of many

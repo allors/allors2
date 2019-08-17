@@ -7,7 +7,7 @@ namespace Allors.Domain
 {
     using System.Linq;
 
-    using Meta;
+    using Allors.Meta;
 
     public partial class SerialisedItemCharacteristic
     {

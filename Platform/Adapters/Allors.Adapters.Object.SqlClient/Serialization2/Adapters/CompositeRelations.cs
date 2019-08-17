@@ -60,7 +60,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                             if (associationClass == null || !allowedAssociationClasses.Contains(associationClass))
                             {
-                                this.cantLoadCompositeRole(this.reader.ReadSubtree(), relationType.Id);
+                                this.cantLoadCompositeRole(this.reader.ReadSubtree(), this.relationType.Id);
                             }
                             else
                             {

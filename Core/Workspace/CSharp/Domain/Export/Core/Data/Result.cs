@@ -28,7 +28,7 @@ namespace Allors.Workspace.Data
                 Fetch = this.Fetch?.ToJson(),
                 Name = this.Name,
                 Skip = this.Skip,
-                Take = this.Take
+                Take = this.Take,
             };
     }
 }

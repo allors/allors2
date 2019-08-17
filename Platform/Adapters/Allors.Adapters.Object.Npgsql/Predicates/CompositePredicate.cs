@@ -9,7 +9,7 @@ namespace Allors.Adapters.Object.Npgsql
     using System.Collections.Generic;
     using System.Linq;
 
-    using Meta;
+    using Allors.Meta;
 
     internal abstract class CompositePredicate : Predicate, ICompositePredicate
     {
@@ -81,15 +81,11 @@ namespace Allors.Adapters.Object.Npgsql
         public ICompositePredicate AddBetween(IRoleType role, object firstValue, object secondValue)
         {
             this.Extent.FlushCache();
-            var betweenRoleA = firstValue as IRoleType;
-            var betweenRoleB = secondValue as IRoleType;
-            var betweenAssociationA = firstValue as IAssociationType;
-            var betweenAssociationB = secondValue as IAssociationType;
-            if (betweenRoleA != null && betweenRoleB != null)
+            if (firstValue is IRoleType betweenRoleA && secondValue is IRoleType betweenRoleB)
             {
                 this.Filters.Add(new RoleBetweenRole(this.Extent, role, betweenRoleA, betweenRoleB));
             }
-            else if (betweenAssociationA != null && betweenAssociationB != null)
+            else if (firstValue is IAssociationType betweenAssociationA && secondValue is IAssociationType betweenAssociationB)
             {
                 throw new NotImplementedException();
             }
@@ -153,13 +149,11 @@ namespace Allors.Adapters.Object.Npgsql
         public ICompositePredicate AddEquals(IRoleType role, object obj)
         {
             this.Extent.FlushCache();
-            var equalsRole = obj as IRoleType;
-            var equalsAssociation = obj as IAssociationType;
-            if (equalsRole != null)
+            if (obj is IRoleType equalsRole)
             {
                 this.Filters.Add(new RoleEqualsRole(this.Extent, role, equalsRole));
             }
-            else if (equalsAssociation != null)
+            else if (obj is IAssociationType equalsAssociation)
             {
                 throw new NotImplementedException();
             }
@@ -195,13 +189,11 @@ namespace Allors.Adapters.Object.Npgsql
         public ICompositePredicate AddGreaterThan(IRoleType role, object value)
         {
             this.Extent.FlushCache();
-            var greaterThanRole = value as IRoleType;
-            var greaterThanAssociation = value as IAssociationType;
-            if (greaterThanRole != null)
+            if (value is IRoleType greaterThanRole)
             {
                 this.Filters.Add(new RoleGreaterThanRole(this.Extent, role, greaterThanRole));
             }
-            else if (greaterThanAssociation != null)
+            else if (value is IAssociationType greaterThanAssociation)
             {
                 throw new NotImplementedException();
             }
@@ -237,13 +229,11 @@ namespace Allors.Adapters.Object.Npgsql
         public ICompositePredicate AddLessThan(IRoleType role, object value)
         {
             this.Extent.FlushCache();
-            var lessThanRole = value as IRoleType;
-            var lessThanAssociation = value as IAssociationType;
-            if (lessThanRole != null)
+            if (value is IRoleType lessThanRole)
             {
                 this.Filters.Add(new RoleLessThanRole(this.Extent, role, lessThanRole));
             }
-            else if (lessThanAssociation != null)
+            else if (value is IAssociationType lessThanAssociation)
             {
                 throw new NotImplementedException();
             }

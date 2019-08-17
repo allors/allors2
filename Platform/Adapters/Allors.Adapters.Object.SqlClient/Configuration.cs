@@ -7,7 +7,7 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System.Data;
 
-    using Caching;
+    using Allors.Adapters.Object.SqlClient.Caching;
 
     public class Configuration : Adapters.Configuration
     {

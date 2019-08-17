@@ -27,7 +27,7 @@ namespace Allors.Data
             {
                 Kind = PredicateKind.Instanceof,
                 ObjectType = this.ObjectType?.Id,
-                PropertyType = this.PropertyType?.Id
+                PropertyType = this.PropertyType?.Id,
             };
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
@@ -46,7 +46,7 @@ namespace Allors.Data
                 }
                 else
                 {
-                    var associationType = (IAssociationType)PropertyType;
+                    var associationType = (IAssociationType)this.PropertyType;
                     compositePredicate.AddInstanceof(associationType, composite);
                 }
             }

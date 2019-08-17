@@ -14,8 +14,7 @@ namespace Allors.Domain.Print.WorkTaskModel
                 this.Number = customer.Id.ToString();
                 this.Name = customer.PartyName;
 
-                var postalBillingAddress = customer.BillingAddress as PostalAddress;
-                if (postalBillingAddress != null)
+                if (customer.BillingAddress is PostalAddress postalBillingAddress)
                 {
                     this.BillingAddress = postalBillingAddress.Address1;
                     if (!string.IsNullOrWhiteSpace(postalBillingAddress.Address2))

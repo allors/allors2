@@ -20,7 +20,7 @@ namespace Allors.Domain
             }
 
             var unitSellingPrice = this.CalculateSellingPrice().Result.HasValue ? this.CalculateSellingPrice().Result.Value : 0M;
-            this.UnitSellingPrice = AssignedUnitSellingPrice ?? unitSellingPrice;
+            this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
 
             if (this.ExistAssignment)
             {

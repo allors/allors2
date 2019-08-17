@@ -17,6 +17,6 @@ namespace Allors.Data
 
         public bool Descending { get; set; }
 
-        public void Build(Extent extent) => extent.AddSort(RoleType, this.Descending ? SortDirection.Descending : SortDirection.Ascending);
+        public void Build(Extent extent) => extent.AddSort(this.RoleType, this.Descending ? SortDirection.Descending : SortDirection.Ascending);
     }
 }

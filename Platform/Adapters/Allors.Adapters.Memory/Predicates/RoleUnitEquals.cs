@@ -7,7 +7,7 @@ namespace Allors.Adapters.Memory
 {
     using System;
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class RoleUnitEquals : Predicate
     {
@@ -24,8 +24,7 @@ namespace Allors.Adapters.Memory
             this.roleType = roleType;
             if (equals is Enum)
             {
-                var unitType = roleType.ObjectType as IUnit;
-                if (unitType != null && unitType.IsInteger)
+                if (roleType.ObjectType is IUnit unitType && unitType.IsInteger)
                 {
                     this.equals = (int)equals;
                 }

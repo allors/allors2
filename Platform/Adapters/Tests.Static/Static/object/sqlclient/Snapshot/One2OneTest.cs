@@ -9,7 +9,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
 
-    using Adapters;
+    using Allors.Adapters;
 
     public class One2OneTest : Adapters.One2OneTest, IDisposable
     {

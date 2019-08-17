@@ -31,6 +31,6 @@ namespace Allors.Protocol.Data
 
         LessThan = 11,
 
-        Like = 12
+        Like = 12,
     }
 }

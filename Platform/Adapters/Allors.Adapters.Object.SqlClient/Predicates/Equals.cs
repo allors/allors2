@@ -5,7 +5,7 @@
 
 namespace Allors.Adapters.Object.SqlClient
 {
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class Equals : Predicate
     {

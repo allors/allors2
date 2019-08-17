@@ -28,7 +28,7 @@ namespace Allors.Domain
                 Predicate = new Equals(this.Meta.Name)
                 {
                     Parameter = "name"
-                }
+                },
             };
 
             var fetchPeople = new PreparedFetchBuilder(this.Session).WithUniqueId(FetchPeople).WithDescription("Fetch People").Build();
@@ -36,7 +36,7 @@ namespace Allors.Domain
             {
                 Include = new Tree(M.Organisation.Class)
                     .Add(M.Organisation.Owner)
-                    .Add(M.Organisation.Employees)
+                    .Add(M.Organisation.Employees),
             };
         }
     }

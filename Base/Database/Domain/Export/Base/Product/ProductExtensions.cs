@@ -43,8 +43,7 @@ namespace Allors.Domain
                     {
                         product.AddVirtualProductPriceComponent(priceComponent);
 
-                        var basePrice = priceComponent as BasePrice;
-                        if (basePrice != null && !priceComponent.ExistProductFeature)
+                        if (priceComponent is BasePrice basePrice && !priceComponent.ExistProductFeature)
                         {
                             product.AddToBasePrice(basePrice);
                         }

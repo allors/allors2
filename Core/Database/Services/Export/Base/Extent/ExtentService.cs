@@ -32,7 +32,7 @@ namespace Allors.Services
                 {
                     var filter = new Filter(M.PreparedExtent.Class)
                     {
-                        Predicate = new Equals(M.PreparedExtent.UniqueId.RoleType) { Value = id }
+                        Predicate = new Equals(M.PreparedExtent.UniqueId.RoleType) { Value = id },
                     };
 
                     var preparedExtent = (PreparedExtent)filter.Build(session).First;

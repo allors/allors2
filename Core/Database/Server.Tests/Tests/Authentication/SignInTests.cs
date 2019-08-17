@@ -34,7 +34,7 @@ namespace Server.Tests
             var args = new AuthenticationTokenRequest
             {
                 UserName = "Jane",
-                Password = "p@ssw0rd"
+                Password = "p@ssw0rd",
             };
 
             var uri = new Uri("Authentication/Token", UriKind.Relative);
@@ -50,7 +50,7 @@ namespace Server.Tests
             var args = new AuthenticationTokenRequest
             {
                 UserName = "Jeff",
-                Password = "p@ssw0rd"
+                Password = "p@ssw0rd",
             };
 
             var uri = new Uri("Authentication/Token", UriKind.Relative);
@@ -66,7 +66,7 @@ namespace Server.Tests
             var args = new AuthenticationTokenRequest
             {
                 UserName = "John",
-                Password = ""
+                Password = "",
             };
 
             var uri = new Uri("Authentication/Token", UriKind.Relative);
@@ -81,7 +81,7 @@ namespace Server.Tests
         {
             var args = new AuthenticationTokenRequest
             {
-                UserName = "John"
+                UserName = "John",
             };
 
             var uri = new Uri("Authentication/Token", UriKind.Relative);

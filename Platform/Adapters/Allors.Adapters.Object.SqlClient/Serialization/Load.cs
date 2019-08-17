@@ -10,7 +10,7 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Data.SqlClient;
     using System.Linq;
 
-    using Adapters;
+    using Allors.Adapters;
 
     using Allors.Adapters.Schema;
     using Allors.Meta;
@@ -117,8 +117,7 @@ namespace Allors.Adapters.Object.SqlClient
 
             foreach (var xmlRelationType in this.xml.Population.Relations.RelationTypes)
             {
-                var xmlRelationTypeUnit = xmlRelationType as RelationTypeUnit;
-                if (xmlRelationTypeUnit != null)
+                if (xmlRelationType is RelationTypeUnit xmlRelationTypeUnit)
                 {
                     var relationTypeId = xmlRelationTypeUnit.Id;
                     var relationType = (IRelationType)this.database.MetaPopulation.Find(relationTypeId);

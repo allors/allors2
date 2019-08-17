@@ -24,11 +24,11 @@ namespace Allors.Excel.PurchaseInvoices
 
     using Microsoft.Office.Interop.Excel;
 
-    using ListObject = ListObject;
-    using Result = Workspace.Client.Result;
-    using Sheets = Sheets;
+    using ListObject = Microsoft.Office.Tools.Excel.ListObject;
+    using Result = Allors.Workspace.Client.Result;
+    using Sheets = Allors.Excel.Sheets;
     using Task = System.Threading.Tasks.Task;
-    using Worksheet = Worksheet;
+    using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
 
     public class PurchaseInvoicesSheet : Sheet
     {
@@ -145,7 +145,7 @@ namespace Allors.Excel.PurchaseInvoices
                     row.SetDueDateNull();
                 }
 
-                var payment = GetPayment(purchaseInvoice);
+                var payment = this.GetPayment(purchaseInvoice);
                 if (payment != null)
                 {
                     row.PaymentDate = payment.EffectiveDate;
@@ -275,7 +275,7 @@ namespace Allors.Excel.PurchaseInvoices
                                 .Add(M.PurchaseInvoice.PurchaseInvoiceState)
                         }
                     } ,
-                }
+                },
             };
 
             var result = await this.Load(pull);
@@ -295,7 +295,7 @@ namespace Allors.Excel.PurchaseInvoices
                                 .Add(M.Payment.PaymentApplications, this.PaymentApplicationTree)
                         }
                     } ,
-                }
+                },
             };
 
             result = await this.Load(pull);
@@ -306,6 +306,7 @@ namespace Allors.Excel.PurchaseInvoices
         => new Tree(M.PaymentApplication.Class)
             .Add(M.PaymentApplication.Invoice)
         ;
+
         public Payment[] Payments { get; set; }
 
         public Workbook Workbook { get; set; }

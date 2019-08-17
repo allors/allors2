@@ -9,7 +9,7 @@ using Resources;
 
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
 
     public partial class OrderShipment
     {
@@ -27,9 +27,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var salesOrderItem = this.OrderItem as SalesOrderItem;
 
-            if (this.ShipmentItem.ShipmentWhereShipmentItem is CustomerShipment customerShipment && salesOrderItem != null)
+            if (this.ShipmentItem.ShipmentWhereShipmentItem is CustomerShipment customerShipment && this.OrderItem is SalesOrderItem salesOrderItem)
             {
                 var quantityPendingShipment = this.OrderItem?.OrderShipmentsWhereOrderItem?.Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
 

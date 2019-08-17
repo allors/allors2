@@ -7,7 +7,7 @@ namespace Allors.Adapters.Memory
 {
     using System;
 
-    using Adapters;
+    using Allors.Adapters;
 
     public class SandboxTest : Adapters.SandboxTest, IDisposable
     {

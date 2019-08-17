@@ -6,7 +6,7 @@
 namespace Allors.Adapters.Object.SqlClient
 {
     using Allors.Meta;
-    using Adapters;
+    using Allors.Adapters;
 
     internal sealed class AssociationContains : Predicate
     {

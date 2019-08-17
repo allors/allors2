@@ -216,8 +216,7 @@ namespace Allors.Adapters
                     "AddEquals() requires a non-null value or object, use AddNot().AddExists() instead.");
             }
 
-            var compareRole = compareObject as IRoleType;
-            if (compareRole != null && compareRole.ObjectType is IComposite)
+            if (compareObject is IRoleType compareRole && compareRole.ObjectType is IComposite)
             {
                 throw new ArgumentException("AddRoleEqual() for composites can only be used with objects (not other roles).");
             }
@@ -251,8 +250,7 @@ namespace Allors.Adapters
                 throw new ArgumentException("AddGreaterThan() requires a non-null value.");
             }
 
-            var compareRole = unit as IRoleType;
-            if (compareRole != null && compareRole.ObjectType is IComposite)
+            if (unit is IRoleType compareRole && compareRole.ObjectType is IComposite)
             {
                 throw new ArgumentException("AAddGreaterThan() can only be used with roles having unit types.");
             }
@@ -295,8 +293,7 @@ namespace Allors.Adapters
                 throw new ArgumentException("AddLessThan() requires a value.");
             }
 
-            var compareRole = unit as IRoleType;
-            if (compareRole != null && compareRole.ObjectType is IComposite)
+            if (unit is IRoleType compareRole && compareRole.ObjectType is IComposite)
             {
                 throw new ArgumentException("AddLessThan() can only be used with roles having unit types.");
             }
@@ -310,8 +307,7 @@ namespace Allors.Adapters
         /// <param name="unit">The unit .</param>
         public static void ValidateRoleLikeFilter(IRoleType role, string unit)
         {
-            var unitType = role.ObjectType as IUnit;
-            if (unitType == null || !unitType.IsString)
+            if (!(role.ObjectType is IUnit unitType) || !unitType.IsString)
             {
                 throw new ArgumentException("AddLike() can only be used with String.");
             }

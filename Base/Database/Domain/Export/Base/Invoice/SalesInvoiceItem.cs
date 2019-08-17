@@ -10,7 +10,7 @@ namespace Allors.Domain
     using System.Linq;
     using System.Text;
 
-    using Meta;
+    using Allors.Meta;
 
     public partial class SalesInvoiceItem
     {

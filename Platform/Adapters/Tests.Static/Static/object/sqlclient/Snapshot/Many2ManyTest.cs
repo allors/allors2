@@ -12,7 +12,7 @@ namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
     using System;
 
-    using Adapters;
+    using Allors.Adapters;
 
     public class Many2ManyTest : Adapters.Many2ManyTest, IDisposable
     {

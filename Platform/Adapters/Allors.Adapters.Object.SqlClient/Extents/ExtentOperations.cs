@@ -20,6 +20,6 @@ namespace Allors.Adapters.Object.SqlClient
         /// <summary>
         /// The Difference of two Extents.
         /// </summary>
-        Except
+        Except,
     }
 }

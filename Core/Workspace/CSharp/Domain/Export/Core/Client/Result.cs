@@ -8,7 +8,7 @@ namespace Allors.Workspace.Client
     using System.Collections.Generic;
     using System.Linq;
 
-    using Protocol.Remote.Pull;
+    using Allors.Protocol.Remote.Pull;
 
     public class Result
     {

@@ -39,7 +39,7 @@ namespace Allors.Workspace.Data
             new Protocol.Data.Fetch
             {
                 Step = this.Step?.ToJson(),
-                Include = this.Include?.ToJson()
+                Include = this.Include?.ToJson(),
             };
     }
 }

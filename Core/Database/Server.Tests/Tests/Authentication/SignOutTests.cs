@@ -30,7 +30,7 @@ namespace Server.Tests
             var args = new AuthenticationTokenRequest
             {
                 UserName = "Jane",
-                Password = "p@ssw0rd"
+                Password = "p@ssw0rd",
             };
 
             var signInUri = new Uri("Authentication/Token", UriKind.Relative);

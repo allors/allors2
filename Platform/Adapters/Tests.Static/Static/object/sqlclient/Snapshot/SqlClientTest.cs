@@ -8,7 +8,7 @@ using Allors.Adapters;
 
 namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
-    using Adapters;
+    using Allors.Adapters;
 
     public class SqlClientTest : SqlClient.SqlClientTest, IDisposable
     {

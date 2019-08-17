@@ -16,10 +16,10 @@ namespace Allors.Workspace.Client
 
     using Polly;
 
-    using Protocol.Remote.Invoke;
-    using Protocol.Remote.Pull;
-    using Protocol.Remote.Push;
-    using Protocol.Remote.Sync;
+    using Allors.Protocol.Remote.Invoke;
+    using Allors.Protocol.Remote.Pull;
+    using Allors.Protocol.Remote.Push;
+    using Allors.Protocol.Remote.Sync;
 
     public class Database
     {
@@ -82,7 +82,7 @@ namespace Allors.Workspace.Client
                     V = v.Object.Version.ToString(),
                     M = v.Name,
                 }).ToArray(),
-                O = options
+                O = options,
             };
 
             var uri = new Uri("Database/Invoke", UriKind.Relative);

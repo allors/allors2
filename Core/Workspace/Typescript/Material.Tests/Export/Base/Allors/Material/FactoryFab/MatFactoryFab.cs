@@ -17,7 +17,7 @@ namespace Components
             : base(driver)
         {
             this.Composite = composite;
-            Selector = selector;
+            this.Selector = selector;
         }
 
         public Composite Composite { get; set; }

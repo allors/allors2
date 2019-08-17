@@ -8,7 +8,7 @@ using System.Linq;
 namespace Allors.Domain
 {
     using Allors.Domain.NonLogging;
-    using Meta;
+    using Allors.Meta;
     using System;
     using System.Collections.Generic;
 
@@ -282,7 +282,6 @@ namespace Allors.Domain
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
                     var salesOrder = orderShipment.OrderItem.OrderWhereValidOrderItem as SalesOrder;
-                    var salesOrderItem = orderShipment.OrderItem as SalesOrderItem;
 
                     if (!invoiceByOrder.TryGetValue(salesOrder, out var salesInvoice))
                     {
@@ -363,7 +362,7 @@ namespace Allors.Domain
 
                     if (leftToInvoice > 0)
                     {
-                        if (salesOrderItem != null)
+                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem)
                         {
                             var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                                 .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)

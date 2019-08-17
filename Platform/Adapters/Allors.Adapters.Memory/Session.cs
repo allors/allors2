@@ -142,8 +142,7 @@ namespace Allors.Adapters.Memory
         {
             var objectType = this.MemoryDatabase.ObjectFactory.GetObjectTypeForType(typeof(T));
 
-            var @class = objectType as IClass;
-            if (@class == null)
+            if (!(objectType is IClass @class))
             {
                 throw new Exception("IObjectType should be a class");
             }
@@ -237,9 +236,7 @@ namespace Allors.Adapters.Memory
 
         public Extent<T> Extent<T>() where T : IObject
         {
-            var compositeType = this.MemoryDatabase.ObjectFactory.GetObjectTypeForType(typeof(T)) as IComposite;
-
-            if (compositeType == null)
+            if (!(this.MemoryDatabase.ObjectFactory.GetObjectTypeForType(typeof(T)) is IComposite compositeType))
             {
                 throw new Exception("type should be a CompositeType");
             }

@@ -11,7 +11,7 @@ namespace Allors.Adapters
     using Allors;
     using Allors.Meta;
 
-    using Domain;
+    using Allors.Domain;
 
     using Xunit;
     using System.Linq;
@@ -22,7 +22,7 @@ namespace Allors.Adapters
         One = 1,
         Two = 2,
         Three = 3,
-        Four = 4
+        Four = 4,
     }
 
     public abstract class ExtentTest : IDisposable

@@ -32,7 +32,7 @@ namespace Allors.Workspace.Data
             new Protocol.Data.TreeNode
             {
                 RoleType = this.RoleType.Id,
-                Nodes = this.Nodes.Select(v => v.ToJson()).ToArray()
+                Nodes = this.Nodes.Select(v => v.ToJson()).ToArray(),
             };
     }
 }
