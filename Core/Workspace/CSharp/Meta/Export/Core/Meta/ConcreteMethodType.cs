@@ -68,15 +68,13 @@ namespace Allors.Workspace.Meta
                     {
                         var methodInfo = extensionMethodInfos[0];
 
-                        Dictionary<MethodInfo, Action<object, object>> actionByMethodInfo;
-                        if (!actionByMethodInfoByType.TryGetValue(this.Class.ClrType, out actionByMethodInfo))
+                        if (!actionByMethodInfoByType.TryGetValue(this.Class.ClrType, out var actionByMethodInfo))
                         {
                             actionByMethodInfo = new Dictionary<MethodInfo, Action<object, object>>();
                             actionByMethodInfoByType[this.Class.ClrType] = actionByMethodInfo;
                         }
 
-                        Action<object, object> action;
-                        if (!actionByMethodInfo.TryGetValue(methodInfo, out action))
+                        if (!actionByMethodInfo.TryGetValue(methodInfo, out var action))
                         {
                             var o = Expression.Parameter(typeof(object));
                             var castO = Expression.Convert(o, methodInfo.GetParameters()[0].ParameterType);

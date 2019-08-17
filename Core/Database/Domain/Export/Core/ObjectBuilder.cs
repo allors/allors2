@@ -1,4 +1,3 @@
-
 // <copyright file="ObjectBuilder.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -17,8 +16,7 @@ namespace Allors
 
         public static object Build(ISession session, IClass @class)
         {
-            Type builderType;
-            if (!BuilderTypeByObjectTypeId.TryGetValue(@class, out builderType))
+            if (!BuilderTypeByObjectTypeId.TryGetValue(@class, out var builderType))
             {
                 var builderTypeName = "Allors.Domain." + @class.Name + "Builder";
                 builderType = Type.GetType(builderTypeName, false);

@@ -1,4 +1,3 @@
-
 // <copyright file="Save.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -120,8 +119,7 @@ namespace Allors.Adapters.Memory
             {
                 var roleType = relationType.RoleType;
 
-                List<Strategy> strategies;
-                sortedStrategiesByRoleType.TryGetValue(roleType, out strategies);
+                sortedStrategiesByRoleType.TryGetValue(roleType, out var strategies);
 
                 if (strategies != null)
                 {

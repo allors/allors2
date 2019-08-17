@@ -155,8 +155,7 @@ namespace Allors.Meta
         /// </returns>
         public MetaObjectBase Find(Guid id)
         {
-            MetaObjectBase metaObject;
-            this.metaObjectById.TryGetValue(id, out metaObject);
+            this.metaObjectById.TryGetValue(id, out var metaObject);
 
             return metaObject;
         }
@@ -176,8 +175,7 @@ namespace Allors.Meta
         {
             this.Derive();
 
-            Class cls;
-            this.derivedClassByLowercaseName.TryGetValue(name.ToLowerInvariant(), out cls);
+            this.derivedClassByLowercaseName.TryGetValue(name.ToLowerInvariant(), out var cls);
 
             return cls;
         }
@@ -233,8 +231,7 @@ namespace Allors.Meta
                 var subtype = inheritance.Subtype;
                 if (subtype != null)
                 {
-                    List<Inheritance> inheritanceList;
-                    if (!inheritancesBySubtype.TryGetValue(subtype, out inheritanceList))
+                    if (!inheritancesBySubtype.TryGetValue(subtype, out var inheritanceList))
                     {
                         inheritanceList = new List<Inheritance>();
                         inheritancesBySubtype[subtype] = inheritanceList;
@@ -396,8 +393,7 @@ namespace Allors.Meta
                     {
                         {
                             var associationObjectType = relationType.AssociationType.ObjectType;
-                            HashSet<RoleType> roles;
-                            if (!roleTypesByAssociationObjectType.TryGetValue(associationObjectType, out roles))
+                            if (!roleTypesByAssociationObjectType.TryGetValue(associationObjectType, out var roles))
                             {
                                 roles = new HashSet<RoleType>();
                                 roleTypesByAssociationObjectType[associationObjectType] = roles;
@@ -408,8 +404,7 @@ namespace Allors.Meta
 
                         {
                             var roleObjectType = relationType.RoleType.ObjectType;
-                            HashSet<AssociationType> associations;
-                            if (!associationTypesByRoleObjectType.TryGetValue(roleObjectType, out associations))
+                            if (!associationTypesByRoleObjectType.TryGetValue(roleObjectType, out var associations))
                             {
                                 associations = new HashSet<AssociationType>();
                                 associationTypesByRoleObjectType[roleObjectType] = associations;
@@ -588,8 +583,7 @@ namespace Allors.Meta
             {
                 supertypes.Add(currentSupertype);
 
-                List<Inheritance> currentSuperInheritances;
-                if (inheritancesBySubtype.TryGetValue(currentSupertype, out currentSuperInheritances))
+                if (inheritancesBySubtype.TryGetValue(currentSupertype, out var currentSuperInheritances))
                 {
                     foreach (var inheritance in currentSuperInheritances)
                     {

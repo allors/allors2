@@ -1,3 +1,8 @@
+// <copyright file="AllorsMaterialFactoryFabTester.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
 using System.ComponentModel;
 using Autotest.Angular;
 

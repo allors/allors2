@@ -1,4 +1,3 @@
-
 // <copyright file="Strategy.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -211,8 +210,7 @@ namespace Allors.Adapters.Memory
             this.AssertNotDeleted();
             var roleType = relationType.RoleType;
 
-            Strategy strategy;
-            this.compositeRoleByRoleType.TryGetValue(roleType, out strategy);
+            this.compositeRoleByRoleType.TryGetValue(roleType, out var strategy);
 
             return strategy?.GetObject();
         }
@@ -354,8 +352,7 @@ namespace Allors.Adapters.Memory
         public bool ExistCompositeRoles(IRelationType relationType)
         {
             this.AssertNotDeleted();
-            HashSet<Strategy> roleStrategies;
-            this.compositesRoleByRoleType.TryGetValue(relationType.RoleType, out roleStrategies);
+            this.compositesRoleByRoleType.TryGetValue(relationType.RoleType, out var roleStrategies);
             return roleStrategies != null;
         }
 
@@ -366,8 +363,7 @@ namespace Allors.Adapters.Memory
         public IObject GetCompositeAssociation(IRelationType relationType)
         {
             this.AssertNotDeleted();
-            Strategy strategy;
-            this.compositeAssociationByAssociationType.TryGetValue(relationType.AssociationType, out strategy);
+            this.compositeAssociationByAssociationType.TryGetValue(relationType.AssociationType, out var strategy);
             return strategy?.GetObject();
         }
 
@@ -383,8 +379,7 @@ namespace Allors.Adapters.Memory
         public bool ExistCompositeAssociations(IRelationType relationType)
         {
             this.AssertNotDeleted();
-            HashSet<Strategy> strategies;
-            this.compositesAssociationByAssociationType.TryGetValue(relationType.AssociationType, out strategies);
+            this.compositesAssociationByAssociationType.TryGetValue(relationType.AssociationType, out var strategies);
 
             return strategies != null;
         }
@@ -443,8 +438,7 @@ namespace Allors.Adapters.Memory
                 {
                     if (associationType.IsMany)
                     {
-                        HashSet<Strategy> associationStrategies;
-                        this.compositesAssociationByAssociationType.TryGetValue(associationType, out associationStrategies);
+                        this.compositesAssociationByAssociationType.TryGetValue(associationType, out var associationStrategies);
 
                         // TODO: Optimize
                         if (associationStrategies != null)
@@ -464,8 +458,7 @@ namespace Allors.Adapters.Memory
                     }
                     else
                     {
-                        Strategy associationStrategy;
-                        this.compositeAssociationByAssociationType.TryGetValue(associationType, out associationStrategy);
+                        this.compositeAssociationByAssociationType.TryGetValue(associationType, out var associationStrategy);
 
                         if (associationStrategy != null)
                         {
@@ -622,15 +615,13 @@ namespace Allors.Adapters.Memory
 
         internal object GetInternalizedUnitRole(IRoleType roleType)
         {
-            object unitRole;
-            this.unitRoleByRoleType.TryGetValue(roleType, out unitRole);
+            this.unitRoleByRoleType.TryGetValue(roleType, out var unitRole);
             return unitRole;
         }
 
         internal List<Strategy> GetStrategies(IAssociationType associationType)
         {
-            HashSet<Strategy> strategies;
-            this.compositesAssociationByAssociationType.TryGetValue(associationType, out strategies);
+            this.compositesAssociationByAssociationType.TryGetValue(associationType, out var strategies);
             if (strategies == null)
             {
                 return new List<Strategy>();
@@ -641,8 +632,7 @@ namespace Allors.Adapters.Memory
 
         internal List<Strategy> GetStrategies(IRoleType roleType)
         {
-            HashSet<Strategy> strategies;
-            this.compositesRoleByRoleType.TryGetValue(roleType, out strategies);
+            this.compositesRoleByRoleType.TryGetValue(roleType, out var strategies);
             if (strategies == null)
             {
                 return new List<Strategy>();
@@ -715,8 +705,7 @@ namespace Allors.Adapters.Memory
                 if (previousRole != null)
                 {
                     var previousRoleStrategy = this.MemorySession.GetStrategy(previousRole);
-                    HashSet<Strategy> previousRoleStrategies;
-                    previousRoleStrategy.compositesAssociationByAssociationType.TryGetValue(associationType, out previousRoleStrategies);
+                    previousRoleStrategy.compositesAssociationByAssociationType.TryGetValue(associationType, out var previousRoleStrategies);
 
                     previousRoleStrategy.Backup(associationType);
                     previousRoleStrategies.Remove(this);
@@ -731,8 +720,7 @@ namespace Allors.Adapters.Memory
                 this.Backup(roleType);
                 this.compositeRoleByRoleType[roleType] = newRoleStrategy;
 
-                HashSet<Strategy> strategies;
-                newRoleStrategy.compositesAssociationByAssociationType.TryGetValue(associationType, out strategies);
+                newRoleStrategy.compositesAssociationByAssociationType.TryGetValue(associationType, out var strategies);
 
                 newRoleStrategy.Backup(associationType);
                 if (strategies == null)
@@ -780,8 +768,7 @@ namespace Allors.Adapters.Memory
                 {
                     var roleType = dictionaryEntry.Key;
 
-                    List<Strategy> strategies;
-                    if (!strategiesByRoleType.TryGetValue(roleType, out strategies))
+                    if (!strategiesByRoleType.TryGetValue(roleType, out var strategies))
                     {
                         strategies = new List<Strategy>();
                         strategiesByRoleType.Add(roleType, strategies);
@@ -797,8 +784,7 @@ namespace Allors.Adapters.Memory
                 {
                     var roleType = dictionaryEntry.Key;
 
-                    List<Strategy> strategies;
-                    if (!strategiesByRoleType.TryGetValue(roleType, out strategies))
+                    if (!strategiesByRoleType.TryGetValue(roleType, out var strategies))
                     {
                         strategies = new List<Strategy>();
                         strategiesByRoleType.Add(roleType, strategies);
@@ -814,8 +800,7 @@ namespace Allors.Adapters.Memory
                 {
                     var roleType = dictionaryEntry.Key;
 
-                    List<Strategy> strategies;
-                    if (!strategiesByRoleType.TryGetValue(roleType, out strategies))
+                    if (!strategiesByRoleType.TryGetValue(roleType, out var strategies))
                     {
                         strategies = new List<Strategy>();
                         strategiesByRoleType.Add(roleType, strategies);
@@ -884,8 +869,7 @@ namespace Allors.Adapters.Memory
             {
                 if (!this.RollbackCompositesRoleByRoleType.ContainsKey(roleType))
                 {
-                    HashSet<Strategy> strategies;
-                    this.compositesRoleByRoleType.TryGetValue(roleType, out strategies);
+                    this.compositesRoleByRoleType.TryGetValue(roleType, out var strategies);
 
                     if (strategies == null)
                     {
@@ -901,8 +885,7 @@ namespace Allors.Adapters.Memory
             {
                 if (!this.RollbackCompositeRoleByRoleType.ContainsKey(roleType))
                 {
-                    Strategy strategy;
-                    this.compositeRoleByRoleType.TryGetValue(roleType, out strategy);
+                    this.compositeRoleByRoleType.TryGetValue(roleType, out var strategy);
 
                     if (strategy == null)
                     {
@@ -922,8 +905,7 @@ namespace Allors.Adapters.Memory
             {
                 if (!this.RollbackCompositesAssociationByAssociationType.ContainsKey(associationType))
                 {
-                    HashSet<Strategy> strategies;
-                    this.compositesAssociationByAssociationType.TryGetValue(associationType, out strategies);
+                    this.compositesAssociationByAssociationType.TryGetValue(associationType, out var strategies);
 
                     if (strategies == null)
                     {
@@ -939,8 +921,7 @@ namespace Allors.Adapters.Memory
             {
                 if (!this.RollbackCompositeAssociationByAssociationType.ContainsKey(associationType))
                 {
-                    Strategy strategy;
-                    this.compositeAssociationByAssociationType.TryGetValue(associationType, out strategy);
+                    this.compositeAssociationByAssociationType.TryGetValue(associationType, out var strategy);
 
                     if (strategy == null)
                     {
@@ -1160,8 +1141,7 @@ namespace Allors.Adapters.Memory
         private void RemoveCompositeRolesOne2Many(IRoleType roleType)
         {
             // TODO: Optimize
-            HashSet<Strategy> previousRoleStrategies;
-            this.compositesRoleByRoleType.TryGetValue(roleType, out previousRoleStrategies);
+            this.compositesRoleByRoleType.TryGetValue(roleType, out var previousRoleStrategies);
             if (previousRoleStrategies != null)
             {
                 foreach (var strategy in new List<Strategy>(previousRoleStrategies))

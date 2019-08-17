@@ -117,8 +117,7 @@ namespace Allors.Meta
             {
                 removedRoleTypes.Remove(roleType);
 
-                ConcreteRoleType concreteRoleType;
-                if (!this.concreteRoleTypeByRoleType.TryGetValue(roleType, out concreteRoleType))
+                if (!this.concreteRoleTypeByRoleType.TryGetValue(roleType, out var concreteRoleType))
                 {
                     concreteRoleType = new ConcreteRoleType(this, roleType);
                     this.concreteRoleTypeByRoleType[roleType] = concreteRoleType;
@@ -143,8 +142,7 @@ namespace Allors.Meta
             {
                 removedMethodTypes.Remove(methodType);
 
-                ConcreteMethodType concreteMethodType;
-                if (!this.concreteMethodTypeByMethodType.TryGetValue(methodType, out concreteMethodType))
+                if (!this.concreteMethodTypeByMethodType.TryGetValue(methodType, out var concreteMethodType))
                 {
                     concreteMethodType = new ConcreteMethodType(this, methodType);
                     this.concreteMethodTypeByMethodType[methodType] = concreteMethodType;

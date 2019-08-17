@@ -1,4 +1,3 @@
-
 // <copyright file="Save.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -126,8 +125,7 @@ namespace Allors.Adapters.Object.Npgsql
                     var sql = string.Empty;
                     if (roleType.ObjectType.IsUnit)
                     {
-                        HashSet<IObjectType> exclusiveRootClasses;
-                        if (!exclusiverRootClassesByObjectType.TryGetValue(associationType.ObjectType, out exclusiveRootClasses))
+                        if (!exclusiverRootClassesByObjectType.TryGetValue(associationType.ObjectType, out var exclusiveRootClasses))
                         {
                             exclusiveRootClasses = new HashSet<IObjectType>();
                             foreach (var concreteClass in associationType.ObjectType.Classes)

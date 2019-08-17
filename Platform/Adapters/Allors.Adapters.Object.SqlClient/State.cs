@@ -48,8 +48,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         public Reference GetOrCreateReferenceForExistingObject(long objectId, Session session)
         {
-            Reference reference;
-            if (!this.ReferenceByObjectId.TryGetValue(objectId, out reference))
+            if (!this.ReferenceByObjectId.TryGetValue(objectId, out var reference))
             {
                 var objectType = session.Database.Cache.GetObjectType(objectId);
                 if (objectType == null)
@@ -83,8 +82,7 @@ namespace Allors.Adapters.Object.SqlClient
             var instantiate = false;
             foreach (var objectId in objectIdArray)
             {
-                Reference reference;
-                if (!this.ReferenceByObjectId.TryGetValue(objectId, out reference))
+                if (!this.ReferenceByObjectId.TryGetValue(objectId, out var reference))
                 {
                     var objectType = session.Database.Cache.GetObjectType(objectId);
                     if (objectType == null)
@@ -104,8 +102,7 @@ namespace Allors.Adapters.Object.SqlClient
             var references = new List<Reference>();
             foreach (var objectId in objectIdArray)
             {
-                Reference reference;
-                if (!this.ReferenceByObjectId.TryGetValue(objectId, out reference))
+                if (!this.ReferenceByObjectId.TryGetValue(objectId, out var reference))
                 {
                     var objectType = session.Database.Cache.GetObjectType(objectId);
                     if (objectType == null)
@@ -132,8 +129,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         public Reference GetOrCreateReferenceForExistingObject(IClass objectType, long objectId, Session session)
         {
-            Reference reference;
-            if (!this.ReferenceByObjectId.TryGetValue(objectId, out reference))
+            if (!this.ReferenceByObjectId.TryGetValue(objectId, out var reference))
             {
                 reference = new Reference(session, objectType, objectId, false);
                 this.ReferenceByObjectId[objectId] = reference;
@@ -149,8 +145,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         public Reference GetOrCreateReferenceForExistingObject(IClass objectType, long objectId, long version, Session session)
         {
-            Reference reference;
-            if (!this.ReferenceByObjectId.TryGetValue(objectId, out reference))
+            if (!this.ReferenceByObjectId.TryGetValue(objectId, out var reference))
             {
                 reference = new Reference(session, objectType, objectId, version);
                 this.ReferenceByObjectId[objectId] = reference;
@@ -175,8 +170,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             if (this.ModifiedRolesByReference != null)
             {
-                Roles roles;
-                if (this.ModifiedRolesByReference.TryGetValue(reference, out roles))
+                if (this.ModifiedRolesByReference.TryGetValue(reference, out var roles))
                 {
                     return roles;
                 }
@@ -187,8 +181,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         public Dictionary<Reference, Reference> GetAssociationByRole(IAssociationType associationType)
         {
-            Dictionary<Reference, Reference> associationByRole;
-            if (!this.AssociationByRoleByAssociationType.TryGetValue(associationType, out associationByRole))
+            if (!this.AssociationByRoleByAssociationType.TryGetValue(associationType, out var associationByRole))
             {
                 associationByRole = new Dictionary<Reference, Reference>();
                 this.AssociationByRoleByAssociationType[associationType] = associationByRole;
@@ -199,8 +192,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         public Dictionary<Reference, long[]> GetAssociationsByRole(IAssociationType associationType)
         {
-            Dictionary<Reference, long[]> associationsByRole;
-            if (!this.AssociationsByRoleByAssociationType.TryGetValue(associationType, out associationsByRole))
+            if (!this.AssociationsByRoleByAssociationType.TryGetValue(associationType, out var associationsByRole))
             {
                 associationsByRole = new Dictionary<Reference, long[]>();
                 this.AssociationsByRoleByAssociationType[associationType] = associationsByRole;

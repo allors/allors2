@@ -146,8 +146,7 @@ namespace Allors
         /// <returns>The Allors <see cref="IObjectType"/>.</returns>
         public IObjectType GetObjectTypeForType(Type type)
         {
-            IObjectType objectType;
-            return !this.objectTypeByType.TryGetValue(type, out objectType) ? null : objectType;
+            return !this.objectTypeByType.TryGetValue(type, out var objectType) ? null : objectType;
         }
 
         /// <summary>
@@ -157,8 +156,7 @@ namespace Allors
         /// <returns>The .Net <see cref="Type"/>.</returns>
         public Type GetTypeForObjectType(IObjectType objectType)
         {
-            Type type;
-            this.typeByObjectType.TryGetValue(objectType, out type);
+            this.typeByObjectType.TryGetValue(objectType, out var type);
             return type;
         }
 
@@ -169,8 +167,7 @@ namespace Allors
         /// <returns>The .Net <see cref="Type"/>.</returns>
         public IObjectType GetObjectTypeForType(Guid objectTypeId)
         {
-            IObjectType objectType;
-            this.objectTypeByObjectTypeId.TryGetValue(objectTypeId, out objectType);
+            this.objectTypeByObjectTypeId.TryGetValue(objectTypeId, out var objectType);
             return objectType;
         }
     }

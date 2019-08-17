@@ -1,4 +1,9 @@
-﻿using System.Net;
+﻿// <copyright file="AddInManager.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+using System.Net;
 using System.Net.Http;
 using BaseExcelAddIn.Base;
 

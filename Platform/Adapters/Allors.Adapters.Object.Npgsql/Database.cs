@@ -1,4 +1,3 @@
-
 // <copyright file="Database.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -280,8 +279,7 @@ namespace Allors.Adapters.Object.Npgsql
                 return container.Equals(containee);
             }
 
-            HashSet<IObjectType> concreteClasses;
-            if (!this.concreteClassesByObjectType.TryGetValue(container, out concreteClasses))
+            if (!this.concreteClassesByObjectType.TryGetValue(container, out var concreteClasses))
             {
                 concreteClasses = new HashSet<IObjectType>(((IInterface)container).Subclasses);
                 this.concreteClassesByObjectType[container] = concreteClasses;

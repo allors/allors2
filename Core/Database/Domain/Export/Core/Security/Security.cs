@@ -1,4 +1,3 @@
-
 // <copyright file="Security.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -68,8 +67,7 @@ namespace Allors.Domain
                 {
                     var operandType = permission.OperandTypePointer;
 
-                    Dictionary<Guid, Permission> deniablePermissionByOperandTypeId;
-                    if (!this.deniablePermissionByOperandTypeIdByObjectTypeId.TryGetValue(objectId, out deniablePermissionByOperandTypeId))
+                    if (!this.deniablePermissionByOperandTypeIdByObjectTypeId.TryGetValue(objectId, out var deniablePermissionByOperandTypeId))
                     {
                         deniablePermissionByOperandTypeId = new Dictionary<Guid, Permission>();
                         this.deniablePermissionByOperandTypeIdByObjectTypeId[objectId] = deniablePermissionByOperandTypeId;
@@ -97,8 +95,7 @@ namespace Allors.Domain
                         throw new Exception("Unkown operation: " + permission.Operation);
                 }
 
-                Dictionary<OperandType, Permission> permissionByOperandType;
-                if (!permissionByOperandTypeByObjectTypeId.TryGetValue(objectId, out permissionByOperandType))
+                if (!permissionByOperandTypeByObjectTypeId.TryGetValue(objectId, out var permissionByOperandType))
                 {
                     permissionByOperandType = new Dictionary<OperandType, Permission>();
                     permissionByOperandTypeByObjectTypeId[objectId] = permissionByOperandType;
@@ -173,13 +170,11 @@ namespace Allors.Domain
 
         public void Deny(ObjectType objectType, ObjectState objectState, IEnumerable<OperandType> operandTypes)
         {
-            Dictionary<Guid, Permission> deniablePermissionByOperandTypeId;
-            if (this.deniablePermissionByOperandTypeIdByObjectTypeId.TryGetValue(objectType.Id, out deniablePermissionByOperandTypeId))
+            if (this.deniablePermissionByOperandTypeIdByObjectTypeId.TryGetValue(objectType.Id, out var deniablePermissionByOperandTypeId))
             {
                 foreach (var operandType in operandTypes)
                 {
-                    Permission permission;
-                    if (deniablePermissionByOperandTypeId.TryGetValue(operandType.Id, out permission))
+                    if (deniablePermissionByOperandTypeId.TryGetValue(operandType.Id, out var permission))
                     {
                         objectState.AddDeniedPermission(permission);
                     }
@@ -189,8 +184,7 @@ namespace Allors.Domain
 
         public void Grant(Guid roleId, ObjectType objectType, params Operations[] operations)
         {
-            Role role;
-            if (this.roleById.TryGetValue(roleId, out role))
+            if (this.roleById.TryGetValue(roleId, out var role))
             {
                 var actualOperations = operations ?? ReadWriteExecute;
                 foreach (var operation in actualOperations)
@@ -227,8 +221,7 @@ namespace Allors.Domain
 
         public void GrantExcept(Guid roleId, ObjectType objectType, ICollection<OperandType> excepts, params Operations[] operations)
         {
-            Role role;
-            if (this.roleById.TryGetValue(roleId, out role))
+            if (this.roleById.TryGetValue(roleId, out var role))
             {
                 var actualOperations = operations ?? ReadWriteExecute;
                 foreach (var operation in actualOperations)
@@ -265,8 +258,7 @@ namespace Allors.Domain
 
         public void Grant(Guid roleId, ObjectType objectType, OperandType operandType, params Operations[] operations)
         {
-            Role role;
-            if (this.roleById.TryGetValue(roleId, out role))
+            if (this.roleById.TryGetValue(roleId, out var role))
             {
                 var actualOperations = operations ?? ReadWriteExecute;
                 foreach (var operation in actualOperations)
@@ -292,8 +284,7 @@ namespace Allors.Domain
 
                     if (permissionByOperandType != null)
                     {
-                        Permission permission;
-                        if (permissionByOperandType.TryGetValue(operandType, out permission))
+                        if (permissionByOperandType.TryGetValue(operandType, out var permission))
                         {
                             role.AddPermission(permission);
                         }

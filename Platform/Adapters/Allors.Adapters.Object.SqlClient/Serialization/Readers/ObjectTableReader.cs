@@ -1,4 +1,3 @@
-
 // <copyright file="ObjectTableReader.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -74,16 +73,13 @@ namespace Allors.Adapters.Object.SqlClient
                         break;
 
                     default:
-                        IAssociationType associationType;
-                        if (associationTypeByLowerCasedFieldName.TryGetValue(lowerCasedColumnName, out associationType))
+                        if (associationTypeByLowerCasedFieldName.TryGetValue(lowerCasedColumnName, out var associationType))
                         {
-                            Dictionary<long, long> associationIdByRoleId;
-                            if (associationIdByRoleIdByRelationTypeId.TryGetValue(associationType.RelationType, out associationIdByRoleId))
+                            if (associationIdByRoleIdByRelationTypeId.TryGetValue(associationType.RelationType, out var associationIdByRoleId))
                             {
                                 this.getValueFuncs[i] = current =>
                                 {
-                                    long association;
-                                    if (associationIdByRoleId.TryGetValue(current, out association))
+                                    if (associationIdByRoleId.TryGetValue(current, out var association))
                                     {
                                         return association;
                                     }
@@ -99,16 +95,13 @@ namespace Allors.Adapters.Object.SqlClient
                             continue;
                         }
 
-                        IRoleType roleType;
-                        if (roleTypeByLowerCasedFieldName.TryGetValue(lowerCasedColumnName, out roleType))
+                        if (roleTypeByLowerCasedFieldName.TryGetValue(lowerCasedColumnName, out var roleType))
                         {
-                            Dictionary<long, object> roleByAssociationId;
-                            if (roleByAssociationIdByRelationTypeId.TryGetValue(roleType.RelationType, out roleByAssociationId))
+                            if (roleByAssociationIdByRelationTypeId.TryGetValue(roleType.RelationType, out var roleByAssociationId))
                             {
                                 this.getValueFuncs[i] = current =>
                                 {
-                                    object role;
-                                    if (roleByAssociationId.TryGetValue(current, out role))
+                                    if (roleByAssociationId.TryGetValue(current, out var role))
                                     {
                                         return role;
                                     }

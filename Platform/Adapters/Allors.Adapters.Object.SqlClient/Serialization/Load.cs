@@ -1,4 +1,3 @@
-
 // <copyright file="Load.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -172,8 +171,7 @@ namespace Allors.Adapters.Object.SqlClient
             foreach (var xmlRelation in xmlRelationTypeUnit.Relations)
             {
                 var associationId = xmlRelation.Association;
-                IObjectType associationConcreteClass;
-                this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
+                this.objectTypeByObjectId.TryGetValue(associationId, out var associationConcreteClass);
 
                 if (xmlRelation.Role == null)
                 {
@@ -237,8 +235,7 @@ namespace Allors.Adapters.Object.SqlClient
                 if (!string.IsNullOrWhiteSpace(xmlRelation.Role))
                 {
                     var associationId = xmlRelation.Association;
-                    IObjectType associationConcreteClass;
-                    this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
+                    this.objectTypeByObjectId.TryGetValue(associationId, out var associationConcreteClass);
 
                     var value = xmlRelation.Role;
                     var rs = value.Split(Serialization.ObjectsSplitterCharArray);
@@ -257,8 +254,7 @@ namespace Allors.Adapters.Object.SqlClient
                         foreach (var r in rs)
                         {
                             var roleId = long.Parse(r);
-                            IObjectType roleConcreteClass;
-                            this.objectTypeByObjectId.TryGetValue(roleId, out roleConcreteClass);
+                            this.objectTypeByObjectId.TryGetValue(roleId, out var roleConcreteClass);
 
                             if (roleConcreteClass == null ||
                                 !this.database.ContainsConcreteClass(relationType.RoleType.ObjectType, roleConcreteClass))
@@ -282,8 +278,7 @@ namespace Allors.Adapters.Object.SqlClient
                 if (!string.IsNullOrWhiteSpace(xmlRelation.Role))
                 {
                     var associationId = xmlRelation.Association;
-                    IObjectType associationConcreteClass;
-                    this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
+                    this.objectTypeByObjectId.TryGetValue(associationId, out var associationConcreteClass);
 
                     var value = xmlRelation.Role;
                     var rs = value.Split(Serialization.ObjectsSplitterCharArray);
@@ -311,8 +306,7 @@ namespace Allors.Adapters.Object.SqlClient
                             foreach (var r in rs)
                             {
                                 var role = long.Parse(r);
-                                IObjectType roleConcreteClass;
-                                this.objectTypeByObjectId.TryGetValue(role, out roleConcreteClass);
+                                this.objectTypeByObjectId.TryGetValue(role, out var roleConcreteClass);
 
                                 if (roleConcreteClass == null || !this.database.ContainsConcreteClass(
                                         relationType.RoleType.ObjectType,
@@ -386,8 +380,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                 if (!roleType.ObjectType.IsUnit && ((associationType.IsMany && roleType.IsMany) || !relationType.ExistExclusiveClasses))
                 {
-                    Dictionary<long, object> roleByAssociationId;
-                    if (this.roleByAssociationIdByRelationTypeId.TryGetValue(relationType, out roleByAssociationId))
+                    if (this.roleByAssociationIdByRelationTypeId.TryGetValue(relationType, out var roleByAssociationId))
                     {
                         var tableName = mapping.TableNameForRelationByRelationType[relationType];
                         var columnNames = GetColumnNames(connection, tableName);
@@ -408,8 +401,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         private Dictionary<long, long> GetAssociationIdByRoleId(IRelationType relationType)
         {
-            Dictionary<long, long> associationIdByRoleId;
-            if (!this.associationIdByRoleIdByRelationTypeId.TryGetValue(relationType, out associationIdByRoleId))
+            if (!this.associationIdByRoleIdByRelationTypeId.TryGetValue(relationType, out var associationIdByRoleId))
             {
                 associationIdByRoleId = new Dictionary<long, long>();
                 this.associationIdByRoleIdByRelationTypeId[relationType] = associationIdByRoleId;
@@ -420,8 +412,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         private Dictionary<long, object> GetRoleByAssociationId(IRelationType relationType)
         {
-            Dictionary<long, object> roleByAssociationId;
-            if (!this.roleByAssociationIdByRelationTypeId.TryGetValue(relationType, out roleByAssociationId))
+            if (!this.roleByAssociationIdByRelationTypeId.TryGetValue(relationType, out var roleByAssociationId))
             {
                 roleByAssociationId = new Dictionary<long, object>();
                 this.roleByAssociationIdByRelationTypeId[relationType] = roleByAssociationId;

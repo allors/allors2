@@ -1,3 +1,8 @@
+// <copyright file="Schema.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
+// </copyright>
+
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;
@@ -76,8 +81,7 @@ AND C.table_schema = @tableSchema";
 
                                 columnName = database.Mapping.NormalizeName(columnName);
 
-                                SchemaTable table;
-                                if (!this.TableByName.TryGetValue(fullyQualifiedTableName, out table))
+                                if (!this.TableByName.TryGetValue(fullyQualifiedTableName, out var table))
                                 {
                                     table = new SchemaTable(this, fullyQualifiedTableName);
                                     this.TableByName[fullyQualifiedTableName] = table;
@@ -124,8 +128,7 @@ where tt.schema_id = SCHEMA_ID(@domainSchema)";
                                 tableName = tableName.Trim().ToLowerInvariant();
                                 var fullyQualifiedTableName = database.SchemaName + "." + tableName;
 
-                                SchemaTableType tableType;
-                                if (!this.TableTypeByName.TryGetValue(fullyQualifiedTableName, out tableType))
+                                if (!this.TableTypeByName.TryGetValue(fullyQualifiedTableName, out var tableType))
                                 {
                                     tableType = new SchemaTableType(this, fullyQualifiedTableName);
                                     this.TableTypeByName[fullyQualifiedTableName] = tableType;
@@ -192,15 +195,13 @@ WHERE
                                 tableName = tableName.Trim().ToLowerInvariant();
                                 indexName = indexName.Trim().ToLowerInvariant();
 
-                                Dictionary<string, SchemaIndex> indexByLowercaseIndexName;
-                                if (!this.indexByIndexNameByTableName.TryGetValue(tableName, out indexByLowercaseIndexName))
+                                if (!this.indexByIndexNameByTableName.TryGetValue(tableName, out var indexByLowercaseIndexName))
                                 {
                                     indexByLowercaseIndexName = new Dictionary<string, SchemaIndex>();
                                     this.indexByIndexNameByTableName[tableName] = indexByLowercaseIndexName;
                                 }
 
-                                SchemaIndex index;
-                                if (!indexByLowercaseIndexName.TryGetValue(indexName, out index))
+                                if (!indexByLowercaseIndexName.TryGetValue(indexName, out var index))
                                 {
                                     index = new SchemaIndex(this, indexName);
                                     indexByLowercaseIndexName[indexName] = index;
@@ -226,32 +227,27 @@ WHERE
 
         public SchemaTable GetTable(string tableName)
         {
-            SchemaTable table;
-            this.TableByName.TryGetValue(tableName.ToLowerInvariant(), out table);
+            this.TableByName.TryGetValue(tableName.ToLowerInvariant(), out var table);
             return table;
         }
 
         public SchemaTableType GetTableType(string tableTypeName)
         {
-            SchemaTableType tableType;
-            this.TableTypeByName.TryGetValue(tableTypeName, out tableType);
+            this.TableTypeByName.TryGetValue(tableTypeName, out var tableType);
             return tableType;
         }
 
         public SchemaProcedure GetProcedure(string procedureName)
         {
-            SchemaProcedure procedure;
-            this.ProcedureByName.TryGetValue(procedureName, out procedure);
+            this.ProcedureByName.TryGetValue(procedureName, out var procedure);
             return procedure;
         }
 
         public SchemaIndex GetIndex(string tableName, string indexName)
         {
-            Dictionary<string, SchemaIndex> indexByLowercaseIndexName;
-            if (this.indexByIndexNameByTableName.TryGetValue(tableName.ToLowerInvariant(), out indexByLowercaseIndexName))
+            if (this.indexByIndexNameByTableName.TryGetValue(tableName.ToLowerInvariant(), out var indexByLowercaseIndexName))
             {
-                SchemaIndex index;
-                indexByLowercaseIndexName.TryGetValue(indexName.ToLowerInvariant(), out index);
+                indexByLowercaseIndexName.TryGetValue(indexName.ToLowerInvariant(), out var index);
                 return index;
             }
 

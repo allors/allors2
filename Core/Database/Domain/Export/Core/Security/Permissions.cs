@@ -37,15 +37,13 @@ namespace Allors.Domain
                     continue;
                 }
 
-                Dictionary<ObjectType, Dictionary<Operations, Permission>> permissionByOperationByConcreteClass;
-                if (!permissionByOperationByConcreteClassByOperandType.TryGetValue(permission.OperandType, out permissionByOperationByConcreteClass))
+                if (!permissionByOperationByConcreteClassByOperandType.TryGetValue(permission.OperandType, out var permissionByOperationByConcreteClass))
                 {
                     permissionByOperationByConcreteClass = new Dictionary<ObjectType, Dictionary<Operations, Permission>>();
                     permissionByOperationByConcreteClassByOperandType[permission.OperandType] = permissionByOperationByConcreteClass;
                 }
 
-                Dictionary<Operations, Permission> permissionByOperation;
-                if (!permissionByOperationByConcreteClass.TryGetValue(permission.ConcreteClass, out permissionByOperation))
+                if (!permissionByOperationByConcreteClass.TryGetValue(permission.ConcreteClass, out var permissionByOperation))
                 {
                     permissionByOperation = new Dictionary<Operations, Permission>();
                     permissionByOperationByConcreteClass.Add(permission.ConcreteClass, permissionByOperation);
@@ -60,8 +58,7 @@ namespace Allors.Domain
                 {
                     // AssociationType
                     var associationType = relationType.AssociationType;
-                    Dictionary<ObjectType, Dictionary<Operations, Permission>> permissionByOperationByConcreteClass;
-                    permissionByOperationByConcreteClassByOperandType.TryGetValue(associationType, out permissionByOperationByConcreteClass);
+                    permissionByOperationByConcreteClassByOperandType.TryGetValue(associationType, out var permissionByOperationByConcreteClass);
 
                     var composite = associationType.RelationType.RoleType.ObjectType as Composite;
                     if (composite != null)
@@ -97,8 +94,7 @@ namespace Allors.Domain
                 {
                     // RoleType
                     var roleType = relationType.RoleType;
-                    Dictionary<ObjectType, Dictionary<Operations, Permission>> permissionByOperationByConcreteClass;
-                    permissionByOperationByConcreteClassByOperandType.TryGetValue(roleType, out permissionByOperationByConcreteClass);
+                    permissionByOperationByConcreteClassByOperandType.TryGetValue(roleType, out var permissionByOperationByConcreteClass);
 
                     foreach (var concreteClass in roleType.RelationType.AssociationType.ObjectType.Classes)
                     {
@@ -141,8 +137,7 @@ namespace Allors.Domain
 
             foreach (var methodType in domain.MethodTypes)
             {
-                Dictionary<ObjectType, Dictionary<Operations, Permission>> permissionByOperationByConcreteClass;
-                permissionByOperationByConcreteClassByOperandType.TryGetValue(methodType, out permissionByOperationByConcreteClass);
+                permissionByOperationByConcreteClassByOperandType.TryGetValue(methodType, out var permissionByOperationByConcreteClass);
 
                 foreach (var concreteClass in methodType.ObjectType.Classes)
                 {

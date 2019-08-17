@@ -1,4 +1,3 @@
-
 // <copyright file="Settings.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -32,17 +31,13 @@ namespace Allors.Adapters
 
         static Settings()
         {
-            int numberOfRuns;
-            NumberOfRuns = int.TryParse(Environment.GetEnvironmentVariable("NumberOfRuns"), out numberOfRuns) ? numberOfRuns : DefaultNumberOfRuns;
+            NumberOfRuns = int.TryParse(Environment.GetEnvironmentVariable("NumberOfRuns"), out var numberOfRuns) ? numberOfRuns : DefaultNumberOfRuns;
 
-            int largeArraySize;
-            LargeArraySize = int.TryParse(Environment.GetEnvironmentVariable("LargeArraySize"), out largeArraySize) ? largeArraySize : DefaultLargeArraySize;
+            LargeArraySize = int.TryParse(Environment.GetEnvironmentVariable("LargeArraySize"), out var largeArraySize) ? largeArraySize : DefaultLargeArraySize;
 
-            bool extraMarkers;
-            ExtraMarkers = bool.TryParse(Environment.GetEnvironmentVariable("ExtraMarkers"), out extraMarkers) ? extraMarkers : DefaultExtraMarkers;
+            ExtraMarkers = bool.TryParse(Environment.GetEnvironmentVariable("ExtraMarkers"), out var extraMarkers) ? extraMarkers : DefaultExtraMarkers;
 
-            bool extraInits;
-            ExtraInits = bool.TryParse(Environment.GetEnvironmentVariable("ExtraCaches"), out extraInits) ? extraInits : DefaultExtraInits;
+            ExtraInits = bool.TryParse(Environment.GetEnvironmentVariable("ExtraCaches"), out var extraInits) ? extraInits : DefaultExtraInits;
         }
 
         public static int NumberOfRuns { get; set; }

@@ -61,8 +61,7 @@ namespace Allors.Adapters.Object.Npgsql
                     return null;
                 }
 
-                object value;
-                this.properties.TryGetValue(name, out value);
+                this.properties.TryGetValue(name, out var value);
                 return value;
             }
 
@@ -130,8 +129,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         public IObject Instantiate(string objectId)
         {
-            long id;
-            if (long.TryParse(objectId, out id))
+            if (long.TryParse(objectId, out var id))
             {
                 return this.Instantiate(id);
             };
@@ -147,8 +145,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         public IStrategy InstantiateStrategy(long objectId)
         {
-            Reference reference;
-            if (!this.State.ReferenceByObjectId.TryGetValue(objectId, out reference))
+            if (!this.State.ReferenceByObjectId.TryGetValue(objectId, out var reference))
             {
                 reference = this.Commands.InstantiateObject(objectId);
                 if (reference != null)
@@ -394,8 +391,7 @@ namespace Allors.Adapters.Object.Npgsql
         {
             var associationByRole = this.State.GetAssociationByRole(associationType);
 
-            Reference association;
-            if (!associationByRole.TryGetValue(roleStrategy.Reference, out association))
+            if (!associationByRole.TryGetValue(roleStrategy.Reference, out var association))
             {
                 this.FlushConditionally(roleStrategy.ObjectId, associationType);
                 association = this.Commands.GetCompositeAssociation(roleStrategy.Reference, associationType);
@@ -417,8 +413,7 @@ namespace Allors.Adapters.Object.Npgsql
         {
             var associationsByRole = this.State.GetAssociationsByRole(associationType);
 
-            long[] associations;
-            if (!associationsByRole.TryGetValue(roleStrategy.Reference, out associations))
+            if (!associationsByRole.TryGetValue(roleStrategy.Reference, out var associations))
             {
                 this.FlushConditionally(roleStrategy.ObjectId, associationType);
                 associations = this.Commands.GetCompositesAssociation(roleStrategy, associationType);
@@ -432,8 +427,7 @@ namespace Allors.Adapters.Object.Npgsql
         {
             var associationsByRole = this.State.GetAssociationsByRole(associationType);
 
-            long[] associations;
-            if (associationsByRole.TryGetValue(role, out associations))
+            if (associationsByRole.TryGetValue(role, out var associations))
             {
                 associationsByRole[role] = associations.Add(association.ObjectId);
             }
@@ -443,8 +437,7 @@ namespace Allors.Adapters.Object.Npgsql
         {
             var associationsByRole = this.State.GetAssociationsByRole(associationType);
 
-            long[] associations;
-            if (associationsByRole.TryGetValue(role, out associations))
+            if (associationsByRole.TryGetValue(role, out var associations))
             {
                 associationsByRole[role] = associations.Remove(association.ObjectId);
             }
@@ -471,8 +464,7 @@ namespace Allors.Adapters.Object.Npgsql
                 var versionByObjectId = this.Commands.GetVersions(this.State.ReferencesWithoutVersions);
                 foreach (var association in this.State.ReferencesWithoutVersions)
                 {
-                    long version;
-                    if (versionByObjectId.TryGetValue(association.ObjectId, out version))
+                    if (versionByObjectId.TryGetValue(association.ObjectId, out var version))
                     {
                         association.Version = version;
                         association.Exists = true;
@@ -511,8 +503,7 @@ namespace Allors.Adapters.Object.Npgsql
                 this.State.TriggersFlushRolesByAssociationType = new Dictionary<IAssociationType, HashSet<long>>();
             }
 
-            HashSet<long> associations;
-            if (!this.State.TriggersFlushRolesByAssociationType.TryGetValue(associationType, out associations))
+            if (!this.State.TriggersFlushRolesByAssociationType.TryGetValue(associationType, out var associations))
             {
                 associations = new HashSet<long>();
                 this.State.TriggersFlushRolesByAssociationType[associationType] = associations;
@@ -525,8 +516,7 @@ namespace Allors.Adapters.Object.Npgsql
         {
             if (this.State.TriggersFlushRolesByAssociationType != null)
             {
-                HashSet<long> roles;
-                if (this.State.TriggersFlushRolesByAssociationType.TryGetValue(associationType, out roles))
+                if (this.State.TriggersFlushRolesByAssociationType.TryGetValue(associationType, out var roles))
                 {
                     if (roles.Contains(roleId))
                     {

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="ThisAddIn.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+using System;
 using System.Threading.Tasks;
 using Allors.Excel;
 using NLog;

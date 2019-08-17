@@ -1,4 +1,3 @@
-
 // <copyright file="Database.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -83,8 +82,7 @@ namespace Allors.Adapters.Memory
 
         public bool ContainsConcreteClass(IComposite objectType, IObjectType concreteClass)
         {
-            object concreteClassOrClasses;
-            if (!this.concreteClassesByObjectType.TryGetValue(objectType, out concreteClassOrClasses))
+            if (!this.concreteClassesByObjectType.TryGetValue(objectType, out var concreteClassOrClasses))
             {
                 if (objectType.ExistExclusiveClass)
                 {

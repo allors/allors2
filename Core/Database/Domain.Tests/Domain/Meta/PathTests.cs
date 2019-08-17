@@ -1,4 +1,3 @@
-
 // <copyright file="PathTests.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -111,8 +110,7 @@ namespace Tests
 
             this.Session.Derive(true);
 
-            Fetch fetch;
-            Fetch.TryParse(M.C2.ObjectType, "C1WhereC1C2One2Many", out fetch);
+            Fetch.TryParse(M.C2.ObjectType, "C1WhereC1C2One2Many", out var fetch);
 
             var aclMock = new Mock<IAccessControlList>();
             aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);

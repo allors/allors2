@@ -1,4 +1,3 @@
-
 //-------------------------------------------------------------------------------------------------
 // <copyright file="Template.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.

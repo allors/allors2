@@ -73,8 +73,7 @@ namespace Allors.Repository.Domain
 
         public Method GetImplementedMethod(Method method)
         {
-            Method implementedMethod;
-            if (this.MethodByName.TryGetValue(method.Name, out implementedMethod))
+            if (this.MethodByName.TryGetValue(method.Name, out var implementedMethod))
             {
                 return implementedMethod;
             }

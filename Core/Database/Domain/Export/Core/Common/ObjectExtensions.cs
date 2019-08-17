@@ -1,4 +1,3 @@
-
 // <copyright file="ObjectExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -31,8 +30,7 @@ namespace Allors.Domain
             var @class = (Class)@this.Strategy.Class;
 
             // Required
-            RoleType[] requiredRoleTypes;
-            if (!RequiredRoleTypesByClassName.TryGetValue(@class.Name, out requiredRoleTypes))
+            if (!RequiredRoleTypesByClassName.TryGetValue(@class.Name, out var requiredRoleTypes))
             {
                 requiredRoleTypes = @class.ConcreteRoleTypes
                     .Where(concreteRoleType => concreteRoleType.IsRequired)
@@ -48,8 +46,7 @@ namespace Allors.Domain
             }
 
             // Unique
-            RoleType[] uniqueRoleTypes;
-            if (!UniqueRoleTypesByClassName.TryGetValue(@class.Name, out uniqueRoleTypes))
+            if (!UniqueRoleTypesByClassName.TryGetValue(@class.Name, out var uniqueRoleTypes))
             {
                 uniqueRoleTypes = @class.ConcreteRoleTypes
                     .Where(concreteRoleType => concreteRoleType.IsUnique)

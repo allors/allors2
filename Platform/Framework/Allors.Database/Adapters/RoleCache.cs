@@ -1,4 +1,3 @@
-
 // <copyright file="RoleCache.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -26,11 +25,9 @@ namespace Allors.Adapters
 
         public bool TryGetUnit(long association, object cacheId, IRoleType roleType, out object role)
         {
-            Dictionary<long, CachedUnitRole> entryByAssociation;
-            if (this.cachedUnitRoleByAssociationByRoleType.TryGetValue(roleType, out entryByAssociation))
+            if (this.cachedUnitRoleByAssociationByRoleType.TryGetValue(roleType, out var entryByAssociation))
             {
-                CachedUnitRole cachedUnitRole;
-                if (entryByAssociation.TryGetValue(association, out cachedUnitRole))
+                if (entryByAssociation.TryGetValue(association, out var cachedUnitRole))
                 {
                     if (cachedUnitRole.CacheId.Equals(cacheId))
                     {
@@ -46,8 +43,7 @@ namespace Allors.Adapters
 
         public void SetUnit(long association, object cacheId, IRoleType roleType, object role)
         {
-            Dictionary<long, CachedUnitRole> entryByAssociation;
-            if (!this.cachedUnitRoleByAssociationByRoleType.TryGetValue(roleType, out entryByAssociation))
+            if (!this.cachedUnitRoleByAssociationByRoleType.TryGetValue(roleType, out var entryByAssociation))
             {
                 entryByAssociation = new Dictionary<long, CachedUnitRole>();
                 this.cachedUnitRoleByAssociationByRoleType[roleType] = entryByAssociation;
@@ -58,11 +54,9 @@ namespace Allors.Adapters
 
         public bool TryGetComposite(long association, object cacheId, IRoleType roleType, out long? role)
         {
-            Dictionary<long, CachedCompositeRole> entryByAssociation;
-            if (this.cachedCompositeRoleByAssociationByRoleType.TryGetValue(roleType, out entryByAssociation))
+            if (this.cachedCompositeRoleByAssociationByRoleType.TryGetValue(roleType, out var entryByAssociation))
             {
-                CachedCompositeRole cachedCompositeRole;
-                if (entryByAssociation.TryGetValue(association, out cachedCompositeRole))
+                if (entryByAssociation.TryGetValue(association, out var cachedCompositeRole))
                 {
                     if (cachedCompositeRole.CacheId.Equals(cacheId))
                     {
@@ -78,8 +72,7 @@ namespace Allors.Adapters
 
         public void SetComposite(long association, object cacheId, IRoleType roleType, long? role)
         {
-            Dictionary<long, CachedCompositeRole> entryByAssociation;
-            if (!this.cachedCompositeRoleByAssociationByRoleType.TryGetValue(roleType, out entryByAssociation))
+            if (!this.cachedCompositeRoleByAssociationByRoleType.TryGetValue(roleType, out var entryByAssociation))
             {
                 entryByAssociation = new Dictionary<long, CachedCompositeRole>();
                 this.cachedCompositeRoleByAssociationByRoleType[roleType] = entryByAssociation;
@@ -90,11 +83,9 @@ namespace Allors.Adapters
 
         public bool TryGetComposites(long association, object cacheId, IRoleType roleType, out long[] role)
         {
-            Dictionary<long, CachedCompositesRole> entryByAssociation;
-            if (this.cachedCompositesRoleByAssociationByRoleType.TryGetValue(roleType, out entryByAssociation))
+            if (this.cachedCompositesRoleByAssociationByRoleType.TryGetValue(roleType, out var entryByAssociation))
             {
-                CachedCompositesRole cachedCompositesRole;
-                if (entryByAssociation.TryGetValue(association, out cachedCompositesRole))
+                if (entryByAssociation.TryGetValue(association, out var cachedCompositesRole))
                 {
                     if (cachedCompositesRole.CacheId.Equals(cacheId))
                     {
@@ -110,8 +101,7 @@ namespace Allors.Adapters
 
         public void SetComposites(long association, object cacheId, IRoleType roleType, long[] role)
         {
-            Dictionary<long, CachedCompositesRole> entryByAssociation;
-            if (!this.cachedCompositesRoleByAssociationByRoleType.TryGetValue(roleType, out entryByAssociation))
+            if (!this.cachedCompositesRoleByAssociationByRoleType.TryGetValue(roleType, out var entryByAssociation))
             {
                 entryByAssociation = new Dictionary<long, CachedCompositesRole>();
                 this.cachedCompositesRoleByAssociationByRoleType[roleType] = entryByAssociation;

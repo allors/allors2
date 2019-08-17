@@ -1,4 +1,9 @@
-﻿namespace Allors
+﻿// <copyright file="Program.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
+// </copyright>
+
+namespace Allors
 {
     using Allors.Workspace.Meta;
     using Autotest;

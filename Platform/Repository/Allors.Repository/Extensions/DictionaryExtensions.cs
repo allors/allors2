@@ -14,8 +14,7 @@ namespace Allors.Repository
     {
         public static TValue Get<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key)
         {
-            TValue val;
-            dict.TryGetValue(key, out val);
+            dict.TryGetValue(key, out var val);
             return val;
         }
     }

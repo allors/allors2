@@ -1,4 +1,3 @@
-
 // <copyright file="Flush.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -124,15 +123,13 @@ namespace Allors.Adapters.Object.SqlClient
 
             var exclusiveClass = association.Class.ExclusiveClass;
 
-            Dictionary<IRoleType, List<UnitRelation>> setUnitRoleRelationsByRoleType;
-            if (!this.setUnitRoleRelationsByRoleTypeByExclusiveClass.TryGetValue(exclusiveClass, out setUnitRoleRelationsByRoleType))
+            if (!this.setUnitRoleRelationsByRoleTypeByExclusiveClass.TryGetValue(exclusiveClass, out var setUnitRoleRelationsByRoleType))
             {
                 setUnitRoleRelationsByRoleType = new Dictionary<IRoleType, List<UnitRelation>>();
                 this.setUnitRoleRelationsByRoleTypeByExclusiveClass[exclusiveClass] = setUnitRoleRelationsByRoleType;
             }
 
-            List<UnitRelation> relations;
-            if (!setUnitRoleRelationsByRoleType.TryGetValue(roleType, out relations))
+            if (!setUnitRoleRelationsByRoleType.TryGetValue(roleType, out var relations))
             {
                 relations = new List<UnitRelation>();
                 setUnitRoleRelationsByRoleType[roleType] = relations;
@@ -155,8 +152,7 @@ namespace Allors.Adapters.Object.SqlClient
                 this.setCompositeRoleRelationsByRoleType = new Dictionary<IRoleType, List<CompositeRelation>>();
             }
 
-            List<CompositeRelation> relations;
-            if (!this.setCompositeRoleRelationsByRoleType.TryGetValue(roleType, out relations))
+            if (!this.setCompositeRoleRelationsByRoleType.TryGetValue(roleType, out var relations))
             {
                 relations = new List<CompositeRelation>();
                 this.setCompositeRoleRelationsByRoleType[roleType] = relations;
@@ -178,8 +174,7 @@ namespace Allors.Adapters.Object.SqlClient
                 this.addCompositeRoleRelationsByRoleType = new Dictionary<IRoleType, List<CompositeRelation>>();
             }
 
-            List<CompositeRelation> relations;
-            if (!this.addCompositeRoleRelationsByRoleType.TryGetValue(roleType, out relations))
+            if (!this.addCompositeRoleRelationsByRoleType.TryGetValue(roleType, out var relations))
             {
                 relations = new List<CompositeRelation>();
                 this.addCompositeRoleRelationsByRoleType[roleType] = relations;
@@ -204,8 +199,7 @@ namespace Allors.Adapters.Object.SqlClient
                 this.removeCompositeRoleRelationsByRoleType = new Dictionary<IRoleType, List<CompositeRelation>>();
             }
 
-            List<CompositeRelation> relations;
-            if (!this.removeCompositeRoleRelationsByRoleType.TryGetValue(roleType, out relations))
+            if (!this.removeCompositeRoleRelationsByRoleType.TryGetValue(roleType, out var relations))
             {
                 relations = new List<CompositeRelation>();
                 this.removeCompositeRoleRelationsByRoleType[roleType] = relations;
@@ -230,8 +224,7 @@ namespace Allors.Adapters.Object.SqlClient
                 this.clearCompositeAndCompositesRoleRelationsByRoleType = new Dictionary<IRoleType, IList<long>>();
             }
 
-            IList<long> relations;
-            if (!this.clearCompositeAndCompositesRoleRelationsByRoleType.TryGetValue(roleType, out relations))
+            if (!this.clearCompositeAndCompositesRoleRelationsByRoleType.TryGetValue(roleType, out var relations))
             {
                 relations = new List<long>();
                 this.clearCompositeAndCompositesRoleRelationsByRoleType[roleType] = relations;

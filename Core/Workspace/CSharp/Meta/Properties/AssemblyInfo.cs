@@ -1,4 +1,9 @@
-﻿using System.Reflection;
+﻿// <copyright file="AssemblyInfo.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // Setting ComVisible to false makes the types in this assembly not visible

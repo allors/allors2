@@ -30,8 +30,7 @@ namespace Allors.R1.Development.Resources
 
         internal void Merge(string fileName, Dictionary<string, object> dictionary)
         {
-            ResourceFile resourceFile;
-            if (this.resourceByFileName.TryGetValue(fileName, out resourceFile))
+            if (this.resourceByFileName.TryGetValue(fileName, out var resourceFile))
             {
                 resourceFile.Merge(dictionary);
             }

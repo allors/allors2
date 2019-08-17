@@ -1,4 +1,3 @@
-
 // <copyright file="ObjectsGraph.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -26,8 +25,7 @@ namespace Allors
 
         public ObjectsNode Add(IObjects objects)
         {
-            ObjectsNode objectsNode;
-            if (!this.objectsNodeByObjects.TryGetValue(objects, out objectsNode))
+            if (!this.objectsNodeByObjects.TryGetValue(objects, out var objectsNode))
             {
                 objectsNode = new ObjectsNode(objects);
                 this.objectsNodeByObjects.Add(objects, objectsNode);

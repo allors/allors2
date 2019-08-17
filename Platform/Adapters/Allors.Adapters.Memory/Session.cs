@@ -1,4 +1,3 @@
-
 // <copyright file="Session.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -90,8 +89,7 @@ namespace Allors.Adapters.Memory
                         {
                             this.strategyByObjectId.Remove(strategy.ObjectId);
 
-                            HashSet<Strategy> strategies;
-                            if (this.strategiesByObjectType.TryGetValue(strategy.UncheckedObjectType, out strategies))
+                            if (this.strategiesByObjectType.TryGetValue(strategy.UncheckedObjectType, out var strategies))
                             {
                                 strategies.Remove(strategy);
                             }
@@ -122,8 +120,7 @@ namespace Allors.Adapters.Memory
                         {
                             this.strategyByObjectId.Remove(strategy.ObjectId);
 
-                            HashSet<Strategy> strategies;
-                            if (this.strategiesByObjectType.TryGetValue(strategy.UncheckedObjectType, out strategies))
+                            if (this.strategiesByObjectType.TryGetValue(strategy.UncheckedObjectType, out var strategies))
                             {
                                 strategies.Remove(strategy);
                             }
@@ -332,8 +329,7 @@ namespace Allors.Adapters.Memory
 
         internal Strategy GetStrategy(long objectId)
         {
-            Strategy strategy;
-            if (!this.strategyByObjectId.TryGetValue(objectId, out strategy))
+            if (!this.strategyByObjectId.TryGetValue(objectId, out var strategy))
             {
                 return null;
             }
@@ -345,8 +341,7 @@ namespace Allors.Adapters.Memory
         {
             this.strategyByObjectId.Add(strategy.ObjectId, strategy);
 
-            HashSet<Strategy> strategies;
-            if (!this.strategiesByObjectType.TryGetValue(strategy.UncheckedObjectType, out strategies))
+            if (!this.strategiesByObjectType.TryGetValue(strategy.UncheckedObjectType, out var strategies))
             {
                 strategies = new HashSet<Strategy>();
                 this.strategiesByObjectType.Add(strategy.UncheckedObjectType, strategies);
@@ -357,8 +352,7 @@ namespace Allors.Adapters.Memory
 
         internal virtual HashSet<Strategy> GetStrategiesForExtentIncludingDeleted(IObjectType type)
         {
-            IObjectType[] concreteClasses;
-            if (!this.concreteClassesByObjectType.TryGetValue(type, out concreteClasses))
+            if (!this.concreteClassesByObjectType.TryGetValue(type, out var concreteClasses))
             {
                 var sortedClassAndSubclassList = new List<IObjectType>();
 
@@ -388,8 +382,7 @@ namespace Allors.Adapters.Memory
                 case 1:
                     {
                         var objectType = concreteClasses[0];
-                        HashSet<Strategy> strategies;
-                        if (this.strategiesByObjectType.TryGetValue(objectType, out strategies))
+                        if (this.strategiesByObjectType.TryGetValue(objectType, out var strategies))
                         {
                             return strategies;
                         }
@@ -403,8 +396,7 @@ namespace Allors.Adapters.Memory
 
                         foreach (var objectType in concreteClasses)
                         {
-                            HashSet<Strategy> objectTypeStrategies;
-                            if (this.strategiesByObjectType.TryGetValue(objectType, out objectTypeStrategies))
+                            if (this.strategiesByObjectType.TryGetValue(objectType, out var objectTypeStrategies))
                             {
                                 strategies.UnionWith(objectTypeStrategies);
                             }
@@ -425,8 +417,7 @@ namespace Allors.Adapters.Memory
                 {
                     var objectType = strategy.UncheckedObjectType;
 
-                    List<Strategy> sortedNonDeletedStrategies;
-                    if (!sortedNonDeletedStrategiesByObjectType.TryGetValue(objectType, out sortedNonDeletedStrategies))
+                    if (!sortedNonDeletedStrategiesByObjectType.TryGetValue(objectType, out var sortedNonDeletedStrategies))
                     {
                         sortedNonDeletedStrategies = new List<Strategy>();
                         sortedNonDeletedStrategiesByObjectType[objectType] = sortedNonDeletedStrategies;

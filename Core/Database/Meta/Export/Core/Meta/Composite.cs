@@ -484,16 +484,14 @@ namespace Allors.Meta
         {
             roleTypes.Clear();
 
-            HashSet<RoleType> classRoleTypes;
-            if (roleTypesByAssociationObjectType.TryGetValue(this, out classRoleTypes))
+            if (roleTypesByAssociationObjectType.TryGetValue(this, out var classRoleTypes))
             {
                 roleTypes.UnionWith(classRoleTypes);
             }
 
             foreach (var superType in this.Supertypes)
             {
-                HashSet<RoleType> superTypeRoleTypes;
-                if (roleTypesByAssociationObjectType.TryGetValue(superType, out superTypeRoleTypes))
+                if (roleTypesByAssociationObjectType.TryGetValue(superType, out var superTypeRoleTypes))
                 {
                     roleTypes.UnionWith(superTypeRoleTypes);
                 }
@@ -511,16 +509,14 @@ namespace Allors.Meta
         {
             associations.Clear();
 
-            HashSet<AssociationType> classAssociationTypes;
-            if (relationTypesByRoleObjectType.TryGetValue(this, out classAssociationTypes))
+            if (relationTypesByRoleObjectType.TryGetValue(this, out var classAssociationTypes))
             {
                 associations.UnionWith(classAssociationTypes);
             }
 
             foreach (var superType in this.Supertypes)
             {
-                HashSet<AssociationType> interfaceAssociationTypes;
-                if (relationTypesByRoleObjectType.TryGetValue(superType, out interfaceAssociationTypes))
+                if (relationTypesByRoleObjectType.TryGetValue(superType, out var interfaceAssociationTypes))
                 {
                     associations.UnionWith(interfaceAssociationTypes);
                 }

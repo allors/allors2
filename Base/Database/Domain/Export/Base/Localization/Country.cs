@@ -1,4 +1,3 @@
-
 // <copyright file="Country.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -14,8 +13,7 @@ namespace Allors.Domain
             {
                 this.EuMemberState = Countries.euMemberStates.Contains(this.IsoCode);
 
-                IbanData ibanData;
-                if (Countries.IbanDataByCountry.TryGetValue(this.IsoCode, out ibanData))
+                if (Countries.IbanDataByCountry.TryGetValue(this.IsoCode, out var ibanData))
                 {
                     this.IbanLength = ibanData.Lenght;
                     this.IbanRegex = ibanData.RegexStructure;

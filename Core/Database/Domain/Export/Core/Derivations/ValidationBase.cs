@@ -1,4 +1,3 @@
-
 // <copyright file="ValidationBase.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -80,8 +79,7 @@ namespace Allors.Domain
 
         public void AssertIsUnique(IObject association, RoleType roleType)
         {
-            ISet<IRoleType> roleTypes;
-            if (this.Derivation.ChangeSet.RoleTypesByAssociation.TryGetValue(association.Id, out roleTypes))
+            if (this.Derivation.ChangeSet.RoleTypesByAssociation.TryGetValue(association.Id, out var roleTypes))
             {
                 if (roleTypes.Contains(roleType))
                 {

@@ -1,3 +1,8 @@
+// <copyright file="Schema.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
+// </copyright>
+
 namespace Allors.Adapters.Object.Npgsql
 {
     using System;
@@ -80,8 +85,7 @@ AND C.table_schema = @tableSchema";
 
                                 columnName = database.Mapping.NormalizeName(columnName);
 
-                                SchemaTable table;
-                                if (!this.TableByName.TryGetValue(fullyQualifiedTableName, out table))
+                                if (!this.TableByName.TryGetValue(fullyQualifiedTableName, out var table))
                                 {
                                     table = new SchemaTable(this, fullyQualifiedTableName);
                                     this.TableByName[fullyQualifiedTableName] = table;
@@ -180,25 +184,21 @@ WHERE routine_schema = @routineSchema";
 
         public SchemaTable GetTable(string tableName)
         {
-            SchemaTable table;
-            this.TableByName.TryGetValue(tableName.ToLowerInvariant(), out table);
+            this.TableByName.TryGetValue(tableName.ToLowerInvariant(), out var table);
             return table;
         }
 
         public SchemaProcedure GetProcedure(string procedureName)
         {
-            SchemaProcedure procedure;
-            this.ProcedureByName.TryGetValue(procedureName, out procedure);
+            this.ProcedureByName.TryGetValue(procedureName, out var procedure);
             return procedure;
         }
 
         public SchemaIndex GetIndex(string tableName, string indexName)
         {
-            Dictionary<string, SchemaIndex> indexByLowercaseIndexName;
-            if (this.indexByIndexNameByTableName.TryGetValue(tableName.ToLowerInvariant(), out indexByLowercaseIndexName))
+            if (this.indexByIndexNameByTableName.TryGetValue(tableName.ToLowerInvariant(), out var indexByLowercaseIndexName))
             {
-                SchemaIndex index;
-                indexByLowercaseIndexName.TryGetValue(indexName.ToLowerInvariant(), out index);
+                indexByLowercaseIndexName.TryGetValue(indexName.ToLowerInvariant(), out var index);
                 return index;
             }
 
