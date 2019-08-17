@@ -3,14 +3,12 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Threading.Tasks;
-using Allors.Excel;
-using NLog;
-using Office = Microsoft.Office.Core;
-
 namespace ExcelAddIn
 {
+    using System;
+    using Allors.Excel;
+    using NLog;
+
     public partial class ThisAddIn
     {
         public AddInManager AddInManager { get; private set; }

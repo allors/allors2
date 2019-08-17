@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.ComponentModel.DataAnnotations;
-
 namespace Identity.Models.ManageViewModels
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class IndexViewModel
     {
         public string Username { get; set; }

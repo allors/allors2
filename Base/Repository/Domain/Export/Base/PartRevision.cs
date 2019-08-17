@@ -33,6 +33,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Reason { get; set; }
+
         #region Allors
         [Id("84561abd-08bc-4d28-b25c-22787d8bd7f0")]
         [AssociationId("4f700281-794b-4250-8bbe-f4fbbbcf8243")]
@@ -43,6 +44,7 @@ namespace Allors.Repository
         [Required]
 
         public Part SupersededByPart { get; set; }
+
         #region Allors
         [Id("8a064340-def3-4d9f-89d6-3325b8a41f4d")]
         [AssociationId("6c674199-8f5f-469c-8f94-f35d64304968")]

@@ -33,6 +33,7 @@ namespace Allors.Repository
         [Required]
 
         public DateTime ReviewDate { get; set; }
+
         #region Allors
         [Id("6d065017-6c6f-413c-bc79-1a6349180c34")]
         [AssociationId("b0f12ce4-58e3-4757-996f-3e3aca8aafbb")]

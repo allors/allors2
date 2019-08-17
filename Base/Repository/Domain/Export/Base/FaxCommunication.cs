@@ -66,8 +66,11 @@ namespace Allors.Repository
         public Person Owner { get; set; }
 
         public DateTime ActualStart { get; set; }
+
         public bool SendNotification { get; set; }
+
         public bool SendReminder { get; set; }
+
         public DateTime RemindAt { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }

@@ -53,7 +53,7 @@ namespace Allors.Adapters.Memory
         public override void CopyTo(Array array, int index)
         {
             this.FillObjects();
-            for (int i = 0; i < this.roles.Count; i++)
+            for (var i = 0; i < this.roles.Count; i++)
             {
                 array.SetValue(this.roles[i].GetObject(), i + index);
             }
@@ -89,7 +89,7 @@ namespace Allors.Adapters.Memory
             if (this.roles.Count > 0)
             {
                 var objects = (IObject[])Array.CreateInstance(type, this.roles.Count);
-                for (int i = 0; i < this.roles.Count; i++)
+                for (var i = 0; i < this.roles.Count; i++)
                 {
                     objects[i] = this.roles[i].GetObject();
                 }

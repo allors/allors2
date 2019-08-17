@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -26,6 +25,7 @@ namespace Allors.Repository
         [Indexed]
 
         public ObjectState[] FromStates { get; set; }
+
         #region Allors
         [Id("dd19e7f8-83b7-4ff1-b475-02c4296b47e4")]
         [AssociationId("c88c9ab2-af38-45ca-9caa-fcb5715da129")]
@@ -39,7 +39,9 @@ namespace Allors.Repository
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public void OnBuild() { }
 
         public void OnPostBuild() { }

@@ -10,7 +10,6 @@ namespace Allors.Development.Repository.Tasks
     using System.IO;
 
     using Allors.Development.Repository.Generation;
-    using Allors.Workspace.Meta;
 
     using Autotest;
 

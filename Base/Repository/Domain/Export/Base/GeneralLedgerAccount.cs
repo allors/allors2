@@ -148,6 +148,7 @@ namespace Allors.Repository
         [Required]
 
         public GeneralLedgerAccountGroup GeneralLedgerAccountGroup { get; set; }
+
         #region Allors
         [Id("beda5c75-e1a0-493a-85ec-a943214cec8d")]
         [AssociationId("319a12b6-4ee9-4bbd-9026-480b02e71255")]

@@ -39,6 +39,7 @@ namespace Allors.Repository
         [Required]
 
         public Position Position { get; set; }
+
         #region Allors
         [Id("4de369bb-6fa3-4fd4-9056-0e70a72c9b9f")]
         [AssociationId("23fa9951-ceb1-44b2-af36-f3e4955018d1")]

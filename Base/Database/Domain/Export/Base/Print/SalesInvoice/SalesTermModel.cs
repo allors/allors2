@@ -34,6 +34,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         }
 
         public string Name { get; }
+
         public string Value { get; }
     }
 }

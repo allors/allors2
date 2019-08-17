@@ -8,8 +8,6 @@ namespace Allors.Adapters.Object.SqlClient
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.IO;
-    using System.Xml;
 
     internal class ObjectsReader : IDataReader
     {

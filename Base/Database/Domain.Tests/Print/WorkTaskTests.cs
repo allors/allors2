@@ -12,8 +12,6 @@ namespace Allors.Domain.Print
     using System.Linq;
     using Xunit;
 
-    using Allors.Meta;
-
     public class WorkTaskTests : DomainTest
     {
         [Fact]

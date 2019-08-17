@@ -7,7 +7,6 @@ namespace Allors.Excel
 {
     using System;
     using System.Threading.Tasks;
-    using System.Windows.Forms;
 
     using NLog;
 

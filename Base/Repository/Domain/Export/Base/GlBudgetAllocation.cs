@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -31,6 +30,7 @@ namespace Allors.Repository
         [Required]
 
         public GeneralLedgerAccount GeneralLedgerAccount { get; set; }
+
         #region Allors
         [Id("dddccd24-864c-48bb-b1ac-35b8a201cd65")]
         [AssociationId("babbcdc0-7d4b-4679-a937-cbf6f5632c8b")]
@@ -41,6 +41,7 @@ namespace Allors.Repository
         [Required]
 
         public BudgetItem BudgetItem { get; set; }
+
         #region Allors
         [Id("eb1e7e03-8b88-4a69-b1cc-46dc77b44a8b")]
         [AssociationId("cd06b83b-3b19-4b6d-bed8-90c5ece3c600")]

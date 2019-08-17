@@ -3,11 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Linq;
+
     public static class PartExtensions
     {
         public static string PartIdentification(this Part @this)

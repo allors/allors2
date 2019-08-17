@@ -56,18 +56,31 @@ namespace Allors.Domain.Print.SalesOrderModel
         }
 
         public string Name { get; }
+
         public string Address { get; }
+
         public string City { get; }
+
         public string State { get; }
+
         public string Country { get; }
+
         public string PostalCode { get; }
+
         public string Telephone { get; }
+
         public string Email { get; }
+
         public string Website { get; }
+
         public string Bank { get; }
+
         public string BankAccount { get; }
+
         public string IBAN { get; }
+
         public string Swift { get; }
+
         public string TaxId { get; }
     }
 }

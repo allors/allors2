@@ -28,6 +28,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime StartedUsingDate { get; set; }
+
         #region Allors
         [Id("5a52b67e-23e4-45ac-a1d4-cb083bf897cc")]
         [AssociationId("7de9d895-a524-4fc2-a5f4-7b9e78921d6c")]
@@ -38,6 +39,7 @@ namespace Allors.Repository
         [Required]
 
         public Service Service { get; set; }
+
         #region Allors
         [Id("6d4ec793-41a7-4044-9744-42d1bd44bbd4")]
         [AssociationId("fe73df0c-f46c-42e6-8274-a5de09de72d5")]

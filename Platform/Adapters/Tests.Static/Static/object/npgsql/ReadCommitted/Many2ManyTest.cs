@@ -6,10 +6,9 @@
 //   Defines the Default type.
 // </summary>
 
-using Xunit;
-
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
+    using Xunit;
     using System;
 
     [Collection(Fixture.Collection)]

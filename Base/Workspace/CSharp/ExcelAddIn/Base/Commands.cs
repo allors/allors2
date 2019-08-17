@@ -3,11 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using ExcelAddIn;
-using Microsoft.Office.Interop.Excel;
-
 namespace Allors.Excel
 {
+    using ExcelAddIn;
+    using Microsoft.Office.Interop.Excel;
     using System;
     using System.Threading.Tasks;
 

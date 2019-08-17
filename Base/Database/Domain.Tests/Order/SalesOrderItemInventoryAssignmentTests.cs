@@ -6,11 +6,9 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System;
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Linq;
     using Xunit;
 
     public class SalesOrderItemInventoryAssignmentTests : DomainTest

@@ -8,7 +8,6 @@ namespace Allors.Adapters.Object.Npgsql
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Allors.Meta;
 

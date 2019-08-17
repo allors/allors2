@@ -23,11 +23,17 @@ namespace Allors.Domain.Print.WorkTaskModel
         }
 
         public string Name { get; }
+
         public string CustomerReferenceNumber { get; }
+
         public string SerialNumber { get; }
+
         public string ItemNumber { get; }
+
         public string Brand { get; }
+
         public string Model { get; }
+
         public string Comment { get; }
     }
 }

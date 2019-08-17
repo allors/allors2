@@ -3,11 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
 namespace Identity.Models.ManageViewModels
 {
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public class EnableAuthenticatorViewModel
     {
         [Required]

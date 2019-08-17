@@ -13,6 +13,7 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedAbbreviations { get; set; }
 
         public string Description { get; set; }
+
         public UnitOfMeasureConversion[] UnitOfMeasureConversions { get; set; }
 
         public string Symbol { get; set; }

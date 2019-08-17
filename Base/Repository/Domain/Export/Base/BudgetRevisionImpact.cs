@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -30,6 +29,7 @@ namespace Allors.Repository
         [Indexed]
 
         public BudgetItem BudgetItem { get; set; }
+
         #region Allors
         [Id("55e9b1e3-0545-471e-97b0-07d8968629c2")]
         [AssociationId("87269928-a93d-43b3-82d5-4d26d771b113")]
@@ -39,6 +39,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Reason { get; set; }
+
         #region Allors
         [Id("6b3a80c1-eff1-478c-a54e-4912bc4a1242")]
         [AssociationId("c8f87804-9940-491d-a6aa-3b4dd888a016")]
@@ -46,6 +47,7 @@ namespace Allors.Repository
         #endregion
 
         public bool Deleted { get; set; }
+
         #region Allors
         [Id("7d0ad499-1e3d-41cd-bc6c-79aac1a7fa57")]
         [AssociationId("d409452f-bd4f-4c71-b71b-8512068d3ce8")]
@@ -53,6 +55,7 @@ namespace Allors.Repository
         #endregion
 
         public bool Added { get; set; }
+
         #region Allors
         [Id("80106b6d-8e1d-4db1-a4eb-71a56e9a4c94")]
         [AssociationId("81e2607d-d1fc-475d-8a19-b60c34fae7f9")]
@@ -61,6 +64,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal RevisedAmount { get; set; }
+
         #region Allors
         [Id("b93df76d-439a-45cf-885d-4887afe5fd6f")]
         [AssociationId("ed0a9f21-20e3-4f26-a020-5b0afc8ec335")]

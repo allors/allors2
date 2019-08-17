@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Microsoft.Extensions.Logging;
-
 namespace Allors.Server.Controllers
 {
+    using Microsoft.Extensions.Logging;
     using System;
     using Allors.Services;
     using Microsoft.AspNetCore.Mvc;

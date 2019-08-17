@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -29,6 +28,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal ThroughAmount { get; set; }
+
         #region Allors
         [Id("b25816e8-4b0c-4857-907f-7a391df2c55e")]
         [AssociationId("017aab24-a93c-4654-bc89-96e075d13c08")]

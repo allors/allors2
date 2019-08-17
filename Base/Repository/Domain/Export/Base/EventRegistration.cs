@@ -26,6 +26,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Person Person { get; set; }
+
         #region Allors
         [Id("ed542026-7020-43e3-ab72-c3f4dd991a4b")]
         [AssociationId("cba93e20-e78d-4c86-8b5b-2daa930fde35")]
@@ -35,6 +36,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Event Event { get; set; }
+
         #region Allors
         [Id("f9805362-2bd2-46d4-b9b2-d38cd0a76f78")]
         [AssociationId("e2dcb678-d8ba-45ed-9f25-5a87aae2d18f")]
@@ -46,7 +48,9 @@ namespace Allors.Repository
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public void OnBuild() { }
 
         public void OnPostBuild() { }

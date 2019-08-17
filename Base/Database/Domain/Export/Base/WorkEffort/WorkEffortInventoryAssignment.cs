@@ -3,12 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using Allors.Meta;
-
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
 
     public partial class WorkEffortInventoryAssignment

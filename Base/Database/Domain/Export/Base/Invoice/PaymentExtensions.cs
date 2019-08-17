@@ -3,12 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using Allors.Meta;
-using Resources;
-
 namespace Allors.Domain
 {
+    using Allors.Meta;
+    using Resources;
+
     public static partial class PaymentExtensions
     {
         public static void BaseOnBuild(this Payment @this, ObjectOnBuild method)

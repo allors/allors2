@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class EngineeringChangeStatus
     {
         public void BaseOnBuild(ObjectOnBuild method)

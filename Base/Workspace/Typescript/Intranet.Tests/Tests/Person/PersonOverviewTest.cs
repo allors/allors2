@@ -3,11 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.@base.objects.person.list;
-using src.allors.material.@base.objects.person.overview;
-
 namespace Tests.PersonTests
 {
+    using src.allors.material.@base.objects.person.list;
+    using src.allors.material.@base.objects.person.overview;
     using Allors.Domain;
     using Allors.Meta;
     using Xunit;

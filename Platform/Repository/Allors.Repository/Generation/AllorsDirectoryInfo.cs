@@ -30,7 +30,7 @@ namespace Allors.Repository.Generation
 
         public string GetRelativeOrFullName(DirectoryInfo baseDirectoryInfo)
         {
-            string relativeName = this.GetRelativeName(baseDirectoryInfo);
+            var relativeName = this.GetRelativeName(baseDirectoryInfo);
             if (relativeName == null)
             {
                 return this.DirectoryInfo.FullName;
@@ -101,7 +101,7 @@ namespace Allors.Repository.Generation
                     relativePath.Append("..");
                 }
 
-                for (int i = ancestors.Count - 1; i >= 0; --i)
+                for (var i = ancestors.Count - 1; i >= 0; --i)
                 {
                     var ancestor = ancestors[i];
                     if (relativePath.Length > 0)

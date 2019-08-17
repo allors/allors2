@@ -2263,7 +2263,7 @@ namespace Allors.Adapters
 
                 foreach (var mark in this.Markers)
                 {
-                    for (int i = 0; i < Settings.NumberOfRuns; i++)
+                    for (var i = 0; i < Settings.NumberOfRuns; i++)
                     {
                         var from = C1.Create(this.Session);
                         var fromAnother = C1.Create(this.Session);

@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -29,6 +28,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal EstimatedCost { get; set; }
+
         #region Allors
         [Id("73900f38-242a-4aac-ba8e-d8ffa57a125f")]
         [AssociationId("87bc4caf-7953-4805-816a-e6e6af4cfc19")]
@@ -37,6 +37,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal EstimatedDuration { get; set; }
+
         #region Allors
         [Id("98ca7e1a-8f15-4533-9de7-819b6c868788")]
         [AssociationId("da3497fc-7c30-4760-bfec-2bbc8d5ebf5b")]
@@ -47,6 +48,7 @@ namespace Allors.Repository
         [Required]
 
         public FixedAsset FixedAsset { get; set; }
+
         #region Allors
         [Id("b9d782af-1f4c-4639-bd11-fda3651982df")]
         [AssociationId("c17dbf4f-504f-4b9e-ba5c-25545e1386d0")]

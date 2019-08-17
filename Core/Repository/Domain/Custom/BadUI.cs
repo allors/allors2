@@ -23,6 +23,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         public Person[] PersonsMany { get; set; }
+
         #region Allors
         [Id("9ebbb9d1-2ca7-4a7f-9f18-f25c05fd28c1")]
         [AssociationId("37c64e26-a391-4c7b-98fb-53ccb5fbc795")]
@@ -31,6 +32,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         public Organisation CompanyOne { get; set; }
+
         #region Allors
         [Id("a4db0d75-3dff-45ac-9c1d-623bca046b4a")]
         [AssociationId("5ed577d8-f048-42b8-9fb4-38b88ebf35f1")]
@@ -39,6 +41,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         public Person PersonOne { get; set; }
+
         #region Allors
         [Id("a8621048-48b5-43c4-b10b-17225958d177")]
         [AssociationId("718eaf0b-1b62-43b2-b336-c9820d806b28")]
@@ -47,6 +50,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         public Organisation CompanyMany { get; set; }
+
         #region Allors
         [Id("c93a102e-ecdb-4189-a0fc-eeea8b4b85d4")]
         [AssociationId("2225f3e0-1304-4a55-9b89-29563fe52e3c")]

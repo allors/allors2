@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Collections.Generic;
-
 namespace Allors.Adapters.Object.SqlClient
 {
+    using System.Collections.Generic;
     using Allors.Meta;
 
     internal abstract class ExtentStatement

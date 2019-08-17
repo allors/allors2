@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
-
     public partial class PurchaseOrderApprovalsLevel2
     {
         protected override void BaseSecure(Security config)

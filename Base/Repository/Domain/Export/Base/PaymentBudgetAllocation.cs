@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -31,6 +30,7 @@ namespace Allors.Repository
         [Required]
 
         public Payment Payment { get; set; }
+
         #region Allors
         [Id("3245613c-71d3-4a5e-a687-6f5ac306d9df")]
         [AssociationId("3cf6b4ce-56df-44c9-9348-3a419a226edc")]
@@ -41,6 +41,7 @@ namespace Allors.Repository
         [Required]
 
         public BudgetItem BudgetItem { get; set; }
+
         #region Allors
         [Id("a982dfa7-4c81-41d6-93ec-ea380a526ad0")]
         [AssociationId("cb680a9c-ba32-4ceb-b9fb-127041e509e5")]

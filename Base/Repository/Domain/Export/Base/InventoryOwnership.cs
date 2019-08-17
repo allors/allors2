@@ -17,6 +17,7 @@ namespace Allors.Repository
         #region inherited properties
 
         public Party[] Parties { get; set; }
+
         public DateTime FromDate { get; set; }
 
         public DateTime ThroughDate { get; set; }

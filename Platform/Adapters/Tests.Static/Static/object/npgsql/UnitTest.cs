@@ -8,7 +8,6 @@
 
 namespace Allors.Adapters.Object.Npgsql
 {
-    using System;
 
     using Allors.Domain;
 

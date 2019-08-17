@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -32,6 +31,7 @@ namespace Allors.Repository
         #endregion
 
         public bool Primary { get; set; }
+
         #region Allors
         [Id("5fbc72bf-2153-4b91-83f9-6fd057e4b1d6")]
         [AssociationId("c06de12f-bf0e-4d91-b8f6-9f6b250b107c")]
@@ -42,6 +42,7 @@ namespace Allors.Repository
         [Required]
 
         public Position ManagedByPosition { get; set; }
+
         #region Allors
         [Id("e2e60d09-ebfa-4bf3-94e9-759279b00919")]
         [AssociationId("1e94dba5-c7d3-41ca-ae79-80b0d2b2ce3c")]

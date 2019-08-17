@@ -7,8 +7,6 @@ namespace Allors.Domain
 {
     using System.Linq;
 
-    using Allors.Meta;
-
     public partial class SerialisedItemCharacteristic
     {
         public void BaseOnDerive(ObjectOnDerive method)

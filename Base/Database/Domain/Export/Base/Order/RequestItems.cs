@@ -5,9 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-    using Allors.Meta;
-
     public partial class RequestItems
     {
         protected override void BaseSecure(Security config)

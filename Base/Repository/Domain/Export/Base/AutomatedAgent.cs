@@ -114,6 +114,7 @@ namespace Allors.Repository
         public PaymentMethod DefaultPaymentMethod { get; set; }
 
         public PartyRate[] PartyRates { get; set; }
+
         public bool CollectiveWorkEffortInvoice { get; set; }
 
         #endregion

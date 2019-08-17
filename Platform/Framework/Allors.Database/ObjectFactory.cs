@@ -6,10 +6,9 @@
 // <summary>Defines the ObjectBase type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
-
 namespace Allors
 {
+    using System.Runtime.CompilerServices;
     using System;
     using System.Collections.Generic;
     using System.Linq;

@@ -33,6 +33,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Cost { get; set; }
+
         #region Allors
         [Id("4dfb4bda-1add-45d5-92c7-6393186301f0")]
         [AssociationId("44088ee8-b84a-494c-a59c-3164c511176c")]
@@ -42,6 +43,7 @@ namespace Allors.Repository
         [Indexed]
 
         public ShipmentMethod ShipmentMethod { get; set; }
+
         #region Allors
         [Id("a029fb4c-4f80-4216-8fc9-9d9b44997816")]
         [AssociationId("9e7b4c12-5168-4fe3-adaf-f8d14f7be01f")]
@@ -51,6 +53,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Carrier Carrier { get; set; }
+
         #region Allors
         [Id("ab4377d4-69c6-4b0c-b9d4-e3a01c1a6a94")]
         [AssociationId("2ad57105-a5c4-4e7f-a6df-79af9cddf9ca")]
@@ -60,6 +63,7 @@ namespace Allors.Repository
         [Indexed]
 
         public ShipmentValue ShipmentValue { get; set; }
+
         #region Allors
         [Id("df4727ab-29a8-448c-97b4-c16033e03dcf")]
         [AssociationId("a57b1bd3-a060-41c1-91bd-ecc428dd9b55")]

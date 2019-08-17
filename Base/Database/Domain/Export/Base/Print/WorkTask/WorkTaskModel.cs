@@ -60,20 +60,35 @@ namespace Allors.Domain.Print.WorkTaskModel
         }
 
         public string Number { get; }
+
         public string Name { get; }
+
         public string Description { get; }
+
         public string WorkDone { get; }
+
         public string Purpose { get; }
+
         public string Date { get; }
+
         public string PurchaseOrder { get; }
+
         public string ContactName { get; }
+
         public string ContactTelephone { get; }
+
         public string PaymentTerms { get; }
+
         public string Facility { get; }
+
         public decimal TotalLabour { get; }
+
         public decimal TotalParts { get; }
+
         public decimal TotalOther { get; }
+
         public decimal Total { get; }
+
         public string SalesRep { get; }
     }
 }

@@ -6,12 +6,9 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Domain
 {
-    using System;
-    using Allors.Meta;
+    using System.Linq;
     using Xunit;
 
     public class SupplierRelationshipTests : DomainTest

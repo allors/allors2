@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -24,6 +23,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         public User[] Selects { get; set; }
+
         #region Allors
         [Id("bc6b71a8-2a66-4b57-9c86-ecf521b973ba")]
         [AssociationId("36058495-3b0d-416b-b2fb-cfe06e88035c")]

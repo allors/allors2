@@ -28,6 +28,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime IssueDate { get; set; }
+
         #region Allors
         [Id("dd30acd3-2e7b-49e6-9fcd-04cfdafb62d0")]
         [AssociationId("cb5a7d75-b938-4451-9896-b661b1828fab")]
@@ -35,6 +36,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime ExpiriationDate { get; set; }
+
         #region Allors
         [Id("eb3cdf1a-d577-46ff-9d0e-d709c6e7d9d9")]
         [AssociationId("8d5d9376-24e0-486f-84fb-f242bfaee585")]

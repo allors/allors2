@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.IO;
-
 namespace Allors.Domain
 {
+    using System.IO;
+
     public static class FileReader
     {
         public static Media CreateMedia(ISession session, string fileName)

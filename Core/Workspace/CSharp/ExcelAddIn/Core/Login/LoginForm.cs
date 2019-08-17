@@ -3,20 +3,13 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Allors.Workspace.Client;
-using Nito.AsyncEx;
-
 namespace BaseExcelAddIn.Base
 {
+    using System;
+    using System.Windows.Forms;
+    using Allors.Workspace.Client;
+    using Nito.AsyncEx;
+
     public partial class LoginForm : Form
     {
         public LoginForm()

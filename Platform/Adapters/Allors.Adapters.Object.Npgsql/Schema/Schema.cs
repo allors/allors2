@@ -7,7 +7,6 @@ namespace Allors.Adapters.Object.Npgsql
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using global::Npgsql;
 
     using NpgsqlTypes;

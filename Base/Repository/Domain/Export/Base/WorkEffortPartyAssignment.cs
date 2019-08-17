@@ -102,7 +102,9 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
         public void Delete() { }
+
         public void DelegateAccess() { }
 
         #endregion

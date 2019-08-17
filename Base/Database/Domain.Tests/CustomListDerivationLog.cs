@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Domain;
-
 namespace Allors
 {
+    using Allors.Domain;
+
     public class CustomListDerivationLog : Domain.Logging.ListDerivationLog
     {
         public Domain.Logging.Derivation Derivation { get; set; }

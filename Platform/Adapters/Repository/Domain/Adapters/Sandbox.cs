@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -39,6 +38,7 @@ namespace Allors.Repository
         [Size(256)]
         #endregion
         public string InvisibleValue { get; set; }
+
         #region Allors
         [Id("856a0161-2a46-428a-bae5-95d6a86a89e8")]
         [AssociationId("0c22274b-c5c3-4b6e-883a-e375f25fd500")]

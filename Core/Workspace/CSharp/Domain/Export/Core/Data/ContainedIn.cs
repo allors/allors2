@@ -5,10 +5,9 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Workspace.Meta;
-
 namespace Allors.Workspace.Data
 {
+    using Allors.Workspace.Meta;
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Workspace;

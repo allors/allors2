@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Protocol.Data;
-
 namespace Allors.Adapters
 {
+    using Allors.Protocol.Data;
     using System;
 
     using Allors;

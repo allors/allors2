@@ -32,14 +32,17 @@ namespace Allors.Repository
         public string ShipmentNumber { get; set; }
 
         public Facility ShipToFacility { get; set; }
+
         public Document[] Documents { get; set; }
 
         public Facility ShipFromFacility { get; set; }
+
         public Party ShipToParty { get; set; }
 
         public ShipmentItem[] ShipmentItems { get; set; }
 
         public PostalAddress ShipToAddress { get; set; }
+
         public Person ShipToContactPerson { get; set; }
 
         public decimal EstimatedShipCost { get; set; }
@@ -53,6 +56,7 @@ namespace Allors.Repository
         public DateTime EstimatedReadyDate { get; set; }
 
         public PostalAddress ShipFromAddress { get; set; }
+
         public PostalAddress ShipFromContactPerson { get; set; }
 
         public string HandlingInstruction { get; set; }

@@ -3,12 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-using Allors.Meta;
-using OpenQA.Selenium.Support.PageObjects;
-
 namespace Components
 {
+    using System.Linq;
+    using Allors.Meta;
+    using OpenQA.Selenium.Support.PageObjects;
     using OpenQA.Selenium;
 
     public class MatFactoryFab : SelectorComponent

@@ -5,8 +5,6 @@
 
 namespace Allors.Domain.Print.PurchaseOrderModel
 {
-    using System;
-
     public class OrderModel
     {
         public OrderModel(PurchaseOrder order)
@@ -26,13 +24,21 @@ namespace Allors.Domain.Print.PurchaseOrderModel
         }
 
         public string Description { get; }
+
         public string Number { get; }
+
         public string Date { get; }
+
         public string CustomerReference { get; }
+
         public string SubTotal { get; }
+
         public string TotalExVat { get; }
+
         public string VatCharge { get; }
+
         public string TotalVat { get; }
+
         public string TotalIncVat { get; }
     }
 }

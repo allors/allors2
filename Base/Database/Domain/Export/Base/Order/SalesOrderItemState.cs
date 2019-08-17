@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class SalesOrderItemState
     {
         public bool Created => Equals(this.UniqueId, SalesOrderItemStates.CreatedId);

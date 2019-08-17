@@ -39,6 +39,7 @@ namespace Allors.Repository
         public decimal Quantity { get; set; }
 
         public string Description { get; set; }
+
         public Invoice SyncedInvoice { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
@@ -213,6 +214,7 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
+
         public void DelegateAccess() { }
         #endregion
 

@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -30,6 +29,7 @@ namespace Allors.Repository
         [Indexed]
 
         public JournalType JournalType { get; set; }
+
         #region Allors
         [Id("99719445-24e6-445e-8ce1-60c0b5911723")]
         [AssociationId("4d278d9b-a817-4311-ba52-d1bd14db8cc2")]
@@ -37,6 +37,7 @@ namespace Allors.Repository
         #endregion
 
         public int Number { get; set; }
+
         #region Allors
         [Id("a47d5af5-21a8-4d4f-a2be-956ae7da8819")]
         [AssociationId("fd990275-4217-46fd-9f2d-e7af28ff5598")]

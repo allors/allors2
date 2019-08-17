@@ -3,13 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Adapters;
-
 namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
-    using System;
-
     using Allors.Adapters;
+    using System;
 
     public class SandboxTest : Adapters.SandboxTest, IDisposable
     {

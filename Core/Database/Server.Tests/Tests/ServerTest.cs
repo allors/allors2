@@ -6,10 +6,9 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Adapters.Object.SqlClient;
-
 namespace Server.Tests
 {
+    using Allors.Adapters.Object.SqlClient;
     using System;
     using System.IO;
     using System.Net.Http;

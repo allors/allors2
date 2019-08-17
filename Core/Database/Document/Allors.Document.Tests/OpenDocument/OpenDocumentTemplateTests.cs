@@ -10,8 +10,6 @@ namespace Allos.Document.OpenDocument.Tests
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
-    using Allors.Document;
     using Allors.Document.OpenDocument;
 
     using Xunit;

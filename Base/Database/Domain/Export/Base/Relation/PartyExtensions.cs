@@ -3,12 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Linq;
     using System;
-    using System.Collections.Generic;
     using Allors.Meta;
 
     public static class PartyExtensions

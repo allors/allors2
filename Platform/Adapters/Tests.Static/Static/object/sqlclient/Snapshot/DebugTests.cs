@@ -3,17 +3,13 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using Allors.Adapters;
-
 namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
+    using System;
     using Allors.Adapters;
 
     using Allors.Adapters.Object.SqlClient.Caching;
     using Allors.Adapters.Object.SqlClient.Debug;
-
-    using Xunit;
 
     public class DebugTests : SqlClient.DebugTests, IDisposable
     {

@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System.Linq;
-
     public partial class ProductQuoteApproval
     {
         public void BaseApprove(ProductQuoteApprovalApprove method)

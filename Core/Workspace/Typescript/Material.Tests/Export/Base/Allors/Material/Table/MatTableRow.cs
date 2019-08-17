@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-
 namespace Components
 {
+    using System.Linq;
     using System.Diagnostics.CodeAnalysis;
     using OpenQA.Selenium;
 

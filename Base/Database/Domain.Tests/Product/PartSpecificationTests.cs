@@ -9,6 +9,7 @@
 namespace Allors.Domain
 {
     using Xunit;
+
     public class PartSpecificationTests : DomainTest
     {
         [Fact]

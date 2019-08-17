@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
-
     public partial class SerialisedInventoryItemState
     {
         public bool IsGood => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Good);

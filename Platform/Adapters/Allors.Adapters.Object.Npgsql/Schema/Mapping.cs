@@ -5,10 +5,9 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Adapters.Object.Npgsql
 {
+    using System.Linq;
     using System;
     using System.Collections.Generic;
 

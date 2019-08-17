@@ -5,10 +5,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Workspace.Meta;
-
 namespace Allors.Workspace.Data
 {
+    using Allors.Workspace.Meta;
+
     public interface IPropertyPredicate : IPredicate
     {
         IPropertyType PropertyType { get; set; }

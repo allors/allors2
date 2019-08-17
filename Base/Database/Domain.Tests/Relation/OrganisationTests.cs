@@ -8,10 +8,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-    using System.Security.Principal;
-    using System.Threading;
-    using Allors.Meta;
     using Xunit;
 
     public class OrganisationTests : DomainTest

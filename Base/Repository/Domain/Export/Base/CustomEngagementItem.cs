@@ -51,6 +51,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string DescriptionOfWork { get; set; }
+
         #region Allors
         [Id("f0b91526-924e-4f11-b27c-187010e1dff7")]
         [AssociationId("21f41aa4-9417-4822-afba-6e424dd936f2")]
@@ -76,6 +77,7 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
         public void DelegateAccess() { }
 
         #endregion

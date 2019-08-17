@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
-
     public partial class SerialisedItemState
     {
         public bool IsNA => this.Equals(new SerialisedItemStates(this.Strategy.Session).NA);

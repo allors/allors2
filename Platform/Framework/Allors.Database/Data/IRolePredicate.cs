@@ -5,10 +5,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
-
 namespace Allors.Data
 {
+    using Allors.Meta;
+
     public interface IRolePredicate : IPredicate
     {
         IRoleType RoleType { get; set; }

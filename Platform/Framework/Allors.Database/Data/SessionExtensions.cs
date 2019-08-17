@@ -52,7 +52,7 @@ namespace Allors.Data
 
         internal static IObject[] GetObjects(this ISession @this, object value)
         {
-            IObject[] emptyArray = Array.Empty<IObject>();
+            var emptyArray = Array.Empty<IObject>();
             switch (value)
             {
                 case IObject[] objects:

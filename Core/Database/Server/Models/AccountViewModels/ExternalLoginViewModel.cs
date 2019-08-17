@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.ComponentModel.DataAnnotations;
-
 namespace Identity.Models.AccountViewModels
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class ExternalLoginViewModel
     {
         [Required]

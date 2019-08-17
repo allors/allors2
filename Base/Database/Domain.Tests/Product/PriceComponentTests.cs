@@ -8,7 +8,6 @@
 
 namespace Allors.Domain
 {
-    using System;
 
     using Allors.Meta;
 

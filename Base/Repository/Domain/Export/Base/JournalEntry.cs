@@ -28,6 +28,7 @@ namespace Allors.Repository
         #endregion
         [Size(-1)]
         public string Description { get; set; }
+
         #region Allors
         [Id("1452d159-857a-4fff-b1d6-6d27772e54bc")]
         [AssociationId("eb122f1d-8615-4342-8beb-2a197677947a")]
@@ -35,6 +36,7 @@ namespace Allors.Repository
         #endregion
 
         public int EntryNumber { get; set; }
+
         #region Allors
         [Id("1b5f8acd-872d-498e-9c2d-ded4b7d31efe")]
         [AssociationId("9bb9541a-f0fc-4ed8-bc3f-13e1d7901395")]
@@ -42,6 +44,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime EntryDate { get; set; }
+
         #region Allors
         [Id("4eca8284-cc27-4440-8b5f-adeffd3b078b")]
         [AssociationId("b7897efa-b2f5-4807-8385-3da4936998c7")]
@@ -49,6 +52,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime JournalDate { get; set; }
+
         #region Allors
         [Id("e81fe73b-1486-4a9d-ab2b-2d49dfcbb777")]
         [AssociationId("77a3f9d6-814b-438e-b424-e63763bb4213")]

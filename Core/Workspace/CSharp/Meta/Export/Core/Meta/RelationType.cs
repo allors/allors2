@@ -6,10 +6,9 @@
 // <summary>Defines the RelationType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Workspace.Meta
 {
+    using System.Linq;
     using System;
 
     /// <summary>

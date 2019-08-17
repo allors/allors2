@@ -33,6 +33,7 @@ namespace Allors.Repository
         [Size(256)]
 
         public string Name { get; set; }
+
         #region Allors
         [Id("71d503fb-ebb9-45b3-af62-1b233677adce")]
         [AssociationId("ca0820dd-e0b2-4714-8e2f-f3613dcdbd15")]

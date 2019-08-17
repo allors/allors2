@@ -38,6 +38,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Person Manager { get; set; }
+
         #region Allors
         [Id("3704d6ac-52c1-4af0-ad6e-151defc2fa05")]
         [AssociationId("840545c0-3f1e-44e0-96cd-48a0dc34e937")]
@@ -47,6 +48,7 @@ namespace Allors.Repository
         [Indexed]
 
         public PayHistory PayHistory { get; set; }
+
         #region Allors
         [Id("a16503ae-6371-4e97-9d34-f21a0f52002f")]
         [AssociationId("7002201c-53f7-457f-8c8c-4990fc4ed175")]
@@ -56,6 +58,7 @@ namespace Allors.Repository
         [Indexed]
 
         public PayCheck BonusPayCheck { get; set; }
+
         #region Allors
         [Id("a5057413-950e-4825-8036-7f398c4b5d39")]
         [AssociationId("86796848-4a49-43c1-879e-1e77063af4e0")]
@@ -65,6 +68,7 @@ namespace Allors.Repository
         [Indexed]
 
         public PerformanceReviewItem[] PerformanceReviewItems { get; set; }
+
         #region Allors
         [Id("ddeb9c39-9bfc-437d-8f5a-434028d8ad6f")]
         [AssociationId("1e857746-32cb-44af-9e05-3fb7568def9a")]
@@ -75,6 +79,7 @@ namespace Allors.Repository
         [Required]
 
         public Person Employee { get; set; }
+
         #region Allors
         [Id("f3210e4a-a8ee-442c-85a5-34290deffe2a")]
         [AssociationId("b91a9331-cc16-401f-9ee7-d697389431f7")]

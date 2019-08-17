@@ -88,7 +88,7 @@ namespace Allors.Development.Repository.Storage
                     relativePath.Append("..");
                 }
 
-                for (int i = ancestors.Count - 1; i >= 0; --i)
+                for (var i = ancestors.Count - 1; i >= 0; --i)
                 {
                     var ancestor = ancestors[i];
                     if (relativePath.Length > 0)

@@ -9,13 +9,9 @@
 namespace Tests
 {
     using System;
-    using System.Data;
 
     using Allors;
     using Allors.Domain;
-    using Allors.Services;
-
-    using Microsoft.Extensions.DependencyInjection;
 
     using Xunit;
 

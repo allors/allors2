@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -178,7 +177,7 @@ namespace Allors.Domain
 
                     if (this.ExistVatRegime)
                     {
-                        decimal vat = Math.Round(discount * this.VatRegime.VatRate.Rate / 100, 2);
+                        var vat = Math.Round(discount * this.VatRegime.VatRate.Rate / 100, 2);
 
                         this.TotalVat -= vat;
                         this.TotalIncVat -= discount + vat;
@@ -187,7 +186,7 @@ namespace Allors.Domain
 
                 if (this.ExistSurchargeAdjustment)
                 {
-                    decimal surcharge = this.SurchargeAdjustment.Percentage.HasValue ?
+                    var surcharge = this.SurchargeAdjustment.Percentage.HasValue ?
                                             Math.Round(this.TotalExVat * this.SurchargeAdjustment.Percentage.Value / 100, 2) :
                                             this.SurchargeAdjustment.Amount ?? 0;
 
@@ -196,7 +195,7 @@ namespace Allors.Domain
 
                     if (this.ExistVatRegime)
                     {
-                        decimal vat = Math.Round(surcharge * this.VatRegime.VatRate.Rate / 100, 2);
+                        var vat = Math.Round(surcharge * this.VatRegime.VatRate.Rate / 100, 2);
                         this.TotalVat += vat;
                         this.TotalIncVat += surcharge + vat;
                     }
@@ -204,7 +203,7 @@ namespace Allors.Domain
 
                 if (this.ExistFee)
                 {
-                    decimal fee = this.Fee.Percentage.HasValue ?
+                    var fee = this.Fee.Percentage.HasValue ?
                                       Math.Round(this.TotalExVat * this.Fee.Percentage.Value / 100, 2) :
                                       this.Fee.Amount ?? 0;
 
@@ -213,7 +212,7 @@ namespace Allors.Domain
 
                     if (this.Fee.ExistVatRate)
                     {
-                        decimal vat1 = Math.Round(fee * this.Fee.VatRate.Rate / 100, 2);
+                        var vat1 = Math.Round(fee * this.Fee.VatRate.Rate / 100, 2);
                         this.TotalVat += vat1;
                         this.TotalIncVat += fee + vat1;
                     }
@@ -221,7 +220,7 @@ namespace Allors.Domain
 
                 if (this.ExistShippingAndHandlingCharge)
                 {
-                    decimal shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ?
+                    var shipping = this.ShippingAndHandlingCharge.Percentage.HasValue ?
                                            Math.Round(this.TotalExVat * this.ShippingAndHandlingCharge.Percentage.Value / 100, 2) :
                                            this.ShippingAndHandlingCharge.Amount ?? 0;
 
@@ -230,7 +229,7 @@ namespace Allors.Domain
 
                     if (this.ShippingAndHandlingCharge.ExistVatRate)
                     {
-                        decimal vat2 = Math.Round(shipping * this.ShippingAndHandlingCharge.VatRate.Rate / 100, 2);
+                        var vat2 = Math.Round(shipping * this.ShippingAndHandlingCharge.VatRate.Rate / 100, 2);
                         this.TotalVat += vat2;
                         this.TotalIncVat += shipping + vat2;
                     }

@@ -13,7 +13,6 @@ namespace Tests.ApplicationTests
     using System;
     using System.Linq;
     using Xunit;
-    using Allors;
 
     [Collection("Test collection")]
     public class OverviewPagesTest : Test

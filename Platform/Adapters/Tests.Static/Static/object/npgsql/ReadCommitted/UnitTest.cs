@@ -3,11 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Xunit;
-
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
-    using System;
+    using Xunit;
 
     [Collection(Fixture.Collection)]
     public class UnitTest : SqlClient.UnitTest

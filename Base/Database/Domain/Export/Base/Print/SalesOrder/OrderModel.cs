@@ -39,15 +39,25 @@ namespace Allors.Domain.Print.SalesOrderModel
         }
 
         public string Description { get; }
+
         public string Number { get; }
+
         public string Date { get; }
+
         public string DueDate { get; }
+
         public string CustomerReference { get; }
+
         public string SubTotal { get; }
+
         public string TotalExVat { get; }
+
         public string VatCharge { get; }
+
         public string TotalVat { get; }
+
         public string TotalIncVat { get; }
+
         public int PaymentNetDays { get; }
     }
 }

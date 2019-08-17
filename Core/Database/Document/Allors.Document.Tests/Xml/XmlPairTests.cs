@@ -8,8 +8,6 @@ namespace Allos.Document.Xml.Tests
     using System.Xml;
 
     using Xunit;
-
-    using Allors.Document;
     using Allors.Document.Xml;
 
     using Org.XmlUnit.Builder;

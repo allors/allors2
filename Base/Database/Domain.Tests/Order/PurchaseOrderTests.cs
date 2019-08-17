@@ -6,10 +6,9 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using Resources;
-
 namespace Allors.Domain
 {
+    using Resources;
     using Allors.Meta;
     using Xunit;
 

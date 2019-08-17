@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -29,6 +28,7 @@ namespace Allors.Repository
         [Size(256)]
 
         public string HeaderNumber { get; set; }
+
         #region Allors
         [Id("78e114b4-ec1d-49ce-ab32-40a3184dea31")]
         [AssociationId("98920876-b4f8-4d41-90f1-115164441836")]

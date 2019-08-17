@@ -5,10 +5,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Workspace.Meta;
-
 namespace Allors.Workspace.Data
 {
+    using Allors.Workspace.Meta;
+
     public class Sort
     {
         public Sort(IRoleType roleType = null) => this.RoleType = roleType;

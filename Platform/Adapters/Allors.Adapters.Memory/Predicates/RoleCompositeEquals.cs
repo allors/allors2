@@ -31,7 +31,7 @@ namespace Allors.Adapters.Memory
                 return ThreeValuedLogic.False;
             }
 
-            object equalsValue = this.equals;
+            var equalsValue = this.equals;
 
             if (this.equals is IRoleType)
             {

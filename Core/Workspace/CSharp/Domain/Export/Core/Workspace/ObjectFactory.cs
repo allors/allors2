@@ -6,11 +6,10 @@
 // <summary>Defines the ObjectBase type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
-using Allors.Workspace.Meta;
-
 namespace Allors.Workspace
 {
+    using System.Runtime.CompilerServices;
+    using Allors.Workspace.Meta;
     using System;
     using System.Collections.Generic;
     using System.Linq;

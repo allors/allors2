@@ -29,6 +29,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal YearsExperience { get; set; }
+
         #region Allors
         [Id("7ed819c8-78ef-4fe3-b499-b381c246711f")]
         [AssociationId("4a88ee23-2c4a-41d2-9891-77e5086db97d")]
@@ -36,6 +37,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime StartedUsingDate { get; set; }
+
         #region Allors
         [Id("a341478c-503c-49ee-8c9a-e85b777e9ff4")]
         [AssociationId("0a9d48d6-e307-461d-b30f-14deae3d5bd8")]
@@ -44,6 +46,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
 
         public SkillRating SkillRating { get; set; }
+
         #region Allors
         [Id("eb3e02dc-6ee5-4aca-9f35-68edafed6dd2")]
         [AssociationId("9223e489-7115-4765-88fd-b18f0d7e8c28")]
@@ -53,6 +56,7 @@ namespace Allors.Repository
         [Indexed]
 
         public SkillLevel SkillLevel { get; set; }
+
         #region Allors
         [Id("fec11de5-a33c-4dd7-9af9-b32c3889c8a3")]
         [AssociationId("9c16c4b8-b80f-478f-96b0-a534f9de5663")]

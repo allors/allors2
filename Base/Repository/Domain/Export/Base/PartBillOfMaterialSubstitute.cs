@@ -39,6 +39,7 @@ namespace Allors.Repository
         [Required]
 
         public PartBillOfMaterial SubstitutionPartBillOfMaterial { get; set; }
+
         #region Allors
         [Id("9bff7f7d-c35c-426d-95f3-6a681d283914")]
         [AssociationId("c9fd9c9c-f57d-413a-ac69-7983f5d51dd6")]
@@ -48,6 +49,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Ordinal Preference { get; set; }
+
         #region Allors
         [Id("a5273118-61c9-43de-9754-22555332cc27")]
         [AssociationId("3de9b9ee-a96c-43b7-984a-86f6d0d20a52")]
@@ -55,6 +57,7 @@ namespace Allors.Repository
         #endregion
 
         public int Quantity { get; set; }
+
         #region Allors
         [Id("ef45301b-415a-417f-a952-fd71704a05e5")]
         [AssociationId("589cd7f5-a89e-48d2-adbe-8c6307ab3585")]

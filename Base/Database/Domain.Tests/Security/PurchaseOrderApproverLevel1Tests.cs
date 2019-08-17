@@ -3,12 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Meta;
-
 namespace Allors.Domain
 {
+    using Allors.Meta;
     using Allors;
-    using Allors.Domain;
     using Xunit;
 
     public class PurchaseOrderApproverLevel1Tests : DomainTest

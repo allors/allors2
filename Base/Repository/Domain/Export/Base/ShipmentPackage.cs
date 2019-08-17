@@ -32,6 +32,7 @@ namespace Allors.Repository
         [Indexed]
 
         public PackagingContent[] PackagingContents { get; set; }
+
         #region Allors
         [Id("7f009302-d4f4-4b06-9e18-fb1c35bd79e7")]
         [AssociationId("30cfc1be-1131-4914-888f-30f29e770332")]
@@ -41,6 +42,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Document[] Documents { get; set; }
+
         #region Allors
         [Id("afd7e182-d201-4eee-803c-9fb4dff0feed")]
         [AssociationId("5b2b0551-afcb-4cc3-863e-ba351492da45")]
@@ -49,6 +51,7 @@ namespace Allors.Repository
         [Required]
 
         public DateTime CreationDate { get; set; }
+
         #region Allors
         [Id("d767222a-b528-4a3f-ac3f-333de19f7ae1")]
         [AssociationId("d1d55767-7b92-49fa-891e-8b701bd56213")]

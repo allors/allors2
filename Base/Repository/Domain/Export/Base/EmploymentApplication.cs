@@ -29,6 +29,7 @@ namespace Allors.Repository
         [Required]
 
         public DateTime ApplicationDate { get; set; }
+
         #region Allors
         [Id("75cc1a7c-6bf7-4798-9ddc-fd1b283aed19")]
         [AssociationId("edffb19c-1b3d-45fc-bc52-d44bd51fc6e2")]
@@ -39,6 +40,7 @@ namespace Allors.Repository
         [Required]
 
         public Position Position { get; set; }
+
         #region Allors
         [Id("7d3147e2-9709-42bc-a6cd-5b922bfc143d")]
         [AssociationId("e8ec31ed-ebd4-4a2c-8948-7170adf61572")]
@@ -48,6 +50,7 @@ namespace Allors.Repository
         [Indexed]
 
         public EmploymentApplicationStatus EmploymentApplicationStatus { get; set; }
+
         #region Allors
         [Id("a4c14261-14a2-404c-814f-6475368d685a")]
         [AssociationId("f9cf5e5a-d262-4898-91f3-a69b3612f0a8")]
@@ -58,6 +61,7 @@ namespace Allors.Repository
         [Required]
 
         public Person Person { get; set; }
+
         #region Allors
         [Id("b0799b22-bff3-49d7-8f9a-3ea41c540778")]
         [AssociationId("90dc458e-243e-42d6-950d-3994f7617981")]

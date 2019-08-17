@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors;
-
 namespace Tests
 {
+    using Allors;
     using Allors.Domain;
     using Allors.Meta;
     using Xunit;

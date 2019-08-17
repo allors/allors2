@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -31,6 +30,7 @@ namespace Allors.Repository
         [Required]
 
         public DeductionType DeductionType { get; set; }
+
         #region Allors
         [Id("abaece2a-d56d-4af9-8421-1d587cd9dda2")]
         [AssociationId("b8d4b48b-292a-4348-8dba-15f89d573dd5")]

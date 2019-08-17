@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -30,6 +29,7 @@ namespace Allors.Repository
         [Indexed]
 
         public TimeFrequency Frequency { get; set; }
+
         #region Allors
         [Id("1c4a69e7-62c7-4e6b-b7a5-69817d1788df")]
         [AssociationId("67280aad-73cd-4366-8a4f-2d38257e022e")]
@@ -38,6 +38,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Cost { get; set; }
+
         #region Allors
         [Id("320e98c9-adff-41cf-894a-500730cf6c09")]
         [AssociationId("b9693920-2e4d-41e2-8925-c6e40b0ed673")]
@@ -46,6 +47,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal ActualEmployerPaidPercentage { get; set; }
+
         #region Allors
         [Id("9a8fcada-bf2c-450d-a941-e0c7ec414cf3")]
         [AssociationId("56813128-50b2-4fbf-ad0f-0385930a6805")]
@@ -56,6 +58,7 @@ namespace Allors.Repository
         [Required]
 
         public Benefit Benefit { get; set; }
+
         #region Allors
         [Id("e4bd1497-824b-477a-9842-a87b4193b430")]
         [AssociationId("fc6f6c2a-5732-4c3d-8db0-58e3a4f26d6c")]

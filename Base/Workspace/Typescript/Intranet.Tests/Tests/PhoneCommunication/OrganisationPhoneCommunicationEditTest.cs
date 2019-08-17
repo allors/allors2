@@ -3,13 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.@base.objects.communicationevent.overview.panel;
-using src.allors.material.@base.objects.organisation.list;
-using src.allors.material.@base.objects.organisation.overview;
-using src.allors.material.@base.objects.phonecommunication.edit;
-
 namespace Tests.PhoneCommunicationTests
 {
+    using src.allors.material.@base.objects.organisation.list;
+    using src.allors.material.@base.objects.organisation.overview;
+    using src.allors.material.@base.objects.phonecommunication.edit;
     using System.Linq;
 
     using Allors;

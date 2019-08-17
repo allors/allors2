@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Diagnostics;
-
 namespace Allors.Domain
 {
+    using System.Diagnostics;
     using Allors.Meta;
 
     public partial class PostalAddress

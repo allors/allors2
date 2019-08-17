@@ -5,10 +5,9 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Data
 {
+    using System;
     using System.Collections.Generic;
 
     using Allors.Meta;

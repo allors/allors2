@@ -35,6 +35,7 @@ namespace Allors.Repository
         [Required]
 
         public Part SubstitutionPart { get; set; }
+
         #region Allors
         [Id("510f8f4c-ff09-4d32-8c1c-e905dbbd684b")]
         [AssociationId("25d0c7ec-767e-4509-9164-67dbec0d66f4")]
@@ -44,6 +45,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Ordinal Preference { get; set; }
+
         #region Allors
         [Id("9cd198eb-2c25-425e-a23b-c321938f2512")]
         [AssociationId("8f8c0254-8bb0-4e61-83b5-38b0b80d0b97")]
@@ -51,6 +53,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime FromDate { get; set; }
+
         #region Allors
         [Id("ccb0a290-b3f4-4e55-b52c-67ca70d67439")]
         [AssociationId("0d0e7982-f7cb-4c6b-bff7-e59f81296d6b")]
@@ -59,6 +62,7 @@ namespace Allors.Repository
         [Required]
 
         public int Quantity { get; set; }
+
         #region Allors
         [Id("e7d4ae25-175a-4e2a-88c2-9d8d5a468d1a")]
         [AssociationId("4986253b-2d85-45d1-8809-dcaab09e22f4")]

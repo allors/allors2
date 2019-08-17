@@ -3,13 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Workspace.Meta;
-using ExcelAddIn.Base.Extensions;
-using ExcelAddIn.Base.Relation.SalesInvoicesOverdue;
-
 namespace Allors.Excel.Relations.CustomersOverdue
 {
-    using System;
+    using Allors.Workspace.Meta;
+    using ExcelAddIn.Base.Extensions;
+    using ExcelAddIn.Base.Relation.SalesInvoicesOverdue;
     using System.Linq;
     using System.Windows.Forms;
 
@@ -132,7 +130,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
 
             // Headers
 
-            int index = -1;
+            var index = -1;
             var headers = this.SalesInvoicesListObject.HeaderRowRange;
             var data = new object[headers.Rows.Count, headers.Columns.Count];
             data[0, ++index] = "Cust Nr";

@@ -35,6 +35,7 @@ namespace Allors.Repository
         [Required]
 
         public Person Professional { get; set; }
+
         #region Allors
         [Id("a75d3ec2-c4f8-4de6-a10c-fe5e3897e663")]
         [AssociationId("70e8f936-27c8-42cb-9459-9a823aaa6318")]

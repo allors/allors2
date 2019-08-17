@@ -8,7 +8,6 @@ namespace Allors.Adapters
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Allors;
     using Allors.Domain;
@@ -41,7 +40,7 @@ namespace Allors.Adapters
                 var strategy = c1.Strategy;
                 var id = long.Parse(strategy.ObjectId.ToString());
 
-                long nextId = long.Parse(this.Session.Create<C1>().Strategy.ObjectId.ToString());
+                var nextId = long.Parse(this.Session.Create<C1>().Strategy.ObjectId.ToString());
 
                 Assert.Equal(id + 1, nextId);
             }
@@ -2648,7 +2647,7 @@ namespace Allors.Adapters
                 c1Removed.Strategy.Delete();
                 C1[] c1RemovedArray = { c1Removed };
 
-                bool error = false;
+                var error = false;
                 try
                 {
                     anObject.C1C1one2one = c1Removed;
@@ -3084,7 +3083,7 @@ namespace Allors.Adapters
                 var proxy = C1.Instantiate(this.Session, id);
 
                 var anotherObject = C1.Create(this.Session);
-                long anotherId = anotherObject.Strategy.ObjectId;
+                var anotherId = anotherObject.Strategy.ObjectId;
                 var anotherProxy = C1.Instantiate(this.Session, anotherId);
 
                 Assert.Equal(anObject, proxy);
@@ -3502,7 +3501,7 @@ namespace Allors.Adapters
 
                 int[] runs = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048 };
 
-                foreach (int run in runs)
+                foreach (var run in runs)
                 {
                     // Empty arrays
                     long[] nullObjectIdArray = null;
@@ -3520,7 +3519,7 @@ namespace Allors.Adapters
                     var objects = new IObject[run];
                     var idStrings = new string[run];
                     var ids = new long[run];
-                    for (int i = 0; i < run; i++)
+                    for (var i = 0; i < run; i++)
                     {
                         var anObject = C1.Create(this.Session);
                         objects[i] = anObject;
@@ -3533,7 +3532,7 @@ namespace Allors.Adapters
                     allorsObjects = this.Session.Instantiate(objects);
 
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Equal(allorsObjects[i].Id, ids[i]);
                     }
@@ -3541,7 +3540,7 @@ namespace Allors.Adapters
                     allorsObjects = this.Session.Instantiate(idStrings);
 
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Equal(allorsObjects[i].Id, ids[i]);
                     }
@@ -3549,7 +3548,7 @@ namespace Allors.Adapters
                     allorsObjects = this.Session.Instantiate(ids);
 
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Equal(allorsObjects[i].Id, ids[i]);
                     }
@@ -3559,7 +3558,7 @@ namespace Allors.Adapters
                     allorsObjects = this.Session.Instantiate(objects);
 
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Equal(allorsObjects[i].Id, ids[i]);
                     }
@@ -3569,7 +3568,7 @@ namespace Allors.Adapters
                     allorsObjects = this.Session.Instantiate(idStrings);
 
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Equal(allorsObjects[i].Id, ids[i]);
                     }
@@ -3579,7 +3578,7 @@ namespace Allors.Adapters
                     allorsObjects = this.Session.Instantiate(ids);
 
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Equal(allorsObjects[i].Id, ids[i]);
                     }
@@ -3589,7 +3588,7 @@ namespace Allors.Adapters
                     allorsObjects = this.Session.Instantiate(objects);
 
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Equal(allorsObjects[i].Id, ids[i]);
                     }
@@ -3599,7 +3598,7 @@ namespace Allors.Adapters
                     allorsObjects = this.Session.Instantiate(idStrings);
 
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Equal(allorsObjects[i].Id, ids[i]);
                     }
@@ -3609,7 +3608,7 @@ namespace Allors.Adapters
                     allorsObjects = this.Session.Instantiate(ids);
 
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Equal(allorsObjects[i].Id, ids[i]);
                     }
@@ -3624,7 +3623,7 @@ namespace Allors.Adapters
 
                     allorsObjects = this.Session.Instantiate(ids);
                     Assert.Equal(run, allorsObjects.Length);
-                    for (int i = 0; i < allorsObjects.Length; i++)
+                    for (var i = 0; i < allorsObjects.Length; i++)
                     {
                         Assert.Contains(allorsObjects[i].Id, ids);
                     }
@@ -3643,7 +3642,7 @@ namespace Allors.Adapters
 
                     this.Session.Commit();
 
-                    string[] doesntExistIds = new[] { (1000 * 1000 * 1000).ToString() };
+                    var doesntExistIds = new[] { (1000 * 1000 * 1000).ToString() };
 
                     Assert.Empty(this.Session.Instantiate(doesntExistIds));
 
@@ -4200,7 +4199,7 @@ namespace Allors.Adapters
                 // don't garbage collect populations
                 var populations = new List<IDatabase>();
 
-                for (int i = 0; i < 100; i++)
+                for (var i = 0; i < 100; i++)
                 {
                     var population1 = this.CreatePopulation();
                     populations.Add(population1);

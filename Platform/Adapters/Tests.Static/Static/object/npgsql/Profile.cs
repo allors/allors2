@@ -5,7 +5,6 @@
 
 namespace Allors.Adapters.Object.Npgsql
 {
-    using System;
     using System.Text;
 
     using global::Npgsql;

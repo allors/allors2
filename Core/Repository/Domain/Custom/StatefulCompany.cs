@@ -25,6 +25,7 @@ namespace Allors.Repository
         #endregion
         [Plural("Employees")]
         public Person Employee { get; set; }
+
         #region Allors
         [Id("6e429d87-ea80-465e-9aa6-0f7d546b6bb3")]
         [AssociationId("de607129-6f68-4db6-a6ca-6ba53cae698d")]
@@ -32,6 +33,7 @@ namespace Allors.Repository
         [Size(256)]
         #endregion
         public string Name { get; set; }
+
         #region Allors
         [Id("9940e8ed-189e-42c6-b0d1-7c01920b9fac")]
         [AssociationId("de4a92c8-4e08-4f37-9d6c-321dcce89e1c")]

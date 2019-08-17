@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Runtime.InteropServices;
-
 namespace Allors.Adapters
 {
+    using System.Runtime.InteropServices;
     using System;
 
     public static class Settings

@@ -3,12 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.@base.objects.organisation.list;
-using src.allors.material.@base.objects.organisation.overview;
-using src.allors.material.@base.objects.organisationcontactrelationship.edit;
-
 namespace Tests.PartyRelationshipTests
 {
+    using src.allors.material.@base.objects.organisation.list;
+    using src.allors.material.@base.objects.organisation.overview;
+    using src.allors.material.@base.objects.organisationcontactrelationship.edit;
     using System.Linq;
 
     using Allors;

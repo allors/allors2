@@ -3,11 +3,9 @@
 // Licensed under the LGPL v3 license.
 // </copyright>
 
-using System.ComponentModel;
-using Autotest.Angular;
-
 namespace Autotest.Testers
 {
+    using Autotest.Angular;
     using System;
     using System.Linq;
     using Allors.Workspace.Meta;

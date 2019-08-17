@@ -3,11 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-
 namespace Identity.Services
 {
+    using System.Text.Encodings.Web;
+    using System.Threading.Tasks;
+
     public static class EmailSenderExtensions
     {
         public static Task SendEmailConfirmationAsync(this IEmailSender emailSender, string email, string link) =>

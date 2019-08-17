@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -116,7 +115,9 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
         public void Delete() { }
+
         public void DelegateAccess() { }
 
         #endregion

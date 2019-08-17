@@ -5,7 +5,6 @@
 
 namespace Allors.Adapters.Memory
 {
-    using System;
 
     using Allors.Adapters;
 

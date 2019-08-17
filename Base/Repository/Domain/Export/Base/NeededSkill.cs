@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -31,6 +30,7 @@ namespace Allors.Repository
         [Required]
 
         public SkillLevel SkillLevel { get; set; }
+
         #region Allors
         [Id("21207c09-22b0-469a-84a7-6edd300c73f7")]
         [AssociationId("a2c931e4-8200-4cdd-9d26-bedbaf529c29")]
@@ -39,6 +39,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal YearsExperience { get; set; }
+
         #region Allors
         [Id("590d749a-52d4-448a-8f95-8412c0115825")]
         [AssociationId("3e6cc798-dae0-4381-abfd-bcba0b449d03")]

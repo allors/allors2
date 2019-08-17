@@ -3,13 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.custom.tests.form;
-
 namespace Tests
 {
+    using src.allors.material.custom.tests.form;
     using System.Linq;
-
-    using Allors;
     using Allors.Domain;
 
     using Components;

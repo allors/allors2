@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
-
     public partial class WorkEffortState
     {
         public bool IsCreated => this.Equals(new WorkEffortStates(this.Strategy.Session).Created);

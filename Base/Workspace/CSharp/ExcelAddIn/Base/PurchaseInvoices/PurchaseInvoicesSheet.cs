@@ -3,17 +3,13 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Runtime.InteropServices;
 using Allors.Workspace.Meta;
 using ExcelAddIn;
 using ExcelAddIn.Base.Extensions;
-using Microsoft.Office.Core;
-using Microsoft.Office.Tools.Excel;
 using Workspace.Domain.Base;
 
 namespace Allors.Excel.PurchaseInvoices
 {
-    using System;
     using System.Linq;
     using System.Windows.Forms;
 
@@ -25,7 +21,6 @@ namespace Allors.Excel.PurchaseInvoices
     using Microsoft.Office.Interop.Excel;
 
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
-    using Result = Allors.Workspace.Client.Result;
     using Sheets = Allors.Excel.Sheets;
     using Task = System.Threading.Tasks.Task;
     using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;

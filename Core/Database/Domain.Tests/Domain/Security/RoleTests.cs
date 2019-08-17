@@ -9,6 +9,7 @@ namespace Tests
     using Allors.Meta;
     using Allors.Domain;
     using Xunit;
+
     public class RoleTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };

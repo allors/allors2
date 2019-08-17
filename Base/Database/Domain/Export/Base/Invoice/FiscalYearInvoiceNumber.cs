@@ -10,7 +10,7 @@ namespace Allors.Domain
         public int DeriveNextSalesInvoiceNumber()
         {
             this.NextSalesInvoiceNumber = this.ExistNextSalesInvoiceNumber ? this.NextSalesInvoiceNumber : 1;
-            int salesInvoiceNumber = this.NextSalesInvoiceNumber;
+            var salesInvoiceNumber = this.NextSalesInvoiceNumber;
             this.NextSalesInvoiceNumber++;
 
             return salesInvoiceNumber;
@@ -19,7 +19,7 @@ namespace Allors.Domain
         public int DeriveNextCreditNoteNumber()
         {
             this.NextCreditNoteNumber = this.ExistNextCreditNoteNumber ? this.NextCreditNoteNumber : 1;
-            int creditNoteNumber = this.NextCreditNoteNumber;
+            var creditNoteNumber = this.NextCreditNoteNumber;
             this.NextCreditNoteNumber++;
 
             return creditNoteNumber;

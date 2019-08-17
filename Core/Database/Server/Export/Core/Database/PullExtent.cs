@@ -6,10 +6,9 @@
 // <summary>Defines the ISessionExtension type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Server
 {
+    using System.Collections.Generic;
     using System;
     using System.Linq;
 

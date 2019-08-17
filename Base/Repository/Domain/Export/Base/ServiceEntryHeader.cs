@@ -34,6 +34,7 @@ namespace Allors.Repository
         [Indexed]
 
         public ServiceEntry[] ServiceEntries { get; set; }
+
         #region Allors
         [Id("7e160fbc-1339-433c-9dcb-9b3ad58ad400")]
         [AssociationId("a9d0cbd8-bb20-45e1-b109-6620b23fa1b7")]
@@ -42,6 +43,7 @@ namespace Allors.Repository
         [Required]
 
         public DateTime SubmittedDate { get; set; }
+
         #region Allors
         [Id("902235fe-a6c5-47bb-936b-8b6ce54b3d15")]
         [AssociationId("1f93dde3-a9bd-4e10-8ec6-38edaec6ffb5")]

@@ -15,21 +15,35 @@ namespace Allors.Repository
     {
         #region inherited properties
         public string InternalComment { get; set; }
+
         public BudgetItem BudgetItem { get; set; }
+
         public decimal PreviousQuantity { get; set; }
+
         public decimal QuantityOrdered { get; set; }
+
         public string Description { get; set; }
+
         public PurchaseOrder CorrespondingPurchaseOrder { get; set; }
 
         public decimal TotalOrderAdjustment { get; set; }
+
         public QuoteItem QuoteItem { get; set; }
+
         public DateTime AssignedDeliveryDate { get; set; }
+
         public DateTime DeliveryDate { get; set; }
+
         public SalesTerm[] SalesTerms { get; set; }
+
         public string ShippingInstruction { get; set; }
+
         public OrderItem[] Associations { get; set; }
+
         public string Message { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
 
         public Guid DerivationId { get; set; }

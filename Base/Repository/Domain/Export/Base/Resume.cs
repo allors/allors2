@@ -29,6 +29,7 @@ namespace Allors.Repository
         [Required]
 
         public DateTime ResumeDate { get; set; }
+
         #region Allors
         [Id("f2330d10-d7da-4085-8eff-f0b77cb91763")]
         [AssociationId("d38024ac-2e0b-40f1-a6e4-252c5ffc0bcc")]

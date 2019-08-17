@@ -3,12 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Workspace.Meta;
-using ExcelAddIn.Base.Extensions;
-using ExcelAddIn.Base.Relation.Customers;
-
 namespace Allors.Excel.Customers
 {
+    using Allors.Workspace.Meta;
+    using ExcelAddIn.Base.Extensions;
+    using ExcelAddIn.Base.Relation.Customers;
     using System;
     using System.Linq;
     using System.Windows.Forms;
@@ -129,7 +128,7 @@ namespace Allors.Excel.Customers
             this.CustomersListObject.SetDataBinding(this.dataSet, this.dataSet.Customers.TableName);
 
             // Headers
-            int index = -1;
+            var index = -1;
             var headers = this.CustomersListObject.HeaderRowRange;
 
             var data = new object[headers.Rows.Count, headers.Columns.Count];

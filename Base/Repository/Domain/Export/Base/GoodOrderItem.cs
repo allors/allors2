@@ -51,6 +51,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Price { get; set; }
+
         #region Allors
         [Id("f7399ebd-64f0-4bfa-a063-e75389d6a7cc")]
         [AssociationId("30b12a84-e2cc-4d24-aca3-71568961f9ee")]
@@ -75,6 +76,7 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
         public void DelegateAccess() { }
 
         #endregion

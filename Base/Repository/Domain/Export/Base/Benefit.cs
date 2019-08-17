@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -29,6 +28,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal EmployerPaidPercentage { get; set; }
+
         #region Allors
         [Id("6239a2cc-97ce-49cb-b5aa-23e1e9ff7e71")]
         [AssociationId("759c76cd-01ba-4be6-a1d1-3f9f305e69b5")]
@@ -37,6 +37,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Description { get; set; }
+
         #region Allors
         [Id("6e1e0ef1-0e2a-406f-afa4-a6c97657801f")]
         [AssociationId("de7199dd-6a61-41d3-b3dc-847a1a1eb596")]
@@ -46,6 +47,7 @@ namespace Allors.Repository
         [Size(256)]
 
         public string Name { get; set; }
+
         #region Allors
         [Id("89460288-d09e-43f9-960a-86b6c1e2e0be")]
         [AssociationId("97cf596f-bed3-4309-9b88-50be9b82f7a1")]

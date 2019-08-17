@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class PurchaseInvoiceState
     {
         public bool IsCreated => this.UniqueId == PurchaseInvoiceStates.CreatedId;

@@ -29,6 +29,7 @@ namespace Allors.Repository
         [Required]
 
         public DateTime StartDateTime { get; set; }
+
         #region Allors
         [Id("959aa0a9-a197-4eb4-bc9e-e40da8892dd0")]
         [AssociationId("d3b7eb35-52d2-48fc-a416-a2185ae347ee")]

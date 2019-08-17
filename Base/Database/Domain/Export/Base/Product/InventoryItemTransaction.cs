@@ -5,7 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
     using System.Linq;
 
     public partial class InventoryItemTransaction
@@ -58,9 +57,9 @@ namespace Allors.Domain
             }
 
             // Match on required properties
-            bool matched = false;
+            var matched = false;
             var matchingItems = this.Part.InventoryItemsWherePart.ToArray();
-            bool possibleMatches = matchingItems.Length > 0;
+            var possibleMatches = matchingItems.Length > 0;
 
             if (possibleMatches)
             {

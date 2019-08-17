@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -30,6 +29,7 @@ namespace Allors.Repository
         [Indexed]
 
         public WorkEffortFixedAssetStandard[] WorkEffortFixedAssetStandards { get; set; }
+
         #region Allors
         [Id("776839ee-f6cb-4334-a017-4ffdfddd152a")]
         [AssociationId("db3c9fba-5ca8-4296-b1a2-d306ad42dbcc")]
@@ -39,6 +39,7 @@ namespace Allors.Repository
         [Indexed]
 
         public WorkEffortGoodStandard[] WorkEffortGoodStandards { get; set; }
+
         #region Allors
         [Id("89eef4e3-eda7-4336-91cb-ce7a7e96521f")]
         [AssociationId("4b61f74f-db7c-4733-b6f5-d485e432a16e")]
@@ -48,6 +49,7 @@ namespace Allors.Repository
         [Indexed]
 
         public WorkEffortType[] Children { get; set; }
+
         #region Allors
         [Id("8d9f51b5-2c8d-4a25-a45e-c79542a09434")]
         [AssociationId("687e9909-0efa-4a04-b705-96d93547458a")]
@@ -57,6 +59,7 @@ namespace Allors.Repository
         [Indexed]
 
         public FixedAsset FixedAssetToRepair { get; set; }
+
         #region Allors
         [Id("93cfed3d-ae24-4a07-becf-34cdc3cdef3e")]
         [AssociationId("958d3cdc-0dbe-4ce6-81c7-492825727ada")]
@@ -66,6 +69,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Description { get; set; }
+
         #region Allors
         [Id("b6d68eff-8a3a-473f-bb4e-9bc46808bde0")]
         [AssociationId("1996225b-a372-44ad-b00a-b257a355d756")]
@@ -75,6 +79,7 @@ namespace Allors.Repository
         [Indexed]
 
         public WorkEffortType[] Dependencies { get; set; }
+
         #region Allors
         [Id("ccf22455-c42a-4f9c-8975-813431bcdd8b")]
         [AssociationId("f70821d5-2a7f-4fdd-ae45-b8c7966710fc")]
@@ -85,6 +90,7 @@ namespace Allors.Repository
         [Required]
 
         public WorkEffortTypeKind WorkEffortTypeKind { get; set; }
+
         #region Allors
         [Id("d51d620e-250e-4492-8926-c8535fad19ec")]
         [AssociationId("e26db451-eb86-44b1-b3cb-eb29d4311157")]
@@ -94,6 +100,7 @@ namespace Allors.Repository
         [Indexed]
 
         public WorkEffortPartStandard[] WorkEffortPartStandards { get; set; }
+
         #region Allors
         [Id("df104ec4-6247-4199-bce1-635978fa8ad4")]
         [AssociationId("0826559c-11ef-4075-ad8e-28c7ed693f1c")]
@@ -103,6 +110,7 @@ namespace Allors.Repository
         [Indexed]
 
         public WorkEffortSkillStandard[] WorkEffortSkillStandards { get; set; }
+
         #region Allors
         [Id("df1fa89e-25e2-4b72-a928-67fa2c95ad70")]
         [AssociationId("361d313b-8313-43bd-8a98-9b2516ca25f7")]
@@ -111,6 +119,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal StandardWorkHours { get; set; }
+
         #region Allors
         [Id("ee521062-a2bf-4a7f-80e4-8da6f63439fe")]
         [AssociationId("fc63a85e-7bc4-49ec-89f5-66fef934f11a")]
@@ -120,6 +129,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Product ProductToProduce { get; set; }
+
         #region Allors
         [Id("f8766ab1-b0ed-42fa-806c-c40a2e68d72a")]
         [AssociationId("7e7a9632-76a8-48c3-ada3-fcc3aa06a511")]

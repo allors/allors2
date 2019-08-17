@@ -3,14 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Workspace.Domain.Base
 {
+    using System;
+
     public class PurchaseInvoiceStates
     {
         public static readonly Guid CreatedId = new Guid("102F4080-1D12-4090-9196-F42C094C38CA");

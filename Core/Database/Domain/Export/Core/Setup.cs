@@ -6,7 +6,6 @@
 namespace Allors
 {
     using System.Collections.Generic;
-    using System.IO;
     using Allors.Domain;
     using Allors.Meta;
 

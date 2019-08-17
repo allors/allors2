@@ -382,7 +382,7 @@ namespace Allors
         /// </returns>
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            for (int i = 0; i < this.BaseExtent.Count; i++)
+            for (var i = 0; i < this.BaseExtent.Count; i++)
             {
                 yield return (T)this.BaseExtent[i];
             }

@@ -34,6 +34,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Good ProductOffering { get; set; }
+
         #region Allors
         [Id("c322fbbd-3406-4e73-83ed-033282ab0cfb")]
         [AssociationId("d265b170-3854-4276-9a20-325984097991")]
@@ -43,6 +44,7 @@ namespace Allors.Repository
         [Indexed]
 
         public DeploymentUsage DeploymentUsage { get; set; }
+
         #region Allors
         [Id("d588ba7f-7b67-43fd-bb67-b9ff82fcffaf")]
         [AssociationId("bbee5696-6e53-4ea3-8f57-4e018e6bc61d")]

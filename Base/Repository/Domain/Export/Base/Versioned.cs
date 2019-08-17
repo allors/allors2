@@ -8,8 +8,6 @@
 
 namespace Allors.Repository
 {
-    using Allors.Repository.Attributes;
-
     public partial interface Versioned : Auditable
     {
     }

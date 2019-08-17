@@ -25,6 +25,7 @@ namespace Allors.Repository
         [Size(256)]
         #endregion
         public string Street { get; set; }
+
         #region Allors
         [Id("b181d077-e897-4add-9456-67b9760d32e8")]
         [AssociationId("5eca1733-0f01-4141-b0d0-d7a2bfd90388")]

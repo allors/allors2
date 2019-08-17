@@ -29,6 +29,7 @@ namespace Allors.Repository
         [Required]
 
         public Good Good { get; set; }
+
         #region Allors
         [Id("28b3b976-3354-4095-b928-7c1474e8c492")]
         [AssociationId("3b07f539-a06c-4cdc-8790-98c05e097aa6")]
@@ -37,6 +38,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal EstimatedCost { get; set; }
+
         #region Allors
         [Id("c94d5e97-ec2b-4d32-ae8d-145595f0ad91")]
         [AssociationId("3ddc2478-34ba-45fa-aa21-a11c856fbfe0")]

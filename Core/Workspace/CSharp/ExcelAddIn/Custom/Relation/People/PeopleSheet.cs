@@ -16,8 +16,6 @@ namespace Allors.Excel.People
     using Allors.Workspace.Domain;
 
     using Microsoft.Office.Interop.Excel;
-
-    using Filter = Microsoft.Office.Interop.Excel.Filter;
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
     using Result = Allors.Workspace.Client.Result;
     using Sheets = Allors.Excel.Sheets;

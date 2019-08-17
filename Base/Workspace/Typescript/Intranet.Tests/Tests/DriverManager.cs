@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Runtime.InteropServices;
-
 namespace Tests
 {
+    using System.Runtime.InteropServices;
     using System;
     using System.Diagnostics;
     using System.Drawing;

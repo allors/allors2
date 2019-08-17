@@ -5,8 +5,6 @@
 
 namespace Allors.Domain.Print.PurchaseInvoiceModel
 {
-    using System;
-
     public class InvoiceModel
     {
         public InvoiceModel(PurchaseInvoice invoice)
@@ -26,13 +24,21 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
         }
 
         public string Description { get; }
+
         public string Number { get; }
+
         public string Date { get; }
+
         public string CustomerReference { get; }
+
         public string SubTotal { get; }
+
         public string TotalExVat { get; }
+
         public string VatCharge { get; }
+
         public string TotalVat { get; }
+
         public string TotalIncVat { get; }
     }
 }

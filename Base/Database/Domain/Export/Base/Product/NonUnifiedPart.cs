@@ -3,13 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-
-using Allors.Meta;
-
 namespace Allors.Domain
 {
-    using System;
+    using System.Linq;
+
+    using Allors.Meta;
 
     public partial class NonUnifiedPart
     {

@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -31,6 +30,7 @@ namespace Allors.Repository
         [Required]
 
         public CommunicationEvent CommunicationEvent { get; set; }
+
         #region Allors
         [Id("b65140b1-8dc4-4836-9ad8-fe01f43dad7a")]
         [AssociationId("b2ddd7e5-fa91-4257-9400-f776787fffb7")]
@@ -41,6 +41,7 @@ namespace Allors.Repository
         [Required]
 
         public Requirement Requirement { get; set; }
+
         #region Allors
         [Id("cdb72b3f-9920-4082-83a7-a0211a29cf77")]
         [AssociationId("f0743736-d40a-4831-a075-8bdd33cb68f6")]

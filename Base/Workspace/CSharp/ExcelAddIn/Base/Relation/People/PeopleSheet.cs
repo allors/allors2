@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Workspace.Meta;
-
 namespace ExcelAddIn.Base.Relation.People
 {
+    using Allors.Workspace.Meta;
     using System;
     using System.Linq;
     using System.Windows.Forms;

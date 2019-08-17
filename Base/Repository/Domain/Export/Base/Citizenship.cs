@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -30,6 +29,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Passport[] Passports { get; set; }
+
         #region Allors
         [Id("ca2b2d3e-ba3c-4e92-a86f-92d5d47b8e01")]
         [AssociationId("f2b5857f-064b-4b4d-bf7f-877a46e015e3")]

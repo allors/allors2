@@ -28,6 +28,7 @@ namespace Allors.Repository
         #endregion
 
         public bool IsPublished { get; set; }
+
         #region Allors
         [Id("2f1736ea-0e74-43a9-b047-cc37bc9618fa")]
         [AssociationId("c1202b23-5507-43ea-849d-94cd46392927")]
@@ -36,6 +37,7 @@ namespace Allors.Repository
         [Size(256)]
 
         public string Title { get; set; }
+
         #region Allors
         [Id("369f8b36-1bb8-45b6-b02d-6cd7c126cb54")]
         [AssociationId("bc2dd1eb-0f39-4717-bd3e-bfcaee6e0a0c")]
@@ -43,6 +45,7 @@ namespace Allors.Repository
         #endregion
 
         public int DisplayOrder { get; set; }
+
         #region Allors
         [Id("372331ef-70a4-4a67-8f85-a0907ace9194")]
         [AssociationId("39e20d75-09f5-4692-a16a-86c2b284e0fa")]
@@ -52,6 +55,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Locale Locale { get; set; }
+
         #region Allors
         [Id("4a03f057-339f-4dd4-ac89-3b97d27d2170")]
         [AssociationId("ca816c14-6aaf-4ed8-b140-f9c941e4f769")]
@@ -60,6 +64,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string LongText { get; set; }
+
         #region Allors
         [Id("7aee11d0-f9b4-450d-83b8-357811e99246")]
         [AssociationId("2ddcf225-907a-4d99-921c-f61893aa7ac8")]
@@ -68,6 +73,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Text { get; set; }
+
         #region Allors
         [Id("a184408c-a1b0-47b2-821a-a2ab643b523e")]
         [AssociationId("213a7484-741a-4a2b-b765-3bc1b8427a64")]
@@ -75,6 +81,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime Date { get; set; }
+
         #region Allors
         [Id("d29e707f-66dc-4fbf-aba4-63473498dd4b")]
         [AssociationId("b977e1eb-5a75-4f36-8381-6b49615e7969")]

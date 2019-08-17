@@ -16,7 +16,9 @@ namespace Allors.Repository
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public string Comment { get; set; }
 
         public LocalisedText[] LocalisedComments { get; set; }
@@ -236,6 +238,7 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
+
         public void DelegateAccess() { }
 
         #endregion

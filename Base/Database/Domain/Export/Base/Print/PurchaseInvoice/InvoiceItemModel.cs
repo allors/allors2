@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-
 namespace Allors.Domain.Print.PurchaseInvoiceModel
 {
+    using System.Linq;
+
     public class InvoiceItemModel
     {
         public InvoiceItemModel(PurchaseInvoiceItem item)
@@ -23,11 +23,17 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
         }
 
         public string Part { get; }
+
         public string Description { get; }
+
         public decimal Quantity { get; }
+
         public string Price { get; }
+
         public string Amount { get; }
+
         public string Comment { get; }
+
         public string SupplierProductId { get; }
     }
 }

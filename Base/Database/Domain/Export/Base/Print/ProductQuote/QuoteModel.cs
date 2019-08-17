@@ -25,14 +25,23 @@ namespace Allors.Domain.Print.ProductQuoteModel
         }
 
         public string Description { get; }
+
         public string Number { get; }
+
         public string IssueDate { get; }
+
         public string ValidFromDate { get; }
+
         public string ValidThroughDate { get; }
+
         public string SubTotal { get; }
+
         public string TotalExVat { get; }
+
         public string VatCharge { get; }
+
         public string TotalVat { get; }
+
         public string TotalIncVat { get; }
     }
 }

@@ -8,6 +8,7 @@ namespace Allors.Domain
     using System;
 
     using Allors.Meta;
+
     internal static class PriceableExtensions
     {
         public static decimal SetUnitSurcharge(this Priceable @this, PriceComponent priceComponent, decimal revenueBreakSurcharge)

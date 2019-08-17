@@ -3,15 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Office.Tools.Ribbon;
-
 namespace ExcelAddIn
 {
+    using System;
+    using Microsoft.Office.Tools.Ribbon;
     using Allors.Excel;
 
     using Nito.AsyncEx;

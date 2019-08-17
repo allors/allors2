@@ -3,13 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.@base.objects.contactmechanism.overview.panel;
-using src.allors.material.@base.objects.person.list;
-using src.allors.material.@base.objects.person.overview;
-using src.allors.material.@base.objects.postaladdress.edit;
-
 namespace Tests.PostalAddressTests
 {
+    using src.allors.material.@base.objects.person.list;
+    using src.allors.material.@base.objects.person.overview;
+    using src.allors.material.@base.objects.postaladdress.edit;
     using System.Linq;
 
     using Allors;

@@ -29,6 +29,7 @@ namespace Allors.Repository
         [Required]
 
         public DateTime ModifiedDate { get; set; }
+
         #region Allors
         [Id("7cb593b7-48ac-4049-b78c-1e84bdd2fa3a")]
         [AssociationId("39c58f18-a640-4c5e-9878-2f82ea90bd0a")]

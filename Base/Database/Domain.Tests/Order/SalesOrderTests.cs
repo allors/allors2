@@ -6,10 +6,9 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
 
     using Xunit;

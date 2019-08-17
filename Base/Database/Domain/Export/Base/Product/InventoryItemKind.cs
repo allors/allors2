@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
-
     public partial class InventoryItemKind
     {
         public bool Serialised => this.Equals(new InventoryItemKinds(this.Strategy.Session).Serialised);

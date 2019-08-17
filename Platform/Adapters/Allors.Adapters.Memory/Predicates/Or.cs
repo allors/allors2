@@ -14,7 +14,7 @@ namespace Allors.Adapters.Memory
 
         internal override ThreeValuedLogic Evaluate(Strategy strategy)
         {
-            bool unknown = false;
+            var unknown = false;
             foreach (var filter in this.Filters)
             {
                 if (filter.Include)

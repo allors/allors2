@@ -35,6 +35,7 @@ namespace Allors.Repository
         [Required]
 
         public TimeFrequency Frequency { get; set; }
+
         #region Allors
         [Id("b3f1071f-7e71-4ef1-aa9b-545ad694f44c")]
         [AssociationId("717107b5-fafc-4cca-b85d-364d819a7529")]
@@ -44,6 +45,7 @@ namespace Allors.Repository
         [Indexed]
 
         public SalaryStep SalaryStep { get; set; }
+
         #region Allors
         [Id("b7ef1bf8-b16b-400e-903e-d0a7454572a0")]
         [AssociationId("9717c46c-8c64-477a-916a-98594dd21039")]

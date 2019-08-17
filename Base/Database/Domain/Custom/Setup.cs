@@ -3,13 +3,13 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Linq;
-using Allors.Domain;
-using Allors.Meta;
-
 namespace Allors
 {
+    using System;
+    using System.Linq;
+    using Allors.Domain;
+    using Allors.Meta;
+
     public partial class Setup
     {
         private void CustomOnPrePrepare()
@@ -333,7 +333,7 @@ namespace Allors
 
             this.session.Derive();
 
-            for (int i = 0; i < 100; i++)
+            for (var i = 0; i < 100; i++)
             {
                 var acmePostalAddress = new PostalAddressBuilder(this.session)
                     .WithAddress1($"Acme{i} address 1")
@@ -575,7 +575,7 @@ line2")
                 }
             }
 
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 var supplierPostalAddress = new PostalAddressBuilder(this.session)
                     .WithAddress1($"Supplier{i} address 1")

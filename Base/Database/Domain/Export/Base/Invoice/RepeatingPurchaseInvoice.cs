@@ -3,11 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System;
 
     using Allors.Meta;

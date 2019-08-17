@@ -32,6 +32,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Description { get; set; }
+
         #region Allors
         [Id("e35c295c-a4a8-4441-af9a-bd2d3e96bab3")]
         [AssociationId("c2158f51-489a-4618-b289-dff18a05afb5")]

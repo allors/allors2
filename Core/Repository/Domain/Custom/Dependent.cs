@@ -25,12 +25,14 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         public Dependee Dependee { get; set; }
+
         #region Allors
         [Id("9884955e-74ed-4f9d-9362-8e0274c53bf9")]
         [AssociationId("5b97e356-9bcd-4c4e-be7a-ef577eef5f14")]
         [RoleId("d067129b-8440-4fc7-80d3-832ce569fe54")]
         #endregion
         public int Counter { get; set; }
+
         #region Allors
         [Id("e971733a-c381-4b5e-8e62-6bbd6d285bd7")]
         [AssociationId("6269351a-5e08-4b10-a895-ff2f669b259f")]

@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Xunit;
-
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
+    using Xunit;
     using Allors;
 
     [Collection(Fixture.Collection)]

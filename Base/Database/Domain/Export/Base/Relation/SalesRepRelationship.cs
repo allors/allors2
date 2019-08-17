@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class SalesRepRelationship
     {
         public void BaseOnDerive(ObjectOnDerive method)

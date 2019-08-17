@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class SalesOrderItemInvoiceState
     {
         public bool NotInvoiced => Equals(this.UniqueId, SalesOrderItemInvoiceStates.NotInvoicedId);

@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -49,7 +48,9 @@ namespace Allors.Repository
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public void OnBuild() { }
 
         public void OnPostBuild() { }

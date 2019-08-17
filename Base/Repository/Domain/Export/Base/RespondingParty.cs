@@ -28,6 +28,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime SendingDate { get; set; }
+
         #region Allors
         [Id("1d220b47-44de-4ab9-9219-b3acf78bdaf2")]
         [AssociationId("5d99c05d-6fea-456e-a6a5-9ba6b6a7ab7f")]
@@ -37,6 +38,7 @@ namespace Allors.Repository
         [Indexed]
 
         public ContactMechanism ContactMechanism { get; set; }
+
         #region Allors
         [Id("8e4080f7-40b7-437c-aff2-0fb6b809797a")]
         [AssociationId("8f61bcf0-a51c-4c02-95a8-99376824f5ab")]

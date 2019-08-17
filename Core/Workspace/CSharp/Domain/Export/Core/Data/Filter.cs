@@ -12,7 +12,6 @@ namespace Allors.Workspace.Data
     using Allors.Protocol.Data;
 
     using Allors.Workspace.Meta;
-    using Allors.Protocol;
 
     public class Filter : IExtent, IPredicateContainer
     {

@@ -39,6 +39,7 @@ namespace Allors.Repository
         [Required]
 
         public FixedAsset FixedAsset { get; set; }
+
         #region Allors
         [Id("59187015-4689-4ef8-942f-c36ff4c74e64")]
         [AssociationId("4f0c5035-bfd2-4843-8d6e-d3df15a7f5dd")]
@@ -49,6 +50,7 @@ namespace Allors.Repository
         [Required]
 
         public Party Party { get; set; }
+
         #region Allors
         [Id("70c38a47-79c4-4ec8-abfd-3c40ef4239ea")]
         [AssociationId("874b5fdc-a8b9-4b7c-9785-15661917b57a")]
@@ -58,6 +60,7 @@ namespace Allors.Repository
         [Indexed]
 
         public AssetAssignmentStatus AssetAssignmentStatus { get; set; }
+
         #region Allors
         [Id("c70f014b-345b-48ad-8075-2a1835a19f57")]
         [AssociationId("95b448b4-4fc5-4bd5-b789-e967de001bbe")]

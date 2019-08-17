@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -29,6 +28,7 @@ namespace Allors.Repository
         [Required]
 
         public int Quantity { get; set; }
+
         #region Allors
         [Id("a9020377-d721-4329-868d-33ab63aed074")]
         [AssociationId("5654ce5d-3453-404c-86cb-dfc1cc175345")]
@@ -39,6 +39,7 @@ namespace Allors.Repository
         [Required]
 
         public OrderItem OrderItem { get; set; }
+
         #region Allors
         [Id("e36224d2-cc6f-43b0-82e1-e300710f6407")]
         [AssociationId("5f56109c-0578-4db7-9c8a-de9617d374d8")]

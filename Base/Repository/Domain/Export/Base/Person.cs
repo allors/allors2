@@ -110,6 +110,7 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedComments { get; set; }
 
         public PartyRate[] PartyRates { get; set; }
+
         public bool CollectiveWorkEffortInvoice { get; set; }
 
         #endregion

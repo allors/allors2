@@ -31,6 +31,7 @@ namespace Allors.Repository
         [Required]
 
         public IUnitOfMeasure ToUnitOfMeasure { get; set; }
+
         #region Allors
         [Id("5d7ed801-4a2e-4abc-a32d-d869210132af")]
         [AssociationId("a3467a5f-8c7d-453a-9a33-18d742f20d06")]
@@ -38,6 +39,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime StartDate { get; set; }
+
         #region Allors
         [Id("835118da-148a-4c42-ab07-75b213a8e1f7")]
         [AssociationId("f9f78e34-6fe1-4863-b831-cabe46cbc764")]

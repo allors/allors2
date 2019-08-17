@@ -29,11 +29,17 @@ namespace Allors.Domain.Print.ProductQuoteModel
         }
 
         public string Reference { get; }
+
         public string Product { get; }
+
         public string Description { get; }
+
         public string Details { get; }
+
         public decimal Quantity { get; }
+
         public string Price { get; }
+
         public string Amount { get; }
 
         public string Comment { get; }

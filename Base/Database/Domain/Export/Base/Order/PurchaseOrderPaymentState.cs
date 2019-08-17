@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class PurchaseOrderPaymentState
     {
         public bool IsNotPaid => Equals(this.UniqueId, PurchaseOrderPaymentStates.NotPaidId);

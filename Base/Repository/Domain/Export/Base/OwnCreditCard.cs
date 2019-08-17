@@ -51,6 +51,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Person Owner { get; set; }
+
         #region Allors
         [Id("e2514c8b-5980-4e58-a75f-20890ed79516")]
         [AssociationId("2f572644-647a-4d4e-b085-400ba3a88f7a")]

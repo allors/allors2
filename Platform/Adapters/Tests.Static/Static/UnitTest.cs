@@ -9,8 +9,6 @@ namespace Allors.Adapters
     using System.Collections;
     using System.Text;
 
-    using Allors.Adapters;
-
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
@@ -1856,7 +1854,7 @@ namespace Allors.Adapters
             {
                 init();
                 var values = new ArrayList();
-                for (int i = 0; i < 4000; i++)
+                for (var i = 0; i < 4000; i++)
                 {
                     values.Add(SingleUnit.Create(this.Session));
                 }

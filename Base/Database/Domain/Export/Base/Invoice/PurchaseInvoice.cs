@@ -3,15 +3,13 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Linq;
-using Allors.Domain.NonLogging;
-using Allors.Services;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Allors.Domain
 {
-    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Allors.Domain.NonLogging;
+    using Allors.Services;
+    using Microsoft.Extensions.DependencyInjection;
     using Allors.Meta;
     using Resources;
 

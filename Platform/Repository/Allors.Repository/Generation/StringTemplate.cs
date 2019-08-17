@@ -11,8 +11,6 @@ namespace Allors.Repository.Generation
     using System;
     using System.IO;
     using System.Xml;
-
-    using Allors.Repository;
     using Allors.Repository.Domain;
 
     using Antlr4.StringTemplate;

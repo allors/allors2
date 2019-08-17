@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -30,6 +29,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Skill Skill { get; set; }
+
         #region Allors
         [Id("20623472-f4f3-40fc-bd7c-cd3da44fe224")]
         [AssociationId("5bc7090b-cf0e-4d08-8c8a-12db14e42ec3")]
@@ -37,6 +37,7 @@ namespace Allors.Repository
         #endregion
 
         public int EstimatedNumberOfPeople { get; set; }
+
         #region Allors
         [Id("e05c673f-6c4b-492d-bf68-b4af15310aea")]
         [AssociationId("4cd6b8fb-6713-4ba2-8cf8-7fa80e824a0e")]
@@ -45,6 +46,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal EstimatedDuration { get; set; }
+
         #region Allors
         [Id("ed6a55d4-def6-49e0-8b1a-9ee99d8b3c3d")]
         [AssociationId("d5289442-6578-4928-873e-7e64cafadf66")]

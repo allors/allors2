@@ -6,7 +6,6 @@
 namespace Tests.Remote
 {
     using Allors.Workspace.Meta;
-    using Allors.Protocol.Remote.Pull;
     using Allors.Workspace.Client;
     using Allors.Workspace.Data;
     using Allors.Workspace.Domain;

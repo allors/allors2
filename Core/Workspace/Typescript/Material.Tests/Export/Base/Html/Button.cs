@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using OpenQA.Selenium.Support.PageObjects;
-
 namespace Components
 {
+    using OpenQA.Selenium.Support.PageObjects;
     using System.Diagnostics.CodeAnalysis;
     using OpenQA.Selenium;
 

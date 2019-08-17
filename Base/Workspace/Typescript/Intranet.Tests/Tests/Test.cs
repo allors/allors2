@@ -3,11 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
-
 namespace Tests
 {
+    using Microsoft.Extensions.Logging;
+    using NLog.Extensions.Logging;
     using System;
     using System.Globalization;
     using System.IO;

@@ -3,12 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Net;
-using System.Net.Http;
-using BaseExcelAddIn.Base;
-
 namespace ExcelAddIn
 {
+    using System.Net;
+    using System.Net.Http;
+    using BaseExcelAddIn.Base;
     using System;
     using System.Configuration;
     using System.Threading.Tasks;

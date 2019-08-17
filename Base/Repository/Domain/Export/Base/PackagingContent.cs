@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -31,6 +30,7 @@ namespace Allors.Repository
         [Required]
 
         public ShipmentItem ShipmentItem { get; set; }
+
         #region Allors
         [Id("ca8bcf75-c40e-4d73-8d0c-f35d1005f73b")]
         [AssociationId("a97a1fd4-6d74-424c-aab4-909bdd198856")]

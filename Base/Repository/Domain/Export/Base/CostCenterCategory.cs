@@ -28,6 +28,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public CostCenterCategory Parent { get; set; }
+
         #region Allors
         [Id("45b0b049-e047-4490-9dde-c48fb1e7bfc3")]
         [AssociationId("130462ef-9d1d-48d9-b0f5-40c82ccea0a2")]
@@ -64,7 +65,9 @@ namespace Allors.Repository
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public void OnBuild() { }
 
         public void OnPostBuild() { }

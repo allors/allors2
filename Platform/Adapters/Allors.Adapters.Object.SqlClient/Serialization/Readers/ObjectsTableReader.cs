@@ -107,7 +107,9 @@ namespace Allors.Adapters.Object.SqlClient
         public override bool NextResult() => throw new NotImplementedException();
 
         public override int Depth { get; }
+
         public override bool HasRows { get; }
+
         public override bool IsClosed { get; }
 
         public override object this[int ordinal] => throw new NotImplementedException();

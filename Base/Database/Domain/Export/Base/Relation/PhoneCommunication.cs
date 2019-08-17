@@ -3,12 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using Allors.Meta;
-using Resources;
-
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class PhoneCommunication
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =

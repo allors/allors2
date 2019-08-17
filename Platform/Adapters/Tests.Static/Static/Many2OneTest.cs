@@ -10,8 +10,6 @@ namespace Allors.Adapters
 {
     using System;
 
-    using Allors.Adapters;
-
     using Allors;
     using Allors.Domain;
     using Allors.Meta;

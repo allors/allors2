@@ -11,12 +11,10 @@ namespace Allors.Adapters.Object.Npgsql
     using global::Npgsql;
     using System.Linq;
     using System.Xml;
-    using System.Xml.Serialization;
 
     using Allors.Adapters.Object.Npgsql.Caching;
 
     using Allors;
-    using Allors.Adapters.Schema;
     using Allors.Meta;
 
     using NpgsqlTypes;

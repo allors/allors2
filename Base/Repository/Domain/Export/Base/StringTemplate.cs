@@ -29,6 +29,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Body { get; set; }
+
         #region Allors
         [Id("c501103b-037a-4961-93df-2dbb74b88a76")]
         [AssociationId("1bcdddcc-e462-4d59-af2d-7346245cb271")]
@@ -42,7 +43,9 @@ namespace Allors.Repository
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public void OnBuild() { }
 
         public void OnPostBuild() { }

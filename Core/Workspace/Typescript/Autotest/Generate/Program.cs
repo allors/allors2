@@ -3,11 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Workspace.Meta;
-using Autotest;
-
 namespace Allors
 {
+    using Allors.Workspace.Meta;
+    using Autotest;
     using System;
     using System.IO;
 

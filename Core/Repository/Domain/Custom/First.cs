@@ -26,12 +26,14 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         public Second Second { get; set; }
+
         #region Allors
         [Id("b0274351-3403-4384-afb6-2cb49cd03893")]
         [AssociationId("ec145229-e33a-4807-a0dd-48778cc88ac7")]
         [RoleId("12c46bf1-eed0-4e2a-b704-5d40032b4911")]
         #endregion
         public bool CreateCycle { get; set; }
+
         #region Allors
         [Id("f2b61dd5-d30c-445a-ae7a-af1c0cc8e278")]
         [AssociationId("ae9f23b5-20a7-4ecc-b642-503d75c486f1")]

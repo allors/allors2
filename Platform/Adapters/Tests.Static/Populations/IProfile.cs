@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors;
-
 namespace Allors.Adapters
 {
+    using Allors;
     using System;
 
     public interface IProfile : IDisposable

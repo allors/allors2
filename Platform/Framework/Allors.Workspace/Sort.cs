@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Workspace.Meta;
-
 namespace Allors.Workspace
 {
+    using Allors.Workspace.Meta;
+
     public class Sort
     {
         public IRoleType RoleType { get; set; }

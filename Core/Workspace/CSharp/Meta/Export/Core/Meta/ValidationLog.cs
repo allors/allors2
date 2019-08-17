@@ -69,7 +69,7 @@ namespace Allors.Workspace.Meta
             get
             {
                 var messages = new string[this.errors.Count];
-                for (int i = 0; i < messages.Length; i++)
+                for (var i = 0; i < messages.Length; i++)
                 {
                     messages[i] = this.errors[i].Message;
                 }

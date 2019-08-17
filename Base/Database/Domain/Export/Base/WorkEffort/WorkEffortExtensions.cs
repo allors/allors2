@@ -3,13 +3,12 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Meta;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using Allors.Meta;
+    using System;
+    using System.Linq;
+
     public static partial class WorkEffortExtensions
     {
         public static DateTime? FromDate(this WorkEffort @this) => @this.ActualStart ?? @this.ScheduledStart;

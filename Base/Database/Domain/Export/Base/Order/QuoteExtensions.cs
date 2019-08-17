@@ -3,11 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-using Allors.Meta;
-
 namespace Allors.Domain
 {
+    using System.Linq;
+
     public static partial class QuoteExtensions
     {
         public static void BaseOnBuild(this Quote @this, ObjectOnBuild method)

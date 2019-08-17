@@ -17,6 +17,7 @@ namespace Allors.Repository
         #region inherited properties
 
         public DateTime FromDate { get; set; }
+
         public DateTime ThroughDate { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }

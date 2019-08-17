@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.custom.relations.people;
-
 namespace Tests.Relations
 {
+    using src.allors.material.custom.relations.people;
     using Allors.Domain;
     using Allors.Meta;
 

@@ -34,6 +34,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Description { get; set; }
+
         #region Allors
         [Id("2f6ed687-4200-4a27-bfb2-922d9ce2e38f")]
         [AssociationId("5f2b047e-2cb0-4d2a-9cce-77846ad35f45")]
@@ -41,6 +42,7 @@ namespace Allors.Repository
         #endregion
 
         public DateTime CommunicationDate { get; set; }
+
         #region Allors
         [Id("5bf234d2-8486-47b2-a770-eca36b44bb67")]
         [AssociationId("cc9f9a6f-54fc-4786-9d83-2769d8d921ce")]
@@ -50,6 +52,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Person GivenByManager { get; set; }
+
         #region Allors
         [Id("a8cd7bf6-6bea-44ad-9e89-1bd63ffca459")]
         [AssociationId("c4a4e475-613b-4e38-bb79-b5bd12f73332")]

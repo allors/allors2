@@ -8,7 +8,6 @@ namespace Allors.Domain
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Allors.Meta;
 
     /// <summary>
     /// The Application object serves as the singleton for

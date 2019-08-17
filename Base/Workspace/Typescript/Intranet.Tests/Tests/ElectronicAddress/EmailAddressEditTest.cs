@@ -3,14 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Meta;
-using src.allors.material.@base.objects.contactmechanism.overview.panel;
-using src.allors.material.@base.objects.emailaddress.create;
-using src.allors.material.@base.objects.emailaddress.edit;
-using src.allors.material.@base.objects.person.overview;
-
 namespace Tests.ElectronicAddressTests
 {
+    using src.allors.material.@base.objects.emailaddress.edit;
+    using src.allors.material.@base.objects.person.overview;
     using System.Linq;
     using Allors;
     using Allors.Domain;

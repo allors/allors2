@@ -5,10 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------------------------------
 
-using Allors.Workspace.Meta;
-
 namespace Allors.Workspace
 {
+    using Allors.Workspace.Meta;
     using Allors.Workspace.Domain;
 
     public static partial class Config

@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public static partial class SalesTermExtensions
     {
         public static void BaseOnPreDerive(this SalesTerm @this, ObjectOnPreDerive method)

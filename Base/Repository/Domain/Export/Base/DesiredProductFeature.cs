@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -29,6 +28,7 @@ namespace Allors.Repository
         [Required]
 
         public bool Required { get; set; }
+
         #region Allors
         [Id("d09dbd42-5c59-4d78-b5d7-4dbee0406ead")]
         [AssociationId("4a611e8a-1bd5-42b3-b2ba-14403328696b")]

@@ -6,10 +6,9 @@
 //   Defines the PersonTests type.
 // </summary>
 
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Linq;
     using System;
 
     using Allors.Meta;

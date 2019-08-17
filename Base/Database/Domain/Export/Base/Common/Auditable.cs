@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public static class AuditableExtension
     {
         public static void BaseOnDerive(this Auditable @this, ObjectOnDerive method)

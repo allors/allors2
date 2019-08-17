@@ -5,7 +5,6 @@
 
 namespace Allors.Server
 {
-    using System.Data;
     using System.Text;
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;

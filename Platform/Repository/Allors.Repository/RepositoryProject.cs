@@ -11,7 +11,6 @@ namespace Allors.Repository.Roslyn
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Reflection.Metadata;
 
     using Allors.Repository.Domain;
 

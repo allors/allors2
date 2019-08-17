@@ -3,13 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.@base.objects.customerrelationship.edit;
-using src.allors.material.@base.objects.partyrelationship.overview.panel;
-using src.allors.material.@base.objects.person.list;
-using src.allors.material.@base.objects.person.overview;
-
 namespace Tests.PartyRelationshipTests
 {
+    using src.allors.material.@base.objects.customerrelationship.edit;
+    using src.allors.material.@base.objects.person.list;
+    using src.allors.material.@base.objects.person.overview;
     using System.Linq;
 
     using Allors;
@@ -17,7 +15,6 @@ namespace Tests.PartyRelationshipTests
     using Allors.Meta;
 
     using Components;
-    using Tests.PersonTests;
 
     using Xunit;
 

@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -30,6 +29,7 @@ namespace Allors.Repository
         [Indexed]
 
         public OrganisationGlAccount GeneralLedgerAccount { get; set; }
+
         #region Allors
         [Id("b51ddcf7-ae36-4fbc-b8b5-3b2befa4a720")]
         [AssociationId("9a4e561c-df1e-4d5f-8b31-384959d56e4f")]
@@ -38,6 +38,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Amount { get; set; }
+
         #region Allors
         [Id("bc59e72d-935c-46fd-a595-4de24369fc12")]
         [AssociationId("d157af85-88b6-4a13-b142-ba7d176bbb40")]
@@ -62,6 +63,7 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
         public void DelegateAccess() { }
 
         #endregion

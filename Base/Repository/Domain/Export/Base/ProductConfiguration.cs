@@ -38,6 +38,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Product[] ProductsUsedIn { get; set; }
+
         #region Allors
         [Id("528afcdf-09c2-4b3a-89b0-4da8fd732e83")]
         [AssociationId("774872d1-6b99-4e5e-8f00-f791a11ea337")]
@@ -47,6 +48,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Product Product { get; set; }
+
         #region Allors
         [Id("9e6d3782-2f32-4155-a1bf-62c02e8cbe82")]
         [AssociationId("aba19375-c6c7-4955-b764-bf731822b4f8")]
@@ -55,6 +57,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal QuantityUsed { get; set; }
+
         #region Allors
         [Id("caabfae5-6cff-41df-a267-9f4bde0b4808")]
         [AssociationId("d76092e1-40e4-45ab-ada5-cbe9206dcf84")]

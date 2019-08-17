@@ -10,8 +10,6 @@ namespace Commands
     using System.IO;
     using System.Linq;
     using System.Xml;
-
-    using Allors;
     using Allors.Domain;
     using Allors.Services;
 

@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Domain.Logging;
-
     public partial class RepeatingSalesInvoices
     {
         public static void Daily(ISession session)

@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
-
     public partial class ProductQuoteApprovals
     {
         protected override void BaseSecure(Security config) => config.GrantOwner(this.ObjectType, Operations.Read, Operations.Write, Operations.Execute);

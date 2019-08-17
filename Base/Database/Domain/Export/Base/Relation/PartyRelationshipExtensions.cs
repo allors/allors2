@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public static partial class PartyRelationshipExtensions
     {
         public static void BaseOnBuild(this PartyRelationship @this, ObjectOnBuild method)

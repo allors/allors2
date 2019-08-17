@@ -25,48 +25,71 @@ namespace Allors.Repository
         public string InternalComment { get; set; }
 
         public Currency Currency { get; set; }
+
         public string Description { get; set; }
+
         public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
 
         public Fee Fee { get; set; }
 
         public string CustomerReference { get; set; }
+
         public DiscountAdjustment DiscountAdjustment { get; set; }
+
         public decimal AmountPaid { get; set; }
+
         public decimal TotalDiscount { get; set; }
+
         public BillingAccount BillingAccount { get; set; }
+
         public decimal TotalIncVat { get; set; }
+
         public decimal TotalSurcharge { get; set; }
+
         public decimal TotalBasePrice { get; set; }
 
         public DateTime InvoiceDate { get; set; }
+
         public DateTime EntryDate { get; set; }
 
         public decimal TotalShippingAndHandling { get; set; }
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
+
         public decimal TotalExVat { get; set; }
+
         public SalesTerm[] SalesTerms { get; set; }
 
         public string InvoiceNumber { get; set; }
+
         public string Message { get; set; }
+
         public VatRegime VatRegime { get; set; }
 
         public decimal TotalVat { get; set; }
+
         public decimal TotalFee { get; set; }
+
         public InvoiceItem[] ValidInvoiceItems { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public string Comment { get; set; }
 
         public LocalisedText[] LocalisedComments { get; set; }
 
         public PrintDocument PrintDocument { get; set; }
+
         public string WorkItemDescription { get; set; }
 
         public User CreatedBy { get; set; }
+
         public User LastModifiedBy { get; set; }
+
         public DateTime CreationDate { get; set; }
+
         public DateTime LastModifiedDate { get; set; }
         #endregion
 

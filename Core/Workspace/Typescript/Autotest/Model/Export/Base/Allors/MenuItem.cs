@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Humanizer;
-
 namespace Autotest
 {
+    using Humanizer;
     using System;
     using System.Linq;
     using Allors.Workspace.Meta;

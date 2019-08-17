@@ -3,11 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Meta;
-using Resources;
-
 namespace Allors.Domain
 {
+    using Allors.Meta;
+    using Resources;
+
     public partial class WorkEffortAssignmentRate
     {
         public void BaseOnBuild(ObjectOnBuild method)

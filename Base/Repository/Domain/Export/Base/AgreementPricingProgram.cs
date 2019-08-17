@@ -45,6 +45,7 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
         public void DelegateAccess() { }
 
         #endregion

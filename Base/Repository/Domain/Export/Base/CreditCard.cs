@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -32,6 +31,7 @@ namespace Allors.Repository
         [Size(256)]
 
         public string NameOnCard { get; set; }
+
         #region Allors
         [Id("0916d4d2-5f82-46da-967e-7b48012e4019")]
         [AssociationId("21cc3945-4cc1-43c7-a0a3-0fc9af562c5a")]
@@ -42,6 +42,7 @@ namespace Allors.Repository
         [Required]
 
         public CreditCardCompany CreditCardCompany { get; set; }
+
         #region Allors
         [Id("4dfa0fda-0001-4635-b8d1-4fd4ce723ed2")]
         [AssociationId("d7ac25b9-d7ec-4f88-82c2-680422891bd7")]
@@ -50,6 +51,7 @@ namespace Allors.Repository
         [Required]
 
         public int ExpirationYear { get; set; }
+
         #region Allors
         [Id("7fa0d04e-b2df-49f8-8aa2-2d546ca843d6")]
         [AssociationId("adee3f7d-ded7-469b-9f43-6ed23f3893de")]
@@ -58,6 +60,7 @@ namespace Allors.Repository
         [Required]
 
         public int ExpirationMonth { get; set; }
+
         #region Allors
         [Id("b5484c11-52d4-45f7-b25a-bf4c05e2c9a0")]
         [AssociationId("15df289b-6c03-4fc4-8d8b-31edc394de8d")]

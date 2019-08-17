@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class PositionTypes
     {
         private UniquelyIdentifiableSticky<PositionType> cache;

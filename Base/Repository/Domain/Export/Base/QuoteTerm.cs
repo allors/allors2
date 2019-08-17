@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -17,7 +16,9 @@ namespace Allors.Repository
         #region inherited properties
 
         public string TermValue { get; set; }
+
         public TermType TermType { get; set; }
+
         public string Description { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }

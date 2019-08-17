@@ -5,8 +5,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     public partial class SalesOrderShipmentState
     {
         public bool NotShipped => Equals(this.UniqueId, SalesOrderShipmentStates.NotShippedId);

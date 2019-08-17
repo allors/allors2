@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.@base.objects.person.list;
-
 namespace Tests.PartyContactMachanismTests
 {
+    using src.allors.material.@base.objects.person.list;
     using System.Linq;
 
     using Allors;

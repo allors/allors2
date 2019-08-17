@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -35,6 +34,7 @@ namespace Allors.Repository
         [Required]
 
         public RatingType RatingType { get; set; }
+
         #region Allors
         [Id("d62d7236-458f-4e30-8df4-27eb877d0931")]
         [AssociationId("7056f19c-c67e-4b54-a08c-c49155326a5e")]
@@ -62,6 +62,7 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
         public void DelegateAccess() { }
 
         #endregion

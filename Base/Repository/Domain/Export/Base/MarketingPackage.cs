@@ -37,6 +37,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Instruction { get; set; }
+
         #region Allors
         [Id("70c7d06c-2086-4a60-b2b9-aba2c6f07669")]
         [AssociationId("23ec81db-27f0-4965-bf25-4f0150fd4281")]
@@ -46,6 +47,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Product[] ProductsUsedIn { get; set; }
+
         #region Allors
         [Id("a687e8ff-624c-4794-866f-f4cc653d874c")]
         [AssociationId("7d1b384b-4730-4e61-8a80-8d18ea8e2ae4")]
@@ -55,6 +57,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Product Product { get; set; }
+
         #region Allors
         [Id("ccabc13b-63cc-4cdf-909d-411edc26d648")]
         [AssociationId("31ac20b1-d41d-4aa5-881b-708e38849017")]
@@ -64,6 +67,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Description { get; set; }
+
         #region Allors
         [Id("dc3c4217-5c42-4ac3-ad16-33f50653bcfc")]
         [AssociationId("82eaf783-4f29-4ede-a285-a7540d0d5f62")]

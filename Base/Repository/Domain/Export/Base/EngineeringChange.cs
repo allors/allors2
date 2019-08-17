@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -36,6 +35,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Person Requestor { get; set; }
+
         #region Allors
         [Id("1b65b18b-c930-49b4-85e4-bb4b07dfdca2")]
         [AssociationId("a34d8a88-50c9-4ece-920c-a1d95388b5ab")]
@@ -45,6 +45,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Person Authorizer { get; set; }
+
         #region Allors
         [Id("4487e364-4c5e-4b84-8847-a6ec1f1a0e6f")]
         [AssociationId("79d6a20e-6bc9-49a4-bc81-c10c73871076")]
@@ -54,6 +55,7 @@ namespace Allors.Repository
         [Size(-1)]
 
         public string Description { get; set; }
+
         #region Allors
         [Id("8d123834-364e-47d7-9d1e-63f4ef19f8c0")]
         [AssociationId("b42a9f7c-5032-44e6-97ed-ac4d1ff48445")]
@@ -63,6 +65,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Person Designer { get; set; }
+
         #region Allors
         [Id("9caba64b-4959-43f9-a6a6-c76dff62dc02")]
         [AssociationId("4709e3c9-c5cc-457c-a6ff-5eb981b3ef2e")]
@@ -72,6 +75,7 @@ namespace Allors.Repository
         [Indexed]
 
         public PartSpecification[] PartSpecifications { get; set; }
+
         #region Allors
         [Id("b076cdcc-7e3f-46c8-b127-98d29a4c9e4e")]
         [AssociationId("d0506d24-4cab-4030-be18-59dd879b4bef")]
@@ -81,6 +85,7 @@ namespace Allors.Repository
         [Indexed]
 
         public PartBillOfMaterial[] PartBillOfMaterials { get; set; }
+
         #region Allors
         [Id("c360a1d9-5d8c-4295-aaae-2d50410dd293")]
         [AssociationId("2e3c4504-2130-45dd-b9bf-4e50abb021c0")]
@@ -91,6 +96,7 @@ namespace Allors.Repository
         [Indexed]
 
         public EngineeringChangeObjectState CurrentObjectState { get; set; }
+
         #region Allors
         [Id("caf244e2-f61d-436e-978c-1d0af118949f")]
         [AssociationId("a77aa2de-44a6-4ee1-aa13-45cf8c4da853")]
@@ -100,6 +106,7 @@ namespace Allors.Repository
         [Indexed]
 
         public EngineeringChangeStatus[] EngineeringChangeStatuses { get; set; }
+
         #region Allors
         [Id("d18955d3-1fce-46c9-bb44-5830bfdc09fd")]
         [AssociationId("078d9017-3d7a-4ba5-9c9b-58f778893a15")]
@@ -109,6 +116,7 @@ namespace Allors.Repository
         [Indexed]
 
         public Person Tester { get; set; }
+
         #region Allors
         [Id("f56d7ad0-430d-482d-a298-5c41ffb082b4")]
         [AssociationId("30ec7448-b167-4273-bb00-cb87a604bb52")]

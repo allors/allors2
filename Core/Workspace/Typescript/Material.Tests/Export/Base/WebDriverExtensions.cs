@@ -3,13 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Threading;
-
 namespace Components
 {
+    using System.Threading;
     using System;
     using OpenQA.Selenium;
-    using OpenQA.Selenium.Support.UI;
 
     public static partial class WebDriverExtensions
     {

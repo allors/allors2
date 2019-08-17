@@ -3,23 +3,17 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.@base.objects.contactmechanism.overview.panel;
-using src.allors.material.@base.objects.person.list;
-using src.allors.material.@base.objects.person.overview;
-using src.allors.material.@base.objects.webaddress.create;
-using src.allors.material.@base.objects.webaddress.edit;
-
 namespace Tests.ElectronicAddressTests
 {
-    using System;
+    using src.allors.material.@base.objects.person.list;
+    using src.allors.material.@base.objects.person.overview;
+    using src.allors.material.@base.objects.webaddress.edit;
     using System.Linq;
 
     using Allors;
     using Allors.Domain;
-    using Allors.Meta;
 
     using Components;
-    using Tests.PersonTests;
 
     using Xunit;
 

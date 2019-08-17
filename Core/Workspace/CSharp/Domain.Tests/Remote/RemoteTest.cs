@@ -6,7 +6,6 @@
 namespace Tests.Remote
 {
     using System;
-    using System.IO;
     using System.Net.Http;
 
     using Allors.Workspace;

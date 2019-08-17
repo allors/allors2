@@ -3,15 +3,14 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-using Allors.Excel.Customers;
-using Allors.Excel.PurchaseInvoices;
-using Allors.Excel.Relations.CustomersOverdue;
-using ExcelAddIn.Base.Relation.People;
-using Microsoft.Office.Interop.Excel;
-
 namespace Allors.Excel
 {
+    using System.Linq;
+    using Allors.Excel.Customers;
+    using Allors.Excel.PurchaseInvoices;
+    using Allors.Excel.Relations.CustomersOverdue;
+    using ExcelAddIn.Base.Relation.People;
+    using Microsoft.Office.Interop.Excel;
     using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
 
     public partial class Sheets

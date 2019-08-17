@@ -24,7 +24,7 @@ namespace Allors.Development.Repository.Storage
 
         public string GetRelativeOrFullName(DirectoryInfo baseDirectoryInfo)
         {
-            string relativeName = this.GetRelativeName(baseDirectoryInfo);
+            var relativeName = this.GetRelativeName(baseDirectoryInfo);
             if (relativeName == null)
             {
                 return this.fileInfo.FullName;

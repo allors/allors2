@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -30,6 +29,7 @@ namespace Allors.Repository
         [Size(256)]
 
         public string Formula { get; set; }
+
         #region Allors
         [Id("b0a81d90-f6bc-4169-b76c-497a3a1f04bf")]
         [AssociationId("6af9db7e-6d96-4b91-9a7f-0f1005e49f65")]

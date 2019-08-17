@@ -3,12 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-using System.Linq;
-using Allors.Domain.NonLogging;
-
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
 
     public partial class NonSerialisedInventoryItem

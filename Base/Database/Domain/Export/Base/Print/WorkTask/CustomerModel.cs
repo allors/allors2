@@ -58,14 +58,23 @@ namespace Allors.Domain.Print.WorkTaskModel
         }
 
         public string Number { get; }
+
         public string Name { get; }
+
         public string BillingAddress { get; }
+
         public string BillingCity { get; }
+
         public string BillingState { get; }
+
         public string BillingPostalCode { get; }
+
         public string ShippingAddress { get; }
+
         public string ShippingCity { get; }
+
         public string ShippingState { get; }
+
         public string ShippingPostalCode { get; }
     }
 }

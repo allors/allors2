@@ -6,10 +6,9 @@
 //   Defines the Default type.
 // </summary>
 
-using System.Collections.Generic;
-
 namespace Allors.Development.Repository.Generation
 {
+    using System.Collections.Generic;
     using System;
     using System.IO;
 

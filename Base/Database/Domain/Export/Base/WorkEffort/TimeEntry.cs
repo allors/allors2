@@ -3,12 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Linq;
     using System;
-    using Allors.Meta;
 
     public partial class TimeEntry
     {
@@ -68,7 +66,7 @@ namespace Allors.Domain
                 this.Worker = this.TimeSheetWhereTimeEntry.Worker;
             }
 
-            decimal billingRate = 0M;
+            var billingRate = 0M;
             if (this.AssignedBillingRate.HasValue)
             {
                 billingRate = this.AssignedBillingRate.Value;

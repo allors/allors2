@@ -3,12 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Collections.Generic;
-using MysticMind.PostgresEmbed;
-using Xunit;
-
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
+    using System.Collections.Generic;
+    using MysticMind.PostgresEmbed;
+    using Xunit;
     using System;
 
     public class Fixture : IDisposable

@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Linq;
+
     public partial class WorkEffortPurchaseOrderItemAssignment
     {
         public void BaseOnDerive(ObjectOnDerive method)

@@ -16,10 +16,10 @@ namespace Allors.Adapters
     {
         public static void AssociationExistHasException(IObject allorsObject, IAssociationType associationType)
         {
-            bool exceptionOccured = false;
+            var exceptionOccured = false;
             try
             {
-                object o = allorsObject.Strategy.GetAssociation(associationType.RelationType);
+                var o = allorsObject.Strategy.GetAssociation(associationType.RelationType);
             }
             catch
             {
@@ -34,10 +34,10 @@ namespace Allors.Adapters
 
         public static void AssociationGetHasException(IObject allorsObject, IAssociationType associationType)
         {
-            bool exceptionOccured = false;
+            var exceptionOccured = false;
             try
             {
-                object o = allorsObject.Strategy.GetAssociation(associationType.RelationType);
+                var o = allorsObject.Strategy.GetAssociation(associationType.RelationType);
             }
             catch
             {
@@ -84,7 +84,7 @@ namespace Allors.Adapters
 
         public static void RoleExistHasException(IObject allorsObject, IRoleType roleType)
         {
-            bool exceptionOccured = false;
+            var exceptionOccured = false;
             try
             {
                 object o = allorsObject.Strategy.ExistRole(roleType.RelationType);
@@ -102,10 +102,10 @@ namespace Allors.Adapters
 
         public static void RoleGetHasException(IObject allorsObject, IRoleType roleType)
         {
-            bool exceptionOccured = false;
+            var exceptionOccured = false;
             try
             {
-                object o = allorsObject.Strategy.GetRole(roleType.RelationType);
+                var o = allorsObject.Strategy.GetRole(roleType.RelationType);
             }
             catch
             {

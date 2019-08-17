@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using src.allors.material.@base.objects.organisation.list;
-
 namespace Tests.OrganisationTests
 {
+    using src.allors.material.@base.objects.organisation.list;
     using Allors.Domain;
     using Allors.Meta;
     using Xunit;

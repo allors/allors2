@@ -41,8 +41,11 @@ namespace Allors.Repository
         public ObjectState[] ObjectStates { get; set; }
 
         public ShipmentState PreviousShipmentState { get; set; }
+
         public ShipmentState LastShipmentState { get; set; }
+
         public ShipmentState ShipmentState { get; set; }
+
         public ShipmentMethod ShipmentMethod { get; set; }
 
         public ShipmentPackage[] ShipmentPackages { get; set; }
@@ -52,6 +55,7 @@ namespace Allors.Repository
         public Document[] Documents { get; set; }
 
         public Person ShipFromContactPerson { get; set; }
+
         public Facility ShipFromFacility { get; set; }
 
         public Party ShipToParty { get; set; }
@@ -59,7 +63,9 @@ namespace Allors.Repository
         public ShipmentItem[] ShipmentItems { get; set; }
 
         public PostalAddress ShipToAddress { get; set; }
+
         public Person ShipToContactPerson { get; set; }
+
         public Facility ShipToFacility { get; set; }
 
         public decimal EstimatedShipCost { get; set; }

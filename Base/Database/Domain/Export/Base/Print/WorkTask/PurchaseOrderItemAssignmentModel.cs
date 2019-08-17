@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System;
-
 namespace Allors.Domain.Print.WorkTaskModel
 {
+    using System;
+
     public class PurchaseOrderItemAssignmentModel
     {
         public PurchaseOrderItemAssignmentModel(WorkEffortPurchaseOrderItemAssignment assignment)

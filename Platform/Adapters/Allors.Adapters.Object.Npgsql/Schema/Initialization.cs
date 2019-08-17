@@ -6,7 +6,6 @@
 namespace Allors.Adapters.Object.Npgsql
 {
     using System;
-    using System.Security.Cryptography;
 
     using global::Npgsql;
     using System.Text;

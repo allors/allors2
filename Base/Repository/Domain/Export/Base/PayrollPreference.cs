@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-    using System;
 
     using Allors.Repository.Attributes;
 
@@ -29,6 +28,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Percentage { get; set; }
+
         #region Allors
         [Id("802de3ea-0cb9-4815-bc56-497e75f487ae")]
         [AssociationId("75568752-3a42-412f-bf76-be6705bd441c")]
@@ -37,6 +37,7 @@ namespace Allors.Repository
         [Size(256)]
 
         public string AccountNumber { get; set; }
+
         #region Allors
         [Id("a37e2763-6d8c-46c3-a69f-148458d2981b")]
         [AssociationId("4255cc8c-c97c-48a2-9111-f8658f478042")]
@@ -47,6 +48,7 @@ namespace Allors.Repository
         [Required]
 
         public PaymentMethod PaymentMethod { get; set; }
+
         #region Allors
         [Id("b576883f-0cfd-4973-aa49-479b6e712c75")]
         [AssociationId("f93aac27-8f9d-4b9e-a55d-5fad0efc6e86")]
@@ -57,6 +59,7 @@ namespace Allors.Repository
         [Required]
 
         public TimeFrequency Frequency { get; set; }
+
         #region Allors
         [Id("c71eb13a-8053-4d56-a3e3-dcd38a1e4f29")]
         [AssociationId("8955caa1-cfdb-4463-a6d2-80ce0f775470")]
@@ -66,6 +69,7 @@ namespace Allors.Repository
         [Indexed]
 
         public DeductionType DeductionType { get; set; }
+
         #region Allors
         [Id("ded05ab7-351b-4b05-9e0a-010e6b4fbd0f")]
         [AssociationId("feb46721-492d-4508-9d28-5b6496f517cd")]

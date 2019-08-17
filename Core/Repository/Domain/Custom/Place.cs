@@ -23,6 +23,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         public Country Country { get; set; }
+
         #region Allors
         [Id("d029f486-4bb8-43a1-8356-98b9bee10de4")]
         [AssociationId("1454029b-b016-41e1-b142-cea20c7b36d1")]
@@ -30,6 +31,7 @@ namespace Allors.Repository
         [Size(256)]
         #endregion
         public string City { get; set; }
+
         #region Allors
         [Id("d80d7c6a-138a-43dd-9748-8ffb89b1dabb")]
         [AssociationId("944c752e-742c-426b-9ac9-c405080d4a8d")]
