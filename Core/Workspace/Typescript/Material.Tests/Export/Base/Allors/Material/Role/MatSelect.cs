@@ -5,10 +5,10 @@
 
 namespace Components
 {
-    using OpenQA.Selenium.Support.PageObjects;
     using System.Diagnostics.CodeAnalysis;
     using Allors.Meta;
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.PageObjects;
 
     public class MatSelect : SelectorComponent
     {

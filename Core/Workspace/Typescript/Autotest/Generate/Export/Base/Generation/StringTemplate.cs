@@ -1,6 +1,6 @@
 // <copyright file="StringTemplate.cs" company="Allors bvba">
-// Copyright (c) Allors bvba. All rights reserved.
-// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
 // </copyright>
 // <summary>
 //   Defines the Default type.
@@ -8,16 +8,13 @@
 
 namespace Allors.Development.Repository.Generation
 {
-    using System.Collections.Generic;
     using System;
+    using System.Collections.Generic;
     using System.IO;
-
+    using System.Xml;
+    using Allors.Development.Repository.Storage;
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Misc;
-
-    using Allors.Development.Repository.Storage;
-    using System.Xml;
-
     using Autotest;
 
     public class StringTemplate

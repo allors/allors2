@@ -8,8 +8,8 @@
 
 namespace Allors.Domain
 {
-    using Xunit;
     using Allors.Meta;
+    using Xunit;
 
     public class PersonTests : DomainTest
     {

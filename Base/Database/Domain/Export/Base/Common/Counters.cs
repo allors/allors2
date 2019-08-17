@@ -14,11 +14,11 @@ namespace Allors.Domain
         {
             int NextElfProefValue(Counter counter)
             {
-                counter.Value = counter.Value + 1;
+                counter.Value += 1;
 
                 while (!IsValidElfProefNumber(counter.Value))
                 {
-                    counter.Value = counter.Value + 1;
+                    counter.Value += 1;
                 }
 
                 return counter.Value;

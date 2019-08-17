@@ -7,11 +7,11 @@
 
 namespace Allors.Workspace.Data
 {
-    using Allors.Workspace.Meta;
     using System.Collections.Generic;
     using System.Linq;
-    using Allors.Workspace;
     using Allors.Protocol.Data;
+    using Allors.Workspace;
+    using Allors.Workspace.Meta;
 
     public class ContainedIn : IPropertyPredicate
     {

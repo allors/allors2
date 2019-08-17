@@ -5,8 +5,8 @@
 
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
-    using Xunit;
     using Allors;
+    using Xunit;
 
     [Collection(Fixture.Collection)]
     public class ExtentTest : Npgsql.ExtentTest

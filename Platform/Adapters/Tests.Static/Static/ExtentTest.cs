@@ -7,14 +7,11 @@ namespace Allors.Adapters
 {
     using System;
     using System.Collections.Generic;
-
-    using Allors;
-    using Allors.Meta;
-
-    using Allors.Domain;
-
-    using Xunit;
     using System.Linq;
+    using Allors;
+    using Allors.Domain;
+    using Allors.Meta;
+    using Xunit;
 
     public enum Zero2Four
     {
@@ -17143,10 +17140,7 @@ namespace Allors.Adapters
         // ISession.Extent for Repositories and
         // IWorkspaceSession.WorkspaceExtent for Workspaces.
 
-        private static Unit GetAllorsString(IObjectType objectType)
-        {
-            return (Unit)objectType.MetaPopulation.Find(UnitIds.String);
-        }
+        private static Unit GetAllorsString(IObjectType objectType) => (Unit)objectType.MetaPopulation.Find(UnitIds.String);
 
         private void AssertC1(Extent extent, bool assert0, bool assert1, bool assert2, bool assert3)
         {

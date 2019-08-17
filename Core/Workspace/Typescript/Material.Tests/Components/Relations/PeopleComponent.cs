@@ -5,9 +5,9 @@
 
 namespace src.allors.material.custom.relations.people
 {
-    using src.allors.material.custom.relations.people.person;
     using Allors.Domain;
     using Components;
+    using src.allors.material.custom.relations.people.person;
 
     public partial class PeopleComponent
     {

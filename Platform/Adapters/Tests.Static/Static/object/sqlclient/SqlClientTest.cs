@@ -6,13 +6,10 @@
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;
-
-    using Allors.Adapters;
-
     using Allors;
+    using Allors.Adapters;
     using Allors.Domain;
     using Allors.Meta;
-
     using Xunit;
 
     public abstract class SqlClientTest

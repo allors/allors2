@@ -5,10 +5,10 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Meta;
-    using System;
 
     public partial class Organisation
     {
@@ -78,8 +78,6 @@ namespace Allors.Domain
                 {
                     this.FiscalYearStartDay = 1;
                 }
-
-                #region Security
 
                 var groupName = $"{this.Name} ProductQuote approvers";
 
@@ -238,7 +236,6 @@ namespace Allors.Domain
                 this.BlueCollarWorkerUserGroup.Members = this.BlueCollarWorkers.ToArray();
                 this.LocalAdministratorUserGroup.Members = this.LocalAdministrators.ToArray();
 
-                #endregion
             }
 
             this.PartyName = this.Name;

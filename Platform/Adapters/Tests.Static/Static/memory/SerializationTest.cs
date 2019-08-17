@@ -6,10 +6,8 @@
 namespace Allors.Adapters.Memory
 {
     using System;
-
-    using Allors.Adapters;
-
     using Allors;
+    using Allors.Adapters;
 
     public class SerializationTest : Adapters.SerializationTest, IDisposable
     {

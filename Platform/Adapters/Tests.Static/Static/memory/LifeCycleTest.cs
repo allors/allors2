@@ -6,11 +6,8 @@
 namespace Allors.Adapters.Memory
 {
     using System;
-
-    using Allors.Adapters;
-
     using Allors;
-
+    using Allors.Adapters;
     using Xunit;
 
     public class LifeCycleTest : Adapters.LifeCycleTest, IDisposable

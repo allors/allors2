@@ -5,16 +5,13 @@
 
 namespace Tests.ElectronicAddressTests
 {
+    using System.Linq;
+    using Allors;
+    using Allors.Domain;
+    using Components;
     using src.allors.material.@base.objects.person.list;
     using src.allors.material.@base.objects.person.overview;
     using src.allors.material.@base.objects.webaddress.edit;
-    using System.Linq;
-
-    using Allors;
-    using Allors.Domain;
-
-    using Components;
-
     using Xunit;
 
     [Collection("Test collection")]

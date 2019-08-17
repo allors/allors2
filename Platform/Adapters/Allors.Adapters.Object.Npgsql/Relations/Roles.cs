@@ -8,10 +8,8 @@ namespace Allors.Adapters.Object.Npgsql
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Allors.Adapters.Object.Npgsql.Caching;
-
     using Allors;
+    using Allors.Adapters.Object.Npgsql.Caching;
     using Allors.Meta;
 
     public sealed class Roles

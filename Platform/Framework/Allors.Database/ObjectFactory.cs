@@ -8,12 +8,11 @@
 
 namespace Allors
 {
-    using System.Runtime.CompilerServices;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using System.Runtime.CompilerServices;
     using Allors.Meta;
 
     /// <summary>
@@ -143,10 +142,7 @@ namespace Allors
         /// </summary>
         /// <param name="type">The .Net <see cref="Type"/>.</param>
         /// <returns>The Allors <see cref="IObjectType"/>.</returns>
-        public IObjectType GetObjectTypeForType(Type type)
-        {
-            return !this.objectTypeByType.TryGetValue(type, out var objectType) ? null : objectType;
-        }
+        public IObjectType GetObjectTypeForType(Type type) => !this.objectTypeByType.TryGetValue(type, out var objectType) ? null : objectType;
 
         /// <summary>
         /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.

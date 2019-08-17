@@ -8,13 +8,10 @@
 
 namespace Allors.Domain
 {
-    using System.Linq;
     using System;
-
+    using System.Linq;
     using Allors.Meta;
-
     using Resources;
-
     using Xunit;
 
     public class SalesInvoiceTests : DomainTest

@@ -8,17 +8,12 @@ namespace Identity
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-
-    using Allors.Services;
-
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
-
+    using Allors.Services;
     using Identity.Models;
-
     using Microsoft.AspNetCore.Identity;
-
     using Task = System.Threading.Tasks.Task;
 
     public class AllorsUserStore<TUser> : IUserStore<TUser>,

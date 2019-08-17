@@ -7,9 +7,8 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System.Collections.Generic;
     using System.Xml;
-
-    using Allors.Meta;
     using Allors.Adapters;
+    using Allors.Meta;
 
     internal class Save
     {

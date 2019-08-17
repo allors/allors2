@@ -12,13 +12,10 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Linq;
     using System.Xml;
     using System.Xml.Serialization;
-
-    using Allors.Adapters.Object.SqlClient.Caching;
-
     using Allors;
+    using Allors.Adapters.Object.SqlClient.Caching;
     using Allors.Adapters.Schema;
     using Allors.Meta;
-
     using Microsoft.SqlServer.Server;
 
     public class Database : IDatabase

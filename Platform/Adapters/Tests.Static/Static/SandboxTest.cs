@@ -5,14 +5,12 @@
 
 namespace Allors.Adapters
 {
-    using Allors.Protocol.Data;
     using System;
-
     using Allors;
     using Allors.Data;
     using Allors.Domain;
     using Allors.Meta;
-
+    using Allors.Protocol.Data;
     using Xunit;
 
     public abstract class SandboxTest : IDisposable

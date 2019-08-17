@@ -5,11 +5,10 @@
 
 namespace Tests.Remote
 {
-    using Allors.Workspace.Meta;
     using Allors.Workspace.Client;
     using Allors.Workspace.Data;
     using Allors.Workspace.Domain;
-
+    using Allors.Workspace.Meta;
     using Xunit;
 
     public class PullTests : RemoteTest

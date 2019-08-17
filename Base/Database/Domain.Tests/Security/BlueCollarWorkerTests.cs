@@ -6,8 +6,8 @@
 namespace Allors.Domain
 {
     using System.Linq;
-    using Allors.Meta;
     using Allors;
+    using Allors.Meta;
     using Xunit;
 
     public class BlueCollarWorkerTests : DomainTest

@@ -6,9 +6,8 @@
 namespace Allors.Adapters.Object.Npgsql
 {
     using System;
-
-    using Allors.Meta;
     using Allors.Adapters;
+    using Allors.Meta;
 
     internal sealed class RoleEqualsValue : Predicate
     {

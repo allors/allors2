@@ -8,13 +8,11 @@ namespace Allors.Workspace.Client
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
-    using Allors.Workspace.Data;
-
     using Allors.Protocol.Remote.Invoke;
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
+    using Allors.Workspace.Data;
 
     public class Context
     {

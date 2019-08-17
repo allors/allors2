@@ -27,7 +27,7 @@ namespace Allors.Domain
                 baseprices = product.BasePrices;
             }
 
-            var party = salesOrder != null ? salesOrder.ShipToCustomer : salesInvoice != null ? salesInvoice.BillToCustomer : null;
+            var party = salesOrder != null ? salesOrder.ShipToCustomer : salesInvoice?.BillToCustomer;
 
             foreach (BasePrice priceComponent in baseprices)
             {
@@ -82,7 +82,7 @@ namespace Allors.Domain
                             }
                             else
                             {
-                                var percentage = discountComponent.Percentage.HasValue ? discountComponent.Percentage.Value : 0;
+                                var percentage = discountComponent.Percentage ?? 0;
                                 discount = Math.Round(productBasePrice * percentage / 100, 2);
                                 productDiscount += discount;
                             }
@@ -100,7 +100,7 @@ namespace Allors.Domain
                             }
                             else
                             {
-                                var percentage = surchargeComponent.Percentage.HasValue ? surchargeComponent.Percentage.Value : 0;
+                                var percentage = surchargeComponent.Percentage ?? 0;
                                 surcharge = Math.Round(productBasePrice * percentage / 100, 2);
                                 productSurcharge += surcharge;
                             }

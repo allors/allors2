@@ -93,19 +93,4 @@ namespace Allors.Document.OpenDocument
             return render.Execute();
         }
     }
-
-    public class OpenDocumentTemplate<T> : OpenDocumentTemplate
-    {
-        private readonly PropertyInfo[] properties;
-
-        public OpenDocumentTemplate(byte[] document, char leftDelimiter = DefaultLeftDelimiter, char rightDelimiter = DefaultRightDelimiter)
-            : base(document, OpenDocumentTemplate.InferArguments(typeof(T)), leftDelimiter, rightDelimiter) =>
-            this.properties = typeof(T).GetProperties();
-
-        public byte[] Render(T model, Dictionary<string, byte[]> imageByName = null)
-        {
-            var dictionary = this.properties.ToDictionary(property => property.Name, property => property.GetValue(model));
-            return this.Render(dictionary, imageByName);
-        }
-    }
 }

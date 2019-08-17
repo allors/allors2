@@ -7,8 +7,8 @@
 
 namespace Allors.Workspace
 {
-    using Allors.Workspace.Meta;
     using Allors.Workspace.Domain;
+    using Allors.Workspace.Meta;
 
     public static partial class Config
     {

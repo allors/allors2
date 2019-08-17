@@ -6,11 +6,9 @@
 namespace Allors.Adapters.Object.Npgsql
 {
     using System;
-
-    using global::Npgsql;
     using System.Text;
-
     using Allors.Meta;
+    using global::Npgsql;
 
     public class Initialization
     {

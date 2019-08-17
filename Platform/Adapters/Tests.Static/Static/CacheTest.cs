@@ -6,14 +6,10 @@
 namespace Allors.Adapters
 {
     using System;
-
     using Allors;
-    using Allors.Meta;
-
     using Allors.Domain;
-
+    using Allors.Meta;
     using Xunit;
-
     using IDatabase = Allors.IDatabase;
 
     public abstract class CacheTest : IDisposable

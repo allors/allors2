@@ -9,8 +9,8 @@
 namespace Tests
 {
     using Allors;
-    using Allors.Meta;
     using Allors.Domain;
+    using Allors.Meta;
     using Xunit;
 
     public class UserGroupTests : DomainTest

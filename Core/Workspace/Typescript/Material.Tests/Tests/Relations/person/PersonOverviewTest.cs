@@ -5,10 +5,9 @@
 
 namespace Tests.Relations
 {
-    using src.allors.material.custom.relations.people;
     using Allors.Domain;
     using Allors.Meta;
-
+    using src.allors.material.custom.relations.people;
     using Xunit;
 
     [Collection("Test collection")]

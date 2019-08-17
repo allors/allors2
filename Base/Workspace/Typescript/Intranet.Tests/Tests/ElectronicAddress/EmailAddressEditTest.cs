@@ -5,15 +5,14 @@
 
 namespace Tests.ElectronicAddressTests
 {
-    using src.allors.material.@base.objects.emailaddress.edit;
-    using src.allors.material.@base.objects.person.overview;
     using System.Linq;
     using Allors;
     using Allors.Domain;
     using Components;
-    using Xunit;
-
+    using src.allors.material.@base.objects.emailaddress.edit;
     using src.allors.material.@base.objects.person.list;
+    using src.allors.material.@base.objects.person.overview;
+    using Xunit;
 
     [Collection("Test collection")]
     public class EmailAddressEditTest : Test

@@ -5,13 +5,13 @@
 
 namespace Tests.ApplicationTests
 {
+    using System;
     using System.Collections.Generic;
-    using OpenQA.Selenium;
-    using OpenQA.Selenium.Support.PageObjects;
+    using System.Linq;
     using System.Reflection;
     using Components;
-    using System;
-    using System.Linq;
+    using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.PageObjects;
     using Xunit;
 
     [Collection("Test collection")]

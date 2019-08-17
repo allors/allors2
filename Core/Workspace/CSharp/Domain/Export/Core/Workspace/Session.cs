@@ -5,12 +5,12 @@
 
 namespace Allors.Workspace
 {
-    using Allors.Workspace.Meta;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
+    using Allors.Workspace.Meta;
 
     public class Session
     {

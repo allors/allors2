@@ -5,13 +5,13 @@
 
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
-    using MysticMind.PostgresEmbed;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using Allors.Meta;
     using global::Npgsql;
     using Microsoft.Extensions.DependencyInjection;
+    using MysticMind.PostgresEmbed;
 
     public class Profile : Npgsql.Profile
     {

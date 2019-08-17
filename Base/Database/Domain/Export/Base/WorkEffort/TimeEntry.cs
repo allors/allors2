@@ -5,8 +5,8 @@
 
 namespace Allors.Domain
 {
-    using System.Linq;
     using System;
+    using System.Linq;
 
     public partial class TimeEntry
     {

@@ -164,10 +164,7 @@ namespace Allors.Adapters.Object.Npgsql
             }
         }
 
-        public override int GetHashCode()
-        {
-            return this.ObjectId.GetHashCode();
-        }
+        public override int GetHashCode() => this.ObjectId.GetHashCode();
 
         public override bool Equals(object obj)
         {
@@ -175,10 +172,7 @@ namespace Allors.Adapters.Object.Npgsql
             return that != null && that.ObjectId.Equals(this.ObjectId);
         }
 
-        public override string ToString()
-        {
-            return "[" + this.Class + ":" + this.ObjectId + "]";
-        }
+        public override string ToString() => "[" + this.Class + ":" + this.ObjectId + "]";
 
         internal virtual void Commit(HashSet<Reference> referencesWithStrategy)
         {
@@ -216,9 +210,6 @@ namespace Allors.Adapters.Object.Npgsql
             }
         }
 
-        public virtual Strategy CreateStrategy()
-        {
-            return new Strategy(this);
-        }
+        public virtual Strategy CreateStrategy() => new Strategy(this);
     }
 }

@@ -5,8 +5,8 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
     using Allors;
+    using Allors.Meta;
     using Xunit;
 
     public class PurchaseOrderApproverLevel1Tests : DomainTest

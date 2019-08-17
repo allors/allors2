@@ -8,7 +8,6 @@
 
 namespace Server.Tests
 {
-    using Allors.Adapters.Object.SqlClient;
     using System;
     using System.IO;
     using System.Net.Http;
@@ -17,6 +16,7 @@ namespace Server.Tests
     using System.Text;
     using System.Threading.Tasks;
     using Allors;
+    using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Server;

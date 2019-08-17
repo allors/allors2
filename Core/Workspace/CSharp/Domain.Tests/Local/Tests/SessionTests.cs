@@ -7,12 +7,10 @@ namespace Tests.Local
 {
     using System;
     using System.Linq;
-
-    using Allors.Workspace.Meta;
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace;
     using Allors.Workspace.Domain;
-
+    using Allors.Workspace.Meta;
     using Xunit;
 
     public class SessionTests : LocalTest

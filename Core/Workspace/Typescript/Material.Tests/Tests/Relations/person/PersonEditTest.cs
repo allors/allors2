@@ -8,9 +8,9 @@ namespace Tests.Relations
     using System.Linq;
     using Allors.Domain;
     using Components;
-    using Xunit;
     using src.allors.material.custom.relations.people;
     using src.allors.material.custom.relations.people.person;
+    using Xunit;
 
     [Collection("Test collection")]
     public class PersonEditTest : Test

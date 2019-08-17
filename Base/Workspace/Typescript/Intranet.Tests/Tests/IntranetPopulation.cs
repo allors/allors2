@@ -640,7 +640,6 @@ line2")
 
             this.Session.Derive();
 
-            #region request/quote/order
             var request = new RequestForQuoteBuilder(this.Session)
                 .WithRecipient(allors)
                 .WithEmailAddress("meknip@xs4all.nl")
@@ -683,7 +682,6 @@ line2")
                 .Build();
 
             salesOrder.AddSalesOrderItem(salesOrderItem);
-            #endregion
 
             this.Session.Derive();
         }

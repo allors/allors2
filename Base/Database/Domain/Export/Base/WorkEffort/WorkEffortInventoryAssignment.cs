@@ -55,7 +55,6 @@ namespace Allors.Domain
 
             var date = this.Assignment.ScheduledStart;
 
-            #region Pricing
 
             try
             {
@@ -70,7 +69,6 @@ namespace Allors.Domain
             var unitSellingPrice = this.CalculateSellingPrice().Result.HasValue ? this.CalculateSellingPrice().Result.Value : 0M;
             this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
 
-            #endregion
 
             if (this.ExistAssignment)
             {

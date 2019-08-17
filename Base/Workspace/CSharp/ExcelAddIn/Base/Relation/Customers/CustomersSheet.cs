@@ -5,20 +5,17 @@
 
 namespace Allors.Excel.Customers
 {
-    using Allors.Workspace.Meta;
-    using ExcelAddIn.Base.Extensions;
-    using ExcelAddIn.Base.Relation.Customers;
     using System;
     using System.Linq;
     using System.Windows.Forms;
-
     using Allors.Excel;
     using Allors.Protocol.Remote;
     using Allors.Workspace.Data;
     using Allors.Workspace.Domain;
-
+    using Allors.Workspace.Meta;
+    using ExcelAddIn.Base.Extensions;
+    using ExcelAddIn.Base.Relation.Customers;
     using Microsoft.Office.Interop.Excel;
-
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
     using Result = Allors.Workspace.Client.Result;
     using Sheets = Allors.Excel.Sheets;

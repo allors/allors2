@@ -59,7 +59,7 @@ namespace Allors.Domain
                 }
 
                 if (@this.ExistActualStart && @this.ActualStart <= @this.Strategy.Session.Now() &&
-                    (@this.ExistActualEnd && @this.ActualEnd > @this.Strategy.Session.Now() || !@this.ExistActualEnd))
+                    ((@this.ExistActualEnd && @this.ActualEnd > @this.Strategy.Session.Now()) || !@this.ExistActualEnd))
                 {
                     @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).InProgress;
                 }

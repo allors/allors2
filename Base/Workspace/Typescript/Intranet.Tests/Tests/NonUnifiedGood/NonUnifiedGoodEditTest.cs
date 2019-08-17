@@ -5,12 +5,10 @@
 
 namespace Tests.NonUnifiedGood
 {
-    using src.allors.material.@base.objects.good.list;
     using System.Linq;
-
     using Allors.Domain;
-
     using Components;
+    using src.allors.material.@base.objects.good.list;
     using Xunit;
 
     [Collection("Test collection")]

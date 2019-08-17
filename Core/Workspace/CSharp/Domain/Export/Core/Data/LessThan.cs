@@ -7,9 +7,9 @@
 
 namespace Allors.Workspace.Data
 {
-    using Allors.Workspace.Meta;
     using System.Collections.Generic;
     using Allors.Protocol.Data;
+    using Allors.Workspace.Meta;
 
     public class LessThan : IRolePredicate
     {

@@ -279,7 +279,6 @@ namespace Allors.Domain
             var validInvoiceItems = this.SalesInvoiceItems.Where(v => v.IsValid).ToArray();
             this.ValidInvoiceItems = validInvoiceItems;
 
-            #region Pricing
             var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.InvoiceDate);
 
             var quantityByProduct = validInvoiceItems
@@ -427,9 +426,6 @@ namespace Allors.Domain
                     }
                 }
             }
-            #endregion
-
-            #region States
 
             var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);
             var salesInvoiceStates = new SalesInvoiceStates(derivation.Session);
@@ -506,9 +502,6 @@ namespace Allors.Domain
                     }
                 }
             }
-            #endregion
-
-            #region VatClause
 
             if (this.ExistVatRegime && this.VatRegime.ExistVatClause)
             {
@@ -528,7 +521,6 @@ namespace Allors.Domain
 
             this.DerivedVatClause = this.ExistAssignedVatClause ? this.AssignedVatClause : this.DerivedVatClause;
 
-            #endregion
 
             this.SalesReps = validInvoiceItems
                 .Cast<SalesInvoiceItem>()

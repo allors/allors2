@@ -5,9 +5,9 @@
 
 namespace Allors.Server
 {
+    using System;
     using System.IO;
     using Allors.Services;
-    using System;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Logging;

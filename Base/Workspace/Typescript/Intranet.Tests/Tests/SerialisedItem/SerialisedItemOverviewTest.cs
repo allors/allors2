@@ -7,9 +7,9 @@ namespace Tests.SerialisedItemTests
 {
     using Allors.Domain;
     using Allors.Meta;
-    using Xunit;
     using src.allors.material.@base.objects.person.list;
     using src.allors.material.@base.objects.person.overview;
+    using Xunit;
 
     [Collection("Test collection")]
     public class SerialisedItemOverviewTest : Test

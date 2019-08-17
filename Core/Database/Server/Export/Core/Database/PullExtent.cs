@@ -8,10 +8,9 @@
 
 namespace Allors.Server
 {
-    using System.Collections.Generic;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
-
     using Allors.Data;
     using Allors.Domain;
     using Allors.Services;

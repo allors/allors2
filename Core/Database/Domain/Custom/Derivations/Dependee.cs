@@ -36,7 +36,7 @@ namespace Allors.Domain
 
         public void CustomOnDerive(ObjectOnDerive method)
         {
-            this.Counter = this.Counter + 1;
+            this.Counter += 1;
 
             if (this.ExistSubdependee)
             {

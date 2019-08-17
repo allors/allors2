@@ -5,17 +5,14 @@
 
 namespace Tests.PartyRelationshipTests
 {
-    using src.allors.material.@base.objects.organisation.list;
-    using src.allors.material.@base.objects.organisation.overview;
-    using src.allors.material.@base.objects.supplierrelationship.edit;
     using System.Linq;
-
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
-
     using Components;
-
+    using src.allors.material.@base.objects.organisation.list;
+    using src.allors.material.@base.objects.organisation.overview;
+    using src.allors.material.@base.objects.supplierrelationship.edit;
     using Xunit;
 
     [Collection("Test collection")]

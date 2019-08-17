@@ -5,16 +5,14 @@
 
 namespace Tests.PostalAddressTests
 {
-    using src.allors.material.@base.objects.person.list;
-    using src.allors.material.@base.objects.person.overview;
-    using src.allors.material.@base.objects.postaladdress.edit;
     using System.Linq;
-
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
-
     using Components;
+    using src.allors.material.@base.objects.person.list;
+    using src.allors.material.@base.objects.person.overview;
+    using src.allors.material.@base.objects.postaladdress.edit;
     using Xunit;
 
     [Collection("Test collection")]

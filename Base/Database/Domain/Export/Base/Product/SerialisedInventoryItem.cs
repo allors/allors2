@@ -10,7 +10,9 @@ namespace Allors.Domain
     public partial class SerialisedInventoryItem
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
-            { new TransitionalConfiguration(M.SerialisedInventoryItem, M.SerialisedInventoryItem.SerialisedInventoryItemState), };
+            {
+                new TransitionalConfiguration(M.SerialisedInventoryItem, M.SerialisedInventoryItem.SerialisedInventoryItemState),
+            };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 

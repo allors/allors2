@@ -9,8 +9,8 @@
 namespace Allors.Domain
 {
     using Allors.Meta;
-    using Xunit;
     using Resources;
+    using Xunit;
 
     public class PurchaseInvoiceTests : DomainTest
     {

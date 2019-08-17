@@ -7,9 +7,8 @@ namespace Allors.Adapters.Memory
 {
     using System.Collections.Generic;
     using System.Xml;
-
-    using Allors.Meta;
     using Allors.Adapters;
+    using Allors.Meta;
 
     public class Save
     {

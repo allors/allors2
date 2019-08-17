@@ -5,8 +5,8 @@
 
 namespace Components
 {
-    using System.Threading;
     using System;
+    using System.Threading;
     using OpenQA.Selenium;
 
     public static partial class WebDriverExtensions

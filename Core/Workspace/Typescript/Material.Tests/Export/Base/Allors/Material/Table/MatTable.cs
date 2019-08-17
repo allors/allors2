@@ -5,8 +5,8 @@
 
 namespace Components
 {
-    using System.Linq;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using Allors;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;

@@ -5,10 +5,10 @@
 
 namespace Autotest.Testers
 {
-    using Autotest.Angular;
     using System;
     using System.Linq;
     using Allors.Workspace.Meta;
+    using Autotest.Angular;
     using Autotest.Html;
 
     public partial class AllorsMaterialFactoryFabTester : Tester

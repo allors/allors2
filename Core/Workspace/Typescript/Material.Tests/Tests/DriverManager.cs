@@ -5,12 +5,11 @@
 
 namespace Tests
 {
-    using System.Runtime.InteropServices;
     using System;
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
-
+    using System.Runtime.InteropServices;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Chrome;
     using OpenQA.Selenium.Firefox;

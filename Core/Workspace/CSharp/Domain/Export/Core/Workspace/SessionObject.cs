@@ -5,12 +5,12 @@
 
 namespace Allors.Workspace
 {
-    using Allors.Workspace.Meta;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Protocol.Remote.Push;
+    using Allors.Workspace.Meta;
 
     public interface ISessionObject
     {

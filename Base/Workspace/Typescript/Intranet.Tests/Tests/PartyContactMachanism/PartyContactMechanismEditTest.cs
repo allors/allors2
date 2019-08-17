@@ -5,12 +5,11 @@
 
 namespace Tests.PartyContactMachanismTests
 {
-    using src.allors.material.@base.objects.person.list;
     using System.Linq;
-
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
+    using src.allors.material.@base.objects.person.list;
     using Xunit;
 
     [Collection("Test collection")]

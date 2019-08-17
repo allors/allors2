@@ -9,9 +9,8 @@
 namespace Allors.Domain
 {
     using System.Linq;
-    using Xunit;
-
     using Allors.Meta;
+    using Xunit;
 
     public class WorkEffortPartyAssignmentTests : DomainTest
     {

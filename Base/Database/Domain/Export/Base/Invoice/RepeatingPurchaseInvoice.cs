@@ -5,12 +5,10 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System;
-
     using Allors.Meta;
-
     using Resources;
 
     public partial class RepeatingPurchaseInvoice
@@ -88,8 +86,8 @@ namespace Allors.Domain
             {
                 foreach (PurchaseOrderItem purchaseOrderItem in purchaseOrder.ValidOrderItems)
                 {
-                    if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
-                        purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))
+                    if ((!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
+                        purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived) || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))
                     {
                         orderItemsToBill.Add(purchaseOrderItem);
                     }

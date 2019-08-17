@@ -5,11 +5,11 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     using System.Linq;
+    using Allors.Meta;
     using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
-    using System.Collections.Generic;
-    using Allors.Meta;
     using Resources;
 
     public partial class PurchaseOrder
@@ -67,7 +67,7 @@ namespace Allors.Domain
                 foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
                 {
                     if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
-                        (purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || !purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1))
+                        (purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1)))
                     {
                         return true;
                     }
@@ -150,7 +150,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            #region Derivations and Validations
 
             this.SecurityTokens = new[]
             {
@@ -188,9 +187,7 @@ namespace Allors.Domain
 
             var validOrderItems = this.PurchaseOrderItems.Where(v => v.IsValid).ToArray();
             this.ValidOrderItems = validOrderItems;
-            #endregion
 
-            #region States
             var purchaseOrderShipmentStates = new PurchaseOrderShipmentStates(this.Strategy.Session);
             var purchaseOrderPaymentStates = new PurchaseOrderPaymentStates(this.Strategy.Session);
 
@@ -201,8 +198,8 @@ namespace Allors.Domain
             {
                 //                var receivable = validOrderItems.Where(v => this.PurchaseOrderState.IsSent && v.PurchaseOrderItemState.IsInProcess && !v.PurchaseOrderItemShipmentState.IsReceived);
 
-                if (validOrderItems.Any(v => v.ExistPart) && validOrderItems.Where(v => v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived) ||
-                    validOrderItems.Any(v => !v.ExistPart) && validOrderItems.Where(v => !v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived))
+                if ((validOrderItems.Any(v => v.ExistPart) && validOrderItems.Where(v => v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived)) ||
+                    (validOrderItems.Any(v => !v.ExistPart) && validOrderItems.Where(v => !v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived)))
                 {
                     this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.Received;
                 }
@@ -283,7 +280,6 @@ namespace Allors.Domain
                     purchaseOrderItem.PurchaseOrderItemState = purchaseOrderItemStates.Rejected;
                 }
             }
-            #endregion
 
             this.BaseOnDeriveOrderItems(derivation);
             this.BaseOnDeriveOrderTotals(derivation);

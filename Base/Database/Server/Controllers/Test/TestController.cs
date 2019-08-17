@@ -5,11 +5,11 @@
 
 namespace Allors.Server.Controllers
 {
-    using Microsoft.Extensions.Logging;
     using System;
     using Allors.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public class TestController : Controller
     {

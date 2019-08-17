@@ -5,17 +5,14 @@
 
 namespace Tests.EmailCommunicationTests
 {
-    using src.allors.material.@base.objects.emailcommunication.edit;
-    using src.allors.material.@base.objects.organisation.list;
-    using src.allors.material.@base.objects.organisation.overview;
     using System.Linq;
-
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
-
     using Components;
-
+    using src.allors.material.@base.objects.emailcommunication.edit;
+    using src.allors.material.@base.objects.organisation.list;
+    using src.allors.material.@base.objects.organisation.overview;
     using Xunit;
 
     [Collection("Test collection")]

@@ -5,10 +5,9 @@
 
 namespace Allors.Adapters.Object.SqlClient.Snapshot
 {
-    using Allors.Adapters;
     using System;
-
     using Allors;
+    using Allors.Adapters;
 
     public class SerializationTest : Adapters.SerializationTest, IDisposable
     {

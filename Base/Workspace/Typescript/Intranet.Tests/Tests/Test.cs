@@ -5,8 +5,6 @@
 
 namespace Tests
 {
-    using Microsoft.Extensions.Logging;
-    using NLog.Extensions.Logging;
     using System;
     using System.Globalization;
     using System.IO;
@@ -18,10 +16,12 @@ namespace Tests
     using Allors.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using NLog.Extensions.Logging;
     using OpenQA.Selenium;
-    using ObjectFactory = Allors.ObjectFactory;
     using src.app.auth;
     using src.app.main;
+    using ObjectFactory = Allors.ObjectFactory;
 
     public abstract class Test : IDisposable
     {

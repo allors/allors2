@@ -110,7 +110,6 @@ namespace Allors.Domain
                 this.QuantityCommittedOut = 0;
             }
 
-            #region States
             var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);
             var salesOrderItemPaymentStates = new SalesOrderItemPaymentStates(derivation.Session);
             var salesOrderItemInvoiceStates = new SalesOrderItemInvoiceStates(derivation.Session);
@@ -208,9 +207,7 @@ namespace Allors.Domain
                     this.SalesOrderItemState = salesOrderItemStates.Finished;
                 }
             }
-            #endregion
 
-            #region Reserve from inventory
             if (this.IsValid)
             {
                 if (this.Part != null && salesOrder.TakenBy != null)
@@ -331,7 +328,6 @@ namespace Allors.Domain
                     this.Description = this.SerialisedItem.Details;
                 }
             }
-            #endregion
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)

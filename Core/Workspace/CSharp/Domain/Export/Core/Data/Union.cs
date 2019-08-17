@@ -7,10 +7,10 @@
 
 namespace Allors.Workspace.Data
 {
-    using Allors.Workspace.Meta;
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Protocol.Data;
+    using Allors.Workspace.Meta;
 
     public class Union : IExtentOperator
     {

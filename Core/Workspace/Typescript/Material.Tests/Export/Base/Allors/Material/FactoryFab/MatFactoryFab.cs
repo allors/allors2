@@ -7,8 +7,8 @@ namespace Components
 {
     using System.Linq;
     using Allors.Meta;
-    using OpenQA.Selenium.Support.PageObjects;
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.PageObjects;
 
     public class MatFactoryFab : SelectorComponent
     {

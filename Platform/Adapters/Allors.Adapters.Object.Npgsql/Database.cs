@@ -8,15 +8,12 @@ namespace Allors.Adapters.Object.Npgsql
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using global::Npgsql;
     using System.Linq;
     using System.Xml;
-
-    using Allors.Adapters.Object.Npgsql.Caching;
-
     using Allors;
+    using Allors.Adapters.Object.Npgsql.Caching;
     using Allors.Meta;
-
+    using global::Npgsql;
     using NpgsqlTypes;
 
     public class Database : IDatabase

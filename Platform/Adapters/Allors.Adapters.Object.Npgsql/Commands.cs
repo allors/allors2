@@ -721,7 +721,7 @@ namespace Allors.Adapters.Object.Npgsql
                 var hashCode = 0;
                 foreach (var roleType in roleTypes)
                 {
-                    hashCode = hashCode ^ roleType.GetHashCode();
+                    hashCode ^= roleType.GetHashCode();
                 }
 
                 return hashCode;

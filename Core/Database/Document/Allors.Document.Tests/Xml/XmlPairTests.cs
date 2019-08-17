@@ -6,11 +6,9 @@
 namespace Allos.Document.Xml.Tests
 {
     using System.Xml;
-
-    using Xunit;
     using Allors.Document.Xml;
-
     using Org.XmlUnit.Builder;
+    using Xunit;
 
     public class XmlPairTests
     {

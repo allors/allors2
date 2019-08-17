@@ -1,28 +1,24 @@
-﻿// <copyright file="AddInManager.cs" company="Allors bvba">
+// <copyright file="AddInManager.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace ExcelAddIn
 {
-    using System.Net;
-    using System.Net.Http;
-    using BaseExcelAddIn.Base;
     using System;
     using System.Configuration;
+    using System.Net;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using System.Windows.Forms;
-
     using Allors.Excel;
     using Allors.Workspace;
     using Allors.Workspace.Client;
-
+    using BaseExcelAddIn.Base;
     using Microsoft.Office.Interop.Excel;
     using Microsoft.Office.Tools;
     using Microsoft.Office.Tools.Excel;
-
     using NLog;
-
     using Application = Microsoft.Office.Interop.Excel.Application;
     using Sheets = Allors.Excel.Sheets;
     using Workbook = Microsoft.Office.Interop.Excel.Workbook;

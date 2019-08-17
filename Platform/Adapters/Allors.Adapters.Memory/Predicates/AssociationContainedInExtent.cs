@@ -5,8 +5,8 @@
 
 namespace Allors.Adapters.Memory
 {
-    using Allors.Meta;
     using Allors.Adapters;
+    using Allors.Meta;
 
     internal sealed class AssociationContainedInExtent : Predicate
     {

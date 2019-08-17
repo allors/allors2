@@ -87,7 +87,6 @@ namespace Allors.Domain
                 }
             }
 
-            #region Pricing
             var currentPriceComponents = new PriceComponents(session).CurrentPriceComponents(this.IssueDate);
 
             var quantityOrderedByProduct = this.QuoteItems
@@ -249,7 +248,6 @@ namespace Allors.Domain
                     }
                 }
             }
-            #endregion
 
             this.DeriveWorkflow();
 

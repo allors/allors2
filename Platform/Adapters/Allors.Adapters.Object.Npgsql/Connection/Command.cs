@@ -9,11 +9,8 @@ namespace Allors.Adapters.Object.Npgsql
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-
-    using global::Npgsql;
-
     using Allors.Meta;
-
+    using global::Npgsql;
     using NpgsqlTypes;
 
     public abstract class Command : IDisposable

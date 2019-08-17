@@ -11,15 +11,12 @@ namespace Allors.Workspace.Client
     using System.Net.Http.Headers;
     using System.Text;
     using System.Threading.Tasks;
-
-    using Newtonsoft.Json;
-
-    using Polly;
-
     using Allors.Protocol.Remote.Invoke;
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
+    using Newtonsoft.Json;
+    using Polly;
 
     public class Database
     {

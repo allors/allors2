@@ -6,10 +6,8 @@
 namespace Tests
 {
     using Allors;
-
-    using Xunit;
-
     using Allors.Domain;
+    using Xunit;
 
     public class CacheTest : DomainTest
     {

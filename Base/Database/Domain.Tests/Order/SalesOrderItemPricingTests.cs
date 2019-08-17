@@ -9,9 +9,8 @@
 namespace Allors.Domain
 {
     using System;
-
-    using Xunit;
     using Allors.Meta;
+    using Xunit;
 
     public class SalesOrderItemPricingTests : DomainTest
     {
@@ -1826,7 +1825,7 @@ namespace Allors.Domain
             var price = this.currentGoodBasePrice.Price ?? 0;
             var discount = Math.Round(price * percentage / 100, 2);
             var discountedprice = price - discount;
-            var adjustmentPercentage = discountAdjustment.Percentage.HasValue ? discountAdjustment.Percentage.Value : 0;
+            var adjustmentPercentage = discountAdjustment.Percentage ?? 0;
             discount += Math.Round(discountedprice * adjustmentPercentage / 100, 2);
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
@@ -1944,7 +1943,7 @@ namespace Allors.Domain
             var price = this.currentGoodBasePrice.Price ?? 0;
             var surcharge = Math.Round(price * percentage / 100, 2);
             var surchargedPrice = price + surcharge;
-            var adjustmentPercentage = surchargeAdjustment.Percentage.HasValue ? surchargeAdjustment.Percentage.Value : 0;
+            var adjustmentPercentage = surchargeAdjustment.Percentage ?? 0;
             surcharge += Math.Round(surchargedPrice * adjustmentPercentage / 100, 2);
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);

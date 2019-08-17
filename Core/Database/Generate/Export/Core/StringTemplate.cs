@@ -10,14 +10,11 @@ namespace Allors.Development.Repository.Generation
 {
     using System;
     using System.IO;
-
+    using System.Xml;
+    using Allors.Development.Repository.Storage;
     using Allors.Meta;
-
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Misc;
-
-    using Allors.Development.Repository.Storage;
-    using System.Xml;
 
     public class StringTemplate
     {

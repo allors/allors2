@@ -5,10 +5,9 @@
 
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
-    using Xunit;
     using System;
-
     using Allors;
+    using Xunit;
 
     [Collection(Fixture.Collection)]
     public class LifeCycleTest : Adapters.LifeCycleTest, IDisposable

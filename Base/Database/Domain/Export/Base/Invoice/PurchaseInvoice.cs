@@ -8,9 +8,9 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Domain.NonLogging;
+    using Allors.Meta;
     using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
-    using Allors.Meta;
     using Resources;
 
     public partial class PurchaseInvoice
@@ -108,7 +108,6 @@ namespace Allors.Domain
             var validInvoiceItems = this.PurchaseInvoiceItems.Where(v => v.IsValid).ToArray();
             this.ValidInvoiceItems = validInvoiceItems;
 
-            #region States
             var purchaseInvoiceStates = new PurchaseInvoiceStates(this.Strategy.Session);
             var purchaseInvoiceItemStates = new PurchaseInvoiceItemStates(this.Strategy.Session);
 
@@ -187,7 +186,6 @@ namespace Allors.Domain
                     }
                 }
             }
-            #endregion
 
             this.BaseOnDeriveInvoiceItems(derivation);
             this.BaseOnDeriveInvoiceTotals();

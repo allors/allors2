@@ -9,14 +9,11 @@ namespace Allors.Adapters.Object.SqlClient
     using System.Linq;
     using System.Reflection;
     using System.Text;
-
-    using Allors.Adapters;
-
     using Allors;
+    using Allors.Adapters;
     using Allors.Adapters.Object.SqlClient.Caching;
     using Allors.Adapters.Object.SqlClient.Debug;
     using Allors.Domain;
-
     using Xunit;
 
     public abstract class DebugTests

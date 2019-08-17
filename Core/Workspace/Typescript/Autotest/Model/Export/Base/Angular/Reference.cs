@@ -1,6 +1,6 @@
 // <copyright file="Reference.cs" company="Allors bvba">
-// Copyright (c) Allors bvba. All rights reserved.
-// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
+// Copyright (c) Allors bvba. All Rights Reserved.
+// Licensed under the LGPL v3 license.
 // </copyright>
 
 namespace Autotest.Angular
@@ -41,14 +41,8 @@ namespace Autotest.Angular
 
         public string Path { get; }
 
-        internal static string ParseId(JToken json)
-        {
-            return json != null ? new Reference(json).Id : null;
-        }
+        internal static string ParseId(JToken json) => json != null ? new Reference(json).Id : null;
 
-        internal static string[] ParseIds(JToken json)
-        {
-            return json != null ? json.Select(v => new Reference(v).Id).ToArray() : new string[0];
-        }
+        internal static string[] ParseIds(JToken json) => json != null ? json.Select(v => new Reference(v).Id).ToArray() : new string[0];
     }
 }

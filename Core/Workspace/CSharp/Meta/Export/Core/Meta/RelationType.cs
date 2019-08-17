@@ -8,8 +8,8 @@
 
 namespace Allors.Workspace.Meta
 {
-    using System.Linq;
     using System;
+    using System.Linq;
 
     /// <summary>
     /// A <see cref="RelationType"/> defines the state and behavior for
@@ -214,10 +214,7 @@ namespace Allors.Workspace.Meta
         /// </returns>
         /// <exception cref="T:System.ArgumentException">
         /// <paramref name="obj"/> is not the same type as this instance. </exception>
-        public int CompareTo(object obj)
-        {
-            return obj is RelationType that ? this.Id.CompareTo(that.Id) : -1;
-        }
+        public int CompareTo(object obj) => obj is RelationType that ? this.Id.CompareTo(that.Id) : -1;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.

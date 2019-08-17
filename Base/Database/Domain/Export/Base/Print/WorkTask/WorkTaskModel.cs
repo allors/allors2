@@ -24,8 +24,8 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.ContactTelephone = workTask.ContactPerson?.CellPhoneNumber?.Description ?? workTask.ContactPerson?.GeneralPhoneNumber?.Description;
 
             this.TotalLabour = Math.Round(workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
-                .Where(v => v.IsBillable &&
-                            !v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue || v.BillableAmountOfTime.HasValue)
+                .Where(v => (v.IsBillable &&
+                            !v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
                 .Sum(v => v.BillingAmount), 2);
 
             this.TotalParts = Math.Round(workTask.WorkEffortInventoryAssignmentsWhereAssignment

@@ -19,7 +19,7 @@ namespace Allors.Domain
         {
             int NextValue(Counter counter)
             {
-                counter.Value = counter.Value + 1;
+                counter.Value += 1;
                 return counter.Value;
             }
 

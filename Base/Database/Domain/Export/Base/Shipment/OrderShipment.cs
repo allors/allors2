@@ -6,8 +6,8 @@
 namespace Allors.Domain
 {
     using System.Linq;
-    using Resources;
     using Allors.Meta;
+    using Resources;
 
     public partial class OrderShipment
     {

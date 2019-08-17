@@ -5,13 +5,11 @@
 
 namespace Tests.PersonTests
 {
+    using System.Linq;
+    using Allors.Domain;
+    using Components;
     using src.allors.material.@base.objects.person.list;
     using src.allors.material.@base.objects.person.overview;
-    using System.Linq;
-
-    using Allors.Domain;
-
-    using Components;
     using Xunit;
 
     [Collection("Test collection")]

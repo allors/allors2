@@ -38,7 +38,6 @@ namespace Allors.Server.Controllers
             var c2C = new C2Builder(this.session).WithName("c2C").Build();
             var c2D = new C2Builder(this.session).WithName("c2D").Build();
 
-            #region String
             // class
             c1B.C1AllorsString = "ᴀbra";
             c1C.C1AllorsString = "ᴀbracadabra";
@@ -59,9 +58,7 @@ namespace Allors.Server.Controllers
             c2B.I12AllorsString = "ᴀbra";
             c2C.I12AllorsString = "ᴀbracadabra";
             c2D.I12AllorsString = "ᴀbracadabra";
-            #endregion
 
-            #region Integer
             c1B.C1AllorsInteger = 1;
             c1C.C1AllorsInteger = 2;
             c1D.C1AllorsInteger = 2;
@@ -76,9 +73,7 @@ namespace Allors.Server.Controllers
             c2B.I12AllorsInteger = 1;
             c2C.I12AllorsInteger = 2;
             c2D.I12AllorsInteger = 2;
-            #endregion
 
-            #region DateTime
             // DateTime
             c1B.C1AllorsDateTime = new DateTime(2000, 1, 1, 0, 0, 4, DateTimeKind.Utc);
             c1C.C1AllorsDateTime = new DateTime(2000, 1, 1, 0, 0, 5, DateTimeKind.Utc);
@@ -94,9 +89,7 @@ namespace Allors.Server.Controllers
             c2B.I12AllorsDateTime = new DateTime(2000, 1, 1, 0, 0, 4, DateTimeKind.Utc);
             c2C.I12AllorsDateTime = new DateTime(2000, 1, 1, 0, 0, 5, DateTimeKind.Utc);
             c2D.I12AllorsDateTime = new DateTime(2000, 1, 1, 0, 0, 5, DateTimeKind.Utc);
-            #endregion
 
-            #region Float
             c1B.C1AllorsDouble = 1;
             c1C.C1AllorsDouble = 2;
             c1D.C1AllorsDouble = 2;
@@ -111,9 +104,7 @@ namespace Allors.Server.Controllers
             c2B.I12AllorsDouble = 1;
             c2C.I12AllorsDouble = 2;
             c2D.I12AllorsDouble = 2;
-            #endregion
 
-            #region Decimal
             c1B.C1AllorsDecimal = 1;
             c1C.C1AllorsDecimal = 2;
             c1D.C1AllorsDecimal = 2;
@@ -128,9 +119,7 @@ namespace Allors.Server.Controllers
             c2B.I12AllorsDecimal = 1;
             c2C.I12AllorsDecimal = 2;
             c2D.I12AllorsDecimal = 2;
-            #endregion
 
-            #region One to One
             c1B.C1C1One2One = c1B;
             c1C.C1C1One2One = c1C;
             c1D.C1C1One2One = c1D;
@@ -151,9 +140,7 @@ namespace Allors.Server.Controllers
             c1B.C1I12One2One = c1B;
             c1C.C1I12One2One = c2B;
             c1D.C1I12One2One = c2C;
-            #endregion
 
-            #region One to Many
             c1B.AddC1C1One2Many(c1B);
             c1C.AddC1C1One2Many(c1C);
             c1C.AddC1C1One2Many(c1D);
@@ -169,9 +156,7 @@ namespace Allors.Server.Controllers
             c1B.AddC1I12One2Many(c1B);
             c1C.AddC1I12One2Many(c2C);
             c1C.AddC1I12One2Many(c2D);
-            #endregion
 
-            #region Many to One
             c1B.C1C1Many2One = c1B;
             c1C.C1C1Many2One = c1C;
             c1D.C1C1Many2One = c1C;
@@ -191,9 +176,7 @@ namespace Allors.Server.Controllers
             c1B.C1I12Many2One = c1B;
             c1C.C1I12Many2One = c2C;
             c1D.C1I12Many2One = c2C;
-            #endregion
 
-            #region Many to Many
             c1B.AddC1C1Many2Many(c1B);
             c1C.AddC1C1Many2Many(c1B);
             c1D.AddC1C1Many2Many(c1B);
@@ -233,7 +216,6 @@ namespace Allors.Server.Controllers
             c1D.AddC1I12Many2Many(c2B);
             c1D.AddC1I12Many2Many(c2C);
             c1D.AddC1I12Many2Many(c2D);
-            #endregion
         }
     }
 }

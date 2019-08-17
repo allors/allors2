@@ -5,17 +5,14 @@
 
 namespace Tests.PhoneCommunicationTests
 {
-    using src.allors.material.@base.objects.person.list;
-    using src.allors.material.@base.objects.person.overview;
-    using src.allors.material.@base.objects.phonecommunication.edit;
     using System.Linq;
-
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
-
     using Components;
-
+    using src.allors.material.@base.objects.person.list;
+    using src.allors.material.@base.objects.person.overview;
+    using src.allors.material.@base.objects.phonecommunication.edit;
     using Xunit;
 
     [Collection("Test collection")]

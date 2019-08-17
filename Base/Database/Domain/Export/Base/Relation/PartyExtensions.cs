@@ -5,8 +5,8 @@
 
 namespace Allors.Domain
 {
-    using System.Linq;
     using System;
+    using System.Linq;
     using Allors.Meta;
 
     public static class PartyExtensions

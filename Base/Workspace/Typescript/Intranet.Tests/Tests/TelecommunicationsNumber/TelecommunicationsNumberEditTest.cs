@@ -5,17 +5,14 @@
 
 namespace Tests.TelecommunicationsNumberTests
 {
+    using System.Linq;
+    using Allors;
+    using Allors.Domain;
+    using Components;
     using src.allors.material.@base.objects.person.list;
     using src.allors.material.@base.objects.person.overview;
     using src.allors.material.@base.objects.telecommunicationsnumber.create;
     using src.allors.material.@base.objects.telecommunicationsnumber.edit;
-    using System.Linq;
-
-    using Allors;
-    using Allors.Domain;
-
-    using Components;
-
     using Xunit;
 
     [Collection("Test collection")]

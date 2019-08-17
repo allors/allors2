@@ -5,16 +5,14 @@
 
 namespace Tests.FaceToFaceCommunicationTests
 {
-    using src.allors.material.@base.objects.facetofacecommunication.edit;
-    using src.allors.material.@base.objects.person.list;
-    using src.allors.material.@base.objects.person.overview;
     using System.Linq;
-
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
-
     using Components;
+    using src.allors.material.@base.objects.facetofacecommunication.edit;
+    using src.allors.material.@base.objects.person.list;
+    using src.allors.material.@base.objects.person.overview;
     using Xunit;
 
     [Collection("Test collection")]

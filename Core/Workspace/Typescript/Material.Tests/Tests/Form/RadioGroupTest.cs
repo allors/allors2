@@ -5,13 +5,11 @@
 
 namespace Tests
 {
-    using src.allors.material.custom.tests.form;
     using System.Linq;
     using Allors.Domain;
     using Allors.Meta;
-
     using Components;
-
+    using src.allors.material.custom.tests.form;
     using Xunit;
 
     [Collection("Test collection")]

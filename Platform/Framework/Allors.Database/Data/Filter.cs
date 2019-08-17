@@ -9,10 +9,8 @@ namespace Allors.Data
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Allors.Protocol.Data;
-
     using Allors.Meta;
+    using Allors.Protocol.Data;
 
     public class Filter : IExtent, IPredicateContainer
     {

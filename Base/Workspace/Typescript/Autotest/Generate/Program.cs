@@ -5,12 +5,11 @@
 
 namespace Allors
 {
-    using Allors.Workspace.Meta;
-    using Autotest;
     using System;
     using System.IO;
-
     using Allors.Development.Repository.Tasks;
+    using Allors.Workspace.Meta;
+    using Autotest;
 
     internal class Program
     {

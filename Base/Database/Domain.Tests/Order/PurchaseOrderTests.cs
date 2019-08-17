@@ -8,8 +8,8 @@
 
 namespace Allors.Domain
 {
-    using Resources;
     using Allors.Meta;
+    using Resources;
     using Xunit;
 
     public class PurchaseOrderTests : DomainTest

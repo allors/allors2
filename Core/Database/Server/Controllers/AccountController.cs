@@ -8,15 +8,14 @@ namespace Identity.Controllers
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using Identity.Models;
+    using Identity.Models.AccountViewModels;
+    using Identity.Services;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-
-    using Identity.Models;
-    using Identity.Models.AccountViewModels;
-    using Identity.Services;
 
     [Authorize]
     [Route("[controller]/[action]")]

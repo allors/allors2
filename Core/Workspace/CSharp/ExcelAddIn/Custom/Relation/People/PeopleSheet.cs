@@ -8,13 +8,11 @@ namespace Allors.Excel.People
     using System;
     using System.Linq;
     using System.Windows.Forms;
-
     using Allors.Excel;
-    using Allors.Workspace.Meta;
     using Allors.Protocol.Remote;
     using Allors.Workspace.Data;
     using Allors.Workspace.Domain;
-
+    using Allors.Workspace.Meta;
     using Microsoft.Office.Interop.Excel;
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
     using Result = Allors.Workspace.Client.Result;

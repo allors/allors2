@@ -8,9 +8,8 @@ namespace Allors.Adapters.Object.Npgsql
     using System.Collections.Generic;
     using System.Data;
     using System.Xml;
-
-    using Allors.Meta;
     using Allors.Adapters;
+    using Allors.Meta;
 
     internal class Save
     {

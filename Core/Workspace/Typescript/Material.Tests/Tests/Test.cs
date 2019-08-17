@@ -7,8 +7,6 @@ namespace Tests
 {
     using System;
     using System.Globalization;
-    using src.app.dashboard;
-    using src.app.main;
     using Allors;
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
@@ -17,8 +15,10 @@ namespace Tests
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using OpenQA.Selenium;
-    using ObjectFactory = Allors.ObjectFactory;
     using src.app.auth;
+    using src.app.dashboard;
+    using src.app.main;
+    using ObjectFactory = Allors.ObjectFactory;
 
     public abstract class Test : IDisposable
     {

@@ -5,9 +5,8 @@
 
 namespace Allors
 {
-    using Allors.Meta;
-
     using Allors.Domain;
+    using Allors.Meta;
 
     public abstract partial class ObjectsBase<T> : IObjects where T : IObject
     {

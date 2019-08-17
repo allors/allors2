@@ -8,12 +8,9 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Allors.Services;
-
     using Allors.Meta;
-
+    using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
-
     using Resources;
 
     public partial class SalesOrder
@@ -149,7 +146,6 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var session = this.strategy.Session;
 
-            #region Derivations and Validations
             // SalesOrder Derivations and Validations
             this.BillToCustomer = this.BillToCustomer ?? this.ShipToCustomer;
             this.ShipToCustomer = this.ShipToCustomer ?? this.BillToCustomer;
@@ -250,9 +246,7 @@ namespace Allors.Domain
                 .SelectMany(v => v.SalesReps)
                 .Distinct()
                 .ToArray();
-            #endregion
 
-            #region VatClause
 
             if (this.ExistVatRegime && this.VatRegime.ExistVatClause)
             {
@@ -301,9 +295,7 @@ namespace Allors.Domain
 
             this.DerivedVatClause = this.ExistAssignedVatClause ? this.AssignedVatClause : this.DerivedVatClause;
 
-            #endregion
 
-            #region States
             var salesOrderShipmentStates = new SalesOrderShipmentStates(this.Strategy.Session);
             var salesOrderPaymentStates = new SalesOrderPaymentStates(this.Strategy.Session);
             var salesOrderInvoiceStates = new SalesOrderInvoiceStates(this.Strategy.Session);
@@ -398,9 +390,7 @@ namespace Allors.Domain
                     salesOrderItem.SalesOrderItemState = salesOrderItemStates.Rejected;
                 }
             }
-            #endregion
 
-            #region Pricing
             var currentPriceComponents = new PriceComponents(session).CurrentPriceComponents(this.OrderDate);
 
             var quantityOrderedByProduct = validOrderItems
@@ -562,7 +552,6 @@ namespace Allors.Domain
                     }
                 }
             }
-            #endregion
 
             // TODO: Move to versioning
             this.PreviousBillToCustomer = this.BillToCustomer;

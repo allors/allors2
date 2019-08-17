@@ -5,10 +5,10 @@
 
 namespace Tests.PersonTests
 {
-    using src.allors.material.@base.objects.person.list;
-    using src.allors.material.@base.objects.person.overview;
     using Allors.Domain;
     using Allors.Meta;
+    using src.allors.material.@base.objects.person.list;
+    using src.allors.material.@base.objects.person.overview;
     using Xunit;
 
     [Collection("Test collection")]

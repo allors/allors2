@@ -1645,7 +1645,7 @@ namespace Allors.Domain
             var price = this.currentGood1BasePrice.Price ?? 0;
             var discount = Math.Round(price * percentage / 100, 2);
             var discountedprice = price - discount;
-            var adjustmentPercentage = discountAdjustment.Percentage.HasValue ? discountAdjustment.Percentage.Value : 0;
+            var adjustmentPercentage = discountAdjustment.Percentage ?? 0;
             discount += Math.Round(discountedprice * adjustmentPercentage / 100, 2);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);
@@ -1761,7 +1761,7 @@ namespace Allors.Domain
             var price = this.currentGood1BasePrice.Price ?? 0;
             var surcharge = Math.Round(price * percentage / 100, 2);
             var surchargedprice = price + surcharge;
-            var adjustmentPercentage = surchargeAdjustment.Percentage.HasValue ? surchargeAdjustment.Percentage.Value : 0;
+            var adjustmentPercentage = surchargeAdjustment.Percentage ?? 0;
             surcharge += Math.Round(surchargedprice * adjustmentPercentage / 100, 2);
 
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitBasePrice);

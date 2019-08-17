@@ -5,9 +5,9 @@
 
 namespace Tests.OrganisationTests
 {
-    using src.allors.material.@base.objects.organisation.list;
     using Allors.Domain;
     using Allors.Meta;
+    using src.allors.material.@base.objects.organisation.list;
     using Xunit;
 
     [Collection("Test collection")]

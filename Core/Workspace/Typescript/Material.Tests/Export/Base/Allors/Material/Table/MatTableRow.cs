@@ -5,8 +5,8 @@
 
 namespace Components
 {
-    using System.Linq;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using OpenQA.Selenium;
 
     public class MatTableRow

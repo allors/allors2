@@ -57,7 +57,10 @@ namespace Server.Tests
 
             var pushRequest = new PushRequest
             {
-                Objects = new[] { new PushRequestObject {
+                Objects = new[]
+                {
+                    new PushRequestObject
+                {
                                                                                   I = organisationId,
                                                                                   V = organisationVersion,
                                                                                   Roles = new[]

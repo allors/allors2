@@ -6,9 +6,8 @@
 namespace ExcelAddIn
 {
     using System;
-    using Microsoft.Office.Tools.Ribbon;
     using Allors.Excel;
-
+    using Microsoft.Office.Tools.Ribbon;
     using Nito.AsyncEx;
 
     public partial class Ribbon

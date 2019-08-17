@@ -16,6 +16,10 @@ namespace Allors.Adapters
 
         IEnumerator IEnumerable.GetEnumerator() => StaticEmptySet.GetEnumerator();
 
+        public int Count => StaticEmptySet.Count;
+
+        public bool IsReadOnly => true;
+
         public void UnionWith(IEnumerable<T> other) => throw new System.NotSupportedException();
 
         public void IntersectWith(IEnumerable<T> other) => throw new System.NotSupportedException();
@@ -47,9 +51,5 @@ namespace Allors.Adapters
         public void CopyTo(T[] array, int arrayIndex) => StaticEmptySet.CopyTo(array, arrayIndex);
 
         public bool Remove(T item) => throw new System.NotSupportedException();
-
-        public int Count => StaticEmptySet.Count;
-
-        public bool IsReadOnly => true;
     }
 }

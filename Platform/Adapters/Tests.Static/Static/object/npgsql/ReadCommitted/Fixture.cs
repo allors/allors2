@@ -5,10 +5,10 @@
 
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
+    using System;
     using System.Collections.Generic;
     using MysticMind.PostgresEmbed;
     using Xunit;
-    using System;
 
     public class Fixture : IDisposable
     {

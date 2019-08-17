@@ -9,10 +9,8 @@ namespace Allors.Adapters.Memory
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml;
-
-    using Allors.Adapters;
-
     using Allors;
+    using Allors.Adapters;
     using Allors.Meta;
 
     public sealed class Strategy : IStrategy

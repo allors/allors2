@@ -8,11 +8,9 @@ namespace Allors.Server
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Allors.Data;
-    using Allors.Protocol.Remote.Pull;
-
     using Allors.Domain;
+    using Allors.Protocol.Remote.Pull;
 
     public class PullResponseBuilder
     {

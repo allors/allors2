@@ -5,10 +5,10 @@
 
 namespace Tests.ApplicationTests
 {
-    using System.Reflection;
-    using Components;
     using System;
     using System.Linq;
+    using System.Reflection;
+    using Components;
     using Xunit;
 
     [Collection("Test collection")]

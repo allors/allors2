@@ -5,8 +5,8 @@
 
 namespace Allors.Adapters
 {
-    using System.Runtime.InteropServices;
     using System;
+    using System.Runtime.InteropServices;
 
     public static class Settings
     {

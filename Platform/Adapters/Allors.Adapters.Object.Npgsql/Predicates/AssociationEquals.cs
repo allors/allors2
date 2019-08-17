@@ -5,8 +5,8 @@
 
 namespace Allors.Adapters.Object.Npgsql
 {
-    using Allors.Meta;
     using Allors.Adapters;
+    using Allors.Meta;
 
     internal sealed class AssociationEquals : Predicate
     {
