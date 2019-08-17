@@ -10,28 +10,6 @@ namespace Allors.Domain
 
     public partial class PriceComponents
     {
-        public partial class IsApplicable
-        {
-            public PriceComponent PriceComponent;
-
-            public Party Customer;
-
-            public Product Product;
-
-            public SalesOrder SalesOrder = null;
-
-            public decimal QuantityOrdered = 0;
-
-            public decimal ValueOrdered = 0;
-
-            public SalesInvoice SalesInvoice = null;
-        }
-
-        public PriceComponent[] CurrentPriceComponents(DateTime date) =>
-            this.Extent()
-                .Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date))
-                .ToArray();
-
         public static bool BaseIsApplicable(IsApplicable isApplicable)
         {
             var priceComponent = isApplicable.PriceComponent;
@@ -203,6 +181,28 @@ namespace Allors.Domain
             }
 
             return true;
+        }
+
+        public PriceComponent[] CurrentPriceComponents(DateTime date) =>
+            this.Extent()
+                .Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date))
+                .ToArray();
+
+        public partial class IsApplicable
+        {
+            public PriceComponent PriceComponent;
+
+            public Party Customer;
+
+            public Product Product;
+
+            public SalesOrder SalesOrder = null;
+
+            public decimal QuantityOrdered = 0;
+
+            public decimal ValueOrdered = 0;
+
+            public SalesInvoice SalesInvoice = null;
         }
     }
 }

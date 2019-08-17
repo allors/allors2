@@ -10,7 +10,6 @@ namespace Allors.Document.OpenDocument
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
-    using System.Reflection;
 
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Misc;

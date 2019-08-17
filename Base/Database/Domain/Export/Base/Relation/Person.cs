@@ -5,15 +5,24 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
     using System;
     using System.Linq;
     using System.Text;
+    using Allors.Meta;
 
     public partial class Person
     {
+        public PrefetchPolicy PrefetchPolicy => new PrefetchPolicyBuilder()
+            .WithRule(M.Person.OrganisationContactRelationshipsWhereContact)
+            .WithRule(M.Person.PartyContactMechanisms.RoleType)
+            .WithRule(M.Person.TimeSheetWhereWorker)
+            .WithRule(M.Person.EmploymentsWhereEmployee)
+            .WithRule(M.Person.SubContractorRelationshipsWhereContractor)
+            .WithRule(M.Person.SubContractorRelationshipsWhereSubContractor)
+            .Build();
+
         private bool IsDeletable =>
-            !this.ExistCurrentOrganisationContactRelationships
+                    !this.ExistCurrentOrganisationContactRelationships
             && !this.ExistEmploymentsWhereEmployee
             && (!this.ExistTimeSheetWhereWorker || !this.TimeSheetWhereWorker.ExistTimeEntries);
 
@@ -99,47 +108,6 @@ namespace Allors.Domain
             }
         }
 
-        public PrefetchPolicy PrefetchPolicy => new PrefetchPolicyBuilder()
-            .WithRule(M.Person.OrganisationContactRelationshipsWhereContact)
-            .WithRule(M.Person.PartyContactMechanisms.RoleType)
-            .WithRule(M.Person.TimeSheetWhereWorker)
-            .WithRule(M.Person.EmploymentsWhereEmployee)
-            .WithRule(M.Person.SubContractorRelationshipsWhereContractor)
-            .WithRule(M.Person.SubContractorRelationshipsWhereSubContractor)
-            .Build();
-
-        private string DerivePartyName()
-        {
-            var partyName = new StringBuilder();
-
-            if (this.ExistFirstName)
-            {
-                partyName.Append(this.FirstName);
-            }
-
-            if (this.ExistMiddleName)
-            {
-                if (partyName.Length > 0)
-                {
-                    partyName.Append(" ");
-                }
-
-                partyName.Append(this.MiddleName);
-            }
-
-            if (this.ExistLastName)
-            {
-                if (partyName.Length > 0)
-                {
-                    partyName.Append(" ");
-                }
-
-                partyName.Append(this.LastName);
-            }
-
-            return partyName.Length > 0 ? partyName.ToString() : $"[{this.UserName}]";
-        }
-
         public void BaseDelete(DeletableDelete method)
         {
             if (!this.IsDeletable)
@@ -195,6 +163,38 @@ namespace Allors.Domain
                     this.AddCurrentOrganisationContactMechanism(partyContactMechanism.ContactMechanism);
                 }
             }
+        }
+
+        private string DerivePartyName()
+        {
+            var partyName = new StringBuilder();
+
+            if (this.ExistFirstName)
+            {
+                partyName.Append(this.FirstName);
+            }
+
+            if (this.ExistMiddleName)
+            {
+                if (partyName.Length > 0)
+                {
+                    partyName.Append(" ");
+                }
+
+                partyName.Append(this.MiddleName);
+            }
+
+            if (this.ExistLastName)
+            {
+                if (partyName.Length > 0)
+                {
+                    partyName.Append(" ");
+                }
+
+                partyName.Append(this.LastName);
+            }
+
+            return partyName.Length > 0 ? partyName.ToString() : $"[{this.UserName}]";
         }
     }
 }

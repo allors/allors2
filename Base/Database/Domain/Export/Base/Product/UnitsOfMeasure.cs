@@ -11,35 +11,41 @@ namespace Allors.Domain
     {
         // Quantity
         private static readonly Guid PackId = new Guid("C4EC577A-D682-433c-BD70-84538BE83209");
+
         private static readonly Guid PairId = new Guid("62CB31EB-CD70-4836-B20F-1088C6CA9DCB");
         private static readonly Guid PieceId = new Guid("F4BBDB52-3441-4768-92D4-729C6C5D6F1B");
         private static readonly Guid PeopleId = new Guid("13274801-52FD-47E8-A15B-8508E848C140");
 
         // Length, width, distance, thickness
         private static readonly Guid MillimeterId = new Guid("A7F83AEF-20DB-42D8-9AB6-2D5821353BE8");
+
         private static readonly Guid CentimeterId = new Guid("7D81FFC7-E77D-4a00-916D-49F2B1CCA12E");
         private static readonly Guid MeterId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
         private static readonly Guid KilometerId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
 
         // Mass
         private static readonly Guid MilligramId = new Guid("43E19BE3-5F7D-441D-A6B3-52EC1B7A2F84");
+
         private static readonly Guid GramId = new Guid("F108E442-3A85-4F69-81ED-51BA9FC39A39");
         private static readonly Guid KilogramId = new Guid("652A99BB-2B11-4DA7-B938-7A8EC1061A09");
         private static readonly Guid MetricTonId = new Guid("140145F7-EB1C-45B9-9B94-982254B88B5D");
 
         // Area
         private static readonly Guid SquareMeterId = new Guid("B2BEEECC-4C04-487A-BA79-EE48AC555800");
+
         private static readonly Guid HectareId = new Guid("7B28A3B1-0717-47E1-9AD9-133D885B7F7A");
         private static readonly Guid SquareKilometerId = new Guid("4FA765C6-FAF0-4C72-808D-71E25603A45D");
 
         // Volume
         private static readonly Guid MilliLiterId = new Guid("6DE02A90-1605-46B4-9BD5-88BD4690A5B2");
+
         private static readonly Guid CubicCentimeterId = new Guid("F6289FF0-87E8-4ADC-92E3-C5D532BA515F");
         private static readonly Guid LiterId = new Guid("C0F2845D-3CBC-4FE7-970B-8C06AFB75ABC");
         private static readonly Guid CubicMeterId = new Guid("F573E22F-9450-4E0A-B177-4142DFAAE829");
 
         // Velocity
         private static readonly Guid MeterPerSecondId = new Guid("66A4216C-46E8-4212-B456-76F968505F25");
+
         private static readonly Guid KilometerPerHourId = new Guid("E3A61B56-2CD1-42E6-9360-1F83F3D15195");
 
         // Density
@@ -53,10 +59,12 @@ namespace Allors.Domain
 
         // Power
         private static readonly Guid WattId = new Guid("ADF494B5-120F-475E-95F0-3EFC2B64FBE7");
+
         private static readonly Guid KiloWattId = new Guid("71B7DCDD-A98D-4005-AFE8-8C5366847ECB");
 
         // Energy
         private static readonly Guid KiloJouleId = new Guid("9F31AAF8-B4BC-48A3-A34B-795E4B082CEC");
+
         private static readonly Guid MegaJouleId = new Guid("56D154BA-F16B-43AC-BCD7-B81EC670932D");
         private static readonly Guid KiloWattHourId = new Guid("83C65E69-0048-4474-9F53-4EA89FA26194");
 
@@ -65,6 +73,7 @@ namespace Allors.Domain
 
         // Electric
         private static readonly Guid AmpereId = new Guid("6CAA7DD3-608F-40A6-AE26-9141517D8C45");
+
         private static readonly Guid VoltId = new Guid("A15B7AFB-660C-455D-A5C7-03D3D32B29CB");
 
         private UniquelyIdentifiableSticky<UnitOfMeasure> cache;
@@ -234,7 +243,7 @@ namespace Allors.Domain
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("degree Celsius")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("graden Celsius").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("°C")
+                .WithAbbreviation("Â°C")
                 .WithUniqueId(DegreeCelsiusId)
                 .WithIsActive(true)
                 .Build();
@@ -242,7 +251,7 @@ namespace Allors.Domain
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("square meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante meter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("m²")
+                .WithAbbreviation("mÂ²")
                 .WithUniqueId(SquareMeterId)
                 .WithIsActive(true)
                 .Build();
@@ -258,7 +267,7 @@ namespace Allors.Domain
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("square kilometer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante kilometer").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("km²")
+                .WithAbbreviation("kmÂ²")
                 .WithUniqueId(SquareKilometerId)
                 .WithIsActive(true)
                 .Build();
@@ -274,7 +283,7 @@ namespace Allors.Domain
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("Cubic centimeter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke centimeter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("cm³")
+                .WithAbbreviation("cmÂ³")
                 .WithUniqueId(CubicCentimeterId)
                 .WithIsActive(true)
                 .Build();
@@ -290,7 +299,7 @@ namespace Allors.Domain
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("Cubic meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke meter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("m³")
+                .WithAbbreviation("mÂ³")
                 .WithUniqueId(CubicMeterId)
                 .WithIsActive(true)
                 .Build();
@@ -314,7 +323,7 @@ namespace Allors.Domain
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilogram per cubic meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilogram per kubieke meter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("kg/m³")
+                .WithAbbreviation("kg/mÂ³")
                 .WithUniqueId(KilogramPerCubicMeterId)
                 .WithIsActive(true)
                 .Build();
@@ -370,7 +379,7 @@ namespace Allors.Domain
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilowatt hour")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilowatt uur").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("kW·h")
+                .WithAbbreviation("kWÂ·h")
                 .WithUniqueId(KiloWattHourId)
                 .WithIsActive(true)
                 .Build();

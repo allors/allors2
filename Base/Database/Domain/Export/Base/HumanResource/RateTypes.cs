@@ -12,6 +12,7 @@ namespace Allors.Domain
         private static readonly Guid StandardRateId = new Guid("FE2C3012-7FBC-4c10-B76E-F0DA4754020A");
         private static readonly Guid OvertimeRateId = new Guid("DE4D0A4C-EDDC-460c-BF78-A45A9B881F48");
         private static readonly Guid WeekendRateId = new Guid("2AA92139-E634-444e-9997-89B5F598812F");
+
         // private static readonly Guid RegularPayId = new Guid("9C1051EA-DDAF-4e21-ACA7-8ABB9A06073D");
         // private static readonly Guid OvertimePayId = new Guid("2422BDBB-C30C-452a-B02F-ED1EE6839B56");
         // private static readonly Guid AveragePayRateId = new Guid("68D502D8-FB6F-4f63-BD33-18AF3D5D1F75");

@@ -210,34 +210,11 @@ namespace Allors.Domain
             this.ResetPrintDocument();
         }
 
-        private void Sync(ISession session)
-        {
-            // session.Prefetch(this.SyncPrefetch, this);
-            foreach (PurchaseInvoiceItem invoiceItem in this.PurchaseInvoiceItems)
-            {
-                invoiceItem.Sync(this);
-            }
-        }
-
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
             if (this.ExistSalesInvoiceWherePurchaseInvoice)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.CreateSalesInvoice, Operations.Execute));
-            }
-        }
-
-        private void DeriveWorkflow()
-        {
-            this.WorkItemDescription = $"PurchaseInvoice: {this.InvoiceNumber} [{this.BilledFrom?.PartyName}]";
-
-            if (this.PurchaseInvoiceState.IsAwaitingApproval)
-            {
-                if (!this.OpenTasks.OfType<PurchaseInvoiceApproval>().Any())
-                {
-                    var approval = new PurchaseInvoiceApprovalBuilder(this.strategy.Session).WithPurchaseInvoice(this).Build();
-                    approval.WorkItem = approval.PurchaseInvoice;
-                }
             }
         }
 
@@ -427,6 +404,29 @@ namespace Allors.Domain
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
             {
                 purchaseInvoiceItem.BaseOnDerivePrices();
+            }
+        }
+
+        private void Sync(ISession session)
+        {
+            // session.Prefetch(this.SyncPrefetch, this);
+            foreach (PurchaseInvoiceItem invoiceItem in this.PurchaseInvoiceItems)
+            {
+                invoiceItem.Sync(this);
+            }
+        }
+
+        private void DeriveWorkflow()
+        {
+            this.WorkItemDescription = $"PurchaseInvoice: {this.InvoiceNumber} [{this.BilledFrom?.PartyName}]";
+
+            if (this.PurchaseInvoiceState.IsAwaitingApproval)
+            {
+                if (!this.OpenTasks.OfType<PurchaseInvoiceApproval>().Any())
+                {
+                    var approval = new PurchaseInvoiceApprovalBuilder(this.strategy.Session).WithPurchaseInvoice(this).Build();
+                    approval.WorkItem = approval.PurchaseInvoice;
+                }
             }
         }
     }

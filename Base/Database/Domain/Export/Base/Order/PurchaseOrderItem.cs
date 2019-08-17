@@ -13,6 +13,7 @@ namespace Allors.Domain
     public partial class PurchaseOrderItem
     {
         #region Transitional
+
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
                 new TransitionalConfiguration(M.PurchaseOrderItem, M.PurchaseOrderItem.PurchaseOrderItemState),
@@ -21,13 +22,8 @@ namespace Allors.Domain
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
-        #endregion
 
-        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
-        {
-            method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
-        }
+        #endregion Transitional
 
         public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsCancelledByOrder || this.PurchaseOrderItemState.IsRejected);
 
@@ -57,6 +53,12 @@ namespace Allors.Domain
 
                 return string.Empty;
             }
+        }
+
+        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
         }
 
         public void BaseConfirm(OrderItemConfirm method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;

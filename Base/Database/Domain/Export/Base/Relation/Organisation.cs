@@ -12,6 +12,37 @@ namespace Allors.Domain
 
     public partial class Organisation
     {
+        public PrefetchPolicy PrefetchPolicy
+        {
+            get
+            {
+                var organisationContactRelationshipPrefetch = new PrefetchPolicyBuilder()
+                    .WithRule(M.OrganisationContactRelationship.Contact)
+                    .Build();
+
+                var partyContactMechanismePrefetch = new PrefetchPolicyBuilder()
+                    .WithRule(M.PartyContactMechanism.ContactMechanism)
+                    .Build();
+
+                return new PrefetchPolicyBuilder()
+                    .WithRule(M.Organisation.RequestCounter.RoleType)
+                    .WithRule(M.Organisation.QuoteCounter.RoleType)
+                    .WithRule(M.Organisation.PurchaseInvoiceCounter.RoleType)
+                    .WithRule(M.Organisation.PurchaseOrderCounter.RoleType)
+                    .WithRule(M.Organisation.SubAccountCounter.RoleType)
+                    .WithRule(M.Organisation.IncomingShipmentCounter.RoleType)
+                    .WithRule(M.Organisation.WorkEffortCounter.RoleType)
+                    .WithRule(M.Organisation.InvoiceSequence.RoleType)
+                    .WithRule(M.Organisation.ContactsUserGroup)
+                    .WithRule(M.Organisation.OrganisationContactRelationshipsWhereOrganisation, organisationContactRelationshipPrefetch)
+                    .WithRule(M.Organisation.PartyContactMechanisms.RoleType, partyContactMechanismePrefetch)
+                    .WithRule(M.Organisation.CurrentContacts.RoleType)
+                    .Build();
+            }
+        }
+
+        public List<string> Roles => new List<string>() { "Internal organisation" };
+
         private bool IsDeletable => !this.ExistCurrentContacts;
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
@@ -287,37 +318,6 @@ namespace Allors.Domain
                 organisationContactRelationship.Contact.Sync(partyContactMechanisms);
             }
         }
-
-        public PrefetchPolicy PrefetchPolicy
-        {
-            get
-            {
-                var organisationContactRelationshipPrefetch = new PrefetchPolicyBuilder()
-                    .WithRule(M.OrganisationContactRelationship.Contact)
-                    .Build();
-
-                var partyContactMechanismePrefetch = new PrefetchPolicyBuilder()
-                    .WithRule(M.PartyContactMechanism.ContactMechanism)
-                    .Build();
-
-                return new PrefetchPolicyBuilder()
-                    .WithRule(M.Organisation.RequestCounter.RoleType)
-                    .WithRule(M.Organisation.QuoteCounter.RoleType)
-                    .WithRule(M.Organisation.PurchaseInvoiceCounter.RoleType)
-                    .WithRule(M.Organisation.PurchaseOrderCounter.RoleType)
-                    .WithRule(M.Organisation.SubAccountCounter.RoleType)
-                    .WithRule(M.Organisation.IncomingShipmentCounter.RoleType)
-                    .WithRule(M.Organisation.WorkEffortCounter.RoleType)
-                    .WithRule(M.Organisation.InvoiceSequence.RoleType)
-                    .WithRule(M.Organisation.ContactsUserGroup)
-                    .WithRule(M.Organisation.OrganisationContactRelationshipsWhereOrganisation, organisationContactRelationshipPrefetch)
-                    .WithRule(M.Organisation.PartyContactMechanisms.RoleType, partyContactMechanismePrefetch)
-                    .WithRule(M.Organisation.CurrentContacts.RoleType)
-                    .Build();
-            }
-        }
-
-        public List<string> Roles => new List<string>() { "Internal organisation" };
 
         public bool BaseIsActiveProfessionalServicesProvider(DateTime? date)
         {

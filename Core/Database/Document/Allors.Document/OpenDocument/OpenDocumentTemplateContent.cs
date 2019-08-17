@@ -278,6 +278,7 @@ namespace Allors.Document.OpenDocument
 ");
                         this.Write((XmlElement)childNode, writer);
                         break;
+
                     case XmlNodeType.Text:
                         writer.Write(childNode.Value);
                         break;

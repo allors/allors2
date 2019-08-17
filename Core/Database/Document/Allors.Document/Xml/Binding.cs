@@ -7,8 +7,8 @@ namespace Allors.Document.Xml
 {
     public class Binding
     {
-        public string Text { get; set; }
-
         public Binding(string text) => this.Text = text.Trim();
+
+        public string Text { get; set; }
     }
 }

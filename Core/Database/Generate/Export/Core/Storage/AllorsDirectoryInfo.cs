@@ -34,35 +34,6 @@ namespace Allors.Development.Repository.Storage
 
         public override string ToString() => this.DirectoryInfo.FullName;
 
-        private void BuildAncestors(AllorsDirectoryInfo root, List<AllorsDirectoryInfo> ancestors)
-        {
-            if (!this.DirectoryInfo.FullName.Equals(this.DirectoryInfo.Root.FullName))
-            {
-                if (!this.DirectoryInfo.FullName.Equals(root.DirectoryInfo.FullName))
-                {
-                    ancestors.Add(this);
-                    this.Parent.BuildAncestors(root, ancestors);
-                }
-            }
-        }
-
-        private AllorsDirectoryInfo GetCommonAncestor(AllorsDirectoryInfo destination) => destination.IsAncestor(this) ? this : this.Parent.GetCommonAncestor(destination);
-
-        private bool IsAncestor(AllorsDirectoryInfo ancestor)
-        {
-            if (this.DirectoryInfo.FullName.Equals(ancestor.DirectoryInfo.FullName))
-            {
-                return true;
-            }
-
-            if (this.Parent != null)
-            {
-                return this.Parent.IsAncestor(ancestor);
-            }
-
-            return false;
-        }
-
         internal string GetRelativeName(AllorsDirectoryInfo baseDirectory)
         {
             if (this.DirectoryInfo.Root.FullName.Equals(baseDirectory.DirectoryInfo.Root.FullName))
@@ -101,6 +72,35 @@ namespace Allors.Development.Repository.Storage
             }
 
             return null;
+        }
+
+        private void BuildAncestors(AllorsDirectoryInfo root, List<AllorsDirectoryInfo> ancestors)
+        {
+            if (!this.DirectoryInfo.FullName.Equals(this.DirectoryInfo.Root.FullName))
+            {
+                if (!this.DirectoryInfo.FullName.Equals(root.DirectoryInfo.FullName))
+                {
+                    ancestors.Add(this);
+                    this.Parent.BuildAncestors(root, ancestors);
+                }
+            }
+        }
+
+        private AllorsDirectoryInfo GetCommonAncestor(AllorsDirectoryInfo destination) => destination.IsAncestor(this) ? this : this.Parent.GetCommonAncestor(destination);
+
+        private bool IsAncestor(AllorsDirectoryInfo ancestor)
+        {
+            if (this.DirectoryInfo.FullName.Equals(ancestor.DirectoryInfo.FullName))
+            {
+                return true;
+            }
+
+            if (this.Parent != null)
+            {
+                return this.Parent.IsAncestor(ancestor);
+            }
+
+            return false;
         }
     }
 }

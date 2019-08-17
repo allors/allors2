@@ -18,18 +18,18 @@ namespace Allors.Domain
 
     public partial class SalesInvoice
     {
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+            {
+                new TransitionalConfiguration(M.SalesInvoice, M.SalesInvoice.SalesInvoiceState),
+            };
+
         private bool IsDeletable =>
-            this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).ReadyForPosting) &&
+                    this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).ReadyForPosting) &&
             this.SalesInvoiceItems.All(v => v.IsDeletable) &&
             this.SalesOrders.Count == 0 &&
             !this.ExistPurchaseInvoice &&
             !this.ExistRepeatingSalesInvoiceWhereSource &&
             !this.IsRepeatingInvoice;
-
-        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
-            {
-                new TransitionalConfiguration(M.SalesInvoice, M.SalesInvoice.SalesInvoiceState),
-            };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
@@ -560,15 +560,6 @@ namespace Allors.Domain
             this.ResetPrintDocument();
         }
 
-        private void Sync(ISession session)
-        {
-            // session.Prefetch(this.SyncPrefetch, this);
-            foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
-            {
-                invoiceItem.Sync(this);
-            }
-        }
-
         public void BaseSend(SalesInvoiceSend method)
         {
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice))
@@ -1017,6 +1008,15 @@ namespace Allors.Domain
             salesInvoiceItem.TotalExVat = salesInvoiceItem.UnitPrice * salesInvoiceItem.Quantity;
             salesInvoiceItem.TotalVat = salesInvoiceItem.UnitVat * salesInvoiceItem.Quantity;
             salesInvoiceItem.TotalIncVat = salesInvoiceItem.TotalExVat + salesInvoiceItem.TotalVat;
+        }
+
+        private void Sync(ISession session)
+        {
+            // session.Prefetch(this.SyncPrefetch, this);
+            foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
+            {
+                invoiceItem.Sync(this);
+            }
         }
     }
 }

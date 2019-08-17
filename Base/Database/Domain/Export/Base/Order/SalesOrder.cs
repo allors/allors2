@@ -571,15 +571,6 @@ namespace Allors.Domain
             this.ResetPrintDocument();
         }
 
-        private void Sync(ISession session)
-        {
-            // session.Prefetch(this.SyncPrefetch, this);
-            foreach (SalesOrderItem orderItem in this.SalesOrderItems)
-            {
-                orderItem.Sync(this);
-            }
-        }
-
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
             var derivation = method.Derivation;
@@ -1017,6 +1008,15 @@ namespace Allors.Domain
             salesOrderItem.TotalExVat = salesOrderItem.UnitPrice * salesOrderItem.QuantityOrdered;
             salesOrderItem.TotalVat = salesOrderItem.UnitVat * salesOrderItem.QuantityOrdered;
             salesOrderItem.TotalIncVat = salesOrderItem.TotalExVat + salesOrderItem.TotalVat;
+        }
+
+        private void Sync(ISession session)
+        {
+            // session.Prefetch(this.SyncPrefetch, this);
+            foreach (SalesOrderItem orderItem in this.SalesOrderItems)
+            {
+                orderItem.Sync(this);
+            }
         }
 
         private Dictionary<PostalAddress, Party> ShipToAddresses()

@@ -1,4 +1,4 @@
-﻿// <copyright file="Counters.cs" company="Allors bvba">
+// <copyright file="Counters.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -57,7 +57,8 @@ namespace Allors.Domain
             }
 
             // ... not result in a 0 when dividing by 11 ...
-            if (total == 0) return false;
+            if (total == 0)
+                return false;
 
             // ... and not have a modulo when dividing by 11.
             return total % 11 == 0;

@@ -9,12 +9,12 @@ namespace Allors.Domain
 
     public partial class QuoteItem
     {
-        public decimal LineTotal => this.Quantity * this.UnitPrice;
-
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
                 new TransitionalConfiguration(M.QuoteItem, M.QuoteItem.QuoteItemState),
             };
+
+        public decimal LineTotal => this.Quantity * this.UnitPrice;
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 

@@ -55,45 +55,6 @@ namespace Allors.Domain
             }
         }
 
-        private void DeriveProductCharacteristics(IDerivation derivation)
-        {
-            var characteristicsToDelete = this.SerialisedItemCharacteristics.ToList();
-            var part = this.PartWhereSerialisedItem;
-
-            if (this.ExistPartWhereSerialisedItem && part.ExistProductType)
-            {
-                foreach (SerialisedItemCharacteristicType characteristicType in part.ProductType.SerialisedItemCharacteristicTypes)
-                {
-                    var characteristic = this.SerialisedItemCharacteristics.FirstOrDefault(v => Equals(v.SerialisedItemCharacteristicType, characteristicType));
-                    if (characteristic == null)
-                    {
-                        var newCharacteristic = new SerialisedItemCharacteristicBuilder(this.Strategy.Session)
-                            .WithSerialisedItemCharacteristicType(characteristicType).Build();
-
-                        this.AddSerialisedItemCharacteristic(newCharacteristic);
-
-                        var partCharacteristics = part.SerialisedItemCharacteristics;
-                        partCharacteristics.Filter.AddEquals(M.SerialisedItemCharacteristic.SerialisedItemCharacteristicType, characteristicType);
-                        var fromPart = partCharacteristics.FirstOrDefault();
-
-                        if (fromPart != null)
-                        {
-                            newCharacteristic.Value = fromPart.Value;
-                        }
-                    }
-                    else
-                    {
-                        characteristicsToDelete.Remove(characteristic);
-                    }
-                }
-            }
-
-            foreach (var characteristic in characteristicsToDelete)
-            {
-                this.RemoveSerialisedItemCharacteristic(characteristic);
-            }
-        }
-
         public void BaseDelete(DeletableDelete method)
         {
             // TODO: Restrit Delete?
@@ -158,6 +119,45 @@ namespace Allors.Domain
             }
 
             return details;
+        }
+
+        private void DeriveProductCharacteristics(IDerivation derivation)
+        {
+            var characteristicsToDelete = this.SerialisedItemCharacteristics.ToList();
+            var part = this.PartWhereSerialisedItem;
+
+            if (this.ExistPartWhereSerialisedItem && part.ExistProductType)
+            {
+                foreach (SerialisedItemCharacteristicType characteristicType in part.ProductType.SerialisedItemCharacteristicTypes)
+                {
+                    var characteristic = this.SerialisedItemCharacteristics.FirstOrDefault(v => Equals(v.SerialisedItemCharacteristicType, characteristicType));
+                    if (characteristic == null)
+                    {
+                        var newCharacteristic = new SerialisedItemCharacteristicBuilder(this.Strategy.Session)
+                            .WithSerialisedItemCharacteristicType(characteristicType).Build();
+
+                        this.AddSerialisedItemCharacteristic(newCharacteristic);
+
+                        var partCharacteristics = part.SerialisedItemCharacteristics;
+                        partCharacteristics.Filter.AddEquals(M.SerialisedItemCharacteristic.SerialisedItemCharacteristicType, characteristicType);
+                        var fromPart = partCharacteristics.FirstOrDefault();
+
+                        if (fromPart != null)
+                        {
+                            newCharacteristic.Value = fromPart.Value;
+                        }
+                    }
+                    else
+                    {
+                        characteristicsToDelete.Remove(characteristic);
+                    }
+                }
+            }
+
+            foreach (var characteristic in characteristicsToDelete)
+            {
+                this.RemoveSerialisedItemCharacteristic(characteristic);
+            }
         }
     }
 }

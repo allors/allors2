@@ -11,6 +11,7 @@ namespace Allors.Domain
     public partial class SalesOrderItem
     {
         #region Transitional
+
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
         {
             new TransitionalConfiguration(M.SalesOrderItem, M.SalesOrderItem.SalesOrderItemState),
@@ -20,13 +21,8 @@ namespace Allors.Domain
         };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
-        #endregion
 
-        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
-        {
-            method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
-        }
+        #endregion Transitional
 
         public bool IsValid => !(this.SalesOrderItemState.Cancelled || this.SalesOrderItemState.Rejected);
 
@@ -43,6 +39,12 @@ namespace Allors.Domain
 
                 return null;
             }
+        }
+
+        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
         }
 
         public void BaseOnBuild(ObjectOnBuild method)

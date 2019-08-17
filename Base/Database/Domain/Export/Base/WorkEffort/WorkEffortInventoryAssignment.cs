@@ -78,6 +78,18 @@ namespace Allors.Domain
         {
         }
 
+        public void BaseCalculateSellingPrice(WorkEffortInventoryAssignmentCalculateSellingPrice method)
+        {
+            if (!method.Result.HasValue)
+            {
+                var part = this.InventoryItem.Part;
+                var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
+                var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
+
+                method.Result = currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
+            }
+        }
+
         private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)
         {
             var adjustmentQuantity = 0M;
@@ -106,18 +118,6 @@ namespace Allors.Domain
                     .WithQuantity(adjustmentQuantity)
                     .WithReason(reason)
                     .Build());
-            }
-        }
-
-        public void BaseCalculateSellingPrice(WorkEffortInventoryAssignmentCalculateSellingPrice method)
-        {
-            if (!method.Result.HasValue)
-            {
-                var part = this.InventoryItem.Part;
-                var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
-                var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
-
-                method.Result = currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
             }
         }
     }

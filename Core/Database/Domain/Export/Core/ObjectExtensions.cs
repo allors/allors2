@@ -27,18 +27,23 @@ namespace Allors
                             case UnitTags.Boolean:
                                 @this.Strategy.SetUnitRole(relationType, false);
                                 break;
+
                             case UnitTags.Decimal:
                                 @this.Strategy.SetUnitRole(relationType, 0m);
                                 break;
+
                             case UnitTags.Float:
                                 @this.Strategy.SetUnitRole(relationType, 0d);
                                 break;
+
                             case UnitTags.Integer:
                                 @this.Strategy.SetUnitRole(relationType, 0);
                                 break;
+
                             case UnitTags.Unique:
                                 @this.Strategy.SetUnitRole(relationType, Guid.NewGuid());
                                 break;
+
                             case UnitTags.DateTime:
                                 @this.Strategy.SetUnitRole(relationType, @this.Strategy.Session.Now());
                                 break;

@@ -305,15 +305,6 @@ namespace Allors.Domain
             this.ResetPrintDocument();
         }
 
-        private void Sync(ISession session)
-        {
-            // session.Prefetch(this.SyncPrefetch, this);
-            foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
-            {
-                orderItem.Sync(this);
-            }
-        }
-
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
             if (!this.CanInvoice)
@@ -324,29 +315,6 @@ namespace Allors.Domain
             if (this.PurchaseOrderShipmentState.IsReceived)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.QuickReceive, Operations.Execute));
-            }
-        }
-
-        private void DeriveWorkflow()
-        {
-            this.WorkItemDescription = $"PurchaseOrder: {this.OrderNumber} [{this.TakenViaSupplier?.PartyName}]";
-
-            var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
-
-            if (this.PurchaseOrderState.IsAwaitingApprovalLevel1)
-            {
-                if (!openTasks.OfType<PurchaseOrderApprovalLevel1>().Any())
-                {
-                    new PurchaseOrderApprovalLevel1Builder(this.strategy.Session).WithPurchaseOrder(this).Build();
-                }
-            }
-
-            if (this.PurchaseOrderState.IsAwaitingApprovalLevel2)
-            {
-                if (!openTasks.OfType<PurchaseOrderApprovalLevel2>().Any())
-                {
-                    new PurchaseOrderApprovalLevel2Builder(this.strategy.Session).WithPurchaseOrder(this).Build();
-                }
             }
         }
 
@@ -602,6 +570,38 @@ namespace Allors.Domain
                         quantityOrderedByPart[purchaseOrderItem.Part] += purchaseOrderItem.QuantityOrdered;
                         totalBasePriceByPart[purchaseOrderItem.Part] += purchaseOrderItem.TotalBasePrice;
                     }
+                }
+            }
+        }
+
+        private void Sync(ISession session)
+        {
+            // session.Prefetch(this.SyncPrefetch, this);
+            foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
+            {
+                orderItem.Sync(this);
+            }
+        }
+
+        private void DeriveWorkflow()
+        {
+            this.WorkItemDescription = $"PurchaseOrder: {this.OrderNumber} [{this.TakenViaSupplier?.PartyName}]";
+
+            var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
+
+            if (this.PurchaseOrderState.IsAwaitingApprovalLevel1)
+            {
+                if (!openTasks.OfType<PurchaseOrderApprovalLevel1>().Any())
+                {
+                    new PurchaseOrderApprovalLevel1Builder(this.strategy.Session).WithPurchaseOrder(this).Build();
+                }
+            }
+
+            if (this.PurchaseOrderState.IsAwaitingApprovalLevel2)
+            {
+                if (!openTasks.OfType<PurchaseOrderApprovalLevel2>().Any())
+                {
+                    new PurchaseOrderApprovalLevel2Builder(this.strategy.Session).WithPurchaseOrder(this).Build();
                 }
             }
         }

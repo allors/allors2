@@ -13,6 +13,53 @@ namespace Allors.Domain
 
     public partial class Permission
     {
+        public OperandType OperandType
+        {
+            get => (OperandType)this.Strategy.Session.Database.MetaPopulation.Find(this.OperandTypePointer);
+
+            set
+            {
+                if (value == null)
+                {
+                    this.RemoveOperandTypePointer();
+                }
+                else
+                {
+                    this.OperandTypePointer = value.Id;
+                }
+            }
+        }
+
+        public bool ExistOperandType => this.ExistOperandTypePointer;
+
+        public Operations Operation
+        {
+            get => (Operations)this.OperationEnum;
+
+            set => this.OperationEnum = (int)value;
+        }
+
+        public bool ExistOperation => this.ExistOperationEnum;
+
+        public ObjectType ConcreteClass
+        {
+            get => (ObjectType)this.Strategy.Session.Database.MetaPopulation.Find(this.ConcreteClassPointer);
+
+            set
+            {
+                if (value == null)
+                {
+                    this.RemoveConcreteClassPointer();
+                }
+                else
+                {
+                    this.ConcreteClassPointer = value.Id;
+                }
+            }
+        }
+
+        public bool ExistConcreteClass => this.ConcreteClass != null;
+
         public void CoreOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
@@ -66,53 +113,6 @@ namespace Allors.Domain
                     break;
             }
         }
-
-        public OperandType OperandType
-        {
-            get => (OperandType)this.Strategy.Session.Database.MetaPopulation.Find(this.OperandTypePointer);
-
-            set
-            {
-                if (value == null)
-                {
-                    this.RemoveOperandTypePointer();
-                }
-                else
-                {
-                    this.OperandTypePointer = value.Id;
-                }
-            }
-        }
-
-        public bool ExistOperandType => this.ExistOperandTypePointer;
-
-        public Operations Operation
-        {
-            get => (Operations)this.OperationEnum;
-
-            set => this.OperationEnum = (int)value;
-        }
-
-        public bool ExistOperation => this.ExistOperationEnum;
-
-        public ObjectType ConcreteClass
-        {
-            get => (ObjectType)this.Strategy.Session.Database.MetaPopulation.Find(this.ConcreteClassPointer);
-
-            set
-            {
-                if (value == null)
-                {
-                    this.RemoveConcreteClassPointer();
-                }
-                else
-                {
-                    this.ConcreteClassPointer = value.Id;
-                }
-            }
-        }
-
-        public bool ExistConcreteClass => this.ConcreteClass != null;
 
         public override string ToString()
         {

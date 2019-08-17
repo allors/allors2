@@ -18,12 +18,6 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
-        {
-            method.SecurityTokens = this.SyncedInvoice?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.SyncedInvoice?.DeniedPermissions.ToArray();
-        }
-
         public bool IsValid => !(this.SalesInvoiceItemState.IsCancelled || this.SalesInvoiceItemState.IsCancelledByInvoice || this.SalesInvoiceItemState.IsWrittenOff);
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
@@ -57,6 +51,12 @@ namespace Allors.Domain
             !this.ExistShipmentItemBillingsWhereInvoiceItem &&
             !this.ExistWorkEffortBillingsWhereInvoiceItem &&
             !this.ExistServiceEntryBillingsWhereInvoiceItem;
+
+        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            method.SecurityTokens = this.SyncedInvoice?.SecurityTokens.ToArray();
+            method.DeniedPermissions = this.SyncedInvoice?.DeniedPermissions.ToArray();
+        }
 
         public void SetActualDiscountAmount(decimal amount)
         {

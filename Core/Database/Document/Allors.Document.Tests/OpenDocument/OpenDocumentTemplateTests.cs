@@ -16,20 +16,6 @@ namespace Allos.Document.OpenDocument.Tests
 
     public class OpenDocumentTemplateTests
     {
-        public class Model
-        {
-            public class ModelPerson
-            {
-                public string FirstName { get; set; }
-            }
-
-            public ModelPerson Person { get; set; }
-
-            public ModelPerson[] People { get; set; }
-
-            public string[] Images { get; set; }
-        }
-
         [Fact]
         public void Render()
         {
@@ -131,6 +117,20 @@ namespace Allos.Document.OpenDocument.Tests
             {
                 resource?.CopyTo(output);
                 return output.ToArray();
+            }
+        }
+
+        public class Model
+        {
+            public ModelPerson Person { get; set; }
+
+            public ModelPerson[] People { get; set; }
+
+            public string[] Images { get; set; }
+
+            public class ModelPerson
+            {
+                public string FirstName { get; set; }
             }
         }
     }

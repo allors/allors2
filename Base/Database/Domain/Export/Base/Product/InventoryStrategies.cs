@@ -5,8 +5,8 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
     using System;
+    using Allors.Meta;
 
     public partial class InventoryStrategies
     {

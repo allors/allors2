@@ -5,10 +5,10 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
-    using Resources;
     using System;
     using System.Linq;
+    using Allors.Meta;
+    using Resources;
 
     public static partial class CommunicationEventExtensions
     {

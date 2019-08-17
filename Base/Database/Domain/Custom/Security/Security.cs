@@ -10,6 +10,8 @@ namespace Allors.Domain
 
     public partial class Security
     {
+        public void Grantemployee(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.EmployeeId, objectType, operations);
+
         private void CustomOnPreSetup()
         {
             // Default access policy
@@ -162,8 +164,6 @@ namespace Allors.Domain
                 }
             }
         }
-
-        public void Grantemployee(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.EmployeeId, objectType, operations);
 
         private void CustomOnPostSetup()
         {

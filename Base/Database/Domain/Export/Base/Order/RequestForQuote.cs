@@ -1,4 +1,4 @@
-﻿// <copyright file="RequestForQuote.cs" company="Allors bvba">
+// <copyright file="RequestForQuote.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -20,20 +20,26 @@ namespace Allors.Domain
 
         public void BaseOnDerive(ObjectOnDerive method) => this.Sync(this.Strategy.Session);
 
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            if (!this.ExistOriginator)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Submit, Operations.Execute));
+            }
+        }
+
+        public void BaseCreateQuote(RequestForQuoteCreateQuote Method)
+        {
+            this.RequestState = new RequestStates(this.Strategy.Session).Quoted;
+            this.QuoteThis();
+        }
+
         private void Sync(ISession session)
         {
             // session.Prefetch(this.SyncPrefetch, this);
             foreach (RequestItem requestItem in this.RequestItems)
             {
                 requestItem.Sync(this);
-            }
-        }
-
-        public void BaseOnPostDerive(ObjectOnPostDerive method)
-        {
-            if (!this.ExistOriginator)
-            {
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Submit, Operations.Execute));
             }
         }
 
@@ -68,12 +74,6 @@ namespace Allors.Domain
             }
 
             return productQuote;
-        }
-
-        public void BaseCreateQuote(RequestForQuoteCreateQuote Method)
-        {
-            this.RequestState = new RequestStates(this.Strategy.Session).Quoted;
-            this.QuoteThis();
         }
     }
 }

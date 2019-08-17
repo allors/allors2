@@ -12,28 +12,6 @@ namespace Allors.Domain
 
     public partial class Organisations
     {
-        protected override void BasePrepare(Setup setup)
-        {
-            setup.AddDependency(this.Meta.ObjectType, M.InventoryStrategy);
-            setup.AddDependency(this.Meta.ObjectType, M.Role);
-            setup.AddDependency(this.Meta.ObjectType, M.OrganisationRole);
-            setup.AddDependency(this.Meta.ObjectType, M.InvoiceSequence);
-            setup.AddDependency(this.Meta.ObjectType, M.Singleton);
-            setup.AddDependency(this.Meta.ObjectType, M.FacilityType);
-        }
-
-        /// <summary>
-        /// Returns an array of Organisations.
-        /// </summary>
-        /// <returns></returns>
-        public Organisation[] InternalOrganisations()
-        {
-            var internalOrganisations = this.Extent();
-            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
-
-            return internalOrganisations.ToArray();
-        }
-
         public static Organisation CreateInternalOrganisation(
             ISession session,
             string name,
@@ -269,6 +247,28 @@ namespace Allors.Domain
             }
 
             return internalOrganisation;
+        }
+
+        /// <summary>
+        /// Returns an array of Organisations.
+        /// </summary>
+        /// <returns></returns>
+        public Organisation[] InternalOrganisations()
+        {
+            var internalOrganisations = this.Extent();
+            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
+
+            return internalOrganisations.ToArray();
+        }
+
+        protected override void BasePrepare(Setup setup)
+        {
+            setup.AddDependency(this.Meta.ObjectType, M.InventoryStrategy);
+            setup.AddDependency(this.Meta.ObjectType, M.Role);
+            setup.AddDependency(this.Meta.ObjectType, M.OrganisationRole);
+            setup.AddDependency(this.Meta.ObjectType, M.InvoiceSequence);
+            setup.AddDependency(this.Meta.ObjectType, M.Singleton);
+            setup.AddDependency(this.Meta.ObjectType, M.FacilityType);
         }
     }
 }

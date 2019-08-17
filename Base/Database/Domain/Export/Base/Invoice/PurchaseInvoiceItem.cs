@@ -18,15 +18,15 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public bool IsValid => !(this.PurchaseInvoiceItemState.IsCancelled || this.PurchaseInvoiceItemState.IsCancelledByInvoice || this.PurchaseInvoiceItemState.IsRejected);
+
+        public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
+
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
             method.SecurityTokens = this.SyncedInvoice?.SecurityTokens.ToArray();
             method.DeniedPermissions = this.SyncedInvoice?.DeniedPermissions.ToArray();
         }
-
-        public bool IsValid => !(this.PurchaseInvoiceItemState.IsCancelled || this.PurchaseInvoiceItemState.IsCancelledByInvoice || this.PurchaseInvoiceItemState.IsRejected);
-
-        public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
         public void BaseOnBuild(ObjectOnBuild method)
         {

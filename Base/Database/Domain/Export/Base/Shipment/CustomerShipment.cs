@@ -182,15 +182,6 @@ namespace Allors.Domain
             this.Sync(this.strategy.Session);
         }
 
-        private void Sync(ISession session)
-        {
-            // session.Prefetch(this.SyncPrefetch, this);
-            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
-            {
-                shipmentItem.Sync(this);
-            }
-        }
-
         public void BaseCancel(CustomerShipmentCancel method) => this.ShipmentState = new ShipmentStates(this.Strategy.Session).Cancelled;
 
         public void BaseHold(CustomerShipmentHold method)
@@ -383,163 +374,6 @@ namespace Allors.Domain
                     }
                 }
             }
-        }
-
-        private void CreatePickList(IDerivation derivation)
-        {
-            if (this.Store.IsImmediatelyPicked && this.ShipmentItems.First.ExistItemIssuancesWhereShipmentItem)
-            {
-                return;
-            }
-
-            if (this.ExistShipToParty)
-            {
-                var pendingPickList = this.PendingPickList;
-
-                if (pendingPickList != null)
-                {
-                    foreach (PickListItem pickListItem in pendingPickList.PickListItems)
-                    {
-                        foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
-                        {
-                            itemIssuance.Delete();
-                        }
-
-                        pendingPickList.RemovePickListItem(pickListItem);
-                        pickListItem.Delete();
-                    }
-                }
-
-                foreach (ShipmentItem shipmentItem in this.ShipmentItems)
-                {
-                    var quantityIssued = 0M;
-                    foreach (ItemIssuance itemIssuance in shipmentItem.ItemIssuancesWhereShipmentItem)
-                    {
-                        quantityIssued += itemIssuance.Quantity;
-                    }
-
-                    if (!shipmentItem.ExistItemIssuancesWhereShipmentItem || shipmentItem.Quantity > quantityIssued)
-                    {
-                        var salesOrderItem = shipmentItem.OrderShipmentsWhereShipmentItem[0].OrderItem as SalesOrderItem;
-
-                        if (this.PendingPickList == null)
-                        {
-                            pendingPickList = new PickListBuilder(this.Strategy.Session).WithShipToParty(this.ShipToParty).Build();
-                        }
-
-                        PickListItem pickListItem = null;
-                        foreach (PickListItem item in pendingPickList.PickListItems)
-                        {
-                            if (salesOrderItem != null && item.InventoryItem.Equals(salesOrderItem.ReservedFromNonSerialisedInventoryItem))
-                            {
-                                pickListItem = item;
-                                break;
-                            }
-                        }
-
-                        if (pickListItem != null)
-                        {
-                            pickListItem.Quantity += shipmentItem.Quantity;
-
-                            var itemIssuances = pickListItem.ItemIssuancesWherePickListItem;
-                            itemIssuances.Filter.AddEquals(M.ItemIssuance.ShipmentItem, shipmentItem);
-                            itemIssuances.First.Quantity = shipmentItem.Quantity;
-                        }
-                        else
-                        {
-                            var quantity = shipmentItem.Quantity - quantityIssued;
-                            pickListItem = new PickListItemBuilder(this.Strategy.Session)
-                                .WithInventoryItem(salesOrderItem.ReservedFromNonSerialisedInventoryItem)
-                                .WithQuantity(quantity)
-                                .Build();
-
-                            if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
-                            {
-                                pickListItem.InventoryItem = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
-                            }
-
-                            if (salesOrderItem.ExistReservedFromSerialisedInventoryItem)
-                            {
-                                pickListItem.InventoryItem = salesOrderItem.ReservedFromSerialisedInventoryItem;
-                            }
-
-                            if (salesOrderItem.ExistSerialisedItem)
-                            {
-                                salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.AvailableForSale = false;
-
-                                if (salesOrderItem.ExistNewSerialisedItemState)
-                                {
-                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.SerialisedItemState = salesOrderItem.NewSerialisedItemState;
-
-                                    if (salesOrderItem.NewSerialisedItemState.Equals(new SerialisedItemStates(this.strategy.Session).Sold))
-                                    {
-                                        salesOrderItem.SerialisedItem.OwnedBy = this.ShipToParty;
-                                    }
-                                }
-                            }
-
-                            new ItemIssuanceBuilder(this.Strategy.Session)
-                                .WithInventoryItem(pickListItem.InventoryItem)
-                                .WithShipmentItem(shipmentItem)
-                                .WithQuantity(quantity)
-                                .WithPickListItem(pickListItem)
-                                .Build();
-                        }
-
-                        pendingPickList.AddPickListItem(pickListItem);
-                    }
-                }
-
-                if (pendingPickList != null)
-                {
-                    pendingPickList.OnDerive(x => x.WithDerivation(derivation));
-                }
-            }
-        }
-
-        private void CreateNegativePickList(CustomerShipment shipment, SalesOrderItem orderItem, decimal quantity)
-        {
-            if (this.ExistShipToParty)
-            {
-                var pickList = new PickListBuilder(this.Strategy.Session)
-                    .WithCustomerShipmentCorrection(shipment)
-                    .WithShipToParty(this.ShipToParty)
-                    .WithStore(this.Store)
-                    .Build();
-
-                pickList.AddPickListItem(new PickListItemBuilder(this.Strategy.Session)
-                                        .WithInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem)
-                                        .WithQuantity(0 - quantity)
-                                        .Build());
-            }
-        }
-
-        private decimal BaseOnDeriveShippingAndHandlingCharges(IDerivation derivation)
-        {
-            var charges = 0M;
-
-            if (!this.WithoutCharges)
-            {
-                foreach (ShippingAndHandlingComponent shippingAndHandlingComponent in new ShippingAndHandlingComponents(this.Strategy.Session).Extent())
-                {
-                    if (shippingAndHandlingComponent.FromDate <= this.strategy.Session.Now() &&
-                        (!shippingAndHandlingComponent.ExistThroughDate || shippingAndHandlingComponent.ThroughDate >= this.strategy.Session.Now()))
-                    {
-                        if (ShippingAndHandlingComponents.BaseIsEligible(shippingAndHandlingComponent, this))
-                        {
-                            if (shippingAndHandlingComponent.Cost.HasValue)
-                            {
-                                if (charges == 0 || shippingAndHandlingComponent.Cost < charges)
-                                {
-                                    charges = shippingAndHandlingComponent.Cost.Value;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return charges;
         }
 
         public void BaseOnDeriveQuantityDecreased(ShipmentItem shipmentItem, SalesOrderItem orderItem, decimal correction)
@@ -738,6 +572,172 @@ namespace Allors.Domain
                     this.Invoice();
                 }
             }
+        }
+
+        private void Sync(ISession session)
+        {
+            // session.Prefetch(this.SyncPrefetch, this);
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                shipmentItem.Sync(this);
+            }
+        }
+
+        private void CreatePickList(IDerivation derivation)
+        {
+            if (this.Store.IsImmediatelyPicked && this.ShipmentItems.First.ExistItemIssuancesWhereShipmentItem)
+            {
+                return;
+            }
+
+            if (this.ExistShipToParty)
+            {
+                var pendingPickList = this.PendingPickList;
+
+                if (pendingPickList != null)
+                {
+                    foreach (PickListItem pickListItem in pendingPickList.PickListItems)
+                    {
+                        foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
+                        {
+                            itemIssuance.Delete();
+                        }
+
+                        pendingPickList.RemovePickListItem(pickListItem);
+                        pickListItem.Delete();
+                    }
+                }
+
+                foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+                {
+                    var quantityIssued = 0M;
+                    foreach (ItemIssuance itemIssuance in shipmentItem.ItemIssuancesWhereShipmentItem)
+                    {
+                        quantityIssued += itemIssuance.Quantity;
+                    }
+
+                    if (!shipmentItem.ExistItemIssuancesWhereShipmentItem || shipmentItem.Quantity > quantityIssued)
+                    {
+                        var salesOrderItem = shipmentItem.OrderShipmentsWhereShipmentItem[0].OrderItem as SalesOrderItem;
+
+                        if (this.PendingPickList == null)
+                        {
+                            pendingPickList = new PickListBuilder(this.Strategy.Session).WithShipToParty(this.ShipToParty).Build();
+                        }
+
+                        PickListItem pickListItem = null;
+                        foreach (PickListItem item in pendingPickList.PickListItems)
+                        {
+                            if (salesOrderItem != null && item.InventoryItem.Equals(salesOrderItem.ReservedFromNonSerialisedInventoryItem))
+                            {
+                                pickListItem = item;
+                                break;
+                            }
+                        }
+
+                        if (pickListItem != null)
+                        {
+                            pickListItem.Quantity += shipmentItem.Quantity;
+
+                            var itemIssuances = pickListItem.ItemIssuancesWherePickListItem;
+                            itemIssuances.Filter.AddEquals(M.ItemIssuance.ShipmentItem, shipmentItem);
+                            itemIssuances.First.Quantity = shipmentItem.Quantity;
+                        }
+                        else
+                        {
+                            var quantity = shipmentItem.Quantity - quantityIssued;
+                            pickListItem = new PickListItemBuilder(this.Strategy.Session)
+                                .WithInventoryItem(salesOrderItem.ReservedFromNonSerialisedInventoryItem)
+                                .WithQuantity(quantity)
+                                .Build();
+
+                            if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
+                            {
+                                pickListItem.InventoryItem = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
+                            }
+
+                            if (salesOrderItem.ExistReservedFromSerialisedInventoryItem)
+                            {
+                                pickListItem.InventoryItem = salesOrderItem.ReservedFromSerialisedInventoryItem;
+                            }
+
+                            if (salesOrderItem.ExistSerialisedItem)
+                            {
+                                salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.AvailableForSale = false;
+
+                                if (salesOrderItem.ExistNewSerialisedItemState)
+                                {
+                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.SerialisedItemState = salesOrderItem.NewSerialisedItemState;
+
+                                    if (salesOrderItem.NewSerialisedItemState.Equals(new SerialisedItemStates(this.strategy.Session).Sold))
+                                    {
+                                        salesOrderItem.SerialisedItem.OwnedBy = this.ShipToParty;
+                                    }
+                                }
+                            }
+
+                            new ItemIssuanceBuilder(this.Strategy.Session)
+                                .WithInventoryItem(pickListItem.InventoryItem)
+                                .WithShipmentItem(shipmentItem)
+                                .WithQuantity(quantity)
+                                .WithPickListItem(pickListItem)
+                                .Build();
+                        }
+
+                        pendingPickList.AddPickListItem(pickListItem);
+                    }
+                }
+
+                if (pendingPickList != null)
+                {
+                    pendingPickList.OnDerive(x => x.WithDerivation(derivation));
+                }
+            }
+        }
+
+        private void CreateNegativePickList(CustomerShipment shipment, SalesOrderItem orderItem, decimal quantity)
+        {
+            if (this.ExistShipToParty)
+            {
+                var pickList = new PickListBuilder(this.Strategy.Session)
+                    .WithCustomerShipmentCorrection(shipment)
+                    .WithShipToParty(this.ShipToParty)
+                    .WithStore(this.Store)
+                    .Build();
+
+                pickList.AddPickListItem(new PickListItemBuilder(this.Strategy.Session)
+                                        .WithInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem)
+                                        .WithQuantity(0 - quantity)
+                                        .Build());
+            }
+        }
+
+        private decimal BaseOnDeriveShippingAndHandlingCharges(IDerivation derivation)
+        {
+            var charges = 0M;
+
+            if (!this.WithoutCharges)
+            {
+                foreach (ShippingAndHandlingComponent shippingAndHandlingComponent in new ShippingAndHandlingComponents(this.Strategy.Session).Extent())
+                {
+                    if (shippingAndHandlingComponent.FromDate <= this.strategy.Session.Now() &&
+                        (!shippingAndHandlingComponent.ExistThroughDate || shippingAndHandlingComponent.ThroughDate >= this.strategy.Session.Now()))
+                    {
+                        if (ShippingAndHandlingComponents.BaseIsEligible(shippingAndHandlingComponent, this))
+                        {
+                            if (shippingAndHandlingComponent.Cost.HasValue)
+                            {
+                                if (charges == 0 || shippingAndHandlingComponent.Cost < charges)
+                                {
+                                    charges = shippingAndHandlingComponent.Cost.Value;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return charges;
         }
     }
 }

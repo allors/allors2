@@ -5,9 +5,9 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
     using System;
     using System.Linq;
+    using Allors.Meta;
 
     public static partial class WorkEffortExtensions
     {

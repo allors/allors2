@@ -1,4 +1,4 @@
-﻿// <copyright file="Program.cs" company="Allors bvba">
+// <copyright file="Program.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,16 +10,18 @@ namespace Allors
 
     using Allors.Development.Repository.Tasks;
 
-    class Program
+    internal class Program
     {
-        static int Main(string[] args)
+        private static int Main(string[] args)
         {
             switch (args.Length)
             {
                 case 0:
                     return Default();
+
                 case 2:
                     return Generate.Execute(args[0], args[1]).ErrorOccured ? 1 : 0;
+
                 default:
                     return 1;
             }

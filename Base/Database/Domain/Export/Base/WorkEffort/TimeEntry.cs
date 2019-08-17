@@ -10,8 +10,6 @@ namespace Allors.Domain
 
     public partial class TimeEntry
     {
-        private int DecimalScale => this.Meta.AmountOfTime.Scale ?? 2;
-
         public decimal ActualHours
         {
             get
@@ -25,6 +23,8 @@ namespace Allors.Domain
                 return Math.Round(hours, this.DecimalScale);
             }
         }
+
+        private int DecimalScale => this.Meta.AmountOfTime.Scale ?? 2;
 
         public void BaseOnBuild(ObjectOnBuild method)
         {
