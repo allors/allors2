@@ -70,22 +70,13 @@ namespace Allors.Adapters.Object.Npgsql
         internal readonly Dictionary<IRelationType, string> UnescapedColumnNameByRelationType;
         internal readonly Dictionary<IRelationType, string> TableNameForRelationByRelationType;
 
-        internal string ProcedureNameForInstantiate;
-
-        internal string ProcedureNameForGetVersion;
-        internal string ProcedureNameForUpdateVersion;
-
-        internal Dictionary<string, string> ProcedureDefinitionByName { get; }
-
         internal readonly Dictionary<IClass, string> ProcedureNameForLoadObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectsByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForDeleteObjectByClass;
-
         internal readonly Dictionary<IClass, string> ProcedureNameForGetUnitRolesByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForPrefetchUnitRolesByClass;
         internal readonly Dictionary<IClass, Dictionary<IRelationType, string>> ProcedureNameForSetUnitRoleByRelationTypeByClass;
-
         internal readonly Dictionary<IRelationType, string> ProcedureNameForGetRoleByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForPrefetchRoleByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForSetRoleByRelationType;
@@ -94,29 +85,45 @@ namespace Allors.Adapters.Object.Npgsql
         internal readonly Dictionary<IRelationType, string> ProcedureNameForClearRoleByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForGetAssociationByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForPrefetchAssociationByRelationType;
+        internal string ProcedureNameForInstantiate;
+
+        internal string ProcedureNameForGetVersion;
+        internal string ProcedureNameForUpdateVersion;
 
         private const string ProcedurePrefixForInstantiate = "i";
 
         private const string ProcedurePrefixForGetVersion = "gv";
+
         private const string ProcedurePrefixForSetVersion = "sv";
+
         private const string ProcedurePrefixForUpdateVersion = "uv";
 
         private const string ProcedurePrefixForCreateObject = "co_";
+
         private const string ProcedurePrefixForCreateObjects = "cos_";
+
         private const string ProcedurePrefixForDeleteObject = "do_";
+
         private const string ProcedurePrefixForLoad = "l_";
 
         private const string ProcedurePrefixForGetUnits = "gu_";
+
         private const string ProcedurePrefixForPrefetchUnits = "pu_";
 
         private const string ProcedurePrefixForGetRole = "gc_";
+
         private const string ProcedurePrefixForPrefetchRole = "pc_";
+
         private const string ProcedurePrefixForSetRole = "sc_";
+
         private const string ProcedurePrefixForClearRole = "cc_";
+
         private const string ProcedurePrefixForAddRole = "ac_";
+
         private const string ProcedurePrefixForRemoveRole = "rc_";
 
         private const string ProcedurePrefixForGetAssociation = "ga_";
+
         private const string ProcedurePrefixForPrefetchAssociation = "pa_";
 
         public Mapping(Database database)
@@ -322,6 +329,8 @@ namespace Allors.Adapters.Object.Npgsql
             }
         }
 
+        internal Dictionary<string, string> ProcedureDefinitionByName { get; }
+
         protected internal Database Database { get; }
 
         internal string NormalizeName(string name)
@@ -347,20 +356,28 @@ namespace Allors.Adapters.Object.Npgsql
                     }
 
                     return "varchar(" + roleType.Size + ")";
+
                 case UnitTags.Integer:
                     return "integer";
+
                 case UnitTags.Decimal:
                     return "numeric(" + roleType.Precision + "," + roleType.Scale + ")";
+
                 case UnitTags.Float:
                     return "double precision";
+
                 case UnitTags.Boolean:
                     return "boolean";
+
                 case UnitTags.DateTime:
                     return "timestamp";
+
                 case UnitTags.Unique:
                     return "uuid";
+
                 case UnitTags.Binary:
                     return "bytea";
+
                 default:
                     return "!UNKNOWN VALUE TYPE!";
             }
@@ -373,20 +390,28 @@ namespace Allors.Adapters.Object.Npgsql
             {
                 case UnitTags.String:
                     return NpgsqlDbType.Varchar;
+
                 case UnitTags.Integer:
                     return NpgsqlDbType.Integer;
+
                 case UnitTags.Decimal:
                     return NpgsqlDbType.Numeric;
+
                 case UnitTags.Float:
                     return NpgsqlDbType.Double;
+
                 case UnitTags.Boolean:
                     return NpgsqlDbType.Boolean;
+
                 case UnitTags.DateTime:
                     return NpgsqlDbType.Timestamp;
+
                 case UnitTags.Unique:
                     return NpgsqlDbType.Uuid;
+
                 case UnitTags.Binary:
                     return NpgsqlDbType.Bytea;
+
                 default:
                     throw new Exception("Unknown Unit Type");
             }
@@ -456,7 +481,7 @@ CREATE FUNCTION {name}({ParamNameForClass} {SqlTypeForClass}, {ParamNameForCount
     RETURNS SETOF {SqlTypeForObject}
     LANGUAGE plpgsql
 AS $$
-DECLARE ID integer; 
+DECLARE ID integer;
 DECLARE COUNTER integer := 0;
 BEGIN
     WHILE COUNTER < {ParamNameForCount} LOOP
@@ -467,7 +492,7 @@ BEGIN
 
         INSERT INTO {this.TableNameForObjectByClass[@class.ExclusiveClass]} ({ColumnNameForObject},{ColumnNameForClass})
         VALUES (ID,{ParamNameForClass});
-       
+
         COUNTER := COUNTER+1;
 
         RETURN NEXT ID;
@@ -511,7 +536,7 @@ $$;
             var definition = $@"
 DROP FUNCTION IF EXISTS {name}({SqlTypeForObject});
 CREATE FUNCTION {name}({ParamNameForObject} {SqlTypeForObject})
-    RETURNS TABLE 
+    RETURNS TABLE
     ({string.Join(", ", sortedUnitRoleTypes.Select(v => $"{this.ColumnNameByRelationType[v.RelationType]} {this.GetSqlType(v)}"))})
     LANGUAGE sql
 AS $$
@@ -534,8 +559,8 @@ $$;";
             var definition =
 $@"DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
-    RETURNS TABLE 
-    ( 
+    RETURNS TABLE
+    (
         {ColumnNameForObject} {SqlTypeForObject},
         {string.Join(", ", sortedUnitRoleTypes.Select(v => $"{this.ColumnNameByRelationType[v.RelationType]} {this.GetSqlType(v)}"))}
     )
@@ -586,7 +611,7 @@ $$;";
             var definition =
 $@"DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {this.ColumnNameByRelationType[relationType]} {SqlTypeForObject},
          {ColumnNameForObject} {SqlTypeForObject}
@@ -643,7 +668,7 @@ $$;";
             var definition = $@"
 DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {this.ColumnNameByRelationType[relationType]} {SqlTypeForObject},
          {ColumnNameForObject} {SqlTypeForObject}
@@ -712,7 +737,7 @@ AS $$
     UPDATE {table}
     SET {this.ColumnNameByRelationType[relationType]} = null
     FROM relations
-    WHERE {table}.{this.ColumnNameByRelationType[relationType]} = relations.{ColumnNameForAssociation} AND 
+    WHERE {table}.{this.ColumnNameByRelationType[relationType]} = relations.{ColumnNameForAssociation} AND
           {table}.{ColumnNameForObject} = relations.{ColumnNameForRole}
 $$;";
 
@@ -860,7 +885,7 @@ $$;";
             var definition = $@"
 DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {ColumnNameForObject} {SqlTypeForObject},
          {this.ColumnNameByRelationType[relationType]} {SqlTypeForObject}
@@ -918,7 +943,7 @@ $$;";
             var definition = $@"
 DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForAssociation} {SqlTypeForObject}
@@ -970,7 +995,7 @@ $$;";
             var definition = $@"
 DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForAssociation} {SqlTypeForObject}
@@ -1033,7 +1058,7 @@ CREATE FUNCTION {name}({objects} {objectsType})
 AS $$
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
 
-    UPDATE {table} 
+    UPDATE {table}
     SET {this.ColumnNameByRelationType[relationType]} = null
     FROM objects
     WHERE {table}.{ColumnNameForObject} = objects.{ColumnNameForObject}
@@ -1076,7 +1101,7 @@ $$;";
             var definition = $@"
 DROP FUNCTION IF EXISTS {name}({objectsArrayType});
 CREATE FUNCTION {name}({objectsArray} {objectsArrayType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForRole} {SqlTypeForObject}
@@ -1185,7 +1210,7 @@ $$;";
             var definition =
 $@"DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForRole} {SqlTypeForObject}
@@ -1271,7 +1296,7 @@ $$;";
             var definition = $@"
 DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {ColumnNameForAssociation} {SqlTypeForObject},
          {ColumnNameForObject} {SqlTypeForObject}
@@ -1320,7 +1345,7 @@ $$;";
             var definition = $@"
 DROP FUNCTION IF EXISTS {name}({objectsType});
 CREATE FUNCTION {name}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForAssociation} {SqlTypeForObject}
@@ -1391,11 +1416,11 @@ $$;";
             var definition =
 $@"DROP FUNCTION IF EXISTS {this.ProcedureNameForGetVersion}({objectsType});
 CREATE FUNCTION {this.ProcedureNameForGetVersion}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForVersion} {SqlTypeForVersion}
-    ) 
+    )
     LANGUAGE sql
 AS $$
     WITH objects AS (SELECT UNNEST({objects}) AS {ColumnNameForObject})
@@ -1417,7 +1442,7 @@ $$;";
             var definition = $@"
 DROP FUNCTION IF EXISTS {this.ProcedureNameForInstantiate}({objectsType});
 CREATE FUNCTION {this.ProcedureNameForInstantiate}({objects} {objectsType})
-    RETURNS TABLE 
+    RETURNS TABLE
     (
          {ColumnNameForObject} {SqlTypeForObject},
          {ColumnNameForClass} {SqlTypeForClass},

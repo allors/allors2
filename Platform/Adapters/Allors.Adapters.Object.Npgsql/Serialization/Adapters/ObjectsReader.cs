@@ -38,6 +38,17 @@ namespace Allors.Adapters.Object.Npgsql
         }
 
         #region Not Implemented
+
+        public int Depth { get; }
+
+        public bool IsClosed { get; }
+
+        public int RecordsAffected { get; }
+
+        public object this[int i] => throw new NotImplementedException();
+
+        public object this[string name] => throw new NotImplementedException();
+
         public bool GetBoolean(int i) => throw new NotImplementedException();
 
         public byte GetByte(int i) => throw new NotImplementedException();
@@ -80,21 +91,12 @@ namespace Allors.Adapters.Object.Npgsql
 
         public bool IsDBNull(int i) => throw new NotImplementedException();
 
-        public object this[int i] => throw new NotImplementedException();
-
-        public object this[string name] => throw new NotImplementedException();
-
         public void Close() => throw new NotImplementedException();
 
         public DataTable GetSchemaTable() => throw new NotImplementedException();
 
         public bool NextResult() => throw new NotImplementedException();
 
-        public int Depth { get; }
-
-        public bool IsClosed { get; }
-
-        public int RecordsAffected { get; }
-        #endregion
+        #endregion Not Implemented
     }
 }

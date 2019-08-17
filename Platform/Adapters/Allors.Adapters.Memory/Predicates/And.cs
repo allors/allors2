@@ -21,6 +21,7 @@ namespace Allors.Adapters.Memory
                     {
                         case ThreeValuedLogic.False:
                             return ThreeValuedLogic.False;
+
                         case ThreeValuedLogic.Unknown:
                             return ThreeValuedLogic.Unknown;
                     }

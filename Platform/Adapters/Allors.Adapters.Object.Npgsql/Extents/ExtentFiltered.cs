@@ -48,9 +48,9 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal Mapping Mapping => this.session.Database.Mapping;
 
-        internal override Session Session => this.session;
-
         public override IComposite ObjectType => this.objectType;
+
+        internal override Session Session => this.session;
 
         internal IAssociationType AssociationType { get; private set; }
 

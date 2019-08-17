@@ -15,11 +15,11 @@ namespace Allors.Adapters.Object.SqlClient
     {
         private IList<long> objectIds;
 
-        internal override SqlExtent ContainedInExtent => this;
-
         public override int Count => this.ObjectIds.Count;
 
         public override IObject First => this.ObjectIds.Count > 0 ? this.Session.State.GetOrCreateReferenceForExistingObject(this.ObjectIds[0], this.Session).Strategy.GetObject() : null;
+
+        internal override SqlExtent ContainedInExtent => this;
 
         internal ExtentOperation ParentOperationExtent { get; set; }
 

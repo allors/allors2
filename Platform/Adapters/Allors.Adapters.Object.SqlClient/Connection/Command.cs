@@ -14,10 +14,6 @@ namespace Allors.Adapters.Object.SqlClient
 
     public abstract class Command : IDisposable
     {
-        protected Mapping Mapping { get; }
-
-        protected SqlCommand SqlCommand { get; }
-
         protected internal Command(Mapping mapping, SqlCommand command)
         {
             this.Mapping = mapping;
@@ -39,6 +35,10 @@ namespace Allors.Adapters.Object.SqlClient
 
             set => this.SqlCommand.CommandText = value;
         }
+
+        protected Mapping Mapping { get; }
+
+        protected SqlCommand SqlCommand { get; }
 
         public void Dispose() => this.SqlCommand.Dispose();
 
@@ -136,7 +136,8 @@ namespace Allors.Adapters.Object.SqlClient
             sqlParameter.SqlDbType = SqlDbType.Structured;
             sqlParameter.TypeName = this.Mapping.TableTypeNameForObject;
             sqlParameter.ParameterName = Mapping.ParamNameForTableType;
-            sqlParameter.Value = new ObjectDataRecord(this.Mapping, objectIds); ;
+            sqlParameter.Value = new ObjectDataRecord(this.Mapping, objectIds);
+            ;
 
             this.Parameters.Add(sqlParameter);
         }
@@ -209,20 +210,28 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 case UnitTags.String:
                     return reader.GetString(i);
+
                 case UnitTags.Integer:
                     return reader.GetInt32(i);
+
                 case UnitTags.Float:
                     return reader.GetDouble(i);
+
                 case UnitTags.Decimal:
                     return reader.GetDecimal(i);
+
                 case UnitTags.Boolean:
                     return reader.GetBoolean(i);
+
                 case UnitTags.DateTime:
                     return reader.GetDateTime(i);
+
                 case UnitTags.Unique:
                     return reader.GetGuid(i);
+
                 case UnitTags.Binary:
                     return reader.GetValue(i);
+
                 default:
                     throw new ArgumentException("Unknown Unit ObjectType: " + unitTypeTag);
             }
@@ -234,6 +243,6 @@ namespace Allors.Adapters.Object.SqlClient
 
         protected abstract void OnExecuted();
 
-        #endregion
+        #endregion Events
     }
 }

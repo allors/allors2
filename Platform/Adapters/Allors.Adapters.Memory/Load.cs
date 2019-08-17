@@ -82,6 +82,7 @@ namespace Allors.Adapters.Memory
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.Population))
                         {
@@ -117,6 +118,7 @@ namespace Allors.Adapters.Memory
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.Objects))
                         {
@@ -185,6 +187,7 @@ namespace Allors.Adapters.Memory
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.Database))
                         {
@@ -286,6 +289,7 @@ namespace Allors.Adapters.Memory
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.Database))
                         {
@@ -341,6 +345,7 @@ namespace Allors.Adapters.Memory
                                             case UnitTags.String:
                                                 strategy.SetUnitRole(relationType, string.Empty);
                                                 break;
+
                                             case UnitTags.Binary:
                                                 strategy.SetUnitRole(relationType, emptyByteArray);
                                                 break;
@@ -485,6 +490,7 @@ namespace Allors.Adapters.Memory
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         if (!this.reader.Name.Equals(Serialization.RelationTypeComposite))
                         {
@@ -520,6 +526,7 @@ namespace Allors.Adapters.Memory
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         return;
                 }
@@ -558,6 +565,7 @@ namespace Allors.Adapters.Memory
                         }
 
                         break;
+
                     case XmlNodeType.EndElement:
                         return;
                 }

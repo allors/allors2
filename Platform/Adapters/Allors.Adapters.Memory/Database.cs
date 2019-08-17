@@ -138,6 +138,13 @@ namespace Allors.Adapters.Memory
             }
         }
 
+        public virtual void Init()
+        {
+            this.Session.Init();
+
+            this.session = null;
+        }
+
         internal void OnObjectNotLoaded(Guid metaTypeId, long allorsObjectId)
         {
             var args = new ObjectNotLoadedEventArgs(metaTypeId, allorsObjectId);
@@ -193,13 +200,6 @@ namespace Allors.Adapters.Memory
                     throw new ArgumentException(role.Strategy.Class + " is not compatible with type " + roleType.ObjectType + " of role " + roleType + ".");
                 }
             }
-        }
-
-        public virtual void Init()
-        {
-            this.Session.Init();
-
-            this.session = null;
         }
     }
 }

@@ -8,9 +8,8 @@ namespace Allors.Adapters.Object.Npgsql
     using System;
     using System.Collections;
     using System.Collections.Generic;
-
-    using Allors.Meta;
     using System.Data.Common;
+    using Allors.Meta;
 
     internal class ObjectTableReader : DbDataReader
     {
@@ -142,6 +141,18 @@ namespace Allors.Adapters.Object.Npgsql
 
         #region Not Supported
 
+        public override int Depth { get; }
+
+        public override bool HasRows { get; }
+
+        public override bool IsClosed { get; }
+
+        public override int RecordsAffected { get; }
+
+        public override object this[int ordinal] => throw new NotImplementedException();
+
+        public override object this[string name] => throw new NotImplementedException();
+
         public override bool GetBoolean(int ordinal) => throw new NotImplementedException();
 
         public override byte GetByte(int ordinal) => throw new NotImplementedException();
@@ -186,17 +197,6 @@ namespace Allors.Adapters.Object.Npgsql
 
         public override bool NextResult() => throw new NotImplementedException();
 
-        public override int Depth { get; }
-
-        public override bool HasRows { get; }
-
-        public override bool IsClosed { get; }
-
-        public override object this[int ordinal] => throw new NotImplementedException();
-
-        public override object this[string name] => throw new NotImplementedException();
-
-        public override int RecordsAffected { get; }
-        #endregion
+        #endregion Not Supported
     }
 }

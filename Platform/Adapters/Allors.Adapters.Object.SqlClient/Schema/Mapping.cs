@@ -72,20 +72,13 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal readonly Dictionary<int, Dictionary<int, string>> TableTypeNameForDecimalRelationByScaleByPrecision;
 
-        internal string ProcedureNameForInstantiate;
-
-        internal string ProcedureNameForGetVersion;
-        internal string ProcedureNameForUpdateVersion;
-
         internal readonly Dictionary<IClass, string> ProcedureNameForLoadObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForCreateObjectsByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForDeleteObjectByClass;
-
         internal readonly Dictionary<IClass, string> ProcedureNameForGetUnitRolesByClass;
         internal readonly Dictionary<IClass, string> ProcedureNameForPrefetchUnitRolesByClass;
         internal readonly Dictionary<IClass, Dictionary<IRelationType, string>> ProcedureNameForSetUnitRoleByRelationTypeByClass;
-
         internal readonly Dictionary<IRelationType, string> ProcedureNameForGetRoleByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForPrefetchRoleByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForSetRoleByRelationType;
@@ -94,7 +87,10 @@ namespace Allors.Adapters.Object.SqlClient
         internal readonly Dictionary<IRelationType, string> ProcedureNameForClearRoleByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForGetAssociationByRelationType;
         internal readonly Dictionary<IRelationType, string> ProcedureNameForPrefetchAssociationByRelationType;
+        internal string ProcedureNameForInstantiate;
 
+        internal string ProcedureNameForGetVersion;
+        internal string ProcedureNameForUpdateVersion;
         private const string ProcedurePrefixForInstantiate = "i";
 
         private const string ProcedurePrefixForGetVersion = "gv";
@@ -410,80 +406,11 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
+        public Dictionary<string, string> ProcedureDefinitionByName { get; }
+
+        public Dictionary<string, string> TableTypeDefinitionByName { get; }
+
         protected internal Database Database { get; }
-
-        internal string NormalizeName(string name)
-        {
-            name = name.ToLowerInvariant();
-            if (ReservedWords.Names.Contains(name))
-            {
-                return "[" + name + "]";
-            }
-
-            return name;
-        }
-
-        internal string GetSqlType(IRoleType roleType)
-        {
-            var unit = (IUnit)roleType.ObjectType;
-            switch (unit.UnitTag)
-            {
-                case UnitTags.String:
-                    if (roleType.Size == -1 || roleType.Size > 4000)
-                    {
-                        return "nvarchar(max)";
-                    }
-
-                    return "nvarchar(" + roleType.Size + ")";
-                case UnitTags.Integer:
-                    return "int";
-                case UnitTags.Decimal:
-                    return "decimal(" + roleType.Precision + "," + roleType.Scale + ")";
-                case UnitTags.Float:
-                    return "float";
-                case UnitTags.Boolean:
-                    return "bit";
-                case UnitTags.DateTime:
-                    return "datetime2";
-                case UnitTags.Unique:
-                    return "uniqueidentifier";
-                case UnitTags.Binary:
-                    if (roleType.Size == -1 || roleType.Size > 8000)
-                    {
-                        return "varbinary(max)";
-                    }
-
-                    return "varbinary(" + roleType.Size + ")";
-                default:
-                    return "!UNKNOWN VALUE TYPE!";
-            }
-        }
-
-        internal SqlDbType GetSqlDbType(IRoleType roleType)
-        {
-            var unit = (IUnit)roleType.ObjectType;
-            switch (unit.UnitTag)
-            {
-                case UnitTags.String:
-                    return SqlDbType.NVarChar;
-                case UnitTags.Integer:
-                    return SqlDbType.Int;
-                case UnitTags.Decimal:
-                    return SqlDbType.Decimal;
-                case UnitTags.Float:
-                    return SqlDbType.Float;
-                case UnitTags.Boolean:
-                    return SqlDbType.Bit;
-                case UnitTags.DateTime:
-                    return SqlDbType.DateTime2;
-                case UnitTags.Unique:
-                    return SqlDbType.UniqueIdentifier;
-                case UnitTags.Binary:
-                    return SqlDbType.VarBinary;
-                default:
-                    throw new Exception("Unknown Unit Type");
-            }
-        }
 
         public string GetTableTypeName(IRoleType roleType)
         {
@@ -519,9 +446,94 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public Dictionary<string, string> ProcedureDefinitionByName { get; }
+        internal string NormalizeName(string name)
+        {
+            name = name.ToLowerInvariant();
+            if (ReservedWords.Names.Contains(name))
+            {
+                return "[" + name + "]";
+            }
 
-        public Dictionary<string, string> TableTypeDefinitionByName { get; }
+            return name;
+        }
+
+        internal string GetSqlType(IRoleType roleType)
+        {
+            var unit = (IUnit)roleType.ObjectType;
+            switch (unit.UnitTag)
+            {
+                case UnitTags.String:
+                    if (roleType.Size == -1 || roleType.Size > 4000)
+                    {
+                        return "nvarchar(max)";
+                    }
+
+                    return "nvarchar(" + roleType.Size + ")";
+
+                case UnitTags.Integer:
+                    return "int";
+
+                case UnitTags.Decimal:
+                    return "decimal(" + roleType.Precision + "," + roleType.Scale + ")";
+
+                case UnitTags.Float:
+                    return "float";
+
+                case UnitTags.Boolean:
+                    return "bit";
+
+                case UnitTags.DateTime:
+                    return "datetime2";
+
+                case UnitTags.Unique:
+                    return "uniqueidentifier";
+
+                case UnitTags.Binary:
+                    if (roleType.Size == -1 || roleType.Size > 8000)
+                    {
+                        return "varbinary(max)";
+                    }
+
+                    return "varbinary(" + roleType.Size + ")";
+
+                default:
+                    return "!UNKNOWN VALUE TYPE!";
+            }
+        }
+
+        internal SqlDbType GetSqlDbType(IRoleType roleType)
+        {
+            var unit = (IUnit)roleType.ObjectType;
+            switch (unit.UnitTag)
+            {
+                case UnitTags.String:
+                    return SqlDbType.NVarChar;
+
+                case UnitTags.Integer:
+                    return SqlDbType.Int;
+
+                case UnitTags.Decimal:
+                    return SqlDbType.Decimal;
+
+                case UnitTags.Float:
+                    return SqlDbType.Float;
+
+                case UnitTags.Boolean:
+                    return SqlDbType.Bit;
+
+                case UnitTags.DateTime:
+                    return SqlDbType.DateTime2;
+
+                case UnitTags.Unique:
+                    return SqlDbType.UniqueIdentifier;
+
+                case UnitTags.Binary:
+                    return SqlDbType.VarBinary;
+
+                default:
+                    throw new Exception("Unknown Unit Type");
+            }
+        }
 
         private void LoadObjects(IClass @class)
         {
@@ -552,7 +564,7 @@ END";
 
             // CreateObject
             var definition = $@"
-CREATE PROCEDURE {name} 
+CREATE PROCEDURE {name}
     {ParamNameForClass} {SqlTypeForClass}
 AS
 BEGIN
@@ -583,7 +595,7 @@ END";
 CREATE PROCEDURE {name}
     {ParamNameForClass} {SqlTypeForClass},
     {ParamNameForCount} {SqlTypeForCount}
-AS 
+AS
 BEGIN
     DECLARE @IDS TABLE (id INT);
     DECLARE @O INT, @COUNTER INT
@@ -619,7 +631,7 @@ END";
             var definition = $@"
 CREATE PROCEDURE {name}
     {ParamNameForObject} {SqlTypeForObject}
-AS 
+AS
 BEGIN
     DELETE FROM {this.TableNameForObjects}
     WHERE {ColumnNameForObject}={ParamNameForObject};
@@ -642,7 +654,7 @@ END";
             var definition = $@"
 CREATE PROCEDURE {name}
     {ParamNameForObject} AS {SqlTypeForObject}
-AS 
+AS
 BEGIN
     SELECT {string.Join(", ", sortedUnitRoleTypes.Select(v => this.ColumnNameByRelationType[v.RelationType]))}
     FROM {table}
@@ -664,9 +676,9 @@ END
             var definition = $@"
 CREATE PROCEDURE {name}
     {ParamNameForTableType} {this.TableTypeNameForObject} READONLY
-AS 
+AS
 BEGIN
-    SELECT {ColumnNameForObject}, {string.Join(", ", sortedUnitRoleTypes.Select(v => this.ColumnNameByRelationType[v.RelationType]))} 
+    SELECT {ColumnNameForObject}, {string.Join(", ", sortedUnitRoleTypes.Select(v => this.ColumnNameByRelationType[v.RelationType]))}
     FROM {table}
     WHERE {ColumnNameForObject} IN (SELECT {this.TableTypeColumnNameForObject} FROM {ParamNameForTableType})
 END";
@@ -798,7 +810,7 @@ BEGIN
     SET {this.ColumnNameByRelationType[relationType]} = null
     FROM {table}
     INNER JOIN {ParamNameForTableType} AS r
-    ON 
+    ON
         {this.ColumnNameByRelationType[relationType]} = r.{this.TableTypeColumnNameForAssociation} AND
         {ColumnNameForObject} = r.{this.TableTypeColumnNameForRole}
 END";
@@ -816,7 +828,7 @@ END";
             var definition = $@"
 CREATE PROCEDURE {name}
     {ParamNameForTableType} {this.TableTypeNameForObject} READONLY
-AS 
+AS
 BEGIN
     UPDATE {this.TableNameForObjectByClass[@class]}
     SET {this.ColumnNameByRelationType[relationType]} = null
@@ -1138,7 +1150,7 @@ CREATE PROCEDURE {name}
     {ParamNameForTableType} {this.TableTypeNameForCompositeRelation} READONLY
 AS
 BEGIN
-    DELETE T 
+    DELETE T
     FROM {table} T
     INNER JOIN {ParamNameForTableType} R
     ON T.{ColumnNameForAssociation} = R.{this.TableTypeColumnNameForAssociation}
@@ -1300,9 +1312,9 @@ END";
             var definition = $@"
 CREATE PROCEDURE {name}
     {ParamNameForTableType} {this.TableTypeNameForObject} READONLY
-AS 
+AS
 BEGIN
-    DELETE T 
+    DELETE T
     FROM {table} T
     INNER JOIN {ParamNameForTableType} A
     ON T.{ColumnNameForAssociation} = A.{this.TableTypeColumnNameForObject}

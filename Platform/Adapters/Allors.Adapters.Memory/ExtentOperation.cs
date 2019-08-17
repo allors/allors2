@@ -56,6 +56,7 @@ namespace Allors.Adapters.Memory
                         }
 
                         break;
+
                     case ExtentOperationType.Intersect:
                         this.Strategies = new List<Strategy>();
                         foreach (var strategy in firstOperandStrategies)
@@ -67,6 +68,7 @@ namespace Allors.Adapters.Memory
                         }
 
                         break;
+
                     case ExtentOperationType.Except:
                         this.Strategies = firstOperandStrategies;
                         foreach (var strategy in secondOperandStrategies)

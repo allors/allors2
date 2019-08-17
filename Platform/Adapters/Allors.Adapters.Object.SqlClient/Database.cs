@@ -334,18 +334,25 @@ namespace Allors.Adapters.Object.SqlClient
                     }
 
                     return new SqlMetaData(name, SqlDbType.NVarChar, roleType.Size.Value);
+
                 case UnitTags.Integer:
                     return new SqlMetaData(name, SqlDbType.Int);
+
                 case UnitTags.Decimal:
                     return new SqlMetaData(name, SqlDbType.Decimal, (byte)roleType.Precision.Value, (byte)roleType.Scale.Value);
+
                 case UnitTags.Float:
                     return new SqlMetaData(name, SqlDbType.Float);
+
                 case UnitTags.Boolean:
                     return new SqlMetaData(name, SqlDbType.Bit);
+
                 case UnitTags.DateTime:
                     return new SqlMetaData(name, SqlDbType.DateTime2);
+
                 case UnitTags.Unique:
                     return new SqlMetaData(name, SqlDbType.UniqueIdentifier);
+
                 case UnitTags.Binary:
                     if (roleType.Size == -1 || roleType.Size > 8000)
                     {
@@ -353,6 +360,7 @@ namespace Allors.Adapters.Object.SqlClient
                     }
 
                     return new SqlMetaData(name, SqlDbType.VarBinary, (long)roleType.Size);
+
                 default:
                     throw new Exception("!UNKNOWN VALUE TYPE!");
             }

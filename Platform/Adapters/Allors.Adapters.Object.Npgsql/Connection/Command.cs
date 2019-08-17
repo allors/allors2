@@ -251,20 +251,28 @@ namespace Allors.Adapters.Object.Npgsql
             {
                 case UnitTags.String:
                     return reader.GetString(i);
+
                 case UnitTags.Integer:
                     return reader.GetInt32(i);
+
                 case UnitTags.Float:
                     return reader.GetDouble(i);
+
                 case UnitTags.Decimal:
                     return reader.GetDecimal(i);
+
                 case UnitTags.Boolean:
                     return reader.GetBoolean(i);
+
                 case UnitTags.DateTime:
                     return reader.GetDateTime(i);
+
                 case UnitTags.Unique:
                     return reader.GetGuid(i);
+
                 case UnitTags.Binary:
                     return reader.GetValue(i);
+
                 default:
                     throw new ArgumentException("Unknown Unit ObjectType: " + unitTypeTag);
             }
@@ -276,6 +284,6 @@ namespace Allors.Adapters.Object.Npgsql
 
         protected abstract void OnExecuted();
 
-        #endregion
+        #endregion Events
     }
 }

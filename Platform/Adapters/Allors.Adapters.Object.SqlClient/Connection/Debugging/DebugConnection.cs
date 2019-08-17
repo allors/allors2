@@ -11,6 +11,11 @@ namespace Allors.Adapters.Object.SqlClient.Debug
 
     public class DebugConnection : Connection
     {
+        public DebugConnection(Database database)
+            : base(database)
+        {
+        }
+
         public List<DebugCommand> Commands { get; } = new List<DebugCommand>();
 
         public IEnumerable<DebugExecution> Executions =>
@@ -20,11 +25,6 @@ namespace Allors.Adapters.Object.SqlClient.Debug
             select execution;
 
         public List<DebugExecution> ExecutionList => this.Executions.ToList();
-
-        public DebugConnection(Database database)
-            : base(database)
-        {
-        }
 
         public override string ToString() => $"{this.Commands.Count} commands with {this.Executions.Count()} executions.";
 
@@ -36,6 +36,7 @@ namespace Allors.Adapters.Object.SqlClient.Debug
         }
 
         #region Events
+
         protected override void OnCreatingSqlConnection()
         {
         }
@@ -91,6 +92,7 @@ namespace Allors.Adapters.Object.SqlClient.Debug
         protected override void OnCreatedSqlCommand()
         {
         }
-        #endregion
+
+        #endregion Events
     }
 }

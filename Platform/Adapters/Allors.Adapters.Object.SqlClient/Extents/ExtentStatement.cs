@@ -26,15 +26,15 @@ namespace Allors.Adapters.Object.SqlClient
             this.referenceAssociationInstances = new List<IAssociationType>();
         }
 
-        internal SqlExtent Extent { get; }
-
-        internal abstract bool IsRoot { get; }
-
         internal Mapping Mapping => this.Session.Database.Mapping;
 
         internal ExtentSort Sorter => this.Extent.Sorter;
 
         protected Session Session => this.Extent.Session;
+
+        internal SqlExtent Extent { get; }
+
+        internal abstract bool IsRoot { get; }
 
         protected IObjectType Type => this.Extent.ObjectType;
 

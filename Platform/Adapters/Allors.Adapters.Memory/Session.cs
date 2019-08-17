@@ -303,13 +303,6 @@ namespace Allors.Adapters.Memory
             return strategy;
         }
 
-        private void Reset()
-        {
-            // Strategies
-            this.strategyByObjectId = new Dictionary<long, Strategy>();
-            this.strategiesByObjectType = new Dictionary<IObjectType, HashSet<Strategy>>();
-        }
-
         internal virtual Strategy InstantiateMemoryStrategy(long objectId) => this.GetStrategy(objectId);
 
         internal Strategy GetStrategy(IObject obj)
@@ -375,30 +368,30 @@ namespace Allors.Adapters.Memory
                     return EmptyStrategies;
 
                 case 1:
+                {
+                    var objectType = concreteClasses[0];
+                    if (this.strategiesByObjectType.TryGetValue(objectType, out var strategies))
                     {
-                        var objectType = concreteClasses[0];
-                        if (this.strategiesByObjectType.TryGetValue(objectType, out var strategies))
-                        {
-                            return strategies;
-                        }
-
-                        return EmptyStrategies;
-                    }
-
-                default:
-                    {
-                        var strategies = new HashSet<Strategy>();
-
-                        foreach (var objectType in concreteClasses)
-                        {
-                            if (this.strategiesByObjectType.TryGetValue(objectType, out var objectTypeStrategies))
-                            {
-                                strategies.UnionWith(objectTypeStrategies);
-                            }
-                        }
-
                         return strategies;
                     }
+
+                    return EmptyStrategies;
+                }
+
+                default:
+                {
+                    var strategies = new HashSet<Strategy>();
+
+                    foreach (var objectType in concreteClasses)
+                    {
+                        if (this.strategiesByObjectType.TryGetValue(objectType, out var objectTypeStrategies))
+                        {
+                            strategies.UnionWith(objectTypeStrategies);
+                        }
+                    }
+
+                    return strategies;
+                }
             }
         }
 
@@ -430,6 +423,13 @@ namespace Allors.Adapters.Memory
 
             var save = new Save(this, writer, sortedNonDeletedStrategiesByObjectType);
             save.Execute();
+        }
+
+        private void Reset()
+        {
+            // Strategies
+            this.strategyByObjectId = new Dictionary<long, Strategy>();
+            this.strategiesByObjectType = new Dictionary<IObjectType, HashSet<Strategy>>();
         }
     }
 }

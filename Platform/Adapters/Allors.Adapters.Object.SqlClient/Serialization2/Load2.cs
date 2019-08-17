@@ -285,6 +285,7 @@ where c = '{@class.Id}'";
                                             case UnitTags.String:
                                                 unit = string.Empty;
                                                 break;
+
                                             case UnitTags.Binary:
                                                 unit = EmptyByteArray;
                                                 break;
@@ -433,6 +434,7 @@ where c = '{@class.Id}'";
         }
 
         #region Load Errors
+
         private void OnObjectNotLoaded(Guid objectTypeId, long allorsObjectId)
         {
             if (this.objectNotLoaded != null)
@@ -457,6 +459,7 @@ where c = '{@class.Id}'";
                 throw new Exception("Role not loaded: " + args);
             }
         }
-        #endregion
+
+        #endregion Load Errors
     }
 }

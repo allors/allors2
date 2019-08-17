@@ -11,11 +11,11 @@ namespace Allors.Adapters.Object.SqlClient
     {
         protected readonly Database Database;
 
+        protected Connection(Database database) => this.Database = database;
+
         protected SqlConnection SqlConnection { get; private set; }
 
         protected SqlTransaction SqlTransaction { get; private set; }
-
-        protected Connection(Database database) => this.Database = database;
 
         internal Command CreateCommand()
         {
@@ -127,6 +127,6 @@ namespace Allors.Adapters.Object.SqlClient
 
         protected abstract void OnCreatedSqlCommand();
 
-        #endregion
+        #endregion Events
     }
 }

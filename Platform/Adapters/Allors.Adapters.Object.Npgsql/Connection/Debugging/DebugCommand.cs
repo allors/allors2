@@ -11,14 +11,14 @@ namespace Allors.Adapters.Object.Npgsql.Debug
 
     public class DebugCommand : Command
     {
-        public List<DebugExecution> Executions { get; } = new List<DebugExecution>();
-
-        public DebugExecution CurrentExecution { get; set; }
-
         public DebugCommand(Mapping mapping, NpgsqlCommand command)
             : base(mapping, command)
         {
         }
+
+        public List<DebugExecution> Executions { get; } = new List<DebugExecution>();
+
+        public DebugExecution CurrentExecution { get; set; }
 
         public override string ToString() => $"[{this.Executions.Count}x] {this.NpgsqlCommand.CommandText}";
 

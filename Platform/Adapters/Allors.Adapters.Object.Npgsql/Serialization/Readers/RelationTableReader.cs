@@ -30,9 +30,11 @@ namespace Allors.Adapters.Object.Npgsql
                     case Mapping.ColumnNameForAssociation:
                         this.getValueFuncs[i] = current => current.Key;
                         break;
+
                     case Mapping.ColumnNameForRole:
                         this.getValueFuncs[i] = current => current.Value;
                         break;
+
                     default:
                         throw new Exception("Unknown column name " + columnName);
                 }
@@ -75,6 +77,19 @@ namespace Allors.Adapters.Object.Npgsql
         }
 
         #region Not Supported
+
+        public override int Depth { get; }
+
+        public override bool HasRows { get; }
+
+        public override bool IsClosed { get; }
+
+        public override int RecordsAffected { get; }
+
+        public override object this[int ordinal] => throw new NotImplementedException();
+
+        public override object this[string name] => throw new NotImplementedException();
+
         public override bool GetBoolean(int ordinal) => throw new NotImplementedException();
 
         public override byte GetByte(int ordinal) => throw new NotImplementedException();
@@ -119,17 +134,6 @@ namespace Allors.Adapters.Object.Npgsql
 
         public override bool NextResult() => throw new NotImplementedException();
 
-        public override int Depth { get; }
-
-        public override bool HasRows { get; }
-
-        public override bool IsClosed { get; }
-
-        public override object this[int ordinal] => throw new NotImplementedException();
-
-        public override object this[string name] => throw new NotImplementedException();
-
-        public override int RecordsAffected { get; }
-        #endregion
+        #endregion Not Supported
     }
 }

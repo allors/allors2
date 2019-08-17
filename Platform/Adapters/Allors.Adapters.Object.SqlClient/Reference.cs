@@ -15,40 +15,11 @@ namespace Allors.Adapters.Object.SqlClient
         internal const long InitialVersion = 0;
         private const long UnknownVersion = -1;
 
-        [Flags]
-        public enum Flags : byte
-        {
-            MaskIsNew = 1,
-            MaskExists = 2,
-            MaskExistsKnown = 4,
-        }
-
         private long version;
 
         private Flags flags;
 
         private WeakReference<Strategy> weakReference;
-
-        private bool FlagIsNew
-        {
-            get { return this.flags.HasFlag(Flags.MaskIsNew); }
-
-            set { this.flags = value ? this.flags | Flags.MaskIsNew : this.flags & ~Flags.MaskIsNew; }
-        }
-
-        private bool FlagExists
-        {
-            get { return this.flags.HasFlag(Flags.MaskExists); }
-
-            set { this.flags = value ? this.flags | Flags.MaskExists : this.flags & ~Flags.MaskExists; }
-        }
-
-        private bool FlagExistsKnown
-        {
-            get { return this.flags.HasFlag(Flags.MaskExistsKnown); }
-
-            set { this.flags = value ? this.flags | Flags.MaskExistsKnown : this.flags & ~Flags.MaskExistsKnown; }
-        }
 
         internal Reference(Session session, IClass @class, long objectId, bool isNew)
         {
@@ -70,6 +41,14 @@ namespace Allors.Adapters.Object.SqlClient
             this.version = version;
             this.FlagExistsKnown = true;
             this.FlagExists = true;
+        }
+
+        [Flags]
+        public enum Flags : byte
+        {
+            MaskIsNew = 1,
+            MaskExists = 2,
+            MaskExistsKnown = 4,
         }
 
         internal virtual Strategy Strategy
@@ -154,6 +133,27 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
+        private bool FlagIsNew
+        {
+            get { return this.flags.HasFlag(Flags.MaskIsNew); }
+
+            set { this.flags = value ? this.flags | Flags.MaskIsNew : this.flags & ~Flags.MaskIsNew; }
+        }
+
+        private bool FlagExists
+        {
+            get { return this.flags.HasFlag(Flags.MaskExists); }
+
+            set { this.flags = value ? this.flags | Flags.MaskExists : this.flags & ~Flags.MaskExists; }
+        }
+
+        private bool FlagExistsKnown
+        {
+            get { return this.flags.HasFlag(Flags.MaskExistsKnown); }
+
+            set { this.flags = value ? this.flags | Flags.MaskExistsKnown : this.flags & ~Flags.MaskExistsKnown; }
+        }
+
         private Strategy Target
         {
             get
@@ -173,6 +173,8 @@ namespace Allors.Adapters.Object.SqlClient
         }
 
         public override string ToString() => "[" + this.Class + ":" + this.ObjectId + "]";
+
+        public virtual Strategy CreateStrategy() => new Strategy(this);
 
         internal virtual void Commit(HashSet<Reference> referencesWithStrategy)
         {
@@ -209,7 +211,5 @@ namespace Allors.Adapters.Object.SqlClient
                 strategy.Release();
             }
         }
-
-        public virtual Strategy CreateStrategy() => new Strategy(this);
     }
 }

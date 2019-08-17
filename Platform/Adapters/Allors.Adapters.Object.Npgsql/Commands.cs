@@ -139,15 +139,19 @@ namespace Allors.Adapters.Object.Npgsql
                                 case UnitTags.String:
                                     unit = reader.GetString(i);
                                     break;
+
                                 case UnitTags.Integer:
                                     unit = reader.GetInt32(i);
                                     break;
+
                                 case UnitTags.Float:
                                     unit = reader.GetDouble(i);
                                     break;
+
                                 case UnitTags.Decimal:
                                     unit = reader.GetDecimal(i);
                                     break;
+
                                 case UnitTags.DateTime:
                                     var dateTime = reader.GetDateTime(i);
                                     if (dateTime == DateTime.MaxValue || dateTime == DateTime.MinValue)
@@ -160,16 +164,20 @@ namespace Allors.Adapters.Object.Npgsql
                                     }
 
                                     break;
+
                                 case UnitTags.Boolean:
                                     unit = reader.GetBoolean(i);
                                     break;
+
                                 case UnitTags.Unique:
                                     unit = reader.GetGuid(i);
                                     break;
+
                                 case UnitTags.Binary:
                                     var byteArray = (byte[])reader.GetValue(i);
                                     unit = byteArray;
                                     break;
+
                                 default:
                                     throw new ArgumentException("Unknown Unit ObjectType: " + roleType.ObjectType.Name);
                             }

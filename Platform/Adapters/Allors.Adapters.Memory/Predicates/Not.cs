@@ -217,8 +217,10 @@ namespace Allors.Adapters.Memory
             {
                 case ThreeValuedLogic.True:
                     return ThreeValuedLogic.False;
+
                 case ThreeValuedLogic.False:
                     return ThreeValuedLogic.True;
+
                 default:
                     return ThreeValuedLogic.Unknown;
             }

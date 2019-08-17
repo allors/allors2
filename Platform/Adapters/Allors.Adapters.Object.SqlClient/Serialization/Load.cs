@@ -79,6 +79,22 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
+        private static string[] GetColumnNames(SqlConnection connection, string tableName)
+        {
+            var command = new SqlCommand("SELECT * FROM " + tableName, connection);
+
+            var columns = new List<string>();
+            using (var reader = command.ExecuteReader())
+            {
+                for (var i = 0; i < reader.FieldCount; i++)
+                {
+                    columns.Add(reader.GetName(i));
+                }
+            }
+
+            return columns.ToArray();
+        }
+
         private void Read()
         {
             Serialization.CheckVersion(this.xml.Population.Version);
@@ -183,18 +199,18 @@ namespace Allors.Adapters.Object.SqlClient
                         switch (((IUnit)relationType.RoleType.ObjectType).UnitTag)
                         {
                             case UnitTags.String:
-                                {
-                                    roleByObjectId.Add(associationId, string.Empty);
-                                }
+                            {
+                                roleByObjectId.Add(associationId, string.Empty);
+                            }
 
-                                break;
+                            break;
 
                             case UnitTags.Binary:
-                                {
-                                    roleByObjectId.Add(associationId, EmptyByteArray);
-                                }
+                            {
+                                roleByObjectId.Add(associationId, EmptyByteArray);
+                            }
 
-                                break;
+                            break;
 
                             default:
                                 this.OnRelationNotLoaded(relationType.Id, associationId, string.Empty);
@@ -420,23 +436,8 @@ namespace Allors.Adapters.Object.SqlClient
             return roleByAssociationId;
         }
 
-        private static string[] GetColumnNames(SqlConnection connection, string tableName)
-        {
-            var command = new SqlCommand("SELECT * FROM " + tableName, connection);
-
-            var columns = new List<string>();
-            using (var reader = command.ExecuteReader())
-            {
-                for (var i = 0; i < reader.FieldCount; i++)
-                {
-                    columns.Add(reader.GetName(i));
-                }
-            }
-
-            return columns.ToArray();
-        }
-
         #region Load Errors
+
         private void OnObjectNotLoaded(Guid objectTypeId, long allorsObjectId)
         {
             if (this.objectNotLoaded != null)
@@ -461,6 +462,7 @@ namespace Allors.Adapters.Object.SqlClient
                 throw new Exception("Role not loaded: " + args);
             }
         }
-        #endregion
+
+        #endregion Load Errors
     }
 }

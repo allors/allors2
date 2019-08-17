@@ -46,9 +46,11 @@ namespace Allors.Adapters.Object.SqlClient
                 case ExtentOperations.Union:
                     statement.Append("\nUNION\n");
                     break;
+
                 case ExtentOperations.Intersect:
                     statement.Append("\nINTERSECT\n");
                     break;
+
                 case ExtentOperations.Except:
                     statement.Append("\n" + this.Session.Database.Except + "\n");
                     break;

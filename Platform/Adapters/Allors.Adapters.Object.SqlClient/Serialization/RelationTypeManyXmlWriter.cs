@@ -64,6 +64,11 @@ namespace Allors.Adapters.Object.SqlClient
         }
 
         /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose() => this.Close();
+
+        /// <summary>
         /// Closes this "<see cref="RelationTypeManyXmlWriter"/>.
         /// </summary>
         internal void Close()
@@ -80,11 +85,6 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
         }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose() => this.Close();
 
         /// <summary>
         /// Writes the the association and role to the <see cref="xmlWriter"/>.

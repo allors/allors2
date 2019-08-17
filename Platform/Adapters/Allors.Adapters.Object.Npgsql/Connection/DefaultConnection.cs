@@ -17,6 +17,7 @@ namespace Allors.Adapters.Object.Npgsql
         protected override Command CreateCommand(Mapping mapping, NpgsqlCommand sqlCommand) => new DefaultCommand(mapping, sqlCommand);
 
         #region Events
+
         protected override void OnCreatingNpgsqlConnection()
         {
         }
@@ -72,6 +73,7 @@ namespace Allors.Adapters.Object.Npgsql
         protected override void OnCreatedNpgsqlCommand()
         {
         }
-        #endregion
+
+        #endregion Events
     }
 }

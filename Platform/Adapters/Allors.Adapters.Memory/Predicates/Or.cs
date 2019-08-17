@@ -23,6 +23,7 @@ namespace Allors.Adapters.Memory
                     {
                         case ThreeValuedLogic.True:
                             return ThreeValuedLogic.True;
+
                         case ThreeValuedLogic.Unknown:
                             unknown = true;
                             break;

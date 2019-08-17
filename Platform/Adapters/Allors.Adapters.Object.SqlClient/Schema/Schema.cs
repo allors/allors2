@@ -41,10 +41,10 @@ WHERE   schema_name = @schemaName";
                     // Tables
                     cmdText = @"
 SELECT T.table_name,
-       C.column_name, 
-       C.data_type, 
+       C.column_name,
+       C.data_type,
        C.character_maximum_length,
-       C.numeric_precision, 
+       C.numeric_precision,
        C.numeric_scale
 FROM information_schema.tables AS T
 FULL OUTER JOIN information_schema.columns AS C
@@ -168,11 +168,11 @@ WHERE routine_schema = @routineSchema";
                     cmdText = @"
 SELECT	o.name AS table_name,
 		i.name AS index_name
-FROM		
+FROM
 		sys.indexes i
 		INNER JOIN sys.objects o ON i.object_id = o.object_id
 		INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
-WHERE 
+WHERE
 	i.name IS NOT NULL
 	AND o.type = 'U'
 	AND i.type = 2

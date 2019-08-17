@@ -13,8 +13,6 @@ namespace Allors.Adapters.Object.Npgsql
 
     public class Schema
     {
-        public Database Database { get; }
-
         public readonly bool Exists;
 
         public Schema(Database database)
@@ -44,10 +42,10 @@ WHERE   schema_name = @schemaName";
                     // Tables
                     cmdText = @"
 SELECT T.table_name,
-       C.column_name, 
-       C.data_type, 
+       C.column_name,
+       C.data_type,
        C.character_maximum_length,
-       C.numeric_precision, 
+       C.numeric_precision,
        C.numeric_scale
 FROM information_schema.tables AS T
 FULL OUTER JOIN information_schema.columns AS C
@@ -173,6 +171,8 @@ WHERE routine_schema = @routineSchema";
                 }
             }
         }
+
+        public Database Database { get; }
 
         public Dictionary<string, SchemaTable> TableByName { get; }
 

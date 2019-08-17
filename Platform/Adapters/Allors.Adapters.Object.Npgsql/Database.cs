@@ -310,20 +310,28 @@ namespace Allors.Adapters.Object.Npgsql
                     }
 
                     return NpgsqlDbType.Varchar;
+
                 case UnitTags.Integer:
                     return NpgsqlDbType.Integer;
+
                 case UnitTags.Decimal:
                     return NpgsqlDbType.Numeric;
+
                 case UnitTags.Float:
                     return NpgsqlDbType.Double;
+
                 case UnitTags.Boolean:
                     return NpgsqlDbType.Boolean;
+
                 case UnitTags.DateTime:
                     return NpgsqlDbType.Timestamp;
+
                 case UnitTags.Unique:
                     return NpgsqlDbType.Uuid;
+
                 case UnitTags.Binary:
                     return NpgsqlDbType.Bytea;
+
                 default:
                     throw new Exception("!UNKNOWN VALUE TYPE!");
             }
@@ -335,26 +343,37 @@ namespace Allors.Adapters.Object.Npgsql
             {
                 case NpgsqlDbType.Varchar:
                     return "VARCHAR";
+
                 case NpgsqlDbType.Text:
                     return "TEXT";
+
                 case NpgsqlDbType.Integer:
                     return "INTEGER";
+
                 case NpgsqlDbType.Bigint:
                     return "BIGINT";
+
                 case NpgsqlDbType.Numeric:
                     return "NUMERIC";
+
                 case NpgsqlDbType.Double:
                     return "DOUBLE PRECISION";
+
                 case NpgsqlDbType.Boolean:
                     return "BOOLEAN";
+
                 case NpgsqlDbType.Date:
                     return "DATE";
+
                 case NpgsqlDbType.Timestamp:
                     return "TIMESTAMP";
+
                 case NpgsqlDbType.Uuid:
                     return "UUID";
+
                 case NpgsqlDbType.Bytea:
                     return "BYTEA";
+
                 default:
                     return "!UNKNOWN VALUE TYPE!";
             }

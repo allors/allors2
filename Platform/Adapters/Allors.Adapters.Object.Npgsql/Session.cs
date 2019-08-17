@@ -44,11 +44,11 @@ namespace Allors.Adapters.Object.Npgsql
 
         public State State { get; }
 
-        private Prefetcher Prefetcher { get; }
-
         IDatabase ISession.Database => this.Database;
 
         public Database Database { get; }
+
+        private Prefetcher Prefetcher { get; }
 
         public object this[string name]
         {

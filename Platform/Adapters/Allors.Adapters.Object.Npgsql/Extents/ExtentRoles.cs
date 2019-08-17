@@ -23,16 +23,6 @@ namespace Allors.Adapters.Object.Npgsql
             this.roleType = roleType;
         }
 
-        internal override SqlExtent ContainedInExtent
-        {
-            get
-            {
-                this.LazyUpgrade();
-
-                return this.upgrade;
-            }
-        }
-
         public override int Count
         {
             get
@@ -70,6 +60,16 @@ namespace Allors.Adapters.Object.Npgsql
         }
 
         public override IComposite ObjectType => this.strategy.Class;
+
+        internal override SqlExtent ContainedInExtent
+        {
+            get
+            {
+                this.LazyUpgrade();
+
+                return this.upgrade;
+            }
+        }
 
         private Reference[] References
         {
