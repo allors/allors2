@@ -56,6 +56,15 @@ namespace Allors.Excel.PurchaseInvoices
             }
         }
 
+        public Payment[] Payments { get; set; }
+
+        public Workbook Workbook { get; set; }
+
+        private Tree PaymentApplicationTree
+        => new Tree(M.PaymentApplication.Class)
+            .Add(M.PaymentApplication.Invoice)
+        ;
+
         public override async Task Refresh()
         {
             await this.Load();
@@ -147,7 +156,7 @@ namespace Allors.Excel.PurchaseInvoices
                 }
                 else
                 {
-                   row.SetPaymentDateNull();
+                    row.SetPaymentDateNull();
                 }
 
                 row.InternalComment = purchaseInvoice.InternalComment;
@@ -256,7 +265,7 @@ namespace Allors.Excel.PurchaseInvoices
             {
                 Extent = new Workspace.Data.Filter(M.PurchaseInvoice.ObjectType),
 
-                Results = new []
+                Results = new[]
                 {
                     new Workspace.Data.Result
                     {
@@ -295,14 +304,5 @@ namespace Allors.Excel.PurchaseInvoices
             result = await this.Load(pull);
             this.Payments = result.GetCollection<Payment>("Payments");
         }
-
-        private Tree PaymentApplicationTree
-        => new Tree(M.PaymentApplication.Class)
-            .Add(M.PaymentApplication.Invoice)
-        ;
-
-        public Payment[] Payments { get; set; }
-
-        public Workbook Workbook { get; set; }
     }
 }

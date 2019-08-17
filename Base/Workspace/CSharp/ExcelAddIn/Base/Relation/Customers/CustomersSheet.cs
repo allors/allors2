@@ -1,4 +1,4 @@
-﻿// <copyright file="CustomersSheet.cs" company="Allors bvba">
+// <copyright file="CustomersSheet.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -54,6 +54,29 @@ namespace Allors.Excel.Customers
                 return this.listObject;
             }
         }
+
+        private Tree PartyContactMechanismsTree
+            => new Tree(M.PartyContactMechanism.Class)
+                .Add(M.PartyContactMechanism.ContactPurposes)
+                .Add(M.PartyContactMechanism.ContactMechanism, this.ContactMechanismTree);
+
+        private Tree CurrentOrganisationContactRelationshipTree
+            => new Tree(M.OrganisationContactRelationship.Class)
+                .Add(M.OrganisationContactRelationship.Organisation)
+                .Add(M.OrganisationContactRelationship.Contact, this.ContactTree);
+
+        private Tree ContactTree
+            => new Tree(M.Person.Class)
+                .Add(M.Person.Salutation)
+                .Add(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree);
+
+        private Tree ContactMechanismTree
+            => new Tree(M.PostalAddress.Class)
+                .Add(M.PostalAddress.Country);
+
+        private Tree GeneralCorrespondenceTree
+            => new Tree(M.ContactMechanism.Interface)
+                .Add(M.ContactMechanism.ContactMechanismType);
 
         public override async Task Refresh()
         {
@@ -175,28 +198,5 @@ namespace Allors.Excel.Customers
             this.result = await this.Load(pull);
             this.Customers = this.result.GetCollection<Organisation>("Organisations");
         }
-
-        private Tree PartyContactMechanismsTree
-            => new Tree(M.PartyContactMechanism.Class)
-                .Add(M.PartyContactMechanism.ContactPurposes)
-                .Add(M.PartyContactMechanism.ContactMechanism, this.ContactMechanismTree);
-
-        private Tree CurrentOrganisationContactRelationshipTree
-            => new Tree(M.OrganisationContactRelationship.Class)
-                .Add(M.OrganisationContactRelationship.Organisation)
-                .Add(M.OrganisationContactRelationship.Contact, this.ContactTree);
-
-        private Tree ContactTree
-            => new Tree(M.Person.Class)
-                .Add(M.Person.Salutation)
-                .Add(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree);
-
-        private Tree ContactMechanismTree
-            => new Tree(M.PostalAddress.Class)
-                .Add(M.PostalAddress.Country);
-
-        private Tree GeneralCorrespondenceTree
-            => new Tree(M.ContactMechanism.Interface)
-                .Add(M.ContactMechanism.ContactMechanismType);
     }
 }

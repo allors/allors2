@@ -5,8 +5,8 @@
 
 namespace Allors.Workspace.Data
 {
-    using Allors.Workspace.Meta;
     using System.Collections.Generic;
+    using Allors.Workspace.Meta;
 
     public interface IExtent
     {

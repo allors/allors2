@@ -11,9 +11,9 @@ namespace Allors.Workspace.Data
 
     public class Instanceof : IPropertyPredicate
     {
-        public string Parameter { get; set; }
-
         public Instanceof(IComposite objectType = null) => this.ObjectType = objectType;
+
+        public string Parameter { get; set; }
 
         public IComposite ObjectType { get; set; }
 

@@ -5,8 +5,8 @@
 
 namespace Allors.Workspace.Data
 {
-    using Allors.Workspace.Meta;
     using System.Text;
+    using Allors.Workspace.Meta;
 
     public class Step
     {

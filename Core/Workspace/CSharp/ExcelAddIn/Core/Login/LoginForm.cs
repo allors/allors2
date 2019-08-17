@@ -25,6 +25,8 @@ namespace BaseExcelAddIn.Base
 
         public bool IsLoggedIn { get; set; }
 
+        public string UserName { get; set; }
+
         private async void Button1_Click(object sender, EventArgs e)
         {
             this.HideError();
@@ -56,8 +58,6 @@ namespace BaseExcelAddIn.Base
                 this.ShowError("Login failed.");
             }
         }
-
-        public string UserName { get; set; }
 
         private void ShowError(string message)
         {

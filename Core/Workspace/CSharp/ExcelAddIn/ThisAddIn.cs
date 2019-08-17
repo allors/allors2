@@ -31,6 +31,6 @@ namespace ExcelAddIn
             this.Shutdown += new System.EventHandler(this.ThisAddIn_Shutdown);
         }
 
-        #endregion
+        #endregion VSTO generated code
     }
 }

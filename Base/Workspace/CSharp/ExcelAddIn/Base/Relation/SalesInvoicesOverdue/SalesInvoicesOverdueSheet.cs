@@ -54,6 +54,17 @@ namespace Allors.Excel.Relations.CustomersOverdue
             }
         }
 
+        private Tree ContactTree
+            => new Tree(M.Person.Class)
+                .Add(M.Person.Salutation)
+                .Add(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree)
+        ;
+
+        private Tree GeneralCorrespondenceTree
+            => new Tree(M.ContactMechanism.Interface)
+                .Add(M.ContactMechanism.ContactMechanismType)
+        ;
+
         public override async Task Refresh()
         {
             await this.Load();
@@ -186,16 +197,5 @@ namespace Allors.Excel.Relations.CustomersOverdue
             this.result = await this.Load(pull);
             this.SalesInvoices = this.result.GetCollection<SalesInvoice>("SalesInvoices");
         }
-
-        private Tree ContactTree
-            => new Tree(M.Person.Class)
-                .Add(M.Person.Salutation)
-                .Add(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree)
-        ;
-
-        private Tree GeneralCorrespondenceTree
-            => new Tree(M.ContactMechanism.Interface)
-                .Add(M.ContactMechanism.ContactMechanismType)
-        ;
     }
 }

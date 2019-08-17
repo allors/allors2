@@ -1,4 +1,4 @@
-﻿// <copyright file="AddInManager.cs" company="Allors bvba">
+// <copyright file="AddInManager.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -62,9 +62,9 @@ namespace ExcelAddIn
 
                 var httpClientHandler = new HttpClientHandler { UseDefaultCredentials = true };
                 var httpClient = new HttpClient(httpClientHandler)
-                        {
-                            BaseAddress = new Uri(ConfigurationManager.AppSettings[AllorsDatabaseAddressKey]),
-                        };
+                {
+                    BaseAddress = new Uri(ConfigurationManager.AppSettings[AllorsDatabaseAddressKey]),
+                };
 
                 this.database = new Database(httpClient);
                 this.workspace = new Workspace(Config.ObjectFactory);

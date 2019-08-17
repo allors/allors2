@@ -13,12 +13,12 @@ namespace Autotest.Testers
 
     public partial class AllorsMaterialFactoryFabTester : Tester
     {
-        public Model Model => this.Element.Template.Directive.Project.Model;
-
         public AllorsMaterialFactoryFabTester(Element element)
             : base(element)
         {
         }
+
+        public Model Model => this.Element.Template.Directive.Project.Model;
 
         public override string PropertyName => "Factory";
 
@@ -59,6 +59,12 @@ namespace Autotest.Testers
 
         public class Factory
         {
+            public Factory(AllorsMaterialFactoryFabTester tester, Class @class)
+            {
+                this.Tester = tester;
+                this.Class = @class;
+            }
+
             public AllorsMaterialFactoryFabTester Tester { get; }
 
             public Class Class { get; }
@@ -77,12 +83,6 @@ namespace Autotest.Testers
 
                     return null;
                 }
-            }
-
-            public Factory(AllorsMaterialFactoryFabTester tester, Class @class)
-            {
-                this.Tester = tester;
-                this.Class = @class;
             }
         }
     }

@@ -5,9 +5,9 @@
 
 namespace Allors.Workspace.Data
 {
-    using Allors.Workspace.Meta;
     using System;
     using System.Linq;
+    using Allors.Workspace.Meta;
 
     public class Fetch
     {

@@ -10,14 +10,14 @@ namespace Autotest.Html
 
     public partial class Text : INode
     {
-        public Scope InScope { get; set; }
-
         public Text(JToken json, Template template, INode parent)
         {
             this.Json = json;
             this.Template = template;
             this.Parent = parent;
         }
+
+        public Scope InScope { get; set; }
 
         public JToken Json { get; }
 

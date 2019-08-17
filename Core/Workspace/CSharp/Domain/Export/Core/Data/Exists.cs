@@ -11,9 +11,9 @@ namespace Allors.Workspace.Data
 
     public class Exists : IPropertyPredicate
     {
-        public string Parameter { get; set; }
-
         public Exists(IPropertyType propertyType = null) => this.PropertyType = propertyType;
+
+        public string Parameter { get; set; }
 
         public IPropertyType PropertyType { get; set; }
 

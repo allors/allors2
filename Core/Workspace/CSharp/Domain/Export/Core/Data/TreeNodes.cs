@@ -5,10 +5,10 @@
 
 namespace Allors.Workspace.Data
 {
-    using Allors.Workspace.Meta;
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using Allors.Workspace.Meta;
 
     public class TreeNodes : IEnumerable<TreeNode>
     {

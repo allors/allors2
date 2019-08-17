@@ -55,8 +55,6 @@ namespace Autotest.Testers
 
         public string NameAttributeValue => this.Element.Attributes.FirstOrDefault(v => v.Name?.ToLowerInvariant() == NameAttribute)?.Value;
 
-        private string RoleTypeAttributeValue => this.Element.Attributes.FirstOrDefault(v => string.Equals(v.Name, "[roleType]", StringComparison.OrdinalIgnoreCase))?.Value;
-
         public override string PropertyName
         {
             get
@@ -115,6 +113,8 @@ namespace Autotest.Testers
                 return null;
             }
         }
+
+        private string RoleTypeAttributeValue => this.Element.Attributes.FirstOrDefault(v => string.Equals(v.Name, "[roleType]", StringComparison.OrdinalIgnoreCase))?.Value;
 
         public override string ToString() => $"{base.ToString()} Type[{this.Type}] RoleType[{this.RoleType}] NameAttributeValue[{this.NameAttributeValue}] RoleTypeAttributeValue[{this.RoleTypeAttributeValue}]";
     }

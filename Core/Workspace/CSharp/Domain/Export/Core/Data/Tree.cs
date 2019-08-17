@@ -5,10 +5,10 @@
 
 namespace Allors.Workspace.Data
 {
-    using Allors.Workspace.Meta;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using Allors.Workspace.Meta;
 
     public class Tree
     {
@@ -21,6 +21,17 @@ namespace Allors.Workspace.Data
         public IComposite Composite { get; }
 
         public TreeNodes Nodes { get; }
+
+        public string DebugView
+        {
+            get
+            {
+                var toString = new StringBuilder();
+                toString.Append(this.Composite.Name + "\n");
+                this.DebugNodeView(toString, this.Nodes, 1);
+                return toString.ToString();
+            }
+        }
 
         public Tree Add(IEnumerable<IRelationType> relationTypes) => this.Add(relationTypes.Select(v => v.RoleType));
 
@@ -63,17 +74,6 @@ namespace Allors.Workspace.Data
                 Composite = this.Composite.Id,
                 Nodes = this.Nodes.Select(v => v.ToJson()).ToArray(),
             };
-
-        public string DebugView
-        {
-            get
-            {
-                var toString = new StringBuilder();
-                toString.Append(this.Composite.Name + "\n");
-                this.DebugNodeView(toString, this.Nodes, 1);
-                return toString.ToString();
-            }
-        }
 
         private void DebugNodeView(StringBuilder toString, TreeNodes nodes, int level)
         {

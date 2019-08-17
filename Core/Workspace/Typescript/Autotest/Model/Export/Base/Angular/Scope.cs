@@ -10,8 +10,8 @@ namespace Autotest.Angular
 
     public partial class Scope
     {
-        public string Name { get; set; }
-
         public HashSet<INode> Nodes = new HashSet<INode>();
+
+        public string Name { get; set; }
     }
 }

@@ -43,14 +43,14 @@ namespace ExcelAddIn
         private Sheets sheets;
         private Commands commands;
 
-        public bool IsLoggedIn { get; set; }
-
         public AddInManager(Application application, CustomTaskPaneCollection customTaskPanes, ApplicationFactory factory)
         {
             this.application = application;
             this.customTaskPanes = customTaskPanes;
             this.factory = factory;
         }
+
+        public bool IsLoggedIn { get; set; }
 
         protected Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 

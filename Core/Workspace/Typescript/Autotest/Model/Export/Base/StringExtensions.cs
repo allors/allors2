@@ -1,4 +1,4 @@
-﻿// <copyright file="StringExtensions.cs" company="Allors bvba">
+// <copyright file="StringExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,8 +11,6 @@ namespace Autotest
 
     public static partial class StringExtensions
     {
-        private static Regex NonAlphaNumericRegex => new Regex("[^a-zA-Z0-9]");
-
         private static readonly HashSet<string> ReservedKeywords = new HashSet<string>
             {
                 "abstract",
@@ -95,6 +93,8 @@ namespace Autotest
                 "volatile",
                 "while",
             };
+
+        private static Regex NonAlphaNumericRegex => new Regex("[^a-zA-Z0-9]");
 
         public static string Capitalize(this string value)
         {
