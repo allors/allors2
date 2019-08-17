@@ -18,7 +18,6 @@ namespace Allors.Adapters.Memory
     {
         private IObject[] defaultObjectArray;
         private Extent parent;
-        private List<Strategy> strategies;
 
         protected Extent(Session session) => this.Session = session;
 
@@ -27,7 +26,7 @@ namespace Allors.Adapters.Memory
             get
             {
                 this.Evaluate();
-                return this.strategies.Count;
+                return this.Strategies.Count;
             }
         }
 
@@ -59,11 +58,7 @@ namespace Allors.Adapters.Memory
 
         internal ExtentSort Sorter { get; private set; }
 
-        protected List<Strategy> Strategies
-        {
-            get => this.strategies;
-            set => this.strategies = value;
-        }
+        protected List<Strategy> Strategies { get; set; }
 
         public override Allors.Extent AddSort(IRoleType roleType) => this.AddSort(roleType, SortDirection.Ascending);
 
@@ -89,7 +84,7 @@ namespace Allors.Adapters.Memory
             this.Evaluate();
 
             var i = index;
-            foreach (var strategy in this.strategies)
+            foreach (var strategy in this.Strategies)
             {
                 array.SetValue(strategy.GetObject(), i);
                 ++i;
@@ -99,7 +94,7 @@ namespace Allors.Adapters.Memory
         public override IEnumerator GetEnumerator()
         {
             this.Evaluate();
-            return new ExtentEnumerator(this.strategies.GetEnumerator());
+            return new ExtentEnumerator(this.Strategies.GetEnumerator());
         }
 
         public override int IndexOf(object value)
@@ -108,7 +103,7 @@ namespace Allors.Adapters.Memory
             var containedObject = (IObject)value;
 
             var i = 0;
-            foreach (var strategy in this.strategies)
+            foreach (var strategy in this.Strategies)
             {
                 if (strategy.ObjectId.Equals(containedObject.Strategy.ObjectId))
                 {
@@ -126,12 +121,12 @@ namespace Allors.Adapters.Memory
             this.Evaluate();
             var clrType = this.Session.GetTypeForObjectType(this.ObjectType);
 
-            if (this.strategies.Count > 0)
+            if (this.Strategies.Count > 0)
             {
-                var objects = (IObject[])Array.CreateInstance(clrType, this.strategies.Count);
+                var objects = (IObject[])Array.CreateInstance(clrType, this.Strategies.Count);
 
                 var i = 0;
-                foreach (var strategy in this.strategies)
+                foreach (var strategy in this.Strategies)
                 {
                     objects[i] = strategy.GetObject();
                     ++i;
@@ -146,11 +141,11 @@ namespace Allors.Adapters.Memory
         public override IObject[] ToArray(Type type)
         {
             this.Evaluate();
-            if (this.strategies.Count > 0)
+            if (this.Strategies.Count > 0)
             {
-                var objects = (IObject[])Array.CreateInstance(type, this.strategies.Count);
+                var objects = (IObject[])Array.CreateInstance(type, this.Strategies.Count);
                 var i = 0;
-                foreach (var strategy in this.strategies)
+                foreach (var strategy in this.Strategies)
                 {
                     objects[i] = strategy.GetObject();
                     ++i;
@@ -165,18 +160,18 @@ namespace Allors.Adapters.Memory
         internal bool ContainsStrategy(Strategy strategy)
         {
             this.Evaluate();
-            return this.strategies.Contains(strategy);
+            return this.Strategies.Contains(strategy);
         }
 
         internal List<Strategy> GetEvaluatedStrategies()
         {
             this.Evaluate();
-            return this.strategies;
+            return this.Strategies;
         }
 
         internal void Invalidate()
         {
-            this.strategies = null;
+            this.Strategies = null;
             if (this.parent != null)
             {
                 this.parent.Invalidate();
@@ -188,7 +183,7 @@ namespace Allors.Adapters.Memory
         protected override IObject GetItem(int index)
         {
             this.Evaluate();
-            return this.strategies[index].GetObject();
+            return this.Strategies[index].GetObject();
         }
     }
 }

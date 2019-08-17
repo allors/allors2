@@ -11,20 +11,18 @@ namespace Allors.Repository.Generation
 
     public class AllorsDirectoryInfo
     {
-        private readonly AllorsDirectoryInfo parent;
-
         public AllorsDirectoryInfo(DirectoryInfo directoryInfo)
         {
             this.DirectoryInfo = directoryInfo;
             if (directoryInfo.Parent != null)
             {
-                this.parent = new AllorsDirectoryInfo(directoryInfo.Parent);
+                this.Parent = new AllorsDirectoryInfo(directoryInfo.Parent);
             }
         }
 
         internal DirectoryInfo DirectoryInfo { get; }
 
-        internal AllorsDirectoryInfo Parent => this.parent;
+        internal AllorsDirectoryInfo Parent { get; }
 
         public string GetRelativeName(DirectoryInfo baseDirectoryInfo) => this.GetRelativeName(new AllorsDirectoryInfo(baseDirectoryInfo));
 
@@ -48,7 +46,7 @@ namespace Allors.Repository.Generation
                 if (!this.DirectoryInfo.FullName.Equals(root.DirectoryInfo.FullName))
                 {
                     ancestors.Add(this);
-                    this.parent.BuildAncestors(root, ancestors);
+                    this.Parent.BuildAncestors(root, ancestors);
                 }
             }
         }
@@ -60,7 +58,7 @@ namespace Allors.Repository.Generation
                 return this;
             }
 
-            return this.parent.GetCommonAncestor(destination);
+            return this.Parent.GetCommonAncestor(destination);
         }
 
         private bool IsAncestor(AllorsDirectoryInfo ancestor)
@@ -70,9 +68,9 @@ namespace Allors.Repository.Generation
                 return true;
             }
 
-            if (this.parent != null)
+            if (this.Parent != null)
             {
-                return this.parent.IsAncestor(ancestor);
+                return this.Parent.IsAncestor(ancestor);
             }
 
             return false;

@@ -13,14 +13,13 @@ namespace Allors.Adapters.Object.SqlClient
     public class Schema
     {
         public readonly bool Exists;
-        private readonly Dictionary<string, Dictionary<string, SchemaIndex>> indexByIndexNameByTableName;
 
         public Schema(Database database)
         {
             this.TableByName = new Dictionary<string, SchemaTable>();
             this.TableTypeByName = new Dictionary<string, SchemaTableType>();
             this.ProcedureByName = new Dictionary<string, SchemaProcedure>();
-            this.indexByIndexNameByTableName = new Dictionary<string, Dictionary<string, SchemaIndex>>();
+            this.IndexByIndexNameByTableName = new Dictionary<string, Dictionary<string, SchemaIndex>>();
 
             using (var connection = new SqlConnection(database.ConnectionString))
             {
@@ -195,10 +194,10 @@ WHERE
                                 tableName = tableName.Trim().ToLowerInvariant();
                                 indexName = indexName.Trim().ToLowerInvariant();
 
-                                if (!this.indexByIndexNameByTableName.TryGetValue(tableName, out var indexByLowercaseIndexName))
+                                if (!this.IndexByIndexNameByTableName.TryGetValue(tableName, out var indexByLowercaseIndexName))
                                 {
                                     indexByLowercaseIndexName = new Dictionary<string, SchemaIndex>();
-                                    this.indexByIndexNameByTableName[tableName] = indexByLowercaseIndexName;
+                                    this.IndexByIndexNameByTableName[tableName] = indexByLowercaseIndexName;
                                 }
 
                                 if (!indexByLowercaseIndexName.TryGetValue(indexName, out var index))
@@ -223,7 +222,7 @@ WHERE
 
         public Dictionary<string, SchemaProcedure> ProcedureByName { get; }
 
-        public Dictionary<string, Dictionary<string, SchemaIndex>> IndexByIndexNameByTableName => this.indexByIndexNameByTableName;
+        public Dictionary<string, Dictionary<string, SchemaIndex>> IndexByIndexNameByTableName { get; }
 
         public SchemaTable GetTable(string tableName)
         {
@@ -245,7 +244,7 @@ WHERE
 
         public SchemaIndex GetIndex(string tableName, string indexName)
         {
-            if (this.indexByIndexNameByTableName.TryGetValue(tableName.ToLowerInvariant(), out var indexByLowercaseIndexName))
+            if (this.IndexByIndexNameByTableName.TryGetValue(tableName.ToLowerInvariant(), out var indexByLowercaseIndexName))
             {
                 indexByLowercaseIndexName.TryGetValue(indexName.ToLowerInvariant(), out var index);
                 return index;

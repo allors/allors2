@@ -1,4 +1,4 @@
-﻿// <copyright file="UnitTest.cs" company="Allors bvba">
+// <copyright file="UnitTest.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -1115,7 +1115,6 @@ namespace Allors.Adapters
                     var aLarge = new StringBuilder().Insert(0, "a", 100000).ToString();
                     var bLarge = new StringBuilder().Insert(0, "b", 100000).ToString();
                     var cLarge = new StringBuilder().Insert(0, "c", 100000).ToString();
-
                     {
                         var values = C1.Create(this.Session);
                         values.C1StringLarge = aLarge;
@@ -1295,7 +1294,6 @@ namespace Allors.Adapters
                     var binary1 = new byte[] { 0 };
                     var binary2 = new byte[] { 1, 2 };
                     var binary3 = new byte[] { 3, 4, 5 };
-
                     {
                         var values = C1.Create(this.Session);
                         values.C1AllorsBinary = binary1;

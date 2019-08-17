@@ -34,7 +34,7 @@ namespace Tests
                 Predicate = new Equals
                 {
                     PropertyType = M.Person.FirstName,
-                    Value = "John"
+                    Value = "John",
                 },
             };
 
@@ -66,7 +66,7 @@ namespace Tests
                                                                                 PropertyType = M.Person.LastName,
                                                                                 Value = "Doe"
                                                                             }
-                                                                    }
+                                                                    },
                 },
             };
 

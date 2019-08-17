@@ -1513,7 +1513,7 @@ namespace Allors.Domain
                     "Zimbabwe",
                     "ZW",
                     "ZWE",
-                    "716"
+                    "716",
                 },
             };
 

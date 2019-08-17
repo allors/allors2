@@ -20,8 +20,6 @@ namespace Allors.Adapters.Memory
         private static readonly IObject[] EmptyObjects = { };
 
         private readonly Dictionary<IObjectType, IObjectType[]> concreteClassesByObjectType;
-        private ChangeSet changeSet;
-
         private bool busyCommittingOrRollingBack;
 
         private Dictionary<long, Strategy> strategyByObjectId;
@@ -40,7 +38,7 @@ namespace Allors.Adapters.Memory
 
             this.concreteClassesByObjectType = new Dictionary<IObjectType, IObjectType[]>();
 
-            this.changeSet = new ChangeSet();
+            this.MemoryChangeSet = new ChangeSet();
 
             this.Reset();
         }
@@ -53,7 +51,7 @@ namespace Allors.Adapters.Memory
 
         public bool IsProfilingEnabled => false;
 
-        internal ChangeSet MemoryChangeSet => this.changeSet;
+        internal ChangeSet MemoryChangeSet { get; private set; }
 
         internal Database MemoryDatabase { get; }
 
@@ -96,7 +94,7 @@ namespace Allors.Adapters.Memory
                         }
                     }
 
-                    this.changeSet = new ChangeSet();
+                    this.MemoryChangeSet = new ChangeSet();
                 }
                 finally
                 {
@@ -127,7 +125,7 @@ namespace Allors.Adapters.Memory
                         }
                     }
 
-                    this.changeSet = new ChangeSet();
+                    this.MemoryChangeSet = new ChangeSet();
                 }
                 finally
                 {
@@ -226,11 +224,11 @@ namespace Allors.Adapters.Memory
         {
             try
             {
-                return this.changeSet;
+                return this.MemoryChangeSet;
             }
             finally
             {
-                this.changeSet = new ChangeSet();
+                this.MemoryChangeSet = new ChangeSet();
             }
         }
 
@@ -275,7 +273,7 @@ namespace Allors.Adapters.Memory
             var strategy = new Strategy(this, objectType, ++this.currentId, Memory.Database.IntialVersion);
             this.AddStrategy(strategy);
 
-            this.changeSet.OnCreated(strategy.ObjectId);
+            this.MemoryChangeSet.OnCreated(strategy.ObjectId);
 
             return strategy.GetObject();
         }
@@ -300,7 +298,7 @@ namespace Allors.Adapters.Memory
             strategy = new Strategy(this, objectType, objectId, objectVersion);
             this.AddStrategy(strategy);
 
-            this.changeSet.OnCreated(strategy.ObjectId);
+            this.MemoryChangeSet.OnCreated(strategy.ObjectId);
 
             return strategy;
         }

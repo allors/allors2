@@ -107,7 +107,7 @@ namespace Allors.Workspace
                                                                        .ObjectType.Name,
                                                                    Roles = new object[0][],
                                                                    Methods = new string[0][]
-                                                               }
+                                                               },
                                                        },
                     };
 

@@ -16,15 +16,13 @@ namespace Allors.Workspace.Meta
 
     public sealed partial class ConcreteMethodType
     {
-        private readonly MethodType methodType;
-
         public ConcreteMethodType(Class @class, MethodType methodType)
         {
             this.Class = @class;
-            this.methodType = methodType;
+            this.MethodType = methodType;
         }
 
-        public MethodType MethodType => this.methodType;
+        public MethodType MethodType { get; private set; }
 
         public Class Class { get; private set; }
 
@@ -57,7 +55,7 @@ namespace Allors.Workspace.Meta
             {
                 foreach (var domain in sortedDomains)
                 {
-                    var methodName = domain.Name + this.methodType.Name;
+                    var methodName = domain.Name + this.MethodType.Name;
                     var extensionMethodInfos = GetExtensionMethods(extensionMethods, @interface.ClrType, methodName);
                     if (extensionMethodInfos.Length > 1)
                     {
@@ -97,7 +95,7 @@ namespace Allors.Workspace.Meta
             {
                 foreach (var domain in sortedDomains)
                 {
-                    var methodName = domain.Name + this.methodType.Name;
+                    var methodName = domain.Name + this.MethodType.Name;
 
                     var methodInfo = this.Class.ClrType.GetTypeInfo().GetDeclaredMethod(methodName);
                     if (methodInfo != null)

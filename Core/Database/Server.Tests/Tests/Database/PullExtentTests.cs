@@ -81,7 +81,7 @@ namespace Server.Tests
                                                                         {
                                                                             new Result { Name = "Datas" },
                                                                         },
-                                                      }
+                                                      },
                                               },
             };
 
@@ -115,7 +115,7 @@ namespace Server.Tests
                           {
                               ExtentRef = Organisations.ExtentByName,
                               Arguments = new Dictionary<string, object> { ["name"] = "Acme" },
-                          }
+                          },
                   },
             };
 
@@ -145,7 +145,7 @@ namespace Server.Tests
                           {
                               ExtentRef = Organisations.ExtentByName,
                               Arguments = new Dictionary<string, object> { ["name"] = "Acme" },
-                          }
+                          },
                   },
             };
 

@@ -47,8 +47,6 @@ namespace Allors.Meta
 
         public bool Workspace => this.RelationType.Workspace;
 
-        IObjectType IRoleType.ObjectType => this.ObjectType;
-
         IObjectType IPropertyType.ObjectType => this.objectType;
 
         public ObjectType ObjectType

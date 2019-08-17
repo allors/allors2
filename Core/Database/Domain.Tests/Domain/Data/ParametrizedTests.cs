@@ -70,7 +70,7 @@ namespace Tests
                                             PropertyType = M.Person.LastName,
                                             Parameter = "lastName"
                                         }
-                                }
+                                },
                 },
             };
 
@@ -109,10 +109,9 @@ namespace Tests
                                     PropertyType = M.Person.LastName,
                                     Parameter = "lastName"
                                 }
-                        }
+                        },
                 },
             };
-
             {
                 var arguments = new Dictionary<string, object>
                                     {
@@ -150,7 +149,7 @@ namespace Tests
                             PropertyType = M.Person.Gender,
                             Parameter = "gender"
                         }
-                    }
+                    },
                 },
             };
 
@@ -182,7 +181,7 @@ namespace Tests
                             PropertyType = M.Person.Gender,
                             Parameter = "gender"
                         }
-                    }
+                    },
                 },
             };
 
@@ -215,7 +214,7 @@ namespace Tests
                                 }
                             }
                         }
-                    }
+                    },
                 },
             };
 
@@ -248,7 +247,7 @@ namespace Tests
                                                                                                                  }
                                                                                              }
                                                                             }
-                                                                    }
+                                                                    },
                 },
             };
 

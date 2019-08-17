@@ -15,27 +15,17 @@ namespace Allors.Meta
     /// </summary>
     public interface IRoleType : IPropertyType
     {
-        string SingularName { get; }
-
         string SingularPropertyName { get; }
 
         string SingularFullName { get; }
-
-        string PluralName { get; }
 
         string PluralPropertyName { get; }
 
         string PluralFullName { get; }
 
-        IObjectType ObjectType { get; }
-
         IAssociationType AssociationType { get; }
 
         IRelationType RelationType { get; }
-
-        bool IsMany { get; }
-
-        bool IsOne { get; }
 
         int? Size { get; }
 

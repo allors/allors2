@@ -27,7 +27,7 @@ namespace Allors.Domain
             {
                 Predicate = new Equals(this.Meta.Name)
                 {
-                    Parameter = "name"
+                    Parameter = "name",
                 },
             };
 

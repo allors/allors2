@@ -9,25 +9,23 @@ namespace Allors.Adapters.Object.Npgsql
 
     public class SchemaTable
     {
-        private readonly Dictionary<string, SchemaTableColumn> columnByLowercaseColumnName;
-
         public SchemaTable(Schema schema, string name)
         {
             this.Schema = schema;
             this.Name = name;
 
-            this.columnByLowercaseColumnName = new Dictionary<string, SchemaTableColumn>();
+            this.ColumnByLowercaseColumnName = new Dictionary<string, SchemaTableColumn>();
         }
 
         public string Name { get; }
 
-        public Dictionary<string, SchemaTableColumn> ColumnByLowercaseColumnName => this.columnByLowercaseColumnName;
+        public Dictionary<string, SchemaTableColumn> ColumnByLowercaseColumnName { get; }
 
         public Schema Schema { get; }
 
         public SchemaTableColumn GetColumn(string columnName)
         {
-            this.columnByLowercaseColumnName.TryGetValue(columnName.ToLowerInvariant(), out var tableColumn);
+            this.ColumnByLowercaseColumnName.TryGetValue(columnName.ToLowerInvariant(), out var tableColumn);
             return tableColumn;
         }
 

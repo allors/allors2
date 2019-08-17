@@ -3431,7 +3431,6 @@ namespace Allors.Adapters
             {
                 init();
                 this.Populate();
-
                 {
                     var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddEquals(MetaS1234.Instance.ClassName, "c1");

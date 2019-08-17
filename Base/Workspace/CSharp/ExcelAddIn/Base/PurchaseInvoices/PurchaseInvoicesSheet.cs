@@ -268,7 +268,7 @@ namespace Allors.Excel.PurchaseInvoices
                                 .Add(M.PurchaseInvoice.BilledFrom)
                                 .Add(M.PurchaseInvoice.Currency)
                                 .Add(M.PurchaseInvoice.PurchaseInvoiceState)
-                        }
+                        },
                     } ,
                 },
             };
@@ -288,7 +288,7 @@ namespace Allors.Excel.PurchaseInvoices
                         {
                             Include = new Tree(M.Payment.Interface)
                                 .Add(M.Payment.PaymentApplications, this.PaymentApplicationTree)
-                        }
+                        },
                     } ,
                 },
             };

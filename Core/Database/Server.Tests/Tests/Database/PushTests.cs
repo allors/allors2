@@ -70,7 +70,7 @@ namespace Server.Tests
                                                                                                   T = M.Organisation.Name.PropertyName,
                                                                                                   S = "Acme"
                                                                                               }
-                                                                                      }
+                                                                                      },
                                                                                   },
                                                           },
             };

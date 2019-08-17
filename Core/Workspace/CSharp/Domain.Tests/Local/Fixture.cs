@@ -1,4 +1,4 @@
-﻿// <copyright file="Fixture.cs" company="Allors bvba">
+// <copyright file="Fixture.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -25,7 +25,7 @@ namespace Tests.Local
                                         new object[] { "LastName", "rw", "Van Exem" },
                                         new object[] { "BirthDate", "rw", "1973-03-27T18:00:00Z" },
                                         new object[] { "IsStudent", "rw", true }
-                                    }
+                                    },
                     },
                     new SyncResponseObject
                     {
@@ -37,7 +37,7 @@ namespace Tests.Local
                                     new object[] { "FirstName", "rw", "Patrick" },
                                     new object[] { "LastName", "rw", "De Boeck" },
                                     new object[] { "IsStudent", "rw", false }
-                                }
+                                },
                     },
                     new SyncResponseObject
                     {
@@ -49,7 +49,7 @@ namespace Tests.Local
                             new object[] { "FirstName", "rw", "Martien" },
                             new object[] { "MiddleName", "rw", "van" },
                             new object[] { "LastName", "rw", "Knippenberg" },
-                        }
+                        },
                     },
                     new SyncResponseObject
                     {
@@ -60,12 +60,12 @@ namespace Tests.Local
                         {
                             new object[] { "Name", "rw", "Acme" },
                             new object[] { "Owner", "rw", "1" },
-                            new object[] { "Employees", "rw", new[] { "1", "2", "3" } }
+                            new object[] { "Employees", "rw", new[] { "1", "2", "3" } },
                         },
                         Methods = new[]
                         {
                             new[] { "JustDoIt", "x" }
-                        }
+                        },
                     },
                     new SyncResponseObject
                     {
@@ -76,12 +76,12 @@ namespace Tests.Local
                         {
                             new object[] { "Name", "rw", "Ocme" },
                             new object[] { "Owner", "rw", "2" },
-                            new object[] { "Employees", "rw", new[] { "1" } }
+                            new object[] { "Employees", "rw", new[] { "1" } },
                         },
                         Methods = new[]
                         {
                             new[] { "JustDoIt", string.Empty }
-                        }
+                        },
                     },
                     new SyncResponseObject
                     {
@@ -97,7 +97,7 @@ namespace Tests.Local
                         {
                             new[] { "JustDoIt", "" }
                         }
-                    }
+                    },
                 },
         };
     }

@@ -136,7 +136,7 @@ namespace Allors.Adapters
                     {
                         Kind = Protocol.Data.PredicateKind.Equals,
                         PropertyType = M.C1.C1AllorsString.Id,
-                        Value = "ᴀbra"
+                        Value = "ᴀbra",
                     },
                 };
 

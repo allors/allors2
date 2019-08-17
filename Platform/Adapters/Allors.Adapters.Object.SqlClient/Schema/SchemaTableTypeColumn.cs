@@ -7,14 +7,13 @@ namespace Allors.Adapters.Object.SqlClient
 {
     public class SchemaTableTypeColumn
     {
-        private readonly string dataType;
         private readonly int? scale;
 
         public SchemaTableTypeColumn(SchemaTableType table, string name, string dataType, int? maximumLength, int? precision, int? scale)
         {
             this.Table = table;
             this.Name = name;
-            this.dataType = dataType;
+            this.DataType = dataType;
             this.MaximumLength = maximumLength;
             this.Precision = precision;
             this.scale = scale;
@@ -24,30 +23,30 @@ namespace Allors.Adapters.Object.SqlClient
 
         public string Name { get; }
 
-        public string DataType => this.dataType;
+        public string DataType { get; }
 
         public string SqlType
         {
             get
             {
-                if (this.dataType.Equals("nvarchar"))
+                if (this.DataType.Equals("nvarchar"))
                 {
                     var length = this.MaximumLength == -1 ? "max" : this.MaximumLength.ToString();
                     return "nvarchar(" + length + ")";
                 }
 
-                if (this.dataType.Equals("varbinary"))
+                if (this.DataType.Equals("varbinary"))
                 {
                     var length = this.MaximumLength == -1 ? "max" : this.MaximumLength.ToString();
                     return "varbinary(" + length + ")";
                 }
 
-                if (this.dataType.Equals("decimal"))
+                if (this.DataType.Equals("decimal"))
                 {
                     return "decimal(" + this.Precision + "," + this.scale + ")";
                 }
 
-                return this.dataType;
+                return this.DataType;
             }
         }
 

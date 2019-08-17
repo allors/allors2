@@ -24,8 +24,6 @@ namespace Allors.Domain
         private readonly AccumulatedChangeSet accumulatedChangeSet;
 
         private Dictionary<string, object> properties;
-        private int generation;
-
         private HashSet<IObject> forced;
 
         private DerivationNodesBase derivationNodes;
@@ -46,7 +44,7 @@ namespace Allors.Domain
 
             this.accumulatedChangeSet = new AccumulatedChangeSet();
 
-            this.generation = 0;
+            this.Generation = 0;
         }
 
         public DerivationConfig Config { get; }
@@ -63,7 +61,7 @@ namespace Allors.Domain
 
         public ISet<Object> DerivedObjects => this.derivedObjects;
 
-        public int Generation => this.generation;
+        public int Generation { get; private set; }
 
         public object this[string name]
         {
@@ -192,7 +190,7 @@ namespace Allors.Domain
 
         public void Add(Object derivable)
         {
-            if (this.generation == 0)
+            if (this.Generation == 0)
             {
                 throw new Exception("Add can only be called during a derivation. Use Derive(intial) instead.");
             }
@@ -221,7 +219,7 @@ namespace Allors.Domain
 
         public void AddDependency(Object dependent, Object dependee)
         {
-            if (this.generation == 0)
+            if (this.Generation == 0)
             {
                 throw new Exception("AddDependency can only be called during a derivation.");
             }
@@ -241,7 +239,7 @@ namespace Allors.Domain
 
         public IValidation Derive(params IObject[] forceDeriveOn)
         {
-            if (this.generation != 0)
+            if (this.Generation != 0)
             {
                 throw new Exception("Derive can only be called once. Create a new Derivation object.");
             }
@@ -270,8 +268,8 @@ namespace Allors.Domain
 
             while (changedObjects.Count > 0)
             {
-                this.generation++;
-                this.OnStartedGeneration(this.generation);
+                this.Generation++;
+                this.OnStartedGeneration(this.Generation);
 
                 var newObjects = this.Session.Instantiate(changeSet.Created);
                 foreach (var newObject in newObjects)

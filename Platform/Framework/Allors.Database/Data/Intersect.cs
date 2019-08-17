@@ -33,7 +33,7 @@ namespace Allors.Data
 
         bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.Any(v => v.HasMissingArguments(arguments));
 
-        Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
+        Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments)
         {
             var extent = session.Intersect(this.Operands[0].Build(session, arguments), this.Operands[1].Build(session, arguments));
             foreach (var sort in this.Sorting)

@@ -11,20 +11,18 @@ namespace Allors.Development.Repository.Storage
 
     public class AllorsDirectoryInfo
     {
-        private readonly AllorsDirectoryInfo parent;
-
         public AllorsDirectoryInfo(DirectoryInfo directoryInfo)
         {
             this.DirectoryInfo = directoryInfo;
             if (directoryInfo.Parent != null)
             {
-                this.parent = new AllorsDirectoryInfo(directoryInfo.Parent);
+                this.Parent = new AllorsDirectoryInfo(directoryInfo.Parent);
             }
         }
 
         internal DirectoryInfo DirectoryInfo { get; private set; }
 
-        internal AllorsDirectoryInfo Parent => this.parent;
+        internal AllorsDirectoryInfo Parent { get; private set; }
 
         public string GetRelativeName(DirectoryInfo baseDirectoryInfo) => this.GetRelativeName(new AllorsDirectoryInfo(baseDirectoryInfo));
 
@@ -43,12 +41,12 @@ namespace Allors.Development.Repository.Storage
                 if (!this.DirectoryInfo.FullName.Equals(root.DirectoryInfo.FullName))
                 {
                     ancestors.Add(this);
-                    this.parent.BuildAncestors(root, ancestors);
+                    this.Parent.BuildAncestors(root, ancestors);
                 }
             }
         }
 
-        private AllorsDirectoryInfo GetCommonAncestor(AllorsDirectoryInfo destination) => destination.IsAncestor(this) ? this : this.parent.GetCommonAncestor(destination);
+        private AllorsDirectoryInfo GetCommonAncestor(AllorsDirectoryInfo destination) => destination.IsAncestor(this) ? this : this.Parent.GetCommonAncestor(destination);
 
         private bool IsAncestor(AllorsDirectoryInfo ancestor)
         {
@@ -57,9 +55,9 @@ namespace Allors.Development.Repository.Storage
                 return true;
             }
 
-            if (this.parent != null)
+            if (this.Parent != null)
             {
-                return this.parent.IsAncestor(ancestor);
+                return this.Parent.IsAncestor(ancestor);
             }
 
             return false;

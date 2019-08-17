@@ -28,7 +28,6 @@ namespace Tests
         public void Populated()
         {
             var data = new DataBuilder(this.Session).Build();
-
             {
                 // Wintertime
                 var expected = new DateTime(2018, 1, 1, 12, 0, 0, DateTimeKind.Utc);

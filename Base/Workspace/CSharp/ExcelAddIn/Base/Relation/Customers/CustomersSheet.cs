@@ -171,7 +171,7 @@ namespace Allors.Excel.Customers
                                 .Add(M.Organisation.PartyContactMechanisms, this.PartyContactMechanismsTree)
                                 .Add(M.Organisation.CurrentOrganisationContactRelationships, this.CurrentOrganisationContactRelationshipTree)
                         }
-                    }
+                    },
                 },
             };
             this.result = await this.Load(pull);

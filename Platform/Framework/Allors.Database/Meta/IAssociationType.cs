@@ -15,25 +15,17 @@ namespace Allors.Meta
     /// </summary>
     public interface IAssociationType : IPropertyType
     {
-        string SingularName { get; }
-
         string SingularPropertyName { get; }
 
         string SingularFullName { get; }
-
-        string PluralName { get; }
 
         string PluralPropertyName { get; }
 
         string PluralFullName { get; }
 
-        bool IsMany { get; }
-
         IRelationType RelationType { get; }
 
-        IComposite ObjectType { get; }
-
-        bool IsOne { get; }
+        new IComposite ObjectType { get; }
 
         IRoleType RoleType { get; }
     }

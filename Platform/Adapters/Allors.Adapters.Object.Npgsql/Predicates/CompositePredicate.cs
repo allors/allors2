@@ -13,12 +13,10 @@ namespace Allors.Adapters.Object.Npgsql
 
     internal abstract class CompositePredicate : Predicate, ICompositePredicate
     {
-        private readonly List<Predicate> filters;
-
         protected CompositePredicate(ExtentFiltered extent)
         {
             this.Extent = extent;
-            this.filters = new List<Predicate>(4);
+            this.Filters = new List<Predicate>(4);
 
             if (extent.Strategy != null)
             {
@@ -68,7 +66,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         protected ExtentFiltered Extent { get; }
 
-        protected List<Predicate> Filters => this.filters;
+        protected List<Predicate> Filters { get; }
 
         public ICompositePredicate AddAnd()
         {

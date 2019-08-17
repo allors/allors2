@@ -23,11 +23,6 @@ namespace Allors
     {
 
         /// <summary>
-        /// The contents of the role.
-        /// </summary>
-        private readonly string roleContents;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RelationNotLoadedEventArgs"/> class.
         /// </summary>
         /// <param name="relationTypeId">The relation type id.</param>
@@ -37,7 +32,7 @@ namespace Allors
         {
             this.RelationTypeId = relationTypeId;
             this.AssociationId = associationId;
-            this.roleContents = roleContents;
+            this.RoleContents = roleContents;
         }
 
         /// <summary>
@@ -56,7 +51,7 @@ namespace Allors
         /// Gets the role contents.
         /// </summary>
         /// <value>The role contents.</value>
-        public string RoleContents => this.roleContents;
+        public string RoleContents { get; }
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
@@ -64,6 +59,6 @@ namespace Allors
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString() => "RelationType: " + this.RelationTypeId + ", Association: " + this.AssociationId + ", Role: " + this.roleContents;
+        public override string ToString() => "RelationType: " + this.RelationTypeId + ", Association: " + this.AssociationId + ", Role: " + this.RoleContents;
     }
 }

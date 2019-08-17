@@ -9,17 +9,15 @@ namespace Allors.Adapters.Object.SqlClient
 
     public class SchemaProcedure
     {
-        private readonly string definition;
-
         public SchemaProcedure(Schema schema, string name, string definition)
         {
             this.Name = name;
-            this.definition = definition;
+            this.Definition = definition;
         }
 
         public string Name { get; }
 
-        public string Definition => this.definition;
+        public string Definition { get; }
 
         public override string ToString() => this.Name;
 

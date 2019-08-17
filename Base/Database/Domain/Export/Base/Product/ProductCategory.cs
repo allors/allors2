@@ -71,7 +71,6 @@ namespace Allors.Domain
             }
 
             this.Children = this.ProductCategoriesWherePrimaryParent.Union(this.ProductCategoriesWhereSecondaryParent).ToArray();
-
             {
                 var descendants = new List<ProductCategory>();
                 var children = this.Children.ToArray();

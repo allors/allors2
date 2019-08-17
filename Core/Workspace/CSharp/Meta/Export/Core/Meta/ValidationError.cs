@@ -15,11 +15,6 @@ namespace Allors.Workspace.Meta
     {
 
         /// <summary>
-        /// The object that contains the member.
-        /// </summary>
-        private readonly object source;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ValidationError"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
@@ -28,7 +23,7 @@ namespace Allors.Workspace.Meta
         /// <param name="members">The members.</param>
         public ValidationError(string message, object source, ValidationKind kind, string[] members)
         {
-            this.source = source;
+            this.Source = source;
             this.Members = members;
             this.Kind = kind;
             this.Message = message;
@@ -56,7 +51,7 @@ namespace Allors.Workspace.Meta
         /// Gets the object that contains the member.
         /// </summary>
         /// <value>The source.</value>
-        public object Source => this.source;
+        public object Source { get; private set; }
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.

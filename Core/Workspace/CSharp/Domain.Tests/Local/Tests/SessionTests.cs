@@ -223,11 +223,11 @@ namespace Tests.Local
             Assert.Null(ocme1.Manager);
             Assert.Null(icme1.Manager);
 
-            Assert.Equal(martien2, acme2.Owner); //x
+            Assert.Equal(martien2, acme2.Owner); // x
             Assert.Null(ocme2.Owner);
             Assert.Equal(martien2, icme2.Owner);
 
-            Assert.Equal(patrick2, acme2.Manager); //x
+            Assert.Equal(patrick2, acme2.Manager); // x
             Assert.Null(ocme2.Manager);
             Assert.Null(icme2.Manager);
         }
@@ -582,22 +582,24 @@ namespace Tests.Local
             Assert.True(exceptionThrown);
         }
 
-        //[Fact]
-        //public void methodCanExecute()
-        //{
-        //    var workspace = new Workspace();
-        //    workspace.Sync(Fixture.loadData);
+        /*
+        [Fact]
+        public void methodCanExecute()
+        {
+            var workspace = new Workspace();
+            workspace.Sync(Fixture.loadData);
 
-        //    var session = new Session(workspace);
+            var session = new Session(workspace);
 
-        //    var acme = session.Get("101") as Organisation;
-        //    var ocme = session.Get("102") as Organisation;
-        //    var icme = session.Get("102") as Organisation;
+            var acme = session.Get("101") as Organisation;
+            var ocme = session.Get("102") as Organisation;
+            var icme = session.Get("102") as Organisation;
 
-        //    Assert.True(acme.CanExecuteJustDoIt);
-        //    this.isFalse(ocme.CanExecuteJustDoIt);
-        //    this.isFalse(icme.CanExecuteJustDoIt);
-        //}
+            Assert.True(acme.CanExecuteJustDoIt);
+            this.isFalse(ocme.CanExecuteJustDoIt);
+            this.isFalse(icme.CanExecuteJustDoIt);
+        }
+        */
 
         [Fact]
         public void Get()

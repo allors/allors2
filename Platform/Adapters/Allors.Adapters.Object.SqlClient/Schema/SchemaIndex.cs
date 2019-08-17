@@ -7,18 +7,16 @@ namespace Allors.Adapters.Object.SqlClient
 {
     public class SchemaIndex
     {
-        private readonly string lowercaseName;
-
         public SchemaIndex(Schema schema, string name)
         {
             this.Schema = schema;
             this.Name = name;
-            this.lowercaseName = name.ToLowerInvariant();
+            this.LowercaseName = name.ToLowerInvariant();
         }
 
         public string Name { get; }
 
-        public string LowercaseName => this.lowercaseName;
+        public string LowercaseName { get; }
 
         public Schema Schema { get; }
 

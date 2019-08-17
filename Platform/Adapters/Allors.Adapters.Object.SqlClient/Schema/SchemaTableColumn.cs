@@ -7,7 +7,6 @@ namespace Allors.Adapters.Object.SqlClient
 {
     public class SchemaTableColumn
     {
-        private readonly string dataType;
         private readonly int? numericScale;
 
         public SchemaTableColumn(SchemaTable table, string name, string dataType, int? characterMaximumLength, int? numericPrecision, int? numericScale)
@@ -15,7 +14,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.Table = table;
             this.Name = name;
             this.LowercaseName = name.ToLowerInvariant();
-            this.dataType = dataType;
+            this.DataType = dataType;
             this.CharacterMaximumLength = characterMaximumLength;
             this.NumericPrecision = numericPrecision;
             this.numericScale = numericScale;
@@ -27,30 +26,30 @@ namespace Allors.Adapters.Object.SqlClient
 
         public string LowercaseName { get; }
 
-        public string DataType => this.dataType;
+        public string DataType { get; }
 
         public string SqlType
         {
             get
             {
-                if (this.dataType.Equals("nvarchar"))
+                if (this.DataType.Equals("nvarchar"))
                 {
                     var length = this.CharacterMaximumLength == -1 ? "max" : this.CharacterMaximumLength.ToString();
                     return "nvarchar(" + length + ")";
                 }
 
-                if (this.dataType.Equals("varbinary"))
+                if (this.DataType.Equals("varbinary"))
                 {
                     var length = this.CharacterMaximumLength == -1 ? "max" : this.CharacterMaximumLength.ToString();
                     return "varbinary(" + length + ")";
                 }
 
-                if (this.dataType.Equals("decimal"))
+                if (this.DataType.Equals("decimal"))
                 {
                     return "decimal(" + this.NumericPrecision + "," + this.numericScale + ")";
                 }
 
-                return this.dataType;
+                return this.DataType;
             }
         }
 

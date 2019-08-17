@@ -183,7 +183,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
                                 .Add(M.SalesInvoice.SalesInvoiceType)
 
                         }
-                    }
+                    },
                 },
             };
             this.result = await this.Load(pull);

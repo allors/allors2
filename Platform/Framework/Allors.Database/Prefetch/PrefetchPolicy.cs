@@ -18,8 +18,6 @@ namespace Allors
 
     public sealed class PrefetchPolicy : IEnumerable<PrefetchRule>
     {
-        private readonly Guid id;
-
         internal PrefetchPolicy(PrefetchRule[] rules)
         {
             if (rules == null)
@@ -28,10 +26,10 @@ namespace Allors
             }
 
             this.PrefetchRules = new List<PrefetchRule>(rules).ToArray();
-            this.id = Guid.NewGuid();
+            this.Id = Guid.NewGuid();
         }
 
-        public Guid Id => this.id;
+        public Guid Id { get; }
 
         public PrefetchRule[] PrefetchRules { get; }
 
