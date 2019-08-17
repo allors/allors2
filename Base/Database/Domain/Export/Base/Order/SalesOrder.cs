@@ -192,7 +192,6 @@ namespace Allors.Domain
                 salesOrderItem.AddSalesRep(SalesRepRelationships.SalesRep(salesOrderItem.ShipToParty, null, this.OrderDate));
 
                 // TODO: Use versioning
-
                 if (salesOrderItem.ExistPreviousProduct && !salesOrderItem.PreviousProduct.Equals(salesOrderItem.Product))
                 {
                     derivation.Validation.AddError(salesOrderItem, M.SalesOrderItem.Product, ErrorMessages.SalesOrderItemProductChangeNotAllowed);
@@ -247,7 +246,6 @@ namespace Allors.Domain
                 .Distinct()
                 .ToArray();
 
-
             if (this.ExistVatRegime && this.VatRegime.ExistVatClause)
             {
                 this.DerivedVatClause = this.VatRegime.VatClause;
@@ -294,7 +292,6 @@ namespace Allors.Domain
             }
 
             this.DerivedVatClause = this.ExistAssignedVatClause ? this.AssignedVatClause : this.DerivedVatClause;
-
 
             var salesOrderShipmentStates = new SalesOrderShipmentStates(this.Strategy.Session);
             var salesOrderPaymentStates = new SalesOrderPaymentStates(this.Strategy.Session);
@@ -576,8 +573,7 @@ namespace Allors.Domain
 
         private void Sync(ISession session)
         {
-            //session.Prefetch(this.SyncPrefetch, this);
-
+            // session.Prefetch(this.SyncPrefetch, this);
             foreach (SalesOrderItem orderItem in this.SalesOrderItems)
             {
                 orderItem.Sync(this);

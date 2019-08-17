@@ -1,10 +1,8 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="AutomatedAgent.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the Extent type.</summary>
-//-------------------------------------------------------------------------------------------------
 
 namespace Allors.Repository
 {
@@ -65,7 +63,6 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-
         }
 
         public void OnPreDerive() { }

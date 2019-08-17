@@ -233,6 +233,5 @@ namespace Allors.Adapters.Object.Npgsql
                 }
             }
         }
-
     }
 }

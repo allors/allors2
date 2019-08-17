@@ -385,7 +385,7 @@ namespace Allors.Adapters
                         Assert.Contains(to1, from.C1C1one2manies);
                         Assert.Equal(from, to1.C1WhereC1C1one2many);
 
-                        //TODO: Replicate to other variants
+                        // TODO: Replicate to other variants
                         fromAnother.RemoveC1C1one2many(to1);
 
                         mark();
@@ -465,7 +465,7 @@ namespace Allors.Adapters
 
                         from.C1C1one2manies = to1Array;
                         mark();
-                        Assert.Single(from.C1C1one2manies); //TODO: Add this to others
+                        Assert.Single(from.C1C1one2manies); // TODO: Add this to others
                         fromAnother.C1C1one2manies = to1Array;
                         mark();
                         Assert.Empty(from.C1C1one2manies);

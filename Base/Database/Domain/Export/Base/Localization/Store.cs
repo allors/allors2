@@ -98,11 +98,10 @@ namespace Allors.Domain
                 this.OutgoingShipmentCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
-            //if (!this.ExistWorkEffortCounter)
-            //{
+            // if (!this.ExistWorkEffortCounter)
+            // {
             //    this.WorkEffortCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            //}
-
+            // }
             if (!this.ExistBillingProcess)
             {
                 this.BillingProcess = new BillingProcesses(this.Strategy.Session).BillingForShipmentItems;

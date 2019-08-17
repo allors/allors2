@@ -185,7 +185,7 @@ namespace Allors.Domain
                                 $", Work Effort: {@this}, From: {from}, Through {through}";
                             derivation.Validation.AddError(@this, M.WorkEffort.WorkEffortPartyAssignmentsWhereAssignment, message);
                         }
-                        else if (worker != null)  // Sync a new WorkEffortPartyAssignment
+                        else if (worker != null) // Sync a new WorkEffortPartyAssignment
                         {
                             new WorkEffortPartyAssignmentBuilder(@this.Strategy.Session)
                                 .WithAssignment(@this)

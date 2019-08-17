@@ -34,7 +34,6 @@ namespace ExcelAddIn
 
         private async void ThisAddIn_Startup(object sender, EventArgs @event)
         {
-
         }
 
         private void ThisAddIn_Shutdown(object sender, EventArgs e)

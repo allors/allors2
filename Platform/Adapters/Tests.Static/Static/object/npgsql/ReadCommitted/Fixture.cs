@@ -27,7 +27,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
             this.Server = new PgServer(
                 pgVersion: "10.7.1",
                 addLocalUserAccessPermission: true,
-                //clearWorkingDirOnStart: true,
+                // clearWorkingDirOnStart: true,
                 pgServerParams: pgServerParams,
                 locale: "English_Belgium.1252");
 
@@ -45,5 +45,4 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
     public class Collection : ICollectionFixture<Fixture>
     {
     }
-
 }

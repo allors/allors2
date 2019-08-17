@@ -1,10 +1,9 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="Prefetcher.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the Session type.</summary>
-//-------------------------------------------------------------------------------------------------
+
 namespace Allors.Adapters.Object.Npgsql
 {
     using System;
@@ -99,7 +98,6 @@ namespace Allors.Adapters.Object.Npgsql
                 command.CommandType = CommandType.StoredProcedure;
                 command.AddObjectArrayParameter(references);
                 this.prefetchUnitRolesByClass[@class] = command;
-
             }
             else
             {

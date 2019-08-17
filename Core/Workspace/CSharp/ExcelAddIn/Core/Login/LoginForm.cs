@@ -42,7 +42,7 @@ namespace BaseExcelAddIn.Base
             AsyncContext.Run(
                 async () =>
                 {
-                    this.IsLoggedIn = await this.Database.Login(this.Uri, this.textBoxUser.Text,this.textBoxPassword.Text);
+                    this.IsLoggedIn = await this.Database.Login(this.Uri, this.textBoxUser.Text, this.textBoxPassword.Text);
                 });
 
             if (this.IsLoggedIn)

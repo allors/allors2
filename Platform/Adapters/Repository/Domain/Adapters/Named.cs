@@ -12,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface Named : Object
     {
-
         #region Allors
         [Id("ce43ca5e-4dfb-4fe1-98ea-17d8382e9531")]
         [AssociationId("c7070936-66b1-4f94-af88-40833b35ce37")]

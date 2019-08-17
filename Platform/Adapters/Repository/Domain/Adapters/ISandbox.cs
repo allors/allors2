@@ -12,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface ISandbox : Object
     {
-
         #region Allors
         [Id("38361bff-62b3-4607-8291-cfdaeedbd36d")]
         [AssociationId("f5403207-14c6-422e-9139-92e1c46ea15b")]
@@ -36,6 +35,5 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         #endregion
         ISandbox InvisibleOne { get; set; }
-
     }
 }

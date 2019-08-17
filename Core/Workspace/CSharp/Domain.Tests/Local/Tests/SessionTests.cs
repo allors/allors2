@@ -18,7 +18,7 @@ namespace Tests.Local
         [Fact]
         public void UnitGet()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
             var session = new Session(this.Workspace);
 
             var koen = session.Get(1) as Person;
@@ -49,7 +49,7 @@ namespace Tests.Local
         [Fact]
         public void UnitSet()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var session1 = new Session(this.Workspace);
             var martien1 = session1.Get(3) as Person;
@@ -72,7 +72,7 @@ namespace Tests.Local
         [Fact]
         public void HasChanges()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var session = new Session(this.Workspace);
             var martien = session.Get(3) as Person;
@@ -116,7 +116,7 @@ namespace Tests.Local
         [Fact]
         public void UnitSave()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
             var session = new Session(this.Workspace);
 
             var koen = session.Get(1) as Person;
@@ -166,7 +166,7 @@ namespace Tests.Local
         [Fact]
         public void OneGet()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
             var session = new Session(this.Workspace);
 
             var koen = session.Get(1) as Person;
@@ -189,7 +189,7 @@ namespace Tests.Local
         [Fact]
         public void OneSet()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var session1 = new Session(this.Workspace);
 
@@ -235,7 +235,7 @@ namespace Tests.Local
         [Fact]
         public void OneSave()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
             var session = new Session(this.Workspace);
 
             var koen = session.Get(1) as Person;
@@ -285,7 +285,7 @@ namespace Tests.Local
         [Fact]
         public void ManyGet()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
             var session = new Session(this.Workspace);
 
             var koen = (Person)session.Get(1);
@@ -314,7 +314,7 @@ namespace Tests.Local
         [Fact]
         public void ManySet()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var session1 = new Session(this.Workspace);
 
@@ -363,7 +363,7 @@ namespace Tests.Local
         [Fact]
         public void ManySaveWithExistingObjects()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var session = new Session(this.Workspace);
 
@@ -429,7 +429,7 @@ namespace Tests.Local
         [Fact]
         public void ManySaveWithNewObjects()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var session = new Session(this.Workspace);
 
@@ -499,13 +499,12 @@ namespace Tests.Local
                 Assert.Contains("3", savedAcme3Employees.A);
                 Assert.Null(savedAcme3Employees.R);
             }
-
         }
 
         [Fact]
         public void SyncWithNewObjects()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var session = new Session(this.Workspace);
 
@@ -524,12 +523,12 @@ namespace Tests.Local
 
             session.Reset();
 
-            //Assert.Null(mathijs.Id);
+            // Assert.Null(mathijs.Id);
             Assert.True(mathijs.NewId < 0);
             Assert.Null(mathijs.FirstName);
             Assert.Null(mathijs.LastName);
 
-            //Assert.Null(acme2.Id);
+            // Assert.Null(acme2.Id);
             Assert.True(acme2.NewId < 0);
             Assert.Null(acme2.Owner);
             Assert.Null(acme2.Manager);
@@ -540,7 +539,7 @@ namespace Tests.Local
         [Fact]
         public void Onsaved()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var session = new Session(this.Workspace);
 
@@ -604,7 +603,7 @@ namespace Tests.Local
         [Fact]
         public void Get()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var session = new Session(this.Workspace);
 

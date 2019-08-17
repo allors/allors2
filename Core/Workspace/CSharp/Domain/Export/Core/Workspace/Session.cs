@@ -106,7 +106,7 @@ namespace Allors.Workspace
                                                                        newSessionObject
                                                                        .ObjectType.Name,
                                                                    Roles = new object[0][],
-                                                                   Methods = new string[0][]
+                                                                   Methods = new string[0][],
                                                                },
                                                        },
                     };

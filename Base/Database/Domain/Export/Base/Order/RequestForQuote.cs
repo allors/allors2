@@ -22,8 +22,7 @@ namespace Allors.Domain
 
         private void Sync(ISession session)
         {
-            //session.Prefetch(this.SyncPrefetch, this);
-
+            // session.Prefetch(this.SyncPrefetch, this);
             foreach (RequestItem requestItem in this.RequestItems)
             {
                 requestItem.Sync(this);

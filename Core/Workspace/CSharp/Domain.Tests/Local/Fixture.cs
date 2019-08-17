@@ -9,7 +9,7 @@ namespace Tests.Local
 
     public class Fixture
     {
-        public static SyncResponse loadData = new SyncResponse
+        public static SyncResponse LoadData = new SyncResponse
         {
             UserSecurityHash = "#",
             Objects = new[]
@@ -24,7 +24,7 @@ namespace Tests.Local
                                         new object[] { "FirstName", "rw", "Koen" },
                                         new object[] { "LastName", "rw", "Van Exem" },
                                         new object[] { "BirthDate", "rw", "1973-03-27T18:00:00Z" },
-                                        new object[] { "IsStudent", "rw", true }
+                                        new object[] { "IsStudent", "rw", true },
                                     },
                     },
                     new SyncResponseObject
@@ -36,7 +36,7 @@ namespace Tests.Local
                                 {
                                     new object[] { "FirstName", "rw", "Patrick" },
                                     new object[] { "LastName", "rw", "De Boeck" },
-                                    new object[] { "IsStudent", "rw", false }
+                                    new object[] { "IsStudent", "rw", false },
                                 },
                     },
                     new SyncResponseObject
@@ -64,7 +64,7 @@ namespace Tests.Local
                         },
                         Methods = new[]
                         {
-                            new[] { "JustDoIt", "x" }
+                            new[] { "JustDoIt", "x" },
                         },
                     },
                     new SyncResponseObject
@@ -80,7 +80,7 @@ namespace Tests.Local
                         },
                         Methods = new[]
                         {
-                            new[] { "JustDoIt", string.Empty }
+                            new[] { "JustDoIt", string.Empty },
                         },
                     },
                     new SyncResponseObject
@@ -91,12 +91,12 @@ namespace Tests.Local
                         Roles = new[]
                         {
                             new object[] { "Name", "rw", "icme" },
-                            new object[] { "Owner", "rw", "3" }
+                            new object[] { "Owner", "rw", "3" },
                         },
                         Methods = new[]
                         {
                             new[] { "JustDoIt", "" }
-                        }
+                        },
                     },
                 },
         };

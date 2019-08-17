@@ -12,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface I34 : Object
     {
-
         #region Allors
         [Id("37e8d764-bfeb-40d8-b7e9-d94e455dcc11")]
         [AssociationId("fd9a1d7e-913e-4fce-88b3-320ab6bbce96")]
@@ -50,6 +49,5 @@ namespace Allors.Repository
         [Size(256)]
         #endregion
         string I34AllorsString { get; set; }
-
     }
 }

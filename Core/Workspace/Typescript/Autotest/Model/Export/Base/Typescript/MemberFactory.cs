@@ -26,6 +26,5 @@ namespace Autotest.Typescript
                     throw new Exception($"Unknown member: {kind}");
             }
         }
-
     }
 }

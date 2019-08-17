@@ -38,7 +38,6 @@ namespace Commands
                 session.SetUser(administrator);
 
                 // Custom code
-
                 session.Derive();
                 session.Commit();
 

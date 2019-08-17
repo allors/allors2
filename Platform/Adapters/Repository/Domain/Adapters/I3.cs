@@ -99,6 +99,5 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         #endregion
         C1 C1one2one { get; set; }
-
     }
 }

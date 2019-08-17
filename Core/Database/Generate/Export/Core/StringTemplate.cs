@@ -133,7 +133,7 @@ namespace Allors.Development.Repository.Generation
                             }
                         }
 
-                        //TODO: Super Domains
+                        // TODO: Super Domains
                     }
 
                     var result = template.Render();

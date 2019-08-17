@@ -28,8 +28,7 @@ namespace Tests.ApplicationTests
                 .ToArray();
 
             // Uncomment next line to only test a certain page
-            //navigateTos = navigateTos.Where(v => v.Name.Equals("NavigateToProductQuotes") || v.Name.Equals("NavigateToSalesOrder")).ToArray();
-
+            // navigateTos = navigateTos.Where(v => v.Name.Equals("NavigateToProductQuotes") || v.Name.Equals("NavigateToSalesOrder")).ToArray();
             this.navigateTos = navigateTos;
         }
 

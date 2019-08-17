@@ -5,67 +5,66 @@
 
 namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 {
-
-    //[CollectionDefinition(Collection.Npgsql)]
-    //public class SchemaTest : Adapters.SchemaTest, IDisposable
-    //{
+    // [CollectionDefinition(Collection.Npgsql)]
+    // public class SchemaTest : Adapters.SchemaTest, IDisposable
+    // {
     // private readonly Profile profile;
 
-    //public SchemaTest(Fixture fixture)
-    //{
+    // public SchemaTest(Fixture fixture)
+    // {
     //    this.profile = new Profile(fixture.Server);
-    //}
+    // }
 
-    //    protected override IProfile Profile => this.profile;
+    // protected override IProfile Profile => this.profile;
 
-    //    protected override IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
+    // protected override IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
     //    {
     //        return this.profile.CreateDatabase(metaPopulation, init);
     //    }
 
-    //    public void Dispose()
+    // public void Dispose()
     //    {
     //        this.profile.Dispose();
     //    }
 
-    //    protected override void DropTable(string schema, string tableName)
+    // protected override void DropTable(string schema, string tableName)
     //    {
     //        this.profile.DropTable(schema, tableName);
     //    }
 
-    //    protected override bool ExistTable(string schema, string table)
+    // protected override bool ExistTable(string schema, string table)
     //    {
     //        return this.profile.ExistTable(schema, table);
     //    }
 
-    //    protected override int ColumnCount(string schema, string table)
+    // protected override int ColumnCount(string schema, string table)
     //    {
     //        return this.profile.ColumnCount(schema, table);
     //    }
 
-    //    protected override bool ExistColumn(string schema, string table, string column, ColumnTypes columnType)
+    // protected override bool ExistColumn(string schema, string table, string column, ColumnTypes columnType)
     //    {
     //        return this.profile.ExistColumn(schema, table, column, columnType);
     //    }
 
-    //    protected override bool ExistPrimaryKey(string schema, string table, string column)
+    // protected override bool ExistPrimaryKey(string schema, string table, string column)
     //    {
     //        return this.profile.ExistPrimaryKey(schema, table, column);
     //    }
 
-    //    protected override bool ExistProcedure(string schema, string procedure)
+    // protected override bool ExistProcedure(string schema, string procedure)
     //    {
     //        return this.profile.ExistProcedure(schema, procedure);
     //    }
 
-    //    protected override bool ExistIndex(string schema, string table, string column)
+    // protected override bool ExistIndex(string schema, string table, string column)
     //    {
     //        return this.profile.ExistIndex(schema, table, column);
     //    }
 
-    //    protected override void DropProcedure(string schema, string procedure)
+    // protected override void DropProcedure(string schema, string procedure)
     //    {
     //        this.profile.DropProcedure(procedure);
     //    }
-    //}
+    // }
 }

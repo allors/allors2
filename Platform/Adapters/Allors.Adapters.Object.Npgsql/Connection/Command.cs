@@ -243,7 +243,6 @@ namespace Allors.Adapters.Object.Npgsql
             {
                 this.OnExecuted();
             }
-
         }
 
         internal object GetValue(NpgsqlDataReader reader, UnitTags unitTypeTag, int i)

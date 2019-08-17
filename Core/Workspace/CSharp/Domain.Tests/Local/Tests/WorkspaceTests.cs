@@ -14,7 +14,7 @@ namespace Tests.Local
         [Fact]
         public void Load()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var martien = this.Workspace.Get(3);
 
@@ -31,7 +31,7 @@ namespace Tests.Local
         [Fact]
         public void CheckVersions()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var required = new PullResponse
             {
@@ -53,7 +53,7 @@ namespace Tests.Local
         [Fact]
         public void CheckVersionsUserSecurityHash()
         {
-            this.Workspace.Sync(Fixture.loadData);
+            this.Workspace.Sync(Fixture.LoadData);
 
             var required = new PullResponse
             {

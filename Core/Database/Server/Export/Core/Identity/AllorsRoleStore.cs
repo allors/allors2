@@ -13,7 +13,7 @@ namespace Identity
 
     public class AllorsRoleStore<TRole> :
         IQueryableRoleStore<TRole>
-        //IRoleClaimStore<TRole>
+        // IRoleClaimStore<TRole>
         where TRole : IdentityRole
     {
         public void Dispose()

@@ -20,8 +20,7 @@ namespace Allors.Domain
 
         private void Sync(ISession session)
         {
-            //session.Prefetch(this.SyncPrefetch, this);
-
+            // session.Prefetch(this.SyncPrefetch, this);
             foreach (QuoteItem quoteItem in this.QuoteItems)
             {
                 quoteItem.Sync(this);

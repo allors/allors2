@@ -23,10 +23,9 @@ namespace Components
 
         protected void ScrollToElement(IWebElement element)
         {
-            //const string ScrollToCommand = @"arguments[0].scrollIntoView(true);";
-            //var javaScriptExecutor = (IJavaScriptExecutor)this.Driver;
-            //javaScriptExecutor.ExecuteScript(ScrollToCommand, element);
-
+            // const string ScrollToCommand = @"arguments[0].scrollIntoView(true);";
+            // var javaScriptExecutor = (IJavaScriptExecutor)this.Driver;
+            // javaScriptExecutor.ExecuteScript(ScrollToCommand, element);
             var actions = new Actions(this.Driver);
             actions.MoveToElement(element);
         }

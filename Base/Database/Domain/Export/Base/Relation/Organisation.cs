@@ -235,7 +235,6 @@ namespace Allors.Domain
                 this.PurchaseInvoiceApproverUserGroup.Members = this.PurchaseInvoiceApprovers.ToArray();
                 this.BlueCollarWorkerUserGroup.Members = this.BlueCollarWorkers.ToArray();
                 this.LocalAdministratorUserGroup.Members = this.LocalAdministrators.ToArray();
-
             }
 
             this.PartyName = this.Name;

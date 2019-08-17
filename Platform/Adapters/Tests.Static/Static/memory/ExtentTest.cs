@@ -5,7 +5,6 @@
 
 namespace Allors.Adapters.Memory
 {
-
     using Allors.Adapters;
 
     public class ExtentTest : Adapters.ExtentTest

@@ -71,7 +71,6 @@ namespace Allors.Adapters
                     throw new ArgumentException(roleType + " on object " + strategy + " is removed.");
                 }
 
-
                 if (!(roleType.ObjectType is IComposite compositeType))
                 {
                     throw new ArgumentException(role + " has no CompositeType");

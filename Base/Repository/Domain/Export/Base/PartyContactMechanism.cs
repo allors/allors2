@@ -8,7 +8,7 @@ namespace Allors.Repository
     using System;
     using Allors.Repository.Attributes;
 
-    //TODO: Rename to ContactMechanism
+    // TODO: Rename to ContactMechanism
     #region Allors
     [Id("ca633037-ba1e-4304-9f2c-3353c287474b")]
     #endregion
@@ -83,7 +83,6 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-
         }
 
         public void OnPreDerive() { }

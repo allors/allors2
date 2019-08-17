@@ -43,7 +43,7 @@ namespace ExcelAddIn
         private Sheets sheets;
         private Commands commands;
 
-        public  bool IsLoggedIn { get; set; }
+        public bool IsLoggedIn { get; set; }
 
         public AddInManager(Application application, CustomTaskPaneCollection customTaskPanes, ApplicationFactory factory)
         {
@@ -106,7 +106,6 @@ namespace ExcelAddIn
 
         private async Task Login(Database database)
         {
-
             try
             {
                 if (!this.IsLoggedIn)
@@ -175,10 +174,10 @@ namespace ExcelAddIn
 
         private void ApplicationOnWorkbookBeforeClose(Workbook workbook, ref bool cancel)
         {
-            //this.mediator.OnStateChanged();
+            // this.mediator.OnStateChanged();
 
-            //var populationXml = this.workspace.Save();
-            //var xmlPart = workbook.CustomXMLParts.Add(populationXml);
+            // var populationXml = this.workspace.Save();
+            // var xmlPart = workbook.CustomXMLParts.Add(populationXml);
         }
 
         private void ApplicationOnWindowActivate(Workbook wb, Window wn) => this.mediator.OnStateChanged();

@@ -7,8 +7,8 @@ namespace Allors.Document.Xml
 {
     public class If : Statement
     {
-        public string text;
+        public string Text { get; set; }
 
-        public If(string text) => this.text = text.Trim();
+        public If(string text) => this.Text = text.Trim();
     }
 }

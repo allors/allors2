@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -13,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface OrderAdjustmentVersion : Version
     {
-
         #region Allors
         [Id("F894196C-EF00-473B-BC09-EDDDFE5500CF")]
         [AssociationId("B1C7008D-55EC-4C1A-8670-42C351F4EC3B")]

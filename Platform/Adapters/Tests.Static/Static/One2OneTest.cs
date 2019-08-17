@@ -13,7 +13,7 @@ namespace Allors.Adapters
 
     using Xunit;
 
-    //TODO: Add remove with null and zero array
+    // TODO: Add remove with null and zero array
     public abstract class One2OneTest : IDisposable
     {
         protected abstract IProfile Profile { get; }

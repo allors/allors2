@@ -114,7 +114,7 @@ namespace Identity.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                //return View(model);
+                // return View(model);
             }
 
             var user = await this._userManager.GetUserAsync(this.User);

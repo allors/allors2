@@ -1,10 +1,8 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="PickListTests.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
-//-------------------------------------------------------------------------------------------------
 
 namespace Allors.Domain
 {
@@ -267,7 +265,6 @@ namespace Allors.Domain
 
             // When SalesOrder is derived 1 quantity is requested for shipping (because inventory is available and quantity ordered (5) is greater then quantity pending shipment (4)
             // A new shipment item is created with quantity 1 and QuantityPendingShipment remains 5
-
             Assert.Equal(4, itemIssuance.Quantity);
             Assert.Equal(4, shipmentItem.Quantity);
             Assert.Equal(3, shipment.ShipmentItems.Count);

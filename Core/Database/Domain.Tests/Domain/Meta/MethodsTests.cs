@@ -54,11 +54,11 @@ namespace Tests
             var method = c1.Sum(
                 m =>
                 {
-                    m.a = 1;
-                    m.b = 2;
+                    m.A = 1;
+                    m.B = 2;
                 });
 
-            Assert.Equal(3, method.result);
+            Assert.Equal(3, method.Result);
         }
 
         [Fact]

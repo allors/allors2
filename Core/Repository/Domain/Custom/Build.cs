@@ -36,7 +36,6 @@ namespace Allors.Repository
 
         public void OnBuild()
         {
-
         }
 
         public void OnPostBuild()
@@ -45,7 +44,6 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-
         }
 
         public void OnPreDerive()

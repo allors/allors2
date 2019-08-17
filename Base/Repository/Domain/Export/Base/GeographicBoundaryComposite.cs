@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -13,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface GeographicBoundaryComposite : GeographicBoundary
     {
-
         #region Allors
         [Id("77d5f129-6096-45da-8b9f-39ef19276f1d")]
         [AssociationId("7484e00e-de39-4fbe-981a-aff3e693cf89")]
@@ -23,6 +21,5 @@ namespace Allors.Repository
         [Indexed]
 
         GeographicBoundary[] Associations { get; set; }
-
     }
 }

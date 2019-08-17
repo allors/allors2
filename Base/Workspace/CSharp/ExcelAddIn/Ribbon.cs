@@ -28,7 +28,7 @@ namespace ExcelAddIn
         {
         }
 
-        private async void saveButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        private async void SaveButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
@@ -37,7 +37,6 @@ namespace ExcelAddIn
                 AsyncContext.Run(
                     async () =>
                         {
-
                             if (this.Commands != null)
                             {
                                 await this.Commands.Save();
@@ -50,7 +49,7 @@ namespace ExcelAddIn
             }
         }
 
-        private async void refreshButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        private async void RefreshButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
@@ -59,7 +58,6 @@ namespace ExcelAddIn
                 AsyncContext.Run(
                     async () =>
                         {
-
                             if (this.Commands != null)
                             {
                                 await this.Commands.Refresh();
@@ -72,7 +70,7 @@ namespace ExcelAddIn
             }
         }
 
-        private async void peopleInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
+        private async void PeopleInitializeButton_Click(object sender, RibbonControlEventArgs eventArgs)
         {
             try
             {
@@ -81,7 +79,6 @@ namespace ExcelAddIn
                 AsyncContext.Run(
                     async () =>
                     {
-
                         if (this.Commands != null)
                         {
                             await this.Commands.PeopleNew();
@@ -116,7 +113,6 @@ namespace ExcelAddIn
                 AsyncContext.Run(
                     async () =>
                     {
-
                         if (this.Commands != null)
                         {
                             await this.Commands.PurchaseInvoicesNew();

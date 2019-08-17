@@ -17,7 +17,6 @@ namespace Allors
         {
             try
             {
-
                 string[,] config =
                 {
                     {

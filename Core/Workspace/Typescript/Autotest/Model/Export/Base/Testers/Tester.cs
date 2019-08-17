@@ -46,7 +46,6 @@ namespace Autotest.Testers
                 return string.Equals($"is{typeName}", typeCheck, StringComparison.OrdinalIgnoreCase) ||
                        (componentName != null && string.Equals($"is{componentName}", typeCheck, StringComparison.OrdinalIgnoreCase)) ||
                        string.Equals($"is{elementName}", typeCheck, StringComparison.OrdinalIgnoreCase);
-
             }
         }
 

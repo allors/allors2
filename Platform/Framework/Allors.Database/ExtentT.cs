@@ -1,10 +1,9 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="ExtentT.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the ExtentT type.</summary>
-//-------------------------------------------------------------------------------------------------
+
 namespace Allors
 {
     using System;
@@ -22,7 +21,6 @@ namespace Allors
     /// <typeparam name="T">The .Net type of the extent.</typeparam>
     public class Extent<T> : IList, IList<T> where T : IObject // Extent<T> must also implement IList to be a DataSource during DataBinding.
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Extent{T}"/> class.
         /// </summary>

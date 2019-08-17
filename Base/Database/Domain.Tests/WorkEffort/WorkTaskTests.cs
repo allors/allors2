@@ -1,10 +1,8 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="WorkTaskTests.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
-//-------------------------------------------------------------------------------------------------
 
 namespace Allors.Domain
 {
@@ -47,7 +45,6 @@ namespace Allors.Domain
         public void GivenWorkEffortAndTimeEntries_WhenDeriving_ThenActualHoursDerived()
         {
             // Arrange
-
             var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
             var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
             new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();

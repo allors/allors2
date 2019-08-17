@@ -198,6 +198,5 @@ namespace Allors.Adapters
                 Assert.Equal(c1, c2b.I1WhereI1I12one2one);
             }
         }
-
     }
 }

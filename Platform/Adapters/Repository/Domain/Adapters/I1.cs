@@ -465,6 +465,5 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         #endregion
         S2 I1S2many2one { get; set; }
-
     }
 }

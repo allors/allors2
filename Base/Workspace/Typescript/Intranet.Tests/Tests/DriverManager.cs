@@ -109,7 +109,6 @@ namespace Tests
                         {
                             throw new Exception("Can not stop driver of type " + this.Driver.GetType().Name);
                         }
-
                     }
                 }
             }

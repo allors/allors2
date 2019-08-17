@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -62,6 +61,5 @@ namespace Allors.Repository
         [Indexed]
 
         GeographicBoundary GeographicBoundary { get; set; }
-
     }
 }

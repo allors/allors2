@@ -43,8 +43,7 @@ namespace Allors.Domain
 
         private void Sync(ISession session)
         {
-            //session.Prefetch(this.SyncPrefetch, this);
-
+            // session.Prefetch(this.SyncPrefetch, this);
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
                 shipmentItem.Sync(this);

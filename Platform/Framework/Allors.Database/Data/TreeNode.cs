@@ -53,7 +53,6 @@ namespace Allors.Data
                             {
                                 node.Resolve(role, objects);
                             }
-
                         }
                     }
                     else
@@ -70,9 +69,7 @@ namespace Allors.Data
                         }
                     }
                 }
-
             }
-
         }
 
         public void BuildPrefetchPolicy(PrefetchPolicyBuilder prefetchPolicyBuilder)

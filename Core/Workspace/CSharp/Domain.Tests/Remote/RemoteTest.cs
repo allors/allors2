@@ -55,6 +55,5 @@ namespace Tests.Remote
             var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
             var loggedIn = this.Database.Login(uri, user, null).Result;
         }
-
     }
 }

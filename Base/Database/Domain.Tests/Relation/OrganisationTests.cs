@@ -74,6 +74,5 @@ namespace Allors.Domain
             Assert.Equal(contact.InactiveOrganisationContactRelationships[0].Organisation, organisation);
             Assert.Equal(0, contact.CurrentOrganisationContactRelationships.Count);
         }
-
     }
 }

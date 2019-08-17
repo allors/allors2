@@ -1,4 +1,4 @@
-﻿// <copyright file="PurchaseInvoicesSheet.cs" company="Allors bvba">
+// <copyright file="PurchaseInvoicesSheet.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -158,7 +158,6 @@ namespace Allors.Excel.PurchaseInvoices
             this.PurchaseInvoicesListObject.SetDataBinding(this.dataSet, this.dataSet.PurchaseInvoice.TableName);
 
             // Headers
-
             int index = -1;
             var headers = this.PurchaseInvoicesListObject.HeaderRowRange;
             var data = new object[headers.Rows.Count, headers.Columns.Count];
@@ -244,10 +243,10 @@ namespace Allors.Excel.PurchaseInvoices
 
                 var values = cells.Cast<Range>().Select(cell => cell.Value).ToArray();
 
-                //var id = Convert.ToInt64(values[0].ToString());
-                //var puchaseInvoice = (PurchaseInvoice)this.Context.Session.Get(id);
-                //puchaseInvoice.InvoiceNumber = values[2];
-                //puchaseInvoice.CustomerReference = values[3];
+                // var id = Convert.ToInt64(values[0].ToString());
+                // var puchaseInvoice = (PurchaseInvoice)this.Context.Session.Get(id);
+                // puchaseInvoice.InvoiceNumber = values[2];
+                // puchaseInvoice.CustomerReference = values[3];
             }
         }
 
@@ -267,9 +266,9 @@ namespace Allors.Excel.PurchaseInvoices
                                 .Add(M.PurchaseInvoice.BilledTo)
                                 .Add(M.PurchaseInvoice.BilledFrom)
                                 .Add(M.PurchaseInvoice.Currency)
-                                .Add(M.PurchaseInvoice.PurchaseInvoiceState)
+                                .Add(M.PurchaseInvoice.PurchaseInvoiceState),
                         },
-                    } ,
+                    },
                 },
             };
 
@@ -287,9 +286,9 @@ namespace Allors.Excel.PurchaseInvoices
                         Fetch = new Fetch()
                         {
                             Include = new Tree(M.Payment.Interface)
-                                .Add(M.Payment.PaymentApplications, this.PaymentApplicationTree)
+                                .Add(M.Payment.PaymentApplications, this.PaymentApplicationTree),
                         },
-                    } ,
+                    },
                 },
             };
 

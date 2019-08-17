@@ -76,14 +76,15 @@ namespace Allors.Domain
 
         private class CachedUser
         {
-            public readonly string UserId;
             private readonly string objectId;
 
             public CachedUser(User user)
             {
-                this.UserId = user.UserName.ToLower();
                 this.objectId = user.Id.ToString();
+                this.UserId = user.UserName.ToLower();
             }
+
+            public string UserId { get; set; }
 
             public User GetUser(ISession session) => (User)session.Instantiate(this.objectId);
         }

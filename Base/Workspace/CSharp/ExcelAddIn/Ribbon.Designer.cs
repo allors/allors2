@@ -82,13 +82,13 @@
             // 
             this.saveButton.Label = "Save";
             this.saveButton.Name = "saveButton";
-            this.saveButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.saveButton_Click);
+            this.saveButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SaveButton_Click);
             // 
             // refreshButton
             // 
             this.refreshButton.Label = "Refresh";
             this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.refreshButton_Click);
+            this.refreshButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.RefreshButton_Click);
             // 
             // buttonLogoff
             // 

@@ -103,7 +103,6 @@ namespace Allors.Adapters
                 c1.C1AllorsString = "Test";
 
                 session.Commit();
-
             }
         }
 

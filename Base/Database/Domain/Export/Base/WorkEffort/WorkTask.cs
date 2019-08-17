@@ -79,17 +79,17 @@ namespace Allors.Domain
             }
         }
 
-        //public void BaseDelete(DeletableDelete method)
-        //{
+        // public void BaseDelete(DeletableDelete method)
+        // {
         //    foreach (WorkEffortStatus workEffortStatus in this.WorkEffortStatuses)
         //    {
         //        workEffortStatus.Delete();
         //    }
 
-        //    foreach (WorkEffortAssignment workEffortAssignment in this.WorkEffortAssignmentsWhereAssignment)
+        // foreach (WorkEffortAssignment workEffortAssignment in this.WorkEffortAssignmentsWhereAssignment)
         //    {
         //        workEffortAssignment.Delete();
         //    }
-        //}
+        // }
     }
 }

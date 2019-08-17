@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -13,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface FinancialAccount : Object
     {
-
         #region Allors
         [Id("f90475c7-4a2d-42fd-bafd-96557c217c19")]
         [AssociationId("5566f06a-feb0-45f0-9a84-673b758b6af9")]
@@ -23,6 +21,5 @@ namespace Allors.Repository
         [Indexed]
 
         FinancialAccountTransaction[] FinancialAccountTransactions { get; set; }
-
     }
 }

@@ -1,10 +1,8 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="CustomerShipmentTests.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
-//-------------------------------------------------------------------------------------------------
 
 namespace Allors.Domain
 {
@@ -682,10 +680,10 @@ namespace Allors.Domain
 
             order.Confirm();
 
-            //var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
-            //derivation.Derive();
+            // var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
+            // derivation.Derive();
 
-            //var list = ((DerivationLog)derivation.DerivationLog).List;
+            // var list = ((DerivationLog)derivation.DerivationLog).List;
             ////list.RemoveAll(v => !v.StartsWith("Dependency"));
 
             this.Session.Derive();

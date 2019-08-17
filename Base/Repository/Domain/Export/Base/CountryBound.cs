@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -13,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface CountryBound : Object
     {
-
         #region Allors
         [Id("095460a7-fffa-4c94-8b51-a4fd9fb80a2e")]
         [AssociationId("f5aa22da-64f3-447a-864c-4db5b77d221b")]
@@ -23,6 +21,5 @@ namespace Allors.Repository
         [Indexed]
 
         Country Country { get; set; }
-
     }
 }

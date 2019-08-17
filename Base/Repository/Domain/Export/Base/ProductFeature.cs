@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -13,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface ProductFeature : UniquelyIdentifiable, Object
     {
-
         #region Allors
         [Id("4a8c511a-8146-4d6d-bc35-d8d6b8f1786d")]
         [AssociationId("31ff19c6-9916-4f4c-8d67-30649d3a07ea")]
@@ -73,6 +71,5 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         VatRate VatRate { get; set; }
-
     }
 }

@@ -11,7 +11,7 @@ namespace Allors.Domain
         {
             if (this.ExistIsoCode)
             {
-                this.EuMemberState = Countries.euMemberStates.Contains(this.IsoCode);
+                this.EuMemberState = Countries.EuMemberStates.Contains(this.IsoCode);
 
                 if (Countries.IbanDataByCountry.TryGetValue(this.IsoCode, out var ibanData))
                 {

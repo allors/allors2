@@ -10,6 +10,7 @@ namespace Allors.Document
 
     using Antlr4.StringTemplate.Misc;
 
+#pragma warning disable RCS1194 // Implement exception constructors.
     public class TemplateException : Exception
     {
         public readonly ReadOnlyCollection<TemplateMessage> TemplateMessages;

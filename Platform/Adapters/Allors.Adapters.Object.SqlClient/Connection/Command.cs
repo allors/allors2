@@ -201,7 +201,6 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 this.OnExecuted();
             }
-
         }
 
         internal object GetValue(SqlDataReader reader, UnitTags unitTypeTag, int i)

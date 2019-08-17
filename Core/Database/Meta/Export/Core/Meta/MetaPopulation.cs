@@ -1,10 +1,8 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="MetaPopulation.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the Domain type.</summary>
-//-------------------------------------------------------------------------------------------------
 
 namespace Allors.Meta
 {
@@ -418,7 +416,6 @@ namespace Allors.Meta
                     foreach (var type in this.derivedComposites)
                     {
                         type.DeriveRoleTypes(sharedRoleTypes, roleTypesByAssociationObjectType);
-
                     }
 
                     // AssociationTypes

@@ -131,14 +131,14 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             // TODO:
-            //if (derivation.ChangeSet.Associations.Contains(this.Id))
-            //{
+            // if (derivation.ChangeSet.Associations.Contains(this.Id))
+            // {
             if (this.ExistPurchaseOrderWherePurchaseOrderItem)
             {
                 derivation.AddDependency(this.PurchaseOrderWherePurchaseOrderItem, this);
             }
 
-            //}
+            // }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)

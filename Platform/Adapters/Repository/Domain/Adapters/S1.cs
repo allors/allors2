@@ -13,7 +13,6 @@ namespace Allors.Repository
     #endregion
     public partial interface S1 : Object, S1234
     {
-
         #region Allors
         [Id("294e7ce3-1b0b-490a-a5e8-6149885d4943")]
         [AssociationId("35b9e89a-2962-47a6-87be-5c3e6a5c553a")]
@@ -145,6 +144,5 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         #endregion
         C1[] S1C1one2manies { get; set; }
-
     }
 }

@@ -14,7 +14,6 @@ namespace Allors.Repository
     #endregion
     public partial interface Payment : Commentable, UniquelyIdentifiable, Deletable, Object
     {
-
         #region Allors
         [Id("4c8b7a4f-f151-419e-8365-ce0da0b3a709")]
         [AssociationId("32007a7b-e849-41c3-96f5-61d253607f98")]

@@ -24,6 +24,5 @@ namespace Tests.Local
         public void Dispose()
         {
         }
-
     }
 }

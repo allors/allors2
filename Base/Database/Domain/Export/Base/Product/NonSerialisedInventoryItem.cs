@@ -211,11 +211,11 @@ namespace Allors.Domain
                         extra -= diff;
                         salesOrderItem.QuantityShortFalled -= diff;
 
-                        //var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
-                        //if (inventoryAssignment != null)
-                        //{
+                        // var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                        // if (inventoryAssignment != null)
+                        // {
                         //    inventoryAssignment.Quantity += diff;
-                        //}
+                        // }
                     }
                 }
             }

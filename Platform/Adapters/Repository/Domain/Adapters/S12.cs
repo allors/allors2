@@ -13,7 +13,6 @@ namespace Allors.Repository
     #endregion
     public partial interface S12 : Object
     {
-
         #region Allors
         [Id("06fabe71-737a-4cff-ac10-2d15dafce503")]
         [AssociationId("f3b1ecf3-95d6-4b96-893e-4ffa0c69bc72")]
@@ -90,6 +89,5 @@ namespace Allors.Repository
         [Scale(2)]
         #endregion
         decimal S12AllorsDecimal { get; set; }
-
     }
 }

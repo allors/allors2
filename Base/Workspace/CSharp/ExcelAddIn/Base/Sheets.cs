@@ -78,7 +78,6 @@ namespace Allors.Excel
                 style.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Orange);
                 style.Interior.Pattern = XlPattern.xlPatternSolid;
             }
-
         }
 
         private Sheet Instantiate(Worksheet worksheet)

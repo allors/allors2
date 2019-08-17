@@ -1,10 +1,8 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="ObjectNotLoadedEventArgs.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the ObjectNotLoadedEventArgs type.</summary>
-//-------------------------------------------------------------------------------------------------
 
 namespace Allors
 {
@@ -24,7 +22,6 @@ namespace Allors
     /// </summary>
     public class ObjectNotLoadedEventArgs
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectNotLoadedEventArgs"/> class.
         /// </summary>

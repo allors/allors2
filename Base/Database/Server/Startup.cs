@@ -74,8 +74,8 @@ namespace Allors.Server
 
             //// Use this derivation log to capture and analyze derivations
             //// Uncomment the following two lines to use a custom list derivation
-            //var listDerivationService = new DerivationService(new DerivationConfig { DerivationLogFunc = () => new CustomListDerivationLog() });
-            //services.AddSingleton<IDerivationService>(listDerivationService);  // Set object ID's for breakpoints in CustomListDerivationLog above
+            // var listDerivationService = new DerivationService(new DerivationConfig { DerivationLogFunc = () => new CustomListDerivationLog() });
+            // services.AddSingleton<IDerivationService>(listDerivationService);  // Set object ID's for breakpoints in CustomListDerivationLog above
 
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()

@@ -11,7 +11,7 @@ namespace Allors.Domain
     {
         public static void BaseOnBuild(this InventoryItem @this, ObjectOnBuild method)
         {
-            //TODO: Let Sync set Unit of Measure
+            // TODO: Let Sync set Unit of Measure
             if (!@this.ExistUnitOfMeasure)
             {
                 @this.UnitOfMeasure = @this.Part?.UnitOfMeasure;
@@ -57,7 +57,7 @@ namespace Allors.Domain
                     .Build();
             }
 
-            //TODO: Let Sync set Unit of Measure
+            // TODO: Let Sync set Unit of Measure
             if (!@this.ExistUnitOfMeasure)
             {
                 @this.UnitOfMeasure = @this.Part?.UnitOfMeasure;

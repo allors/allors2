@@ -137,6 +137,5 @@ namespace Allors.Repository
         [RoleId("ace6cdc5-e66f-40dd-bd37-45db231cc9e8")]
         #endregion
         bool S1234AllorsBoolean { get; set; }
-
     }
 }

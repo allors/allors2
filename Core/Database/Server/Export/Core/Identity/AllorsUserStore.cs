@@ -18,13 +18,13 @@ namespace Identity
 
     public class AllorsUserStore<TUser> : IUserStore<TUser>,
                                           IUserPasswordStore<TUser>
-                                        //IUserLoginStore<TUser>
-                                        //IUserClaimStore<TUser>,
-                                        //IUserSecurityStampStore<TUser>,
-                                        //IUserTwoFactorStore<TUser>,
-                                        //IUserEmailStore<TUser>,
-                                        //IUserLockoutStore<TUser>,
-                                        //IUserPhoneNumberStore<TUser>
+                                        // IUserLoginStore<TUser>
+                                        // IUserClaimStore<TUser>,
+                                        // IUserSecurityStampStore<TUser>,
+                                        // IUserTwoFactorStore<TUser>,
+                                        // IUserEmailStore<TUser>,
+                                        // IUserLockoutStore<TUser>,
+                                        // IUserPhoneNumberStore<TUser>
                                         where TUser : ApplicationUser
     {
         private readonly IDatabase database;

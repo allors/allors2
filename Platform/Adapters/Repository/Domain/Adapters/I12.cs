@@ -161,6 +161,5 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         #endregion
         C2[] I12C2one2manies { get; set; }
-
     }
 }

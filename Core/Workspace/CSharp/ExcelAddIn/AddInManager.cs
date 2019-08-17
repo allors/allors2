@@ -124,10 +124,10 @@ namespace ExcelAddIn
 
         private void ApplicationOnWorkbookBeforeClose(Workbook workbook, ref bool cancel)
         {
-            //this.mediator.OnStateChanged();
+            // this.mediator.OnStateChanged();
 
-            //var populationXml = this.workspace.Save();
-            //var xmlPart = workbook.CustomXMLParts.Add(populationXml);
+            // var populationXml = this.workspace.Save();
+            // var xmlPart = workbook.CustomXMLParts.Add(populationXml);
         }
 
         private void ApplicationOnWindowActivate(Workbook wb, Window wn) => this.mediator.OnStateChanged();

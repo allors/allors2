@@ -183,7 +183,7 @@ namespace Allors.Document.OpenDocument
             if (this.bindingByXmlElement.TryGetValue(element, out var binding))
             {
                 writer.Write(this.LeftDelimiter);
-                writer.Write(binding.text);
+                writer.Write(binding.Text);
                 writer.Write(this.RightDelimiter);
                 return;
             }
@@ -194,7 +194,7 @@ namespace Allors.Document.OpenDocument
                 {
                     writer.Write(this.LeftDelimiter);
                     writer.Write("if(");
-                    writer.Write(ifStatement.text);
+                    writer.Write(ifStatement.Text);
                     writer.Write(")");
                     writer.Write(this.RightDelimiter);
 

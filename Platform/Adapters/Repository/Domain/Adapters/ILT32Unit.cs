@@ -35,6 +35,5 @@ namespace Allors.Repository
         [Size(256)]
         #endregion
         string AllorsString2 { get; set; }
-
     }
 }

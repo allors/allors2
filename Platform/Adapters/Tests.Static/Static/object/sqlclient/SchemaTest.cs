@@ -12,39 +12,39 @@ namespace Allors.Adapters.Object.SqlClient
         [Fact(Skip = "Explicit")]
         public void Recover()
         {
-            //this.InitAndCreateSession();
+            // this.InitAndCreateSession();
 
-            //this.DropProcedure("_GC");
+            // this.DropProcedure("_GC");
 
-            //var repository = this.CreateDatabase();
+            // var repository = this.CreateDatabase();
 
-            //var exceptionThrown = false;
-            //try
-            //{
+            // var exceptionThrown = false;
+            // try
+            // {
             //    repository.CreateSession();
-            //}
-            //catch
-            //{
+            // }
+            // catch
+            // {
             //    exceptionThrown = true;
-            //}
+            // }
 
-            //Assert.True(exceptionThrown);
+            // Assert.True(exceptionThrown);
 
-            //((Database.SqlClient.Database)repository).Schema.Recover();
+            // ((Database.SqlClient.Database)repository).Schema.Recover();
 
-            //Assert.True(this.ExistProcedure("_GC"));
+            // Assert.True(this.ExistProcedure("_GC"));
 
-            //exceptionThrown = false;
-            //try
-            //{
+            // exceptionThrown = false;
+            // try
+            // {
             //    repository.CreateSession();
-            //}
-            //catch
-            //{
+            // }
+            // catch
+            // {
             //    exceptionThrown = true;
-            //}
+            // }
 
-            //Assert.False(exceptionThrown);
+            // Assert.False(exceptionThrown);
         }
     }
 }

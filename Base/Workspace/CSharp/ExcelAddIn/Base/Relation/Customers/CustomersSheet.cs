@@ -33,7 +33,6 @@ namespace Allors.Excel.Customers
         public CustomersSheet(Sheets sheets, Worksheet worksheet)
             : base(sheets, worksheet)
         {
-
         }
 
         public Organisation[] Customers { get; private set; }
@@ -151,7 +150,6 @@ namespace Allors.Excel.Customers
                 var cells = range.Cells;
 
                 var values = cells.Cast<Range>().Select(cell => cell.Value).ToArray();
-
             }
         }
 
@@ -161,16 +159,16 @@ namespace Allors.Excel.Customers
             {
                 Extent = new Workspace.Data.Filter(M.Organisation.ObjectType),
 
-                Results =  new[]
+                Results = new[]
                 {
                     new Workspace.Data.Result()
                     {
                         Fetch = new Fetch()
                         {
-                            Include =  new Tree(M.Organisation.Class)
+                            Include = new Tree(M.Organisation.Class)
                                 .Add(M.Organisation.PartyContactMechanisms, this.PartyContactMechanismsTree)
                                 .Add(M.Organisation.CurrentOrganisationContactRelationships, this.CurrentOrganisationContactRelationshipTree)
-                        }
+                        },
                     },
                 },
             };

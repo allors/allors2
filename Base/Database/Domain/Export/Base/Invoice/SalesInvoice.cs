@@ -521,7 +521,6 @@ namespace Allors.Domain
 
             this.DerivedVatClause = this.ExistAssignedVatClause ? this.AssignedVatClause : this.DerivedVatClause;
 
-
             this.SalesReps = validInvoiceItems
                 .Cast<SalesInvoiceItem>()
                 .SelectMany(v => v.SalesReps)
@@ -543,8 +542,7 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
-            //this.BaseOnDeriveRevenues(derivation);
-
+            // this.BaseOnDeriveRevenues(derivation);
             var singleton = this.strategy.Session.GetSingleton();
 
             this.SecurityTokens = new[]
@@ -564,8 +562,7 @@ namespace Allors.Domain
 
         private void Sync(ISession session)
         {
-            //session.Prefetch(this.SyncPrefetch, this);
-
+            // session.Prefetch(this.SyncPrefetch, this);
             foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
             {
                 invoiceItem.Sync(this);

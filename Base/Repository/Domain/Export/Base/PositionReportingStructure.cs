@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -62,7 +61,6 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-
         }
 
         public void OnPreDerive() { }

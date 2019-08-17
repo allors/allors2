@@ -124,7 +124,6 @@ namespace Allors.Adapters.Object.Npgsql
                         break;
                 }
             }
-
         }
 
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();

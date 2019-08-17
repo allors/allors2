@@ -12,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface IGT32Composite : Object
     {
-
         #region Allors
         [Id("010bc5d7-9e1e-4ca7-a146-33b73252c4c8")]
         [AssociationId("20869686-dc42-4b08-939e-f090f5a48652")]
@@ -276,6 +275,5 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         #endregion
         IGT32Composite Self16 { get; set; }
-
     }
 }

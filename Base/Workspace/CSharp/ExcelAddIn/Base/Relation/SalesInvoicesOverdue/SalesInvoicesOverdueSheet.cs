@@ -109,7 +109,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
                 row.InvoiceNumber = salesInvoice.InvoiceNumber;
 
                 // TODO Duedate as derived field?
-                //row.DueDate = ??
+                // row.DueDate = ??
                 row.Description = salesInvoice.Description;
                 row.InvoiceType = salesInvoice.SalesInvoiceType?.Name;
                 row.InternalOrganisationName = salesInvoice.BilledFrom?.PartyName;
@@ -126,7 +126,6 @@ namespace Allors.Excel.Relations.CustomersOverdue
             this.SalesInvoicesListObject.SetDataBinding(this.dataSet, this.dataSet.SalesInvoices.TableName);
 
             // Headers
-
             var index = -1;
             var headers = this.SalesInvoicesListObject.HeaderRowRange;
             var data = new object[headers.Rows.Count, headers.Columns.Count];
@@ -159,7 +158,6 @@ namespace Allors.Excel.Relations.CustomersOverdue
                 var cells = range.Cells;
 
                 var values = cells.Cast<Range>().Select(cell => cell.Value).ToArray();
-
             }
         }
 
@@ -169,20 +167,19 @@ namespace Allors.Excel.Relations.CustomersOverdue
             {
                 Extent = new Workspace.Data.Filter(M.SalesInvoice.ObjectType),
 
-                Results =  new[]
+                Results = new[]
                 {
                     new Workspace.Data.Result()
                     {
                         Fetch = new Fetch()
                         {
-                            Include =  new Tree(M.SalesInvoice.Class)
+                            Include = new Tree(M.SalesInvoice.Class)
                                 .Add(M.SalesInvoice.BilledFrom)
                                 .Add(M.SalesInvoice.BillToCustomer)
                                 .Add(M.SalesInvoice.BillToContactPerson, this.ContactTree)
                                 .Add(M.SalesInvoice.Currency)
                                 .Add(M.SalesInvoice.SalesInvoiceType)
-
-                        }
+                        },
                     },
                 },
             };

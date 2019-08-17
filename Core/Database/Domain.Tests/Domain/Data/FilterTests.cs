@@ -59,13 +59,13 @@ namespace Tests
                                                                         new Equals
                                                                             {
                                                                                 PropertyType = M.Person.FirstName,
-                                                                                Value = "John"
+                                                                                Value = "John",
                                                                             },
                                                                         new Equals
                                                                             {
                                                                                 PropertyType = M.Person.LastName,
                                                                                 Value = "Doe"
-                                                                            }
+                                                                            },
                                                                     },
                 },
             };

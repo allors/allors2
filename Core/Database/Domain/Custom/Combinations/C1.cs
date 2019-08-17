@@ -28,7 +28,7 @@ namespace Allors.Domain
             }
         }
 
-        public void CustomSum(C1Sum method) => method.result = method.a + method.b;
+        public void CustomSum(C1Sum method) => method.Result = method.A + method.B;
 
         public override string ToString() => this.Name;
     }

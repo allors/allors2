@@ -24,8 +24,7 @@ namespace Allors.Repository
 
         public Organisation ExecutedBy { get; set; }
 
-        //public Store Store { get; set; }
-
+        // public Store Store { get; set; }
         public Party Customer { get; set; }
 
         public ContactMechanism FullfillContactMechanism { get; set; }
@@ -172,7 +171,6 @@ namespace Allors.Repository
 
         public void OnInit()
         {
-
         }
 
         public void OnPreDerive() { }

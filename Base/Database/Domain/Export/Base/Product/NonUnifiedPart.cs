@@ -35,8 +35,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            //if (derivation.ChangeSet.Associations.Contains(this.Id))
-            //{
+            // if (derivation.ChangeSet.Associations.Contains(this.Id))
+            // {
             //    if (this.ExistInventoryItemsWherePart)
             //    {
             //        foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
@@ -44,7 +44,7 @@ namespace Allors.Domain
             //            derivation.AddDependency(this, inventoryItem);
             //        }
             //    }
-            //}
+            // }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)

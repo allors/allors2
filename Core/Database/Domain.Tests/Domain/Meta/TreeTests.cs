@@ -109,7 +109,7 @@ namespace Tests
         }
 
         [Fact]
-        public void legal()
+        public void Legal()
         {
             var tree = new Tree(M.C1.ObjectType)
                 .Add(M.C1.C1C1Many2Manies);

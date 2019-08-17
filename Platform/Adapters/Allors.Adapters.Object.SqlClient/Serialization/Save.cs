@@ -230,6 +230,5 @@ namespace Allors.Adapters.Object.SqlClient
                 }
             }
         }
-
     }
 }

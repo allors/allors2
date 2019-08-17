@@ -124,7 +124,6 @@ namespace Allors.Adapters.Object.SqlClient
                         break;
                 }
             }
-
         }
 
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();

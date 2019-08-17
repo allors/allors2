@@ -55,7 +55,6 @@ namespace Allors.Domain
 
             var date = this.Assignment.ScheduledStart;
 
-
             try
             {
                 this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart
@@ -68,7 +67,6 @@ namespace Allors.Domain
 
             var unitSellingPrice = this.CalculateSellingPrice().Result.HasValue ? this.CalculateSellingPrice().Result.Value : 0M;
             this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
-
 
             if (this.ExistAssignment)
             {

@@ -150,7 +150,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-
             this.SecurityTokens = new[]
             {
                 this.strategy.Session.GetSingleton().DefaultSecurityToken,
@@ -196,8 +195,7 @@ namespace Allors.Domain
             // PurchaseOrder Shipment State
             if (validOrderItems.Any())
             {
-                //                var receivable = validOrderItems.Where(v => this.PurchaseOrderState.IsSent && v.PurchaseOrderItemState.IsInProcess && !v.PurchaseOrderItemShipmentState.IsReceived);
-
+                // var receivable = validOrderItems.Where(v => this.PurchaseOrderState.IsSent && v.PurchaseOrderItemState.IsInProcess && !v.PurchaseOrderItemShipmentState.IsReceived);
                 if ((validOrderItems.Any(v => v.ExistPart) && validOrderItems.Where(v => v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived)) ||
                     (validOrderItems.Any(v => !v.ExistPart) && validOrderItems.Where(v => !v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived)))
                 {
@@ -309,8 +307,7 @@ namespace Allors.Domain
 
         private void Sync(ISession session)
         {
-            //session.Prefetch(this.SyncPrefetch, this);
-
+            // session.Prefetch(this.SyncPrefetch, this);
             foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
             {
                 orderItem.Sync(this);

@@ -44,7 +44,6 @@ namespace Allors.Adapters.Object.Npgsql
                 // The rows with NULL values should then return TRUE and not UNKNOWN.
                 //
                 // statement.sql.Append(" " + role.SingularFullName + "_R." + schema.O + " = " + allorsObject.ObjectId);
-
                 statement.Append("\n");
                 statement.Append("EXISTS(\n");
                 statement.Append("SELECT " + Mapping.ColumnNameForObject + "\n");
@@ -59,7 +58,7 @@ namespace Allors.Adapters.Object.Npgsql
 
         internal override void Setup(ExtentStatement statement)
         {
-            //extent.UseRole(role);
+            // extent.UseRole(role);
         }
     }
 }

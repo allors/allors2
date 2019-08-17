@@ -25,7 +25,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-
             if (this.ShipmentItem.ShipmentWhereShipmentItem is CustomerShipment customerShipment && this.OrderItem is SalesOrderItem salesOrderItem)
             {
                 var quantityPendingShipment = this.OrderItem?.OrderShipmentsWhereOrderItem?.Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);

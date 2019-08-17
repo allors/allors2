@@ -253,8 +253,7 @@ namespace Allors.Domain
                 .Select(v => v.SalesRepresentative)
                 .ToArray();
 
-            //@this.BaseOnDeriveActiveCustomer(derivation);
-
+            // @this.BaseOnDeriveActiveCustomer(derivation);
             foreach (CustomerRelationship customerRelationship in @this.CustomerRelationshipsWhereCustomer)
             {
                 if (@this.BaseIsActiveCustomer(customerRelationship.InternalOrganisation, @this.Strategy.Session.Now()))
@@ -267,23 +266,22 @@ namespace Allors.Domain
                 }
             }
 
-            //var allCustomerRelationships = @this.CustomerRelationshipsWhereCustomer;
-            //var allInternalOrganisations = allCustomerRelationships
+            // var allCustomerRelationships = @this.CustomerRelationshipsWhereCustomer;
+            // var allInternalOrganisations = allCustomerRelationships
             //    .Select(v => v.InternalOrganisation)
             //    .Distinct()
             //    .ToArray();
 
-            //foreach (InternalOrganisation internalOrganisation in allInternalOrganisations)
-            //{
+            // foreach (InternalOrganisation internalOrganisation in allInternalOrganisations)
+            // {
             //    var activeCustomers = allCustomerRelationships
             //        .Where(v => Equals(v.InternalOrganisation, internalOrganisation) && v.FromDate.Date <= DateTime.UtcNow &&
             //                    (!v.ExistThroughDate || v.ThroughDate >= DateTime.UtcNow))
             //        .Select(v => v.Customer)
             //        .ToArray();
 
-            //    internalOrganisation.ActiveCustomers = activeCustomers;
-            //}
-
+            // internalOrganisation.ActiveCustomers = activeCustomers;
+            // }
             foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancialRelationshipsWhereParty)
             {
                 partyFinancial.AmountDue = 0;

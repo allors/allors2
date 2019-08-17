@@ -5,7 +5,6 @@
 
 namespace Allors.Repository
 {
-
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -13,7 +12,6 @@ namespace Allors.Repository
     #endregion
     public partial interface PartBillOfMaterial : Commentable, Period, Object
     {
-
         #region Allors
         [Id("06c3a64a-ef2c-44a0-81ee-1335842cf844")]
         [AssociationId("738ee8fd-307a-4d12-a0fc-238640386eee")]
@@ -53,6 +51,5 @@ namespace Allors.Repository
         [Required]
 
         Part ComponentPart { get; set; }
-
     }
 }

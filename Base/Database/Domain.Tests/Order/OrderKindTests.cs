@@ -8,7 +8,6 @@
 
 namespace Allors.Domain
 {
-
     using Xunit;
 
     public class OrderKindTests : DomainTest

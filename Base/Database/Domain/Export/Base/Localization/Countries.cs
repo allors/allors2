@@ -9,7 +9,7 @@ namespace Allors.Domain
 
     public partial class Countries
     {
-        internal static List<string> euMemberStates = new List<string>
+        internal static List<string> EuMemberStates = new List<string>
             {
                 "BE", "BG", "CZ", "DK", "DE", "EE", "IE", "EL", "ES",
                 "FR", "IT", "CY", "LV", "LT", "LU", "HU", "MT", "NL",

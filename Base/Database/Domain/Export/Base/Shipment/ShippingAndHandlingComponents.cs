@@ -21,16 +21,15 @@ namespace Allors.Domain
             var carrierValid = false;
 
             // TODO: ???
-            //if (shippingAndHandlingComponent.ExistSpecifiedFor)
-            //{
+            // if (shippingAndHandlingComponent.ExistSpecifiedFor)
+            // {
             //    withSpecifiedFor = true;
 
-            //    if (customerShipment.ShipFromParty.Equals(shippingAndHandlingComponent.SpecifiedFor))
+            // if (customerShipment.ShipFromParty.Equals(shippingAndHandlingComponent.SpecifiedFor))
             //    {
             //        specifiedForValid = true;
             //    }
-            //}
-
+            // }
             if (shippingAndHandlingComponent.ExistGeographicBoundary)
             {
                 withGeographicBoundary = true;

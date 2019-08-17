@@ -1,10 +1,8 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="RelationTypeOneXmlWriter.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the IRelationTypeOneXmlWriter type.</summary>
-//-------------------------------------------------------------------------------------------------
 
 namespace Allors.Adapters.Object.Npgsql
 {

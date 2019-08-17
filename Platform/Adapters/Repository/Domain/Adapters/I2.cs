@@ -57,6 +57,5 @@ namespace Allors.Repository
         [RoleId("81acc49f-16c9-4677-80f4-c3e768a7b9e3")]
         #endregion
         double I2AllorsDouble { get; set; }
-
     }
 }

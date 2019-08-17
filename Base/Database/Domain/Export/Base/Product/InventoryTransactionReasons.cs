@@ -52,13 +52,13 @@ namespace Allors.Domain
 
             new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Sales Order")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bestelling").WithLocale(dutchLocale).Build())  //TODO
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bestelling").WithLocale(dutchLocale).Build()) // TODO
                 .WithUniqueId(SalesOrderId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(true)  // Increases Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(null)  // Does not affect Quantity
+                .WithIncreasesQuantityCommittedOut(true) // Increases Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(null) // Does not affect Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -69,9 +69,9 @@ namespace Allors.Domain
                 .WithUniqueId(OutgoingShipmentId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(false)  // Decreases Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(false)  // Decreases Quantity
+                .WithIncreasesQuantityCommittedOut(false) // Decreases Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(false) // Decreases Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -82,9 +82,9 @@ namespace Allors.Domain
                 .WithUniqueId(IncomingShipmentId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(null)  // Decreases Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(true)  // Decreases Quantity
+                .WithIncreasesQuantityCommittedOut(null) // Decreases Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(true) // Decreases Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -95,9 +95,9 @@ namespace Allors.Domain
                 .WithUniqueId(TheftId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(true)
-                .WithIncreasesQuantityCommittedOut(null)  // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(false)  // Decreases Quantity
+                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(false) // Decreases Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -108,9 +108,9 @@ namespace Allors.Domain
                 .WithUniqueId(ShrinkageId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(true)
-                .WithIncreasesQuantityCommittedOut(null)  // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(false)  // Decreases Quantity
+                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(false) // Decreases Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -121,9 +121,9 @@ namespace Allors.Domain
                 .WithUniqueId(UnknownId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(true)
-                .WithIncreasesQuantityCommittedOut(null)  // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(true)  // Affects Quantity
+                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(true) // Affects Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -134,9 +134,9 @@ namespace Allors.Domain
                 .WithUniqueId(StateId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(null)  // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(null)  // Does not affect Quantity
+                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(null) // Does not affect Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Scrap)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Scrap)
                 .Build();
@@ -146,9 +146,9 @@ namespace Allors.Domain
                 .WithUniqueId(PhysicalCountId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(true)
-                .WithIncreasesQuantityCommittedOut(null)  // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(true)  // Increases Quantity
+                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(true) // Increases Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -158,9 +158,9 @@ namespace Allors.Domain
                 .WithUniqueId(ConsumptionId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(false)  // Decreases Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(false)  // Decreases Quantity
+                .WithIncreasesQuantityCommittedOut(false) // Decreases Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(false) // Decreases Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -170,9 +170,9 @@ namespace Allors.Domain
                 .WithUniqueId(ReservationId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(true)  // Increases Quantity
-                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(null)  // Does not affect Quantity
+                .WithIncreasesQuantityCommittedOut(true) // Increases Quantity
+                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(null) // Does not affect Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();

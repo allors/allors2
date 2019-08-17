@@ -1,10 +1,8 @@
-//-------------------------------------------------------------------------------------------------
 // <copyright file="NonSerializedInventoryItemTests.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
-//-------------------------------------------------------------------------------------------------
 
 namespace Allors.Domain
 {
@@ -314,30 +312,30 @@ namespace Allors.Domain
             Assert.Equal(7, salesItem.QuantityShortFalled);
         }
 
-        //[Fact]
-        //public void ReportNonSerialisedInventory()
-        //{
+        // [Fact]
+        // public void ReportNonSerialisedInventory()
+        // {
         //    var supplier = new OrganisationBuilder(this.DatabaseSession).WithName("supplier").Build();
         //    var internalOrganisation = Singleton.Instance(this.DatabaseSession).InternalOrganisation;
 
-        //    new SupplierRelationshipBuilder(this.DatabaseSession)
+        // new SupplierRelationshipBuilder(this.DatabaseSession)
         //        .WithSingleton(internalOrganisation)
         //        .WithSupplier(supplier)
         //        .WithFromDate(this.Session.Now())
         //        .Build();
 
-        //    var rawMaterial = new RawMaterialBuilder(this.DatabaseSession)
+        // var rawMaterial = new RawMaterialBuilder(this.DatabaseSession)
         //        .WithName("raw material")
         //        .WithInventoryItemKind(new InventoryItemKinds(this.DatabaseSession).NonSerialised)
         //        .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
         //        .Build();
 
-        //    var level1 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level1").Build();
+        // var level1 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level1").Build();
         //    var level2 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level2").WithPrimaryParent(level1).Build();
         //    var level3 = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("level3").WithPrimaryParent(level2).Build();
         //    var category = new ProductCategoryBuilder(this.DatabaseSession).WithDescription("category").Build();
 
-        //    var good = new NonUnifiedGoodBuilder(this.DatabaseSession)
+        // var good = new NonUnifiedGoodBuilder(this.DatabaseSession)
         //        .WithName("Good")
         //        .WithSku("10101")
         //        .WithVatRate(new VatRateBuilder(this.DatabaseSession).WithRate(21).Build())
@@ -347,64 +345,63 @@ namespace Allors.Domain
         //        .WithProductCategory(category)
         //        .Build();
 
-        //    var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
+        // var purchasePrice = new ProductPurchasePriceBuilder(this.DatabaseSession)
         //        .WithFromDate(this.Session.Now())
         //        .WithCurrency(new Currencies(this.DatabaseSession).FindBy(M.Currency.IsoCode, "EUR"))
         //        .WithPrice(1)
         //        .WithUnitOfMeasure(new UnitsOfMeasure(this.DatabaseSession).Piece)
         //        .Build();
 
-        //    var goodItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
+        // var goodItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
         //        .WithGood(good)
         //        .WithAvailableToPromise(120)
         //        .WithQuantityOnHand(120)
         //        .Build();
 
-        //    var damagedItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
+        // var damagedItem = new NonSerialisedInventoryItemBuilder(this.DatabaseSession)
         //        .WithGood(good)
         //        .WithAvailableToPromise(120)
         //        .WithQuantityOnHand(120)
         //        .WithCurrentObjectState(new NonSerialisedInventoryItemStates(this.DatabaseSession).SlightlyDamaged)
         //        .Build();
 
-        //    var partItem = (NonSerialisedInventoryItem)rawMaterial.InventoryItemsWherePart[0];
+        // var partItem = (NonSerialisedInventoryItem)rawMaterial.InventoryItemsWherePart[0];
 
-        //    new SupplierOfferingBuilder(this.DatabaseSession)
+        // new SupplierOfferingBuilder(this.DatabaseSession)
         //        .WithProduct(good)
         //        .WithPart(rawMaterial)
         //        .WithSupplier(supplier)
         //        .WithProductPurchasePrice(purchasePrice)
         //        .Build();
 
-        //var valueByParameter = new Dictionary<Predicate, object>();
+        // var valueByParameter = new Dictionary<Predicate, object>();
 
-        //var preparedExtent = new Reports(this.DatabaseSession).FindByName(Constants.REPORTNONSERIALIZEDINVENTORY).PreparedExtent;
-        //var parameters = preparedExtent.Parameters;
+        // var preparedExtent = new Reports(this.DatabaseSession).FindByName(Constants.REPORTNONSERIALIZEDINVENTORY).PreparedExtent;
+        // var parameters = preparedExtent.Parameters;
 
-        //var extent = preparedExtent.Execute(valueByParameter);
+        // var extent = preparedExtent.Execute(valueByParameter);
 
-        //Assert.Equal(3, extent.Count);
-        //Assert.Contains(goodItem, extent);
-        //Assert.Contains(damagedItem, extent);
-        //Assert.Contains(partItem, extent);
+        // Assert.Equal(3, extent.Count);
+        // Assert.Contains(goodItem, extent);
+        // Assert.Contains(damagedItem, extent);
+        // Assert.Contains(partItem, extent);
 
-        //valueByParameter[parameters[1]] = new NonSerialisedInventoryItemStates(this.DatabaseSession).SlightlyDamaged;
+        // valueByParameter[parameters[1]] = new NonSerialisedInventoryItemStates(this.DatabaseSession).SlightlyDamaged;
 
-        //extent = preparedExtent.Execute(valueByParameter);
+        // extent = preparedExtent.Execute(valueByParameter);
 
-        //Assert.Single(extent.Count);
-        //Assert.Contains(damagedItem, extent);
+        // Assert.Single(extent.Count);
+        // Assert.Contains(damagedItem, extent);
 
-        //valueByParameter.Clear();
-        //valueByParameter[parameters[4]] = level1;
+        // valueByParameter.Clear();
+        // valueByParameter[parameters[4]] = level1;
 
-        //extent = preparedExtent.Execute(valueByParameter);
+        // extent = preparedExtent.Execute(valueByParameter);
 
-        //Assert.Equal(2, extent.Count);
-        //Assert.Contains(goodItem, extent);
-        //Assert.Contains(damagedItem, extent);
-        //}
-
+        // Assert.Equal(2, extent.Count);
+        // Assert.Contains(goodItem, extent);
+        // Assert.Contains(damagedItem, extent);
+        // }
         private Part CreatePart(string partId, InventoryItemKind kind)
             => new NonUnifiedPartBuilder(this.Session)
                 .WithProductIdentification(new PartNumberBuilder(this.Session)

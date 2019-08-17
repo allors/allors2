@@ -21,7 +21,6 @@ namespace Allors
     /// </summary>
     public class RelationNotLoadedEventArgs
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RelationNotLoadedEventArgs"/> class.
         /// </summary>

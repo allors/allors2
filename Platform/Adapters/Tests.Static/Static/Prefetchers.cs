@@ -16,7 +16,7 @@ namespace Allors.Adapters
 
         public Prefetchers() => this.prefetchPolicyByClass = new Dictionary<IClass, PrefetchPolicy>();
 
-        public PrefetchPolicy this[IClass @class]    // Indexer declaration
+        public PrefetchPolicy this[IClass @class] // Indexer declaration
         {
             get
             {

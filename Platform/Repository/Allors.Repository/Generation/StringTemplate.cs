@@ -88,14 +88,14 @@ namespace Allors.Repository.Generation
 
                 if (generation.HasAttribute(InputKey))
                 {
-                    //var input = new Guid(generation.GetAttribute(InputKey));
-                    //var objectType = repository.Find(input) as IObjectType;
-                    //if (objectType != null)
-                    //{
+                    // var input = new Guid(generation.GetAttribute(InputKey));
+                    // var objectType = repository.Find(input) as IObjectType;
+                    // if (objectType != null)
+                    // {
                     //    template.Add(ObjectTypeKey, objectType);
-                    //}
-                    //else
-                    //{
+                    // }
+                    // else
+                    // {
                     //    var relationType = repository.Find(input) as RelationType;
                     //    if (relationType != null)
                     //    {
@@ -121,7 +121,7 @@ namespace Allors.Repository.Generation
                     //            }
                     //        }
                     //    }
-                    //}
+                    // }
                 }
 
                 var result = template.Render();

@@ -96,7 +96,7 @@ namespace Allors.Domain
 
         public void BaseDelete(DeletableDelete method)
         {
-            //TODO: Restrit Delete?
+            // TODO: Restrit Delete?
             foreach (SerialisedItemVersion version in this.AllVersions)
             {
                 version.Delete();

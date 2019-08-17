@@ -191,8 +191,7 @@ namespace Allors.Adapters
 
                         var xml = stringWriter.ToString();
                         File.WriteAllText(@"c:\temp\population.xml", xml);
-                        //Console.Out.WriteLine(xml);
-
+                        // Console.Out.WriteLine(xml);
                         var stringReader = new StringReader(xml);
                         using (var reader = XmlReader.Create(stringReader))
                         {
@@ -296,8 +295,7 @@ namespace Allors.Adapters
                     }
 
                     var xml = stringWriter.ToString();
-                    //Console.Out.WriteLine(xml);
-
+                    // Console.Out.WriteLine(xml);
                     var stringReader = new StringReader(xml);
                     using (var reader = XmlReader.Create(stringReader))
                     {
@@ -473,10 +471,9 @@ namespace Allors.Adapters
                         savePopulation.Save(writer);
                     }
 
-                    //writer = XmlWriter.Create(@"population.xml", Encoding.UTF8);
-                    //saveSession.Population.Save(writer);
-                    //writer.Close();
-
+                    // writer = XmlWriter.Create(@"population.xml", Encoding.UTF8);
+                    // saveSession.Population.Save(writer);
+                    // writer.Close();
                     var stringReader = new StringReader(stringWriter.ToString());
                     using (var reader = XmlReader.Create(stringReader))
                     {

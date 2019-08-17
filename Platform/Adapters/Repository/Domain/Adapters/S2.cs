@@ -57,6 +57,5 @@ namespace Allors.Repository
         [RoleId("51f99d5f-bccf-4252-9475-dcf724e775d9")]
         #endregion
         DateTime S2AllorsDateTime { get; set; }
-
     }
 }

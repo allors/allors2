@@ -1,10 +1,8 @@
-﻿//-------------------------------------------------------------------------------------------------
-// <copyright file="BankAccountTests.cs" company="Allors bvba">
+﻿// <copyright file="BankAccountTests.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
-//-------------------------------------------------------------------------------------------------
 
 namespace Allors.Domain
 {
@@ -198,7 +196,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void m_Correct()
+        public void M_Correct()
         {
             new BankAccountBuilder(this.Session).WithIban("TR330006100519786457841326").Build();
 

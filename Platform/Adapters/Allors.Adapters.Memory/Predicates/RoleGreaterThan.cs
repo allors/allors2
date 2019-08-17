@@ -44,7 +44,6 @@ namespace Allors.Adapters.Memory
                 }
             }
 
-
             if (!(strategy.GetInternalizedUnitRole(this.roleType) is IComparable comparable))
             {
                 return ThreeValuedLogic.Unknown;

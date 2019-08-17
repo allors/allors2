@@ -4,7 +4,6 @@
 // </copyright>
 
 // ReSharper disable Mvc.ActionNotResolved
-
 namespace Allors.Server
 {
     using System;

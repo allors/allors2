@@ -14,7 +14,6 @@ namespace Allors.Repository
     #endregion
     public partial interface FinancialAccountTransaction : Object
     {
-
         #region Allors
         [Id("04411b65-a0a1-4e2c-9d10-a0ecfcf6c3d2")]
         [AssociationId("340a61a7-3458-47ea-b41d-4c559fd8b1d2")]
@@ -40,6 +39,5 @@ namespace Allors.Repository
         [Required]
 
         DateTime TransactionDate { get; set; }
-
     }
 }

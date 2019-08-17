@@ -23,11 +23,10 @@ namespace Allors.Adapters
         private const bool DefaultExtraInits = true;
 
         // Full
-        //private const int DefaultNumberOfRuns = 2;
-        //private const int DefaultLargeArraySize = 1000;
-        //private const bool DefaultExtraMarkers = true;
-        //private const bool DefaultExtraInits = true;
-
+        // private const int DefaultNumberOfRuns = 2;
+        // private const int DefaultLargeArraySize = 1000;
+        // private const bool DefaultExtraMarkers = true;
+        // private const bool DefaultExtraInits = true;
         static Settings()
         {
             NumberOfRuns = int.TryParse(Environment.GetEnvironmentVariable("NumberOfRuns"), out var numberOfRuns) ? numberOfRuns : DefaultNumberOfRuns;

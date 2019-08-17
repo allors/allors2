@@ -16781,7 +16781,7 @@ namespace Allors.Adapters
         [Fact]
         public void ValidateAssociationExist()
         {
-            //TODO:
+            // TODO:
         }
 
         [Fact]
@@ -17138,7 +17138,6 @@ namespace Allors.Adapters
 
         // ISession.Extent for Repositories and
         // IWorkspaceSession.WorkspaceExtent for Workspaces.
-
         private static Unit GetAllorsString(IObjectType objectType) => (Unit)objectType.MetaPopulation.Find(UnitIds.String);
 
         private void AssertC1(Extent extent, bool assert0, bool assert1, bool assert2, bool assert3)

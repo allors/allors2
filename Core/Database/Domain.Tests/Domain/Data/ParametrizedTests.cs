@@ -63,13 +63,13 @@ namespace Tests
                                     new Equals
                                         {
                                             PropertyType = M.Person.FirstName,
-                                            Parameter = "firstName"
+                                            Parameter = "firstName",
                                         },
                                     new Equals
                                         {
                                             PropertyType = M.Person.LastName,
                                             Parameter = "lastName"
-                                        }
+                                        },
                                 },
                 },
             };
@@ -102,13 +102,13 @@ namespace Tests
                             new Equals
                                 {
                                     PropertyType = M.Person.FirstName,
-                                    Parameter = "firstName"
+                                    Parameter = "firstName",
                                 },
                             new Equals
                                 {
                                     PropertyType = M.Person.LastName,
                                     Parameter = "lastName"
-                                }
+                                },
                         },
                 },
             };
@@ -148,7 +148,7 @@ namespace Tests
                         {
                             PropertyType = M.Person.Gender,
                             Parameter = "gender"
-                        }
+                        },
                     },
                 },
             };
@@ -180,7 +180,7 @@ namespace Tests
                         {
                             PropertyType = M.Person.Gender,
                             Parameter = "gender"
-                        }
+                        },
                     },
                 },
             };
@@ -213,7 +213,7 @@ namespace Tests
                                     Parameter = "gender"
                                 }
                             }
-                        }
+                        },
                     },
                 },
             };
@@ -246,7 +246,7 @@ namespace Tests
                                                                                                                      Parameter = "gender"
                                                                                                                  }
                                                                                              }
-                                                                            }
+                                                                            },
                                                                     },
                 },
             };
