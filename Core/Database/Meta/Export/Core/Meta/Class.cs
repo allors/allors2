@@ -12,9 +12,6 @@ namespace Allors.Meta
 
     public sealed partial class Class : Composite, IClass
     {
-        // TODO: Review
-        public RoleType[] DelegatedAccessRoleTypes { get; set; }
-
         private readonly Class[] classes;
 
         private readonly Dictionary<RoleType, ConcreteRoleType> concreteRoleTypeByRoleType;
@@ -28,7 +25,7 @@ namespace Allors.Meta
         private Type clrType;
 
         internal Class(MetaPopulation metaPopulation, Guid id)
-            : base(metaPopulation)
+                    : base(metaPopulation)
         {
             this.Id = id;
 
@@ -38,6 +35,9 @@ namespace Allors.Meta
             this.classes = new[] { this };
             metaPopulation.OnClassCreated(this);
         }
+
+        // TODO: Review
+        public RoleType[] DelegatedAccessRoleTypes { get; set; }
 
         public Dictionary<RoleType, ConcreteRoleType> ConcreteRoleTypeByRoleType
         {

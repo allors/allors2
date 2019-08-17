@@ -197,6 +197,11 @@ namespace Allors.Meta
         /// <value>The name of the reverse.</value>
         public string ReverseName => this.RoleType.SingularName + this.AssociationType.SingularName;
 
+        public ConcreteRoleType[] ConcreteRoleTypes =>
+                    this.AssociationType.ObjectType.IsInterface ?
+                        this.AssociationType.ObjectType.Classes.Select(v => v.ConcreteRoleTypeByRoleType[this.RoleType]).ToArray() :
+                        Array.Empty<ConcreteRoleType>();
+
         /// <summary>
         /// Gets the validation name.
         /// </summary>
@@ -304,10 +309,5 @@ namespace Allors.Meta
 
             this.RoleType?.Validate(validationLog);
         }
-
-        public ConcreteRoleType[] ConcreteRoleTypes =>
-            this.AssociationType.ObjectType.IsInterface ?
-                this.AssociationType.ObjectType.Classes.Select(v => v.ConcreteRoleTypeByRoleType[this.RoleType]).ToArray() :
-                Array.Empty<ConcreteRoleType>();
     }
 }

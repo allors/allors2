@@ -17,10 +17,6 @@ namespace Allors.Meta
 
         public const string PluralSuffix = "s";
 
-        public bool IsRequired { get; set; }
-
-        public bool IsUnique { get; set; }
-
         private ObjectType objectType;
 
         private string singularName;
@@ -42,6 +38,10 @@ namespace Allors.Meta
 
             relationType.MetaPopulation.OnRoleTypeCreated(this);
         }
+
+        public bool IsRequired { get; set; }
+
+        public bool IsUnique { get; set; }
 
         public bool Workspace => this.RelationType.Workspace;
 
@@ -307,6 +307,7 @@ namespace Allors.Meta
                         this.Precision = null;
 
                         break;
+
                     case UnitTags.Binary:
                         if (!this.Size.HasValue)
                         {
@@ -317,6 +318,7 @@ namespace Allors.Meta
                         this.Precision = null;
 
                         break;
+
                     case UnitTags.Decimal:
                         if (!this.Precision.HasValue)
                         {

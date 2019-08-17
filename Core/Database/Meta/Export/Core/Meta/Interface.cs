@@ -31,6 +31,7 @@ namespace Allors.Meta
         }
 
         #region Exist
+
         public bool ExistSubclasses
         {
             get
@@ -58,7 +59,7 @@ namespace Allors.Meta
             }
         }
 
-        #endregion
+        #endregion Exist
 
         IEnumerable<IClass> IInterface.Subclasses => this.Subclasses;
 
@@ -105,8 +106,6 @@ namespace Allors.Meta
 
         public override Type ClrType => this.clrType;
 
-        internal void Bind(Dictionary<string, Type> typeByTypeName) => this.clrType = typeByTypeName[this.Name];
-
         /// <summary>
         /// Contains this concrete class.
         /// </summary>
@@ -121,6 +120,8 @@ namespace Allors.Meta
             this.MetaPopulation.Derive();
             return this.Equals(objectType) || this.derivedSubtypes.Contains(objectType);
         }
+
+        internal void Bind(Dictionary<string, Type> typeByTypeName) => this.clrType = typeByTypeName[this.Name];
 
         /// <summary>
         /// Derive direct sub type derivations.

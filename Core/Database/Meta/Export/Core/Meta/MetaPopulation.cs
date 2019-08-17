@@ -13,6 +13,7 @@ namespace Allors.Meta
 
     public sealed partial class MetaPopulation : IMetaPopulation
     {
+        public static readonly MetaPopulation Instance;
         private readonly Dictionary<Guid, MetaObjectBase> metaObjectById;
 
         private Dictionary<string, Class> derivedClassByLowercaseName;
@@ -29,8 +30,6 @@ namespace Allors.Meta
         private IList<AssociationType> associationTypes;
         private IList<RoleType> roleTypes;
         private IList<MethodType> methodTypes;
-
-        public static readonly MetaPopulation Instance;
 
         static MetaPopulation()
         {
@@ -137,6 +136,52 @@ namespace Allors.Meta
                 }
 
                 return true;
+            }
+        }
+
+        // TODO: Added for Workspace.Meta
+        public IEnumerable<Composite> WorkspaceComposites
+        {
+            get
+            {
+                this.Derive();
+                return this.Composites.Where(m => m.Workspace);
+            }
+        }
+
+        public IEnumerable<Interface> WorkspaceInterfaces
+        {
+            get
+            {
+                this.Derive();
+                return this.Interfaces.Where(m => m.Workspace);
+            }
+        }
+
+        public IEnumerable<Class> WorkspaceClasses
+        {
+            get
+            {
+                this.Derive();
+                return this.Classes.Where(m => m.Workspace);
+            }
+        }
+
+        public IEnumerable<RelationType> WorkspaceRelationTypes
+        {
+            get
+            {
+                this.Derive();
+                return this.RelationTypes.Where(m => m.Workspace);
+            }
+        }
+
+        public IEnumerable<MethodType> WorkspaceMethodTypes
+        {
+            get
+            {
+                this.Derive();
+                return this.MethodTypes.Where(m => m.Workspace);
             }
         }
 
@@ -597,52 +642,6 @@ namespace Allors.Meta
             }
 
             return false;
-        }
-
-        // TODO: Added for Workspace.Meta
-        public IEnumerable<Composite> WorkspaceComposites
-        {
-            get
-            {
-                this.Derive();
-                return this.Composites.Where(m => m.Workspace);
-            }
-        }
-
-        public IEnumerable<Interface> WorkspaceInterfaces
-        {
-            get
-            {
-                this.Derive();
-                return this.Interfaces.Where(m => m.Workspace);
-            }
-        }
-
-        public IEnumerable<Class> WorkspaceClasses
-        {
-            get
-            {
-                this.Derive();
-                return this.Classes.Where(m => m.Workspace);
-            }
-        }
-
-        public IEnumerable<RelationType> WorkspaceRelationTypes
-        {
-            get
-            {
-                this.Derive();
-                return this.RelationTypes.Where(m => m.Workspace);
-            }
-        }
-
-        public IEnumerable<MethodType> WorkspaceMethodTypes
-        {
-            get
-            {
-                this.Derive();
-                return this.MethodTypes.Where(m => m.Workspace);
-            }
         }
     }
 }

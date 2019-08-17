@@ -12,14 +12,6 @@ namespace Allors.Repository.Domain
 
     public class XmlDoc
     {
-        public string FullValue { get; }
-
-        public string VerbatimFullValue => this.FullValue?.Replace("\"", "\"\"");
-
-        public string Value { get; }
-
-        public string VerbatimValue => this.Value?.Replace("\"", "\"\"");
-
         public XmlDoc(string value)
         {
             this.FullValue = value;
@@ -34,5 +26,13 @@ namespace Allors.Repository.Domain
                 throw new Exception("Could not parse XmlDoc: \n" + this.FullValue);
             }
         }
+
+        public string FullValue { get; }
+
+        public string VerbatimFullValue => this.FullValue?.Replace("\"", "\"\"");
+
+        public string Value { get; }
+
+        public string VerbatimValue => this.Value?.Replace("\"", "\"\"");
     }
 }

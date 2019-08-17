@@ -8,6 +8,12 @@ namespace Allors.Meta
 {
     public sealed partial class ConcreteRoleType : IConcreteRoleType
     {
+        public ConcreteRoleType(Class @class, RoleType roleType)
+        {
+            this.Class = @class;
+            this.RoleType = roleType;
+        }
+
         public bool IsRequired => this.IsRequiredOverride ?? this.RoleType.IsRequired;
 
         public bool? IsRequiredOverride { get; set; }
@@ -15,12 +21,6 @@ namespace Allors.Meta
         public bool IsUnique => this.IsUniqueOverride ?? this.RoleType.IsUnique;
 
         public bool? IsUniqueOverride { get; set; }
-
-        public ConcreteRoleType(Class @class, RoleType roleType)
-        {
-            this.Class = @class;
-            this.RoleType = roleType;
-        }
 
         IRoleType IConcreteRoleType.RoleType
         {

@@ -23,6 +23,11 @@ namespace Allors.Meta
 
         private string xmlDoc;
 
+        protected Composite(MetaPopulation metaPopulation)
+            : base(metaPopulation)
+        {
+        }
+
         public bool Workspace { get; private set; }
 
         public string XmlDoc
@@ -65,11 +70,6 @@ namespace Allors.Meta
                 this.MetaPopulation.Derive();
                 return this.isSynced;
             }
-        }
-
-        protected Composite(MetaPopulation metaPopulation)
-            : base(metaPopulation)
-        {
         }
 
         public bool ExistExclusiveClass
@@ -236,6 +236,7 @@ namespace Allors.Meta
         public IEnumerable<AssociationType> InheritedAssociations => this.AssociationTypes.Except(this.ExclusiveAssociationTypes);
 
         #region Workspace
+
         // Workspace
         public IEnumerable<Composite> WorkspaceRelatedComposites
         {
@@ -388,7 +389,8 @@ namespace Allors.Meta
                 return this.ExclusiveMethodTypes.Where(m => m.Workspace);
             }
         }
-        #endregion
+
+        #endregion Workspace
 
         public bool ExistSupertype(IInterface @interface)
         {

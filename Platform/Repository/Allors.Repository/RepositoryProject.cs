@@ -1,4 +1,4 @@
-﻿// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // <copyright file="RepositoryProject.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -20,22 +20,6 @@ namespace Allors.Repository.Roslyn
 
     internal class RepositoryProject
     {
-        public Project Project { get; }
-
-        public Solution Solution { get; }
-
-        public Compilation Compilation { get; }
-
-        public Dictionary<SyntaxTree, SemanticModel> SemanticModelBySyntaxTree { get; }
-
-        public Dictionary<SyntaxTree, Document> DocumentBySyntaxTree { get; }
-
-        public INamedTypeSymbol DomainAttributeType { get; }
-
-        public INamedTypeSymbol ExtendAttributeType { get; }
-
-        public System.Reflection.Assembly Assembly { get; set; }
-
         internal RepositoryProject(Project project)
         {
             this.Project = project;
@@ -70,5 +54,21 @@ namespace Allors.Repository.Roslyn
                 }
             }
         }
+
+        public Project Project { get; }
+
+        public Solution Solution { get; }
+
+        public Compilation Compilation { get; }
+
+        public Dictionary<SyntaxTree, SemanticModel> SemanticModelBySyntaxTree { get; }
+
+        public Dictionary<SyntaxTree, Document> DocumentBySyntaxTree { get; }
+
+        public INamedTypeSymbol DomainAttributeType { get; }
+
+        public INamedTypeSymbol ExtendAttributeType { get; }
+
+        public System.Reflection.Assembly Assembly { get; set; }
     }
 }

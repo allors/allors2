@@ -19,6 +19,7 @@ namespace Allors.Meta
         /// Used to create property names.
         /// </summary>
         private const string Where = "Where";
+
         private Composite objectType;
 
         internal AssociationType(RelationType relationType, Guid id)
@@ -134,17 +135,6 @@ namespace Allors.Meta
         /// </summary>
         public override string DisplayName => this.PropertyName;
 
-        /// <summary>
-        /// Get the value of the association on this object.
-        /// </summary>
-        /// <param name="strategy">
-        /// The strategy.
-        /// </param>
-        /// <returns>
-        /// The association value.
-        /// </returns>
-        public override object Get(IStrategy strategy) => strategy.GetAssociation(this.RelationType);
-
         IRoleType IAssociationType.RoleType => this.RoleType;
 
         /// <summary>
@@ -158,6 +148,17 @@ namespace Allors.Meta
         /// </summary>
         /// <value>The name of the validation.</value>
         protected internal override string ValidationName => "association type " + this.RelationType.Name;
+
+        /// <summary>
+        /// Get the value of the association on this object.
+        /// </summary>
+        /// <param name="strategy">
+        /// The strategy.
+        /// </param>
+        /// <returns>
+        /// The association value.
+        /// </returns>
+        public override object Get(IStrategy strategy) => strategy.GetAssociation(this.RelationType);
 
         /// <summary>
         /// Compares the current instance with another object of the same type.

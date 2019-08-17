@@ -89,14 +89,6 @@ namespace Allors.Meta
         public override string DisplayName => this.name;
 
         /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </returns>
-        public override string ToString() => this.name;
-
-        /// <summary>
         /// Gets the validation name.
         /// </summary>
         /// <value>The validation name.</value>
@@ -112,6 +104,14 @@ namespace Allors.Meta
                 return "unknown method type";
             }
         }
+
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        public override string ToString() => this.name;
 
         /// <summary>
         /// Validates the instance.

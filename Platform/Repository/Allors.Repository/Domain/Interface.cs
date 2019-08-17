@@ -33,15 +33,6 @@ namespace Allors.Repository.Domain
             }
         }
 
-        private void AddInterfaces(ISet<Interface> interfaces)
-        {
-            interfaces.UnionWith(this.ImplementedInterfaces);
-            foreach (var implementedInterface in this.ImplementedInterfaces)
-            {
-                implementedInterface.AddInterfaces(interfaces);
-            }
-        }
-
         public Dictionary<string, PartialInterface> PartialByDomainName { get; }
 
         public Dictionary<string, Property> InheritedPropertyByRoleName { get; }
@@ -86,6 +77,15 @@ namespace Allors.Repository.Domain
             }
 
             return null;
+        }
+
+        private void AddInterfaces(ISet<Interface> interfaces)
+        {
+            interfaces.UnionWith(this.ImplementedInterfaces);
+            foreach (var implementedInterface in this.ImplementedInterfaces)
+            {
+                implementedInterface.AddInterfaces(interfaces);
+            }
         }
     }
 }
