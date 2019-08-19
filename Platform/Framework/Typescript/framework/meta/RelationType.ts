@@ -1,7 +1,6 @@
 import { MetaPopulation } from './MetaPopulation';
 import { AssociationType } from './AssociationType';
 import { RoleType } from './RoleType';
-import { ConcreteRoleType } from './ConcreteRoleType';
 
 export class RelationType {
   id: string;
