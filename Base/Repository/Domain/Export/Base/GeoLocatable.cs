@@ -22,7 +22,7 @@ namespace Allors.Repository
         [Precision(8)]
         [Scale(6)]
         [Workspace]
-        decimal Latitude { get; set; }
+        double Latitude { get; set; }
 
         #region Allors
         [Id("c51b6be6-5678-4664-b2c9-874cc46deb2e")]
@@ -34,6 +34,6 @@ namespace Allors.Repository
         [Precision(9)]
         [Scale(6)]
         [Workspace]
-        decimal Longitude { get; set; }
+        double Longitude { get; set; }
     }
 }
