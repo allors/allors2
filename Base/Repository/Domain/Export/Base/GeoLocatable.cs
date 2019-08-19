@@ -17,7 +17,6 @@ namespace Allors.Repository
         [AssociationId("340069b9-a00b-420d-8f8d-52e627729db3")]
         [RoleId("bab847eb-ff35-49dd-ae44-ccf4e1ee6743")]
         #endregion
-        [Derived]
         [Required]
         [Precision(8)]
         [Scale(6)]
@@ -29,7 +28,6 @@ namespace Allors.Repository
         [AssociationId("0d7f48c7-84e5-4ea6-8242-22e4cb35e8cd")]
         [RoleId("66d37e99-b7aa-42c7-8b03-0d4bee43a1e7")]
         #endregion
-        [Derived]
         [Required]
         [Precision(9)]
         [Scale(6)]
