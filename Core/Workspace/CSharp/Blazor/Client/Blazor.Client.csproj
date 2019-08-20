@@ -14,4 +14,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.0.0-preview8.19405.7" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj" />
+    <ProjectReference Include="..\..\Meta\Workspace.Meta.csproj" />
+  </ItemGroup>
+
 </Project>

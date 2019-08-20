@@ -1,4 +1,4 @@
-﻿// <copyright file="Workspace.cs" company="Allors bvba">
+// <copyright file="Workspace.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -24,7 +24,7 @@ namespace Allors.Workspace
         {
             var userSecurityHash = response.UserSecurityHash;
 
-            var requireLoadIds = new SyncRequest
+            var syncRequest = new SyncRequest
             {
                 Objects = response.Objects.Where(v =>
                         {
@@ -35,7 +35,7 @@ namespace Allors.Workspace
                         }).Select(v => v[0]).ToArray(),
             };
 
-            return requireLoadIds;
+            return syncRequest;
         }
 
         public void Sync(SyncResponse syncResponse)

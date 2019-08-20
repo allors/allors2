@@ -44,9 +44,9 @@ namespace Allors.Repository
         [Id("49b96f79-c33d-4847-8c64-d50a6adb4985")]
         [AssociationId("b031ef1a-0102-4b19-b85d-aa9c404596c3")]
         [RoleId("b95c7b34-a295-4600-82c8-826cc2186a00")]
+        #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
-        #endregion
         public Person[] Employees { get; set; }
 
         #region Allors
@@ -121,9 +121,9 @@ namespace Allors.Repository
         [AssociationId("896a4589-4caf-4cd2-8365-c4200b12f519")]
         [RoleId("baa30557-79ff-406d-b374-9d32519b2de7")]
         [Indexed]
+        #endregion
         [Size(256)]
         [Workspace]
-        #endregion
         public string Name { get; set; }
 
         #region Allors

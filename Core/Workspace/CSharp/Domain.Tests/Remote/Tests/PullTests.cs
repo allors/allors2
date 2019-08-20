@@ -26,6 +26,10 @@ namespace Tests.Remote
             var result = context.Load(pull).Result;
 
             var people = result.GetCollection<Person>("People");
+
+            result = context.Load(pull).Result;
+
+            var people2 = result.GetCollection<Person>("People");
         }
     }
 }

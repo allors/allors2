@@ -14,6 +14,12 @@ namespace Blazor.Server
     using Allors.Services;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Identity.Models;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Text;
+    using Identity;
 
     public class Startup
     {
@@ -32,6 +38,39 @@ namespace Blazor.Server
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IPolicyService, PolicyService>();
             services.AddSingleton<IExtentService, ExtentService>();
+
+            // Identity
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .UseAllors()
+                .AddDefaultTokenProviders();
+
+            // Enable Dual Authentication
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddCookie(cfg => cfg.SlidingExpiration = true)
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
+
+                    cfg.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = this.Configuration["Tokens:Issuer"],
+                        ValidAudience = this.Configuration["Tokens:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"])),
+                    };
+                });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return System.Threading.Tasks.Task.CompletedTask;
+                };
+            });
 
             services.AddMvc().AddNewtonsoftJson();
             services.AddResponseCompression(opts =>
@@ -60,6 +99,9 @@ namespace Blazor.Server
             databaseService.Database = database;
 
             app.UseResponseCompression();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             if (env.IsDevelopment())
             {

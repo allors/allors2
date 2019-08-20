@@ -27,7 +27,7 @@ namespace Blazor.Server
             }
         }
 
-        // TODO: add NLog
+        // TODO: add NLog and json files
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(new ConfigurationBuilder()
