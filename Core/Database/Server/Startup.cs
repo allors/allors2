@@ -128,7 +128,8 @@ namespace Allors.Server
                     CommandTimeout = 600,
                 });
 
-            app.UseAllors(database);
+            var databaseService = app.ApplicationServices.GetRequiredService<IDatabaseService>();
+            databaseService.Database = database;
 
             if (env.IsDevelopment())
             {
