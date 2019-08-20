@@ -20,6 +20,8 @@ namespace Allors.Workspace.Data
 
         public SessionObject Object { get; set; }
 
+        public string ObjectId { get; set; }
+
         public Arguments Arguments { get; set; }
 
         public Result[] Results { get; set; }
@@ -30,7 +32,7 @@ namespace Allors.Workspace.Data
                 ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.ToJson(),
                 ObjectType = this.ObjectType?.Id,
-                Object = this.Object?.Id.ToString(),
+                Object = this.ObjectId ?? this.Object?.Id.ToString(),
                 Results = this.Results?.Select(v => v.ToJson()).ToArray(),
             };
     }

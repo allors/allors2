@@ -1,0 +1,51 @@
+@page "/person/edit/{id}"
+@inject Allors.Workspace.Client.Database Database
+@inject Allors.Workspace.Workspace Workspace
+@inject IUriHelper UriHelper
+
+<div>@id</div>
+
+@if (person == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>@person?.UserName</div>
+
+    <div><input type="text" @bind="person.FirstName" /></div>
+
+    <div><button type="button" @onclick="Save">Save</button></div>
+}
+
+@code {
+    Context Context;
+
+    [Parameter]
+    public string id { get; set; }
+
+    Person person;
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        this.Context = new Context(this.Database, this.Workspace);
+
+        var pull = new Pull
+        {
+            ObjectId = id
+        };
+
+        var result = await this.Context.Load(pull);
+
+        this.person = result.GetObject<Person>("Person");
+    }
+
+    public async System.Threading.Tasks.Task Save()
+    {
+        var response = await this.Context.Save();
+        if (!response.HasErrors)
+        {
+            this.UriHelper.NavigateTo("/person/list");
+        }
+    }
+}

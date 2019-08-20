@@ -1,10 +1,6 @@
-@page "/fetchdata"
-@inject HttpClient Http
-@using Allors.Workspace;
-@using Allors.Workspace.Domain
-@using Allors.Workspace.Client;
-@using Allors.Workspace.Data;
-@using Allors.Workspace.Meta;
+@page "/person/list"
+@inject Allors.Workspace.Client.Database Database
+@inject Allors.Workspace.Workspace Workspace
 
 @if (people == null)
 {
@@ -18,34 +14,32 @@ else
                 <th>First Name</th>
                 <th>Middle Name</th>
                 <th>Last Name</th>
+                <th>User Name</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var person in people)
             {
-                <tr>
-                    <td>@person.FirstName</td>
-                    <td>@person.MiddleName</td>
-                    <td>@person.LastName</td>
-                </tr>
+            <tr>
+                <td>@person.FirstName</td>
+                <td>@person.MiddleName</td>
+                <td>@person.LastName</td>
+                <td>@person.UserName</td>
+                <td><a href="/person/edit/@person.Id">Edit</a></td>
+            </tr>
             }
         </tbody>
     </table>
 }
 
 @code {
-    Database Database;
-    Workspace Workspace;
     Context Context;
 
     Person[] people;
 
     protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
-        this.Database = new Database(this.Http);
-        var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
-        this.Workspace = new Workspace(objectFactory);
-
         var user = "administrator";
         var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
         var loggedIn = await this.Database.Login(uri, user, null);
