@@ -5,6 +5,7 @@ namespace Blazor.Client
     using Allors.Workspace.Client;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
+    using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +26,10 @@ namespace Blazor.Client
                 var workspace = new Workspace(objectFactory);
                 return workspace;
             });
+
+            services.AddAuthorizationCore();
+            services.AddScoped<AllorsAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<AllorsAuthenticationStateProvider>());
         }
 
         public void Configure(IComponentsApplicationBuilder app)

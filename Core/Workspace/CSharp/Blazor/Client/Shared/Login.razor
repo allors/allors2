@@ -1,0 +1,33 @@
+@inject Allors.Workspace.Client.Database Database
+@inject Allors.Workspace.AllorsAuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Login</h3>
+
+<div>
+    <div>
+        <label>User Name:</label>
+        <input @bind="UserName" />
+    </div>
+
+    <div>
+        <label>Password:</label>
+        <input type="password" @bind="Password" />
+    </div>
+
+    <div>
+        <button type="button" @onclick="LogIn" />
+    </div>
+</div>
+
+
+@code {
+
+    string UserName { get; set; }
+
+    string Password { get; set; }
+
+    async System.Threading.Tasks.Task LogIn()
+    {
+        this.AuthenticationStateProvider.LogIn(this.UserName, this.Password);
+    }
+}

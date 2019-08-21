@@ -1,4 +1,5 @@
 @page "/person/list"
+@attribute [Authorize]
 @inject Allors.Workspace.Client.Database Database
 @inject Allors.Workspace.Workspace Workspace
 
@@ -21,13 +22,13 @@ else
         <tbody>
             @foreach (var person in people)
             {
-            <tr>
-                <td>@person.FirstName</td>
-                <td>@person.MiddleName</td>
-                <td>@person.LastName</td>
-                <td>@person.UserName</td>
-                <td><a href="/person/edit/@person.Id">Edit</a></td>
-            </tr>
+                <tr>
+                    <td>@person.FirstName</td>
+                    <td>@person.MiddleName</td>
+                    <td>@person.LastName</td>
+                    <td>@person.UserName</td>
+                    <td><a href="/person/edit/@person.Id">Edit</a></td>
+                </tr>
             }
         </tbody>
     </table>
