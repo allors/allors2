@@ -1,5 +1,7 @@
 @inherits LayoutComponentBase
 @using Microsoft.AspNetCore.Components
+@inject Allors.Workspace.AllorsAuthenticationStateProvider AuthenticationStateProvider
+@inject IUriHelper UriHelper
 
 <MatAppBar Style="z-index: 100;" Class="mat">
     <MatAppBarRow>
@@ -8,11 +10,11 @@
             <MatAppBarTitle>Allors Blazor</MatAppBarTitle>
         </MatAppBarSection>
         <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-            <MatIconButton Link="http://www.allors.com" Target="_blank">
+            <MatIconButton>
                 <i class="fa fa-user-circle" aria-hidden="true"></i>
             </MatIconButton>
-            <MatIconButton Link="https://github.com/allors">
-                <i class="fa fa-github" aria-hidden="true"></i>
+            <MatIconButton @onclick="GoTo">
+                <i class="fa fa-vial" aria-hidden="true"></i>
             </MatIconButton>
         </MatAppBarSection>
     </MatAppBarRow>
@@ -24,7 +26,7 @@
         <ChildContent>
             <MatDrawer @bind-Opened="@_navMenuOpened" Mode="@MatDrawerMode.Modal">
                 <MatAppBarAdjust></MatAppBarAdjust>
-                <NavMenu/>
+                <NavMenu />
             </MatDrawer>
         </ChildContent>
         <ElseContent>
@@ -59,7 +61,7 @@
 
     [CascadingParameter]
     MatTheme theme { get; set; }
-    
+
     protected void ModelDrawerHiddenChanged(bool hidden)
     {
         if (!hidden)
@@ -76,5 +78,11 @@
     {
         _navMenuOpened = !_navMenuOpened;
         this.StateHasChanged();
+    }
+
+    async System.Threading.Tasks.Task GoTo()
+    {
+        await this.AuthenticationStateProvider.LogIn("administrator", null);
+        this.UriHelper.NavigateTo("/person/edit/2680");
     }
 }
