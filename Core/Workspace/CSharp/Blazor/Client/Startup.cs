@@ -27,9 +27,14 @@ namespace Blazor.Client
                 return workspace;
             });
 
-            services.AddAuthorizationCore();
+            var implementationInstance = new AllorsAuthenticationStateProviderConfig
+            {
+                AuthenticationUrl = "/TestAuthentication/Token",
+            };
+            services.AddSingleton(implementationInstance);
             services.AddScoped<AllorsAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<AllorsAuthenticationStateProvider>());
+            services.AddAuthorizationCore();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

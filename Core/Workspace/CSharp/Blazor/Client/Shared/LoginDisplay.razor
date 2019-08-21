@@ -1,0 +1,20 @@
+@inject Allors.Workspace.AllorsAuthenticationStateProvider AuthenticationStateProvider
+
+<AuthorizeView>
+    <Authorized>
+        <span>
+            Hello, <strong>@context.User.Identity.Name</strong>!
+        </span>
+        <button type="button" @onclick="LogOut">Log out</button>
+    </Authorized>
+    <NotAuthorized>
+        Log in TODO!
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    void LogOut(){
+        this.AuthenticationStateProvider.LogOut();
+    }
+}

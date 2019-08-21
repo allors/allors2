@@ -1,4 +1,3 @@
-@inject Allors.Workspace.Client.Database Database
 @inject Allors.Workspace.AllorsAuthenticationStateProvider AuthenticationStateProvider
 
 <h3>Login</h3>
@@ -15,7 +14,7 @@
     </div>
 
     <div>
-        <button type="button" @onclick="LogIn" />
+        <button type="button" @onclick="LogIn" >Log in</button>
     </div>
 </div>
 
@@ -28,6 +27,6 @@
 
     async System.Threading.Tasks.Task LogIn()
     {
-        this.AuthenticationStateProvider.LogIn(this.UserName, this.Password);
+        await this.AuthenticationStateProvider.LogIn(this.UserName, this.Password);
     }
 }

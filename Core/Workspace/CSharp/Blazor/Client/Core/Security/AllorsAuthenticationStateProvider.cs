@@ -10,10 +10,13 @@ namespace Allors.Workspace
     {
         public string UserId { get; private set; }
 
+        private readonly AllorsAuthenticationStateProviderConfig Config;
+
         private readonly Database Database;
 
-        public AllorsAuthenticationStateProvider(Database database)
+        public AllorsAuthenticationStateProvider(AllorsAuthenticationStateProviderConfig config, Database database)
         {
+            this.Config = config;
             this.Database = database;
         }
 
@@ -23,9 +26,9 @@ namespace Allors.Workspace
 
             if (!string.IsNullOrWhiteSpace(this.UserId))
             {
-                var claim = new Claim(ClaimTypes.Name, "mrfibuli");
+                var claim = new Claim(ClaimTypes.Name, this.UserId);
                 var claims = new[] { claim };
-                var identity = new ClaimsIdentity(claims, "Fake authentication type");
+                var identity = new ClaimsIdentity(claims, "Allors Identity Claims");
 
                 user = new ClaimsPrincipal(identity);
             }
@@ -39,7 +42,7 @@ namespace Allors.Workspace
 
         public async Task<bool> LogIn(string userName, string password)
         {
-            var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
+            var uri = new Uri(this.Config.AuthenticationUrl, UriKind.Relative);
             var loggedIn = await this.Database.Login(uri, userName, password);
             if (loggedIn)
             {
@@ -48,6 +51,12 @@ namespace Allors.Workspace
             }
 
             return loggedIn;
+        }
+
+        public void LogOut()
+        {
+            this.UserId = null;
+            this.NotifyAuthenticationStateChanged(this.GetAuthenticationStateAsync());
         }
     }
 }
