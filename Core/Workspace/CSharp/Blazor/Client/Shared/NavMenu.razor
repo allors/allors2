@@ -1,37 +1,71 @@
-<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Blazor</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+@using Microsoft.AspNetCore.Components
+@inject IUriHelper Url
+<style>
+    .mdc-drawer {
+        box-shadow: 2px 0px 2px 0px rgba(199,199,199,0.29);
+    }
+</style>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="person/list">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> People
-            </NavLink>
-        </li>
-    </ul>
-</div>
+<MatNavMenu Multi="true">
+    <MatNavItem Href="@Url.ToAbsoluteUri("").AbsoluteUri"><MatIcon Icon="home"></MatIcon>&nbsp; Home</MatNavItem>
 
-@code {
-    bool collapseNavMenu = true;
-
-    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    void ToggleNavMenu()
+    @foreach (string type in sections)
     {
-        collapseNavMenu = !collapseNavMenu;
+        <MatNavSubMenu Expanded="true">
+            <MatNavSubMenuHeader>
+                <MatNavItem AllowSelection="false">@type</MatNavItem>
+            </MatNavSubMenuHeader>
+            <MatNavSubMenuList>
+                @foreach (var navItem in navItems.Where(n => n.Section == @type))
+                {
+                    <MatNavItem Href="@Url.ToAbsoluteUri(navItem.Url).AbsoluteUri">
+                        @navItem.Name
+                    </MatNavItem>
+                }
+            </MatNavSubMenuList>
+        </MatNavSubMenu>
+        <MatDivider></MatDivider>
+    }
+
+    <MatNavItem Href="@Url.ToAbsoluteUri("").AbsoluteUri">
+        TODO
+    </MatNavItem>
+</MatNavMenu>
+
+@code
+{
+    class NavItem
+    {
+        public string Section;
+        public string Name;
+        public string Url;
+    }
+
+    NavItem[] navItems;
+    string[] sections;
+
+    protected async override System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        const string general = "General";
+        const string relations = "Relations";
+
+        sections = new string[] { general, relations };
+        navItems = new[]
+        {
+            new NavItem()
+            {
+                Name = "Counter",
+                Url = "counter",
+                Section = general
+            },
+            new NavItem()
+            {
+                Name = "People",
+                Url = "person/list",
+                Section = relations
+            },
+        }.OrderBy(i => i.Name).ToArray();
     }
 }
