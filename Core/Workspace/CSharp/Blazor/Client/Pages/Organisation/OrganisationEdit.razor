@@ -1,4 +1,4 @@
-@page "/person/edit/{id}"
+@page "/organisation/edit/{id}"
 @attribute [Authorize]
 @inject Allors.Workspace.Client.Database Database
 @inject Allors.Workspace.Workspace Workspace
@@ -14,8 +14,10 @@ else
         <AllorsValidator />
         <ValidationSummary />
 
-        <input @bind="person.FirstName" />
-        <AllorsInput RoleType="@M.Person.FirstName" />
+        <p>
+            <label for="firstName">First Name: </label>
+            <InputText id="firstName" @bind-Value="person.FirstName" />
+        </p>
 
         <button type="submit">Submit</button>
     </EditForm>

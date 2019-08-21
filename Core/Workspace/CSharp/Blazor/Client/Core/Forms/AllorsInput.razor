@@ -1,0 +1,31 @@
+<input @bind="Value"/>
+
+@code {
+    [CascadingParameter]
+    public EditContext CurrentEditContext { get; set; }
+
+    [Parameter]
+    public RoleType RoleType { get; set; }
+
+    public ISessionObject Object
+    {
+        get
+        {
+            return (ISessionObject)this.CurrentEditContext.Model;
+        }
+    }
+
+    public String Value
+    {
+        get
+        {
+            return (string)this.Object.Get(this.RoleType);
+        }
+
+        set
+        {
+            this.Object.Set(this.RoleType, value);
+        }
+    }
+
+}
