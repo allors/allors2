@@ -1,4 +1,10 @@
-<MatTextField @bind-Value="@Model" Label="@DerivedLabel" FullWidth="@FullWidth"></MatTextField>
+<MatAutocomplete Collection="@Options" ItemType="Person" Label="Select person" CustomStringSelector="@(i => i.FirstName)" @bind-Value="@Model">
+    <ItemTemplate>
+        <div style="display: flex; flex-direction: row; width: 100%;">
+            <div style="flex: 1;">@context.FirstName</div>
+        </div>
+    </ItemTemplate>
+</MatAutocomplete>
 
 @code {
     [CascadingParameter]
@@ -16,6 +22,8 @@
     [Parameter]
     public bool FullWidth { get; set; } = true;
 
+    Person[] Options { get; set; } = Array.Empty<Person>();
+
     public ISessionObject DerivedObject
     {
         get
@@ -32,11 +40,11 @@
         }
     }
 
-    public String Model
+    public Person Model
     {
         get
         {
-            return (string)this.DerivedObject.Get(this.RoleType);
+            return (Person)this.DerivedObject.Get(this.RoleType);
         }
 
         set

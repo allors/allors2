@@ -1,20 +1,22 @@
 @inject Allors.Workspace.AllorsAuthenticationStateProvider AuthenticationStateProvider
 
-<AuthorizeView>
+<AuthorizeView Context="AuthorizeContext">
     <Authorized>
-        <span>
-            Hello, <strong>@context.User.Identity.Name</strong>!
-        </span>
-        <button type="button" @onclick="LogOut">Log out</button>
+        <MatTooltip Tooltip="Logout">
+            <MatIconButton Icon="exit_to_app" RefBack="@context" OnClick="LogOut"></MatIconButton>
+        </MatTooltip>
     </Authorized>
     <NotAuthorized>
-        Log in TODO!
+        <MatTooltip Tooltip="Login">
+            <MatIconButton Icon="account_box" RefBack="@context" Link="/account/login"></MatIconButton>
+        </MatTooltip>
     </NotAuthorized>
 </AuthorizeView>
 
 @code {
 
-    void LogOut(){
+    void LogOut()
+    {
         this.AuthenticationStateProvider.LogOut();
     }
 }

@@ -41,10 +41,6 @@ else
 
     protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
-        var user = "administrator";
-        var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
-        var loggedIn = await this.Database.Login(uri, user, null);
-
         var context = new Context(this.Database, this.Workspace);
 
         var pull = new Pull

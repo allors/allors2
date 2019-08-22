@@ -112,7 +112,7 @@ namespace Allors.Workspace.Meta
         /// <summary>
         /// Gets the display name.
         /// </summary>
-        public override string DisplayName => this.PropertyName;
+        public override string DisplayName => this.PropertyName?.Humanize();
 
         /// <summary>
         /// Gets the name.

@@ -4,20 +4,35 @@
 @inject Allors.Workspace.Workspace Workspace
 @inject IUriHelper UriHelper
 
-@if (person == null)
+@if (organisation == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <EditForm Model="@person" OnValidSubmit="@HandleValidSubmit">
+    <EditForm Model="@organisation" OnValidSubmit="@HandleValidSubmit">
         <AllorsValidator />
         <ValidationSummary />
 
-        <p>
-            <label for="firstName">First Name: </label>
-            <InputText id="firstName" @bind-Value="person.FirstName" />
-        </p>
+        <div class="container">
+            @*<div class="row">
+                <div class="col-md">
+                    <AllorsInput RoleType="@M.Organisation.Name" />
+                </div>
+            </div>*@
+
+            <div class="row">
+                <div class="col-md">
+                    <AllorsAutocomplete RoleType="@M.Organisation.Owner" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <MatButton>Submit</MatButton>
+                </div>
+            </div>
+        </div>
 
         <button type="submit">Submit</button>
     </EditForm>
@@ -29,7 +44,7 @@ else
     [Parameter]
     public string id { get; set; }
 
-    Person person;
+    Organisation organisation;
 
     protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
@@ -37,12 +52,23 @@ else
 
         var pull = new Pull
         {
-            ObjectId = id
+            ObjectId = id,
+            Results = new[]
+            {
+                new Allors.Workspace.Data.Result
+                {
+                   Fetch = new Fetch
+                   {
+                       Include = new Tree(M.Organisation.Class)
+                       .Add(M.Organisation.Owner)
+                    }
+                }
+            }
         };
 
         var result = await this.Context.Load(pull);
 
-        this.person = result.GetObject<Person>("Person");
+        this.organisation = result.GetObject<Organisation>("Organisation");
     }
 
     public async System.Threading.Tasks.Task HandleValidSubmit()
@@ -50,7 +76,7 @@ else
         var response = await this.Context.Save();
         if (!response.HasErrors)
         {
-            this.UriHelper.NavigateTo("/person/list");
+            this.UriHelper.NavigateTo("/organisation/list");
         }
     }
 }

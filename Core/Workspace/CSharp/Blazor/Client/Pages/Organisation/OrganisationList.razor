@@ -3,7 +3,7 @@
 @inject Allors.Workspace.Client.Database Database
 @inject Allors.Workspace.Workspace Workspace
 
-@if (people == null)
+@if (organisations == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -20,14 +20,11 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var person in people)
+            @foreach (var organisation in organisations)
             {
                 <tr>
-                    <td>@person.FirstName</td>
-                    <td>@person.MiddleName</td>
-                    <td>@person.LastName</td>
-                    <td>@person.UserName</td>
-                    <td><a href="/person/edit/@person.Id">Edit</a></td>
+                    <td>@organisation.Name</td>
+                    <td><a href="/organisation/edit/@organisation.Id">Edit</a></td>
                 </tr>
             }
         </tbody>
@@ -37,23 +34,19 @@ else
 @code {
     Context Context;
 
-    Person[] people;
+    Organisation[] organisations;
 
     protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
-        var user = "administrator";
-        var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
-        var loggedIn = await this.Database.Login(uri, user, null);
-
         var context = new Context(this.Database, this.Workspace);
 
         var pull = new Pull
         {
-            Extent = new Filter(M.Person.ObjectType),
+            Extent = new Filter(M.Organisation.ObjectType),
         };
 
         var result = await context.Load(pull);
 
-        this.people = result.GetCollection<Person>("People");
+        this.organisations = result.GetCollection<Organisation>("Organisations");
     }
 }

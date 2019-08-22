@@ -9,15 +9,27 @@
     <p><em>Loading...</em></p>
 }
 else
-{
-    <EditForm Model="@person" OnValidSubmit="@HandleValidSubmit">
+{ <EditForm Model="@person" OnValidSubmit="@HandleValidSubmit">
         <AllorsValidator />
         <ValidationSummary />
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    <AllorsInput RoleType="@M.Person.FirstName" />
+                </div>
+                <div class="col-md">
+                    <AllorsInput RoleType="@M.Person.LastName" />
+                </div>
+            </div>
 
-        <input @bind="person.FirstName" />
-        <AllorsInput RoleType="@M.Person.FirstName" />
 
-        <button type="submit">Submit</button>
+            <div class="row">
+                <div class="col">
+                    <MatButton>Submit</MatButton>
+                </div>
+            </div>
+        </div>
+
     </EditForm>
 }
 

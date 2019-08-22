@@ -14,7 +14,7 @@
                 <i class="fa fa-user-circle" aria-hidden="true"></i>
             </MatIconButton>
             <MatIconButton @onclick="GoTo">
-                <i class="fa fa-vial" aria-hidden="true"></i>
+                <i class="fa fa-bolt" aria-hidden="true"></i>
             </MatIconButton>
         </MatAppBarSection>
     </MatAppBarRow>
@@ -83,6 +83,6 @@
     async System.Threading.Tasks.Task GoTo()
     {
         await this.AuthenticationStateProvider.LogIn("administrator", null);
-        this.UriHelper.NavigateTo("/person/edit/2680");
+        this.UriHelper.NavigateTo("/organisation/edit/2577");
     }
 }
