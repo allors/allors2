@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
 
     using Allors.Services;
@@ -15,14 +16,14 @@ namespace Allors.Domain
 
     public static partial class SessionExtension
     {
-        public static Dictionary<long, T> GetCache<T>(this ISession @this)
+        public static ConcurrentDictionary<long, T> GetCache<T>(this ISession @this)
         {
             var caches = @this.ServiceProvider.GetRequiredService<ICacheService>();
-            var cache = caches.Get<T, Dictionary<long, T>>();
+            var cache = caches.Get<T, ConcurrentDictionary<long, T>>();
             if (cache == null)
             {
-                cache = new Dictionary<long, T>();
-                caches.Set<T, Dictionary<long, T>>(cache);
+                cache = new ConcurrentDictionary<long, T>();
+                caches.Set<T, ConcurrentDictionary<long, T>>(cache);
             }
 
             return cache;

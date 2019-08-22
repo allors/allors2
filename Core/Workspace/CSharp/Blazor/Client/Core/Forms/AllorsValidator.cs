@@ -33,7 +33,6 @@ namespace Allors.Workspace
         private static void ValidateModel(EditContext editContext, ValidationMessageStore messages)
         {
             messages.Clear();
-            messages.Add(editContext.Field("FirstName"), "First Name is required");
             editContext.NotifyValidationStateChanged();
         }
 
