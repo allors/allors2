@@ -2,14 +2,10 @@
 
 <AuthorizeView Context="AuthorizeContext">
     <Authorized>
-        <MatTooltip Tooltip="Logout">
-            <MatIconButton Icon="exit_to_app" RefBack="@context" OnClick="LogOut"></MatIconButton>
-        </MatTooltip>
+        <button @onclick="LogOut"></button>
     </Authorized>
     <NotAuthorized>
-        <MatTooltip Tooltip="Login">
-            <MatIconButton Icon="account_box" RefBack="@context" Link="/account/login"></MatIconButton>
-        </MatTooltip>
+        <a Link="/account/login"></a>
     </NotAuthorized>
 </AuthorizeView>
 

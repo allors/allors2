@@ -1,36 +1,24 @@
 @using Microsoft.AspNetCore.Components
 @inject IUriHelper Url
-<style>
-    .mdc-drawer {
-        box-shadow: 2px 0px 2px 0px rgba(199,199,199,0.29);
-    }
-</style>
 
-<MatNavMenu Multi="true">
-    <MatNavItem Href="@Url.ToAbsoluteUri("").AbsoluteUri"><MatIcon Icon="home"></MatIcon>&nbsp; Home</MatNavItem>
-
-    @foreach (string type in sections)
+<nav class="mdc-list">
+    @foreach (string section in sections)
     {
-        <MatNavSubMenu Expanded="true">
-            <MatNavSubMenuHeader>
-                <MatNavItem AllowSelection="false">@type</MatNavItem>
-            </MatNavSubMenuHeader>
-            <MatNavSubMenuList>
-                @foreach (var navItem in navItems.Where(n => n.Section == @type))
-                {
-                    <MatNavItem Href="@Url.ToAbsoluteUri(navItem.Url).AbsoluteUri">
-                        @navItem.Name
-                    </MatNavItem>
-                }
-            </MatNavSubMenuList>
-        </MatNavSubMenu>
-        <MatDivider></MatDivider>
-    }
+        <hr class="mdc-list-divider">
+        <h6 class="mdc-list-group__subheader">@section</h6>
 
-    <MatNavItem Href="@Url.ToAbsoluteUri("").AbsoluteUri">
-        TODO
-    </MatNavItem>
-</MatNavMenu>
+        @foreach (var navItem in navItems.Where(n => n.Section == section))
+        {
+            <a class="mdc-list-item mdc-list-item--activated" href="@Url.ToAbsoluteUri(navItem.Url).AbsoluteUri" aria-current="page">
+                @if (!string.IsNullOrWhiteSpace(navItem.Icon))
+                {
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">@navItem.Icon</i>
+                }
+                <span class="mdc-list-item__text">@navItem.Name</span>
+            </a>
+        }
+    }
+</nav>
 
 @code
 {
@@ -38,6 +26,7 @@
     {
         public string Section;
         public string Name;
+        public string Icon;
         public string Url;
     }
 
@@ -56,21 +45,21 @@
         {
             new NavItem()
             {
+                Section = general,
                 Name = "Counter",
                 Url = "counter",
-                Section = general
             },
             new NavItem()
             {
+                Section = relations,
                 Name = "Organisations",
                 Url = "organisation/list",
-                Section = relations
             },
             new NavItem()
             {
+                Section = relations,
                 Name = "People",
                 Url = "person/list",
-                Section = relations
             },
         }.OrderBy(i => i.Name).ToArray();
     }

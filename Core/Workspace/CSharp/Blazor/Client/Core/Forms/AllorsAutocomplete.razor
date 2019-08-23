@@ -1,11 +1,3 @@
-<MatAutocomplete Collection="@Options" ItemType="Person" Label="Select person" CustomStringSelector="@(i => i.FirstName)" @bind-Value="@Model">
-    <ItemTemplate>
-        <div style="display: flex; flex-direction: row; width: 100%;">
-            <div style="flex: 1;">@context.FirstName</div>
-        </div>
-    </ItemTemplate>
-</MatAutocomplete>
-
 @code {
     [CascadingParameter]
     public EditContext EditContext { get; set; }

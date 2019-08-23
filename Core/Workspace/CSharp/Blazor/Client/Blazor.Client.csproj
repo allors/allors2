@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MatBlazor" Version="1.6.3" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor" Version="3.0.0-preview8.19405.7" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="3.0.0-preview8.19405.7" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.0.0-preview8.19405.7" />
@@ -18,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj" />
     <ProjectReference Include="..\..\Meta\Workspace.Meta.csproj" />
+    <ProjectReference Include="..\RazorComponents.MaterialDesign\RazorComponents.MaterialDesign.csproj" />
   </ItemGroup>
 
 </Project>

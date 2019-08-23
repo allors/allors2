@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
   <title>Blazor</title>
   <base href="/" />
-  <link href="css/bootstrap-grid.min.css" rel="stylesheet" />
-  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/normalize.css@7.0.0/normalize.css">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@4.3.1/dist/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:300,400,500">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700">
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="styles.css" />
   <style>
-    html, body {
-      margin: 0px;
-    }
-
     .spinner {
       width: 40px;
       height: 40px;
@@ -54,10 +57,12 @@
   </style>
 </head>
 
-<body class="mat">
-  <app style="display: flex;">
+<body>
+  <app>
     <div class="spinner"></div>
   </app>
+  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+  <script src="_content/RazorComponents.MaterialDesign/script.js"></script>
   <script src="_framework/blazor.webassembly.js"></script>
 </body>
 

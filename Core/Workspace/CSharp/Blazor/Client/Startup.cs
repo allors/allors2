@@ -5,7 +5,6 @@ namespace Blazor.Client
     using Allors.Workspace.Client;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
-    using MatBlazor;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Builder;
     using Microsoft.Extensions.DependencyInjection;
@@ -36,13 +35,6 @@ namespace Blazor.Client
             services.AddScoped<AllorsAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<AllorsAuthenticationStateProvider>());
             services.AddAuthorizationCore();
-
-            services.AddMatToaster(config =>
-            {
-                config.PreventDuplicates = false;
-                config.NewestOnTop = true;
-                config.ShowCloseButton = true;
-            });
         }
 
         public void Configure(IComponentsApplicationBuilder app)
