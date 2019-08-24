@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Core\Workspace\Typescript\Material.Tests\Export\**\*.cs" />
+    <Compile Include="..\..\..\..\Core\Workspace\Typescript\Material.Tests\Core*\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

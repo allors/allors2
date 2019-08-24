@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Core\Database\Meta\Export\Core\Meta\**\*.cs" />
+    <Compile Include="..\..\..\Core\Database\Meta\Core*\Meta\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

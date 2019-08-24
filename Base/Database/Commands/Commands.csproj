@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Core\Database\Commands\Export\**\*.cs" />
+    <Compile Include="..\..\..\Core\Database\Commands\Core*\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>

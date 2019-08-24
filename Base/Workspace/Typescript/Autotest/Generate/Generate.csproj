@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\..\Core\Workspace\Typescript\Autotest\Generate\Export\**\*.cs" />
+    <Compile Include="..\..\..\..\..\Core\Workspace\Typescript\Autotest\Generate\Core*\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
