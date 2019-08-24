@@ -5,11 +5,11 @@
 
   <!-- StyleCop Analyzers configuration -->
   <PropertyGroup>
-    <CodeAnalysisRuleSet>$(SolutionDir)stylecop.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)stylecop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
-    <AdditionalFiles Include="$(SolutionDir)stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
 </Project>
