@@ -1,10 +1,10 @@
-namespace Allors.Workspace
+namespace Allors.Blazor
 {
     using System;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Forms;
 
-    public class AllorsValidator : ComponentBase
+    public partial class AllorsValidator : ComponentBase
     {
         [CascadingParameter]
         public EditContext EditContext { get; set; }

@@ -14,7 +14,7 @@
     [Parameter]
     public bool FullWidth { get; set; } = true;
 
-    Person[] Options { get; set; } = Array.Empty<Person>();
+    ISessionObject[] Options { get; set; } = Array.Empty<ISessionObject>();
 
     public ISessionObject DerivedObject
     {
@@ -32,11 +32,11 @@
         }
     }
 
-    public Person Model
+    public ISessionObject Model
     {
         get
         {
-            return (Person)this.DerivedObject.Get(this.RoleType);
+            return (ISessionObject)this.DerivedObject.Get(this.RoleType);
         }
 
         set

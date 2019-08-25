@@ -5,8 +5,8 @@
     <OutputType>Library</OutputType>
     <LangVersion>7.3</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <RootNamespace>Allors.Blazor</RootNamespace>
-    <AssemblyName>Allors.Blazor</AssemblyName>
+    <RootNamespace>Allors.Blazor.Material</RootNamespace>
+    <AssemblyName>Allors.Blazor.Material</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Workspace.Domain.csproj" />
+    <ProjectReference Include="..\..\Blazor\Blazor.csproj" />
+    <ProjectReference Include="..\RazorComponents.MaterialDesign\RazorComponents.MaterialDesign.csproj" />
   </ItemGroup>
 
 

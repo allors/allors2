@@ -151,6 +151,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Material", "Material", "{3A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor", "Core\Workspace\CSharp\Blazor\Blazor.csproj", "{00486286-B113-4EDE-A6AC-1862F2B9098F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Material", "Core\Workspace\CSharp\Blazor.Material\Material\Blazor.Material.csproj", "{FE1DDACA-967B-488E-8881-4E7495C66788}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -369,6 +371,10 @@ Global
 		{00486286-B113-4EDE-A6AC-1862F2B9098F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00486286-B113-4EDE-A6AC-1862F2B9098F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00486286-B113-4EDE-A6AC-1862F2B9098F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE1DDACA-967B-488E-8881-4E7495C66788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE1DDACA-967B-488E-8881-4E7495C66788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE1DDACA-967B-488E-8881-4E7495C66788}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE1DDACA-967B-488E-8881-4E7495C66788}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -445,6 +451,7 @@ Global
 		{5A9EFEB0-B6A6-4275-A2A9-283DE698F44A} = {3AA84BB0-2AB5-42E5-851D-A0FA309B3761}
 		{3AA84BB0-2AB5-42E5-851D-A0FA309B3761} = {34AEB7D0-55F9-4C4C-BB48-B3EF71210688}
 		{00486286-B113-4EDE-A6AC-1862F2B9098F} = {34AEB7D0-55F9-4C4C-BB48-B3EF71210688}
+		{FE1DDACA-967B-488E-8881-4E7495C66788} = {3AA84BB0-2AB5-42E5-851D-A0FA309B3761}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00D78C3D-8536-4549-B1EE-C19BD0C50387}

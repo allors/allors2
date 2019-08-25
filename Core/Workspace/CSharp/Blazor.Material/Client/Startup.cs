@@ -5,6 +5,7 @@ namespace Blazor.Client
     using Allors.Workspace.Client;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
+    using Allors.Blazor;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Builder;
     using Microsoft.Extensions.DependencyInjection;

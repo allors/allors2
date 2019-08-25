@@ -1,4 +1,4 @@
-namespace Allors.Workspace
+namespace Allors.Blazor
 {
     using System;
     using System.Security.Claims;
@@ -6,7 +6,7 @@ namespace Allors.Workspace
     using Allors.Workspace.Client;
     using Microsoft.AspNetCore.Components;
 
-    public class AllorsAuthenticationStateProvider : AuthenticationStateProvider
+    public partial class AllorsAuthenticationStateProvider : AuthenticationStateProvider
     {
         public string UserId { get; private set; }
 
