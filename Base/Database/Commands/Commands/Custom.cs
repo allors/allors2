@@ -1,7 +1,22 @@
-﻿// <copyright file="Custom.cs" company="Allors bvba">
-// Copyright (c) Allors bvba. All rights reserved.
-// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Custom.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
+// 
+// Dual Licensed under
+//   a) the General Public Licence v3 (GPL)
+//   b) the Allors License
+// 
+// The GPL License is included in the file gpl.txt.
+// The Allors License is an addendum to your contract.
+// 
+// Allors Applications is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// For more information visit http://www.allors.com/legal
 // </copyright>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Commands
 {
@@ -34,7 +49,14 @@ namespace Commands
 
         private Commands Parent { get; set; }
 
-        public int OnExecute(CommandLineApplication app) => this.PrintSalesInvoice();
+        public int OnExecute(CommandLineApplication app)
+        {
+            //return this.PrintPurchaseInvoice();
+            //return this.PrintSalesInvoice();
+            return this.PrintProductQuote();
+            //return this.PrintWorkTask();
+            //return this.MonthlyScheduler();
+        }
 
         private int PrintPurchaseInvoice()
         {
@@ -151,6 +173,69 @@ namespace Commands
 
                 var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                 var outputFile = File.Create(Path.Combine(desktopDir, "salesInvoice.odt"));
+                using (var stream = new MemoryStream(result.Media.MediaContent.Data))
+                {
+                    stream.CopyTo(outputFile);
+                }
+
+                this.logger.LogInformation("End");
+            }
+
+            return ExitCode.Success;
+        }
+
+        private int PrintProductQuote()
+        {
+            using (var session = this.databaseService.Database.CreateSession())
+            {
+                this.logger.LogInformation("Begin");
+
+                var administrator = new Users(session).GetUser("administrator");
+                session.SetUser(administrator);
+
+                var templateFilePath = "domain/templates/ProductQuote2.odt";
+                var templateFileInfo = new FileInfo(templateFilePath);
+                var prefix = string.Empty;
+                while (!templateFileInfo.Exists)
+                {
+                    prefix += "../";
+                    templateFileInfo = new FileInfo(prefix + templateFilePath);
+                }
+
+                var quote = new ProductQuotes(session).Extent().Last();
+                var template = quote.Issuer.ProductQuoteTemplate;
+
+                using (var memoryStream = new MemoryStream())
+                using (var fileStream = new FileStream(
+                    templateFileInfo.FullName,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite))
+                {
+                    fileStream.CopyTo(memoryStream);
+                    template.Media.InData = memoryStream.ToArray();
+                }
+
+                session.Derive();
+
+                var images = new Dictionary<string, byte[]> { { "Logo", session.GetSingleton().LogoImage.MediaContent.Data }, };
+
+                if (quote.ExistQuoteNumber)
+                {
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(quote.QuoteNumber, BarcodeType.CODE_128, 320, 80);
+                    images.Add("Barcode", barcode);
+                }
+
+                var printModel = new Allors.Domain.Print.ProductQuoteModel.Model(quote);
+                quote.RenderPrintDocument(template, printModel, images);
+
+                session.Derive();
+
+                var result = quote.PrintDocument;
+
+                var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                var outputFile = File.Create(Path.Combine(desktopDir, "quote.odt"));
                 using (var stream = new MemoryStream(result.Media.MediaContent.Data))
                 {
                     stream.CopyTo(outputFile);
