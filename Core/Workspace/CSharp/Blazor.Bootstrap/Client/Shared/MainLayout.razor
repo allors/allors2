@@ -1,0 +1,40 @@
+@inherits LayoutComponentBase
+@inject IBootstrapCSS BootstrapCSS
+@inject AllorsAuthenticationStateProvider AuthenticationStateProvider
+@inject IUriHelper UriHelper
+
+
+<div class="bg-light">
+    <div class="container">
+        <NavMenu />
+    </div>
+</div>
+
+<div class="main container">
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+@code {
+
+    bool isServerSide;
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        try
+        {
+            await BootstrapCSS.SetBootstrapCSS("4.3.1");
+        }
+        catch (Exception)
+        {
+            this.isServerSide = true;
+        }
+    }
+
+    async System.Threading.Tasks.Task GoTo()
+    {
+        await this.AuthenticationStateProvider.LogIn("administrator", null);
+        this.UriHelper.NavigateTo("/organisation/edit/2577");
+    }
+}
