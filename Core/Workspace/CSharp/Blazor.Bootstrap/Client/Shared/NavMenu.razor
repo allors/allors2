@@ -20,7 +20,7 @@
                     <BSDropdownMenu>
                         @foreach (var navItem in navItems.Where(n => n.Section == section))
                         {
-                            <BSDropdownItem Href="@Url.ToAbsoluteUri(navItem.Url).AbsoluteUri" @onclick="!IsO">@navItem.Name</BSDropdownItem>
+                            <BSDropdownItem Href="@Url.ToAbsoluteUri(navItem.Url).AbsoluteUri">@navItem.Name</BSDropdownItem>
                         }
                     </BSDropdownMenu>
                 </BSNavItem>
