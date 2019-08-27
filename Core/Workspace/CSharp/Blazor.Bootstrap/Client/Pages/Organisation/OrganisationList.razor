@@ -1,6 +1,6 @@
 @page "/organisation/list"
 @attribute [Authorize]
-@inject Allors.Workspace.Client.Database Database
+@inject Allors.Workspace.Client.IDatabase Database
 @inject Allors.Workspace.Workspace Workspace
 
 @if (organisations == null)

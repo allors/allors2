@@ -10,13 +10,13 @@ namespace Allors.Excel
 
     public partial class Client
     {
-        public Client(Database database, Workspace workspace)
+        public Client(IDatabase database, Workspace workspace)
         {
             this.Database = database;
             this.Workspace = workspace;
         }
 
-        public Database Database { get; }
+        public IDatabase Database { get; }
 
         public Workspace Workspace { get; }
     }

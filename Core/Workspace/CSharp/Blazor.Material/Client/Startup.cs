@@ -14,10 +14,10 @@ namespace Blazor.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<Database>((serviceProvider) =>
+            services.AddSingleton<IDatabase>((serviceProvider) =>
             {
                 var http = serviceProvider.GetRequiredService<HttpClient>();
-                var database = new Database(http);
+                var database = new RemoteDatabase(http);
                 return database;
             });
 

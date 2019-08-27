@@ -1,4 +1,4 @@
-﻿// <copyright file="Database.cs" company="Allors bvba">
+// <copyright file="IDatabase.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,9 +18,9 @@ namespace Allors.Workspace.Client
     using Newtonsoft.Json;
     using Polly;
 
-    public class Database
+    public class RemoteDatabase : IDatabase
     {
-        public Database(HttpClient httpClient)
+        public RemoteDatabase(HttpClient httpClient)
         {
             this.HttpClient = httpClient;
 
@@ -28,7 +28,7 @@ namespace Allors.Workspace.Client
             this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        ~Database() => this.HttpClient.Dispose();
+        ~RemoteDatabase() => this.HttpClient.Dispose();
 
         public HttpClient HttpClient { get; }
 
@@ -38,10 +38,19 @@ namespace Allors.Workspace.Client
             .Handle<HttpRequestException>()
             .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
-        public async Task<PullResponse> Pull(string name, object args)
+        public async Task<PullResponse> Pull(string name, PullRequest pullRequest)
         {
             var uri = new Uri(name + "/pull", UriKind.Relative);
-            var response = await this.PostAsJsonAsync(uri, args);
+            var response = await this.PostAsJsonAsync(uri, pullRequest);
+            response.EnsureSuccessStatusCode();
+            var pullResponse = await this.ReadAsAsync<PullResponse>(response);
+            return pullResponse;
+        }
+
+        public async Task<PullResponse> Pull(string name, object pullRequest)
+        {
+            var uri = new Uri(name + "/pull", UriKind.Relative);
+            var response = await this.PostAsJsonAsync(uri, pullRequest);
             response.EnsureSuccessStatusCode();
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
             return pullResponse;

@@ -1,4 +1,4 @@
-﻿// <copyright file="Context.cs" company="Allors bvba">
+// <copyright file="Context.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,10 +18,10 @@ namespace Allors.Workspace.Client
     {
         private const string DefaultPullService = "Pull";
 
-        private readonly Database database;
+        private readonly IDatabase database;
         private readonly Workspace workspace;
 
-        public Context(Database database, Workspace workspace)
+        public Context(IDatabase database, Workspace workspace)
         {
             this.database = database;
             this.workspace = workspace;
