@@ -18,9 +18,11 @@ namespace Allors.Workspace.Client
     using Newtonsoft.Json;
     using Polly;
 
-    public class RemoteDatabase : IDatabase
+    public class ClientDatabase : IDatabase
     {
-        public RemoteDatabase(HttpClient httpClient)
+        private const string DefaultPullService = "Pull";
+
+        public ClientDatabase(HttpClient httpClient)
         {
             this.HttpClient = httpClient;
 
@@ -28,7 +30,7 @@ namespace Allors.Workspace.Client
             this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        ~RemoteDatabase() => this.HttpClient.Dispose();
+        ~ClientDatabase() => this.HttpClient.Dispose();
 
         public HttpClient HttpClient { get; }
 
@@ -38,9 +40,9 @@ namespace Allors.Workspace.Client
             .Handle<HttpRequestException>()
             .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 
-        public async Task<PullResponse> Pull(string name, PullRequest pullRequest)
+        public async Task<PullResponse> Pull(PullRequest pullRequest)
         {
-            var uri = new Uri(name + "/pull", UriKind.Relative);
+            var uri = new Uri(DefaultPullService + "/pull", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, pullRequest);
             response.EnsureSuccessStatusCode();
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
@@ -76,21 +78,8 @@ namespace Allors.Workspace.Client
             return pushResponse;
         }
 
-        public async Task<InvokeResponse> Invoke(Method method) => await this.Invoke(new[] { method });
-
-        public async Task<InvokeResponse> Invoke(Method[] methods, InvokeOptions options = null)
+        public async Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null)
         {
-            var invokeRequest = new InvokeRequest
-            {
-                I = methods.Select(v => new Invocation
-                {
-                    I = v.Object.Id.ToString(),
-                    V = v.Object.Version.ToString(),
-                    M = v.Name,
-                }).ToArray(),
-                O = options,
-            };
-
             var uri = new Uri("Database/Invoke", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, invokeRequest);
             response.EnsureSuccessStatusCode();

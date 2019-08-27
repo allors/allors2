@@ -13,17 +13,15 @@ namespace Allors.Workspace.Client
 
     public interface IDatabase
     {
-        Task<PullResponse> Pull(string name, PullRequest pullRequest);
+        Task<PullResponse> Pull(PullRequest pullRequest);
 
-        Task<PullResponse> Pull(string name, object pullRequest);
+        Task<PullResponse> Pull(string service, object args);
 
         Task<SyncResponse> Sync(SyncRequest syncRequest);
 
         Task<PushResponse> Push(PushRequest pushRequest);
 
-        Task<InvokeResponse> Invoke(Method method);
-
-        Task<InvokeResponse> Invoke(Method[] methods, InvokeOptions options = null);
+        Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null);
 
         Task<InvokeResponse> Invoke(string service, object args);
     }

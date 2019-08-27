@@ -12,9 +12,9 @@ namespace Allors.Blazor
 
         private readonly AllorsAuthenticationStateProviderConfig Config;
 
-        private readonly RemoteDatabase Database;
+        private readonly ClientDatabase Database;
 
-        public AllorsAuthenticationStateProvider(AllorsAuthenticationStateProviderConfig config, RemoteDatabase database)
+        public AllorsAuthenticationStateProvider(AllorsAuthenticationStateProviderConfig config, ClientDatabase database)
         {
             this.Config = config;
             this.Database = database;

@@ -33,7 +33,7 @@ namespace ExcelAddIn
         private readonly CustomTaskPaneCollection customTaskPanes;
         private readonly ApplicationFactory factory;
 
-        private RemoteDatabase database;
+        private ClientDatabase database;
         private Workspace workspace;
         private Client client;
 
@@ -69,7 +69,7 @@ namespace ExcelAddIn
                         BaseAddress = new Uri(ConfigurationManager.AppSettings[AllorsDatabaseAddressKey]),
                     };
 
-                    this.database = new RemoteDatabase(httpClient);
+                    this.database = new ClientDatabase(httpClient);
                     this.workspace = new Workspace(Config.ObjectFactory);
                     this.client = new Client(this.database, this.workspace);
 
@@ -104,7 +104,7 @@ namespace ExcelAddIn
             this.database.HttpClient.DefaultRequestHeaders.Authorization = null;
         }
 
-        private async Task Login(RemoteDatabase database)
+        private async Task Login(ClientDatabase database)
         {
             try
             {

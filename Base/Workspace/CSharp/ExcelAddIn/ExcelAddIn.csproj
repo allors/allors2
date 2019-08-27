@@ -236,6 +236,7 @@
     <Compile Include="Base\Relation\SalesInvoicesOverdue\SalesInvoicesOverdueSheet.cs" />
     <Compile Include="Base\Sheet.cs" />
     <Compile Include="Base\Sheets.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -333,6 +334,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Core\Workspace\CSharp\Client\Workspace.Client.csproj">
+      <Project>{35d1cd24-c392-468c-ad68-df5d6f306cec}</Project>
+      <Name>Workspace.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Protocol\Allors.Protocol.csproj">
       <Project>{4cc90d31-775e-4a0e-8183-1ed53270d14d}</Project>
       <Name>Allors.Protocol</Name>
@@ -348,6 +353,10 @@
     <ProjectReference Include="..\Meta\Workspace.Meta.csproj">
       <Project>{d7f1b1a7-965a-4ba7-a0d2-33d7a3d4b29a}</Project>
       <Name>Workspace.Meta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workspace\Workspace.csproj">
+      <Project>{f531c158-2336-41fa-8b4f-a28de19bb4ed}</Project>
+      <Name>Workspace</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

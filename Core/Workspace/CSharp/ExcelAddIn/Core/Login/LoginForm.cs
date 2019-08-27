@@ -21,7 +21,7 @@ namespace BaseExcelAddIn.Base
 
         public Uri Uri { get; set; }
 
-        public RemoteDatabase Database { get; set; }
+        public ClientDatabase Database { get; set; }
 
         public bool IsLoggedIn { get; set; }
 

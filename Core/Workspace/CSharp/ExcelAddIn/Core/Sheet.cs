@@ -1,4 +1,4 @@
-﻿// <copyright file="Sheet.cs" company="Allors bvba">
+// <copyright file="Sheet.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -93,7 +93,7 @@ namespace Allors.Excel
             }
             else
             {
-                response = await this.Sheets.Client.Database.Invoke(method);
+                response = await this.Context.Invoke(method);
 
                 if (response.HasErrors)
                 {
@@ -105,7 +105,7 @@ namespace Allors.Excel
 
         public async Task Invoke(Method method)
         {
-            var response = await this.Sheets.Client.Database.Invoke(method);
+            var response = await this.Context.Invoke(method);
 
             if (response.HasErrors)
             {
@@ -142,7 +142,7 @@ namespace Allors.Excel
             }
             else
             {
-                response = await this.Sheets.Client.Database.Invoke(method);
+                response = await this.Context.Invoke(method);
 
                 if (response.HasErrors)
                 {

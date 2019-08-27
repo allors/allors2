@@ -163,6 +163,7 @@
   -->
   <ItemGroup>
     <Compile Include="AddInManager.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Core\Client.cs" />
     <Compile Include="Core\Commands.cs" />
     <Compile Include="Core\Data\Row.cs" />
@@ -243,7 +244,6 @@
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="Settings.StyleCop" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.cs</DependentUpon>
     </None>
@@ -269,6 +269,10 @@
       <Project>{b01846a2-2e2b-4676-be34-f9e14442f80f}</Project>
       <Name>Allors.Workspace</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Client\Workspace.Client.csproj">
+      <Project>{35d1cd24-c392-468c-ad68-df5d6f306cec}</Project>
+      <Name>Workspace.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain\Workspace.Domain.csproj">
       <Project>{94474285-cafb-4a71-aed2-d6a80564f543}</Project>
       <Name>Workspace.Domain</Name>
@@ -276,6 +280,10 @@
     <ProjectReference Include="..\Meta\Workspace.Meta.csproj">
       <Project>{ec4af4c3-ec56-491a-a5b3-2d54938d32b1}</Project>
       <Name>Workspace.Meta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workspace\Workspace.csproj">
+      <Project>{3fa6effc-e02f-4be2-83c7-502d3adcc0e6}</Project>
+      <Name>Workspace</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

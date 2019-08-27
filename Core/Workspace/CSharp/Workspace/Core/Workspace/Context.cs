@@ -16,8 +16,6 @@ namespace Allors.Workspace.Client
 
     public class Context
     {
-        private const string DefaultPullService = "Pull";
-
         private readonly IDatabase database;
         private readonly Workspace workspace;
 
@@ -31,7 +29,23 @@ namespace Allors.Workspace.Client
 
         public Session Session { get; }
 
-        public async Task<Result> Load(object args, string pullService = DefaultPullService)
+        public async Task<Result> Load(params Pull[] pulls)
+        {
+            var pullRequest = new PullRequest { P = pulls.Select(v => v.ToJson()).ToArray() };
+            var pullResponse = await this.database.Pull(pullRequest);
+            var requireLoadIds = this.workspace.Diff(pullResponse);
+            if (requireLoadIds.Objects.Length > 0)
+            {
+                var loadResponse = await this.database.Sync(requireLoadIds);
+                this.workspace.Sync(loadResponse);
+            }
+
+            var result = new Result(this.Session, pullResponse);
+            return result;
+        }
+
+
+        public async Task<Result> Load(object args, string pullService = null)
         {
             if (args is Pull pull)
             {
@@ -54,8 +68,6 @@ namespace Allors.Workspace.Client
             var result = new Result(this.Session, pullResponse);
             return result;
         }
-
-        public async Task<Result> Load(params Pull[] pulls) => await this.Load((IEnumerable<Pull>)pulls);
 
         public async Task<PushResponse> Save()
         {
@@ -84,7 +96,24 @@ namespace Allors.Workspace.Client
             return pushResponse;
         }
 
-        public Task<InvokeResponse> Invoke(Method method) => this.database.Invoke(method);
+        public Task<InvokeResponse> Invoke(Method method, InvokeOptions options = null) => this.Invoke(new[] { method }, options);
+
+        public Task<InvokeResponse> Invoke(Method[] methods, InvokeOptions options = null)
+        {
+
+            var invokeRequest = new InvokeRequest
+            {
+                I = methods.Select(v => new Invocation
+                {
+                    I = v.Object.Id.ToString(),
+                    V = v.Object.Version.ToString(),
+                    M = v.Name,
+                }).ToArray(),
+                O = options,
+            };
+
+            return this.database.Invoke(invokeRequest);
+        }
 
         public Task<InvokeResponse> Invoke(string service, object args) => this.database.Invoke(service, args);
     }

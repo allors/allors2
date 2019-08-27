@@ -26,7 +26,7 @@ namespace Tests.Remote
 
         public Workspace Workspace { get; set; }
 
-        public RemoteDatabase Database { get; set; }
+        public ClientDatabase Database { get; set; }
 
         public RemoteTest()
         {
@@ -35,7 +35,7 @@ namespace Tests.Remote
                 BaseAddress = new Uri(Url),
             };
 
-            this.Database = new RemoteDatabase(client);
+            this.Database = new ClientDatabase(client);
 
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
             this.Workspace = new Workspace(objectFactory);

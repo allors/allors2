@@ -17,7 +17,7 @@ namespace Blazor.Client
             services.AddSingleton<IDatabase>((serviceProvider) =>
             {
                 var http = serviceProvider.GetRequiredService<HttpClient>();
-                var database = new RemoteDatabase(http);
+                var database = new ClientDatabase(http);
                 return database;
             });
 
