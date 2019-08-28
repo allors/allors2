@@ -21,7 +21,7 @@
     <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6BBA0C2D-D20F-4A22-99B4-D3D0D3F8A1E5}</ProjectGuid>
+    <ProjectGuid>{2793BF14-439A-418F-8CD0-808A07AD09C5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>ExcelAddIn</RootNamespace>
@@ -101,14 +101,8 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -253,14 +247,18 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Nito.AsyncEx.StrongNamed">
-      <Version>4.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="NLog">
-      <Version>4.6.6</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Base\Workspace\CSharp\Domain\Workspace.Domain.csproj">
+      <Project>{4ad34589-ae2f-4904-8fbf-438e27640bec}</Project>
+      <Name>Workspace.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Base\Workspace\CSharp\Meta\Workspace.Meta.csproj">
+      <Project>{d7f1b1a7-965a-4ba7-a0d2-33d7a3d4b29a}</Project>
+      <Name>Workspace.Meta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Base\Workspace\CSharp\Workspace\Workspace.csproj">
+      <Project>{f531c158-2336-41fa-8b4f-a28de19bb4ed}</Project>
+      <Name>Workspace</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Protocol\Allors.Protocol.csproj">
       <Project>{4cc90d31-775e-4a0e-8183-1ed53270d14d}</Project>
       <Name>Allors.Protocol</Name>
@@ -273,18 +271,17 @@
       <Project>{35d1cd24-c392-468c-ad68-df5d6f306cec}</Project>
       <Name>Workspace.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\Workspace.Domain.csproj">
-      <Project>{94474285-cafb-4a71-aed2-d6a80564f543}</Project>
-      <Name>Workspace.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Meta\Workspace.Meta.csproj">
-      <Project>{ec4af4c3-ec56-491a-a5b3-2d54938d32b1}</Project>
-      <Name>Workspace.Meta</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Workspace\Workspace.csproj">
-      <Project>{3fa6effc-e02f-4be2-83c7-502d3adcc0e6}</Project>
-      <Name>Workspace</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Nito.AsyncEx.StrongNamed">
+      <Version>4.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="NLog">
+      <Version>4.6.7</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.4</Version>
+    </PackageReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -21,11 +21,11 @@
     <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{15E278BF-C374-4C63-8469-18B71AF991FA}</ProjectGuid>
+    <ProjectGuid>{97DC9291-7F7C-49F0-9CA3-7919B72888C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>ExcelAddIn</RootNamespace>
-    <AssemblyName>AppsExcelAddIn</AssemblyName>
+    <AssemblyName>ExcelAddIn</AssemblyName>
     <LoadBehavior>3</LoadBehavior>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
@@ -101,14 +101,8 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -210,29 +204,13 @@
     <Compile Include="AddInManager.cs" />
     <Compile Include="Base\Commands.cs" />
     <Compile Include="Base\Mediator.cs" />
-    <Compile Include="Base\PurchaseInvoices\DataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </Compile>
+    <Compile Include="Base\PurchaseInvoices\DataSet.Designer.cs" />
     <Compile Include="Base\PurchaseInvoices\PurchaseInvoicesSheet.cs" />
     <Compile Include="Base\Relation\Customers\CustomersSheet.cs" />
-    <Compile Include="Base\Relation\Customers\DataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Base\Relation\People\DataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </Compile>
+    <Compile Include="Base\Relation\Customers\DataSet.Designer.cs" />
+    <Compile Include="Base\Relation\People\DataSet.Designer.cs" />
     <Compile Include="Base\Relation\People\PeopleSheet.cs" />
-    <Compile Include="Base\Relation\SalesInvoicesOverdue\DataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </Compile>
+    <Compile Include="Base\Relation\SalesInvoicesOverdue\DataSet.Designer.cs" />
     <Compile Include="Base\Relation\SalesInvoicesOverdue\SalesInvoicesOverdueSheet.cs" />
     <Compile Include="Base\Sheet.cs" />
     <Compile Include="Base\Sheets.cs" />
@@ -256,51 +234,32 @@
     <EmbeddedResource Include="Ribbon.resx">
       <DependentUpon>Ribbon.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\desktop.ini">
-      <Link>Core\desktop.ini</Link>
-    </None>
     <None Include="app.config" />
     <None Include="Base\PurchaseInvoices\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Base\PurchaseInvoices\DataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Base\PurchaseInvoices\DataSet.xsd" />
     <None Include="Base\PurchaseInvoices\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
     <None Include="Base\Relation\Customers\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Base\Relation\Customers\DataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Base\Relation\Customers\DataSet.xsd" />
     <None Include="Base\Relation\Customers\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
     <None Include="Base\Relation\People\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Base\Relation\People\DataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Base\Relation\People\DataSet.xsd" />
     <None Include="Base\Relation\People\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
     <None Include="Base\Relation\SalesInvoicesOverdue\DataSet.xsc">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
-    <None Include="Base\Relation\SalesInvoicesOverdue\DataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Base\Relation\SalesInvoicesOverdue\DataSet.xsd" />
     <None Include="Base\Relation\SalesInvoicesOverdue\DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </None>
@@ -364,7 +323,10 @@
       <Version>4.0.1</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.6.6</Version>
+      <Version>4.6.7</Version>
+    </PackageReference>
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.4</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
@@ -378,7 +340,7 @@
     <ManifestKeyFile>ExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1D4FC99D764126503217EE9DEF0C5107F381DC18</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>92405655F4D85E6C56F31DD3EE4C86DA0B002368</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
