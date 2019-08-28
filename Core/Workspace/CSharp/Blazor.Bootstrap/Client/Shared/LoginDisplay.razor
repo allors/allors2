@@ -1,4 +1,4 @@
-@inject AllorsAuthenticationStateProvider AuthenticationStateProvider
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView Context="AuthorizeContext">
     <Authorized>
@@ -13,6 +13,9 @@
 
     void LogOut()
     {
-        this.AuthenticationStateProvider.LogOut();
+        if (this.AuthenticationStateProvider is AllorsAuthenticationStateProvider allorsAuthenticationStateProvider)
+        {
+            allorsAuthenticationStateProvider.LogOut();
+        }
     }
 }

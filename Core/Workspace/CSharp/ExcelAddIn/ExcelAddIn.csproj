@@ -247,18 +247,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Base\Workspace\CSharp\Domain\Workspace.Domain.csproj">
-      <Project>{4ad34589-ae2f-4904-8fbf-438e27640bec}</Project>
-      <Name>Workspace.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Base\Workspace\CSharp\Meta\Workspace.Meta.csproj">
-      <Project>{d7f1b1a7-965a-4ba7-a0d2-33d7a3d4b29a}</Project>
-      <Name>Workspace.Meta</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Base\Workspace\CSharp\Workspace\Workspace.csproj">
-      <Project>{f531c158-2336-41fa-8b4f-a28de19bb4ed}</Project>
-      <Name>Workspace</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Protocol\Allors.Protocol.csproj">
       <Project>{4cc90d31-775e-4a0e-8183-1ed53270d14d}</Project>
       <Name>Allors.Protocol</Name>
@@ -270,6 +258,18 @@
     <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Workspace\Allors.Workspace.csproj">
       <Project>{b01846a2-2e2b-4676-be34-f9e14442f80f}</Project>
       <Name>Allors.Workspace</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\Workspace.Domain.csproj">
+      <Project>{94474285-cafb-4a71-aed2-d6a80564f543}</Project>
+      <Name>Workspace.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Meta\Workspace.Meta.csproj">
+      <Project>{ec4af4c3-ec56-491a-a5b3-2d54938d32b1}</Project>
+      <Name>Workspace.Meta</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workspace\Workspace.csproj">
+      <Project>{3fa6effc-e02f-4be2-83c7-502d3adcc0e6}</Project>
+      <Name>Workspace</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 @inherits LayoutComponentBase
 @inject IBootstrapCSS BootstrapCSS
-@inject AllorsAuthenticationStateProvider AuthenticationStateProvider
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IUriHelper UriHelper
 
 
@@ -34,7 +34,11 @@
 
     async System.Threading.Tasks.Task GoTo()
     {
-        await this.AuthenticationStateProvider.LogIn("administrator", null);
+        if (this.AuthenticationStateProvider is AllorsAuthenticationStateProvider allorsAuthenticationStateProvider)
+        {
+            await allorsAuthenticationStateProvider.LogIn("administrator", null);
+        }
+
         this.UriHelper.NavigateTo("/organisation/edit/2577");
     }
 }

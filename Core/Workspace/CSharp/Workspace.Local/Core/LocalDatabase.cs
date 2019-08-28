@@ -17,15 +17,17 @@ namespace Allors.Workspace.Local
 
     public class LocalDatabase : IDatabase
     {
-        private readonly Allors.IDatabase database;
-
-        public LocalDatabase(Allors.IDatabase database, ITreeService treeService, IFetchService fetchService, IExtentService extentService)
+        public LocalDatabase(IDatabaseService databaseService, ITreeService treeService, IFetchService fetchService, IExtentService extentService)
         {
-            this.database = database;
+            this.DatabaseService = databaseService;
             this.TreeService = treeService;
             this.FetchService = fetchService;
             this.ExtentService = extentService;
         }
+
+        public Allors.IDatabase Database => this.DatabaseService.Database;
+
+        public IDatabaseService DatabaseService { get; }
 
         public ITreeService TreeService { get; }
 
@@ -35,7 +37,7 @@ namespace Allors.Workspace.Local
 
         public Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null)
         {
-            using (var session = this.database.CreateSession())
+            using (var session = this.Database.CreateSession())
             {
                 var user = session.GetUser();
                 var responseBuilder = new InvokeResponseBuilder(session, user, invokeRequest);
@@ -48,7 +50,7 @@ namespace Allors.Workspace.Local
 
         public Task<PullResponse> Pull(PullRequest pullRequest)
         {
-            using (var session = this.database.CreateSession())
+            using (var session = this.Database.CreateSession())
             {
                 var user = session.GetUser();
                 var response = new PullResponseBuilder(user, this.TreeService);
@@ -80,7 +82,7 @@ namespace Allors.Workspace.Local
 
         public Task<PushResponse> Push(PushRequest pushRequest)
         {
-            using (var session = this.database.CreateSession())
+            using (var session = this.Database.CreateSession())
             {
                 var user = session.GetUser();
                 var responseBuilder = new PushResponseBuilder(session, user, pushRequest);
@@ -96,7 +98,7 @@ namespace Allors.Workspace.Local
 
         public Task<SyncResponse> Sync(SyncRequest syncRequest)
         {
-            using (var session = this.database.CreateSession())
+            using (var session = this.Database.CreateSession())
             {
                 var user = session.GetUser();
                 var responseBuilder = new SyncResponseBuilder(session, user, syncRequest);

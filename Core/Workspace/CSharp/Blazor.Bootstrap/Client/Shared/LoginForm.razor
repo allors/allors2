@@ -1,4 +1,4 @@
-@inject AllorsAuthenticationStateProvider AuthenticationStateProvider
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="container mt-3">
 
@@ -35,6 +35,9 @@
 
     async System.Threading.Tasks.Task LogIn()
     {
-        await this.AuthenticationStateProvider.LogIn(this.UserName, this.Password);
+        if (this.AuthenticationStateProvider is AllorsAuthenticationStateProvider allorsAuthenticationStateProvider)
+        {
+            await allorsAuthenticationStateProvider.LogIn(this.UserName, this.Password);
+        }
     }
 }
