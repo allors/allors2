@@ -9,7 +9,7 @@ namespace Tests.Remote
     using System.Net.Http;
 
     using Allors.Workspace;
-    using Allors.Workspace.Client;
+    using Allors.Workspace.Remote;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
 
@@ -26,7 +26,7 @@ namespace Tests.Remote
 
         public Workspace Workspace { get; set; }
 
-        public ClientDatabase Database { get; set; }
+        public RemoteDatabase Database { get; set; }
 
         public RemoteTest()
         {
@@ -35,7 +35,7 @@ namespace Tests.Remote
                 BaseAddress = new Uri(Url),
             };
 
-            this.Database = new ClientDatabase(client);
+            this.Database = new RemoteDatabase(client);
 
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
             this.Workspace = new Workspace(objectFactory);

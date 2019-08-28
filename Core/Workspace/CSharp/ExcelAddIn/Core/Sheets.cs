@@ -7,7 +7,6 @@ namespace Allors.Excel
 {
     using System;
     using System.Collections.Generic;
-    using Allors.Workspace.Client;
     using NLog;
 
     using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;

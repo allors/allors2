@@ -1,4 +1,4 @@
-﻿// <copyright file="PullResponseBuilder.cs" company="Allors bvba">
+// <copyright file="PullResponseBuilder.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,17 +11,23 @@ namespace Allors.Server
     using Allors.Data;
     using Allors.Domain;
     using Allors.Protocol.Remote.Pull;
+    using Services;
 
     public class PullResponseBuilder
     {
         private readonly User user;
+        private readonly ITreeService treeService;
 
         private readonly HashSet<IObject> objects = new HashSet<IObject>();
         private readonly Dictionary<string, IObject> objectByName = new Dictionary<string, IObject>();
         private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
         private readonly Dictionary<string, object> valueByName = new Dictionary<string, object>();
 
-        public PullResponseBuilder(User user) => this.user = user;
+        public PullResponseBuilder(User user, ITreeService treeService)
+        {
+            this.user = user;
+            this.treeService = treeService;
+        }
 
         public PullResponse Build() =>
             new PullResponse
@@ -40,7 +46,7 @@ namespace Allors.Server
                 Tree tree = null;
                 if (full)
                 {
-                    tree = @object.Strategy.Session.Database.FullTree(@object.Strategy.Class);
+                    tree = @object.Strategy.Session.Database.FullTree(@object.Strategy.Class, this.treeService);
                 }
 
                 this.AddObject(name, @object, tree);
@@ -73,7 +79,7 @@ namespace Allors.Server
             if (full && inputList.Count > 0)
             {
                 var @object = inputList.FirstOrDefault();
-                tree = @object?.Strategy.Session.Database.FullTree(@object.Strategy.Class);
+                tree = @object?.Strategy.Session.Database.FullTree(@object.Strategy.Class, this.treeService);
             }
 
             this.AddCollection(name, inputList, tree);

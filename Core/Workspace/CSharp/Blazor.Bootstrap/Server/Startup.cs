@@ -1,15 +1,20 @@
 namespace Blazor.Server
 {
+    using System;
     using System.Linq;
+    using System.Net.Http;
     using System.Text;
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
+    using Blazor.Client;
+    using BlazorStrap;
     using Identity;
     using Identity.Models;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
@@ -25,10 +30,14 @@ namespace Blazor.Server
 
         public IConfiguration Configuration { get; }
 
+        public bool IsServerSideBlazor { get; private set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            this.IsServerSideBlazor = !services.Any(x => x.ServiceType == typeof(HttpClient));
+
             services.AddSingleton(this.Configuration);
 
             // Allors
@@ -76,6 +85,34 @@ namespace Blazor.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+
+            services.AddSingleton<Allors.Workspace.Local.LocalDatabase>();
+            services.AddSingleton<Allors.Workspace.IDatabase>(provider => provider.GetRequiredService<Allors.Workspace.Local.LocalDatabase>());
+
+            services.AddSingleton<Allors.Workspace.Workspace>((serviceProvider) =>
+            {
+                var objectFactory = new Allors.Workspace.ObjectFactory(Allors.Workspace.Meta.MetaPopulation.Instance, typeof(User));
+                var workspace = new Allors.Workspace.Workspace(objectFactory);
+                return workspace;
+            });
+
+
+            if (this.IsServerSideBlazor)
+            {
+                services.AddServerSideBlazor();
+
+                // TODO: Authentication
+                //var implementationInstance = new AllorsAuthenticationStateProviderConfig
+                //{
+                //    AuthenticationUrl = "/TestAuthentication/Token",
+                //};
+                //services.AddSingleton(implementationInstance);
+                //services.AddScoped<AllorsAuthenticationStateProvider>();
+                //services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<AllorsAuthenticationStateProvider>());
+                //services.AddAuthorizationCore();
+
+                services.AddBootstrapCSS();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,19 +141,38 @@ namespace Blazor.Server
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBlazorDebugging();
+                if (!this.IsServerSideBlazor)
+                {
+                    app.UseBlazorDebugging();
+                }
             }
 
             app.UseStaticFiles();
-            app.UseClientSideBlazorFiles<Startup>();
+
+            if (!this.IsServerSideBlazor)
+            {
+                app.UseClientSideBlazorFiles<Startup>();
+            }
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
+            if (this.IsServerSideBlazor)
             {
-                endpoints.MapDefaultControllerRoute();
-                endpoints.MapFallbackToClientSideBlazor<Startup>("index.html");
-            });
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+                    endpoints.MapBlazorHub<App>(selector: "app");
+                    endpoints.MapFallbackToPage("/_Host");
+                });
+            }
+            else
+            {
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapDefaultControllerRoute();
+                    endpoints.MapFallbackToClientSideBlazor<Startup>("index.html");
+                });
+            }
         }
     }
 }

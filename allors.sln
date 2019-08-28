@@ -145,6 +145,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Base\Workspac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Workspace.Remote", "Platform\Framework\Allors.Workspace.Remote\Allors.Workspace.Remote.csproj", "{6097814D-9245-4CB2-9458-9EF8F1458BB8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Local", "Core\Workspace\CSharp\Workspace.Local\Workspace.Local.csproj", "{170303DE-F712-4363-AFCF-C3DAE3EFA082}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Local", "Base\Workspace\CSharp\Workspace.Local\Workspace.Local.csproj", "{36803A0C-F72B-42C6-8B32-0AF5996150EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -359,6 +363,14 @@ Global
 		{6097814D-9245-4CB2-9458-9EF8F1458BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6097814D-9245-4CB2-9458-9EF8F1458BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6097814D-9245-4CB2-9458-9EF8F1458BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{170303DE-F712-4363-AFCF-C3DAE3EFA082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{170303DE-F712-4363-AFCF-C3DAE3EFA082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{170303DE-F712-4363-AFCF-C3DAE3EFA082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{170303DE-F712-4363-AFCF-C3DAE3EFA082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36803A0C-F72B-42C6-8B32-0AF5996150EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36803A0C-F72B-42C6-8B32-0AF5996150EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36803A0C-F72B-42C6-8B32-0AF5996150EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36803A0C-F72B-42C6-8B32-0AF5996150EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -432,6 +444,8 @@ Global
 		{2793BF14-439A-418F-8CD0-808A07AD09C5} = {50A1B7BA-85A8-4AD0-B90C-829A756CC0E5}
 		{97DC9291-7F7C-49F0-9CA3-7919B72888C8} = {C1398D8A-D1F2-4726-8160-91701961E78B}
 		{6097814D-9245-4CB2-9458-9EF8F1458BB8} = {3B8D3499-3717-4D22-9038-03FFB26F96B0}
+		{170303DE-F712-4363-AFCF-C3DAE3EFA082} = {50A1B7BA-85A8-4AD0-B90C-829A756CC0E5}
+		{36803A0C-F72B-42C6-8B32-0AF5996150EF} = {C1398D8A-D1F2-4726-8160-91701961E78B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00D78C3D-8536-4549-B1EE-C19BD0C50387}

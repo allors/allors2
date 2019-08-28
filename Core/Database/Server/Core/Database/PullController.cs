@@ -1,4 +1,4 @@
-﻿// <copyright file="PullController.cs" company="Allors bvba">
+// <copyright file="PullController.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -18,12 +18,13 @@ namespace Allors.Server.Controllers
 
     public class PullController : Controller
     {
-        public PullController(IDatabaseService databaseService, IPolicyService policyService, IExtentService extentService, IFetchService fetchService, ILogger<PullController> logger)
+        public PullController(IDatabaseService databaseService, IPolicyService policyService, IExtentService extentService, IFetchService fetchService, ITreeService treeService, ILogger<PullController> logger)
         {
             this.DatabaseService = databaseService;
             this.PolicyService = policyService;
             this.ExtentService = extentService;
             this.FetchService = fetchService;
+            this.TreeService = treeService;
             this.Logger = logger;
         }
 
@@ -34,6 +35,8 @@ namespace Allors.Server.Controllers
         private IExtentService ExtentService { get; }
 
         private IFetchService FetchService { get; }
+
+        public ITreeService TreeService { get; }
 
         private ILogger<PullController> Logger { get; set; }
 
@@ -49,7 +52,7 @@ namespace Allors.Server.Controllers
                             using (var session = this.DatabaseService.Database.CreateSession())
                             {
                                 var user = session.GetUser();
-                                var response = new PullResponseBuilder(user);
+                                var response = new PullResponseBuilder(user, this.TreeService);
 
                                 if (req.P != null)
                                 {

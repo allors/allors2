@@ -6,7 +6,6 @@
 namespace Allors.Excel
 {
     using Allors.Workspace;
-    using Allors.Workspace.Client;
 
     public partial class Client
     {

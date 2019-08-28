@@ -7,7 +7,7 @@ namespace Tests.Local
 {
     using System;
 
-    using Allors.Workspace.Client;
+    using Allors.Workspace;
     using Allors.Workspace.Domain;
 
     using Nito.AsyncEx;

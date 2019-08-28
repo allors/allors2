@@ -7,7 +7,7 @@ namespace Tests.Remote
 {
     using System.Net.Http;
 
-    using Allors.Workspace.Client;
+    using Allors.Workspace;
     using Nito.AsyncEx;
 
     using Xunit;

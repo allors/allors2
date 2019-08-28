@@ -1,4 +1,4 @@
-﻿// <copyright file="TestUnitSamplesController.cs" company="Allors bvba">
+// <copyright file="TestUnitSamplesController.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,9 +16,16 @@ namespace Allors.Server.Controllers
 
     public class TestUnitSamplesController : Controller
     {
-        public TestUnitSamplesController(ISessionService sessionService) => this.Session = sessionService.Session;
+        public TestUnitSamplesController(ISessionService sessionService, ITreeService treeService)
+        {
+            this.Session = sessionService.Session;
+            this.TreeService = treeService;
+        }
 
         private ISession Session { get; }
+
+        public ITreeService TreeService { get; }
+
 
         [HttpPost]
         public async Task<IActionResult> Pull([FromBody] TestUnitSamplesParams @params)
@@ -32,7 +39,7 @@ namespace Allors.Server.Controllers
                     this.Session.Commit();
                 }
 
-                var responseBuilder = new PullResponseBuilder(this.Session.GetUser());
+                var responseBuilder = new PullResponseBuilder(this.Session.GetUser(), this.TreeService);
 
                 switch (@params.Step)
                 {

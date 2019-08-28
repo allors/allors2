@@ -1,4 +1,4 @@
-﻿// <copyright file="DatabaseExtensions.cs" company="Allors bvba">
+// <copyright file="DatabaseExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,13 +11,11 @@ namespace Allors.Server
     using Allors.Meta;
     using Allors.Services;
 
-    using Microsoft.Extensions.DependencyInjection;
 
     public static class DatabaseExtensions
     {
-        public static Tree FullTree(this IDatabase @this, IComposite composite)
+        public static Tree FullTree(this IDatabase @this, IComposite composite, ITreeService treeService)
         {
-            var treeService = @this.ServiceProvider.GetRequiredService<ITreeService>();
             var tree = treeService.Get(composite);
             if (tree == null)
             {

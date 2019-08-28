@@ -1,4 +1,4 @@
-﻿// <copyright file="PeopleSheet.cs" company="Allors bvba">
+// <copyright file="PeopleSheet.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,7 +15,7 @@ namespace Allors.Excel.People
     using Allors.Workspace.Meta;
     using Microsoft.Office.Interop.Excel;
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
-    using Result = Allors.Workspace.Client.Result;
+    using Result = Allors.Workspace.Result;
     using Sheets = Allors.Excel.Sheets;
     using Task = System.Threading.Tasks.Task;
     using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;

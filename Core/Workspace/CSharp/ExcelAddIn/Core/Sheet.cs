@@ -13,7 +13,6 @@ namespace Allors.Excel
     using Allors.Protocol.Remote;
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace;
-    using Allors.Workspace.Client;
 
     using Microsoft.Office.Tools;
     using Microsoft.Office.Tools.Excel;
