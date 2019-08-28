@@ -29,7 +29,8 @@ partial class Build
          });
 
     private Target BaseGenerate => _ => _
-                     .After(Clean)
+         .After(Clean)
+         .DependsOn(CoreGenerate) // TODO: Problem wiht ExcelAddin in Base (remove after fix)
          .Executes(() =>
          {
              DotNetRun(s => s
