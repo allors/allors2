@@ -7,7 +7,7 @@ namespace BaseExcelAddIn.Base
 {
     using System;
     using System.Windows.Forms;
-    using Allors.Workspace.Client;
+    using Allors.Workspace.Remote;
     using Nito.AsyncEx;
 
     public partial class LoginForm : Form
@@ -21,7 +21,7 @@ namespace BaseExcelAddIn.Base
 
         public Uri Uri { get; set; }
 
-        public ClientDatabase Database { get; set; }
+        public RemoteDatabase Database { get; set; }
 
         public bool IsLoggedIn { get; set; }
 

@@ -3,7 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Tests.Local
+namespace Tests.Mock
 {
     using System;
     using System.Linq;
@@ -13,7 +13,7 @@ namespace Tests.Local
     using Allors.Workspace.Meta;
     using Xunit;
 
-    public class SessionTests : LocalTest
+    public class SessionTests : MockTest
     {
         [Fact]
         public void UnitGet()

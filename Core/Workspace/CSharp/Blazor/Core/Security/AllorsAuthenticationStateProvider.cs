@@ -3,7 +3,7 @@ namespace Allors.Blazor
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using Allors.Workspace.Client;
+    using Allors.Workspace.Remote;
     using Microsoft.AspNetCore.Components;
 
     public partial class AllorsAuthenticationStateProvider : AuthenticationStateProvider
@@ -12,9 +12,9 @@ namespace Allors.Blazor
 
         private readonly AllorsAuthenticationStateProviderConfig Config;
 
-        private readonly ClientDatabase Database;
+        private readonly RemoteDatabase Database;
 
-        public AllorsAuthenticationStateProvider(AllorsAuthenticationStateProviderConfig config, ClientDatabase database)
+        public AllorsAuthenticationStateProvider(AllorsAuthenticationStateProviderConfig config, RemoteDatabase database)
         {
             this.Config = config;
             this.Database = database;

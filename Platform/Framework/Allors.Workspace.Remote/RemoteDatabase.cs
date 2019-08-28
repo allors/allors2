@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Workspace.Client
+namespace Allors.Workspace.Remote
 {
     using System;
-    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
@@ -18,11 +17,11 @@ namespace Allors.Workspace.Client
     using Newtonsoft.Json;
     using Polly;
 
-    public class ClientDatabase : IDatabase
+    public class RemoteDatabase : IDatabase
     {
         private const string DefaultPullService = "Pull";
 
-        public ClientDatabase(HttpClient httpClient)
+        public RemoteDatabase(HttpClient httpClient)
         {
             this.HttpClient = httpClient;
 
@@ -30,7 +29,7 @@ namespace Allors.Workspace.Client
             this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        ~ClientDatabase() => this.HttpClient.Dispose();
+        ~RemoteDatabase() => this.HttpClient.Dispose();
 
         public HttpClient HttpClient { get; }
 

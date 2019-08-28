@@ -1,11 +1,11 @@
 namespace Blazor.Client
 {
     using System.Net.Http;
+    using Allors.Blazor;
     using Allors.Workspace;
-    using Allors.Workspace.Client;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
-    using Allors.Blazor;
+    using Allors.Workspace.Remote;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Builder;
     using Microsoft.Extensions.DependencyInjection;
@@ -14,13 +14,13 @@ namespace Blazor.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ClientDatabase>((serviceProvider) =>
+            services.AddSingleton<RemoteDatabase>((serviceProvider) =>
             {
                 var http = serviceProvider.GetRequiredService<HttpClient>();
-                var database = new ClientDatabase(http);
+                var database = new RemoteDatabase(http);
                 return database;
             });
-            services.AddSingleton<IDatabase>(provider => provider.GetRequiredService<ClientDatabase>());
+            services.AddSingleton<IDatabase>(provider => provider.GetRequiredService<RemoteDatabase>());
 
             services.AddSingleton<Workspace>((serviceProvider) =>
             {

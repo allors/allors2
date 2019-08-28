@@ -27,7 +27,6 @@
     <ProjectReference Include="..\..\..\..\Database\Meta\Meta.csproj" />
     <ProjectReference Include="..\..\..\..\Database\Resources\Resources.csproj" />
     <ProjectReference Include="..\..\..\..\Database\Services\Services.csproj" />
-    <ProjectReference Include="..\Client\Blazor.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

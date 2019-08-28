@@ -263,13 +263,13 @@
       <Project>{4cc90d31-775e-4a0e-8183-1ed53270d14d}</Project>
       <Name>Allors.Protocol</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Workspace.Remote\Allors.Workspace.Remote.csproj">
+      <Project>{6097814d-9245-4cb2-9458-9ef8f1458bb8}</Project>
+      <Name>Allors.Workspace.Remote</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Workspace\Allors.Workspace.csproj">
       <Project>{b01846a2-2e2b-4676-be34-f9e14442f80f}</Project>
       <Name>Allors.Workspace</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Client\Workspace.Client.csproj">
-      <Project>{35d1cd24-c392-468c-ad68-df5d6f306cec}</Project>
-      <Name>Workspace.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

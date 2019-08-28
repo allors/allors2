@@ -3,13 +3,13 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Tests.Local
+namespace Tests.Mock
 {
     using Allors.Protocol.Remote.Pull;
 
     using Xunit;
 
-    public class WorkspaceTests : LocalTest
+    public class WorkspaceTests : MockTest
     {
         [Fact]
         public void Load()

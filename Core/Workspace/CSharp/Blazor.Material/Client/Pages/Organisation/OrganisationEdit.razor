@@ -1,7 +1,7 @@
 @page "/organisation/edit/{id}"
 @attribute [Authorize]
-@inject Allors.Workspace.Client.IDatabase Database
-@inject Allors.Workspace.Workspace Workspace
+@inject IDatabase Database
+@inject Workspace Workspace
 @inject IUriHelper UriHelper
 
 @if (organisation == null)

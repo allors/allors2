@@ -13,7 +13,7 @@ namespace ExcelAddIn
 
     using Allors.Excel;
     using Allors.Workspace;
-    using Allors.Workspace.Client;
+    using Allors.Workspace.Remote;
     using Microsoft.Office.Interop.Excel;
     using Microsoft.Office.Tools;
     using Microsoft.Office.Tools.Excel;
@@ -34,7 +34,7 @@ namespace ExcelAddIn
         private readonly CustomTaskPaneCollection customTaskPanes;
         private readonly ApplicationFactory factory;
 
-        private ClientDatabase database;
+        private RemoteDatabase database;
         private Workspace workspace;
         private Client client;
 
@@ -66,7 +66,7 @@ namespace ExcelAddIn
                     BaseAddress = new Uri(ConfigurationManager.AppSettings[AllorsDatabaseAddressKey]),
                 };
 
-                this.database = new ClientDatabase(httpClient);
+                this.database = new RemoteDatabase(httpClient);
                 this.workspace = new Workspace(Config.ObjectFactory);
                 this.client = new Client(this.database, this.workspace);
 
@@ -94,7 +94,7 @@ namespace ExcelAddIn
             }
         }
 
-        private async Task Login(ClientDatabase database)
+        private async Task Login(RemoteDatabase database)
         {
             try
             {
