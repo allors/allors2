@@ -18,6 +18,8 @@ namespace Allors.Document.OpenDocument
     {
         internal const string ContentFileName = "content.xml";
 
+        internal const string StylesFileName = "styles.xml";
+
         internal const string MetaFileName = "META-INF/manifest.xml";
 
         protected const char DefaultLeftDelimiter = '\u02C2';
@@ -28,7 +30,9 @@ namespace Allors.Document.OpenDocument
 
         private readonly Dictionary<string, byte[]> fileByFileName;
 
-        private readonly TemplateGroup templateGroup;
+        private readonly TemplateGroup ContentTemplateGroup;
+
+        private readonly TemplateGroup StylesTemplateGroup;
 
         private readonly byte[] manifest;
 
@@ -56,13 +60,32 @@ namespace Allors.Document.OpenDocument
                                     var content = new OpenDocumentTemplateContent(file, leftDelimiter, rightDelimiter);
                                     var stringTemplate = content.ToStringTemplate();
                                     var group = MainTemplateName + "(" + arguments + ")" + stringTemplate;
-                                    this.templateGroup = new TemplateGroupString(MainTemplateName, group, leftDelimiter, rightDelimiter)
+                                    this.ContentTemplateGroup = new TemplateGroupString(MainTemplateName, group, leftDelimiter, rightDelimiter)
                                     {
                                         ErrorManager = new ErrorManager(errorBuffer),
                                     };
 
                                     // Force a compilation of the templates to check for errors
-                                    this.templateGroup.GetInstanceOf(MainTemplateName);
+                                    this.ContentTemplateGroup.GetInstanceOf(MainTemplateName);
+                                    if (errorBuffer.Errors.Count > 0)
+                                    {
+                                        throw new TemplateException(errorBuffer.Errors);
+                                    }
+                                }
+                                else if (entry.FullName.Equals(StylesFileName))
+                                {
+                                    var errorBuffer = new ErrorBuffer();
+
+                                    var content = new OpenDocumentTemplateContent(file, leftDelimiter, rightDelimiter);
+                                    var stringTemplate = content.ToStringTemplate();
+                                    var group = MainTemplateName + "(" + arguments + ")" + stringTemplate;
+                                    this.StylesTemplateGroup = new TemplateGroupString(MainTemplateName, group, leftDelimiter, rightDelimiter)
+                                    {
+                                        ErrorManager = new ErrorManager(errorBuffer),
+                                    };
+
+                                    // Force a compilation of the templates to check for errors
+                                    this.StylesTemplateGroup.GetInstanceOf(MainTemplateName);
                                     if (errorBuffer.Errors.Count > 0)
                                     {
                                         throw new TemplateException(errorBuffer.Errors);
@@ -88,7 +111,7 @@ namespace Allors.Document.OpenDocument
         public byte[] Render(IDictionary<string, object> model, IDictionary<string, byte[]> imageByName = null)
         {
             var clonedFileByFileName = new Dictionary<string, byte[]>(this.fileByFileName);
-            var render = new OpenDocumentRendering(model, this.manifest, imageByName, this.templateGroup, clonedFileByFileName);
+            var render = new OpenDocumentRendering(model, this.manifest, imageByName, this.ContentTemplateGroup, this.StylesTemplateGroup, clonedFileByFileName);
             return render.Execute();
         }
     }
