@@ -14,11 +14,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Domain.Print.ProductQuoteModel
 {
     public class QuoteModel
     {
-        public QuoteModel(Quote quote)
+        public QuoteModel(Quote quote, Dictionary<string, byte[]> imageByImageName)
         {
             this.Description = quote.Description;
             this.Number = quote.QuoteNumber;
@@ -27,7 +29,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
             this.ValidThroughDate = quote.ValidThroughDate?.ToString("yyyy-MM-dd");
 
             // TODO: Where does the currency come from?
-            var currency = "€";
+            var currency = "â‚¬";
             this.SubTotal = quote.TotalBasePrice.ToString("0.00") + " " + currency;
             this.TotalExVat = quote.TotalExVat.ToString("0.00") + " " + currency;
             this.VatCharge = quote.VatRegime?.VatRate?.Rate.ToString("n2");
@@ -36,14 +38,23 @@ namespace Allors.Domain.Print.ProductQuoteModel
         }
 
         public string Description { get; }
+
         public string Number { get; }
+
         public string IssueDate { get; }
+
         public string ValidFromDate { get; }
+
         public string ValidThroughDate { get; }
+
         public string SubTotal { get; }
+
         public string TotalExVat { get; }
+
         public string VatCharge { get; }
+
         public string TotalVat { get; }
+
         public string TotalIncVat { get; }
     }
 }

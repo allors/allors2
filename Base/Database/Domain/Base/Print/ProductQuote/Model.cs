@@ -14,22 +14,24 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Domain.Print.ProductQuoteModel
 {
     using System.Linq;
 
     public class Model
     {
-        public Model(ProductQuote quote)
+        public Model(ProductQuote quote, Dictionary<string, byte[]> images)
         {
-            this.Quote = new QuoteModel(quote);
-            
-            this.Request = new RequestModel(quote.Request);
-            this.Issuer = new IssuerModel((Organisation)quote.Issuer);
-            this.BillTo = new BillToModel(quote);
-            this.Receiver = new ReceiverModel(quote);
-            
-            this.QuoteItems = quote.QuoteItems.Select(v => new QuoteItemModel(v)).ToArray();
+            this.Quote = new QuoteModel(quote, images);
+
+            this.Request = new RequestModel(quote, images);
+            this.Issuer = new IssuerModel(quote, images);
+            this.BillTo = new BillToModel(quote, images);
+            this.Receiver = new ReceiverModel(quote, images);
+
+            this.QuoteItems = quote.QuoteItems.Select(v => new QuoteItemModel(v, images)).ToArray();
 
         }
 
@@ -44,6 +46,5 @@ namespace Allors.Domain.Print.ProductQuoteModel
         public ReceiverModel Receiver { get; }
 
         public QuoteItemModel[] QuoteItems { get; }
-
     }
 }

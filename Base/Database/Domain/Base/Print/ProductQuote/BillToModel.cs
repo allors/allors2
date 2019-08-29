@@ -14,15 +14,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Domain.Print.ProductQuoteModel
 {
     public class BillToModel
     {
-        public BillToModel(ProductQuote quote)
+        public BillToModel(ProductQuote quote, Dictionary<string, byte[]> imageByImageName)
         {
-            var contactMechanisam = quote.FullfillContactMechanism;
-            
-            if (contactMechanisam is PostalAddress postalAddress)
+            var contactMechanism = quote.FullfillContactMechanism;
+
+            if (contactMechanism is PostalAddress postalAddress)
             {
                 this.Address = postalAddress.Address1;
                 if (!string.IsNullOrWhiteSpace(postalAddress.Address2))
@@ -41,7 +43,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
                 this.Country = postalAddress.Country?.Name;
             }
 
-            if (contactMechanisam is ElectronicAddress electronicAddress)
+            if (contactMechanism is ElectronicAddress electronicAddress)
             {
                 this.Address = electronicAddress.ElectronicAddressString;
             }

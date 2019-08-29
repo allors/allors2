@@ -82,13 +82,6 @@ namespace Allors.Domain
                 .Except(this.CurrentOrganisationContactRelationships)
                 .ToArray();
 
-            this.CurrentPartyContactMechanisms = this.PartyContactMechanisms
-                .Where(v => v.FromDate > this.strategy.Session.Now() || (v.ExistThroughDate && v.ThroughDate < this.strategy.Session.Now()))
-                .ToArray();
-
-            this.InactivePartyContactMechanisms = this.PartyContactMechanisms
-                    .Except(this.CurrentPartyContactMechanisms).ToArray();
-
             if (!this.ExistTimeSheetWhereWorker
                 && (this.ExistEmploymentsWhereEmployee
                     || this.ExistSubContractorRelationshipsWhereContractor

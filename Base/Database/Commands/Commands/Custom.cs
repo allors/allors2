@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="Custom.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 // 
@@ -227,7 +227,7 @@ namespace Commands
                     images.Add("Barcode", barcode);
                 }
 
-                var printModel = new Allors.Domain.Print.ProductQuoteModel.Model(quote);
+                var printModel = new Allors.Domain.Print.ProductQuoteModel.Model(quote, images);
                 quote.RenderPrintDocument(template, printModel, images);
 
                 session.Derive();

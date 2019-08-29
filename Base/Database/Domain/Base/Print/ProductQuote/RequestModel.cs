@@ -14,13 +14,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Domain.Print.ProductQuoteModel
 {
     public class RequestModel
     {
-        public RequestModel(Request request)
+        public RequestModel(Quote quote, Dictionary<string, byte[]> imageByImageName)
         {
-            this.Number = request?.RequestNumber;
+            this.Number = quote.Request?.RequestNumber;
         }
 
         public string Number { get; }

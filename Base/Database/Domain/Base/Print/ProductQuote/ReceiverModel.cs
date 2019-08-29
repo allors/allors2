@@ -14,12 +14,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Allors.Domain.Print.ProductQuoteModel
 {
     public class ReceiverModel
     {
-        public ReceiverModel(ProductQuote quote)
+        public ReceiverModel(ProductQuote quote, Dictionary<string, byte[]> imageByImageName)
         {
+            var session = quote.Strategy.Session;
+
             var receiver = quote.Receiver;
             var organisationReceiver = quote.Receiver as Organisation;
 
@@ -30,7 +35,19 @@ namespace Allors.Domain.Print.ProductQuoteModel
             }
 
             this.Contact = quote.ContactPerson?.PartyName;
+            this.ContactFirstName = quote.ContactPerson?.FirstName;
             this.Salutation = quote.ContactPerson?.Salutation?.Name;
+            this.ContactFunction = quote.ContactPerson?.Function;
+
+            if (quote.ContactPerson?.CurrentPartyContactMechanisms.FirstOrDefault(v => v.ContactMechanism.GetType().Name == typeof(EmailAddress).Name)?.ContactMechanism is EmailAddress emailAddress)
+            {
+                this.ContactEmail = emailAddress.ElectronicAddressString;
+            }
+
+            if (quote.ContactPerson?.CurrentPartyContactMechanisms.FirstOrDefault(v => v.ContactMechanism.GetType().Name == typeof(TelecommunicationsNumber).Name)?.ContactMechanism is TelecommunicationsNumber phone)
+            {
+                this.ContactPhone = phone.ToString();
+            }
         }
 
         public string Name { get; }
@@ -38,6 +55,14 @@ namespace Allors.Domain.Print.ProductQuoteModel
         public string Salutation { get; }
 
         public string Contact { get; }
+
+        public string ContactFirstName { get; }
+
+        public string ContactFunction { get; }
+
+        public string ContactEmail { get; }
+
+        public string ContactPhone { get; }
 
         public string TaxId { get; }
     }

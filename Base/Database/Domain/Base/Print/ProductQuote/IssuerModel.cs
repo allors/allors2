@@ -14,28 +14,30 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Domain.Print.ProductQuoteModel
 {
     using System.Linq;
 
     public class IssuerModel
     {
-        public IssuerModel(Organisation Issuer)
+        public IssuerModel(Quote quote, Dictionary<string, byte[]> imageByImageName)
         {
-            if (Issuer != null)
+            if (quote.Issuer is Organisation issuer)
             {
-                this.Name = Issuer.PartyName;
-                this.Email = Issuer.GeneralEmail?.ElectronicAddressString;
-                this.Website = Issuer.InternetAddress?.ElectronicAddressString;
-                this.TaxId = Issuer.TaxNumber;
+                this.Name = issuer.PartyName;
+                this.Email = issuer.GeneralEmail?.ElectronicAddressString;
+                this.Website = issuer.InternetAddress?.ElectronicAddressString;
+                this.TaxId = issuer.TaxNumber;
 
-                var phone = Issuer.BillingInquiriesPhone ?? Issuer.GeneralPhoneNumber;
+                var phone = issuer.BillingInquiriesPhone ?? issuer.GeneralPhoneNumber;
                 if (phone != null)
                 {
                     this.Telephone = $"{phone.CountryCode} {phone.AreaCode} {phone.ContactNumber}";
                 }
 
-                if (Issuer.GeneralCorrespondence is PostalAddress generalAddress)
+                if (issuer.GeneralCorrespondence is PostalAddress generalAddress)
                 {
                     this.Address = generalAddress.Address1;
                     if (!string.IsNullOrWhiteSpace(generalAddress.Address2))
@@ -54,7 +56,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
                     this.Country = generalAddress.Country?.Name;
                 }
 
-                var bankAccount = Issuer.BankAccounts.FirstOrDefault(v => v.ExistIban);
+                var bankAccount = issuer.BankAccounts.FirstOrDefault(v => v.ExistIban);
                 if (bankAccount != null)
                 {
                     this.IBAN = bankAccount.Iban;

@@ -469,6 +469,7 @@ namespace Allors
                 var productQuote = new ProductQuoteBuilder(this.session)
                     .WithIssuer(allors)
                     .WithReceiver(acme)
+                    .WithContactPerson(contact1)
                     .WithFullfillContactMechanism(acmePostalAddress)
                     .Build();
 

@@ -55,7 +55,7 @@ namespace Allors.Domain
                     images.Add("Barcode", barcode);
                 }
 
-                var printModel = new Print.ProductQuoteModel.Model(this);
+                var printModel = new Print.ProductQuoteModel.Model(this, images);
                 this.RenderPrintDocument(this.Issuer?.ProductQuoteTemplate, printModel, images);
 
                 this.PrintDocument.Media.FileName = $"{this.QuoteNumber}.odt";
