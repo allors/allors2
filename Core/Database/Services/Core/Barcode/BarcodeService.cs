@@ -8,9 +8,7 @@ namespace Allors.Services
     using System;
     using System.IO;
 
-    using SixLabors.ImageSharp;
-    using SixLabors.ImageSharp.PixelFormats;
-
+    using SkiaSharp;
     using ZXing.Common;
 
     public class BarcodeService : IBarcodeService
@@ -84,7 +82,7 @@ namespace Allors.Services
                     throw new ArgumentException();
             }
 
-            var barcodeWriter = new ZXing.ImageSharp.BarcodeWriter<Rgba32>
+            var barcodeWriter = new ZXing.SkiaSharp.BarcodeWriter
             {
                 Format = barcodeFormat,
             };
@@ -110,10 +108,17 @@ namespace Allors.Services
 
             using (var image = barcodeWriter.Write(content))
             {
-                using (var stream = new MemoryStream())
+                using (var memStream = new MemoryStream())
                 {
-                    image.SaveAsPng(stream);
-                    return stream.ToArray();
+                    using (var wstream = new SKManagedWStream(memStream))
+                    {
+                        if (image.Encode(wstream, SKEncodedImageFormat.Png, 100))
+                        {
+                            return memStream.ToArray();
+                        }
+
+                        return null;
+                    }
                 }
             }
         }
