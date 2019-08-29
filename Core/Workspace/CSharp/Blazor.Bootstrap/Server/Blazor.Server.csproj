@@ -12,6 +12,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="BlazorStrap" Version="1.0.0-preview8-02" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-preview8.19405.7" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.0.0-preview8.19405.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />

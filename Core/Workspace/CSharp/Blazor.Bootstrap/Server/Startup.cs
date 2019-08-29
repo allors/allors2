@@ -1,5 +1,6 @@
 namespace Blazor.Server
 {
+    using System;
     using System.Linq;
     using System.Net.Http;
     using System.Text;
@@ -30,7 +31,7 @@ namespace Blazor.Server
 
         public IConfiguration Configuration { get; }
 
-        public bool IsClientSideBlazor { get; } = true;
+        public bool IsClientSideBlazor { get; } = false;
 
         public bool IsServerSideBlazor => !this.IsClientSideBlazor;
 
@@ -106,6 +107,21 @@ namespace Blazor.Server
                     var workspace = new Allors.Workspace.Workspace(objectFactory);
                     return workspace;
                 });
+
+                // Server Side Blazor doesn't register HttpClient by default
+                if (!services.Any(x => x.ServiceType == typeof(HttpClient)))
+                {
+                    // Setup HttpClient for server side in a client side compatible fashion
+                    services.AddScoped<HttpClient>(s =>
+                    {
+                        // Creating the URI helper needs to wait until the JS Runtime is initialized, so defer it.
+                        IUriHelper uriHelper = s.GetRequiredService<IUriHelper>();
+                        return new HttpClient
+                        {
+                            BaseAddress = new Uri(uriHelper.GetBaseUri())
+                        };
+                    });
+                }
 
                 services.AddBootstrapCSS();
             }

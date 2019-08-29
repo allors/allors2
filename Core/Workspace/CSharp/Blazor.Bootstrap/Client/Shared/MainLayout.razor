@@ -3,7 +3,6 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IUriHelper UriHelper
 
-
 <div class="bg-light">
     <div class="container">
         <NavMenu />
@@ -18,18 +17,14 @@
 
 @code {
 
-    bool isServerSide;
 
     protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
         try
         {
-            await BootstrapCSS.SetBootstrapCSS("4.3.1");
+            await this.BootstrapCSS.SetBootstrapCSS("4.3.1");
         }
-        catch (Exception)
-        {
-            this.isServerSide = true;
-        }
+        catch { }
     }
 
     async System.Threading.Tasks.Task GoTo()
