@@ -193,7 +193,7 @@ namespace Commands
                 var administrator = new Users(session).GetUser("administrator");
                 session.SetUser(administrator);
 
-                var templateFilePath = "domain/templates/ProductQuote2.odt";
+                var templateFilePath = "domain/templates/ProductQuote.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
                 var prefix = string.Empty;
                 while (!templateFileInfo.Exists)

@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Allors.Meta;
 
 namespace Allors.Domain.Print.ProductQuoteModel
 {
@@ -32,14 +33,13 @@ namespace Allors.Domain.Print.ProductQuoteModel
             this.Product = serialisedItem?.Name ?? product?.Name;
             this.Description = serialisedItem?.Description ?? product?.Description;
             this.Details = item.Details;
-            this.Quantity = item.Quantity;
+            this.Quantity = item.Quantity.ToString("0");
             // TODO: Where does the currency come from?
             var currency = "€";
             this.Price = item.UnitPrice.ToString("0.00") + " " + currency;
 
-            // TODO: Make TotalPrice a derived field on ProductQuote
-            var totalPrice = item.Quantity * item.UnitPrice;
-            this.Amount = totalPrice.ToString("0.00") + " " + currency;
+            this.UnitAmount = item.UnitPrice.ToString("0.00") + " " + currency;
+            this.TotalAmount = item.TotalExVat.ToString("0.00") + " " + currency;
 
             this.Comment = item.Comment;
             this.ProductCategory = string.Join(", ", product.ProductCategoriesWhereProduct.Select(v => v.Name));
@@ -85,6 +85,13 @@ namespace Allors.Domain.Print.ProductQuoteModel
                 this.IdentificationNumber = serialisedItem.ItemNumber;
                 this.Year = serialisedItem.ManufacturingYear.ToString();
 
+                var hoursType = new SerialisedItemCharacteristicTypes(session).FindBy(M.SerialisedItemCharacteristicType.Name,"Hours");
+                var hoursCharacteristic = serialisedItem.SerialisedItemCharacteristics.FirstOrDefault(v => v.SerialisedItemCharacteristicType.Equals(hoursType));
+                if (hoursCharacteristic != null)
+                {
+                    this.Hours = $"{hoursCharacteristic.Value} {hoursType.UnitOfMeasure?.Abbreviation}";
+                }
+
                 if (serialisedItem.ExistPrimaryPhoto)
                 {
                     this.PrimaryPhotoName = $"{item.Id}_primaryPhoto";
@@ -119,11 +126,13 @@ namespace Allors.Domain.Print.ProductQuoteModel
 
         public string Details { get; }
 
-        public decimal Quantity { get; }
+        public string Quantity { get; }
 
         public string Price { get; }
 
-        public string Amount { get; }
+        public string UnitAmount { get; }
+
+        public string TotalAmount { get; }
 
         public string Comment { get; }
 
@@ -136,5 +145,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
         public string ModelName { get; }
 
         public string Year { get; }
+
+        public string Hours { get; }
     }
 }
