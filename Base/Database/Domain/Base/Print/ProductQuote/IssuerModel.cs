@@ -31,13 +31,13 @@ namespace Allors.Domain.Print.ProductQuoteModel
                 this.Website = issuer.InternetAddress?.ElectronicAddressString;
                 this.TaxId = issuer.TaxNumber;
 
-                var phoneNumbers = issuer?.CurrentPartyContactMechanisms.Where(v => v.ContactMechanism.GetType().Name == typeof(TelecommunicationsNumber).Name).Select(v => v.ContactMechanism) as TelecommunicationsNumber[];
-                if (phoneNumbers != null && phoneNumbers.Length > 0)
+                var phoneNumbers = issuer?.CurrentPartyContactMechanisms.Where(v => v.ContactMechanism.GetType().Name == typeof(TelecommunicationsNumber).Name).Select(v => v.ContactMechanism).ToArray();
+                if (phoneNumbers.Length > 0)
                 {
                     this.Telephone = phoneNumbers[0].ToString();
                 }
 
-                if (phoneNumbers != null && phoneNumbers.Length > 1)
+                if (phoneNumbers.Length > 1)
                 {
                     this.Telephone2 = phoneNumbers[1].ToString();
                 }
