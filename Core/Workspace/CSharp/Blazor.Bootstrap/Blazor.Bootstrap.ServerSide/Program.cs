@@ -1,4 +1,4 @@
-namespace Blazor.Server
+namespace Blazor.Bootstrap.ServerSide
 {
     using System;
     using System.IO;

@@ -1,37 +1,100 @@
 @inherits LayoutComponentBase
+@implements IDisposable
+@using Task = System.Threading.Tasks.Task
+@using Microsoft.AspNetCore.Components
 @inject AllorsAuthenticationStateProvider AuthenticationStateProvider
 @inject IUriHelper UriHelper
+@inject IJSRuntime Js
 
-<MdcDrawer @ref="@sidebar" @ref:suppressField>
-    <Title><img src="images/allors.svg" style="width:100px;" /></Title>
-    <Subtitle>Apps with Blazor</Subtitle>
-    <Content>
-        <NavMenu/>
-    </Content>
-</MdcDrawer>
+<MatAppBar Style="z-index: 100;" Class="mat">
+    <MatAppBarRow>
+        <MatAppBarSection>
+            <MatIconButton Icon="menu" OnClick="@((e) => MenuButtonClicked())"></MatIconButton>
+            <MatAppBarTitle>MatBlazor - Material Design components for Blazor and Razor Components</MatAppBarTitle>
+        </MatAppBarSection>
+        <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+            <MatIconButton Link="http://samprof.com" Target="_blank">
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
+            </MatIconButton>
+            <MatIconButton Link="https://github.com/SamProf/MatBlazor">
+                <i class="fa fa-github" aria-hidden="true"></i>
+            </MatIconButton>
+        </MatAppBarSection>
+    </MatAppBarRow>
+</MatAppBar>
 
-<div class="mdc-drawer-app-content">
-    <MdcTopAppBar Title="Razor Components Material Design" OnNavClicked="@(() => sidebar.Toggle())" ScrollTarget="#main-content">
-        <span class="mdc-top-app-bar-content">
-            <i class="material-icons">account_circle</i>
-        </span>
-    </MdcTopAppBar>
+<MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="mat">
 
-    <main class="main-content" id="main-content">
-        <div class="mdc-top-app-bar--fixed-adjust">
-            <div class="mdc-card main-content-card">
-                @Body
-            </div>
-        </div>
-    </main>
-</div>
+    <MatHidden Breakpoint="@MatBreakpoint.SM" Direction="@MatHiddenDirection.Up" HiddenChanged="@ModelDrawerHiddenChanged">
+        <ChildContent>
+            <MatDrawer @bind-Opened="@_navMenuOpened" Mode="@MatDrawerMode.Modal">
+                <MatAppBarAdjust></MatAppBarAdjust>
+                <NavMenu />
+            </MatDrawer>
+        </ChildContent>
+        <ElseContent>
+            <MatDrawer @bind-Opened="@_navMenuOpened" Mode="@MatDrawerMode.Dismissible">
+                <MatAppBarAdjust></MatAppBarAdjust>
+                <NavMenu />
+            </MatDrawer>
+        </ElseContent>
+    </MatHidden>
 
-@code {
-    MdcDrawer sidebar;
 
-    async System.Threading.Tasks.Task GoTo()
+    <MatDrawerContent Style="padding-left: 25px; padding-right: 25px;">
+        <MatAppBarAdjust></MatAppBarAdjust>
+        @Body
+    </MatDrawerContent>
+
+</MatDrawerContainer>
+
+<MatSnackbar @bind-IsOpen="@lazySnackbarIsOpen">
+    <MatSnackbarContent>If you like MatBlazor, please put a star on GitHub.</MatSnackbarContent>
+    <MatSnackbarActions>
+        @* <MatButton Raised="true">Star</MatButton> *@
+        <MatIconButton Icon="@MatIconNames.Stars" Link="https://github.com/BlazorComponents/MatBlazor" style="color: white;" target="_blank"></MatIconButton>
+    </MatSnackbarActions>
+
+</MatSnackbar>
+
+@functions {
+
+    BaseMatMenu Menu;
+
+    protected void ModelDrawerHiddenChanged(bool hidden)
+    {
+        if (!hidden)
+        {
+            _navMenuOpened = false;
+        }
+    }
+
+    bool lazySnackbarIsOpen = false;
+
+    bool _navMenuOpened = true;
+
+    void MenuButtonClicked()
+    {
+        _navMenuOpened = !_navMenuOpened;
+        this.StateHasChanged();
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        await Task.Delay(TimeSpan.FromSeconds(5))
+            .ContinueWith((_) => { this.lazySnackbarIsOpen = true; });
+    }
+
+    public void Dispose()
+    {
+    }
+
+    async Task GoTo()
     {
         await this.AuthenticationStateProvider.LogIn("administrator", null);
         this.UriHelper.NavigateTo("/organisation/edit/2577");
     }
 }
+

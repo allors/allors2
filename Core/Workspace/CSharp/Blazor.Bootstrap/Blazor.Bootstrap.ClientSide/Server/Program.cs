@@ -1,5 +1,5 @@
-namespace Blazor.Server
-{
+namespace Blazor.Bootstrap.ClientSide.Server
+{ 
     using System;
     using System.IO;
     using Allors.Services;

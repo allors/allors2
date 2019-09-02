@@ -5,13 +5,13 @@
     <OutputType>Library</OutputType>
     <LangVersion>7.3</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <RootNamespace>Allors.Blazor.Material</RootNamespace>
-    <AssemblyName>Allors.Blazor.Material</AssemblyName>
+    <RootNamespace>Allors.Blazor.Bootstrap</RootNamespace>
+    <AssemblyName>Allors.Blazor.Bootstrap</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MatBlazor" Version="1.6.3" />
+    <PackageReference Include="BlazorStrap" Version="1.0.0-preview8-02" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.0.0-preview8.19405.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.0.0-preview8.19405.7" />
   </ItemGroup>
