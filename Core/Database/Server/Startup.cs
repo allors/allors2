@@ -11,8 +11,6 @@ namespace Allors.Server
     using Allors.Meta;
     using Allors.Services;
     using Identity;
-    using Identity.Models;
-    using Identity.Services;
     using JSNLog;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
@@ -27,6 +25,7 @@ namespace Allors.Server
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
+    using ObjectFactory = Allors.ObjectFactory;
 
     public class Startup
     {
@@ -50,13 +49,16 @@ namespace Allors.Server
             // var listDerivationService = new DerivationService(new DerivationConfig { DerivationLogFunc = () => new CustomListDerivationLog() });
             // services.AddSingleton<IDerivationService>(listDerivationService);  // Set object ID's for breakpoints in CustomListDerivationLog above
 
-            // Identity
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .UseAllors()
-                .AddDefaultTokenProviders();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
 
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
+            // Identity
+            services.AddDefaultIdentity<IdentityUser>()
+                .UseAllors();
 
             // Enable Dual Authentication
             services.AddAuthentication(option =>
@@ -117,13 +119,11 @@ namespace Allors.Server
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // Allors
-            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
-
             var database = new Database(
                 app.ApplicationServices,
                 new Configuration
                 {
-                    ObjectFactory = objectFactory,
+                    ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
                     ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
                     CommandTimeout = 600,
                 });
@@ -134,11 +134,11 @@ namespace Allors.Server
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
             }
 
             var jsnlogConfiguration = new JsnlogConfiguration
@@ -152,7 +152,9 @@ namespace Allors.Server
 
             app.UseJSNLog(new LoggingAdapter(loggerFactory), jsnlogConfiguration);
 
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseAuthentication();
 
@@ -186,9 +188,9 @@ namespace Allors.Server
             app.UseResponseCaching();
 
             app.UseMvc(routes =>
-                {
-                    routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                });
+            {
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
         }
 
         private class CustomListDerivationLog : Allors.Domain.Logging.ListDerivationLog

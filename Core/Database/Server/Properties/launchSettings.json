@@ -17,7 +17,7 @@
     },
     "Kestrel": {
       "commandName": "Project",
-      "launchUrl": "api/values",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
