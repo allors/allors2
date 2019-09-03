@@ -3,6 +3,7 @@ namespace Blazor.Bootstrap.ClientSide
     using System;
     using System.Net.Http;
     using Allors.Blazor;
+    using Allors.Blazor.Bootstrap;
     using Allors.Workspace;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;

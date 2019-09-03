@@ -1,4 +1,4 @@
-﻿// <copyright file="TestAuthenticationController.cs" company="Allors bvba">
+// <copyright file="TestAuthenticationController.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,14 +16,14 @@ namespace Allors.Server
 
     public class TestAuthenticationController : Controller
     {
-        public TestAuthenticationController(UserManager<ApplicationUser> userManager, ILogger<AuthenticationController> logger, IConfiguration config)
+        public TestAuthenticationController(UserManager<IdentityUser> userManager, ILogger<AuthenticationController> logger, IConfiguration config)
         {
             this.UserManager = userManager;
             this.Logger = logger;
             this.Configuration = config;
         }
 
-        public UserManager<ApplicationUser> UserManager { get; }
+        public UserManager<IdentityUser> UserManager { get; }
 
         public ILogger Logger { get; }
 

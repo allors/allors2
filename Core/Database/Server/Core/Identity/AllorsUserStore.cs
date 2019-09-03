@@ -1,4 +1,4 @@
-﻿// <copyright file="AllorsUserStore.cs" company="Allors bvba">
+// <copyright file="AllorsUserStore.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,16 +16,14 @@ namespace Identity
     using Microsoft.AspNetCore.Identity;
     using Task = System.Threading.Tasks.Task;
 
-    public class AllorsUserStore<TUser> : IUserStore<TUser>,
-                                          IUserPasswordStore<TUser>
-                                        // IUserLoginStore<TUser>
-                                        // IUserClaimStore<TUser>,
-                                        // IUserSecurityStampStore<TUser>,
-                                        // IUserTwoFactorStore<TUser>,
-                                        // IUserEmailStore<TUser>,
-                                        // IUserLockoutStore<TUser>,
-                                        // IUserPhoneNumberStore<TUser>
-                                        where TUser : ApplicationUser
+    public class AllorsUserStore : IUserPasswordStore<IdentityUser>
+                                        // IUserLoginStore<IdentityUser>
+                                        // IUserClaimStore<IdentityUser>,
+                                        // IUserSecurityStampStore<IdentityUser>,
+                                        // IUserTwoFactorStore<IdentityUser>,
+                                        // IUserEmailStore<IdentityUser>,
+                                        // IUserLockoutStore<IdentityUser>,
+                                        // IUserPhoneNumberStore<IdentityUser>
     {
         private readonly IDatabase database;
 
@@ -36,37 +34,37 @@ namespace Identity
         {
         }
 
-        public async Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
+        public async Task<string> GetUserIdAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return user.Id;
         }
 
-        public async Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken)
+        public async Task<string> GetUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return user.UserName;
         }
 
-        public async Task SetUserNameAsync(TUser user, string userName, CancellationToken cancellationToken)
+        public async Task SetUserNameAsync(IdentityUser user, string userName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.UserName = userName;
         }
 
-        public async Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken cancellationToken)
+        public async Task<string> GetNormalizedUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return user.NormalizedUserName;
         }
 
-        public async Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken)
+        public async Task SetNormalizedUserNameAsync(IdentityUser user, string normalizedName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.NormalizedUserName = normalizedName;
         }
 
-        public async Task<IdentityResult> CreateAsync(TUser identityUser, CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateAsync(IdentityUser identityUser, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             using (var session = this.database.CreateSession())
@@ -98,7 +96,7 @@ namespace Identity
             }
         }
 
-        public async Task<IdentityResult> UpdateAsync(TUser identityUser, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateAsync(IdentityUser identityUser, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             using (var session = this.database.CreateSession())
@@ -124,7 +122,7 @@ namespace Identity
             }
         }
 
-        public async Task<IdentityResult> DeleteAsync(TUser identityUser, CancellationToken cancellationToken)
+        public async Task<IdentityResult> DeleteAsync(IdentityUser identityUser, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             using (var session = this.database.CreateSession())
@@ -150,7 +148,7 @@ namespace Identity
             }
         }
 
-        public async Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public async Task<IdentityUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             using (var session = this.database.CreateSession())
@@ -159,7 +157,7 @@ namespace Identity
 
                 if (user != null)
                 {
-                    var identityUser = new ApplicationUser
+                    var identityUser = new IdentityUser
                     {
                         Id = user.Id.ToString(),
                         UserName = user.UserName,
@@ -168,14 +166,14 @@ namespace Identity
                         EmailConfirmed = user.UserEmailConfirmed ?? false,
                     };
 
-                    return (TUser)identityUser;
+                    return (IdentityUser)identityUser;
                 }
 
                 return null;
             }
         }
 
-        public async Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        public async Task<IdentityUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             using (var session = this.database.CreateSession())
@@ -184,7 +182,7 @@ namespace Identity
 
                 if (user != null)
                 {
-                    var identityUser = new ApplicationUser
+                    var identityUser = new IdentityUser
                     {
                         Id = user.Id.ToString(),
                         UserName = user.UserName,
@@ -193,7 +191,7 @@ namespace Identity
                         EmailConfirmed = user.UserEmailConfirmed ?? false,
                     };
 
-                    return (TUser)identityUser;
+                    return (IdentityUser)identityUser;
                 }
 
                 return null;
@@ -202,19 +200,19 @@ namespace Identity
         #endregion
 
         #region IUserPasswordStore
-        public async Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
+        public async Task SetPasswordHashAsync(IdentityUser user, string passwordHash, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             user.PasswordHash = passwordHash;
         }
 
-        public async Task<string> GetPasswordHashAsync(TUser user, CancellationToken cancellationToken)
+        public async Task<string> GetPasswordHashAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return user.PasswordHash;
         }
 
-        public async Task<bool> HasPasswordAsync(TUser user, CancellationToken cancellationToken)
+        public async Task<bool> HasPasswordAsync(IdentityUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return string.IsNullOrWhiteSpace(user.PasswordHash);

@@ -78,7 +78,7 @@ namespace Allors.Server
             // services.AddSingleton<IDerivationService>(listDerivationService);  // Set object ID's for breakpoints in CustomListDerivationLog above
 
             // Identity
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .UseAllors()
                 .AddDefaultTokenProviders();
 

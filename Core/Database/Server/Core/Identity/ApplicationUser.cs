@@ -1,4 +1,4 @@
-﻿// <copyright file="ApplicationUser.cs" company="Allors bvba">
+// <copyright file="IdentityUserExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -14,7 +14,7 @@ namespace Identity.Models
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
 
-    public class ApplicationUser : IdentityUser
+    public static class IdentityUserExtensions
     {
         private const string TokensKeyKey = "Tokens:Key";
 
@@ -26,28 +26,12 @@ namespace Identity.Models
 
         private static readonly TimeSpan DefaultExpiration = new TimeSpan(30, 0, 0, 0);
 
-        public string Id { get; internal set; }
-
-        public string UserName { get; set; }
-
-        public string NormalizedUserName { get; set; }
-
-        public string PasswordHash { get; set; }
-
-        public string Email { get; set; }
-
-        public bool EmailConfirmed { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        public bool TwoFactorEnabled { get; set; }
-
-        public string CreateToken(IConfiguration configuration)
+        public static string CreateToken(this IdentityUser @this, IConfiguration configuration)
         {
             var claims = new[]
                              {
-                                 new Claim(ClaimTypes.Name, this.UserName), // Required for User.Identity.Name
-                                 new Claim(JwtRegisteredClaimNames.Sub, this.UserName),
+                                 new Claim(ClaimTypes.Name, @this.UserName), // Required for User.Identity.Name
+                                 new Claim(JwtRegisteredClaimNames.Sub, @this.UserName),
                                  new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                              };
 

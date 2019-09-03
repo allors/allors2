@@ -1,4 +1,4 @@
-﻿// <copyright file="AuthenticationController.cs" company="Allors bvba">
+// <copyright file="AuthenticationController.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -19,7 +19,7 @@ namespace Allors.Server
 
     public class AuthenticationController : Controller
     {
-        public AuthenticationController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<AuthenticationController> logger, IConfiguration config, ISessionService sessionService)
+        public AuthenticationController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<AuthenticationController> logger, IConfiguration config, ISessionService sessionService)
         {
             this.UserManager = userManager;
             this.SignInManager = signInManager;
@@ -28,9 +28,9 @@ namespace Allors.Server
             this.SessionService = sessionService;
         }
 
-        public UserManager<ApplicationUser> UserManager { get; }
+        public UserManager<IdentityUser> UserManager { get; }
 
-        public SignInManager<ApplicationUser> SignInManager { get; }
+        public SignInManager<IdentityUser> SignInManager { get; }
 
         public ILogger Logger { get; }
 

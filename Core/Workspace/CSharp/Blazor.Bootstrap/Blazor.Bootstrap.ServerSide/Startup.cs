@@ -36,14 +36,12 @@ namespace Blazor.Bootstrap.ServerSide
             services.AddSingleton<IPolicyService, PolicyService>();
             services.AddSingleton<IExtentService, ExtentService>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .UseAllors()
-                .AddDefaultUI()
-                .AddDefaultTokenProviders();
+            services.AddDefaultIdentity<IdentityUser>()
+               .UseAllors();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddScoped<AuthenticationStateProvider, RevalidatingAuthenticationStateProvider<ApplicationUser>>();
+            services.AddScoped<AuthenticationStateProvider, RevalidatingAuthenticationStateProvider<IdentityUser>>();
 
             services.AddSingleton<Allors.Workspace.Local.LocalDatabase>();
             services.AddSingleton<Allors.Workspace.IDatabase>(provider => provider.GetRequiredService<Allors.Workspace.Local.LocalDatabase>());
