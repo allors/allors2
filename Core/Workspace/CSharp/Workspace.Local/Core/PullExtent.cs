@@ -4,7 +4,7 @@
 // </copyright>
 // <summary>Defines the ISessionExtension type.</summary>
 
-namespace Allors.Server
+namespace Allors.Api
 {
     using System;
     using System.Collections.Generic;

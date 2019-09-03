@@ -1,0 +1,26 @@
+@page
+@model PeopleModel
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Middle Name</th>
+        <th>Last Name</th>
+        <th>User Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var person in Model.People)
+    {
+        <tr>
+            <td>@person.FirstName</td>
+            <td>@person.MiddleName</td>
+            <td>@person.LastName</td>
+            <td>@person.UserName</td>
+            <td><a href="/person/edit/@person.Id">Edit</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

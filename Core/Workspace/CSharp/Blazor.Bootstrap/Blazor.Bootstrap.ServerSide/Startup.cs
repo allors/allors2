@@ -37,7 +37,7 @@ namespace Blazor.Bootstrap.ServerSide
             services.AddSingleton<IExtentService, ExtentService>();
 
             services.AddDefaultIdentity<IdentityUser>()
-               .UseAllors();
+               .AddAllorsStores();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
@@ -73,19 +73,14 @@ namespace Blazor.Bootstrap.ServerSide
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
-
-            var database = new Database(
-                app.ApplicationServices,
-                new Configuration
-                {
-                    ObjectFactory = objectFactory,
-                    ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
-                    CommandTimeout = 600,
-                });
-
-            var databaseService = app.ApplicationServices.GetRequiredService<IDatabaseService>();
-            databaseService.Database = database;
+            app.ApplicationServices.GetRequiredService<IDatabaseService>().Database = new Database(
+                 app.ApplicationServices,
+                 new Configuration
+                 {
+                     ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User)),
+                     ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
+                     CommandTimeout = 600,
+                 });
 
             if (env.IsDevelopment())
             {

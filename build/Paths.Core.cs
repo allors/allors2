@@ -6,10 +6,10 @@ public partial class Paths
     public AbsolutePath CoreRepositoryDomainRepository => Core / "Repository/Domain/Repository.csproj";
     public AbsolutePath CoreDatabaseMetaGenerated => Core / "Database/Meta/generated";
     public AbsolutePath CoreDatabaseGenerate => Core / "Database/Generate/Generate.csproj";
-    public AbsolutePath CoreDatabaseServer => Core / "Database/Server";
+    public AbsolutePath CoreDatabaseApi => Core / "Database/Api";
     public AbsolutePath CoreDatabaseCommands => Core / "Database/Commands";
     public AbsolutePath CoreDatabaseDomainTests => Core / "Database/Domain.Tests/Domain.Tests.csproj";
-    public AbsolutePath CoreDatabaseServerTests => Core / "Database/Server.Tests/Server.Tests.csproj";
+    public AbsolutePath CoreDatabaseApiTests => Core / "Database/Api.Tests/Api.Tests.csproj";
 
     public AbsolutePath CoreWorkspaceTypescriptDomain => Core / "Workspace/Typescript/Domain";
     public AbsolutePath CoreWorkspaceTypescriptPromise => Core / "Workspace/Typescript/Promise";

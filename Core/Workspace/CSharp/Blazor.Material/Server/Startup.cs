@@ -38,9 +38,8 @@ namespace Blazor.Server
             services.AddSingleton<IExtentService, ExtentService>();
 
             // Identity
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .UseAllors()
-                .AddDefaultTokenProviders();
+            services.AddDefaultIdentity<IdentityUser>()
+                     .AddAllorsStores();
 
             // Enable Dual Authentication
             services.AddAuthentication(option =>

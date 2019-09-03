@@ -41,19 +41,19 @@ partial class Build
             DotNetPublish(dotNetPublishSettings);
         });
 
-    Target CorePublishServer => _ => _
+    Target CorePublishApi => _ => _
         .DependsOn(CoreGenerate)
         .Executes(() =>
         {
             var dotNetPublishSettings = new DotNetPublishSettings()
-                .SetWorkingDirectory(Paths.CoreDatabaseServer)
-                .SetOutput(Paths.ArtifactsCoreServer);
+                .SetWorkingDirectory(Paths.CoreDatabaseApi)
+                .SetOutput(Paths.ArtifactsCoreApi);
             DotNetPublish(dotNetPublishSettings);
         });
 
-    Target CoreDatabaseTestServer => _ => _
+    Target CoreDatabaseTestApi => _ => _
         .DependsOn(CoreGenerate)
-        .DependsOn(CorePublishServer)
+        .DependsOn(CorePublishApi)
         .DependsOn(CorePublishCommands)
         .Executes(async () =>
         {
@@ -61,12 +61,12 @@ partial class Build
             {
                 sqlServer.Restart();
                 sqlServer.Populate(Paths.ArtifactsCoreCommands);
-                using (var server = new Server(Paths.ArtifactsCoreServer))
+                using (var server = new Api(Paths.ArtifactsCoreApi))
                 {
                     await server.Ready();
                     DotNetTest(s => s
-                        .SetProjectFile(Paths.CoreDatabaseServerTests)
-                        .SetLogger("trx;LogFileName=CoreDatabaseServer.trx")
+                        .SetProjectFile(Paths.CoreDatabaseApiTests)
+                        .SetLogger("trx;LogFileName=CoreDatabaseApi.trx")
                         .SetResultsDirectory(Paths.ArtifactsTests));
                 }
             }
@@ -118,7 +118,7 @@ partial class Build
 
     Target CoreWorkspaceTypescriptPromise => _ => _
         .DependsOn(CoreWorkspaceSetup)
-        .DependsOn(CorePublishServer)
+        .DependsOn(CorePublishApi)
         .DependsOn(CorePublishCommands)
         .DependsOn(EnsureDirectories)
         .Executes(async () =>
@@ -127,7 +127,7 @@ partial class Build
             {
                 sqlServer.Restart();
                 sqlServer.Populate(Paths.ArtifactsCoreCommands);
-                using (var server = new Server(Paths.ArtifactsCoreServer))
+                using (var server = new Api(Paths.ArtifactsCoreApi))
                 {
                     await server.Ready();
                     NpmRun(s => s
@@ -141,7 +141,7 @@ partial class Build
 
     Target CoreWorkspaceTypescriptAngular => _ => _
         .DependsOn(CoreWorkspaceSetup)
-        .DependsOn(CorePublishServer)
+        .DependsOn(CorePublishApi)
         .DependsOn(CorePublishCommands)
         .DependsOn(EnsureDirectories)
         .Executes(async () =>
@@ -150,7 +150,7 @@ partial class Build
             {
                 sqlServer.Restart();
                 sqlServer.Populate(Paths.ArtifactsCoreCommands);
-                using (var server = new Server(Paths.ArtifactsCoreServer))
+                using (var server = new Api(Paths.ArtifactsCoreApi))
                 {
                     await server.Ready();
                     NpmRun(s => s
@@ -166,7 +166,7 @@ partial class Build
 
     Target CoreWorkspaceTypescriptMaterial => _ => _
         .DependsOn(CoreWorkspaceSetup)
-        .DependsOn(CorePublishServer)
+        .DependsOn(CorePublishApi)
         .DependsOn(CorePublishCommands)
         .Executes(async () =>
         {
@@ -174,7 +174,7 @@ partial class Build
             {
                 sqlServer.Restart();
                 sqlServer.Populate(Paths.ArtifactsCoreCommands);
-                using (var server = new Server(Paths.ArtifactsCoreServer))
+                using (var server = new Api(Paths.ArtifactsCoreApi))
                 {
                     await server.Ready();
                     NpmRun(s => s
@@ -190,7 +190,7 @@ partial class Build
 
     Target CoreWorkspaceTypescriptMaterialTests => _ => _
         .DependsOn(CoreWorkspaceAutotest)
-        .DependsOn(CorePublishServer)
+        .DependsOn(CorePublishApi)
         .DependsOn(CorePublishCommands)
         .Executes(async () =>
         {
@@ -198,7 +198,7 @@ partial class Build
             {
                 sqlServer.Restart();
                 sqlServer.Populate(Paths.ArtifactsCoreCommands);
-                using (var server = new Server(Paths.ArtifactsCoreServer))
+                using (var server = new Api(Paths.ArtifactsCoreApi))
                 {
                     using (var angular = new Angular(Paths.CoreWorkspaceTypescriptMaterial))
                     {
@@ -215,7 +215,7 @@ partial class Build
 
     Target CoreDatabaseTest => _ => _
         .DependsOn(CoreDatabaseTestDomain)
-        .DependsOn(CoreDatabaseTestServer);
+        .DependsOn(CoreDatabaseTestApi);
 
     Target CoreWorkspaceTest => _ => _
         .DependsOn(CoreWorkspaceTypescriptDomain)

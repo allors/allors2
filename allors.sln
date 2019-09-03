@@ -65,9 +65,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Core\Database\Meta\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources", "Core\Database\Resources\Resources.csproj", "{15CCBE65-02A9-4D34-812A-A3C8DE54F6D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Core\Database\Server\Server.csproj", "{C8D4E18C-9EE0-4F18-A37B-E18B2834357D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Core\Database\Api\Api.csproj", "{C8D4E18C-9EE0-4F18-A37B-E18B2834357D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Tests", "Core\Database\Server.Tests\Server.Tests.csproj", "{5D0E75D8-BDCC-4ACC-90D4-AA867DB4246D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Tests", "Core\Database\Api.Tests\Api.Tests.csproj", "{5D0E75D8-BDCC-4ACC-90D4-AA867DB4246D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Core\Database\Services\Services.csproj", "{F186943D-2361-42CA-895A-B172C25FE664}"
 EndProject
@@ -111,7 +111,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Base\Database\Meta\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources", "Base\Database\Resources\Resources.csproj", "{91AE008F-0205-4997-80A5-9529417F01E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Base\Database\Server\Server.csproj", "{C0C2516C-E398-410A-8BF3-A5464AD809CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Base\Database\Api\Api.csproj", "{C0C2516C-E398-410A-8BF3-A5464AD809CA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Base\Database\Services\Services.csproj", "{623F1736-0F72-4424-8CBE-D9828717A1C7}"
 EndProject
@@ -148,6 +148,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Local", "Core\Workspace\CSharp\Workspace.Local\Workspace.Local.csproj", "{170303DE-F712-4363-AFCF-C3DAE3EFA082}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Local", "Base\Workspace\CSharp\Workspace.Local\Workspace.Local.csproj", "{36803A0C-F72B-42C6-8B32-0AF5996150EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Razor", "Core\Workspace\CSharp\Razor\Razor.csproj", "{30D543D4-EA5B-4DCC-A1D2-8FD75ED966C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -371,6 +373,10 @@ Global
 		{36803A0C-F72B-42C6-8B32-0AF5996150EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36803A0C-F72B-42C6-8B32-0AF5996150EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36803A0C-F72B-42C6-8B32-0AF5996150EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30D543D4-EA5B-4DCC-A1D2-8FD75ED966C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30D543D4-EA5B-4DCC-A1D2-8FD75ED966C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30D543D4-EA5B-4DCC-A1D2-8FD75ED966C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30D543D4-EA5B-4DCC-A1D2-8FD75ED966C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -446,6 +452,7 @@ Global
 		{6097814D-9245-4CB2-9458-9EF8F1458BB8} = {3B8D3499-3717-4D22-9038-03FFB26F96B0}
 		{170303DE-F712-4363-AFCF-C3DAE3EFA082} = {50A1B7BA-85A8-4AD0-B90C-829A756CC0E5}
 		{36803A0C-F72B-42C6-8B32-0AF5996150EF} = {C1398D8A-D1F2-4726-8160-91701961E78B}
+		{30D543D4-EA5B-4DCC-A1D2-8FD75ED966C6} = {50A1B7BA-85A8-4AD0-B90C-829A756CC0E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00D78C3D-8536-4549-B1EE-C19BD0C50387}

@@ -14,7 +14,7 @@ namespace Tests
 
     using Xunit;
 
-    [Collection("Server")]
+    [Collection("Api")]
     public class PreparedExtentTests : DomainTest
     {
         [Fact]
