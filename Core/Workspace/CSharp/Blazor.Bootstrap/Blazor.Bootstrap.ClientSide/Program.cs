@@ -1,7 +1,7 @@
-namespace Blazor.Bootstrap.ClientSide.Client
-{
-    using Microsoft.AspNetCore.Blazor.Hosting;
+﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
+namespace Blazor.Bootstrap.ClientSide
+{
     public class Program
     {
         public static void Main(string[] args)

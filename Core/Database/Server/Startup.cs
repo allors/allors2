@@ -93,11 +93,11 @@ namespace Allors.Server
             services.AddCors(options =>
             {
                 options.AddPolicy(
-                    "AllowAngular",
+                    "AllorsSpa",
                     builder =>
                     {
                         builder
-                            .WithOrigins("http://localhost:4200", "http://localhost:9876")
+                            .WithOrigins("http://localhost:4000", "http://localhost:4200", "http://localhost:9876")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
@@ -109,7 +109,7 @@ namespace Allors.Server
 
             services.Configure<MvcOptions>(options =>
                 {
-                    options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAngular"));
+                    options.Filters.Add(new CorsAuthorizationFilterFactory("AllorsSpa"));
                 });
         }
 
@@ -156,7 +156,7 @@ namespace Allors.Server
 
             app.UseAuthentication();
 
-            app.UseCors("AllowAngular");
+            app.UseCors("AllorsSpa");
 
             app.UseExceptionHandler(appBuilder =>
                 {

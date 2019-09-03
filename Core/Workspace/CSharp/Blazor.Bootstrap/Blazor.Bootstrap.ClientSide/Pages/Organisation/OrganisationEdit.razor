@@ -1,0 +1,76 @@
+@page "/organisation/edit/{id}"
+@attribute [Authorize]
+@inject IDatabase Database
+@inject Workspace Workspace
+@inject IUriHelper UriHelper
+
+@if (organisation == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="@organisation" OnValidSubmit="@HandleValidSubmit">
+        <AllorsValidator />
+        <ValidationSummary />
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    @*<AllorsInput RoleType="@M.Organisation.Name" />*@
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <button @onclick="HandleValidSubmit">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit">Submit</button>
+    </EditForm>
+}
+
+@code {
+    Context Context;
+
+    [Parameter]
+    public string id { get; set; }
+
+    Organisation organisation;
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        this.Context = new Context(this.Database, this.Workspace);
+
+        var pull = new Pull
+        {
+            ObjectId = id,
+            Results = new[]
+            {
+                new Allors.Workspace.Data.Result
+                {
+                   Fetch = new Fetch
+                   {
+                       Include = new Tree(M.Organisation.Class)
+                       .Add(M.Organisation.Owner)
+                    }
+                }
+            }
+        };
+
+        var result = await this.Context.Load(pull);
+
+        this.organisation = result.GetObject<Organisation>("Organisation");
+    }
+
+    public async System.Threading.Tasks.Task HandleValidSubmit()
+    {
+        var response = await this.Context.Save();
+        if (!response.HasErrors)
+        {
+            this.UriHelper.NavigateTo("/organisation/list");
+        }
+    }
+}

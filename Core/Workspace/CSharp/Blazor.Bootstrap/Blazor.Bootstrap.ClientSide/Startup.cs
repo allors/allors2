@@ -1,8 +1,8 @@
-namespace Blazor.Bootstrap.ClientSide.Client
+namespace Blazor.Bootstrap.ClientSide
 {
+    using System;
     using System.Net.Http;
     using Allors.Blazor;
-    using Allors.Blazor.Bootstrap;
     using Allors.Workspace;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
@@ -14,11 +14,14 @@ namespace Blazor.Bootstrap.ClientSide.Client
 
     public class Startup
     {
+        private const string ServerUrl = "http://localhost:5000";
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<RemoteDatabase>((serviceProvider) =>
             {
                 var http = serviceProvider.GetRequiredService<HttpClient>();
+                http.BaseAddress = new Uri(ServerUrl);
                 var database = new RemoteDatabase(http);
                 return database;
             });
