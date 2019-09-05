@@ -1,6 +1,5 @@
 @using Microsoft.AspNetCore.Components
-@inject IUriHelper Url
-
+@inject NavigationManager NavigationManager
 
 <BSNavbar IsExpand="true" Color="Color.Light">
     <BSNavbarBrand Href="/">Allors</BSNavbarBrand>
@@ -20,11 +19,13 @@
                     <BSDropdownMenu>
                         @foreach (var navItem in navItems.Where(n => n.Group == group))
                         {
-                            <BSDropdownItem Href="@Url.ToAbsoluteUri(navItem.Url).AbsoluteUri">@navItem.Name</BSDropdownItem>
+                            <BSDropdownItem Href="@NavigationManager.ToAbsoluteUri(navItem.Url).AbsoluteUri">@navItem.Name</BSDropdownItem>
                         }
                     </BSDropdownMenu>
                 </BSNavItem>
             }
+            
+            <LoginDisplay/>
 
         </BSNav>
     </BSCollapse>
@@ -45,7 +46,7 @@
 
     bool IsOpen { get; set; } = true;
 
-    void onclick(UIMouseEventArgs e)
+    void onclick(MouseEventArgs e)
     {
         IsOpen = !IsOpen;
         StateHasChanged();

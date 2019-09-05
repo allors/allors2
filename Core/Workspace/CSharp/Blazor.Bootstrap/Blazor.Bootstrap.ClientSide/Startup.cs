@@ -9,8 +9,8 @@ namespace Blazor.Bootstrap.ClientSide
     using Allors.Workspace.Meta;
     using Allors.Workspace.Remote;
     using BlazorStrap;
-    using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Builder;
+    using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.Extensions.DependencyInjection;
 
     public class Startup

@@ -34,9 +34,6 @@ namespace Blazor.Bootstrap.ServerSide
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(builder => builder
-                     .UseConfiguration(new ConfigurationBuilder()
-                        .AddCommandLine(args)
-                     .Build())
                      .UseStartup<Startup>()
                      .ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
                      {

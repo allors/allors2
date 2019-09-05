@@ -2,7 +2,7 @@
 @attribute [Authorize]
 @inject IDatabase Database
 @inject Workspace Workspace
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
 @if (organisation == null)
 {
@@ -70,7 +70,7 @@ else
         var response = await this.Context.Save();
         if (!response.HasErrors)
         {
-            this.UriHelper.NavigateTo("/organisation/list");
+            this.NavigationManager.NavigateTo("/organisation/list");
         }
     }
 }

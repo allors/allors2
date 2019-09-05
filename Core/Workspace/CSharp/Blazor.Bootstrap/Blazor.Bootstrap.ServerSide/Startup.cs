@@ -11,9 +11,9 @@ namespace Blazor.Bootstrap.ServerSide
     using Blazor.Bootstrap.ServerSide.Areas.Identity;
     using BlazorStrap;
     using Identity;
-    using Identity.Models;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Components;
+    using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Configuration;
@@ -41,11 +41,11 @@ namespace Blazor.Bootstrap.ServerSide
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddScoped<AuthenticationStateProvider, RevalidatingAuthenticationStateProvider<IdentityUser>>();
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
             services.AddSingleton<Allors.Workspace.Local.LocalDatabase>();
             services.AddSingleton<Allors.Workspace.IDatabase>(provider => provider.GetRequiredService<Allors.Workspace.Local.LocalDatabase>());
-            services.AddSingleton<Allors.Workspace.Workspace>((serviceProvider) =>
+            services.AddSingleton((serviceProvider) =>
             {
                 var objectFactory = new Allors.Workspace.ObjectFactory(Allors.Workspace.Meta.MetaPopulation.Instance, typeof(Allors.Workspace.Domain.User));
                 var workspace = new Allors.Workspace.Workspace(objectFactory);
@@ -58,11 +58,11 @@ namespace Blazor.Bootstrap.ServerSide
                 // Setup HttpClient for server side in a client side compatible fashion
                 services.AddScoped<HttpClient>(s =>
                 {
-                    // Creating the URI helper needs to wait until the JS Runtime is initialized, so defer it.
-                    var uriHelper = s.GetRequiredService<IUriHelper>();
+                    // Creating the NavigationManager needs to wait until the JS Runtime is initialized, so defer it.
+                    var navigationManager = s.GetRequiredService<NavigationManager>();
                     return new HttpClient
                     {
-                        BaseAddress = new Uri(uriHelper.GetBaseUri()),
+                        BaseAddress = new Uri(navigationManager.BaseUri),
                     };
                 });
             }
@@ -103,7 +103,7 @@ namespace Blazor.Bootstrap.ServerSide
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapBlazorHub<App>(selector: "app");
+                endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
         }

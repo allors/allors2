@@ -4,7 +4,7 @@ namespace Allors.Blazor
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Allors.Workspace.Remote;
-    using Microsoft.AspNetCore.Components;
+    using Microsoft.AspNetCore.Components.Authorization;
 
     public partial class AllorsAuthenticationStateProvider : AuthenticationStateProvider
     {

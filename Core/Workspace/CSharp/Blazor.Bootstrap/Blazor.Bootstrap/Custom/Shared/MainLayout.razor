@@ -1,9 +1,9 @@
 @inherits LayoutComponentBase
 @inject IBootstrapCSS BootstrapCSS
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject IUriHelper UriHelper
+@inject NavigationManager NavigationManager
 
-<div class="bg-light">
+<div>
     <div class="container">
         <NavMenu />
     </div>
@@ -34,6 +34,6 @@
             await allorsAuthenticationStateProvider.LogIn("administrator", null);
         }
 
-        this.UriHelper.NavigateTo("/organisation/edit/2577");
+        this.NavigationManager.NavigateTo("/organisation/edit/2577");
     }
 }
