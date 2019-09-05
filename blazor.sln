@@ -83,7 +83,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace", "Core\Workspace
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Core\Workspace\CSharp\ExcelAddIn\ExcelAddIn.csproj", "{2793BF14-439A-418F-8CD0-808A07AD09C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor", "Core\Workspace\CSharp\Blazor\Blazor.csproj", "{365B463D-E01E-4C47-A635-B7173175A26F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Blazor", "Core\Workspace\CSharp\Blazor\Allors.Blazor.csproj", "{365B463D-E01E-4C47-A635-B7173175A26F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor", "Blazor", "{DF5CEE7D-312C-4507-99FE-AD091139F80A}"
 EndProject
@@ -93,7 +93,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Workspace.Remote", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Local", "Core\Workspace\CSharp\Workspace.Local\Workspace.Local.csproj", "{9132991F-0D00-4332-9CA4-917A2E04BC27}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Bootstrap", "Core\Workspace\CSharp\Blazor.Bootstrap\Blazor.Bootstrap\Blazor.Bootstrap.csproj", "{BD532C94-6B59-4BAF-BA65-161CAE99B4E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Blazor.Bootstrap", "Core\Workspace\CSharp\Blazor.Bootstrap\Blazor.Bootstrap\Allors.Blazor.Bootstrap.csproj", "{BD532C94-6B59-4BAF-BA65-161CAE99B4E4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Bootstrap.ServerSide", "Core\Workspace\CSharp\Blazor.Bootstrap\Blazor.Bootstrap.ServerSide\Blazor.Bootstrap.ServerSide.csproj", "{84DE07C1-B6BA-49FE-88ED-39C6454D8E2A}"
 EndProject

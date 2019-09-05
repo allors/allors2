@@ -22,7 +22,7 @@
     <ProjectReference Include="..\..\..\..\Database\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\..\..\Database\Services\Services.csproj" />
     <ProjectReference Include="..\..\Workspace.Local\Workspace.Local.csproj" />
-    <ProjectReference Include="..\Blazor.Bootstrap\Blazor.Bootstrap.csproj" />
+    <ProjectReference Include="..\Blazor.Bootstrap\Allors.Blazor.Bootstrap.csproj" />
   </ItemGroup>
 
   <ItemGroup>

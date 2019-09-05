@@ -17,7 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Platform\Framework\Allors.Workspace.Remote\Allors.Workspace.Remote.csproj" />
     <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj" />
-    <ProjectReference Include="..\Blazor.Bootstrap\Blazor.Bootstrap.csproj" />
+    <ProjectReference Include="..\Blazor.Bootstrap\Allors.Blazor.Bootstrap.csproj" />
   </ItemGroup>
 
 </Project>
