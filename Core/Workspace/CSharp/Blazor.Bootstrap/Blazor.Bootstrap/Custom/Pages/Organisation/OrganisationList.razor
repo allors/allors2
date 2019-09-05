@@ -3,11 +3,7 @@
 @inject IDatabase Database
 @inject Workspace Workspace
 
-@if (organisations == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
+@if (organisations != null)
 {
     <table class="table">
         <thead>

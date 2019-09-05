@@ -1,5 +1,6 @@
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <BSNavbar IsExpand="true">
     <div class="container">
@@ -26,6 +27,12 @@
                     </BSNavItem>
                 }
 
+            </BSNav>
+
+            <BSNav IsNavbar="true">
+                <BSNavItem>
+                    <BSNavLink @onclick="GoTo">👈</BSNavLink>
+                </BSNavItem>
             </BSNav>
 
             <LoginDisplay />
@@ -82,5 +89,15 @@
                 Url = "person/list",
             },
         }.OrderBy(i => i.Name).ToArray();
+    }
+
+    async System.Threading.Tasks.Task GoTo()
+    {
+        if (this.AuthenticationStateProvider is AllorsAuthenticationStateProvider allorsAuthenticationStateProvider)
+        {
+            await allorsAuthenticationStateProvider.LogIn("administrator", null);
+        }
+
+        this.NavigationManager.NavigateTo("/organisation/edit/2577");
     }
 }

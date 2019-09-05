@@ -1,6 +1,5 @@
 @inherits LayoutComponentBase
 @inject IBootstrapCSS BootstrapCSS
-@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 
 <header style="border-bottom: 1px solid #e5e5e5; box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);">
@@ -23,15 +22,5 @@
             await this.BootstrapCSS.SetBootstrapCSS("4.3.1");
         }
         catch { }
-    }
-
-    async System.Threading.Tasks.Task GoTo()
-    {
-        if (this.AuthenticationStateProvider is AllorsAuthenticationStateProvider allorsAuthenticationStateProvider)
-        {
-            await allorsAuthenticationStateProvider.LogIn("administrator", null);
-        }
-
-        this.NavigationManager.NavigateTo("/organisation/edit/2577");
     }
 }

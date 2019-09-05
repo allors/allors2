@@ -4,32 +4,22 @@
 @inject Workspace Workspace
 @inject NavigationManager NavigationManager
 
-@if (organisation == null)
+@if (organisation != null)
 {
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <EditForm Model="@organisation" OnValidSubmit="@HandleValidSubmit">
+    <BSForm Model="@organisation" OnValidSubmit="@HandleValidSubmit">
         <AllorsValidator />
         <ValidationSummary />
 
-        <div class="container">
-            <div class="row">
-                <div class="col-md">
-                    @*<AllorsInput RoleType="@M.Organisation.Name" />*@
-                </div>
-            </div>
+        <BSRow>
+            <AllorsInput RoleType="@M.Organisation.Name"/>
+        </BSRow>
 
-            <div class="row">
-                <div class="col">
-                    <button @onclick="HandleValidSubmit">Submit</button>
-                </div>
-            </div>
-        </div>
-
-        <button type="submit">Submit</button>
-    </EditForm>
+        <BSRow>
+            <BSFormGroup>
+                <BSButton type="submit">Submit</BSButton>
+            </BSFormGroup>
+        </BSRow>
+    </BSForm>
 }
 
 @code {

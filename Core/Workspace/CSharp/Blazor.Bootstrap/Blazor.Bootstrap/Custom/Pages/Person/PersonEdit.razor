@@ -4,12 +4,9 @@
 @inject Workspace Workspace
 @inject NavigationManager NavigationManager
 
-@if (person == null)
+@if (person != null)
 {
-    <p><em>Loading...</em></p>
-}
-else
-{ <EditForm Model="@person" OnValidSubmit="@HandleValidSubmit">
+    <EditForm Model="@person" OnValidSubmit="@HandleValidSubmit">
         <AllorsValidator />
         <ValidationSummary />
         <div class="container">
