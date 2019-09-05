@@ -1,12 +1,23 @@
-﻿<AuthorizeView>
+<AuthorizeView>
     <Authorized>
-        <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
-        <form method="post" action="Identity/Account/LogOut">
-            <button type="submit" class="nav-link btn btn-link">Log out</button>
-        </form>
+        <BSNav IsNavbar="true">
+            <BSNavItem>
+                <BSNavLink Href="Identity/Account/Manage">@context.User.Identity.Name</BSNavLink>
+            </BSNavItem>
+
+            <form method="post" action="Identity/Account/LogOut">
+                <button type="submit" class="nav-link btn btn-link">Log out</button>
+            </form>
+        </BSNav>
     </Authorized>
     <NotAuthorized>
-        <a href="Identity/Account/Register">Register</a>
-        <a href="Identity/Account/Login">Log in</a>
+        <BSNav IsNavbar="true">
+            <BSNavItem>
+                <BSNavLink Href="Identity/Account/Register">Register</BSNavLink>
+            </BSNavItem>
+            <BSNavItem>
+                <BSNavLink Href="Identity/Account/Login">Login</BSNavLink>
+            </BSNavItem>
+        </BSNav>
     </NotAuthorized>
 </AuthorizeView>
