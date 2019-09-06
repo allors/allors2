@@ -1,12 +1,14 @@
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                <LoginForm />
+            </NotAuthorized>
+        </AuthorizeRouteView>
     </Found>
     <NotFound>
-        <CascadingAuthenticationState>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <LoginForm></LoginForm>
-            </LayoutView>
-        </CascadingAuthenticationState>
+        <LayoutView Layout="@typeof(MainLayout)">
+            Page Not Found
+        </LayoutView>
     </NotFound>
 </Router>

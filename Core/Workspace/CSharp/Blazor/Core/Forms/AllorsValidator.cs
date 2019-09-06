@@ -9,14 +9,20 @@ namespace Allors.Blazor
         [CascadingParameter]
         public EditContext EditContext { get; set; }
 
+        [CascadingParameter]
+        public AllorsValidation Validation { get; set; }
+
         /// <inheritdoc />
         protected override void OnInitialized()
         {
             if (this.EditContext == null)
             {
-                throw new InvalidOperationException($"{nameof(AllorsValidator)} requires a cascading " +
-                    $"parameter of type {nameof(EditContext)}. For example, you can use {nameof(AllorsValidator)} " +
-                    $"inside an EditForm.");
+                throw new InvalidOperationException($"{nameof(AllorsValidator)} requires a cascading parameter of type {nameof(EditContext)}.");
+            }
+
+            if (this.Validation == null)
+            {
+                throw new InvalidOperationException($"{nameof(AllorsValidator)} requires a cascading parameter of type {nameof(AllorsValidation)}.");
             }
 
             var messages = new ValidationMessageStore(this.EditContext);

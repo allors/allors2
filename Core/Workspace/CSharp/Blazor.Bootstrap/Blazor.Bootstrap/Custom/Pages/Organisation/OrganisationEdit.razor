@@ -6,12 +6,11 @@
 
 @if (organisation != null)
 {
-    <BSForm Model="@organisation" OnValidSubmit="@HandleValidSubmit">
-        <AllorsValidator />
+    <AllorsBSForm Model="@organisation" OnValidSubmit="@HandleValidSubmit">
         <ValidationSummary />
 
         <BSRow>
-            <AllorsInput RoleType="@M.Organisation.Name"/>
+            <AllorsInput RoleType="@M.Organisation.Name" />
         </BSRow>
 
         <BSRow>
@@ -19,7 +18,7 @@
                 <BSButton type="submit">Submit</BSButton>
             </BSFormGroup>
         </BSRow>
-    </BSForm>
+    </AllorsBSForm>
 }
 
 @code {
