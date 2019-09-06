@@ -1,7 +1,10 @@
+@implements IAllorsValidationField
+@implements IDisposable
+
 <BSFormGroup>
     <BSLabel>@DerivedLabel</BSLabel>
     <BSInput @bind-Value="Model"></BSInput>
-    <BSFormFeedback For="@(() => Model)"/>
+    <BSFormFeedback For="@(() => Model)" />
 </BSFormGroup>
 
 @code {
@@ -22,7 +25,7 @@
 
     [Parameter]
     public bool FullWidth { get; set; } = true;
-    
+
     public ISessionObject DerivedObject
     {
         get
@@ -51,9 +54,31 @@
             this.DerivedObject.Set(this.RoleType, value);
         }
     }
-    
+
+    public FieldIdentifier FieldIdentifier => new FieldIdentifier(this, "Model");
+
+    public void Validate(ValidationMessageStore messages)
+    {
+        if (this.RoleType.IsRequired && string.IsNullOrWhiteSpace(this.Model))
+        {
+            messages.Add(this.FieldIdentifier, $"{this.RoleType.Name} is required");
+        }
+        else
+        {
+            messages.Clear(this.FieldIdentifier);
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        this.Validation.Remove(this);
+    }
+
     override protected void OnAfterRender(bool firstRender)
     {
-        this.Validation.Components.Add(this);
+        if (firstRender)
+        {
+            this.Validation.Add(this);
+        }
     }
 }

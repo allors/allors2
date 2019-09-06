@@ -29,21 +29,23 @@ namespace Allors.Blazor
 
             // Perform object-level validation on request
             this.EditContext.OnValidationRequested +=
-                (sender, eventArgs) => ValidateModel(this.EditContext, messages);
+                (sender, eventArgs) => ValidateModel(this.EditContext, this.Validation, messages);
 
             // Perform per-field validation on each field edit
             this.EditContext.OnFieldChanged +=
-                (sender, eventArgs) => ValidateField(this.EditContext, messages, eventArgs.FieldIdentifier);
+                (sender, eventArgs) => ValidateField(this.EditContext, this.Validation, messages, eventArgs.FieldIdentifier);
         }
 
-        private static void ValidateModel(EditContext editContext, ValidationMessageStore messages)
+        private static void ValidateModel(EditContext editContext, AllorsValidation validation, ValidationMessageStore messages)
         {
             messages.Clear();
+            validation.Validate(messages);
             editContext.NotifyValidationStateChanged();
         }
 
-        private static void ValidateField(EditContext editContext, ValidationMessageStore messages, in FieldIdentifier fieldIdentifier)
+        private static void ValidateField(EditContext editContext, AllorsValidation validation, ValidationMessageStore messages, in FieldIdentifier fieldIdentifier)
         {
+            validation.Validate(fieldIdentifier, messages);
             editContext.NotifyValidationStateChanged();
         }
     }
