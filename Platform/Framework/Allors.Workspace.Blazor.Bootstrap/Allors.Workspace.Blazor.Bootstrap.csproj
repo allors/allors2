@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <LangVersion>7.3</LangVersion>
+    <RazorLangVersion>3.0</RazorLangVersion>
+    <RootNamespace>Allors.Workspace.Blazor.Bootstrap</RootNamespace>
+    <AssemblyName>Allors.Workspace.Blazor.Bootstrap</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BlazorStrap" Version="1.0.0-preview9-01" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.0.0-preview9.19424.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.0.0-preview9.19424.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Allors.Workspace.Blazor\Allors.Workspace.Blazor.csproj" />
+  </ItemGroup>
+
+
+</Project>

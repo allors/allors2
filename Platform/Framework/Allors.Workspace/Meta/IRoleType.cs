@@ -13,11 +13,13 @@ namespace Allors.Workspace.Meta
     /// </summary>
     public interface IRoleType : IPropertyType
     {
+        string PropertyName { get; }
+
         string SingularPropertyName { get; }
 
-        string SingularFullName { get; }
-
         string PluralPropertyName { get; }
+
+        string SingularFullName { get; }
 
         string PluralFullName { get; }
 
@@ -30,5 +32,7 @@ namespace Allors.Workspace.Meta
         int? Precision { get; }
 
         int? Scale { get; }
+        bool IsRequired { get; }
+        string DisplayName { get; }
     }
 }

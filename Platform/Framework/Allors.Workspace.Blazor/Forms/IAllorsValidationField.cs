@@ -1,4 +1,4 @@
-namespace Allors.Blazor
+namespace Allors.Workspace.Blazor
 {
     using Microsoft.AspNetCore.Components.Forms;
 

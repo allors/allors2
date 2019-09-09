@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
     <LangVersion>7.3</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
-    <RootNamespace>Allors.Blazor.Bootstrap</RootNamespace>
-    <AssemblyName>Allors.Blazor.Bootstrap</AssemblyName>
+    <RootNamespace>Blazor.Bootstrap</RootNamespace>
+    <AssemblyName>Blazor.Bootstrap</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Blazor\Allors.Blazor.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Framework\Allors.Workspace.Blazor.Bootstrap\Allors.Workspace.Blazor.Bootstrap.csproj" />
+    <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj" />
   </ItemGroup>
-
 
 </Project>

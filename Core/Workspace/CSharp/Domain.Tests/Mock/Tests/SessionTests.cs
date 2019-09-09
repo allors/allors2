@@ -607,7 +607,7 @@ namespace Tests.Mock
 
             var session = new Session(this.Workspace);
 
-            var acme = (Organisation)session.Create(M.Organisation);
+            var acme = (Organisation)session.Create(M.Organisation.Class);
 
             var acmeAgain = session.Get(acme.Id);
 

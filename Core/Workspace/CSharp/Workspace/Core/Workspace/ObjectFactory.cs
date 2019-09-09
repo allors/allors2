@@ -13,7 +13,7 @@ namespace Allors.Workspace
     using System.Runtime.CompilerServices;
     using Allors.Workspace.Meta;
 
-    public class ObjectFactory
+    public class ObjectFactory : IObjectFactory
     {
         /// <summary>
         /// <see cref="Type"/> by <see cref="IObjectType"/> cache.
@@ -129,13 +129,15 @@ namespace Allors.Workspace
         /// <returns>
         /// The new <see cref="SessionObject"/>.
         /// </returns>
-        public SessionObject Create(Session session, ObjectType objectType)
+        public SessionObject Create(ISession session, IObjectType objectType)
         {
             var constructor = this.contructorInfoByObjectType[objectType];
             object[] parameters = { session };
 
             return (SessionObject)constructor.Invoke(parameters);
         }
+
+        INewSessionObject IObjectFactory.Create(ISession session, IObjectType objectType) => this.Create(session, objectType);
 
         /// <summary>
         /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.

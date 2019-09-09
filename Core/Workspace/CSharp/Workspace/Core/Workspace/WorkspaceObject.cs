@@ -1,4 +1,4 @@
-﻿// <copyright file="WorkspaceObject.cs" company="Allors bvba">
+// <copyright file="WorkspaceObject.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -9,7 +9,7 @@ namespace Allors.Workspace
     using Allors.Protocol.Remote.Sync;
     using Allors.Workspace.Meta;
 
-    public class WorkspaceObject
+    public class WorkspaceObject : IWorkspaceObject
     {
         public WorkspaceObject(Workspace workspace, SyncResponse loadResponse, SyncResponseObject loadObject)
         {
@@ -55,7 +55,7 @@ namespace Allors.Workspace
             }
         }
 
-        public Workspace Workspace { get; }
+        public IWorkspace Workspace { get; }
 
         public long Id { get; }
 
@@ -63,7 +63,7 @@ namespace Allors.Workspace
 
         public string UserSecurityHash { get; }
 
-        public Class ObjectType { get; }
+        public IClass ObjectType { get; }
 
         public Dictionary<string, object> Roles { get; }
 

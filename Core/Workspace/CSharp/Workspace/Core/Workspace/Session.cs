@@ -1,4 +1,4 @@
-﻿// <copyright file="Session.cs" company="Allors bvba">
+// <copyright file="Session.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,19 +12,19 @@ namespace Allors.Workspace
     using Allors.Protocol.Remote.Sync;
     using Allors.Workspace.Meta;
 
-    public class Session
+    public class Session : ISession
     {
         private static long idCounter = 0;
 
         private readonly Workspace workspace;
-        private readonly Dictionary<long, SessionObject> sessionObjectById = new Dictionary<long, SessionObject>();
-        private readonly Dictionary<long, SessionObject> newSessionObjectById = new Dictionary<long, SessionObject>();
+        private readonly Dictionary<long, INewSessionObject> sessionObjectById = new Dictionary<long, INewSessionObject>();
+        private readonly Dictionary<long, INewSessionObject> newSessionObjectById = new Dictionary<long, INewSessionObject>();
 
         public Session(Workspace workspace) => this.workspace = workspace;
 
         public bool HasChanges => this.newSessionObjectById.Count > 0 || this.sessionObjectById.Values.Any(v => v.HasChanges);
 
-        public SessionObject Get(long id)
+        public INewSessionObject Get(long id)
         {
             if (!this.sessionObjectById.TryGetValue(id, out var sessionObject))
             {
@@ -32,19 +32,21 @@ namespace Allors.Workspace
                 {
                     var workspaceObject = this.workspace.Get(id);
 
-                    sessionObject = this.workspace.ObjectFactory.Create(this, workspaceObject.ObjectType);
+                    var newSessionObject = this.workspace.ObjectFactory.Create(this, workspaceObject.ObjectType);
 
-                    sessionObject.WorkspaceObject = workspaceObject;
-                    sessionObject.ObjectType = workspaceObject.ObjectType;
+                    newSessionObject.WorkspaceObject = workspaceObject;
+                    newSessionObject.ObjectType = workspaceObject.ObjectType;
 
-                    this.sessionObjectById[workspaceObject.Id] = sessionObject;
+                    this.sessionObjectById[workspaceObject.Id] = newSessionObject;
+
+                    sessionObject = newSessionObject;
                 }
             }
 
             return sessionObject;
         }
 
-        public SessionObject Create(Class @class)
+        public INewSessionObject Create(IClass @class)
         {
             var newSessionObject = this.workspace.ObjectFactory.Create(this, @class);
 

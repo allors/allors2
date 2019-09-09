@@ -1,4 +1,4 @@
-namespace Allors.Blazor
+namespace Allors.Workspace.Blazor
 {
     using System.Collections.Generic;
     using System.Linq;

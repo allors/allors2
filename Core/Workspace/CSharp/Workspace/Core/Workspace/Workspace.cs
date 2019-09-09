@@ -12,11 +12,13 @@ namespace Allors.Workspace
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Sync;
 
-    public class Workspace
+    public class Workspace : IWorkspace
     {
         private readonly Dictionary<long, WorkspaceObject> workspaceObjectById = new Dictionary<long, WorkspaceObject>();
 
         public Workspace(ObjectFactory objectFactory) => this.ObjectFactory = objectFactory;
+
+        IObjectFactory IWorkspace.ObjectFactory => this.ObjectFactory;
 
         public ObjectFactory ObjectFactory { get; }
 
@@ -47,7 +49,7 @@ namespace Allors.Workspace
             }
         }
 
-        public WorkspaceObject Get(long id)
+        public IWorkspaceObject Get(long id)
         {
             var workspaceObject = this.workspaceObjectById[id];
             if (workspaceObject == null)

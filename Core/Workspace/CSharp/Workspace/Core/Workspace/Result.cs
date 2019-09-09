@@ -25,9 +25,9 @@ namespace Allors.Workspace
                 pair => pair.Value);
         }
 
-        public Dictionary<string, SessionObject> Objects { get; }
+        public Dictionary<string, INewSessionObject> Objects { get; }
 
-        public Dictionary<string, SessionObject[]> Collections { get; }
+        public Dictionary<string, INewSessionObject[]> Collections { get; }
 
         public Dictionary<string, object> Values { get; }
 

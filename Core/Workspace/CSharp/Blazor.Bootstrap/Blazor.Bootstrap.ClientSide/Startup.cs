@@ -2,15 +2,15 @@ namespace Blazor.Bootstrap.ClientSide
 {
     using System;
     using System.Net.Http;
-    using Allors.Blazor;
-    using Allors.Blazor.Bootstrap;
     using Allors.Workspace;
+    using Allors.Workspace.Blazor;
+    using Allors.Workspace.Blazor.Bootstrap;
     using Allors.Workspace.Domain;
     using Allors.Workspace.Meta;
     using Allors.Workspace.Remote;
     using BlazorStrap;
-    using Microsoft.AspNetCore.Components.Builder;
     using Microsoft.AspNetCore.Components.Authorization;
+    using Microsoft.AspNetCore.Components.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
     public class Startup
@@ -49,7 +49,7 @@ namespace Blazor.Bootstrap.ClientSide
 
         public void Configure(IComponentsApplicationBuilder app)
         {
-            app.AddComponent<App>("app");
+            app.AddComponent<Blazor.Bootstrap.App>("app");
         }
     }
 }

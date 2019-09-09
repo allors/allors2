@@ -1,4 +1,4 @@
-﻿// <copyright file="SessionObject.cs" company="Allors bvba">
+// <copyright file="SessionObject.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,60 +12,20 @@ namespace Allors.Workspace
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace.Meta;
 
-    public interface ISessionObject
-    {
-        long Id { get; }
-
-        long? Version { get; }
-
-        Class ObjectType { get; }
-
-        Session Session { get; }
-
-        WorkspaceObject WorkspaceObject { get; set; }
-
-        bool HasChanges { get; }
-
-        bool CanRead(RoleType roleType);
-
-        bool CanWrite(RoleType roleType);
-
-        bool Exist(RoleType roleType);
-
-        object Get(RoleType roleType);
-
-        void Set(RoleType roleType, object value);
-
-        void Add(RoleType roleType, ISessionObject value);
-
-        void Remove(RoleType roleType, ISessionObject value);
-
-        PushRequestObject Save();
-
-        PushRequestNewObject SaveNew();
-
-        void Reset();
-    }
-
-    public interface INewSessionObject : ISessionObject
-    {
-        long? NewId { get; set; }
-    }
-
     public class SessionObject : INewSessionObject
     {
         private static readonly ISessionObject[] EmptySessionObjects = new ISessionObject[0];
 
-        private Dictionary<RoleType, object> changedRoleByRoleType;
-        private Dictionary<RoleType, object> roleByRoleType = new Dictionary<RoleType, object>();
+        private Dictionary<IRoleType, object> changedRoleByRoleType;
+        private Dictionary<IRoleType, object> roleByRoleType = new Dictionary<IRoleType, object>();
 
         protected SessionObject(Session session) => this.Session = session;
 
-        public Session Session { get; }
+        public ISession Session { get; }
 
-        public WorkspaceObject WorkspaceObject { get; set; }
+        public IWorkspaceObject WorkspaceObject { get; set; }
 
-        public Class ObjectType { get; set; }
+        public IClass ObjectType { get; set; }
 
         public long? NewId { get; set; }
 
@@ -115,7 +75,7 @@ namespace Allors.Workspace
             return false;
         }
 
-        public bool CanRead(RoleType roleType)
+        public bool CanRead(IRoleType roleType)
         {
             if (this.NewId != null)
             {
@@ -125,7 +85,7 @@ namespace Allors.Workspace
             return this.WorkspaceObject.CanRead(roleType.PropertyName);
         }
 
-        public bool CanWrite(RoleType roleType)
+        public bool CanWrite(IRoleType roleType)
         {
             if (this.NewId != null)
             {
@@ -145,7 +105,7 @@ namespace Allors.Workspace
             return this.WorkspaceObject.CanExecute(methodType.Name);
         }
 
-        public bool Exist(RoleType roleType)
+        public bool Exist(IRoleType roleType)
         {
             var value = this.Get(roleType);
             if (roleType.ObjectType.IsComposite && roleType.IsMany)
@@ -156,7 +116,7 @@ namespace Allors.Workspace
             return value != null;
         }
 
-        public object Get(RoleType roleType)
+        public object Get(IRoleType roleType)
         {
             if (!this.roleByRoleType.TryGetValue(roleType, out var value))
             {
@@ -260,7 +220,7 @@ namespace Allors.Workspace
             return value;
         }
 
-        public void Set(RoleType roleType, object value)
+        public void Set(IRoleType roleType, object value)
         {
             var current = this.Get(roleType);
             if (roleType.ObjectType.IsUnit || roleType.IsOne)
@@ -287,7 +247,7 @@ namespace Allors.Workspace
 
             if (this.changedRoleByRoleType == null)
             {
-                this.changedRoleByRoleType = new Dictionary<RoleType, object>();
+                this.changedRoleByRoleType = new Dictionary<IRoleType, object>();
             }
 
             if (roleType.ObjectType.IsComposite && roleType.IsMany)
@@ -300,7 +260,7 @@ namespace Allors.Workspace
             this.changedRoleByRoleType[roleType] = value;
         }
 
-        public void Add(RoleType roleType, ISessionObject value)
+        public void Add(IRoleType roleType, ISessionObject value)
         {
             var roles = (ISessionObject[])this.Get(roleType);
             if (!roles.Contains(value))
@@ -311,7 +271,7 @@ namespace Allors.Workspace
             this.Set(roleType, roles);
         }
 
-        public void Remove(RoleType roleType, ISessionObject value)
+        public void Remove(IRoleType roleType, ISessionObject value)
         {
             var roles = (ISessionObject[])this.Get(roleType);
             if (roles.Contains(value))
@@ -366,7 +326,7 @@ namespace Allors.Workspace
 
             this.changedRoleByRoleType = null;
 
-            this.roleByRoleType = new Dictionary<RoleType, object>();
+            this.roleByRoleType = new Dictionary<IRoleType, object>();
         }
 
         private PushRequestRole[] SaveRoles()
