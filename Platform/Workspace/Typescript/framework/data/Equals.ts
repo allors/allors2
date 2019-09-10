@@ -1,5 +1,5 @@
-import { PropertyType } from '../../meta';
-import { ISessionObject } from '../../workspace/SessionObject';
+import { PropertyType } from '../meta';
+import { ISessionObject } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
 export class Equals extends ParametrizedPredicate {

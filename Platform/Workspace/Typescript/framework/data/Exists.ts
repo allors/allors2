@@ -1,4 +1,4 @@
-import { PropertyType } from '../../meta';
+import { PropertyType } from '../meta';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
 export class Exists extends ParametrizedPredicate {

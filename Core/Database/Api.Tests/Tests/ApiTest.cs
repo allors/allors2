@@ -14,7 +14,7 @@ namespace Allors.Api.Tests
     using System.Text;
     using System.Threading.Tasks;
     using Allors;
-    using Allors.Adapters.Object.SqlClient;
+    using Allors.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Api;

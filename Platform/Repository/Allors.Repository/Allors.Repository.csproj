@@ -3,8 +3,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\Framework\Allors.Database\Meta\UnitIds.cs" Link="UnitIds.cs" />
-    <Compile Include="..\..\Framework\Allors.Database\Meta\UnitNames.cs" Link="UnitNames.cs" />
+    <Compile Include="..\..\Database\Allors.Database\Meta\UnitIds.cs" Link="UnitIds.cs" />
+    <Compile Include="..\..\Database\Allors.Database\Meta\UnitNames.cs" Link="UnitNames.cs" />
     <Compile Include="..\Domain\Attributes\Multiplicity.cs" Link="Domain\Multiplicity.cs" />
   </ItemGroup>
   <ItemGroup>

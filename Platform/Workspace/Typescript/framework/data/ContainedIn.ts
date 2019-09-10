@@ -1,6 +1,6 @@
-import { PropertyType } from '../../meta';
+import { PropertyType } from '../meta';
 
-import { ISessionObject } from './../../workspace/SessionObject';
+import { ISessionObject } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 import { Extent } from './Extent';
 

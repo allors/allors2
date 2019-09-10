@@ -1,4 +1,4 @@
-import { AssociationType, RoleType, ObjectType } from '../../meta';
+import { AssociationType, RoleType, ObjectType } from '../meta';
 import { Tree } from './Tree';
 
 const includeKey = 'include';

@@ -4,10 +4,9 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { FilterFieldDefinition } from './FilterFieldDefinition';
 import { Predicate, And, Or, Not, ContainedIn, Filter } from '../../../framework';
 import { FilterField } from './FilterField';
-import { ParametrizedPredicate } from '../../../framework/database/data/ParametrizedPredicate';
+import { ParametrizedPredicate } from '../../../framework/data/ParametrizedPredicate';
 
 import { FilterOptions } from './FilterOptions';
-import { Options } from 'selenium-webdriver/safari';
 
 function getParameterizedPredicates(predicate: Predicate, results: ParametrizedPredicate[] = []): ParametrizedPredicate[] {
 

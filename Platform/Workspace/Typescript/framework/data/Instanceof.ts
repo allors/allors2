@@ -1,4 +1,4 @@
-import { ObjectType, PropertyType } from '../../meta';
+import { ObjectType, PropertyType } from '../meta';
 
 import { Predicate } from './Predicate';
 

@@ -7,7 +7,9 @@ public partial class Paths
     public AbsolutePath PlatformRepositoryTemplatesMetaCs => PlatformRepositoryTemplates / "meta.cs.stg";
     public AbsolutePath PlatformRepositoryGenerate => Platform / "Repository/Generate/Generate.csproj";
 
-    public AbsolutePath PlatformAdapters => Platform / "Adapters";
+    public AbsolutePath PlatformDatabase => Platform / "Database";
+
+    public AbsolutePath PlatformAdapters => PlatformDatabase / "Adapters";
     public AbsolutePath PlatformAdaptersRepositoryDomainRepository => PlatformAdapters / "Repository/Domain/Repository.csproj";
     public AbsolutePath PlatformAdaptersMetaGenerated => PlatformAdapters / "Meta/generated";
     public AbsolutePath PlatformAdaptersGenerate => PlatformAdapters / "Generate/Generate.csproj";

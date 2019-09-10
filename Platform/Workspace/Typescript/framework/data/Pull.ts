@@ -1,8 +1,8 @@
 import { Extent } from './Extent';
-import { ISessionObject } from '../../workspace';
+import { ISessionObject } from '../workspace';
 import { Result } from './Result';
 import { FlatPull } from './FlatPull';
-import { ObjectType } from '../../meta/ObjectType';
+import { ObjectType } from '../meta';
 import { Filter } from './Filter';
 import { Fetch } from './Fetch';
 import { Sort } from './Sort';

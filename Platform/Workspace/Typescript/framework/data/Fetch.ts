@@ -1,4 +1,4 @@
-import { ObjectType } from '../../meta';
+import { ObjectType } from '../meta';
 import { Tree } from './Tree';
 import { Step } from './Step';
 

@@ -1,6 +1,6 @@
 import { Sort } from './Sort';
 import { Extent } from './Extent';
-import { ObjectType } from '../../meta';
+import { ObjectType } from '../meta';
 
 export class Intersect {
   public operands: Extent[];

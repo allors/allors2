@@ -1,4 +1,4 @@
-import { ObjectType } from '../../meta';
+import { ObjectType } from '../meta';
 import { Predicate } from './Predicate';
 import { Sort } from './Sort';
 

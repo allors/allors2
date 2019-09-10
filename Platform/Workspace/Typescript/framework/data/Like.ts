@@ -1,12 +1,12 @@
-import { RoleType } from '../../meta';
+import { RoleType } from '../meta';
 
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
-export class GreaterThan extends ParametrizedPredicate {
+export class Like extends ParametrizedPredicate {
   public roleType: RoleType;
-  public value: string | Date | boolean | number;
+  public value: any;
 
-  constructor(fields?: Partial<GreaterThan> | RoleType) {
+  constructor(fields?: Partial<Like> | RoleType) {
     super();
 
     if ((fields as RoleType).objectType) {
@@ -18,7 +18,7 @@ export class GreaterThan extends ParametrizedPredicate {
 
   public toJSON(): any {
     return {
-      kind: 'GreaterThan',
+      kind: 'Like',
       roleType: this.roleType.id,
       parameter: this.parameter,
       value: this.value,

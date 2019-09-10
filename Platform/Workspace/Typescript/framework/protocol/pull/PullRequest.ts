@@ -1,4 +1,4 @@
-import { Pull } from '../../database/data';
+import { Pull } from '../../data';
 
 export class PullRequest {
 

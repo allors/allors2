@@ -11,7 +11,6 @@ import { SyncResponse } from './../protocol/sync/SyncResponse';
 import { INewSessionObject, ISessionObject, SessionObject } from './SessionObject';
 import { IWorkspace, Workspace } from './Workspace';
 import { WorkspaceObject } from './WorkspaceObject';
-import { Filter } from '../database';
 
 export interface ISession {
 

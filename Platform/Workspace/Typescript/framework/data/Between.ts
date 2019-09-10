@@ -1,4 +1,4 @@
-import { RoleType } from '../../meta';
+import { RoleType } from '../meta';
 import { Predicate } from './Predicate';
 
 export class Between implements Predicate {

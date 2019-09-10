@@ -1,4 +1,4 @@
-import { ObjectType, RoleType } from '../../meta';
+import { ObjectType, RoleType } from '../meta';
 
 export class TreeNode {
 
