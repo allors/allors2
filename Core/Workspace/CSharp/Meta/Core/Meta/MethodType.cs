@@ -8,7 +8,7 @@ namespace Allors.Workspace.Meta
     using System;
     using System.Linq;
 
-    public sealed partial class MethodType : OperandType
+    public sealed partial class MethodType : OperandType, IMethodType
     {
         private string name;
         private Composite objectType;
@@ -103,6 +103,16 @@ namespace Allors.Workspace.Meta
 
                 return "unknown method type";
             }
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is RoleType that)
+            {
+                return this.Id.CompareTo(that.Id);
+            }
+
+            return -1;
         }
 
         /// <summary>

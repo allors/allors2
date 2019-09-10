@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Remote.csproj" />
+    <ProjectReference Include="..\Adapters\Allors.Workspace.Adapters.Remote\Allors.Workspace.Adapters.Remote.csproj" />
   </ItemGroup>
 
 

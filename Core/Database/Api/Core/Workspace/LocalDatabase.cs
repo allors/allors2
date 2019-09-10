@@ -6,13 +6,13 @@
 namespace Allors.Workspace.Local
 {
     using System.Threading.Tasks;
+    using Allors.Domain;
     using Allors.Protocol.Data;
     using Allors.Protocol.Remote.Invoke;
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
     using Allors.Services;
-    using Domain;
     using Api;
 
     public class LocalDatabase : IDatabase

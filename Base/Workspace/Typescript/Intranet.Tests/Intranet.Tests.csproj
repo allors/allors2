@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.SqlClient\Allors.Database.Adapters.SqlClient.csproj" />
     <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
     <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />

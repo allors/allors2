@@ -297,9 +297,13 @@
       <Project>{9f12fd7c-1abb-47f7-bc8e-215ef4188a2c}</Project>
       <Name>Allors.Database.Protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Remote.csproj">
-      <Project>{4e36531c-0e52-4e5e-a109-35d958c4fd07}</Project>
-      <Name>Allors.Workspace.Remote</Name>
+    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters.Remote\Allors.Workspace.Adapters.Remote.csproj">
+      <Project>{6ac69e65-1e09-4f93-b26c-696e2b1a64a3}</Project>
+      <Name>Allors.Workspace.Adapters.Remote</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Adapters.csproj">
+      <Project>{589fee18-80a2-49d1-adfc-49d20891d0ba}</Project>
+      <Name>Allors.Workspace.Adapters</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj">
       <Project>{81679fa6-2e9b-42e3-aae3-210e7d21e82e}</Project>

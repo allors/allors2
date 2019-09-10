@@ -251,9 +251,13 @@
       <Project>{9f12fd7c-1abb-47f7-bc8e-215ef4188a2c}</Project>
       <Name>Allors.Database.Protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Remote.csproj">
-      <Project>{4e36531c-0e52-4e5e-a109-35d958c4fd07}</Project>
-      <Name>Allors.Workspace.Remote</Name>
+    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters.Remote\Allors.Workspace.Adapters.Remote.csproj">
+      <Project>{86131e07-2cbe-4ddd-8ec2-6702743ed33b}</Project>
+      <Name>Allors.Workspace.Adapters.Remote</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Adapters.csproj">
+      <Project>{f2d09194-eca3-4eef-94f2-d16fdb81c51a}</Project>
+      <Name>Allors.Workspace.Adapters</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj">
       <Project>{81679fa6-2e9b-42e3-aae3-210e7d21e82e}</Project>
@@ -266,10 +270,6 @@
     <ProjectReference Include="..\Meta\Workspace.Meta.csproj">
       <Project>{ec4af4c3-ec56-491a-a5b3-2d54938d32b1}</Project>
       <Name>Workspace.Meta</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Workspace\Workspace.csproj">
-      <Project>{3fa6effc-e02f-4be2-83c7-502d3adcc0e6}</Project>
-      <Name>Workspace</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

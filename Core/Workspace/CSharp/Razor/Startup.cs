@@ -1,6 +1,6 @@
 namespace Razor
 {
-    using Allors.Adapters.Object.SqlClient;
+    using Allors.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;

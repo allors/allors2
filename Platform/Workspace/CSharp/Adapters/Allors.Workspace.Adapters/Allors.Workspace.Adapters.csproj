@@ -9,9 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Database\Allors.Database.Protocol\Allors.Database.Protocol.csproj" />
-    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj" />
-    <ProjectReference Include="..\Meta\Workspace.Meta.csproj" />
+    <ProjectReference Include="..\..\Allors.Workspace\Allors.Workspace.csproj" />
   </ItemGroup>
 
 </Project>

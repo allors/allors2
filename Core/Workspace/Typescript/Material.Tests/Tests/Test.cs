@@ -8,7 +8,7 @@ namespace Tests
     using System;
     using System.Globalization;
     using Allors;
-    using Allors.Adapters.Object.SqlClient;
+    using Allors.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;

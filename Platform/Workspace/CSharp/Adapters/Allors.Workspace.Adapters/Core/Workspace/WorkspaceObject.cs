@@ -17,7 +17,7 @@ namespace Allors.Workspace
             this.Id = long.Parse(loadObject.I);
             this.Version = !string.IsNullOrEmpty(loadObject.V) ? long.Parse(loadObject.V) : 0;
             this.UserSecurityHash = loadResponse.UserSecurityHash;
-            this.ObjectType = (Class)this.Workspace.ObjectFactory.GetObjectTypeForTypeName(loadObject.T);
+            this.ObjectType = (IClass)this.Workspace.ObjectFactory.GetObjectTypeForTypeName(loadObject.T);
 
             this.Roles = new Dictionary<string, object>();
             this.Methods = new Dictionary<string, object>();

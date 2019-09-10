@@ -46,7 +46,7 @@ namespace Allors.Workspace
             }
         }
 
-        public bool HasChangedRoles(params RoleType[] roleTypes)
+        public bool HasChangedRoles(params IRoleType[] roleTypes)
         {
             if (roleTypes.Length == 0)
             {
@@ -95,7 +95,7 @@ namespace Allors.Workspace
             return this.WorkspaceObject.CanWrite(roleType.PropertyName);
         }
 
-        public bool CanExecute(MethodType methodType)
+        public bool CanExecute(IMethodType methodType)
         {
             if (this.NewId != null)
             {
@@ -128,7 +128,7 @@ namespace Allors.Workspace
 
                         if (value != null)
                         {
-                            var unit = (Unit)roleType.ObjectType;
+                            var unit = (IUnit)roleType.ObjectType;
 
                             switch (unit.UnitTag)
                             {
