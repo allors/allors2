@@ -16,7 +16,7 @@ namespace Allors.Workspace.Data
         /// <inheritdoc/>
         public IPropertyType PropertyType { get; set; }
 
-        public SessionObject Object { get; set; }
+        public ISessionObject Object { get; set; }
 
         public object Value { get; set; }
 

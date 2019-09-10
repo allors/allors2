@@ -15,7 +15,7 @@ namespace Allors.Workspace.Data
 
         public IPropertyType PropertyType { get; set; }
 
-        public SessionObject Object { get; set; }
+        public ISessionObject Object { get; set; }
 
         public string Parameter { get; set; }
 

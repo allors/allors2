@@ -26,7 +26,7 @@ namespace Allors.Workspace.Data
         {
             var addedComposite = treeNode.RoleType.AssociationType.ObjectType;
 
-            if (!((Composite)addedComposite).IsAssignableFrom(this.composite) && !this.composite.IsAssignableFrom((Composite)addedComposite))
+            if (!((IComposite)addedComposite).IsAssignableFrom(this.composite) && !this.composite.IsAssignableFrom((IComposite)addedComposite))
             {
                 throw new ArgumentException(treeNode.RoleType + " is not a valid tree node on " + this.composite + ".");
             }

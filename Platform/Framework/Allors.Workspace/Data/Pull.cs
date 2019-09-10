@@ -18,7 +18,7 @@ namespace Allors.Workspace.Data
 
         public IObjectType ObjectType { get; set; }
 
-        public SessionObject Object { get; set; }
+        public ISessionObject Object { get; set; }
 
         public string ObjectId { get; set; }
 

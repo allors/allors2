@@ -19,7 +19,7 @@ namespace Allors.Workspace.Data
 
         public IExtent Extent { get; set; }
 
-        public IEnumerable<SessionObject> Objects { get; set; }
+        public IEnumerable<ISessionObject> Objects { get; set; }
 
         public string Parameter { get; set; }
 
