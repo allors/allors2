@@ -20,6 +20,7 @@
   </ItemGroup> 
  
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.SqlClient\Allors.Database.Adapters.SqlClient.csproj" />
     <ProjectReference Include="..\..\Workspace\CSharp\Workspace.Local\Workspace.Local.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />

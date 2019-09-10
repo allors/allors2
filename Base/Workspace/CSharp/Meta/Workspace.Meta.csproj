@@ -1,10 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Core*\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj" />
   </ItemGroup>
 
 </Project>

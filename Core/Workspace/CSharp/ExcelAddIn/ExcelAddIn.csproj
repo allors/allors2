@@ -247,6 +247,18 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Platform\Database\Allors.Database.Protocol\Allors.Database.Protocol.csproj">
+      <Project>{9f12fd7c-1abb-47f7-bc8e-215ef4188a2c}</Project>
+      <Name>Allors.Database.Protocol</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Remote.csproj">
+      <Project>{4e36531c-0e52-4e5e-a109-35d958c4fd07}</Project>
+      <Name>Allors.Workspace.Remote</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj">
+      <Project>{81679fa6-2e9b-42e3-aae3-210e7d21e82e}</Project>
+      <Name>Allors.Workspace</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain\Workspace.Domain.csproj">
       <Project>{94474285-cafb-4a71-aed2-d6a80564f543}</Project>
       <Name>Workspace.Domain</Name>

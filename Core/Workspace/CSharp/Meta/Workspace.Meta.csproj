@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -6,6 +6,9 @@
     <Compile Remove="Export\**" />
     <EmbeddedResource Remove="Export\**" />
     <None Remove="Export\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj" />
   </ItemGroup>
 
 </Project>

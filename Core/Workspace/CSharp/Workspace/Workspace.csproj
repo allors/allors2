@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -9,6 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Platform\Database\Allors.Database.Protocol\Allors.Database.Protocol.csproj" />
+    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj" />
     <ProjectReference Include="..\Meta\Workspace.Meta.csproj" />
   </ItemGroup>
 
