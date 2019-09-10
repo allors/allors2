@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Platform\Framework\Allors.Workspace.Blazor.Bootstrap\Allors.Workspace.Blazor.Bootstrap.csproj" />
     <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj" />
   </ItemGroup>
 

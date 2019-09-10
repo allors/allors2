@@ -19,8 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
-    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Workspace\Allors.Workspace.csproj" />
     <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
     <ProjectReference Include="..\Domain\Workspace.Domain.csproj" />

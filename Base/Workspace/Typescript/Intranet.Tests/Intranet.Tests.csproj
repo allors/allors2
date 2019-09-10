@@ -36,10 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
-    <ProjectReference Include="..\..\..\..\Platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
-    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Database\Allors.Database.csproj" />
-    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Protocol\Allors.Protocol.csproj" />
     <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
     <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />

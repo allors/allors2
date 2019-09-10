@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Protocol\Allors.Protocol.csproj" />
-    <ProjectReference Include="..\..\..\..\Platform\Framework\Allors.Workspace\Allors.Workspace.csproj" />
     <ProjectReference Include="..\Meta\Workspace.Meta.csproj" />
   </ItemGroup>
 
