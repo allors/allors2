@@ -6,7 +6,7 @@ import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService } from '../../../../../../material';
 import { ObjectService, ObjectData } from '../../../../../../material/core/services/object';
 import { ISessionObject, RoleType, Fetch, Pull, Tree } from '../../../../../../framework';
-import { Step } from '../../../../../../../allors/framework/database/data/Step';
+import { Step } from '../../../../../../../allors/framework/data/Step';
 
 interface Row extends TableRow {
   object: ProductIdentification;
