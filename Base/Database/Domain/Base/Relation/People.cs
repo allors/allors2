@@ -32,6 +32,7 @@ namespace Allors.Domain
             setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
             setup.AddDependency(this.ObjectType, M.ContactMechanismPurpose.ObjectType);
             setup.AddDependency(this.ObjectType, M.InternalOrganisation.ObjectType);
+            setup.AddDependency(this.ObjectType, M.PersonalTitle.ObjectType);
         }
 
         protected override void BaseSecure(Security config)
