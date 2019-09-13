@@ -87,14 +87,10 @@ $endif$
 
 interfaceAssociationType() ::= <<
 
-$if(associationType.ObjectType.IsUnit)$
-        $associationType.PropertyName$ : $objectType_Name(associationType.ObjectType)$;
-$else$
 $if(associationType.IsOne)$
         $associationType.PropertyName$ : $objectType_Name(associationType.ObjectType)$;
 $else$
         $associationType.PropertyName$ : $objectType_Name(associationType.ObjectType)$[];
-$endif$
 $endif$
 >>
 
@@ -150,20 +146,16 @@ $endif$
 >>
 
 classAssociationType() ::= <<
-$if(associationType.ObjectType.IsUnit)$
-    $if(associationType.RelationType.IsDerived)$readonly $endif$$associationType.PropertyName$: $objectType_Name(associationType.ObjectType)$;
-$else$
 $if(associationType.IsOne)$
     $if(associationType.RelationType.IsDerived)$readonly $endif$$associationType.PropertyName$: $objectType_Name(associationType.ObjectType)$;
 $else$
     $if(associationType.RelationType.IsDerived)$readonly $endif$$associationType.PluralPropertyName$: $objectType_Name(associationType.ObjectType)$[];
 $endif$
-$endif$
 >>
 
 classMethodType() ::= <<
     CanExecute$methodType.Name$(): boolean;
-    
+
     $methodType.Name$: Method;
 >>
 

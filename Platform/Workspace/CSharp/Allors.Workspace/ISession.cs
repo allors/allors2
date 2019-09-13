@@ -5,6 +5,7 @@
 
 namespace Allors.Workspace
 {
+    using System.Collections.Generic;
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace.Meta;
 
@@ -21,5 +22,7 @@ namespace Allors.Workspace
         void PushResponse(PushResponse pushResponse);
 
         void Reset();
+
+        IEnumerable<INewSessionObject> GetAssociation(INewSessionObject @object, IAssociationType associationType);
     }
 }

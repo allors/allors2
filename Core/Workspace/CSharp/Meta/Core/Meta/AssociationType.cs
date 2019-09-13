@@ -55,7 +55,9 @@ namespace Allors.Workspace.Meta
             }
         }
 
-        public IObjectType ObjectType
+        IObjectType IPropertyType.ObjectType => this.ObjectType;
+
+        public IComposite ObjectType
         {
             get => this.objectType;
 

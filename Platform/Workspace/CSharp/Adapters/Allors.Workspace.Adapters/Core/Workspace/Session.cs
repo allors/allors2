@@ -129,5 +129,34 @@ namespace Allors.Workspace
                 throw new Exception("Not all new objects received ids");
             }
         }
+
+        public IEnumerable<INewSessionObject> GetAssociation(INewSessionObject @object, IAssociationType associationType)
+        {
+            var roleType = associationType.RoleType;
+
+            var associations = this.workspace.Get((IComposite)associationType.ObjectType).Select(v => this.Get(v.Id));
+            foreach (var association in associations)
+            {
+                if (association.CanRead(roleType))
+                {
+                    if (roleType.IsOne)
+                    {
+                        var role = (ISessionObject)association.Get(roleType);
+                        if (role != null && role.Id == @object.Id)
+                        {
+                            yield return association;
+                        }
+                    }
+                    else
+                    {
+                        var roles = (ISessionObject[])association.Get(roleType);
+                        if (roles != null && roles.Contains(association))
+                        {
+                            yield return association;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ TemplateName() ::= <<Allors C# Workspace Meta>>
 TemplateVersion() ::= <<1.0.5>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(meta) ::= <<
-$! 
+$!
 Copyright 2002-2016 Allors bvba.
 
 Dual Licensed under
@@ -23,12 +23,12 @@ GNU General Public License for more details.
 For more information visit http://www.allors.com/legal
 !$
 <generations>
-	<generation template="meta" output="meta.g.cs"/> 
-	<generation template="builder" output="builder.g.cs"/> 
-	<generation template="domains" output="domains.g.cs"/> 
-	<generation template="units" output="units.g.cs"/> 
-	<generation template="interfaces" output="interfaces.g.cs"/> 
-	<generation template="classes" output="classes.g.cs"/> 
+	<generation template="meta" output="meta.g.cs"/>
+	<generation template="builder" output="builder.g.cs"/>
+	<generation template="domains" output="domains.g.cs"/>
+	<generation template="units" output="units.g.cs"/>
+	<generation template="interfaces" output="interfaces.g.cs"/>
+	<generation template="classes" output="classes.g.cs"/>
 </generations>
 >>
 
@@ -55,7 +55,7 @@ $meta.WorkspaceClasses:{class|             $class.SingularName$ = Meta$class.Sin
 		}
 	}
 
-	public partial class MetaInterface 
+	public partial class MetaInterface
 	{
 		public void Extend()
 		{
@@ -65,7 +65,7 @@ $meta.WorkspaceClasses:{class|             $class.SingularName$ = Meta$class.Sin
 $meta.SortedDomains:{assembly|        internal virtual void $assembly.Name$Extend() {\}}; separator="\n"$
 	}
 
-	public partial class MetaClass 
+	public partial class MetaClass
 	{
 		public void Extend()
 		{
@@ -173,7 +173,7 @@ $if(property.RoleType.IsRequired)$		relationType.RoleType.IsRequired = $property
 $if(property.RoleType.Size)$		relationType.RoleType.Size = $property.RoleType.Size$;$endif$
 $if(property.RoleType.Precision)$		relationType.RoleType.Precision = $property.RoleType.Precision$;$endif$
 $if(property.RoleType.Scale)$		relationType.RoleType.Scale = $property.RoleType.Scale$;$endif$
-		Meta$composite.SingularName$.Instance.$property.RoleType.Name$ = relationType.RoleType; 
+		Meta$composite.SingularName$.Instance.$property.RoleType.Name$ = relationType.RoleType;
 	}
 >>
 
@@ -184,10 +184,10 @@ implementedRoles(class) ::= <<$class.WorkspaceInheritedRoleTypes:{roleType|$impl
 implementedRole(property) ::= <<            Meta$class.SingularName$.Instance.$property.RoleType.Name$ = Meta$class.SingularName$.Instance.Class.ConcreteRoleTypeByRoleType[Meta$property.AssociationType.ObjectType.SingularName$.Instance.$property.RoleType.Name$];>>
 
 associations(composite) ::= <<$composite.WorkspaceExclusiveAssociationTypes:{associationType|$association(property=associationType.RelationType)$}; separator="\n"$>>
-association(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationType.Name$ = Meta$property.AssociationType.SingularName$.Instance.$property.RoleType.Name$.AssociationType;>>
+association(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationType.PropertyName$ = Meta$property.AssociationType.SingularName$.Instance.$property.RoleType.Name$.AssociationType;>>
 
 inheritedassociations(composite) ::= <<$composite.WorkspaceInheritedAssociationTypes:{associationType|$inheritedassociation(property=associationType.RelationType)$}; separator="\n"$>>
-inheritedassociation(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationType.Name$ = Meta$property.AssociationType.SingularName$.Instance.$property.RoleType.Name$.AssociationType;>>
+inheritedassociation(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationType.PropertyName$ = Meta$property.AssociationType.SingularName$.Instance.$property.RoleType.Name$.AssociationType;>>
 
 exclusiveMethods(composite) ::= <<$composite.WorkspaceExclusiveMethods:{method|$definedMethod(method)$}; separator="\n"$>>
 definedMethod(method) ::= <<
@@ -196,7 +196,7 @@ definedMethod(method) ::= <<
 				method.ObjectType = Meta$method.ObjectType.SingularName$.Instance;
 				method.Name = "$method.Name$";
 				// TODO: Group and XmlDoc
-				Meta$composite.SingularName$.Instance.$method.Name$ = method; 
+				Meta$composite.SingularName$.Instance.$method.Name$ = method;
 			}
 >>
 
@@ -280,12 +280,12 @@ $interface.ExclusiveMethodTypes:{method|         public MethodType $method.Name$
 
 		// Inherited Methods
 $interface.InheritedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
-		
+
 		// Roles
 $interface.RoleTypes:{property|         public RoleType $property.Name$;}; separator="\n"$
 
 		// Associations
-$interface.AssociationTypes:{property|         public AssociationType $property.Name$;}; separator="\n"$
+$interface.AssociationTypes:{property|         public AssociationType $property.PropertyName$;}; separator="\n"$
 
 		internal Meta$interface.SingularName$(MetaPopulation metaPopulation)
         {
@@ -326,7 +326,7 @@ $class.InheritedMethods:{method|         public MethodType $method.Name$;}; sepa
 $class.RoleTypes:{property|         public RoleType $property.Name$;}; separator="\n"$
 
 		// Associations
-$class.AssociationTypes:{property|         public AssociationType $property.Name$;}; separator="\n"$
+$class.AssociationTypes:{property|         public AssociationType $property.PropertyName$;}; separator="\n"$
 
 		internal Meta$class.SingularName$(MetaPopulation metaPopulation)
         {

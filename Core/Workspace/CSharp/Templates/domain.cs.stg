@@ -40,16 +40,20 @@ namespace Allors.Workspace.Domain
 $interface.XmlDocComment$
 	public partial interface $interface.name$ : ISessionObject $if(interface.WorkspaceDirectSupertypes)$ $interface.WorkspaceDirectSupertypes:{directSupertype|, $directSupertype.SingularName$}$ $endif$
 	{
-$interface.WorkspaceExclusiveRoleTypes:{roleType|$interfaceExclusiveRoleType_Interface()$}$
+$interface.WorkspaceExclusiveRoleTypes:{roleType|$interfaceRoleType()$}$
+
+$interface.WorkspaceExclusiveAssociationTypes:{associationType|$interfaceAssociationType()$}; separator="\n"$
+
+$interface.workspaceMethodTypes:{methodType|$interfaceMethodType()$}; separator="\n"$
 	}
 }
 >>
 
-interfaceExclusiveRoleType_Interface() ::= <<
+interfaceRoleType() ::= <<
 $\n$
 $roleType.RelationType.XmlDocComment$
 $if(roleType.ObjectType.IsUnit)$
-		$roleType_ObjectType(roleType)$ $roleType.SingularPropertyName$ 
+		$roleType_ObjectType(roleType)$ $roleType.SingularPropertyName$
 		{
 			get;
 $if(!roleType.RelationType.IsDerived)$
@@ -66,7 +70,7 @@ $endif$
 $else$
 $if(roleType.IsMany)$
 		$roleType_ObjectType(roleType)$[] $roleType.PluralPropertyName$
-		{ 
+		{
 			get;
 $if(!roleType.RelationType.IsDerived)$
 			set;
@@ -87,7 +91,7 @@ $endif$
 		void Remove$roleType.PluralPropertyName$();
 $else$
 		$roleType_ObjectType(roleType)$ $roleType.SingularPropertyName$
-		{ 
+		{
 			get;
 $if(!roleType.RelationType.IsDerived)$
 			set;
@@ -104,6 +108,27 @@ $if(!roleType.RelationType.IsDerived)$
 $endif$
 $endif$
 $endif$
+>>
+
+interfaceAssociationType() ::= <<
+
+$if(associationType.IsOne)$
+		$objectType_Name(associationType.ObjectType)$ $associationType.SingularPropertyName$
+		{
+			get;
+		}
+$else$
+		$objectType_Name(associationType.ObjectType)$[] $associationType.PluralPropertyName$
+		{
+			get;
+		}
+$endif$
+>>
+
+interfaceMethodType() ::= <<
+        bool CanExecute$methodType.Name$ { get; }
+
+        Method $methodType.Name$ { get; }
 >>
 
 castClass(meta, objectType) ::= <<
@@ -130,10 +155,10 @@ $class.XmlDocComment$
 				return Allors.Workspace.Meta.Meta$class.SingularName$.Instance;
 			}
 		}
-	
+
 		public static $class.name$ Instantiate (Session allorsSession, long allorsObjectId)
 		{
-			return ($class.name$) allorsSession.Get(allorsObjectId);		
+			return ($class.name$) allorsSession.Get(allorsObjectId);
 		}
 
 		public override bool Equals(object obj)
@@ -155,13 +180,15 @@ $class.XmlDocComment$
 
 $class.workspaceConcreteRoleTypes:{concreteRoleType|$classConcreteRoleType_Class()$}$
 
+$class.workspaceAssociationTypes:{associationType|$classAssociationType()$}; separator="\n"$
+
 $class.workspaceMethodTypes:{methodType|$classMethodType()$}; separator="\n"$
 	}
 }
 >>
 
 classMethodType() ::= <<
-			public bool CanExecute$methodType.Name$ 
+			public bool CanExecute$methodType.Name$
 			{
 				get
 				{
@@ -169,7 +196,7 @@ classMethodType() ::= <<
 				}
 			}
 
-			public Method $methodType.Name$ 
+			public Method $methodType.Name$
 			{
 				get
 				{
@@ -179,7 +206,7 @@ classMethodType() ::= <<
 >>
 
 classConcreteRoleType_Class() ::= <<
-		public bool CanRead$concreteRoleType.RoleType.PropertyName$ 
+		public bool CanRead$concreteRoleType.RoleType.PropertyName$
 		{
 			get
 			{
@@ -187,7 +214,7 @@ classConcreteRoleType_Class() ::= <<
 			}
 		}
 
-		public bool CanWrite$concreteRoleType.RoleType.PropertyName$ 
+		public bool CanWrite$concreteRoleType.RoleType.PropertyName$
 		{
 			get
 			{
@@ -199,13 +226,13 @@ $\n$
 $concreteRoleType.RoleType.RelationType.XmlDocComment$
 $if(concreteRoleType.RoleType.ObjectType.IsUnit)$
 $if(concreteRoleType.IsRequiredOverride)$
-$if(concreteRoleType.RoleType.ObjectType.IsBoolean || 
-	concreteRoleType.RoleType.ObjectType.IsDateTime || 
-	concreteRoleType.RoleType.ObjectType.IsDecimal || 
-	concreteRoleType.RoleType.ObjectType.IsFloat || 
-	concreteRoleType.RoleType.ObjectType.IsInteger || 
+$if(concreteRoleType.RoleType.ObjectType.IsBoolean ||
+	concreteRoleType.RoleType.ObjectType.IsDateTime ||
+	concreteRoleType.RoleType.ObjectType.IsDecimal ||
+	concreteRoleType.RoleType.ObjectType.IsFloat ||
+	concreteRoleType.RoleType.ObjectType.IsInteger ||
 	concreteRoleType.RoleType.ObjectType.IsUnique)$
-		$roleType_ObjectType(concreteRoleType.RoleType)$ $concreteRoleType.RoleType.AssociationType.ObjectType.Name$.$concreteRoleType.RoleType.SingularPropertyName$ 
+		$roleType_ObjectType(concreteRoleType.RoleType)$ $concreteRoleType.RoleType.AssociationType.ObjectType.Name$.$concreteRoleType.RoleType.SingularPropertyName$
 		{
 			get
 			{
@@ -218,7 +245,7 @@ $if(concreteRoleType.RoleType.ObjectType.IsBoolean ||
 		}
 $endif$
 $endif$
-		virtual public $concreteRoleType_ObjectType(concreteRoleType)$ $concreteRoleType.RoleType.SingularPropertyName$ 
+		virtual public $concreteRoleType_ObjectType(concreteRoleType)$ $concreteRoleType.RoleType.SingularPropertyName$
 		{
 			get
 			{
@@ -244,7 +271,7 @@ $endif$
 $else$
 $if(concreteRoleType.RoleType.IsMany)$
 		virtual public $concreteRoleType_ObjectType(concreteRoleType)$[] $concreteRoleType.RoleType.PluralPropertyName$
-		{ 
+		{
 			get
 			{
 				return ($concreteRoleType_ObjectType(concreteRoleType)$[])this.Get(Meta.$concreteRoleType.RoleType.PropertyName$);
@@ -279,7 +306,7 @@ $if(concreteRoleType.RoleType.IsMany)$
 		}
 $else$
 		virtual public $concreteRoleType_ObjectType(concreteRoleType)$ $concreteRoleType.RoleType.SingularPropertyName$
-		{ 
+		{
 			get
 			{
 				return ($concreteRoleType_ObjectType(concreteRoleType)$) this.Get(Meta.$concreteRoleType.RoleType.PropertyName$);
@@ -303,6 +330,27 @@ $else$
 			this.Set(Meta.$concreteRoleType.RoleType.PropertyName$, null);
 		}
 $endif$
+$endif$
+>>
+
+classAssociationType() ::= <<
+
+$if(associationType.IsOne)$
+		public $objectType_Name(associationType.ObjectType)$ $associationType.SingularPropertyName$
+		{
+            get
+            {
+                return this.GetAssociation<$objectType_Name(associationType.ObjectType)$>(Meta.$associationType.PropertyName$);
+            }
+		}
+$else$
+		public $objectType_Name(associationType.ObjectType)$[] $associationType.PluralPropertyName$
+		{
+            get
+            {
+                return this.GetAssociations<$objectType_Name(associationType.ObjectType)$>(Meta.$associationType.PropertyName$);
+            }
+		}
 $endif$
 >>
 

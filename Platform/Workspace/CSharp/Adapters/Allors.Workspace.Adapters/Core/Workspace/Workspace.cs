@@ -11,6 +11,7 @@ namespace Allors.Workspace
 
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Sync;
+    using Allors.Workspace.Meta;
 
     public class Workspace : IWorkspace
     {
@@ -58,6 +59,12 @@ namespace Allors.Workspace
             }
 
             return workspaceObject;
+        }
+
+        internal IEnumerable<IWorkspaceObject> Get(IComposite objectType)
+        {
+            var classes = new HashSet<IClass>(objectType.Classes);
+            return this.workspaceObjectById.Where(v => classes.Contains(v.Value.ObjectType)).Select(v => v.Value);
         }
     }
 }

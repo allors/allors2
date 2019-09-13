@@ -284,6 +284,10 @@ namespace Allors.Workspace
             this.Set(roleType, roles);
         }
 
+        public T GetAssociation<T>(IAssociationType associationType) => this.Session.GetAssociation(this, associationType).Cast<T>().FirstOrDefault();
+
+        public T[] GetAssociations<T>(IAssociationType associationType) => this.Session.GetAssociation(this, associationType).Cast<T>().ToArray();
+
         public PushRequestObject Save()
         {
             if (this.changedRoleByRoleType != null)
