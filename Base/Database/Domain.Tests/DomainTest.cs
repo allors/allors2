@@ -8,7 +8,7 @@ namespace Allors
 {
     using System;
     using System.Linq;
-    using Allors.Adapters.Memory;
+    using Allors.Database.Adapters.Memory;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
@@ -52,7 +52,7 @@ namespace Allors
                 ObjectFactory = this.ObjectFactory,
             };
 
-            var database = new Database(serviceProvider, configuration);
+            var database = new Database.Adapters.Memory.Database(serviceProvider, configuration);
             this.Setup(database, populate);
         }
 

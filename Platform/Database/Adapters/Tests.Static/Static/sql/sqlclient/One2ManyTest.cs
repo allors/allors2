@@ -3,18 +3,14 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Npgsql.ReadCommitted
+namespace Allors.Database.Adapters.SqlClient
 {
-    using Xunit;
-    using System;
     using Adapters;
+    using System;
 
-    [Collection(Fixture.Collection)]
     public class One2ManyTest : Adapters.One2ManyTest, IDisposable
     {
-        private readonly Profile profile;
-
-        public One2ManyTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
+        private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 

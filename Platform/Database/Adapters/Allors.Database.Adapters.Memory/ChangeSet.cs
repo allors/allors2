@@ -6,11 +6,11 @@
 //   Defines the AllorsChangeSetMemory type.
 // </summary>
 
-namespace Allors.Adapters.Memory
+namespace Allors.Database.Adapters.Memory
 {
     using System.Collections.Generic;
 
-    using Allors.Adapters;
+    using Adapters;
 
     using Allors.Meta;
 

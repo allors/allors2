@@ -6,10 +6,10 @@
 //   Defines the AllorsPredicateRoleGreaterThanValueMemory type.
 // </summary>
 
-namespace Allors.Adapters.Memory
+namespace Allors.Database.Adapters.Memory
 {
     using System;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
 
     internal sealed class RoleGreaterThan : Predicate

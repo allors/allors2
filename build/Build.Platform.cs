@@ -31,7 +31,7 @@ partial class Build
         {
             DotNetTest(s => s
                 .SetProjectFile(Paths.PlatformAdaptersStaticTests)
-                .SetFilter("FullyQualifiedName~Allors.Adapters.Memory")
+                .SetFilter("FullyQualifiedName~Allors.Database.Adapters.Memory")
                 .SetLogger("trx;LogFileName=AdaptersMemory.trx")
                 .SetResultsDirectory(Paths.ArtifactsTests));
         });
@@ -45,7 +45,7 @@ partial class Build
                 database.Restart();
                 DotNetTest(s => s
                     .SetProjectFile(Paths.PlatformAdaptersStaticTests)
-                    .SetFilter("FullyQualifiedName~Allors.Adapters.Object.SqlClient")
+                    .SetFilter("FullyQualifiedName~Allors.Database.Adapters.SqlClient")
                     .SetLogger("trx;LogFileName=AdaptersSqlClient.trx")
                     .SetResultsDirectory(Paths.ArtifactsTests));
             }
@@ -57,7 +57,7 @@ partial class Build
         {
             DotNetTest(s => s
                .SetProjectFile(Paths.PlatformAdaptersStaticTests)
-               .SetFilter("FullyQualifiedName~Allors.Adapters.Object.Npgsql")
+               .SetFilter("FullyQualifiedName~Allors.Database.Adapters.Npgsql")
                .SetLogger("trx;LogFileName=AdaptersNpgsql.trx")
                .SetResultsDirectory(Paths.ArtifactsTests));
         });

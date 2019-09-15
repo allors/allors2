@@ -3,17 +3,23 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.SqlClient
+namespace Allors.Database.Adapters.SqlClient
 {
     using System;
     using Allors;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Domain;
     using Allors.Meta;
     using Xunit;
 
-    public abstract class SqlClientTest
+    public class SqlClientTest : IDisposable
     {
+        private readonly Profile profile = new Profile();
+
+        protected IProfile Profile => this.profile;
+
+        public void Dispose() => this.profile.Dispose();
+
         #region Population
         protected C1 c1A;
         protected C1 c1B;
@@ -32,8 +38,6 @@ namespace Allors.Adapters.SqlClient
         protected C4 c4C;
         protected C4 c4D;
         #endregion
-
-        protected abstract IProfile Profile { get; }
 
         protected ISession Session => this.Profile.Session;
 

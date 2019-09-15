@@ -19,10 +19,10 @@
 // <summary>Defines the Default type.</summary>
 //------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Memory
+namespace Allors.Database.Adapters.Memory
 {
     using Allors;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
     using Xunit;
     

@@ -16,7 +16,7 @@
 
 using Allors;
 
-namespace Allors.Adapters
+namespace Allors.Database.Adapters
 {
     using System;
 

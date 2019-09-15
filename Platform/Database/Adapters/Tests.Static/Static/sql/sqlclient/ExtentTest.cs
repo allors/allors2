@@ -3,8 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.SqlClient
+namespace Allors.Database.Adapters.SqlClient
 {
+    using System;
     using System.Linq;
 
     using Allors;
@@ -13,8 +14,17 @@ namespace Allors.Adapters.SqlClient
 
     using Xunit;
 
-    public abstract class ExtentTest : Adapters.ExtentTest
+    public abstract class ExtentTest : Adapters.ExtentTest, IDisposable
     {
+        private readonly Profile profile = new Profile();
+
+        protected override IProfile Profile => this.profile;
+
+        public override void Dispose() => this.profile.Dispose();
+
+        protected override ISession CreateSession() => this.profile.CreateSession();
+
+
         [Fact]
         public override void SortOne()
         {

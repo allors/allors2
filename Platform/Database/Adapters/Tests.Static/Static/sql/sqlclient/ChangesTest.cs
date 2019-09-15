@@ -1,13 +1,14 @@
-// <copyright file="UnitTest.cs" company="Allors bvba">
+// <copyright file="ChangesTest.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.SqlClient.Snapshot
+namespace Allors.Database.Adapters.SqlClient
 {
-    using Allors.Adapters;
+    using Adapters;
+    using System;
 
-    public class UnitTest : SqlClient.UnitTest
+    public class ChangesTest : Adapters.ChangesTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

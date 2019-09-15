@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Npgsql
+namespace Allors.Database.Adapters.Npgsql
 {
     using System;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
 
     internal sealed class RoleEqualsValue : Predicate

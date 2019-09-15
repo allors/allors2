@@ -6,11 +6,11 @@
 //   Defines the AllorsChangeSetMemory type.
 // </summary>
 
-namespace Allors.Adapters.Npgsql
+namespace Allors.Database.Adapters.Npgsql
 {
     using System.Collections.Generic;
 
-    using Allors.Adapters;
+    using Adapters;
 
     using Allors.Meta;
 

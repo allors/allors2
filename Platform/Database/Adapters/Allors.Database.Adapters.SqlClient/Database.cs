@@ -3,7 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.SqlClient
+namespace Allors.Database.Adapters.SqlClient
 {
     using System;
     using System.Collections.Generic;
@@ -12,8 +12,8 @@ namespace Allors.Adapters.SqlClient
     using System.Linq;
     using System.Xml;
     using System.Xml.Serialization;
+    using Adapters.Schema;
     using Allors;
-    using Allors.Adapters.Schema;
     using Allors.Meta;
     using Caching;
     using Microsoft.SqlServer.Server;

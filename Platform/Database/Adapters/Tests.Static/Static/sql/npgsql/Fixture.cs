@@ -3,12 +3,17 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Npgsql.ReadCommitted
+namespace Allors.Database.Adapters.Npgsql
 {
     using System;
     using System.Collections.Generic;
     using MysticMind.PostgresEmbed;
     using Xunit;
+
+    [CollectionDefinition(Fixture.Collection)]
+    public class Collection : ICollectionFixture<Fixture>
+    {
+    }
 
     public class Fixture : IDisposable
     {
@@ -39,10 +44,5 @@ namespace Allors.Adapters.Npgsql.ReadCommitted
             this.Server?.Stop();
             this.Server = null;
         }
-    }
-
-    [CollectionDefinition(Fixture.Collection)]
-    public class Collection : ICollectionFixture<Fixture>
-    {
     }
 }

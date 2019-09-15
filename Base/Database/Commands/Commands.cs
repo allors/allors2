@@ -8,7 +8,7 @@ namespace Commands
     using System;
     using System.Data;
     using System.Globalization;
-    using Allors.Adapters.SqlClient;
+    using Allors.Database.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;

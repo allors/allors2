@@ -3,7 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.SqlClient.Caching
+namespace Allors.Database.Adapters.SqlClient.Caching
 {
     using Allors.Meta;
 

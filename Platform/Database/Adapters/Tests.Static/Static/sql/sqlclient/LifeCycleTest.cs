@@ -3,19 +3,15 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Npgsql.ReadCommitted
+namespace Allors.Database.Adapters.SqlClient
 {
     using System;
-    using Adapters;
     using Allors;
-    using Xunit;
+    using Adapters;
 
-    [Collection(Fixture.Collection)]
     public class LifeCycleTest : Adapters.LifeCycleTest, IDisposable
     {
-        private readonly Profile profile;
-
-        public LifeCycleTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
+        private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 

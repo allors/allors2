@@ -9,7 +9,7 @@ namespace Allors.Api
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Adapters;
+    using Database.Adapters;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Remote.Push;

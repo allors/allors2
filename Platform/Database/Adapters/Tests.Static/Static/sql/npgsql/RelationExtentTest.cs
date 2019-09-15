@@ -1,20 +1,20 @@
-// <copyright file="ChangesTest.cs" company="Allors bvba">
+// <copyright file="RelationExtentTest.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Npgsql.ReadCommitted
+namespace Allors.Database.Adapters.Npgsql
 {
-    using System;
-    using Allors.Adapters;
     using Xunit;
+    using System;
+    using Adapters;
 
     [Collection(Fixture.Collection)]
-    public class ChangesTest : Adapters.ChangesTest, IDisposable
+    public class RelationExtentTest : Adapters.RelationExtentTest, IDisposable
     {
         private readonly Profile profile;
 
-        public ChangesTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
+        public RelationExtentTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
 
         protected override IProfile Profile => this.profile;
 

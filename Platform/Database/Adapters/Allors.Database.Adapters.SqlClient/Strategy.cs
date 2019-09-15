@@ -6,13 +6,13 @@
 //   Defines the AllorsStrategySql type.
 // </summary>
 
-namespace Allors.Adapters.SqlClient
+namespace Allors.Database.Adapters.SqlClient
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Adapters;
+    using Adapters;
 
     using Allors.Meta;
 

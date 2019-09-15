@@ -6,9 +6,9 @@
 //   Defines the Default type.
 // </summary>
 
-namespace Allors.Adapters.SqlClient.Snapshot
+namespace Allors.Database.Adapters.SqlClient
 {
-    using Allors.Adapters;
+    using Adapters;
     using System;
 
     public class Many2ManyTest : Adapters.Many2ManyTest, IDisposable

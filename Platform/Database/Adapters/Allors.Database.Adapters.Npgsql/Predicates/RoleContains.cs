@@ -6,9 +6,9 @@
 //   Defines the AllorsPredicateRoleContainsSql type.
 // </summary>
 
-namespace Allors.Adapters.Npgsql
+namespace Allors.Database.Adapters.Npgsql
 {
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
 
     internal sealed class RoleContains : Predicate

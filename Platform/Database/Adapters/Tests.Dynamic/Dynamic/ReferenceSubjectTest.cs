@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters
+namespace Allors.Database.Adapters
 {
     public abstract class ReferenceSubjectTest : ReferenceTest
     {

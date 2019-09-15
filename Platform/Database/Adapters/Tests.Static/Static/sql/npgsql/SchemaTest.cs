@@ -3,7 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Npgsql.ReadCommitted
+namespace Allors.Database.Adapters.Npgsql
 {
     // [CollectionDefinition(Collection.Npgsql)]
     // public class SchemaTest : Adapters.SchemaTest, IDisposable

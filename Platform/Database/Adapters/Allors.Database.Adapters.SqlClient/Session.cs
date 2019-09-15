@@ -4,7 +4,7 @@
 // </copyright>
 // <summary>Defines the Session type.</summary>
 
-namespace Allors.Adapters.SqlClient
+namespace Allors.Database.Adapters.SqlClient
 {
     using System;
     using System.Collections.Generic;

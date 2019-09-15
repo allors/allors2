@@ -11,7 +11,7 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors;
-    using Allors.Adapters;
+    using Database.Adapters;
     using Allors.Meta;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]

@@ -3,9 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.SqlClient.Snapshot
+namespace Allors.Database.Adapters.SqlClient
 {
-    using Allors.Adapters;
+    using Adapters;
     using System;
 
     public class Many2OneTest : Adapters.Many2OneTest, IDisposable

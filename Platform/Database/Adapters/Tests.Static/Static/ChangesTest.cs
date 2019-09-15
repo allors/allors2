@@ -4,7 +4,7 @@
 // </copyright>
 // <summary>Defines the ExtentTest type.</summary>
 
-namespace Allors.Adapters
+namespace Allors.Database.Adapters
 {
     using System;
     using System.Linq;

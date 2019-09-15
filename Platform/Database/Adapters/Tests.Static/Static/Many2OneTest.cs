@@ -6,7 +6,7 @@
 //   Defines the Default type.
 // </summary>
 
-namespace Allors.Adapters
+namespace Allors.Database.Adapters
 {
     using System;
 

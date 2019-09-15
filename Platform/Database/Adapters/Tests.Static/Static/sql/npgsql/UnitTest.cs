@@ -5,7 +5,7 @@
 // <summary>Defines the Default type.</summary>
 //------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters.Npgsql
+namespace Allors.Database.Adapters.Npgsql
 {
     using Allors.Domain;
 
@@ -13,6 +13,14 @@ namespace Allors.Adapters.Npgsql
 
     public abstract class UnitTest : Adapters.UnitTest
     {
+        private readonly Profile profile;
+
+        public UnitTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
+
+        protected override IProfile Profile => this.profile;
+
+        public override void Dispose() => this.profile.Dispose();
+
         protected override bool UseFloatMaximum => false;
 
         protected override bool UseFloatMinimum => false;

@@ -14,7 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters
+namespace Allors.Database.Adapters
 {
     using System;
     using System.Collections;
@@ -24,7 +24,7 @@ namespace Allors.Adapters
     using System.Xml;
 
     using Allors;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
 
     public abstract class Test : IDisposable

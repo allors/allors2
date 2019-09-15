@@ -6,9 +6,9 @@
 //   Defines the AllorsPredicateRoleContainsSql type.
 // </summary>
 
-namespace Allors.Adapters.SqlClient
+namespace Allors.Database.Adapters.SqlClient
 {
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
 
     internal sealed class RoleContains : Predicate

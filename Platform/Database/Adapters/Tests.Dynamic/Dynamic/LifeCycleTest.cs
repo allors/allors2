@@ -16,14 +16,14 @@
 
 using Xunit;
 
-namespace Allors.Adapters
+namespace Allors.Database.Adapters
 {
     using System;
     using System.Collections;
     using System.Globalization;
     using System.Linq;
     using Allors;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
     using Xunit;
 

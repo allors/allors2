@@ -6,12 +6,11 @@
 namespace Allors.Api
 {
     using System.Text;
-    using Allors.Adapters.SqlClient;
+    using Allors.Database.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
     using Identity;
-    using Identity.Models;
     using Identity.Services;
     using JSNLog;
     using Microsoft.AspNetCore.Authentication.JwtBearer;

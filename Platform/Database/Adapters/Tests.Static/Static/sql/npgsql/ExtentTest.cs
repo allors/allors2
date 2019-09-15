@@ -3,7 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Npgsql
+namespace Allors.Database.Adapters.Npgsql
 {
     using System.Linq;
 
@@ -15,6 +15,16 @@ namespace Allors.Adapters.Npgsql
 
     public abstract class ExtentTest : Adapters.ExtentTest
     {
+        private readonly Profile profile;
+
+        public ExtentTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
+
+        protected override IProfile Profile => this.profile;
+
+        public override void Dispose() => this.profile.Dispose();
+
+        protected override ISession CreateSession() => this.profile.CreateSession();
+
         [Fact]
         public override void SortOne()
         {

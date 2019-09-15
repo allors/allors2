@@ -3,14 +3,14 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Npgsql
+namespace Allors.Database.Adapters.Npgsql
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
     using System.Xml;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
     using global::Npgsql;
     using NpgsqlTypes;

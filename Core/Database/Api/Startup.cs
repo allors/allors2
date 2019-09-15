@@ -6,7 +6,7 @@
 namespace Allors.Api
 {
     using System.Text;
-    using Allors.Adapters.SqlClient;
+    using Database.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;

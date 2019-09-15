@@ -14,12 +14,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters
+namespace Allors.Database.Adapters
 {
     using System;
 
     using Allors;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
 
     public abstract class Profile : IDisposable

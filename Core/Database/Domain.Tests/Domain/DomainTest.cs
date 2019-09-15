@@ -10,12 +10,12 @@ namespace Tests
     using System.IO;
     using System.Reflection;
     using Allors;
-    using Allors.Adapters.Memory;
+    using Allors.Database.Adapters.Memory;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
-    using Configuration = Allors.Adapters.Memory.Configuration;
+    using Configuration = Allors.Database.Adapters.Memory.Configuration;
     using ObjectFactory = Allors.ObjectFactory;
 
     public class DomainTest : IDisposable

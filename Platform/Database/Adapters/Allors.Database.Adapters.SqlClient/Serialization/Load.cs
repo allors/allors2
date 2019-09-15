@@ -3,16 +3,14 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.SqlClient
+namespace Allors.Database.Adapters.SqlClient
 {
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
     using System.Linq;
-
-    using Allors.Adapters;
-
-    using Allors.Adapters.Schema;
+    using Adapters.Schema;
+    using Adapters;
     using Allors.Meta;
 
     internal class Load

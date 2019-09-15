@@ -3,11 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Memory
+namespace Allors.Database.Adapters.Memory
 {
     using System;
     using Allors;
-    using Allors.Adapters;
+    using Adapters;
     using Xunit;
 
     public class LifeCycleTest : Adapters.LifeCycleTest, IDisposable

@@ -8,7 +8,7 @@ namespace Allors
 {
     using System.Collections.Generic;
 
-    using Allors.Adapters;
+    using Database.Adapters;
     using Allors.Meta;
 
     public static partial class IChangeSetExtensions

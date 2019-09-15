@@ -6,10 +6,10 @@
 //   Defines the AllorsPredicateRoleEqualsRoleSql type.
 // </summary>
 
-namespace Allors.Adapters.Npgsql
+namespace Allors.Database.Adapters.Npgsql
 {
     using System;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
 
     internal sealed class RoleEqualsRole : Predicate

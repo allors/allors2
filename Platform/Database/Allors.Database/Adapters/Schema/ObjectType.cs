@@ -3,7 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Adapters.Schema
+namespace Allors.Database.Adapters.Schema
 {
     using System;
     using System.Xml.Serialization;

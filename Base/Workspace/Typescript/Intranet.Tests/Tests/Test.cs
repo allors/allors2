@@ -10,7 +10,7 @@ namespace Tests
     using System.IO;
     using System.Xml;
     using Allors;
-    using Allors.Adapters.SqlClient;
+    using Allors.Database.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;

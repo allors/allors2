@@ -14,10 +14,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Adapters
+namespace Allors.Database.Adapters
 {
     using Allors;
-    using Allors.Adapters;
+    using Adapters;
     using Allors.Meta;
 
     public abstract class ReferenceProxyTest : ReferenceTest
