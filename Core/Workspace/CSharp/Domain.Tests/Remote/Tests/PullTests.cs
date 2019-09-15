@@ -20,16 +20,18 @@ namespace Tests.Remote
 
             var pull = new Pull
             {
-                Extent = new Filter(M.Person.ObjectType),
+                Extent = new Filter(M.C1.ObjectType),
             };
 
             var result = context.Load(pull).Result;
 
-            var people = result.GetCollection<Person>("People");
+            var c1s = result.GetCollection<C1>("C1s");
+            Assert.Equal(4, c1s.Length);
 
             result = context.Load(pull).Result;
 
-            var people2 = result.GetCollection<Person>("People");
+            var c1s2 = result.GetCollection<C1>("C1s");
+            Assert.Equal(4, c1s2.Length);
         }
     }
 }

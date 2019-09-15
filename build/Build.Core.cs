@@ -213,20 +213,44 @@ partial class Build
             }
         });
 
+    Target CoreWorkspaceCSharpDomainTests => _ => _
+        .DependsOn(CorePublishApi)
+        .DependsOn(CorePublishCommands)
+        .Executes(async () =>
+        {
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Populate(Paths.ArtifactsCoreCommands);
+                using (var server = new Api(Paths.ArtifactsCoreApi))
+                {
+                    await server.Ready();
+                    DotNetTest(s => s
+                        .SetProjectFile(Paths.CoreWorkspaceCSharpDomainTests)
+                        .SetLogger("trx;LogFileName=CoreWorkspaceCSharpDomainTests.trx")
+                        .SetResultsDirectory(Paths.ArtifactsTests));
+                }
+            }
+        });
+
     Target CoreDatabaseTest => _ => _
         .DependsOn(CoreDatabaseTestDomain)
         .DependsOn(CoreDatabaseTestApi);
 
-    Target CoreWorkspaceTest => _ => _
+    Target CoreWorkspaceTypescriptTest => _ => _
         .DependsOn(CoreWorkspaceTypescriptDomain)
         .DependsOn(CoreWorkspaceTypescriptPromise)
         .DependsOn(CoreWorkspaceTypescriptAngular)
         .DependsOn(CoreWorkspaceTypescriptMaterial)
         .DependsOn(CoreWorkspaceTypescriptMaterialTests);
 
+    Target CoreWorkspaceCSharpTest => _ => _
+        .DependsOn(CoreWorkspaceCSharpDomainTests);
+
     Target CoreTest => _ => _
         .DependsOn(CoreDatabaseTest)
-        .DependsOn(CoreWorkspaceTest);
+        .DependsOn(CoreWorkspaceCSharpTest)
+        .DependsOn(CoreWorkspaceTypescriptTest);
 
     Target Core => _ => _
         .DependsOn(Clean)

@@ -28,4 +28,7 @@ public partial class Paths
         CoreWorkspaceTypescriptMaterial,
         CoreWorkspaceTypescriptAutotestAngular
     };
+
+    public AbsolutePath CoreWorkspaceCSharpDomainTests => Core / "Workspace/CSharp/Domain.Tests";
+
 }
