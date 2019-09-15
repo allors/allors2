@@ -150,7 +150,7 @@ namespace Allors.Workspace
                     else
                     {
                         var roles = (ISessionObject[])association.Get(roleType);
-                        if (roles != null && roles.Contains(association))
+                        if (roles != null && roles.Contains(@object))
                         {
                             yield return association;
                         }
