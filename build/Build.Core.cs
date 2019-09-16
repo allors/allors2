@@ -247,10 +247,13 @@ partial class Build
     Target CoreWorkspaceCSharpTest => _ => _
         .DependsOn(CoreWorkspaceCSharpDomainTests);
 
-    Target CoreTest => _ => _
-        .DependsOn(CoreDatabaseTest)
+    Target CoreWorkspaceTest => _ => _
         .DependsOn(CoreWorkspaceCSharpTest)
         .DependsOn(CoreWorkspaceTypescriptTest);
+
+    Target CoreTest => _ => _
+        .DependsOn(CoreDatabaseTest)
+        .DependsOn(CoreWorkspaceTest);
 
     Target Core => _ => _
         .DependsOn(Clean)
