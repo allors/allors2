@@ -98,16 +98,16 @@ namespace Allors.Domain.Print.ProductQuoteModel
                     imageByImageName.Add(this.PrimaryPhotoName, serialisedItem.PrimaryPhoto.MediaContent.Data);
                 }
 
-                if (serialisedItem.Photos.Count > 0)
+                if (serialisedItem.AdditionalPhotos.Count > 0)
                 {
                     this.SecondaryPhotoName1 = $"{item.Id}_secondaryPhoto1";
-                    imageByImageName.Add(this.SecondaryPhotoName1, serialisedItem.Photos[0].MediaContent.Data);
+                    imageByImageName.Add(this.SecondaryPhotoName1, serialisedItem.AdditionalPhotos[0].MediaContent.Data);
                 }
 
-                if (serialisedItem.Photos.Count > 1)
+                if (serialisedItem.AdditionalPhotos.Count > 1)
                 {
                     this.SecondaryPhotoName2 = $"{item.Id}_secondaryPhoto2";
-                    imageByImageName.Add(this.SecondaryPhotoName2, serialisedItem.Photos[1].MediaContent.Data);
+                    imageByImageName.Add(this.SecondaryPhotoName2, serialisedItem.AdditionalPhotos[1].MediaContent.Data);
                 }
             }
         }
