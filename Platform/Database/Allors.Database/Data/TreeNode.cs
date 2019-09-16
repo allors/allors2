@@ -12,10 +12,10 @@ namespace Allors.Data
 
     public class TreeNode
     {
-        public TreeNode(IRoleType roleType, IComposite composite = null, TreeNodes nodes = null)
+        public TreeNode(IPropertyType propertyType, IComposite composite = null, TreeNodes nodes = null)
         {
-            this.RoleType = roleType;
-            this.Composite = composite ?? (roleType.ObjectType.IsComposite ? (IComposite)roleType.ObjectType : null);
+            this.PropertyType = propertyType;
+            this.Composite = composite ?? (propertyType.ObjectType.IsComposite ? (IComposite)propertyType.ObjectType : null);
 
             if (this.Composite != null)
             {
@@ -23,7 +23,7 @@ namespace Allors.Data
             }
         }
 
-        public IRoleType RoleType { get; }
+        public IPropertyType PropertyType { get; }
 
         public IComposite Composite { get; }
 
@@ -32,7 +32,7 @@ namespace Allors.Data
         public Protocol.Data.TreeNode Save() =>
             new Protocol.Data.TreeNode
             {
-                RoleType = this.RoleType.Id,
+                PropertyType = this.PropertyType.Id,
                 Nodes = this.Nodes.Select(v => v.Save()).ToArray(),
             };
 
@@ -40,25 +40,57 @@ namespace Allors.Data
         {
             if (obj != null)
             {
-                if (this.RoleType.ObjectType.IsComposite)
+                if (this.PropertyType is IRoleType roleType)
                 {
-                    if (this.RoleType.IsOne)
+                    if (roleType.ObjectType.IsComposite)
                     {
-                        var role = obj.Strategy.GetCompositeRole(this.RoleType.RelationType);
-                        if (role != null)
+                        if (roleType.IsOne)
                         {
-                            objects.Add(role);
+                            var role = obj.Strategy.GetCompositeRole(roleType.RelationType);
+                            if (role != null)
+                            {
+                                objects.Add(role);
+
+                                foreach (var node in this.Nodes)
+                                {
+                                    node.Resolve(role, objects);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var roles = obj.Strategy.GetCompositeRoles(roleType.RelationType);
+                            foreach (IObject role in roles)
+                            {
+                                objects.Add(role);
+
+                                foreach (var node in this.Nodes)
+                                {
+                                    node.Resolve(role, objects);
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (this.PropertyType is IAssociationType associationType)
+                {
+                    if (associationType.IsOne)
+                    {
+                        var association = obj.Strategy.GetCompositeAssociation(associationType.RelationType);
+                        if (association != null)
+                        {
+                            objects.Add(association);
 
                             foreach (var node in this.Nodes)
                             {
-                                node.Resolve(role, objects);
+                                node.Resolve(association, objects);
                             }
                         }
                     }
                     else
                     {
-                        var roles = obj.Strategy.GetCompositeRoles(this.RoleType.RelationType);
-                        foreach (IObject role in roles)
+                        var associations = obj.Strategy.GetCompositeAssociations(associationType.RelationType);
+                        foreach (IObject role in associations)
                         {
                             objects.Add(role);
 
@@ -76,7 +108,7 @@ namespace Allors.Data
         {
             if (this.Nodes == null || this.Nodes.Count == 0)
             {
-                prefetchPolicyBuilder.WithRule(this.RoleType);
+                prefetchPolicyBuilder.WithRule(this.PropertyType);
             }
             else
             {
@@ -87,7 +119,7 @@ namespace Allors.Data
                 }
 
                 var nestedPrefetchPolicy = nestedPrefetchPolicyBuilder.Build();
-                prefetchPolicyBuilder.WithRule(this.RoleType, nestedPrefetchPolicy);
+                prefetchPolicyBuilder.WithRule(this.PropertyType, nestedPrefetchPolicy);
             }
         }
     }

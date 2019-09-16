@@ -24,11 +24,20 @@ namespace Allors.Workspace.Data
 
         public void Add(TreeNode treeNode)
         {
-            var addedComposite = treeNode.RoleType.AssociationType.ObjectType;
+            IComposite addedComposite = null;
 
-            if (!((IComposite)addedComposite).IsAssignableFrom(this.composite) && !this.composite.IsAssignableFrom((IComposite)addedComposite))
+            if (treeNode.PropertyType is IRoleType roleType)
             {
-                throw new ArgumentException(treeNode.RoleType + " is not a valid tree node on " + this.composite + ".");
+                addedComposite = (IComposite)roleType.AssociationType.ObjectType;
+            }
+            else if (treeNode.PropertyType is IAssociationType associationType)
+            {
+                addedComposite = (IComposite)associationType.RoleType.ObjectType;
+            }
+
+            if (addedComposite == null || (!addedComposite.IsAssignableFrom(this.composite) && !this.composite.IsAssignableFrom((IComposite)addedComposite)))
+            {
+                throw new ArgumentException(treeNode.PropertyType + " is not a valid tree node on " + this.composite + ".");
             }
 
             this.items.Add(treeNode);

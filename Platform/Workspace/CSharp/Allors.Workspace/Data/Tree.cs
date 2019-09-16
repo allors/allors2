@@ -33,40 +33,29 @@ namespace Allors.Workspace.Data
             }
         }
 
-        public Tree Add(IEnumerable<IRelationType> relationTypes) => this.Add(relationTypes.Select(v => v.RoleType));
-
-        public Tree Add(IEnumerable<IRoleType> roleTypes)
+        public Tree Add(IEnumerable<IPropertyType> propertyType)
         {
-            new List<IRoleType>(roleTypes).ForEach(v => this.Add(v));
+            new List<IPropertyType>(propertyType).ForEach(v => this.Add(v));
             return this;
         }
 
-        public Tree Add(IRelationType relationType) => this.Add(relationType.RoleType);
-
-        public Tree Add(IRoleType roleType)
+        public Tree Add(IPropertyType propertyType)
         {
-            var treeNode = new TreeNode(roleType);
+            var treeNode = new TreeNode(propertyType);
+            this.Nodes.Add(treeNode);
+            return this;
+        }
+
+        public Tree Add(IPropertyType propertyType, Tree tree)
+        {
+            var treeNode = new TreeNode(propertyType, tree.Composite, tree.Nodes);
             this.Nodes.Add(treeNode);
             return this;
         }
 
         public Tree Add(IConcreteRoleType concreteRoleType) => this.Add(concreteRoleType.RoleType);
 
-        public Tree Add(IRelationType relationType, Tree tree) => this.Add(relationType.RoleType, tree);
-
-        public Tree Add(IRoleType roleType, Tree tree)
-        {
-            var treeNode = new TreeNode(roleType, tree.Composite, tree.Nodes);
-            this.Nodes.Add(treeNode);
-            return this;
-        }
-
-        public Tree Add(IConcreteRoleType concreteRoleType, Tree tree)
-        {
-            var treeNode = new TreeNode(concreteRoleType.RoleType, tree.Composite, tree.Nodes);
-            this.Nodes.Add(treeNode);
-            return this;
-        }
+        public Tree Add(IConcreteRoleType concreteRoleType, Tree tree) => this.Add(concreteRoleType.RoleType, tree);
 
         public Protocol.Data.Tree ToJson() =>
             new Protocol.Data.Tree
@@ -80,7 +69,7 @@ namespace Allors.Workspace.Data
             foreach (var node in nodes)
             {
                 var indent = new string(' ', level * 2);
-                toString.Append(indent + "- " + node.RoleType + "\n");
+                toString.Append(indent + "- " + node.PropertyType + "\n");
                 this.DebugNodeView(toString, node.Nodes, level + 1);
             }
         }

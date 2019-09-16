@@ -10,10 +10,10 @@ namespace Allors.Workspace.Data
 
     public class TreeNode
     {
-        public TreeNode(IRoleType roleType, IComposite composite = null, TreeNodes nodes = null)
+        public TreeNode(IPropertyType propertyType, IComposite composite = null, TreeNodes nodes = null)
         {
-            this.RoleType = roleType;
-            this.Composite = composite ?? (roleType.ObjectType.IsComposite ? (IComposite)roleType.ObjectType : null);
+            this.PropertyType = propertyType;
+            this.Composite = composite ?? (propertyType.ObjectType.IsComposite ? (IComposite)propertyType.ObjectType : null);
 
             if (this.Composite != null)
             {
@@ -21,7 +21,7 @@ namespace Allors.Workspace.Data
             }
         }
 
-        public IRoleType RoleType { get; }
+        public IPropertyType PropertyType { get; }
 
         public IComposite Composite { get; }
 
@@ -30,7 +30,7 @@ namespace Allors.Workspace.Data
         public Protocol.Data.TreeNode ToJson() =>
             new Protocol.Data.TreeNode
             {
-                RoleType = this.RoleType.Id,
+                PropertyType = this.PropertyType.Id,
                 Nodes = this.Nodes.Select(v => v.ToJson()).ToArray(),
             };
     }

@@ -15,8 +15,8 @@ namespace Allors.Protocol.Data
             {
                 foreach (var childProtocolTreeNode in @this.Nodes)
                 {
-                    var childRoleType = childProtocolTreeNode.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(childProtocolTreeNode.RoleType.Value) : null;
-                    var childTreeNode = new Allors.Data.TreeNode(childRoleType);
+                    var childPropertyType = childProtocolTreeNode.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(childProtocolTreeNode.PropertyType.Value) : null;
+                    var childTreeNode = new Allors.Data.TreeNode(childPropertyType);
                     treeNode.Nodes.Add(childTreeNode);
                     childProtocolTreeNode.Load(session, childTreeNode);
                 }
