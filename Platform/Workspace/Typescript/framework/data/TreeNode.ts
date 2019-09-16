@@ -12,7 +12,7 @@ export class TreeNode {
   public toJSON(): any {
     return {
       nodes: this.nodes,
-      propertyType: this.propertyType.id,
+      propertytype: this.propertyType.id,
     };
   }
 
