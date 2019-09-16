@@ -1,7 +1,8 @@
 <div *ngIf="panel.isCollapsed && serialisedItem" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
   <div class="container mb-3">
     <div class="row rounded" style="background-color: white;">
-      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
+      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start"
+        style="background-color: lightseagreen">
         <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
       </div>
       <div class="col-9 col-md-10 p-3">
@@ -21,8 +22,10 @@
         <mat-tab label="General">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-static class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.ItemNumber"></a-mat-static>
-              <a-mat-static class="col-md-6" [object]="currentFacility" [roleType]="m.Facility.Name" label="Facility"></a-mat-static>
+              <a-mat-static class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.ItemNumber">
+              </a-mat-static>
+              <a-mat-static class="col-md-6" [object]="currentFacility" [roleType]="m.Facility.Name" label="Facility">
+              </a-mat-static>
             </div>
 
             <div class="row">
@@ -36,50 +39,65 @@
             </div>
 
             <div class="row">
-              <a-mat-textarea class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Description"></a-mat-textarea>
+              <a-mat-textarea class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Description">
+              </a-mat-textarea>
             </div>
 
             <div class="row">
-              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialNumber"></a-mat-input>
+              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialNumber">
+              </a-mat-input>
               <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialisedItemState"
-                            [options]="serialisedItemStates" display="Name"></a-mat-select>
+                [options]="serialisedItemStates" display="Name"></a-mat-select>
             </div>
 
             <div class="row">
-              <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Ownership" [options]="ownerships"
-                            display="Name"></a-mat-select>
+              <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Ownership"
+                [options]="ownerships" display="Name"></a-mat-select>
               <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.OwnedBy"
-                                  [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
+                [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName">
+              </a-mat-autocomplete>
             </div>
 
             <div class="row">
-              <a-mat-static class="col-md" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem" [roleType]="m.SerialisedItem.SuppliedBy" display="Name"></a-mat-static>
-              <a-mat-select class="col-md" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem" [roleType]="m.SerialisedItem.AssignedSuppliedBy" [options]="currentSuppliers" display="Name" label="Supplied By"></a-mat-select>
+              <a-mat-static class="col-md" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.SuppliedBy" display="Name"></a-mat-static>
+              <a-mat-select class="col-md" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.AssignedSuppliedBy" [options]="currentSuppliers" display="Name"
+                label="Supplied By"></a-mat-select>
               <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy"
-                                  [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName"></a-mat-autocomplete>
+                [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName">
+              </a-mat-autocomplete>
             </div>
 
             <div class="row">
-              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentalFromDate"></a-mat-datepicker>
-              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentalThroughDate"></a-mat-datepicker>
+              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentalFromDate">
+              </a-mat-datepicker>
+              <a-mat-datepicker class="col-md" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.RentalThroughDate"></a-mat-datepicker>
             </div>
 
             <div class="row">
-              <a-mat-datepicker class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedReturnDate"></a-mat-datepicker>
+              <a-mat-datepicker class="col-md-6" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.ExpectedReturnDate"></a-mat-datepicker>
             </div>
 
             <div class="row">
-              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.LastServiceDate"></a-mat-datepicker>
-              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.NextServiceDate"></a-mat-datepicker>
+              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.LastServiceDate">
+              </a-mat-datepicker>
+              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.NextServiceDate">
+              </a-mat-datepicker>
             </div>
 
             <div class="row">
-              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.CustomerReferenceNumber"></a-mat-input>
-              <a-mat-slidetoggle class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.AvailableForSale"></a-mat-slidetoggle>
+              <a-mat-input class="col-md" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.CustomerReferenceNumber"></a-mat-input>
+              <a-mat-slidetoggle class="col-md" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.AvailableForSale"></a-mat-slidetoggle>
             </div>
 
             <div class="row">
-              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Details" label="Print details"></a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Details"
+                label="Print details"></a-mat-textarea>
             </div>
 
             <div class="row">
@@ -93,10 +111,10 @@
                 <div *ngFor="let locale of locales; let i = index">
                   <mat-divider *ngIf="i > 0"></mat-divider>
                   <div class="row">
-                    <a-mat-localised-text class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.LocalisedNames"
-                                          [locale]="locale"></a-mat-localised-text>
-                    <a-mat-localised-text class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.LocalisedDescriptions"
-                                          [locale]="locale"></a-mat-localised-text>
+                    <a-mat-localised-text class="col-md-12" [object]="serialisedItem"
+                      [roleType]="m.SerialisedItem.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+                    <a-mat-localised-text class="col-md-12" [object]="serialisedItem"
+                      [roleType]="m.SerialisedItem.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
                   </div>
                 </div>
               </mat-expansion-panel>
@@ -108,31 +126,40 @@
           <div class="container-fluid">
 
             <div class="row pt-3">
-              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.AcquisitionYear"></a-mat-input>
-              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.ManufacturingYear"></a-mat-input>
+              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.AcquisitionYear">
+              </a-mat-input>
+              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.ManufacturingYear">
+              </a-mat-input>
               <mat-form-field class="col-md">
                 <input matInput [(ngModel)]="serialisedItem.age" name="age" placeholder="Age" readonly>
               </mat-form-field>
-              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.LifeTime"></a-mat-input>
+              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.LifeTime">
+              </a-mat-input>
             </div>
 
             <div class="row">
               <mat-form-field class="col-md">
                 <input matInput [(ngModel)]="serialisedItem.yearsToGo" name="yearsToGo" placeholder="Years to go"
-                       readonly>
+                  readonly>
               </mat-form-field>
-              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.DepreciationYears"></a-mat-input>
+              <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.DepreciationYears">
+              </a-mat-input>
             </div>
 
             <div class="row" *ngFor="let productCharacteristicValue of serialisedItem.SerialisedItemCharacteristics">
-              <a-mat-input class="col-md" *ngIf="productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
-                           [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
+              <a-mat-input class="col-md"
+                *ngIf="productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
+                [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value"
+                [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure.Name + ')'">
+              </a-mat-input>
             </div>
 
             <div class="row" *ngFor="let productCharacteristicValue of serialisedItem.SerialisedItemCharacteristics">
-              <a-mat-textarea class="col-md" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
-                              [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"
-                              class="col-md-12"></a-mat-textarea>
+              <a-mat-textarea class="col-md"
+                *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
+                [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value"
+                [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name" class="col-md-12">
+              </a-mat-textarea>
             </div>
 
             <div class="row">
@@ -144,10 +171,13 @@
                 </mat-expansion-panel-header>
                 <div *ngFor="let locale of locales; let i = index" class="row">
                   <mat-divider *ngIf="i > 0"></mat-divider>
-                  <div class="row" *ngFor="let productCharacteristicValue of serialisedItem.SerialisedItemCharacteristics">
-                    <a-mat-localised-text class="col-md-12" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
-                                          [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.LocalisedValues"
-                                          [locale]="locale" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"></a-mat-localised-text>
+                  <div class="row"
+                    *ngFor="let productCharacteristicValue of serialisedItem.SerialisedItemCharacteristics">
+                    <a-mat-localised-text class="col-md-12"
+                      *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
+                      [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.LocalisedValues"
+                      [locale]="locale" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name">
+                    </a-mat-localised-text>
                   </div>
                 </div>
               </mat-expansion-panel>
@@ -159,44 +189,52 @@
         <mat-tab label="Financial">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-input>
-              <a-mat-static class="col" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem" [roleType]="m.SerialisedItem.PurchasePrice"></a-mat-static>
-              <a-mat-input class="col" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem" [roleType]="m.SerialisedItem.AssignedPurchasePrice" label="Purchase Price"></a-mat-input>
+              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice">
+              </a-mat-input>
+              <a-mat-static class="col" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.PurchasePrice"></a-mat-static>
+              <a-mat-input class="col" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.AssignedPurchasePrice" label="Purchase Price"></a-mat-input>
             </div>
 
             <div class="row">
-              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.ReplacementValue"></a-mat-input>
+              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.ReplacementValue">
+              </a-mat-input>
               <mat-form-field class="col">
-                <input matInput [(ngModel)]="serialisedItem.goingConcern" name="goingConcern" placeholder="Going Concern"
-                       readonly>
+                <input matInput [(ngModel)]="serialisedItem.goingConcern" name="goingConcern"
+                  placeholder="Going Concern" readonly>
               </mat-form-field>
             </div>
 
             <div class="row">
               <mat-form-field class="col">
                 <input matInput [(ngModel)]="serialisedItem.marketValue" name="marketValue" placeholder="Market Value"
-                       readonly>
+                  readonly>
               </mat-form-field>
             </div>
 
             <div class="row">
-              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.RefurbishCost"></a-mat-input>
-              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.TransportCost"></a-mat-input>
+              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.RefurbishCost">
+              </a-mat-input>
+              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.TransportCost">
+              </a-mat-input>
             </div>
 
             <div class="row">
-              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedRentalPriceDryLease"></a-mat-input>
-              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedRentalPriceFullService"></a-mat-input>
+              <a-mat-input class="col" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.ExpectedRentalPriceDryLease"></a-mat-input>
+              <a-mat-input class="col" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.ExpectedRentalPriceFullService"></a-mat-input>
             </div>
 
             <div class="row">
               <mat-form-field class="col">
                 <input type="number" matInput [(ngModel)]="serialisedItem.grossBookValue" name="grossBookValue"
-                       placeholder="Gross Book Value" readonly>
+                  placeholder="Gross Book Value" readonly>
               </mat-form-field>
               <mat-form-field class="col">
-                <input type="number" matInput [(ngModel)]="serialisedItem.expectedPosa" name="expectedPosa" placeholder="Expected Posa"
-                       readonly>
+                <input type="number" matInput [(ngModel)]="serialisedItem.expectedPosa" name="expectedPosa"
+                  placeholder="Expected Posa" readonly>
               </mat-form-field>
             </div>
           </div>
@@ -205,9 +243,12 @@
         <mat-tab label="Comments">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.InternalComment"></a-mat-textarea>
-              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Keywords"></a-mat-textarea>
-              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Comment"></a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.InternalComment">
+              </a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Keywords">
+              </a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Comment">
+              </a-mat-textarea>
             </div>
 
             <div class="row">
@@ -221,8 +262,8 @@
                 <div *ngFor="let locale of locales; let i = index">
                   <mat-divider *ngIf="i > 0"></mat-divider>
                   <div class="row">
-                    <a-mat-localised-text class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.LocalisedComments"
-                                          [locale]="locale"></a-mat-localised-text>
+                    <a-mat-localised-text class="col-md-12" [object]="serialisedItem"
+                      [roleType]="m.SerialisedItem.LocalisedComments" [locale]="locale"></a-mat-localised-text>
                   </div>
                 </div>
               </mat-expansion-panel>
@@ -231,18 +272,47 @@
         </mat-tab>
 
         <mat-tab label="Images">
-          <div class="container-fluid">
-            <div class="row pt-3">
-              <a-mat-file class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.PrimaryPhoto" accept="image/*"></a-mat-file>
-              <a-mat-files class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Photos" accept="image/*"></a-mat-files>
-            </div>
-          </div>
+          <mat-tab-group>
+            <mat-tab label="Primary">
+              <div class="container-fluid">
+                <div class="row pt-3">
+                  <a-mat-file class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.PrimaryPhoto"
+                    accept="image/*"></a-mat-file>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Secondary">
+              <div class="container-fluid">
+                <div class="row pt-3">
+                  <a-mat-files class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.SecondaryPhotos"
+                    accept="image/*"></a-mat-files>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Additional">
+                <div class="container-fluid">
+                    <div class="row pt-3">
+                      <a-mat-files class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.AdditionalPhotos"
+                        accept="image/*"></a-mat-files>
+                    </div>
+                  </div>
+                </mat-tab>
+            <mat-tab label="Private">
+                <div class="container-fluid">
+                    <div class="row pt-3">
+                      <a-mat-files class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.PrivatePhotos"
+                        accept="image/*"></a-mat-files>
+                    </div>
+                  </div>
+                </mat-tab>
+          </mat-tab-group>
         </mat-tab>
 
       </mat-tab-group>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE & CLOSE</button>
+      <button mat-button class="ml-2" color="primary" type="submit"
+        [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE & CLOSE</button>
       <button mat-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
       <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
     </mat-card-actions>

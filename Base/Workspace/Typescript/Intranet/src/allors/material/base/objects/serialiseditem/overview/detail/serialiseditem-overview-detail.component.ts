@@ -110,7 +110,9 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                 OwnedBy: x,
                 RentedBy: x,
                 PrimaryPhoto: x,
-                Photos: x,
+                SecondaryPhotos: x,
+                AdditionalPhotos: x,
+                PrivatePhotos: x,
                 PurchaseOrder: x,
                 SuppliedBy: x
               }

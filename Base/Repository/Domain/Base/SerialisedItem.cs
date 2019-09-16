@@ -254,7 +254,27 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Multiplicity(Multiplicity.ManyToMany)]
-        public Media[] Photos { get; set; }
+        public Media[] SecondaryPhotos { get; set; }
+
+        #region Allors
+        [Id("65BBB01F-66A1-47E2-B206-2F1BE6C91398")]
+        [AssociationId("6437F990-28F7-4A70-BF04-D27F022C35FE")]
+        [RoleId("1D1102AF-F8B1-46D4-A2E1-3C9700D54767")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.ManyToMany)]
+        public Media[] AdditionalPhotos { get; set; }
+
+        #region Allors
+        [Id("2A6D6DA0-A106-400E-9F2F-BA19D3F9EC77")]
+        [AssociationId("47426B6B-6F51-4D46-89E5-F48B01B3203E")]
+        [RoleId("ED9FF9B5-0000-4FD4-9586-9E6CEABE1F0C")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.ManyToMany)]
+        public Media[] PrivatePhotos { get; set; }
 
         #region Allors
         [Id("18A320F1-2F65-4E49-A615-D88EDD15AC5C")]
