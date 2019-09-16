@@ -23,13 +23,13 @@ GNU General Public License for more details.
 For more information visit http://www.allors.com/legal
 !$
 <generations>
-    <generation template="index" output="index.ts"/> 
-    <generation template="domain" output="domain.g.ts"/> 
-    <generation template="tree" output="tree.g.ts"/> 
-    <generation template="fetch" output="fetch.g.ts"/> 
-    <generation template="pull" output="pull.g.ts"/> 
-    <generation template="ids" output="ids.g.ts"/> 
-    <generation template="data" output="data.json"/> 
+    <generation template="index" output="index.ts"/>
+    <generation template="domain" output="domain.g.ts"/>
+    <generation template="tree" output="tree.g.ts"/>
+    <generation template="fetch" output="fetch.g.ts"/>
+    <generation template="pull" output="pull.g.ts"/>
+    <generation template="ids" output="ids.g.ts"/>
+    <generation template="data" output="data.json"/>
 </generations>
 >>
 
@@ -102,6 +102,7 @@ treeFactory(composite) ::= <<
 treeComposite(composite) ::= <<
 export interface Tree$composite.SingularName$ {
 $composite.WorkspaceCompositeRoleTypes:{role|    $role.Name$?: Tree | Tree$role.ObjectType.Name$;}; separator="\n"$
+$composite.WorkspaceAssociationTypes:{association|    $association.PropertyName$?: Tree | Tree$association.ObjectType.Name$;}; separator="\n"$
 
 $composite.WorkspaceSubtypes:{type|$treeSubType(type)$}$
 }
@@ -111,6 +112,7 @@ $composite.WorkspaceSubtypes:{type|$treeSubType(type)$}$
 treeSubType(type) ::= <<
 
 $type.WorkspaceExclusiveCompositeRoleTypes:{role|    $type.Name$_$role.Name$?: Tree$role.ObjectType.Name$;}; separator="\n"$
+$type.WorkspaceExclusiveAssociationTypes:{association|    $type.Name$_$association.PropertyName$?: Tree$association.ObjectType.Name$;}; separator="\n"$
 
 >>
 
@@ -291,7 +293,7 @@ relationType(relationType) ::= <<
           "isRequired": $boolean(relationType.RoleType.IsRequired)$
         },
 $if(relationType.ConcreteRoleTypes)$
-        "concreteRoleTypes": 
+        "concreteRoleTypes":
           [
 $relationType.ConcreteRoleTypes:{concreteRoleType|$concreteRoleType(concreteRoleType)$}; separator=",\n"$
           ],

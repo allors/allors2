@@ -52,7 +52,7 @@ describe('Extent', () => {
                     objectType: m.Person,
                     nodes: [
                       new TreeNode({
-                        roleType: m.Person.Photo,
+                        propertyType: m.Person.Photo,
                       }),
                     ]
                   })

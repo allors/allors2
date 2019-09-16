@@ -14,9 +14,9 @@ export class Tree {
 
       if (literal) {
         this.nodes = Object.keys(literal)
-          .map((roleName) => {
+          .map((propertyName) => {
             const treeNode = new TreeNode();
-            treeNode.parse(literal, this.objectType as ObjectType, roleName);
+            treeNode.parse(literal, this.objectType as ObjectType, propertyName);
             return treeNode;
           });
       }
@@ -30,9 +30,9 @@ export class Tree {
     let nodes = this.nodes;
     if (this.nodes && !(this.nodes instanceof Array)) {
       nodes = Object.keys(this.nodes)
-        .map((roleName) => {
+        .map((propertyName) => {
           const treeNode = new TreeNode();
-          treeNode.parse(this.nodes, this.objectType, roleName);
+          treeNode.parse(this.nodes, this.objectType, propertyName);
           return treeNode;
         });
     }

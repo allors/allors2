@@ -1,8 +1,8 @@
-import { ObjectType, RoleType } from '../meta';
+import { ObjectType, PropertyType } from '../meta';
 
 export class TreeNode {
 
-  public roleType: RoleType;
+  public propertyType: PropertyType;
   public nodes: TreeNode[];
 
   constructor(fields?: Partial<TreeNode>) {
@@ -12,35 +12,35 @@ export class TreeNode {
   public toJSON(): any {
     return {
       nodes: this.nodes,
-      roletype: this.roleType.id,
+      propertyType: this.propertyType.id,
     };
   }
 
-  public parse(json: any, objectType: ObjectType, roleTypeName: string) {
-    this.roleType = objectType.roleTypeByName[roleTypeName];
+  public parse(json: any, objectType: ObjectType, propertyTypeName: string) {
+    this.propertyType = objectType.roleTypeByName[propertyTypeName] || objectType.associationTypeByName[propertyTypeName];
 
-    if (!this.roleType) {
+    if (!this.propertyType) {
       const metaPopulation = objectType.metaPopulation;
-      const [subTypeName, subStepName] = roleTypeName.split('_');
+      const [subTypeName, subStepName] = propertyTypeName.split('_');
 
       const subType = metaPopulation.objectTypeByName[subTypeName];
       if (subType) {
-        this.roleType = subType.roleTypeByName[subStepName];
+        this.propertyType = subType.roleTypeByName[subStepName] || subType.associationTypeByName[propertyTypeName];
       }
     }
 
-    if (!this.roleType) {
-      throw new Error('Unknown role: ' + roleTypeName);
+    if (!this.propertyType) {
+      throw new Error('Unknown Property: ' + propertyTypeName);
     }
 
-    const role = json[roleTypeName];
-    if (role.nodes) {
-      this.nodes = role.nodes;
-    } else if (role) {
-      const nodes = Object.keys(role)
-        .map((childRoleName) => {
+    const property = json[propertyTypeName];
+    if (property.nodes) {
+      this.nodes = property.nodes;
+    } else if (property) {
+      const nodes = Object.keys(property)
+        .map((childPropertyName) => {
           const childTreeNode = new TreeNode();
-          childTreeNode.parse(role, this.roleType.objectType, childRoleName);
+          childTreeNode.parse(property, this.propertyType.objectType, childPropertyName);
           return childTreeNode;
         });
 
