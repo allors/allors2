@@ -1,12 +1,12 @@
-// <copyright file="Tree.cs" company="Allors bvba">
+// <copyright file="ITree.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Protocol.Data
+namespace Allors.Workspace.Data
 {
-    public class Tree
+    public interface ITree : INode
     {
-        public TreeNode[] Nodes { get; set; }
+        Protocol.Data.Tree ToData();
     }
 }

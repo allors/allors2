@@ -13,15 +13,12 @@ namespace Allors.Data
 
     public class Tree
     {
-        public Tree(IComposite composite)
+        public Tree()
         {
-            this.Composite = composite;
-            this.Nodes = new TreeNodes(this.Composite);
+            this.Nodes = new TreeNode[0];
         }
 
-        public IComposite Composite { get; }
-
-        public TreeNodes Nodes { get; }
+        public TreeNode[] Nodes { get; private set; }
 
         public PrefetchPolicy BuildPrefetchPolicy()
         {
@@ -44,14 +41,15 @@ namespace Allors.Data
         public Tree Add(IPropertyType propertyType)
         {
             var treeNode = new TreeNode(propertyType);
-            this.Nodes.Add(treeNode);
+            this.Add(treeNode);
             return this;
         }
 
         public Tree Add(IPropertyType propertyType, Tree tree)
         {
-            var treeNode = new TreeNode(propertyType, tree.Composite, tree.Nodes);
-            this.Nodes.Add(treeNode);
+            var treeNode = new TreeNode(propertyType, tree.Nodes);
+            this.Add(treeNode);
+
             return this;
         }
 
@@ -59,8 +57,8 @@ namespace Allors.Data
 
         public Tree Add(IConcreteRoleType concreteRoleType, Tree tree)
         {
-            var treeNode = new TreeNode(concreteRoleType.RoleType, tree.Composite, tree.Nodes);
-            this.Nodes.Add(treeNode);
+            var treeNode = new TreeNode(concreteRoleType.RoleType, tree.Nodes);
+            this.Add(treeNode);
             return this;
         }
 
@@ -78,28 +76,28 @@ namespace Allors.Data
         public Protocol.Data.Tree Save() =>
             new Protocol.Data.Tree
             {
-                Composite = this.Composite.Id,
                 Nodes = this.Nodes.Select(v => v.Save()).ToArray(),
             };
 
-        public string DebugView
+        public override string ToString()
         {
-            get
-            {
-                var toString = new StringBuilder();
-                toString.Append(this.Composite.Name + "\n");
-                this.DebugNodeView(toString, this.Nodes, 1);
-                return toString.ToString();
-            }
+            var toString = new StringBuilder();
+            this.ToString(toString, this.Nodes, 1);
+            return toString.ToString();
         }
 
-        private void DebugNodeView(StringBuilder toString, TreeNodes nodes, int level)
+        internal void Add(TreeNode treeNode)
+        {
+            this.Nodes = this.Nodes.Append(treeNode).ToArray();
+        }
+
+        private void ToString(StringBuilder toString, TreeNode[] nodes, int level)
         {
             foreach (var node in nodes)
             {
                 var indent = new string(' ', level * 2);
                 toString.Append(indent + "- " + node.PropertyType + "\n");
-                this.DebugNodeView(toString, node.Nodes, level + 1);
+                this.ToString(toString, node.Nodes, level + 1);
             }
         }
     }

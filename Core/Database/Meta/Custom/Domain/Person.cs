@@ -20,7 +20,7 @@ namespace Allors.Meta
             this.MiddleName.RelationType.Workspace = true;
 
             var person = this;
-            this.AngularHome = new Tree(person.Class)
+            this.AngularHome = new Tree()
                     .Add(person.Photo);
         }
     }

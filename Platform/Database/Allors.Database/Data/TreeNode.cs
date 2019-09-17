@@ -5,21 +5,29 @@
 
 namespace Allors.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Allors.Meta;
 
     public class TreeNode
     {
-        public TreeNode(IPropertyType propertyType, IComposite composite = null, TreeNodes nodes = null)
+        public TreeNode(IPropertyType propertyType, TreeNode[] nodes = null)
         {
             this.PropertyType = propertyType;
-            this.Composite = composite ?? (propertyType.ObjectType.IsComposite ? (IComposite)propertyType.ObjectType : null);
+            this.Composite = propertyType.ObjectType.IsComposite ? (IComposite)propertyType.ObjectType : null;
 
-            if (this.Composite != null)
+            if (propertyType.ObjectType.IsComposite)
             {
-                this.Nodes = nodes ?? new TreeNodes(this.Composite);
+                if (nodes != null)
+                {
+                    foreach (var node in nodes)
+                    {
+                        this.AssertAssignable(node);
+                    }
+                }
+
+                this.Nodes = nodes ?? new TreeNode[0];
             }
         }
 
@@ -27,7 +35,7 @@ namespace Allors.Data
 
         public IComposite Composite { get; }
 
-        public TreeNodes Nodes { get; }
+        public TreeNode[] Nodes { get; private set; }
 
         public Protocol.Data.TreeNode Save() =>
             new Protocol.Data.TreeNode
@@ -106,7 +114,7 @@ namespace Allors.Data
 
         public void BuildPrefetchPolicy(PrefetchPolicyBuilder prefetchPolicyBuilder)
         {
-            if (this.Nodes == null || this.Nodes.Count == 0)
+            if (this.Nodes == null || this.Nodes.Length == 0)
             {
                 prefetchPolicyBuilder.WithRule(this.PropertyType);
             }
@@ -120,6 +128,32 @@ namespace Allors.Data
 
                 var nestedPrefetchPolicy = nestedPrefetchPolicyBuilder.Build();
                 prefetchPolicyBuilder.WithRule(this.PropertyType, nestedPrefetchPolicy);
+            }
+        }
+
+        internal void Add(TreeNode treeNode)
+        {
+            this.AssertAssignable(treeNode);
+
+            this.Nodes = this.Nodes.Append(treeNode).ToArray();
+        }
+
+        private void AssertAssignable(TreeNode treeNode)
+        {
+            IComposite addedComposite = null;
+
+            if (treeNode.PropertyType is IRoleType roleType)
+            {
+                addedComposite = roleType.AssociationType.ObjectType;
+            }
+            else if (treeNode.PropertyType is IAssociationType associationType)
+            {
+                addedComposite = (IComposite)associationType.RoleType.ObjectType;
+            }
+
+            if (addedComposite == null || (!addedComposite.IsAssignableFrom(this.Composite) && !this.Composite.IsAssignableFrom(addedComposite)))
+            {
+                throw new ArgumentException(treeNode.PropertyType + " is not a valid tree node on " + this.Composite + ".");
             }
         }
     }

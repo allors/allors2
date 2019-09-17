@@ -34,7 +34,7 @@ namespace Tests.Remote
                                 {
                                     Fetch = new Fetch
                                     {
-                                        Include = new Tree(M.C1.ObjectType)
+                                        Include = new Tree()
                                             .Add(M.C1.C1C1One2One)
                                             .Add(M.C1.C1C1One2Manies)
                                             .Add(M.C1.C1C1Many2One)

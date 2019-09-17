@@ -42,8 +42,8 @@
                 {
                    Fetch = new Fetch
                    {
-                       Include = new Tree(M.Organisation.Class)
-                       .Add(M.Organisation.Owner)
+                       Include = new Tree()
+                        .Add(M.Organisation.Owner)
                     }
                 }
             }

@@ -20,12 +20,11 @@ namespace Allors.Meta
             var organisation = this;
             var person = MetaPerson.Instance;
 
-            this.AngularEmployees = new Tree(organisation.Class)
+            this.AngularEmployees = new Tree()
                 .Add(organisation.Employees);
 
-            this.AngularShareholders = new Tree(organisation.Class)
-                .Add(organisation.Shareholders,
-                    new Tree(person.Class)
+            this.AngularShareholders = new Tree()
+                .Add(organisation.Shareholders, new Tree()
                         .Add(person.Photo));
         }
     }

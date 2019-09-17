@@ -3,7 +3,7 @@ namespace Blazor.Bootstrap.ServerSide
     using System;
     using System.Linq;
     using System.Net.Http;
-    using Allors.Adapters.SqlClient;
+    using Allors.Database.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Workspace.Data.Pull">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UAAAAAAAAAAAAAAgAAAAAAAACAAAAAAAIIAACAAAAAA=</HashCode>
+      <FileName>Data\Pull.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Extent" />
+      <Property Name="Results" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Workspace.Data.Result">
+    <Position X="3.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEgAAQAAAAAAAAAIAEAAAAAEAA=</HashCode>
+      <FileName>Data\Result.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Fetch" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Workspace.Data.Fetch">
+    <Position X="5.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAIIAAAAAAAAA=</HashCode>
+      <FileName>Data\Fetch.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Include" />
+      <Property Name="Step" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Workspace.Data.Tree" Collapsed="true">
+    <Position X="8.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAAAAAAAAABAAAAAAAAAAAAAAoBAAAAAAAAA=</HashCode>
+      <FileName>Data\Tree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Workspace.Data.Step" Collapsed="true">
+    <Position X="8.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACgAAAAAAAgAAEAAAgCAAAAAAAAAAAIAACAAAAAAA=</HashCode>
+      <FileName>Data\Step.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Include" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Workspace.Data.Filter">
+    <Position X="3.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAIAAAAAAAAAAAQAAAAAAIAIIAAAAAAAAA=</HashCode>
+      <FileName>Data\Filter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Allors.Workspace.Data.IExtent">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAIIAAAAAAAAA=</HashCode>
+      <FileName>Data\IExtent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

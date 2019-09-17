@@ -34,7 +34,7 @@ namespace Allors.Domain
             var fetchPeople = new PreparedFetchBuilder(this.Session).WithUniqueId(FetchPeople).WithDescription("Fetch People").Build();
             fetchPeople.Fetch = new Fetch
             {
-                Include = new Tree(M.Organisation.Class)
+                Include = new Tree()
                     .Add(M.Organisation.Owner)
                     .Add(M.Organisation.Employees),
             };

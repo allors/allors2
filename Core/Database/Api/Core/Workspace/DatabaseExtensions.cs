@@ -19,7 +19,7 @@ namespace Allors.Api
             var tree = treeService.Get(composite);
             if (tree == null)
             {
-                tree = new Tree(composite);
+                tree = new Tree();
                 foreach (var compositeRoleType in composite.RoleTypes.Where(v => v.ObjectType.IsComposite && ((RoleType)v).Workspace))
                 {
                     tree.Add(compositeRoleType);

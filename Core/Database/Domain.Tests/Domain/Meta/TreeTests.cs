@@ -37,7 +37,7 @@ namespace Tests
 
             this.Session.Derive(true);
 
-            var tree = new Tree(M.C1.ObjectType).Add(M.C1.C1C2One2Manies);
+            var tree = new Tree().Add(M.C1.C1C2One2Manies);
 
             var resolved = new HashSet<IObject>();
             tree.Resolve(c1A, resolved);
@@ -81,8 +81,11 @@ namespace Tests
             this.Session.Commit();
 
             var tree =
-                new Tree(M.C1.ObjectType).Add(M.C1.C1I12One2Manies, new Tree(M.C1.ObjectType).Add(M.C1.C1C1One2Manies))
-                    .Add(M.C1.C1I12One2Manies, new Tree(M.C2.ObjectType).Add(M.C2.C2C2One2Manies));
+                new Tree()
+                    .Add(M.C1.C1I12One2Manies, new Tree()
+                        .Add(M.C1.C1C1One2Manies))
+                    .Add(M.C1.C1I12One2Manies, new Tree()
+                        .Add(M.C2.C2C2One2Manies));
 
             var prefetchPolicy = tree.BuildPrefetchPolicy();
 
@@ -111,14 +114,19 @@ namespace Tests
         [Fact]
         public void Legal()
         {
-            var tree = new Tree(M.C1.ObjectType)
-                .Add(M.C1.C1C1Many2Manies);
+            var tree = new Tree()
+                .Add(M.C1.C1C1Many2Manies, new Tree()
+                    .Add(M.C1.C1C2Many2Manies));
 
-            tree = new Tree(M.C1.ObjectType)
-                .Add(M.I12.I12C2Many2Manies);
+            tree = new Tree()
+                .Add(M.C1.C1C1Many2Manies, new Tree()
+                    .Add(M.I12.I12C2Many2Manies)
+                );
 
-            tree = new Tree(M.I12.ObjectType)
-                .Add(M.C1.C1C1Many2Manies);
+            tree = new Tree()
+                .Add(M.C1.C1I12Many2Manies, new Tree()
+                    .Add(M.C1.I12C2Many2Manies)
+                );
         }
 
         [Fact]
@@ -129,8 +137,9 @@ namespace Tests
 
                 try
                 {
-                    var tree = new Tree(M.C1.ObjectType)
-                        .Add(M.C2.C2AllorsString);
+                    var tree = new Tree()
+                        .Add(M.C1.C1C1Many2Manies, new Tree()
+                            .Add(M.C2.C2C1Many2Manies));
                 }
                 catch (ArgumentException)
                 {
@@ -144,7 +153,7 @@ namespace Tests
         [Fact]
         public void UnitTreeNodesDontHaveTreeNodes()
         {
-            var tree = new Tree(M.C1.ObjectType)
+            var tree = new Tree()
                 .Add(M.C1.C1AllorsString);
 
             var treeNode = tree.Nodes[0];
@@ -155,14 +164,14 @@ namespace Tests
         [Fact]
         public void Prefetch()
         {
-            var tree = new Tree(M.C1.ObjectType);
+            var tree = new Tree();
             tree.BuildPrefetchPolicy();
 
-            tree = new Tree(M.C1.ObjectType)
+            tree = new Tree()
                 .Add(M.C1.C1AllorsBinary);
             tree.BuildPrefetchPolicy();
 
-            tree = new Tree(M.C1.ObjectType)
+            tree = new Tree()
                 .Add(M.C1.C1C1Many2Manies);
             tree.BuildPrefetchPolicy();
         }

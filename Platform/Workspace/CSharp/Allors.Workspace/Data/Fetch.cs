@@ -28,17 +28,15 @@ namespace Allors.Workspace.Data
         {
         }
 
-        public Tree Include { get; set; }
+        public ITree Include { get; set; }
 
         public Step Step { get; set; }
-
-        public IObjectType ObjectType => this.Step?.GetObjectType() ?? this.Include.Composite;
 
         public Protocol.Data.Fetch ToJson() =>
             new Protocol.Data.Fetch
             {
                 Step = this.Step?.ToJson(),
-                Include = this.Include?.ToJson(),
+                Include = this.Include?.ToData(),
             };
     }
 }

@@ -60,8 +60,8 @@ namespace Allors.Excel.PurchaseInvoices
 
         public Workbook Workbook { get; set; }
 
-        private Tree PaymentApplicationTree
-        => new Tree(M.PaymentApplication.Class)
+        private ITree PaymentApplicationTree
+        => new Tree()
             .Add(M.PaymentApplication.Invoice)
         ;
 
@@ -271,7 +271,7 @@ namespace Allors.Excel.PurchaseInvoices
                     {
                         Fetch = new Fetch()
                         {
-                            Include = new Tree(M.PurchaseInvoice.Class)
+                            Include = new Tree()
                                 .Add(M.PurchaseInvoice.BilledTo)
                                 .Add(M.PurchaseInvoice.BilledFrom)
                                 .Add(M.PurchaseInvoice.Currency)
@@ -294,7 +294,7 @@ namespace Allors.Excel.PurchaseInvoices
                     {
                         Fetch = new Fetch()
                         {
-                            Include = new Tree(M.Payment.Interface)
+                            Include = new Tree()
                                 .Add(M.Payment.PaymentApplications, this.PaymentApplicationTree),
                         },
                     },

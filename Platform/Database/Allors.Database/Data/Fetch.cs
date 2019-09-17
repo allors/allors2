@@ -33,8 +33,6 @@ namespace Allors.Data
 
         public Step Step { get; set; }
 
-        public IObjectType ObjectType => this.Step?.GetObjectType() ?? this.Include.Composite;
-
         public static bool TryParse(IComposite composite, string fetchString, out Fetch fetch)
         {
             var propertyType = Resolve(composite, fetchString);

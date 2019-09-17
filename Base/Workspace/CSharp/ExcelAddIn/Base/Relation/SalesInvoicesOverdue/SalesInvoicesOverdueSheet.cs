@@ -54,14 +54,14 @@ namespace Allors.Excel.Relations.CustomersOverdue
             }
         }
 
-        private Tree ContactTree
-            => new Tree(M.Person.Class)
+        private ITree ContactTree
+            => new Tree()
                 .Add(M.Person.Salutation)
                 .Add(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree)
         ;
 
-        private Tree GeneralCorrespondenceTree
-            => new Tree(M.ContactMechanism.Interface)
+        private ITree GeneralCorrespondenceTree
+            => new Tree()
                 .Add(M.ContactMechanism.ContactMechanismType)
         ;
 
@@ -184,7 +184,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
                     {
                         Fetch = new Fetch()
                         {
-                            Include = new Tree(M.SalesInvoice.Class)
+                            Include = new Tree()
                                 .Add(M.SalesInvoice.BilledFrom)
                                 .Add(M.SalesInvoice.BillToCustomer)
                                 .Add(M.SalesInvoice.BillToContactPerson, this.ContactTree)

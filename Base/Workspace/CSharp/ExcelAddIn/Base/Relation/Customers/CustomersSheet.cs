@@ -56,26 +56,26 @@ namespace Allors.Excel.Customers
         }
 
         private Tree PartyContactMechanismsTree
-            => new Tree(M.PartyContactMechanism.Class)
+            => new Tree()
                 .Add(M.PartyContactMechanism.ContactPurposes)
                 .Add(M.PartyContactMechanism.ContactMechanism, this.ContactMechanismTree);
 
-        private Tree CurrentOrganisationContactRelationshipTree
-            => new Tree(M.OrganisationContactRelationship.Class)
+        private ITree CurrentOrganisationContactRelationshipTree
+            => new Tree()
                 .Add(M.OrganisationContactRelationship.Organisation)
                 .Add(M.OrganisationContactRelationship.Contact, this.ContactTree);
 
-        private Tree ContactTree
-            => new Tree(M.Person.Class)
+        private ITree ContactTree
+            => new Tree()
                 .Add(M.Person.Salutation)
                 .Add(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree);
 
-        private Tree ContactMechanismTree
-            => new Tree(M.PostalAddress.Class)
+        private ITree ContactMechanismTree
+            => new Tree()
                 .Add(M.PostalAddress.Country);
 
-        private Tree GeneralCorrespondenceTree
-            => new Tree(M.ContactMechanism.Interface)
+        private ITree GeneralCorrespondenceTree
+            => new Tree()
                 .Add(M.ContactMechanism.ContactMechanismType);
 
         public override async Task Refresh()
@@ -188,7 +188,7 @@ namespace Allors.Excel.Customers
                     {
                         Fetch = new Fetch()
                         {
-                            Include = new Tree(M.Organisation.Class)
+                            Include = new Tree()
                                 .Add(M.Organisation.PartyContactMechanisms, this.PartyContactMechanismsTree)
                                 .Add(M.Organisation.CurrentOrganisationContactRelationships, this.CurrentOrganisationContactRelationshipTree)
                         },
