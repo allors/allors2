@@ -131,10 +131,42 @@ namespace Allors.Data
             }
         }
 
+        public TreeNode Add(IEnumerable<IPropertyType> propertyTypes)
+        {
+            foreach (var propertyType in propertyTypes)
+            {
+                this.Add(propertyType);
+            }
+
+            return this;
+        }
+
+        public TreeNode Add(IPropertyType propertyType)
+        {
+            var treeNode = new TreeNode(propertyType);
+            this.Add(treeNode);
+            return this;
+        }
+
+        public TreeNode Add(IPropertyType propertyType, TreeNode[] subTree)
+        {
+            var treeNode = new TreeNode(propertyType, subTree);
+            this.Add(treeNode);
+            return this;
+        }
+
+        public TreeNode Add(IConcreteRoleType concreteRoleType) => this.Add(concreteRoleType.RoleType);
+
+        public TreeNode Add(IConcreteRoleType concreteRoleType, TreeNode[] subTree)
+        {
+            var treeNode = new TreeNode(concreteRoleType.RoleType, subTree);
+            this.Add(treeNode);
+            return this;
+        }
+
         internal void Add(TreeNode treeNode)
         {
             this.AssertAssignable(treeNode);
-
             this.Nodes = this.Nodes.Append(treeNode).ToArray();
         }
 

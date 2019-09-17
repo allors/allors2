@@ -9,6 +9,6 @@ namespace Allors.Protocol.Data
     {
         public Step Step { get; set; }
 
-        public Tree Include { get; set; }
+        public TreeNode[] Include { get; set; }
     }
 }

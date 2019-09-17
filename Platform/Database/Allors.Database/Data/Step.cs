@@ -38,7 +38,7 @@ namespace Allors.Data
             }
         }
 
-        public Tree Include { get; set; }
+        public TreeNode[] Include { get; set; }
 
         public IPropertyType PropertyType { get; set; }
 

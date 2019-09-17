@@ -43,7 +43,7 @@ namespace Allors.Api
         {
             if (@object != null)
             {
-                Tree tree = null;
+                TreeNode[] tree = null;
                 if (full)
                 {
                     tree = @object.Strategy.Session.Database.FullTree(@object.Strategy.Class, this.treeService);
@@ -53,7 +53,7 @@ namespace Allors.Api
             }
         }
 
-        public void AddObject(string name, IObject @object, Tree tree)
+        public void AddObject(string name, IObject @object, TreeNode[] tree)
         {
             if (@object != null)
             {
@@ -75,7 +75,7 @@ namespace Allors.Api
         {
             var inputList = (collection as IList<IObject>) ?? collection?.ToArray() ?? Array.Empty<IObject>();
 
-            Tree tree = null;
+            TreeNode[] tree = null;
             if (full && inputList.Count > 0)
             {
                 var @object = inputList.FirstOrDefault();
@@ -85,7 +85,7 @@ namespace Allors.Api
             this.AddCollection(name, inputList, tree);
         }
 
-        public void AddCollection(string name, IEnumerable<IObject> collection, Tree tree)
+        public void AddCollection(string name, IEnumerable<IObject> collection, TreeNode[] tree)
         {
             if (collection != null)
             {

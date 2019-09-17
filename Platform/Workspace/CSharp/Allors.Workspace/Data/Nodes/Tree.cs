@@ -10,9 +10,9 @@ namespace Allors.Workspace.Data
     using System.Text;
     using Allors.Workspace.Meta;
 
-    public class Tree : ITree
+    public class Node : INode
     {
-        public Tree(IPropertyType propertyType = null, INode[] nodes = null)
+        public Node(IPropertyType propertyType = null, INode[] nodes = null)
         {
             this.PropertyType = propertyType;
             this.Nodes = nodes ?? new INode[0];
@@ -22,24 +22,19 @@ namespace Allors.Workspace.Data
 
         public INode[] Nodes { get; private set; }
 
-        public Tree Add(IPropertyType propertyType)
+        public Node Add(IPropertyType propertyType)
         {
-            var node = new Tree(propertyType, null);
+            var node = new Node(propertyType, null);
             this.Nodes = this.Nodes.Append(node).ToArray();
             return this;
         }
 
-        public Tree Add(IPropertyType propertyType, ITree nodes)
+        public Node Add(IPropertyType propertyType, INode childNode)
         {
-            var node = new Tree(propertyType, nodes.Nodes);
+            var node = new Node(propertyType, childNode.Nodes);
             this.Nodes = this.Nodes.Append(node).ToArray();
             return this;
         }
-
-        public Protocol.Data.Tree ToData() => new Protocol.Data.Tree
-        {
-            Nodes = this.Nodes.Select(v => v.ToData()).ToArray(),
-        };
 
         public override string ToString()
         {

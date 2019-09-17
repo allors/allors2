@@ -12,7 +12,7 @@ namespace Allors.Services
 
     public class TreeService : ITreeService
     {
-        private ConcurrentDictionary<IComposite, Tree> trees;
+        private ConcurrentDictionary<IComposite, TreeNode[]> trees;
 
         public TreeService(IStateService stateService)
         {
@@ -20,10 +20,10 @@ namespace Allors.Services
             stateService.Register(this);
         }
 
-        public Tree Get(IComposite type) => this.trees.TryGetValue(type, out var tree) ? tree : null;
+        public TreeNode[] Get(IComposite type) => this.trees.TryGetValue(type, out var tree) ? tree : null;
 
-        public void Set(IComposite type, Tree tree) => this.trees[type] = tree;
+        public void Set(IComposite type, TreeNode[] tree) => this.trees[type] = tree;
 
-        public void Clear() => this.trees = new ConcurrentDictionary<IComposite, Tree>();
+        public void Clear() => this.trees = new ConcurrentDictionary<IComposite, TreeNode[]>();
     }
 }

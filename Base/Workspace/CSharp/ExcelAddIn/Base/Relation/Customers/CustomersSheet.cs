@@ -55,28 +55,38 @@ namespace Allors.Excel.Customers
             }
         }
 
-        private Tree PartyContactMechanismsTree
-            => new Tree()
-                .Add(M.PartyContactMechanism.ContactPurposes)
-                .Add(M.PartyContactMechanism.ContactMechanism, this.ContactMechanismTree);
+        private INode[] PartyContactMechanismsTree
+            => new[]
+            {
+                new Node(M.PartyContactMechanism.ContactPurposes),
+                new Node(M.PartyContactMechanism.ContactMechanism, this.ContactMechanismTree),
+            };
 
-        private ITree CurrentOrganisationContactRelationshipTree
-            => new Tree()
-                .Add(M.OrganisationContactRelationship.Organisation)
-                .Add(M.OrganisationContactRelationship.Contact, this.ContactTree);
+        private INode[] CurrentOrganisationContactRelationshipTree
+            => new[]
+            {
+                new Node(M.OrganisationContactRelationship.Organisation),
+                new Node(M.OrganisationContactRelationship.Contact, this.ContactTree),
+            };
 
-        private ITree ContactTree
-            => new Tree()
-                .Add(M.Person.Salutation)
-                .Add(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree);
+        private INode[] ContactTree
+            => new[]
+            {
+                new Node(M.Person.Salutation),
+                new Node(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree),
+            };
 
-        private ITree ContactMechanismTree
-            => new Tree()
-                .Add(M.PostalAddress.Country);
+        private INode[] ContactMechanismTree
+            => new[]
+            {
+                new Node(M.PostalAddress.Country),
+            };
 
-        private ITree GeneralCorrespondenceTree
-            => new Tree()
-                .Add(M.ContactMechanism.ContactMechanismType);
+        private INode[] GeneralCorrespondenceTree
+            => new[]
+            {
+                new Node(M.ContactMechanism.ContactMechanismType),
+            };
 
         public override async Task Refresh()
         {
@@ -188,9 +198,11 @@ namespace Allors.Excel.Customers
                     {
                         Fetch = new Fetch()
                         {
-                            Include = new Tree()
-                                .Add(M.Organisation.PartyContactMechanisms, this.PartyContactMechanismsTree)
-                                .Add(M.Organisation.CurrentOrganisationContactRelationships, this.CurrentOrganisationContactRelationshipTree)
+                            Include = new []
+                                {
+                                    new Node(M.Organisation.PartyContactMechanisms, this.PartyContactMechanismsTree),
+                                    new Node(M.Organisation.CurrentOrganisationContactRelationships, this.CurrentOrganisationContactRelationshipTree),
+                                }
                         },
                     },
                 },

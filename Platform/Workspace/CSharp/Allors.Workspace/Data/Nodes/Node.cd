@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Allors.Workspace.Data.Tree">
-    <Position X="1.5" Y="4.75" Width="1.5" />
+  <Class Name="Allors.Workspace.Data.Node">
+    <Position X="1.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIgAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACBAAAAAA=</HashCode>
       <FileName>Data\Nodes\Tree.cs</FileName>
@@ -14,12 +14,16 @@
       <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
       <FileName>Data\Nodes\INode.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Nodes" />
+      <Property Name="PropertyType" />
+    </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Workspace.Data.ITree">
-    <Position X="1.5" Y="3" Width="1.5" />
+  <Interface Name="Allors.Workspace.Meta.IPropertyType" Collapsed="true">
+    <Position X="5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>Data\Nodes\ITree.cs</FileName>
+      <HashCode>AAAAiAAAAAAAAAIAAAAAAAQAAAAAAAACAIAAAAAAAAA=</HashCode>
+      <FileName>Meta\IPropertyType.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

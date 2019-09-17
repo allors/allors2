@@ -24,30 +24,22 @@
   <Class Name="Allors.Workspace.Data.Fetch">
     <Position X="5.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAIIAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Data\Fetch.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Include" />
       <Property Name="Step" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Include" />
+    </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Allors.Workspace.Data.Tree" Collapsed="true">
-    <Position X="8.5" Y="6.25" Width="1.5" />
+  <Class Name="Allors.Workspace.Data.Step">
+    <Position X="9" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIgAAAAAAAAAAAAABAAAAAAAAAAAAAAoBAAAAAAAAA=</HashCode>
-      <FileName>Data\Tree.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Allors.Workspace.Data.Step" Collapsed="true">
-    <Position X="8.5" Y="7.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AgACgAAAAAAAgAAEAAAgCAAAAAAAAAAAIAACAAAAAAA=</HashCode>
+      <HashCode>AgICgAAAAAAAgAAEAAAgCAAAAAAAAAAAIAACAAAAAAA=</HashCode>
       <FileName>Data\Step.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Include" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Allors.Workspace.Data.Filter">
     <Position X="3.25" Y="3" Width="1.5" />
@@ -62,6 +54,13 @@
     <TypeIdentifier>
       <HashCode>IAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAIIAAAAAAAAA=</HashCode>
       <FileName>Data\IExtent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.Data.INode" Collapsed="true">
+    <Position X="9.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Data\Nodes\INode.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

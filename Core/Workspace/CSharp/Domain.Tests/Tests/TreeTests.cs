@@ -7,7 +7,6 @@ namespace Tests.Remote
 {
     using Allors.Workspace.Data;
     using Xunit;
-    using Tree = Allors.Protocol.Data.Tree;
 
     public class TreeTests : Test
     {
@@ -16,18 +15,5 @@ namespace Tests.Remote
         {
 
         }
-
-
-        public class OrganisationTree : Tree
-        {
-
-        }
-
-
-        public class PersonTree : Tree
-        {
-
-        }
-
     }
 }

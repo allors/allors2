@@ -34,15 +34,17 @@ namespace Tests.Remote
                                 {
                                     Fetch = new Fetch
                                     {
-                                        Include = new Tree()
-                                            .Add(M.C1.C1C1One2One)
-                                            .Add(M.C1.C1C1One2Manies)
-                                            .Add(M.C1.C1C1Many2One)
-                                            .Add(M.C1.C1C1Many2Manies)
-                                            .Add(M.C1.C1C2One2One)
-                                            .Add(M.C1.C1C2One2Manies)
-                                            .Add(M.C1.C1C2Many2One)
-                                            .Add(M.C1.C1C2Many2Manies),
+                                        Include = new[]
+                                            {
+                                                new Node(M.C1.C1C1One2One),
+                                                new Node(M.C1.C1C1One2Manies),
+                                                new Node(M.C1.C1C1Many2One),
+                                                new Node(M.C1.C1C1Many2Manies),
+                                                new Node(M.C1.C1C2One2One),
+                                                new Node(M.C1.C1C2One2Manies),
+                                                new Node(M.C1.C1C2Many2One),
+                                                new Node(M.C1.C1C2Many2Manies),
+                                            },
                                     },
                                 },
                             },

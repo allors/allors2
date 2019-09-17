@@ -37,7 +37,7 @@ namespace Tests
 
             this.Session.Derive(true);
 
-            var tree = new Tree().Add(M.C1.C1C2One2Manies);
+            var tree = new[] { new TreeNode(M.C1.C1C2One2Manies) };
 
             var resolved = new HashSet<IObject>();
             tree.Resolve(c1A, resolved);
@@ -80,12 +80,13 @@ namespace Tests
 
             this.Session.Commit();
 
-            var tree =
-                new Tree()
-                    .Add(M.C1.C1I12One2Manies, new Tree()
-                        .Add(M.C1.C1C1One2Manies))
-                    .Add(M.C1.C1I12One2Manies, new Tree()
-                        .Add(M.C2.C2C2One2Manies));
+            var tree = new[]
+            {
+                new TreeNode(M.C1.C1I12One2Manies)
+                    .Add(M.C1.C1C1One2Manies),
+                new TreeNode(M.C1.C1I12One2Manies)
+                    .Add(M.C2.C2C2One2Manies),
+            };
 
             var prefetchPolicy = tree.BuildPrefetchPolicy();
 
@@ -94,7 +95,7 @@ namespace Tests
             this.Session.Prefetch(prefetchPolicy, c1A);
             tree.Resolve(c1A, resolved);
 
-            Assert.Equal(resolved.Count, 2);
+            Assert.Equal(2, resolved.Count);
             Assert.Contains(c1C, resolved);
             Assert.Contains(c1D, resolved);
 
@@ -103,7 +104,7 @@ namespace Tests
             this.Session.Prefetch(prefetchPolicy, c1B);
             tree.Resolve(c1B, resolved);
 
-            Assert.Equal(resolved.Count, 5);
+            Assert.Equal(5, resolved.Count);
             Assert.Contains(c1E, resolved);
             Assert.Contains(c2A, resolved);
             Assert.Contains(c2B, resolved);
@@ -114,19 +115,11 @@ namespace Tests
         [Fact]
         public void Legal()
         {
-            var tree = new Tree()
-                .Add(M.C1.C1C1Many2Manies, new Tree()
-                    .Add(M.C1.C1C2Many2Manies));
+            new TreeNode(M.C1.C1C1Many2Manies).Add(M.C1.C1C2Many2Manies);
 
-            tree = new Tree()
-                .Add(M.C1.C1C1Many2Manies, new Tree()
-                    .Add(M.I12.I12C2Many2Manies)
-                );
+            new TreeNode(M.C1.C1C1Many2Manies).Add(M.I12.I12C2Many2Manies);
 
-            tree = new Tree()
-                .Add(M.C1.C1I12Many2Manies, new Tree()
-                    .Add(M.C1.I12C2Many2Manies)
-                );
+            new TreeNode(M.C1.C1I12Many2Manies).Add(M.C1.I12C2Many2Manies);
         }
 
         [Fact]
@@ -137,9 +130,7 @@ namespace Tests
 
                 try
                 {
-                    var tree = new Tree()
-                        .Add(M.C1.C1C1Many2Manies, new Tree()
-                            .Add(M.C2.C2C1Many2Manies));
+                    new TreeNode(M.C1.C1C1Many2Manies).Add(M.C2.C2C1Many2Manies);
                 }
                 catch (ArgumentException)
                 {
@@ -153,10 +144,7 @@ namespace Tests
         [Fact]
         public void UnitTreeNodesDontHaveTreeNodes()
         {
-            var tree = new Tree()
-                .Add(M.C1.C1AllorsString);
-
-            var treeNode = tree.Nodes[0];
+            var treeNode = new TreeNode(M.C1.C1AllorsString);
 
             Assert.Null(treeNode.Nodes);
         }
@@ -164,15 +152,13 @@ namespace Tests
         [Fact]
         public void Prefetch()
         {
-            var tree = new Tree();
+            var tree = new TreeNode[0];
             tree.BuildPrefetchPolicy();
 
-            tree = new Tree()
-                .Add(M.C1.C1AllorsBinary);
+            tree = new[] { new TreeNode(M.C1.C1AllorsBinary) };
             tree.BuildPrefetchPolicy();
 
-            tree = new Tree()
-                .Add(M.C1.C1C1Many2Manies);
+            tree = new[] { new TreeNode(M.C1.C1C1Many2Manies) };
             tree.BuildPrefetchPolicy();
         }
     }

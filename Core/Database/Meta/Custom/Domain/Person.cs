@@ -9,7 +9,7 @@ namespace Allors.Meta
 
     public partial class MetaPerson
     {
-        public Tree AngularHome;
+        public TreeNode[] AngularHome;
 
         internal override void CustomExtend()
         {
@@ -20,8 +20,10 @@ namespace Allors.Meta
             this.MiddleName.RelationType.Workspace = true;
 
             var person = this;
-            this.AngularHome = new Tree()
-                    .Add(person.Photo);
+            this.AngularHome = new[]
+                {
+                    new TreeNode(person.Photo),
+                };
         }
     }
 }

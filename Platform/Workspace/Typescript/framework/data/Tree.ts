@@ -37,9 +37,6 @@ export class Tree {
         });
     }
 
-    return {
-      composite: this.objectType.id,
-      nodes,
-    };
+    return nodes;
   }
 }

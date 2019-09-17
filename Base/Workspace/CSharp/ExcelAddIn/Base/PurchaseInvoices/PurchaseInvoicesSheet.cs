@@ -60,10 +60,10 @@ namespace Allors.Excel.PurchaseInvoices
 
         public Workbook Workbook { get; set; }
 
-        private ITree PaymentApplicationTree
-        => new Tree()
-            .Add(M.PaymentApplication.Invoice)
-        ;
+        private INode[] PaymentApplicationTree => new []
+        {
+            new Node(M.PaymentApplication.Invoice),
+        };
 
         public override async Task Refresh()
         {
@@ -271,11 +271,13 @@ namespace Allors.Excel.PurchaseInvoices
                     {
                         Fetch = new Fetch()
                         {
-                            Include = new Tree()
-                                .Add(M.PurchaseInvoice.BilledTo)
-                                .Add(M.PurchaseInvoice.BilledFrom)
-                                .Add(M.PurchaseInvoice.Currency)
-                                .Add(M.PurchaseInvoice.PurchaseInvoiceState),
+                            Include = new []
+                                {
+                                    new Node(M.PurchaseInvoice.BilledTo),
+                                    new Node(M.PurchaseInvoice.BilledFrom),
+                                    new Node(M.PurchaseInvoice.Currency),
+                                    new Node(M.PurchaseInvoice.PurchaseInvoiceState),
+                                }
                         },
                     },
                 },
@@ -290,12 +292,14 @@ namespace Allors.Excel.PurchaseInvoices
 
                 Results = new[]
                 {
-                    new Workspace.Data.Result
+                    new Result
                     {
                         Fetch = new Fetch()
                         {
-                            Include = new Tree()
-                                .Add(M.Payment.PaymentApplications, this.PaymentApplicationTree),
+                            Include = new Node[]
+                                {
+                                    new Node(M.Payment.PaymentApplications, this.PaymentApplicationTree),
+                                }
                         },
                     },
                 },

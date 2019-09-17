@@ -54,15 +54,19 @@ namespace Allors.Excel.Relations.CustomersOverdue
             }
         }
 
-        private ITree ContactTree
-            => new Tree()
-                .Add(M.Person.Salutation)
-                .Add(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree)
+        private INode[] ContactTree
+            => new[]
+                {
+                    new Node(M.Person.Salutation),
+                    new Node(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree),
+                }
         ;
 
-        private ITree GeneralCorrespondenceTree
-            => new Tree()
-                .Add(M.ContactMechanism.ContactMechanismType)
+        private INode[] GeneralCorrespondenceTree
+            => new[]
+                {
+                    new Node(M.ContactMechanism.ContactMechanismType),
+                }
         ;
 
         public override async Task Refresh()
@@ -184,12 +188,14 @@ namespace Allors.Excel.Relations.CustomersOverdue
                     {
                         Fetch = new Fetch()
                         {
-                            Include = new Tree()
-                                .Add(M.SalesInvoice.BilledFrom)
-                                .Add(M.SalesInvoice.BillToCustomer)
-                                .Add(M.SalesInvoice.BillToContactPerson, this.ContactTree)
-                                .Add(M.SalesInvoice.Currency)
-                                .Add(M.SalesInvoice.SalesInvoiceType)
+                            Include = new[]
+                                {
+                                    new Node(M.SalesInvoice.BilledFrom),
+                                    new Node(M.SalesInvoice.BillToCustomer),
+                                    new Node(M.SalesInvoice.BillToContactPerson, this.ContactTree),
+                                    new Node(M.SalesInvoice.Currency),
+                                    new Node(M.SalesInvoice.SalesInvoiceType),
+                                }
                         },
                     },
                 },

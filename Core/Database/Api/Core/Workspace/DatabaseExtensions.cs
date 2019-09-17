@@ -14,17 +14,12 @@ namespace Allors.Api
 
     public static class DatabaseExtensions
     {
-        public static Tree FullTree(this IDatabase @this, IComposite composite, ITreeService treeService)
+        public static TreeNode[] FullTree(this IDatabase @this, IComposite composite, ITreeService treeService)
         {
             var tree = treeService.Get(composite);
             if (tree == null)
             {
-                tree = new Tree();
-                foreach (var compositeRoleType in composite.RoleTypes.Where(v => v.ObjectType.IsComposite && ((RoleType)v).Workspace))
-                {
-                    tree.Add(compositeRoleType);
-                }
-
+                tree = composite.RoleTypes.Where(v => v.ObjectType.IsComposite && ((RoleType)v).Workspace).Select(v => new TreeNode(v)).ToArray();
                 treeService.Set(composite, tree);
             }
 

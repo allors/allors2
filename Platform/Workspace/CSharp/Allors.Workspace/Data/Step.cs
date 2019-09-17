@@ -5,6 +5,7 @@
 
 namespace Allors.Workspace.Data
 {
+    using System.Linq;
     using System.Text;
     using Allors.Workspace.Meta;
 
@@ -38,7 +39,7 @@ namespace Allors.Workspace.Data
             }
         }
 
-        public ITree Include { get; set; }
+        public INode[] Include { get; set; }
 
         public IPropertyType PropertyType { get; set; }
 
@@ -51,7 +52,7 @@ namespace Allors.Workspace.Data
         public Protocol.Data.Step ToJson() =>
             new Protocol.Data.Step
             {
-                Include = this.Include?.ToData(),
+                Include = this.Include?.Select(v=>v.ToData()).ToArray(),
                 PropertyType = this.PropertyType.Id,
                 Next = this.Next.ToJson(),
             };

@@ -28,7 +28,7 @@ namespace Allors.Workspace.Data
         {
         }
 
-        public ITree Include { get; set; }
+        public INode[] Include { get; set; }
 
         public Step Step { get; set; }
 
@@ -36,7 +36,7 @@ namespace Allors.Workspace.Data
             new Protocol.Data.Fetch
             {
                 Step = this.Step?.ToJson(),
-                Include = this.Include?.ToData(),
+                Include = this.Include?.Select(v => v.ToData()).ToArray(),
             };
     }
 }
