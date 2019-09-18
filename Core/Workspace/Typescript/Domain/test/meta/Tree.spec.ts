@@ -25,7 +25,7 @@ describe('Tree',
           const orignal = factory.Organisation({});
 
           const json = JSON.stringify(orignal);
-          const include = JSON.parse(json).nodes;
+          const include = JSON.parse(json);
 
           assert.isArray(include);
           assert.isEmpty(include);
@@ -41,7 +41,7 @@ describe('Tree',
           });
 
           const json = JSON.stringify(original);
-          const include = JSON.parse(json).nodes;
+          const include = JSON.parse(json);
 
           assert.deepEqual(include, [
             {
@@ -61,7 +61,7 @@ describe('Tree',
           });
 
           const json = JSON.stringify(original);
-          const include = JSON.parse(json).nodes;
+          const include = JSON.parse(json);
 
           assert.deepEqual(include, [
             {
@@ -85,7 +85,7 @@ describe('Tree',
           });
 
           const json = JSON.stringify(original);
-          const include = JSON.parse(json).nodes;
+          const include = JSON.parse(json);
 
           assert.deepEqual(include, [
             {
@@ -107,7 +107,7 @@ describe('Tree',
           });
 
           const json = JSON.stringify(original);
-          const include = JSON.parse(json).nodes;
+          const include = JSON.parse(json);
 
           assert.deepEqual(include, [
             {
