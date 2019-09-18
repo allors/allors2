@@ -6,28 +6,25 @@
 
 @if (person != null)
 {
-    <EditForm Model="@person" OnValidSubmit="@HandleValidSubmit">
-        <AllorsValidator />
+    <AllorsBSForm Model="@person" OnValidSubmit="@HandleValidSubmit">
         <ValidationSummary />
-        <div class="container">
-            <div class="row">
-                <div class="col-md">
-                    @*<AllorsInput RoleType="@M.Person.FirstName" />*@
-                </div>
-                <div class="col-md">
-                    @*<AllorsInput RoleType="@M.Person.LastName" />*@
-                </div>
-            </div>
 
+        <BSRow>
+            <BSCol>
+                <AllorsInput RoleType="@M.Person.FirstName" />
+            </BSCol>
+            <BSCol>
+                <AllorsInput RoleType="@M.Person.LastName" />
+            </BSCol>
+        </BSRow>
+        
+        <BSRow>
+            <BSCol>
+                <button @onclick="HandleValidSubmit">Submit</button>
+            </BSCol>
+        </BSRow>
 
-            <div class="row">
-                <div class="col">
-                    <button @onclick="HandleValidSubmit">Submit</button>
-                </div>
-            </div>
-        </div>
-
-    </EditForm>
+    </AllorsBSForm>
 }
 
 @code {

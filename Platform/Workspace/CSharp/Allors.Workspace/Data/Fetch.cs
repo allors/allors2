@@ -28,7 +28,7 @@ namespace Allors.Workspace.Data
         {
         }
 
-        public INode[] Include { get; set; }
+        public Node[] Include { get; set; }
 
         public Step Step { get; set; }
 

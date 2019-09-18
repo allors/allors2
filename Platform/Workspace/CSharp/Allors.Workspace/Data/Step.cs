@@ -39,7 +39,7 @@ namespace Allors.Workspace.Data
             }
         }
 
-        public INode[] Include { get; set; }
+        public Node[] Include { get; set; }
 
         public IPropertyType PropertyType { get; set; }
 

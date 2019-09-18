@@ -10,17 +10,17 @@ namespace Allors.Workspace.Data
     using System.Text;
     using Allors.Workspace.Meta;
 
-    public class Node : INode
+    public class Node
     {
-        public Node(IPropertyType propertyType = null, INode[] nodes = null)
+        public Node(IPropertyType propertyType = null, Node[] nodes = null)
         {
             this.PropertyType = propertyType;
-            this.Nodes = nodes ?? new INode[0];
+            this.Nodes = nodes ?? new Node[0];
         }
 
         public IPropertyType PropertyType { get; }
 
-        public INode[] Nodes { get; private set; }
+        public Node[] Nodes { get; private set; }
 
         public Node Add(IPropertyType propertyType)
         {
@@ -29,11 +29,22 @@ namespace Allors.Workspace.Data
             return this;
         }
 
-        public Node Add(IPropertyType propertyType, INode childNode)
+        public Node Add(IPropertyType propertyType, Node childNode)
         {
             var node = new Node(propertyType, childNode.Nodes);
             this.Nodes = this.Nodes.Append(node).ToArray();
             return this;
+        }
+
+        public Protocol.Data.TreeNode ToData()
+        {
+            var data = new Protocol.Data.TreeNode
+            {
+                PropertyType = this.PropertyType.Id,
+                Nodes = this.Nodes.Select(v => v.ToData()).ToArray(),
+            };
+
+            return data;
         }
 
         public override string ToString()
@@ -44,7 +55,7 @@ namespace Allors.Workspace.Data
             return toString.ToString();
         }
 
-        private void ToString(StringBuilder toString, IReadOnlyCollection<INode> nodes, int level)
+        private void ToString(StringBuilder toString, IReadOnlyCollection<Node> nodes, int level)
         {
             foreach (var node in nodes)
             {

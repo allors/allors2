@@ -60,7 +60,7 @@ namespace Allors.Excel.PurchaseInvoices
 
         public Workbook Workbook { get; set; }
 
-        private INode[] PaymentApplicationTree => new []
+        private Node[] PaymentApplicationTree => new []
         {
             new Node(M.PaymentApplication.Invoice),
         };

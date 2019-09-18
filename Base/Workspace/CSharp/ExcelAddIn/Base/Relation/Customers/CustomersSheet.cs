@@ -55,34 +55,34 @@ namespace Allors.Excel.Customers
             }
         }
 
-        private INode[] PartyContactMechanismsTree
+        private Node[] PartyContactMechanismsTree
             => new[]
             {
                 new Node(M.PartyContactMechanism.ContactPurposes),
                 new Node(M.PartyContactMechanism.ContactMechanism, this.ContactMechanismTree),
             };
 
-        private INode[] CurrentOrganisationContactRelationshipTree
+        private Node[] CurrentOrganisationContactRelationshipTree
             => new[]
             {
                 new Node(M.OrganisationContactRelationship.Organisation),
                 new Node(M.OrganisationContactRelationship.Contact, this.ContactTree),
             };
 
-        private INode[] ContactTree
+        private Node[] ContactTree
             => new[]
             {
                 new Node(M.Person.Salutation),
                 new Node(M.Person.GeneralCorrespondence, this.GeneralCorrespondenceTree),
             };
 
-        private INode[] ContactMechanismTree
+        private Node[] ContactMechanismTree
             => new[]
             {
                 new Node(M.PostalAddress.Country),
             };
 
-        private INode[] GeneralCorrespondenceTree
+        private Node[] GeneralCorrespondenceTree
             => new[]
             {
                 new Node(M.ContactMechanism.ContactMechanismType),

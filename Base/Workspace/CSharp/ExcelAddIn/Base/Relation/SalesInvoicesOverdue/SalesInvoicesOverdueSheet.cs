@@ -54,7 +54,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
             }
         }
 
-        private INode[] ContactTree
+        private Node[] ContactTree
             => new[]
                 {
                     new Node(M.Person.Salutation),
@@ -62,7 +62,7 @@ namespace Allors.Excel.Relations.CustomersOverdue
                 }
         ;
 
-        private INode[] GeneralCorrespondenceTree
+        private Node[] GeneralCorrespondenceTree
             => new[]
                 {
                     new Node(M.ContactMechanism.ContactMechanismType),
