@@ -14,6 +14,8 @@ namespace Allors.Workspace
     {
         public Result(Session session, PullResponse response)
         {
+            this.Workspace = session.Workspace;
+
             this.Objects = response.NamedObjects.ToDictionary(
                 pair => pair.Key,
                 pair => session.Get(long.Parse(pair.Value)));
@@ -31,9 +33,25 @@ namespace Allors.Workspace
 
         public Dictionary<string, object> Values { get; }
 
+        private IWorkspace Workspace { get; }
+
+        public T[] GetCollection<T>()
+        {
+            var objectType = this.Workspace.ObjectFactory.GetObjectType<T>();
+            var key = objectType.PluralName;
+            return this.GetCollection<T>(key);
+        }
+
         public T[] GetCollection<T>(string key) => this.Collections[key]?.Cast<T>().ToArray();
 
         public void GetCollection<T>(string key, out T[] value) => value = this.Collections[key]?.Cast<T>().ToArray();
+
+        public T GetObject<T>() where T : SessionObject
+        {
+            var objectType = this.Workspace.ObjectFactory.GetObjectType<T>();
+            var key = objectType.SingularName;
+            return this.GetObject<T>(key);
+        }
 
         public T GetObject<T>(string key) where T : SessionObject => (T)this.Objects[key];
 

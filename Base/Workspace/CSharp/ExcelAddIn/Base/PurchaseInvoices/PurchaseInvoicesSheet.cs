@@ -3,13 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Workspace.Meta;
-using ExcelAddIn;
-using ExcelAddIn.Base.Extensions;
-using Workspace.Domain.Base;
-
 namespace Allors.Excel.PurchaseInvoices
 {
+    using Allors.Workspace.Meta;
+    using ExcelAddIn;
+    using ExcelAddIn.Base.Extensions;
     using System.Linq;
     using System.Windows.Forms;
 
