@@ -1,4 +1,4 @@
-﻿// <copyright file="CoreMediaController.cs" company="Allors bvba">
+// <copyright file="CoreMediaController.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,14 +16,14 @@ namespace Allors.Api
 
     public abstract partial class CoreMediaController : Controller
     {
-        private const int OneYearInSeconds = 60 * 60 * 24 * 356;
+        protected const int OneYearInSeconds = 60 * 60 * 24 * 356;
 
         protected CoreMediaController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 
         [AllowAnonymous]
-        public virtual ActionResult Download(string id)
+        public virtual IActionResult Download(string id)
         {
             if (Guid.TryParse(id, out var uniqueId))
             {
@@ -39,7 +39,7 @@ namespace Allors.Api
 
         [AllowAnonymous]
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds, VaryByQueryKeys = new[] { "revision" })]
-        public virtual ActionResult DownloadWithRevision(string id, string revision)
+        public virtual IActionResult DownloadWithRevision(string id, string revision)
         {
             if (Guid.TryParse(id, out var uniqueId))
             {
