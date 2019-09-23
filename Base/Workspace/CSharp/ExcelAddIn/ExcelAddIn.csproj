@@ -317,10 +317,6 @@
       <Project>{d7f1b1a7-965a-4ba7-a0d2-33d7a3d4b29a}</Project>
       <Name>Workspace.Meta</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Workspace\Workspace.csproj">
-      <Project>{f531c158-2336-41fa-8b4f-a28de19bb4ed}</Project>
-      <Name>Workspace</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Nito.AsyncEx.StrongNamed">
