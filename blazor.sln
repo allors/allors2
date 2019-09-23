@@ -35,9 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Core\Database\Meta\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources", "Core\Database\Resources\Resources.csproj", "{15CCBE65-02A9-4D34-812A-A3C8DE54F6D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Core\Database\Api\Api.csproj", "{C8D4E18C-9EE0-4F18-A37B-E18B2834357D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Core\Database\Server\Server.csproj", "{C8D4E18C-9EE0-4F18-A37B-E18B2834357D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api.Tests", "Core\Database\Api.Tests\Api.Tests.csproj", "{5D0E75D8-BDCC-4ACC-90D4-AA867DB4246D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Tests", "Core\Database\Server.Tests\Server.Tests.csproj", "{5D0E75D8-BDCC-4ACC-90D4-AA867DB4246D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Core\Database\Services\Services.csproj", "{F186943D-2361-42CA-895A-B172C25FE664}"
 EndProject

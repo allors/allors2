@@ -52,7 +52,7 @@ partial class Build
 
     private Target BasePublishExcellAddin => _ => _
          .DependsOn(BaseWorkspaceCSharpExcellAddin)
-         .DependsOn(BasePublishApi)
+         .DependsOn(BasePublishServer)
          .DependsOn(BasePublishCommands)
          .Executes(() =>
          {
@@ -72,13 +72,13 @@ partial class Build
              CopyDirectoryRecursively(Paths.BaseWorkspaceCSharpExcelAddIn / "bin" / Configuration / "app.publish", Paths.ArtifactsBaseExcellAddIn);
          });
 
-    private Target BasePublishApi => _ => _
+    private Target BasePublishServer => _ => _
              .DependsOn(BaseGenerate)
          .Executes(() =>
          {
              var dotNetPublishSettings = new DotNetPublishSettings()
-                 .SetWorkingDirectory(Paths.BaseDatabaseApi)
-                 .SetOutput(Paths.ArtifactsBaseApi);
+                 .SetWorkingDirectory(Paths.BaseDatabaseServer)
+                 .SetOutput(Paths.ArtifactsBaseServer);
              DotNetPublish(dotNetPublishSettings);
          });
 
@@ -148,7 +148,7 @@ partial class Build
 
     private Target BaseWorkspaceTypescriptIntranet => _ => _
          .DependsOn(BaseWorkspaceSetup)
-         .DependsOn(BasePublishApi)
+         .DependsOn(BasePublishServer)
          .DependsOn(BasePublishCommands)
          .Executes(async () =>
          {
@@ -157,7 +157,7 @@ partial class Build
                  sqlServer.Restart();
                  sqlServer.Populate(Paths.ArtifactsBaseCommands);
 
-                 using (var server = new Api(Paths.ArtifactsBaseApi))
+                 using (var server = new Server(Paths.ArtifactsBaseServer))
                  {
                      await server.Ready();
                      NpmRun(
@@ -176,7 +176,7 @@ partial class Build
 
     private Target BaseWorkspaceTypescriptIntranetTests => _ => _
          .DependsOn(BaseWorkspaceAutotest)
-         .DependsOn(BasePublishApi)
+         .DependsOn(BasePublishServer)
          .DependsOn(BasePublishCommands)
          .Executes(async () =>
          {
@@ -184,7 +184,7 @@ partial class Build
              {
                  sqlServer.Restart();
                  sqlServer.Populate(Paths.ArtifactsBaseCommands);
-                 using (var server = new Api(Paths.ArtifactsBaseApi))
+                 using (var server = new Server(Paths.ArtifactsBaseServer))
                  {
                      using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
                      {

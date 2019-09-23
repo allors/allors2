@@ -9,13 +9,13 @@ using static Nuke.Common.Logger;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tooling.ProcessTasks;
 
-partial class Api : IDisposable
+partial class Server : IDisposable
 {
     private IProcess Process { get; set; }
 
-    public Api(AbsolutePath path)
+    public Server(AbsolutePath path)
     {
-        var arguments = $@"{path}/Api.dll";
+        var arguments = $@"{path}/Server.dll";
         var workingDirectory = path;
 
         Process = StartProcess(DotNetTasks.DotNetPath, arguments, workingDirectory);
@@ -32,7 +32,7 @@ partial class Api : IDisposable
     {
         if (!await Get("/Test/Ready", TimeSpan.FromMinutes(5)))
         {
-            throw new Exception("Api is not ready");
+            throw new Exception("Server is not ready");
         }
     }
 
@@ -50,25 +50,25 @@ partial class Api : IDisposable
             {
                 using (var client = new HttpClient())
                 {
-                    Normal($"Api request: ${url}");
+                    Normal($"Server request: ${url}");
                     var response = await client.GetAsync($"http://localhost:5000{url}");
                     success = response.IsSuccessStatusCode;
                     var result = response.Content.ReadAsStringAsync().Result;
                     if (!success)
                     {
-                        Warn("Api response: Unsuccessful");
+                        Warn("Server response: Unsuccessful");
                         Warn(result);
                     }
                     else
                     {
-                        Normal("Api response: Successful");
+                        Normal("Server response: Successful");
                         Normal(result);
                     }
                 }
             }
             catch (Exception e)
             {
-                Warn($"Api: Exception (run {++run})");
+                Warn($"Server: Exception (run {++run})");
             }
         }
 

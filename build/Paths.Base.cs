@@ -7,7 +7,7 @@ public partial class Paths
     public AbsolutePath BaseDatabaseMetaGenerated => Base / "Database/Meta/generated";
     public AbsolutePath BaseDatabaseGenerate => Base / "Database/Generate/Generate.csproj";
     public AbsolutePath BaseDatabaseCommands => Base / "Database/Commands";
-    public AbsolutePath BaseDatabaseApi => Base / "Database/Api";
+    public AbsolutePath BaseDatabaseServer => Base / "Database/Server";
     public AbsolutePath BaseDatabaseDomainTests => Base / "Database/Domain.Tests/Domain.Tests.csproj";
 
     public AbsolutePath BaseWorkspaceCSharp => Base / "Workspace/CSharp";

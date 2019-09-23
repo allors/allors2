@@ -6,14 +6,14 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 partial class SqlServer : IDisposable
 {
-    SqlLocalDbApi api;
+    SqlLocalDbApi sqlLocalDbApi;
     ISqlLocalDbInstanceInfo dbInstance;
     ISqlLocalDbInstanceManager manager;
 
     public SqlServer()
     {
-        api = new SqlLocalDbApi();
-        dbInstance = api.GetOrCreateInstance("MyInstance");
+        sqlLocalDbApi = new SqlLocalDbApi();
+        dbInstance = sqlLocalDbApi.GetOrCreateInstance("MyInstance");
         manager = dbInstance.Manage();
     }
 
@@ -39,9 +39,9 @@ partial class SqlServer : IDisposable
 
     public void Dispose()
     {
-        api?.Dispose();
+        sqlLocalDbApi?.Dispose();
 
-        api = null;
+        sqlLocalDbApi = null;
         dbInstance = null;
         manager = null;
     }
