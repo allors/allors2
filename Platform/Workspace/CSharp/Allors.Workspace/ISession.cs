@@ -13,6 +13,8 @@ namespace Allors.Workspace
     {
         bool HasChanges { get; }
 
+        IWorkspace Workspace { get; }
+
         INewSessionObject Create(IClass @class);
 
         INewSessionObject Get(long id);

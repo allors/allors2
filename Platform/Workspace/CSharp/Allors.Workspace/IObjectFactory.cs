@@ -17,14 +17,14 @@ namespace Allors.Workspace
 
         INewSessionObject Create(ISession session, IObjectType objectType);
 
-        IObjectType GetObjectTypeForObjectTypeId(Guid id);
+        IObjectType GetObjectType<T>();
 
-        IObjectType GetObjectTypeForType(Guid objectTypeId);
+        IObjectType GetObjectType(Type type);
 
-        IObjectType GetObjectTypeForType(Type type);
+        IObjectType GetObjectType(Guid id);
 
-        IObjectType GetObjectTypeForTypeName(string name);
+        IObjectType GetObjectType(string name);
 
-        Type GetTypeForObjectType(IObjectType objectType);
+        Type GetType(IObjectType objectType);
     }
 }

@@ -24,6 +24,8 @@ namespace Allors.Workspace
 
         public bool HasChanges => this.newSessionObjectById.Count > 0 || this.sessionObjectById.Values.Any(v => v.HasChanges);
 
+        public IWorkspace Workspace => this.workspace;
+
         public INewSessionObject Get(long id)
         {
             if (!this.sessionObjectById.TryGetValue(id, out var sessionObject))

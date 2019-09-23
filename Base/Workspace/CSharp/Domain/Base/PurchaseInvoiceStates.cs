@@ -1,13 +1,13 @@
-﻿// <copyright file="PurchaseInvoiceStates.cs" company="Allors bvba">
+// <copyright file="PurchaseInvoiceStates.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Workspace.Domain.Base
+namespace Allors.Workspace.Domain
 {
     using System;
 
-    public class PurchaseInvoiceStates
+    public partial class PurchaseInvoiceStates
     {
         public static readonly Guid CreatedId = new Guid("102F4080-1D12-4090-9196-F42C094C38CA");
         public static readonly Guid AwaitingApprovalId = new Guid("FE3A30A9-0174-4534-A11E-E772112E9760");

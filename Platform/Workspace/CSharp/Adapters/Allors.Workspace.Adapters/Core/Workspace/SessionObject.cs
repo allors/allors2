@@ -152,9 +152,8 @@ namespace Allors.Workspace
                                     value = Convert.ToDouble(value);
                                     break;
 
-                                case UnitTags.Unique:
-                                    value = new Guid((string)value);
-                                    break;
+                                //case UnitTags.Unique:
+                                //    break;
                             }
                         }
                     }

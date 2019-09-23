@@ -144,9 +144,9 @@ namespace Allors.Workspace
         /// </summary>
         /// <param name="type">The .Net <see cref="Type"/>.</param>
         /// <returns>The Allors <see cref="IObjectType"/>.</returns>
-        public IObjectType GetObjectTypeForType(Type type) => !this.objectTypeByType.TryGetValue(type, out var objectType) ? null : objectType;
+        public IObjectType GetObjectType(Type type) => !this.objectTypeByType.TryGetValue(type, out var objectType) ? null : objectType;
 
-        public IObjectType GetObjectTypeForTypeName(string name) => !this.objectTypeByName.TryGetValue(name, out var objectType) ? null : objectType;
+        public IObjectType GetObjectType(string name) => !this.objectTypeByName.TryGetValue(name, out var objectType) ? null : objectType;
 
         /// <summary>
         /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.
@@ -157,28 +157,23 @@ namespace Allors.Workspace
         /// <returns>
         /// The Allors <see cref="IObjectType"/>.
         /// </returns>
-        public IObjectType GetObjectTypeForObjectTypeId(Guid id) => !this.objectTypeByObjectTypeId.TryGetValue(id, out var objectType) ? null : objectType;
+        public IObjectType GetObjectType(Guid id) => !this.objectTypeByObjectTypeId.TryGetValue(id, out var objectType) ? null : objectType;
 
         /// <summary>
         /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.
         /// </summary>
         /// <param name="objectType">The Allors <see cref="IObjectType"/>.</param>
         /// <returns>The .Net <see cref="Type"/>.</returns>
-        public Type GetTypeForObjectType(IObjectType objectType)
+        public Type GetType(IObjectType objectType)
         {
             this.typeByObjectType.TryGetValue(objectType, out var type);
             return type;
         }
-
-        /// <summary>
-        /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.
-        /// </summary>
-        /// <param name="objectTypeId">The Allors <see cref="IObjectType"/> id.</param>
-        /// <returns>The .Net <see cref="Type"/>.</returns>
-        public IObjectType GetObjectTypeForType(Guid objectTypeId)
+        
+        public IObjectType GetObjectType<T>()
         {
-            this.objectTypeByObjectTypeId.TryGetValue(objectTypeId, out var objectType);
-            return objectType;
+            var typeName = typeof(T).Name;
+            return this.GetObjectType(typeName);
         }
     }
 }
