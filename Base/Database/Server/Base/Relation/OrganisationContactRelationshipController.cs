@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Api.Controllers
+namespace Allors.Server.Controllers
 {
     using Allors.Domain;
-    using Api;
+    using Server;
     using Allors.Services;
 
     using Microsoft.AspNetCore.Mvc;

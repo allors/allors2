@@ -13,7 +13,7 @@ namespace Allors.Workspace.Local
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
     using Allors.Services;
-    using Api;
+    using Server;
 
     public class LocalDatabase : IDatabase
     {

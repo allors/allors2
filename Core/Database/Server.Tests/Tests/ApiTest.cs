@@ -4,7 +4,7 @@
 // </copyright>
 // <summary>Defines the DomainTest type.</summary>
 
-namespace Allors.Api.Tests
+namespace Allors.Server.Tests
 {
     using System;
     using System.IO;
@@ -17,7 +17,7 @@ namespace Allors.Api.Tests
     using Database.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Api;
+    using Server;
     using Allors.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
