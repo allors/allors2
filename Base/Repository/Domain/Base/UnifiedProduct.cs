@@ -91,6 +91,16 @@ namespace Allors.Repository
         Media[] ElectronicDocuments { get; set; }
 
         #region Allors
+        [Id("AFBF7196-1EDC-4F3A-845B-E583E6EFA6B8")]
+        [AssociationId("19C9EA89-108A-4F96-B3AD-6CD6C8C46BCF")]
+        [RoleId("44D97AF0-CC68-4ED8-AA41-EAA22369E3A8")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        LocalisedMedia[] LocalisedElectronicDocuments { get; set; }
+
+        #region Allors
         [Id("9b66342e-48ac-4761-b375-b9b60d94b005")]
         [AssociationId("fcb1a5ad-544f-4613-a160-077d9130732f")]
         [RoleId("76542b1d-9085-451c-9110-85bfac863016")]
@@ -108,6 +118,16 @@ namespace Allors.Repository
         [Workspace]
         [Size(-1)]
         string Keywords { get; set; }
+
+        #region Allors
+        [Id("990A3EFD-891E-4BB9-8FEE-8DE538E9EC04")]
+        [AssociationId("266F8DEA-8AA2-4A9B-AD1B-3D229C4CE559")]
+        [RoleId("D5A7BD3C-82AB-47CC-9974-46BCC4AB8A6F")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        LocalisedText[] LocalisedKeywords { get; set; }
 
         #region Allors
         [Id("f52c0b7e-dbc4-4082-a2b9-9b1a05ce7179")]

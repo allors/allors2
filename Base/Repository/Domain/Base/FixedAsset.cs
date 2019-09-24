@@ -94,5 +94,15 @@ namespace Allors.Repository
         [Workspace]
         [Size(-1)]
         string Keywords { get; set; }
+
+        #region Allors
+        [Id("EAC7725D-7B6A-48E1-95D1-3D9B17F5FDA8")]
+        [AssociationId("DFD5AB33-E2D4-4860-9AC2-77E281ADF941")]
+        [RoleId("79F6FB5F-8F4F-483A-8E79-1EF50FDCE82C")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        LocalisedText[] LocalisedKeywords { get; set; }
     }
 }

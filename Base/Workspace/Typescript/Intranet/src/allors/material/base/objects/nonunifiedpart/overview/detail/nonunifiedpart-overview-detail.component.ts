@@ -138,6 +138,9 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
                 LocalisedComments: {
                   Locale: x,
                 },
+                LocalisedKeywords: {
+                  Locale: x,
+                },
               }
             }),
             pull.Part(
