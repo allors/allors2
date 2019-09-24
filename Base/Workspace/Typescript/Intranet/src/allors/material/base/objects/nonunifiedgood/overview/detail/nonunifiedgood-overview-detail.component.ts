@@ -148,6 +148,9 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
                 LocalisedComments: {
                   Locale: x,
                 },
+                LocalisedKeywords: {
+                  Locale: x,
+                },
               },
             }),
             pull.NonUnifiedGood({

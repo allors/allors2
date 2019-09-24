@@ -152,6 +152,9 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
                 LocalisedComments: {
                   Locale: x,
                 },
+                LocalisedKeywords: {
+                  Locale: x,
+                },
               },
             }),
             pull.UnifiedGood(
