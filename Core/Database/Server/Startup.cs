@@ -19,7 +19,6 @@ namespace Allors.Server
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Cors.Internal;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -108,11 +107,6 @@ namespace Allors.Server
 
             services.AddResponseCaching();
             services.AddMvc();
-
-            services.Configure<MvcOptions>(options =>
-                {
-                    options.Filters.Add(new CorsAuthorizationFilterFactory("AllorsSpa"));
-                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -141,6 +135,8 @@ namespace Allors.Server
                 app.UseHsts();
             }
 
+            app.UseCors("AllorsSpa");
+
             var jsnlogConfiguration = new JsnlogConfiguration
             {
                 corsAllowedOriginsRegex = ".*",
@@ -157,8 +153,6 @@ namespace Allors.Server
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
-            app.UseCors("AllorsSpa");
 
             app.UseExceptionHandler(appBuilder =>
                 {

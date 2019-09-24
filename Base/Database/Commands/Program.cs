@@ -1,4 +1,4 @@
-﻿// <copyright file="Program.cs" company="Allors bvba">
+// <copyright file="Program.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,7 +15,7 @@ namespace Commands
 
     public class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
             var configurationBuilder = new ConfigurationBuilder();
 
@@ -41,12 +41,13 @@ namespace Commands
             {
                 var app = new CommandLineApplication<Commands>();
                 app.Conventions.UseDefaultConventions().UseConstructorInjection(serviceProvider);
-                app.Execute(args);
+                return app.Execute(args);
             }
             catch (Exception e)
             {
                 var logger = serviceProvider.GetService<ILogger<Program>>();
                 logger.LogCritical(e, e.Message);
+                return ExitCode.Error;
             }
         }
     }
