@@ -4,11 +4,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Core*\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\..\..\Core\Workspace\CSharp\Meta\Core*\**\*.cs" />
+  </ItemGroup>
 </Project>

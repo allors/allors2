@@ -3,10 +3,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Generated\" />
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Allors.Database\Allors.Database.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
   </ItemGroup>

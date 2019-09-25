@@ -11,7 +11,6 @@ namespace Allors.Server
     using Allors.Meta;
     using Allors.Services;
     using Identity;
-    using Identity.Services;
     using JSNLog;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
@@ -30,6 +29,7 @@ namespace Allors.Server
     public class Startup
     {
         #region CustomListDerivationLog
+
         private class CustomListDerivationLog : Allors.Domain.Logging.ListDerivationLog
         {
             public Allors.Domain.Logging.Derivation Derivation { get; set; }
@@ -54,7 +54,8 @@ namespace Allors.Server
                 }
             }
         }
-        #endregion
+
+        #endregion CustomListDerivationLog
 
         public Startup(IConfiguration configuration) => this.Configuration = configuration;
 
@@ -80,9 +81,6 @@ namespace Allors.Server
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddAllorsStores()
                 .AddDefaultTokenProviders();
-
-            // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
 
             // Enable Dual Authentication
             services.AddAuthentication(option =>

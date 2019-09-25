@@ -19,6 +19,10 @@ namespace Allors.Domain
             {
                 this.Name = this.Language.IsoCode + "-" + this.Country.IsoCode;
             }
+            else
+            {
+                this.RemoveName();
+            }
         }
     }
 }

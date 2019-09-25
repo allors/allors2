@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Core\Database\Meta\Core*\**\*.cs" />
+    <ProjectReference Include="..\..\..\Platform\Database\Allors.Database\Allors.Database.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,11 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="generated\" />
+    <Compile Include="..\..\..\Core\Database\Meta\Core*\**\*.cs" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\Database\Allors.Database\Allors.Database.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,11 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <!-- Next line errors on MacOS -->
-    <!-- <UserSecretsId>aspnet-{Project Name}-{GUID}</UserSecretsId> -->
-    <UserSecretsId>aspnet-Api-8B0BF624-6A9D-4B7C-A120-C8480C2E2071</UserSecretsId>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,10 +26,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Identity\Pages\" />
-    <Folder Include="Pages\Shared\" />
-  </ItemGroup>
-
 </Project>

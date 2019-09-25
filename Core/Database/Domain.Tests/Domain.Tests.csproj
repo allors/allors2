@@ -1,20 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="EmployeesTemplate.odt" />
-    <None Remove="Image.jpeg" />
-    <None Remove="Resources\EmbeddedTemplate.odt" />
-    <None Remove="Resources\logo.png" />
-    <None Remove="Resources\PdfAs.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\logo.png" />
-    <EmbeddedResource Include="Resources\PdfAs.jpg" />
-    <EmbeddedResource Include="Resources\EmbeddedTemplate.odt" />
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
@@ -25,6 +13,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.Memory\Allors.Database.Adapters.Memory.csproj" />
     <ProjectReference Include="..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.SqlClient\Allors.Database.Adapters.SqlClient.csproj" />
@@ -33,7 +22,16 @@
     <ProjectReference Include="..\Resources\Resources.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+    <None Remove="Resources\EmbeddedTemplate.odt" />
+    <None Remove="Resources\logo.png" />
+    <None Remove="Resources\PdfAs.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\logo.png" />
+    <EmbeddedResource Include="Resources\PdfAs.jpg" />
+    <EmbeddedResource Include="Resources\EmbeddedTemplate.odt" />
   </ItemGroup>
 </Project>
