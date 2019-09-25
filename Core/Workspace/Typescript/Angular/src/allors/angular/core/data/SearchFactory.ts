@@ -48,7 +48,7 @@ export class SearchFactory {
       const context = contextOrService instanceof Context ? contextOrService : contextOrService.context;
 
       return context
-        .load('Pull', new PullRequest({ pulls }))
+        .load(new PullRequest({ pulls }))
         .pipe(map((loaded: Loaded) => {
           return loaded.collections.results;
         }));

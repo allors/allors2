@@ -108,7 +108,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -325,7 +325,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.invoice.BilledFrom !== this.previousBilledFrom) {
@@ -368,7 +368,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
@@ -410,7 +410,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
@@ -457,7 +457,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {

@@ -11,11 +11,11 @@ declare module '../generated/WorkEffortState.g' {
   }
 }
 
-const createdId = 'c082cd605c5f4948bdb106bd9c385751';
-const inProgressId = '7a83df7b99184b108f9948896f9db105';
-const cancelledId = 'f9fc3cd044c9434398fd494c4d6c9988';
-const completedId = '4d942f823b8f42489ebc22b1e5f05d93';
-const finishedId = '6a9716a181744b2686eb22a265b74e78';
+const createdId = 'c082cd60-5c5f-4948-bdb1-06bd9c385751';
+const inProgressId = '7a83df7b-9918-4b10-8f99-48896f9db105';
+const cancelledId = 'f9fc3cd0-44c9-4343-98fd-494c4d6c9988';
+const completedId = '4d942f82-3b8f-4248-9ebc-22b1e5f05d93';
+const finishedId = '6a9716a1-8174-4b26-86eb-22a265b74e78';
 
 domain.extend((workspace) => {
 

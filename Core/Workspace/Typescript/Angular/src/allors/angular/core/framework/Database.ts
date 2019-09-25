@@ -2,17 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse, InvokeOptions } from '../../../framework';
+import { PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from '../../../framework';
+import { InvokeRequest, InvokeResponse,  InvokeOptions } from '../../../framework';
 import { Method } from '../../../framework';
+import { services } from '../../../framework/database';
 
 export class Database {
 
   constructor(private http: HttpClient, public url: string) {
   }
 
-  public pull(name: string, params?: any): Observable<PullResponse> {
-    const serviceName: string = this.fullyQualifiedUrl(name + '/Pull');
+  public pull(params?: any): Observable<PullResponse> {
 
+    const serviceName: string = this.fullyQualifiedUrl(services.pull);
     return this.http
       .post<PullResponse>(serviceName, params)
       .pipe(
@@ -25,7 +27,7 @@ export class Database {
 
   public sync(syncRequest: SyncRequest): Observable<SyncResponse> {
 
-    const serviceName: string = this.fullyQualifiedUrl('Database/Sync');
+    const serviceName: string = this.fullyQualifiedUrl(services.sync);
     return this.http
       .post<SyncResponse>(serviceName, syncRequest)
       .pipe(
@@ -38,7 +40,7 @@ export class Database {
 
   public push(pushRequest: PushRequest): Observable<PushResponse> {
 
-    const serviceName: string = this.fullyQualifiedUrl('Database/Push');
+    const serviceName: string = this.fullyQualifiedUrl(services.push);
     return this.http
       .post<PushResponse>(serviceName, pushRequest)
       .pipe(
@@ -80,7 +82,7 @@ export class Database {
       o: options
     };
 
-    const serviceName: string = this.fullyQualifiedUrl('Database/Invoke');
+    const serviceName: string = this.fullyQualifiedUrl(services.invoke);
     return this.http
       .post<InvokeResponse>(serviceName, invokeRequest)
       .pipe(
@@ -96,7 +98,7 @@ export class Database {
   }
 
   private invokeService(methodOrService: string, args?: any): Observable<InvokeResponse> {
-    const service: string = this.fullyQualifiedUrl(methodOrService + '/Invoke');
+    const service: string = this.fullyQualifiedUrl(methodOrService);
     return this.http
       .post<InvokeResponse>(service, args)
       .pipe(

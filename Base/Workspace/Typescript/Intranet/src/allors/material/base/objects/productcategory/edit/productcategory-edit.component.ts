@@ -76,7 +76,7 @@ export class ProductCategoryEditComponent extends TestScope implements OnInit, O
             }),
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );

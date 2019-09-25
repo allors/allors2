@@ -71,7 +71,7 @@ export class PurchaseReturnCreateComponent extends TestScope implements OnInit, 
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -170,7 +170,7 @@ export class PurchaseReturnCreateComponent extends TestScope implements OnInit, 
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
@@ -207,7 +207,7 @@ export class PurchaseReturnCreateComponent extends TestScope implements OnInit, 
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];

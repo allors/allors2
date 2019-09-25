@@ -44,13 +44,13 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors.context.load('Pull', new PullRequest({ pulls }))
+    this.allors.context.load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.facilities = loaded.collections.Facilities as Facility[];
 
         this.facilityTypes = loaded.collections.FacilityTypes as FacilityType[];
-        const storageLocation = this.facilityTypes.find((v) => v.UniqueId === 'ff66c1ad304848fda7d9fbf97a090edd');
+        const storageLocation = this.facilityTypes.find((v) => v.UniqueId === 'ff66c1ad-3048-48fd-a7d9-fbf97a090edd');
 
         this.facility = this.allors.context.create('Facility') as Facility;
         this.facility.Owner = this.internalOrganisation;

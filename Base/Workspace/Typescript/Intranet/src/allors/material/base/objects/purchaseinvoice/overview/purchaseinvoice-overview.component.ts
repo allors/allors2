@@ -89,7 +89,7 @@ export class PurchasInvoiceOverviewComponent extends TestScope implements AfterV
           this.panelManager.onPull(pulls);
 
           return this.panelManager.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

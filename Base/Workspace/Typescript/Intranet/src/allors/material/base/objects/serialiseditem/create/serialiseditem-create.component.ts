@@ -81,7 +81,7 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -98,7 +98,7 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
         this.parts = loaded.collections.Parts as Part[];
-        this.parts = this.parts.filter(v => v.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae');
+        this.parts = this.parts.filter(v => v.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae');
 
         this.serialisedItem = this.allors.context.create('SerialisedItem') as SerialisedItem;
         this.serialisedItem.AvailableForSale = false;

@@ -109,15 +109,15 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
                 targets.forEach((salesinvoice) => {
                   const amountToPay = salesinvoice.TotalIncVat - salesinvoice.AmountPaid;
 
-                  if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1835e41f880af6611efce5b32' ||
-                    salesinvoice.SalesInvoiceType.UniqueId === 'ef5b7c52e782416db46f89c8c7a5c24d') {
+                  if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1-835e-41f8-80af-6611efce5b32' ||
+                    salesinvoice.SalesInvoiceType.UniqueId === 'ef5b7c52-e782-416d-b46f-89c8c7a5c24d') {
 
                     const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
                     paymentApplication.Invoice = salesinvoice;
                     paymentApplication.AmountApplied = amountToPay;
 
                     // sales invoice
-                    if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1835e41f880af6611efce5b32') {
+                    if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1-835e-41f8-80af-6611efce5b32') {
                       const receipt = this.allors.context.create('Receipt') as Receipt;
                       receipt.Amount = amountToPay;
                       receipt.EffectiveDate = paymentDate;
@@ -126,7 +126,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
                     }
 
                     // credit note
-                    if (salesinvoice.SalesInvoiceType.UniqueId === 'ef5b7c52e782416db46f89c8c7a5c24d') {
+                    if (salesinvoice.SalesInvoiceType.UniqueId === 'ef5b7c52-e782-416d-b46f-89c8c7a5c24d') {
                       const disbursement = this.allors.context.create('Disbursement') as Disbursement;
                       disbursement.Amount = amountToPay;
                       disbursement.EffectiveDate = paymentDate;
@@ -292,7 +292,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

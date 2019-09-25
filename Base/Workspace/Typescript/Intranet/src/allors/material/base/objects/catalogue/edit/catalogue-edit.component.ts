@@ -76,7 +76,7 @@ export class CatalogueEditComponent extends TestScope implements OnInit, OnDestr
             pull.CatScope()
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, create: isCreate }))
             );

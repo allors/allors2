@@ -63,7 +63,7 @@ export class UnifiedGoodOverviewComponent extends TestScope implements AfterView
           this.panelManager.onPull(pulls);
 
           return this.panelManager.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -73,7 +73,7 @@ export class UnifiedGoodOverviewComponent extends TestScope implements AfterView
         this.panelManager.onPulled(loaded);
 
         const unifiedGood = loaded.objects.UnifiedGood as UnifiedGood;
-        this.serialised = unifiedGood.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
+        this.serialised = unifiedGood.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
       });
   }
 

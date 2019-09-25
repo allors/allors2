@@ -34,7 +34,7 @@ describe('Instantiate',
             scope.session.reset();
 
             const loaded = await scope
-                .load('Pull', new PullRequest({ pulls }));
+                .load(new PullRequest({ pulls }));
 
             people = loaded.collections['People'] as Person[];
         });
@@ -56,7 +56,7 @@ describe('Instantiate',
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load('Pull', new PullRequest({ pulls }));
+                        .load(new PullRequest({ pulls }));
 
                     const person = loaded.objects['Person'] as Person;
 
@@ -97,7 +97,7 @@ describe('Instantiate',
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load('Pull', new PullRequest({ pulls }));
+                        .load(new PullRequest({ pulls }));
 
                     people = loaded.collections['People'] as Person[];
 
@@ -135,7 +135,7 @@ describe('Instantiate',
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load(new PullRequest({ pulls }));
 
                     const people = loaded.collections["People"] as Person[];
 
@@ -169,7 +169,7 @@ describe('Instantiate',
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load(new PullRequest({ pulls }));
 
                     const owners = loaded.collections["Owners"] as Media[];
 
@@ -201,7 +201,7 @@ describe('Instantiate',
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load(new PullRequest({ pulls }));
 
                     const employees = loaded.collections["Employees"] as Media[];
 

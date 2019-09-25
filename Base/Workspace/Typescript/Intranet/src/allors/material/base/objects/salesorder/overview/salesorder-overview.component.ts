@@ -116,7 +116,7 @@ export class SalesOrderOverviewComponent extends TestScope implements AfterViewI
           this.panelManager.onPull(pulls);
 
           return this.panelManager.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -130,7 +130,7 @@ export class SalesOrderOverviewComponent extends TestScope implements AfterViewI
         this.salesInvoice = loaded.objects.SalesInvoice as SalesInvoice;
         this.inventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
         this.billingProcesses = loaded.collections.BillingProcesses as BillingProcess[];
-        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId === 'ab01ccc264804fc0b20e265afd41fae2');
+        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId === 'ab01ccc2-6480-4fc0-b20e-265afd41fae2');
         this.orderItems = this.order.SalesOrderItems;
 
       });

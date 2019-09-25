@@ -205,8 +205,8 @@ ids(meta) ::= <<
 // tslint:disable:object-literal-sort-keys
 
 export const ids = {
-$meta.Units:{unit|  $unit.Name$: '$unit.IdAsNumberString$',}; separator="\n"$
-$meta.WorkspaceComposites:{composite|  $composite.Name$: '$composite.IdAsNumberString$',}; separator="\n"$
+$meta.Units:{unit|  $unit.Name$: '$unit.IdAsString$',}; separator="\n"$
+$meta.WorkspaceComposites:{composite|  $composite.Name$: '$composite.IdAsString$',}; separator="\n"$
 };
 >>
 
@@ -240,7 +240,7 @@ $meta.WorkspaceMethodTypes:{methodType|$methodType(methodType)$}; separator=",\n
 
 interface(interface) ::= <<
       {
-        "id": "$interface.IdAsNumberString$",
+        "id": "$interface.IdAsString$",
         "name": "$interface.Name$",
         "plural": "$interface.PluralName$"$if(interface.WorkspaceSupertypes)$,
         "interfaces":
@@ -253,7 +253,7 @@ $endif$
 
 class(class) ::= <<
       {
-        "id": "$class.IdAsNumberString$",
+        "id": "$class.IdAsString$",
         "name": "$class.Name$",
         "plural": "$class.PluralName$"$if(class.WorkspaceSupertypes)$,
         "interfaces":
@@ -266,7 +266,7 @@ $endif$
 
 associationType(associationType) ::= <<
                 {
-                    "id": "$associationType.IdAsNumberString$",
+                    "id": "$associationType.IdAsString$",
                     "name": "$associationType.PropertyName$",
                     "objectType": "$associationType.ObjectType.Name$",
                     "isOne": $boolean(associationType.IsOne)$
@@ -275,17 +275,17 @@ associationType(associationType) ::= <<
 
 relationType(relationType) ::= <<
       {
-        "id": "$relationType.IdAsNumberString$",
+        "id": "$relationType.IdAsString$",
         "associationType": {
-          "id": "$relationType.AssociationType.IdAsNumberString$",
-          "objectTypeId": "$relationType.AssociationType.ObjectType.IdAsNumberString$",
+          "id": "$relationType.AssociationType.IdAsString$",
+          "objectTypeId": "$relationType.AssociationType.ObjectType.IdAsString$",
           "name": "$relationType.AssociationType.PropertyName$",
           "singular": "$relationType.AssociationType.SingularName$",
           "isOne": $boolean(relationType.AssociationType.IsOne)$
         },
         "roleType": {
-          "id": "$relationType.RoleType.IdAsNumberString$",
-          "objectTypeId": "$relationType.RoleType.ObjectType.IdAsNumberString$",
+          "id": "$relationType.RoleType.IdAsString$",
+          "objectTypeId": "$relationType.RoleType.ObjectType.IdAsString$",
           "name": "$relationType.RoleType.PropertyName$",
           "singular": "$relationType.RoleType.SingularName$",
           "isUnit": $boolean(relationType.RoleType.ObjectType.IsUnit)$,
@@ -304,7 +304,7 @@ $endif$
 
 concreteRoleType(concreteRoleType) ::= <<
             {
-              "objectTypeId": "$concreteRoleType.Class.IdAsNumberString$",
+              "objectTypeId": "$concreteRoleType.Class.IdAsString$",
               "isRequired": $boolean(concreteRoleType.IsRequired)$
             }
 >>
@@ -312,7 +312,7 @@ concreteRoleType(concreteRoleType) ::= <<
 methodType(methodType) ::= <<
       {
         "id": "$methodType.id$",
-        "objectTypeId": "$methodType.ObjectType.IdAsNumberString$",
+        "objectTypeId": "$methodType.ObjectType.IdAsString$",
         "name": "$methodType.name$"
       }
 >>

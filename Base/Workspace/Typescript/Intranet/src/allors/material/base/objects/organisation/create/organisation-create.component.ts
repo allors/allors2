@@ -137,7 +137,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
           }
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -163,8 +163,8 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
-        this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8b5e0cee4c9842f18f183638fba943a0');
-        this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8c6d629b1e274520aa8ce8adf93a5095');
+        this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8b5e0cee-4c98-42f1-8f18-3638fba943a0');
+        this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8c6d629b-1e27-4520-aa8c-e8adf93a5095');
         this.manufacturerRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '32e74bef2d7944278902-b093afa81661');
         this.selectableRoles.push(this.customerRole);
         this.selectableRoles.push(this.supplierRole);

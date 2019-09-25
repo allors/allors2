@@ -57,7 +57,7 @@ export class FetchComponent implements OnInit, OnDestroy {
     this.allors.context.reset();
 
     this.subscription = this.allors.context
-      .load('Pull', new PullRequest({
+      .load(new PullRequest({
         pulls,
       }))
       .subscribe((loaded: Loaded) => {

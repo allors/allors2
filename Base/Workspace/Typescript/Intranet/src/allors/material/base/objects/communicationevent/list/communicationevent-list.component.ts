@@ -104,7 +104,7 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , ,]),
+        }, [, , , , ]),
         switchMap(([refresh, filterFields, sort, pageEvent]) => {
 
           const pulls = [
@@ -120,7 +120,7 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

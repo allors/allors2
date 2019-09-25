@@ -130,7 +130,7 @@ export class WorkTaskOverviewDetailComponent extends TestScope implements OnInit
             })
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -213,7 +213,7 @@ export class WorkTaskOverviewDetailComponent extends TestScope implements OnInit
       })
     ];
 
-    this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.context.load(new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
         const indexMyself = this.workEfforts.indexOf(this.workTask, 0);

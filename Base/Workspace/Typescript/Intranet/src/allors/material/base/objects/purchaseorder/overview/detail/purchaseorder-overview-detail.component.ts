@@ -136,7 +136,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -270,7 +270,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.order.TakenViaSupplier !== this.previousSupplier) {
@@ -313,7 +313,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];

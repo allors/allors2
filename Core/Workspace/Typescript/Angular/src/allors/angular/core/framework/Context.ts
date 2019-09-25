@@ -39,10 +39,10 @@ export class Context {
     this.session.delete(object);
   }
 
-  load(service: string, params?: any): Observable<Loaded> {
+  load(params?: any): Observable<Loaded> {
 
     return this.database
-      .pull(service, params)
+      .pull(params)
       .pipe(
         switchMap((pullResponse: PullResponse) => {
           const requireLoadIds: SyncRequest = this.workspace.diff(pullResponse);

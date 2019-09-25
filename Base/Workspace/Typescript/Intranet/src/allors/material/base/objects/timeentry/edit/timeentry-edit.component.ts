@@ -107,7 +107,7 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
           }
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );
@@ -119,7 +119,7 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
 
         this.rateTypes = loaded.collections.RateTypes as RateType[];
         this.frequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
-        const hour = this.frequencies.find((v) => v.UniqueId === 'db14e5d55eaf4ec8b149c558a28d99f5');
+        const hour = this.frequencies.find((v) => v.UniqueId === 'db14e5d5-5eaf-4ec8-b149-c558a28d99f5');
 
         if (isCreate) {
           this.workEffort = loaded.objects.WorkEffort as WorkEffort;
@@ -220,7 +220,7 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         this.timeSheet = loaded.objects.TimeSheet as TimeSheet;

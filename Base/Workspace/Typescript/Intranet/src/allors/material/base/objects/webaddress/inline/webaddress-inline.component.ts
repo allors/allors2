@@ -25,7 +25,7 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
   constructor(
     private allors: ContextService,
     public metaService: MetaService,
-    
+
   ) {
     this.m = this.metaService.m;
   }
@@ -41,7 +41,7 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.context.load(new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as ContactMechanismPurpose[];
         this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;

@@ -27,7 +27,7 @@ describe('Extent', () => {
           pull.Person()
         ];
 
-        const loaded: Loaded = await fixture.allors.context.load('Pull', new PullRequest({ pulls })).toPromise();
+        const loaded: Loaded = await fixture.allors.context.load(new PullRequest({ pulls })).toPromise();
         const people = loaded.collections.People as Person[];
 
         expect(people).toBeArrayOfSize(7);
@@ -65,7 +65,7 @@ describe('Extent', () => {
         fixture.allors.context.reset();
 
         const loaded = await fixture.allors.context
-          .load('Pull', new PullRequest({ pulls })).toPromise();
+          .load(new PullRequest({ pulls })).toPromise();
 
         const people = loaded.collections['People'] as Person[];
 
@@ -101,7 +101,7 @@ describe('Extent', () => {
 
         fixture.allors.context.reset();
 
-        const loaded = await fixture.allors.context.load('Pull', new PullRequest({ pulls })).toPromise();
+        const loaded = await fixture.allors.context.load(new PullRequest({ pulls })).toPromise();
 
         const organisations = loaded.collections['Organisations'] as Organisation[];
 
@@ -139,7 +139,7 @@ describe('Extent', () => {
         fixture.allors.context.reset();
 
         const loaded = await fixture.allors.context
-          .load('Pull', new PullRequest({ pulls }))
+          .load(new PullRequest({ pulls }))
           .toPromise();
 
         const owners = loaded.collections['Owners'] as Person[];
@@ -169,7 +169,7 @@ describe('Extent', () => {
         fixture.allors.context.reset();
 
         const loaded = await fixture.allors.context
-          .load('Pull', new PullRequest({ pulls }))
+          .load(new PullRequest({ pulls }))
           .toPromise();
 
         const employees = loaded.collections['Employees'] as Person[];
@@ -200,7 +200,7 @@ describe('Extent', () => {
         fixture.allors.context.reset();
 
         const loaded = await fixture.allors.context
-          .load('Pull', new PullRequest({ pulls }))
+          .load(new PullRequest({ pulls }))
           .toPromise();
 
         const employees = loaded.collections['Employees'] as Person[];
@@ -235,7 +235,7 @@ describe('Extent', () => {
         fixture.allors.context.reset();
 
         const loaded = await fixture.allors.context
-          .load('Pull', new PullRequest({ pulls }))
+          .load(new PullRequest({ pulls }))
           .toPromise();
 
         const owners = loaded.collections['Owners'] as Person[];

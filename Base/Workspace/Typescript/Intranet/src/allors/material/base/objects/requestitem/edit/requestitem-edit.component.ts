@@ -84,7 +84,7 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
           }
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );
@@ -96,7 +96,7 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
         this.requestItem = loaded.objects.RequestItem as RequestItem;
         this.goods = loaded.collections.Goods as Good[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
-        const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId === 'f4bbdb523441476892d4729c6c5d6f1b');
+        const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId === 'f4bbdb52-3441-4768-92d4-729c6c5d6f1b');
 
         if (isCreate) {
           this.title = 'Create Request Item';
@@ -176,7 +176,7 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.part = loaded.objects.UnifiedGood as Part;
         if (this.part) {

@@ -29,7 +29,7 @@ export class ConfigService {
         ];
 
         return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load(new PullRequest({ pulls }))
             .pipe(
                 tap((loaded: Loaded) => {
                     const internalOrganisations = loaded.collections.Organisations as Organisation[];

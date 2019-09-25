@@ -137,7 +137,7 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -232,7 +232,7 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.productQuote.Receiver !== this.previousReceiver) {

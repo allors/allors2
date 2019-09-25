@@ -94,6 +94,10 @@ export class MetaPopulation {
       roleType.isOne = dataRoleType.isOne;
       roleType.isRequired = dataRoleType.isRequired;
 
+      if (!roleType.objectType) {
+        console.debug(roleType);
+      }
+
       dataRelationType.concreteRoleTypes && dataRelationType.concreteRoleTypes.forEach((dataConcreteRoleType) => {
         const concreteRoleType = new ConcreteRoleType(this);
         concreteRoleType.relationType = relationType;

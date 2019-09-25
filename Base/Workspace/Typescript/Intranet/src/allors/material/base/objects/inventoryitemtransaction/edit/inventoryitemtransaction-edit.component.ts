@@ -99,7 +99,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
             })
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded }))
             );
@@ -128,7 +128,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
           this.nonSerialisedInventoryItem = loaded.objects.InventoryItem as NonSerialisedInventoryItem;
           this.part = this.inventoryItem.Part;
           this.selectedFacility = this.inventoryItem.Facility;
-          this.serialised = this.inventoryItem.Part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
+          this.serialised = this.inventoryItem.Part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
         }
 
         this.inventoryItemTransaction = this.allors.context.create('InventoryItemTransaction') as InventoryItemTransaction;

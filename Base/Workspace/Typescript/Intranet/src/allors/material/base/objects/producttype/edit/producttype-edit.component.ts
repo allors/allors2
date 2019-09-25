@@ -63,7 +63,7 @@ export class ProductTypeEditComponent extends TestScope implements OnInit, OnDes
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );

@@ -156,7 +156,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
           }
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );
@@ -296,7 +296,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
@@ -329,7 +329,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];

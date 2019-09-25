@@ -149,7 +149,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , , ,]),
+        }, [, , , , , ]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
@@ -180,7 +180,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -194,7 +194,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
           return {
             object: v,
             name: v.Name,
-            id: v.ProductIdentifications.find(p => p.ProductIdentificationType.UniqueId === 'b640630da5564526a2e560a84ab0db3f').Identification,
+            id: v.ProductIdentifications.find(p => p.ProductIdentificationType.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f').Identification,
             categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.displayName).join(', '),
             // qoh: v.Part && v.Part.QuantityOnHand
             qoh: ((v as NonUnifiedGood).Part && (v as NonUnifiedGood).Part.QuantityOnHand) || (v as UnifiedGood).QuantityOnHand

@@ -202,7 +202,7 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
             }),
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -232,7 +232,7 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
         const currentsupplierRelationships = supplierRelationships.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
-        const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630da5564526a2e560a84ab0db3f');
+        const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
         this.productNumber = this.good.ProductIdentifications.find(v => v.ProductIdentificationType === goodNumberType);
 
@@ -290,7 +290,7 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe(() => {
         this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       });

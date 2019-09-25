@@ -76,7 +76,7 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -121,7 +121,7 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
       })
     ];
 
-    this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.context.load(new PullRequest({ pulls })).subscribe(
       (loaded) => {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms

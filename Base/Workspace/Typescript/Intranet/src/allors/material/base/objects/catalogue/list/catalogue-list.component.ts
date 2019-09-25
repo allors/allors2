@@ -111,7 +111,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
             internalOrganisationId
           ];
-        }, [, , , , ,]),
+        }, [, , , , , ]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           internalOrganisationPredicate.object = internalOrganisationId;
@@ -130,7 +130,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

@@ -52,7 +52,7 @@ export class PersonInlineComponent implements OnInit, OnDestroy {
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.locales = loaded.collections.Locales as Locale[];
         this.genders = loaded.collections.GenderTypes as Enumeration[];

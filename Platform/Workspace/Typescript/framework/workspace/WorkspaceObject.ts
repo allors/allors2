@@ -55,10 +55,6 @@ export class WorkspaceObject implements IWorkspaceObject {
           if (roleType.objectType.isUnique) {
             let value = role[2] as string;
             if (value) {
-              if (value.length !== 16) {
-                value = value.replace(/-/g, '').toLowerCase();
-              }
-
               value = value.toLowerCase();
             }
             this.roles[name] = value;

@@ -17,11 +17,11 @@ export class Scope {
     this.session = new Session(this.workspace);
   }
 
-  public load(service: string, params?: any): Promise<Loaded> {
+  public load(params?: any): Promise<Loaded> {
 
     return new Promise((resolve, reject) => {
       this.database
-        .pull(service, params)
+        .pull(params)
         .then((pullResponse: PullResponse) => {
           const requireLoadIds: SyncRequest = this.workspace.diff(pullResponse);
 

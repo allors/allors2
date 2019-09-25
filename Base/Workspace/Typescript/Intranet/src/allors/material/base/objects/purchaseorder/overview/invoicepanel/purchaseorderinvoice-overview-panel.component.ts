@@ -228,8 +228,8 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
       this.orderItemBillings = loaded.collections.OrderItemBillings as OrderItemBilling[];
 
       const invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
-      this.partItem = invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d57c943119c569ff37959653b');
-      this.workItem = invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'a4d2e6d0c6c146eca1cf3a64822e7a9e');
+      this.partItem = invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
+      this.workItem = invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'a4d2e6d0-c6c1-46ec-a1cf-3a64822e7a9e');
 
       this.objects = loaded.collections[pullName] as PurchaseOrder[];
 

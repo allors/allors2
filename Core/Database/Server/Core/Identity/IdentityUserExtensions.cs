@@ -16,13 +16,13 @@ namespace Identity.Models
 
     public static class IdentityUserExtensions
     {
-        private const string TokensKeyKey = "Tokens:Key";
+        private const string TokensKeyKey = "JwtToken:Key";
 
-        private const string TokensIssuerKey = "Tokens:Issuer";
+        private const string TokensIssuerKey = "JwtToken:Issuer";
 
-        private const string TokensAudienceKey = "Tokens:Audience";
+        private const string TokensAudienceKey = "JwtToken:Audience";
 
-        private const string TokensExpirationKey = "Tokens:Expiration";
+        private const string TokensExpirationKey = "JwtToken:Expiration";
 
         private static readonly TimeSpan DefaultExpiration = new TimeSpan(30, 0, 0, 0);
 

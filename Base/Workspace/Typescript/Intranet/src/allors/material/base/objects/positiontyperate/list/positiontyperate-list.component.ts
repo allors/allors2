@@ -149,7 +149,7 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
             })
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

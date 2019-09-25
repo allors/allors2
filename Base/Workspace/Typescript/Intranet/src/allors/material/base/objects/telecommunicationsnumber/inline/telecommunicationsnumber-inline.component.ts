@@ -49,7 +49,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as ContactMechanismPurpose[];
         this.contactMechanismTypes = loaded.collections.ContactMechanismTypes as ContactMechanismType[];

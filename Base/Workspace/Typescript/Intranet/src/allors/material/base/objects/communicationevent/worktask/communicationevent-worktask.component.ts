@@ -85,7 +85,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
             pull.WorkEffortPartyAssignment()
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

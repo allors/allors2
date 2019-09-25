@@ -4,6 +4,7 @@ import { MetaPopulation } from './MetaPopulation';
 import { MethodType } from './MethodType';
 import { RoleType } from './RoleType';
 import * as units from './Units';
+import { ids } from '../../meta/generated/ids.g';
 
 export enum Kind {
   unit,
@@ -32,35 +33,35 @@ export class ObjectType implements MetaObject {
   }
 
   get isBinary(): boolean {
-    return this.id === units.binaryId;
+    return this.id === ids.Binary;
   }
 
   get isBoolean(): boolean {
-    return this.id === units.booleanId;
+    return this.id === ids.Boolean;
   }
 
   get isDateTime(): boolean {
-    return this.id === units.dateTimeId;
+    return this.id === ids.DateTime;
   }
 
   get isDecimal(): boolean {
-    return this.id === units.decimalId;
+    return this.id === ids.Decimal;
   }
 
   get isFloat(): boolean {
-    return this.id === units.floatId;
+    return this.id === ids.Float;
   }
 
   get isInteger(): boolean {
-    return this.id === units.integerId;
+    return this.id === ids.Integer;
   }
 
   get isString(): boolean {
-    return this.id === units.stringId;
+    return this.id === ids.String;
   }
 
   get isUnique(): boolean {
-    return this.id === units.uniqueId;
+    return this.id === ids.Unique;
   }
 
   get isComposite(): boolean {

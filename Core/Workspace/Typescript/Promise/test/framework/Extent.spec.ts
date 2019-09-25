@@ -33,7 +33,7 @@ describe('Extent',
 
           const pullRequest = new PullRequest({ pulls });
           const loaded = await scope
-            .load('Pull', pullRequest);
+            .load(pullRequest);
 
           const people = loaded.collections['People'] as Person[];
 
@@ -78,7 +78,7 @@ describe('Extent',
           const json = JSON.stringify(pullRequest);
 
           const loaded = await scope
-            .load('Pull', pullRequest);
+            .load(pullRequest);
 
           const people = loaded.collections['People'] as Person[];
 
@@ -116,7 +116,7 @@ describe('Extent',
           scope.session.reset();
 
           const loaded = await scope
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
 
           const organisations = loaded.collections['Organisations'] as Organisation[];
 
@@ -155,7 +155,7 @@ describe('Extent',
           scope.session.reset();
 
           const loaded = await scope
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
 
           const owners = loaded.collections['Owners'] as Person[];
 
@@ -186,7 +186,7 @@ describe('Extent',
           scope.session.reset();
 
           const loaded = await scope
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
 
           const employees = loaded.collections['Employees'] as Media[];
 
@@ -218,7 +218,7 @@ describe('Extent',
           scope.session.reset();
 
           const loaded = await scope
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
 
           const employees = loaded.collections['Employees'] as Person[];
 
@@ -254,7 +254,7 @@ describe('Extent',
           scope.session.reset();
 
           const loaded = await scope
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
 
           const owners = loaded.collections['Owners'] as Person[];
 

@@ -63,7 +63,7 @@ export class OrganisationOverviewComponent extends TestScope implements OnInit, 
           this.allors.context.reset();
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {

@@ -128,7 +128,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           }
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );
@@ -245,9 +245,9 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
+        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
         const supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
         this.supplierOffering = supplierOfferings.find(v => moment(v.FromDate).isBefore(moment())

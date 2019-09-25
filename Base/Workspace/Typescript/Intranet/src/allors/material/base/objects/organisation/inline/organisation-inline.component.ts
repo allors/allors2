@@ -32,7 +32,7 @@ export class OrganisationInlineComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     this.allors.context
-      .load('Pull', new PullRequest({}))
+      .load(new PullRequest({}))
       .subscribe((loaded) => {
         this.organisation = this.allors.context.create('Organisation') as Organisation;
       });

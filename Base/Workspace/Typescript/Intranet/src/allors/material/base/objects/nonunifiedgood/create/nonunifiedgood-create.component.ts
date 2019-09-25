@@ -79,7 +79,7 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
             })
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -94,7 +94,7 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
         this.settings = loaded.objects.Settings as Settings;
 
         const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-        this.goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630da5564526a2e560a84ab0db3f');
+        this.goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
         this.good = this.allors.context.create('NonUnifiedGood') as Good;
         this.good.VatRate = vatRateZero;

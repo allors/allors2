@@ -135,7 +135,7 @@ export class RequestForQuoteOverviewDetailComponent extends TestScope implements
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -230,7 +230,7 @@ export class RequestForQuoteOverviewDetailComponent extends TestScope implements
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.request.Originator !== this.previousOriginator) {

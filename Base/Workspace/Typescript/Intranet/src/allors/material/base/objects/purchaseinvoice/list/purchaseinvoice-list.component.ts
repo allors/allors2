@@ -108,15 +108,15 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                 targets.forEach((purchaseInvoice) => {
                   const amountToPay = purchaseInvoice.TotalIncVat - purchaseInvoice.AmountPaid;
 
-                  if (purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309a4cb4ab78f753bb11dcf3783' ||
-                    purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d92781f54d6a984758b674ad3e6a') {
+                  if (purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309-a4cb-4ab7-8f75-3bb11dcf3783' ||
+                    purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d927-81f5-4d6a-9847-58b674ad3e6a') {
 
                     const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
                     paymentApplication.Invoice = purchaseInvoice;
                     paymentApplication.AmountApplied = amountToPay;
 
                     // purchase invoice
-                    if (purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309a4cb4ab78f753bb11dcf3783') {
+                    if (purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309-a4cb-4ab7-8f75-3bb11dcf3783') {
                       const disbursement = this.allors.context.create('Disbursement') as Disbursement;
                       disbursement.Amount = amountToPay;
                       disbursement.EffectiveDate = paymentDate;
@@ -125,7 +125,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                     }
 
                     // purchase return
-                    if (purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d92781f54d6a984758b674ad3e6a') {
+                    if (purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d927-81f5-4d6a-9847-58b674ad3e6a') {
                       const receipt = this.allors.context.create('Receipt') as Receipt;
                       receipt.Amount = amountToPay;
                       receipt.EffectiveDate = paymentDate;
@@ -241,7 +241,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

@@ -81,7 +81,7 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );
@@ -95,7 +95,7 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
         this.organisations = loaded.collections.Organisations as Organisation[];
 
         this.contactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
-        this.generalContact = this.contactKinds.find(v => v.UniqueId === 'eebe4d65c45249c9a583c0ffec385e98');
+        this.generalContact = this.contactKinds.find(v => v.UniqueId === 'eebe4d65-c452-49c9-a583-c0ffec385e98');
 
         if (isCreate) {
           this.title = 'Add Organisation Contact';

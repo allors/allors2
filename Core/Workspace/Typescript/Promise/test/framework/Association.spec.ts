@@ -40,7 +40,7 @@ describe('Association',
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load('Pull', new PullRequest({ pulls }));
+                        .load(new PullRequest({ pulls }));
 
                     const c1s = loaded.collections['C1s'] as C1[];
                     const c2s = loaded.collections['C2s'] as C2[];

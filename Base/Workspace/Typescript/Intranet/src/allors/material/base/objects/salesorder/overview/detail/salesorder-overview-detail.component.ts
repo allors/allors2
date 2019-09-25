@@ -207,7 +207,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
         this.goods = loaded.collections[goodPullName] as Good[];
         this.currencies = loaded.collections.Currencies as Currency[];
         this.billingProcesses = loaded.collections[billingProcessPullName] as BillingProcess[];
-        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId === 'ab01ccc264804fc0b20e265afd41fae2');
+        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId === 'ab01ccc2-6480-4fc0-b20e-265afd41fae2');
         this.inventoryItemStates = loaded.collections[serialisedInventoryItemStatePullName] as SerialisedInventoryItemState[];
       }
     };
@@ -280,7 +280,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -489,7 +489,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
@@ -539,7 +539,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.order.BillToCustomer !== this.previousBillToCustomer) {
@@ -589,7 +589,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.order.BillToEndCustomer !== this.previousBillToEndCustomer) {
@@ -637,7 +637,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.order.ShipToEndCustomer !== this.previousShipToEndCustomer) {

@@ -6,7 +6,7 @@
 namespace Allors.Server
 {
     using System.Text;
-    using Database.Adapters.SqlClient;
+    using Allors.Database.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
@@ -14,16 +14,13 @@ namespace Allors.Server
     using JSNLog;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
-    using Newtonsoft.Json;
     using ObjectFactory = Allors.ObjectFactory;
 
     public class Startup
@@ -42,59 +39,12 @@ namespace Allors.Server
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IPolicyService, PolicyService>();
             services.AddSingleton<IExtentService, ExtentService>();
+            /* Uncomment next line to enable derivation logging */
+            /* services.AddDerivationLogging(); */
 
-            //// Use this derivation log to capture and analyze derivations
-            //// Uncomment the following two lines to use a custom list derivation
-            // var listDerivationService = new DerivationService(new DerivationConfig { DerivationLogFunc = () => new CustomListDerivationLog() });
-            // services.AddSingleton<IDerivationService>(listDerivationService);  // Set object ID's for breakpoints in CustomListDerivationLog above
-
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
-            // Identity
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddAllorsStores();
-
-            // Enable Dual Authentication
-            services.AddAuthentication(option =>
-                    {
-                        option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    })
-                .AddCookie(cfg => cfg.SlidingExpiration = true)
-                .AddJwtBearer(cfg =>
-                    {
-                        cfg.RequireHttpsMetadata = false;
-                        cfg.SaveToken = true;
-
-                        cfg.TokenValidationParameters = new TokenValidationParameters()
-                        {
-                            ValidIssuer = this.Configuration["Tokens:Issuer"],
-                            ValidAudience = this.Configuration["Tokens:Issuer"],
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"])),
-                        };
-                    });
-
-            services.ConfigureApplicationCookie(options =>
-                {
-                    options.Events.OnRedirectToLogin = context =>
-                        {
-                            context.Response.StatusCode = 401;
-                            return System.Threading.Tasks.Task.CompletedTask;
-                        };
-                });
-
-            // For IIS Authentication
-            // services.AddAuthentication(IISDefaults.AuthenticationScheme);
-
-            // Add framework services.
             services.AddCors(options =>
             {
-                options.AddPolicy(
-                    "AllorsSpa",
+                options.AddDefaultPolicy(
                     builder =>
                     {
                         builder
@@ -105,15 +55,31 @@ namespace Allors.Server
                     });
             });
 
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddAllorsStores();
+
+            services.AddAuthentication(option => option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.Configuration.GetSection("JwtToken:Key").Value)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                    };
+                });
+
+            services.AddControllers();
             services.AddResponseCaching();
-            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // Allors
-            var database = new Database(
+            var databaseService = app.ApplicationServices.GetRequiredService<IDatabaseService>();
+            databaseService.Database = new Database(
                 app.ApplicationServices,
                 new Configuration
                 {
@@ -122,20 +88,16 @@ namespace Allors.Server
                     CommandTimeout = 600,
                 });
 
-            var databaseService = app.ApplicationServices.GetRequiredService<IDatabaseService>();
-            databaseService.Database = database;
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
 
-            app.UseCors("AllorsSpa");
+            app.UseCors();
 
             var jsnlogConfiguration = new JsnlogConfiguration
             {
@@ -149,67 +111,19 @@ namespace Allors.Server
             app.UseJSNLog(new LoggingAdapter(loggerFactory), jsnlogConfiguration);
 
             // app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
-
+            app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseExceptionHandler(appBuilder =>
-                {
-                    appBuilder.Use(async (context, next) =>
-                        {
-                            var error = context.Features[typeof(IExceptionHandlerFeature)] as IExceptionHandlerFeature;
-                            var message = error?.Error.GetType().ToString();
+            app.ConfigureExceptionHandler(env, loggerFactory);
 
-                            if (error?.Error is SecurityTokenExpiredException)
-                            {
-                                context.Response.StatusCode = 401;
-                                context.Response.ContentType = "application/json";
-
-                                await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
-                            }
-                            else if (error?.Error != null)
-                            {
-                                context.Response.StatusCode = 500;
-                                context.Response.ContentType = "application/json";
-                                await context.Response.WriteAsync(JsonConvert.SerializeObject(message));
-                            }
-                            else
-                                await next();
-                        });
-                });
-
-            app.UseResponseCaching();
-
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
-        }
-
-        private class CustomListDerivationLog : Allors.Domain.Logging.ListDerivationLog
-        {
-            public Allors.Domain.Logging.Derivation Derivation { get; set; }
-
-            public override void AddedDerivable(Object derivable)
-            {
-                base.AddedDerivable(derivable);
-
-                if (derivable.Id == 787812)
-                {
-                    var setBreakpointHere = derivable;  // Set a breakpoint here to debug why derivable was added
-                }
-            }
-
-            public override void AddedDependency(Object dependent, Object dependee)
-            {
-                base.AddedDependency(dependent, dependee);
-
-                if (dependent.Id == 787812 || dependee.Id == 787812)
-                {
-                    var setBreakpointHere = (dependent.Id == 787812) ? dependent : dependee;  // Set breakpoint here to debug why dependency was added
-                }
-            }
         }
     }
 }

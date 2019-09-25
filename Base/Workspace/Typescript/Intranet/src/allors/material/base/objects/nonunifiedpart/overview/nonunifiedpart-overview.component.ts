@@ -63,7 +63,7 @@ export class NonUnifiedPartOverviewComponent extends TestScope implements AfterV
           this.panelManager.onPull(pulls);
 
           return this.panelManager.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -72,7 +72,7 @@ export class NonUnifiedPartOverviewComponent extends TestScope implements AfterV
         this.panelManager.onPulled(loaded);
 
         const part = loaded.objects.NonUnifiedPart as NonUnifiedPart;
-        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
+        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
       });
   }
 

@@ -174,7 +174,7 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
             }),
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -192,7 +192,7 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
         this.productFeatureApplicabilities = loaded.collections.ProductFeatureApplicabilities as ProductFeatureApplicability[];
         this.productDimensions = this.productFeatureApplicabilities.map(v => v.ProductFeature).filter((v) => v.objectType.name === this.m.ProductDimension.name) as ProductDimension[];
 
-        const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630da5564526a2e560a84ab0db3f');
+        const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
         this.productNumber = this.good.ProductIdentifications.find(v => v.ProductIdentificationType === goodNumberType);
 

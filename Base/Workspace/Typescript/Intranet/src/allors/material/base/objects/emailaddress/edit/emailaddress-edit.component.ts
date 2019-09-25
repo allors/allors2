@@ -56,7 +56,7 @@ export class EmailAddressEditComponent extends TestScope implements OnInit, OnDe
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

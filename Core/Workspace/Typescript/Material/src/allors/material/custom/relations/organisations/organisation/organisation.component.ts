@@ -68,7 +68,7 @@ export class OrganisationComponent extends TestScope implements OnInit, AfterVie
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {

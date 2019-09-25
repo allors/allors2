@@ -58,7 +58,7 @@ export class PersonOverviewComponent extends TestScope implements OnInit, AfterV
           this.allors.context.reset();
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {

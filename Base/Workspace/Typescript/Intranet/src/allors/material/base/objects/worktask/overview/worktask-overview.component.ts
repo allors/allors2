@@ -60,7 +60,7 @@ export class WorkTaskOverviewComponent extends TestScope implements AfterViewIni
           this.panelManager.onPull(pulls);
 
           return this.panelManager.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

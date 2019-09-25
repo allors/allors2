@@ -68,7 +68,7 @@ export class RepeatingSalesInvoiceEditComponent extends TestScope implements OnI
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );

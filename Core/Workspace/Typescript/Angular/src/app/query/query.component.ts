@@ -57,7 +57,7 @@ export class QueryComponent implements OnInit, OnDestroy {
     this.allors.context.reset();
 
     this.subscription = this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
         this.organisations = loaded.collections.Organisations as Organisation[];
         this.organisationCount = loaded.values.Organisations_count;

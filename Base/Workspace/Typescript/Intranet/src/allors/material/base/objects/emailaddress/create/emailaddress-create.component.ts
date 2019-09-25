@@ -62,7 +62,7 @@ export class EmailAddressCreateComponent extends TestScope implements OnInit, On
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

@@ -104,7 +104,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -121,9 +121,9 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
         this.roles = loaded.collections.PersonRoles as PersonRole[];
         this.organisationContactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
 
-        this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId === 'b29444ef09504d6fab3e9c6dc44c050f');
-        this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId === 'db06a3e161464c18a60ddd10e19f7243');
-        this.salesRepRole = this.roles.find((v: PersonRole) => v.UniqueId === '2d41946c4a77456f918a2e83e6c12d7f');
+        this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId === 'b29444ef-0950-4d6f-ab3e-9c6dc44c050f');
+        this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId === 'db06a3e1-6146-4c18-a60d-dd10e19f7243');
+        this.salesRepRole = this.roles.find((v: PersonRole) => v.UniqueId === '2d41946c-4a77-456f-918a-2e83e6c12d7f');
 
         this.person = this.allors.context.create('Person') as Person;
         this.person.CollectiveWorkEffortInvoice = false;

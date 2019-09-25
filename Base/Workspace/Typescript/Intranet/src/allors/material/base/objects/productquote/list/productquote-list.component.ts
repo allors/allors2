@@ -148,7 +148,7 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

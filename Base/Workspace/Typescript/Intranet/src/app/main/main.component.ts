@@ -116,7 +116,7 @@ export class MainComponent extends TestScope implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {

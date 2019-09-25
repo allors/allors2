@@ -29,7 +29,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
   constructor(
     private allors: ContextService,
     public metaService: MetaService,
-    
+
   ) {
     this.m = this.metaService.m;
   }
@@ -47,7 +47,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
       )
     ];
 
-    this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.context.load(new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as ContactMechanismPurpose[];
 

@@ -125,7 +125,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
             }),
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

@@ -132,7 +132,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
             );
           }
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );
@@ -150,8 +150,8 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.facilities = loaded.collections.Facilities as Facility[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
-        this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778273544cb8354fb887ada42ad');
-        this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d57c943119c569ff37959653b');
+        this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
+        this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
 
         if (isCreate) {
           this.title = 'Add sales invoice Item';
@@ -232,7 +232,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
         const serialisedItems1 = loaded.collections[unifiedGoodPullName] as SerialisedItem[];
         const serialisedItems2 = loaded.collections[nonUnifiedGoodPullName] as SerialisedItem[];

@@ -114,7 +114,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

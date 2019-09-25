@@ -68,7 +68,7 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -173,7 +173,7 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.quote.Receiver !== this.previousReceiver) {

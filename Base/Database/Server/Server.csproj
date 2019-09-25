@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UserSecretsId>f85482da-3d97-422f-992f-d7ae8f4cbc35</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="JSNLog" Version="2.29.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.5" />
     <PackageReference Include="Polly" Version="7.1.1" />
   </ItemGroup>

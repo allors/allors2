@@ -72,7 +72,7 @@ export class SalesTermEditComponent extends TestScope implements OnInit, OnDestr
             );
           }
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, create, objectType, associationRoleType }))
             );

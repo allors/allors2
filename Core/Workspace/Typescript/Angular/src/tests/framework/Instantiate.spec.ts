@@ -25,7 +25,7 @@ describe('Instantiate', () => {
     ];
 
     const loaded = await fixture.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .toPromise();
 
     people = loaded.collections.People as Person[];
@@ -46,7 +46,7 @@ describe('Instantiate', () => {
         fixture.allors.context.reset();
 
         const loaded = await fixture.allors.context
-          .load('Pull', new PullRequest({ pulls }))
+          .load(new PullRequest({ pulls }))
           .toPromise();
 
         const person = loaded.objects.Person as Person;
@@ -87,7 +87,7 @@ describe('Instantiate', () => {
         fixture.allors.context.reset();
 
         const loaded = await fixture.allors.context
-          .load('Pull', new PullRequest({ pulls }))
+          .load(new PullRequest({ pulls }))
           .toPromise();
 
         people = loaded.collections['People'] as Person[];

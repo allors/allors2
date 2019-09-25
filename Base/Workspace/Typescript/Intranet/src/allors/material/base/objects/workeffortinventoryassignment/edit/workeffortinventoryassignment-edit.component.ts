@@ -91,7 +91,7 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
           }
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
+            .load(new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, isCreate }))
             );
@@ -160,7 +160,7 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
   }
 
   public inventoryItemSelected(inventoryItem: InventoryItem): void {
-    this.serialised = inventoryItem.Part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
+    this.serialised = inventoryItem.Part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
     if (inventoryItem.objectType === this.metaService.m.NonSerialisedInventoryItem) {
       const item = inventoryItem as NonSerialisedInventoryItem;

@@ -1,7 +1,7 @@
 @echo off
 
 set ASPNETCORE_ENVIRONMENT=Development
-cd database\api
+cd database\server
 
 rem dotnet run --no-build --configuration Debug
 dotnet run --configuration Debug

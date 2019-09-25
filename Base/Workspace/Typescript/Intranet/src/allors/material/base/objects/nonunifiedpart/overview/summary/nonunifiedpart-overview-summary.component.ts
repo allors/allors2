@@ -94,7 +94,7 @@ export class NonUnifiedPartOverviewSummaryComponent {
       const now = moment.utc();
 
       this.part = loaded.objects[partPullName] as Part;
-      this.serialised = this.part.InventoryItemKind.UniqueId === '2596e2dd3f5d4588a4a2167d6fbe3fae';
+      this.serialised = this.part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
       this.allPricecomponents = loaded.collections[priceComponentPullName] as PriceComponent[];
       this.currentPricecomponents = this.allPricecomponents.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));

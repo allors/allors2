@@ -165,7 +165,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
             })
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -180,7 +180,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
             object: v,
             name: v.Name,
             id: v.ProductIdentifications
-                .find(p => p.ProductIdentificationType.UniqueId === 'b640630da5564526a2e560a84ab0db3f' || p.ProductIdentificationType.UniqueId === '5735191acdc4456396efdddc7b969ca6').Identification,
+                .find(p => p.ProductIdentificationType.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f' || p.ProductIdentificationType.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6').Identification,
             categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.displayName).join(', '),
             qoh: v.QuantityOnHand,
             photos: v.Photos.length,

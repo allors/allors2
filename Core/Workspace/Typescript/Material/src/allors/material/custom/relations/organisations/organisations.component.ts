@@ -106,7 +106,7 @@ export class OrganisationsComponent extends TestScope implements OnInit, OnDestr
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {

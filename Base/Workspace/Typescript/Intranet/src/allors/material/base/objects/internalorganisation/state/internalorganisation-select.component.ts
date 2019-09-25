@@ -45,7 +45,7 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.subscription = this.allors.context.load('Pull', new PullRequest({ pulls }))
+    this.subscription = this.allors.context.load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.internalOrganisations = loaded.collections.Organisations as Organisation[];
       });

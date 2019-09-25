@@ -98,7 +98,7 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -120,10 +120,10 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
         this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
 
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
-        const piece = this.unitsOfMeasure.find((v) => v.UniqueId === 'f4bbdb523441476892d4729c6c5d6f1b');
+        const piece = this.unitsOfMeasure.find((v) => v.UniqueId === 'f4bbdb52-3441-4768-92d4-729c6c5d6f1b');
 
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
-        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191acdc4456396efdddc7b969ca6');
+        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 
@@ -168,7 +168,7 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
     ];
 
     this.allors.context
-      .load('Pull', new PullRequest({ pulls }))
+      .load(new PullRequest({ pulls }))
       .subscribe(() => {
         this.models = this.selectedBrand.Models ? this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)) : [];
       });

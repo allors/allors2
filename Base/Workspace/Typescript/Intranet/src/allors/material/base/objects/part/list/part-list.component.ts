@@ -176,7 +176,7 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , , ,]),
+        }, [, , , , , ]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           const pulls = [
@@ -202,7 +202,7 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -210,7 +210,7 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
 
         const parts = loaded.collections.Parts as Part[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
-        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191acdc4456396efdddc7b969ca6');
+        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
         const partNumberByPart = parts.reduce((map, obj) => {
           map[obj.id] = obj.ProductIdentifications.filter(v => v.ProductIdentificationType === partNumberType).map(w => w.Identification);
