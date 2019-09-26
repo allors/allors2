@@ -74,7 +74,7 @@ namespace Allors.Database.Adapters.SqlClient
                     return @"Server=(localdb)\MSSQLLocalDB;Integrated Security=true";
                 }
 
-                return "server=localhost;database=object;User Id=SA;Password=Allors2018";
+                return "server=localhost;database=object;User Id=SA;Password=Allors123";
             }
         }
 
