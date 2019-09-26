@@ -4,6 +4,8 @@ generated/
 artifacts/
 build/Properties/launchSettings.json
 **/package-lock.json
+**/.DS_Store
+.gitignore.swp
 
 # https://github.com/JetBrains/resharper-rider-samples/blob/master/.gitignore
 # ---------------------------------------------------------------------------
