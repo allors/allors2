@@ -31,9 +31,12 @@ stages:
       maxParallel: 10
     
     steps:
-    - task: DotNetCoreInstaller@0
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core 3.0 sdk'
       inputs:
-        version: '3.0.100'
+        packageType: sdk
+        version: 3.0.100
+        installationPath: $(Agent.ToolsDirectory)/dotnet
     - task: PowerShell@2
       inputs:
         targetType: 'filePath'
