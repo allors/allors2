@@ -6,6 +6,7 @@
 namespace Allors.Protocol.Data
 {
     using System;
+    using System.Text.Json;
     using System.Xml;
 
     using Allors.Meta;
@@ -48,6 +49,36 @@ namespace Allors.Protocol.Data
                 default:
                     throw new Exception("Unknown unit " + unit);
             }
+        }
+
+        public static object ToValue(IRoleType roleType, object value)
+        {
+            var unit = (IUnit)roleType?.ObjectType;
+
+            if (value is string stringValue)
+            {
+                return Convert.ToValue(unit, stringValue);
+            }
+
+            if (value is JsonElement jsonElement)
+            {
+                switch (jsonElement.ValueKind)
+                {
+                    case JsonValueKind.True:
+                        return true;
+
+                    case JsonValueKind.False:
+                        return true;
+
+                    case JsonValueKind.Undefined:
+                        return null;
+
+                    default:
+                        throw new ArgumentException($"Unknown value: {value}");
+                }
+            }
+
+            return value;
         }
     }
 }

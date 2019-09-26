@@ -31,6 +31,10 @@ stages:
       maxParallel: 10
     
     steps:
+    - task: UseDotNet@2
+      displayName: 'Use dotnet sdk 3.x'
+      inputs:
+        version: 3.x
     - task: PowerShell@2
       inputs:
         targetType: 'filePath'

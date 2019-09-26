@@ -1,5 +1,5 @@
-import { Person, Media, Organisation } from '../../src/allors/domain';
-import { PullRequest, Pull, Filter, TreeNode, Tree, Result, Fetch } from '../../src/allors/framework';
+import { Person, Media, Organisation, C1 } from '../../src/allors/domain';
+import { PullRequest, Pull, Filter, TreeNode, Tree, Result, Fetch, Equals } from '../../src/allors/framework';
 
 import { assert } from 'chai';
 import 'mocha';
@@ -265,4 +265,37 @@ describe('Extent',
           assert.equal(2, owners.length);
         });
       });
+
+    describe('with boolean predicate',
+      () => {
+        it('should return results', async () => {
+
+          const { m, scope } = fixture;
+
+          const pulls = [
+            new Pull({
+              extent: new Filter({
+                objectType: m.C1,
+                predicate: new Equals({
+                  propertyType: m.C1.C1AllorsBoolean,
+                  value: true,
+                })
+              })
+            }),
+          ];
+
+          scope.session.reset();
+
+          const pullRequest = new PullRequest({ pulls });
+          const loaded = await scope
+            .load(pullRequest);
+
+          const c1s = loaded.collections['C1s'] as C1[];
+
+          assert.isArray(c1s);
+          // assert.isNotEmpty(c1s);
+          // assert.equal(7, c1s.length);
+        });
+      });
+
   });
