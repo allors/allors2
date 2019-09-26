@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <RootNamespace></RootNamespace>
     <IsPackable>False</IsPackable>
@@ -11,12 +11,8 @@
 
   <ItemGroup>
     <PackageReference Include="MartinCostello.SqlLocalDb" Version="2.0.0" />
-    <PackageReference Include="Nuke.CodeGeneration" Version="0.21.2" />
-    <PackageReference Include="Nuke.Common" Version="0.21.2" />
-    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Nuke.Common" Version="0.22.1" />
+    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.1"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +31,6 @@
     <None Include="..\appveyor.yml" Condition="Exists('..\appveyor.yml')" />
     <None Include="..\.travis.yml" Condition="Exists('..\.travis.yml')" />
     <None Include="..\GitVersion.yml" Condition="Exists('..\GitVersion.yml')" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
