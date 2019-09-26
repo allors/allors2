@@ -88,7 +88,7 @@ namespace Allors.Protocol.Data
                             }
                             else if (@this.Value != null)
                             {
-                                var value = Convert.ToValue(roleType, @this.Value);
+                                var value = Convert.ToValue((IRoleType)propertyType, @this.Value);
                                 equals.Value = value;
                             }
 

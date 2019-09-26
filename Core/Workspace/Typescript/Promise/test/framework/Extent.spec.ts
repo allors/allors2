@@ -1,5 +1,5 @@
 import { Person, Media, Organisation, C1 } from '../../src/allors/domain';
-import { PullRequest, Pull, Filter, TreeNode, Tree, Result, Fetch, Equals } from '../../src/allors/framework';
+import { PullRequest, Pull, Filter, TreeNode, Tree, Result, Fetch, Equals, And } from '../../src/allors/framework';
 
 import { assert } from 'chai';
 import 'mocha';
@@ -15,258 +15,258 @@ describe('Extent',
       await fixture.init();
     });
 
-    describe('People',
-      () => {
-        it('should return all people', async () => {
+    // describe('People',
+    //   () => {
+    //     it('should return all people', async () => {
 
-          const { m, scope } = fixture;
+    //       const { m, scope } = fixture;
 
-          const pulls = [
-            new Pull({
-              extent: new Filter({
-                objectType: m.Person
-              })
-            }),
-          ];
+    //       const pulls = [
+    //         new Pull({
+    //           extent: new Filter({
+    //             objectType: m.Person
+    //           })
+    //         }),
+    //       ];
 
-          scope.session.reset();
+    //       scope.session.reset();
 
-          const pullRequest = new PullRequest({ pulls });
-          const loaded = await scope
-            .load(pullRequest);
+    //       const pullRequest = new PullRequest({ pulls });
+    //       const loaded = await scope
+    //         .load(pullRequest);
 
-          const people = loaded.collections['People'] as Person[];
+    //       const people = loaded.collections['People'] as Person[];
 
-          assert.isArray(people);
-          assert.isNotEmpty(people);
-          assert.equal(7, people.length);
-        });
-      });
+    //       assert.isArray(people);
+    //       assert.isNotEmpty(people);
+    //       assert.equal(7, people.length);
+    //     });
+    //   });
 
-    describe('People with include tree',
-      () => {
-        it('should return all people', async () => {
+    // describe('People with include tree',
+    //   () => {
+    //     it('should return all people', async () => {
 
-          const { m, scope } = fixture;
+    //       const { m, scope } = fixture;
 
-          const pulls = [
-            new Pull({
-              extent: new Filter({
-                objectType: m.Person,
-              }),
-              results: [
-                new Result({
-                  fetch: new Fetch({
-                    include: new Tree({
-                      objectType: m.Person,
-                      nodes: [
-                        new TreeNode({
-                          propertyType: m.Person.Photo,
-                        }),
-                      ]
-                    })
-                  })
-                })
-              ]
-            }),
-          ];
+    //       const pulls = [
+    //         new Pull({
+    //           extent: new Filter({
+    //             objectType: m.Person,
+    //           }),
+    //           results: [
+    //             new Result({
+    //               fetch: new Fetch({
+    //                 include: new Tree({
+    //                   objectType: m.Person,
+    //                   nodes: [
+    //                     new TreeNode({
+    //                       propertyType: m.Person.Photo,
+    //                     }),
+    //                   ]
+    //                 })
+    //               })
+    //             })
+    //           ]
+    //         }),
+    //       ];
 
-          scope.session.reset();
+    //       scope.session.reset();
 
-          const pullRequest = new PullRequest({ pulls });
+    //       const pullRequest = new PullRequest({ pulls });
 
-          const json = JSON.stringify(pullRequest);
+    //       const json = JSON.stringify(pullRequest);
 
-          const loaded = await scope
-            .load(pullRequest);
+    //       const loaded = await scope
+    //         .load(pullRequest);
 
-          const people = loaded.collections['People'] as Person[];
+    //       const people = loaded.collections['People'] as Person[];
 
-          assert.isArray(people);
-          assert.isNotEmpty(people);
+    //       assert.isArray(people);
+    //       assert.isNotEmpty(people);
 
-          people.forEach(() => {
-          });
-        });
-      });
+    //       people.forEach(() => {
+    //       });
+    //     });
+    //   });
 
-    describe('Organisation with tree builder',
-      () => {
-        it('should return all organisations', async () => {
+    // describe('Organisation with tree builder',
+    //   () => {
+    //     it('should return all organisations', async () => {
 
-          const { m, scope, tree } = fixture;
+    //       const { m, scope, tree } = fixture;
 
-          const pulls = [
-            new Pull({
-              extent: new Filter({
-                objectType: m.Organisation,
-              }),
-              results: [
-                new Result({
-                  fetch: new Fetch({
-                    include: tree.Organisation({
-                      Owner: {}
-                    })
-                  })
-                })
-              ]
-            }),
-          ];
+    //       const pulls = [
+    //         new Pull({
+    //           extent: new Filter({
+    //             objectType: m.Organisation,
+    //           }),
+    //           results: [
+    //             new Result({
+    //               fetch: new Fetch({
+    //                 include: tree.Organisation({
+    //                   Owner: {}
+    //                 })
+    //               })
+    //             })
+    //           ]
+    //         }),
+    //       ];
 
-          scope.session.reset();
+    //       scope.session.reset();
 
-          const loaded = await scope
-            .load(new PullRequest({ pulls }));
+    //       const loaded = await scope
+    //         .load(new PullRequest({ pulls }));
 
-          const organisations = loaded.collections['Organisations'] as Organisation[];
+    //       const organisations = loaded.collections['Organisations'] as Organisation[];
 
-          assert.isArray(organisations);
-          assert.isNotEmpty(organisations);
+    //       assert.isArray(organisations);
+    //       assert.isNotEmpty(organisations);
 
-          organisations.forEach((organisation) => {
-            const owner = organisation.Owner;
-            if (owner) {
-            }
-          });
-        });
-      });
+    //       organisations.forEach((organisation) => {
+    //         const owner = organisation.Owner;
+    //         if (owner) {
+    //         }
+    //       });
+    //     });
+    //   });
 
-    describe('Organisation with path',
-      () => {
-        it('should return all owners', async () => {
+    // describe('Organisation with path',
+    //   () => {
+    //     it('should return all owners', async () => {
 
-          const { m, scope, fetch } = fixture;
+    //       const { m, scope, fetch } = fixture;
 
-          const pulls = [
-            new Pull({
-              extent: new Filter({
-                objectType: m.Organisation,
-              }),
-              results: [
-                new Result({
-                  fetch: fetch.Organisation({
-                    Owner: {},
-                  })
-                })
-              ]
-            })
-          ];
+    //       const pulls = [
+    //         new Pull({
+    //           extent: new Filter({
+    //             objectType: m.Organisation,
+    //           }),
+    //           results: [
+    //             new Result({
+    //               fetch: fetch.Organisation({
+    //                 Owner: {},
+    //               })
+    //             })
+    //           ]
+    //         })
+    //       ];
 
-          scope.session.reset();
+    //       scope.session.reset();
 
-          const loaded = await scope
-            .load(new PullRequest({ pulls }));
+    //       const loaded = await scope
+    //         .load(new PullRequest({ pulls }));
 
-          const owners = loaded.collections['Owners'] as Person[];
+    //       const owners = loaded.collections['Owners'] as Person[];
 
-          assert.isArray(owners);
-          assert.isNotEmpty(owners);
-          assert.equal(2, owners.length);
-        });
+    //       assert.isArray(owners);
+    //       assert.isNotEmpty(owners);
+    //       assert.equal(2, owners.length);
+    //     });
 
-        it('should return all employees', async () => {
+    //     it('should return all employees', async () => {
 
-          const { m, scope, fetch } = fixture;
+    //       const { m, scope, fetch } = fixture;
 
-          const pulls = [
-            new Pull({
-              extent: new Filter({
-                objectType: m.Organisation,
-              }),
-              results: [
-                new Result({
-                  fetch: fetch.Organisation({
-                    Employees: {},
-                  })
-                })
-              ]
-            })
-          ];
+    //       const pulls = [
+    //         new Pull({
+    //           extent: new Filter({
+    //             objectType: m.Organisation,
+    //           }),
+    //           results: [
+    //             new Result({
+    //               fetch: fetch.Organisation({
+    //                 Employees: {},
+    //               })
+    //             })
+    //           ]
+    //         })
+    //       ];
 
-          scope.session.reset();
+    //       scope.session.reset();
 
-          const loaded = await scope
-            .load(new PullRequest({ pulls }));
+    //       const loaded = await scope
+    //         .load(new PullRequest({ pulls }));
 
-          const employees = loaded.collections['Employees'] as Media[];
+    //       const employees = loaded.collections['Employees'] as Media[];
 
-          assert.isArray(employees);
-          assert.isNotEmpty(employees);
-          assert.equal(3, employees.length);
-        });
-      });
+    //       assert.isArray(employees);
+    //       assert.isNotEmpty(employees);
+    //       assert.equal(3, employees.length);
+    //     });
+    //   });
 
-    describe('Organisation with typesafe path',
-      () => {
-        it('should return all employees', async () => {
+    // describe('Organisation with typesafe path',
+    //   () => {
+    //     it('should return all employees', async () => {
 
-          const { m, scope, fetch } = fixture;
+    //       const { m, scope, fetch } = fixture;
 
-          const pulls = [
-            new Pull({
-              extent: new Filter(m.Organisation),
-              results: [
-                new Result({
-                  fetch: fetch.Organisation({
-                    Employees: {},
-                  })
-                })
-              ]
-            })
-          ];
+    //       const pulls = [
+    //         new Pull({
+    //           extent: new Filter(m.Organisation),
+    //           results: [
+    //             new Result({
+    //               fetch: fetch.Organisation({
+    //                 Employees: {},
+    //               })
+    //             })
+    //           ]
+    //         })
+    //       ];
 
-          scope.session.reset();
+    //       scope.session.reset();
 
-          const loaded = await scope
-            .load(new PullRequest({ pulls }));
+    //       const loaded = await scope
+    //         .load(new PullRequest({ pulls }));
 
-          const employees = loaded.collections['Employees'] as Person[];
+    //       const employees = loaded.collections['Employees'] as Person[];
 
-          assert.isArray(employees);
-          assert.isNotEmpty(employees);
-          assert.equal(3, employees.length);
-        });
-      });
+    //       assert.isArray(employees);
+    //       assert.isNotEmpty(employees);
+    //       assert.equal(3, employees.length);
+    //     });
+    //   });
 
-    describe('Organisation with typesafe path and tree',
-      () => {
-        it('should return all people', async () => {
+    // describe('Organisation with typesafe path and tree',
+    //   () => {
+    //     it('should return all people', async () => {
 
-          const { m, scope, fetch } = fixture;
+    //       const { m, scope, fetch } = fixture;
 
-          const pulls = [
-            new Pull({
-              extent: new Filter(m.Organisation),
-              results: [
-                new Result({
-                  fetch: fetch.Organisation({
-                    Owner: {
-                      include: {
-                        Photo: {}
-                      }
-                    },
-                  })
-                })
-              ]
-            })
-          ];
+    //       const pulls = [
+    //         new Pull({
+    //           extent: new Filter(m.Organisation),
+    //           results: [
+    //             new Result({
+    //               fetch: fetch.Organisation({
+    //                 Owner: {
+    //                   include: {
+    //                     Photo: {}
+    //                   }
+    //                 },
+    //               })
+    //             })
+    //           ]
+    //         })
+    //       ];
 
-          scope.session.reset();
+    //       scope.session.reset();
 
-          const loaded = await scope
-            .load(new PullRequest({ pulls }));
+    //       const loaded = await scope
+    //         .load(new PullRequest({ pulls }));
 
-          const owners = loaded.collections['Owners'] as Person[];
+    //       const owners = loaded.collections['Owners'] as Person[];
 
-          owners.forEach(v => v.Photo);
+    //       owners.forEach(v => v.Photo);
 
-          assert.isArray(owners);
-          assert.isNotEmpty(owners);
-          assert.equal(2, owners.length);
-        });
-      });
+    //       assert.isArray(owners);
+    //       assert.isNotEmpty(owners);
+    //       assert.equal(2, owners.length);
+    //     });
+    //   });
 
-    describe('with boolean predicate',
+    describe('with value predicates',
       () => {
         it('should return results', async () => {
 
@@ -276,9 +276,49 @@ describe('Extent',
             new Pull({
               extent: new Filter({
                 objectType: m.C1,
-                predicate: new Equals({
-                  propertyType: m.C1.C1AllorsBoolean,
-                  value: true,
+                predicate: new And({
+                  operands: [
+                    new Equals({
+                      propertyType: m.C1.C1AllorsBoolean,
+                      value: true,
+                    }),
+                    new Equals({
+                      propertyType: m.C1.C1AllorsDateTime,
+                      value: new Date(),
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I1AllorsDateTime,
+                      value: new Date().toISOString(),
+                    }),
+                    new Equals({
+                      propertyType: m.C1.C1AllorsDecimal,
+                      value: '10.0',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I1AllorsDecimal,
+                      value: 10,
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I12AllorsDecimal,
+                      value: 10.1,
+                    }),
+                    new Equals({
+                      propertyType: m.C1.C1AllorsInteger,
+                      value: 1001,
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I1AllorsInteger,
+                      value: '1001',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.C1AllorsUnique,
+                      value: '{8E896822-C6DC-4D6D-BE30-77D24FDEA2CC}',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I1AllorsUnique,
+                      value: '8E896822-C6DC-4D6D-BE30-77D24FDEA2CC',
+                    }),
+                  ]
                 })
               })
             }),

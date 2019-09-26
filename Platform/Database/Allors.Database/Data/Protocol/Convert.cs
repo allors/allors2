@@ -73,8 +73,13 @@ namespace Allors.Protocol.Data
                     case JsonValueKind.Undefined:
                         return null;
 
+                    case JsonValueKind.String:
+                        var jsonString = jsonElement.GetString();
+                        return Convert.ToValue(unit, jsonString);
+
                     default:
-                        throw new ArgumentException($"Unknown value: {value}");
+                        var jsonRawText = jsonElement.GetRawText();
+                        return Convert.ToValue(unit, jsonRawText);
                 }
             }
 
