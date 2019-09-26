@@ -1,9 +1,10 @@
 @implements IAllorsValidationField
+@using System
 @implements System.IDisposable
 
 <BSFormGroup>
     <BSLabel>@DerivedLabel</BSLabel>
-    <BSInput @bind-Value="Model"></BSInput>
+    <input type="datetime" class="form-control" @bind="Model" />
     <BSFormFeedback For="@(() => Model)" />
 </BSFormGroup>
 
@@ -42,15 +43,27 @@
         }
     }
 
-    public string Model
+    public DateTime? Model
     {
         get
         {
-            return (string)this.DerivedObject.Get(this.RoleType);
+            return (DateTime?)this.DerivedObject.Get(this.RoleType);
         }
 
         set
         {
+            if (value.HasValue)
+            {
+                value = new DateTime(
+                    value.Value.Year,
+                    value.Value.Month,
+                    value.Value.Day,
+                    value.Value.Hour,
+                    value.Value.Minute,
+                    value.Value.Second,
+                    DateTimeKind.Utc);
+            }
+
             this.DerivedObject.Set(this.RoleType, value);
         }
     }
@@ -59,7 +72,7 @@
 
     public void Validate(ValidationMessageStore messages)
     {
-        if (this.RoleType.IsRequired && string.IsNullOrWhiteSpace(this.Model))
+        if (this.RoleType.IsRequired && this.Model == null)
         {
             messages.Add(this.FieldIdentifier, $"{this.RoleType.Name} is required");
         }

@@ -17,7 +17,13 @@
                 <AllorsInput RoleType="@M.Person.LastName" />
             </BSCol>
         </BSRow>
-        
+
+        <BSRow>
+            <BSCol>
+                <AllorsDateInput RoleType="@M.Person.BirthDate" />
+            </BSCol>
+        </BSRow>
+
         <BSRow>
             <BSCol>
                 <button @onclick="HandleValidSubmit">Submit</button>

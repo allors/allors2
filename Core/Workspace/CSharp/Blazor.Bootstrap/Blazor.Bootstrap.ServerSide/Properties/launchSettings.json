@@ -18,7 +18,7 @@
     "Blazor.Bootstrap.ServerSide": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:5001/organisation/edit/2577",
+      "launchUrl": "https://localhost:5001/person/edit/2585",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
