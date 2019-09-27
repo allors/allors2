@@ -21,7 +21,7 @@ namespace Allors.Server.Tests
             var administrator = new Users(this.Session).GetUser("administrator");
             await this.SignIn(administrator);
 
-            var uri = new Uri(@"Database/Push", UriKind.Relative);
+            var uri = new Uri(@"allors/push", UriKind.Relative);
 
             var pushRequest = new PushRequest
             {
@@ -53,7 +53,7 @@ namespace Allors.Server.Tests
             organisation.Delete();
             this.Session.Commit();
 
-            var uri = new Uri(@"Database/Push", UriKind.Relative);
+            var uri = new Uri(@"allors/push", UriKind.Relative);
 
             var pushRequest = new PushRequest
             {

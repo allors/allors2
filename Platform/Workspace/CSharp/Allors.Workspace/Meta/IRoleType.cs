@@ -13,6 +13,10 @@ namespace Allors.Workspace.Meta
     /// </summary>
     public interface IRoleType : IPropertyType
     {
+        IAssociationType AssociationType { get; }
+
+        IRelationType RelationType { get; }
+
         string PropertyName { get; }
 
         string SingularPropertyName { get; }
@@ -22,10 +26,6 @@ namespace Allors.Workspace.Meta
         string SingularFullName { get; }
 
         string PluralFullName { get; }
-
-        IAssociationType AssociationType { get; }
-
-        IRelationType RelationType { get; }
 
         int? Size { get; }
 

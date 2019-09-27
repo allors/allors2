@@ -16,6 +16,8 @@ namespace Allors.Workspace
     {
         long Id { get; }
 
+        long? NewId { get; set; }
+
         long? Version { get; }
 
         IClass ObjectType { get; }

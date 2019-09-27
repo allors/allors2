@@ -14,8 +14,8 @@ namespace Allors.Workspace
 
         SyncRequest Diff(PullResponse response);
 
-        IWorkspaceObject Get(long id);
-
         void Sync(SyncResponse syncResponse);
+
+        IWorkspaceObject Get(long id);
     }
 }

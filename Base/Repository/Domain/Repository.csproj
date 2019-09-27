@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -7,6 +7,10 @@
   <ItemGroup>
     <Compile Include="..\..\..\Platform\Repository\Domain\Attributes*\**\*.cs" />
     <Compile Include="..\..\..\Core\Repository\Domain\Core*\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Database\Allors.Database.Protocol\Allors.Database.Protocol.csproj" />
   </ItemGroup>
 
 </Project>

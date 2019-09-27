@@ -58,15 +58,8 @@
       <Property Name="AccessControls" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.AccessControlledObject">
+  <Interface Name="Allors.Domain.Object">
     <Position X="1.25" Y="4.75" Width="2" />
-    <AssociationLine Name="DeniedPermissions" Type="Allors.Domain.Permission" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="2.25" Y="5.747" />
-        <Point X="2.25" Y="6.35" />
-        <Point X="5" Y="6.35" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>

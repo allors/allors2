@@ -1,11 +1,10 @@
-﻿// <copyright file="PushResponseBuilder.cs" company="Allors bvba">
+// <copyright file="PushResponseBuilder.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace Allors.Server
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -13,6 +12,8 @@ namespace Allors.Server
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Remote.Push;
+    using Protocol.Data;
+    using Convert = System.Convert;
 
     public class PushResponseBuilder
     {
@@ -177,18 +178,7 @@ namespace Allors.Server
                         if (roleType.ObjectType.IsUnit)
                         {
                             var unitType = (IUnit)roleType.ObjectType;
-                            var role = pushRequestRole.S;
-                            if (role is string)
-                            {
-                                role = Serialization.ReadString((string)role, unitType.UnitTag);
-                            }
-
-                            // Json.net deserializes number to long or double, instead of int.
-                            if (unitType.IsInteger && role != null && !(role is int))
-                            {
-                                role = Convert.ToInt32(role);
-                            }
-
+                            var role = UnitConvert.Parse(unitType.Id, pushRequestRole.S);
                             obj.Strategy.SetUnitRole(roleType.RelationType, role);
                         }
                         else

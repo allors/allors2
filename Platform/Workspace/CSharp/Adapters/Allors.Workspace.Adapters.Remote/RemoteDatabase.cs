@@ -59,7 +59,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<SyncResponse> Sync(SyncRequest syncRequest)
         {
-            var uri = new Uri("Database/Sync", UriKind.Relative);
+            var uri = new Uri("allors/sync", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, syncRequest);
             response.EnsureSuccessStatusCode();
 
@@ -69,7 +69,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<PushResponse> Push(PushRequest pushRequest)
         {
-            var uri = new Uri("Database/Push", UriKind.Relative);
+            var uri = new Uri("allors/push", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, pushRequest);
             response.EnsureSuccessStatusCode();
 
@@ -79,7 +79,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null)
         {
-            var uri = new Uri("Database/Invoke", UriKind.Relative);
+            var uri = new Uri("allors/invoke", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, invokeRequest);
             response.EnsureSuccessStatusCode();
 

@@ -5,29 +5,20 @@
 
 namespace Allors.Workspace
 {
-    using System.Collections.Generic;
     using Allors.Workspace.Meta;
 
     public interface IWorkspaceObject
     {
+        IWorkspace Workspace { get; }
+
+        IClass Class { get; }
+
         long Id { get; }
-
-        Dictionary<string, object> Methods { get; }
-
-        IClass ObjectType { get; }
-
-        Dictionary<string, object> Roles { get; }
-
-        string UserSecurityHash { get; }
 
         long Version { get; }
 
-        IWorkspace Workspace { get; }
+        string UserSecurityHash { get; }
 
-        bool CanExecute(string methodTypeName);
-
-        bool CanRead(string roleTypeName);
-
-        bool CanWrite(string roleTypeName);
+        IWorkspaceRole[] Roles { get; }
     }
 }

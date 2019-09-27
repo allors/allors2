@@ -24,7 +24,7 @@ namespace Allors.Workspace.Data
             {
                 Kind = PredicateKind.LessThan,
                 RoleType = this.RoleType?.Id,
-                Value = DataConvert.ToString(this.Value),
+                Value = UnitConvert.ToString(this.Value),
                 Parameter = this.Parameter,
             };
 

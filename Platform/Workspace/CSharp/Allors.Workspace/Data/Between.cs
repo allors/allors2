@@ -25,7 +25,7 @@ namespace Allors.Workspace.Data
             {
                 Kind = PredicateKind.Between,
                 RoleType = this.RoleType?.Id,
-                Values = this.Values.Select(DataConvert.ToString).ToArray(),
+                Values = this.Values.Select(UnitConvert.ToString).ToArray(),
                 Parameter = this.Parameter,
             };
 

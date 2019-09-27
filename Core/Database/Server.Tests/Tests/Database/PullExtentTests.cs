@@ -29,7 +29,7 @@ namespace Allors.Server.Tests
 
             this.Session.Commit();
 
-            var uri = new Uri(@"Pull/Pull", UriKind.Relative);
+            var uri = new Uri(@"allors/pull", UriKind.Relative);
 
             var extent = new Allors.Data.Filter(M.Data.ObjectType);
 
@@ -66,7 +66,7 @@ namespace Allors.Server.Tests
 
             this.Session.Commit();
 
-            var uri = new Uri(@"Pull/Pull", UriKind.Relative);
+            var uri = new Uri(@"allors/pull", UriKind.Relative);
 
             var extent = new Allors.Data.Filter(M.Data.ObjectType);
 
@@ -105,7 +105,7 @@ namespace Allors.Server.Tests
 
             this.Session.Commit();
 
-            var uri = new Uri(@"Pull/Pull", UriKind.Relative);
+            var uri = new Uri(@"allors/pull", UriKind.Relative);
 
             var pullRequest = new PullRequest
             {
@@ -135,7 +135,7 @@ namespace Allors.Server.Tests
 
             this.Session.Commit();
 
-            var uri = new Uri(@"Pull/Pull", UriKind.Relative);
+            var uri = new Uri(@"allors/pull", UriKind.Relative);
 
             var pullRequest = new PullRequest
             {
@@ -150,6 +150,9 @@ namespace Allors.Server.Tests
             };
 
             var response = await this.PostAsJsonAsync(uri, pullRequest);
+
+            Assert.True(response.IsSuccessStatusCode);
+
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
 
             var organisations = pullResponse.NamedCollections["Organisations"];

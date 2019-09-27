@@ -33,7 +33,7 @@ namespace Allors.Data
             }
         }
 
-        public static Protocol.Data.TreeNode[] Save(this TreeNode[] treeNodes) =>
+        public static Protocol.Data.Node[] Save(this TreeNode[] treeNodes) =>
             treeNodes.Select(v => v.Save()).ToArray();
     }
 }

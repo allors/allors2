@@ -15,16 +15,16 @@ namespace Allors.Workspace
 
         string Namespace { get; }
 
-        INewSessionObject Create(ISession session, IObjectType objectType);
+        ISessionObject Create(ISession session, IObjectType objectType);
 
         IObjectType GetObjectType<T>();
 
         IObjectType GetObjectType(Type type);
 
-        IObjectType GetObjectType(Guid id);
-
         IObjectType GetObjectType(string name);
 
         Type GetType(IObjectType objectType);
+
+        object EmptyArray(IObjectType objectType);
     }
 }

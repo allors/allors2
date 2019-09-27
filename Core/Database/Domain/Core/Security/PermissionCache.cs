@@ -27,11 +27,21 @@ namespace Allors.Domain
             session.Prefetch(PrefetchPolicy, permissions);
 
             this.PermissionIdByOperationByOperandTypeIdByClassId = permissions
-                .GroupBy(v => v.ConcreteClass.Id).ToDictionary(v => v.Key,
+                .GroupBy(v => v.ConcreteClass.Id).ToDictionary(
+                    v => v.Key,
+                    w => w.GroupBy(v => v.OperandType.Id).ToDictionary(v => v.Key, x =>
+                        x.ToDictionary(v => v.Operation, y => y.Id)));
+
+            this.WorkspacePermissionIdByOperationByOperandTypeIdByClassId = permissions
+                .Where(v => (v.OperandType as RoleType)?.Workspace == true || (v.OperandType as MethodType)?.Workspace == true)
+                .GroupBy(v => v.ConcreteClass.Id).ToDictionary(
+                    v => v.Key,
                     w => w.GroupBy(v => v.OperandType.Id).ToDictionary(v => v.Key, x =>
                         x.ToDictionary(v => v.Operation, y => y.Id)));
         }
 
         public Dictionary<Guid, Dictionary<Guid, Dictionary<Operations, long>>> PermissionIdByOperationByOperandTypeIdByClassId { get; }
+
+        public Dictionary<Guid, Dictionary<Guid, Dictionary<Operations, long>>> WorkspacePermissionIdByOperationByOperandTypeIdByClassId { get; }
     }
 }

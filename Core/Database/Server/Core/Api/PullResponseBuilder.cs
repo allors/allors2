@@ -21,7 +21,7 @@ namespace Allors.Server
         private readonly HashSet<IObject> objects = new HashSet<IObject>();
         private readonly Dictionary<string, IObject> objectByName = new Dictionary<string, IObject>();
         private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
-        private readonly Dictionary<string, object> valueByName = new Dictionary<string, object>();
+        private readonly Dictionary<string, string> valueByName = new Dictionary<string, string>();
 
         public PullResponseBuilder(User user, ITreeService treeService)
         {
@@ -114,7 +114,7 @@ namespace Allors.Server
             }
         }
 
-        public void AddValue(string name, object value)
+        public void AddValue(string name, string value)
         {
             if (value != null)
             {

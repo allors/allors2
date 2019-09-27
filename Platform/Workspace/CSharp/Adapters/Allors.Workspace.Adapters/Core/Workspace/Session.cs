@@ -17,8 +17,8 @@ namespace Allors.Workspace
         private static long idCounter = 0;
 
         private readonly Workspace workspace;
-        private readonly Dictionary<long, INewSessionObject> sessionObjectById = new Dictionary<long, INewSessionObject>();
-        private readonly Dictionary<long, INewSessionObject> newSessionObjectById = new Dictionary<long, INewSessionObject>();
+        private readonly Dictionary<long, ISessionObject> sessionObjectById = new Dictionary<long, ISessionObject>();
+        private readonly Dictionary<long, ISessionObject> newSessionObjectById = new Dictionary<long, ISessionObject>();
 
         public Session(Workspace workspace) => this.workspace = workspace;
 
@@ -26,7 +26,7 @@ namespace Allors.Workspace
 
         public IWorkspace Workspace => this.workspace;
 
-        public INewSessionObject Get(long id)
+        public ISessionObject Get(long id)
         {
             if (!this.sessionObjectById.TryGetValue(id, out var sessionObject))
             {
@@ -34,10 +34,10 @@ namespace Allors.Workspace
                 {
                     var workspaceObject = this.workspace.Get(id);
 
-                    var newSessionObject = this.workspace.ObjectFactory.Create(this, workspaceObject.ObjectType);
+                    var newSessionObject = this.workspace.ObjectFactory.Create(this, workspaceObject.Class);
 
                     newSessionObject.WorkspaceObject = workspaceObject;
-                    newSessionObject.ObjectType = workspaceObject.ObjectType;
+                    newSessionObject.ObjectType = workspaceObject.Class;
 
                     this.sessionObjectById[workspaceObject.Id] = newSessionObject;
 
@@ -48,7 +48,7 @@ namespace Allors.Workspace
             return sessionObject;
         }
 
-        public INewSessionObject Create(IClass @class)
+        public ISessionObject Create(IClass @class)
         {
             var newSessionObject = this.workspace.ObjectFactory.Create(this, @class);
 
@@ -93,32 +93,12 @@ namespace Allors.Workspace
                     var newId = long.Parse(pushResponseNewObject.NI);
                     var id = long.Parse(pushResponseNewObject.I);
 
+                    this.workspace.Invalidate(id);
+
                     var newSessionObject = this.newSessionObjectById[newId];
-
-                    var loadResponse = new SyncResponse
-                    {
-                        UserSecurityHash = "#",
-                        // This should trigger a load on next check
-                        Objects =
-                                                   new[]
-                                                       {
-                                                           new SyncResponseObject
-                                                               {
-                                                                   I = id.ToString(),
-                                                                   V = string.Empty,
-                                                                   T =
-                                                                       newSessionObject
-                                                                       .ObjectType.Name,
-                                                                   Roles = new object[0][],
-                                                                   Methods = new string[0][],
-                                                               },
-                                                       },
-                    };
-
                     this.newSessionObjectById.Remove(newId);
                     newSessionObject.NewId = null;
 
-                    this.workspace.Sync(loadResponse);
                     var workspaceObject = this.workspace.Get(id);
                     newSessionObject.WorkspaceObject = workspaceObject;
 
@@ -132,7 +112,7 @@ namespace Allors.Workspace
             }
         }
 
-        public IEnumerable<INewSessionObject> GetAssociation(INewSessionObject @object, IAssociationType associationType)
+        public IEnumerable<ISessionObject> GetAssociation(ISessionObject @object, IAssociationType associationType)
         {
             var roleType = associationType.RoleType;
 

@@ -27,7 +27,7 @@ namespace Allors.Domain
         private HashSet<long> deniedPermissions;
 
         private bool lazyLoaded;
-
+        private PermissionCache permissionCache;
         private Dictionary<Guid, Dictionary<Operations, long>> permissionIdByOperationByOperandTypeId;
 
         static AccessControlList() =>
@@ -50,6 +50,17 @@ namespace Allors.Domain
         public User User
         {
             get;
+        }
+
+        public string WorkspacePermissions
+        {
+            get
+            {
+                this.LazyLoad();
+
+                var worspacePermissionIds = this.permissionCache.WorkspacePermissionIByClassId;
+                this.permissionIds
+            }
         }
 
         public bool CanRead(IPropertyType propertyType) => this.IsPermitted(propertyType, Operations.Read);
@@ -129,8 +140,8 @@ namespace Allors.Domain
 
                 this.permissionIds = new HashSet<long>(this.Caches(securityTokens).SelectMany(v => v.EffectivePermissionIds));
 
-                var permissionCache = this.session.GetCache<PermissionCache, PermissionCache>(() => new PermissionCache(this.session));
-                this.permissionIdByOperationByOperandTypeId = permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[this.classId];
+                this.permissionCache = this.session.GetCache<PermissionCache, PermissionCache>(() => new PermissionCache(this.session));
+                this.permissionIdByOperationByOperandTypeId = this.permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[this.classId];
 
                 this.lazyLoaded = true;
             }

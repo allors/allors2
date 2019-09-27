@@ -5,8 +5,11 @@
 
 namespace Tests.Mock
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using Allors.Protocol.Remote.Pull;
-
+    using Allors.Workspace;
+    using Allors.Workspace.Meta;
     using Xunit;
 
     public class WorkspaceTests : MockTest
@@ -16,16 +19,18 @@ namespace Tests.Mock
         {
             this.Workspace.Sync(Fixture.LoadData);
 
+            object Value(IWorkspaceObject @object, IRoleType roleType) => @object.Write.First(v => v.RoleType == roleType).Value;
+
             var martien = this.Workspace.Get(3);
 
             Assert.Equal(3, martien.Id);
             Assert.Equal(1003, martien.Version);
-            Assert.Equal("Person", martien.ObjectType.Name);
-            Assert.Equal("Martien", martien.Roles["FirstName"]);
-            Assert.Equal("van", martien.Roles["MiddleName"]);
-            Assert.Equal("Knippenberg", martien.Roles["LastName"]);
-            Assert.False(martien.Roles.ContainsKey("IsStudent"));
-            Assert.False(martien.Roles.ContainsKey("BirthDate"));
+            Assert.Equal("Person", martien.Class.Name);
+            Assert.Equal("Martien", Value(martien, M.Person.FirstName));
+            Assert.Equal("van", Value(martien, M.Person.MiddleName));
+            Assert.Equal("Knippenberg", Value(martien, M.Person.LastName));
+            Assert.DoesNotContain(martien.Write, v => v.RoleType == M.Person.IsStudent);
+            Assert.DoesNotContain(martien.Write, v => v.RoleType == M.Person.BirthDate);
         }
 
         [Fact]

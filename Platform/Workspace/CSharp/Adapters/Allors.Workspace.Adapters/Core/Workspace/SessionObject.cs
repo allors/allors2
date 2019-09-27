@@ -9,14 +9,17 @@ namespace Allors.Workspace
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net.Sockets;
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace.Meta;
+    using Protocol.Data;
 
-    public class SessionObject : INewSessionObject
+    public class SessionObject : ISessionObject
     {
         private static readonly ISessionObject[] EmptySessionObjects = new ISessionObject[0];
 
         private Dictionary<IRoleType, object> changedRoleByRoleType;
+
         private Dictionary<IRoleType, object> roleByRoleType = new Dictionary<IRoleType, object>();
 
         protected SessionObject(Session session) => this.Session = session;
@@ -82,7 +85,8 @@ namespace Allors.Workspace
                 return true;
             }
 
-            return this.WorkspaceObject.CanRead(roleType.PropertyName);
+            // TODO:
+            return true;
         }
 
         public bool CanWrite(IRoleType roleType)
@@ -92,7 +96,8 @@ namespace Allors.Workspace
                 return true;
             }
 
-            return this.WorkspaceObject.CanWrite(roleType.PropertyName);
+            // TODO:
+            return true;
         }
 
         public bool CanExecute(IMethodType methodType)
@@ -102,7 +107,8 @@ namespace Allors.Workspace
                 return true;
             }
 
-            return this.WorkspaceObject.CanExecute(methodType.Name);
+            // TODO: Optimize
+            return true;
         }
 
         public bool Exist(IRoleType roleType)
@@ -122,95 +128,37 @@ namespace Allors.Workspace
             {
                 if (this.NewId == null)
                 {
-                    if (roleType.ObjectType.IsUnit)
+                    var workspaceRole = this.WorkspaceObject.Roles?.FirstOrDefault(v => v.RoleType == roleType);
+                    if (workspaceRole?.Value != null)
                     {
-                        this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out value);
-
-                        if (value != null)
+                        if (roleType.ObjectType.IsUnit)
                         {
-                            var unit = (IUnit)roleType.ObjectType;
-
-                            switch (unit.UnitTag)
-                            {
-                                case UnitTags.Binary:
-                                    value = Convert.FromBase64String((string)value);
-                                    break;
-
-                                case UnitTags.DateTime:
-                                    value = Convert.ToDateTime(value);
-                                    break;
-
-                                case UnitTags.Integer:
-                                    value = Convert.ToInt32(value);
-                                    break;
-
-                                case UnitTags.Decimal:
-                                    value = Convert.ToDecimal(value);
-                                    break;
-
-                                case UnitTags.Float:
-                                    value = Convert.ToDouble(value);
-                                    break;
-
-                                //case UnitTags.Unique:
-                                //    break;
-                            }
+                            value = workspaceRole.Value;
                         }
-                    }
-                    else
-                    {
-                        try
+                        else
                         {
                             if (roleType.IsOne)
                             {
-                                this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out var role);
-                                value = role != null ? this.Session.Get(long.Parse((string)role)) : null;
+                                value = this.Session.Get((long)workspaceRole.Value);
                             }
                             else
                             {
-                                if (this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out var roles))
+                                var ids = (long[])workspaceRole.Value;
+                                var array = Array.CreateInstance(roleType.ObjectType.ClrType, ids.Length);
+                                for (var i = 0; i < ids.Length; i++)
                                 {
-                                    if (roles is IList list)
-                                    {
-                                        var array = Array.CreateInstance(roleType.ObjectType.ClrType, list.Count);
-
-                                        for (var i = 0; i < list.Count; i++)
-                                        {
-                                            var roleId = list[i];
-                                            var role = this.Session.Get(long.Parse(roleId.ToString()));
-                                            array.SetValue(role, i);
-                                        }
-
-                                        return array;
-                                    }
+                                    array.SetValue(this.Session.Get(ids[i]), i);
                                 }
 
-                                return new ArrayList().ToArray(roleType.ObjectType.ClrType);
+                                value = array;
                             }
-                        }
-                        catch
-                        {
-                            var stringValue = "N/A";
-                            try
-                            {
-                                stringValue = this.ToString();
-                            }
-                            catch
-                            {
-                                // ignored
-                            }
-
-                            throw new Exception($"Could not get role {roleType.PropertyName} from [objectType: ${this.ObjectType.Name}, id: ${this.Id}, value: '${stringValue}']");
                         }
                     }
                 }
-                else
+
+                if (value == null && roleType.IsMany)
                 {
-                    if (roleType.ObjectType.IsComposite && roleType.IsMany)
-                    {
-                        // TODO: Optimize
-                        value = new ArrayList(EmptySessionObjects).ToArray(roleType.ObjectType.ClrType);
-                    }
+                    value = this.WorkspaceObject.Workspace.ObjectFactory.EmptyArray(roleType.ObjectType);
                 }
 
                 this.roleByRoleType[roleType] = value;
@@ -339,55 +287,56 @@ namespace Allors.Workspace
             foreach (var keyValuePair in this.changedRoleByRoleType)
             {
                 var roleType = keyValuePair.Key;
-                var role = keyValuePair.Value;
+                var roleValue = keyValuePair.Value;
 
-                var saveRole = new PushRequestRole { T = roleType.PropertyName };
+                var pushRequestRole = new PushRequestRole { T = roleType.PropertyName };
 
                 if (roleType.ObjectType.IsUnit)
                 {
-                    saveRole.S = role;
+                    pushRequestRole.S = UnitConvert.ToString(roleValue);
                 }
                 else
                 {
                     if (roleType.IsOne)
                     {
-                        var sessionRole = (SessionObject)role;
-                        saveRole.S = sessionRole?.Id.ToString();
+                        var sessionRole = (SessionObject)roleValue;
+                        pushRequestRole.S = sessionRole?.Id.ToString();
                     }
                     else
                     {
-                        var sessionRoles = (SessionObject[])role;
+                        var sessionRoles = (SessionObject[])roleValue;
                         var roleIds = sessionRoles.Select(item => item.Id.ToString()).ToArray();
                         if (this.NewId != null)
                         {
-                            saveRole.A = roleIds;
+                            pushRequestRole.A = roleIds;
                         }
                         else
                         {
-                            if (!this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out var originalRoleIdsObject))
+                            var originalRoleIdsObject = this.WorkspaceObject.Roles.FirstOrDefault(v => v.RoleType == roleType);
+                            if (originalRoleIdsObject?.Value != null)
                             {
-                                saveRole.A = roleIds;
+                                pushRequestRole.A = roleIds;
                             }
                             else
                             {
                                 if (originalRoleIdsObject != null)
                                 {
-                                    var originalRoleIds = ((IEnumerable<object>)originalRoleIdsObject)
+                                    var originalRoleIds = ((IEnumerable<long>)originalRoleIdsObject.Value)
                                         .Select(v => v.ToString())
                                         .ToArray();
-                                    saveRole.A = roleIds.Except(originalRoleIds).ToArray();
-                                    saveRole.R = originalRoleIds.Except(roleIds).ToArray();
+                                    pushRequestRole.A = roleIds.Except(originalRoleIds).ToArray();
+                                    pushRequestRole.R = originalRoleIds.Except(roleIds).ToArray();
                                 }
                                 else
                                 {
-                                    saveRole.A = roleIds.ToArray();
+                                    pushRequestRole.A = roleIds.ToArray();
                                 }
                             }
                         }
                     }
                 }
 
-                saveRoles.Add(saveRole);
+                saveRoles.Add(pushRequestRole);
             }
 
             return saveRoles.ToArray();

@@ -11,6 +11,8 @@ namespace Allors.Domain
     {
         User User { get; }
 
+        string WorkspacePermissions { get; }
+
         bool CanRead(IPropertyType propertyType);
 
         bool CanRead(ConcreteRoleType propertyType);

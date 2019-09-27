@@ -5,101 +5,116 @@
 
 namespace Tests.Mock
 {
+    using System.Collections.Generic;
     using Allors.Protocol.Remote.Sync;
+    using Allors.Workspace.Meta;
 
     public class Fixture
     {
-        public static SyncResponse LoadData = new SyncResponse
+        public static SyncResponse LoadData
         {
-            UserSecurityHash = "#",
-            Objects = new[]
+            get
             {
-                    new SyncResponseObject
+                var keyByMetaObject = new Dictionary<IMetaObject, string>();
+                var index = 0;
+
+                string encode(IMetaObject metaObject)
+                {
+                    if (keyByMetaObject.TryGetValue(metaObject, out var key))
                     {
-                        I = "1",
-                        V = "1001",
-                        T = "Person",
-                        Roles = new[]
-                                   {
-                                        new object[] { "FirstName", "rw", "Koen" },
-                                        new object[] { "LastName", "rw", "Van Exem" },
-                                        new object[] { "BirthDate", "rw", "1973-03-27T18:00:00Z" },
-                                        new object[] { "IsStudent", "rw", true },
-                                    },
-                    },
-                    new SyncResponseObject
+                        return key;
+                    }
+
+                    key = (++index).ToString();
+                    keyByMetaObject.Add(metaObject, key);
+                    return $":{key}:{metaObject.Id.ToString("D").ToLower()}";
+                }
+
+                return new SyncResponse
+                {
+                    UserSecurityHash = "#",
+                    Objects = new[]
                     {
-                        I = "2",
-                        V = "1002",
-                        T = "Person",
-                        Roles = new[]
-                                {
-                                    new object[] { "FirstName", "rw", "Patrick" },
-                                    new object[] { "LastName", "rw", "De Boeck" },
-                                    new object[] { "IsStudent", "rw", false },
-                                },
-                    },
-                    new SyncResponseObject
-                    {
-                        I = "3",
-                        V = "1003",
-                        T = "Person",
-                        Roles = new[]
+                        new SyncResponseObject
                         {
-                            new object[] { "FirstName", "rw", "Martien" },
-                            new object[] { "MiddleName", "rw", "van" },
-                            new object[] { "LastName", "rw", "Knippenberg" },
+                            I = "1",
+                            V = "1001",
+                            T = encode(M.Person.ObjectType),
+                            W = new[]
+                            {
+                                new SyncResponseRole { T = encode(M.Person.FirstName), V = "Koen"},
+                                new SyncResponseRole { T = encode(M.Person.LastName), V = "Van Exem"},
+                                new SyncResponseRole { T = encode(M.Person.BirthDate), V = "1973-03-27T18:00:00Z"},
+                                new SyncResponseRole { T = encode(M.Person.IsStudent), V = "0"},
+                            },
+                        },
+                        new SyncResponseObject
+                        {
+                            I = "2",
+                            V = "1002",
+                            T = encode(M.Person.ObjectType),
+                            W = new[]
+                            {
+                                new SyncResponseRole { T = encode(M.Person.FirstName), V = "Patrick"},
+                                new SyncResponseRole { T = encode(M.Person.LastName), V = "De Boeck"},
+                                new SyncResponseRole { T = encode(M.Person.IsStudent), V = "1"},
+                            },
+                        },
+                        new SyncResponseObject
+                        {
+                            I = "3",
+                            V = "1003",
+                            T = encode(M.Person.ObjectType),
+                            W = new[]
+                            {
+                                new SyncResponseRole { T = encode(M.Person.FirstName), V = "Martien"},
+                                new SyncResponseRole { T = encode(M.Person.MiddleName), V = "van"},
+                                new SyncResponseRole { T = encode(M.Person.LastName), V = "Knippenberg"},
+                            },
+                        },
+                        new SyncResponseObject
+                        {
+                            I = "101",
+                            V = "1101",
+                            T = encode(M.Organisation.ObjectType),
+                            W = new[]
+                            {
+                                new SyncResponseRole { T = encode(M.Organisation.Name), V = "Acme" },
+                                new SyncResponseRole { T = encode(M.Organisation.Owner), V = "1" },
+                                new SyncResponseRole { T = encode(M.Organisation.Employees), V = "1,2,3" },
+                                new SyncResponseRole { T = encode(M.Organisation.Manager)},
+                            },
+                            X = new[] { encode(M.Organisation.JustDoIt) },
+                        },
+                        new SyncResponseObject
+                        {
+                            I = "102",
+                            V = "1102",
+                            T = encode(M.Organisation.ObjectType),
+                            W = new[]
+                            {
+                                new SyncResponseRole { T = encode(M.Organisation.Name), V = "Ocme" },
+                                new SyncResponseRole { T = encode(M.Organisation.Owner), V = "2" },
+                                new SyncResponseRole { T = encode(M.Organisation.Employees), V = "1" },
+                            },
+                            X = new[] { encode(M.Organisation.JustDoIt) },
+                        },
+                        new SyncResponseObject
+                        {
+                            I = "103",
+                            V = "1103",
+                            T = encode(M.Organisation.ObjectType),
+                            W = new[]
+                            {
+                                new SyncResponseRole { T = encode(M.Organisation.Name), V = "icme" },
+                                new SyncResponseRole { T = encode(M.Organisation.Owner), V = "3" },
+                            },
+                            X = new[] { encode(M.Organisation.JustDoIt) },
                         },
                     },
-                    new SyncResponseObject
-                    {
-                        I = "101",
-                        V = "1101",
-                        T = "Organisation",
-                        Roles = new[]
-                        {
-                            new object[] { "Name", "rw", "Acme" },
-                            new object[] { "Owner", "rw", "1" },
-                            new object[] { "Employees", "rw", new[] { "1", "2", "3" } },
-                        },
-                        Methods = new[]
-                        {
-                            new[] { "JustDoIt", "x" },
-                        },
-                    },
-                    new SyncResponseObject
-                    {
-                        I = "102",
-                        V = "1102",
-                        T = "Organisation",
-                        Roles = new[]
-                        {
-                            new object[] { "Name", "rw", "Ocme" },
-                            new object[] { "Owner", "rw", "2" },
-                            new object[] { "Employees", "rw", new[] { "1" } },
-                        },
-                        Methods = new[]
-                        {
-                            new[] { "JustDoIt", string.Empty },
-                        },
-                    },
-                    new SyncResponseObject
-                    {
-                        I = "103",
-                        V = "1103",
-                        T = "Organisation",
-                        Roles = new[]
-                        {
-                            new object[] { "Name", "rw", "icme" },
-                            new object[] { "Owner", "rw", "3" },
-                        },
-                        Methods = new[]
-                        {
-                            new[] { "JustDoIt", "" }
-                        },
-                    },
-                },
-        };
+                };
+            }
+        }
     }
 }
 

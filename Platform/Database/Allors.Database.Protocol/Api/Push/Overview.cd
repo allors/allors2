@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Allors.Protocol.Remote.Push.PushRequest">
+    <Position X="0.5" Y="1.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEAAAAAAAAAAAA=</HashCode>
+      <FileName>Api\Push\PushRequest.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="NewObjects" />
+      <Property Name="Objects" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Push.PushRequestNewObject">
+    <Position X="4.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAAI=</HashCode>
+      <FileName>Api\Push\PushRequestNewObject.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Roles" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Push.PushRequestObject">
+    <Position X="4.75" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAACAQAAA=</HashCode>
+      <FileName>Api\Push\PushRequestObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Push.PushRequestRole">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIACEAQA=</HashCode>
+      <FileName>Api\Push\PushRequestRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Push.PushResponse">
+    <Position X="0.5" Y="5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Api\Push\PushResponse.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="NewObjects" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Push.PushResponseNewObject">
+    <Position X="4.75" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAI=</HashCode>
+      <FileName>Api\Push\PushResponseNewObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

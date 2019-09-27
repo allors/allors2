@@ -9,7 +9,7 @@ namespace Allors.Protocol.Data
 
     public static class TreeNodeExtensions
     {
-        public static void Load(this TreeNode @this, ISession session, Allors.Data.TreeNode treeNode)
+        public static void Load(this Node @this, ISession session, Allors.Data.TreeNode treeNode)
         {
             if (@this.Nodes != null)
             {

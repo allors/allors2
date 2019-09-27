@@ -94,7 +94,7 @@ namespace Allors.Server
 
                                         paged = paged.ToArray();
 
-                                        response.AddValue(name + "_total", objects.Length);
+                                        response.AddValue(name + "_total", objects.Length.ToString());
                                         response.AddCollection(name, paged, include);
                                     }
                                     else

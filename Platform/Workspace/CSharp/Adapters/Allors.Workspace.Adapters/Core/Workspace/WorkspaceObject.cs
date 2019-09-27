@@ -5,54 +5,20 @@
 
 namespace Allors.Workspace
 {
-    using System.Collections.Generic;
     using Allors.Protocol.Remote.Sync;
     using Allors.Workspace.Meta;
+    using System.Linq;
 
     public class WorkspaceObject : IWorkspaceObject
     {
-        public WorkspaceObject(Workspace workspace, SyncResponse loadResponse, SyncResponseObject loadObject)
+        internal WorkspaceObject(SyncResponseContext ctx, SyncResponseObject syncResponseObject)
         {
-            this.Workspace = workspace;
-            this.Id = long.Parse(loadObject.I);
-            this.Version = !string.IsNullOrEmpty(loadObject.V) ? long.Parse(loadObject.V) : 0;
-            this.UserSecurityHash = loadResponse.UserSecurityHash;
-            this.ObjectType = (IClass)this.Workspace.ObjectFactory.GetObjectType(loadObject.T);
-
-            this.Roles = new Dictionary<string, object>();
-            this.Methods = new Dictionary<string, object>();
-
-            if (loadObject.Roles != null)
-            {
-                foreach (var role in loadObject.Roles)
-                {
-                    var name = (string)role[0];
-                    var access = (string)role[1];
-                    var canRead = access.Contains("r");
-                    var canWrite = access.Contains("w");
-
-                    this.Roles[$"CanRead{name}"] = canRead;
-                    this.Roles[$"CanWrite{name}"] = canWrite;
-
-                    if (canRead)
-                    {
-                        var value = role.Length > 2 ? role[2] : null;
-                        this.Roles[name] = value;
-                    }
-                }
-            }
-
-            if (loadObject.Methods != null)
-            {
-                foreach (var method in loadObject.Methods)
-                {
-                    var name = method[0];
-                    var access = method[1];
-                    var canExecute = access.Contains("x");
-
-                    this.Methods[$"CanExecute{name}"] = canExecute;
-                }
-            }
+            this.Workspace = ctx.Workspace;
+            this.UserSecurityHash = ctx.UserSecurityHash;
+            this.Id = long.Parse(syncResponseObject.I);
+            this.Version = !string.IsNullOrEmpty(syncResponseObject.V) ? long.Parse(syncResponseObject.V) : 0;
+            this.Class = ctx.ReadClass(syncResponseObject);
+            this.Roles = syncResponseObject.R?.Select(v => new WorkspaceRole(ctx, v)).Cast<IWorkspaceRole>().ToArray();
         }
 
         public IWorkspace Workspace { get; }
@@ -61,18 +27,10 @@ namespace Allors.Workspace
 
         public long Version { get; }
 
-        public string UserSecurityHash { get; }
+        public string UserSecurityHash { get; internal set; }
 
-        public IClass ObjectType { get; }
+        public IClass Class { get; }
 
-        public Dictionary<string, object> Roles { get; }
-
-        public Dictionary<string, object> Methods { get; }
-
-        public bool CanRead(string roleTypeName) => (bool)this.Roles[$"CanRead{roleTypeName}"];
-
-        public bool CanWrite(string roleTypeName) => (bool)this.Roles[$"CanWrite{roleTypeName}"];
-
-        public bool CanExecute(string methodTypeName) => (bool)this.Methods[$"CanExecute{methodTypeName}"];
+        public IWorkspaceRole[] Roles { get; }
     }
 }

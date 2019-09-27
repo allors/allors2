@@ -86,7 +86,7 @@ namespace Allors.Server
 
                                 paged = paged.ToArray();
 
-                                response.AddValue(name + "_total", extent.Build(this.session, this.pull.Arguments).Count);
+                                response.AddValue(name + "_total", extent.Build(this.session, this.pull.Arguments).Count.ToString());
                                 response.AddCollection(name, paged, include);
                             }
                             else

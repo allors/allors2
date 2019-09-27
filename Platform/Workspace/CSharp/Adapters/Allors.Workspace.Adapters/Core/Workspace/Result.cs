@@ -27,11 +27,11 @@ namespace Allors.Workspace
                 pair => pair.Value);
         }
 
-        public Dictionary<string, INewSessionObject> Objects { get; }
+        public Dictionary<string, ISessionObject> Objects { get; }
 
-        public Dictionary<string, INewSessionObject[]> Collections { get; }
+        public Dictionary<string, ISessionObject[]> Collections { get; }
 
-        public Dictionary<string, object> Values { get; }
+        public Dictionary<string, string> Values { get; }
 
         private IWorkspace Workspace { get; }
 
@@ -57,8 +57,8 @@ namespace Allors.Workspace
 
         public void GetObject<T>(string key, out T value) where T : SessionObject => value = (T)this.Objects[key];
 
-        public T GetValue<T>(string key) => (T)this.Values[key];
+        public string GetValue(string key) => this.Values[key];
 
-        public void GetValue<T>(string key, out T value) => value = (T)this.Values[key];
+        public void GetValue(string key, out string value) => value = this.Values[key];
     }
 }

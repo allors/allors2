@@ -13,6 +13,6 @@ namespace Allors.Protocol.Data
 
         public Step Next { get; set; }
 
-        public TreeNode[] Include { get; set; }
+        public Node[] Include { get; set; }
     }
 }

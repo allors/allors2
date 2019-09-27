@@ -36,9 +36,9 @@ namespace Allors.Workspace.Data
             return this;
         }
 
-        public Protocol.Data.TreeNode ToData()
+        public Protocol.Data.Node ToData()
         {
-            var data = new Protocol.Data.TreeNode
+            var data = new Protocol.Data.Node
             {
                 PropertyType = this.PropertyType.Id,
                 Nodes = this.Nodes.Select(v => v.ToData()).ToArray(),

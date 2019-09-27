@@ -15,9 +15,9 @@ namespace Allors.Workspace
 
         IWorkspace Workspace { get; }
 
-        INewSessionObject Create(IClass @class);
+        ISessionObject Create(IClass @class);
 
-        INewSessionObject Get(long id);
+        ISessionObject Get(long id);
 
         PushRequest PushRequest();
 
@@ -25,6 +25,6 @@ namespace Allors.Workspace
 
         void Reset();
 
-        IEnumerable<INewSessionObject> GetAssociation(INewSessionObject @object, IAssociationType associationType);
+        IEnumerable<ISessionObject> GetAssociation(ISessionObject @object, IAssociationType associationType);
     }
 }

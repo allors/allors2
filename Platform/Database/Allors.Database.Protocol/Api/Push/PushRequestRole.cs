@@ -1,4 +1,4 @@
-﻿// <copyright file="PushRequestRole.cs" company="Allors bvba">
+// <copyright file="PushRequestRole.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,7 +15,7 @@ namespace Allors.Protocol.Remote.Push
         /// <summary>
         /// Gets or sets the set role.
         /// </summary>
-        public object S { get; set; }
+        public string S { get; set; }
 
         /// <summary>
         /// Gets or sets the add roles.

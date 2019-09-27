@@ -37,8 +37,8 @@ namespace Allors.Data
 
         public TreeNode[] Nodes { get; private set; }
 
-        public Protocol.Data.TreeNode Save() =>
-            new Protocol.Data.TreeNode
+        public Protocol.Data.Node Save() =>
+            new Protocol.Data.Node
             {
                 PropertyType = this.PropertyType.Id,
                 Nodes = this.Nodes.Select(v => v.Save()).ToArray(),

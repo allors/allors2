@@ -7,10 +7,10 @@ namespace Allors.Protocol.Data
 {
     using System;
 
-    public class TreeNode
+    public class Node
     {
         public Guid? PropertyType { get; set; }
 
-        public TreeNode[] Nodes { get; set; }
+        public Node[] Nodes { get; set; }
     }
 }

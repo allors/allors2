@@ -29,7 +29,7 @@ namespace Allors.Data
                 Kind = PredicateKind.Equals,
                 PropertyType = this.PropertyType.Id,
                 Object = this.Object?.Id.ToString(),
-                Value = DataConvert.ToString(this.Value),
+                Value = UnitConvert.ToString(this.Value),
                 Parameter = this.Parameter,
             };
 

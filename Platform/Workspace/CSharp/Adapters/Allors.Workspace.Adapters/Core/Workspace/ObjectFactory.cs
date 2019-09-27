@@ -37,6 +37,8 @@ namespace Allors.Workspace
         /// </summary>
         private readonly Dictionary<IObjectType, ConstructorInfo> contructorInfoByObjectType;
 
+        private readonly Dictionary<IObjectType, object> emptyArrayByObjectType;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ObjectFactory"/> class.
         /// </summary>
@@ -81,6 +83,7 @@ namespace Allors.Workspace
             this.objectTypeByName = new Dictionary<string, IObjectType>();
             this.objectTypeByObjectTypeId = new Dictionary<Guid, IObjectType>();
             this.contructorInfoByObjectType = new Dictionary<IObjectType, ConstructorInfo>();
+            this.emptyArrayByObjectType = new Dictionary<IObjectType, object>();
 
             var typeByName = types.ToDictionary(type => type.Name, type => type);
 
@@ -104,6 +107,8 @@ namespace Allors.Workspace
 
                     this.contructorInfoByObjectType[objectType] = constructor;
                 }
+
+                this.emptyArrayByObjectType.Add(objectType, Array.CreateInstance(type, 0));
             }
         }
 
@@ -137,7 +142,7 @@ namespace Allors.Workspace
             return (SessionObject)constructor.Invoke(parameters);
         }
 
-        INewSessionObject IObjectFactory.Create(ISession session, IObjectType objectType) => this.Create(session, objectType);
+        ISessionObject IObjectFactory.Create(ISession session, IObjectType objectType) => this.Create(session, objectType);
 
         /// <summary>
         /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.
@@ -151,17 +156,6 @@ namespace Allors.Workspace
         /// <summary>
         /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.
         /// </summary>
-        /// <param name="id">
-        /// The id.
-        /// </param>
-        /// <returns>
-        /// The Allors <see cref="IObjectType"/>.
-        /// </returns>
-        public IObjectType GetObjectType(Guid id) => !this.objectTypeByObjectTypeId.TryGetValue(id, out var objectType) ? null : objectType;
-
-        /// <summary>
-        /// Gets the .Net <see cref="Type"/> given the Allors <see cref="IObjectType"/>.
-        /// </summary>
         /// <param name="objectType">The Allors <see cref="IObjectType"/>.</param>
         /// <returns>The .Net <see cref="Type"/>.</returns>
         public Type GetType(IObjectType objectType)
@@ -169,7 +163,9 @@ namespace Allors.Workspace
             this.typeByObjectType.TryGetValue(objectType, out var type);
             return type;
         }
-        
+
+        public object EmptyArray(IObjectType objectType) => this.emptyArrayByObjectType[objectType];
+
         public IObjectType GetObjectType<T>()
         {
             var typeName = typeof(T).Name;

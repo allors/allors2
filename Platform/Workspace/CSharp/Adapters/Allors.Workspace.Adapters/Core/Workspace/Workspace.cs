@@ -43,10 +43,23 @@ namespace Allors.Workspace
 
         public void Sync(SyncResponse syncResponse)
         {
-            foreach (var objectData in syncResponse.Objects)
+            var syncResponseContext = new SyncResponseContext(this, syncResponse.UserSecurityHash);
+            foreach (var syncResponseObject in syncResponse.Objects)
             {
-                var workspaceObject = new WorkspaceObject(this, syncResponse, objectData);
+                var workspaceObject = new WorkspaceObject(syncResponseContext, syncResponseObject);
                 this.workspaceObjectById[workspaceObject.Id] = workspaceObject;
+            }
+        }
+
+        /// <summary>
+        /// Invalidates the object in order to force a sync on next pull.
+        /// </summary>
+        /// <param name="objectId">The object id.</param>
+        internal void Invalidate(long objectId)
+        {
+            if (this.workspaceObjectById.TryGetValue(objectId, out var workspaceObject))
+            {
+                workspaceObject.UserSecurityHash = "#";
             }
         }
 
@@ -64,7 +77,7 @@ namespace Allors.Workspace
         internal IEnumerable<IWorkspaceObject> Get(IComposite objectType)
         {
             var classes = new HashSet<IClass>(objectType.Classes);
-            return this.workspaceObjectById.Where(v => classes.Contains(v.Value.ObjectType)).Select(v => v.Value);
+            return this.workspaceObjectById.Where(v => classes.Contains(v.Value.Class)).Select(v => v.Value);
         }
     }
 }
