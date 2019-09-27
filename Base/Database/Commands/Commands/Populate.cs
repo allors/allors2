@@ -1,4 +1,4 @@
-﻿// <copyright file="Populate.cs" company="Allors bvba">
+// <copyright file="Populate.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -40,7 +40,7 @@ namespace Commands
 
             using (var session = this.databaseService.Database.CreateSession())
             {
-                var config = new Config { DataPath = this.dataPath, Demo = true };
+                var config = new Config { DataPath = this.dataPath, Demo = true, End2End = true};
                 new Setup(session, config).Apply();
 
                 session.Derive();

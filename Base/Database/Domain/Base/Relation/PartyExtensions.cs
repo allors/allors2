@@ -319,11 +319,16 @@ namespace Allors.Domain
                         }
                     }
 
-                    var gracePeriod = salesInvoice.Store.PaymentGracePeriod;
+                    var gracePeriod = salesInvoice.Store?.PaymentGracePeriod;
 
                     if (salesInvoice.DueDate.HasValue)
                     {
-                        var dueDate = salesInvoice.DueDate.Value.AddDays(gracePeriod);
+                        var dueDate = salesInvoice.DueDate.Value;
+
+                        if (gracePeriod.HasValue)
+                        {
+                            dueDate = salesInvoice.DueDate.Value.AddDays(gracePeriod.Value);
+                        }
 
                         if (@this.Strategy.Session.Now() > dueDate)
                         {

@@ -146,8 +146,6 @@ namespace Allors
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null);
 
-            var b2BCustomer = this.CreateB2BCustomer(allors);
-
             // Give Administrator access
             new EmploymentBuilder(this.session).WithEmployee(administrator).WithEmployer(allors).Build();
             allors.AddProductQuoteApprover(administrator);
@@ -338,88 +336,16 @@ namespace Allors
 
             for (var i = 0; i < 100; i++)
             {
-                var acmePostalAddress = new PostalAddressBuilder(this.session)
-                    .WithAddress1($"Acme{i} address 1")
-                    .WithLocality($"Acme{i} city")
-                    .WithPostalCode("1111")
-                    .WithCountry(us)
-                    .Build();
+                var b2BCustomer = this.CreateB2BCustomer(allors);
 
-                var acmeBillingAddress = new PartyContactMechanismBuilder(this.session)
-                    .WithContactMechanism(acmePostalAddress)
-                    .WithContactPurpose(new ContactMechanismPurposes(this.session).GeneralCorrespondence)
-                    .WithUseAsDefault(true)
-                    .Build();
-
-                var acmeInquiries = new PartyContactMechanismBuilder(this.session)
-                    .WithContactMechanism(new TelecommunicationsNumberBuilder(this.session).WithCountryCode("+1").WithContactNumber("111 222 333").Build())
-                    .WithContactPurpose(new ContactMechanismPurposes(this.session).GeneralPhoneNumber)
-                    .WithContactPurpose(new ContactMechanismPurposes(this.session).OrderInquiriesPhone)
-                    .WithUseAsDefault(true)
-                    .Build();
-
-                var acme = new OrganisationBuilder(this.session)
-                    .WithName($"Acme{i}")
-                    .WithLocale(new Locales(this.session).EnglishUnitedStates)
-                    .WithPartyContactMechanism(acmeBillingAddress)
-                    .WithPartyContactMechanism(acmeInquiries)
-                    .WithTaxNumber($"{1000 + i}-{1000 + i}-{1000 + i}")
-                    .Build();
-
-                var contact1Email = new PartyContactMechanismBuilder(this.session)
-                    .WithContactMechanism(new EmailAddressBuilder(this.session).WithElectronicAddressString($"employee1@acme{i}.com").Build())
-                    .WithContactPurpose(new ContactMechanismPurposes(this.session).PersonalEmailAddress)
-                    .WithUseAsDefault(true)
-                    .Build();
-
-                var contact2PhoneNumber = new PartyContactMechanismBuilder(this.session)
-                    .WithContactMechanism(new TelecommunicationsNumberBuilder(this.session).WithCountryCode("+1").WithAreaCode("123").WithContactNumber("456").Build())
-                    .WithContactPurpose(new ContactMechanismPurposes(this.session).GeneralPhoneNumber)
-                    .WithUseAsDefault(true)
-                    .Build();
-
-                var contact1 = new PersonBuilder(this.session)
-                    .WithFirstName($"John{i}")
-                    .WithLastName($"Doe{i}")
-                    .WithGender(new GenderTypes(this.session).Male)
-                    .WithLocale(new Locales(this.session).EnglishUnitedStates)
-                    .WithPartyContactMechanism(contact1Email)
-                    .Build();
-
-                var contact2 = new PersonBuilder(this.session)
-                    .WithFirstName($"Jane{i}")
-                    .WithLastName($"Doe{i}")
-                    .WithGender(new GenderTypes(this.session).Male)
-                    .WithLocale(new Locales(this.session).EnglishUnitedStates)
-                    .WithPartyContactMechanism(contact2PhoneNumber)
-                    .Build();
-
-                new CustomerRelationshipBuilder(this.session)
-                    .WithCustomer(acme)
-                    .WithInternalOrganisation(allors)
-                    .WithFromDate(this.session.Now())
-                    .Build();
-
-                new OrganisationContactRelationshipBuilder(this.session)
-                    .WithOrganisation(acme)
-                    .WithContact(contact1)
-                    .WithContactKind(new OrganisationContactKinds(this.session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                    .WithFromDate(this.session.Now())
-                    .Build();
-
-                new OrganisationContactRelationshipBuilder(this.session)
-                    .WithOrganisation(acme)
-                    .WithContact(contact2)
-                    .WithContactKind(new OrganisationContactKinds(this.session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                    .WithFromDate(this.session.Now())
-                    .Build();
+                this.session.Derive();
 
                 new FaceToFaceCommunicationBuilder(this.session)
                     .WithDescription($"Meeting {i}")
                     .WithSubject($"meeting {i}")
                     .WithEventPurpose(new CommunicationEventPurposes(this.session).Meeting)
-                    .WithFromParty(contact1)
-                    .WithToParty(contact2)
+                    .WithFromParty(allors.CurrentContacts.First)
+                    .WithToParty(b2BCustomer.CurrentContacts.First)
                     .WithOwner(administrator)
                     .WithActualStart(this.session.Now())
                     .Build();
@@ -438,7 +364,7 @@ namespace Allors
                     .WithDescription($"Letter {i}")
                     .WithSubject($"letter {i}")
                     .WithFromParty(administrator)
-                    .WithToParty(contact1)
+                    .WithToParty(b2BCustomer.CurrentContacts.First)
                     .WithEventPurpose(new CommunicationEventPurposes(this.session).Meeting)
                     .WithOwner(administrator)
                     .WithActualStart(this.session.Now())
@@ -448,7 +374,7 @@ namespace Allors
                     .WithDescription($"Phone {i}")
                     .WithSubject($"phone {i}")
                     .WithFromParty(administrator)
-                    .WithToParty(contact1)
+                    .WithToParty(b2BCustomer.CurrentContacts.First)
                     .WithEventPurpose(new CommunicationEventPurposes(this.session).Meeting)
                     .WithOwner(administrator)
                     .WithActualStart(this.session.Now())
@@ -471,9 +397,9 @@ namespace Allors
 
                 var productQuote = new ProductQuoteBuilder(this.session)
                     .WithIssuer(allors)
-                    .WithReceiver(acme)
-                    .WithContactPerson(contact1)
-                    .WithFullfillContactMechanism(acmePostalAddress)
+                    .WithReceiver(b2BCustomer)
+                    .WithContactPerson(b2BCustomer.CurrentContacts.First)
+                    .WithFullfillContactMechanism(b2BCustomer.GeneralEmail)
                     .Build();
 
                 var quoteItem = new QuoteItemBuilder(this.session)
@@ -512,8 +438,8 @@ line2")
 
                 var order = new SalesOrderBuilder(this.session)
                     .WithTakenBy(allors)
-                    .WithBillToCustomer(acme)
-                    .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
+                    .WithBillToCustomer(b2BCustomer)
+                    .WithBillToEndCustomerContactMechanism(b2BCustomer.BillingAddress)
                     .WithSalesOrderItem(salesOrderItem1)
                     .WithSalesOrderItem(salesOrderItem2)
                     .WithSalesOrderItem(salesOrderItem3)
@@ -551,11 +477,9 @@ line2")
 
                 var salesInvoice = new SalesInvoiceBuilder(this.session)
                     .WithBilledFrom(allors)
-                    .WithBillToCustomer(acme)
-                    .WithBillToContactPerson(contact1)
-                    .WithBillToContactMechanism(acme.PartyContactMechanisms[0].ContactMechanism)
-                    .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
-                    .WithShipToContactPerson(contact2)
+                    .WithBillToCustomer(b2BCustomer)
+                    .WithBillToContactPerson(b2BCustomer.CurrentContacts.First)
+                    .WithBillToContactMechanism(b2BCustomer.BillingAddress)
                     .WithSalesInvoiceItem(salesInvoiceItem1)
                     .WithSalesInvoiceItem(salesInvoiceItem2)
                     .WithSalesInvoiceItem(salesInvoiceItem3)
@@ -657,20 +581,20 @@ line2")
                     .Build();
             }
 
-            var acme0 = new Organisations(this.session).FindBy(M.Organisation.Name, "Acme0");
+            var aOrganisation = new Organisations(this.session).FindBy(M.Organisation.IsInternalOrganisation, false);
 
             var item = new SerialisedItemBuilder(this.session)
                 .WithSerialNumber("112")
                 .WithSerialisedItemState(new SerialisedItemStates(this.session).Sold)
                 .WithAvailableForSale(false)
-                .WithOwnedBy(acme0)
+                .WithOwnedBy(aOrganisation)
                 .Build();
 
             finishedGood2.AddSerialisedItem(item);
 
             var workTask = new WorkTaskBuilder(this.session)
                 .WithTakenBy(allors)
-                .WithCustomer(new Organisations(this.session).FindBy(M.Organisation.Name, "Acme0"))
+                .WithCustomer(aOrganisation)
                 .WithName("maintenance")
                 .Build();
 
@@ -689,7 +613,7 @@ line2")
                 .WithName("Task")
                 .WithTakenBy(allors)
                 .WithFacility(new Facilities(this.session).Extent().First)
-                .WithCustomer(acme0)
+                .WithCustomer(aOrganisation)
                 .WithWorkEffortPurpose(new WorkEffortPurposes(this.session).Maintenance)
                 .WithSpecialTerms("Net 45 Days")
                 .Build();
