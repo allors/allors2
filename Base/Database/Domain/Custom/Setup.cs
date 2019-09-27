@@ -7,8 +7,9 @@ namespace Allors
 {
     using System;
     using System.Linq;
-    using Allors.Domain;
-    using Allors.Meta;
+    using Domain;
+    using Domain.End2End;
+    using Meta;
 
     public partial class Setup
     {
@@ -144,6 +145,8 @@ namespace Allors
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null);
+
+            var b2BCustomer = this.CreateB2BCustomer(allors);
 
             // Give Administrator access
             new EmploymentBuilder(this.session).WithEmployee(administrator).WithEmployer(allors).Build();
@@ -826,5 +829,20 @@ line2")
                 .WithTimeFrequency(frequency)
                 .WithWorkEffort(workEffort)
                 .Build();
+
+        private Organisation CreateB2BCustomer(Organisation internalOrganisation)
+        {
+            var customer = new OrganisationBuilder(this.session).WithDefaults(this.session, this.Config).Build();
+
+            new CustomerRelationshipBuilder(this.session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(this.session.Now().AddDays(-1)).Build();
+
+            new OrganisationContactRelationshipBuilder(session)
+                .WithContact(new PersonBuilder(session).WithCompanyContactDefaults(session, this.Config).Build())
+                .WithOrganisation(customer)
+                .WithFromDate(this.session.Now().AddDays(-1))
+                .Build();
+
+            return customer;
+        }
     }
 }

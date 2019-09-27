@@ -18,7 +18,7 @@ namespace Allors
     {
         public DomainTest(bool populate = true) => this.Setup(populate);
 
-        public virtual Config Config { get; } = new Config { SetupSecurity = false };
+        public virtual Config Config { get; } = new Config { SetupSecurity = false, End2End = true};
 
         public ISession Session { get; private set; }
 
