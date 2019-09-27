@@ -30,7 +30,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        public Media media { get; set; }
+        public Media Media { get; set; }
 
         #region inherited methods
 
