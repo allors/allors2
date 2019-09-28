@@ -16,60 +16,48 @@ namespace Allors.Domain
     /// </summary>
     public class AccessControlList : IAccessControlList
     {
-        internal static readonly PrefetchPolicy PrefetchPolicy;
-
         private readonly Object @object;
-        private readonly ISession session;
-
         private readonly Guid classId;
 
-        private HashSet<long> permissionIds;
-        private HashSet<long> deniedPermissions;
-
         private bool lazyLoaded;
+        private AccessControl[] accessControls;
+        private HashSet<long> deniedPermissions;
         private PermissionCache permissionCache;
         private Dictionary<Guid, Dictionary<Operations, long>> permissionIdByOperationByOperandTypeId;
 
-        static AccessControlList() =>
-            PrefetchPolicy = new PrefetchPolicyBuilder()
-                .WithRule(M.AccessControl.CacheId.RoleType)
-                .WithRule(M.AccessControl.EffectiveUsers)
-                .WithRule(M.AccessControl.EffectivePermissions)
-                .Build();
-
-        public AccessControlList(IObject obj, User user)
+        internal AccessControlList(IAccessControlListFactory accessControlListFactory, IObject @object)
         {
-            this.User = user;
-            this.session = this.User.Strategy.Session;
-            this.@object = obj as Object;
+            this.AccessControlListFactory = accessControlListFactory;
+            this.@object = @object as Object;
             this.classId = this.@object?.Strategy.Class.Id ?? Guid.Empty;
 
             this.lazyLoaded = false;
         }
 
-        public User User
-        {
-            get;
-        }
+        public IAccessControlListFactory AccessControlListFactory { get; }
 
-        public string WorkspacePermissions
+        public string SortedWorkspacePermissionIds
         {
             get
             {
                 this.LazyLoad();
 
-                var worspacePermissionIds = this.permissionCache.WorkspacePermissionIByClassId;
-                this.permissionIds
+                var workspacePermissionIds = string.Join(
+                    ",",
+                    this.permissionCache.SortedWorkspacePermissionIdsByClassId[this.classId]
+                        .Select(v => this.AccessControlListFactory.EffectivePermissionIdsByAccessControl.Any(w => w.Value.Contains(v))));
+
+                return workspacePermissionIds;
             }
         }
 
         public bool CanRead(IPropertyType propertyType) => this.IsPermitted(propertyType, Operations.Read);
 
-        public bool CanRead(ConcreteRoleType roleType) => this.IsPermitted(roleType.RoleType, Operations.Read);
+        public bool CanRead(IConcreteRoleType roleType) => this.IsPermitted(roleType.RoleType, Operations.Read);
 
         public bool CanWrite(IRoleType roleType) => this.IsPermitted(roleType, Operations.Write);
 
-        public bool CanWrite(ConcreteRoleType roleType) => this.IsPermitted(roleType.RoleType, Operations.Write);
+        public bool CanWrite(IConcreteRoleType roleType) => this.IsPermitted(roleType.RoleType, Operations.Write);
 
         public bool CanExecute(IMethodType methodType) => this.IsPermitted(methodType, Operations.Execute);
 
@@ -91,7 +79,7 @@ namespace Allors.Domain
                         return false;
                     }
 
-                    return this.permissionIds.Contains(permissionId);
+                    return this.accessControls.Any(v => this.AccessControlListFactory.EffectivePermissionIdsByAccessControl[v].Contains(permissionId));
                 }
             }
 
@@ -102,6 +90,9 @@ namespace Allors.Domain
         {
             if (!this.lazyLoaded)
             {
+                var strategy = this.@object.Strategy;
+                var session = strategy.Session;
+
                 SecurityToken[] securityTokens;
                 if (this.@object is DelegatedAccessControlledObject controlledObject)
                 {
@@ -132,64 +123,21 @@ namespace Allors.Domain
 
                 if (securityTokens == null || securityTokens.Length == 0)
                 {
-                    var singleton = this.session.GetSingleton();
-                    securityTokens = this.@object.Strategy.IsNewInSession
+                    var singleton = session.GetSingleton();
+                    securityTokens = strategy.IsNewInSession
                                           ? new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken }
                                           : new[] { singleton.DefaultSecurityToken };
                 }
 
-                this.permissionIds = new HashSet<long>(this.Caches(securityTokens).SelectMany(v => v.EffectivePermissionIds));
+                this.accessControls = securityTokens.SelectMany(v => v.AccessControls)
+                    .Distinct()
+                    .Where(this.AccessControlListFactory.EffectivePermissionIdsByAccessControl.ContainsKey)
+                    .ToArray();
 
-                this.permissionCache = this.session.GetCache<PermissionCache, PermissionCache>(() => new PermissionCache(this.session));
+                this.permissionCache = session.GetCache<PermissionCache, PermissionCache>(() => new PermissionCache(session));
                 this.permissionIdByOperationByOperandTypeId = this.permissionCache.PermissionIdByOperationByOperandTypeIdByClassId[this.classId];
 
                 this.lazyLoaded = true;
-            }
-        }
-
-        private IEnumerable<AccessControlCacheEntry> Caches(SecurityToken[] securityTokens)
-        {
-            List<AccessControl> misses = null;
-
-            var caches = this.session.GetCache<AccessControlCacheEntry>();
-            foreach (var accessControl in securityTokens.SelectMany(v => v.AccessControls).Distinct())
-            {
-                caches.TryGetValue(accessControl.Id, out var cache);
-                if (cache == null || !accessControl.CacheId.Equals(cache.CacheId))
-                {
-                    if (misses == null)
-                    {
-                        misses = new List<AccessControl>();
-                    }
-
-                    misses.Add(accessControl);
-                }
-                else
-                {
-                    if (cache.EffectiveUserIds.Contains(this.User.Id))
-                    {
-                        yield return cache;
-                    }
-                }
-            }
-
-            if (misses != null)
-            {
-                if (misses.Count > 1)
-                {
-                    this.session.Prefetch(PrefetchPolicy, misses);
-                }
-
-                foreach (var accessControl in misses)
-                {
-                    var cache = new AccessControlCacheEntry(accessControl);
-                    caches[accessControl.Id] = cache;
-
-                    if (cache.EffectiveUserIds.Contains(this.User.Id))
-                    {
-                        yield return cache;
-                    }
-                }
             }
         }
     }

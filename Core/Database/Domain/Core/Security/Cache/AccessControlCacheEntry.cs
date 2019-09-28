@@ -15,13 +15,10 @@ namespace Allors.Domain
         {
             this.CacheId = accessControl.CacheId;
 
-            this.EffectiveUserIds = new HashSet<long>(accessControl.EffectiveUsers.Select(v => v.Id));
             this.EffectivePermissionIds = new HashSet<long>(accessControl.EffectivePermissions.Select(v => v.Id));
         }
 
         public Guid CacheId { get; }
-
-        public HashSet<long> EffectiveUserIds { get; }
 
         public HashSet<long> EffectivePermissionIds { get; }
     }

@@ -48,7 +48,7 @@ namespace Allors.Server
                 this.session.Prefetch(prefetcher, prefetchObjects);
             }
 
-            var accessControlLists = new AccessControlLists(objects, this.user);
+            var accessControlLists = new AccessControlListFactory(objects, this.user);
 
             SyncResponseRole CreateSyncResponseRole(IObject @object, IRoleType roleType)
             {

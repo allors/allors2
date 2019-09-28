@@ -52,16 +52,5 @@ namespace Allors
                 }
             }
         }
-
-        // TODO: move to security
-        public static void AddCreatorSecurityToken(this Domain.Object @this)
-        {
-            var creator = @this.Strategy.Session.GetUser();
-
-            if (creator != null)
-            {
-                @this.AddSecurityToken(creator.OwnerSecurityToken);
-            }
-        }
     }
 }

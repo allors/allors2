@@ -272,7 +272,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderStates(this.Session).InProcess, order.PurchaseOrderState);
-            var acl = new AccessControlList(order, this.Session.GetUser());
+            var acl = new AccessControlListFactory(this.Session.GetUser()).Create(order);
             Assert.False(acl.CanExecute(M.PurchaseOrder.Approve));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Reject));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Continue));
@@ -299,7 +299,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderStates(this.Session).InProcess, order.PurchaseOrderState);
-            var acl = new AccessControlList(order, this.Session.GetUser());
+            var acl = new AccessControlListFactory(this.Session.GetUser()).Create(order);
             Assert.True(acl.CanExecute(M.PurchaseOrder.Cancel));
             Assert.True(acl.CanExecute(M.PurchaseOrder.Hold));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));
@@ -329,7 +329,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderStates(this.Session).OnHold, order.PurchaseOrderState);
-            var acl = new AccessControlList(order, this.Session.GetUser());
+            var acl = new AccessControlListFactory(this.Session.GetUser()).Create(order);
             Assert.False(acl.CanExecute(M.PurchaseOrder.Approve));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Hold));
             Assert.False(acl.CanExecute(M.PurchaseOrder.Confirm));

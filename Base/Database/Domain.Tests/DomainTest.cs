@@ -18,13 +18,11 @@ namespace Allors
     {
         public DomainTest(bool populate = true) => this.Setup(populate);
 
-        public virtual Config Config { get; } = new Config { SetupSecurity = false, End2End = true};
+        public virtual Config Config { get; } = new Config { SetupSecurity = false, Unit = true };
 
         public ISession Session { get; private set; }
 
         public ITimeService TimeService => this.Session.ServiceProvider.GetRequiredService<ITimeService>();
-
-        protected Organisation InternalOrganisation => this.Session.Extent<Organisation>().First(v => v.IsInternalOrganisation);
 
         public TimeSpan? TimeShift
         {
@@ -32,6 +30,8 @@ namespace Allors
 
             set => this.TimeService.Shift = value;
         }
+
+        protected Organisation InternalOrganisation => this.Session.Extent<Organisation>().First(v => v.IsInternalOrganisation);
 
         protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
 

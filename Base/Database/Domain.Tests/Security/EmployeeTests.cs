@@ -20,7 +20,7 @@ namespace Allors.Domain
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
             this.SetIdentity(employee.UserName);
 
-            var acl = new AccessControlList(employee, employee);
+            var acl = new AccessControlListFactory(employee).Create(employee);
             Assert.True(acl.CanRead(M.Person.FirstName));
             Assert.False(acl.CanWrite(M.Person.FirstName));
         }
@@ -33,7 +33,7 @@ namespace Allors.Domain
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
             this.SetIdentity(employee.UserName);
 
-            var acl = new AccessControlList(good, employee);
+            var acl = new AccessControlListFactory(employee).Create(good);
             Assert.True(acl.CanRead(M.Good.Name));
             Assert.False(acl.CanWrite(M.Good.Name));
         }
@@ -54,7 +54,7 @@ namespace Allors.Domain
 
             Assert.True(workTask.Strategy.IsNewInSession);
 
-            var acl = new AccessControlList(workTask, employee);
+            var acl = new AccessControlListFactory(employee).Create(workTask);
             Assert.False(acl.CanRead(M.WorkTask.Name));
             Assert.False(acl.CanWrite(M.WorkTask.Name));
         }
@@ -76,7 +76,7 @@ namespace Allors.Domain
 
             Assert.False(workTask.Strategy.IsNewInSession);
 
-            var acl = new AccessControlList(workTask, employee);
+            var acl = new AccessControlListFactory(employee).Create(workTask);
             Assert.False(acl.CanRead(M.WorkTask.Name));
             Assert.False(acl.CanWrite(M.WorkTask.Name));
         }
@@ -103,7 +103,7 @@ namespace Allors.Domain
 
             Assert.True(salesInvoice.Strategy.IsNewInSession);
 
-            var acl = new AccessControlList(salesInvoice, employee);
+            var acl = new AccessControlListFactory(employee).Create(salesInvoice);
             Assert.False(acl.CanRead(M.SalesInvoice.Description));
             Assert.False(acl.CanWrite(M.SalesInvoice.Description));
 
@@ -111,7 +111,7 @@ namespace Allors.Domain
 
             Assert.False(salesInvoice.Strategy.IsNewInSession);
 
-            acl = new AccessControlList(salesInvoice, employee);
+            acl = new AccessControlListFactory(employee).Create(salesInvoice);
             Assert.False(acl.CanRead(M.SalesInvoice.Description));
             Assert.False(acl.CanWrite(M.SalesInvoice.Description));
         }
@@ -124,7 +124,7 @@ namespace Allors.Domain
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
             this.SetIdentity(employee.UserName);
 
-            var acl = new AccessControlList(userGroup, employee);
+            var acl = new AccessControlListFactory(employee).Create(userGroup);
             Assert.True(acl.CanRead(M.UserGroup.Members));
             Assert.False(acl.CanWrite(M.UserGroup.Members));
         }
@@ -135,7 +135,7 @@ namespace Allors.Domain
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
             this.SetIdentity(employee.UserName);
 
-            var acl = new AccessControlList(this.Session.GetSingleton(), employee);
+            var acl = new AccessControlListFactory(employee).Create(this.Session.GetSingleton());
             Assert.True(acl.CanRead(M.Singleton.SalesAccountManagerUserGroup));
             Assert.False(acl.CanWrite(M.Singleton.SalesAccountManagerUserGroup));
         }

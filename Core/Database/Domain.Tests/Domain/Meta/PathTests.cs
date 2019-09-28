@@ -18,6 +18,19 @@ namespace Tests
 
     public class PathTests : DomainTest
     {
+        private static Mock<IAccessControlListFactory> AclFactoryMock
+        {
+            get
+            {
+                var aclMock = new Mock<IAccessControlList>();
+                aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
+                aclMock.Setup(acl => acl.CanRead(It.IsAny<IConcreteRoleType>())).Returns(true);
+                var aclFactoryMock = new Mock<IAccessControlListFactory>();
+                aclFactoryMock.Setup(aclFactory => aclFactory.Create(It.IsAny<IObject>())).Returns(aclMock.Object);
+                return aclFactoryMock;
+            }
+        }
+
         [Fact]
         public void One2ManyWithPropertyTypes()
         {
@@ -40,15 +53,13 @@ namespace Tests
 
             var path = new Fetch(M.C1.C1C2One2Manies, M.C2.C2AllorsString);
 
-            var aclMock = new Mock<IAccessControlList>();
-            aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
-            var acls = new AccessControlListFactory(null, (allorsObject, user) => aclMock.Object);
+            var aclFactoryMock = AclFactoryMock;
 
-            var result = (ISet<object>)path.Get(c1a, acls);
+            var result = (ISet<object>)path.Get(c1a, aclFactoryMock.Object);
             Assert.Equal(1, result.Count);
             Assert.True(result.Contains("c2A"));
 
-            result = (ISet<object>)path.Get(c1b, acls);
+            result = (ISet<object>)path.Get(c1b, aclFactoryMock.Object);
             Assert.Equal(2, result.Count);
             Assert.True(result.Contains("c2B"));
             Assert.True(result.Contains("c2C"));
@@ -76,15 +87,13 @@ namespace Tests
 
             var path = new Fetch(MetaC1.Instance.C1C2One2Manies, MetaC2.Instance.C2AllorsString);
 
-            var aclMock = new Mock<IAccessControlList>();
-            aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
-            var acls = new AccessControlListFactory(null, (allorsObject, user) => aclMock.Object);
+            var aclFactoryMock = AclFactoryMock;
 
-            var result = (ISet<object>)path.Get(c1a, acls);
+            var result = (ISet<object>)path.Get(c1a, aclFactoryMock.Object);
             Assert.Equal(1, result.Count);
             Assert.True(result.Contains("c2A"));
 
-            result = (ISet<object>)path.Get(c1b, acls);
+            result = (ISet<object>)path.Get(c1b, aclFactoryMock.Object);
             Assert.Equal(2, result.Count);
             Assert.True(result.Contains("c2B"));
             Assert.True(result.Contains("c2C"));
@@ -112,14 +121,12 @@ namespace Tests
 
             Fetch.TryParse(M.C2.ObjectType, "C1WhereC1C2One2Many", out var fetch);
 
-            var aclMock = new Mock<IAccessControlList>();
-            aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
-            var acls = new AccessControlListFactory(null, (allorsObject, user) => aclMock.Object);
+            var aclFactoryMock = AclFactoryMock;
 
-            var result = (C1)fetch.Get(c2A, acls);
+            var result = (C1)fetch.Get(c2A, aclFactoryMock.Object);
             Assert.Equal(result, c1A);
 
-            result = (C1)fetch.Get(c2B, acls);
+            result = (C1)fetch.Get(c2B, aclFactoryMock.Object);
             Assert.Equal(result, c1B);
         }
     }

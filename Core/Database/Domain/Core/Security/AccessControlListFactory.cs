@@ -5,39 +5,20 @@
 
 namespace Allors.Domain
 {
-    using System;
-    using System.Collections.Concurrent;
-    using Allors;
+    using System.Collections.Generic;
 
-    /// <summary>
-    /// A factory for AccessControlLists.
-    /// </summary>
     public class AccessControlListFactory : IAccessControlListFactory
     {
-        private readonly User user;
-        private readonly ConcurrentDictionary<IObject, IAccessControlList> accessControlListByObject;
-
-        private readonly Func<IObject, User, IAccessControlList> factory = (allorsObject, user) => new AccessControlList(allorsObject, user);
-
         public AccessControlListFactory(User user)
         {
-            this.user = user;
-            this.accessControlListByObject = new ConcurrentDictionary<IObject, IAccessControlList>();
+            this.User = user;
+            this.EffectivePermissionIdsByAccessControl = user.EffectivePermissionsByAccessControl();
         }
 
-        public AccessControlListFactory(User user, Func<IObject, User, IAccessControlList> factory)
-            : this(user) =>
-            this.factory = factory;
+        public User User { get; }
 
-        public IAccessControlList Create(IObject allorsObject)
-        {
-            if (!this.accessControlListByObject.TryGetValue(allorsObject, out var acl))
-            {
-                acl = this.factory(allorsObject, this.user);
-                this.accessControlListByObject[allorsObject] = acl;
-            }
+        public IReadOnlyDictionary<AccessControl, HashSet<long>> EffectivePermissionIdsByAccessControl { get; set; }
 
-            return acl;
-        }
+        public IAccessControlList Create(IObject @object) => new AccessControlList(this, @object);
     }
 }

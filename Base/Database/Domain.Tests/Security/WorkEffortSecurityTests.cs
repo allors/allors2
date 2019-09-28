@@ -1,4 +1,4 @@
-﻿// <copyright file="WorkEffortSecurityTests.cs" company="Allors bvba">
+// <copyright file="WorkEffortSecurityTests.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -29,7 +29,7 @@ namespace Allors.Domain
             var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
             this.SetIdentity(Users.AdministratorUserName);
 
-            var acl = new AccessControlList(workTask, administrator);
+            var acl = new AccessControlListFactory(administrator).Create(workTask);
             Assert.True(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
             Assert.False(acl.CanExecute(M.WorkEffort.Complete));
@@ -56,7 +56,7 @@ namespace Allors.Domain
             var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
             this.SetIdentity(Users.AdministratorUserName);
 
-            var acl = new AccessControlList(workTask, administrator);
+            var acl = new AccessControlListFactory(administrator).Create(workTask);
             Assert.True(acl.CanExecute(M.WorkEffort.Invoice));
             Assert.True(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
@@ -99,7 +99,7 @@ namespace Allors.Domain
             var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
             this.SetIdentity(Users.AdministratorUserName);
 
-            var acl = new AccessControlList(timeEntry, administrator);
+            var acl = new AccessControlListFactory(administrator).Create(timeEntry);
             Assert.False(acl.CanWrite(M.TimeEntry.AmountOfTime));
         }
     }

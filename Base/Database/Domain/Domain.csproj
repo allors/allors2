@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="..\..\..\Core\Database\Domain\Core\Security\Cache\AccessControlCache.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Templates\allors.png" />
     <None Remove="Templates\ProductQuote.odt" />
     <None Remove="Templates\PurchaseInvoice.odt" />
