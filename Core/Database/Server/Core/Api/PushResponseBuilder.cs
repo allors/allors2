@@ -7,25 +7,24 @@ namespace Allors.Server
 {
     using System.Collections.Generic;
     using System.Linq;
-
-    using Database.Adapters;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Remote.Push;
     using Protocol.Data;
-    using Convert = System.Convert;
 
     public class PushResponseBuilder
     {
         private readonly ISession session;
         private readonly PushRequest pushRequest;
         private readonly User user;
+        private readonly AccessControlListFactory aclFactory;
 
         public PushResponseBuilder(ISession session, User user, PushRequest pushRequest)
         {
             this.session = session;
             this.user = user;
             this.pushRequest = pushRequest;
+            this.aclFactory = new AccessControlListFactory(this.user);
         }
 
         public PushResponse Build()
@@ -166,7 +165,7 @@ namespace Allors.Server
             {
                 var composite = (Composite)obj.Strategy.Class;
                 var roleTypes = composite.WorkspaceRoleTypes;
-                var acl = new AccessControlList(obj, this.user);
+                var acl = this.aclFactory.Create(obj);
 
                 var roleTypeName = pushRequestRole.T;
                 var roleType = roleTypes.FirstOrDefault(v => v.PropertyName.Equals(roleTypeName));

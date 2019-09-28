@@ -19,7 +19,7 @@ namespace Tests.Mock
         {
             this.Workspace.Sync(Fixture.LoadData);
 
-            object Value(IWorkspaceObject @object, IRoleType roleType) => @object.Write.First(v => v.RoleType == roleType).Value;
+            object Value(IWorkspaceObject @object, IRoleType roleType) => @object.Roles.First(v => v.RoleType == roleType).Value;
 
             var martien = this.Workspace.Get(3);
 
@@ -29,8 +29,8 @@ namespace Tests.Mock
             Assert.Equal("Martien", Value(martien, M.Person.FirstName));
             Assert.Equal("van", Value(martien, M.Person.MiddleName));
             Assert.Equal("Knippenberg", Value(martien, M.Person.LastName));
-            Assert.DoesNotContain(martien.Write, v => v.RoleType == M.Person.IsStudent);
-            Assert.DoesNotContain(martien.Write, v => v.RoleType == M.Person.BirthDate);
+            Assert.DoesNotContain(martien.Roles, v => v.RoleType == M.Person.IsStudent);
+            Assert.DoesNotContain(martien.Roles, v => v.RoleType == M.Person.BirthDate);
         }
 
         [Fact]

@@ -12,13 +12,15 @@ namespace Allors.Server
     internal class SyncResponseContext
     {
         private readonly Dictionary<IMetaObject, string> keyByMetaObject;
+        private readonly Dictionary<string, string> keyBySortedPermissionIds;
 
-        private int index;
+        private int indexForMetaObject;
+        private int indexForSortedPermissionIds;
 
         internal SyncResponseContext()
         {
             this.keyByMetaObject = new Dictionary<IMetaObject, string>();
-            this.index = 0;
+            this.indexForMetaObject = 0;
         }
 
         public string Write(IMetaObject metaObject)
@@ -28,13 +30,20 @@ namespace Allors.Server
                 return key;
             }
 
-            key = (++this.index).ToString();
+            key = (++this.indexForMetaObject).ToString();
             return $":{key}:{metaObject.Id.ToString("D").ToLower()}";
         }
 
         public string Write(IAccessControlList acl)
         {
-            return acl.WorkspacePermissions;
+            var sortedPermissionIds = acl.SortedWorkspacePermissionIds;
+            if (this.keyBySortedPermissionIds.TryGetValue(sortedPermissionIds, out var key))
+            {
+                return key;
+            }
+
+            key = (++this.indexForSortedPermissionIds).ToString();
+            return $":{key}:{sortedPermissionIds}";
         }
     }
 }

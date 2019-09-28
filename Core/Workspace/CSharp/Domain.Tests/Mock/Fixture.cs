@@ -40,7 +40,7 @@ namespace Tests.Mock
                             I = "1",
                             V = "1001",
                             T = encode(M.Person.ObjectType),
-                            W = new[]
+                            R = new[]
                             {
                                 new SyncResponseRole { T = encode(M.Person.FirstName), V = "Koen"},
                                 new SyncResponseRole { T = encode(M.Person.LastName), V = "Van Exem"},
@@ -53,7 +53,7 @@ namespace Tests.Mock
                             I = "2",
                             V = "1002",
                             T = encode(M.Person.ObjectType),
-                            W = new[]
+                            R = new[]
                             {
                                 new SyncResponseRole { T = encode(M.Person.FirstName), V = "Patrick"},
                                 new SyncResponseRole { T = encode(M.Person.LastName), V = "De Boeck"},
@@ -65,7 +65,7 @@ namespace Tests.Mock
                             I = "3",
                             V = "1003",
                             T = encode(M.Person.ObjectType),
-                            W = new[]
+                            R = new[]
                             {
                                 new SyncResponseRole { T = encode(M.Person.FirstName), V = "Martien"},
                                 new SyncResponseRole { T = encode(M.Person.MiddleName), V = "van"},
@@ -77,39 +77,36 @@ namespace Tests.Mock
                             I = "101",
                             V = "1101",
                             T = encode(M.Organisation.ObjectType),
-                            W = new[]
+                            R = new[]
                             {
                                 new SyncResponseRole { T = encode(M.Organisation.Name), V = "Acme" },
                                 new SyncResponseRole { T = encode(M.Organisation.Owner), V = "1" },
                                 new SyncResponseRole { T = encode(M.Organisation.Employees), V = "1,2,3" },
                                 new SyncResponseRole { T = encode(M.Organisation.Manager)},
                             },
-                            X = new[] { encode(M.Organisation.JustDoIt) },
                         },
                         new SyncResponseObject
                         {
                             I = "102",
                             V = "1102",
                             T = encode(M.Organisation.ObjectType),
-                            W = new[]
+                            R = new[]
                             {
                                 new SyncResponseRole { T = encode(M.Organisation.Name), V = "Ocme" },
                                 new SyncResponseRole { T = encode(M.Organisation.Owner), V = "2" },
                                 new SyncResponseRole { T = encode(M.Organisation.Employees), V = "1" },
                             },
-                            X = new[] { encode(M.Organisation.JustDoIt) },
                         },
                         new SyncResponseObject
                         {
                             I = "103",
                             V = "1103",
                             T = encode(M.Organisation.ObjectType),
-                            W = new[]
+                            R = new[]
                             {
                                 new SyncResponseRole { T = encode(M.Organisation.Name), V = "icme" },
                                 new SyncResponseRole { T = encode(M.Organisation.Owner), V = "3" },
                             },
-                            X = new[] { encode(M.Organisation.JustDoIt) },
                         },
                     },
                 };
@@ -117,4 +114,3 @@ namespace Tests.Mock
         }
     }
 }
-

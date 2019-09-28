@@ -20,6 +20,7 @@ namespace Allors.Server
         private readonly SyncRequest syncRequest;
         private readonly User user;
         private readonly SyncResponseContext context;
+        private readonly AccessControlListFactory aclFactory;
 
         public SyncResponseBuilder(ISession session, User user, SyncRequest syncRequest)
         {
@@ -27,6 +28,7 @@ namespace Allors.Server
             this.user = user;
             this.syncRequest = syncRequest;
             this.context = new SyncResponseContext();
+            this.aclFactory = new AccessControlListFactory(this.user);
         }
 
         public SyncResponse Build()
@@ -47,8 +49,6 @@ namespace Allors.Server
 
                 this.session.Prefetch(prefetcher, prefetchObjects);
             }
-
-            var accessControlLists = new AccessControlListFactory(objects, this.user);
 
             SyncResponseRole CreateSyncResponseRole(IObject @object, IRoleType roleType)
             {
@@ -80,7 +80,7 @@ namespace Allors.Server
                 Objects = objects.Select(v =>
                 {
                     var @class = (Class)v.Strategy.Class;
-                    var acl = accessControlLists[v];
+                    var acl = this.aclFactory.Create(v);
 
                     return new SyncResponseObject
                     {
@@ -91,7 +91,7 @@ namespace Allors.Server
                             .Where(w => acl.CanRead(w))
                             .Select(w => CreateSyncResponseRole(v, w))
                             .ToArray(),
-                        P = this.context.Write(acl)
+                        P = this.context.Write(acl),
                     };
                 }).ToArray(),
             };

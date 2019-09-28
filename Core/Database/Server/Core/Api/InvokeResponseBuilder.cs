@@ -1,4 +1,4 @@
-﻿// <copyright file="InvokeResponseBuilder.cs" company="Allors bvba">
+// <copyright file="InvokeResponseBuilder.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -21,6 +21,8 @@ namespace Allors.Server
         private readonly bool isolated;
         private readonly bool continueOnError;
 
+        private readonly AccessControlListFactory aclFactory;
+
         public InvokeResponseBuilder(ISession session, User user, InvokeRequest invokeRequest)
         {
             this.session = session;
@@ -28,6 +30,8 @@ namespace Allors.Server
             this.invocations = invokeRequest.I;
             this.isolated = invokeRequest.O?.I ?? false;
             this.continueOnError = invokeRequest.O?.C ?? false;
+
+            this.aclFactory = new AccessControlListFactory(this.user);
         }
 
         public InvokeResponse Build()
@@ -125,7 +129,7 @@ namespace Allors.Server
                 return true;
             }
 
-            var acl = new AccessControlList(obj, this.user);
+            var acl = this.aclFactory.Create(obj);
             if (!acl.CanExecute(methodType))
             {
                 invokeResponse.AddAccessError(obj);
