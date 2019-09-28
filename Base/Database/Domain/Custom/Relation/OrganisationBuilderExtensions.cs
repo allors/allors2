@@ -30,7 +30,7 @@ namespace Allors.Domain.End2End
                 @this.WithName(company.CompanyName());
                 @this.WithEuListingState(euCountry);
                 @this.WithVatRegime(new VatRegimes(session).IntraCommunautair);
-                @this.WithLegalForm(config.faker.Random.ArrayElement(session.Extent<LegalForm>().ToArray()));
+                @this.WithLegalForm(config.faker.Random.ListItem(session.Extent<LegalForm>()));
                 @this.WithTaxNumber($"{euCountry.IsoCode}{config.faker.Random.Number(99999999)}");
 
                 @this.WithAgreement(new SalesAgreementBuilder(session)
@@ -73,6 +73,19 @@ namespace Allors.Domain.End2End
                     .WithContactPurpose(new ContactMechanismPurposes(session).OrderInquiriesPhone)
                     .WithContactPurpose(new ContactMechanismPurposes(session).ShippingInquiriesPhone)
                     .Build());
+            }
+
+            return @this;
+        }
+
+        public static OrganisationBuilder WithManufacturerDefaults(this OrganisationBuilder @this, ISession session, Config config)
+        {
+            if (config.End2End)
+            {
+                var company = config.faker.Company;
+
+                @this.WithName(company.CompanyName());
+                @this.WithIsManufacturer(true);
             }
 
             return @this;

@@ -74,12 +74,14 @@ namespace Allors.Domain.End2End
         //    return this;
         //}
 
-        public static PersonBuilder WithCompanyContactDefaults(this PersonBuilder @this, ISession session, Config config)
+        public static PersonBuilder WithEmployeeOrCompanyContactDefaults(this PersonBuilder @this, ISession session, Config config)
         {
             if (config.End2End)
             {
-                @this.WithFirstName(config.faker.Name.FirstName());
-                @this.WithLastName(config.faker.Name.LastName());
+                var person = config.faker.Person;
+
+                @this.WithFirstName(person.FirstName);
+                @this.WithLastName(person.LastName);
                 @this.WithSalutation(config.faker.Random.ListItem(session.Extent<Salutation>()));
                 @this.WithGender(config.faker.Random.ListItem(session.Extent<GenderType>()));
                 @this.WithTitle(config.faker.Random.ListItem(session.Extent<PersonalTitle>()));
@@ -107,29 +109,5 @@ namespace Allors.Domain.End2End
 
             return @this;
         }
-
-        //public PersonBuilder WithEmployeeDefaults(ISession session, Config config)
-        //{
-        //    if (config.End2End)
-        //    {
-        //        var person = config.faker.Person;
-
-        //        this.WithName(company.CompanyName());
-
-        //        this.WithPartyContactMechanism(new PartyContactMechanismBuilder(session)
-        //            .WithUseAsDefault(true)
-        //            .WithContactMechanism(new EmailAddressBuilder(session).WithDefaults(session, config).Build())
-        //            .WithContactPurpose(new ContactMechanismPurposes(session).PersonalEmailAddress)
-        //            .Build());
-
-        //        this.WithPartyContactMechanism(new PartyContactMechanismBuilder(session)
-        //            .WithUseAsDefault(true)
-        //            .WithContactMechanism(new TelecommunicationsNumberBuilder(session).WithDefaults(session, config).Build())
-        //            .WithContactPurpose(new ContactMechanismPurposes(session).GeneralPhoneNumber)
-        //            .Build());
-        //    }
-
-        //    return this;
-        //}
     }
 }
