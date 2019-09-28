@@ -20,15 +20,15 @@ namespace Allors.Data
 
         public Sort[] Sorting { get; set; }
 
-        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Predicate != null && this.Predicate.HasMissingArguments(arguments);
+        bool IExtent.HasMissingArguments(IDictionary<string, string> parameters) => this.Predicate != null && this.Predicate.HasMissingArguments(parameters);
 
-        public Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
+        public Allors.Extent Build(ISession session, IDictionary<string, string> parameters = null)
         {
             var extent = session.Extent(this.ObjectType);
 
-            if (this.Predicate != null && !this.Predicate.ShouldTreeShake(arguments))
+            if (this.Predicate != null && !this.Predicate.ShouldTreeShake(parameters))
             {
-                this.Predicate?.Build(session, arguments, extent.Filter);
+                this.Predicate?.Build(session, parameters, extent.Filter);
             }
 
             if (this.Sorting != null)

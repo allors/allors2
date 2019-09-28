@@ -18,7 +18,7 @@ namespace Allors.Data
 
         public object Value { get; set; }
 
-        public string Parameter { get; set; }
+        public string Argument { get; set; }
 
         public Predicate Save() =>
             new Predicate
@@ -26,16 +26,16 @@ namespace Allors.Data
                 Kind = PredicateKind.LessThan,
                 RoleType = this.RoleType?.Id,
                 Value = UnitConvert.ToString(this.Value),
-                Parameter = this.Parameter,
+                Argument = this.Argument,
             };
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Argument != null && (parameters == null || !parameters.ContainsKey(this.Argument));
 
-        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var value = this.Parameter != null ? arguments[this.Parameter] : this.Value;
+            var value = this.Argument != null ? parameters[this.Argument] : this.Value;
 
             compositePredicate.AddLessThan(this.RoleType, value);
         }

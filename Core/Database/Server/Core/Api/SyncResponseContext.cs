@@ -21,6 +21,9 @@ namespace Allors.Server
         {
             this.keyByMetaObject = new Dictionary<IMetaObject, string>();
             this.indexForMetaObject = 0;
+
+            this.keyBySortedPermissionIds = new Dictionary<string, string>();
+            this.indexForSortedPermissionIds = 0;
         }
 
         public string Write(IMetaObject metaObject)

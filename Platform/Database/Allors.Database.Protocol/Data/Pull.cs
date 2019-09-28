@@ -20,6 +20,6 @@ namespace Allors.Protocol.Data
 
         public Result[] Results { get; set; }
 
-        public IDictionary<string, object> Arguments { get; set; }
+        public IDictionary<string, string> Parameters { get; set; }
     }
 }

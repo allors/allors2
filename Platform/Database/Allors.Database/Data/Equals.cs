@@ -21,7 +21,7 @@ namespace Allors.Data
 
         public object Value { get; set; }
 
-        public string Parameter { get; set; }
+        public string Argument { get; set; }
 
         public Predicate Save() =>
             new Predicate
@@ -30,19 +30,19 @@ namespace Allors.Data
                 PropertyType = this.PropertyType.Id,
                 Object = this.Object?.Id.ToString(),
                 Value = UnitConvert.ToString(this.Value),
-                Parameter = this.Parameter,
+                Argument = this.Argument,
             };
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Argument != null && (parameters == null || !parameters.ContainsKey(this.Argument));
 
         /// <inheritdoc/>
-        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
             if (this.PropertyType == null)
             {
-                var equals = this.Parameter != null ? arguments[this.Parameter] : this.Object;
+                var equals = this.Argument != null ? session.Instantiate(parameters[this.Argument]) : this.Object;
                 if (equals != null)
                 {
                     compositePredicate.AddEquals(this.Object);
@@ -54,7 +54,7 @@ namespace Allors.Data
                 {
                     if (roleType.ObjectType.IsUnit)
                     {
-                        var equals = this.Parameter != null ? arguments[this.Parameter] : this.Value;
+                        var equals = this.Argument != null ? parameters[this.Argument] : this.Value;
                         if (equals != null)
                         {
                             compositePredicate.AddEquals(roleType, equals);
@@ -62,7 +62,7 @@ namespace Allors.Data
                     }
                     else
                     {
-                        var equals = this.Parameter != null ? session.GetObject(arguments[this.Parameter]) : this.Object;
+                        var equals = this.Argument != null ? session.GetObject(parameters[this.Argument]) : this.Object;
                         if (equals != null)
                         {
                             compositePredicate.AddEquals(roleType, equals);
@@ -72,7 +72,7 @@ namespace Allors.Data
                 else
                 {
                     var associationType = (IAssociationType)this.PropertyType;
-                    var equals = (IObject)(this.Parameter != null ? session.GetObject(arguments[this.Parameter]) : this.Object);
+                    var equals = (IObject)(this.Argument != null ? session.GetObject(parameters[this.Argument]) : this.Object);
                     if (equals != null)
                     {
                         compositePredicate.AddEquals(associationType, equals);

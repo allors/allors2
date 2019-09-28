@@ -18,7 +18,7 @@ namespace Allors.Data
 
         public IObject Object { get; set; }
 
-        public string Parameter { get; set; }
+        public string Argument { get; set; }
 
         public Predicate Save() =>
             new Predicate
@@ -26,16 +26,16 @@ namespace Allors.Data
                 Kind = PredicateKind.Contains,
                 PropertyType = this.PropertyType?.Id,
                 Object = this.Object?.Id.ToString(),
-                Parameter = this.Parameter,
+                Argument = this.Argument,
             };
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Argument != null && (parameters == null || !parameters.ContainsKey(this.Argument));
 
-        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var containedObject = this.Parameter != null ? session.GetObject(arguments[this.Parameter]) : this.Object;
+            var containedObject = this.Argument != null ? session.GetObject(parameters[this.Argument]) : this.Object;
 
             if (this.PropertyType is IRoleType roleType)
             {

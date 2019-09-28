@@ -5,6 +5,7 @@
 
 namespace Tests
 {
+    using System.Collections.Generic;
     using Allors;
     using Allors.Data;
     using Allors.Domain;
@@ -23,7 +24,10 @@ namespace Tests
             var extentService = this.Session.ServiceProvider.GetRequiredService<IExtentService>();
             var organizationByName = extentService.Get(Organisations.ExtentByName);
 
-            var arguments = new Arguments(new { name = "Acme" });
+            var arguments = new Dictionary<string, string>
+            {
+                { "name", "Acme" },
+            };
 
             Extent<Organisation> organizations = organizationByName.Build(this.Session, arguments).ToArray();
 

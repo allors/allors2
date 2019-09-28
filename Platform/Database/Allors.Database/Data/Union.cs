@@ -21,11 +21,11 @@ namespace Allors.Data
 
         public Sort[] Sorting { get; set; }
 
-        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.Any(v => v.HasMissingArguments(arguments));
+        bool IExtent.HasMissingArguments(IDictionary<string, string> parameters) => this.Operands.Any(v => v.HasMissingArguments(parameters));
 
-        public Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
+        public Allors.Extent Build(ISession session, IDictionary<string, string> parameters = null)
         {
-            var extent = session.Union(this.Operands[0].Build(session, arguments), this.Operands[1].Build(session, arguments));
+            var extent = session.Union(this.Operands[0].Build(session, parameters), this.Operands[1].Build(session, parameters));
             foreach (var sort in this.Sorting)
             {
                 sort.Build(extent);

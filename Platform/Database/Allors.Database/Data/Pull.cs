@@ -6,6 +6,7 @@
 namespace Allors.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Meta;
@@ -20,9 +21,9 @@ namespace Allors.Data
 
         public IObject Object { get; set; }
 
-        public Arguments Arguments { get; set; }
-
         public Result[] Results { get; set; }
+
+        public IDictionary<string, string> Parameters { get; set; }
 
         public Protocol.Data.Pull Save() =>
             new Protocol.Data.Pull

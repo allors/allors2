@@ -16,9 +16,9 @@ namespace Allors.Data
 
         public IPredicate[] Operands { get; set; }
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => this.Operands.All(v => v.ShouldTreeShake(arguments));
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.Operands.All(v => v.ShouldTreeShake(parameters));
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.All(v => v.HasMissingArguments(arguments));
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Operands.All(v => v.HasMissingArguments(parameters));
 
         public Predicate Save() =>
             new Predicate()
@@ -27,14 +27,14 @@ namespace Allors.Data
                 Operands = this.Operands.Select(v => v.Save()).ToArray(),
             };
 
-        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
             var and = compositePredicate.AddAnd();
             foreach (var predicate in this.Operands)
             {
-                if (!predicate.ShouldTreeShake(arguments))
+                if (!predicate.ShouldTreeShake(parameters))
                 {
-                    predicate.Build(session, arguments, and);
+                    predicate.Build(session, parameters, and);
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace Allors.Data
 
         public IEnumerable<object> Values { get; set; }
 
-        public string Parameter { get; set; }
+        public string Argument { get; set; }
 
         public Predicate Save() =>
             new Predicate
@@ -27,16 +27,17 @@ namespace Allors.Data
                 Kind = PredicateKind.Between,
                 RoleType = this.RoleType?.Id,
                 Values = this.Values.Select(UnitConvert.ToString).ToArray(),
-                Parameter = this.Parameter,
+                Argument = this.Argument,
             };
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Argument != null && (parameters == null || !parameters.ContainsKey(this.Argument));
 
-        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var values = this.Parameter != null ? ((IEnumerable<object>)arguments[this.Parameter]).ToArray() : this.Values.ToArray();
+            var parameter = this.Argument != null ? parameters[this.Argument]?.Split('|').Select(v => UnitConvert.Parse(this.RoleType.ObjectType.Id, v)) : null;
+            var values = parameter != null ? parameter.ToArray() : this.Values.ToArray();
             compositePredicate.AddBetween(this.RoleType, values[0], values[1]);
         }
     }

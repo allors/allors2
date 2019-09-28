@@ -26,10 +26,14 @@ namespace Tests
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
+            var locales = new Locales(this.Session).Extent().ToArray();
+            var locale = new Locales(this.Session).FindBy(M.Locale.Name, Locales.EnglishGreatBritainName);
+
             builder
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                .WithText("Brunei Dollar")
-                .WithLocale(new Locales(this.Session).FindBy(M.Locale.Name, Locales.EnglishGreatBritainName))
+                .WithLocalisedName(
+                    new LocalisedTextBuilder(this.Session)
+                    .WithText("Brunei Dollar")
+                    .WithLocale(locale)
                 .Build());
 
             Assert.False(this.Session.Derive(false).HasErrors);

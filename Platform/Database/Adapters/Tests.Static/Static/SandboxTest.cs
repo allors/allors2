@@ -1,4 +1,4 @@
-﻿// <copyright file="SandboxTest.cs" company="Allors bvba">
+// <copyright file="SandboxTest.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -6,6 +6,7 @@
 namespace Allors.Database.Adapters
 {
     using System;
+    using System.Collections.Generic;
     using Allors;
     using Allors.Data;
     using Allors.Domain;
@@ -15,15 +16,15 @@ namespace Allors.Database.Adapters
 
     public abstract class SandboxTest : IDisposable
     {
-        protected abstract IProfile Profile { get; }
-
-        protected IDatabase Population => this.Profile.Database;
-
         protected ISession Session => this.Profile.Session;
 
         protected Action[] Markers => this.Profile.Markers;
 
         protected Action[] Inits => this.Profile.Inits;
+
+        protected abstract IProfile Profile { get; }
+
+        protected IDatabase Population => this.Profile.Database;
 
         public abstract void Dispose();
 
@@ -92,10 +93,10 @@ namespace Allors.Database.Adapters
 
                 var extent = new Filter(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
+                    Predicate = new Equals(M.C1.C1AllorsString) { Argument = "pString" },
                 };
 
-                var objects = this.Session.Resolve<C1>(extent, new { pString = "ᴀbra" });
+                var objects = this.Session.Resolve<C1>(extent, new Dictionary<string, string> { { "pString", "ᴀbra" } });
 
                 Assert.Single(objects);
             }
@@ -111,7 +112,7 @@ namespace Allors.Database.Adapters
 
                 var extent = new Filter(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
+                    Predicate = new Equals(M.C1.C1AllorsString) { Argument = "pString" },
                 };
 
                 var objects = this.Session.Resolve<C1>(extent);
@@ -158,7 +159,7 @@ namespace Allors.Database.Adapters
 
                 var extent = new Filter(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
+                    Predicate = new Equals(M.C1.C1AllorsString) { Argument = "pString" },
                 };
 
                 var schemaExtent = extent.Save();
@@ -171,7 +172,7 @@ namespace Allors.Database.Adapters
 
                 Assert.NotNull(predicate);
                 Assert.Equal(PredicateKind.Equals, predicate.Kind);
-                Assert.Equal("pString", predicate.Parameter);
+                Assert.Equal("pString", predicate.Argument);
             }
         }
 

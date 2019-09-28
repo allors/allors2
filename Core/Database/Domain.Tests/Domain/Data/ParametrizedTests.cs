@@ -13,20 +13,20 @@ namespace Tests
     using Allors.Data;
     using Allors.Domain;
     using Allors.Meta;
-
+    using Allors.Protocol.Data;
     using Xunit;
 
     public class ParametrizedTests : DomainTest
     {
         [Fact]
-        public void EqualsWithArguments()
+        public void EqualsWithParameters()
         {
             var filter = new Filter(M.Person.ObjectType)
             {
-                Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" },
+                Predicate = new Equals { PropertyType = M.Person.FirstName, Argument = "firstName" },
             };
 
-            var arguments = new Dictionary<string, object> { { "firstName", "John" } };
+            var arguments = new Dictionary<string, string> { { "firstName", "John" } };
             var queryExtent = filter.Build(this.Session, arguments);
 
             var extent = this.Session.Extent(M.Person.ObjectType);
@@ -36,11 +36,11 @@ namespace Tests
         }
 
         [Fact]
-        public void EqualsWithoutArguments()
+        public void EqualsWithoutParameters()
         {
             var filter = new Filter(M.Person.ObjectType)
             {
-                Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" },
+                Predicate = new Equals { PropertyType = M.Person.FirstName, Argument = "firstName" },
             };
 
             var queryExtent = filter.Build(this.Session);
@@ -51,7 +51,7 @@ namespace Tests
         }
 
         [Fact]
-        public void AndWithArguments()
+        public void AndWithParameters()
         {
             // select from Person where FirstName='John' and LastName='Doe'
             var filter = new Filter(M.Person.ObjectType)
@@ -63,18 +63,18 @@ namespace Tests
                                     new Equals
                                         {
                                             PropertyType = M.Person.FirstName,
-                                            Parameter = "firstName",
+                                            Argument = "firstName",
                                         },
                                     new Equals
                                         {
                                             PropertyType = M.Person.LastName,
-                                            Parameter = "lastName"
+                                            Argument = "lastName"
                                         },
                                 },
                 },
             };
 
-            var arguments = new Dictionary<string, object>
+            var arguments = new Dictionary<string, string>
                                 {
                                     { "firstName", "John" },
                                     { "lastName", "Doe" },
@@ -90,7 +90,7 @@ namespace Tests
         }
 
         [Fact]
-        public void AndWithoutArguments()
+        public void AndWithoutParameters()
         {
             // select from Person where FirstName='John' and LastName='Doe'
             var filter = new Filter(M.Person.ObjectType)
@@ -102,18 +102,18 @@ namespace Tests
                             new Equals
                                 {
                                     PropertyType = M.Person.FirstName,
-                                    Parameter = "firstName",
+                                    Argument = "firstName",
                                 },
                             new Equals
                                 {
                                     PropertyType = M.Person.LastName,
-                                    Parameter = "lastName"
+                                    Argument = "lastName"
                                 },
                         },
                 },
             };
             {
-                var arguments = new Dictionary<string, object>
+                var arguments = new Dictionary<string, string>
                                     {
                                         { "firstName", "John" },
                                     };
@@ -135,7 +135,7 @@ namespace Tests
         }
 
         [Fact]
-        public void NestedWithArguments()
+        public void NestedWithParameters()
         {
             var filter = new Filter(M.Organisation.ObjectType)
             {
@@ -147,7 +147,7 @@ namespace Tests
                         Predicate = new Equals
                         {
                             PropertyType = M.Person.Gender,
-                            Parameter = "gender"
+                            Argument = "gender",
                         },
                     },
                 },
@@ -155,7 +155,7 @@ namespace Tests
 
             var male = new Genders(this.Session).Male;
 
-            var arguments = new Dictionary<string, object> { { "gender", male } };
+            var arguments = new Dictionary<string, string> { { "gender", male.Id.ToString() } };
             var queryExtent = filter.Build(this.Session, arguments);
 
             var employees = this.Session.Extent(M.Person.ObjectType);
@@ -167,7 +167,7 @@ namespace Tests
         }
 
         [Fact]
-        public void NestedWithoutArguments()
+        public void NestedWithoutParameters()
         {
             var filter = new Filter(M.Organisation.ObjectType)
             {
@@ -179,13 +179,13 @@ namespace Tests
                         Predicate = new Equals
                         {
                             PropertyType = M.Person.Gender,
-                            Parameter = "gender"
+                            Argument = "gender",
                         },
                     },
                 },
             };
 
-            var arguments = new Dictionary<string, object>();
+            var arguments = new Dictionary<string, string>();
             var queryExtent = filter.Build(this.Session, arguments);
 
             var extent = this.Session.Extent(M.Organisation.ObjectType);
@@ -194,7 +194,7 @@ namespace Tests
         }
 
         [Fact]
-        public void AndNestedContainedInWithoutArguments()
+        public void AndNestedContainedInWithoutParameters()
         {
             var filter = new Filter(M.Organisation.ObjectType)
             {
@@ -210,16 +210,16 @@ namespace Tests
                                 Predicate = new ContainedIn
                                 {
                                     PropertyType = M.Person.Gender,
-                                    Parameter = "gender"
-                                }
-                            }
+                                    Argument = "gender",
+                                },
+                            },
                         },
                     },
                 },
             };
 
-            var arguments = new Dictionary<string, object>();
-            var queryExtent = filter.Build(this.Session, arguments);
+            var parameters = new Dictionary<string, string>();
+            var queryExtent = filter.Build(this.Session, parameters);
 
             var extent = this.Session.Extent(M.Organisation.ObjectType);
 
@@ -227,31 +227,31 @@ namespace Tests
         }
 
         [Fact]
-        public void AndNestedContainsWithoutArguments()
+        public void AndNestedContainsWithoutParameters()
         {
             var filter = new Filter(M.Organisation.ObjectType)
             {
                 Predicate = new And
                 {
                     Operands = new IPredicate[]
-                                                                    {
-                                                                        new ContainedIn
-                                                                            {
-                                                                                PropertyType = M.Organisation.Employees,
-                                                                                Extent = new Filter(M.Person.ObjectType)
-                                                                                             {
-                                                                                                 Predicate = new Contains
-                                                                                                                 {
-                                                                                                                     PropertyType = M.Person.Gender,
-                                                                                                                     Parameter = "gender"
-                                                                                                                 }
-                                                                                             }
-                                                                            },
-                                                                    },
+                    {
+                        new ContainedIn
+                            {
+                                PropertyType = M.Organisation.Employees,
+                                Extent = new Filter(M.Person.ObjectType)
+                                             {
+                                                 Predicate = new Contains
+                                                                 {
+                                                                     PropertyType = M.Person.Gender,
+                                                                     Argument = "gender",
+                                                                 },
+                                             },
+                            },
+                    },
                 },
             };
 
-            var arguments = new Dictionary<string, object>();
+            var arguments = new Dictionary<string, string>();
             var queryExtent = filter.Build(this.Session, arguments);
 
             var extent = this.Session.Extent(M.Organisation.ObjectType);

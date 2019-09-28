@@ -12,9 +12,9 @@ namespace Allors.Data
 
     public class Instanceof : IPropertyPredicate
     {
-        public string Parameter { get; set; }
-
         public Instanceof(IComposite objectType = null) => this.ObjectType = objectType;
+
+        public string Argument { get; set; }
 
         public IComposite ObjectType { get; set; }
 
@@ -28,13 +28,13 @@ namespace Allors.Data
                 PropertyType = this.PropertyType?.Id,
             };
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Argument != null && (parameters == null || !parameters.ContainsKey(this.Argument));
 
-        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var composite = this.Parameter != null ? (IComposite)session.GetMetaObject(arguments[this.Parameter]) : this.ObjectType;
+            var composite = this.Argument != null ? (IComposite)session.GetMetaObject(parameters[this.Argument]) : this.ObjectType;
 
             if (this.PropertyType != null)
             {

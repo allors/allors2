@@ -21,13 +21,13 @@ namespace Allors.Data
 
         public IEnumerable<IObject> Objects { get; set; }
 
-        public string Parameter { get; set; }
+        public string Argument { get; set; }
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters)
         {
-            if (this.Parameter != null)
+            if (this.Argument != null)
             {
-                if (arguments == null || !arguments.ContainsKey(this.Parameter))
+                if (parameters == null || !parameters.ContainsKey(this.Argument))
                 {
                     return false;
                 }
@@ -35,17 +35,17 @@ namespace Allors.Data
 
             if (this.Extent != null)
             {
-                return this.Extent.HasMissingArguments(arguments);
+                return this.Extent.HasMissingArguments(parameters);
             }
 
             return false;
         }
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters)
         {
-            if (this.Parameter != null)
+            if (this.Argument != null)
             {
-                if (arguments == null || !arguments.ContainsKey(this.Parameter))
+                if (parameters == null || !parameters.ContainsKey(this.Argument))
                 {
                     return true;
                 }
@@ -53,7 +53,7 @@ namespace Allors.Data
 
             if (this.Extent != null)
             {
-                return this.Extent.HasMissingArguments(arguments);
+                return this.Extent.HasMissingArguments(parameters);
             }
 
             return false;
@@ -66,12 +66,12 @@ namespace Allors.Data
                 PropertyType = this.PropertyType?.Id,
                 Extent = this.Extent?.Save(),
                 Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
-                Parameter = this.Parameter,
+                Argument = this.Argument,
             };
 
-        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var objects = this.Parameter != null ? session.GetObjects(arguments[this.Parameter]) : this.Objects;
+            var objects = this.Argument != null ? session.GetObjects(parameters[this.Argument]) : this.Objects;
 
             if (this.PropertyType is IRoleType roleType)
             {
@@ -81,7 +81,7 @@ namespace Allors.Data
                 }
                 else
                 {
-                    compositePredicate.AddContainedIn(roleType, this.Extent.Build(session, arguments));
+                    compositePredicate.AddContainedIn(roleType, this.Extent.Build(session, parameters));
                 }
             }
             else
@@ -93,7 +93,7 @@ namespace Allors.Data
                 }
                 else
                 {
-                    compositePredicate.AddContainedIn(associationType, this.Extent.Build(session, arguments));
+                    compositePredicate.AddContainedIn(associationType, this.Extent.Build(session, parameters));
                 }
             }
         }

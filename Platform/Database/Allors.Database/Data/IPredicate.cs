@@ -13,10 +13,10 @@ namespace Allors.Data
     {
         Predicate Save();
 
-        void Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate);
+        void Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate);
 
-        bool ShouldTreeShake(IReadOnlyDictionary<string, object> arguments);
+        bool ShouldTreeShake(IDictionary<string, string> parameters);
 
-        bool HasMissingArguments(IReadOnlyDictionary<string, object> arguments);
+        bool HasMissingArguments(IDictionary<string, string> parameters);
     }
 }

@@ -53,7 +53,7 @@ namespace Allors.Protocol.Data
                             return new Exists
                             {
                                 PropertyType = propertyType,
-                                Parameter = @this.Parameter,
+                                Argument = @this.Argument,
                             };
 
                         case PredicateKind.Contains:
@@ -61,13 +61,13 @@ namespace Allors.Protocol.Data
                             return new Contains
                             {
                                 PropertyType = propertyType,
-                                Parameter = @this.Parameter,
+                                Argument = @this.Argument,
                                 Object = session.Instantiate(@this.Object),
                             };
 
                         case PredicateKind.ContainedIn:
 
-                            var containedIn = new ContainedIn(propertyType) { Parameter = @this.Parameter };
+                            var containedIn = new ContainedIn(propertyType) { Argument = @this.Argument };
                             if (@this.Objects != null)
                             {
                                 containedIn.Objects = @this.Objects.Select(session.Instantiate).ToArray();
@@ -81,7 +81,7 @@ namespace Allors.Protocol.Data
 
                         case PredicateKind.Equals:
 
-                            var equals = new Equals(propertyType) { Parameter = @this.Parameter };
+                            var equals = new Equals(propertyType) { Argument = @this.Argument };
                             if (@this.Object != null)
                             {
                                 equals.Object = session.Instantiate(@this.Object);
@@ -98,7 +98,7 @@ namespace Allors.Protocol.Data
 
                             return new Between(roleType)
                             {
-                                Parameter = @this.Parameter,
+                                Argument = @this.Argument,
                                 Values = @this.Values.Select(v => Convert.ToValue(roleType, v)).ToArray(),
                             };
 
@@ -106,7 +106,7 @@ namespace Allors.Protocol.Data
 
                             return new GreaterThan(roleType)
                             {
-                                Parameter = @this.Parameter,
+                                Argument = @this.Argument,
                                 Value = Convert.ToValue(roleType, @this.Value),
                             };
 
@@ -114,7 +114,7 @@ namespace Allors.Protocol.Data
 
                             return new LessThan(roleType)
                             {
-                                Parameter = @this.Parameter,
+                                Argument = @this.Argument,
                                 Value = Convert.ToValue(roleType, @this.Value),
                             };
 
@@ -122,7 +122,7 @@ namespace Allors.Protocol.Data
 
                             return new Like(roleType)
                             {
-                                Parameter = @this.Parameter,
+                                Argument = @this.Argument,
                                 Value = Convert.ToValue(roleType, @this.Value).ToString(),
                             };
 

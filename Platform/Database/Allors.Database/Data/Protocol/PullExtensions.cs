@@ -21,7 +21,7 @@ namespace Allors.Protocol.Data
                 ObjectType = @this.ObjectType.HasValue ? (IObjectType)session.Database.MetaPopulation.Find(@this.ObjectType.Value) : null,
                 Object = @this.Object != null ? session.Instantiate(@this.Object) : null,
                 Results = @this.Results?.Select(v => v.Load(session)).ToArray(),
-                Arguments = @this.Arguments != null ? new Arguments(@this.Arguments) : null,
+                Parameters = @this.Parameters,
             };
 
             return pull;

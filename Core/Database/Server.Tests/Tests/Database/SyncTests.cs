@@ -31,6 +31,9 @@ namespace Allors.Server.Tests
                 Objects = new[] { person.Id.ToString() },
             };
             var response = await this.PostAsJsonAsync(uri, syncRequest);
+
+            Assert.True(response.IsSuccessStatusCode);
+
             var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
 
             Assert.Single(syncResponse.Objects);

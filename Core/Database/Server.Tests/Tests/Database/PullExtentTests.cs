@@ -114,12 +114,15 @@ namespace Allors.Server.Tests
                       new Pull
                           {
                               ExtentRef = Organisations.ExtentByName,
-                              Arguments = new Dictionary<string, object> { ["name"] = "Acme" },
+                              Parameters = new Dictionary<string, string> { ["name"] = "Acme" },
                           },
                   },
             };
 
             var response = await this.PostAsJsonAsync(uri, pullRequest);
+
+            Assert.True(response.IsSuccessStatusCode);
+
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
 
             var organisations = pullResponse.NamedCollections["Organisations"];
@@ -144,7 +147,7 @@ namespace Allors.Server.Tests
                       new Pull
                           {
                               ExtentRef = Organisations.ExtentByName,
-                              Arguments = new Dictionary<string, object> { ["name"] = "Acme" },
+                              Parameters = new Dictionary<string, string> { ["name"] = "Acme" },
                           },
                   },
             };

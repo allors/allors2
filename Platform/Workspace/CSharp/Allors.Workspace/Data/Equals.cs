@@ -29,7 +29,7 @@ namespace Allors.Workspace.Data
                 PropertyType = this.PropertyType.Id,
                 Object = this.Object?.Id.ToString(),
                 Value = UnitConvert.ToString(this.Value),
-                Parameter = this.Parameter,
+                Argument = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);

@@ -60,7 +60,7 @@ namespace Allors.Server
                 }
                 else if (roleType.IsOne)
                 {
-                    syncResponseRole.V = @object.Strategy.GetCompositeRole(roleType.RelationType).ToString();
+                    syncResponseRole.V = @object.Strategy.GetCompositeRole(roleType.RelationType)?.Id.ToString();
                 }
                 else
                 {

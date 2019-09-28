@@ -25,7 +25,7 @@ namespace Allors.Workspace.Data
                 Kind = PredicateKind.LessThan,
                 RoleType = this.RoleType?.Id,
                 Value = UnitConvert.ToString(this.Value),
-                Parameter = this.Parameter,
+                Argument = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);

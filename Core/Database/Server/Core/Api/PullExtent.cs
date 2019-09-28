@@ -38,7 +38,7 @@ namespace Allors.Server
             }
 
             var extent = this.pull.Extent ?? this.extentService.Get(this.pull.ExtentRef.Value);
-            var objects = extent.Build(this.session, this.pull.Arguments).ToArray();
+            var objects = extent.Build(this.session, this.pull.Parameters).ToArray();
 
             if (this.pull.Results != null)
             {
@@ -86,7 +86,7 @@ namespace Allors.Server
 
                                 paged = paged.ToArray();
 
-                                response.AddValue(name + "_total", extent.Build(this.session, this.pull.Arguments).Count.ToString());
+                                response.AddValue(name + "_total", extent.Build(this.session, this.pull.Parameters).Count.ToString());
                                 response.AddCollection(name, paged, include);
                             }
                             else

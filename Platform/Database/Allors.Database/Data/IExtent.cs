@@ -15,10 +15,10 @@ namespace Allors.Data
 
         Sort[] Sorting { get; set; }
 
-        Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null);
+        Extent Build(ISession session, IDictionary<string, string> parameters = null);
 
         Protocol.Data.Extent Save();
 
-        bool HasMissingArguments(IReadOnlyDictionary<string, object> arguments);
+        bool HasMissingArguments(IDictionary<string, string> parameters);
     }
 }

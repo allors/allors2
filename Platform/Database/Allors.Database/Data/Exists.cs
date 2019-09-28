@@ -13,9 +13,9 @@ namespace Allors.Data
 
     public class Exists : IPropertyPredicate
     {
-        public string Parameter { get; set; }
-
         public Exists(IPropertyType propertyType = null) => this.PropertyType = propertyType;
+
+        public string Argument { get; set; }
 
         public IPropertyType PropertyType { get; set; }
 
@@ -24,32 +24,28 @@ namespace Allors.Data
             {
                 Kind = PredicateKind.Exists,
                 PropertyType = this.PropertyType?.Id,
-                Parameter = this.Parameter,
+                Argument = this.Argument,
             };
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
 
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Argument != null && (parameters == null || !parameters.ContainsKey(this.Argument));
 
-        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var argument = this.Parameter != null ? arguments[this.Parameter] : null;
-
-            var exists = !(argument is bool b) || b;
-            var propertyType = argument is string s && Guid.TryParse(s, out var metaObjectId) ? (IPropertyType)session.GetMetaObject(metaObjectId) : this.PropertyType;
+            var parameter = this.Argument != null ? parameters[this.Argument] : null;
+            var propertyType = Guid.TryParse(parameter, out var metaObjectId) ? (IPropertyType)session.GetMetaObject(metaObjectId) : this.PropertyType;
 
             if (propertyType != null)
             {
-                var predicate = !exists ? compositePredicate.AddNot() : compositePredicate;
-
                 if (propertyType is IRoleType roleType)
                 {
-                    predicate.AddExists(roleType);
+                    compositePredicate.AddExists(roleType);
                 }
                 else
                 {
                     var associationType = (IAssociationType)propertyType;
-                    predicate.AddExists(associationType);
+                    compositePredicate.AddExists(associationType);
                 }
             }
         }

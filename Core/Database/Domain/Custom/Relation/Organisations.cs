@@ -27,7 +27,7 @@ namespace Allors.Domain
             {
                 Predicate = new Equals(this.Meta.Name)
                 {
-                    Parameter = "name",
+                    Argument = "name",
                 },
             };
 
@@ -38,8 +38,7 @@ namespace Allors.Domain
                     {
                         new TreeNode(M.Organisation.Owner),
                         new TreeNode(M.Organisation.Employees),
-                    }
-
+                    },
             };
         }
     }

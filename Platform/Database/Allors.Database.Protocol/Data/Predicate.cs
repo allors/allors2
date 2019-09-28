@@ -17,7 +17,7 @@ namespace Allors.Protocol.Data
 
         public Guid? ObjectType { get; set; }
 
-        public string Parameter { get; set; }
+        public string Argument { get; set; }
 
         public Predicate Operand { get; set; }
 

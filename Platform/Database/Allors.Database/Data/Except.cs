@@ -29,11 +29,11 @@ namespace Allors.Data
                 Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray(),
             };
 
-        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.Any(v => v.HasMissingArguments(arguments));
+        bool IExtent.HasMissingArguments(IDictionary<string, string> parameters) => this.Operands.Any(v => v.HasMissingArguments(parameters));
 
-        Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments)
+        Allors.Extent IExtent.Build(ISession session, IDictionary<string, string> parameters)
         {
-            var extent = session.Except(this.Operands[0].Build(session, arguments), this.Operands[1].Build(session, arguments));
+            var extent = session.Except(this.Operands[0].Build(session, parameters), this.Operands[1].Build(session, parameters));
             foreach (var sort in this.Sorting)
             {
                 sort.Build(extent);

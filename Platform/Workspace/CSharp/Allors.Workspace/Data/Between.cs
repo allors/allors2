@@ -26,7 +26,7 @@ namespace Allors.Workspace.Data
                 Kind = PredicateKind.Between,
                 RoleType = this.RoleType?.Id,
                 Values = this.Values.Select(UnitConvert.ToString).ToArray(),
-                Parameter = this.Parameter,
+                Argument = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
