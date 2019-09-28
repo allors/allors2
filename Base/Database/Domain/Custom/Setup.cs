@@ -46,10 +46,6 @@ namespace Allors
             var be = new Countries(this.session).FindBy(M.Country.IsoCode, "BE");
             var us = new Countries(this.session).FindBy(M.Country.IsoCode, "US");
 
-            var email2 = new EmailAddressBuilder(this.session)
-                .WithElectronicAddressString("recipient@acme.com")
-                .Build();
-
             var allorsLogo = this.Config.DataPath + @"\www\admin\images\logo.png";
 
             var allors = Organisations.CreateInternalOrganisation(
@@ -153,21 +149,21 @@ namespace Allors
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
 
-            var allorsEmployee1 = this.CreatePerson(allors, "employee1@allors.com", "Allors", "Employee 1", "letmein");
-            var allorsEmployee2 = this.CreatePerson(allors, "employee2@allors.com", "Allors", "Employee 2", "letmein");
-            var allorsProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@allors.com", "Allors", "ProductQuoteApprover", "letmein");
-            var allorsPurchaseInvoiceApprover = this.CreatePerson(allors, "purchaseInvoiceApprover@allors.com", "Allors", "PurchaseInvoiceApprover", "letmein");
-            var allorsPurchaseOrderApproverLevel1 = this.CreatePerson(allors, "purchaseOrderApproverLevel1@allors.com", "Allors", "PurchaseOrderApproverLevel1", "letmein");
-            var allorsPurchaseOrderApproverLevel2 = this.CreatePerson(allors, "purchaseOrderApproverLevel2@allors.com", "Allors", "PurchaseOrderApproverLevel2", "letmein");
+            var allorsEmployee1 = this.CreatePerson(allors,"letmein");
+            var allorsEmployee2 = this.CreatePerson(allors, "letmein");
+            var allorsProductQuoteApprover = this.CreatePerson(allors, "letmein");
+            var allorsPurchaseInvoiceApprover = this.CreatePerson(allors, "letmein");
+            var allorsPurchaseOrderApproverLevel1 = this.CreatePerson(allors, "letmein");
+            var allorsPurchaseOrderApproverLevel2 = this.CreatePerson(allors, "letmein");
 
             allors.ProductQuoteApprovers = new[] { allorsProductQuoteApprover, administrator };
             allors.PurchaseInvoiceApprovers = new[] { allorsPurchaseInvoiceApprover, administrator };
             allors.PurchaseOrderApproversLevel1 = new[] { allorsPurchaseOrderApproverLevel1, administrator };
             allors.PurchaseOrderApproversLevel2 = new[] { allorsPurchaseOrderApproverLevel2, administrator };
 
-            var dipuEmployee = this.CreatePerson(dipu, "employee@dipu.com", "first", "dipu employee", "letmein");
-            var dipuProductQuoteApprover = this.CreatePerson(allors, "productQuoteApprover@dipu.com", "Dipu", "ProductQuoteApprover", "letmein");
-            var dipuPurchaseInvoiceApprover = this.CreatePerson(allors, "purchaseInvoiceApprover@allors.com", "dipu", "PurchaseInvoiceApprover", "letmein");
+            var dipuEmployee = this.CreatePerson(dipu, "letmein");
+            var dipuProductQuoteApprover = this.CreatePerson(dipu, "letmein");
+            var dipuPurchaseInvoiceApprover = this.CreatePerson(dipu, "letmein");
 
             dipu.ProductQuoteApprovers = new[] { dipuProductQuoteApprover, administrator };
             dipu.PurchaseInvoiceApprovers = new[] { dipuPurchaseInvoiceApprover, administrator };
@@ -178,38 +174,18 @@ namespace Allors
                 .WithOwner(allors)
                 .Build();
 
-            var manufacturer = new OrganisationBuilder(this.session).WithName("Gizmo inc.").WithIsManufacturer(true).Build();
-
-            var productType = new ProductTypeBuilder(this.session)
-                .WithName($"Gizmo")
-                .WithSerialisedItemCharacteristicType(new SerialisedItemCharacteristicTypeBuilder(this.session)
-                                            .WithName("Size")
-                                            .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Afmeting").WithLocale(dutchLocale).Build())
-                                            .Build())
-                .WithSerialisedItemCharacteristicType(new SerialisedItemCharacteristicTypeBuilder(this.session)
-                                            .WithName("Weight")
-                                            .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Gewicht").WithLocale(dutchLocale).Build())
-                                            .WithUnitOfMeasure(new UnitsOfMeasure(this.session).Kilogram)
-                                            .Build())
-                .Build();
-
             var vatRate = new VatRateBuilder(this.session).WithRate(21).Build();
+            var manufacturer = new OrganisationBuilder(this.session).WithManufacturerDefaults(this.session, this.Config).Build();
 
-            var brand = new BrandBuilder(this.session)
-                .WithName("brand1")
-                .WithModel(new ModelBuilder(this.session).WithName("model1").Build())
-                .Build();
+            this.CreateSupplier(allors);
+            this.CreateSupplier(allors);
 
-            var finishedGood = new NonUnifiedPartBuilder(this.session)
-                .WithProductIdentification(new SkuIdentificationBuilder(this.session)
-                    .WithIdentification("10101")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.session).Sku).Build())
-                .WithName("finished good")
-                .WithBrand(brand)
-                .WithModel(brand.Models[0])
-                .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
-                .WithManufacturedBy(manufacturer)
-                .Build();
+            this.session.Derive();
+
+            var nonSerialisedPart1 = this.CreateNonSerialisedNonUnifiedPart(allors);
+            var nonSerialisedPart2 = this.CreateNonSerialisedNonUnifiedPart(allors);
+            var serialisedPart1 = this.CreateSerialisedNonUnifiedPart(allors);
+            var serialisedPart2 = this.CreateSerialisedNonUnifiedPart(allors);
 
             var good1 = new NonUnifiedGoodBuilder(this.session)
                 .WithProductIdentification(new ProductNumberBuilder(this.session)
@@ -220,24 +196,7 @@ namespace Allors
                 .WithDescription("Perfect blue with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.session).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate)
-                .WithPart(finishedGood)
-                .Build();
-
-            new InventoryItemTransactionBuilder(this.session)
-                .WithPart(finishedGood)
-                .WithFacility(allors.FacilitiesWhereOwner.First)
-                .WithQuantity(100)
-                .WithReason(new InventoryTransactionReasons(this.session).Unknown)
-                .Build();
-
-            var finishedGood2 = new NonUnifiedPartBuilder(this.session)
-                .WithName("finished good2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.session).Serialised)
-                .WithProductType(productType)
-                .WithProductIdentification(new SkuIdentificationBuilder(this.session)
-                    .WithIdentification("10102")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.session).Sku).Build())
-                .WithManufacturedBy(manufacturer)
+                .WithPart(nonSerialisedPart1)
                 .Build();
 
             var good2 = new NonUnifiedGoodBuilder(this.session)
@@ -249,11 +208,11 @@ namespace Allors
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.session).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate)
-                .WithPart(finishedGood2)
+                .WithPart(serialisedPart1)
                 .Build();
 
-            var serialisedItem = new SerialisedItemBuilder(this.session).WithSerialNumber("1").WithAvailableForSale(true).WithOwnedBy(allors).Build();
-            finishedGood2.AddSerialisedItem(serialisedItem);
+            var serialisedItem = new SerialisedItemBuilder(this.session).WithDefaults(this.session, this.Config, allors).Build();
+            serialisedPart1.AddSerialisedItem(serialisedItem);
 
             new InventoryItemTransactionBuilder(this.session)
                 .WithSerialisedItem(serialisedItem)
@@ -261,15 +220,6 @@ namespace Allors
                 .WithQuantity(1)
                 .WithReason(new InventoryTransactionReasons(this.session).IncomingShipment)
                 .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.session).Available)
-                .Build();
-
-            var finishedGood3 = new NonUnifiedPartBuilder(this.session)
-                .WithProductIdentification(new SkuIdentificationBuilder(this.session)
-                    .WithIdentification("10103")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.session).Sku).Build())
-                .WithName("finished good3")
-                .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
-                .WithManufacturedBy(manufacturer)
                 .Build();
 
             var good3 = new NonUnifiedGoodBuilder(this.session)
@@ -281,14 +231,7 @@ namespace Allors
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.session).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate)
-                .WithPart(finishedGood3)
-                .Build();
-
-            var finishedGood4 = new NonUnifiedPartBuilder(this.session)
-                .WithName("finished good4")
-                .WithInventoryItemKind(new InventoryItemKinds(this.session).Serialised)
-                .WithProductType(productType)
-                .WithManufacturedBy(manufacturer)
+                .WithPart(nonSerialisedPart2)
                 .Build();
 
             var good4 = new NonUnifiedGoodBuilder(this.session)
@@ -298,7 +241,7 @@ namespace Allors
                 .WithName("Tiny purple round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Zeer kleine paarse ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate)
-                .WithPart(finishedGood4)
+                .WithPart(serialisedPart2)
                 .Build();
 
             var productCategory1 = new ProductCategoryBuilder(this.session)
@@ -333,6 +276,10 @@ namespace Allors
                 .Build();
 
             this.session.Derive();
+
+            var email2 = new EmailAddressBuilder(this.session)
+                .WithElectronicAddressString("recipient@acme.com")
+                .Build();
 
             for (var i = 0; i < 100; i++)
             {
@@ -505,34 +452,11 @@ line2")
 
             for (var i = 0; i < 4; i++)
             {
-                var supplierPostalAddress = new PostalAddressBuilder(this.session)
-                    .WithAddress1($"Supplier{i} address 1")
-                    .WithLocality($"Supplier{i} city")
-                    .WithPostalCode("1111")
-                    .WithCountry(us)
-                    .Build();
-
-                var supplierBillingAddress = new PartyContactMechanismBuilder(this.session)
-                    .WithContactMechanism(supplierPostalAddress)
-                    .WithContactPurpose(new ContactMechanismPurposes(this.session).GeneralCorrespondence)
-                    .WithUseAsDefault(true)
-                    .Build();
-
-                var supplier = new OrganisationBuilder(this.session)
-                    .WithName($"Supplier{i}")
-                    .WithLocale(new Locales(this.session).EnglishUnitedStates)
-                    .WithPartyContactMechanism(supplierBillingAddress)
-                    .Build();
-
-                new SupplierRelationshipBuilder(this.session)
-                    .WithSupplier(supplier)
-                    .WithInternalOrganisation(allors)
-                    .WithFromDate(this.session.Now())
-                    .Build();
+                var supplier = this.Config.faker.Random.ListItem(allors.CurrentSuppliers);
 
                 var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.session)
                     .WithDescription("first item")
-                    .WithPart(finishedGood)
+                    .WithPart(nonSerialisedPart1)
                     .WithAssignedUnitPrice(3000)
                     .WithQuantity(1)
                     .WithMessage(@"line1
@@ -544,7 +468,7 @@ line2")
                     .WithDescription("second item")
                     .WithAssignedUnitPrice(2000)
                     .WithQuantity(2)
-                    .WithPart(finishedGood2)
+                    .WithPart(nonSerialisedPart2)
                     .WithInvoiceItemType(new InvoiceItemTypes(this.session).PartItem)
                     .Build();
 
@@ -569,7 +493,7 @@ line2")
 
                 var purchaseOrderItem1 = new PurchaseOrderItemBuilder(this.session)
                     .WithDescription("first purchase order item")
-                    .WithPart(finishedGood)
+                    .WithPart(nonSerialisedPart1)
                     .WithQuantityOrdered(1)
                     .Build();
 
@@ -590,7 +514,7 @@ line2")
                 .WithOwnedBy(aOrganisation)
                 .Build();
 
-            finishedGood2.AddSerialisedItem(item);
+            nonSerialisedPart2.AddSerialisedItem(item);
 
             var workTask = new WorkTaskBuilder(this.session)
                 .WithTakenBy(allors)
@@ -603,9 +527,9 @@ line2")
                 .WithAssignment(workTask)
                 .Build();
 
-            var part1 = this.CreatePart("P1");
-            var part2 = this.CreatePart("P2");
-            var part3 = this.CreatePart("P3");
+            var workOrderPart1 = this.CreateNonSerialisedNonUnifiedPart(allors);
+            var workOrderPart2 = this.CreateNonSerialisedNonUnifiedPart(allors);
+            var workOrderPart3 = this.CreateNonSerialisedNonUnifiedPart(allors);
 
             this.session.Derive();
 
@@ -624,9 +548,9 @@ line2")
                 .WithComment("Busted tailpipe")
                 .Build();
 
-            this.CreateInventoryAssignment(workOrder, part1, 11);
-            this.CreateInventoryAssignment(workOrder, part2, 12);
-            this.CreateInventoryAssignment(workOrder, part3, 13);
+            this.CreateInventoryAssignment(workOrder, workOrderPart1, 11);
+            this.CreateInventoryAssignment(workOrder, workOrderPart2, 12);
+            this.CreateInventoryAssignment(workOrder, workOrderPart3, 13);
 
             //// Work Effort Time Entries
             var yesterday = DateTimeFactory.CreateDateTime(this.session.Now().AddDays(-1));
@@ -672,48 +596,14 @@ line2")
             this.session.Derive();
         }
 
-        private Person CreatePerson(Organisation organisation, string email, string firstName, string lastName, string password)
+        private Person CreatePerson(Organisation internalOrganisation, string password)
         {
-            var userEmail = new EmailAddressBuilder(this.session).WithElectronicAddressString(email).Build();
+            var person = new PersonBuilder(this.session).WithEmployeeOrCompanyContactDefaults(this.session, this.Config).Build();
 
-            var be = new Countries(this.session).FindBy(M.Country.IsoCode, "BE");
-
-            var postalAddress = new PostalAddressBuilder(this.session)
-                .WithAddress1($"{firstName} address")
-                .WithLocality($"Mechelen")
-                .WithPostalCode("2800")
-                .WithCountry(be)
-                .Build();
-
-            var generalCorrespondence = new PartyContactMechanismBuilder(this.session)
-                .WithContactMechanism(postalAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.session).GeneralCorrespondence)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var person = new PersonBuilder(this.session)
-                .WithUserName(email)
-                .WithFirstName(firstName)
-                .WithLastName(lastName)
-                .WithUserEmail(userEmail.ElectronicAddressString)
-                .WithUserEmailConfirmed(true)
-                .WithPartyContactMechanism(generalCorrespondence)
-                .Build();
-
-            person.AddPartyContactMechanism(
-                new PartyContactMechanismBuilder(this.session)
-                    .WithContactMechanism(userEmail)
-                    .WithContactPurpose(new ContactMechanismPurposes(this.session).PersonalEmailAddress)
-                    .WithUseAsDefault(true)
-                    .Build());
-
-            new EmploymentBuilder(this.session).WithEmployee(person).WithEmployer(organisation).Build();
-
-            new OrganisationContactRelationshipBuilder(this.session)
-                .WithOrganisation(organisation)
-                .WithContact(person)
-                .WithContactKind(new OrganisationContactKinds(this.session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                .WithFromDate(this.session.Now())
+            new EmploymentBuilder(this.session)
+                .WithEmployee(person)
+                .WithEmployer(internalOrganisation)
+                .WithFromDate(this.Config.faker.Date.Past(refDate: session.Now()))
                 .Build();
 
             new UserGroups(this.session).Creators.AddMember(person);
@@ -723,12 +613,87 @@ line2")
             return person;
         }
 
-        private Part CreatePart(string id) =>
-            new NonUnifiedPartBuilder(this.session)
-                .WithProductIdentification(new PartNumberBuilder(this.session)
-                    .WithIdentification(id)
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.session).Part).Build())
+        private Organisation CreateB2BCustomer(Organisation internalOrganisation)
+        {
+            var customer = new OrganisationBuilder(this.session).WithDefaults(this.session, this.Config).Build();
+
+            new CustomerRelationshipBuilder(this.session)
+                .WithCustomer(customer)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithFromDate(this.Config.faker.Date.Past(refDate: session.Now()))
                 .Build();
+
+            new OrganisationContactRelationshipBuilder(session)
+                .WithContact(new PersonBuilder(this.session).WithEmployeeOrCompanyContactDefaults(this.session, this.Config).Build())
+                .WithOrganisation(customer)
+                .WithFromDate(this.Config.faker.Date.Past(refDate: session.Now()))
+                .Build();
+
+            return customer;
+        }
+
+        private Organisation CreateSupplier(Organisation internalOrganisation)
+        {
+            var supplier = new OrganisationBuilder(this.session).WithDefaults(this.session, this.Config).Build();
+
+            new SupplierRelationshipBuilder(this.session)
+                .WithSupplier(supplier)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithFromDate(this.Config.faker.Date.Past(refDate: session.Now()))
+                .Build();
+
+            new OrganisationContactRelationshipBuilder(session)
+                .WithContact(new PersonBuilder(this.session).WithEmployeeOrCompanyContactDefaults(this.session, this.Config).Build())
+                .WithOrganisation(supplier)
+                .WithFromDate(this.Config.faker.Date.Past(refDate: session.Now()))
+                .Build();
+
+            return supplier;
+        }
+
+        private Part CreateNonSerialisedNonUnifiedPart(Organisation internalOrganisation)
+        {
+            var part = new NonUnifiedPartBuilder(this.session).WithNonSerialisedDefaults(this.session, this.Config, internalOrganisation).Build();
+
+            foreach (Organisation supplier in internalOrganisation.CurrentSuppliers)
+            {
+                new SupplierOfferingBuilder(session)
+                    .WithFromDate(this.Config.faker.Date.Past(refDate: this.session.Now()))
+                    .WithSupplier(supplier)
+                    .WithPart(part);
+            }
+
+            new InventoryItemTransactionBuilder(this.session)
+                .WithPart(part)
+                .WithFacility(internalOrganisation.FacilitiesWhereOwner.First)
+                .WithQuantity(this.Config.faker.Random.Number(1000))
+                .WithReason(new InventoryTransactionReasons(this.session).Unknown)
+                .Build();
+
+            return part;
+        }
+
+        private Part CreateSerialisedNonUnifiedPart(Organisation internalOrganisation)
+        {
+            var part = new NonUnifiedPartBuilder(this.session).WithSerialisedDefaults(this.session, this.Config, internalOrganisation).Build();
+
+            foreach (Organisation supplier in internalOrganisation.CurrentSuppliers)
+            {
+                new SupplierOfferingBuilder(session)
+                    .WithFromDate(this.Config.faker.Date.Past(refDate: this.session.Now()))
+                    .WithSupplier(supplier)
+                    .WithPart(part);
+            }
+
+            new InventoryItemTransactionBuilder(this.session)
+                .WithPart(part)
+                .WithFacility(internalOrganisation.FacilitiesWhereOwner.First)
+                .WithQuantity(this.Config.faker.Random.Number(1000))
+                .WithReason(new InventoryTransactionReasons(this.session).Unknown)
+                .Build();
+
+            return part;
+        }
 
         private WorkEffortInventoryAssignment CreateInventoryAssignment(WorkEffort workOrder, Part part, int quantity)
         {
@@ -753,20 +718,5 @@ line2")
                 .WithTimeFrequency(frequency)
                 .WithWorkEffort(workEffort)
                 .Build();
-
-        private Organisation CreateB2BCustomer(Organisation internalOrganisation)
-        {
-            var customer = new OrganisationBuilder(this.session).WithDefaults(this.session, this.Config).Build();
-
-            new CustomerRelationshipBuilder(this.session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(this.session.Now().AddDays(-1)).Build();
-
-            new OrganisationContactRelationshipBuilder(session)
-                .WithContact(new PersonBuilder(session).WithCompanyContactDefaults(session, this.Config).Build())
-                .WithOrganisation(customer)
-                .WithFromDate(this.session.Now().AddDays(-1))
-                .Build();
-
-            return customer;
-        }
     }
 }
