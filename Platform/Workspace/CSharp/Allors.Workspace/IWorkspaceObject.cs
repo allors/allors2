@@ -6,19 +6,20 @@
 namespace Allors.Workspace
 {
     using Allors.Workspace.Meta;
+    using Security;
 
     public interface IWorkspaceObject
     {
-        IWorkspace Workspace { get; }
+        IAccessControlList AccessControlList { get; }
 
         IClass Class { get; }
 
         long Id { get; }
 
+        IWorkspaceRole[] Roles { get; }
+
         long Version { get; }
 
-        string UserSecurityHash { get; }
-
-        IWorkspaceRole[] Roles { get; }
+        IWorkspace Workspace { get; }
     }
 }

@@ -31,15 +31,15 @@ namespace Allors.Server.Controllers
 
         private IDatabaseService DatabaseService { get; }
 
-        private IPolicyService PolicyService { get; }
-
         private IExtentService ExtentService { get; }
 
         private IFetchService FetchService { get; }
 
-        private ITreeService TreeService { get; }
-
         private ILogger<PullController> Logger { get; }
+
+        private IPolicyService PolicyService { get; }
+
+        private ITreeService TreeService { get; }
 
         [HttpPost]
         [Authorize]

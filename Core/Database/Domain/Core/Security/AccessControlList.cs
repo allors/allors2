@@ -19,27 +19,22 @@ namespace Allors.Domain
     {
         private readonly Guid classId;
 
-        private bool lazyLoaded;
-
         private AccessControl[] accessControls;
         private HashSet<long> deniedPermissions;
+        private bool lazyLoaded;
         private PermissionCache permissionCache;
         private Dictionary<Guid, Dictionary<Operations, long>> permissionIdByOperationByOperandTypeId;
 
         internal AccessControlList(IAccessControlLists accessControlLists, IObject @object)
         {
             this.AccessControlLists = accessControlLists;
-            this.Object = @object as Object;
+            this.Object = (Object)@object;
             this.classId = this.Object.Strategy.Class.Id;
 
             this.lazyLoaded = false;
         }
 
-        public Object Object { get; }
-
-        public IAccessControlLists AccessControlLists { get; }
-
-        public IEnumerable<AccessControl> AccessControls
+        public AccessControl[] AccessControls
         {
             get
             {
@@ -48,7 +43,7 @@ namespace Allors.Domain
             }
         }
 
-        public IEnumerable<long> DeniedPermissionIds
+        public HashSet<long> DeniedPermissionIds
         {
             get
             {
@@ -57,6 +52,12 @@ namespace Allors.Domain
             }
         }
 
+        public Object Object { get; }
+
+        private IAccessControlLists AccessControlLists { get; }
+
+        public bool CanExecute(IMethodType methodType) => this.IsPermitted(methodType, Operations.Execute);
+
         public bool CanRead(IPropertyType propertyType) => this.IsPermitted(propertyType, Operations.Read);
 
         public bool CanRead(IConcreteRoleType roleType) => this.IsPermitted(roleType.RoleType, Operations.Read);
@@ -64,8 +65,6 @@ namespace Allors.Domain
         public bool CanWrite(IRoleType roleType) => this.IsPermitted(roleType, Operations.Write);
 
         public bool CanWrite(IConcreteRoleType roleType) => this.IsPermitted(roleType.RoleType, Operations.Write);
-
-        public bool CanExecute(IMethodType methodType) => this.IsPermitted(methodType, Operations.Execute);
 
         public bool IsPermitted(IOperandType operandType, Operations operation)
         {

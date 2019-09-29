@@ -13,13 +13,13 @@ namespace Allors.Domain
     /// </summary>
     public interface IAccessControlList
     {
-        IAccessControlLists AccessControlLists { get; }
+        AccessControl[] AccessControls { get; }
 
-        IEnumerable<AccessControl> AccessControls { get; }
-
-        IEnumerable<long> DeniedPermissionIds { get; }
+        HashSet<long> DeniedPermissionIds { get; }
 
         Object Object { get; }
+
+        bool CanExecute(IMethodType methodType);
 
         bool CanRead(IPropertyType propertyType);
 
@@ -28,8 +28,6 @@ namespace Allors.Domain
         bool CanWrite(IRoleType roleType);
 
         bool CanWrite(IConcreteRoleType roleType);
-
-        bool CanExecute(IMethodType methodType);
 
         bool IsPermitted(IOperandType operandType, Operations operation);
     }

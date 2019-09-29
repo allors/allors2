@@ -3,24 +3,24 @@
   <Class Name="Allors.Protocol.Remote.Pull.PullRequest">
     <Position X="0.5" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>Remote\Pull\PullRequest.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAABAAAA=</HashCode>
+      <FileName>Api\Pull\PullRequest.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="P" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Allors.Protocol.Remote.Pull.PullResponse">
-    <Position X="0.5" Y="3.75" Width="1.5" />
+    <Position X="0.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAgAAAEAAAAAAAQAAIA=</HashCode>
-      <FileName>Remote\Pull\PullResponse.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAgAAAGAAAAEAAQAAAA=</HashCode>
+      <FileName>Api\Pull\PullResponse.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Protocol.Data.Pull">
     <Position X="3" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAAAAAAAAAAAAAAgAAAAAAAACAAAAAAAIIAACAAAAAA=</HashCode>
+      <HashCode>EAAAAAAAAAAAAAAgAAAAAAAACAAAAAAAAIAACAAAAAA=</HashCode>
       <FileName>Data\Pull.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -70,31 +70,18 @@
       <Property Name="Include" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Allors.Protocol.Data.Tree">
-    <Position X="10.5" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Data\Tree.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Nodes" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="Allors.Protocol.Data.TreeNode">
-    <Position X="10.5" Y="5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAIgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Data\TreeNode.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Nodes" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="Allors.Protocol.Data.Predicate" Collapsed="true">
     <Position X="8.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAIAAAAAAABAAAAgAAAAAAAAAAASAAEAAIAiAAEAAAA=</HashCode>
+      <HashCode>EAIAAAAAAABAAAAgAAAAAAAAAAACAAEAIIAiAAEAAAA=</HashCode>
       <FileName>Data\Predicate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Protocol.Data.Node" Collapsed="true">
+    <Position X="9.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Data\Node.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

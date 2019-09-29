@@ -14,16 +14,13 @@ namespace Allors.Server
 
     public class SyncResponseBuilder
     {
-        private static readonly object[][] EmptyRoles = { };
-
+        private readonly AccessControlsCompressor accessControlsCompressor;
+        private readonly AccessControlLists acls;
+        private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
+        private readonly MetaObjectCompressor metaObjectCompressor;
         private readonly ISession session;
         private readonly SyncRequest syncRequest;
         private readonly User user;
-        private readonly AccessControlLists acls;
-
-        private readonly MetaObjectCompressor metaObjectCompressor;
-        private readonly AccessControlsCompressor accessControlsCompressor;
-        private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
 
         public SyncResponseBuilder(ISession session, User user, SyncRequest syncRequest)
         {
@@ -71,8 +68,8 @@ namespace Allors.Server
                 else
                 {
                     syncResponseRole.V = string.Join(
-                        ',',
-                        @object.Strategy.GetCompositeRoles(roleType.RelationType)
+                        separator: ',',
+                        values: @object.Strategy.GetCompositeRoles(roleType.RelationType)
                             .Cast<IObject>()
                             .Select(roleObject => roleObject.Id.ToString()));
                 }
@@ -82,7 +79,6 @@ namespace Allors.Server
 
             return new SyncResponse
             {
-                UserSecurityHash = this.user.SecurityHash(),
                 Objects = objects.Select(v =>
                 {
                     var @class = (Class)v.Strategy.Class;

@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     public class AccessControlLists : IAccessControlLists
     {
@@ -16,9 +17,11 @@ namespace Allors.Domain
             this.AclByObject = new Dictionary<IObject, IAccessControlList>();
         }
 
-        public User User { get; }
+        public IEnumerable<AccessControl> AccessControls => this.AclByObject.SelectMany(v => v.Value.AccessControls).Distinct();
 
         public IReadOnlyDictionary<AccessControl, HashSet<long>> EffectivePermissionIdsByAccessControl { get; set; }
+
+        public User User { get; }
 
         private Dictionary<IObject, IAccessControlList> AclByObject { get; }
 

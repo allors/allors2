@@ -29,11 +29,11 @@ namespace Allors.Workspace.Local
 
         public IDatabaseService DatabaseService { get; }
 
-        public ITreeService TreeService { get; }
+        public IExtentService ExtentService { get; }
 
         public IFetchService FetchService { get; }
 
-        public IExtentService ExtentService { get; }
+        public ITreeService TreeService { get; }
 
         public Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null)
         {

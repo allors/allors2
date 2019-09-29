@@ -1,4 +1,4 @@
-// <copyright file="IPropertyType.cs" company="Allors bvba">
+// <copyright file="IOperandType.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,11 +8,7 @@ namespace Allors.Workspace.Meta
 {
     using System;
 
-    /// <summary>
-    /// A <see cref="IPropertyType"/> can be a <see cref="IAssociationType"/> or a <see cref="IRoleType"/>.
-    /// </summary>
-    public interface IMethodType : IOperandType
+    public interface IOperandType : IMetaObject, IComparable
     {
-        string Name { get; }
     }
 }

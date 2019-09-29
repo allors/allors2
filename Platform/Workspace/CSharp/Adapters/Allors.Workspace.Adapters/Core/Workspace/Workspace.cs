@@ -39,16 +39,6 @@ namespace Allors.Workspace
             return syncRequest;
         }
 
-        public void Sync(SyncResponse syncResponse)
-        {
-            var syncResponseContext = new SyncResponseContext(this, syncResponse.UserSecurityHash);
-            foreach (var syncResponseObject in syncResponse.Objects)
-            {
-                var workspaceObject = new WorkspaceObject(syncResponseContext, syncResponseObject);
-                this.workspaceObjectById[workspaceObject.Id] = workspaceObject;
-            }
-        }
-
         public IWorkspaceObject Get(long id)
         {
             var workspaceObject = this.workspaceObjectById[id];
@@ -60,6 +50,22 @@ namespace Allors.Workspace
             return workspaceObject;
         }
 
+        public void Sync(SyncResponse syncResponse)
+        {
+            var ctx = new SyncResponseContext(this);
+            foreach (var syncResponseObject in syncResponse.Objects)
+            {
+                var workspaceObject = new WorkspaceObject(ctx, syncResponseObject);
+                this.workspaceObjectById[workspaceObject.Id] = workspaceObject;
+            }
+        }
+
+        internal IEnumerable<IWorkspaceObject> Get(IComposite objectType)
+        {
+            var classes = new HashSet<IClass>(objectType.Classes);
+            return this.workspaceObjectById.Where(v => classes.Contains(v.Value.Class)).Select(v => v.Value);
+        }
+
         /// <summary>
         /// Invalidates the object in order to force a sync on next pull.
         /// </summary>
@@ -68,14 +74,9 @@ namespace Allors.Workspace
         {
             if (this.workspaceObjectById.TryGetValue(objectId, out var workspaceObject))
             {
-                workspaceObject.UserSecurityHash = "#";
+                // TODO:
+                //workspaceObject.UserSecurityHash = "#";
             }
-        }
-
-        internal IEnumerable<IWorkspaceObject> Get(IComposite objectType)
-        {
-            var classes = new HashSet<IClass>(objectType.Classes);
-            return this.workspaceObjectById.Where(v => classes.Contains(v.Value.Class)).Select(v => v.Value);
         }
     }
 }

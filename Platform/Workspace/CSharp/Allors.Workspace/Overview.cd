@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Workspace.ISession">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <Members>
+      <Method Name="Create" Hidden="true" />
+      <Method Name="Get" Hidden="true" />
+      <Method Name="GetAssociation" Hidden="true" />
+      <Method Name="PushRequest" Hidden="true" />
+      <Method Name="PushResponse" Hidden="true" />
+      <Method Name="Reset" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABABERAAAAAAAAAAAAgAEAAAAAQAAAAAAA=</HashCode>
+      <FileName>ISession.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Workspace" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Workspace.IWorkspace">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="Diff" Hidden="true" />
+      <Method Name="Get" Hidden="true" />
+      <Method Name="Sync" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>IWorkspace.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.IWorkspaceObject">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAABAAAAAAAIAAAAAAgAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>IWorkspaceObject.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Workspace" />
+      <Property Name="AccessControlList" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Roles" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="Allors.Workspace.IWorkspaceRole">
+    <Position X="5.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>IWorkspaceRole.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.ISessionObject">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <Members>
+      <Method Name="Add" Hidden="true" />
+      <Method Name="CanRead" Hidden="true" />
+      <Method Name="CanWrite" Hidden="true" />
+      <Method Name="Exist" Hidden="true" />
+      <Method Name="Get" Hidden="true" />
+      <Method Name="Remove" Hidden="true" />
+      <Method Name="Reset" Hidden="true" />
+      <Method Name="Save" Hidden="true" />
+      <Method Name="SaveNew" Hidden="true" />
+      <Method Name="Set" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IAICAIAAQAAABUBAkAAABAAAAAAAAAAAAIAAAAEIAAA=</HashCode>
+      <FileName>ISessionObject.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ObjectType" />
+      <Property Name="Session" />
+      <Property Name="WorkspaceObject" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Workspace.Meta.IClass" Collapsed="true">
+    <Position X="5.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Meta\IClass.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.Security.IAccessControlList">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IAccessControlList.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Execute" />
+      <Property Name="Read" />
+      <Property Name="Write" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="Allors.Workspace.Meta.IMethodType" Collapsed="true">
+    <Position X="10.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Meta\IMethodType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Workspace.Meta.IRoleType" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEEAAAAAAAgAAAAEIAAAAggAAAAAAQABIAAABAEAA=</HashCode>
+      <FileName>Meta\IRoleType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

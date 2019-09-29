@@ -15,17 +15,14 @@ namespace Allors.Server
 
     public class PullResponseBuilder
     {
-        private readonly ITreeService treeService;
-        private readonly AccessControlLists acls;
-
-        private readonly HashSet<IObject> objects;
-
-        private readonly Dictionary<string, IObject> objectByName = new Dictionary<string, IObject>();
-        private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
-        private readonly Dictionary<string, string> valueByName = new Dictionary<string, string>();
-
         private readonly AccessControlsCompressor accessControlsCompressor;
+        private readonly AccessControlLists acls;
+        private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
         private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
+        private readonly Dictionary<string, IObject> objectByName = new Dictionary<string, IObject>();
+        private readonly HashSet<IObject> objects;
+        private readonly ITreeService treeService;
+        private readonly Dictionary<string, string> valueByName = new Dictionary<string, string>();
 
         public PullResponseBuilder(User user, ITreeService treeService)
         {
@@ -35,58 +32,6 @@ namespace Allors.Server
 
             this.accessControlsCompressor = new AccessControlsCompressor(this.acls);
             this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(this.acls);
-        }
-
-        public PullResponse Build() =>
-            new PullResponse
-            {
-                Objects = this.objects.Select(v =>
-                {
-                    var strategy = v.Strategy;
-                    var id = strategy.ObjectId.ToString();
-                    var version = strategy.ObjectVersion.ToString();
-                    var accessControls = this.accessControlsCompressor.Write(v);
-                    var deniedPermissions = this.deniedPermissionsCompressor.Write(v);
-
-                    return deniedPermissions != null ?
-                        new[] { id, version, accessControls, deniedPermissions } :
-                        new[] { id, version, accessControls };
-                }).ToArray(),
-                NamedObjects = this.objectByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Id.ToString()),
-                NamedCollections = this.collectionsByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
-                NamedValues = this.valueByName,
-            };
-
-        public void AddObject(string name, IObject @object, bool full = false)
-        {
-            if (@object != null)
-            {
-                TreeNode[] tree = null;
-                if (full)
-                {
-                    tree = @object.Strategy.Session.Database.FullTree(@object.Strategy.Class, this.treeService);
-                }
-
-                this.AddObject(name, @object, tree);
-            }
-        }
-
-        public void AddObject(string name, IObject @object, TreeNode[] tree)
-        {
-            if (@object != null)
-            {
-                if (tree != null)
-                {
-                    // Prefetch
-                    var session = @object.Strategy.Session;
-                    var prefetcher = tree.BuildPrefetchPolicy();
-                    session.Prefetch(prefetcher, @object);
-                }
-
-                this.objects.Add(@object);
-                this.objectByName.Add(name, @object);
-                tree?.Resolve(@object, this.acls, this.objects);
-            }
         }
 
         public void AddCollection(string name, IEnumerable<IObject> collection, bool full = false)
@@ -132,12 +77,78 @@ namespace Allors.Server
             }
         }
 
+        public void AddObject(string name, IObject @object, bool full = false)
+        {
+            if (@object != null)
+            {
+                TreeNode[] tree = null;
+                if (full)
+                {
+                    tree = @object.Strategy.Session.Database.FullTree(@object.Strategy.Class, this.treeService);
+                }
+
+                this.AddObject(name, @object, tree);
+            }
+        }
+
+        public void AddObject(string name, IObject @object, TreeNode[] tree)
+        {
+            if (@object != null)
+            {
+                if (tree != null)
+                {
+                    // Prefetch
+                    var session = @object.Strategy.Session;
+                    var prefetcher = tree.BuildPrefetchPolicy();
+                    session.Prefetch(prefetcher, @object);
+                }
+
+                this.objects.Add(@object);
+                this.objectByName.Add(name, @object);
+                tree?.Resolve(@object, this.acls, this.objects);
+            }
+        }
+
         public void AddValue(string name, string value)
         {
             if (value != null)
             {
                 this.valueByName.Add(name, value);
             }
+        }
+
+        public PullResponse Build()
+        {
+            var pullResponse = new PullResponse
+            {
+                Objects = this.objects.Select(v =>
+                {
+                    var strategy = v.Strategy;
+                    var id = strategy.ObjectId.ToString();
+                    var version = strategy.ObjectVersion.ToString();
+                    var accessControls = this.accessControlsCompressor.Write(v);
+                    var deniedPermissions = this.deniedPermissionsCompressor.Write(v);
+
+                    return deniedPermissions != null
+                        ? new[] { id, version, accessControls, deniedPermissions }
+                        : new[] { id, version, accessControls };
+                }).ToArray(),
+                NamedObjects = this.objectByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Id.ToString()),
+                NamedCollections =
+                    this.collectionsByName.ToDictionary(kvp => kvp.Key,
+                        kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
+                NamedValues = this.valueByName,
+            };
+
+            pullResponse.AccessControls = this.acls.AccessControls
+                .Select(v => new[]
+                {
+                    v.Strategy.ObjectId.ToString(),
+                    v.Strategy.ObjectVersion.ToString(),
+                })
+                .ToArray();
+
+            return pullResponse;
         }
     }
 }

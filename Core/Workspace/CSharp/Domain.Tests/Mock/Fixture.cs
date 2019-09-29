@@ -32,7 +32,6 @@ namespace Tests.Mock
 
                 return new SyncResponse
                 {
-                    UserSecurityHash = "#",
                     Objects = new[]
                     {
                         new SyncResponseObject

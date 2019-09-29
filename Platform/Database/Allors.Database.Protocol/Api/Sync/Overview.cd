@@ -1,34 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+<ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Allors.Protocol.Remote.Sync.SyncRequest">
     <Position X="0.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAEAAAAAAAAAA=</HashCode>
       <FileName>Api\Sync\SyncRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Protocol.Remote.Sync.SyncResponse">
-    <Position X="0.5" Y="2.75" Width="2" />
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <AssociationLine Name="Objects" Type="Allors.Protocol.Remote.Sync.SyncResponseObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="0.812" Y="3.618" />
+        <Point X="0.812" Y="6.912" />
+        <Point X="4" Y="6.912" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAIA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAEAAAAAAAAAA=</HashCode>
       <FileName>Api\Sync\SyncResponse.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AccessControls" />
+    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
+      <Property Name="Permissions" />
       <Property Name="Objects" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Allors.Protocol.Remote.Sync.SyncResponseObject">
-    <Position X="3.75" Y="2.75" Width="1.75" />
+  <Class Name="Allors.Protocol.Remote.Sync.SyncResponseAccessControl">
+    <Position X="4" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACBUAQA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQAAA=</HashCode>
+      <FileName>Api\Sync\SyncResponseAccessControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Sync.SyncResponsePermission">
+    <Position X="4" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQAAA=</HashCode>
+      <FileName>Api\Sync\SyncResponsePermission.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Sync.SyncResponseObject">
+    <Position X="4" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAJCAUAQA=</HashCode>
       <FileName>Api\Sync\SyncResponseObject.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
+    <ShowAsCollectionAssociation>
       <Property Name="R" />
-    </ShowAsAssociation>
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Allors.Protocol.Remote.Sync.SyncResponseRole">
-    <Position X="6.75" Y="2.75" Width="1.5" />
+    <Position X="6.5" Y="5.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAA=</HashCode>
       <FileName>Api\Sync\SyncResponseRole.cs</FileName>
