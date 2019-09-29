@@ -26,9 +26,9 @@ namespace Allors.Domain
         private PermissionCache permissionCache;
         private Dictionary<Guid, Dictionary<Operations, long>> permissionIdByOperationByOperandTypeId;
 
-        internal AccessControlList(IAccessControlListFactory accessControlListFactory, IObject @object)
+        internal AccessControlList(IAccessControlLists accessControlLists, IObject @object)
         {
-            this.AccessControlListFactory = accessControlListFactory;
+            this.AccessControlLists = accessControlLists;
             this.Object = @object as Object;
             this.classId = this.Object.Strategy.Class.Id;
 
@@ -37,7 +37,7 @@ namespace Allors.Domain
 
         public Object Object { get; }
 
-        public IAccessControlListFactory AccessControlListFactory { get; }
+        public IAccessControlLists AccessControlLists { get; }
 
         public IEnumerable<AccessControl> AccessControls
         {
@@ -85,7 +85,7 @@ namespace Allors.Domain
                         return false;
                     }
 
-                    return this.accessControls.Any(v => this.AccessControlListFactory.EffectivePermissionIdsByAccessControl[v].Contains(permissionId));
+                    return this.accessControls.Any(v => this.AccessControlLists.EffectivePermissionIdsByAccessControl[v].Contains(permissionId));
                 }
             }
 
@@ -137,7 +137,7 @@ namespace Allors.Domain
 
                 this.accessControls = securityTokens.SelectMany(v => v.AccessControls)
                     .Distinct()
-                    .Where(this.AccessControlListFactory.EffectivePermissionIdsByAccessControl.ContainsKey)
+                    .Where(this.AccessControlLists.EffectivePermissionIdsByAccessControl.ContainsKey)
                     .ToArray();
 
                 this.permissionCache = session.GetCache<PermissionCache, PermissionCache>(() => new PermissionCache(session));

@@ -127,7 +127,7 @@ namespace Allors.Domain
 
             this.SetIdentity("approver");
 
-            var acl = new AccessControlListFactory(approver).Create(order);
+            var acl = new AccessControlLists(approver)[order];
             Assert.True(acl.CanExecute(M.PurchaseOrder.Approve));
         }
 
@@ -177,7 +177,7 @@ namespace Allors.Domain
             this.SetIdentity(approver.UserName);
 
             var purchaseOrderApproval = order.PurchaseOrderApprovalsLevel1WherePurchaseOrder.First;
-            var acl = new AccessControlListFactory(approver).Create(purchaseOrderApproval);
+            var acl = new AccessControlLists(approver)[purchaseOrderApproval];
             Assert.True(acl.CanWrite(M.ApproveTask.Comment));
             Assert.True(acl.CanExecute(M.ApproveTask.Approve));
         }

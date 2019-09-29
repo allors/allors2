@@ -15,37 +15,42 @@ namespace Allors.Server
 
     public class PullResponseBuilder
     {
-        private readonly AccessControlListFactory aclFactory;
         private readonly ITreeService treeService;
+        private readonly AccessControlLists acls;
 
-        private readonly Dictionary<IObject, IAccessControlList> aclByObject = new Dictionary<IObject, IAccessControlList>();
+        private readonly HashSet<IObject> objects;
 
         private readonly Dictionary<string, IObject> objectByName = new Dictionary<string, IObject>();
         private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
         private readonly Dictionary<string, string> valueByName = new Dictionary<string, string>();
 
-        private readonly AccessControlsCompression accessControlsCompression;
-        private readonly DeniedPermissionsCompression deniedPermissionsCompression;
+        private readonly AccessControlsCompressor accessControlsCompressor;
+        private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
 
         public PullResponseBuilder(User user, ITreeService treeService)
         {
-            this.aclFactory = new AccessControlListFactory(user);
-            this.aclByObject = new Dictionary<IObject, IAccessControlList>();
+            this.acls = new AccessControlLists(user);
+            this.objects = new HashSet<IObject>();
             this.treeService = treeService;
 
-            this.accessControlsCompression = new AccessControlsCompression();
-            this.deniedPermissionsCompression = new DeniedPermissionsCompression();
+            this.accessControlsCompressor = new AccessControlsCompressor(this.acls);
+            this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(this.acls);
         }
 
         public PullResponse Build() =>
             new PullResponse
             {
-                Objects = this.aclByObject.Select(kvp => new[]
+                Objects = this.objects.Select(v =>
                 {
-                    kvp.Key.Id.ToString(),
-                    kvp.Value.Object.Id.ToString(),
-                    this.accessControlsCompression.Write(kvp.Value),
-                    this.deniedPermissionsCompression.Write(kvp.Value),
+                    var strategy = v.Strategy;
+                    var id = strategy.ObjectId.ToString();
+                    var version = strategy.ObjectVersion.ToString();
+                    var accessControls = this.accessControlsCompressor.Write(v);
+                    var deniedPermissions = this.deniedPermissionsCompressor.Write(v);
+
+                    return deniedPermissions != null ?
+                        new[] { id, version, accessControls, deniedPermissions } :
+                        new[] { id, version, accessControls };
                 }).ToArray(),
                 NamedObjects = this.objectByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Id.ToString()),
                 NamedCollections = this.collectionsByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
@@ -78,8 +83,9 @@ namespace Allors.Server
                     session.Prefetch(prefetcher, @object);
                 }
 
+                this.objects.Add(@object);
                 this.objectByName.Add(name, @object);
-                tree?.Resolve(@object, this.aclFactory, this.aclByObject);
+                tree?.Resolve(@object, this.acls, this.objects);
             }
         }
 
@@ -120,7 +126,8 @@ namespace Allors.Server
                 list.AddRange(inputList);
                 foreach (var namedObject in inputList)
                 {
-                    tree?.Resolve(namedObject, this.aclFactory, this.aclByObject);
+                    this.objects.Add(namedObject);
+                    tree?.Resolve(namedObject, this.acls, this.objects);
                 }
             }
         }

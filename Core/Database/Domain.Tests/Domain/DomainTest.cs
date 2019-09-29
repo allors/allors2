@@ -38,16 +38,16 @@ namespace Tests
 
         protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
-        public Mock<IAccessControlListFactory> AclFactoryMock
+        public Mock<IAccessControlLists> AclsMock
         {
             get
             {
                 var aclMock = new Mock<IAccessControlList>();
                 aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
                 aclMock.Setup(acl => acl.CanRead(It.IsAny<IConcreteRoleType>())).Returns(true);
-                var aclFactoryMock = new Mock<IAccessControlListFactory>();
-                aclFactoryMock.Setup(aclFactory => aclFactory.Create(It.IsAny<IObject>())).Returns(aclMock.Object);
-                return aclFactoryMock;
+                var aclsMock = new Mock<IAccessControlLists>();
+                aclsMock.Setup(acls => acls[It.IsAny<IObject>()]).Returns(aclMock.Object);
+                return aclsMock;
             }
         }
 

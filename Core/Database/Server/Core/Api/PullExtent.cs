@@ -60,7 +60,7 @@ namespace Allors.Server
 
                             if (fetch.Step != null)
                             {
-                                var aclCache = new AccessControlListFactory(this.user);
+                                var aclCache = new AccessControlLists(this.user);
 
                                 objects = fetch.Step.IsOne ?
                                               objects.Select(v => fetch.Step.Get(v, aclCache)).Where(v => v != null).Cast<IObject>().Distinct().ToArray() :

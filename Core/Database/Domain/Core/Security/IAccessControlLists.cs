@@ -7,12 +7,15 @@ namespace Allors.Domain
 {
     using System.Collections.Generic;
 
-    public interface IAccessControlListFactory
+    public interface IAccessControlLists
     {
         User User { get; }
 
         IReadOnlyDictionary<AccessControl, HashSet<long>> EffectivePermissionIdsByAccessControl { get; set; }
 
-        IAccessControlList Create(IObject @object);
+        IAccessControlList this[IObject @object]
+        {
+            get;
+        }
     }
 }

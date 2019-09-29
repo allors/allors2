@@ -11,27 +11,22 @@ namespace Allors.Data
 
     public static class TreeNodeExtensions
     {
-        public static void Resolve(this TreeNode[] treeNodes, IObject @object, IAccessControlListFactory aclFactory, IDictionary<IObject, IAccessControlList> aclByObject)
+        public static void Resolve(this TreeNode[] treeNodes, IObject @object, IAccessControlLists acls, ISet<IObject> objects)
         {
             if (@object != null)
             {
                 foreach (var node in treeNodes)
                 {
-                    node.Resolve(@object, aclFactory, aclByObject);
+                    node.Resolve(@object, acls, objects);
                 }
             }
         }
 
-        public static void Resolve(this TreeNode @this, IObject @object, IAccessControlListFactory aclFactory, IDictionary<IObject, IAccessControlList> aclByObject)
+        public static void Resolve(this TreeNode @this, IObject @object, IAccessControlLists acls, ISet<IObject> objects)
         {
             if (@object != null)
             {
-                if (!aclByObject.TryGetValue(@object, out var acl))
-                {
-                    acl = aclFactory.Create(@object);
-                    aclByObject.Add(@object, acl);
-                }
-
+                var acl = acls[@object];
                 if (acl.CanRead(@this.PropertyType))
                 {
                     if (@this.PropertyType is IRoleType roleType)
@@ -43,9 +38,10 @@ namespace Allors.Data
                                 var role = @object.Strategy.GetCompositeRole(roleType.RelationType);
                                 if (role != null)
                                 {
+                                    objects.Add(role);
                                     foreach (var node in @this.Nodes)
                                     {
-                                        node.Resolve(role, aclFactory, aclByObject);
+                                        node.Resolve(role, acls, objects);
                                     }
                                 }
                             }
@@ -54,9 +50,10 @@ namespace Allors.Data
                                 var roles = @object.Strategy.GetCompositeRoles(roleType.RelationType);
                                 foreach (IObject role in roles)
                                 {
+                                    objects.Add(role);
                                     foreach (var node in @this.Nodes)
                                     {
-                                        node.Resolve(role, aclFactory, aclByObject);
+                                        node.Resolve(role, acls, objects);
                                     }
                                 }
                             }
@@ -69,20 +66,22 @@ namespace Allors.Data
                             var association = @object.Strategy.GetCompositeAssociation(associationType.RelationType);
                             if (association != null)
                             {
+                                objects.Add(association);
                                 foreach (var node in @this.Nodes)
                                 {
-                                    node.Resolve(association, aclFactory, aclByObject);
+                                    node.Resolve(association, acls, objects);
                                 }
                             }
                         }
                         else
                         {
                             var associations = @object.Strategy.GetCompositeAssociations(associationType.RelationType);
-                            foreach (IObject role in associations)
+                            foreach (IObject association in associations)
                             {
+                                objects.Add(association);
                                 foreach (var node in @this.Nodes)
                                 {
-                                    node.Resolve(role, aclFactory, aclByObject);
+                                    node.Resolve(association, acls, objects);
                                 }
                             }
                         }

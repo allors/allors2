@@ -21,7 +21,7 @@ namespace Allors.Server
         private readonly bool isolated;
         private readonly bool continueOnError;
 
-        private readonly AccessControlListFactory aclFactory;
+        private readonly AccessControlLists acls;
 
         public InvokeResponseBuilder(ISession session, User user, InvokeRequest invokeRequest)
         {
@@ -31,7 +31,7 @@ namespace Allors.Server
             this.isolated = invokeRequest.O?.I ?? false;
             this.continueOnError = invokeRequest.O?.C ?? false;
 
-            this.aclFactory = new AccessControlListFactory(this.user);
+            this.acls = new AccessControlLists(this.user);
         }
 
         public InvokeResponse Build()
@@ -129,7 +129,7 @@ namespace Allors.Server
                 return true;
             }
 
-            var acl = this.aclFactory.Create(obj);
+            var acl = this.acls[obj];
             if (!acl.CanExecute(methodType))
             {
                 invokeResponse.AddAccessError(obj);

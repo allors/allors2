@@ -11,7 +11,7 @@ namespace Tests
     using Allors.Data;
     using Allors.Domain;
     using Allors.Meta;
-
+    using Moq;
     using Xunit;
 
     public class PathTests : DomainTest
@@ -38,13 +38,11 @@ namespace Tests
 
             var path = new Fetch(M.C1.C1C2One2Manies, M.C2.C2AllorsString);
 
-            var aclFactoryMock = this.AclFactoryMock;
-
-            var result = (ISet<object>)path.Get(c1a, aclFactoryMock.Object);
+            var result = (ISet<object>)path.Get(c1a, this.AclsMock.Object);
             Assert.Equal(1, result.Count);
             Assert.True(result.Contains("c2A"));
 
-            result = (ISet<object>)path.Get(c1b, aclFactoryMock.Object);
+            result = (ISet<object>)path.Get(c1b, this.AclsMock.Object);
             Assert.Equal(2, result.Count);
             Assert.True(result.Contains("c2B"));
             Assert.True(result.Contains("c2C"));
@@ -72,13 +70,11 @@ namespace Tests
 
             var path = new Fetch(MetaC1.Instance.C1C2One2Manies, MetaC2.Instance.C2AllorsString);
 
-            var aclFactoryMock = this.AclFactoryMock;
-
-            var result = (ISet<object>)path.Get(c1a, aclFactoryMock.Object);
+            var result = (ISet<object>)path.Get(c1a, this.AclsMock.Object);
             Assert.Equal(1, result.Count);
             Assert.True(result.Contains("c2A"));
 
-            result = (ISet<object>)path.Get(c1b, aclFactoryMock.Object);
+            result = (ISet<object>)path.Get(c1b, this.AclsMock.Object);
             Assert.Equal(2, result.Count);
             Assert.True(result.Contains("c2B"));
             Assert.True(result.Contains("c2C"));
@@ -106,12 +102,10 @@ namespace Tests
 
             Fetch.TryParse(M.C2.ObjectType, "C1WhereC1C2One2Many", out var fetch);
 
-            var aclFactoryMock = this.AclFactoryMock;
-
-            var result = (C1)fetch.Get(c2A, aclFactoryMock.Object);
+            var result = (C1)fetch.Get(c2A, this.AclsMock.Object);
             Assert.Equal(result, c1A);
 
-            result = (C1)fetch.Get(c2B, aclFactoryMock.Object);
+            result = (C1)fetch.Get(c2B, this.AclsMock.Object);
             Assert.Equal(result, c1B);
         }
     }

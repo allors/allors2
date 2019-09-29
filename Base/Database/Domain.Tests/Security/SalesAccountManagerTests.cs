@@ -36,7 +36,7 @@ namespace Allors.Domain
 
             this.SetIdentity(salesaccm.UserName);
 
-            var acl = new AccessControlListFactory(salesaccm).Create(person);
+            var acl = new AccessControlLists(salesaccm)[person];
             Assert.True(acl.CanRead(M.Person.FirstName));
             Assert.True(acl.CanWrite(M.Person.FirstName));
         }
@@ -77,7 +77,7 @@ namespace Allors.Domain
 
             Assert.True(salesInvoice.Strategy.IsNewInSession);
 
-            var acl = new AccessControlListFactory(salesaccm).Create(salesInvoice);
+            var acl = new AccessControlLists(salesaccm)[salesInvoice];
             Assert.True(acl.CanRead(M.SalesInvoice.Description));
             Assert.True(acl.CanWrite(M.SalesInvoice.Description));
 
@@ -85,7 +85,7 @@ namespace Allors.Domain
 
             Assert.False(salesInvoice.Strategy.IsNewInSession);
 
-            acl = new AccessControlListFactory(salesaccm).Create(salesInvoice);
+            acl = new AccessControlLists(salesaccm)[salesInvoice];
             Assert.True(acl.CanRead(M.SalesInvoice.Description));
             Assert.True(acl.CanWrite(M.SalesInvoice.Description));
         }
@@ -112,7 +112,7 @@ namespace Allors.Domain
 
             this.SetIdentity(salesaccm.UserName);
 
-            var acl = new AccessControlListFactory(salesaccm).Create(good);
+            var acl = new AccessControlLists(salesaccm)[good];
             Assert.True(acl.CanRead(M.Good.Name));
             Assert.False(acl.CanWrite(M.Good.Name));
         }

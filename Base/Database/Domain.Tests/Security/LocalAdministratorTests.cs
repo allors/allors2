@@ -125,7 +125,7 @@ namespace Allors.Domain
 
             this.SetIdentity(localAdmin.UserName);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(inventoryAssignment);
+            var acl = new AccessControlLists(localAdmin)[inventoryAssignment];
             Assert.True(acl.CanRead(M.WorkEffortInventoryAssignment.InventoryItem));
             Assert.True(acl.CanWrite(M.WorkEffortInventoryAssignment.InventoryItem));
             Assert.True(acl.CanRead(M.WorkEffortInventoryAssignment.Quantity));
@@ -186,7 +186,7 @@ namespace Allors.Domain
 
             this.SetIdentity(localAdmin.UserName);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(inventoryAssignment);
+            var acl = new AccessControlLists(localAdmin)[inventoryAssignment];
             Assert.False(acl.CanRead(M.WorkEffortInventoryAssignment.InventoryItem));
             Assert.False(acl.CanWrite(M.WorkEffortInventoryAssignment.InventoryItem));
             Assert.False(acl.CanRead(M.WorkEffortInventoryAssignment.Quantity));
@@ -229,7 +229,7 @@ namespace Allors.Domain
 
             this.SetIdentity(localAdmin.UserName);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(workTask);
+            var acl = new AccessControlLists(localAdmin)[workTask];
             Assert.True(acl.CanRead(M.WorkTask.WorkDone));
             Assert.True(acl.CanWrite(M.WorkTask.WorkDone));
         }
@@ -264,7 +264,7 @@ namespace Allors.Domain
 
             this.SetIdentity(localAdmin.UserName);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(workTask);
+            var acl = new AccessControlLists(localAdmin)[workTask];
             Assert.False(acl.CanRead(M.WorkTask.WorkDone));
             Assert.False(acl.CanWrite(M.WorkTask.WorkDone));
         }
@@ -305,7 +305,7 @@ namespace Allors.Domain
 
             this.SetIdentity(localAdmin.UserName);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(timeEntry);
+            var acl = new AccessControlLists(localAdmin)[timeEntry];
             Assert.True(acl.CanRead(M.TimeEntry.ThroughDate));
             Assert.True(acl.CanWrite(M.TimeEntry.ThroughDate));
         }
@@ -348,7 +348,7 @@ namespace Allors.Domain
 
             this.SetIdentity(localAdmin.UserName);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(timeEntry);
+            var acl = new AccessControlLists(localAdmin)[timeEntry];
             Assert.False(acl.CanRead(M.TimeEntry.ThroughDate));
             Assert.False(acl.CanWrite(M.TimeEntry.ThroughDate));
         }
@@ -385,7 +385,7 @@ namespace Allors.Domain
 
             Assert.True(salesInvoice.Strategy.IsNewInSession);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(salesInvoice);
+            var acl = new AccessControlLists(localAdmin)[salesInvoice];
             Assert.True(acl.CanRead(M.SalesInvoice.Description));
             Assert.True(acl.CanWrite(M.SalesInvoice.Description));
 
@@ -393,7 +393,7 @@ namespace Allors.Domain
 
             Assert.False(salesInvoice.Strategy.IsNewInSession);
 
-            acl = new AccessControlListFactory(localAdmin).Create(salesInvoice);
+            acl = new AccessControlLists(localAdmin)[salesInvoice];
             Assert.True(acl.CanRead(M.SalesInvoice.Description));
             Assert.True(acl.CanWrite(M.SalesInvoice.Description));
         }
@@ -454,7 +454,7 @@ namespace Allors.Domain
 
             Assert.True(salesInvoice.Strategy.IsNewInSession);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(salesInvoice);
+            var acl = new AccessControlLists(localAdmin)[salesInvoice];
             Assert.False(acl.CanRead(M.SalesInvoice.Description));
             Assert.False(acl.CanWrite(M.SalesInvoice.Description));
 
@@ -462,7 +462,7 @@ namespace Allors.Domain
 
             Assert.False(salesInvoice.Strategy.IsNewInSession);
 
-            acl = new AccessControlListFactory(localAdmin).Create(salesInvoice);
+            acl = new AccessControlLists(localAdmin)[salesInvoice];
             Assert.False(acl.CanRead(M.SalesInvoice.Description));
             Assert.False(acl.CanWrite(M.SalesInvoice.Description));
         }
@@ -488,7 +488,7 @@ namespace Allors.Domain
 
             this.SetIdentity(localAdmin.UserName);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(internalOrganisation);
+            var acl = new AccessControlLists(localAdmin)[internalOrganisation];
             Assert.True(acl.CanRead(M.Organisation.Name));
             Assert.False(acl.CanWrite(M.Organisation.Name));
         }
@@ -515,7 +515,7 @@ namespace Allors.Domain
 
             this.SetIdentity(localAdmin.UserName);
 
-            var acl = new AccessControlListFactory(localAdmin).Create(userGroup);
+            var acl = new AccessControlLists(localAdmin)[userGroup];
             Assert.True(acl.CanRead(M.UserGroup.Members));
             Assert.False(acl.CanWrite(M.UserGroup.Members));
         }

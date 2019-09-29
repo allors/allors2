@@ -126,7 +126,7 @@ namespace Allors.Domain
 
             this.SetIdentity(worker.UserName);
 
-            var acl = new AccessControlListFactory(worker).Create(inventoryAssignment);
+            var acl = new AccessControlLists(worker)[inventoryAssignment];
             Assert.True(acl.CanRead(M.WorkEffortInventoryAssignment.InventoryItem));
             Assert.True(acl.CanWrite(M.WorkEffortInventoryAssignment.InventoryItem));
             Assert.True(acl.CanRead(M.WorkEffortInventoryAssignment.Quantity));
@@ -190,7 +190,7 @@ namespace Allors.Domain
 
             this.SetIdentity(worker.UserName);
 
-            var acl = new AccessControlListFactory(worker).Create(inventoryAssignment);
+            var acl = new AccessControlLists(worker)[inventoryAssignment];
             Assert.False(acl.CanRead(M.WorkEffortInventoryAssignment.InventoryItem));
             Assert.False(acl.CanWrite(M.WorkEffortInventoryAssignment.InventoryItem));
             Assert.False(acl.CanRead(M.WorkEffortInventoryAssignment.Quantity));
@@ -234,7 +234,7 @@ namespace Allors.Domain
 
             this.SetIdentity(worker.UserName);
 
-            var acl = new AccessControlListFactory(worker).Create(workTask);
+            var acl = new AccessControlLists(worker)[workTask];
             Assert.True(acl.CanRead(M.WorkTask.WorkDone));
             Assert.True(acl.CanWrite(M.WorkTask.WorkDone));
         }
@@ -270,7 +270,7 @@ namespace Allors.Domain
 
             this.SetIdentity(worker.UserName);
 
-            var acl = new AccessControlListFactory(worker).Create(workTask);
+            var acl = new AccessControlLists(worker)[workTask];
             Assert.False(acl.CanRead(M.WorkTask.WorkDone));
             Assert.False(acl.CanWrite(M.WorkTask.WorkDone));
         }
@@ -312,7 +312,7 @@ namespace Allors.Domain
 
             this.SetIdentity(worker.UserName);
 
-            var acl = new AccessControlListFactory(worker).Create(timeEntry);
+            var acl = new AccessControlLists(worker)[timeEntry];
             Assert.True(acl.CanRead(M.TimeEntry.ThroughDate));
             Assert.True(acl.CanWrite(M.TimeEntry.ThroughDate));
         }
@@ -356,7 +356,7 @@ namespace Allors.Domain
 
             this.SetIdentity(worker.UserName);
 
-            var acl = new AccessControlListFactory(worker).Create(timeEntry);
+            var acl = new AccessControlLists(worker)[timeEntry];
             Assert.False(acl.CanRead(M.TimeEntry.ThroughDate));
             Assert.False(acl.CanWrite(M.TimeEntry.ThroughDate));
         }
@@ -383,7 +383,7 @@ namespace Allors.Domain
 
             this.SetIdentity(worker.UserName);
 
-            var acl = new AccessControlListFactory(worker).Create(internalOrganisation);
+            var acl = new AccessControlLists(worker)[internalOrganisation];
             Assert.True(acl.CanRead(M.Organisation.Name));
             Assert.False(acl.CanWrite(M.Organisation.Name));
         }

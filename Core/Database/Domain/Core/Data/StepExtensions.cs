@@ -14,26 +14,26 @@ namespace Allors.Domain
 
     public static class StepExtensions
     {
-        public static object Get(this Step step, IObject allorsObject, IAccessControlListFactory aclFactory)
+        public static object Get(this Step step, IObject @object, IAccessControlLists acls)
         {
-            var acl = aclFactory.Create(allorsObject);
+            var acl = acls[@object];
             if (acl.CanRead(step.PropertyType))
             {
                 if (step.ExistNext)
                 {
-                    var currentValue = step.PropertyType.Get(allorsObject.Strategy);
+                    var currentValue = step.PropertyType.Get(@object.Strategy);
 
                     if (currentValue != null)
                     {
                         if (currentValue is IObject)
                         {
-                            return step.Next.Get((IObject)currentValue, aclFactory);
+                            return step.Next.Get((IObject)currentValue, acls);
                         }
 
                         var results = new HashSet<object>();
                         foreach (var item in (IEnumerable)currentValue)
                         {
-                            var nextValueResult = step.Next.Get((IObject)item, aclFactory);
+                            var nextValueResult = step.Next.Get((IObject)item, acls);
                             if (nextValueResult is HashSet<object>)
                             {
                                 results.UnionWith((HashSet<object>)nextValueResult);
@@ -48,22 +48,22 @@ namespace Allors.Domain
                     }
                 }
 
-                return step.PropertyType.Get(allorsObject.Strategy);
+                return step.PropertyType.Get(@object.Strategy);
             }
 
             return null;
         }
 
-        public static bool Set(this Step step, IObject allorsObject, IAccessControlListFactory aclFactory, object value)
+        public static bool Set(this Step step, IObject @object, IAccessControlLists acls, object value)
         {
-            var acl = aclFactory.Create(allorsObject);
+            var acl = acls[@object];
             if (step.ExistNext)
             {
                 if (acl.CanRead(step.PropertyType))
                 {
-                    if (step.PropertyType.Get(allorsObject.Strategy) is IObject property)
+                    if (step.PropertyType.Get(@object.Strategy) is IObject property)
                     {
-                        step.Next.Set(property, aclFactory, value);
+                        step.Next.Set(property, acls, value);
                         return true;
                     }
                 }
@@ -75,7 +75,7 @@ namespace Allors.Domain
             {
                 if (acl.CanWrite(roleType))
                 {
-                    roleType.Set(allorsObject.Strategy, value);
+                    roleType.Set(@object.Strategy, value);
                     return true;
                 }
             }
@@ -83,9 +83,9 @@ namespace Allors.Domain
             return false;
         }
 
-        public static void Ensure(this Step step, IObject allorsObject, IAccessControlListFactory aclFactory)
+        public static void Ensure(this Step step, IObject @object, IAccessControlLists acls)
         {
-            var acl = aclFactory.Create(allorsObject);
+            var acl = acls[@object];
 
             if (step.PropertyType is RoleType roleType)
             {
@@ -98,13 +98,13 @@ namespace Allors.Domain
                 {
                     if (acl.CanRead(roleType))
                     {
-                        var role = roleType.Get(allorsObject.Strategy);
+                        var role = roleType.Get(@object.Strategy);
                         if (role == null)
                         {
                             if (acl.CanWrite(roleType))
                             {
-                                role = allorsObject.Strategy.Session.Create((Class)roleType.ObjectType);
-                                roleType.Set(allorsObject.Strategy, role);
+                                role = @object.Strategy.Session.Create((Class)roleType.ObjectType);
+                                roleType.Set(@object.Strategy, role);
                             }
                         }
 
@@ -112,7 +112,7 @@ namespace Allors.Domain
                         {
                             if (role is IObject next)
                             {
-                                step.Next.Ensure(next, aclFactory);
+                                step.Next.Ensure(next, acls);
                             }
                         }
                     }
@@ -128,11 +128,11 @@ namespace Allors.Domain
 
                 if (acl.CanRead(associationType))
                 {
-                    if (associationType.Get(allorsObject.Strategy) is IObject association)
+                    if (associationType.Get(@object.Strategy) is IObject association)
                     {
                         if (step.ExistNext)
                         {
-                            step.Next.Ensure(association, aclFactory);
+                            step.Next.Ensure(association, acls);
                         }
                     }
                 }

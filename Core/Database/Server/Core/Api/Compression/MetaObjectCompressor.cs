@@ -9,13 +9,13 @@ namespace Allors.Server
     using Domain;
     using Meta;
 
-    internal class MetaObjectCompression
+    internal class MetaObjectCompressor
     {
         private readonly Dictionary<IMetaObject, string> indexByMetaObject;
 
         private int counter;
 
-        internal MetaObjectCompression()
+        internal MetaObjectCompressor()
         {
             this.indexByMetaObject = new Dictionary<IMetaObject, string>();
             this.counter = 0;
@@ -30,7 +30,7 @@ namespace Allors.Server
 
             index = (++this.counter).ToString();
             this.indexByMetaObject.Add(metaObject, index);
-            return $":{index}:{metaObject.Id.ToString("D").ToLower()}";
+            return $"{Compression.IndexMarker}{index}{Compression.IndexMarker}{metaObject.Id.ToString("D").ToLower()}";
         }
     }
 }

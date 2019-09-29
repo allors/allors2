@@ -66,7 +66,7 @@ namespace Allors.Server
 
                             if (fetch.Step != null)
                             {
-                                var aclCache = new AccessControlListFactory(this.user);
+                                var aclCache = new AccessControlLists(this.user);
 
                                 var propertyType = fetch.Step.End.PropertyType;
 

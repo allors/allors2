@@ -15,7 +15,7 @@ namespace Tests
     using Allors.Data;
     using Allors.Domain;
     using Allors.Meta;
-
+    using Moq;
     using Xunit;
 
     public class TreeTests : DomainTest
@@ -29,30 +29,27 @@ namespace Tests
 
             var c1A = new C1Builder(this.Session).WithC1AllorsString("c1A").WithC1C2One2Many(c2A).Build();
 
-            var c1B =
-                new C1Builder(this.Session).WithC1AllorsString("c1B")
+            var c1B = new C1Builder(this.Session).WithC1AllorsString("c1B")
                     .WithC1C2One2Many(c2B)
                     .WithC1C2One2Many(c2C)
                     .Build();
 
             this.Session.Derive(true);
 
-            var aclFactoryMock = this.AclFactoryMock;
-
             var tree = new[] { new TreeNode(M.C1.C1C2One2Manies) };
 
-            var resolved = new Dictionary<IObject, IAccessControlList>();
-            tree.Resolve(c1A, aclFactoryMock.Object, resolved);
+            var resolved = new HashSet<IObject>();
+            tree.Resolve(c1A, this.AclsMock.Object, resolved);
 
             Assert.Single(resolved);
-            Assert.True(resolved.ContainsKey(c2A));
+            Assert.Contains(c2A, resolved);
 
-            resolved = new Dictionary<IObject, IAccessControlList>();
-            tree.Resolve(c1B, aclFactoryMock.Object, resolved);
+            resolved = new HashSet<IObject>();
+            tree.Resolve(c1B, this.AclsMock.Object, resolved);
 
             Assert.Equal(2, resolved.Count);
-            Assert.True(resolved.ContainsKey(c2B));
-            Assert.True(resolved.ContainsKey(c2C));
+            Assert.Contains(c2B, resolved);
+            Assert.Contains(c2C, resolved);
         }
 
         [Fact]
@@ -92,28 +89,27 @@ namespace Tests
 
             var prefetchPolicy = tree.BuildPrefetchPolicy();
 
-            var resolved = new Dictionary<IObject, IAccessControlList>();
-            var aclFactoryMock = this.AclFactoryMock;
+            var resolved = new HashSet<IObject>();
 
             this.Session.Prefetch(prefetchPolicy, c1A);
 
-            tree.Resolve(c1A, aclFactoryMock.Object, resolved);
+            tree.Resolve(c1A, this.AclsMock.Object, resolved);
 
             Assert.Equal(2, resolved.Count);
-            Assert.True(resolved.ContainsKey(c1C));
-            Assert.True(resolved.ContainsKey(c1D));
+            Assert.Contains(c1C, resolved);
+            Assert.Contains(c1D, resolved);
 
-            resolved = new Dictionary<IObject, IAccessControlList>();
+            resolved = new HashSet<IObject>();
 
             this.Session.Prefetch(prefetchPolicy, c1B);
-            tree.Resolve(c1B, aclFactoryMock.Object, resolved);
+            tree.Resolve(c1B, this.AclsMock.Object, resolved);
 
             Assert.Equal(5, resolved.Count);
-            Assert.True(resolved.ContainsKey(c1E));
-            Assert.True(resolved.ContainsKey(c2A));
-            Assert.True(resolved.ContainsKey(c2B));
-            Assert.True(resolved.ContainsKey(c2C));
-            Assert.True(resolved.ContainsKey(c2D));
+            Assert.Contains(c1E, resolved);
+            Assert.Contains(c2A, resolved);
+            Assert.Contains(c2B, resolved);
+            Assert.Contains(c2C, resolved);
+            Assert.Contains(c2D, resolved);
         }
 
         [Fact]

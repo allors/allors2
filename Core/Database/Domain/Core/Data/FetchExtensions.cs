@@ -9,10 +9,10 @@ namespace Allors.Domain
 
     public static class FetchExtensions
     {
-        public static object Get(this Fetch fetch, IObject allorsObject, IAccessControlListFactory aclFactory) => fetch.Step == null ? allorsObject : fetch.Step.Get(allorsObject, aclFactory);
+        public static object Get(this Fetch fetch, IObject allorsObject, IAccessControlLists acls) => fetch.Step == null ? allorsObject : fetch.Step.Get(allorsObject, acls);
 
-        public static bool Set(this Fetch fetch, IObject allorsObject, IAccessControlListFactory aclFactory, object value) => fetch.Step != null && fetch.Step.Set(allorsObject, aclFactory, value);
+        public static bool Set(this Fetch fetch, IObject allorsObject, IAccessControlLists acls, object value) => fetch.Step != null && fetch.Step.Set(allorsObject, acls, value);
 
-        public static void Ensure(this Fetch fetch, IObject allorsObject, IAccessControlListFactory aclFactory) => fetch.Step.Ensure(allorsObject, aclFactory);
+        public static void Ensure(this Fetch fetch, IObject allorsObject, IAccessControlLists acls) => fetch.Step.Ensure(allorsObject, acls);
     }
 }

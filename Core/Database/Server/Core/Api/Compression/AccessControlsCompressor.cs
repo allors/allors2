@@ -9,26 +9,29 @@ namespace Allors.Server
     using System.Linq;
     using Domain;
 
-    internal class AccessControlsCompression
+    internal class AccessControlsCompressor
     {
+        private readonly AccessControlLists acls;
         private readonly Dictionary<string, string> indexBySortedAccessControlIds;
 
         private int counter;
 
-        internal AccessControlsCompression()
+        internal AccessControlsCompressor(AccessControlLists acls)
         {
+            this.acls = acls;
             this.indexBySortedAccessControlIds = new Dictionary<string, string>();
             this.counter = 0;
         }
 
-        public string Write(IAccessControlList acl)
+        public string Write(IObject @object)
         {
-            if (acl.AccessControls == null)
+            var accessControls = this.acls[@object].AccessControls;
+            if (accessControls == null)
             {
                 return null;
             }
 
-            var sortedAccessControlIds = string.Join(',', acl.AccessControls.OrderBy(v => v.Id).Select(v => v.Id));
+            var sortedAccessControlIds = string.Join(Compression.ItemSeparator, accessControls.OrderBy(v => v.Id).Select(v => v.Id));
             if (this.indexBySortedAccessControlIds.TryGetValue(sortedAccessControlIds, out var index))
             {
                 return index;
@@ -36,7 +39,7 @@ namespace Allors.Server
 
             index = (++this.counter).ToString();
             this.indexBySortedAccessControlIds.Add(sortedAccessControlIds, index);
-            return $":{index}:{sortedAccessControlIds}";
+            return $"{Compression.IndexMarker}{index}{Compression.IndexMarker}{sortedAccessControlIds}";
         }
     }
 }

@@ -19,22 +19,22 @@ namespace Allors.Server
         private readonly ISession session;
         private readonly SyncRequest syncRequest;
         private readonly User user;
-        private readonly AccessControlListFactory aclFactory;
+        private readonly AccessControlLists acls;
 
-        private readonly MetaObjectCompression metaObjectCompression;
-        private readonly AccessControlsCompression accessControlsCompression;
-        private readonly DeniedPermissionsCompression deniedPermissionsCompression;
+        private readonly MetaObjectCompressor metaObjectCompressor;
+        private readonly AccessControlsCompressor accessControlsCompressor;
+        private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
 
         public SyncResponseBuilder(ISession session, User user, SyncRequest syncRequest)
         {
             this.session = session;
             this.user = user;
             this.syncRequest = syncRequest;
-            this.aclFactory = new AccessControlListFactory(this.user);
+            this.acls = new AccessControlLists(this.user);
 
-            this.metaObjectCompression = new MetaObjectCompression();
-            this.accessControlsCompression = new AccessControlsCompression();
-            this.deniedPermissionsCompression = new DeniedPermissionsCompression();
+            this.metaObjectCompressor = new MetaObjectCompressor();
+            this.accessControlsCompressor = new AccessControlsCompressor(this.acls);
+            this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(this.acls);
         }
 
         public SyncResponse Build()
@@ -58,7 +58,7 @@ namespace Allors.Server
 
             SyncResponseRole CreateSyncResponseRole(IObject @object, IRoleType roleType)
             {
-                var syncResponseRole = new SyncResponseRole { T = this.metaObjectCompression.Write(roleType) };
+                var syncResponseRole = new SyncResponseRole { T = this.metaObjectCompressor.Write(roleType) };
 
                 if (roleType.ObjectType.IsUnit)
                 {
@@ -86,7 +86,7 @@ namespace Allors.Server
                 Objects = objects.Select(v =>
                 {
                     var @class = (Class)v.Strategy.Class;
-                    var acl = this.aclFactory.Create(v);
+                    var acl = this.acls[v];
 
                     return new SyncResponseObject
                     {
@@ -97,8 +97,8 @@ namespace Allors.Server
                             .Where(w => acl.CanRead(w))
                             .Select(w => CreateSyncResponseRole(v, w))
                             .ToArray(),
-                        A = this.accessControlsCompression.Write(acl),
-                        D = this.deniedPermissionsCompression.Write(acl),
+                        A = this.accessControlsCompressor.Write(v),
+                        D = this.deniedPermissionsCompressor.Write(v),
                     };
                 }).ToArray(),
             };

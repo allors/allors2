@@ -29,7 +29,7 @@ namespace Allors.Domain
             var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
             this.SetIdentity(Users.AdministratorUserName);
 
-            var acl = new AccessControlListFactory(administrator).Create(workTask);
+            var acl = new AccessControlLists(administrator)[workTask];
             Assert.True(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
             Assert.False(acl.CanExecute(M.WorkEffort.Complete));
@@ -56,7 +56,7 @@ namespace Allors.Domain
             var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
             this.SetIdentity(Users.AdministratorUserName);
 
-            var acl = new AccessControlListFactory(administrator).Create(workTask);
+            var acl = new AccessControlLists(administrator)[workTask];
             Assert.True(acl.CanExecute(M.WorkEffort.Invoice));
             Assert.True(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
@@ -99,7 +99,7 @@ namespace Allors.Domain
             var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
             this.SetIdentity(Users.AdministratorUserName);
 
-            var acl = new AccessControlListFactory(administrator).Create(timeEntry);
+            var acl = new AccessControlLists(administrator)[timeEntry];
             Assert.False(acl.CanWrite(M.TimeEntry.AmountOfTime));
         }
     }

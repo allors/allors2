@@ -13,7 +13,7 @@ namespace Allors.Domain
     /// </summary>
     public interface IAccessControlList
     {
-        IAccessControlListFactory AccessControlListFactory { get; }
+        IAccessControlLists AccessControlLists { get; }
 
         IEnumerable<AccessControl> AccessControls { get; }
 

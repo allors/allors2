@@ -32,11 +32,11 @@ namespace Tests
             {
                 session.Commit();
 
-                var aclFactory = new AccessControlListFactory(guest);
+                var acls = new AccessControlLists(guest);
                 foreach (Object aco in (IObject[])session.Extent(M.Organisation.ObjectType))
                 {
                     // When
-                    var accessList = aclFactory.Create(aco);
+                    var accessList = acls[aco];
 
                     // Then
                     Assert.False(accessList.CanExecute(M.Organisation.JustDoIt));
@@ -74,7 +74,7 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlListFactory(person).Create(organisation);
+                var acl = new AccessControlLists(person)[organisation];
 
                 Assert.True(acl.CanRead(M.Organisation.Name));
 
@@ -110,7 +110,7 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlListFactory(person).Create(organisation);
+                var acl = new AccessControlLists(person)[organisation];
 
                 Assert.True(acl.CanRead(M.Organisation.Name));
 
@@ -151,7 +151,7 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlListFactory(person).Create(organisation);
+                var acl = new AccessControlLists(person)[organisation];
 
                 Assert.False(acl.CanRead(M.Organisation.Name));
 
@@ -192,7 +192,7 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlListFactory(person).Create(organisation);
+                var acl = new AccessControlLists(person)[organisation];
 
                 Assert.False(acl.CanRead(M.Organisation.Name));
 
@@ -227,14 +227,14 @@ namespace Tests
 
                 this.Session.Derive(true);
 
-                var acl = new AccessControlListFactory(person).Create(organisation);
+                var acl = new AccessControlLists(person)[organisation];
 
                 accessControl.RemoveSubject(person);
                 accessControl.AddSubject(person2);
 
                 this.Session.Derive(true);
 
-                acl = new AccessControlListFactory(person).Create(organisation);
+                acl = new AccessControlLists(person)[organisation];
 
                 Assert.False(acl.CanRead(M.Organisation.Name));
 
@@ -269,13 +269,13 @@ namespace Tests
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
-                var acl = new AccessControlListFactory(person).Create(organisation);
+                var acl = new AccessControlLists(person)[organisation];
 
                 Assert.True(acl.CanRead(M.Organisation.Name));
 
                 organisation.AddDeniedPermission(readOrganisationName);
 
-                acl = new AccessControlListFactory(person).Create(organisation);
+                acl = new AccessControlLists(person)[organisation];
 
                 Assert.False(acl.CanRead(M.Organisation.Name));
 

@@ -1267,7 +1267,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlListFactory(this.Session.GetUser()).Create(shipment);
+            var acl = new AccessControlLists(this.Session.GetUser())[shipment];
             Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
             Assert.True(acl.CanExecute(M.CustomerShipment.Cancel));
         }
@@ -1292,7 +1292,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlListFactory(this.Session.GetUser()).Create(shipment);
+            var acl = new AccessControlLists(this.Session.GetUser())[shipment];
             Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
         }
 
@@ -1366,7 +1366,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var acl = new AccessControlListFactory(this.Session.GetUser()).Create(shipment);
+            var acl = new AccessControlLists(this.Session.GetUser())[shipment];
             Assert.Equal(new ShipmentStates(this.Session).Shipped, shipment.ShipmentState);
             Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
             Assert.False(acl.CanWrite(M.Shipment.HandlingInstruction));

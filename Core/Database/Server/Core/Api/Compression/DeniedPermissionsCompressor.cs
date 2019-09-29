@@ -8,28 +8,30 @@ namespace Allors.Server
     using System.Collections.Generic;
     using System.Linq;
     using Domain;
-    using Org.BouncyCastle.Asn1.X509;
 
-    internal class DeniedPermissionsCompression
+    internal class DeniedPermissionsCompressor
     {
+        private readonly AccessControlLists acls;
         private readonly Dictionary<string, string> indexBySortedDeniedPermissionIds;
 
         private int counter;
 
-        internal DeniedPermissionsCompression()
+        internal DeniedPermissionsCompressor(AccessControlLists acls)
         {
+            this.acls = acls;
             this.indexBySortedDeniedPermissionIds = new Dictionary<string, string>();
             this.counter = 0;
         }
 
-        public string Write(IAccessControlList acl)
+        public string Write(IObject @object)
         {
-            if (acl.DeniedPermissionIds == null)
+            var deniedPermissionIds = this.acls[@object].DeniedPermissionIds;
+            if (deniedPermissionIds == null)
             {
                 return null;
             }
 
-            var sortedDeniedPermissionIds = string.Join(',', acl.DeniedPermissionIds.OrderBy(v => v));
+            var sortedDeniedPermissionIds = string.Join(Compression.ItemSeparator, deniedPermissionIds.OrderBy(v => v));
             if (this.indexBySortedDeniedPermissionIds.TryGetValue(sortedDeniedPermissionIds, out var index))
             {
                 return index;
@@ -37,7 +39,7 @@ namespace Allors.Server
 
             index = (++this.counter).ToString();
             this.indexBySortedDeniedPermissionIds.Add(sortedDeniedPermissionIds, index);
-            return $":{index}:{sortedDeniedPermissionIds}";
+            return $"{Compression.IndexMarker}{index}{Compression.IndexMarker}{sortedDeniedPermissionIds}";
         }
     }
 }

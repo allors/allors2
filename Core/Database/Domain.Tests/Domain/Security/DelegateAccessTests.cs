@@ -20,7 +20,7 @@ namespace Tests
             var administrator = new People(this.Session).FindBy(M.Person.UserName, "Administrator");
             var accessClass = new AccessClassBuilder(this.Session).Build();
 
-            var acl = new AccessControlListFactory(administrator).Create(accessClass);
+            var acl = new AccessControlLists(administrator)[accessClass];
             Assert.True(acl.CanRead(M.AccessClass.Property));
             Assert.True(acl.CanWrite(M.AccessClass.Property));
 
@@ -37,7 +37,7 @@ namespace Tests
             var accessClass = new AccessClassBuilder(this.Session).WithBlock(true).Build();
 
             // Use default security from Singleton
-            var acl = new AccessControlListFactory(administrator).Create(accessClass);
+            var acl = new AccessControlLists(administrator)[accessClass];
             Assert.True(acl.CanRead(M.AccessClass.Property));
             Assert.True(acl.CanWrite(M.AccessClass.Property));
 

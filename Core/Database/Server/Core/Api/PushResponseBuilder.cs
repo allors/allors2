@@ -17,14 +17,14 @@ namespace Allors.Server
         private readonly ISession session;
         private readonly PushRequest pushRequest;
         private readonly User user;
-        private readonly AccessControlListFactory aclFactory;
+        private readonly AccessControlLists acls;
 
         public PushResponseBuilder(ISession session, User user, PushRequest pushRequest)
         {
             this.session = session;
             this.user = user;
             this.pushRequest = pushRequest;
-            this.aclFactory = new AccessControlListFactory(this.user);
+            this.acls = new AccessControlLists(this.user);
         }
 
         public PushResponse Build()
@@ -165,7 +165,7 @@ namespace Allors.Server
             {
                 var composite = (Composite)obj.Strategy.Class;
                 var roleTypes = composite.WorkspaceRoleTypes;
-                var acl = this.aclFactory.Create(obj);
+                var acl = this.acls[obj];
 
                 var roleTypeName = pushRequestRole.T;
                 var roleType = roleTypes.FirstOrDefault(v => v.PropertyName.Equals(roleTypeName));
