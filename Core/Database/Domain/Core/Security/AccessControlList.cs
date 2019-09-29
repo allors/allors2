@@ -8,6 +8,7 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using Allors;
     using Allors.Meta;
 
@@ -16,10 +17,10 @@ namespace Allors.Domain
     /// </summary>
     public class AccessControlList : IAccessControlList
     {
-        private readonly Object @object;
         private readonly Guid classId;
 
         private bool lazyLoaded;
+
         private AccessControl[] accessControls;
         private HashSet<long> deniedPermissions;
         private PermissionCache permissionCache;
@@ -28,26 +29,31 @@ namespace Allors.Domain
         internal AccessControlList(IAccessControlListFactory accessControlListFactory, IObject @object)
         {
             this.AccessControlListFactory = accessControlListFactory;
-            this.@object = @object as Object;
-            this.classId = this.@object?.Strategy.Class.Id ?? Guid.Empty;
+            this.Object = @object as Object;
+            this.classId = this.Object.Strategy.Class.Id;
 
             this.lazyLoaded = false;
         }
 
+        public Object Object { get; }
+
         public IAccessControlListFactory AccessControlListFactory { get; }
 
-        public string SortedWorkspacePermissionIds
+        public IEnumerable<AccessControl> AccessControls
         {
             get
             {
                 this.LazyLoad();
+                return this.accessControls;
+            }
+        }
 
-                var workspacePermissionIds = string.Join(
-                    ",",
-                    this.permissionCache.SortedWorkspacePermissionIdsByClassId[this.classId]
-                        .Select(v => this.AccessControlListFactory.EffectivePermissionIdsByAccessControl.Any(w => w.Value.Contains(v))));
-
-                return workspacePermissionIds;
+        public IEnumerable<long> DeniedPermissionIds
+        {
+            get
+            {
+                this.LazyLoad();
+                return this.deniedPermissions;
             }
         }
 
@@ -63,7 +69,7 @@ namespace Allors.Domain
 
         public bool IsPermitted(IOperandType operandType, Operations operation)
         {
-            if (this.@object == null)
+            if (this.Object == null)
             {
                 return operation == Operations.Read;
             }
@@ -90,11 +96,11 @@ namespace Allors.Domain
         {
             if (!this.lazyLoaded)
             {
-                var strategy = this.@object.Strategy;
+                var strategy = this.Object.Strategy;
                 var session = strategy.Session;
 
                 SecurityToken[] securityTokens;
-                if (this.@object is DelegatedAccessControlledObject controlledObject)
+                if (this.Object is DelegatedAccessControlledObject controlledObject)
                 {
                     var delegatedAccess = controlledObject.DelegateAccess();
                     securityTokens = delegatedAccess.SecurityTokens;
@@ -102,22 +108,22 @@ namespace Allors.Domain
                     var delegatedAccessDeniedPermissions = delegatedAccess.DeniedPermissions;
                     if (delegatedAccessDeniedPermissions != null && delegatedAccessDeniedPermissions.Length > 0)
                     {
-                        this.deniedPermissions = this.@object.DeniedPermissions.Count > 0 ?
-                                                     new HashSet<long>(this.@object.DeniedPermissions.Union(delegatedAccessDeniedPermissions).Select(v => v.Id)) :
+                        this.deniedPermissions = this.Object.DeniedPermissions.Count > 0 ?
+                                                     new HashSet<long>(this.Object.DeniedPermissions.Union(delegatedAccessDeniedPermissions).Select(v => v.Id)) :
                                                      new HashSet<long>(delegatedAccessDeniedPermissions.Select(v => v.Id));
                     }
-                    else if (this.@object.DeniedPermissions.Count > 0)
+                    else if (this.Object.DeniedPermissions.Count > 0)
                     {
-                        this.deniedPermissions = new HashSet<long>(this.@object.DeniedPermissions.Select(v => v.Id));
+                        this.deniedPermissions = new HashSet<long>(this.Object.DeniedPermissions.Select(v => v.Id));
                     }
                 }
                 else
                 {
-                    securityTokens = this.@object.SecurityTokens;
+                    securityTokens = this.Object.SecurityTokens;
 
-                    if (this.@object.DeniedPermissions.Count > 0)
+                    if (this.Object.DeniedPermissions.Count > 0)
                     {
-                        this.deniedPermissions = new HashSet<long>(this.@object.DeniedPermissions.Select(v => v.Id));
+                        this.deniedPermissions = new HashSet<long>(this.Object.DeniedPermissions.Select(v => v.Id));
                     }
                 }
 

@@ -22,17 +22,6 @@ namespace Allors.Data
             return prefetchPolicyBuilder.Build();
         }
 
-        public static void Resolve(this TreeNode[] treeNodes, IObject obj, HashSet<IObject> objects)
-        {
-            if (obj != null)
-            {
-                foreach (var node in treeNodes)
-                {
-                    node.Resolve(obj, objects);
-                }
-            }
-        }
-
         public static Protocol.Data.Node[] Save(this TreeNode[] treeNodes) =>
             treeNodes.Select(v => v.Save()).ToArray();
     }

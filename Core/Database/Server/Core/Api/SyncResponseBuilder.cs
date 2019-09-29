@@ -19,16 +19,22 @@ namespace Allors.Server
         private readonly ISession session;
         private readonly SyncRequest syncRequest;
         private readonly User user;
-        private readonly SyncResponseContext context;
         private readonly AccessControlListFactory aclFactory;
+
+        private readonly MetaObjectCompression metaObjectCompression;
+        private readonly AccessControlsCompression accessControlsCompression;
+        private readonly DeniedPermissionsCompression deniedPermissionsCompression;
 
         public SyncResponseBuilder(ISession session, User user, SyncRequest syncRequest)
         {
             this.session = session;
             this.user = user;
             this.syncRequest = syncRequest;
-            this.context = new SyncResponseContext();
             this.aclFactory = new AccessControlListFactory(this.user);
+
+            this.metaObjectCompression = new MetaObjectCompression();
+            this.accessControlsCompression = new AccessControlsCompression();
+            this.deniedPermissionsCompression = new DeniedPermissionsCompression();
         }
 
         public SyncResponse Build()
@@ -52,7 +58,7 @@ namespace Allors.Server
 
             SyncResponseRole CreateSyncResponseRole(IObject @object, IRoleType roleType)
             {
-                var syncResponseRole = new SyncResponseRole { T = this.context.Write(roleType) };
+                var syncResponseRole = new SyncResponseRole { T = this.metaObjectCompression.Write(roleType) };
 
                 if (roleType.ObjectType.IsUnit)
                 {
@@ -91,7 +97,8 @@ namespace Allors.Server
                             .Where(w => acl.CanRead(w))
                             .Select(w => CreateSyncResponseRole(v, w))
                             .ToArray(),
-                        P = this.context.Write(acl),
+                        A = this.accessControlsCompression.Write(acl),
+                        D = this.deniedPermissionsCompression.Write(acl),
                     };
                 }).ToArray(),
             };

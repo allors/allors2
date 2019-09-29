@@ -31,9 +31,14 @@ namespace Allors.Protocol.Remote.Sync
         public SyncResponseRole[] R { get; set; }
 
         /// <summary>
-        /// Gets or sets the permissions.
+        /// Gets or sets the access controls.
         /// </summary>
-        public string P { get; set; }
+        public string A { get; set; }
+
+        /// <summary>
+        /// Gets or sets the denied permissions.
+        /// </summary>
+        public string D { get; set; }
 
         public override string ToString() => $"{this.T} [{this.I}:{this.V}]";
     }

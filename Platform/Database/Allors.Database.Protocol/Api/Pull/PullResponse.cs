@@ -9,8 +9,6 @@ namespace Allors.Protocol.Remote.Pull
 
     public class PullResponse
     {
-        public string UserSecurityHash { get; set; }
-
         public string[][] Objects { get; set; }
 
         public Dictionary<string, string> NamedObjects { get; set; }

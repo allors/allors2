@@ -12,25 +12,10 @@ namespace Tests
     using Allors.Domain;
     using Allors.Meta;
 
-    using Moq;
-
     using Xunit;
 
     public class PathTests : DomainTest
     {
-        private static Mock<IAccessControlListFactory> AclFactoryMock
-        {
-            get
-            {
-                var aclMock = new Mock<IAccessControlList>();
-                aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
-                aclMock.Setup(acl => acl.CanRead(It.IsAny<IConcreteRoleType>())).Returns(true);
-                var aclFactoryMock = new Mock<IAccessControlListFactory>();
-                aclFactoryMock.Setup(aclFactory => aclFactory.Create(It.IsAny<IObject>())).Returns(aclMock.Object);
-                return aclFactoryMock;
-            }
-        }
-
         [Fact]
         public void One2ManyWithPropertyTypes()
         {
@@ -53,7 +38,7 @@ namespace Tests
 
             var path = new Fetch(M.C1.C1C2One2Manies, M.C2.C2AllorsString);
 
-            var aclFactoryMock = AclFactoryMock;
+            var aclFactoryMock = this.AclFactoryMock;
 
             var result = (ISet<object>)path.Get(c1a, aclFactoryMock.Object);
             Assert.Equal(1, result.Count);
@@ -87,7 +72,7 @@ namespace Tests
 
             var path = new Fetch(MetaC1.Instance.C1C2One2Manies, MetaC2.Instance.C2AllorsString);
 
-            var aclFactoryMock = AclFactoryMock;
+            var aclFactoryMock = this.AclFactoryMock;
 
             var result = (ISet<object>)path.Get(c1a, aclFactoryMock.Object);
             Assert.Equal(1, result.Count);
@@ -121,7 +106,7 @@ namespace Tests
 
             Fetch.TryParse(M.C2.ObjectType, "C1WhereC1C2One2Many", out var fetch);
 
-            var aclFactoryMock = AclFactoryMock;
+            var aclFactoryMock = this.AclFactoryMock;
 
             var result = (C1)fetch.Get(c2A, aclFactoryMock.Object);
             Assert.Equal(result, c1A);

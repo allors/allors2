@@ -25,8 +25,6 @@ namespace Allors.Workspace
 
         public SyncRequest Diff(PullResponse response)
         {
-            var userSecurityHash = response.UserSecurityHash;
-
             var syncRequest = new SyncRequest
             {
                 Objects = response.Objects.Where(v =>
@@ -34,7 +32,7 @@ namespace Allors.Workspace
                             var id = long.Parse(v[0]);
                             var version = long.Parse(v[1]);
                             this.workspaceObjectById.TryGetValue(id, out var workspaceObject);
-                            return workspaceObject == null || !workspaceObject.Version.Equals(version) || !workspaceObject.UserSecurityHash.Equals(userSecurityHash);
+                            return workspaceObject == null || !workspaceObject.Version.Equals(version);
                         }).Select(v => v[0]).ToArray(),
             };
 
@@ -51,6 +49,17 @@ namespace Allors.Workspace
             }
         }
 
+        public IWorkspaceObject Get(long id)
+        {
+            var workspaceObject = this.workspaceObjectById[id];
+            if (workspaceObject == null)
+            {
+                throw new Exception($"Object with id {id} is not present.");
+            }
+
+            return workspaceObject;
+        }
+
         /// <summary>
         /// Invalidates the object in order to force a sync on next pull.
         /// </summary>
@@ -61,17 +70,6 @@ namespace Allors.Workspace
             {
                 workspaceObject.UserSecurityHash = "#";
             }
-        }
-
-        public IWorkspaceObject Get(long id)
-        {
-            var workspaceObject = this.workspaceObjectById[id];
-            if (workspaceObject == null)
-            {
-                throw new Exception($"Object with id {id} is not present.");
-            }
-
-            return workspaceObject;
         }
 
         internal IEnumerable<IWorkspaceObject> Get(IComposite objectType)

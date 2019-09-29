@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     using Allors.Meta;
 
     /// <summary>
@@ -14,7 +15,11 @@ namespace Allors.Domain
     {
         IAccessControlListFactory AccessControlListFactory { get; }
 
-        string SortedWorkspacePermissionIds { get; }
+        IEnumerable<AccessControl> AccessControls { get; }
+
+        IEnumerable<long> DeniedPermissionIds { get; }
+
+        Object Object { get; }
 
         bool CanRead(IPropertyType propertyType);
 

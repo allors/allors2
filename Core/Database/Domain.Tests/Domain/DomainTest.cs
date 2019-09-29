@@ -15,6 +15,7 @@ namespace Tests
     using Allors.Meta;
     using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
+    using Moq;
     using Configuration = Allors.Database.Adapters.Memory.Configuration;
     using ObjectFactory = Allors.ObjectFactory;
 
@@ -36,6 +37,19 @@ namespace Tests
         }
 
         protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
+
+        public Mock<IAccessControlListFactory> AclFactoryMock
+        {
+            get
+            {
+                var aclMock = new Mock<IAccessControlList>();
+                aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
+                aclMock.Setup(acl => acl.CanRead(It.IsAny<IConcreteRoleType>())).Returns(true);
+                var aclFactoryMock = new Mock<IAccessControlListFactory>();
+                aclFactoryMock.Setup(aclFactory => aclFactory.Create(It.IsAny<IObject>())).Returns(aclMock.Object);
+                return aclFactoryMock;
+            }
+        }
 
         public void Dispose()
         {

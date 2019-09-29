@@ -40,14 +40,13 @@ namespace Tests.Mock
 
             var required = new PullResponse
             {
-                UserSecurityHash = "#",
                 Objects =
-                                       new[]
-                                           {
-                                                new[] { "1", "1001" },
-                                                new[] { "2", "1002" },
-                                                new[] { "3", "1004" },
-                                           },
+                       new[]
+                           {
+                                new[] { "1", "1001" },
+                                new[] { "2", "1002" },
+                                new[] { "3", "1004" },
+                           },
             };
 
             var requireLoad = this.Workspace.Diff(required);
@@ -62,14 +61,13 @@ namespace Tests.Mock
 
             var required = new PullResponse
             {
-                UserSecurityHash = "def",
                 Objects =
-                                       new[]
-                                           {
-                                                new[] { "1", "1001" },
-                                                new[] { "2", "1002" },
-                                                new[] { "3", "1004" },
-                                           },
+                       new[]
+                           {
+                                new[] { "1", "1001" },
+                                new[] { "2", "1002" },
+                                new[] { "3", "1004" },
+                           },
             };
 
             var requireLoad = this.Workspace.Diff(required);

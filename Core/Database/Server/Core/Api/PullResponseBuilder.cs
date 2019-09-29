@@ -15,25 +15,38 @@ namespace Allors.Server
 
     public class PullResponseBuilder
     {
-        private readonly User user;
+        private readonly AccessControlListFactory aclFactory;
         private readonly ITreeService treeService;
 
-        private readonly HashSet<IObject> objects = new HashSet<IObject>();
+        private readonly Dictionary<IObject, IAccessControlList> aclByObject = new Dictionary<IObject, IAccessControlList>();
+
         private readonly Dictionary<string, IObject> objectByName = new Dictionary<string, IObject>();
         private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
         private readonly Dictionary<string, string> valueByName = new Dictionary<string, string>();
 
+        private readonly AccessControlsCompression accessControlsCompression;
+        private readonly DeniedPermissionsCompression deniedPermissionsCompression;
+
         public PullResponseBuilder(User user, ITreeService treeService)
         {
-            this.user = user;
+            this.aclFactory = new AccessControlListFactory(user);
+            this.aclByObject = new Dictionary<IObject, IAccessControlList>();
             this.treeService = treeService;
+
+            this.accessControlsCompression = new AccessControlsCompression();
+            this.deniedPermissionsCompression = new DeniedPermissionsCompression();
         }
 
         public PullResponse Build() =>
             new PullResponse
             {
-                UserSecurityHash = this.user.SecurityHash(),
-                Objects = this.objects.Select(x => new[] { x.Id.ToString(), x.Strategy.ObjectVersion.ToString() }).ToArray(),
+                Objects = this.aclByObject.Select(kvp => new[]
+                {
+                    kvp.Key.Id.ToString(),
+                    kvp.Value.Object.Id.ToString(),
+                    this.accessControlsCompression.Write(kvp.Value),
+                    this.deniedPermissionsCompression.Write(kvp.Value),
+                }).ToArray(),
                 NamedObjects = this.objectByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Id.ToString()),
                 NamedCollections = this.collectionsByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
                 NamedValues = this.valueByName,
@@ -65,9 +78,8 @@ namespace Allors.Server
                     session.Prefetch(prefetcher, @object);
                 }
 
-                this.objects.Add(@object);
                 this.objectByName.Add(name, @object);
-                tree?.Resolve(@object, this.objects);
+                tree?.Resolve(@object, this.aclFactory, this.aclByObject);
             }
         }
 
@@ -108,8 +120,7 @@ namespace Allors.Server
                 list.AddRange(inputList);
                 foreach (var namedObject in inputList)
                 {
-                    this.objects.Add(namedObject);
-                    tree?.Resolve(namedObject, this.objects);
+                    tree?.Resolve(namedObject, this.aclFactory, this.aclByObject);
                 }
             }
         }
