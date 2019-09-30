@@ -1,7 +1,7 @@
 import {
   InvokeResponse, ISession, ISessionObject, Method, PullResponse,
   PushRequest, PushRequestObject, PushResponse, Session, SyncRequest,
-  SyncResponse, Workspace,
+  SyncResponse, Workspace, Pull, PullRequest,
 } from '../../framework';
 
 import { Database } from './Database';
@@ -17,11 +17,13 @@ export class Scope {
     this.session = new Session(this.workspace);
   }
 
-  public load(params?: any): Promise<Loaded> {
+  public load(pull: Pull | PullRequest): Promise<Loaded>;
+  public load(customService: string, customArgs?: any): Promise<Loaded>;
+  public load(requestOrCustomService: PullRequest | Pull | string, customArgs?: any): Promise<Loaded> {
 
     return new Promise((resolve, reject) => {
       this.database
-        .pull(params)
+        .pull(requestOrCustomService, customArgs)
         .then((pullResponse: PullResponse) => {
           const requireLoadIds: SyncRequest = this.workspace.diff(pullResponse);
 

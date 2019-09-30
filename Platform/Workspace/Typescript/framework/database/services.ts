@@ -3,4 +3,5 @@ export const services = {
   sync: 'allors/sync',
   push: 'allors/push',
   invoke: 'allors/invoke',
+  security: 'allors/security',
 };

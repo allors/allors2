@@ -1,4 +1,4 @@
-import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse, InvokeOptions } from '../../framework';
+import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse, InvokeOptions, PullRequest, Pull } from '../../framework';
 import { Method } from '../../framework';
 import { services } from '../../framework/database';
 
@@ -10,10 +10,24 @@ export class Database {
   constructor(private http: Http) {
   }
 
-  public pull(params?: any): Promise<PullResponse> {
+  public pull(requestOrCustomService: PullRequest | Pull | string, customArgs?: any): Promise<PullResponse> {
     return new Promise((resolve, reject) => {
 
-      this.http.post(services.pull, params || {})
+      let service = services.pull;
+      let params: PullRequest | any;
+
+      if (typeof requestOrCustomService === 'string') {
+        service = requestOrCustomService;
+        params = customArgs;
+      } else {
+        if (requestOrCustomService instanceof Pull) {
+          params = new PullRequest({ pulls: [requestOrCustomService] });
+        } else{
+          params = requestOrCustomService;
+        }
+      }
+
+      this.http.post(service, params || {})
         .then((httpResponse: HttpResponse) => {
           const response = httpResponse.data;
           response.responseType = ResponseType.Pull;
