@@ -13,6 +13,11 @@ namespace Allors.Protocol.Data
     {
         public static object Parse(Guid objectTypeId, string value)
         {
+            if (value == null)
+            {
+                return null;
+            }
+
             switch (objectTypeId)
             {
                 case var u when u == UnitIds.DateTime:

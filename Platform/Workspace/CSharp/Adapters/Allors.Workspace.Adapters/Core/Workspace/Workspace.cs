@@ -13,6 +13,7 @@ namespace Allors.Workspace
     using Allors.Protocol.Remote.Sync;
     using Allors.Workspace.Meta;
     using Domain;
+    using Protocol.Remote.Security;
 
     public class Workspace : IWorkspace
     {
@@ -55,6 +56,8 @@ namespace Allors.Workspace
                 {
                     var id = long.Parse(v[0]);
                     this.workspaceObjectById.TryGetValue(id, out var workspaceObject);
+                    var sortedAccessControlIds = v.Length > 2 ? ctx.ReadSortedAccessControlIds(v[2]) : null;
+                    var sortedDeniedPermissionIds = v.Length > 3 ? ctx.ReadSortedDeniedPermissionIds(v[3]) : null;
 
                     if (workspaceObject == null)
                     {
@@ -72,7 +75,6 @@ namespace Allors.Workspace
                         return false;
                     }
 
-                    var sortedAccessControlIds = ctx.ReadSortedAccessControlIds(v[2]);
                     if (v.Length == 3)
                     {
                         if (workspaceObject.SortedDeniedPermissionIds != null)
@@ -83,14 +85,10 @@ namespace Allors.Workspace
                         return !Equals(workspaceObject.SortedAccessControlIds, sortedAccessControlIds);
                     }
 
-                    var sortedDeniedPermissionIds = ctx.ReadSortedDeniedPermissionIds(v[3]);
                     return !Equals(workspaceObject.SortedAccessControlIds, sortedAccessControlIds) ||
                            !Equals(workspaceObject.SortedDeniedPermissionIds, sortedDeniedPermissionIds);
                 }).Select(v => v[0]).ToArray(),
             };
-
-            syncRequest.AccessControls = ctx.MissingAccessControlIds.Select(v => v.ToString()).ToArray();
-            syncRequest.Permissions = ctx.MissingPermissionIds.Select(v => v.ToString()).ToArray();
 
             return syncRequest;
         }
@@ -106,7 +104,7 @@ namespace Allors.Workspace
             return workspaceObject;
         }
 
-        public void Sync(SyncResponse syncResponse)
+        public SecurityRequest Sync(SyncResponse syncResponse)
         {
             var ctx = new SyncResponseContext(this);
             foreach (var syncResponseObject in syncResponse.Objects)
@@ -115,67 +113,81 @@ namespace Allors.Workspace
                 this.workspaceObjectById[workspaceObject.Id] = workspaceObject;
             }
 
-            foreach (var syncResponsePermission in syncResponse.Permissions)
+            return null;
+        }
+
+        public void Security(SecurityResponse syncResponse)
+        {
+            var ctx = new SecurityResponseContext(this);
+
+            if (syncResponse.Permissions != null)
             {
-                var id = long.Parse(syncResponsePermission[0]);
-                var @class = (IClass)ctx.MetaObjectDecompressor.Read(syncResponsePermission[1]);
-                var operandType = (IOperandType)ctx.MetaObjectDecompressor.Read(syncResponsePermission[2]);
-                Enum.TryParse(syncResponsePermission[3], out Operations operation);
-
-                var permission = new Permission(id, @class, operandType, operation);
-                this.PermissionById[id] = permission;
-
-                switch (operation)
+                foreach (var syncResponsePermission in syncResponse.Permissions)
                 {
-                    case Operations.Read:
-                        if (!this.readPermissionByOperandTypeByClass.TryGetValue(@class,
-                            out var readPermissionByOperandType))
-                        {
-                            readPermissionByOperandType = new Dictionary<IOperandType, Permission>();
-                            this.readPermissionByOperandTypeByClass[@class] = readPermissionByOperandType;
-                        }
+                    var id = long.Parse(syncResponsePermission[0]);
+                    var @class = (IClass)ctx.MetaObjectDecompressor.Read(syncResponsePermission[1]);
+                    var operandType = (IOperandType)ctx.MetaObjectDecompressor.Read(syncResponsePermission[2]);
+                    Enum.TryParse(syncResponsePermission[3], out Operations operation);
 
-                        readPermissionByOperandType[operandType] = permission;
+                    var permission = new Permission(id, @class, operandType, operation);
+                    this.PermissionById[id] = permission;
 
-                        break;
+                    switch (operation)
+                    {
+                        case Operations.Read:
+                            if (!this.readPermissionByOperandTypeByClass.TryGetValue(@class,
+                                out var readPermissionByOperandType))
+                            {
+                                readPermissionByOperandType = new Dictionary<IOperandType, Permission>();
+                                this.readPermissionByOperandTypeByClass[@class] = readPermissionByOperandType;
+                            }
 
-                    case Operations.Write:
-                        if (!this.writePermissionByOperandTypeByClass.TryGetValue(@class,
-                            out var writePermissionByOperandType))
-                        {
-                            writePermissionByOperandType = new Dictionary<IOperandType, Permission>();
-                            this.writePermissionByOperandTypeByClass[@class] = writePermissionByOperandType;
-                        }
+                            readPermissionByOperandType[operandType] = permission;
 
-                        writePermissionByOperandType[operandType] = permission;
+                            break;
 
-                        break;
+                        case Operations.Write:
+                            if (!this.writePermissionByOperandTypeByClass.TryGetValue(@class,
+                                out var writePermissionByOperandType))
+                            {
+                                writePermissionByOperandType = new Dictionary<IOperandType, Permission>();
+                                this.writePermissionByOperandTypeByClass[@class] = writePermissionByOperandType;
+                            }
 
-                    case Operations.Execute:
-                        if (!this.executePermissionByOperandTypeByClass.TryGetValue(@class,
-                            out var executePermissionByOperandType))
-                        {
-                            executePermissionByOperandType = new Dictionary<IOperandType, Permission>();
-                            this.executePermissionByOperandTypeByClass[@class] = executePermissionByOperandType;
-                        }
+                            writePermissionByOperandType[operandType] = permission;
 
-                        executePermissionByOperandType[operandType] = permission;
+                            break;
 
-                        break;
+                        case Operations.Execute:
+                            if (!this.executePermissionByOperandTypeByClass.TryGetValue(@class,
+                                out var executePermissionByOperandType))
+                            {
+                                executePermissionByOperandType = new Dictionary<IOperandType, Permission>();
+                                this.executePermissionByOperandTypeByClass[@class] = executePermissionByOperandType;
+                            }
+
+                            executePermissionByOperandType[operandType] = permission;
+
+                            break;
+                    }
                 }
             }
 
-            foreach (var syncResponseAccessControl in syncResponse.AccessControls)
+            if (syncResponse.AccessControls != null)
             {
-                var id = long.Parse(syncResponseAccessControl.I);
-                var version = long.Parse(syncResponseAccessControl.V);
-                var permissions = syncResponseAccessControl.P.Select(v => this.PermissionById[long.Parse(v)]);
-                var permissionSet = new HashSet<Permission>(permissions);
+                foreach (var syncResponseAccessControl in syncResponse.AccessControls)
+                {
+                    var id = long.Parse(syncResponseAccessControl.I);
+                    var version = long.Parse(syncResponseAccessControl.V);
+                    var permissions = syncResponseAccessControl.P.Select(v => this.PermissionById[long.Parse(v)]);
+                    var permissionSet = new HashSet<Permission>(permissions);
 
-                var accessControl = new AccessControl(id, version, permissionSet);
-                this.AccessControlById[id] = accessControl;
+                    var accessControl = new AccessControl(id, version, permissionSet);
+                    this.AccessControlById[id] = accessControl;
+                }
             }
         }
+
 
         internal IEnumerable<IWorkspaceObject> Get(IComposite objectType)
         {
@@ -195,11 +207,37 @@ namespace Allors.Workspace
             switch (operation)
             {
                 case Operations.Read:
-                    return this.readPermissionByOperandTypeByClass[@class][roleType];
+                    if (this.readPermissionByOperandTypeByClass.TryGetValue(@class, out var readPermissionByOperandType))
+                    {
+                        if (readPermissionByOperandType.TryGetValue(roleType, out var readPermission))
+                        {
+                            return readPermission;
+                        }
+                    }
+
+                    return null;
+
                 case Operations.Write:
-                    return this.writePermissionByOperandTypeByClass[@class][roleType];
+                    if (this.writePermissionByOperandTypeByClass.TryGetValue(@class, out var writePermissionByOperandType))
+                    {
+                        if (writePermissionByOperandType.TryGetValue(roleType, out var writePermission))
+                        {
+                            return writePermission;
+                        }
+                    }
+
+                    return null;
+
                 default:
-                    return this.executePermissionByOperandTypeByClass[@class][roleType];
+                    if (this.executePermissionByOperandTypeByClass.TryGetValue(@class, out var executePermissionByOperandType))
+                    {
+                        if (executePermissionByOperandType.TryGetValue(roleType, out var executePermission))
+                        {
+                            return executePermission;
+                        }
+                    }
+
+                    return null;
             }
         }
     }

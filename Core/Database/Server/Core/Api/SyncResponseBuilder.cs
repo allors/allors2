@@ -70,11 +70,15 @@ namespace Allors.Server
                 }
                 else
                 {
-                    syncResponseRole.V = string.Join(
-                        separator: ',',
-                        values: @object.Strategy.GetCompositeRoles(roleType.RelationType)
-                            .Cast<IObject>()
-                            .Select(roleObject => roleObject.Id.ToString()));
+                    var roles = @object.Strategy.GetCompositeRoles(roleType.RelationType);
+                    if (roles.Count > 0)
+                    {
+                        syncResponseRole.V = string.Join(
+                            separator: ',',
+                            values: roles
+                                .Cast<IObject>()
+                                .Select(roleObject => roleObject.Id.ToString()));
+                    }
                 }
 
                 return syncResponseRole;
@@ -91,7 +95,7 @@ namespace Allors.Server
                     {
                         I = v.Id.ToString(),
                         V = v.Strategy.ObjectVersion.ToString(),
-                        T = v.Strategy.Class.Name,
+                        T = this.metaObjectCompressor.Write(v.Strategy.Class),
                         R = @class.WorkspaceRoleTypes
                             .Where(w => acl.CanRead(w))
                             .Select(w => CreateSyncResponseRole(v, w))
@@ -102,48 +106,13 @@ namespace Allors.Server
                 }).ToArray(),
             };
 
-            HashSet<Permission> permissions = null;
-            if (this.syncRequest.Permissions != null)
-            {
-                var permissionIds = this.syncRequest.Permissions;
-                permissions = new HashSet<Permission>(this.session.Instantiate(permissionIds).Cast<Permission>());
-            }
-
-            AccessControl[] accessControls = null;
-            if (this.syncRequest.AccessControls != null)
-            {
-                if (permissions == null)
+            syncResponse.AccessControls = this.acls.AccessControls
+                .Select(v => new[]
                 {
-                    permissions = new HashSet<Permission>();
-                }
-
-                var accessControlIds = this.syncRequest.AccessControls;
-                accessControls = this.session.Instantiate(accessControlIds).Cast<AccessControl>().ToArray();
-                syncResponse.AccessControls = accessControls
-                    .Select(v =>
-                    {
-                        var effectiveWorkspacePermissions = v.EffectivePermissions.Where(w => w.OperandType.Workspace).ToArray();
-                        permissions.UnionWith(effectiveWorkspacePermissions);
-                        return new SyncResponseAccessControl
-                        {
-                            I = v.Strategy.ObjectId.ToString(),
-                            V = v.Strategy.ObjectVersion.ToString(),
-                            P = effectiveWorkspacePermissions.Select(w => w.Id.ToString()).ToArray(),
-                        };
-                    }).ToArray();
-            }
-
-            if (permissions != null)
-            {
-                syncResponse.Permissions = permissions.Select(v =>
-                    new[]
-                    {
-                        v.Strategy.ObjectId.ToString(),
-                        this.metaObjectCompressor.Write(v.ConcreteClass),
-                        this.metaObjectCompressor.Write(v.OperandType),
-                        v.OperationEnum.ToString(),
-                    }).ToArray();
-            }
+                    v.Strategy.ObjectId.ToString(),
+                    v.Strategy.ObjectVersion.ToString(),
+                })
+                .ToArray();
 
             return syncResponse;
         }

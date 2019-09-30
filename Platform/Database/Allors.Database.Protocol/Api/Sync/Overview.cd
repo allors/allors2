@@ -3,14 +3,14 @@
   <Class Name="Allors.Protocol.Remote.Sync.SyncRequest">
     <Position X="0.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAEAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
       <FileName>Api\Sync\SyncRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Protocol.Remote.Sync.SyncResponse">
     <Position X="0.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAEAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAA=</HashCode>
       <FileName>Api\Sync\SyncResponse.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -21,14 +21,14 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Allors.Protocol.Remote.Sync.SyncResponseAccessControl">
-    <Position X="4" Y="2.75" Width="2" />
+    <Position X="4" Y="5.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBQAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAQAAA=</HashCode>
       <FileName>Api\Sync\SyncResponseAccessControl.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Protocol.Remote.Sync.SyncResponseObject">
-    <Position X="4" Y="4.75" Width="2" />
+    <Position X="4" Y="2.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAJCAUAQA=</HashCode>
       <FileName>Api\Sync\SyncResponseObject.cs</FileName>
@@ -38,7 +38,7 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Allors.Protocol.Remote.Sync.SyncResponseRole">
-    <Position X="7.25" Y="4.75" Width="1.75" />
+    <Position X="7" Y="2.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAA=</HashCode>
       <FileName>Api\Sync\SyncResponseRole.cs</FileName>

@@ -3,9 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Protocol.Remote.Sync
+namespace Allors.Protocol.Remote.Security
 {
-    public class SyncResponseAccessControl
+    public class SecurityResponseAccessControl
     {
         /// <summary>
         /// Gets or sets the id.

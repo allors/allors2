@@ -75,6 +75,11 @@ namespace Allors.Workspace
 
         private bool IsPermitted(Permission permission)
         {
+            if (permission == null)
+            {
+                return false;
+            }
+
             if (this.accessControls == null && this.SortedAccessControlIds != null)
             {
                 this.accessControls = this.SortedAccessControlIds.Split(Compressor.ItemSeparator).Select(v => this.Workspace.AccessControlById[long.Parse(v)]).ToArray();

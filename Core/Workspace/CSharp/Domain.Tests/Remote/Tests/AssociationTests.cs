@@ -72,9 +72,9 @@ namespace Tests.Remote
 
                     // One to One
                     Assert.Null(c2A.C1WhereC1C2One2One);
-                    Assert.Equal(c2B.C1WhereC1C2One2One, c1B);
-                    Assert.Equal(c2C.C1WhereC1C2One2One, c1C);
-                    Assert.Equal(c2D.C1WhereC1C2One2One, c1D);
+                    Assert.Equal(c1B, c2B.C1WhereC1C2One2One);
+                    Assert.Equal(c1C, c2C.C1WhereC1C2One2One);
+                    Assert.Equal(c1D, c2D.C1WhereC1C2One2One);
 
                     // Many to One
                     Assert.Empty(c2A.C1sWhereC1C2Many2One);

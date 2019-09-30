@@ -33,18 +33,16 @@ namespace Allors.Workspace
         {
             var pullRequest = new PullRequest { P = pulls.Select(v => v.ToJson()).ToArray() };
             var pullResponse = await this.database.Pull(pullRequest);
-            var requireLoadIds = this.workspace.Diff(pullResponse);
-            if (requireLoadIds.Objects.Length > 0)
+            var syncRequest = this.workspace.Diff(pullResponse);
+            if (syncRequest.Objects.Length > 0)
             {
-                var loadResponse = await this.database.Sync(requireLoadIds);
-                this.workspace.Sync(loadResponse);
+                await this.Load(syncRequest);
             }
 
             var result = new Result(this.Session, pullResponse);
             return result;
         }
-
-
+        
         public async Task<Result> Load(object args, string pullService = null)
         {
             if (args is Pull pull)
@@ -58,11 +56,11 @@ namespace Allors.Workspace
             }
 
             var pullResponse = await this.database.Pull(pullService, args);
-            var requireLoadIds = this.workspace.Diff(pullResponse);
-            if (requireLoadIds.Objects.Length > 0)
+            var syncRequest = this.workspace.Diff(pullResponse);
+
+            if (syncRequest.Objects.Length > 0)
             {
-                var loadResponse = await this.database.Sync(requireLoadIds);
-                this.workspace.Sync(loadResponse);
+                await this.Load(syncRequest);
             }
 
             var result = new Result(this.Session, pullResponse);
@@ -83,13 +81,13 @@ namespace Allors.Workspace
                     objects = objects.Union(pushResponse.NewObjects.Select(v => v.I)).ToArray();
                 }
 
-                var requireLoadIds = new SyncRequest
+                var syncRequests = new SyncRequest
                 {
                     Objects = objects,
                 };
 
-                var loadResponse = await this.database.Sync(requireLoadIds);
-                this.workspace.Sync(loadResponse);
+                await this.Load(syncRequests);
+
                 this.Session.Reset();
             }
 
@@ -116,5 +114,17 @@ namespace Allors.Workspace
         }
 
         public Task<InvokeResponse> Invoke(string service, object args) => this.database.Invoke(service, args);
+
+        private async Task Load(SyncRequest syncRequest)
+        {
+            var syncResponse = await this.database.Sync(syncRequest);
+            var securityRequest = this.workspace.Sync(syncResponse);
+
+            if (securityRequest != null)
+            {
+                var securityResponse = await this.database.Security(securityRequest);
+                this.workspace.Security(securityResponse);
+            }
+        }
     }
 }

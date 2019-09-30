@@ -10,6 +10,7 @@ namespace Allors.Workspace
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
+    using Protocol.Remote.Security;
 
     public interface IDatabase
     {
@@ -24,5 +25,7 @@ namespace Allors.Workspace
         Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null);
 
         Task<InvokeResponse> Invoke(string service, object args);
+
+        Task<SecurityResponse> Security(SecurityRequest securityRequest);
     }
 }

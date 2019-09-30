@@ -16,6 +16,7 @@ namespace Allors.Workspace.Remote
     using Allors.Protocol.Remote.Sync;
     using Newtonsoft.Json;
     using Polly;
+    using Protocol.Remote.Security;
 
     public class RemoteDatabase : IDatabase
     {
@@ -41,7 +42,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<PullResponse> Pull(PullRequest pullRequest)
         {
-            var uri = new Uri(DefaultPullService + "/pull", UriKind.Relative);
+            var uri = new Uri("allors/pull", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, pullRequest);
             response.EnsureSuccessStatusCode();
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
@@ -95,6 +96,16 @@ namespace Allors.Workspace.Remote
 
             var invokeResponse = await this.ReadAsAsync<InvokeResponse>(response);
             return invokeResponse;
+        }
+
+        public async Task<SecurityResponse> Security(SecurityRequest securityRequest)
+        {
+            var uri = new Uri("allors/security", UriKind.Relative);
+            var response = await this.PostAsJsonAsync(uri, securityRequest);
+            response.EnsureSuccessStatusCode();
+
+            var syncResponse = await this.ReadAsAsync<SecurityResponse>(response);
+            return syncResponse;
         }
 
         public async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args) =>

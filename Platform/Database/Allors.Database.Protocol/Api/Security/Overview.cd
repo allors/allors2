@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Protocol.Remote.Sync.SecurityRequest">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAEAAAAAAAAAA=</HashCode>
+      <FileName>Api\Security\SecurityRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Sync.SecurityResponse">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAEAAAAAAAAAA=</HashCode>
+      <FileName>Api\Security\SecurityResponse.cs</FileName>
+      <NewMemberFileName>Api\Sync\SyncResponse.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="AccessControls" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Sync.SecurityResponseAccessControl">
+    <Position X="3.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBQAAA=</HashCode>
+      <FileName>Api\Security\SecurityResponseAccessControl.cs</FileName>
+      <NewMemberFileName>Api\Sync\SyncResponseAccessControl.cs</NewMemberFileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

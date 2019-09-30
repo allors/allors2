@@ -7,6 +7,7 @@ namespace Allors.Workspace
 {
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Sync;
+    using Protocol.Remote.Security;
 
     public interface IWorkspace
     {
@@ -14,7 +15,9 @@ namespace Allors.Workspace
 
         SyncRequest Diff(PullResponse response);
 
-        void Sync(SyncResponse syncResponse);
+        SecurityRequest Sync(SyncResponse syncResponse);
+
+        void Security(SecurityResponse securityResponse);
 
         IWorkspaceObject Get(long id);
     }

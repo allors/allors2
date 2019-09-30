@@ -13,6 +13,7 @@ namespace Allors.Workspace.Local
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
     using Allors.Services;
+    using Protocol.Remote.Security;
     using Server;
 
     public class LocalDatabase : IDatabase
@@ -102,6 +103,17 @@ namespace Allors.Workspace.Local
             {
                 var user = session.GetUser();
                 var responseBuilder = new SyncResponseBuilder(session, user, syncRequest);
+                var response = responseBuilder.Build();
+                return System.Threading.Tasks.Task.FromResult(response);
+            }
+        }
+
+        public Task<SecurityResponse> Security(SecurityRequest securityRequest)
+        {
+            using (var session = this.Database.CreateSession())
+            {
+                var user = session.GetUser();
+                var responseBuilder = new SecurityResponseBuilder(session, user, securityRequest);
                 var response = responseBuilder.Build();
                 return System.Threading.Tasks.Task.FromResult(response);
             }
