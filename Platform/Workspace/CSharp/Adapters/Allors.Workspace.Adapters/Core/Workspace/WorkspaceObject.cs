@@ -26,8 +26,8 @@ namespace Allors.Workspace
             this.Version = !string.IsNullOrEmpty(syncResponseObject.V) ? long.Parse(syncResponseObject.V) : 0;
             this.Class = (IClass)ctx.MetaObjectDecompressor.Read(syncResponseObject.T);
             this.Roles = syncResponseObject.R?.Select(v => new WorkspaceRole(ctx.MetaObjectDecompressor, v)).Cast<IWorkspaceRole>().ToArray();
-            this.SortedAccessControlIds = ctx.Decompressor.Read(syncResponseObject.A, out var firstAccessControlIds);
-            this.SortedDeniedPermissionIds = ctx.Decompressor.Read(syncResponseObject.D, out var firstDeniedPermissionIds);
+            this.SortedAccessControlIds = ctx.ReadSortedAccessControlIds(syncResponseObject.A);
+            this.SortedDeniedPermissionIds = ctx.ReadSortedDeniedPermissionIds(syncResponseObject.D);
         }
 
         internal WorkspaceObject(Workspace workspace, long objectId, IClass @class)
@@ -45,15 +45,21 @@ namespace Allors.Workspace
 
         public IWorkspaceRole[] Roles { get; }
 
-        public long Version { get; }
+        public string SortedAccessControlIds { get; set; }
 
         public string SortedDeniedPermissionIds { get; set; }
 
-        public string SortedAccessControlIds { get; set; }
+        public long Version { get; }
 
         IWorkspace IWorkspaceObject.Workspace => this.Workspace;
 
         public Workspace Workspace { get; }
+
+        public bool CanExecute(IMethodType methodType)
+        {
+            var permission = this.Workspace.GetPermission(this.Class, methodType, Operations.Execute);
+            return this.IsPermitted(permission);
+        }
 
         public bool CanRead(IRoleType roleType)
         {
@@ -64,12 +70,6 @@ namespace Allors.Workspace
         public bool CanWrite(IRoleType roleType)
         {
             var permission = this.Workspace.GetPermission(this.Class, roleType, Operations.Write);
-            return this.IsPermitted(permission);
-        }
-
-        public bool CanExecute(IMethodType methodType)
-        {
-            var permission = this.Workspace.GetPermission(this.Class, methodType, Operations.Execute);
             return this.IsPermitted(permission);
         }
 

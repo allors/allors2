@@ -17,8 +17,8 @@ namespace Allors.Server
         private readonly AccessControlLists acls;
         private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
         private readonly MetaObjectCompressor metaObjectCompressor;
-        private readonly ISession session;
         private readonly SecurityRequest securityRequest;
+        private readonly ISession session;
         private readonly User user;
 
         public SecurityResponseBuilder(ISession session, User user, SecurityRequest securityRequest)
@@ -37,6 +37,8 @@ namespace Allors.Server
         public SecurityResponse Build()
         {
             var securityResponse = new SecurityResponse();
+
+            // TODO: Prefetch
 
             var permissionIds = this.securityRequest.Permissions;
             var permissions = new HashSet<Permission>(this.session.Instantiate(permissionIds).Cast<Permission>());

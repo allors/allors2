@@ -17,13 +17,10 @@ namespace Allors.Workspace
 
     public class Workspace : IWorkspace
     {
-        private readonly Dictionary<long, WorkspaceObject> workspaceObjectById;
-
-        private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> readPermissionByOperandTypeByClass;
-
-        private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> writePermissionByOperandTypeByClass;
-
         private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> executePermissionByOperandTypeByClass;
+        private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> readPermissionByOperandTypeByClass;
+        private readonly Dictionary<long, WorkspaceObject> workspaceObjectById;
+        private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> writePermissionByOperandTypeByClass;
 
         public Workspace(ObjectFactory objectFactory)
         {
@@ -104,18 +101,6 @@ namespace Allors.Workspace
             return workspaceObject;
         }
 
-        public SecurityRequest Sync(SyncResponse syncResponse)
-        {
-            var ctx = new SyncResponseContext(this);
-            foreach (var syncResponseObject in syncResponse.Objects)
-            {
-                var workspaceObject = new WorkspaceObject(ctx, syncResponseObject);
-                this.workspaceObjectById[workspaceObject.Id] = workspaceObject;
-            }
-
-            return null;
-        }
-
         public void Security(SecurityResponse syncResponse)
         {
             var ctx = new SecurityResponseContext(this);
@@ -188,19 +173,32 @@ namespace Allors.Workspace
             }
         }
 
+        public SecurityRequest Sync(SyncResponse syncResponse)
+        {
+            var ctx = new SyncResponseContext(this, this.AccessControlById, this.PermissionById);
+            foreach (var syncResponseObject in syncResponse.Objects)
+            {
+                var workspaceObject = new WorkspaceObject(ctx, syncResponseObject);
+                this.workspaceObjectById[workspaceObject.Id] = workspaceObject;
+            }
+
+            if (ctx.MissingAccessControlIds.Count > 0 || ctx.MissingPermissionIds.Count > 0)
+            {
+                return new SecurityRequest
+                {
+                    AccessControls = ctx.MissingAccessControlIds.Select(v => v.ToString()).ToArray(),
+                    Permissions = ctx.MissingPermissionIds.Select(v => v.ToString()).ToArray(),
+                };
+            }
+
+            return null;
+        }
 
         internal IEnumerable<IWorkspaceObject> Get(IComposite objectType)
         {
             var classes = new HashSet<IClass>(objectType.Classes);
             return this.workspaceObjectById.Where(v => classes.Contains(v.Value.Class)).Select(v => v.Value);
         }
-
-        /// <summary>
-        /// Invalidates the object in order to force a sync on next pull.
-        /// </summary>
-        /// <param name="objectId">The object id.</param>
-        /// <param name="class"></param>
-        internal void Invalidate(long objectId, IClass @class) => this.workspaceObjectById[objectId] = new WorkspaceObject(this, objectId, @class);
 
         internal Permission GetPermission(IClass @class, IOperandType roleType, Operations operation)
         {
@@ -240,5 +238,12 @@ namespace Allors.Workspace
                     return null;
             }
         }
+
+        /// <summary>
+        /// Invalidates the object in order to force a sync on next pull.
+        /// </summary>
+        /// <param name="objectId">The object id.</param>
+        /// <param name="class"></param>
+        internal void Invalidate(long objectId, IClass @class) => this.workspaceObjectById[objectId] = new WorkspaceObject(this, objectId, @class);
     }
 }

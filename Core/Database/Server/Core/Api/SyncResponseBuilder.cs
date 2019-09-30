@@ -97,7 +97,7 @@ namespace Allors.Server
                         V = v.Strategy.ObjectVersion.ToString(),
                         T = this.metaObjectCompressor.Write(v.Strategy.Class),
                         R = @class.WorkspaceRoleTypes
-                            .Where(w => acl.CanRead(w))
+                            .Where(w => acl.CanRead(w) && v.Strategy.ExistRole(w.RelationType))
                             .Select(w => CreateSyncResponseRole(v, w))
                             .ToArray(),
                         A = this.accessControlsCompressor.Write(v),

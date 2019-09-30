@@ -9,41 +9,13 @@ namespace Allors.Server.Tests
 
     using Allors.Domain;
     using Allors.Protocol.Remote.Sync;
-
+    using Meta;
+    using Protocol;
     using Xunit;
 
     [Collection("Api")]
     public class SyncTests : ApiTest
     {
-        [Fact]
-        public async void ExistingObject()
-        {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
-
-            var people = new People(this.Session).Extent();
-            var person = people[0];
-
-            var uri = new Uri(@"allors/sync", UriKind.Relative);
-
-            var syncRequest = new SyncRequest
-            {
-                Objects = new[] { person.Id.ToString() },
-            };
-            var response = await this.PostAsJsonAsync(uri, syncRequest);
-
-            Assert.True(response.IsSuccessStatusCode);
-
-            var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
-
-            Assert.Single(syncResponse.Objects);
-            var syncObject = syncResponse.Objects[0];
-
-            Assert.Equal(person.Id.ToString(), syncObject.I);
-            Assert.Equal(person.GetType().Name, syncObject.T);
-            Assert.Equal(person.Strategy.ObjectVersion.ToString(), syncObject.V);
-        }
-
         [Fact]
         public async void DeletedObject()
         {
@@ -69,6 +41,35 @@ namespace Allors.Server.Tests
             var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
 
             Assert.Empty(syncResponse.Objects);
+        }
+
+        [Fact]
+        public async void ExistingObject()
+        {
+            var administrator = new Users(this.Session).GetUser("administrator");
+            await this.SignIn(administrator);
+
+            var people = new People(this.Session).Extent();
+            var person = people[0];
+
+            var uri = new Uri(@"allors/sync", UriKind.Relative);
+
+            var syncRequest = new SyncRequest
+            {
+                Objects = new[] { person.Id.ToString() },
+            };
+            var response = await this.PostAsJsonAsync(uri, syncRequest);
+
+            Assert.True(response.IsSuccessStatusCode);
+
+            var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
+
+            Assert.Single(syncResponse.Objects);
+            var syncObject = syncResponse.Objects[0];
+
+            Assert.Equal(person.Id.ToString(), syncObject.I);
+            Assert.Equal($"{Compressor.IndexMarker}1{Compressor.IndexMarker}{M.Person.Class.IdAsString}", syncObject.T);
+            Assert.Equal(person.Strategy.ObjectVersion.ToString(), syncObject.V);
         }
     }
 }

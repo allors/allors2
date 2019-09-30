@@ -27,58 +27,6 @@ namespace Allors.Server.Tests
             acl => string.Join(',', acl.DeniedPermissionIds.OrderBy(v => v).Select(v => v.ToString()));
 
         [Fact]
-        public async void WithoutDeniedPermissions()
-        {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
-
-            var data = new DataBuilder(this.Session).WithString("First").Build();
-
-            this.Session.Commit();
-
-            var uri = new Uri(@"allors/pull", UriKind.Relative);
-
-            var extent = new Allors.Data.Filter(M.Data.ObjectType);
-
-            var pullRequest = new PullRequest
-            {
-                P = new[]
-                      {
-                          new Pull
-                              {
-                                  Extent = extent.Save(),
-                              },
-                      },
-            };
-
-            var response = await this.PostAsJsonAsync(uri, pullRequest);
-            var pullResponse = await this.ReadAsAsync<PullResponse>(response);
-
-            var namedCollection = pullResponse.NamedCollections["Datas"];
-
-            Assert.Single(namedCollection);
-
-            var namedObject = namedCollection.First();
-
-            Assert.Equal(data.Id.ToString(), namedObject);
-
-            var objects = pullResponse.Objects;
-
-            Assert.Single(objects);
-
-            var @object = objects[0];
-
-            var acls = new AccessControlLists(administrator);
-            var acl = acls[data];
-
-            Assert.Equal(3, @object.Length);
-
-            Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
-            Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
-            Assert.Equal($"~1~{this.PrintAccessControls(acl)}", @object[2]);
-        }
-
-        [Fact]
         public async void WithDeniedPermissions()
         {
             var administrator = new Users(this.Session).GetUser("administrator");
@@ -130,63 +78,7 @@ namespace Allors.Server.Tests
             Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
             Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
             Assert.Equal($"~1~{this.PrintAccessControls(acl)}", @object[2]);
-            Assert.Equal($"~1~{this.PrintDeniedPermissions(acl)}", @object[3]);
-        }
-
-        [Fact]
-        public async void WithResult()
-        {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
-
-            var data = new DataBuilder(this.Session).WithString("First").Build();
-
-            this.Session.Commit();
-
-            var uri = new Uri(@"allors/pull", UriKind.Relative);
-
-            var extent = new Allors.Data.Filter(M.Data.ObjectType);
-
-            var pullRequest = new PullRequest
-            {
-                P = new[]
-                      {
-                          new Pull
-                              {
-                                  Extent = extent.Save(),
-                                  Results = new[]
-                                                {
-                                                    new Result { Name = "Datas" },
-                                                },
-                              },
-                      },
-            };
-
-            var response = await this.PostAsJsonAsync(uri, pullRequest);
-            var pullResponse = await this.ReadAsAsync<PullResponse>(response);
-
-            var namedCollection = pullResponse.NamedCollections["Datas"];
-
-            Assert.Single(namedCollection);
-
-            var namedObject = namedCollection.First();
-
-            Assert.Equal(data.Id.ToString(), namedObject);
-
-            var objects = pullResponse.Objects;
-
-            Assert.Single(objects);
-
-            var @object = objects[0];
-
-            var acls = new AccessControlLists(administrator);
-            var acl = acls[data];
-
-            Assert.Equal(3, @object.Length);
-
-            Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
-            Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
-            Assert.Equal($"~1~{this.PrintAccessControls(acl)}", @object[2]);
+            Assert.Equal($"~2~{this.PrintDeniedPermissions(acl)}", @object[3]);
         }
 
         [Fact]
@@ -253,6 +145,114 @@ namespace Allors.Server.Tests
             var organisations = pullResponse.NamedCollections["Organisations"];
 
             Assert.Single(organisations);
+        }
+
+        [Fact]
+        public async void WithoutDeniedPermissions()
+        {
+            var administrator = new Users(this.Session).GetUser("administrator");
+            await this.SignIn(administrator);
+
+            var data = new DataBuilder(this.Session).WithString("First").Build();
+
+            this.Session.Commit();
+
+            var uri = new Uri(@"allors/pull", UriKind.Relative);
+
+            var extent = new Allors.Data.Filter(M.Data.ObjectType);
+
+            var pullRequest = new PullRequest
+            {
+                P = new[]
+                      {
+                          new Pull
+                              {
+                                  Extent = extent.Save(),
+                              },
+                      },
+            };
+
+            var response = await this.PostAsJsonAsync(uri, pullRequest);
+            var pullResponse = await this.ReadAsAsync<PullResponse>(response);
+
+            var namedCollection = pullResponse.NamedCollections["Datas"];
+
+            Assert.Single(namedCollection);
+
+            var namedObject = namedCollection.First();
+
+            Assert.Equal(data.Id.ToString(), namedObject);
+
+            var objects = pullResponse.Objects;
+
+            Assert.Single(objects);
+
+            var @object = objects[0];
+
+            var acls = new AccessControlLists(administrator);
+            var acl = acls[data];
+
+            Assert.Equal(3, @object.Length);
+
+            Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
+            Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
+            Assert.Equal($"~1~{this.PrintAccessControls(acl)}", @object[2]);
+        }
+
+        [Fact]
+        public async void WithResult()
+        {
+            var administrator = new Users(this.Session).GetUser("administrator");
+            await this.SignIn(administrator);
+
+            var data = new DataBuilder(this.Session).WithString("First").Build();
+
+            this.Session.Commit();
+
+            var uri = new Uri(@"allors/pull", UriKind.Relative);
+
+            var extent = new Allors.Data.Filter(M.Data.ObjectType);
+
+            var pullRequest = new PullRequest
+            {
+                P = new[]
+                      {
+                          new Pull
+                              {
+                                  Extent = extent.Save(),
+                                  Results = new[]
+                                                {
+                                                    new Result { Name = "Datas" },
+                                                },
+                              },
+                      },
+            };
+
+            var response = await this.PostAsJsonAsync(uri, pullRequest);
+            var pullResponse = await this.ReadAsAsync<PullResponse>(response);
+
+            var namedCollection = pullResponse.NamedCollections["Datas"];
+
+            Assert.Single(namedCollection);
+
+            var namedObject = namedCollection.First();
+
+            Assert.Equal(data.Id.ToString(), namedObject);
+
+            var objects = pullResponse.Objects;
+
+            Assert.Single(objects);
+
+            var @object = objects[0];
+
+            var acls = new AccessControlLists(administrator);
+            var acl = acls[data];
+
+            Assert.Equal(3, @object.Length);
+
+            Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
+            Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
+            Assert.Equal($"~1~{this.PrintAccessControls(acl)}", @object[2]);
         }
     }
 }

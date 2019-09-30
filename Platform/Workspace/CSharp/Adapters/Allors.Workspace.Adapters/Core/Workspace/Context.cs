@@ -29,6 +29,26 @@ namespace Allors.Workspace
 
         public Session Session { get; }
 
+        public Task<InvokeResponse> Invoke(Method method, InvokeOptions options = null) => this.Invoke(new[] { method }, options);
+
+        public Task<InvokeResponse> Invoke(Method[] methods, InvokeOptions options = null)
+        {
+            var invokeRequest = new InvokeRequest
+            {
+                I = methods.Select(v => new Invocation
+                {
+                    I = v.Object.Id.ToString(),
+                    V = v.Object.Version.ToString(),
+                    M = v.Name,
+                }).ToArray(),
+                O = options,
+            };
+
+            return this.database.Invoke(invokeRequest);
+        }
+
+        public Task<InvokeResponse> Invoke(string service, object args) => this.database.Invoke(service, args);
+
         public async Task<Result> Load(params Pull[] pulls)
         {
             var pullRequest = new PullRequest { P = pulls.Select(v => v.ToJson()).ToArray() };
@@ -42,7 +62,7 @@ namespace Allors.Workspace
             var result = new Result(this.Session, pullResponse);
             return result;
         }
-        
+
         public async Task<Result> Load(object args, string pullService = null)
         {
             if (args is Pull pull)
@@ -93,27 +113,6 @@ namespace Allors.Workspace
 
             return pushResponse;
         }
-
-        public Task<InvokeResponse> Invoke(Method method, InvokeOptions options = null) => this.Invoke(new[] { method }, options);
-
-        public Task<InvokeResponse> Invoke(Method[] methods, InvokeOptions options = null)
-        {
-
-            var invokeRequest = new InvokeRequest
-            {
-                I = methods.Select(v => new Invocation
-                {
-                    I = v.Object.Id.ToString(),
-                    V = v.Object.Version.ToString(),
-                    M = v.Name,
-                }).ToArray(),
-                O = options,
-            };
-
-            return this.database.Invoke(invokeRequest);
-        }
-
-        public Task<InvokeResponse> Invoke(string service, object args) => this.database.Invoke(service, args);
 
         private async Task Load(SyncRequest syncRequest)
         {
