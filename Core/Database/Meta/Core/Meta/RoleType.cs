@@ -19,14 +19,10 @@ namespace Allors.Meta
 
         private ObjectType objectType;
 
-        private string singularName;
-
         private string pluralName;
-
-        private int? scale;
-
         private int? precision;
-
+        private int? scale;
+        private string singularName;
         private int? size;
 
         internal RoleType(RelationType relationType, Guid id)
@@ -39,55 +35,24 @@ namespace Allors.Meta
             relationType.MetaPopulation.OnRoleTypeCreated(this);
         }
 
-        public bool IsRequired { get; set; }
-
-        public bool IsUnique { get; set; }
-
-        public bool Workspace => this.RelationType.Workspace;
-
-        IObjectType IPropertyType.ObjectType => this.objectType;
-
-        public ObjectType ObjectType
-        {
-            get => this.objectType;
-
-            set
-            {
-                this.MetaPopulation.AssertUnlocked();
-                this.objectType = value;
-                this.MetaPopulation.Stale();
-            }
-        }
-
-        public string SingularName
-        {
-            get => this.singularName;
-
-            set
-            {
-                this.MetaPopulation.AssertUnlocked();
-                this.singularName = value;
-                this.MetaPopulation.Stale();
-            }
-        }
-
-        public string PluralName
-        {
-            get => this.pluralName;
-
-            set
-            {
-                this.MetaPopulation.AssertUnlocked();
-                this.pluralName = value;
-                this.MetaPopulation.Stale();
-            }
-        }
+        IAssociationType IRoleType.AssociationType => this.AssociationType;
 
         /// <summary>
-        /// Gets a value indicating whether this instance has a multiplicity of one.
+        /// Gets the association.
         /// </summary>
-        /// <value><c>true</c> if this instance is one; otherwise, <c>false</c>.</value>
-        public bool IsOne => !this.IsMany;
+        /// <value>The association.</value>
+        public AssociationType AssociationType => this.RelationType.AssociationType;
+
+        /// <summary>
+        /// Gets the display name.
+        /// </summary>
+        public override string DisplayName => this.PropertyName;
+
+        /// <summary>
+        /// Gets the full name.
+        /// </summary>
+        /// <value>The full name.</value>
+        public string FullName => this.IsMany ? this.PluralFullName : this.SingularFullName;
 
         public bool IsMany
         {
@@ -105,14 +70,15 @@ namespace Allors.Meta
             }
         }
 
-        IRelationType IRoleType.RelationType => this.RelationType;
-
-        public RelationType RelationType { get; private set; }
-
         /// <summary>
-        /// Gets the display name.
+        /// Gets a value indicating whether this instance has a multiplicity of one.
         /// </summary>
-        public override string DisplayName => this.PropertyName;
+        /// <value><c>true</c> if this instance is one; otherwise, <c>false</c>.</value>
+        public bool IsOne => !this.IsMany;
+
+        public bool IsRequired { get; set; }
+
+        public bool IsUnique { get; set; }
 
         /// <summary>
         /// Gets the name.
@@ -131,17 +97,19 @@ namespace Allors.Meta
             }
         }
 
-        /// <summary>
-        /// Gets the full name.
-        /// </summary>
-        /// <value>The full name.</value>
-        public string FullName => this.IsMany ? this.PluralFullName : this.SingularFullName;
+        IObjectType IPropertyType.ObjectType => this.objectType;
 
-        /// <summary>
-        /// Gets the full singular name.
-        /// </summary>
-        /// <value>The full singular name.</value>
-        public string SingularFullName => this.RelationType.AssociationType.SingularName + this.SingularName;
+        public ObjectType ObjectType
+        {
+            get => this.objectType;
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.objectType = value;
+                this.MetaPopulation.Stale();
+            }
+        }
 
         /// <summary>
         /// Gets the full plural name.
@@ -149,39 +117,19 @@ namespace Allors.Meta
         /// <value>The full plural name.</value>
         public string PluralFullName => this.RelationType.AssociationType.SingularName + this.PluralName;
 
-        /// <summary>
-        /// Gets the property name.
-        /// </summary>
-        /// <value>The full name.</value>
-        public string PropertyName => this.IsMany ? this.PluralPropertyName : this.SingularPropertyName;
-
-        public string SingularPropertyName => this.SingularName;
-
-        public string PluralPropertyName => this.PluralName;
-
-        IAssociationType IRoleType.AssociationType => this.AssociationType;
-
-        /// <summary>
-        /// Gets the association.
-        /// </summary>
-        /// <value>The association.</value>
-        public AssociationType AssociationType => this.RelationType.AssociationType;
-
-        public int? Scale
+        public string PluralName
         {
-            get
-            {
-                this.MetaPopulation.Derive();
-                return this.scale;
-            }
+            get => this.pluralName;
 
             set
             {
                 this.MetaPopulation.AssertUnlocked();
-                this.scale = value;
+                this.pluralName = value;
                 this.MetaPopulation.Stale();
             }
         }
+
+        public string PluralPropertyName => this.PluralName;
 
         public int? Precision
         {
@@ -199,6 +147,52 @@ namespace Allors.Meta
             }
         }
 
+        /// <summary>
+        /// Gets the property name.
+        /// </summary>
+        /// <value>The full name.</value>
+        public string PropertyName => this.IsMany ? this.PluralPropertyName : this.SingularPropertyName;
+
+        IRelationType IRoleType.RelationType => this.RelationType;
+
+        public RelationType RelationType { get; private set; }
+
+        public int? Scale
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.scale;
+            }
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.scale = value;
+                this.MetaPopulation.Stale();
+            }
+        }
+
+        /// <summary>
+        /// Gets the full singular name.
+        /// </summary>
+        /// <value>The full singular name.</value>
+        public string SingularFullName => this.RelationType.AssociationType.SingularName + this.SingularName;
+
+        public string SingularName
+        {
+            get => this.singularName;
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.singularName = value;
+                this.MetaPopulation.Stale();
+            }
+        }
+
+        public string SingularPropertyName => this.SingularName;
+
         public int? Size
         {
             get
@@ -214,6 +208,8 @@ namespace Allors.Meta
                 this.MetaPopulation.Stale();
             }
         }
+
+        public bool Workspace => this.RelationType.Workspace;
 
         /// <summary>
         /// Gets the validation name.
@@ -252,6 +248,14 @@ namespace Allors.Meta
         public override object Get(IStrategy strategy) => strategy.GetRole(this.RelationType);
 
         /// <summary>
+        /// Get the object type.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ObjectType"/>.
+        /// </returns>
+        public override ObjectType GetObjectType() => this.ObjectType;
+
+        /// <summary>
         /// Set the value of the role on this object.
         /// </summary>
         /// <param name="strategy">
@@ -261,14 +265,6 @@ namespace Allors.Meta
         /// The role value.
         /// </param>
         public void Set(IStrategy strategy, object value) => strategy.SetRole(this.RelationType, value);
-
-        /// <summary>
-        /// Get the object type.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ObjectType"/>.
-        /// </returns>
-        public override ObjectType GetObjectType() => this.ObjectType;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.

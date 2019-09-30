@@ -32,13 +32,16 @@ namespace Allors.Meta
             relationType.MetaPopulation.OnAssociationTypeCreated(this);
         }
 
-        public bool Workspace => this.RelationType.Workspace;
+        /// <summary>
+        /// Gets the display name.
+        /// </summary>
+        public override string DisplayName => this.PropertyName;
 
         /// <summary>
-        /// Gets a value indicating whether this instance has a multiplicity of one.
+        /// Gets the full name.
         /// </summary>
-        /// <value><c>true</c> if this instance is one; otherwise, <c>false</c>.</value>
-        public bool IsOne => !this.IsMany;
+        /// <value>The full name.</value>
+        public string FullName => this.IsMany ? this.PluralFullName : this.SingularFullName;
 
         public bool IsMany
         {
@@ -56,6 +59,18 @@ namespace Allors.Meta
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance has a multiplicity of one.
+        /// </summary>
+        /// <value><c>true</c> if this instance is one; otherwise, <c>false</c>.</value>
+        public bool IsOne => !this.IsMany;
+
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>The name .</value>
+        public override string Name => this.FullName;
+
         IComposite IAssociationType.ObjectType => this.ObjectType;
 
         IObjectType IPropertyType.ObjectType => this.objectType;
@@ -72,21 +87,11 @@ namespace Allors.Meta
             }
         }
 
-        IRelationType IAssociationType.RelationType => this.RelationType;
-
-        public RelationType RelationType { get; private set; }
-
         /// <summary>
-        /// Gets the name.
+        /// Gets the plural name when using <see cref="Where"/>.
         /// </summary>
-        /// <value>The name .</value>
-        public override string Name => this.FullName;
-
-        /// <summary>
-        /// Gets the singular name when using <see cref="Where"/>.
-        /// </summary>
-        /// <value>The singular name when using <see cref="Where"/>.</value>
-        public string SingularName => this.ObjectType.SingularName;
+        /// <value>The plural name when using <see cref="Where"/>.</value>
+        public string PluralFullName => this.RoleType.SingularName + this.PluralName;
 
         /// <summary>
         /// Gets the plural name when using <see cref="Where"/>.
@@ -95,22 +100,10 @@ namespace Allors.Meta
         public string PluralName => this.ObjectType.PluralName;
 
         /// <summary>
-        /// Gets the full name.
-        /// </summary>
-        /// <value>The full name.</value>
-        public string FullName => this.IsMany ? this.PluralFullName : this.SingularFullName;
-
-        /// <summary>
-        /// Gets the singular name when using <see cref="Where"/>.
-        /// </summary>
-        /// <value>The singular name when using <see cref="Where"/>.</value>
-        public string SingularFullName => this.RoleType.SingularName + this.SingularName;
-
-        /// <summary>
         /// Gets the plural name when using <see cref="Where"/>.
         /// </summary>
         /// <value>The plural name when using <see cref="Where"/>.</value>
-        public string PluralFullName => this.RoleType.SingularName + this.PluralName;
+        public string PluralPropertyName => this.ObjectType.PluralName + Where + this.RoleType.SingularName;
 
         /// <summary>
         /// Gets the property name.
@@ -118,22 +111,9 @@ namespace Allors.Meta
         /// <value>The full name.</value>
         public string PropertyName => this.IsMany ? this.PluralPropertyName : this.SingularPropertyName;
 
-        /// <summary>
-        /// Gets the singular name when using <see cref="Where"/>.
-        /// </summary>
-        /// <value>The singular name when using <see cref="Where"/>.</value>
-        public string SingularPropertyName => this.ObjectType.SingularName + Where + this.RoleType.SingularName;
+        IRelationType IAssociationType.RelationType => this.RelationType;
 
-        /// <summary>
-        /// Gets the plural name when using <see cref="Where"/>.
-        /// </summary>
-        /// <value>The plural name when using <see cref="Where"/>.</value>
-        public string PluralPropertyName => this.ObjectType.PluralName + Where + this.RoleType.SingularName;
-
-        /// <summary>
-        /// Gets the display name.
-        /// </summary>
-        public override string DisplayName => this.PropertyName;
+        public RelationType RelationType { get; private set; }
 
         IRoleType IAssociationType.RoleType => this.RoleType;
 
@@ -144,21 +124,30 @@ namespace Allors.Meta
         public RoleType RoleType => this.RelationType.RoleType;
 
         /// <summary>
+        /// Gets the singular name when using <see cref="Where"/>.
+        /// </summary>
+        /// <value>The singular name when using <see cref="Where"/>.</value>
+        public string SingularFullName => this.RoleType.SingularName + this.SingularName;
+
+        /// <summary>
+        /// Gets the singular name when using <see cref="Where"/>.
+        /// </summary>
+        /// <value>The singular name when using <see cref="Where"/>.</value>
+        public string SingularName => this.ObjectType.SingularName;
+
+        /// <summary>
+        /// Gets the singular name when using <see cref="Where"/>.
+        /// </summary>
+        /// <value>The singular name when using <see cref="Where"/>.</value>
+        public string SingularPropertyName => this.ObjectType.SingularName + Where + this.RoleType.SingularName;
+
+        public bool Workspace => this.RelationType.Workspace;
+
+        /// <summary>
         /// Gets the validation name.
         /// </summary>
         /// <value>The name of the validation.</value>
         protected internal override string ValidationName => "association type " + this.RelationType.Name;
-
-        /// <summary>
-        /// Get the value of the association on this object.
-        /// </summary>
-        /// <param name="strategy">
-        /// The strategy.
-        /// </param>
-        /// <returns>
-        /// The association value.
-        /// </returns>
-        public override object Get(IStrategy strategy) => strategy.GetAssociation(this.RelationType);
 
         /// <summary>
         /// Compares the current instance with another object of the same type.
@@ -178,6 +167,17 @@ namespace Allors.Meta
 
             return -1;
         }
+
+        /// <summary>
+        /// Get the value of the association on this object.
+        /// </summary>
+        /// <param name="strategy">
+        /// The strategy.
+        /// </param>
+        /// <returns>
+        /// The association value.
+        /// </returns>
+        public override object Get(IStrategy strategy) => strategy.GetAssociation(this.RelationType);
 
         /// <summary>
         /// Get the object type.

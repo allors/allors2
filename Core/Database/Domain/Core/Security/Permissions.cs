@@ -25,7 +25,7 @@ namespace Allors.Domain
 
         public void Sync()
         {
-            var permissionByOperationByConcreteClassByOperandType = new Dictionary<OperandType, Dictionary<ObjectType, Dictionary<Operations, Permission>>>();
+            var permissionByOperationByConcreteClassByOperandType = new Dictionary<IOperandType, Dictionary<ObjectType, Dictionary<Operations, Permission>>>();
 
             foreach (Permission permission in new Permissions(this.Session).Extent())
             {

@@ -13,34 +13,6 @@ namespace Allors.Domain
 
     public partial class Permission
     {
-        public OperandType OperandType
-        {
-            get => (OperandType)this.Strategy.Session.Database.MetaPopulation.Find(this.OperandTypePointer);
-
-            set
-            {
-                if (value == null)
-                {
-                    this.RemoveOperandTypePointer();
-                }
-                else
-                {
-                    this.OperandTypePointer = value.Id;
-                }
-            }
-        }
-
-        public bool ExistOperandType => this.ExistOperandTypePointer;
-
-        public Operations Operation
-        {
-            get => (Operations)this.OperationEnum;
-
-            set => this.OperationEnum = (int)value;
-        }
-
-        public bool ExistOperation => this.ExistOperationEnum;
-
         public ObjectType ConcreteClass
         {
             get => (ObjectType)this.Strategy.Session.Database.MetaPopulation.Find(this.ConcreteClassPointer);
@@ -60,19 +32,32 @@ namespace Allors.Domain
 
         public bool ExistConcreteClass => this.ConcreteClass != null;
 
-        public void CoreOnPreDerive(ObjectOnPreDerive method)
+        public bool ExistOperandType => this.ExistOperandTypePointer;
+
+        public bool ExistOperation => this.ExistOperationEnum;
+
+        public IOperandType OperandType
         {
-            var derivation = method.Derivation;
+            get => (IOperandType)this.Strategy.Session.Database.MetaPopulation.Find(this.OperandTypePointer);
 
-            if (derivation.IsModified(this))
+            set
             {
-                foreach (Role role in this.RolesWherePermission)
+                if (value == null)
                 {
-                    derivation.AddDependency(role, this);
+                    this.RemoveOperandTypePointer();
                 }
-
-                this.Strategy.Session.ClearCache<PermissionCache>();
+                else
+                {
+                    this.OperandTypePointer = value.Id;
+                }
             }
+        }
+
+        public Operations Operation
+        {
+            get => (Operations)this.OperationEnum;
+
+            set => this.OperationEnum = (int)value;
         }
 
         public void CoreOnDerive(ObjectOnDerive method)
@@ -114,6 +99,21 @@ namespace Allors.Domain
             }
         }
 
+        public void CoreOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (derivation.IsModified(this))
+            {
+                foreach (Role role in this.RolesWherePermission)
+                {
+                    derivation.AddDependency(role, this);
+                }
+
+                this.Strategy.Session.ClearCache<PermissionCache>();
+            }
+        }
+
         public override string ToString()
         {
             var toString = new StringBuilder();
@@ -134,7 +134,7 @@ namespace Allors.Domain
             return toString.ToString();
         }
 
-        internal void Sync(ObjectType concreteClass, OperandType operandType, Operations operation)
+        internal void Sync(ObjectType concreteClass, IOperandType operandType, Operations operation)
         {
             this.OperandType = operandType;
             this.Operation = operation;

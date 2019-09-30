@@ -15,15 +15,13 @@ namespace Allors.Domain
     {
         private static readonly Operations[] ReadWriteExecute = { Operations.Read, Operations.Write, Operations.Execute };
 
-        private readonly ISession session;
-        private readonly Dictionary<ObjectType, IObjects> objectsByObjectType;
-
-        private readonly Dictionary<Guid, Role> roleById;
-        private readonly Dictionary<Guid, Dictionary<OperandType, Permission>> readPermissionsByObjectTypeId;
-        private readonly Dictionary<Guid, Dictionary<OperandType, Permission>> writePermissionsByObjectTypeId;
-        private readonly Dictionary<Guid, Dictionary<OperandType, Permission>> executePermissionsByObjectTypeId;
-
         private readonly Dictionary<Guid, Dictionary<Guid, Permission>> deniablePermissionByOperandTypeIdByObjectTypeId;
+        private readonly Dictionary<Guid, Dictionary<IOperandType, Permission>> executePermissionsByObjectTypeId;
+        private readonly Dictionary<ObjectType, IObjects> objectsByObjectType;
+        private readonly Dictionary<Guid, Dictionary<IOperandType, Permission>> readPermissionsByObjectTypeId;
+        private readonly Dictionary<Guid, Role> roleById;
+        private readonly ISession session;
+        private readonly Dictionary<Guid, Dictionary<IOperandType, Permission>> writePermissionsByObjectTypeId;
 
         public Security(ISession session)
         {
@@ -46,9 +44,9 @@ namespace Allors.Domain
                 this.roleById[role.UniqueId] = role;
             }
 
-            this.readPermissionsByObjectTypeId = new Dictionary<Guid, Dictionary<OperandType, Permission>>();
-            this.writePermissionsByObjectTypeId = new Dictionary<Guid, Dictionary<OperandType, Permission>>();
-            this.executePermissionsByObjectTypeId = new Dictionary<Guid, Dictionary<OperandType, Permission>>();
+            this.readPermissionsByObjectTypeId = new Dictionary<Guid, Dictionary<IOperandType, Permission>>();
+            this.writePermissionsByObjectTypeId = new Dictionary<Guid, Dictionary<IOperandType, Permission>>();
+            this.executePermissionsByObjectTypeId = new Dictionary<Guid, Dictionary<IOperandType, Permission>>();
 
             this.deniablePermissionByOperandTypeIdByObjectTypeId = new Dictionary<Guid, Dictionary<Guid, Permission>>();
 
@@ -74,7 +72,7 @@ namespace Allors.Domain
                     deniablePermissionByOperandTypeId.Add(operandType, permission);
                 }
 
-                Dictionary<Guid, Dictionary<OperandType, Permission>> permissionByOperandTypeByObjectTypeId;
+                Dictionary<Guid, Dictionary<IOperandType, Permission>> permissionByOperandTypeByObjectTypeId;
                 switch (permission.Operation)
                 {
                     case Operations.Read:
@@ -95,7 +93,7 @@ namespace Allors.Domain
 
                 if (!permissionByOperandTypeByObjectTypeId.TryGetValue(objectId, out var permissionByOperandType))
                 {
-                    permissionByOperandType = new Dictionary<OperandType, Permission>();
+                    permissionByOperandType = new Dictionary<IOperandType, Permission>();
                     permissionByOperandTypeByObjectTypeId[objectId] = permissionByOperandType;
                 }
 
@@ -135,7 +133,7 @@ namespace Allors.Domain
             var actualOperations = operations ?? ReadWriteExecute;
             foreach (var operation in actualOperations)
             {
-                Dictionary<OperandType, Permission> permissionByOperandType;
+                Dictionary<IOperandType, Permission> permissionByOperandType;
                 switch (operation)
                 {
                     case Operations.Read:
@@ -187,7 +185,7 @@ namespace Allors.Domain
                 var actualOperations = operations ?? ReadWriteExecute;
                 foreach (var operation in actualOperations)
                 {
-                    Dictionary<OperandType, Permission> permissionByOperandType;
+                    Dictionary<IOperandType, Permission> permissionByOperandType;
                     switch (operation)
                     {
                         case Operations.Read:
@@ -217,51 +215,14 @@ namespace Allors.Domain
             }
         }
 
-        public void GrantExcept(Guid roleId, ObjectType objectType, ICollection<OperandType> excepts, params Operations[] operations)
+        public void Grant(Guid roleId, ObjectType objectType, IOperandType operandType, params Operations[] operations)
         {
             if (this.roleById.TryGetValue(roleId, out var role))
             {
                 var actualOperations = operations ?? ReadWriteExecute;
                 foreach (var operation in actualOperations)
                 {
-                    Dictionary<OperandType, Permission> permissionByOperandType;
-                    switch (operation)
-                    {
-                        case Operations.Read:
-                            this.readPermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
-                            break;
-
-                        case Operations.Write:
-                            this.writePermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
-                            break;
-
-                        case Operations.Execute:
-                            this.executePermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
-                            break;
-
-                        default:
-                            throw new Exception("Unkown operation: " + operations);
-                    }
-
-                    if (permissionByOperandType != null)
-                    {
-                        foreach (var dictionaryEntry in permissionByOperandType.Where(v => !excepts.Contains(v.Key)))
-                        {
-                            role.AddPermission(dictionaryEntry.Value);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void Grant(Guid roleId, ObjectType objectType, OperandType operandType, params Operations[] operations)
-        {
-            if (this.roleById.TryGetValue(roleId, out var role))
-            {
-                var actualOperations = operations ?? ReadWriteExecute;
-                foreach (var operation in actualOperations)
-                {
-                    Dictionary<OperandType, Permission> permissionByOperandType;
+                    Dictionary<IOperandType, Permission> permissionByOperandType;
                     switch (operation)
                     {
                         case Operations.Read:
@@ -293,17 +254,54 @@ namespace Allors.Domain
 
         public void GrantAdministrator(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.AdministratorId, objectType, operations);
 
-        public void GrantGuest(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.GuestId, objectType, operations);
-
         public void GrantCreator(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.CreatorId, objectType, operations);
+
+        public void GrantExcept(Guid roleId, ObjectType objectType, ICollection<IOperandType> excepts, params Operations[] operations)
+        {
+            if (this.roleById.TryGetValue(roleId, out var role))
+            {
+                var actualOperations = operations ?? ReadWriteExecute;
+                foreach (var operation in actualOperations)
+                {
+                    Dictionary<IOperandType, Permission> permissionByOperandType;
+                    switch (operation)
+                    {
+                        case Operations.Read:
+                            this.readPermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
+                            break;
+
+                        case Operations.Write:
+                            this.writePermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
+                            break;
+
+                        case Operations.Execute:
+                            this.executePermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
+                            break;
+
+                        default:
+                            throw new Exception("Unkown operation: " + operations);
+                    }
+
+                    if (permissionByOperandType != null)
+                    {
+                        foreach (var dictionaryEntry in permissionByOperandType.Where(v => !excepts.Contains(v.Key)))
+                        {
+                            role.AddPermission(dictionaryEntry.Value);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void GrantGuest(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.GuestId, objectType, operations);
 
         public void GrantOwner(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.OwnerId, objectType, operations);
 
-        private void CoreOnPreSetup()
+        private void CoreOnPostSetup()
         {
         }
 
-        private void CoreOnPostSetup()
+        private void CoreOnPreSetup()
         {
         }
     }

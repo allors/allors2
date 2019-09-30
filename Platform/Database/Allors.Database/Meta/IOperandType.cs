@@ -8,5 +8,6 @@ namespace Allors.Meta
 {
     public interface IOperandType : IMetaObject
     {
+        bool Workspace { get; }
     }
 }

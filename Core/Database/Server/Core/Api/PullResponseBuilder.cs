@@ -128,15 +128,12 @@ namespace Allors.Server
                     var version = strategy.ObjectVersion.ToString();
                     var accessControls = this.accessControlsCompressor.Write(v);
                     var deniedPermissions = this.deniedPermissionsCompressor.Write(v);
-
                     return deniedPermissions != null
                         ? new[] { id, version, accessControls, deniedPermissions }
                         : new[] { id, version, accessControls };
                 }).ToArray(),
                 NamedObjects = this.objectByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Id.ToString()),
-                NamedCollections =
-                    this.collectionsByName.ToDictionary(kvp => kvp.Key,
-                        kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
+                NamedCollections = this.collectionsByName.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Select(obj => obj.Id.ToString()).ToArray()),
                 NamedValues = this.valueByName,
             };
 

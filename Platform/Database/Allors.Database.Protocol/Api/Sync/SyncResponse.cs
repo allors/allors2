@@ -11,6 +11,6 @@ namespace Allors.Protocol.Remote.Sync
 
         public SyncResponseObject[] Objects { get; set; }
 
-        public SyncResponsePermission[] Permissions { get; set; }
+        public string[][] Permissions { get; set; }
     }
 }

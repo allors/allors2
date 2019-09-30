@@ -11,19 +11,15 @@ namespace Allors.Domain
     {
         public void GrantOperations(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.OperationsId, objectType, operations);
 
-        public void GrantSales(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.SalesId, objectType, operations);
+        public void GrantOperations(ObjectType objectType, IOperandType operandType, params Operations[] operations) => this.Grant(Roles.OperationsId, objectType, operandType, operations);
 
         public void GrantProcurement(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.ProcurementId, objectType, operations);
 
-        public void GrantOperations(ObjectType objectType, OperandType operandType, params Operations[] operations) => this.Grant(Roles.OperationsId, objectType, operandType, operations);
+        public void GrantProcurement(ObjectType objectType, IOperandType operandType, params Operations[] operations) => this.Grant(Roles.ProcurementId, objectType, operandType, operations);
 
-        public void GrantSales(ObjectType objectType, OperandType operandType, params Operations[] operations) => this.Grant(Roles.SalesId, objectType, operandType, operations);
+        public void GrantSales(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.SalesId, objectType, operations);
 
-        public void GrantProcurement(ObjectType objectType, OperandType operandType, params Operations[] operations) => this.Grant(Roles.ProcurementId, objectType, operandType, operations);
-
-        private void CustomOnPreSetup()
-        {
-        }
+        public void GrantSales(ObjectType objectType, IOperandType operandType, params Operations[] operations) => this.Grant(Roles.SalesId, objectType, operandType, operations);
 
         private void CustomOnPostSetup()
         {
@@ -38,6 +34,10 @@ namespace Allors.Domain
                 security.GrantCreator(@class, full);
                 security.GrantGuest(@class, Operations.Read);
             }
+        }
+
+        private void CustomOnPreSetup()
+        {
         }
     }
 }

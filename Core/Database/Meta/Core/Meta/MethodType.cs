@@ -13,9 +13,8 @@ namespace Allors.Meta
         private string name;
         private Composite objectType;
 
-        private string xmlDoc;
-
         private bool workspace;
+        private string xmlDoc;
 
         public MethodType(MetaPopulation metaPopulation, Guid id)
             : base(metaPopulation)
@@ -23,6 +22,37 @@ namespace Allors.Meta
             this.Id = id;
 
             metaPopulation.OnMethodTypeCreated(this);
+        }
+
+        /// <summary>
+        /// Gets the display name.
+        /// </summary>
+        public override string DisplayName => this.name;
+
+        public string FullName => this.ObjectType != null ? this.ObjectType.Name + this.name : this.Name;
+
+        public string Name
+        {
+            get => this.name;
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.name = value;
+                this.MetaPopulation.Stale();
+            }
+        }
+
+        public Composite ObjectType
+        {
+            get => this.objectType;
+
+            set
+            {
+                this.MetaPopulation.AssertUnlocked();
+                this.objectType = value;
+                this.MetaPopulation.Stale();
+            }
         }
 
         public bool Workspace
@@ -56,37 +86,6 @@ namespace Allors.Meta
                 return null;
             }
         }
-
-        public string Name
-        {
-            get => this.name;
-
-            set
-            {
-                this.MetaPopulation.AssertUnlocked();
-                this.name = value;
-                this.MetaPopulation.Stale();
-            }
-        }
-
-        public string FullName => this.ObjectType != null ? this.ObjectType.Name + this.name : this.Name;
-
-        public Composite ObjectType
-        {
-            get => this.objectType;
-
-            set
-            {
-                this.MetaPopulation.AssertUnlocked();
-                this.objectType = value;
-                this.MetaPopulation.Stale();
-            }
-        }
-
-        /// <summary>
-        /// Gets the display name.
-        /// </summary>
-        public override string DisplayName => this.name;
 
         /// <summary>
         /// Gets the validation name.

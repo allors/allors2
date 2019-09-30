@@ -5,6 +5,7 @@
 
 namespace Allors.Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Domain;
@@ -77,7 +78,7 @@ namespace Allors.Server
                 return syncResponseRole;
             }
 
-            return new SyncResponse
+            var syncResponse = new SyncResponse
             {
                 Objects = objects.Select(v =>
                 {
@@ -98,6 +99,51 @@ namespace Allors.Server
                     };
                 }).ToArray(),
             };
+
+            HashSet<Permission> permissions = null;
+            if (this.syncRequest.Permissions != null)
+            {
+                var permissionIds = this.syncRequest.Permissions.Split(Compression.ItemSeparator);
+                permissions = new HashSet<Permission>(this.session.Instantiate(permissionIds).Cast<Permission>());
+            }
+
+            AccessControl[] accessControls = null;
+            if (this.syncRequest.AccessControls != null)
+            {
+                if (permissions == null)
+                {
+                    permissions = new HashSet<Permission>();
+                }
+
+                var accessControlIds = this.syncRequest.AccessControls.Split(Compression.ItemSeparator);
+                accessControls = this.session.Instantiate(accessControlIds).Cast<AccessControl>().ToArray();
+                syncResponse.AccessControls = accessControls
+                    .Select(v =>
+                    {
+                        var effectiveWorkspacePermissions = v.EffectivePermissions.Where(w => w.OperandType.Workspace).ToArray();
+                        permissions.UnionWith(effectiveWorkspacePermissions);
+                        return new SyncResponseAccessControl
+                        {
+                            I = v.Strategy.ObjectId.ToString(),
+                            V = v.Strategy.ObjectVersion.ToString(),
+                            P = string.Join(Compression.ItemSeparator, effectiveWorkspacePermissions.Select(w => w.Id)),
+                        };
+                    }).ToArray();
+            }
+
+            if (permissions != null)
+            {
+                syncResponse.Permissions = permissions.Select(v =>
+                    new[]
+                    {
+                        v.Strategy.ObjectId.ToString(),
+                        this.metaObjectCompressor.Write(v.ConcreteClass),
+                        this.metaObjectCompressor.Write(v.OperandType),
+                        v.OperationEnum.ToString(),
+                    }).ToArray();
+            }
+
+            return syncResponse;
         }
     }
 }
