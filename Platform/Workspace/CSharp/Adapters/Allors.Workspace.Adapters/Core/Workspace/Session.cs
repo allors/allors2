@@ -93,12 +93,12 @@ namespace Allors.Workspace
                     var newId = long.Parse(pushResponseNewObject.NI);
                     var id = long.Parse(pushResponseNewObject.I);
 
-                    this.workspace.Invalidate(id);
 
                     var newSessionObject = this.newSessionObjectById[newId];
                     this.newSessionObjectById.Remove(newId);
                     newSessionObject.NewId = null;
 
+                    this.workspace.Invalidate(id, newSessionObject.ObjectType);
                     var workspaceObject = this.workspace.Get(id);
                     newSessionObject.WorkspaceObject = workspaceObject;
 

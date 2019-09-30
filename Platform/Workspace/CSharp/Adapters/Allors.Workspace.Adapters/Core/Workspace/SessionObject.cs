@@ -85,8 +85,7 @@ namespace Allors.Workspace
                 return true;
             }
 
-            // TODO:
-            return true;
+            return this.WorkspaceObject.CanRead(roleType);
         }
 
         public bool CanWrite(IRoleType roleType)
@@ -96,8 +95,7 @@ namespace Allors.Workspace
                 return true;
             }
 
-            // TODO:
-            return true;
+            return this.WorkspaceObject.CanWrite(roleType);
         }
 
         public bool CanExecute(IMethodType methodType)
@@ -107,8 +105,7 @@ namespace Allors.Workspace
                 return true;
             }
 
-            // TODO: Optimize
-            return true;
+            return this.WorkspaceObject.CanExecute(methodType);
         }
 
         public bool Exist(IRoleType roleType)
@@ -158,7 +155,7 @@ namespace Allors.Workspace
 
                 if (value == null && roleType.IsMany)
                 {
-                    value = this.WorkspaceObject.Workspace.ObjectFactory.EmptyArray(roleType.ObjectType);
+                    value = this.Session.Workspace.ObjectFactory.EmptyArray(roleType.ObjectType);
                 }
 
                 this.roleByRoleType[roleType] = value;
@@ -312,16 +309,16 @@ namespace Allors.Workspace
                         }
                         else
                         {
-                            var originalRoleIdsObject = this.WorkspaceObject.Roles.FirstOrDefault(v => v.RoleType == roleType);
-                            if (originalRoleIdsObject?.Value != null)
+                            var workspaceRole = this.WorkspaceObject.Roles.FirstOrDefault(v => v.RoleType == roleType);
+                            if (workspaceRole?.Value == null)
                             {
                                 pushRequestRole.A = roleIds;
                             }
                             else
                             {
-                                if (originalRoleIdsObject != null)
+                                if (workspaceRole.Value != null)
                                 {
-                                    var originalRoleIds = ((IEnumerable<long>)originalRoleIdsObject.Value)
+                                    var originalRoleIds = ((IEnumerable<long>)workspaceRole.Value)
                                         .Select(v => v.ToString())
                                         .ToArray();
                                     pushRequestRole.A = roleIds.Except(originalRoleIds).ToArray();

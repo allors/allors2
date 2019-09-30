@@ -6,12 +6,9 @@
 namespace Allors.Workspace
 {
     using Allors.Workspace.Meta;
-    using Security;
 
     public interface IWorkspaceObject
     {
-        IAccessControlList AccessControlList { get; }
-
         IClass Class { get; }
 
         long Id { get; }
@@ -21,5 +18,11 @@ namespace Allors.Workspace
         long Version { get; }
 
         IWorkspace Workspace { get; }
+
+        bool CanRead(IRoleType roleType);
+
+        bool CanWrite(IRoleType roleType);
+
+        bool CanExecute(IMethodType methodType);
     }
 }

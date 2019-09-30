@@ -37,8 +37,8 @@
       <FileName>IWorkspaceObject.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Workspace" />
       <Property Name="AccessControlList" />
+      <Property Name="Workspace" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Roles" />
@@ -83,11 +83,14 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Workspace.Security.IAccessControlList">
-    <Position X="7.5" Y="0.5" Width="1.5" />
+    <Position X="7.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAQAAAIAAAAoAAAAAAAAAAAAAAEAAAg=</HashCode>
       <FileName>IAccessControlList.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Class" />
+    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Execute" />
       <Property Name="Read" />
@@ -95,14 +98,14 @@
     </ShowAsCollectionAssociation>
   </Interface>
   <Interface Name="Allors.Workspace.Meta.IMethodType" Collapsed="true">
-    <Position X="10.25" Y="1.5" Width="1.5" />
+    <Position X="10.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Meta\IMethodType.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Workspace.Meta.IRoleType" Collapsed="true">
-    <Position X="10.25" Y="0.5" Width="1.5" />
+    <Position X="10.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEEAAAAAAAgAAAAEIAAAAggAAAAAAQABIAAABAEAA=</HashCode>
       <FileName>Meta\IRoleType.cs</FileName>

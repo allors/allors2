@@ -13,9 +13,9 @@ namespace Allors.Protocol.Remote.Sync
         public string I { get; set; }
 
         /// <summary>
-        /// Gets or sets the permissions.
+        /// Gets or sets the permissions ids.
         /// </summary>
-        public string P { get; set; }
+        public string[] P { get; set; }
 
         /// <summary>
         /// Gets or sets the version.

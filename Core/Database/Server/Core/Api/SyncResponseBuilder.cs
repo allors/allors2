@@ -11,6 +11,7 @@ namespace Allors.Server
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Remote.Sync;
+    using Protocol;
     using Protocol.Data;
 
     public class SyncResponseBuilder
@@ -30,9 +31,10 @@ namespace Allors.Server
             this.syncRequest = syncRequest;
             this.acls = new AccessControlLists(this.user);
 
-            this.metaObjectCompressor = new MetaObjectCompressor();
-            this.accessControlsCompressor = new AccessControlsCompressor(this.acls);
-            this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(this.acls);
+            var compressor = new Compressor();
+            this.metaObjectCompressor = new MetaObjectCompressor(compressor);
+            this.accessControlsCompressor = new AccessControlsCompressor(compressor, this.acls);
+            this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(compressor, this.acls);
         }
 
         public SyncResponse Build()
@@ -103,7 +105,7 @@ namespace Allors.Server
             HashSet<Permission> permissions = null;
             if (this.syncRequest.Permissions != null)
             {
-                var permissionIds = this.syncRequest.Permissions.Split(Compression.ItemSeparator);
+                var permissionIds = this.syncRequest.Permissions;
                 permissions = new HashSet<Permission>(this.session.Instantiate(permissionIds).Cast<Permission>());
             }
 
@@ -115,7 +117,7 @@ namespace Allors.Server
                     permissions = new HashSet<Permission>();
                 }
 
-                var accessControlIds = this.syncRequest.AccessControls.Split(Compression.ItemSeparator);
+                var accessControlIds = this.syncRequest.AccessControls;
                 accessControls = this.session.Instantiate(accessControlIds).Cast<AccessControl>().ToArray();
                 syncResponse.AccessControls = accessControls
                     .Select(v =>
@@ -126,7 +128,7 @@ namespace Allors.Server
                         {
                             I = v.Strategy.ObjectId.ToString(),
                             V = v.Strategy.ObjectVersion.ToString(),
-                            P = string.Join(Compression.ItemSeparator, effectiveWorkspacePermissions.Select(w => w.Id)),
+                            P = effectiveWorkspacePermissions.Select(w => w.Id.ToString()).ToArray(),
                         };
                     }).ToArray();
             }

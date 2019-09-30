@@ -7,10 +7,10 @@ namespace Allors.Protocol.Remote.Sync
 {
     public class SyncRequest
     {
-        public string AccessControls { get; set; }
+        public string[] AccessControls { get; set; }
 
         public string[] Objects { get; set; }
 
-        public string Permissions { get; set; }
+        public string[] Permissions { get; set; }
     }
 }

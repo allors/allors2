@@ -3,20 +3,20 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Server
+namespace Allors.Workspace
 {
-    using Meta;
     using Protocol;
+    using Workspace.Meta;
 
-    internal class MetaObjectCompressor
+    public class MetaObjectCompressor
     {
         private readonly Compressor compressor;
 
-        internal MetaObjectCompressor(Compressor compressor) => this.compressor = compressor;
+        public MetaObjectCompressor(Compressor compressor) => this.compressor = compressor;
 
         public string Write(IMetaObject metaObject)
         {
-            var value = metaObject.Id.ToString("D").ToLower();
+            var value = metaObject?.Id.ToString("D").ToLower();
             return this.compressor.Write(value);
         }
     }

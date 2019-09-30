@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Workspace.Workspace">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="Diff" Hidden="true" />
+      <Method Name="Invalidate" Hidden="true" />
+      <Method Name="Sync" Hidden="true" />
+      <Method Name="Workspace" Hidden="true" />
+    </Members>
+    <AssociationLine Name="permissionById" Type="Allors.Workspace.Permission" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1.312" Y="1.796" />
+        <Point X="1.312" Y="6.59" />
+        <Point X="4.25" Y="6.59" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEAEAAAECAAAAAAAAAAAAAAAACAAAAAAgAAIA=</HashCode>
+      <FileName>Core\Workspace\Workspace.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="workspaceObjectById" />
+      <Field Name="accessControlById" />
+      <Field Name="permissionById" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Workspace.WorkspaceObject">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="WorkspaceObject" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAABAAAAAEEIAAAAIAgAAAAAAAAAAAAAIAAg=</HashCode>
+      <FileName>Core\Workspace\WorkspaceObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Workspace.AccessControl">
+    <Position X="4.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Core\Workspace\Security\AccessControl.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Permissions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Allors.Workspace.Permission">
+    <Position X="4.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAEAACAAAAA=</HashCode>
+      <FileName>Core\Workspace\Security\Permission.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -7,6 +7,7 @@ namespace Tests.Mock
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Allors.Protocol;
     using Allors.Protocol.Remote.Pull;
     using Allors.Workspace;
     using Allors.Workspace.Meta;
@@ -34,45 +35,139 @@ namespace Tests.Mock
         }
 
         [Fact]
-        public void CheckVersions()
+        public void Diff()
         {
             this.Workspace.Sync(Fixture.LoadData);
-
-            var required = new PullResponse
+            var compressor = new Compressor();
+            var pullResponse = new PullResponse
             {
                 Objects =
                        new[]
                            {
-                                new[] { "1", "1001" },
-                                new[] { "2", "1002" },
-                                new[] { "3", "1004" },
+                                new[] { "1", "1001", compressor.Write("101") },
+                                new[] { "2", "1002", compressor.Write("102"), compressor.Write("103") },
+                                new[] { "3", "1003" },
                            },
             };
 
-            var requireLoad = this.Workspace.Diff(required);
+            var requireLoad = this.Workspace.Diff(pullResponse);
 
-            Assert.Equal(1, requireLoad.Objects.Length);
+            Assert.Empty(requireLoad.Objects);
         }
 
         [Fact]
-        public void CheckVersionsUserSecurityHash()
+        public void DiffVersion()
         {
             this.Workspace.Sync(Fixture.LoadData);
-
-            var required = new PullResponse
+            var compressor = new Compressor();
+            var pullResponse = new PullResponse
             {
                 Objects =
-                       new[]
-                           {
-                                new[] { "1", "1001" },
-                                new[] { "2", "1002" },
-                                new[] { "3", "1004" },
-                           },
+                    new[]
+                    {
+                        new[] { "1", "1001", compressor.Write("101") },
+                        new[] { "2", "1002", compressor.Write("102"), compressor.Write("103") },
+                        new[] { "3", "1004" },
+                    },
             };
 
-            var requireLoad = this.Workspace.Diff(required);
+            var requireLoad = this.Workspace.Diff(pullResponse);
 
-            Assert.Equal(3, requireLoad.Objects.Length);
+            Assert.Single(requireLoad.Objects);
+
+            Assert.Equal("3", requireLoad.Objects[0]);
+        }
+
+        [Fact]
+        public void DiffAccessControl()
+        {
+            this.Workspace.Sync(Fixture.LoadData);
+            var compressor = new Compressor();
+            var pullResponse = new PullResponse
+            {
+                Objects =
+                    new[]
+                    {
+                        new[] { "1", "1001", compressor.Write("201") },
+                        new[] { "2", "1002", compressor.Write("102"), compressor.Write("103") },
+                        new[] { "3", "1003" },
+                    },
+            };
+
+            var requireLoad = this.Workspace.Diff(pullResponse);
+
+            Assert.Single(requireLoad.Objects);
+
+            Assert.Equal("1", requireLoad.Objects[0]);
+        }
+
+        [Fact]
+        public void DiffChangeDeniedPermission()
+        {
+            this.Workspace.Sync(Fixture.LoadData);
+            var compressor = new Compressor();
+            var pullResponse = new PullResponse
+            {
+                Objects =
+                    new[]
+                    {
+                        new[] { "1", "1001", compressor.Write("101") },
+                        new[] { "2", "1002", compressor.Write("102"), compressor.Write("104") },
+                        new[] { "3", "1003" },
+                    },
+            };
+
+            var requireLoad = this.Workspace.Diff(pullResponse);
+
+            Assert.Single(requireLoad.Objects);
+
+            Assert.Equal("2", requireLoad.Objects[0]);
+        }
+
+        [Fact]
+        public void DiffAddDeniedPermission()
+        {
+            this.Workspace.Sync(Fixture.LoadData);
+            var compressor = new Compressor();
+            var pullResponse = new PullResponse
+            {
+                Objects =
+                    new[]
+                    {
+                        new[] { "1", "1001", compressor.Write("101"), compressor.Write("104") },
+                        new[] { "2", "1002", compressor.Write("102"), compressor.Write("103") },
+                        new[] { "3", "1003" },
+                    },
+            };
+
+            var requireLoad = this.Workspace.Diff(pullResponse);
+
+            Assert.Single(requireLoad.Objects);
+
+            Assert.Equal("1", requireLoad.Objects[0]);
+        }
+
+        [Fact]
+        public void DiffRemoveDeniedPermission()
+        {
+            this.Workspace.Sync(Fixture.LoadData);
+            var compressor = new Compressor();
+            var pullResponse = new PullResponse
+            {
+                Objects =
+                    new[]
+                    {
+                        //new[] { "1", "1001", compressor.Write("101") },
+                        new[] { "2", "1002", compressor.Write("102") },
+                        //new[] { "3", "1003" },
+                    },
+            };
+
+            var requireLoad = this.Workspace.Diff(pullResponse);
+
+            Assert.Single(requireLoad.Objects);
+
+            Assert.Equal("2", requireLoad.Objects[0]);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Allors.Server
     using Allors.Data;
     using Allors.Domain;
     using Allors.Protocol.Remote.Pull;
+    using Protocol;
     using Services;
 
     public class PullResponseBuilder
@@ -30,8 +31,9 @@ namespace Allors.Server
             this.objects = new HashSet<IObject>();
             this.treeService = treeService;
 
-            this.accessControlsCompressor = new AccessControlsCompressor(this.acls);
-            this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(this.acls);
+            var compressor = new Compressor();
+            this.accessControlsCompressor = new AccessControlsCompressor(compressor, this.acls);
+            this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(compressor, this.acls);
         }
 
         public void AddCollection(string name, IEnumerable<IObject> collection, bool full = false)

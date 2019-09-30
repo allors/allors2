@@ -5,22 +5,19 @@
 
 namespace Allors.Server
 {
-    using System.Collections.Generic;
     using System.Linq;
     using Domain;
+    using Protocol;
 
     internal class DeniedPermissionsCompressor
     {
+        private readonly Compressor compressor;
         private readonly AccessControlLists acls;
-        private readonly Dictionary<string, string> indexBySortedDeniedPermissionIds;
 
-        private int counter;
-
-        internal DeniedPermissionsCompressor(AccessControlLists acls)
+        internal DeniedPermissionsCompressor(Compressor compressor, AccessControlLists acls)
         {
+            this.compressor = compressor;
             this.acls = acls;
-            this.indexBySortedDeniedPermissionIds = new Dictionary<string, string>();
-            this.counter = 0;
         }
 
         public string Write(IObject @object)
@@ -31,15 +28,8 @@ namespace Allors.Server
                 return null;
             }
 
-            var sortedDeniedPermissionIds = string.Join(Compression.ItemSeparator, deniedPermissionIds.OrderBy(v => v));
-            if (this.indexBySortedDeniedPermissionIds.TryGetValue(sortedDeniedPermissionIds, out var index))
-            {
-                return index;
-            }
-
-            index = (++this.counter).ToString();
-            this.indexBySortedDeniedPermissionIds.Add(sortedDeniedPermissionIds, index);
-            return $"{Compression.IndexMarker}{index}{Compression.IndexMarker}{sortedDeniedPermissionIds}";
+            var sortedPermissionIds = string.Join(Compressor.ItemSeparator, deniedPermissionIds.OrderBy(v => v));
+            return this.compressor.Write(sortedPermissionIds);
         }
     }
 }

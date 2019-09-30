@@ -24,7 +24,7 @@
       <Method Name="WorkspaceObject" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>IAACAAAAAABAAAAAAAIAAAAAAgAAAAAAAAAAAAAAAAI=</HashCode>
+      <HashCode>IAACAAAAAABAAAAAAAIAAAAIAgAAAAAAAAAAAAAAAAo=</HashCode>
       <FileName>Core\Workspace\WorkspaceObject.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

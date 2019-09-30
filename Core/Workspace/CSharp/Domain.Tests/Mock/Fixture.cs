@@ -6,7 +6,10 @@
 namespace Tests.Mock
 {
     using System.Collections.Generic;
+    using Allors.Protocol;
     using Allors.Protocol.Remote.Sync;
+    using Allors.Server;
+    using Allors.Workspace;
     using Allors.Workspace.Meta;
 
     public class Fixture
@@ -15,20 +18,8 @@ namespace Tests.Mock
         {
             get
             {
-                var keyByMetaObject = new Dictionary<IMetaObject, string>();
-                var index = 0;
-
-                string encode(IMetaObject metaObject)
-                {
-                    if (keyByMetaObject.TryGetValue(metaObject, out var key))
-                    {
-                        return key;
-                    }
-
-                    key = (++index).ToString();
-                    keyByMetaObject.Add(metaObject, key);
-                    return $":{key}:{metaObject.Id.ToString("D").ToLower()}";
-                }
+                var c = new Compressor();
+                var mc = new MetaObjectCompressor(c);
 
                 return new SyncResponse
                 {
@@ -38,73 +29,76 @@ namespace Tests.Mock
                         {
                             I = "1",
                             V = "1001",
-                            T = encode(M.Person.ObjectType),
+                            T = mc.Write(M.Person.ObjectType),
                             R = new[]
                             {
-                                new SyncResponseRole { T = encode(M.Person.FirstName), V = "Koen"},
-                                new SyncResponseRole { T = encode(M.Person.LastName), V = "Van Exem"},
-                                new SyncResponseRole { T = encode(M.Person.BirthDate), V = "1973-03-27T18:00:00Z"},
-                                new SyncResponseRole { T = encode(M.Person.IsStudent), V = "0"},
+                                new SyncResponseRole { T = mc.Write(M.Person.FirstName), V = "Koen"},
+                                new SyncResponseRole { T = mc.Write(M.Person.LastName), V = "Van Exem"},
+                                new SyncResponseRole { T = mc.Write(M.Person.BirthDate), V = "1973-03-27T18:00:00Z"},
+                                new SyncResponseRole { T = mc.Write(M.Person.IsStudent), V = "1"},
                             },
+                            A = c.Write("101"),
                         },
                         new SyncResponseObject
                         {
                             I = "2",
                             V = "1002",
-                            T = encode(M.Person.ObjectType),
+                            T = mc.Write(M.Person.ObjectType),
                             R = new[]
                             {
-                                new SyncResponseRole { T = encode(M.Person.FirstName), V = "Patrick"},
-                                new SyncResponseRole { T = encode(M.Person.LastName), V = "De Boeck"},
-                                new SyncResponseRole { T = encode(M.Person.IsStudent), V = "1"},
+                                new SyncResponseRole { T = mc.Write(M.Person.FirstName), V = "Patrick"},
+                                new SyncResponseRole { T = mc.Write(M.Person.LastName), V = "De Boeck"},
+                                new SyncResponseRole { T = mc.Write(M.Person.IsStudent), V = "0"},
                             },
+                            A = c.Write("102"),
+                            D = c.Write("103"),
                         },
                         new SyncResponseObject
                         {
                             I = "3",
                             V = "1003",
-                            T = encode(M.Person.ObjectType),
+                            T = mc.Write(M.Person.ObjectType),
                             R = new[]
                             {
-                                new SyncResponseRole { T = encode(M.Person.FirstName), V = "Martien"},
-                                new SyncResponseRole { T = encode(M.Person.MiddleName), V = "van"},
-                                new SyncResponseRole { T = encode(M.Person.LastName), V = "Knippenberg"},
+                                new SyncResponseRole { T = mc.Write(M.Person.FirstName), V = "Martien"},
+                                new SyncResponseRole { T = mc.Write(M.Person.MiddleName), V = "van"},
+                                new SyncResponseRole { T = mc.Write(M.Person.LastName), V = "Knippenberg"},
                             },
                         },
                         new SyncResponseObject
                         {
                             I = "101",
                             V = "1101",
-                            T = encode(M.Organisation.ObjectType),
+                            T = mc.Write(M.Organisation.ObjectType),
                             R = new[]
                             {
-                                new SyncResponseRole { T = encode(M.Organisation.Name), V = "Acme" },
-                                new SyncResponseRole { T = encode(M.Organisation.Owner), V = "1" },
-                                new SyncResponseRole { T = encode(M.Organisation.Employees), V = "1,2,3" },
-                                new SyncResponseRole { T = encode(M.Organisation.Manager)},
+                                new SyncResponseRole { T = mc.Write(M.Organisation.Name), V = "Acme" },
+                                new SyncResponseRole { T = mc.Write(M.Organisation.Owner), V = "1" },
+                                new SyncResponseRole { T = mc.Write(M.Organisation.Employees), V = "1,2,3" },
+                                new SyncResponseRole { T = mc.Write(M.Organisation.Manager)},
                             },
                         },
                         new SyncResponseObject
                         {
                             I = "102",
                             V = "1102",
-                            T = encode(M.Organisation.ObjectType),
+                            T = mc.Write(M.Organisation.ObjectType),
                             R = new[]
                             {
-                                new SyncResponseRole { T = encode(M.Organisation.Name), V = "Ocme" },
-                                new SyncResponseRole { T = encode(M.Organisation.Owner), V = "2" },
-                                new SyncResponseRole { T = encode(M.Organisation.Employees), V = "1" },
+                                new SyncResponseRole { T = mc.Write(M.Organisation.Name), V = "Ocme" },
+                                new SyncResponseRole { T = mc.Write(M.Organisation.Owner), V = "2" },
+                                new SyncResponseRole { T = mc.Write(M.Organisation.Employees), V = "1" },
                             },
                         },
                         new SyncResponseObject
                         {
                             I = "103",
                             V = "1103",
-                            T = encode(M.Organisation.ObjectType),
+                            T = mc.Write(M.Organisation.ObjectType),
                             R = new[]
                             {
-                                new SyncResponseRole { T = encode(M.Organisation.Name), V = "icme" },
-                                new SyncResponseRole { T = encode(M.Organisation.Owner), V = "3" },
+                                new SyncResponseRole { T = mc.Write(M.Organisation.Name), V = "icme" },
+                                new SyncResponseRole { T = mc.Write(M.Organisation.Owner), V = "3" },
                             },
                         },
                     },

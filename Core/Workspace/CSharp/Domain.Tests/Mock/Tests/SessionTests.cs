@@ -7,6 +7,7 @@ namespace Tests.Mock
 {
     using System;
     using System.Linq;
+    using Allors.Protocol.Data;
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace;
     using Allors.Workspace.Domain;
@@ -26,7 +27,7 @@ namespace Tests.Mock
             Assert.Equal("Koen", koen.FirstName);
             Assert.Null(koen.MiddleName);
             Assert.Equal("Van Exem", koen.LastName);
-            Assert.Equal(DateTime.Parse("1973-03-27T18:00:00Z"), koen.BirthDate);
+            Assert.Equal(UnitConvert.Parse(M.Person.BirthDate.ObjectType.Id, "1973-03-27T18:00:00Z"), koen.BirthDate);
             Assert.True(koen.IsStudent);
 
             var patrick = session.Get(2) as Person;
@@ -396,6 +397,7 @@ namespace Tests.Mock
             Assert.Contains("1", savedAcmeEmployees.R);
             Assert.Contains("2", savedAcmeEmployees.R);
             Assert.Contains("3", savedAcmeEmployees.R);
+
             var savedOcme = save.Objects.First(v => v.I == "102");
 
             Assert.Equal("1102", savedOcme.V);
@@ -543,9 +545,9 @@ namespace Tests.Mock
 
             var session = new Session(this.Workspace);
 
-            var saveResponse = new PushResponse();
+            var pushResponse = new PushResponse();
 
-            session.PushResponse(saveResponse);
+            session.PushResponse(pushResponse);
 
             var mathijs = session.Create(M.Person.Class) as Person;
             mathijs.FirstName = "Mathijs";
@@ -553,12 +555,12 @@ namespace Tests.Mock
 
             var newId = mathijs.NewId.Value;
 
-            saveResponse = new PushResponse
+            pushResponse = new PushResponse
             {
                 NewObjects = new[] { new PushResponseNewObject { I = "10000", NI = newId.ToString() } },
             };
 
-            session.PushResponse(saveResponse);
+            session.PushResponse(pushResponse);
 
             Assert.Null(mathijs.NewId);
             Assert.Equal(10000, mathijs.Id);
