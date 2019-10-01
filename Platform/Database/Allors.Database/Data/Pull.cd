@@ -3,23 +3,14 @@
   <Class Name="Allors.Data.Pull">
     <Position X="1" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAAAAIAAAAAAAAAgAAAAAAAACAAAAAAAIIAACAAAAAA=</HashCode>
+      <HashCode>EAAAAIAAAAAAAAAgAAAAAAAACAAAAAAAAIAACAAAAAA=</HashCode>
       <FileName>Data\Pull.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Extent" />
       <Property Name="Object" />
-      <Property Name="Arguments" />
       <Property Name="Results" />
     </ShowAsAssociation>
-  </Class>
-  <Class Name="Allors.Data.Arguments" Collapsed="true">
-    <Position X="4" Y="5.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>CAAAAAAAAAAFABAACAAAAAQAAAAAAAAEAAAgAAAAAAA=</HashCode>
-      <FileName>Data\Arguments.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Allors.Data.Result">
     <Position X="4" Y="3" Width="1.5" />
@@ -57,7 +48,7 @@
   <Class Name="Allors.Data.TreeNode">
     <Position X="12.25" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIoAIAAAACAAAAAABAAAAAAAACAAAAAAAACAAAAAAA=</HashCode>
+      <HashCode>AAIoAIAAAAAAAAAAABAAAAAAAACAAAAAAAACAAAAAAA=</HashCode>
       <FileName>Data\TreeNode.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

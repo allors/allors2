@@ -5,8 +5,11 @@
 
 namespace Allors.Workspace
 {
+    using System;
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Sync;
+    using Domain;
+    using Meta;
     using Protocol.Remote.Security;
 
     public interface IWorkspace
@@ -20,5 +23,7 @@ namespace Allors.Workspace
         void Security(SecurityResponse securityResponse);
 
         IWorkspaceObject Get(long id);
+
+        Permission GetPermission(IClass @class, IOperandType roleType, Operations operation);
     }
 }

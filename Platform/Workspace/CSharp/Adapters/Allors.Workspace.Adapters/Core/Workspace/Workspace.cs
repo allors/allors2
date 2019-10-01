@@ -8,7 +8,6 @@ namespace Allors.Workspace
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection.Emit;
     using Allors.Protocol.Remote.Pull;
     using Allors.Protocol.Remote.Sync;
     using Allors.Workspace.Meta;
@@ -49,42 +48,44 @@ namespace Allors.Workspace
 
             var syncRequest = new SyncRequest
             {
-                Objects = response.Objects.Where(v =>
-                {
-                    var id = long.Parse(v[0]);
-                    this.workspaceObjectById.TryGetValue(id, out var workspaceObject);
-                    var sortedAccessControlIds = v.Length > 2 ? ctx.ReadSortedAccessControlIds(v[2]) : null;
-                    var sortedDeniedPermissionIds = v.Length > 3 ? ctx.ReadSortedDeniedPermissionIds(v[3]) : null;
-
-                    if (workspaceObject == null)
+                Objects = response.Objects
+                    .Where(v =>
                     {
-                        return true;
-                    }
+                        var id = long.Parse(v[0]);
+                        this.workspaceObjectById.TryGetValue(id, out var workspaceObject);
+                        var sortedAccessControlIds = v.Length > 2 ? ctx.ReadSortedAccessControlIds(v[2]) : null;
+                        var sortedDeniedPermissionIds = v.Length > 3 ? ctx.ReadSortedDeniedPermissionIds(v[3]) : null;
 
-                    var version = long.Parse(v[1]);
-                    if (!workspaceObject.Version.Equals(version))
-                    {
-                        return true;
-                    }
-
-                    if (v.Length == 2)
-                    {
-                        return false;
-                    }
-
-                    if (v.Length == 3)
-                    {
-                        if (workspaceObject.SortedDeniedPermissionIds != null)
+                        if (workspaceObject == null)
                         {
                             return true;
                         }
 
-                        return !Equals(workspaceObject.SortedAccessControlIds, sortedAccessControlIds);
-                    }
+                        var version = long.Parse(v[1]);
+                        if (!workspaceObject.Version.Equals(version))
+                        {
+                            return true;
+                        }
 
-                    return !Equals(workspaceObject.SortedAccessControlIds, sortedAccessControlIds) ||
-                           !Equals(workspaceObject.SortedDeniedPermissionIds, sortedDeniedPermissionIds);
-                }).Select(v => v[0]).ToArray(),
+                        if (v.Length == 2)
+                        {
+                            return false;
+                        }
+
+                        if (v.Length == 3)
+                        {
+                            if (workspaceObject.SortedDeniedPermissionIds != null)
+                            {
+                                return true;
+                            }
+
+                            return !Equals(workspaceObject.SortedAccessControlIds, sortedAccessControlIds);
+                        }
+
+                        return !Equals(workspaceObject.SortedAccessControlIds, sortedAccessControlIds) ||
+                               !Equals(workspaceObject.SortedDeniedPermissionIds, sortedDeniedPermissionIds);
+                    })
+                    .Select(v => v[0]).ToArray(),
             };
 
             return syncRequest;
@@ -101,13 +102,13 @@ namespace Allors.Workspace
             return workspaceObject;
         }
 
-        public void Security(SecurityResponse syncResponse)
+        public void Security(SecurityResponse securityResponse)
         {
             var ctx = new SecurityResponseContext(this);
 
-            if (syncResponse.Permissions != null)
+            if (securityResponse.Permissions != null)
             {
-                foreach (var syncResponsePermission in syncResponse.Permissions)
+                foreach (var syncResponsePermission in securityResponse.Permissions)
                 {
                     var id = long.Parse(syncResponsePermission[0]);
                     var @class = (IClass)ctx.MetaObjectDecompressor.Read(syncResponsePermission[1]);
@@ -158,9 +159,9 @@ namespace Allors.Workspace
                 }
             }
 
-            if (syncResponse.AccessControls != null)
+            if (securityResponse.AccessControls != null)
             {
-                foreach (var syncResponseAccessControl in syncResponse.AccessControls)
+                foreach (var syncResponseAccessControl in securityResponse.AccessControls)
                 {
                     var id = long.Parse(syncResponseAccessControl.I);
                     var version = long.Parse(syncResponseAccessControl.V);
@@ -200,7 +201,7 @@ namespace Allors.Workspace
             return this.workspaceObjectById.Where(v => classes.Contains(v.Value.Class)).Select(v => v.Value);
         }
 
-        internal Permission GetPermission(IClass @class, IOperandType roleType, Operations operation)
+        public Permission GetPermission(IClass @class, IOperandType roleType, Operations operation)
         {
             switch (operation)
             {

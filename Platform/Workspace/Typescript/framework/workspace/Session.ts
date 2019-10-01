@@ -137,31 +137,10 @@ export class Session implements ISession {
   }
 
   public pushRequest(): PushRequest {
-    const data: PushRequest = new PushRequest();
-    data.newObjects = [];
-    data.objects = [];
-
-    if (this.newSessionObjectById) {
-      Object.keys(this.newSessionObjectById).forEach((key: string) => {
-        const newSessionObject: INewSessionObject = this.newSessionObjectById[key];
-        const objectData: PushRequestNewObject = newSessionObject.saveNew();
-        if (objectData !== undefined) {
-          data.newObjects.push(objectData);
-        }
-      });
-    }
-
-    if (this.existingSessionObjectById) {
-      Object.keys(this.existingSessionObjectById).forEach((key: string) => {
-        const sessionObject: ISessionObject = this.existingSessionObjectById[key];
-        const objectData: PushRequestObject = sessionObject.save();
-        if (objectData !== undefined) {
-          data.objects.push(objectData);
-        }
-      });
-    }
-
-    return data;
+    const data: PushRequest = new PushRequest({
+      newObjects: Object.values(this.newSessionObjectById).map(v => v.saveNew()).filter(v => v !== undefined),
+      objects: Object.values(this.existingSessionObjectById).map(v => v.save()).filter(v => v !== undefined),
+    });
   }
 
   public pushResponse(pushResponse: PushResponse): void {

@@ -1,13 +1,14 @@
 import { ObjectType } from '../meta';
 import { Tree } from './Tree';
 import { Step } from './Step';
+import { TreeNode } from './TreeNode';
 
 const includeKey = 'include';
 
 export class Fetch {
   public step: Step;
 
-  public include: Tree;
+  public include: Tree | TreeNode[];
 
   constructor(fields?: Partial<Fetch> | ObjectType, literal?: any) {
 
@@ -38,7 +39,7 @@ export class Fetch {
 
     return {
       step: this.step,
-      include: this.include,
+      include: this.include instanceof Tree ? this.include.nodes : this.include,
     };
   }
 }

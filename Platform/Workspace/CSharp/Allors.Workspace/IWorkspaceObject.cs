@@ -5,10 +5,13 @@
 
 namespace Allors.Workspace
 {
+    using System.Security;
     using Allors.Workspace.Meta;
 
     public interface IWorkspaceObject
     {
+        IWorkspace Workspace { get; }
+
         IClass Class { get; }
 
         long Id { get; }
@@ -17,12 +20,6 @@ namespace Allors.Workspace
 
         long Version { get; }
 
-        IWorkspace Workspace { get; }
-
-        bool CanRead(IRoleType roleType);
-
-        bool CanWrite(IRoleType roleType);
-
-        bool CanExecute(IMethodType methodType);
+        bool IsPermitted(Permission permission);
     }
 }

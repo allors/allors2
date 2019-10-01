@@ -55,25 +55,7 @@ namespace Allors.Workspace
 
         public Workspace Workspace { get; }
 
-        public bool CanExecute(IMethodType methodType)
-        {
-            var permission = this.Workspace.GetPermission(this.Class, methodType, Operations.Execute);
-            return this.IsPermitted(permission);
-        }
-
-        public bool CanRead(IRoleType roleType)
-        {
-            var permission = this.Workspace.GetPermission(this.Class, roleType, Operations.Read);
-            return this.IsPermitted(permission);
-        }
-
-        public bool CanWrite(IRoleType roleType)
-        {
-            var permission = this.Workspace.GetPermission(this.Class, roleType, Operations.Write);
-            return this.IsPermitted(permission);
-        }
-
-        private bool IsPermitted(Permission permission)
+        public bool IsPermitted(Permission permission)
         {
             if (permission == null)
             {

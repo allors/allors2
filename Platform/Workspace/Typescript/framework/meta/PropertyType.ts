@@ -1,6 +1,4 @@
-import { MetaObject } from './MetaObject';
-import { ObjectType } from './ObjectType';
+import { OperandType } from './OperandType';
 
-export interface PropertyType extends MetaObject {
-    objectType: ObjectType;
+export interface PropertyType extends OperandType {
 }

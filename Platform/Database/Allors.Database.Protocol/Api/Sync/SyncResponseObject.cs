@@ -13,11 +13,6 @@ namespace Allors.Protocol.Remote.Sync
         public string I { get; set; }
 
         /// <summary>
-        /// Gets or sets the version.
-        /// </summary>
-        public string V { get; set; }
-
-        /// <summary>
         /// Gets or sets the object type.
         /// Format is a mapping ":{key}:{value}" or a key "{key}".
         /// The key will be generated on first occurence of the ObjectType
@@ -26,9 +21,9 @@ namespace Allors.Protocol.Remote.Sync
         public string T { get; set; }
 
         /// <summary>
-        /// Gets or sets the roles.
+        /// Gets or sets the version.
         /// </summary>
-        public SyncResponseRole[] R { get; set; }
+        public string V { get; set; }
 
         /// <summary>
         /// Gets or sets the access controls.
@@ -39,6 +34,11 @@ namespace Allors.Protocol.Remote.Sync
         /// Gets or sets the denied permissions.
         /// </summary>
         public string D { get; set; }
+
+        /// <summary>
+        /// Gets or sets the roles.
+        /// </summary>
+        public SyncResponseRole[] R { get; set; }
 
         public override string ToString() => $"{this.T} [{this.I}:{this.V}]";
     }

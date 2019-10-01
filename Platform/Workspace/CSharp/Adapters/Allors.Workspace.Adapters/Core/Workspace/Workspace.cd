@@ -10,7 +10,7 @@
       <Method Name="Workspace" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAQAAAAEAEAAAADAAAAAAAAAAAAAAAAAAAAAAAgAAIA=</HashCode>
+      <HashCode>IAQAICAEAEAAAADAgQAAAAAAAAAAAAAAAAAEAAgAQIA=</HashCode>
       <FileName>Core\Workspace\Workspace.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -24,13 +24,13 @@
       <Method Name="WorkspaceObject" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>IAACAAAAAABAAAAAAAIAAAAIAgAAAAAAAAAAAAAAAAo=</HashCode>
+      <HashCode>IACCgAAAAABAAAAAEEIAAAAIAgAAAAAAAAAAAIAIAAg=</HashCode>
       <FileName>Core\Workspace\WorkspaceObject.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Allors.Workspace.Session">
-    <Position X="0.75" Y="3.5" Width="1.5" />
+    <Position X="0.75" Y="4.5" Width="1.5" />
     <Members>
       <Method Name="Create" Hidden="true" />
       <Method Name="Get" Hidden="true" />
@@ -50,7 +50,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Allors.Workspace.SessionObject">
-    <Position X="4.25" Y="3.5" Width="1.5" />
+    <Position X="4.25" Y="5.25" Width="1.5" />
     <Members>
       <Method Name="Add" Hidden="true" />
       <Method Name="CanExecute" Hidden="true" />

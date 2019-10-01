@@ -1,15 +1,7 @@
 import { Response } from '../Response';
-
-export interface SyncResponseObject {
-    i: string;
-    v: string;
-    t: string;
-
-    roles?: any[][];
-    methods?: string[][];
-}
+import { SyncResponseObject } from './SyncResponseObject';
 
 export interface SyncResponse extends Response {
-    userSecurityHash: string;
+    accessControls: string[][];
     objects: SyncResponseObject[];
 }

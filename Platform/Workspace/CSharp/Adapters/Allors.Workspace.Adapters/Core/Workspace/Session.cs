@@ -74,15 +74,12 @@ namespace Allors.Workspace
             }
         }
 
-        public PushRequest PushRequest()
-        {
-            var data = new PushRequest
+        public PushRequest PushRequest() =>
+            new PushRequest
             {
                 NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew()).ToArray(),
                 Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray(),
             };
-            return data;
-        }
 
         public void PushResponse(PushResponse pushResponse)
         {
@@ -92,7 +89,6 @@ namespace Allors.Workspace
                 {
                     var newId = long.Parse(pushResponseNewObject.NI);
                     var id = long.Parse(pushResponseNewObject.I);
-
 
                     var newSessionObject = this.newSessionObjectById[newId];
                     this.newSessionObjectById.Remove(newId);

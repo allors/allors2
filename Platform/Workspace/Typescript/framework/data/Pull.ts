@@ -18,9 +18,9 @@ export class Pull {
 
   public object: ISessionObject | string;
 
-  public arguments: { [name: string]: string; };
-
   public results: Result[];
+
+  public parameters: { [name: string]: string; };
 
   constructor(fields?: Partial<Pull> | ObjectType, flat?: FlatPull) {
     if (fields instanceof ObjectType) {
@@ -32,7 +32,7 @@ export class Pull {
         this.extentRef = flat.extentRef;
         this.extent = flat.extent;
         this.object = flat.object;
-        this.arguments = flat.arguments;
+        this.parameters = flat.parameters;
 
         const sort = flat.sort instanceof Sort ? [flat.sort] : flat.sort;
 
@@ -89,8 +89,8 @@ export class Pull {
       extent: this.extent,
       objectType: this.objectType && this.objectType.id,
       object: sessionObject && sessionObject.id ? sessionObject.id : this.object,
-      arguments: this.arguments,
       results: this.results,
+      parameters: this.parameters,
     };
   }
 }

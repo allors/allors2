@@ -26,7 +26,7 @@ export interface FlatPull {
 
     include?: Tree | any;
 
-    arguments?: { [id: string]: string };
+    parameters?: { [id: string]: string };
 
     name?: string;
 

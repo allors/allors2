@@ -12,6 +12,7 @@ namespace Allors.Workspace
     using System.Net.Sockets;
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace.Meta;
+    using Domain;
     using Protocol.Data;
 
     public class SessionObject : ISessionObject
@@ -85,7 +86,8 @@ namespace Allors.Workspace
                 return true;
             }
 
-            return this.WorkspaceObject.CanRead(roleType);
+            var permission = this.Session.Workspace.GetPermission(this.ObjectType, roleType, Operations.Read);
+            return this.WorkspaceObject.IsPermitted(permission);
         }
 
         public bool CanWrite(IRoleType roleType)
@@ -95,7 +97,8 @@ namespace Allors.Workspace
                 return true;
             }
 
-            return this.WorkspaceObject.CanWrite(roleType);
+            var permission = this.Session.Workspace.GetPermission(this.ObjectType, roleType, Operations.Write);
+            return this.WorkspaceObject.IsPermitted(permission);
         }
 
         public bool CanExecute(IMethodType methodType)
@@ -105,7 +108,8 @@ namespace Allors.Workspace
                 return true;
             }
 
-            return this.WorkspaceObject.CanExecute(methodType);
+            var permission = this.Session.Workspace.GetPermission(this.ObjectType, methodType, Operations.Execute);
+            return this.WorkspaceObject.IsPermitted(permission);
         }
 
         public bool Exist(IRoleType roleType)
