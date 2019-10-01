@@ -3,4 +3,5 @@
     Pull,
     Sync,
     Push,
+    Security,
 }

@@ -10,37 +10,36 @@ export interface Interface {
     id: string;
     name: string;
     plural: string;
-    interfaces?: string[];
+    interfaceIds?: string[];
 }
 
 export interface Class {
     id: string;
     name: string;
     plural: string;
-    interfaces?: string[];
+    interfaceIds?: string[];
 }
 
 export interface RelationType {
     id: string;
     associationType: AssociationType;
     roleType: RoleType;
-    isDerived?: boolean;
     concreteRoleTypes?: ConcreteRoleType[];
+    isDerived?: boolean;
 }
 
 export interface AssociationType {
     id: string;
     objectTypeId: string;
     name: string;
-    singular: string;
     isOne: boolean;
 }
 
 export interface RoleType {
     id: string;
     objectTypeId: string;
-    name: string;
     singular: string;
+    plural: string;
     isUnit: boolean;
     isOne: boolean;
     isRequired?: boolean;
@@ -55,9 +54,4 @@ export interface MethodType {
     id: string;
     objectTypeId: string;
     name: string;
-    concreteMethodTypes?: ConcreteMethodType[];
-}
-
-export interface ConcreteMethodType {
-    objectTypeId: string;
 }

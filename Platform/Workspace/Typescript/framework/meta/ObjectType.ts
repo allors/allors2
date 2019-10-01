@@ -3,7 +3,6 @@ import { MetaObject } from './MetaObject';
 import { MetaPopulation } from './MetaPopulation';
 import { MethodType } from './MethodType';
 import { RoleType } from './RoleType';
-import * as units from './Units';
 import { ids } from '../../meta/generated/ids.g';
 
 export enum Kind {
@@ -21,9 +20,9 @@ export class ObjectType implements MetaObject {
   interfaces: ObjectType[] = [];
   classes: ObjectType[] = [];
 
-  roleTypeByName: { [name: string]: RoleType; } = {};
-  associationTypeByName: { [name: string]: AssociationType; } = {};
-  methodTypeByName: { [name: string]: MethodType; } = {};
+  xroleTypeByName: { [name: string]: RoleType; } = {};
+  xassociationTypeByName: { [name: string]: AssociationType; } = {};
+  xmethodTypeByName: { [name: string]: MethodType; } = {};
 
   constructor(public metaPopulation: MetaPopulation) {
   }
@@ -97,25 +96,25 @@ export class ObjectType implements MetaObject {
   }
 
   private deriveAssociations() {
-    this.interfaces.forEach((v) => Object.assign(this.associationTypeByName, v.associationTypeByName));
+    this.interfaces.forEach((v) => Object.assign(this.xassociationTypeByName, v.xassociationTypeByName));
   }
 
   private deriveRoles() {
-    this.interfaces.forEach((v) => Object.assign(this.roleTypeByName, v.roleTypeByName));
+    this.interfaces.forEach((v) => Object.assign(this.xroleTypeByName, v.xroleTypeByName));
 
     if (this.isClass) {
-      Object.keys(this.roleTypeByName)
-        .map((name) => this.roleTypeByName[name])
+      Object.keys(this.xroleTypeByName)
+        .map((name) => this.xroleTypeByName[name])
         .forEach((roleType) => {
           const relationType = roleType.relationType;
           if (relationType.associationType.objectType.isInterface) {
-            this.roleTypeByName[roleType.name] = relationType.concreteRoleTypeByClassName[this.name];
+            this.xroleTypeByName[roleType.name] = relationType.concreteRoleTypeByClassId[this.name];
           }
         });
     }
   }
 
   private deriveMethods() {
-    this.interfaces.forEach((v) => Object.assign(this.methodTypeByName, v.methodTypeByName));
+    this.interfaces.forEach((v) => Object.assign(this.xmethodTypeByName, v.xmethodTypeByName));
   }
 }

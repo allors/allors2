@@ -3,7 +3,7 @@ import { MetaPopulation } from '../meta/MetaPopulation';
 
 export const createMetaDecompressor = (decompressor: Decompressor, metaPopulation: MetaPopulation) => (compressed: string) => {
   return metaPopulation.metaObjectById[decompressor.read(compressed, v => {})];
-}
+};
 
 export class Decompressor {
   private valueByKey: { [k: string]: string };

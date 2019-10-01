@@ -23,22 +23,12 @@ namespace Allors.Workspace
             this.Workspace = ctx.Workspace;
             this.Id = long.Parse(syncResponseObject.I);
             this.Version = !string.IsNullOrEmpty(syncResponseObject.V) ? long.Parse(syncResponseObject.V) : 0;
-            this.Version = !string.IsNullOrEmpty(syncResponseObject.V) ? long.Parse(syncResponseObject.V) : 0;
             this.Class = (IClass)ctx.MetaObjectDecompressor.Read(syncResponseObject.T);
             this.Roles = syncResponseObject.R?.Select(v => new WorkspaceRole(ctx.MetaObjectDecompressor, v)).Cast<IWorkspaceRole>().ToArray();
             this.SortedAccessControlIds = ctx.ReadSortedAccessControlIds(syncResponseObject.A);
             this.SortedDeniedPermissionIds = ctx.ReadSortedDeniedPermissionIds(syncResponseObject.D);
         }
-
-        internal WorkspaceObject(Workspace workspace, long objectId, IClass @class)
-        {
-            this.Workspace = workspace;
-            this.Id = objectId;
-            this.Class = @class;
-            this.Version = 0;
-            this.Roles = Array.Empty<IWorkspaceRole>();
-        }
-
+        
         public IClass Class { get; }
 
         public long Id { get; }
@@ -49,7 +39,7 @@ namespace Allors.Workspace
 
         public string SortedDeniedPermissionIds { get; set; }
 
-        public long Version { get; }
+        public long Version { get; private set; }
 
         IWorkspace IWorkspaceObject.Workspace => this.Workspace;
 
@@ -83,5 +73,7 @@ namespace Allors.Workspace
 
             return false;
         }
+
+        internal void Invalidate() => this.Version = -1;
     }
 }

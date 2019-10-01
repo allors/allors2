@@ -6,7 +6,7 @@ export class RelationType {
   id: string;
   associationType: AssociationType;
   roleType: RoleType;
-  concreteRoleTypeByClassName: { [name: string]: RoleType; } = {};
+  concreteRoleTypeByClassId: { [id: string]: RoleType; } = {};
 
   constructor(public metaPopulation: MetaPopulation) {
     this.metaPopulation = metaPopulation;

@@ -23,6 +23,8 @@ export class ConcreteRoleType implements RoleType {
 
     public get singular(): string { return this.roleType.singular; }
 
+    public get plural(): string { return this.roleType.plural; }
+
     public get isOne(): boolean { return this.roleType.isOne; }
 
     public get isMany(): boolean { return this.roleType.isMany; }

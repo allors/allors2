@@ -245,6 +245,6 @@ namespace Allors.Workspace
         /// </summary>
         /// <param name="objectId">The object id.</param>
         /// <param name="class"></param>
-        internal void Invalidate(long objectId, IClass @class) => this.workspaceObjectById[objectId] = new WorkspaceObject(this, objectId, @class);
+        internal void Invalidate(long objectId, IClass @class) => this.workspaceObjectById[objectId]?.Invalidate();
     }
 }

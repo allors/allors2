@@ -32,8 +32,8 @@ export class Fixture {
         const database = new Database(http);
         this.scope = new Scope(database, workspace);
 
-        this.pull = new PullFactory(this.metaPopulation);
-        this.tree = new TreeFactory(this.metaPopulation);
-        this.fetch = new FetchFactory(this.metaPopulation);
+        this.tree = new TreeFactory(this.m);
+        this.fetch = new FetchFactory(this.m);
+        this.pull = new PullFactory(this.m);
     }
 }

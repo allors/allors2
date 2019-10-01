@@ -25,21 +25,34 @@ export class Scope {
       this.database
         .pull(requestOrCustomService, customArgs)
         .then((pullResponse: PullResponse) => {
-          const requireLoadIds: SyncRequest = this.workspace.diff(pullResponse);
+          const syncRequest = this.workspace.diff(pullResponse);
 
-          if (requireLoadIds.objects.length > 0) {
+          if (syncRequest.objects.length > 0) {
             return this.database
-              .sync(requireLoadIds)
+              .sync(syncRequest)
               .then((syncResponse: SyncResponse) => {
-                this.workspace.sync(syncResponse);
-                const loaded: Loaded = new Loaded(this.session, pullResponse);
-                resolve(loaded);
+                const securityRequest = this.workspace.sync(syncResponse);
+                if (securityRequest) {
+                  this.database
+                    .security(securityRequest)
+                    .then(v => {
+                      this.workspace.security(v);
+                      const loaded = new Loaded(this.session, pullResponse);
+                      resolve(loaded);
+                    })
+                    .catch((e) => {
+                      reject(e);
+                    });
+                } else{
+                  const loaded = new Loaded(this.session, pullResponse);
+                  resolve(loaded);
+                }
               })
               .catch((e) => {
                 reject(e);
               });
           } else {
-            const loaded: Loaded = new Loaded(this.session, pullResponse);
+            const loaded = new Loaded(this.session, pullResponse);
             resolve(loaded);
           }
         })

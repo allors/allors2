@@ -14,21 +14,21 @@ export class Step {
     if (fields instanceof ObjectType) {
       const objectType = fields as ObjectType;
 
-      this.propertyType = objectType.roleTypeByName[stepName];
+      this.propertyType = objectType.xroleTypeByName[stepName];
       if (!this.propertyType) {
-        this.propertyType = objectType.associationTypeByName[stepName];
+        this.propertyType = objectType.xassociationTypeByName[stepName];
       }
 
       if (!this.propertyType) {
         const metaPopulation = objectType.metaPopulation;
         const [subTypeName, subStepName] = stepName.split('_');
 
-        const subType = metaPopulation.objectTypeByName[subTypeName];
+        const subType = metaPopulation.xobjectTypeByName[subTypeName];
         if (subType) {
-          this.propertyType = subType.roleTypeByName[subStepName];
+          this.propertyType = subType.xroleTypeByName[subStepName];
 
           if (!this.propertyType) {
-            this.propertyType = subType.associationTypeByName[subStepName];
+            this.propertyType = subType.xassociationTypeByName[subStepName];
           }
         }
       }

@@ -1,4 +1,4 @@
-﻿import { ObjectType } from '../meta';
+﻿import { ObjectType, OperandType, RoleType, AssociationType, MethodType } from '../meta';
 
 import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
 import { PushRequestObject } from './../protocol/push/PushRequestObject';
@@ -7,6 +7,7 @@ import { PushRequestRole } from './../protocol/push/PushRequestRole';
 import { Method } from './Method';
 import { ISession, Session } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
+import { Operations } from '../protocol/Operations';
 
 export interface IObject {
   id: string;
@@ -14,349 +15,326 @@ export interface IObject {
 }
 
 export interface ISessionObject extends IObject {
-    id: string;
-    version: string;
-    objectType: ObjectType;
+  id: string;
+  newId: string;
+  version: string;
+  objectType: ObjectType;
 
-    isNew: boolean;
+  isNew: boolean;
 
-    session: ISession;
-    workspaceObject: IWorkspaceObject;
+  session: ISession;
+  workspaceObject: IWorkspaceObject;
 
-    hasChanges: boolean;
+  hasChanges: boolean;
 
-    canRead(roleTypeName: string): boolean;
-    canWrite(roleTypeName: string): boolean;
-    canExecute(methodName: string): boolean;
+  canRead(roleType: RoleType): boolean;
+  canWrite(roleTyp: RoleType): boolean;
+  canExecute(methodType: MethodType): boolean;
+  isPermited(operandType: OperandType, operation: Operations): boolean;
 
-    get(roleTypeName: string): any;
-    set(roleTypeName: string, value: any);
-    add(roleTypeName: string, value: any);
-    remove(roleTypeName: string, value: any);
+  get(roleType: RoleType): any;
+  set(roleType: RoleType, value: any);
+  add(roleType: RoleType, value: any);
+  remove(roleType: RoleType, value: any);
 
-    getAssociation(associationTypeName: string): any;
+  getAssociation(associationType: AssociationType): any;
 
-    save(): PushRequestObject;
-    saveNew(): PushRequestNewObject;
-    reset();
+  save(): PushRequestObject;
+  saveNew(): PushRequestNewObject;
+  reset();
 }
 
-export interface INewSessionObject extends ISessionObject {
-    newId: string;
-}
+export class SessionObject implements ISessionObject {
 
-export class SessionObject implements INewSessionObject {
+  public session: Session;
+  public workspaceObject: IWorkspaceObject;
+  public objectType: ObjectType;
+  public newId: string;
+  private changedRoleByRoleType: Map<RoleType, any>;
+  private roleByRoleType: Map<RoleType, any>;
 
-    public session: Session;
-    public workspaceObject: IWorkspaceObject;
-    public objectType: ObjectType;
+  get isNew(): boolean {
+    return this.newId ? true : false;
+  }
 
-    public newId: string;
-
-    private changedRoleByRoleTypeName: { [id: string]: any; };
-    private roleByRoleTypeName: { [id: string]: any; };
-
-    get isNew(): boolean {
-        return this.newId ? true : false;
+  get hasChanges(): boolean {
+    if (this.newId) {
+      return true;
     }
 
-    get hasChanges(): boolean {
-        if (this.newId) {
-            return true;
-        }
+    return !!this.changedRoleByRoleType;
+  }
 
-        return this.changedRoleByRoleTypeName !== undefined;
+  get id(): string {
+    return this.workspaceObject ? this.workspaceObject.id : this.newId;
+  }
+
+  get version(): string {
+    return this.workspaceObject ? this.workspaceObject.version : undefined;
+  }
+
+  public canRead(roleType: RoleType): boolean {
+    return this.isPermited(roleType, Operations.Read);
+  }
+
+  public canWrite(roleType: RoleType): boolean {
+    return this.isPermited(roleType, Operations.Write);
+  }
+
+  public canExecute(methodType: MethodType): boolean {
+    return this.isPermited(methodType, Operations.Read);
+  }
+
+  public isPermited(operandType: OperandType, operation: Operations): boolean {
+    if (this.newId) {
+      return true;
+    } else if (this.workspaceObject) {
+      const permission = this.session.workspace.permission(this.objectType, operandType, operation);
+      return this.workspaceObject.isPermitted(permission);
     }
 
-    get id(): string {
-        return this.workspaceObject ? this.workspaceObject.id : this.newId;
+    return false;
+  }
+
+  public method(methodType: MethodType): Method {
+    return new Method(this, methodType);
+  }
+
+  public get(roleType: RoleType): any {
+    if (this.roleByRoleType === undefined) {
+      return null;
     }
 
-    get version(): string {
-        return this.workspaceObject ? this.workspaceObject.version : undefined;
-    }
-
-    public canRead(roleTypeName: string): boolean {
-        if (this.newId) {
-            return true;
-        } else if (this.workspaceObject) {
-            return this.workspaceObject.canRead(roleTypeName);
-        }
-
-        return undefined;
-    }
-
-    public canWrite(roleTypeName: string): boolean {
-        if (this.newId) {
-            return true;
-        } else if (this.workspaceObject) {
-            return this.workspaceObject.canWrite(roleTypeName);
-        }
-
-        return undefined;
-    }
-
-    public canExecute(methodName: string): boolean {
-        if (this.newId) {
-            return true;
-        } else if (this.workspaceObject) {
-            return this.workspaceObject.canExecute(methodName);
-        }
-
-        return undefined;
-    }
-
-    public method(methodName: string): Method {
-        if (!this.roleByRoleTypeName) {
-            return undefined;
-        }
-
-        return new Method(this, methodName);
-    }
-
-    public get(roleTypeName: string): any {
-        if (!this.roleByRoleTypeName) {
-            return undefined;
-        }
-
-        let value = this.roleByRoleTypeName[roleTypeName];
-        if (value === undefined) {
-            const roleType = this.objectType.roleTypeByName[roleTypeName];
-            if (this.newId === undefined) {
-                if (roleType.objectType.isUnit) {
-                    value = this.workspaceObject.roles[roleTypeName];
-                    if (value === undefined) {
-                        value = null;
-                    }
-                } else {
-                    try {
-                        if (roleType.isOne) {
-                            const role: string = this.workspaceObject.roles[roleTypeName];
-                            value = role ? this.session.get(role) : null;
-                        } else {
-                            const roles: string[] = this.workspaceObject.roles[roleTypeName];
-                            value = roles ? roles.map((role) => {
-                                return this.session.get(role);
-                            }) : [];
-                        }
-                    } catch (e) {
-                        let stringValue = 'N/A';
-                        try {
-                            stringValue = this.toString();
-                        } catch (e2) {
-                            throw new Error(`Could not get role ${roleTypeName} from [objectType: ${this.objectType.name}, id: ${this.id}]`);
-                        }
-
-                        throw new Error(`Could not get role ${roleTypeName} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`);
-                    }
-                }
-            } else {
-                if (roleType.objectType.isComposite && roleType.isMany) {
-                    value = [];
-                } else {
-                    value = null;
-                }
-            }
-
-            this.roleByRoleTypeName[roleTypeName] = value;
-        }
-
-        return value;
-    }
-
-    public set(roleTypeName: string, value: any) {
-        this.assertExists();
-
-        if (this.changedRoleByRoleTypeName === undefined) {
-            this.changedRoleByRoleTypeName = {};
-        }
-
-        if (value === undefined) {
+    let value = this.roleByRoleType.get(roleType);
+    if (value === undefined) {
+      if (this.newId === undefined) {
+        if (roleType.objectType.isUnit) {
+          value = this.workspaceObject.roles.get(roleType);
+          if (value === undefined) {
             value = null;
-        }
-
-        if (value === null) {
-            const roleType = this.objectType.roleTypeByName[roleTypeName];
-            if (roleType.objectType.isComposite && roleType.isMany) {
-                value = [];
-            }
-        }
-
-        if (value === '') {
-            const roleType = this.objectType.roleTypeByName[roleTypeName];
-            if (roleType.objectType.isUnit) {
-                if (!roleType.objectType.isString) {
-                    value = null;
-                }
-            }
-        }
-
-        this.roleByRoleTypeName[roleTypeName] = value;
-        this.changedRoleByRoleTypeName[roleTypeName] = value;
-
-        this.session.hasChanges = true;
-    }
-
-    public add(roleTypeName: string, value: any) {
-        if (!!value) {
-            this.assertExists();
-
-            const roles = this.get(roleTypeName);
-            if (roles.indexOf(value) < 0) {
-                roles.push(value);
-            }
-
-            this.set(roleTypeName, roles);
-
-            this.session.hasChanges = true;
-        }
-    }
-
-    public remove(roleTypeName: string, value: any) {
-        if (!!value) {
-            this.assertExists();
-
-            const roles = this.get(roleTypeName);
-            const index = roles.indexOf(value);
-            if (index >= 0) {
-                roles.splice(index, 1);
-            }
-
-            this.set(roleTypeName, roles);
-
-            this.session.hasChanges = true;
-        }
-    }
-
-    public getAssociation(associationTypeName: string): any {
-        this.assertExists();
-
-        const associationType = this.objectType.associationTypeByName[associationTypeName];
-
-        const associations = this.session.getAssociation(this, associationType);
-
-        if (associationType.isOne) {
-            return associations.length > 0 ? associations[0] : null;
-        }
-
-        return associations;
-    }
-
-    public save(): PushRequestObject {
-        if (this.changedRoleByRoleTypeName !== undefined) {
-            const data = new PushRequestObject();
-            data.i = this.id;
-            data.v = this.version;
-            data.roles = this.saveRoles();
-            return data;
-        }
-
-        return undefined;
-    }
-
-    public saveNew(): PushRequestNewObject {
-        this.assertExists();
-
-        const data = new PushRequestNewObject();
-        data.ni = this.newId;
-        data.t = this.objectType.name;
-
-        if (this.changedRoleByRoleTypeName !== undefined) {
-            data.roles = this.saveRoles();
-        }
-
-        return data;
-    }
-
-    public reset() {
-        if (this.newId) {
-            delete this.newId;
-            delete this.session;
-            delete this.objectType;
-            delete this.roleByRoleTypeName;
+          }
         } else {
-            this.workspaceObject = this.workspaceObject.workspace.get(this.id);
-            this.roleByRoleTypeName = {};
+          try {
+            if (roleType.isOne) {
+              const role: string = this.workspaceObject.roles.get(roleType);
+              value = role ? this.session.get(role) : null;
+            } else {
+              const roles: string[] = this.workspaceObject.roles.get(roleType);
+              value = roles ? roles.map((role) => {
+                return this.session.get(role);
+              }) : [];
+            }
+          } catch (e) {
+            let stringValue = 'N/A';
+            try {
+              stringValue = this.toString();
+            } catch (e2) {
+              throw new Error(`Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}]`);
+            }
+
+            throw new Error(`Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`);
+          }
+        }
+      } else {
+        if (roleType.objectType.isComposite && roleType.isMany) {
+          value = [];
+        } else {
+          value = null;
+        }
+      }
+
+      this.roleByRoleType.set(roleType, value);
+    }
+
+    return value;
+  }
+
+  public set(roleType: RoleType, value: any) {
+    this.assertExists();
+
+    if (this.changedRoleByRoleType === undefined) {
+      this.changedRoleByRoleType = new Map();
+    }
+
+    if (value === undefined) {
+      value = null;
+    }
+
+    if (value === null) {
+      if (roleType.objectType.isComposite && roleType.isMany) {
+        value = [];
+      }
+    }
+
+    if (value === '') {
+      if (roleType.objectType.isUnit) {
+        if (!roleType.objectType.isString) {
+          value = null;
+        }
+      }
+    }
+
+    this.roleByRoleType.set(roleType, value);
+    this.changedRoleByRoleType.set(roleType, value);
+
+    this.session.hasChanges = true;
+  }
+
+  public add(roleType: RoleType, value: any) {
+    if (!!value) {
+      this.assertExists();
+
+      const roles = this.get(roleType);
+      if (roles.indexOf(value) < 0) {
+        roles.push(value);
+      }
+
+      this.set(roleType, roles);
+
+      this.session.hasChanges = true;
+    }
+  }
+
+  public remove(roleType: RoleType, value: any) {
+    if (!!value) {
+      this.assertExists();
+
+      const roles = this.get(roleType);
+      const index = roles.indexOf(value);
+      if (index >= 0) {
+        roles.splice(index, 1);
+      }
+
+      this.set(roleType, roles);
+
+      this.session.hasChanges = true;
+    }
+  }
+
+  public getAssociation(associationType: AssociationType): any {
+    this.assertExists();
+
+    const associations = this.session.getAssociation(this, associationType);
+
+    if (associationType.isOne) {
+      return associations.length > 0 ? associations[0] : null;
+    }
+
+    return associations;
+  }
+
+  public save(): PushRequestObject {
+    if (this.changedRoleByRoleType !== undefined) {
+      const data = new PushRequestObject();
+      data.i = this.id;
+      data.v = this.version;
+      data.roles = this.saveRoles();
+      return data;
+    }
+
+    return undefined;
+  }
+
+  public saveNew(): PushRequestNewObject {
+    this.assertExists();
+
+    const data = new PushRequestNewObject();
+    data.ni = this.newId;
+    data.t = this.objectType.name;
+
+    if (this.changedRoleByRoleType !== undefined) {
+      data.roles = this.saveRoles();
+    }
+
+    return data;
+  }
+
+  public reset() {
+    if (this.newId) {
+      delete this.newId;
+      delete this.session;
+      delete this.objectType;
+      delete this.roleByRoleType;
+    } else {
+      this.workspaceObject = this.workspaceObject.workspace.get(this.id);
+      this.roleByRoleType = new Map();
+    }
+
+    delete this.changedRoleByRoleType;
+  }
+
+  public onDelete(deleted: SessionObject) {
+    if (this.changedRoleByRoleType !== undefined) {
+
+      for (const [roleType, value] of this.changedRoleByRoleType) {
+        if (!roleType.objectType.isUnit) {
+          if (roleType.isOne) {
+            const role = value as SessionObject;
+            if (role && role === deleted) {
+              this.set(roleType, null);
+            }
+          } else {
+            const roles = value as SessionObject[];
+            if (roles && roles.indexOf(deleted) > -1) {
+              this.remove(roleType, deleted);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  protected init() {
+    this.roleByRoleType = new Map();
+  }
+
+  private assertExists() {
+    if (this.roleByRoleType === undefined) {
+      throw new Error('Object doesn\'t exist anymore.');
+    }
+  }
+
+  private saveRoles(): PushRequestRole[] {
+    const saveRoles = new Array<PushRequestRole>();
+
+    if (this.changedRoleByRoleType) {
+
+      for (const [roleType, value] of this.changedRoleByRoleType) {
+        let role = value;
+        if (role instanceof Date) {
+          role = (role as Date).toISOString();
         }
 
-        delete this.changedRoleByRoleTypeName;
-    }
+        // TODO: Unit conversion
 
-    public onDelete(deleted: SessionObject) {
-        if (this.changedRoleByRoleTypeName) {
-            Object
-                .keys(this.changedRoleByRoleTypeName)
-                .forEach((roleTypeName) => {
-                    const roleType = this.objectType.roleTypeByName[roleTypeName];
+        const saveRole = new PushRequestRole();
+        saveRole.t = roleType.name;
 
-                    if (!roleType.objectType.isUnit) {
-                        if (roleType.isOne) {
-                            const role = this.changedRoleByRoleTypeName[roleTypeName] as SessionObject;
-                            if (role && role === deleted) {
-                                this.set(roleType.name, null);
-                            }
-                        } else {
-                            const roles = this.changedRoleByRoleTypeName[roleTypeName] as SessionObject[];
-                            if (roles && roles.indexOf(deleted) > -1) {
-                                this.remove(roleType.name, deleted);
-                            }
-                        }
-                    }
-                });
-        }
-    }
-
-    protected init() {
-        this.roleByRoleTypeName = {};
-    }
-
-    private assertExists() {
-        if (!this.roleByRoleTypeName) {
-            throw new Error('Object doesn\'t exist anymore.');
-        }
-    }
-
-    private saveRoles(): PushRequestRole[] {
-        const saveRoles = new Array<PushRequestRole>();
-
-        if (this.changedRoleByRoleTypeName) {
-            Object
-                .keys(this.changedRoleByRoleTypeName)
-                .forEach((roleTypeName) => {
-                    const roleType = this.objectType.roleTypeByName[roleTypeName];
-                    let role = this.changedRoleByRoleTypeName[roleTypeName];
-                    if (role instanceof Date) {
-                        role = (role as Date).toISOString();
-                    }
-
-                    const saveRole = new PushRequestRole();
-                    saveRole.t = roleType.name;
-
-                    if (roleType.objectType.isUnit) {
-                        saveRole.s = role;
-                    } else {
-                        if (roleType.isOne) {
-                            saveRole.s = role ? role.id || role.newId : null;
-                        } else {
-                            const roleIds = role.map((item) => (item as SessionObject).id || (item as SessionObject).newId);
-                            if (this.newId) {
-                                saveRole.a = roleIds;
-                            } else {
-                                const originalRoleIds = this.workspaceObject.roles[roleTypeName] as string[];
-                                if (!originalRoleIds) {
-                                    saveRole.a = roleIds;
-                                } else {
-                                    saveRole.a = roleIds.filter((v) => originalRoleIds.indexOf(v) < 0);
-                                    saveRole.r = originalRoleIds.filter((v) => roleIds.indexOf(v) < 0);
-                                }
-                            }
-                        }
-                    }
-
-                    saveRoles.push(saveRole);
-                });
+        if (roleType.objectType.isUnit) {
+          saveRole.s = role;
+        } else {
+          if (roleType.isOne) {
+            saveRole.s = role ? role.id || role.newId : null;
+          } else {
+            const roleIds = role.map((item) => (item as SessionObject).id || (item as SessionObject).newId);
+            if (this.newId) {
+              saveRole.a = roleIds;
+            } else {
+              const originalRoleIds = this.workspaceObject.roles.get(roleType) as string[];
+              if (!originalRoleIds) {
+                saveRole.a = roleIds;
+              } else {
+                saveRole.a = roleIds.filter((v) => originalRoleIds.indexOf(v) < 0);
+                saveRole.r = originalRoleIds.filter((v) => roleIds.indexOf(v) < 0);
+              }
+            }
+          }
         }
 
-        return saveRoles;
+        saveRoles.push(saveRole);
+      }
+
+      return saveRoles;
     }
+  }
 }

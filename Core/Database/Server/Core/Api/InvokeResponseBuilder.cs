@@ -102,6 +102,7 @@ namespace Allors.Server
 
         private bool Invoke(Invocation invocation, InvokeResponse invokeResponse)
         {
+            // TODO: M should be a methodTypeId instead of the methodName
             if (invocation.M == null || invocation.I == null || invocation.V == null)
             {
                 throw new ArgumentException();

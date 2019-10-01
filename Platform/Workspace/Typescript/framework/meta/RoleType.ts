@@ -10,6 +10,7 @@ export class RoleType implements PropertyType {
     objectType: ObjectType;
     name: string;
     singular: string;
+    plural: string;
     isOne: boolean;
     isDerived: boolean;
     isRequired: boolean;

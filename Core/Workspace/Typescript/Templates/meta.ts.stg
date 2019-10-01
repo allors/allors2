@@ -80,10 +80,11 @@ tree(meta) ::= <<
 // tslint:disable:no-empty-interface
 // tslint:disable:no-consecutive-blank-lines
 
-import { Tree, MetaPopulation, ObjectType, TreeNode } from '../../framework';
+import { Tree } from '../../framework';
+import { Meta } from './domain.g';
 
 export class TreeFactory {
-    constructor(private metaPopulation: MetaPopulation) {
+    constructor(private meta: Meta) {
     }
 
 $meta.WorkspaceComposites:{composite|$treeFactory(composite)$}; separator="\n\n"$
@@ -95,7 +96,7 @@ $meta.WorkspaceComposites:{composite|$treeComposite(composite)$}; separator="\n\
 
 treeFactory(composite) ::= <<
     public $composite.Name$(literal: Tree$composite.Name$): Tree {
-        return new Tree(this.metaPopulation.objectTypeByName['$composite.SingularName$'], literal);
+        return new Tree(this.meta.$composite.SingularName$, literal);
     }
 >>
 
@@ -123,11 +124,12 @@ fetch(meta) ::= <<
 // tslint:disable:no-empty-interface
 // tslint:disable:no-consecutive-blank-lines
 
-import { MetaPopulation, Fetch, Tree } from '../../framework';
+import { Fetch, Tree } from '../../framework';
 import { $meta.WorkspaceComposites:{composite|Tree$composite.Name$}; separator=", "$ } from './tree.g';
+import { Meta } from './domain.g';
 
 export class FetchFactory {
-    constructor(private metaPopulation: MetaPopulation) {
+    constructor(private meta: Meta) {
     }
 
 $meta.WorkspaceComposites:{composite|$fetchFactory(composite)$}; separator="\n\n"$
@@ -139,7 +141,7 @@ $meta.WorkspaceComposites:{composite|$fetchComposite(composite)$}; separator="\n
 
 fetchFactory(composite) ::= <<
     public $composite.Name$(literal: Fetch$composite.Name$): Fetch {
-        return new Fetch(this.metaPopulation.objectTypeByName['$composite.SingularName$'], literal);
+        return new Fetch(this.meta.$composite.SingularName$, literal);
     }
 >>
 
@@ -169,13 +171,14 @@ pull(meta) ::= <<
 // tslint:disable:no-empty-interface
 // tslint:disable:no-consecutive-blank-lines
 
-import { MetaPopulation, Pull, FlatPull, Fetch, Tree } from '../../framework';
+import { Pull, FlatPull, Fetch, Tree } from '../../framework';
 
 import { $meta.WorkspaceComposites:{composite|Fetch$composite.Name$}; separator=", "$ } from './fetch.g';
 import { $meta.WorkspaceComposites:{composite|Tree$composite.Name$}; separator=", "$ } from './tree.g';
+import { Meta } from './domain.g';
 
 export class PullFactory {
-    constructor(private metaPopulation: MetaPopulation) {
+    constructor(private meta: Meta) {
     }
 
 $meta.WorkspaceComposites:{composite|$pullFactory(composite)$}; separator="\n\n"$
@@ -187,7 +190,7 @@ $meta.WorkspaceComposites:{composite|$pullComposite(composite)$}; separator="\n\
 
 pullFactory(composite) ::= <<
     public $composite.Name$(literal?: Pull$composite.Name$): Pull {
-        return new Pull(this.metaPopulation.objectTypeByName['$composite.SingularName$'], literal);
+        return new Pull(this.meta.$composite.SingularName$, literal);
     }
 >>
 
@@ -243,9 +246,9 @@ interface(interface) ::= <<
         "id": "$interface.IdAsString$",
         "name": "$interface.Name$",
         "plural": "$interface.PluralName$"$if(interface.WorkspaceSupertypes)$,
-        "interfaces":
+        "interfaceIds":
           [
-$interface.WorkspaceSupertypes:{interface|            "$interface.Name$"}; separator=",\n"$
+$interface.WorkspaceSupertypes:{interface|            "$interface.IdAsString$"}; separator=",\n"$
           ]
 $endif$
       }
@@ -256,21 +259,12 @@ class(class) ::= <<
         "id": "$class.IdAsString$",
         "name": "$class.Name$",
         "plural": "$class.PluralName$"$if(class.WorkspaceSupertypes)$,
-        "interfaces":
+        "interfaceIds":
           [
-$class.WorkspaceSupertypes:{interface|            "$interface.Name$"}; separator=",\n"$
+$class.WorkspaceSupertypes:{interface|            "$interface.IdAsString$"}; separator=",\n"$
           ]
 $endif$
       }
->>
-
-associationType(associationType) ::= <<
-                {
-                    "id": "$associationType.IdAsString$",
-                    "name": "$associationType.PropertyName$",
-                    "objectType": "$associationType.ObjectType.Name$",
-                    "isOne": $boolean(associationType.IsOne)$
-                }
 >>
 
 relationType(relationType) ::= <<
@@ -280,14 +274,13 @@ relationType(relationType) ::= <<
           "id": "$relationType.AssociationType.IdAsString$",
           "objectTypeId": "$relationType.AssociationType.ObjectType.IdAsString$",
           "name": "$relationType.AssociationType.PropertyName$",
-          "singular": "$relationType.AssociationType.SingularName$",
           "isOne": $boolean(relationType.AssociationType.IsOne)$
         },
         "roleType": {
           "id": "$relationType.RoleType.IdAsString$",
           "objectTypeId": "$relationType.RoleType.ObjectType.IdAsString$",
-          "name": "$relationType.RoleType.PropertyName$",
-          "singular": "$relationType.RoleType.SingularName$",
+          "singular": "$relationType.RoleType.SingularPropertyName$",
+          "plural": "$relationType.RoleType.PluralPropertyName$",
           "isUnit": $boolean(relationType.RoleType.ObjectType.IsUnit)$,
           "isOne": $boolean(relationType.RoleType.IsOne)$,
           "isRequired": $boolean(relationType.RoleType.IsRequired)$

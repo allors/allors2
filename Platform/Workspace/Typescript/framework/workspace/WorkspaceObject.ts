@@ -1,8 +1,9 @@
-import { ObjectType, PropertyType, MethodType } from '../meta';
+import { ObjectType, MetaObject, RoleType } from '../meta';
 import { SyncResponseObject } from '../protocol/sync/SyncResponseObject';
-import { IWorkspace } from './Workspace';
-import { Operations } from '../protocol/Operations';
+import { IWorkspace, Workspace } from './Workspace';
 import { Permission } from './Permission';
+import { AccessControl } from './AccessControl';
+import { Compressor } from '../protocol/Compressor';
 
 export interface IWorkspaceObject {
   workspace: IWorkspace;
@@ -14,65 +15,72 @@ export interface IWorkspaceObject {
 }
 
 export class WorkspaceObject implements IWorkspaceObject {
-  workspace: IWorkspace;
+  workspace: Workspace;
   objectType: ObjectType;
   id: string;
   version: string;
   sortedAccessControlIds: string;
-  sortedDenidPermissionIds: string;
-  roles: { [roleTypeId: string]: any };
+  sortedDeniedPermissionIds: string;
+  roles: Map<RoleType, any>;
 
-  constructor(workspace: IWorkspace, id: string, objectType: ObjectType);
-  constructor(workspace: IWorkspace, syncResponseObject: SyncResponseObject);
-  constructor(workspace: IWorkspace, syncResponseObjectOrId: SyncResponseObject | string) {
+  private accessControls: AccessControl[];
+
+  private deniedPermissions: Permission[];
+
+  constructor(workspace: Workspace, syncResponseObject: SyncResponseObject, sortedAccessControlIdsDecompress: (compressed: string) => string, sortedDeniedPermissionIdsDecompress: (compressed: string) => string, metaDecompress: (compressed: string) => MetaObject) {
+
     this.workspace = workspace;
-    this.roles = {};
+    this.id = syncResponseObject.i;
+    this.version = syncResponseObject.v;
+    this.objectType = this.workspace.metaPopulation.metaObjectById[metaDecompress(syncResponseObject.t).id] as ObjectType;
 
-    if (typeof syncResponseObjectOrId === 'string') {
-      this.id = syncResponseObjectOrId;
-      this.objectType = this.objectType;
-    } else {
-      const syncResponseObject = syncResponseObjectOrId;
-      const metaObjectById = this.workspace.metaPopulation.metaObjectById;
+    this.roles = new Map();
+    if (syncResponseObject.r) {
+      syncResponseObject.r.forEach((role) => {
+        const roleTypeId = role.t;
+        const roleType = metaDecompress(roleTypeId) as RoleType;
 
-      this.objectType = metaObjectById[syncResponseObject.t] as ObjectType;
-      this.id = syncResponseObject.i;
-      this.version = syncResponseObject.v;
+        let value = role.v;
+        // TODO: Conversions
 
-      if (syncResponseObject.r) {
-        syncResponseObject.r.forEach((role) => {
-          this.roles[role.t] = role.v;
-        });
+        this.roles.set(roleType, value);
+      });
+    }
+
+    this.sortedAccessControlIds = sortedAccessControlIdsDecompress(syncResponseObject.a);
+    this.sortedDeniedPermissionIds = sortedDeniedPermissionIdsDecompress(syncResponseObject.d);
+  }
+
+  isPermitted(permission: Permission): boolean {
+    if (permission == null) {
+      return false;
+    }
+
+    if (!this.accessControls && this.sortedAccessControlIds) {
+      this.accessControls = this.sortedAccessControlIds
+        .split(Compressor.itemSeparator)
+        .map(v => this.workspace.accessControlById[v]);
+
+      if (this.deniedPermissions != null) {
+        this.deniedPermissions = this.sortedDeniedPermissionIds
+          .split(Compressor.itemSeparator)
+          .map(v => this.workspace.permissionById[v]);
       }
     }
-  }
 
-  isPermitted(permission: Permission): bool
-  {
-      if (permission == null)
-      {
-          return false;
-      }
-
-      if (this.accessControls == null && this.SortedAccessControlIds != null)
-      {
-          this.accessControls = this.SortedAccessControlIds.Split(Compressor.ItemSeparator).Select(v => this.Workspace.AccessControlById[long.Parse(v)]).ToArray();
-          if (this.deniedPermissions != null)
-          {
-              this.deniedPermissions = this.SortedDeniedPermissionIds.Split(Compressor.ItemSeparator).Select(v => this.Workspace.PermissionById[long.Parse(v)]).ToArray();
-          }
-      }
-
-      if (this.deniedPermissions != null && this.deniedPermissions.Contains(permission))
-      {
-          return false;
-      }
-
-      if (this.accessControls != null && this.accessControls.Length > 0)
-      {
-          return this.accessControls.Any(v => v.Permissions.Any(w => w == permission));
-      }
-
+    if (this.deniedPermissions && this.deniedPermissions.indexOf(permission) > -1) {
       return false;
+    }
+
+    if (this.accessControls) {
+      return !!this.accessControls.filter(v => !!v.permissions.filter(w => w === permission));
+    }
+
+    return false;
   }
+
+  invalidate() {
+    this.version = '';
+  }
+
 }

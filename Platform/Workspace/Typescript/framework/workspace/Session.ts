@@ -1,16 +1,12 @@
 import { ObjectType, AssociationType } from '../meta';
 
 import { PushRequest } from './../protocol/push/PushRequest';
-import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
-import { PushRequestObject } from './../protocol/push/PushRequestObject';
 import { PushResponse } from './../protocol/push/PushResponse';
-import { PushResponseNewObject } from './../protocol/push/PushResponseNewObject';
-import { ResponseType } from './../protocol/ResponseType';
-import { SyncResponse } from './../protocol/sync/SyncResponse';
 
-import { INewSessionObject, ISessionObject, SessionObject } from './SessionObject';
+import { ISessionObject, SessionObject } from './SessionObject';
 import { IWorkspace, Workspace } from './Workspace';
 import { WorkspaceObject } from './WorkspaceObject';
+import { Operations } from '../protocol/Operations';
 
 export interface ISession {
 
@@ -37,7 +33,7 @@ export class Session implements ISession {
   public hasChanges: boolean;
 
   private existingSessionObjectById: { [id: string]: ISessionObject } = {};
-  private newSessionObjectById: { [id: string]: INewSessionObject } = {};
+  private newSessionObjectById: { [id: string]: ISessionObject } = {};
 
   private sessionObjectByIdByClassId: { [id: string]: { [id: string]: ISessionObject } } = {};
 
@@ -73,15 +69,13 @@ export class Session implements ISession {
     return sessionObject;
   }
 
-  public create(objectType: ObjectType | string): ISessionObject {
+  public create(objectType: ObjectType): ISessionObject {
 
     const objectTypeName = objectType instanceof ObjectType ? objectType.name : objectType;
     const constructor: any = this.workspace.constructorByName[objectTypeName];
-    const newSessionObject: INewSessionObject = new constructor();
+    const newSessionObject: ISessionObject = new constructor();
     newSessionObject.session = this;
-    newSessionObject.objectType = this.workspace.metaPopulation.objectTypeByName[
-      objectTypeName
-    ];
+    newSessionObject.objectType = this.workspace.metaPopulation.metaObjectById[objectType.id] as ObjectType;
     newSessionObject.newId = (--Session.idCounter).toString();
 
     this.newSessionObjectById[newSessionObject.newId] = newSessionObject;
@@ -137,7 +131,7 @@ export class Session implements ISession {
   }
 
   public pushRequest(): PushRequest {
-    const data: PushRequest = new PushRequest({
+    return new PushRequest({
       newObjects: Object.values(this.newSessionObjectById).map(v => v.saveNew()).filter(v => v !== undefined),
       objects: Object.values(this.existingSessionObjectById).map(v => v.save()).filter(v => v !== undefined),
     });
@@ -145,35 +139,15 @@ export class Session implements ISession {
 
   public pushResponse(pushResponse: PushResponse): void {
     if (pushResponse.newObjects) {
-      Object.keys(pushResponse.newObjects).forEach((key: string) => {
-        const pushResponseNewObject: PushResponseNewObject =
-          pushResponse.newObjects[key];
+      pushResponse.newObjects.forEach((pushResponseNewObject) => {
         const newId: string = pushResponseNewObject.ni;
         const id: string = pushResponseNewObject.i;
 
-        const newSessionObject: INewSessionObject = this.newSessionObjectById[
-          newId
-        ];
-
-        const syncResponse: SyncResponse = {
-          hasErrors: false,
-          objects: [
-            {
-              i: id,
-              methods: [],
-              roles: [],
-              t: newSessionObject.objectType.name,
-              v: '',
-            },
-          ],
-          responseType: ResponseType.Sync,
-          userSecurityHash: '#', // This should trigger a load on next check
-        };
-
+        const newSessionObject: ISessionObject = this.newSessionObjectById[newId];
         delete this.newSessionObjectById[newId];
         delete newSessionObject.newId;
 
-        this.workspace.sync(syncResponse);
+        this.workspace.invalidate(id, newSessionObject.objectType);
         const workspaceObject: WorkspaceObject = this.workspace.get(id);
         newSessionObject.workspaceObject = workspaceObject;
 
@@ -203,14 +177,14 @@ export class Session implements ISession {
           .keys(sessionObjectById)
           .forEach((v) => {
             const association = sessionObjectById[v];
-            if (association.canRead(roleType.name)) {
+            if (association.canRead(roleType)) {
               if (roleType.isOne) {
-                const role: ISessionObject = association.get(roleType.name);
+                const role: ISessionObject = association.get(roleType);
                 if (role && role.id === object.id) {
                   associations.push(association);
                 }
               } else {
-                const roles: ISessionObject[] = association.get(roleType.name);
+                const roles: ISessionObject[] = association.get(roleType);
                 if (roles && roles.indexOf(association) > -1) {
                   associations.push(association);
                 }
@@ -234,14 +208,15 @@ export class Session implements ISession {
           .filter((v) => associationIds.indexOf(v) < 0)
           .forEach((v) => {
             const association = workspaceObjectById[v];
-            if (association.canRead(roleType.name)) {
+            const permission = this.workspace.permission(association.objectType, roleType, Operations.Read);
+            if (association.isPermitted(permission)) {
               if (roleType.isOne) {
-                const role: string = association.roles[roleType.name];
+                const role: string = association.roles.get(roleType);
                 if (object.id === role) {
                   associations.push(this.get(association.id));
                 }
               } else {
-                const roles: string[] = association.roles[roleType.name];
+                const roles: string[] = association.roles.get(roleType);
                 if (roles && roles.indexOf(association.id) > -1) {
                   associations.push(this.get(association.id));
                 }

@@ -1,4 +1,5 @@
 import { OperandType } from '../meta/OperandType';
+import { ObjectType } from '../meta/ObjectType';
 import { Operations } from '../protocol/Operations';
 
 export class Permission {

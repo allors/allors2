@@ -1,4 +1,4 @@
-import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse, InvokeOptions, PullRequest, Pull } from '../../framework';
+import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseType, SyncRequest, SyncResponse, PullRequest, Pull, SecurityRequest, SecurityResponse } from '../../framework';
 import { Method } from '../../framework';
 import { services } from '../../framework/database';
 
@@ -10,7 +10,7 @@ export class Database {
   constructor(private http: Http) {
   }
 
-  public pull(requestOrCustomService: PullRequest | Pull | string, customArgs?: any): Promise<PullResponse> {
+  pull(requestOrCustomService: PullRequest | Pull | string, customArgs?: any): Promise<PullResponse> {
     return new Promise((resolve, reject) => {
 
       let service = services.pull;
@@ -22,7 +22,7 @@ export class Database {
       } else {
         if (requestOrCustomService instanceof Pull) {
           params = new PullRequest({ pulls: [requestOrCustomService] });
-        } else{
+        } else {
           params = requestOrCustomService;
         }
       }
@@ -40,7 +40,7 @@ export class Database {
     });
   }
 
-  public sync(syncRequest: SyncRequest): Promise<SyncResponse> {
+  sync(syncRequest: SyncRequest): Promise<SyncResponse> {
     return new Promise((resolve, reject) => {
 
       this.http.post(services.sync, syncRequest)
@@ -56,7 +56,7 @@ export class Database {
     });
   }
 
-  public push(pushRequest: PushRequest): Promise<PushResponse> {
+  push(pushRequest: PushRequest): Promise<PushResponse> {
     return new Promise((resolve, reject) => {
 
       this.http.post(services.push, pushRequest)
@@ -77,10 +77,26 @@ export class Database {
     });
   }
 
-  public invoke(method: Method): Promise<InvokeResponse>;
-  public invoke(methods: Method[], isolated: boolean, continueOnError: boolean): Promise<InvokeResponse>;
-  public invoke(service: string, args?: any): Promise<InvokeResponse>;
-  public invoke(methodsOrMethodOrService: Method[] | Method | string, args?: any, continueOnError?: boolean): Promise<InvokeResponse> {
+  security(securityRequest: SecurityRequest): Promise<SecurityResponse> {
+    return new Promise((resolve, reject) => {
+
+      this.http.post(services.security, securityRequest)
+        .then((httpResponse: HttpResponse) => {
+          const response = httpResponse.data;
+          response.responseType = ResponseType.Security;
+          resolve(response);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+
+    });
+  }
+
+  invoke(method: Method): Promise<InvokeResponse>;
+  invoke(methods: Method[], isolated: boolean, continueOnError: boolean): Promise<InvokeResponse>;
+  invoke(service: string, args?: any): Promise<InvokeResponse>;
+  invoke(methodsOrMethodOrService: Method[] | Method | string, args?: any, continueOnError?: boolean): Promise<InvokeResponse> {
     return new Promise((resolve, reject) => {
 
       if (methodsOrMethodOrService instanceof Array) {
@@ -89,7 +105,7 @@ export class Database {
           i: methods.map((v) => {
             return {
               i: v.object.id,
-              m: v.name,
+              m: v.methodType.name,
               v: v.object.version,
             };
           })
@@ -114,7 +130,7 @@ export class Database {
         const invokeRequest: InvokeRequest = {
           i: [{
             i: method.object.id,
-            m: method.name,
+            m: method.methodType.name,
             v: method.object.version,
           }]
         };

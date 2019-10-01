@@ -10,7 +10,7 @@ import { MethodType } from './MethodType';
 export class MetaPopulation {
   readonly metaObjectById: { [id: string]: MetaObject; } = {};
 
-  readonly objectTypeByName: { [name: string]: ObjectType } = {};
+  readonly xobjectTypeByName: { [name: string]: ObjectType } = {};
 
   readonly units: ObjectType[] = [];
   readonly composites: ObjectType[] = [];
@@ -32,7 +32,7 @@ export class MetaPopulation {
         objectType.kind = Kind.unit;
         this.units.push(objectType);
         this.objectTypes.push(objectType);
-        this.objectTypeByName[objectType.name] = objectType;
+        this.xobjectTypeByName[objectType.name] = objectType;
         this.metaObjectById[objectType.id] = objectType;
       });
 
@@ -46,7 +46,7 @@ export class MetaPopulation {
       this.composites.push(objectType);
       this.interfaces.push(objectType);
       this.objectTypes.push(objectType);
-      this.objectTypeByName[objectType.name] = objectType;
+      this.xobjectTypeByName[objectType.name] = objectType;
       this.metaObjectById[objectType.id] = objectType;
     });
 
@@ -60,7 +60,7 @@ export class MetaPopulation {
       this.composites.push(objectType);
       this.classes.push(objectType);
       this.objectTypes.push(objectType);
-      this.objectTypeByName[objectType.name] = objectType;
+      this.xobjectTypeByName[objectType.name] = objectType;
       this.metaObjectById[objectType.id] = objectType;
     });
 
@@ -69,7 +69,7 @@ export class MetaPopulation {
     // Implemented interfaces
     dataObjectTypes.forEach((dataObjectType: Interface | Class) => {
       const metaObjectType = this.metaObjectById[dataObjectType.id] as ObjectType;
-      metaObjectType.interfaces = dataObjectType.interfaces ? dataObjectType.interfaces.map((v) => this.objectTypeByName[v]) : [];
+      metaObjectType.interfaces = dataObjectType.interfaceIds ? dataObjectType.interfaceIds.map((v) => this.metaObjectById[v] as ObjectType) : [];
     });
 
     // RelationTypes
@@ -82,37 +82,38 @@ export class MetaPopulation {
       associationType.id = dataAssociationType.id;
       associationType.objectType = this.metaObjectById[dataAssociationType.objectTypeId] as ObjectType;
       associationType.name = dataAssociationType.name;
-      associationType.singular = dataAssociationType.singular;
       associationType.isOne = dataAssociationType.isOne;
 
       const dataRoleType = dataRelationType.roleType;
       const roleType = relationType.roleType;
       roleType.id = dataRoleType.id;
       roleType.objectType = this.metaObjectById[dataRoleType.objectTypeId] as ObjectType;
-      roleType.name = dataRoleType.name;
       roleType.singular = dataRoleType.singular;
+      roleType.plural = dataRoleType.plural;
       roleType.isOne = dataRoleType.isOne;
       roleType.isRequired = dataRoleType.isRequired;
 
-      if (!roleType.objectType) {
-        console.debug(roleType);
+      roleType.name = roleType.isOne ? roleType.singular : roleType.plural;
+
+      if (dataRelationType.concreteRoleTypes) {
+        dataRelationType.concreteRoleTypes.forEach((dataConcreteRoleType) => {
+          const concreteRoleType = new ConcreteRoleType(this);
+          concreteRoleType.relationType = relationType;
+          concreteRoleType.roleType = roleType;
+          concreteRoleType.isRequired = dataConcreteRoleType.isRequired;
+
+          const objectType = this.metaObjectById[dataConcreteRoleType.objectTypeId] as ObjectType;
+          relationType.concreteRoleTypeByClassId[objectType.id] = concreteRoleType;
+        });
       }
 
-      dataRelationType.concreteRoleTypes && dataRelationType.concreteRoleTypes.forEach((dataConcreteRoleType) => {
-        const concreteRoleType = new ConcreteRoleType(this);
-        concreteRoleType.relationType = relationType;
-        concreteRoleType.roleType = roleType;
-        concreteRoleType.isRequired = dataConcreteRoleType.isRequired;
-
-        const objectType = this.metaObjectById[dataConcreteRoleType.objectTypeId] as ObjectType;
-        relationType.concreteRoleTypeByClassName[objectType.name] = concreteRoleType;
-      });
-
-      associationType.objectType.roleTypeByName[roleType.name] = roleType;
-      roleType.objectType.associationTypeByName[associationType.name] = associationType;
+      associationType.objectType.xroleTypeByName[roleType.name] = roleType;
+      roleType.objectType.xassociationTypeByName[associationType.name] = associationType;
 
       this.relationTypes.push(relationType);
       this.metaObjectById[relationType.id] = relationType;
+      this.metaObjectById[relationType.roleType.id] = relationType.roleType;
+      this.metaObjectById[relationType.associationType.id] = relationType.associationType;
     });
 
     // RelationTypes
@@ -122,7 +123,7 @@ export class MetaPopulation {
       methodType.objectType = this.metaObjectById[dataMethodType.objectTypeId] as ObjectType;
       methodType.name = dataMethodType.name;
 
-      methodType.objectType.methodTypeByName[methodType.name] = methodType;
+      methodType.objectType.xmethodTypeByName[methodType.name] = methodType;
 
       this.methodTypes.push(methodType);
       this.metaObjectById[methodType.id] = methodType;
@@ -137,17 +138,17 @@ export class MetaPopulation {
       .forEach((objectType) => {
         this[objectType.name] = objectType;
 
-        Object.keys(objectType.roleTypeByName).forEach((name) => {
-          const roleType = objectType.roleTypeByName[name];
+        Object.keys(objectType.xroleTypeByName).forEach((name) => {
+          const roleType = objectType.xroleTypeByName[name];
           objectType[name] = roleType;
         });
 
-        Object.keys(objectType.associationTypeByName).forEach((name) => {
-          objectType[name] = objectType.associationTypeByName[name];
+        Object.keys(objectType.xassociationTypeByName).forEach((name) => {
+          objectType[name] = objectType.xassociationTypeByName[name];
         });
 
-        Object.keys(objectType.methodTypeByName).forEach((name) => {
-          objectType[name] = objectType.methodTypeByName[name];
+        Object.keys(objectType.xmethodTypeByName).forEach((name) => {
+          objectType[name] = objectType.xmethodTypeByName[name];
         });
       });
   }
