@@ -53,9 +53,7 @@ export class Session implements ISession {
       if (sessionObject === undefined) {
         const workspaceObject: WorkspaceObject = this.workspace.get(id);
 
-        const constructor: any = this.workspace.constructorByName[
-          workspaceObject.objectType.name
-        ];
+        const constructor: any = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
         sessionObject = new constructor();
         sessionObject.session = this;
         sessionObject.workspaceObject = workspaceObject;
@@ -72,7 +70,7 @@ export class Session implements ISession {
   public create(objectType: ObjectType): ISessionObject {
 
     const objectTypeName = objectType instanceof ObjectType ? objectType.name : objectType;
-    const constructor: any = this.workspace.constructorByName[objectTypeName];
+    const constructor: any = this.workspace.constructorByObjectType.get(objectType);
     const newSessionObject: ISessionObject = new constructor();
     newSessionObject.session = this;
     newSessionObject.objectType = this.workspace.metaPopulation.metaObjectById[objectType.id] as ObjectType;

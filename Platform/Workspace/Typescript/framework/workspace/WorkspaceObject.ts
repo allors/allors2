@@ -4,6 +4,7 @@ import { IWorkspace, Workspace } from './Workspace';
 import { Permission } from './Permission';
 import { AccessControl } from './AccessControl';
 import { Compressor } from '../protocol/Compressor';
+import { ids } from '../../meta';
 
 export interface IWorkspaceObject {
   workspace: IWorkspace;
@@ -32,7 +33,7 @@ export class WorkspaceObject implements IWorkspaceObject {
     this.workspace = workspace;
     this.id = syncResponseObject.i;
     this.version = syncResponseObject.v;
-    this.objectType = this.workspace.metaPopulation.metaObjectById[metaDecompress(syncResponseObject.t).id] as ObjectType;
+    this.objectType = metaDecompress(syncResponseObject.t) as ObjectType;
 
     this.roles = new Map();
     if (syncResponseObject.r) {
@@ -40,8 +41,25 @@ export class WorkspaceObject implements IWorkspaceObject {
         const roleTypeId = role.t;
         const roleType = metaDecompress(roleTypeId) as RoleType;
 
-        let value = role.v;
-        // TODO: Conversions
+        let value: any = role.v;
+
+        if (roleType.objectType.isUnit) {
+          switch (roleType.objectType.id) {
+            case ids.Boolean:
+              value = value === 'true';
+              break;
+            case ids.Float:
+              value = parseFloat(value);
+              break;
+            case ids.Integer:
+              value = parseInt(value, 10);
+              break;
+          }
+        } else {
+          if (roleType.isMany) {
+            value = (value as string).split(Compressor.itemSeparator);
+          }
+        }
 
         this.roles.set(roleType, value);
       });

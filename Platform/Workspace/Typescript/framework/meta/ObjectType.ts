@@ -16,15 +16,25 @@ export class ObjectType implements MetaObject {
   name: string;
   plural: string;
   kind: Kind;
+  interfaces: ObjectType[];
 
-  interfaces: ObjectType[] = [];
-  classes: ObjectType[] = [];
+  classes: ObjectType[];
 
-  xroleTypeByName: { [name: string]: RoleType; } = {};
-  xassociationTypeByName: { [name: string]: AssociationType; } = {};
-  xmethodTypeByName: { [name: string]: MethodType; } = {};
+  roleTypes: RoleType[];
+  associationTypes: AssociationType[];
+  methodTypes: MethodType[];
+
+  roleTypeByName: Map<string, RoleType>;
+  associationTypeByName: Map<string, AssociationType>;
 
   constructor(public metaPopulation: MetaPopulation) {
+    this.classes = [];
+    this.roleTypes = [];
+    this.associationTypes = [];
+    this.methodTypes = [];
+
+    this.roleTypeByName = new Map();
+    this.associationTypeByName = new Map();
   }
 
   get isUnit(): boolean {
@@ -73,48 +83,5 @@ export class ObjectType implements MetaObject {
 
   get isClass(): boolean {
     return this.kind === Kind.class;
-  }
-
-  derive(): void {
-    this.deriveClasses();
-    this.deriveAssociations();
-    this.deriveRoles();
-    this.deriveMethods();
-  }
-
-  private deriveClasses() {
-    if (this.isClass) {
-      this.classes.push(this);
-    }
-
-    this.interfaces.forEach((v) => {
-
-      if (this.isClass) {
-        v.classes.push(this);
-      }
-    });
-  }
-
-  private deriveAssociations() {
-    this.interfaces.forEach((v) => Object.assign(this.xassociationTypeByName, v.xassociationTypeByName));
-  }
-
-  private deriveRoles() {
-    this.interfaces.forEach((v) => Object.assign(this.xroleTypeByName, v.xroleTypeByName));
-
-    if (this.isClass) {
-      Object.keys(this.xroleTypeByName)
-        .map((name) => this.xroleTypeByName[name])
-        .forEach((roleType) => {
-          const relationType = roleType.relationType;
-          if (relationType.associationType.objectType.isInterface) {
-            this.xroleTypeByName[roleType.name] = relationType.concreteRoleTypeByClassId[this.name];
-          }
-        });
-    }
-  }
-
-  private deriveMethods() {
-    this.interfaces.forEach((v) => Object.assign(this.xmethodTypeByName, v.xmethodTypeByName));
   }
 }

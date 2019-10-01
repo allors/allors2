@@ -16,7 +16,7 @@ namespace Allors.Workspace
 
         public string Write(IMetaObject metaObject)
         {
-            var value = metaObject?.Id.ToString("D").ToLower();
+            var value = metaObject?.Id.ToString("D");
             return this.compressor.Write(value);
         }
     }

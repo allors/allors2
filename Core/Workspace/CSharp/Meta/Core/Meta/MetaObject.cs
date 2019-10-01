@@ -40,7 +40,7 @@ namespace Allors.Workspace.Meta
         /// Gets the id as a string.
         /// </summary>
         /// <value>The id as a string.</value>
-        public string IdAsString => this.Id.ToString("D").ToLower();
+        public string IdAsString => this.Id.ToString("D");
 
         /// <summary>
         /// Gets the validation name.

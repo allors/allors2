@@ -17,7 +17,8 @@ import { Permission } from './Permission';
 
 export interface IWorkspace {
   metaPopulation: MetaPopulation;
-  constructorByName: { [name: string]: typeof SessionObject };
+  constructorByObjectType: Map<ObjectType, typeof SessionObject>;
+
   diff(data: PullResponse): SyncRequest;
   sync(data: SyncResponse): SecurityRequest;
   security(data: SecurityResponse): void;
@@ -27,8 +28,9 @@ export interface IWorkspace {
 }
 
 export class Workspace implements IWorkspace {
-  constructorByName: { [name: string]: typeof SessionObject };
-  prototypeByName: { [name: string]: any };
+
+  constructorByObjectType: Map<ObjectType, typeof SessionObject>;
+
   workspaceObjectByIdByClassId: { [id: string]: { [id: string]: WorkspaceObject } } = {};
   workspaceObjectById: { [id: string]: WorkspaceObject } = {};
   accessControlById: { [id: string]: AccessControl } = {};
@@ -39,53 +41,45 @@ export class Workspace implements IWorkspace {
 
   constructor(public metaPopulation: MetaPopulation) {
 
-    this.prototypeByName = {};
-    this.constructorByName = {};
+    this.constructorByObjectType = new Map();
 
     this.metaPopulation.objectTypes.forEach((objectType) => {
           if (objectType.isClass) {
-
             const DynamicClass = (() => {
               return function () {
-
                 const prototype1 = Object.getPrototypeOf(this);
                 const prototype2 = Object.getPrototypeOf(prototype1);
-
                 prototype2.init.call(this);
               };
             })();
 
             DynamicClass.prototype = Object.create(SessionObject.prototype);
             DynamicClass.prototype.constructor = DynamicClass;
+            this.constructorByObjectType.set(objectType, DynamicClass as any);
+
             const prototype = DynamicClass.prototype;
-
-            this.prototypeByName[objectType.name] = prototype;
-            this.constructorByName[objectType.name] = DynamicClass as any;
-
-            Object.keys(objectType.xroleTypeByName)
-              .forEach((roleTypeName) => {
-                const roleType = objectType.xroleTypeByName[roleTypeName];
-
-                Object.defineProperty(prototype, 'CanRead' + roleTypeName, {
+            objectType.roleTypes
+              .forEach((roleType) => {
+                Object.defineProperty(prototype, 'CanRead' + roleType.name, {
                   get(this: SessionObject) {
                     return this.canRead(roleType);
                   },
                 });
 
                 if (roleType.isDerived) {
-                  Object.defineProperty(prototype, roleTypeName, {
+                  Object.defineProperty(prototype, roleType.name, {
                     get(this: SessionObject) {
                       return this.get(roleType);
                     },
                   });
                 } else {
-                  Object.defineProperty(prototype, 'CanWrite' + roleTypeName, {
+                  Object.defineProperty(prototype, 'CanWrite' + roleType.name, {
                     get(this: SessionObject) {
                       return this.canWrite(roleType);
                     },
                   });
 
-                  Object.defineProperty(prototype, roleTypeName, {
+                  Object.defineProperty(prototype, roleType.name, {
                     get(this: SessionObject) {
                       return this.get(roleType);
                     },
@@ -108,29 +102,24 @@ export class Workspace implements IWorkspace {
                 }
               });
 
-            Object.keys(objectType.xassociationTypeByName)
-              .forEach((associationTypeName) => {
-
-                const associationType = objectType.xassociationTypeByName[associationTypeName];
-
-                Object.defineProperty(prototype, associationTypeName, {
+            objectType.associationTypes
+              .forEach((associationType) => {
+                Object.defineProperty(prototype, associationType.name, {
                   get(this: SessionObject) {
                     return this.getAssociation(associationType);
                   },
                 });
               });
 
-            Object.keys(objectType.xmethodTypeByName)
-              .forEach((methodTypeName) => {
-                const methodType = objectType.xmethodTypeByName[methodTypeName];
-
-                Object.defineProperty(prototype, 'CanExecute' + methodTypeName, {
+            objectType.methodTypes
+              .forEach((methodType) => {
+                Object.defineProperty(prototype, 'CanExecute' + methodType.name, {
                   get(this: SessionObject) {
                     return this.canExecute(methodType);
                   },
                 });
 
-                Object.defineProperty(prototype, methodTypeName, {
+                Object.defineProperty(prototype, methodType.name, {
                   get(this: SessionObject) {
                     return this.method(methodType);
                   },

@@ -29,6 +29,15 @@ describe('Unit Samples',
 
           const unitSample = loaded.objects['unitSample'] as UnitSample;
 
+          assert.isTrue(unitSample.CanReadAllorsBinary);
+          assert.isTrue(unitSample.CanReadAllorsBoolean);
+          assert.isTrue(unitSample.CanReadAllorsDateTime);
+          assert.isTrue(unitSample.CanReadAllorsDecimal);
+          assert.isTrue(unitSample.CanReadAllorsDouble);
+          assert.isTrue(unitSample.CanReadAllorsInteger);
+          assert.isTrue(unitSample.CanReadAllorsString);
+          assert.isTrue(unitSample.CanReadAllorsUnique);
+
           assert.isDefined(unitSample.AllorsBinary);
           assert.isDefined(unitSample.AllorsBoolean);
           assert.isDefined(unitSample.AllorsDateTime);
@@ -37,6 +46,15 @@ describe('Unit Samples',
           assert.isDefined(unitSample.AllorsInteger);
           assert.isDefined(unitSample.AllorsString);
           assert.isDefined(unitSample.AllorsUnique);
+
+          assert.equal('AQID', unitSample.AllorsBinary);
+          assert.equal(true, unitSample.AllorsBoolean);
+          assert.equal('1973-03-27T00:00:00.0000000Z', unitSample.AllorsDateTime);
+          assert.equal('12.34', unitSample.AllorsDecimal);
+          assert.equal(123, unitSample.AllorsDouble);
+          assert.equal(1000, unitSample.AllorsInteger);
+          assert.equal('a string', unitSample.AllorsString);
+          assert.equal('2946cf37-71be-4681-8fe6-d0024d59beff', unitSample.AllorsUnique);
         });
       });
   });

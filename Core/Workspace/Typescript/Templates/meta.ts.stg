@@ -2,7 +2,7 @@ delimiters "$", "$"
 
 TemplateId() ::= <<2FD8EE5D-4976-484F-96F9-9474AE09BFDB>>
 TemplateName() ::= <<Allors Typescript Meta>>
-TemplateVersion() ::= <<1.0.10>>
+TemplateVersion() ::= <<1.0.11>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(meta) ::= <<
 $!

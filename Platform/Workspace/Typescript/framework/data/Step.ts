@@ -14,16 +14,16 @@ export class Step {
     if (fields instanceof ObjectType) {
       const objectType = fields as ObjectType;
 
-      this.propertyType = objectType.xroleTypeByName[stepName];
+      this.propertyType = objectType.roleTypeByName.get(stepName);
       if (!this.propertyType) {
-        this.propertyType = objectType.xassociationTypeByName[stepName];
+        this.propertyType = objectType.associationTypeByName.get(stepName);
       }
 
       if (!this.propertyType) {
         const metaPopulation = objectType.metaPopulation;
         const [subTypeName, subStepName] = stepName.split('_');
 
-        const subType = metaPopulation.xobjectTypeByName[subTypeName];
+        const subType = metaPopulation.objectTypeByName[subTypeName];
         if (subType) {
           this.propertyType = subType.xroleTypeByName[subStepName];
 

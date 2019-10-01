@@ -40,13 +40,13 @@ namespace Allors.Meta
         /// Gets the id as a number only string.
         /// </summary>
         /// <value>The id as a number only string.</value>
-        public string IdAsNumberString => this.Id.ToString("N").ToLower();
+        public string IdAsNumberString => this.Id.ToString("N");
 
         /// <summary>
         /// Gets the id as a string.
         /// </summary>
         /// <value>The id as a string.</value>
-        public string IdAsString => this.Id.ToString("D").ToLower();
+        public string IdAsString => this.Id.ToString("D");
 
         /// <summary>
         /// Gets the validation name.

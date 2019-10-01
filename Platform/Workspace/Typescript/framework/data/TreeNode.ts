@@ -17,13 +17,13 @@ export class TreeNode {
   }
 
   public parse(json: any, objectType: ObjectType, propertyTypeName: string) {
-    this.propertyType = objectType.xroleTypeByName[propertyTypeName] || objectType.xassociationTypeByName[propertyTypeName];
+    this.propertyType = objectType.roleTypeByName.get(propertyTypeName) || objectType.associationTypeByName.get(propertyTypeName);
 
     if (!this.propertyType) {
       const metaPopulation = objectType.metaPopulation;
       const [subTypeName, subStepName] = propertyTypeName.split('_');
 
-      const subType = metaPopulation.xobjectTypeByName[subTypeName];
+      const subType = metaPopulation.objectTypeByName[subTypeName];
       if (subType) {
         this.propertyType = subType.xroleTypeByName[subStepName] || subType.xassociationTypeByName[propertyTypeName];
       }

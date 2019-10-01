@@ -6,6 +6,7 @@
 namespace Allors.Protocol.Data
 {
     using System;
+    using System.Globalization;
     using System.Xml;
     using Meta;
 
@@ -21,17 +22,17 @@ namespace Allors.Protocol.Data
             switch (objectTypeId)
             {
                 case var u when u == UnitIds.DateTime:
-                    return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.Utc);
+                    return DateTime.Parse(value, CultureInfo.InvariantCulture);
                 case var u when u == UnitIds.Binary:
                     return Convert.FromBase64String(value);
                 case var u when u == UnitIds.Boolean:
-                    return XmlConvert.ToBoolean(value);
+                    return bool.Parse(value);
                 case var u when u == UnitIds.Decimal:
-                    return XmlConvert.ToDecimal(value);
+                    return decimal.Parse(value, CultureInfo.InvariantCulture);
                 case var u when u == UnitIds.Float:
-                    return XmlConvert.ToDouble(value);
+                    return double.Parse(value, CultureInfo.InvariantCulture);
                 case var u when u == UnitIds.Integer:
-                    return XmlConvert.ToInt32(value);
+                    return int.Parse(value, CultureInfo.InvariantCulture);
                 case var u when u == UnitIds.String:
                     return value;
                 case var u when u == UnitIds.Unique:
@@ -46,21 +47,21 @@ namespace Allors.Protocol.Data
             switch (value)
             {
                 case DateTime dateTime:
-                    return XmlConvert.ToString(dateTime, XmlDateTimeSerializationMode.Utc);
+                    return dateTime.ToString("o");
                 case byte[] binary:
                     return Convert.ToBase64String(binary);
                 case bool @bool:
-                    return XmlConvert.ToString(@bool);
+                    return @bool ? "true" : "false";
                 case decimal @decimal:
-                    return XmlConvert.ToString(@decimal);
+                    return @decimal.ToString(CultureInfo.InvariantCulture);
                 case double @double:
-                    return XmlConvert.ToString(@double);
+                    return @double.ToString(CultureInfo.InvariantCulture);
                 case int @int:
-                    return XmlConvert.ToString(@int);
+                    return @int.ToString(CultureInfo.InvariantCulture);
                 case string @string:
                     return @string;
                 case Guid @guid:
-                    return XmlConvert.ToString(@guid);
+                    return @guid.ToString("D");
                 case null:
                     return null;
                 default:
