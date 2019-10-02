@@ -266,7 +266,7 @@ describe('Extent',
         });
       });
 
-    describe('with value predicates',
+    describe('with predicate values',
       () => {
         it('should return results', async () => {
 
@@ -338,4 +338,88 @@ describe('Extent',
         });
       });
 
+
+      describe('with predicate parameters',
+      () => {
+        it('should return results', async () => {
+
+          const { m, scope } = fixture;
+
+          const pulls = [
+            new Pull({
+              extent: new Filter({
+                objectType: m.C1,
+                predicate: new And({
+                  operands: [
+                    new Equals({
+                      propertyType: m.C1.C1AllorsBoolean,
+                      parameter: 'p1',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.C1AllorsDateTime,
+                      parameter: 'p2',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I1AllorsDateTime,
+                      parameter: 'p3',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.C1AllorsDecimal,
+                      parameter: 'p4',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I1AllorsDecimal,
+                      parameter: 'p5',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I12AllorsDecimal,
+                      parameter: 'p6',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.C1AllorsInteger,
+                      parameter: 'p7',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I1AllorsInteger,
+                      parameter: 'p8',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.C1AllorsUnique,
+                      parameter: 'p9',
+                    }),
+                    new Equals({
+                      propertyType: m.C1.I1AllorsUnique,
+                      parameter: 'p10',
+                    }),
+                  ]
+                })
+              }),
+              parameters: {
+                p1: true,
+                p2: new Date(),
+                p3: new Date().toISOString(),
+                p4: '10.0',
+                p5: 10,
+                p6: 10.1,
+                p7: 1001,
+                p8: '1001',
+                p9: '{8E896822-C6DC-4D6D-BE30-77D24FDEA2CC}',
+                p10: '8E896822-C6DC-4D6D-BE30-77D24FDEA2CC',
+              }
+            }),
+          ];
+
+          scope.session.reset();
+
+          const pullRequest = new PullRequest({ pulls });
+          const loaded = await scope
+            .load(pullRequest);
+
+          const c1s = loaded.collections['C1s'] as C1[];
+
+          assert.isArray(c1s);
+          // assert.isNotEmpty(c1s);
+          // assert.equal(7, c1s.length);
+        });
+      });
   });

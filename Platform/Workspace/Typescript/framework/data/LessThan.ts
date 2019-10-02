@@ -21,7 +21,7 @@ export class LessThan extends ParametrizedPredicate {
       kind: 'LessThan',
       roleType: this.roleType.id,
       parameter: this.parameter,
-      value: serialize(this.value, this.roleType.objectType),
+      value: serialize(this.value),
     };
   }
 }

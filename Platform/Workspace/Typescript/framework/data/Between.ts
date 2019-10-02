@@ -20,7 +20,7 @@ export class Between implements Predicate {
       kind: 'Between',
       roleType: this.roleType.id,
       param: this.param,
-      values: serializeArray(this.values, this.roleType.objectType),
+      values: serializeArray(this.values),
     };
   }
 }

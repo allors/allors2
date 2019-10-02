@@ -1,3 +1,4 @@
+import { UnitTypes, CompositeTypes, serializeObject } from '../protocol/Serialization';
 import { Extent } from './Extent';
 import { ISessionObject } from '../workspace';
 import { Result } from './Result';
@@ -16,11 +17,11 @@ export class Pull {
 
   public objectType: ObjectType;
 
-  public object: ISessionObject | string;
+  public object: CompositeTypes;
 
   public results: Result[];
 
-  public parameters: { [name: string]: string; };
+  public parameters: { [name: string]: UnitTypes; };
 
   constructor(fields?: Partial<Pull> | ObjectType, flat?: FlatPull) {
     if (fields instanceof ObjectType) {
@@ -90,7 +91,7 @@ export class Pull {
       objectType: this.objectType && this.objectType.id,
       object: sessionObject && sessionObject.id ? sessionObject.id : this.object,
       results: this.results,
-      parameters: this.parameters,
+      parameters: serializeObject(this.parameters),
     };
   }
 }

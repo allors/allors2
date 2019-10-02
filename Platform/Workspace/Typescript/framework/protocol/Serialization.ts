@@ -5,27 +5,42 @@ import { ObjectType } from '../meta/ObjectType';
 export type UnitTypes = string | Date | boolean | number;
 export type CompositeTypes = ISessionObject | string;
 
-export function serializeArray(roles: UnitTypes[], objectType: ObjectType): string[] {
+export function serializeObject(roles: { [name: string]: UnitTypes; }): { [name: string]: string; } {
   if (roles) {
-    return roles.map(v => serialize(v, objectType));
+    return Object
+      .keys(roles)
+      .reduce((obj, v) => {
+        obj[v] = serialize(roles[v]);
+        return obj;
+      }, {});
+  }
+
+  return {};
+}
+
+export function serializeArray(roles: UnitTypes[]): string[] {
+  if (roles) {
+    return roles.map(v => serialize(v));
   }
 
   return [];
 }
 
-export function serialize(role: UnitTypes, objectType: ObjectType): string {
-  switch (objectType.id) {
-    case ids.Boolean:
-      return role ? 'true' : 'false';
+export function serialize(role: UnitTypes): string {
 
-    case ids.DateTime:
-      if (role instanceof Date) {
-        return (role as Date).toISOString();
-      }
-      break;
+  if (role === undefined || role === null) {
+    return null;
   }
 
-  role = role.toString();
+  if (typeof role === 'string') {
+    return role;
+  }
+
+  if (role instanceof Date) {
+    return (role as Date).toISOString();
+  }
+
+  return role.toString();
 }
 
 export function deserialize(value: string, objectType: ObjectType): UnitTypes {

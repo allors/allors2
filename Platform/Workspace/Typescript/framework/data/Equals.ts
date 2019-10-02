@@ -24,7 +24,7 @@ export class Equals extends ParametrizedPredicate {
       kind: 'Equals',
       propertytype: this.propertyType.id,
       parameter: this.parameter,
-      value: serialize(this.value, this.propertyType.objectType),
+      value: serialize(this.value),
       object: this.object && (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object
     };
   }

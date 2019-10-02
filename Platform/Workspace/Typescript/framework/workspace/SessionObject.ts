@@ -306,7 +306,7 @@ export class SessionObject implements ISessionObject {
 
         let role = value;
         if (roleType.objectType.isUnit) {
-          role = serialize(role, roleType.objectType);
+          role = serialize(role);
           saveRole.s = role;
         } else {
           if (roleType.isOne) {
