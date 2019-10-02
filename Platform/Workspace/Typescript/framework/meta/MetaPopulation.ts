@@ -135,6 +135,18 @@ export class MetaPopulation {
       associationType.objectType.roleTypes.push(roleType);
       roleType.objectType.associationTypes.push(associationType);
 
+      if (associationType.objectType.isInterface) {
+        this.composites
+        .filter(v => v.interfaces.indexOf(associationType.objectType) > -1)
+        .forEach(v => v.roleTypes.push(roleType));
+      }
+
+      if (roleType.objectType.isInterface) {
+        this.composites
+        .filter(v => v.interfaces.indexOf(roleType.objectType) > -1)
+        .forEach(v => v.associationTypes.push(associationType));
+      }
+
       this.metaObjectById.set(relationType.id, relationType);
       this.metaObjectById.set(relationType.roleType.id, relationType.roleType);
       this.metaObjectById.set(relationType.associationType.id, relationType.associationType);

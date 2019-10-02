@@ -5,6 +5,9 @@
 
 namespace Allors.Protocol.Remote.Sync
 {
+    using System.Diagnostics;
+
+    [DebuggerDisplay("{V} [{T}]")]
     public class SyncResponseRole
     {
         /// <summary>

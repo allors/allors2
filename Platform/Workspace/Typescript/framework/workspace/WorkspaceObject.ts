@@ -6,12 +6,15 @@ import { AccessControl } from './AccessControl';
 import { Compressor } from '../protocol/Compressor';
 import { ids } from '../../meta';
 
+import Decimal from 'decimal.js';
+
 export interface IWorkspaceObject {
   workspace: IWorkspace;
   objectType: ObjectType;
   id: string;
   version: string;
-  roles: { [roleTypeId: string]: any };
+  roleByRoleTypeId: Map<string, any>;
+
   isPermitted(permission: Permission): boolean;
 }
 
@@ -22,10 +25,10 @@ export class WorkspaceObject implements IWorkspaceObject {
   version: string;
   sortedAccessControlIds: string;
   sortedDeniedPermissionIds: string;
-  roles: Map<RoleType, any>;
+
+  roleByRoleTypeId: Map<string, any>;
 
   private accessControls: AccessControl[];
-
   private deniedPermissions: Permission[];
 
   constructor(workspace: Workspace, syncResponseObject: SyncResponseObject, sortedAccessControlIdsDecompress: (compressed: string) => string, sortedDeniedPermissionIdsDecompress: (compressed: string) => string, metaDecompress: (compressed: string) => MetaObject) {
@@ -35,7 +38,7 @@ export class WorkspaceObject implements IWorkspaceObject {
     this.version = syncResponseObject.v;
     this.objectType = metaDecompress(syncResponseObject.t) as ObjectType;
 
-    this.roles = new Map();
+    this.roleByRoleTypeId = new Map();
     if (syncResponseObject.r) {
       syncResponseObject.r.forEach((role) => {
         const roleTypeId = role.t;
@@ -54,6 +57,9 @@ export class WorkspaceObject implements IWorkspaceObject {
             case ids.Integer:
               value = parseInt(value, 10);
               break;
+            case ids.Decimal:
+              value = new Decimal(value);
+              break;
           }
         } else {
           if (roleType.isMany) {
@@ -61,7 +67,7 @@ export class WorkspaceObject implements IWorkspaceObject {
           }
         }
 
-        this.roles.set(roleType, value);
+        this.roleByRoleTypeId.set(roleType.id, value);
       });
     }
 
@@ -77,12 +83,12 @@ export class WorkspaceObject implements IWorkspaceObject {
     if (!this.accessControls && this.sortedAccessControlIds) {
       this.accessControls = this.sortedAccessControlIds
         .split(Compressor.itemSeparator)
-        .map(v => this.workspace.accessControlById[v]);
+        .map(v => this.workspace.accessControlById.get(v));
 
       if (this.deniedPermissions != null) {
         this.deniedPermissions = this.sortedDeniedPermissionIds
           .split(Compressor.itemSeparator)
-          .map(v => this.workspace.permissionById[v]);
+          .map(v => this.workspace.permissionById.get(v));
       }
     }
 
@@ -91,7 +97,13 @@ export class WorkspaceObject implements IWorkspaceObject {
     }
 
     if (this.accessControls) {
-      return !!this.accessControls.filter(v => !!v.permissions.filter(w => w === permission));
+      for (const accessControl of this.accessControls) {
+        for (const effectivePermission of accessControl.permissions) {
+          if (effectivePermission === permission) {
+            return true;
+          }
+        }
+      }
     }
 
     return false;

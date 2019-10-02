@@ -13,7 +13,8 @@
     "az:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-trx-reporter ./test/**/*.spec.ts "
   },
   "dependencies": {
-    "axios": "latest"
+    "axios": "latest",
+    "decimal.js": "^10.2.0"
   },
   "devDependencies": {
     "@types/chai": "latest",

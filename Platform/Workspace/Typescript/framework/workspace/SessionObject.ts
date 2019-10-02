@@ -109,17 +109,17 @@ export class SessionObject implements ISessionObject {
     if (value === undefined) {
       if (this.newId === undefined) {
         if (roleType.objectType.isUnit) {
-          value = this.workspaceObject.roles.get(roleType);
+          value = this.workspaceObject.roleByRoleTypeId.get(roleType.id);
           if (value === undefined) {
             value = null;
           }
         } else {
           try {
             if (roleType.isOne) {
-              const role: string = this.workspaceObject.roles.get(roleType);
+              const role: string = this.workspaceObject.roleByRoleTypeId.get(roleType.id);
               value = role ? this.session.get(role) : null;
             } else {
-              const roles: string[] = this.workspaceObject.roles.get(roleType);
+              const roles: string[] = this.workspaceObject.roleByRoleTypeId.get(roleType.id);
               value = roles ? roles.map((role) => {
                 return this.session.get(role);
               }) : [];
@@ -320,7 +320,7 @@ export class SessionObject implements ISessionObject {
             if (this.newId) {
               saveRole.a = roleIds;
             } else {
-              const originalRoleIds = this.workspaceObject.roles.get(roleType) as string[];
+              const originalRoleIds = this.workspaceObject.roleByRoleTypeId.get(roleType.id) as string[];
               if (!originalRoleIds) {
                 saveRole.a = roleIds;
               } else {

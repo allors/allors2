@@ -31,102 +31,118 @@ export class Workspace implements IWorkspace {
 
   constructorByObjectType: Map<ObjectType, typeof SessionObject>;
 
-  workspaceObjectByIdByClassId: { [id: string]: { [id: string]: WorkspaceObject } } = {};
-  workspaceObjectById: { [id: string]: WorkspaceObject } = {};
-  accessControlById: { [id: string]: AccessControl } = {};
-  permissionById: { [id: string]: Permission } = {};
-  private readPermissionByOperandTypeByClass: { [classId: string]: { [operandTypeId: string]: Permission } } = {};
-  private writePermissionByOperandTypeByClass: { [classId: string]: { [operandTypeId: string]: Permission } } = {};
-  private executePermissionByOperandTypeByClass: { [classId: string]: { [operandTypeId: string]: Permission } } = {};
+  workspaceObjectByIdByClass: Map<ObjectType, Map<string, WorkspaceObject>>;
+  workspaceObjectById: Map<string, WorkspaceObject>;
+  accessControlById: Map<string, AccessControl>;
+  permissionById: Map<string, Permission>;
+
+  private readPermissionByOperandTypeByClass: Map<ObjectType, Map<OperandType, Permission>>;
+  private writePermissionByOperandTypeByClass: Map<ObjectType, Map<OperandType, Permission>>;
+  private executePermissionByOperandTypeByClass: Map<ObjectType, Map<OperandType, Permission>>;
 
   constructor(public metaPopulation: MetaPopulation) {
 
     this.constructorByObjectType = new Map();
 
+    this.workspaceObjectByIdByClass = new Map();
+    this.workspaceObjectById = new Map();
+    this.accessControlById = new Map();
+    this.permissionById = new Map();
+
+    this.readPermissionByOperandTypeByClass = new Map();
+    this.writePermissionByOperandTypeByClass = new Map();
+    this.executePermissionByOperandTypeByClass = new Map();
+
+    metaPopulation.classes.forEach(v => {
+      this.readPermissionByOperandTypeByClass.set(v, new Map());
+      this.writePermissionByOperandTypeByClass.set(v, new Map());
+      this.executePermissionByOperandTypeByClass.set(v, new Map());
+    });
+
     this.metaPopulation.objectTypes.forEach((objectType) => {
-          if (objectType.isClass) {
-            const DynamicClass = (() => {
-              return function () {
-                const prototype1 = Object.getPrototypeOf(this);
-                const prototype2 = Object.getPrototypeOf(prototype1);
-                prototype2.init.call(this);
-              };
-            })();
+      if (objectType.isClass) {
+        const DynamicClass = (() => {
+          return function () {
+            const prototype1 = Object.getPrototypeOf(this);
+            const prototype2 = Object.getPrototypeOf(prototype1);
+            prototype2.init.call(this);
+          };
+        })();
 
-            DynamicClass.prototype = Object.create(SessionObject.prototype);
-            DynamicClass.prototype.constructor = DynamicClass;
-            this.constructorByObjectType.set(objectType, DynamicClass as any);
+        DynamicClass.prototype = Object.create(SessionObject.prototype);
+        DynamicClass.prototype.constructor = DynamicClass;
+        this.constructorByObjectType.set(objectType, DynamicClass as any);
 
-            const prototype = DynamicClass.prototype;
-            objectType.roleTypes
-              .forEach((roleType) => {
-                Object.defineProperty(prototype, 'CanRead' + roleType.name, {
-                  get(this: SessionObject) {
-                    return this.canRead(roleType);
-                  },
-                });
+        const prototype = DynamicClass.prototype;
+        objectType.roleTypes
+          .forEach((roleType) => {
+            Object.defineProperty(prototype, 'CanRead' + roleType.name, {
+              get(this: SessionObject) {
+                return this.canRead(roleType);
+              },
+            });
 
-                if (roleType.isDerived) {
-                  Object.defineProperty(prototype, roleType.name, {
-                    get(this: SessionObject) {
-                      return this.get(roleType);
-                    },
-                  });
-                } else {
-                  Object.defineProperty(prototype, 'CanWrite' + roleType.name, {
-                    get(this: SessionObject) {
-                      return this.canWrite(roleType);
-                    },
-                  });
-
-                  Object.defineProperty(prototype, roleType.name, {
-                    get(this: SessionObject) {
-                      return this.get(roleType);
-                    },
-
-                    set(this: SessionObject, value) {
-                      this.set(roleType, value);
-                    },
-                  });
-
-                  if (roleType.isMany) {
-
-                    prototype['Add' + roleType.singular] = function (this: SessionObject, value) {
-                      return this.add(roleType, value);
-                    };
-
-                    prototype['Remove' + roleType.singular] = function (this: SessionObject, value) {
-                      return this.remove(roleType, value);
-                    };
-                  }
-                }
+            if (roleType.isDerived) {
+              Object.defineProperty(prototype, roleType.name, {
+                get(this: SessionObject) {
+                  return this.get(roleType);
+                },
+              });
+            } else {
+              Object.defineProperty(prototype, 'CanWrite' + roleType.name, {
+                get(this: SessionObject) {
+                  return this.canWrite(roleType);
+                },
               });
 
-            objectType.associationTypes
-              .forEach((associationType) => {
-                Object.defineProperty(prototype, associationType.name, {
-                  get(this: SessionObject) {
-                    return this.getAssociation(associationType);
-                  },
-                });
+              Object.defineProperty(prototype, roleType.name, {
+                get(this: SessionObject) {
+                  return this.get(roleType);
+                },
+
+                set(this: SessionObject, value) {
+                  this.set(roleType, value);
+                },
               });
 
-            objectType.methodTypes
-              .forEach((methodType) => {
-                Object.defineProperty(prototype, 'CanExecute' + methodType.name, {
-                  get(this: SessionObject) {
-                    return this.canExecute(methodType);
-                  },
-                });
+              if (roleType.isMany) {
 
-                Object.defineProperty(prototype, methodType.name, {
-                  get(this: SessionObject) {
-                    return this.method(methodType);
-                  },
-                });
-              });
-          }
-        });
+                prototype['Add' + roleType.singular] = function (this: SessionObject, value) {
+                  return this.add(roleType, value);
+                };
+
+                prototype['Remove' + roleType.singular] = function (this: SessionObject, value) {
+                  return this.remove(roleType, value);
+                };
+              }
+            }
+          });
+
+        objectType.associationTypes
+          .forEach((associationType) => {
+            Object.defineProperty(prototype, associationType.name, {
+              get(this: SessionObject) {
+                return this.getAssociation(associationType);
+              },
+            });
+          });
+
+        objectType.methodTypes
+          .forEach((methodType) => {
+            Object.defineProperty(prototype, 'CanExecute' + methodType.name, {
+              get(this: SessionObject) {
+                return this.canExecute(methodType);
+              },
+            });
+
+            Object.defineProperty(prototype, methodType.name, {
+              get(this: SessionObject) {
+                return this.method(methodType);
+              },
+            });
+          });
+      }
+    });
   }
 
   diff(response: PullResponse): SyncRequest {
@@ -136,7 +152,7 @@ export class Workspace implements IWorkspace {
         objects: response.objects
           .filter((syncRequestObject) => {
             const [id, version, soretedAccessControlIds, sortedDeniedPermissionIds] = syncRequestObject;
-            const workspaceObject = this.workspaceObjectById[id];
+            const workspaceObject = this.workspaceObjectById.get(id);
             return (workspaceObject === undefined) ||
               (workspaceObject === null) ||
               (workspaceObject.version !== version) ||
@@ -161,7 +177,7 @@ export class Workspace implements IWorkspace {
         first
           .split(Compressor.itemSeparator)
           .forEach(v => {
-            if (!Object.prototype.hasOwnProperty.call(this.accessControlById, v)) {
+            if (!this.accessControlById.has(v)) {
               missingAccessControlIds.add(v);
             }
           });
@@ -173,7 +189,7 @@ export class Workspace implements IWorkspace {
         first
           .split(Compressor.itemSeparator)
           .forEach(v => {
-            if (!Object.prototype.hasOwnProperty.call(this.permissionById, v)) {
+            if (!this.permissionById.has(v)) {
               missingPermissionIds.add(v);
             }
           });
@@ -184,8 +200,15 @@ export class Workspace implements IWorkspace {
       syncResponse.objects
         .forEach((v) => {
           const workspaceObject = new WorkspaceObject(this, v, sortedAccessControlIdsDecompress, sortedDeniedPermissionIdsDecompress, metaDecompress);
-          this.workspaceObjectById[workspaceObject.id] = workspaceObject;
-          this.addByObjectTypeId(workspaceObject);
+          this.workspaceObjectById.set(workspaceObject.id, workspaceObject);
+
+          let workspaceObjectById = this.workspaceObjectByIdByClass.get(workspaceObject.objectType);
+          if (!workspaceObjectById) {
+            workspaceObjectById = new Map();
+            this.workspaceObjectByIdByClass.set(workspaceObject.objectType, workspaceObjectById);
+          }
+
+          workspaceObjectById.set(workspaceObject.id, workspaceObject);
         });
     }
 
@@ -199,41 +222,41 @@ export class Workspace implements IWorkspace {
     return null;
   }
 
+  private getOrCreate<T, U, V>(map: Map<T, Map<U, V>>, key: T) {
+    let value = map.get(key);
+    if (!value) {
+      value = new Map();
+      map.set(key, value);
+    }
+
+    return value;
+  }
+
   security(securityResponse: SecurityResponse): void {
     const decompressor = new Decompressor();
     const metaDecompress = createMetaDecompress(decompressor, this.metaPopulation);
-
-    const setPermission = (permissionByOperandTypeByClass: { [objectTypeId: string]: { [operandTypeId: string]: Permission } }, objectType: ObjectType, operandType: OperandType, permission: Permission) => {
-      let permissionByOperandType = permissionByOperandTypeByClass[objectType.id];
-      if (!permissionByOperandType) {
-        permissionByOperandType = {};
-        permissionByOperandTypeByClass[objectType.id] = permissionByOperandType;
-      }
-
-      permissionByOperandType[operandType.id] = permission;
-    };
 
     if (securityResponse.permissions) {
       securityResponse.permissions.forEach(v => {
         const id = v[0];
         const objectType = metaDecompress(v[1]) as ObjectType;
         const operandType = metaDecompress(v[2]) as OperandType;
-        const operation = Operations[v[3]];
+        const operation = parseInt(v[3], 10);
 
         const permission = new Permission(id, objectType, operandType, operation);
-        this.permissionById[id] = permission;
+        this.permissionById.set(id, permission);
 
         switch (operation) {
           case Operations.Read:
-            setPermission(this.readPermissionByOperandTypeByClass, objectType, operandType, permission);
+            this.getOrCreate(this.readPermissionByOperandTypeByClass, objectType).set(operandType, permission);
             break;
 
           case Operations.Write:
-            setPermission(this.writePermissionByOperandTypeByClass, objectType, operandType, permission);
+            this.getOrCreate(this.writePermissionByOperandTypeByClass, objectType).set(operandType, permission);
             break;
 
           case Operations.Execute:
-            setPermission(this.executePermissionByOperandTypeByClass, objectType, operandType, permission);
+            this.getOrCreate(this.executePermissionByOperandTypeByClass, objectType).set(operandType, permission);
             break;
         }
       });
@@ -243,23 +266,23 @@ export class Workspace implements IWorkspace {
       securityResponse.accessControls.forEach(v => {
         const id = v.i;
         const version = v.v;
-        const permissions = v.p.map(w => this.permissionById[w]);
+        const permissions = v.p.map(w => this.permissionById.get(w));
 
         const accessControl = new AccessControl(id, version, permissions);
-        this.accessControlById[id] = accessControl;
+        this.accessControlById.set(id, accessControl);
       });
     }
   }
 
   invalidate(id: string, objectType: ObjectType) {
-    const workspaceObject = this.workspaceObjectById[id];
+    const workspaceObject = this.workspaceObjectById.get(id);
     if (workspaceObject) {
       workspaceObject.invalidate();
     }
   }
 
   get(id: string): WorkspaceObject {
-    const workspaceObject = this.workspaceObjectById[id];
+    const workspaceObject = this.workspaceObjectById.get(id);
     if (workspaceObject === undefined) {
       throw new Error(`Object with id ${id} is not present.`);
     }
@@ -270,31 +293,11 @@ export class Workspace implements IWorkspace {
   permission(objectType: ObjectType, operandType: OperandType, operation: Operations): Permission {
     switch (operation) {
       case Operations.Read:
-        return this.getPermission(this.readPermissionByOperandTypeByClass, objectType, operandType);
+        return this.readPermissionByOperandTypeByClass.get(objectType).get(operandType);
       case Operations.Write:
-        return this.getPermission(this.writePermissionByOperandTypeByClass, objectType, operandType);
+        return this.writePermissionByOperandTypeByClass.get(objectType).get(operandType);
       default:
-        return this.getPermission(this.executePermissionByOperandTypeByClass, objectType, operandType);
+        return this.executePermissionByOperandTypeByClass.get(objectType).get(operandType);
     }
-  }
-
-  private getPermission = (permissionByOperandTypeByClass: { [objectTypeId: string]: { [operandTypeId: string]: Permission } }, objectType: ObjectType, operandType: OperandType) => {
-    let permissionByOperandType = permissionByOperandTypeByClass[objectType.id];
-    if (!permissionByOperandType) {
-      permissionByOperandType = {};
-      permissionByOperandTypeByClass[objectType.id] = permissionByOperandType;
-    }
-
-    return permissionByOperandType[operandType.id];
-  }
-
-  private addByObjectTypeId(workspaceObject: WorkspaceObject) {
-    let workspaceObjectById = this.workspaceObjectByIdByClassId[workspaceObject.objectType.id];
-    if (!workspaceObjectById) {
-      workspaceObjectById = {};
-      this.workspaceObjectByIdByClassId[workspaceObject.objectType.id] = workspaceObjectById;
-    }
-
-    workspaceObjectById[workspaceObject.id] = workspaceObject;
   }
 }

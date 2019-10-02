@@ -32,13 +32,18 @@ export class Session implements ISession {
 
   public hasChanges: boolean;
 
-  private existingSessionObjectById: { [id: string]: ISessionObject } = {};
-  private newSessionObjectById: { [id: string]: ISessionObject } = {};
+  private existingSessionObjectById: Map<string, ISessionObject>;
+  private newSessionObjectById: Map<string, ISessionObject>;
 
-  private sessionObjectByIdByClassId: { [id: string]: { [id: string]: ISessionObject } } = {};
+  private sessionObjectByIdByClass: Map<ObjectType, Map<string, ISessionObject>>;
 
   constructor(public workspace: IWorkspace) {
     this.hasChanges = false;
+
+    this.existingSessionObjectById = new Map();
+    this.newSessionObjectById = new Map();
+
+    this.sessionObjectByIdByClass = new Map();
   }
 
   public get(id: string): ISessionObject {
@@ -46,7 +51,7 @@ export class Session implements ISession {
       return undefined;
     }
 
-    let sessionObject: ISessionObject = this.existingSessionObjectById[id];
+    let sessionObject: ISessionObject = this.existingSessionObjectById.get(id);
     if (sessionObject === undefined) {
       sessionObject = this.newSessionObjectById[id];
 
@@ -59,7 +64,7 @@ export class Session implements ISession {
         sessionObject.workspaceObject = workspaceObject;
         sessionObject.objectType = workspaceObject.objectType;
 
-        this.existingSessionObjectById[sessionObject.id] = sessionObject;
+        this.existingSessionObjectById.set(sessionObject.id, sessionObject);
         this.addByObjectTypeId(sessionObject);
       }
     }
@@ -94,35 +99,30 @@ export class Session implements ISession {
 
     if (this.newSessionObjectById && this.newSessionObjectById.hasOwnProperty(newId)) {
 
-      Object.keys(this.newSessionObjectById).forEach((key: string) =>
-        (this.newSessionObjectById[key] as SessionObject).onDelete(newSessionObject),
-      );
+      for (const sessionObject of this.newSessionObjectById.values()) {
+        (sessionObject as SessionObject).onDelete(newSessionObject);
+      }
 
-      if (this.existingSessionObjectById) {
-        Object.keys(this.existingSessionObjectById).forEach((key: string) =>
-          (this.existingSessionObjectById[key] as SessionObject).onDelete(newSessionObject),
-        );
+      for (const sessionObject of this.existingSessionObjectById.values()) {
+        (sessionObject as SessionObject).onDelete(newSessionObject);
       }
 
       const objectType = newSessionObject.objectType;
       newSessionObject.reset();
 
-      delete this.newSessionObjectById[newId];
+      this.newSessionObjectById.delete(newId);
       this.removeByObjectTypeId(objectType, newId);
     }
   }
 
   public reset(): void {
-    if (this.newSessionObjectById) {
-      Object.keys(this.newSessionObjectById).forEach((key: string) =>
-        this.newSessionObjectById[key].reset(),
-      );
+
+    for (const sessionObject of this.newSessionObjectById.values()) {
+      (sessionObject as SessionObject).reset();
     }
 
-    if (this.existingSessionObjectById) {
-      Object.keys(this.existingSessionObjectById).forEach((key: string) =>
-        this.existingSessionObjectById[key].reset(),
-      );
+    for (const sessionObject of this.existingSessionObjectById.values()) {
+      (sessionObject as SessionObject).reset();
     }
 
     this.hasChanges = false;
@@ -130,8 +130,8 @@ export class Session implements ISession {
 
   public pushRequest(): PushRequest {
     return new PushRequest({
-      newObjects: Object.values(this.newSessionObjectById).map(v => v.saveNew()).filter(v => v !== undefined),
-      objects: Object.values(this.existingSessionObjectById).map(v => v.save()).filter(v => v !== undefined),
+      newObjects: [...this.newSessionObjectById.values()].map(v => v.saveNew()).filter(v => v !== undefined),
+      objects: [...this.existingSessionObjectById.values()].map(v => v.save()).filter(v => v !== undefined),
     });
   }
 
@@ -161,34 +161,33 @@ export class Session implements ISession {
     }
   }
 
-  // TODO: add caching
   public getAssociation(object: ISessionObject, associationType: AssociationType): ISessionObject[] {
     const associationClasses = associationType.objectType.classes;
     const roleType = associationType.relationType.roleType;
 
+    const associationIds = new Set<string>();
     const associations: ISessionObject[] = [];
 
     associationClasses.forEach((associationClass) => {
-      const sessionObjectById = this.sessionObjectByIdByClassId[associationClass.id];
+      const sessionObjectById = this.sessionObjectByIdByClass.get(associationClass);
       if (sessionObjectById) {
-        Object
-          .keys(sessionObjectById)
-          .forEach((v) => {
-            const association = sessionObjectById[v];
-            if (association.canRead(roleType)) {
-              if (roleType.isOne) {
-                const role: ISessionObject = association.get(roleType);
-                if (role && role.id === object.id) {
-                  associations.push(association);
-                }
-              } else {
-                const roles: ISessionObject[] = association.get(roleType);
-                if (roles && roles.indexOf(association) > -1) {
-                  associations.push(association);
-                }
+        for (const association of sessionObjectById.values()) {
+          if (!associationIds.has(association.id) && association.canRead(roleType)) {
+            if (roleType.isOne) {
+              const role: ISessionObject = association.get(roleType);
+              if (role && role.id === object.id) {
+                associationIds.add(association.id);
+                associations.push(association);
+              }
+            } else {
+              const roles: ISessionObject[] = association.get(roleType);
+              if (roles && roles.indexOf(association) > -1) {
+                associationIds.add(association.id);
+                associations.push(association);
               }
             }
-          });
+          }
+        }
       }
     });
 
@@ -196,31 +195,29 @@ export class Session implements ISession {
       return associations;
     }
 
-    const associationIds = associations.map((v => v.id));
-
     associationClasses.forEach((associationClass) => {
-      const workspaceObjectById = (this.workspace as Workspace).workspaceObjectByIdByClassId[associationClass.id];
+      const workspaceObjectById = (this.workspace as Workspace).workspaceObjectByIdByClass.get(associationClass);
       if (workspaceObjectById) {
-        Object
-          .keys(workspaceObjectById)
-          .filter((v) => associationIds.indexOf(v) < 0)
-          .forEach((v) => {
-            const association = workspaceObjectById[v];
+        for (const [id, association] of workspaceObjectById) {
+          if (!associationIds.has(id)) {
             const permission = this.workspace.permission(association.objectType, roleType, Operations.Read);
             if (association.isPermitted(permission)) {
               if (roleType.isOne) {
-                const role: string = association.roles.get(roleType);
+                const role: string = association.roleByRoleTypeId.get(roleType.id);
                 if (object.id === role) {
                   associations.push(this.get(association.id));
+                  break;
                 }
               } else {
-                const roles: string[] = association.roles.get(roleType);
+                const roles: string[] = association.roleByRoleTypeId.get(roleType.id);
                 if (roles && roles.indexOf(association.id) > -1) {
+                  associationIds.add(association.id);
                   associations.push(this.get(association.id));
                 }
               }
             }
-          });
+          }
+        }
       }
     });
 
@@ -228,19 +225,19 @@ export class Session implements ISession {
   }
 
   private addByObjectTypeId(sessionObject: ISessionObject) {
-    let sessionObjectById = this.sessionObjectByIdByClassId[sessionObject.objectType.id];
+    let sessionObjectById = this.sessionObjectByIdByClass.get(sessionObject.objectType);
     if (!sessionObjectById) {
-      sessionObjectById = {};
-      this.sessionObjectByIdByClassId[sessionObject.objectType.id] = sessionObjectById;
+      sessionObjectById = new Map();
+      this.sessionObjectByIdByClass.set(sessionObject.objectType, sessionObjectById);
     }
 
-    sessionObjectById[sessionObject.id] = sessionObject;
+    sessionObjectById.set(sessionObject.id, sessionObject);
   }
 
   private removeByObjectTypeId(objectType: ObjectType, id: string) {
-    const sessionObjectById = this.sessionObjectByIdByClassId[objectType.id];
+    const sessionObjectById = this.sessionObjectByIdByClass.get(objectType);
     if (sessionObjectById) {
-      delete sessionObjectById[id];
+      sessionObjectById.delete(id);
     }
   }
 }
