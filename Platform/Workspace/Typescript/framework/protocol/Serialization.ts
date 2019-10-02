@@ -1,5 +1,5 @@
 ﻿import { ISessionObject } from '../workspace/SessionObject';
-import { ids } from '../../meta/generated';
+import { ids } from '../../meta/generated/ids.g';
 import { ObjectType } from '../meta/ObjectType';
 
 export type UnitTypes = string | Date | boolean | number;

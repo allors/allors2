@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from '../../../framework';
-import { InvokeRequest, InvokeResponse,  InvokeOptions } from '../../../framework';
+import { PullResponse, PushRequest, PushResponse, ResponseError, SecurityRequest, SecurityResponse } from '../../../framework';
+import { ResponseType, SyncRequest, SyncResponse, PullRequest, Pull } from '../../../framework';
+import { InvokeRequest, InvokeResponse, InvokeOptions } from '../../../framework';
 import { Method } from '../../../framework';
 import { services } from '../../../framework/database';
 
@@ -12,11 +13,24 @@ export class Database {
   constructor(private http: HttpClient, public url: string) {
   }
 
-  public pull(params?: any): Observable<PullResponse> {
+  pull(requestOrCustomService: PullRequest | Pull | string, customArgs?: any): Observable<PullResponse> {
 
-    const serviceName: string = this.fullyQualifiedUrl(services.pull);
+    let service = this.fullyQualifiedUrl(services.pull);
+    let params: PullRequest | any;
+
+    if (typeof requestOrCustomService === 'string') {
+      service = this.fullyQualifiedUrl(requestOrCustomService);
+      params = customArgs;
+    } else {
+      if (requestOrCustomService instanceof Pull) {
+        params = new PullRequest({ pulls: [requestOrCustomService] });
+      } else {
+        params = requestOrCustomService;
+      }
+    }
+
     return this.http
-      .post<PullResponse>(serviceName, params)
+      .post<PullResponse>(service, params)
       .pipe(
         map((pullResponse) => {
           pullResponse.responseType = ResponseType.Pull;
@@ -25,11 +39,11 @@ export class Database {
       );
   }
 
-  public sync(syncRequest: SyncRequest): Observable<SyncResponse> {
+  sync(syncRequest: SyncRequest): Observable<SyncResponse> {
 
-    const serviceName: string = this.fullyQualifiedUrl(services.sync);
+    const service = this.fullyQualifiedUrl(services.sync);
     return this.http
-      .post<SyncResponse>(serviceName, syncRequest)
+      .post<SyncResponse>(service, syncRequest)
       .pipe(
         map((syncResponse) => {
           syncResponse.responseType = ResponseType.Sync;
@@ -38,11 +52,11 @@ export class Database {
       );
   }
 
-  public push(pushRequest: PushRequest): Observable<PushResponse> {
+  push(pushRequest: PushRequest): Observable<PushResponse> {
 
-    const serviceName: string = this.fullyQualifiedUrl(services.push);
+    const service = this.fullyQualifiedUrl(services.push);
     return this.http
-      .post<PushResponse>(serviceName, pushRequest)
+      .post<PushResponse>(service, pushRequest)
       .pipe(
         map((pushResponse) => {
           pushResponse.responseType = ResponseType.Sync;
@@ -56,10 +70,23 @@ export class Database {
       );
   }
 
-  public invoke(method: Method): Observable<InvokeResponse>;
-  public invoke(methods: Method[], options: InvokeOptions): Observable<InvokeResponse>;
-  public invoke(service: string, args?: any): Observable<InvokeResponse>;
-  public invoke(methodOrService: Method | Method[] | string, args?: any): Observable<InvokeResponse> {
+  security(securityRequest: SecurityRequest): Observable<SecurityResponse> {
+
+    const service = this.fullyQualifiedUrl(services.sync);
+    return this.http
+      .post<SecurityResponse>(service, securityRequest)
+      .pipe(
+        map((securityResponse) => {
+          securityResponse.responseType = ResponseType.Security;
+          return securityResponse;
+        })
+      );
+  }
+
+  invoke(method: Method): Observable<InvokeResponse>;
+  invoke(methods: Method[], options: InvokeOptions): Observable<InvokeResponse>;
+  invoke(service: string, args?: any): Observable<InvokeResponse>;
+  invoke(methodOrService: Method | Method[] | string, args?: any): Observable<InvokeResponse> {
 
     if (methodOrService instanceof Method) {
       return this.invokeMethods([methodOrService]);
@@ -70,21 +97,21 @@ export class Database {
     }
   }
 
-  public invokeMethods(methods: Method[], options?: InvokeOptions): Observable<InvokeResponse> {
+  invokeMethods(methods: Method[], options?: InvokeOptions): Observable<InvokeResponse> {
     const invokeRequest: InvokeRequest = {
       i: methods.map(v => {
         return {
           i: v.object.id,
-          m: v.name,
+          m: v.methodType.name,
           v: v.object.version,
         };
       }),
       o: options
     };
 
-    const serviceName: string = this.fullyQualifiedUrl(services.invoke);
+    const service = this.fullyQualifiedUrl(services.invoke);
     return this.http
-      .post<InvokeResponse>(serviceName, invokeRequest)
+      .post<InvokeResponse>(service, invokeRequest)
       .pipe(
         map((invokeResponse) => {
           invokeResponse.responseType = ResponseType.Invoke;
@@ -113,7 +140,6 @@ export class Database {
         })
       );
   }
-
 
   private fullyQualifiedUrl(localUrl: string): string {
     return this.url + localUrl;

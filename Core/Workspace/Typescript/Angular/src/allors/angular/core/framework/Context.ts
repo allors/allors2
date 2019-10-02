@@ -1,6 +1,6 @@
 import { Observable, of } from 'rxjs';
 
-import { ISession, Session, PullResponse, SyncRequest, IWorkspace, SyncResponse, PushRequest, PushResponse, PushRequestObject, Method, InvokeOptions, InvokeResponse, ObjectType, ISessionObject } from '../../../framework';
+import { ISession, Session, PullResponse, SyncRequest, IWorkspace, SyncResponse, PushRequest, PushResponse, PushRequestObject, Method, InvokeOptions, InvokeResponse, ObjectType, ISessionObject, SecurityResponse } from '../../../framework';
 
 import { Loaded } from './responses/Loaded';
 import { switchMap, map } from 'rxjs/operators';
@@ -51,10 +51,22 @@ export class Context {
             return this.database
               .sync(requireLoadIds)
               .pipe(
-                map((syncResponse: SyncResponse) => {
-                  this.workspace.sync(syncResponse);
-                  const loaded: Loaded = new Loaded(this.session, pullResponse);
-                  return loaded;
+                switchMap((syncResponse: SyncResponse) => {
+                  const securityRequest = this.workspace.sync(syncResponse);
+                  if (securityRequest) {
+                    return this.database
+                      .security(securityRequest)
+                      .pipe(
+                        map((securityResponse: SecurityResponse) => {
+                          this.workspace.security(securityResponse);
+                          const loaded: Loaded = new Loaded(this.session, pullResponse);
+                          return loaded;
+                        })
+                      )
+                  } else {
+                    const loaded: Loaded = new Loaded(this.session, pullResponse);
+                    return of(loaded);
+                  }
                 }));
           } else {
             const loaded: Loaded = new Loaded(this.session, pullResponse);

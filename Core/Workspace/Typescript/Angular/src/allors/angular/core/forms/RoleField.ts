@@ -60,7 +60,7 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   }
 
   get model(): any {
-    return this.ExistObject ? this.object.get(this.roleType.name) : undefined;
+    return this.ExistObject ? this.object.get(this.roleType) : undefined;
   }
 
   set model(value: any) {
@@ -76,19 +76,19 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
         }
       }
 
-      this.object.set(this.roleType.name, value);
+      this.object.set(this.roleType, value);
     }
   }
 
   get canRead(): boolean {
     if (this.ExistObject) {
-      return this.object.canRead(this.roleType.name);
+      return this.object.canRead(this.roleType);
     }
   }
 
   get canWrite(): boolean {
     if (this.ExistObject) {
-      return this.object.canWrite(this.roleType.name);
+      return this.object.canWrite(this.roleType);
     }
   }
 
@@ -120,13 +120,13 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
 
   public add(value: ISessionObject) {
     if (this.ExistObject) {
-      this.object.add(this.roleType.name, value);
+      this.object.add(this.roleType, value);
     }
   }
 
   public remove(value: ISessionObject) {
     if (this.ExistObject) {
-      this.object.remove(this.roleType.name, value);
+      this.object.remove(this.roleType, value);
     }
   }
 
