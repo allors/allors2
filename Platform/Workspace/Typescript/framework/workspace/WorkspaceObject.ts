@@ -29,9 +29,21 @@ export class WorkspaceObject implements IWorkspaceObject {
   private accessControls: AccessControl[];
   private deniedPermissions: Permission[];
 
-  constructor(workspace: Workspace, syncResponseObject: SyncResponseObject, sortedAccessControlIdsDecompress: (compressed: string) => string, sortedDeniedPermissionIdsDecompress: (compressed: string) => string, metaDecompress: (compressed: string) => MetaObject) {
-
+  constructor(workspace: Workspace) {
     this.workspace = workspace;
+  }
+
+  new(id: string, objectType: ObjectType) {
+    this.objectType = objectType;
+    this.id = id;
+    this.version = '0';
+  }
+
+  sync(syncResponseObject: SyncResponseObject,
+    sortedAccessControlIdsDecompress: (compressed: string) => string,
+    sortedDeniedPermissionIdsDecompress: (compressed: string) => string,
+    metaDecompress: (compressed: string) => MetaObject) {
+
     this.id = syncResponseObject.i;
     this.version = syncResponseObject.v;
     this.objectType = metaDecompress(syncResponseObject.t) as ObjectType;

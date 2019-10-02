@@ -125,7 +125,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
                 ProductCategories: x,
                 CatScope: x
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

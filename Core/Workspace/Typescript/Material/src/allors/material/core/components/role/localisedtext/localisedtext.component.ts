@@ -34,7 +34,7 @@ export class AllorsMaterialLocalisedTextComponent extends RoleField {
     if (!this.localisedObject) {
       const localisedText: LocalisedText = this.object.session.create('LocalisedText') as LocalisedText;
       localisedText.Locale = this.locale;
-      this.object.add(this.roleType.name, localisedText);
+      this.object.add(this.roleType, localisedText);
     }
 
     this.localisedObject.Text = value;

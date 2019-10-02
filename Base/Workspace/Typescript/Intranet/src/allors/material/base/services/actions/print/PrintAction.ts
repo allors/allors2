@@ -16,7 +16,7 @@ export class PrintAction implements Action {
       let printable = target as Printable;
 
       if (roleType) {
-        printable = printable.get(roleType.name);
+        printable = printable.get(roleType);
       }
 
       const revision = printable.PrintDocument && printable.PrintDocument.Media ? printable.PrintDocument.Media.Revision : undefined;

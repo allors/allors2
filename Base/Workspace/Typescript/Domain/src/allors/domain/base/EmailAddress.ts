@@ -1,5 +1,6 @@
 import { domain } from '../domain';
 import { EmailAddress } from '../generated/EmailAddress.g';
+import { Meta } from '../../meta/generated/domain.g';
 
 declare module '../generated/EmailAddress.g' {
   interface EmailAddress {
@@ -9,7 +10,8 @@ declare module '../generated/EmailAddress.g' {
 
 domain.extend((workspace) => {
 
-  const obj: EmailAddress = workspace.prototypeByName['EmailAddress'];
+  const m = workspace.metaPopulation as Meta;
+  const obj = workspace.constructorByObjectType.get(m.EmailAddress).prototype as any;
 
   Object.defineProperty(obj, 'displayName', {
     configurable: true,

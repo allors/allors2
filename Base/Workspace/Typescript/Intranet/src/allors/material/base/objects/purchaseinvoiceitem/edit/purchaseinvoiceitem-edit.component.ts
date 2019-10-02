@@ -164,7 +164,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
 
     if (this.invoiceItem.InvoiceItemType !== this.partItemType &&
       this.invoiceItem.InvoiceItemType !== this.partItemType) {
-      this.invoiceItem.Quantity = 1;
+      this.invoiceItem.Quantity = '1';
     }
   }
 }

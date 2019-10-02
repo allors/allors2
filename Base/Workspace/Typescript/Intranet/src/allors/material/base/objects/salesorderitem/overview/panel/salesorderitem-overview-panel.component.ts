@@ -14,11 +14,11 @@ interface Row extends TableRow {
   item: string;
   type: string;
   state: string;
-  ordered: number;
-  shipped: number;
-  reserved: number;
-  short: number;
-  returned: number;
+  ordered: string;
+  shipped: string;
+  reserved: string;
+  short: string;
+  returned: string;
   lastModifiedDate: string;
 }
 

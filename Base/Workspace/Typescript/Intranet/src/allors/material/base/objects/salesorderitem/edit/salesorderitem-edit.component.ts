@@ -162,11 +162,11 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
           }
 
           if (this.orderItem.DiscountAdjustment) {
-            this.discount = this.orderItem.DiscountAdjustment.Amount;
+            this.discount = parseFloat(this.orderItem.DiscountAdjustment.Amount);
           }
 
           if (this.orderItem.SurchargeAdjustment) {
-            this.surcharge = this.orderItem.SurchargeAdjustment.Amount;
+            this.surcharge = parseFloat(this.orderItem.SurchargeAdjustment.Amount);
           }
 
           if (this.orderItem.CanWriteAssignedUnitPrice) {
@@ -214,7 +214,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   private onSave() {
 
     if (this.orderItem.InvoiceItemType !== this.productItemType) {
-      this.orderItem.QuantityOrdered = 1;
+      this.orderItem.QuantityOrdered = '1';
     }
   }
 

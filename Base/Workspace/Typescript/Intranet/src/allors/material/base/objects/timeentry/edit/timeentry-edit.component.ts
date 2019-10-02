@@ -34,7 +34,7 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
   workEffortAssignmentRates: WorkEffortAssignmentRate[];
   workEffortRate: WorkEffortAssignmentRate;
   partyRate: PartyRate;
-  derivedBillingRate: number;
+  derivedBillingRate: string;
   customerRate: PartyRate;
 
   constructor(

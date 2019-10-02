@@ -43,7 +43,7 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
   get model(): any {
     if (this.momentModel == null) {
       if (this.ExistObject) {
-        const isoString = this.object.get(this.roleType.name);
+        const isoString = this.object.get(this.roleType);
         this.momentModel = isoString ? moment(isoString).clone() : null;
       }
     }
@@ -59,11 +59,11 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
       this.momentModel = value;
 
       if (value === null) {
-        this.object.set(this.roleType.name, null);
+        this.object.set(this.roleType, null);
       } else {
         if (value.isValid()) {
           const isoString = value.toISOString();
-          this.object.set(this.roleType.name, isoString);
+          this.object.set(this.roleType, isoString);
         }
       }
     }

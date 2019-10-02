@@ -20,7 +20,7 @@ export class MethodAction implements Action {
     this.execute = (target: ActionTarget) => {
 
       const objects = Array.isArray(target) ? target as ISessionObject[] : [target as ISessionObject];
-      const methods = objects.filter((v) => v.canExecute(methodType.name)).map((v) => v[methodType.name]);
+      const methods = objects.filter((v) => v.canExecute(methodType)).map((v) => v[methodType.name]);
 
       if (methods.length > 0) {
         context.invoke(methods)

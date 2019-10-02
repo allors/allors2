@@ -22,7 +22,6 @@ export interface IWorkspace {
   diff(data: PullResponse): SyncRequest;
   sync(data: SyncResponse): SecurityRequest;
   security(data: SecurityResponse): void;
-  invalidate(id: string, objectType: ObjectType);
   get(id: string): WorkspaceObject;
   permission(objectType: ObjectType, operandType: OperandType, operation: Operations): Permission;
 }
@@ -31,8 +30,9 @@ export class Workspace implements IWorkspace {
 
   constructorByObjectType: Map<ObjectType, typeof SessionObject>;
 
-  workspaceObjectByIdByClass: Map<ObjectType, Map<string, WorkspaceObject>>;
   workspaceObjectById: Map<string, WorkspaceObject>;
+  workspaceObjectsByClass: Map<ObjectType, Set<WorkspaceObject>>;
+
   accessControlById: Map<string, AccessControl>;
   permissionById: Map<string, Permission>;
 
@@ -44,8 +44,12 @@ export class Workspace implements IWorkspace {
 
     this.constructorByObjectType = new Map();
 
-    this.workspaceObjectByIdByClass = new Map();
     this.workspaceObjectById = new Map();
+    this.workspaceObjectsByClass = new Map();
+    for (const objectType of metaPopulation.classes) {
+      this.workspaceObjectsByClass.set(objectType, new Set());
+    }
+
     this.accessControlById = new Map();
     this.permissionById = new Map();
 
@@ -143,18 +147,32 @@ export class Workspace implements IWorkspace {
     });
   }
 
+  get(id: string): WorkspaceObject {
+    const workspaceObject = this.workspaceObjectById.get(id);
+    if (workspaceObject === undefined) {
+      throw new Error(`Object with id ${id} is not present.`);
+    }
+
+    return workspaceObject;
+  }
+
   diff(response: PullResponse): SyncRequest {
 
+    const decompressor = new Decompressor();
     return new SyncRequest(
       {
         objects: response.objects
           .filter((syncRequestObject) => {
-            const [id, version, soretedAccessControlIds, sortedDeniedPermissionIds] = syncRequestObject;
+            const [id, version, compressedSortedAccessControlIds, compressedSortedDeniedPermissionIds] = syncRequestObject;
             const workspaceObject = this.workspaceObjectById.get(id);
+
+            const sortedAccessControlIds = decompressor.read(compressedSortedAccessControlIds, v => v);
+            const sortedDeniedPermissionIds = decompressor.read(compressedSortedDeniedPermissionIds, v => v);
+
             return (workspaceObject === undefined) ||
               (workspaceObject === null) ||
               (workspaceObject.version !== version) ||
-              (workspaceObject.sortedAccessControlIds !== soretedAccessControlIds) ||
+              (workspaceObject.sortedAccessControlIds !== sortedAccessControlIds) ||
               (workspaceObject.sortedDeniedPermissionIds !== sortedDeniedPermissionIds);
           })
           .map((syncRequestObject) => {
@@ -197,16 +215,9 @@ export class Workspace implements IWorkspace {
     if (syncResponse.objects) {
       syncResponse.objects
         .forEach((v) => {
-          const workspaceObject = new WorkspaceObject(this, v, sortedAccessControlIdsDecompress, sortedDeniedPermissionIdsDecompress, metaDecompress);
-          this.workspaceObjectById.set(workspaceObject.id, workspaceObject);
-
-          let workspaceObjectById = this.workspaceObjectByIdByClass.get(workspaceObject.objectType);
-          if (!workspaceObjectById) {
-            workspaceObjectById = new Map();
-            this.workspaceObjectByIdByClass.set(workspaceObject.objectType, workspaceObjectById);
-          }
-
-          workspaceObjectById.set(workspaceObject.id, workspaceObject);
+          const workspaceObject = new WorkspaceObject(this);
+          workspaceObject.sync(v, sortedAccessControlIdsDecompress, sortedDeniedPermissionIdsDecompress, metaDecompress);
+          this.add(workspaceObject);
         });
     }
 
@@ -272,19 +283,10 @@ export class Workspace implements IWorkspace {
     }
   }
 
-  invalidate(id: string, objectType: ObjectType) {
-    const workspaceObject = this.workspaceObjectById.get(id);
-    if (workspaceObject) {
-      workspaceObject.invalidate();
-    }
-  }
-
-  get(id: string): WorkspaceObject {
-    const workspaceObject = this.workspaceObjectById.get(id);
-    if (workspaceObject === undefined) {
-      throw new Error(`Object with id ${id} is not present.`);
-    }
-
+  new(id: string, objectType: ObjectType): WorkspaceObject {
+    const workspaceObject = new WorkspaceObject(this);
+    workspaceObject.new(id, objectType);
+    this.add(workspaceObject);
     return workspaceObject;
   }
 
@@ -297,5 +299,10 @@ export class Workspace implements IWorkspace {
       default:
         return this.executePermissionByOperandTypeByClass.get(objectType).get(operandType);
     }
+  }
+
+  private add(workspaceObject: WorkspaceObject) {
+    this.workspaceObjectById.set(workspaceObject.id, workspaceObject);
+    this.workspaceObjectsByClass.get(workspaceObject.objectType).add(workspaceObject);
   }
 }

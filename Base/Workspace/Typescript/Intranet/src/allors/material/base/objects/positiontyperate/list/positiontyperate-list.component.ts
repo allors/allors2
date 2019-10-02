@@ -17,7 +17,7 @@ interface Row extends TableRow {
   rateType: string;
   from: string;
   through: string;
-  rate: number;
+  rate: string;
   frequency: string;
 }
 
@@ -138,7 +138,7 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
                 Frequency: x,
                 RateType: x
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

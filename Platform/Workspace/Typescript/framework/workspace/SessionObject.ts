@@ -84,11 +84,11 @@ export class SessionObject implements ISessionObject {
   }
 
   public canExecute(methodType: MethodType): boolean {
-    return this.isPermited(methodType, Operations.Read);
+    return this.isPermited(methodType, Operations.Execute);
   }
 
   public isPermited(operandType: OperandType, operation: Operations): boolean {
-    if(this.roleByRoleType === undefined){
+    if (this.roleByRoleType === undefined) {
       return undefined;
     }
 

@@ -3,16 +3,17 @@ import "mocha";
 
 import { domain, Person } from "../../src/allors/domain";
 import { MetaPopulation, Session, Workspace } from "../../src/allors/framework";
-import { data } from "../../src/allors/meta";
+import { data, Meta } from "../../src/allors/meta";
 
 describe("Person",
     () => {
 
+        let m: Meta;
         let session: Session;
 
         beforeEach(() => {
-            const metaPopulation = new MetaPopulation(data);
-            const workspace = new Workspace(metaPopulation);
+            m = new MetaPopulation(data) as Meta;
+            const workspace = new Workspace(m);
             domain.apply(workspace);
 
             session = new Session(workspace);
@@ -23,7 +24,7 @@ describe("Person",
                 let person: Person;
 
                 beforeEach(() => {
-                    person = session.create("Person") as Person;
+                    person = session.create(m.Person) as Person;
                 });
 
                 it("should be N/A when nothing set", () => {

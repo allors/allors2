@@ -114,7 +114,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
         this.invoice = this.allors.context.create('SalesInvoice') as SalesInvoice;
         this.invoice.BilledFrom = this.internalOrganisation;
-        this.invoice.AdvancePayment = 0;
+        this.invoice.AdvancePayment = '0';
 
         if (this.invoice.BillToCustomer) {
           this.updateBillToCustomer(this.invoice.BillToCustomer);

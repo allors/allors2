@@ -89,7 +89,7 @@ export class ProductIdentificationEditComponent extends TestScope implements OnI
         if (create) {
           this.title = 'Add Identification';
           this.object = this.allors.context.create(objectType) as ProductIdentification;
-          this.container.add(associationRoleType.name, this.object);
+          this.container.add(associationRoleType, this.object);
         }
 
       });

@@ -89,7 +89,7 @@ export class SalesTermEditComponent extends TestScope implements OnInit, OnDestr
         if (create) {
           this.title = 'Add Sales Term';
           this.object = this.allors.context.create(objectType.name) as SalesTerm;
-          this.container.add(associationRoleType.name, this.object);
+          this.container.add(associationRoleType, this.object);
         }
 
       });

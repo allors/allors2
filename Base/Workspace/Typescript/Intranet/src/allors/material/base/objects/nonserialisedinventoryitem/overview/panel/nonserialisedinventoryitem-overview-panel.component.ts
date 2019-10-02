@@ -12,10 +12,10 @@ interface Row extends TableRow {
   part: string;
   uom: string;
   state: string;
-  qoh: number;
-  atp: number;
-  committedOut: number;
-  expectedIn: number;
+  qoh: string;
+  atp: string;
+  committedOut: string;
+  expectedIn: string;
 }
 
 @Component({

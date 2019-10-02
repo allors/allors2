@@ -13,7 +13,7 @@ interface Row extends TableRow {
   object: QuoteItem;
   item: string;
   state: string;
-  quantity: number;
+  quantity: string;
   lastModifiedDate: string;
 }
 

@@ -10,7 +10,7 @@ interface Row extends TableRow {
   part: string;
   facility: string;
   state: string;
-  quantity: number;
+  quantity: string;
   uom: string;
 }
 

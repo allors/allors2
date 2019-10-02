@@ -14,8 +14,8 @@ interface Row extends TableRow {
   item: string;
   type: string;
   state: string;
-  quantity: number;
-  totalExVat: number;
+  quantity: string;
+  totalExVat: string;
 }
 
 @Component({

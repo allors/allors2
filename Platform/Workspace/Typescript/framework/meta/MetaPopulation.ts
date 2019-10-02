@@ -107,8 +107,8 @@ export class MetaPopulation {
       methodType.objectType.methodTypes.push(methodType);
       if (methodType.objectType.isInterface) {
         this.composites
-        .filter(v => v.interfaces.indexOf(methodType.objectType) > -1)
-        .forEach(v => v.methodTypes.push(methodType));
+          .filter(v => v.interfaces.indexOf(methodType.objectType) > -1)
+          .forEach(v => v.methodTypes.push(methodType));
       }
 
       this.metaObjectById.set(methodType.id, methodType);
@@ -193,6 +193,17 @@ export class MetaPopulation {
         objectType.roleTypes.forEach(v => objectType.roleTypeByName.set(v.name, v));
         objectType.associationTypes.forEach(v => objectType.associationTypeByName.set(v.name, v));
         objectType.methodTypes.forEach(v => objectType.methodTypeByName.set(v.name, v));
+
+        objectType.subtypes.forEach(subtype => {
+          subtype.roleTypes
+            .filter(subtypeRoleType => !objectType.roleTypes.find(v => v.id === subtypeRoleType.id))
+            .forEach(v => objectType.roleTypeByName.set(`${subtype.name}_${v.name}`, v));
+
+          subtype.associationTypes
+            .filter(subtypeAssociationType => !objectType.exclusiveAssociationTypes.find(v => v === subtypeAssociationType))
+            .forEach(v => objectType.associationTypeByName.set(`${subtype.name}_${v.name}`, v));
+        });
+
       });
 
     // Assign Own Properties

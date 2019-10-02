@@ -23,6 +23,7 @@
     "mocha-teamcity-reporter": "latest",
     "mocha-trx-reporter": "latest",
     "ts-node": "latest",
+    "tslint": "latest",
     "typescript": "latest"
   },
   "dependencies": {}

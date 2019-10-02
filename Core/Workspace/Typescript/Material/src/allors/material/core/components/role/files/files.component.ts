@@ -47,7 +47,7 @@ export class AllorsMaterialFilesComponent extends RoleField {
   }
 
   public delete(media: Media): void {
-    this.object.remove(this.roleType.name, media);
+    this.object.remove(this.roleType, media);
   }
 
   public onFileInput(event) {
@@ -70,7 +70,7 @@ export class AllorsMaterialFilesComponent extends RoleField {
       const media: Media = this.object.session.create('Media') as Media;
       media.FileName = file.name;
       media.InDataUri = reader.result as string;
-      this.object.add(this.roleType.name, media);
+      this.object.add(this.roleType, media);
     };
 
     reader.addEventListener('load', load, false);

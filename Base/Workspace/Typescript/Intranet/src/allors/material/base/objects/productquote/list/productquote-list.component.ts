@@ -143,7 +143,7 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
                 Receiver: x,
                 QuoteState: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

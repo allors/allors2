@@ -143,7 +143,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
                 GeneralPhoneNumber: x,
                 GeneralEmail: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

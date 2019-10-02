@@ -17,7 +17,7 @@ interface Row extends TableRow {
   name: string;
   partNo: string;
   type: string;
-  qoh: number;
+  qoh: string;
   brand: string;
   model: string;
   kind: string;
@@ -193,7 +193,7 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
                   ProductIdentificationType: x
                 },
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

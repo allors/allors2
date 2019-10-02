@@ -135,7 +135,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
                 Originator: x,
                 RequestState: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

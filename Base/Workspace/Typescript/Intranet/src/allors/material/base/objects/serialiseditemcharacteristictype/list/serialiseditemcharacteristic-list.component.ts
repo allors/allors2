@@ -122,7 +122,7 @@ export class SerialisedItemCharacteristicListComponent extends TestScope impleme
               include: {
                 UnitOfMeasure: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

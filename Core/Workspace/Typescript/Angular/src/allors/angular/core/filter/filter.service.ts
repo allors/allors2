@@ -80,7 +80,7 @@ export class AllorsFilterService {
     }));
   }
 
-  arguments(filterFields: FilterField[]): any {
+  parameters(filterFields: FilterField[]): any {
     return filterFields.reduce((acc, cur) => {
       acc[cur.definition.predicate.parameter] = cur.argument;
       return acc;

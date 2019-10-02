@@ -18,8 +18,8 @@ interface Row extends TableRow {
   name: string;
   id: string;
   categories: string;
-  qoh: number;
-  photos: number;
+  qoh: string;
+  photos: string;
 }
 
 @Component({
@@ -147,7 +147,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
                   ProductIdentificationType: x
                 }
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),
@@ -183,7 +183,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
                 .find(p => p.ProductIdentificationType.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f' || p.ProductIdentificationType.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6').Identification,
             categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.displayName).join(', '),
             qoh: v.QuantityOnHand,
-            photos: v.Photos.length,
+            photos: v.Photos.length.toString(),
           } as Row;
         });
       });

@@ -10,7 +10,7 @@ interface Row extends TableRow {
   person: string;
   from: string;
   through: string;
-  time: number;
+  time: string;
 }
 
 @Component({

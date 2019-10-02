@@ -1,21 +1,23 @@
 import { domain } from '../domain';
 import { SerialisedItem } from '../generated/SerialisedItem.g';
+import { Meta } from '../../meta/generated/domain.g';
 
 declare module '../generated/SerialisedItem.g' {
   interface SerialisedItem {
-    displayName;
-    age;
-    yearsToGo;
-    goingConcern;
-    marketValue;
-    grossBookValue;
-    expectedPosa;
+    displayName: string;
+    age: number;
+    yearsToGo: number;
+    goingConcern: number;
+    marketValue: number;
+    grossBookValue: number;
+    expectedPosa: number;
   }
 }
 
 domain.extend((workspace) => {
 
-  const obj: SerialisedItem = workspace.prototypeByName['SerialisedItem'];
+  const m = workspace.metaPopulation as Meta;
+  const obj = workspace.constructorByObjectType.get(m.SerialisedItem).prototype as any;
 
   Object.defineProperty(obj, 'displayName', {
     configurable: true,
@@ -50,7 +52,7 @@ domain.extend((workspace) => {
   Object.defineProperty(obj, 'goingConcern', {
     configurable: true,
     get(this: SerialisedItem) {
-      return Math.round((this.ReplacementValue * this.yearsToGo) / this.LifeTime);
+      return Math.round((parseFloat(this.ReplacementValue) * this.yearsToGo) / this.LifeTime);
     },
   });
 
@@ -58,7 +60,7 @@ domain.extend((workspace) => {
     configurable: true,
     get(this: SerialisedItem) {
       if (this.ManufacturingYear) {
-        return Math.round(this.ReplacementValue * Math.exp(-2.045 * this.age / this.LifeTime));
+        return Math.round(parseFloat(this.ReplacementValue) * Math.exp(-2.045 * this.age / this.LifeTime));
       } else {
         return 0;
       }
@@ -68,14 +70,14 @@ domain.extend((workspace) => {
   Object.defineProperty(obj, 'grossBookValue', {
     configurable: true,
     get(this: SerialisedItem) {
-      return Math.round(this.PurchasePrice + this.RefurbishCost + this.TransportCost);
+      return Math.round(parseFloat(this.PurchasePrice) + parseFloat(this.RefurbishCost) + parseFloat(this.TransportCost));
     },
   });
 
   Object.defineProperty(obj, 'expectedPosa', {
     configurable: true,
     get(this: SerialisedItem) {
-      return this.ExpectedSalesPrice - this.grossBookValue;
+      return parseFloat(this.ExpectedSalesPrice) - this.grossBookValue;
     },
   });
 

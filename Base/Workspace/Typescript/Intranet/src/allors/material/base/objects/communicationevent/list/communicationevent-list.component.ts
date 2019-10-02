@@ -115,7 +115,7 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
                 CommunicationEventState: x,
                 InvolvedParties: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

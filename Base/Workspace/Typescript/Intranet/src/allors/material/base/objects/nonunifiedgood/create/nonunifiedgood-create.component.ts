@@ -93,7 +93,7 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.settings = loaded.objects.Settings as Settings;
 
-        const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
+        const vatRateZero = this.vatRates.find((v: VatRate) => parseFloat(v.Rate) === 0);
         this.goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
         this.good = this.allors.context.create('NonUnifiedGood') as Good;

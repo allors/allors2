@@ -1,5 +1,6 @@
 import { domain } from '../domain';
 import { AutomatedAgent } from '../generated/AutomatedAgent.g';
+import { Meta } from '../../meta/generated/domain.g';
 
 declare module '../generated/AutomatedAgent.g' {
     interface AutomatedAgent {
@@ -10,7 +11,8 @@ declare module '../generated/AutomatedAgent.g' {
 
 domain.extend((workspace) => {
 
-    const obj: AutomatedAgent = workspace.prototypeByName['AutomatedAgent'];
+    const m = workspace.metaPopulation as Meta;
+    const obj = workspace.constructorByObjectType.get(m.AutomatedAgent).prototype as any;
 
     Object.defineProperty(obj, 'displayName', {
         configurable: true,

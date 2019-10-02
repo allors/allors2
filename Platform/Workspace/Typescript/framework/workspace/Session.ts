@@ -38,7 +38,7 @@ export class Session implements ISession {
 
   private sessionObjectByIdByClass: Map<ObjectType, Map<string, ISessionObject>>;
 
-  constructor(public workspace: IWorkspace) {
+  constructor(public workspace: Workspace) {
     this.hasChanges = false;
 
     this.existingSessionObjectById = new Map();
@@ -139,21 +139,18 @@ export class Session implements ISession {
   public pushResponse(pushResponse: PushResponse): void {
     if (pushResponse.newObjects) {
       pushResponse.newObjects.forEach((pushResponseNewObject) => {
-        const newId: string = pushResponseNewObject.ni;
-        const id: string = pushResponseNewObject.i;
+        const newId = pushResponseNewObject.ni;
+        const id = pushResponseNewObject.i;
 
-        const newSessionObject: ISessionObject = this.newSessionObjectById[newId];
-        delete this.newSessionObjectById[newId];
+        const newSessionObject = this.newSessionObjectById.get(newId);
         delete newSessionObject.newId;
+        newSessionObject.workspaceObject = this.workspace.new(id, newSessionObject.objectType);
 
-        this.workspace.invalidate(id, newSessionObject.objectType);
-        const workspaceObject: WorkspaceObject = this.workspace.get(id);
-        newSessionObject.workspaceObject = workspaceObject;
+        this.newSessionObjectById.delete(newId);
+        this.existingSessionObjectById.set(id, newSessionObject);
 
-        this.existingSessionObjectById[id] = newSessionObject;
-
-        this.addByObjectTypeId(newSessionObject);
         this.removeByObjectTypeId(newSessionObject.objectType, newId);
+        this.addByObjectTypeId(newSessionObject);
       });
     }
 
@@ -197,24 +194,22 @@ export class Session implements ISession {
     }
 
     associationClasses.forEach((associationClass) => {
-      const workspaceObjectById = (this.workspace as Workspace).workspaceObjectByIdByClass.get(associationClass);
-      if (workspaceObjectById) {
-        for (const [id, association] of workspaceObjectById) {
-          if (!associationIds.has(id)) {
-            const permission = this.workspace.permission(association.objectType, roleType, Operations.Read);
-            if (association.isPermitted(permission)) {
-              if (roleType.isOne) {
-                const role: string = association.roleByRoleTypeId.get(roleType.id);
-                if (object.id === role) {
-                  associations.push(this.get(association.id));
-                  break;
-                }
-              } else {
-                const roles: string[] = association.roleByRoleTypeId.get(roleType.id);
-                if (roles && roles.indexOf(association.id) > -1) {
-                  associationIds.add(association.id);
-                  associations.push(this.get(association.id));
-                }
+      const workspaceObjects = this.workspace.workspaceObjectsByClass.get(associationClass);
+      for (const workspaceObject of workspaceObjects) {
+        if (!associationIds.has(workspaceObject.id)) {
+          const permission = this.workspace.permission(workspaceObject.objectType, roleType, Operations.Read);
+          if (workspaceObject.isPermitted(permission)) {
+            if (roleType.isOne) {
+              const role: string = workspaceObject.roleByRoleTypeId.get(roleType.id);
+              if (object.id === role) {
+                associations.push(this.get(workspaceObject.id));
+                break;
+              }
+            } else {
+              const roles: string[] = workspaceObject.roleByRoleTypeId.get(roleType.id);
+              if (roles && roles.indexOf(workspaceObject.id) > -1) {
+                associationIds.add(workspaceObject.id);
+                associations.push(this.get(workspaceObject.id));
               }
             }
           }

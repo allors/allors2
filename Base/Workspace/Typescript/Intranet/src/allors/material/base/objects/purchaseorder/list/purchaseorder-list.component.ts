@@ -192,7 +192,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
                 TakenViaSupplier: x,
                 PurchaseOrderState: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

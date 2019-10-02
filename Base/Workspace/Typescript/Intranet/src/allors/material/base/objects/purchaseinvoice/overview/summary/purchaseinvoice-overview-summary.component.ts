@@ -95,7 +95,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
       this.goods = loaded.collections[goodPullName] as Good[];
       this.orders = loaded.collections[purchaseOrderPullName] as PurchaseOrder[];
 
-      this.orderTotalExVat = this.orders.reduce((partialOrderTotal, order) => partialOrderTotal + order.ValidOrderItems.reduce((partialItemTotal, item) => partialItemTotal + item.TotalExVat, 0), 0);
+      this.orderTotalExVat = this.orders.reduce((partialOrderTotal, order) => partialOrderTotal + order.ValidOrderItems.reduce((partialItemTotal, item) => partialItemTotal + parseFloat(item.TotalExVat), 0), 0);
     };
   }
 

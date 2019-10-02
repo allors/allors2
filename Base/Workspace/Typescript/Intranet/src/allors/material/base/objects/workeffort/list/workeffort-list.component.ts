@@ -132,7 +132,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
                 WorkEffortState: x,
                 WorkEffortPurposes: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

@@ -12,7 +12,7 @@
               "--colors",
               "--recursive",
               "--inspect-brk",
-              "${workspaceFolder}/dist/**/Session.spec.js",
+              "${workspaceFolder}/dist/**/Tree.spec.js",
           ],
           "stopOnEntry": false,
           "internalConsoleOptions": "openOnSessionStart",

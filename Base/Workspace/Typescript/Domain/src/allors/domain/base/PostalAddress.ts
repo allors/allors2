@@ -1,5 +1,6 @@
 import { domain } from '../domain';
 import { PostalAddress } from '../generated/PostalAddress.g';
+import { Meta } from '../../meta/generated/domain.g';
 
 declare module '../generated/PostalAddress.g' {
   interface PostalAddress {
@@ -9,7 +10,8 @@ declare module '../generated/PostalAddress.g' {
 
 domain.extend((workspace) => {
 
-  const obj: PostalAddress = workspace.prototypeByName['PostalAddress'];
+  const m = workspace.metaPopulation as Meta;
+  const obj = workspace.constructorByObjectType.get(m.PostalAddress).prototype as any;
 
   Object.defineProperty(obj, 'displayName', {
     configurable: true,

@@ -9,81 +9,85 @@ import { syncResponse } from './fixture';
 import { Compressor } from '../../src/allors/framework/protocol/Compressor';
 
 describe('Workspace',
-    () => {
+  () => {
 
-        let m: Meta;
-        let workspace: Workspace;
+    let m: Meta;
+    let workspace: Workspace;
+
+    beforeEach(() => {
+      m = new MetaPopulation(data) as Meta;
+      workspace = new Workspace(m);
+      domain.apply(workspace);
+    });
+
+    it('should have its relations set when synced', () => {
+      workspace.sync(syncResponse(m));
+
+      const martien = workspace.get('3');
+
+      assert.equal(martien.id, '3');
+      assert.equal(martien.version, '1003');
+      assert.equal(martien.objectType.name, 'Person');
+      assert.equal(martien.roleByRoleTypeId.get(m.Person.FirstName.id), 'Martien');
+      assert.equal(martien.roleByRoleTypeId.get(m.Person.MiddleName.id), 'van');
+      assert.equal(martien.roleByRoleTypeId.get(m.Person.LastName.id), 'Knippenberg');
+      assert.isUndefined(martien.roleByRoleTypeId.get(m.Person.IsStudent.id));
+      assert.isUndefined(martien.roleByRoleTypeId.get(m.Person.BirthDate.id));
+    });
+
+    describe('synced with same access control',
+      () => {
 
         beforeEach(() => {
-            m = new MetaPopulation(data) as Meta;
-            workspace = new Workspace(m);
-            domain.apply(workspace);
+          workspace.sync(syncResponse(m));
         });
 
-        it('should have its relations set when synced', () => {
-            workspace.sync(syncResponse(m));
+        it('should require load objects only for changed version', () => {
+          const c = new Compressor();
 
-            const martien = workspace.get('3');
+          const pullResponse: PullResponse = {
+            hasErrors: false,
+            objects: [
+              ['101', '1101', c.write('801')],
+              ['102', '1102'],
+              ['103', '1104'],
+            ],
+            responseType: ResponseType.Pull,
+          };
 
-            assert.equal(martien.id, '3');
-            assert.equal(martien.version, '1003');
-            assert.equal(martien.objectType.name, 'Person');
-            assert.equal(martien.roleByRoleTypeId.get(m.Person.FirstName.id), 'Martien');
-            assert.equal(martien.roleByRoleTypeId.get(m.Person.MiddleName.id), 'van');
-            assert.equal(martien.roleByRoleTypeId.get(m.Person.LastName.id), 'Knippenberg');
-            assert.isUndefined(martien.roleByRoleTypeId.get(m.Person.IsStudent.id));
-            assert.isUndefined(martien.roleByRoleTypeId.get(m.Person.BirthDate.id));
+          const requireLoad = workspace.diff(pullResponse);
+
+          assert.equal(requireLoad.objects.length, 1);
+          assert.equal(requireLoad.objects[0], '103');
         });
 
-        describe('synced with same securityHash',
-            () => {
+      },
+    );
 
-                beforeEach(() => {
-                    workspace.sync(syncResponse(m));
-                });
+    describe('synced with different security',
+      () => {
+        beforeEach(() => {
+          workspace.sync(syncResponse(m));
+        });
 
-                it('should require load objects only for changed version', () => {
-                    const pullResponse: PullResponse = {
-                        hasErrors: false,
-                        objects: [
-                            ['1', '1001'],
-                            ['2', '1002'],
-                            ['3', '1004'],
-                        ],
-                        responseType: ResponseType.Pull,
-                    };
+        it('should require load objects for all objects', () => {
+          const c = new Compressor();
 
-                    const requireLoad = workspace.diff(pullResponse);
+          const pullResponse: PullResponse = {
+            hasErrors: false,
+            objects: [
+              ['101', '1101', c.write('801'), c.write('904')],
+              ['102', '1102', c.write('801')],
+              ['103', '1103'],
+            ],
+            responseType: ResponseType.Pull,
+          };
 
-                    assert.equal(requireLoad.objects.length, 1);
-                    assert.equal(requireLoad.objects[0], '3');
-                });
+          const requireLoad = workspace.diff(pullResponse);
 
-            },
-        );
-
-        describe('synced with different securityHash',
-            () => {
-                beforeEach(() => {
-                    workspace.sync(syncResponse(m));
-                });
-
-                it('should require load objects for all objects', () => {
-                    const pullResponse: PullResponse = {
-                        hasErrors: false,
-                        objects: [
-                            ['1', '1001'],
-                            ['2', '1002'],
-                            ['3', '1004'],
-                        ],
-                        responseType: ResponseType.Pull,
-                    };
-
-                    const requireLoad = workspace.diff(pullResponse);
-
-                    assert.equal(requireLoad.objects.length, 3);
-                    assert.sameMembers(requireLoad.objects, ['1', '2', '3']);
-                });
-            });
-    },
+          assert.equal(requireLoad.objects.length, 2);
+          assert.sameMembers(requireLoad.objects, ['101', '102']);
+        });
+      });
+  },
 );

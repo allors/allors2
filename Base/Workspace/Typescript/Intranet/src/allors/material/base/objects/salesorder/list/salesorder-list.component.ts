@@ -192,7 +192,7 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
                 ShipToCustomer: x,
                 SalesOrderState: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

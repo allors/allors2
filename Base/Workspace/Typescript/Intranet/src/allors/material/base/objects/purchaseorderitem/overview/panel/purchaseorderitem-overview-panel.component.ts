@@ -13,8 +13,8 @@ interface Row extends TableRow {
   object: PurchaseOrderItem;
   item: string;
   state: string;
-  ordered: number;
-  received: number;
+  ordered: string;
+  received: string;
   lastModifiedDate: string;
 }
 

@@ -252,7 +252,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
   private onSave() {
 
     if (this.invoiceItem.InvoiceItemType !== this.productItemType) {
-      this.invoiceItem.Quantity = 1;
+      this.invoiceItem.Quantity = '1';
     }
   }
 }

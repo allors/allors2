@@ -10,7 +10,7 @@ interface Row extends TableRow {
   rateType: string;
   from: string;
   through: string;
-  rate: number;
+  rate: string;
   frequency: string;
 }
 

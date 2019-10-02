@@ -13,7 +13,7 @@ import { Equals } from '../../../../../../../allors/framework';
 interface Row extends TableRow {
   object: Payment;
   date: string;
-  amount: number;
+  amount: string;
 }
 
 @Component({

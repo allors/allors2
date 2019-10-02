@@ -23,7 +23,7 @@ export class EditAction implements Action {
     let editObject = target as ISessionObject
 
     if (this.roleType) {
-      editObject = editObject.get(this.roleType.name);
+      editObject = editObject.get(this.roleType);
     }
 
     return editObject;

@@ -1,5 +1,6 @@
 import { domain } from '../domain';
 import { WorkEffortState } from '../generated/WorkEffortState.g';
+import { Meta } from '../../meta/generated/domain.g';
 
 declare module '../generated/WorkEffortState.g' {
   interface WorkEffortState {
@@ -19,7 +20,8 @@ const finishedId = '6a9716a1-8174-4b26-86eb-22a265b74e78';
 
 domain.extend((workspace) => {
 
-  const obj: WorkEffortState = workspace.prototypeByName.WorkEffortState;
+  const m = workspace.metaPopulation as Meta;
+  const obj = workspace.constructorByObjectType.get(m.WorkEffortState).prototype as any;
 
   Object.defineProperty(obj, 'created', {
     configurable: true,

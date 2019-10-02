@@ -1,5 +1,6 @@
 import { domain } from '../domain';
 import { Person } from '../generated/Person.g';
+import { Meta } from '../../meta/generated/domain.g';
 
 declare module '../generated/Person.g' {
     interface Person {
@@ -11,7 +12,8 @@ declare module '../generated/Person.g' {
 
 domain.extend((workspace) => {
 
-    const obj: Person = workspace.prototypeByName['Person'];
+    const m = workspace.metaPopulation as Meta;
+    const obj = workspace.constructorByObjectType.get(m.Person).prototype as any;
 
     Object.defineProperty(obj, 'displayName', {
         configurable: true,

@@ -21,7 +21,7 @@ interface Row extends TableRow {
   state: string;
   reference: string;
   description: string;
-  totalExVat: number;
+  totalExVat: string;
   lastModifiedDate: string;
 }
 
@@ -107,19 +107,19 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
             .subscribe((paymentDate: string) => {
               if (paymentDate) {
                 targets.forEach((salesinvoice) => {
-                  const amountToPay = salesinvoice.TotalIncVat - salesinvoice.AmountPaid;
+                  const amountToPay = parseFloat(salesinvoice.TotalIncVat) - parseFloat(salesinvoice.AmountPaid);
 
                   if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1-835e-41f8-80af-6611efce5b32' ||
                     salesinvoice.SalesInvoiceType.UniqueId === 'ef5b7c52-e782-416d-b46f-89c8c7a5c24d') {
 
                     const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
                     paymentApplication.Invoice = salesinvoice;
-                    paymentApplication.AmountApplied = amountToPay;
+                    paymentApplication.AmountApplied = amountToPay.toString();
 
                     // sales invoice
                     if (salesinvoice.SalesInvoiceType.UniqueId === '92411bf1-835e-41f8-80af-6611efce5b32') {
                       const receipt = this.allors.context.create('Receipt') as Receipt;
-                      receipt.Amount = amountToPay;
+                      receipt.Amount = amountToPay.toString();
                       receipt.EffectiveDate = paymentDate;
                       receipt.Sender = salesinvoice.BilledFrom;
                       receipt.AddPaymentApplication(paymentApplication);
@@ -128,7 +128,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
                     // credit note
                     if (salesinvoice.SalesInvoiceType.UniqueId === 'ef5b7c52-e782-416d-b46f-89c8c7a5c24d') {
                       const disbursement = this.allors.context.create('Disbursement') as Disbursement;
-                      disbursement.Amount = amountToPay;
+                      disbursement.Amount = amountToPay.toString();
                       disbursement.EffectiveDate = paymentDate;
                       disbursement.Sender = salesinvoice.BilledFrom;
                       disbursement.AddPaymentApplication(paymentApplication);
@@ -287,7 +287,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
                 SalesInvoiceState: x,
                 SalesInvoiceType: x
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

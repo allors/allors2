@@ -1,6 +1,9 @@
-import { SyncResponse, ResponseType } from '../../src/allors/framework';
 import { Meta } from '../../src/allors/meta';
+import { SyncResponse } from '../../src/allors/framework/protocol/sync/SyncResponse';
 import { Compressor } from '../../src/allors/framework/protocol/Compressor';
+import { ResponseType } from '../../src/allors/framework/protocol/ResponseType';
+import { SecurityResponse } from '../../src/allors/framework/protocol/security/SecurityResponse';
+import { Operations } from '../../src/allors/framework/protocol/Operations';
 
 export function syncResponse(m: Meta): SyncResponse {
 
@@ -50,6 +53,7 @@ export function syncResponse(m: Meta): SyncResponse {
           { t: c.write(m.Organisation.Owner.id), v: '1' },
           { t: c.write(m.Organisation.Employees.id), v: '1,2,3' },
         ],
+        a: c.write('801'),
       },
       {
         i: '102',
@@ -71,5 +75,28 @@ export function syncResponse(m: Meta): SyncResponse {
         ],
       },
     ],
+    accessControls: [
+      ['801', '1']
+    ]
   }
-};
+}
+
+export function securityResponse(m: Meta): SecurityResponse {
+
+  const c = new Compressor();
+
+  return {
+    responseType: ResponseType.Security,
+    hasErrors: false,
+    accessControls: [{
+      i: '801',
+      v: '1',
+      p: ['901', '902', '903']
+    }],
+    permissions: [
+      ['901', c.write(m.Organisation.id), c.write(m.Organisation.JustDoIt.id), Operations.Execute.toString()],
+      ['902', c.write(m.Organisation.id), c.write(m.Organisation.Name.id), Operations.Read.toString()],
+      ['903', c.write(m.Organisation.id), c.write(m.Organisation.Owner.id), Operations.Write.toString()],
+    ]
+  }
+}

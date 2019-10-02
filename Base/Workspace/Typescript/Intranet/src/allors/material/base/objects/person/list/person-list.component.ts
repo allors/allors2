@@ -129,7 +129,7 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
                 GeneralPhoneNumber: x,
                 GeneralEmail: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

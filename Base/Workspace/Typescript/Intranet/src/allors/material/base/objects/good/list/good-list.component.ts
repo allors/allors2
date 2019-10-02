@@ -18,7 +18,7 @@ interface Row extends TableRow {
   name: string;
   id: string;
   categories: string;
-  qoh: number;
+  qoh: string;
 }
 
 @Component({
@@ -162,7 +162,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
                   ProductIdentificationType: x
                 }
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

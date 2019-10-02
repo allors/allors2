@@ -22,7 +22,7 @@ interface Row extends TableRow {
   state: string;
   reference: string;
   dueDate: string;
-  totalExVat: number;
+  totalExVat: string;
   lastModifiedDate: string;
 }
 @Component({
@@ -106,19 +106,19 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
             .subscribe((paymentDate: string) => {
               if (paymentDate) {
                 targets.forEach((purchaseInvoice) => {
-                  const amountToPay = purchaseInvoice.TotalIncVat - purchaseInvoice.AmountPaid;
+                  const amountToPay = parseFloat(purchaseInvoice.TotalIncVat) - parseFloat(purchaseInvoice.AmountPaid);
 
                   if (purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309-a4cb-4ab7-8f75-3bb11dcf3783' ||
                     purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d927-81f5-4d6a-9847-58b674ad3e6a') {
 
                     const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
                     paymentApplication.Invoice = purchaseInvoice;
-                    paymentApplication.AmountApplied = amountToPay;
+                    paymentApplication.AmountApplied = amountToPay.toString();
 
                     // purchase invoice
                     if (purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309-a4cb-4ab7-8f75-3bb11dcf3783') {
                       const disbursement = this.allors.context.create('Disbursement') as Disbursement;
-                      disbursement.Amount = amountToPay;
+                      disbursement.Amount = amountToPay.toString();
                       disbursement.EffectiveDate = paymentDate;
                       disbursement.Sender = purchaseInvoice.BilledFrom;
                       disbursement.AddPaymentApplication(paymentApplication);
@@ -127,7 +127,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                     // purchase return
                     if (purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d927-81f5-4d6a-9847-58b674ad3e6a') {
                       const receipt = this.allors.context.create('Receipt') as Receipt;
-                      receipt.Amount = amountToPay;
+                      receipt.Amount = amountToPay.toString();
                       receipt.EffectiveDate = paymentDate;
                       receipt.Sender = purchaseInvoice.BilledFrom;
                       receipt.AddPaymentApplication(paymentApplication);
@@ -236,7 +236,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                   Media: x
                 },
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

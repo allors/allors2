@@ -45,7 +45,7 @@ export class AllorsMaterialDatepickerComponent extends RoleField {
       return this.momentModel;
     }
 
-    return this.ExistObject ? this.object.get(this.roleType.name) : undefined;
+    return this.ExistObject ? this.object.get(this.roleType) : undefined;
   }
 
   set model(value: any) {
@@ -53,11 +53,11 @@ export class AllorsMaterialDatepickerComponent extends RoleField {
       this.momentModel = value;
 
       if (value == null) {
-        this.object.set(this.roleType.name, null);
+        this.object.set(this.roleType, null);
       } else {
         if (value.isValid()) {
           const isoString = value.toISOString();
-          this.object.set(this.roleType.name, isoString);
+          this.object.set(this.roleType, isoString);
           this.momentModel = null;
         }
       }

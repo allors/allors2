@@ -1,5 +1,6 @@
 import { domain } from '../domain';
 import { WebAddress } from '../generated/WebAddress.g';
+import { Meta } from '../../meta/generated/domain.g';
 
 declare module '../generated/WebAddress.g' {
   interface WebAddress {
@@ -9,7 +10,8 @@ declare module '../generated/WebAddress.g' {
 
 domain.extend((workspace) => {
 
-  const obj: WebAddress = workspace.prototypeByName['WebAddress'];
+  const m = workspace.metaPopulation as Meta;
+  const obj = workspace.constructorByObjectType.get(m.WebAddress).prototype as any;
 
   Object.defineProperty(obj, 'displayName', {
     configurable: true,

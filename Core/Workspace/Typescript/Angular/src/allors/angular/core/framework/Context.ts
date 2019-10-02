@@ -1,6 +1,6 @@
 import { Observable, of } from 'rxjs';
 
-import { ISession, Session, PullResponse, SyncRequest, IWorkspace, SyncResponse, PushRequest, PushResponse, PushRequestObject, Method, InvokeOptions, InvokeResponse, ObjectType, ISessionObject, SecurityResponse } from '../../../framework';
+import { ISession, Session, PullResponse, SyncRequest, IWorkspace, SyncResponse, PushRequest, PushResponse, PushRequestObject, Method, InvokeOptions, InvokeResponse, ObjectType, ISessionObject, SecurityResponse, Workspace } from '../../../framework';
 
 import { Loaded } from './responses/Loaded';
 import { switchMap, map } from 'rxjs/operators';
@@ -14,7 +14,7 @@ export class Context {
 
   constructor(
     public database: Database,
-    public workspace: IWorkspace
+    public workspace: Workspace
   ) {
     this.session = new Session(this.workspace);
   }
