@@ -11,7 +11,7 @@
   }
 
   public write(value: string): string {
-    if (value !== undefined && value !== null) {
+    if (value === undefined || value === null) {
       return null;
     }
 

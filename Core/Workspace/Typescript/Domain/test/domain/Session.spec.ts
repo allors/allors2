@@ -1,17 +1,17 @@
 import { assert } from 'chai';
 import { domain, Organisation, Person } from '../../src/allors/domain';
 import { MetaPopulation, PushResponse, ResponseType, Session, Workspace, SessionObject } from '../../src/allors/framework';
-import { data } from '../../src/allors/meta';
+import { data, Meta } from '../../src/allors/meta';
 import { syncResponse } from './fixture';
 
 describe('Session',
     () => {
-        let metaPopulation: MetaPopulation;
+        let m: Meta;
         let workspace: Workspace;
 
         beforeEach(() => {
-            metaPopulation = new MetaPopulation(data);
-            workspace = new Workspace(metaPopulation);
+            m = new MetaPopulation(data) as Meta;
+            workspace = new Workspace(m);
             domain.apply(workspace);
         });
 
@@ -20,7 +20,7 @@ describe('Session',
             let session: Session;
 
             beforeEach(() => {
-                workspace.sync(syncResponse);
+                workspace.sync(syncResponse(m));
                 session = new Session(workspace);
             });
 
@@ -30,12 +30,12 @@ describe('Session',
             });
 
             it('should not throw exception for a new object', () => {
-                const jos = session.create('Person') as Person;
+                const jos = session.create(m.Person) as Person;
                 assert.doesNotThrow( () => { session.delete(jos); } );
             });
 
             it('should throw exception for a deleted object', () => {
-                const acme = session.create('Organisation') as Organisation;
+                const acme = session.create(m.Organisation) as Organisation;
 
                 session.delete(acme);
 
@@ -44,7 +44,7 @@ describe('Session',
                 assert.isUndefined(acme.Name);
                 assert.throw( () => { acme.Name = 'Acme'; } );
 
-                const jos = session.create('Person') as Person;
+                const jos = session.create(m.Person) as Person;
 
                 assert.isUndefined(acme.CanReadOwner);
                 assert.isUndefined(acme.CanWriteOwner);
@@ -62,7 +62,7 @@ describe('Session',
 
             it('should delete role from existing object', () => {
                 const acme = session.get('101') as Organisation;
-                const jos = session.create('Person') as Person;
+                const jos = session.create(m.Person) as Person;
 
                 acme.Owner = jos;
 
@@ -73,7 +73,7 @@ describe('Session',
 
             it('should remove role from existing object', () => {
                 const acme = session.get('101') as Organisation;
-                const jos = session.create('Person') as Person;
+                const jos = session.create(m.Person) as Person;
 
                 acme.AddEmployee(jos);
 
@@ -83,8 +83,8 @@ describe('Session',
             });
 
             it('should delete role from new object', () => {
-                const acme = session.create('Organisation') as Organisation;
-                const jos = session.create('Person') as Person;
+                const acme = session.create(m.Organisation) as Organisation;
+                const jos = session.create(m.Person) as Person;
 
                 acme.Owner = jos;
 
@@ -94,8 +94,8 @@ describe('Session',
             });
 
             it('should remove role from new object', () => {
-                const acme = session.create('Organisation') as Organisation;
-                const jos = session.create('Person') as Person;
+                const acme = session.create(m.Organisation) as Organisation;
+                const jos = session.create(m.Person) as Person;
 
                 acme.AddEmployee(jos);
 
@@ -110,7 +110,7 @@ describe('Session',
             let session: Session;
 
             beforeEach(() => {
-                workspace.sync(syncResponse);
+                workspace.sync(syncResponse(m));
                 session = new Session(workspace);
             });
 
@@ -386,16 +386,16 @@ describe('Session',
             it('should save with many objects', () => {
                 const martien = session.get('3') as Person;
 
-                const mathijs = session.create('Person') as Person;
+                const mathijs = session.create(m.Person) as Person;
                 mathijs.FirstName = 'Mathijs';
                 mathijs.LastName = 'Verwer';
 
-                const acme2 = session.create('Organisation') as Organisation;
+                const acme2 = session.create(m.Organisation) as Organisation;
                 acme2.Name = 'Acme 2';
                 acme2.Manager = mathijs;
                 acme2.AddEmployee(mathijs);
 
-                const acme3 = session.create('Organisation') as Organisation;
+                const acme3 = session.create(m.Organisation) as Organisation;
                 acme3.Name = 'Acme 3';
                 acme3.Manager = martien;
                 acme3.AddEmployee(martien);
@@ -501,16 +501,16 @@ describe('Session',
 
                 const martien = session.get('3') as Person;
 
-                const mathijs = session.create('Person') as Person;
+                const mathijs = session.create(m.Person) as Person;
                 mathijs.FirstName = 'Mathijs';
                 mathijs.LastName = 'Verwer';
 
-                const acme2 = session.create('Organisation') as Organisation;
+                const acme2 = session.create(m.Organisation) as Organisation;
                 acme2.Name = 'Acme 2';
                 acme2.Manager = mathijs;
                 acme2.AddEmployee(mathijs);
 
-                const acme3 = session.create('Organisation') as Organisation;
+                const acme3 = session.create(m.Organisation) as Organisation;
                 acme3.Name = 'Acme 3';
                 acme3.Manager = martien;
                 acme3.AddEmployee(martien);
@@ -563,7 +563,7 @@ describe('Session',
 
             it('should exist when created', () => {
 
-                const john = session.create('Person') as Person;
+                const john = session.create(m.Person) as Person;
 
                 assert.exists(john);
 
@@ -576,11 +576,11 @@ describe('Session',
 
                 const martien = session.get('3') as Person;
 
-                const mathijs = session.create('Person') as Person;
+                const mathijs = session.create(m.Person) as Person;
                 mathijs.FirstName = 'Mathijs';
                 mathijs.LastName = 'Verwer';
 
-                const acme2 = session.create('Organisation') as Organisation;
+                const acme2 = session.create(m.Organisation) as Organisation;
                 acme2.Name = 'Acme 2';
                 acme2.Owner = martien;
                 acme2.Manager = mathijs;
@@ -617,7 +617,7 @@ describe('Session',
 
                 session.pushResponse(saveResponse);
 
-                let mathijs = session.create('Person') as Person;
+                let mathijs = session.create(m.Person) as Person;
                 mathijs.FirstName = 'Mathijs';
                 mathijs.LastName = 'Verwer';
 
@@ -665,7 +665,7 @@ describe('Session',
             });
 
             it('get', () => {
-                const acme = session.create('Organisation') as Organisation;
+                const acme = session.create(m.Organisation) as Organisation;
 
                 let acmeAgain = session.get(acme.id);
                 assert.equal(acmeAgain, acme);
@@ -677,7 +677,7 @@ describe('Session',
             it('hasChangesWithNewObject', () => {
                 assert.isFalse(session.hasChanges);
 
-                const walter = session.create('Person') as Person;
+                const walter = session.create(m.Person) as Person;
 
                 assert.isTrue(session.hasChanges);
             });

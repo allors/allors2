@@ -6,6 +6,7 @@ import { unitIdByTypeName } from './Units';
 import { RelationType } from './RelationType';
 import { ConcreteRoleType } from './ConcreteRoleType';
 import { MethodType } from './MethodType';
+import { RoleType } from './RoleType';
 
 export class MetaPopulation {
   readonly metaObjectById: Map<string, MetaObject>;
@@ -77,6 +78,14 @@ export class MetaPopulation {
       objectType.interfaces = dataObjectType.interfaceIds ? dataObjectType.interfaceIds.map((v) => this.metaObjectById.get(v) as ObjectType) : [];
     });
 
+    // Derive subtypes
+    this.composites
+      .forEach((composite) => {
+        composite.interfaces.forEach((compositeInterface) => {
+          compositeInterface.subtypes.push(composite);
+        });
+      });
+
     // Derive classes
     this.classes
       .forEach((objectType) => {
@@ -92,7 +101,16 @@ export class MetaPopulation {
       methodType.id = methodTypeData.id;
       methodType.objectType = this.metaObjectById.get(methodTypeData.objectTypeId) as ObjectType;
       methodType.name = methodTypeData.name;
+
+      methodType.objectType.exclusiveMethodTypes.push(methodType);
+
       methodType.objectType.methodTypes.push(methodType);
+      if (methodType.objectType.isInterface) {
+        this.composites
+        .filter(v => v.interfaces.indexOf(methodType.objectType) > -1)
+        .forEach(v => v.methodTypes.push(methodType));
+      }
+
       this.metaObjectById.set(methodType.id, methodType);
       return methodType;
     });
@@ -132,19 +150,18 @@ export class MetaPopulation {
         });
       }
 
+      associationType.objectType.exclusiveRoleTypes.push(roleType);
+      roleType.objectType.exclusiveAssociationTypes.push(associationType);
+
       associationType.objectType.roleTypes.push(roleType);
       roleType.objectType.associationTypes.push(associationType);
 
       if (associationType.objectType.isInterface) {
-        this.composites
-        .filter(v => v.interfaces.indexOf(associationType.objectType) > -1)
-        .forEach(v => v.roleTypes.push(roleType));
+        associationType.objectType.subtypes.forEach(subtype => subtype.roleTypes.push(roleType));
       }
 
       if (roleType.objectType.isInterface) {
-        this.composites
-        .filter(v => v.interfaces.indexOf(roleType.objectType) > -1)
-        .forEach(v => v.associationTypes.push(associationType));
+        roleType.objectType.subtypes.forEach(subtype => subtype.associationTypes.push(associationType));
       }
 
       this.metaObjectById.set(relationType.id, relationType);
@@ -174,7 +191,8 @@ export class MetaPopulation {
     this.composites
       .forEach((objectType) => {
         objectType.roleTypes.forEach(v => objectType.roleTypeByName.set(v.name, v));
-        objectType.associationTypeByName.forEach(v => objectType.associationTypeByName.set(v.name, v));
+        objectType.associationTypes.forEach(v => objectType.associationTypeByName.set(v.name, v));
+        objectType.methodTypes.forEach(v => objectType.methodTypeByName.set(v.name, v));
       });
 
     // Assign Own Properties

@@ -36,7 +36,7 @@ namespace Allors.Domain
                 }
                 else if (@class.Equals(M.WorkEffortInventoryAssignment.ObjectType))
                 {
-                    var excepts = new HashSet<OperandType>
+                    var excepts = new HashSet<IOperandType>
                     {
                         M.WorkEffortInventoryAssignment.BillableQuantity,
                         M.WorkEffortInventoryAssignment.UnitSellingPrice,

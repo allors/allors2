@@ -74,7 +74,7 @@ namespace Allors.Server
                     if (roles.Count > 0)
                     {
                         syncResponseRole.V = string.Join(
-                            separator: ',',
+                            separator: Compressor.ItemSeparator,
                             values: roles
                                 .Cast<IObject>()
                                 .Select(roleObject => roleObject.Id.ToString()));

@@ -3,18 +3,20 @@ import 'mocha';
 
 import { domain, Person } from '../../src/allors/domain';
 import { MetaPopulation, Session, Workspace } from '../../src/allors/framework';
-import { data } from '../../src/allors/meta';
+import { data, Meta } from '../../src/allors/meta';
 
 describe('Person',
     () => {
 
         let session: Session;
+        let m: Meta;
 
         beforeEach(() => {
             const metaPopulation = new MetaPopulation(data);
             const workspace = new Workspace(metaPopulation);
             domain.apply(workspace);
 
+            m = metaPopulation as Meta;
             session = new Session(workspace);
         });
 
@@ -24,7 +26,7 @@ describe('Person',
                 let person: Person;
 
                 beforeEach(() => {
-                    person = session.create('Person') as Person;
+                    person = session.create(m.Person) as Person;
                 });
 
                 it('should have a UserName', () => {
@@ -38,7 +40,7 @@ describe('Person',
                 let person: Person;
 
                 beforeEach(() => {
-                    person = session.create('Person') as Person;
+                    person = session.create(m.Person) as Person;
                 });
 
                 it('should be N/A when nothing set', () => {
@@ -74,7 +76,7 @@ describe('Person',
                 let person: Person;
 
                 beforeEach(() => {
-                    person = session.create('Person') as Person;
+                    person = session.create(m.Person) as Person;
                 });
 
                 it('should be Hello John Doe when lastName Doe and firstName John', () => {

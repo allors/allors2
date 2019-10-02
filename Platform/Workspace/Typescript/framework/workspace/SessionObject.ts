@@ -9,6 +9,7 @@ import { ISession, Session } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
 import { Operations } from '../protocol/Operations';
 import { serialize } from '../protocol/Serialization';
+import { Compressor } from '../protocol/Compressor';
 
 export interface IObject {
   id: string;
@@ -40,8 +41,8 @@ export interface ISessionObject extends IObject {
 
   getAssociation(associationType: AssociationType): any;
 
-  save(): PushRequestObject;
-  saveNew(): PushRequestNewObject;
+  save(compressor: Compressor): PushRequestObject;
+  saveNew(compressor: Compressor): PushRequestNewObject;
   reset();
 }
 
@@ -87,6 +88,10 @@ export class SessionObject implements ISessionObject {
   }
 
   public isPermited(operandType: OperandType, operation: Operations): boolean {
+    if(this.roleByRoleType === undefined){
+      return undefined;
+    }
+
     if (this.newId) {
       return true;
     } else if (this.workspaceObject) {
@@ -98,12 +103,16 @@ export class SessionObject implements ISessionObject {
   }
 
   public method(methodType: MethodType): Method {
+    if (this.roleByRoleType === undefined) {
+      return undefined;
+    }
+
     return new Method(this, methodType);
   }
 
   public get(roleType: RoleType): any {
     if (this.roleByRoleType === undefined) {
-      return null;
+      return undefined;
     }
 
     let value = this.roleByRoleType.get(roleType);
@@ -224,27 +233,27 @@ export class SessionObject implements ISessionObject {
     return associations;
   }
 
-  public save(): PushRequestObject {
+  public save(compressor: Compressor): PushRequestObject {
     if (this.changedRoleByRoleType !== undefined) {
       const data = new PushRequestObject();
       data.i = this.id;
       data.v = this.version;
-      data.roles = this.saveRoles();
+      data.roles = this.saveRoles(compressor);
       return data;
     }
 
     return undefined;
   }
 
-  public saveNew(): PushRequestNewObject {
+  public saveNew(compressor: Compressor): PushRequestNewObject {
     this.assertExists();
 
     const data = new PushRequestNewObject();
     data.ni = this.newId;
-    data.t = this.objectType.name;
+    data.t = compressor.write(this.objectType.id);
 
     if (this.changedRoleByRoleType !== undefined) {
-      data.roles = this.saveRoles();
+      data.roles = this.saveRoles(compressor);
     }
 
     return data;
@@ -295,14 +304,14 @@ export class SessionObject implements ISessionObject {
     }
   }
 
-  private saveRoles(): PushRequestRole[] {
+  private saveRoles(compressor: Compressor): PushRequestRole[] {
     const saveRoles = new Array<PushRequestRole>();
 
     if (this.changedRoleByRoleType) {
 
       for (const [roleType, value] of this.changedRoleByRoleType) {
         const saveRole = new PushRequestRole();
-        saveRole.t = roleType.name;
+        saveRole.t = compressor.write(roleType.id);
 
         let role = value;
         if (roleType.objectType.isUnit) {

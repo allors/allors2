@@ -1,21 +1,21 @@
 import { domain, Organisation, Person } from '../../src/allors/domain';
 import { MetaPopulation, PullRequest, Session, Workspace } from '../../src/allors/framework';
-import { data, TreeFactory } from '../../src/allors/meta';
+import { data, TreeFactory, Meta } from '../../src/allors/meta';
 
 import { assert } from 'chai';
 import 'mocha';
 
 describe('Tree',
   () => {
-    let metaPopulation: MetaPopulation;
+    let m: Meta;
     let factory: TreeFactory;
 
     beforeEach(async () => {
-      metaPopulation = new MetaPopulation(data);
-      const workspace = new Workspace(metaPopulation);
+      m = new MetaPopulation(data) as Meta;
+      const workspace = new Workspace(m);
       domain.apply(workspace);
 
-      factory = new TreeFactory(metaPopulation);
+      factory = new TreeFactory(m);
     });
 
     describe('with empty include',
@@ -45,7 +45,7 @@ describe('Tree',
 
           assert.deepEqual(include, [
             {
-              propertytype: 'b95c7b34a295460082c8826cc2186a00',
+              propertytype: 'b95c7b34-a295-4600-82c8-826cc2186a00',
             },
           ]);
         });
@@ -65,10 +65,10 @@ describe('Tree',
 
           assert.deepEqual(include, [
             {
-              propertytype: 'b95c7b34a295460082c8826cc2186a00',
+              propertytype: 'b95c7b34-a295-4600-82c8-826cc2186a00',
             },
             {
-              propertytype: '19de0627fb1c4f559b6531d8008d0a48',
+              propertytype: '19de0627-fb1c-4f55-9b65-31d8008d0a48',
             },
           ]);
         });
@@ -90,9 +90,9 @@ describe('Tree',
           assert.deepEqual(include, [
             {
               nodes: [{
-                propertytype: 'f6624facdb8e4fb29e8618021b59d31d',
+                propertytype: 'f6624fac-db8e-4fb2-9e86-18021b59d31d',
               }],
-              propertytype: 'b95c7b34a295460082c8826cc2186a00',
+              propertytype: 'b95c7b34-a295-4600-82c8-826cc2186a00',
             },
           ]);
         });
@@ -111,7 +111,7 @@ describe('Tree',
 
           assert.deepEqual(include, [
             {
-              propertytype: 'f6624facdb8e4fb29e8618021b59d31d',
+              propertytype: 'f6624fac-db8e-4fb2-9e86-18021b59d31d',
             },
           ]);
         });

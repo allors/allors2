@@ -59,89 +59,87 @@ export class Workspace implements IWorkspace {
       this.executePermissionByOperandTypeByClass.set(v, new Map());
     });
 
-    this.metaPopulation.objectTypes.forEach((objectType) => {
-      if (objectType.isClass) {
-        const DynamicClass = (() => {
-          return function () {
-            const prototype1 = Object.getPrototypeOf(this);
-            const prototype2 = Object.getPrototypeOf(prototype1);
-            prototype2.init.call(this);
-          };
-        })();
+    this.metaPopulation.classes.forEach((objectType) => {
+      const DynamicClass = (() => {
+        return function () {
+          const prototype1 = Object.getPrototypeOf(this);
+          const prototype2 = Object.getPrototypeOf(prototype1);
+          prototype2.init.call(this);
+        };
+      })();
 
-        DynamicClass.prototype = Object.create(SessionObject.prototype);
-        DynamicClass.prototype.constructor = DynamicClass;
-        this.constructorByObjectType.set(objectType, DynamicClass as any);
+      DynamicClass.prototype = Object.create(SessionObject.prototype);
+      DynamicClass.prototype.constructor = DynamicClass;
+      this.constructorByObjectType.set(objectType, DynamicClass as any);
 
-        const prototype = DynamicClass.prototype;
-        objectType.roleTypes
-          .forEach((roleType) => {
-            Object.defineProperty(prototype, 'CanRead' + roleType.name, {
+      const prototype = DynamicClass.prototype;
+      objectType.roleTypes
+        .forEach((roleType) => {
+          Object.defineProperty(prototype, 'CanRead' + roleType.name, {
+            get(this: SessionObject) {
+              return this.canRead(roleType);
+            },
+          });
+
+          if (roleType.isDerived) {
+            Object.defineProperty(prototype, roleType.name, {
               get(this: SessionObject) {
-                return this.canRead(roleType);
+                return this.get(roleType);
+              },
+            });
+          } else {
+            Object.defineProperty(prototype, 'CanWrite' + roleType.name, {
+              get(this: SessionObject) {
+                return this.canWrite(roleType);
               },
             });
 
-            if (roleType.isDerived) {
-              Object.defineProperty(prototype, roleType.name, {
-                get(this: SessionObject) {
-                  return this.get(roleType);
-                },
-              });
-            } else {
-              Object.defineProperty(prototype, 'CanWrite' + roleType.name, {
-                get(this: SessionObject) {
-                  return this.canWrite(roleType);
-                },
-              });
+            Object.defineProperty(prototype, roleType.name, {
+              get(this: SessionObject) {
+                return this.get(roleType);
+              },
 
-              Object.defineProperty(prototype, roleType.name, {
-                get(this: SessionObject) {
-                  return this.get(roleType);
-                },
+              set(this: SessionObject, value) {
+                this.set(roleType, value);
+              },
+            });
 
-                set(this: SessionObject, value) {
-                  this.set(roleType, value);
-                },
-              });
+            if (roleType.isMany) {
 
-              if (roleType.isMany) {
+              prototype['Add' + roleType.singular] = function (this: SessionObject, value) {
+                return this.add(roleType, value);
+              };
 
-                prototype['Add' + roleType.singular] = function (this: SessionObject, value) {
-                  return this.add(roleType, value);
-                };
-
-                prototype['Remove' + roleType.singular] = function (this: SessionObject, value) {
-                  return this.remove(roleType, value);
-                };
-              }
+              prototype['Remove' + roleType.singular] = function (this: SessionObject, value) {
+                return this.remove(roleType, value);
+              };
             }
+          }
+        });
+
+      objectType.associationTypes
+        .forEach((associationType) => {
+          Object.defineProperty(prototype, associationType.name, {
+            get(this: SessionObject) {
+              return this.getAssociation(associationType);
+            },
+          });
+        });
+
+      objectType.methodTypes
+        .forEach((methodType) => {
+          Object.defineProperty(prototype, 'CanExecute' + methodType.name, {
+            get(this: SessionObject) {
+              return this.canExecute(methodType);
+            },
           });
 
-        objectType.associationTypes
-          .forEach((associationType) => {
-            Object.defineProperty(prototype, associationType.name, {
-              get(this: SessionObject) {
-                return this.getAssociation(associationType);
-              },
-            });
+          Object.defineProperty(prototype, methodType.name, {
+            get(this: SessionObject) {
+              return this.method(methodType);
+            },
           });
-
-        objectType.methodTypes
-          .forEach((methodType) => {
-            Object.defineProperty(prototype, 'CanExecute' + methodType.name, {
-              get(this: SessionObject) {
-                return this.canExecute(methodType);
-              },
-            });
-
-            Object.defineProperty(prototype, methodType.name, {
-              get(this: SessionObject) {
-                return this.method(methodType);
-              },
-            });
-          });
-      }
+        });
     });
   }
 

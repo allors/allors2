@@ -43,7 +43,6 @@ export class WorkspaceObject implements IWorkspaceObject {
         const roleType = metaDecompress(roleTypeId) as RoleType;
 
         let value: any = role.v;
-
         if (roleType.objectType.isUnit) {
           value = deserialize(value, roleType.objectType);
         } else {

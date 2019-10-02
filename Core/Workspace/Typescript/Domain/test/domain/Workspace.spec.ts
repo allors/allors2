@@ -3,42 +3,43 @@ import 'mocha';
 
 import { domain } from '../../src/allors/domain';
 import { MetaPopulation, PullResponse, PushResponse, ResponseType, Session, Workspace } from '../../src/allors/framework';
-import { data } from '../../src/allors/meta';
+import { data, Meta } from '../../src/allors/meta';
 
 import { syncResponse } from './fixture';
+import { Compressor } from '../../src/allors/framework/protocol/Compressor';
 
 describe('Workspace',
     () => {
 
-        let metaPopulation: MetaPopulation;
+        let m: Meta;
         let workspace: Workspace;
 
         beforeEach(() => {
-            metaPopulation = new MetaPopulation(data);
-            workspace = new Workspace(metaPopulation);
+            m = new MetaPopulation(data) as Meta;
+            workspace = new Workspace(m);
             domain.apply(workspace);
         });
 
         it('should have its relations set when synced', () => {
-            workspace.sync(syncResponse);
+            workspace.sync(syncResponse(m));
 
             const martien = workspace.get('3');
 
             assert.equal(martien.id, '3');
             assert.equal(martien.version, '1003');
             assert.equal(martien.objectType.name, 'Person');
-            assert.equal(martien.roles.FirstName, 'Martien');
-            assert.equal(martien.roles.MiddleName, 'van');
-            assert.equal(martien.roles.LastName, 'Knippenberg');
-            assert.isUndefined(martien.roles.IsStudent);
-            assert.isUndefined(martien.roles.BirthDate);
+            assert.equal(martien.roleByRoleTypeId.get(m.Person.FirstName.id), 'Martien');
+            assert.equal(martien.roleByRoleTypeId.get(m.Person.MiddleName.id), 'van');
+            assert.equal(martien.roleByRoleTypeId.get(m.Person.LastName.id), 'Knippenberg');
+            assert.isUndefined(martien.roleByRoleTypeId.get(m.Person.IsStudent.id));
+            assert.isUndefined(martien.roleByRoleTypeId.get(m.Person.BirthDate.id));
         });
 
         describe('synced with same securityHash',
             () => {
 
                 beforeEach(() => {
-                    workspace.sync(syncResponse);
+                    workspace.sync(syncResponse(m));
                 });
 
                 it('should require load objects only for changed version', () => {
@@ -50,7 +51,6 @@ describe('Workspace',
                             ['3', '1004'],
                         ],
                         responseType: ResponseType.Pull,
-                        userSecurityHash: '#',
                     };
 
                     const requireLoad = workspace.diff(pullResponse);
@@ -65,7 +65,7 @@ describe('Workspace',
         describe('synced with different securityHash',
             () => {
                 beforeEach(() => {
-                    workspace.sync(syncResponse);
+                    workspace.sync(syncResponse(m));
                 });
 
                 it('should require load objects for all objects', () => {
@@ -77,7 +77,6 @@ describe('Workspace',
                             ['3', '1004'],
                         ],
                         responseType: ResponseType.Pull,
-                        userSecurityHash: 'abc',
                     };
 
                     const requireLoad = workspace.diff(pullResponse);

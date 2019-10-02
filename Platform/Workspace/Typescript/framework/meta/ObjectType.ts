@@ -17,8 +17,12 @@ export class ObjectType implements MetaObject {
   plural: string;
   kind: Kind;
   interfaces: ObjectType[];
-
+  subtypes: ObjectType[];
   classes: ObjectType[];
+
+  exclusiveRoleTypes: RoleType[];
+  exclusiveAssociationTypes: AssociationType[];
+  exclusiveMethodTypes: MethodType[];
 
   roleTypes: RoleType[];
   associationTypes: AssociationType[];
@@ -26,15 +30,23 @@ export class ObjectType implements MetaObject {
 
   roleTypeByName: Map<string, RoleType>;
   associationTypeByName: Map<string, AssociationType>;
+  methodTypeByName: Map<string, MethodType>;
 
   constructor(public metaPopulation: MetaPopulation) {
+    this.subtypes = [];
     this.classes = [];
+
+    this.exclusiveRoleTypes = [];
+    this.exclusiveAssociationTypes = [];
+    this.exclusiveMethodTypes = [];
+
     this.roleTypes = [];
     this.associationTypes = [];
     this.methodTypes = [];
 
     this.roleTypeByName = new Map();
     this.associationTypeByName = new Map();
+    this.methodTypeByName = new Map();
   }
 
   get isUnit(): boolean {

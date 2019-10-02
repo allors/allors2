@@ -1,21 +1,21 @@
 import { domain } from '../../src/allors/domain';
 import { MetaPopulation, Workspace } from '../../src/allors/framework';
-import { data, PullFactory } from '../../src/allors/meta';
+import { data, PullFactory, Meta } from '../../src/allors/meta';
 
 import { assert } from 'chai';
 import 'mocha';
 
 describe('Filter',
     () => {
-        let metaPopulation: MetaPopulation;
+        let m: Meta;
         let factory: PullFactory;
 
         beforeEach(async () => {
-            metaPopulation = new MetaPopulation(data);
-            const workspace = new Workspace(metaPopulation);
+            m = new MetaPopulation(data) as Meta;
+            const workspace = new Workspace(m);
             domain.apply(workspace);
 
-            factory = new PullFactory(metaPopulation);
+            factory = new PullFactory(m);
         });
 
         describe('with empty flatPull',

@@ -7,6 +7,7 @@ import { ISessionObject, SessionObject } from './SessionObject';
 import { IWorkspace, Workspace } from './Workspace';
 import { WorkspaceObject } from './WorkspaceObject';
 import { Operations } from '../protocol/Operations';
+import { Compressor } from '../protocol/Compressor';
 
 export interface ISession {
 
@@ -53,7 +54,7 @@ export class Session implements ISession {
 
     let sessionObject: ISessionObject = this.existingSessionObjectById.get(id);
     if (sessionObject === undefined) {
-      sessionObject = this.newSessionObjectById[id];
+      sessionObject = this.newSessionObjectById.get(id);
 
       if (sessionObject === undefined) {
         const workspaceObject: WorkspaceObject = this.workspace.get(id);
@@ -74,14 +75,13 @@ export class Session implements ISession {
 
   public create(objectType: ObjectType): ISessionObject {
 
-    const objectTypeName = objectType instanceof ObjectType ? objectType.name : objectType;
     const constructor: any = this.workspace.constructorByObjectType.get(objectType);
     const newSessionObject: ISessionObject = new constructor();
     newSessionObject.session = this;
-    newSessionObject.objectType = this.workspace.metaPopulation.metaObjectById[objectType.id] as ObjectType;
+    newSessionObject.objectType = objectType;
     newSessionObject.newId = (--Session.idCounter).toString();
 
-    this.newSessionObjectById[newSessionObject.newId] = newSessionObject;
+    this.newSessionObjectById.set(newSessionObject.newId, newSessionObject);
     this.addByObjectTypeId(newSessionObject);
 
     this.hasChanges = true;
@@ -97,7 +97,7 @@ export class Session implements ISession {
     const newSessionObject = object as SessionObject;
     const newId = newSessionObject.newId;
 
-    if (this.newSessionObjectById && this.newSessionObjectById.hasOwnProperty(newId)) {
+    if (this.newSessionObjectById.has(newId)) {
 
       for (const sessionObject of this.newSessionObjectById.values()) {
         (sessionObject as SessionObject).onDelete(newSessionObject);
@@ -129,9 +129,10 @@ export class Session implements ISession {
   }
 
   public pushRequest(): PushRequest {
+    const compressor = new Compressor();
     return new PushRequest({
-      newObjects: [...this.newSessionObjectById.values()].map(v => v.saveNew()).filter(v => v !== undefined),
-      objects: [...this.existingSessionObjectById.values()].map(v => v.save()).filter(v => v !== undefined),
+      newObjects: Array.from(this.newSessionObjectById.values()).map(v => v.saveNew(compressor)).filter(v => v !== undefined),
+      objects: Array.from(this.existingSessionObjectById.values()).map(v => v.save(compressor)).filter(v => v !== undefined),
     });
   }
 

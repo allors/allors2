@@ -12,9 +12,9 @@ namespace Allors.Domain
     {
         public void GrantBlueCollarWorker(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.BlueCollarWorkerId, objectType, operations);
 
-        public void GrantExceptBlueCollarWorker(ObjectType objectType, ICollection<OperandType> excepts, params Operations[] operations) => this.GrantExcept(Roles.BlueCollarWorkerId, objectType, excepts, operations);
+        public void GrantExceptBlueCollarWorker(ObjectType objectType, ICollection<IOperandType> excepts, params Operations[] operations) => this.GrantExcept(Roles.BlueCollarWorkerId, objectType, excepts, operations);
 
-        public void GrantExceptEmployee(ObjectType objectType, ICollection<OperandType> excepts, params Operations[] operations) => this.GrantExcept(Roles.EmployeeId, objectType, excepts, operations);
+        public void GrantExceptEmployee(ObjectType objectType, ICollection<IOperandType> excepts, params Operations[] operations) => this.GrantExcept(Roles.EmployeeId, objectType, excepts, operations);
 
         public void GrantProductQuoteApprover(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.ProductQuoteApproverId, objectType, operations);
 
