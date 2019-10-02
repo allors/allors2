@@ -1,8 +1,19 @@
+﻿import { ISessionObject } from '../workspace/SessionObject';
 import { ids } from '../../meta/generated';
 import { ObjectType } from '../meta/ObjectType';
-import { UnitTypes } from './Types';
 
-export function unitToString(role: UnitTypes, objectType: ObjectType): string {
+export type UnitTypes = string | Date | boolean | number;
+export type CompositeTypes = ISessionObject | string;
+
+export function serializeArray(roles: UnitTypes[], objectType: ObjectType): string[] {
+  if (roles) {
+    return roles.map(v => serialize(v, objectType));
+  }
+
+  return [];
+}
+
+export function serialize(role: UnitTypes, objectType: ObjectType): string {
   switch (objectType.id) {
     case ids.Boolean:
       return role ? 'true' : 'false';
@@ -17,7 +28,7 @@ export function unitToString(role: UnitTypes, objectType: ObjectType): string {
   role = role.toString();
 }
 
-export function stringToUnit(value: string, objectType: ObjectType): UnitTypes {
+export function deserialize(value: string, objectType: ObjectType): UnitTypes {
   switch (objectType.id) {
     case ids.Boolean:
       return value === 'true' ? true : false;

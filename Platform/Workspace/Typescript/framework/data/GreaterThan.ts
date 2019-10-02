@@ -1,5 +1,5 @@
 import { RoleType } from '../meta';
-import { UnitTypes } from '../protocol/Types';
+import { UnitTypes, serialize } from '../protocol/Serialization';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
 export class GreaterThan extends ParametrizedPredicate {
@@ -21,7 +21,7 @@ export class GreaterThan extends ParametrizedPredicate {
       kind: 'GreaterThan',
       roleType: this.roleType.id,
       parameter: this.parameter,
-      value: this.value,
+      value: serialize(this.value, this.roleType.objectType),
     };
   }
 }

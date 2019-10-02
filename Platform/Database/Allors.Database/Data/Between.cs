@@ -17,7 +17,7 @@ namespace Allors.Data
 
         public IRoleType RoleType { get; set; }
 
-        public IEnumerable<string> Values { get; set; }
+        public IEnumerable<object> Values { get; set; }
 
         public string Argument { get; set; }
 

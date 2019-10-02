@@ -4,7 +4,7 @@ import { IWorkspace, Workspace } from './Workspace';
 import { Permission } from './Permission';
 import { AccessControl } from './AccessControl';
 import { Compressor } from '../protocol/Compressor';
-import { stringToUnit } from '../protocol/Convert';
+import { deserialize } from '../protocol/Serialization';
 
 export interface IWorkspaceObject {
   workspace: IWorkspace;
@@ -45,7 +45,7 @@ export class WorkspaceObject implements IWorkspaceObject {
         let value: any = role.v;
 
         if (roleType.objectType.isUnit) {
-          value = stringToUnit(value, roleType.objectType);
+          value = deserialize(value, roleType.objectType);
         } else {
           if (roleType.isMany) {
             value = (value as string).split(Compressor.itemSeparator);

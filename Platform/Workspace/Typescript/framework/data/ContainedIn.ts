@@ -1,5 +1,5 @@
 import { PropertyType } from '../meta';
-import { CompositeTypes } from '../protocol/Types';
+import { CompositeTypes } from '../protocol/Serialization';
 import { ISessionObject } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 import { Extent } from './Extent';

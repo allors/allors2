@@ -8,7 +8,7 @@ import { Method } from './Method';
 import { ISession, Session } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
 import { Operations } from '../protocol/Operations';
-import { unitToString } from '../protocol/Convert';
+import { serialize } from '../protocol/Serialization';
 
 export interface IObject {
   id: string;
@@ -306,7 +306,7 @@ export class SessionObject implements ISessionObject {
 
         let role = value;
         if (roleType.objectType.isUnit) {
-          role = unitToString(role, roleType.objectType);
+          role = serialize(role, roleType.objectType);
           saveRole.s = role;
         } else {
           if (roleType.isOne) {

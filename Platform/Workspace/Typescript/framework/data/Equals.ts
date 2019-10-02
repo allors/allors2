@@ -1,5 +1,5 @@
 import { PropertyType } from '../meta';
-import { UnitTypes, CompositeTypes } from '../protocol/Types';
+import { UnitTypes, CompositeTypes, serialize } from '../protocol/Serialization';
 import { ISessionObject } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
@@ -24,7 +24,7 @@ export class Equals extends ParametrizedPredicate {
       kind: 'Equals',
       propertytype: this.propertyType.id,
       parameter: this.parameter,
-      value: this.value,
+      value: serialize(this.value, this.propertyType.objectType),
       object: this.object && (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object
     };
   }

@@ -1,5 +1,5 @@
 import { RoleType } from '../meta';
-import { UnitTypes } from '../protocol/Types';
+import { UnitTypes, serializeArray } from '../protocol/Serialization';
 import { Predicate } from './Predicate';
 
 export class Between implements Predicate {
@@ -20,7 +20,7 @@ export class Between implements Predicate {
       kind: 'Between',
       roleType: this.roleType.id,
       param: this.param,
-      values: this.values,
+      values: serializeArray(this.values, this.roleType.objectType),
     };
   }
 }
