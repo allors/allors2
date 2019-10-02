@@ -8,6 +8,7 @@ import { Method } from './Method';
 import { ISession, Session } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
 import { Operations } from '../protocol/Operations';
+import { unitToString } from '../protocol/Convert';
 
 export interface IObject {
   id: string;
@@ -300,17 +301,12 @@ export class SessionObject implements ISessionObject {
     if (this.changedRoleByRoleType) {
 
       for (const [roleType, value] of this.changedRoleByRoleType) {
-        let role = value;
-        if (role instanceof Date) {
-          role = (role as Date).toISOString();
-        }
-
-        // TODO: Unit conversion
-
         const saveRole = new PushRequestRole();
         saveRole.t = roleType.name;
 
+        let role = value;
         if (roleType.objectType.isUnit) {
+          role = unitToString(role, roleType.objectType);
           saveRole.s = role;
         } else {
           if (roleType.isOne) {

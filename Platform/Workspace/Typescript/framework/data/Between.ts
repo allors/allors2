@@ -1,10 +1,11 @@
 import { RoleType } from '../meta';
+import { UnitTypes } from '../protocol/Types';
 import { Predicate } from './Predicate';
 
 export class Between implements Predicate {
   public roleType: RoleType;
   public param: string;
-  public values: any[];
+  public values: UnitTypes[];
 
   constructor(fields?: Partial<Between>| RoleType) {
     if ((fields as RoleType).objectType) {

@@ -4,9 +4,7 @@ import { IWorkspace, Workspace } from './Workspace';
 import { Permission } from './Permission';
 import { AccessControl } from './AccessControl';
 import { Compressor } from '../protocol/Compressor';
-import { ids } from '../../meta';
-
-import Decimal from 'decimal.js';
+import { stringToUnit } from '../protocol/Convert';
 
 export interface IWorkspaceObject {
   workspace: IWorkspace;
@@ -47,20 +45,7 @@ export class WorkspaceObject implements IWorkspaceObject {
         let value: any = role.v;
 
         if (roleType.objectType.isUnit) {
-          switch (roleType.objectType.id) {
-            case ids.Boolean:
-              value = value === 'true';
-              break;
-            case ids.Float:
-              value = parseFloat(value);
-              break;
-            case ids.Integer:
-              value = parseInt(value, 10);
-              break;
-            case ids.Decimal:
-              value = new Decimal(value);
-              break;
-          }
+          value = stringToUnit(value, roleType.objectType);
         } else {
           if (roleType.isMany) {
             value = (value as string).split(Compressor.itemSeparator);

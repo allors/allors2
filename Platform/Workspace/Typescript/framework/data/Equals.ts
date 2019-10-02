@@ -1,11 +1,12 @@
 import { PropertyType } from '../meta';
+import { UnitTypes, CompositeTypes } from '../protocol/Types';
 import { ISessionObject } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
 export class Equals extends ParametrizedPredicate {
   public propertyType: PropertyType;
-  public value: string | Date | boolean | number;
-  public object: ISessionObject | string;
+  public value: UnitTypes;
+  public object: CompositeTypes;
 
   constructor(fields?: Partial<Equals> | PropertyType) {
     super();

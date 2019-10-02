@@ -1,12 +1,12 @@
 import { PropertyType } from '../meta';
-
+import { CompositeTypes } from '../protocol/Types';
 import { ISessionObject } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
 export class Contains extends ParametrizedPredicate {
   public propertyType: PropertyType;
   public parameter: string;
-  public object: ISessionObject | string;
+  public object: CompositeTypes;
 
   constructor(fields?: Partial<Contains> | PropertyType) {
 

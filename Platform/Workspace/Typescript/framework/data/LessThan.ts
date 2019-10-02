@@ -1,10 +1,10 @@
 import { RoleType } from '../meta';
-
+import { UnitTypes } from '../protocol/Types';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
 export class LessThan extends ParametrizedPredicate {
   public roleType: RoleType;
-  public value: string | Date | boolean | number;
+  public value: UnitTypes;
 
   constructor(fields?: Partial<LessThan> | RoleType) {
     super();

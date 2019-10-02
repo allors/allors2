@@ -1,5 +1,5 @@
 import { PropertyType } from '../meta';
-
+import { CompositeTypes } from '../protocol/Types';
 import { ISessionObject } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 import { Extent } from './Extent';
@@ -7,7 +7,7 @@ import { Extent } from './Extent';
 export class ContainedIn extends ParametrizedPredicate {
   public propertyType: PropertyType;
   public extent: Extent;
-  public objects: Array<ISessionObject | string>;
+  public objects: Array<CompositeTypes>;
 
   constructor(fields?: Partial<ContainedIn> | PropertyType) {
     super();

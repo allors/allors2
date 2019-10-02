@@ -4,7 +4,7 @@ import { ParametrizedPredicate } from './ParametrizedPredicate';
 
 export class Like extends ParametrizedPredicate {
   public roleType: RoleType;
-  public value: any;
+  public value: string;
 
   constructor(fields?: Partial<Like> | RoleType) {
     super();
