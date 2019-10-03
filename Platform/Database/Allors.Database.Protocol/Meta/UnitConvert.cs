@@ -22,17 +22,17 @@ namespace Allors.Protocol.Data
             switch (objectTypeId)
             {
                 case var u when u == UnitIds.DateTime:
-                    return DateTime.Parse(value).ToUniversalTime();
+                    return XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.Utc);
                 case var u when u == UnitIds.Binary:
                     return Convert.FromBase64String(value);
                 case var u when u == UnitIds.Boolean:
-                    return bool.Parse(value);
+                    return XmlConvert.ToBoolean(value);
                 case var u when u == UnitIds.Decimal:
-                    return decimal.Parse(value, CultureInfo.InvariantCulture);
+                    return XmlConvert.ToDecimal(value);
                 case var u when u == UnitIds.Float:
-                    return double.Parse(value, CultureInfo.InvariantCulture);
+                    return XmlConvert.ToDouble(value);
                 case var u when u == UnitIds.Integer:
-                    return int.Parse(value, CultureInfo.InvariantCulture);
+                    return XmlConvert.ToInt32(value);
                 case var u when u == UnitIds.String:
                     return value;
                 case var u when u == UnitIds.Unique:
