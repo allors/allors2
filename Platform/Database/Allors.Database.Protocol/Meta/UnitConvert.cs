@@ -22,7 +22,7 @@ namespace Allors.Protocol.Data
             switch (objectTypeId)
             {
                 case var u when u == UnitIds.DateTime:
-                    return DateTime.Parse(value, CultureInfo.InvariantCulture);
+                    return DateTime.Parse(value).ToUniversalTime();
                 case var u when u == UnitIds.Binary:
                     return Convert.FromBase64String(value);
                 case var u when u == UnitIds.Boolean:

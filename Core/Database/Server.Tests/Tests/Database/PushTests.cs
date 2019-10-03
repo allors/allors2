@@ -9,7 +9,7 @@ namespace Allors.Server.Tests
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Remote.Push;
-
+    using Protocol;
     using Xunit;
 
     [Collection("Api")]
@@ -18,6 +18,8 @@ namespace Allors.Server.Tests
         [Fact]
         public async void WorkspaceNewObject()
         {
+            var compressor = new Compressor();
+
             var administrator = new Users(this.Session).GetUser("administrator");
             await this.SignIn(administrator);
 
@@ -25,8 +27,9 @@ namespace Allors.Server.Tests
 
             var pushRequest = new PushRequest
             {
-                NewObjects = new[] { new PushRequestNewObject { T = "Build", NI = "-1" }, },
+                NewObjects = new[] { new PushRequestNewObject { T = compressor.Write(M.Build.Class.IdAsString), NI = "-1" }, },
             };
+
             var response = await this.PostAsJsonAsync(uri, pushRequest);
             var pushResponse = await this.ReadAsAsync<PushResponse>(response);
 

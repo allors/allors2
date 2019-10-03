@@ -71,8 +71,9 @@ namespace Allors.Server.Controllers
                 this.Session.Commit();
 
                 responseBuilder.AddObject("unitSample", unitSample);
+                var pullResponse = responseBuilder.Build();
 
-                return this.Ok(responseBuilder.Build());
+                return this.Ok(pullResponse);
             }
             catch (Exception e)
             {
