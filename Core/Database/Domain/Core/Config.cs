@@ -12,11 +12,5 @@ namespace Allors
         public DirectoryInfo DataPath { get; set; }
 
         public bool SetupSecurity { get; set; } = true;
-
-        public bool Demo { get; set; } = false;
-
-        public bool Unit { get; set; } = false;
-
-        public bool End2End { get; set; } = false;
     }
 }

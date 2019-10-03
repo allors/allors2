@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EmailAddressBuilderExtensions.cs" company="Allors bvba">
+// <copyright file="BrandBuilderExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -14,17 +14,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.End2End
+namespace Allors.Domain.TestPopulation
 {
-    public static partial class EmailAddressBuilderExtensions
+    using Bogus;
+
+    public static partial class BrandBuilderExtensions
     {
-        public static EmailAddressBuilder WithDefaults(this EmailAddressBuilder @this, ISession session, Config config)
+        public static BrandBuilder WithDefaults(this BrandBuilder @this)
         {
-            if (config.End2End)
-            {
-                @this.WithElectronicAddressString(config.faker.Internet.Email());
-                @this.WithDescription(config.faker.Lorem.Word());
-            }
+            var faker = @this.Session.Faker();
+
+            @this.WithName(faker.Lorem.Word());
+            @this.WithLogoImage(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
+            @this.WithModel(new ModelBuilder(@this.Session).WithName(faker.Lorem.Word()).Build());
+            @this.WithModel(new ModelBuilder(@this.Session).WithName(faker.Lorem.Word()).Build());
+            @this.WithModel(new ModelBuilder(@this.Session).WithName(faker.Lorem.Word()).Build());
 
             return @this;
         }

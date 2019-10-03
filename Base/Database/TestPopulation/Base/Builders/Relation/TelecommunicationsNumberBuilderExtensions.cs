@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WebAddressBuilderExtensions.cs" company="Allors bvba">
+// <copyright file="TelecommunicationsNumberBuilderExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -14,17 +14,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.End2End
+namespace Allors.Domain.TestPopulation
 {
-    public static partial class WebAddressBuilderExtensions
+    public static partial class TelecommunicationsNumberBuilderExtensions
     {
-        public static WebAddressBuilder WithDefaults(this WebAddressBuilder @this, ISession session, Config config)
+        public static TelecommunicationsNumberBuilder WithDefaults(this TelecommunicationsNumberBuilder @this)
         {
-            if (config.End2End)
-            {
-                @this.WithElectronicAddressString(config.faker.Internet.Url());
-                @this.WithDescription(config.faker.Lorem.Word());
-            }
+            var faker = @this.Session.Faker();
+
+            @this.WithCountryCode(faker.Phone.PhoneNumber("####"));
+            @this.WithContactNumber(faker.Phone.PhoneNumber("## ## ##"));
+            @this.WithDescription(faker.Lorem.Word());
+            @this.WithContactMechanismType(faker.Random.ListItem(@this.Session.Extent<ContactMechanismType>()));
 
             return @this;
         }

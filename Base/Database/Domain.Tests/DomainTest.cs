@@ -12,13 +12,14 @@ namespace Allors
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
+    using Bogus;
     using Microsoft.Extensions.DependencyInjection;
 
     public class DomainTest : IDisposable
     {
         public DomainTest(bool populate = true) => this.Setup(populate);
 
-        public virtual Config Config { get; } = new Config { SetupSecurity = false, Unit = true };
+        public virtual Config Config { get; } = new Config { SetupSecurity = false };
 
         public ISession Session { get; private set; }
 
@@ -46,6 +47,7 @@ namespace Allors
             var services = new ServiceCollection();
             services.AddAllors();
             var serviceProvider = services.BuildServiceProvider();
+            services.AddSingleton<Faker>();
 
             var configuration = new Configuration
             {

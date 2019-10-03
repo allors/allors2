@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ManufacturerIdentificationExtensions.cs" company="Allors bvba">
+// <copyright file="WebAddressBuilderExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -14,17 +14,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.End2End
+namespace Allors.Domain.TestPopulation
 {
-    public static partial class ManufacturerIdentificationExtensions
+    public static partial class WebAddressBuilderExtensions
     {
-        public static ManufacturerIdentificationBuilder WithDefaults(this ManufacturerIdentificationBuilder @this, ISession session, Config config)
+        public static WebAddressBuilder WithDefaults(this WebAddressBuilder @this)
         {
-            if (config.End2End)
-            {
-                @this.WithIdentification(config.faker.Random.AlphaNumeric(9));
-                @this.WithProductIdentificationType(new ProductIdentificationTypes(session).Manufacturer);
-            }
+            var faker = @this.Session.Faker();
+
+            @this.WithElectronicAddressString(faker.Internet.Url());
+            @this.WithDescription(faker.Lorem.Word());
 
             return @this;
         }

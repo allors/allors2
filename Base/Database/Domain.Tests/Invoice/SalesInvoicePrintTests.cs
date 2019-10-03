@@ -11,8 +11,6 @@ namespace Allors.Domain
 
     public class SalesInvoicePrintTests : DomainTest
     {
-        public override Config Config => new Config { Demo = true };
-
         [Fact]
         public void GivenSalesInvoice_WhenCreatingPrintModel_ThenPrintModelIsNotNull()
         {

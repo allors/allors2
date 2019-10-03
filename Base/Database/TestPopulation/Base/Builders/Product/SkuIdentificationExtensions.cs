@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TelecommunicationsNumberBuilderExtensions.cs" company="Allors bvba">
+// <copyright file="SkuIdentificationExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -14,20 +14,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.End2End
+namespace Allors.Domain.TestPopulation
 {
-    public static partial class TelecommunicationsNumberBuilderExtensions
+    public static partial class SkuIdentificationExtensions
     {
-        public static TelecommunicationsNumberBuilder WithDefaults(this TelecommunicationsNumberBuilder @this, ISession session, Config config)
+        public static SkuIdentificationBuilder WithDefaults(this SkuIdentificationBuilder @this)
         {
-            if (config.End2End)
-            {
-                @this.WithCountryCode(config.faker.Phone.PhoneNumber("####"));
-                @this.WithContactNumber(config.faker.Phone.PhoneNumber("## ## ##"));
-                @this.WithDescription(config.faker.Lorem.Word());
-                @this.WithContactMechanismType(config.faker.Random.ListItem(session.Extent<ContactMechanismType>()));
-            }
-
+            var faker = @this.Session.Faker();
+            @this.WithIdentification(faker.Random.AlphaNumeric(7));
+            @this.WithProductIdentificationType(new ProductIdentificationTypes(@this.Session).Sku);
             return @this;
         }
     }

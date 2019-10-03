@@ -16,23 +16,22 @@
 
 using Allors.Meta;
 
-namespace Allors.Domain.End2End
+namespace Allors.Domain.TestPopulation
 {
     public static partial class PostalAddressBuilderExtensions
     {
-        public static PostalAddressBuilder WithDefaults(this PostalAddressBuilder @this, ISession session, Config config)
+        public static PostalAddressBuilder WithDefaults(this PostalAddressBuilder @this)
         {
-            if (config.End2End)
-            {
-                @this.WithAddress1(config.faker.Address.StreetAddress());
-                @this.WithAddress2(config.faker.Address.SecondaryAddress());
-                @this.WithAddress3(config.faker.Address.BuildingNumber());
-                @this.WithPostalCode(config.faker.Address.ZipCode());
-                @this.WithLocality(config.faker.Address.City());
-                @this.WithCountry(new Countries(session).FindBy(M.Country.IsoCode, config.faker.Address.CountryCode()));
-                @this.WithLatitude(config.faker.Address.Latitude());
-                @this.WithLongitude(config.faker.Address.Longitude());
-            }
+            var faker = @this.Session.Faker();
+
+            @this.WithAddress1(faker.Address.StreetAddress());
+            @this.WithAddress2(faker.Address.SecondaryAddress());
+            @this.WithAddress3(faker.Address.BuildingNumber());
+            @this.WithPostalCode(faker.Address.ZipCode());
+            @this.WithLocality(faker.Address.City());
+            @this.WithCountry(new Countries(@this.Session).FindBy(M.Country.IsoCode, faker.Address.CountryCode()));
+            @this.WithLatitude(faker.Address.Latitude());
+            @this.WithLongitude(faker.Address.Longitude());
 
             return @this;
         }

@@ -12,7 +12,7 @@ namespace Allors
         private bool built;
         private Exception exception;
 
-        protected ObjectBuilder(ISession session) => this.DatabaseSession = session;
+        protected ObjectBuilder(ISession session) => this.Session = session;
 
         ~ObjectBuilder()
         {
@@ -22,9 +22,7 @@ namespace Allors
             }
         }
 
-        protected ISession Session => this.DatabaseSession;
-
-        protected ISession DatabaseSession { get; private set; }
+        public ISession Session { get; }
 
         public override void Dispose() => this.Build();
 
@@ -38,7 +36,7 @@ namespace Allors
 
             try
             {
-                var instance = this.DatabaseSession.Create<T>();
+                var instance = this.Session.Create<T>();
                 this.OnBuild(instance);
 
                 instance.OnBuild(x => x.WithBuilder(this));

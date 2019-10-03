@@ -10,7 +10,7 @@ namespace Commands
     using Allors;
     using Allors.Domain;
     using Allors.Services;
-
+    using Bogus;
     using McMaster.Extensions.CommandLineUtils;
 
     using Microsoft.Extensions.Configuration;
@@ -32,6 +32,9 @@ namespace Commands
             this.logger = logger;
         }
 
+        [Option("-d", Description = "Create demo population")]
+        public bool UseDemo { get; set; } = false;
+
         public int OnExecute(CommandLineApplication app)
         {
             this.logger.LogInformation("Begin");
@@ -40,7 +43,7 @@ namespace Commands
 
             using (var session = this.databaseService.Database.CreateSession())
             {
-                var config = new Config { DataPath = this.dataPath, Demo = true, End2End = true};
+                var config = new Config { DataPath = this.dataPath };
                 new Setup(session, config).Apply();
 
                 session.Derive();
@@ -53,6 +56,15 @@ namespace Commands
 
                 session.Derive();
                 session.Commit();
+
+                if (this.UseDemo)
+                {
+                    var faker = new Faker("en");
+                    session.GetSingleton().Full(config.DataPath, faker);
+
+                    session.Derive();
+                    session.Commit();
+                }
             }
 
             this.logger.LogInformation("End");

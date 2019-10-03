@@ -14,6 +14,7 @@ namespace Tests
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
+    using Bogus;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -21,6 +22,7 @@ namespace Tests
     using OpenQA.Selenium;
     using src.app.auth;
     using src.app.main;
+    using Database = Allors.Database.Adapters.SqlClient.Database;
     using ObjectFactory = Allors.ObjectFactory;
 
     public abstract class Test : IDisposable
@@ -70,6 +72,7 @@ namespace Tests
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.AddLogging(builder => builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace));
+            services.AddSingleton<Faker>();
 
             this.ServiceProvider = services.BuildServiceProvider();
 

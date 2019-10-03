@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SkuIdentificationExtensions.cs" company="Allors bvba">
+// <copyright file="ManufacturerIdentificationExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -14,18 +14,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.End2End
+namespace Allors.Domain.TestPopulation
 {
-    public static partial class SkuIdentificationExtensions
+    public static partial class ManufacturerIdentificationExtensions
     {
-        public static SkuIdentificationBuilder WithDefaults(this SkuIdentificationBuilder @this, ISession session, Config config)
+        public static ManufacturerIdentificationBuilder WithDefaults(this ManufacturerIdentificationBuilder @this)
         {
-            if (config.End2End)
-            {
-                @this.WithIdentification(config.faker.Random.AlphaNumeric(7));
-                @this.WithProductIdentificationType(new ProductIdentificationTypes(session).Sku);
-            }
-
+            var faker = @this.Session.Faker();
+            @this.WithIdentification(faker.Random.AlphaNumeric(9));
+            @this.WithProductIdentificationType(new ProductIdentificationTypes(@this.Session).Manufacturer);
             return @this;
         }
     }

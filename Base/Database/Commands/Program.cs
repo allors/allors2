@@ -8,6 +8,7 @@ namespace Commands
     using System;
     using System.IO;
     using Allors.Services;
+    using Bogus;
     using McMaster.Extensions.CommandLineUtils;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,7 @@ namespace Commands
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.AddLogging(builder => builder.SetMinimumLevel(LogLevel.Trace));
+            services.AddSingleton<Faker>();
 
             var serviceProvider = services.BuildServiceProvider();
 

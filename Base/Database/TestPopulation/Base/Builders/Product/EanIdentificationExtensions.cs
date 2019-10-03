@@ -14,18 +14,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.End2End
+namespace Allors.Domain.TestPopulation
 {
     public static partial class EanIdentificationExtensions
     {
-        public static EanIdentificationBuilder WithDefaults(this EanIdentificationBuilder @this, ISession session, Config config)
+        public static EanIdentificationBuilder WithDefaults(this EanIdentificationBuilder @this)
         {
-            if (config.End2End)
-            {
-                @this.WithIdentification(config.faker.Commerce.Ean13());
-                @this.WithProductIdentificationType(new ProductIdentificationTypes(session).Ean);
-            }
-
+            var faker = @this.Session.Faker();
+            @this.WithIdentification(faker.Commerce.Ean13());
+            @this.WithProductIdentificationType(new ProductIdentificationTypes(@this.Session).Ean);
             return @this;
         }
     }

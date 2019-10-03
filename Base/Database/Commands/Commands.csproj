@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
+    <ProjectReference Include="..\TestPopulation\TestPopulation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

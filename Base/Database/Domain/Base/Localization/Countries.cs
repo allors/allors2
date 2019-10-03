@@ -9,14 +9,14 @@ namespace Allors.Domain
 
     public partial class Countries
     {
-        internal static List<string> EuMemberStates = new List<string>
+        public static List<string> EuMemberStates = new List<string>
             {
                 "BE", "BG", "CZ", "DK", "DE", "EE", "IE", "GR", "ES",
                 "FR", "IT", "CY", "LV", "LT", "LU", "HU", "MT", "NL",
                 "AT", "PL", "PT", "RO", "SI", "SK", "FI", "SE", "GB",
             };
 
-        internal static Dictionary<string, IbanData> IbanDataByCountry = new Dictionary<string, IbanData>
+        public static Dictionary<string, IbanData> IbanDataByCountry = new Dictionary<string, IbanData>
             {
                 { "AD", new IbanData(24, @"\d{8}[a-zA-Z0-9]{12}") },
                 { "AL", new IbanData(28, @"\d{8}[a-zA-Z0-9]{16}") },
@@ -70,7 +70,7 @@ namespace Allors.Domain
             };
     }
 
-    internal class IbanData
+    public class IbanData
     {
         public int Lenght;
         public string RegexStructure;
