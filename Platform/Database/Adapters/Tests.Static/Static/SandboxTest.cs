@@ -93,7 +93,7 @@ namespace Allors.Database.Adapters
 
                 var extent = new Filter(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Argument = "pString" },
+                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
                 };
 
                 var objects = this.Session.Resolve<C1>(extent, new Dictionary<string, string> { { "pString", "ᴀbra" } });
@@ -112,7 +112,7 @@ namespace Allors.Database.Adapters
 
                 var extent = new Filter(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Argument = "pString" },
+                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
                 };
 
                 var objects = this.Session.Resolve<C1>(extent);
@@ -159,7 +159,7 @@ namespace Allors.Database.Adapters
 
                 var extent = new Filter(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Argument = "pString" },
+                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
                 };
 
                 var schemaExtent = extent.Save();
@@ -172,7 +172,7 @@ namespace Allors.Database.Adapters
 
                 Assert.NotNull(predicate);
                 Assert.Equal(PredicateKind.Equals, predicate.Kind);
-                Assert.Equal("pString", predicate.Argument);
+                Assert.Equal("pString", predicate.Parameter);
             }
         }
 

@@ -23,7 +23,7 @@ namespace Tests
         {
             var filter = new Filter(M.Person.ObjectType)
             {
-                Predicate = new Equals { PropertyType = M.Person.FirstName, Argument = "firstName" },
+                Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" },
             };
 
             var arguments = new Dictionary<string, string> { { "firstName", "John" } };
@@ -40,7 +40,7 @@ namespace Tests
         {
             var filter = new Filter(M.Person.ObjectType)
             {
-                Predicate = new Equals { PropertyType = M.Person.FirstName, Argument = "firstName" },
+                Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" },
             };
 
             var queryExtent = filter.Build(this.Session);
@@ -63,12 +63,12 @@ namespace Tests
                                     new Equals
                                         {
                                             PropertyType = M.Person.FirstName,
-                                            Argument = "firstName",
+                                            Parameter = "firstName",
                                         },
                                     new Equals
                                         {
                                             PropertyType = M.Person.LastName,
-                                            Argument = "lastName"
+                                            Parameter = "lastName"
                                         },
                                 },
                 },
@@ -102,12 +102,12 @@ namespace Tests
                             new Equals
                                 {
                                     PropertyType = M.Person.FirstName,
-                                    Argument = "firstName",
+                                    Parameter = "firstName",
                                 },
                             new Equals
                                 {
                                     PropertyType = M.Person.LastName,
-                                    Argument = "lastName"
+                                    Parameter = "lastName"
                                 },
                         },
                 },
@@ -147,7 +147,7 @@ namespace Tests
                         Predicate = new Equals
                         {
                             PropertyType = M.Person.Gender,
-                            Argument = "gender",
+                            Parameter = "gender",
                         },
                     },
                 },
@@ -179,7 +179,7 @@ namespace Tests
                         Predicate = new Equals
                         {
                             PropertyType = M.Person.Gender,
-                            Argument = "gender",
+                            Parameter = "gender",
                         },
                     },
                 },
@@ -210,7 +210,7 @@ namespace Tests
                                 Predicate = new ContainedIn
                                 {
                                     PropertyType = M.Person.Gender,
-                                    Argument = "gender",
+                                    Parameter = "gender",
                                 },
                             },
                         },
@@ -243,7 +243,7 @@ namespace Tests
                                                  Predicate = new Contains
                                                                  {
                                                                      PropertyType = M.Person.Gender,
-                                                                     Argument = "gender",
+                                                                     Parameter = "gender",
                                                                  },
                                              },
                             },
