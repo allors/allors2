@@ -146,15 +146,15 @@ export class Session implements ISession {
         const newId = pushResponseNewObject.ni;
         const id = pushResponseNewObject.i;
 
-        const newSessionObject = this.newSessionObjectById.get(newId);
-        delete newSessionObject.newId;
-        newSessionObject.workspaceObject = this.workspace.new(id, newSessionObject.objectType);
+        const sessionObject = this.newSessionObjectById.get(newId);
+        delete sessionObject.newId;
+        sessionObject.workspaceObject = this.workspace.new(id, sessionObject.objectType);
 
         this.newSessionObjectById.delete(newId);
-        this.existingSessionObjectById.set(id, newSessionObject);
+        this.existingSessionObjectById.set(id, sessionObject);
 
-        this.removeByObjectTypeId(newSessionObject.objectType, newId);
-        this.addByObjectTypeId(newSessionObject);
+        this.removeByObjectTypeId(sessionObject.objectType, newId);
+        this.addByObjectTypeId(sessionObject);
       });
     }
 

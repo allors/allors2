@@ -18,17 +18,25 @@ namespace Allors.Workspace
 
         private Permission[] deniedPermissions;
 
+        internal WorkspaceObject(Workspace workspace, long objectId, IClass @class)
+        {
+            this.Workspace = workspace;
+            this.Id = objectId;
+            this.Class = @class;
+            this.Version = 0;
+        }
+
         internal WorkspaceObject(SyncResponseContext ctx, SyncResponseObject syncResponseObject)
         {
             this.Workspace = ctx.Workspace;
             this.Id = long.Parse(syncResponseObject.I);
-            this.Version = !string.IsNullOrEmpty(syncResponseObject.V) ? long.Parse(syncResponseObject.V) : 0;
             this.Class = (IClass)ctx.MetaObjectDecompressor.Read(syncResponseObject.T);
+            this.Version = !string.IsNullOrEmpty(syncResponseObject.V) ? long.Parse(syncResponseObject.V) : 0;
             this.Roles = syncResponseObject.R?.Select(v => new WorkspaceRole(ctx.MetaObjectDecompressor, v)).Cast<IWorkspaceRole>().ToArray();
             this.SortedAccessControlIds = ctx.ReadSortedAccessControlIds(syncResponseObject.A);
             this.SortedDeniedPermissionIds = ctx.ReadSortedDeniedPermissionIds(syncResponseObject.D);
         }
-        
+
         public IClass Class { get; }
 
         public long Id { get; }
@@ -73,7 +81,5 @@ namespace Allors.Workspace
 
             return false;
         }
-
-        internal void Invalidate() => this.Version = -1;
     }
 }

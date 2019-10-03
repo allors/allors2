@@ -240,11 +240,11 @@ namespace Allors.Workspace
             }
         }
 
-        /// <summary>
-        /// Invalidates the object in order to force a sync on next pull.
-        /// </summary>
-        /// <param name="objectId">The object id.</param>
-        /// <param name="class"></param>
-        internal void Invalidate(long objectId, IClass @class) => this.workspaceObjectById[objectId]?.Invalidate();
+        internal WorkspaceObject New(long objectId, IClass @class)
+        {
+            var workspaceObject = new WorkspaceObject(this, objectId, @class);
+            this.workspaceObjectById[objectId] = workspaceObject;
+            return workspaceObject;
+        }
     }
 }
