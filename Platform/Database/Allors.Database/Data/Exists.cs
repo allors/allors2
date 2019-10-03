@@ -15,7 +15,7 @@ namespace Allors.Data
     {
         public Exists(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
-        public string Argument { get; set; }
+        public string Parameter { get; set; }
 
         public IPropertyType PropertyType { get; set; }
 
@@ -24,16 +24,16 @@ namespace Allors.Data
             {
                 Kind = PredicateKind.Exists,
                 PropertyType = this.PropertyType?.Id,
-                Argument = this.Argument,
+                Parameter = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
 
-        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Argument != null && (parameters == null || !parameters.ContainsKey(this.Argument));
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Parameter != null && (parameters == null || !parameters.ContainsKey(this.Parameter));
 
         void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var parameter = this.Argument != null ? parameters[this.Argument] : null;
+            var parameter = this.Parameter != null ? parameters[this.Parameter] : null;
             var propertyType = Guid.TryParse(parameter, out var metaObjectId) ? (IPropertyType)session.GetMetaObject(metaObjectId) : this.PropertyType;
 
             if (propertyType != null)

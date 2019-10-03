@@ -66,7 +66,7 @@ namespace Allors.Workspace.Data
                 PropertyType = this.PropertyType?.Id,
                 Extent = this.Extent?.ToJson(),
                 Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
-                Argument = this.Parameter,
+                Parameter = this.Parameter,
             };
     }
 }

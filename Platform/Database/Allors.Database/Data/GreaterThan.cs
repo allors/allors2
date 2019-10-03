@@ -18,7 +18,7 @@ namespace Allors.Data
 
         public object Value { get; set; }
 
-        public string Argument { get; set; }
+        public string Parameter { get; set; }
 
         public Predicate Save() =>
             new Predicate
@@ -26,16 +26,16 @@ namespace Allors.Data
                 Kind = PredicateKind.GreaterThan,
                 RoleType = this.RoleType?.Id,
                 Value = UnitConvert.ToString(this.Value),
-                Argument = this.Argument,
+                Parameter = this.Parameter,
             };
 
         bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
 
-        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Argument != null && (parameters == null || !parameters.ContainsKey(this.Argument));
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Parameter != null && (parameters == null || !parameters.ContainsKey(this.Parameter));
 
         void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var value = this.Argument != null ? parameters[this.Argument] : this.Value;
+            var value = this.Parameter != null ? parameters[this.Parameter] : this.Value;
 
             compositePredicate.AddGreaterThan(this.RoleType, value);
         }

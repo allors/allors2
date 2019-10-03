@@ -73,7 +73,11 @@ export class Session implements ISession {
     return sessionObject;
   }
 
-  public create(objectType: ObjectType): ISessionObject {
+  public create(objectType: ObjectType | string): ISessionObject {
+
+    if (typeof objectType === 'string') {
+      objectType = this.workspace.metaPopulation.objectTypeByName.get(objectType);
+    }
 
     const constructor: any = this.workspace.constructorByObjectType.get(objectType);
     const newSessionObject: ISessionObject = new constructor();

@@ -21,13 +21,13 @@ namespace Allors.Data
 
         public IEnumerable<IObject> Objects { get; set; }
 
-        public string Argument { get; set; }
+        public string Parameter { get; set; }
 
         bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters)
         {
-            if (this.Argument != null)
+            if (this.Parameter != null)
             {
-                if (parameters == null || !parameters.ContainsKey(this.Argument))
+                if (parameters == null || !parameters.ContainsKey(this.Parameter))
                 {
                     return false;
                 }
@@ -43,9 +43,9 @@ namespace Allors.Data
 
         bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters)
         {
-            if (this.Argument != null)
+            if (this.Parameter != null)
             {
-                if (parameters == null || !parameters.ContainsKey(this.Argument))
+                if (parameters == null || !parameters.ContainsKey(this.Parameter))
                 {
                     return true;
                 }
@@ -66,12 +66,12 @@ namespace Allors.Data
                 PropertyType = this.PropertyType?.Id,
                 Extent = this.Extent?.Save(),
                 Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),
-                Argument = this.Argument,
+                Parameter = this.Parameter,
             };
 
         void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var objects = this.Argument != null ? session.GetObjects(parameters[this.Argument]) : this.Objects;
+            var objects = this.Parameter != null ? session.GetObjects(parameters[this.Parameter]) : this.Objects;
 
             if (this.PropertyType is IRoleType roleType)
             {
