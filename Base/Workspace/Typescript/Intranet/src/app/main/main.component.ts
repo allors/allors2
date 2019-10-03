@@ -47,9 +47,7 @@ export class MainComponent extends TestScope implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     menu.forEach(menuItem => {
-      const objectType = this.metaService.m.metaObjectById[
-        menuItem.id
-      ] as ObjectType;
+      const objectType = this.metaService.m.metaObjectById.get(menuItem.id) as ObjectType;
 
       const sideMenuItem: SideMenuItem = {
         icon: menuItem.icon || (objectType && objectType.icon),
@@ -59,9 +57,7 @@ export class MainComponent extends TestScope implements OnInit, OnDestroy {
         children:
           menuItem.children &&
           menuItem.children.map(childMenuItem => {
-            const childObjectType = this.metaService.m.metaObjectById[
-              childMenuItem.id
-            ] as ObjectType;
+            const childObjectType = this.metaService.m.metaObjectById.get(childMenuItem.id) as ObjectType;
             return {
               icon:
                 childMenuItem.icon || (childObjectType && childObjectType.icon),
