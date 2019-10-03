@@ -15,7 +15,7 @@ namespace Components
     {
         public MatDatepicker(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver) =>
-            this.Selector = By.XPath($".//a-mat-datepicker{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//input");
+            this.Selector = By.XPath($".//a-mat-datepicker{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsString}']//input");
 
         public override By Selector { get; }
 

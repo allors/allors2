@@ -30,7 +30,7 @@ namespace Tests
         {
             this.Driver.WaitForAngular();
 
-            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@doe.org");
+            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@example.com");
 
             var before = new Datas(this.Session).Extent().ToArray();
 

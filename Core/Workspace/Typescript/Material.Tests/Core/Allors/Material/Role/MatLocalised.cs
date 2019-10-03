@@ -13,7 +13,7 @@ namespace Components
     {
         public MatLocalised(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver) =>
-            this.Selector = By.XPath($".//a-mat-static{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
+            this.Selector = By.XPath($".//a-mat-static{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsString}']");
 
         public MatLocalised(IWebDriver driver, By selector)
             : base(driver) =>

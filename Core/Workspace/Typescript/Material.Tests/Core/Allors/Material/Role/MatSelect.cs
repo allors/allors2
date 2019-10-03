@@ -15,8 +15,8 @@ namespace Components
         public MatSelect(IWebDriver driver, RoleType roleType, params string[] scopes) : base(driver)
         {
             this.Selector = By.XPath($".//a-mat-select{this.ByScopesPredicate(scopes)}");
-            this.ArrowSelector = new ByChained(this.Selector, By.XPath($".//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']//*[contains(@class,'mat-select-arrow')]"));
-            this.ValueTextSelector = new ByChained(this.Selector, By.XPath($".//mat-select[@data-allors-roletype='{roleType.IdAsNumberString}']/*[contains(@class,'mat-select-value-text')]"));
+            this.ArrowSelector = new ByChained(this.Selector, By.XPath($".//mat-select[@data-allors-roletype='{roleType.IdAsString}']//*[contains(@class,'mat-select-arrow')]"));
+            this.ValueTextSelector = new ByChained(this.Selector, By.XPath($".//mat-select[@data-allors-roletype='{roleType.IdAsString}']/*[contains(@class,'mat-select-value-text')]"));
         }
 
         public override By Selector { get; }

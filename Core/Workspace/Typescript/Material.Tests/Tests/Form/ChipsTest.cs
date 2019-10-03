@@ -27,11 +27,11 @@ namespace Tests
         [Fact]
         public void AddOne()
         {
-            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@doe.org");
+            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@example.com");
 
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.Chips.Add("jane", "jane@doe.org");
+            this.page.Chips.Add("jane", "jane@example.com");
 
             this.page.SAVE.Click();
 
@@ -50,14 +50,14 @@ namespace Tests
         [Fact]
         public void AddTwo()
         {
-            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@doe.org");
-            var john = new People(this.Session).FindBy(M.Person.UserName, "john@doe.org");
+            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@example.com");
+            var john = new People(this.Session).FindBy(M.Person.UserName, "john@example.com");
 
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.Chips.Add("jane", "jane@doe.org");
+            this.page.Chips.Add("jane", "jane@example.com");
 
-            this.page.Chips.Add("john", "john@doe.org");
+            this.page.Chips.Add("john", "john@example.com");
 
             this.page.SAVE.Click();
 
@@ -79,11 +79,11 @@ namespace Tests
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.Chips.Add("jane", "jane@doe.org");
+            this.page.Chips.Add("jane", "jane@example.com");
 
             this.page.SAVE.Click();
 
-            this.page.Chips.Remove("jane@doe.org");
+            this.page.Chips.Remove("jane@example.com");
 
             this.page.SAVE.Click();
 

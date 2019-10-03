@@ -7,6 +7,7 @@ namespace Tests
 {
     using System;
     using System.Globalization;
+    using System.IO;
     using Allors;
     using Allors.Database.Adapters.SqlClient;
     using Allors.Domain;
@@ -41,16 +42,15 @@ namespace Tests
             CultureInfo.CurrentCulture = new CultureInfo("nl-BE");
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
 
-            const string FileName = @"base.appSettings.json";
-            var userSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/allors/{FileName}";
-            var systemSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}/allors/{FileName}";
 
-            var appConfiguration = new ConfigurationBuilder()
-                .AddJsonFile(@"appSettings.json")
-                .AddJsonFile(systemSettings, true)
-                .AddJsonFile(userSettings, true)
-                .AddEnvironmentVariables()
-                .Build();
+
+            const string root = "/config/core";
+            var configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddCrossPlatform(".");
+            configurationBuilder.AddCrossPlatform(root);
+            configurationBuilder.AddCrossPlatform(Path.Combine(root, "commands"));
+            configurationBuilder.AddEnvironmentVariables();
+            var appConfiguration = configurationBuilder.Build();
 
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
 

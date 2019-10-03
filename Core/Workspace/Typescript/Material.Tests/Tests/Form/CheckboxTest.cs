@@ -27,7 +27,7 @@ namespace Tests
         [Fact]
         public void Initial()
         {
-            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@doe.org");
+            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@example.com");
 
             var before = new Datas(this.Session).Extent().ToArray();
 

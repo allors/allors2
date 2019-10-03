@@ -35,13 +35,7 @@ namespace Allors.Meta
                 this.MetaPopulation.Stale();
             }
         }
-
-        /// <summary>
-        /// Gets the id as a number only string.
-        /// </summary>
-        /// <value>The id as a number only string.</value>
-        public string IdAsNumberString => this.Id.ToString("N");
-
+        
         /// <summary>
         /// Gets the id as a string.
         /// </summary>

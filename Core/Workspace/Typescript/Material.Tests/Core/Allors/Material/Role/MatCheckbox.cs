@@ -14,7 +14,7 @@ namespace Components
     {
         public MatCheckbox(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver) =>
-            this.Selector = By.XPath($".//a-mat-checkbox{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']");
+            this.Selector = By.XPath($".//a-mat-checkbox{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsString}']");
 
         public override By Selector { get; }
 

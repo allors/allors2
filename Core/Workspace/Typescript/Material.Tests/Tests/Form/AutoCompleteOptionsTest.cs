@@ -27,11 +27,11 @@ namespace Tests
         [Fact]
         public void Initial()
         {
-            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@doe.org");
+            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@example.com");
 
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.AutocompleteOptions.Select("jane", "jane@doe.org");
+            this.page.AutocompleteOptions.Select("jane", "jane@example.com");
 
             this.page.SAVE.Click();
 

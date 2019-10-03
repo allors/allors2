@@ -25,7 +25,7 @@ namespace Tests.Relations
         [Fact]
         public void Title()
         {
-            var person = new People(this.Session).FindBy(M.Person.UserName, "john@doe.org");
+            var person = new People(this.Session).FindBy(M.Person.UserName, "john@example.com");
             this.people.Select(person);
             Assert.Equal("Person Overview", this.Driver.Title);
         }

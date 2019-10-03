@@ -15,7 +15,7 @@ namespace Components
     {
         public MatSlider(IWebDriver driver, RoleType roleType, params string[] scopes)
         : base(driver) =>
-            this.Selector = By.XPath($".//a-mat-slider{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsNumberString}']//mat-slider");
+            this.Selector = By.XPath($".//a-mat-slider{this.ByScopesPredicate(scopes)}//*[@data-allors-roletype='{roleType.IdAsString}']//mat-slider");
 
         public override By Selector { get; }
 
