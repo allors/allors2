@@ -12,7 +12,6 @@ namespace Allors.Server
     using Allors.Protocol.Remote.Push;
     using Protocol;
     using Protocol.Data;
-    using Workspace;
     using ISession = Allors.ISession;
 
     public class PushResponseBuilder
@@ -174,9 +173,7 @@ namespace Allors.Server
                 var roleTypes = composite.WorkspaceRoleTypes;
                 var acl = this.acls[obj];
 
-                var roleTypeName = pushRequestRole.T;
-                var roleType = roleTypes.FirstOrDefault(v => v.PropertyName.Equals(roleTypeName));
-
+                var roleType = (IRoleType)this.metaObjectDecompressor.Read(pushRequestRole.T);
                 if (roleType != null)
                 {
                     if (acl.CanWrite(roleType))

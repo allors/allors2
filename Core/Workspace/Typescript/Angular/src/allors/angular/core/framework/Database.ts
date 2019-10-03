@@ -72,7 +72,7 @@ export class Database {
 
   security(securityRequest: SecurityRequest): Observable<SecurityResponse> {
 
-    const service = this.fullyQualifiedUrl(services.sync);
+    const service = this.fullyQualifiedUrl(services.security);
     return this.http
       .post<SecurityResponse>(service, securityRequest)
       .pipe(
