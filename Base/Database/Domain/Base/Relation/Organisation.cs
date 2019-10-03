@@ -277,6 +277,16 @@ namespace Allors.Domain
                 this.ContactsUserGroup = new UserGroupBuilder(this.Strategy.Session).WithName(customerContactGroupName).Build();
             }
 
+            this.CurrentSuppliers = this.SupplierRelationshipsWhereInternalOrganisation
+                .Where(v => v.FromDate <= this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= this.Strategy.Session.Now()))
+                .Select(v => v.Supplier)
+                .ToArray();
+
+            this.CurrentCustomers = this.CustomerRelationshipsWhereCustomer
+                .Where(v => v.FromDate <= this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= this.Strategy.Session.Now()))
+                .Select(v => v.Customer)
+                .ToArray();
+
             var allContactRelationships = this.OrganisationContactRelationshipsWhereOrganisation.ToArray();
             var allContacts = allContactRelationships.Select(v => v.Contact);
 
