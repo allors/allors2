@@ -46,8 +46,8 @@ namespace Allors
         {
             var services = new ServiceCollection();
             services.AddAllors();
-            var serviceProvider = services.BuildServiceProvider();
             services.AddSingleton<Faker>();
+            var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration
             {

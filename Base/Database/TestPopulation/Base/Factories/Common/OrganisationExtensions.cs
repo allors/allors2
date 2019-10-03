@@ -101,12 +101,12 @@ namespace Allors
                     .WithPart(part);
             }
 
-            new InventoryItemTransactionBuilder(@this.Session())
-                .WithPart(part)
-                .WithFacility(@this.FacilitiesWhereOwner.First)
-                .WithQuantity(faker.Random.Number(1000))
-                .WithReason(new InventoryTransactionReasons(@this.Session()).Unknown)
-                .Build();
+            //new InventoryItemTransactionBuilder(@this.Session())
+            //    .WithPart(part)
+            //    .WithFacility(@this.FacilitiesWhereOwner.First)
+            //    .WithQuantity(faker.Random.Number(1))
+            //    .WithReason(new InventoryTransactionReasons(@this.Session()).Unknown)
+            //    .Build();
 
             return part;
         }

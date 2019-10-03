@@ -34,8 +34,7 @@ namespace Allors.Domain
             session.Derive();
             session.Commit();
 
-            var faker = new Faker("en");
-            this.Session.GetSingleton().Full(config.DataPath, faker);
+            this.Session.GetSingleton().Full(config.DataPath, session.Faker());
 
             session.Derive();
             session.Commit();
