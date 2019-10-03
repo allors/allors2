@@ -53,13 +53,13 @@ namespace Allors.Domain.TestPopulation
             @this.WithTransportCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
             @this.WithExpectedRentalPriceFullService(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 10)));
             @this.WithExpectedRentalPriceDryLease(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 20)));
-            //@this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            //@this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            //@this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            //@this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            //@this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            //@this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            //@this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
+            @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
+            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
+            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
+            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
+            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
+            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
+            @this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
             @this.WithAvailableForSale(faker.Random.Bool());
 
             if (state.IsSold)

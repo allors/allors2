@@ -58,9 +58,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithInternalComment(faker.Lorem.Words().ToString());
             @this.WithKeywords(faker.Lorem.Words().ToString());
             @this.WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece);
-            //@this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
-            //@this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
-            //@this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
+            @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
+            @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
+            @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
             @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
             @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc2.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
             @this.WithProductIdentification(new SkuIdentificationBuilder(@this.Session).WithDefaults().Build());
@@ -123,9 +123,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithInternalComment(faker.Lorem.Words().ToString());
             @this.WithKeywords(faker.Lorem.Words().ToString());
             @this.WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece);
-            //@this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
-            //@this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
-            //@this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
+            @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
+            @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
+            @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
             @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
             @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc2.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
             @this.WithProductIdentification(new SkuIdentificationBuilder(@this.Session).WithDefaults().Build());

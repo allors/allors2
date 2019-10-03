@@ -25,7 +25,7 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             @this.WithName(faker.Lorem.Word());
-            //@this.WithLogoImage(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
+            @this.WithLogoImage(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
             @this.WithModel(new ModelBuilder(@this.Session).WithName(faker.Lorem.Word()).Build());
             @this.WithModel(new ModelBuilder(@this.Session).WithName(faker.Lorem.Word()).Build());
             @this.WithModel(new ModelBuilder(@this.Session).WithName(faker.Lorem.Word()).Build());

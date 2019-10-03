@@ -76,7 +76,9 @@ namespace Allors
                 new SupplierOfferingBuilder(@this.Session())
                     .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
                     .WithSupplier(supplier)
-                    .WithPart(part);
+                    .WithPart(part)
+                    .WithUnitOfMeasure(part.UnitOfMeasure)
+                    .Build();
             }
 
             new InventoryItemTransactionBuilder(@this.Session())
@@ -98,7 +100,9 @@ namespace Allors
                 new SupplierOfferingBuilder(@this.Session())
                     .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
                     .WithSupplier(supplier)
-                    .WithPart(part);
+                    .WithPart(part)
+                    .WithUnitOfMeasure(part.UnitOfMeasure)
+                    .Build();
             }
 
             //new InventoryItemTransactionBuilder(@this.Session())

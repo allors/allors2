@@ -263,7 +263,7 @@ namespace Allors
                 .WithElectronicAddressString("recipient@acme.com")
                 .Build();
 
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var b2BCustomer = allors.CreateB2BCustomer(faker);
 
@@ -419,7 +419,7 @@ line2")
                     .WithVatRegime(new VatRegimes(@this.Session()).Assessable)
                     .Build();
 
-                for (var j = 0; j < 30; j++)
+                for (var j = 0; j < 3; j++)
                 {
                     var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session())
                         .WithDescription("Extra Charge")
@@ -431,6 +431,8 @@ line2")
                     salesInvoice.AddSalesInvoiceItem(salesInvoiceItem);
                 }
             }
+
+            @this.Session().Derive();
 
             for (var i = 0; i < 4; i++)
             {
