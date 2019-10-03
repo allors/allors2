@@ -10,7 +10,10 @@ namespace Allors.Server
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Remote.Push;
+    using Protocol;
     using Protocol.Data;
+    using Workspace;
+    using ISession = Allors.ISession;
 
     public class PushResponseBuilder
     {
@@ -18,6 +21,7 @@ namespace Allors.Server
         private readonly PushRequest pushRequest;
         private readonly User user;
         private readonly AccessControlLists acls;
+        private readonly MetaObjectDecompressor metaObjectDecompressor;
 
         public PushResponseBuilder(ISession session, User user, PushRequest pushRequest)
         {
@@ -25,6 +29,9 @@ namespace Allors.Server
             this.user = user;
             this.pushRequest = pushRequest;
             this.acls = new AccessControlLists(this.user);
+
+            var compressor = new Decompressor();
+            this.metaObjectDecompressor = new MetaObjectDecompressor(compressor, session.Database.MetaPopulation);
         }
 
         public PushResponse Build()
@@ -39,7 +46,7 @@ namespace Allors.Server
                     x => x.NI,
                     x =>
                         {
-                            var cls = this.session.Database.MetaPopulation.FindClassByName(x.T);
+                            var cls = (IClass)this.metaObjectDecompressor.Read(x.T);
                             return (IObject)Allors.ObjectBuilder.Build(this.session, cls);
                         });
             }
