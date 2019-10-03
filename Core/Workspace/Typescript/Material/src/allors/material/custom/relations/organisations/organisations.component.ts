@@ -101,7 +101,7 @@ export class OrganisationsComponent extends TestScope implements OnInit, OnDestr
                 Owner: x,
                 Employees: x,
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

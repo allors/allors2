@@ -103,7 +103,7 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
               include: {
                 Pictures: x
               },
-              arguments: this.filterService.arguments(filterFields),
+              parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];
