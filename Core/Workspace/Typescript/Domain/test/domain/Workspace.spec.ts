@@ -105,8 +105,8 @@ describe('Workspace',
 
           const accessControl802 = workspace.accessControlById.get('802');
 
-          for (const permission of accessControl802.permissions) {
-            assert.include(accessControl801.permissions, permission);
+          for (const permission of accessControl802.permissionIds) {
+            assert.include(accessControl801.permissionIds, permission);
           }
 
         });
