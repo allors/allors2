@@ -54,7 +54,7 @@ namespace Allors.Data
                 {
                     if (roleType.ObjectType.IsUnit)
                     {
-                        var equals = this.Parameter != null ? parameters[this.Parameter] : this.Value;
+                        var equals = this.Parameter != null ? UnitConvert.Parse(roleType.ObjectType.Id, parameters[this.Parameter]) : this.Value;
                         if (equals != null)
                         {
                             compositePredicate.AddEquals(roleType, equals);

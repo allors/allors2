@@ -70,8 +70,8 @@ namespace Allors.Server
                     };
                 });
 
-            services.AddControllers();
             services.AddResponseCaching();
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,6 +117,7 @@ namespace Allors.Server
 
             app.ConfigureExceptionHandler(env, loggerFactory);
 
+            app.UseResponseCaching();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -35,7 +35,7 @@ namespace Allors.Data
 
         void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var value = this.Parameter != null ? parameters[this.Parameter] : this.Value;
+            var value = this.Parameter != null ? UnitConvert.Parse(this.RoleType.ObjectType.Id, parameters[this.Parameter]) : this.Value;
 
             compositePredicate.AddGreaterThan(this.RoleType, value);
         }

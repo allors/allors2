@@ -338,8 +338,7 @@ describe('Extent',
         });
       });
 
-
-      describe('with predicate parameters',
+    describe('with predicate parameters',
       () => {
         it('should return results', async () => {
 

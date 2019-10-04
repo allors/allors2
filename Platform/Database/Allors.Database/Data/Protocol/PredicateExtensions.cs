@@ -88,7 +88,7 @@ namespace Allors.Protocol.Data
                             }
                             else if (@this.Value != null)
                             {
-                                var value = Convert.ToValue((IRoleType)propertyType, @this.Value);
+                                var value = UnitConvert.Parse(((IRoleType)propertyType).ObjectType.Id, @this.Value);
                                 equals.Value = value;
                             }
 
@@ -99,7 +99,7 @@ namespace Allors.Protocol.Data
                             return new Between(roleType)
                             {
                                 Parameter = @this.Parameter,
-                                Values = @this.Values?.Select(v => Convert.ToValue(roleType, v)).ToArray(),
+                                Values = @this.Values?.Select(v => UnitConvert.Parse(roleType.ObjectType.Id, v)).ToArray(),
                             };
 
                         case PredicateKind.GreaterThan:
@@ -107,7 +107,7 @@ namespace Allors.Protocol.Data
                             return new GreaterThan(roleType)
                             {
                                 Parameter = @this.Parameter,
-                                Value = Convert.ToValue(roleType, @this.Value),
+                                Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.Value),
                             };
 
                         case PredicateKind.LessThan:
@@ -115,7 +115,7 @@ namespace Allors.Protocol.Data
                             return new LessThan(roleType)
                             {
                                 Parameter = @this.Parameter,
-                                Value = Convert.ToValue(roleType, @this.Value),
+                                Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.Value),
                             };
 
                         case PredicateKind.Like:
@@ -123,7 +123,7 @@ namespace Allors.Protocol.Data
                             return new Like(roleType)
                             {
                                 Parameter = @this.Parameter,
-                                Value = Convert.ToValue(roleType, @this.Value)?.ToString(),
+                                Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.Value)?.ToString(),
                             };
 
                         default:

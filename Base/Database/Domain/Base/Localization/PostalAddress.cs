@@ -23,11 +23,6 @@ namespace Allors.Domain
 
             if (!this.ExistPostalAddressBoundaries)
             {
-                if (!this.ExistCountry || !this.ExistLocality)
-                {
-                    Debugger.Break();
-                }
-
                 derivation.Validation.AssertExists(this, M.PostalAddress.Locality);
                 derivation.Validation.AssertExists(this, M.PostalAddress.Country);
             }
