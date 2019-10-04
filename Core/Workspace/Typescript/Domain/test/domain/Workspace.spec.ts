@@ -5,7 +5,7 @@ import { domain } from '../../src/allors/domain';
 import { MetaPopulation, PullResponse, PushResponse, ResponseType, Session, Workspace } from '../../src/allors/framework';
 import { data, Meta } from '../../src/allors/meta';
 
-import { syncResponse } from './fixture';
+import { syncResponse, securityResponse, securityResponse2 } from './fixture';
 import { Compressor } from '../../src/allors/framework/protocol/Compressor';
 
 describe('Workspace',
@@ -60,7 +60,6 @@ describe('Workspace',
           assert.equal(requireLoad.objects.length, 1);
           assert.equal(requireLoad.objects[0], '103');
         });
-
       },
     );
 
@@ -83,10 +82,33 @@ describe('Workspace',
             responseType: ResponseType.Pull,
           };
 
-          const requireLoad = workspace.diff(pullResponse);
+          const syncRequest = workspace.diff(pullResponse);
 
-          assert.equal(requireLoad.objects.length, 2);
-          assert.sameMembers(requireLoad.objects, ['101', '102']);
+          assert.equal(syncRequest.objects.length, 2);
+          assert.sameMembers(syncRequest.objects, ['101', '102']);
+        });
+      });
+
+
+    describe('call security',
+      () => {
+        beforeEach(() => {
+          workspace.sync(syncResponse(m));
+          workspace.security(securityResponse(m));
+        });
+
+        it('with different accesscontrol but already existing permissions', () => {
+
+          const accessControl801 = workspace.accessControlById.get('801');
+
+          workspace.security(securityResponse2(m));
+
+          const accessControl802 = workspace.accessControlById.get('802');
+
+          for (const permission of accessControl802.permissions) {
+            assert.include(accessControl801.permissions, permission);
+          }
+
         });
       });
   },

@@ -8,6 +8,7 @@ namespace Tests
 {
     using Allors;
     using System;
+    using System.Linq;
     using Allors.Domain;
     using Allors.Meta;
     using Xunit;
@@ -64,6 +65,16 @@ namespace Tests
         //    associationTypePermissions.Filter.AddEquals(M.Permission.OperandTypePointer, relationType.AssociationType.Id);
         //    Assert.Equal(1, associationTypePermissions.Count);
         // }
+
+        [Fact]
+        public void NoPermissionsForAssociationsWhenUnitType()
+        {
+            new Permissions(this.Session).Sync();
+            var permissions = new Permissions(this.Session).Extent().ToArray();
+
+            Assert.Empty(permissions.Where(v=> v.OperandType is AssociationType associationType && associationType.RoleType.ObjectType.IsUnit));
+        }
+        
         [Fact]
         public void WhenSyncingPermissionsThenObsolotePermissionsAreDeleted()
         {

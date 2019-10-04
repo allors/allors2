@@ -7,6 +7,7 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Allors;
     using Allors.Meta;
 
@@ -63,19 +64,13 @@ namespace Allors.Domain
                         foreach (var concreteClass in composite.Classes)
                         {
                             Dictionary<Operations, Permission> permissionByOperation = null;
-                            if (permissionByOperationByConcreteClass != null)
-                            {
-                                permissionByOperationByConcreteClass.TryGetValue(concreteClass, out permissionByOperation);
-                            }
+                            permissionByOperationByConcreteClass?.TryGetValue(concreteClass, out permissionByOperation);
 
                             Operations[] operations = { Operations.Read };
                             foreach (var operation in operations)
                             {
                                 Permission permission = null;
-                                if (permissionByOperation != null)
-                                {
-                                    permissionByOperation.TryGetValue(operation, out permission);
-                                }
+                                permissionByOperation?.TryGetValue(operation, out permission);
 
                                 if (permission == null)
                                 {

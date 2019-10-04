@@ -98,5 +98,24 @@ export function securityResponse(m: Meta): SecurityResponse {
       ['902', c.write(m.Organisation.id), c.write(m.Organisation.Name.id), Operations.Read.toString()],
       ['903', c.write(m.Organisation.id), c.write(m.Organisation.Owner.id), Operations.Write.toString()],
     ]
-  }
+  };
+}
+
+export function securityResponse2(m: Meta): SecurityResponse {
+
+  const c = new Compressor();
+
+  return {
+    responseType: ResponseType.Security,
+    hasErrors: false,
+    accessControls: [{
+      i: '802',
+      v: '1',
+      p: ['902', '903']
+    }],
+    permissions: [
+      ['902', c.write(m.Organisation.id), c.write(m.Organisation.Name.id), Operations.Read.toString()],
+      ['903', c.write(m.Organisation.id), c.write(m.Organisation.Owner.id), Operations.Write.toString()],
+    ]
+  };
 }

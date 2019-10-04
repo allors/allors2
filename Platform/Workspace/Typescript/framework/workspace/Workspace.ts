@@ -252,8 +252,11 @@ export class Workspace implements IWorkspace {
         const operandType = metaDecompress(v[2]) as OperandType;
         const operation = parseInt(v[3], 10);
 
-        const permission = new Permission(id, objectType, operandType, operation);
-        this.permissionById.set(id, permission);
+        let permission = this.permissionById.get(id);
+        if (!permission) {
+          permission = new Permission(id, objectType, operandType, operation);
+          this.permissionById.set(id, permission);
+        }
 
         switch (operation) {
           case Operations.Read:
@@ -275,8 +278,8 @@ export class Workspace implements IWorkspace {
       securityResponse.accessControls.forEach(v => {
         const id = v.i;
         const version = v.v;
-        const permissions = v.p.map(w => this.permissionById.get(w));
-
+        const permissions = new Set<Permission>();
+        v.p.forEach(w => permissions.add(this.permissionById.get(w)));
         const accessControl = new AccessControl(id, version, permissions);
         this.accessControlById.set(id, accessControl);
       });

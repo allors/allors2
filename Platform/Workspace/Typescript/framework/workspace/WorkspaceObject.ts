@@ -26,11 +26,15 @@ export class WorkspaceObject implements IWorkspaceObject {
 
   roleByRoleTypeId: Map<string, any>;
 
-  private accessControls: AccessControl[];
-  private deniedPermissions: Permission[];
+  private cachedSortedAccessControlIds: string;
+  private cachedSortedDeniedPermissionIds: string;
+  private cachedAccessControls: AccessControl[];
+  private cachedDeniedPermissions: Set<Permission>;
 
   constructor(workspace: Workspace) {
     this.workspace = workspace;
+    this.cachedAccessControls = null;
+    this.cachedDeniedPermissions = null;
   }
 
   new(id: string, objectType: ObjectType) {
@@ -39,7 +43,8 @@ export class WorkspaceObject implements IWorkspaceObject {
     this.version = '0';
   }
 
-  sync(syncResponseObject: SyncResponseObject,
+  sync(
+    syncResponseObject: SyncResponseObject,
     sortedAccessControlIdsDecompress: (compressed: string) => string,
     sortedDeniedPermissionIdsDecompress: (compressed: string) => string,
     metaDecompress: (compressed: string) => MetaObject) {
@@ -76,28 +81,37 @@ export class WorkspaceObject implements IWorkspaceObject {
       return false;
     }
 
-    if (!this.accessControls && this.sortedAccessControlIds) {
-      this.accessControls = this.sortedAccessControlIds
-        .split(Compressor.itemSeparator)
-        .map(v => this.workspace.accessControlById.get(v));
-
-      if (this.deniedPermissions != null) {
-        this.deniedPermissions = this.sortedDeniedPermissionIds
+    if (this.sortedAccessControlIds !== this.cachedSortedAccessControlIds) {
+      this.cachedSortedAccessControlIds = this.sortedAccessControlIds;
+      if (this.sortedAccessControlIds) {
+        this.cachedAccessControls = this.sortedAccessControlIds
           .split(Compressor.itemSeparator)
-          .map(v => this.workspace.permissionById.get(v));
+          .map(v => this.workspace.accessControlById.get(v));
+      } else {
+        this.sortedAccessControlIds = null;
       }
     }
 
-    if (this.deniedPermissions && this.deniedPermissions.indexOf(permission) > -1) {
+    if (this.sortedDeniedPermissionIds !== this.cachedSortedDeniedPermissionIds) {
+      this.cachedSortedDeniedPermissionIds = this.sortedDeniedPermissionIds;
+      if (this.sortedDeniedPermissionIds) {
+        this.cachedDeniedPermissions = new Set();
+        this.sortedDeniedPermissionIds
+          .split(Compressor.itemSeparator)
+          .forEach(v => this.cachedDeniedPermissions.add(this.workspace.permissionById.get(v)));
+      } else {
+        this.cachedDeniedPermissions = null;
+      }
+    }
+
+    if (this.cachedDeniedPermissions && this.cachedDeniedPermissions.has(permission)) {
       return false;
     }
 
-    if (this.accessControls) {
-      for (const accessControl of this.accessControls) {
-        for (const effectivePermission of accessControl.permissions) {
-          if (effectivePermission === permission) {
-            return true;
-          }
+    if (this.cachedAccessControls) {
+      for (const accessControl of this.cachedAccessControls) {
+        if (accessControl.permissions.has(permission)) {
+          return true;
         }
       }
     }

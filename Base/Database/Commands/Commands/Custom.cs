@@ -27,6 +27,7 @@ namespace Commands
 
     using Allors;
     using Allors.Domain;
+    using Allors.Meta;
     using Allors.Services;
 
     using McMaster.Extensions.CommandLineUtils;
@@ -51,11 +52,38 @@ namespace Commands
 
         public int OnExecute(CommandLineApplication app)
         {
+            return this.CheckSecurity();
             //return this.PrintPurchaseInvoice();
             //return this.PrintSalesInvoice();
-            return this.PrintProductQuote();
+            //return this.PrintProductQuote();
             //return this.PrintWorkTask();
             //return this.MonthlyScheduler();
+        }
+
+        private int CheckSecurity()
+        {
+            using (var session = this.databaseService.Database.CreateSession())
+            {
+                var people = new People(session);
+
+                var administrator = people.FindBy(M.Person.UserName, "administrator");
+                var john = people.FindBy(M.Person.FirstName, "john");
+
+                var acls = new AccessControlLists(administrator);
+                var acl = acls[john];
+
+                var accessControl = acl.AccessControls.Single();
+
+                var effectivePermissions = accessControl.EffectivePermissions;
+                var personPermissions = effectivePermissions.Where(v => v.ConcreteClass == M.Person.Class).ToArray();
+
+                var workspacePersonPermissions = personPermissions.Where(w => w.OperandType.Workspace).ToArray();
+
+                //var canRead = acl.CanRead(M.Person.Salutation);
+                //var canWrite = acl.CanRead(M.Person.Salutation);
+            }
+
+            return 0;
         }
 
         private int PrintPurchaseInvoice()

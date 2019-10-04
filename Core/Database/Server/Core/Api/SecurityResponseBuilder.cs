@@ -9,6 +9,7 @@ namespace Allors.Server
     using System.Linq;
     using Allors.Domain;
     using Allors.Protocol.Remote.Security;
+    using Meta;
     using Protocol;
 
     public class SecurityResponseBuilder
