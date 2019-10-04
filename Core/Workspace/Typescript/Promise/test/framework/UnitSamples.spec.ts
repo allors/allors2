@@ -21,11 +21,11 @@ describe('Unit Samples',
       () => {
         it('should return units with values', async () => {
 
-          const { scope } = fixture;
+          const { ctx } = fixture;
 
-          scope.session.reset();
+          ctx.session.reset();
 
-          const loaded = await scope.load('TestUnitSamples/Pull', { step: 1 });
+          const loaded = await ctx.load('TestUnitSamples/Pull', { step: 1 });
 
           const unitSample = loaded.objects['unitSample'] as UnitSample;
 

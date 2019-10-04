@@ -241,7 +241,7 @@ export class Workspace implements IWorkspace {
     return value;
   }
 
-  security(securityResponse: SecurityResponse): void {
+  security(securityResponse: SecurityResponse): SecurityRequest {
     const decompressor = new Decompressor();
     const metaDecompress = createMetaDecompress(decompressor, this.metaPopulation);
 
@@ -274,14 +274,30 @@ export class Workspace implements IWorkspace {
       });
     }
 
+    let missingPermissionIds: Set<string>;
+
     if (securityResponse.accessControls) {
       securityResponse.accessControls.forEach(v => {
         const id = v.i;
         const version = v.v;
-        const permissions = new Set<Permission>();
-        v.p.forEach(w => permissions.add(this.permissionById.get(w)));
-        const accessControl = new AccessControl(id, version, permissions);
+        const permissionIds = new Set<string>();
+        v.p.forEach(w => {
+          if (!this.permissionById.has(w)) {
+            if (!missingPermissionIds) {
+              missingPermissionIds = new Set();
+            }
+            missingPermissionIds.add(w);
+          }
+          permissionIds.add(w);
+        });
+        const accessControl = new AccessControl(id, version, permissionIds);
         this.accessControlById.set(id, accessControl);
+      });
+    }
+
+    if (missingPermissionIds) {
+      return new SecurityRequest({
+        permissions: [...missingPermissionIds],
       });
     }
   }

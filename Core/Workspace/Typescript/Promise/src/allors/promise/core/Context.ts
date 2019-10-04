@@ -10,7 +10,7 @@ import { Invoked } from './responses/Invoked';
 import { Loaded } from './responses/Loaded';
 import { Saved } from './responses/Saved';
 
-export class Scope {
+export class Context {
   public session: ISession;
 
   constructor(public database: Database, public workspace: Workspace) {
@@ -36,14 +36,27 @@ export class Scope {
                   this.database
                     .security(securityRequest)
                     .then(v => {
-                      this.workspace.security(v);
-                      const loaded = new Loaded(this.session, pullResponse);
-                      resolve(loaded);
-                    })
+                      const securityRequest2 = this.workspace.security(v);
+                      if (securityRequest2) {
+                        this.database
+                          .security(securityRequest2)
+                          .then(v => {
+                            this.workspace.security(v);
+                            const loaded = new Loaded(this.session, pullResponse);
+                            resolve(loaded);
+                          })
+                          .catch((e) => {
+                            reject(e);
+                          });
+                      } else {
+                        const loaded = new Loaded(this.session, pullResponse);
+                        resolve(loaded);
+                      }
+                                        })
                     .catch((e) => {
                       reject(e);
                     });
-                } else{
+                } else {
                   const loaded = new Loaded(this.session, pullResponse);
                   resolve(loaded);
                 }

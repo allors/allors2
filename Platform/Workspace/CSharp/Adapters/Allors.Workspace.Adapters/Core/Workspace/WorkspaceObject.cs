@@ -76,7 +76,7 @@ namespace Allors.Workspace
 
             if (this.accessControls != null && this.accessControls.Length > 0)
             {
-                return this.accessControls.Any(v => v.Permissions.Any(w => w == permission));
+                return this.accessControls.Any(v => v.PermissionIds.Any(w => w == permission.Id));
             }
 
             return false;

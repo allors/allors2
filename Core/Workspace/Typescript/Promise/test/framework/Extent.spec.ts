@@ -19,7 +19,7 @@ describe('Extent',
       () => {
         it('should return all people', async () => {
 
-          const { m, scope } = fixture;
+          const { m, ctx } = fixture;
 
           const pulls = [
             new Pull({
@@ -29,10 +29,10 @@ describe('Extent',
             }),
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
           const pullRequest = new PullRequest({ pulls });
-          const loaded = await scope
+          const loaded = await ctx
             .load(pullRequest);
 
           const people = loaded.collections['People'] as Person[];
@@ -47,7 +47,7 @@ describe('Extent',
       () => {
         it('should return all people', async () => {
 
-          const { m, scope } = fixture;
+          const { m, ctx } = fixture;
 
           const pulls = [
             new Pull({
@@ -71,13 +71,13 @@ describe('Extent',
             }),
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
           const pullRequest = new PullRequest({ pulls });
 
           const json = JSON.stringify(pullRequest);
 
-          const loaded = await scope
+          const loaded = await ctx
             .load(pullRequest);
 
           const people = loaded.collections['People'] as Person[];
@@ -94,7 +94,7 @@ describe('Extent',
       () => {
         it('should return all organisations', async () => {
 
-          const { m, scope, tree } = fixture;
+          const { m, ctx, tree } = fixture;
 
           const pulls = [
             new Pull({
@@ -113,9 +113,9 @@ describe('Extent',
             }),
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
-          const loaded = await scope
+          const loaded = await ctx
             .load(new PullRequest({ pulls }));
 
           const organisations = loaded.collections['Organisations'] as Organisation[];
@@ -135,7 +135,7 @@ describe('Extent',
       () => {
         it('should return all owners', async () => {
 
-          const { m, scope, fetch } = fixture;
+          const { m, ctx, fetch } = fixture;
 
           const pulls = [
             new Pull({
@@ -152,9 +152,9 @@ describe('Extent',
             })
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
-          const loaded = await scope
+          const loaded = await ctx
             .load(new PullRequest({ pulls }));
 
           const owners = loaded.collections['Owners'] as Person[];
@@ -166,7 +166,7 @@ describe('Extent',
 
         it('should return all employees', async () => {
 
-          const { m, scope, fetch } = fixture;
+          const { m, ctx, fetch } = fixture;
 
           const pulls = [
             new Pull({
@@ -183,9 +183,9 @@ describe('Extent',
             })
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
-          const loaded = await scope
+          const loaded = await ctx
             .load(new PullRequest({ pulls }));
 
           const employees = loaded.collections['Employees'] as Media[];
@@ -200,7 +200,7 @@ describe('Extent',
       () => {
         it('should return all employees', async () => {
 
-          const { m, scope, fetch } = fixture;
+          const { m, ctx, fetch } = fixture;
 
           const pulls = [
             new Pull({
@@ -215,9 +215,9 @@ describe('Extent',
             })
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
-          const loaded = await scope
+          const loaded = await ctx
             .load(new PullRequest({ pulls }));
 
           const employees = loaded.collections['Employees'] as Person[];
@@ -232,7 +232,7 @@ describe('Extent',
       () => {
         it('should return all people', async () => {
 
-          const { m, scope, fetch } = fixture;
+          const { m, ctx, fetch } = fixture;
 
           const pulls = [
             new Pull({
@@ -251,9 +251,9 @@ describe('Extent',
             })
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
-          const loaded = await scope
+          const loaded = await ctx
             .load(new PullRequest({ pulls }));
 
           const owners = loaded.collections['Owners'] as Person[];
@@ -270,7 +270,7 @@ describe('Extent',
       () => {
         it('should return results', async () => {
 
-          const { m, scope } = fixture;
+          const { m, ctx } = fixture;
 
           const pulls = [
             new Pull({
@@ -324,10 +324,10 @@ describe('Extent',
             }),
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
           const pullRequest = new PullRequest({ pulls });
-          const loaded = await scope
+          const loaded = await ctx
             .load(pullRequest);
 
           const c1s = loaded.collections['C1s'] as C1[];
@@ -342,7 +342,7 @@ describe('Extent',
       () => {
         it('should return results', async () => {
 
-          const { m, scope } = fixture;
+          const { m, ctx } = fixture;
 
           const pulls = [
             new Pull({
@@ -408,10 +408,10 @@ describe('Extent',
             }),
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
           const pullRequest = new PullRequest({ pulls });
-          const loaded = await scope
+          const loaded = await ctx
             .load(pullRequest);
 
           const c1s = loaded.collections['C1s'] as C1[];

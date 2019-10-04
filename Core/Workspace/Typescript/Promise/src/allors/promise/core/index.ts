@@ -1,5 +1,5 @@
 export * from './Database';
-export * from './Scope';
+export * from './Context';
 
 export * from './responses/Loaded';
 export * from './responses/Saved';

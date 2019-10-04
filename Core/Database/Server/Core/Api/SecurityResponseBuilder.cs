@@ -14,13 +14,20 @@ namespace Allors.Server
 
     public class SecurityResponseBuilder
     {
+        private static readonly PrefetchPolicy AccessControlPrefetchPolicy;
+
         private readonly AccessControlsCompressor accessControlsCompressor;
         private readonly AccessControlLists acls;
         private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
-        private readonly MetaObjectCompressor metaObjectCompressor;
+        private readonly Compressor compressor;
         private readonly SecurityRequest securityRequest;
         private readonly ISession session;
         private readonly User user;
+
+        static SecurityResponseBuilder() =>
+            AccessControlPrefetchPolicy = new PrefetchPolicyBuilder()
+                .WithRule(M.AccessControl.EffectivePermissions)
+                .Build();
 
         public SecurityResponseBuilder(ISession session, User user, SecurityRequest securityRequest)
         {
@@ -29,8 +36,7 @@ namespace Allors.Server
             this.securityRequest = securityRequest;
             this.acls = new AccessControlLists(this.user);
 
-            var compressor = new Compressor();
-            this.metaObjectCompressor = new MetaObjectCompressor(compressor);
+            this.compressor = new Compressor();
             this.accessControlsCompressor = new AccessControlsCompressor(compressor, this.acls);
             this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(compressor, this.acls);
         }
@@ -39,37 +45,33 @@ namespace Allors.Server
         {
             var securityResponse = new SecurityResponse();
 
-            // TODO: Prefetch
-
-            var permissionIds = this.securityRequest.Permissions;
-            var permissions = new HashSet<Permission>(this.session.Instantiate(permissionIds).Cast<Permission>());
-
             if (this.securityRequest.AccessControls != null)
             {
                 var accessControlIds = this.securityRequest.AccessControls;
                 var accessControls = this.session.Instantiate(accessControlIds).Cast<AccessControl>().ToArray();
+
+                this.session.Prefetch(AccessControlPrefetchPolicy, accessControls);
+
                 securityResponse.AccessControls = accessControls
-                    .Select(v =>
+                    .Select(v => new SecurityResponseAccessControl
                     {
-                        var effectiveWorkspacePermissions = v.EffectivePermissions.Where(w => w.OperandType.Workspace).ToArray();
-                        permissions.UnionWith(effectiveWorkspacePermissions);
-                        return new SecurityResponseAccessControl
-                        {
-                            I = v.Strategy.ObjectId.ToString(),
-                            V = v.Strategy.ObjectVersion.ToString(),
-                            P = effectiveWorkspacePermissions.Select(w => w.Id.ToString()).ToArray(),
-                        };
+                        I = v.Strategy.ObjectId.ToString(),
+                        V = v.Strategy.ObjectVersion.ToString(),
+                        P = v.EffectivePermissions.Where(w => w.OperandType.Workspace).Select(w => w.Id.ToString()).ToArray(),
                     }).ToArray();
             }
 
-            if (permissions.Count > 0)
+            if (this.securityRequest.Permissions.Length > 0)
             {
+                var permissionIds = this.securityRequest.Permissions;
+                var permissions = this.session.Instantiate(permissionIds).Cast<Permission>();
+
                 securityResponse.Permissions = permissions.Select(v =>
                     new[]
                     {
                         v.Strategy.ObjectId.ToString(),
-                        this.metaObjectCompressor.Write(v.ConcreteClass),
-                        this.metaObjectCompressor.Write(v.OperandType),
+                        this.compressor.Write(v.ConcreteClassPointer.ToString("D")),
+                        this.compressor.Write(v.OperandTypePointer.ToString("D")),
                         v.OperationEnum.ToString(),
                     }).ToArray();
             }

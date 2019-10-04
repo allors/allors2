@@ -19,7 +19,7 @@ describe('Association',
             () => {
                 it('should access association', async () => {
 
-                    const { x, scope, pull } = fixture;
+                    const { x, ctx, pull } = fixture;
 
                     const pulls = [
                         pull.C1({
@@ -37,9 +37,9 @@ describe('Association',
                         pull.C2()
                     ];
 
-                    scope.session.reset();
+                    ctx.session.reset();
 
-                    const loaded = await scope
+                    const loaded = await ctx
                         .load(new PullRequest({ pulls }));
 
                     const c1s = loaded.collections['C1s'] as C1[];

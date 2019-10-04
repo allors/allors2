@@ -102,7 +102,28 @@ namespace Allors.Workspace
             return workspaceObject;
         }
 
-        public void Security(SecurityResponse securityResponse)
+        public SecurityRequest Sync(SyncResponse syncResponse)
+        {
+            var ctx = new SyncResponseContext(this, this.AccessControlById, this.PermissionById);
+            foreach (var syncResponseObject in syncResponse.Objects)
+            {
+                var workspaceObject = new WorkspaceObject(ctx, syncResponseObject);
+                this.workspaceObjectById[workspaceObject.Id] = workspaceObject;
+            }
+
+            if (ctx.MissingAccessControlIds.Count > 0 || ctx.MissingPermissionIds.Count > 0)
+            {
+                return new SecurityRequest
+                {
+                    AccessControls = ctx.MissingAccessControlIds.Select(v => v.ToString()).ToArray(),
+                    Permissions = ctx.MissingPermissionIds.Select(v => v.ToString()).ToArray(),
+                };
+            }
+
+            return null;
+        }
+
+        public SecurityRequest Security(SecurityResponse securityResponse)
         {
             var ctx = new SecurityResponseContext(this);
 
@@ -159,36 +180,39 @@ namespace Allors.Workspace
                 }
             }
 
+            HashSet<long> missingPermissionIds = null;
             if (securityResponse.AccessControls != null)
             {
                 foreach (var syncResponseAccessControl in securityResponse.AccessControls)
                 {
                     var id = long.Parse(syncResponseAccessControl.I);
                     var version = long.Parse(syncResponseAccessControl.V);
-                    var permissions = syncResponseAccessControl.P.Select(v => this.PermissionById[long.Parse(v)]);
-                    var permissionSet = new HashSet<Permission>(permissions);
+                    var permissionsIds = syncResponseAccessControl.P.Select(v =>
+                    {
+                        var permissionId = long.Parse(v);
+                        if (!this.PermissionById.ContainsKey(permissionId))
+                        {
+                            if (missingPermissionIds == null)
+                            {
+                                missingPermissionIds = new HashSet<long>();
+                            }
 
-                    var accessControl = new AccessControl(id, version, permissionSet);
+                            missingPermissionIds.Add(permissionId);
+                        }
+
+                        return permissionId;
+                    });
+
+                    var accessControl = new AccessControl(id, version, new HashSet<long>(permissionsIds));
                     this.AccessControlById[id] = accessControl;
                 }
             }
-        }
 
-        public SecurityRequest Sync(SyncResponse syncResponse)
-        {
-            var ctx = new SyncResponseContext(this, this.AccessControlById, this.PermissionById);
-            foreach (var syncResponseObject in syncResponse.Objects)
-            {
-                var workspaceObject = new WorkspaceObject(ctx, syncResponseObject);
-                this.workspaceObjectById[workspaceObject.Id] = workspaceObject;
-            }
-
-            if (ctx.MissingAccessControlIds.Count > 0 || ctx.MissingPermissionIds.Count > 0)
+            if (missingPermissionIds != null)
             {
                 return new SecurityRequest
                 {
-                    AccessControls = ctx.MissingAccessControlIds.Select(v => v.ToString()).ToArray(),
-                    Permissions = ctx.MissingPermissionIds.Select(v => v.ToString()).ToArray(),
+                    Permissions = missingPermissionIds.Select(v => v.ToString()).ToArray(),
                 };
             }
 

@@ -110,7 +110,7 @@ export class WorkspaceObject implements IWorkspaceObject {
 
     if (this.cachedAccessControls) {
       for (const accessControl of this.cachedAccessControls) {
-        if (accessControl.permissions.has(permission)) {
+        if (accessControl.permissionIds.has(permission.id)) {
           return true;
         }
       }

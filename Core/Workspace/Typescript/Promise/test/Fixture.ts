@@ -1,7 +1,7 @@
 import { domain } from '../src/allors/domain';
 import { MetaPopulation, Workspace } from '../src/allors/framework';
 import { data, Meta, TreeFactory, FetchFactory, PullFactory } from '../src/allors/meta';
-import { Database, Scope } from '../src/allors/promise';
+import { Database, Context } from '../src/allors/promise';
 
 import { AxiosHttp } from '../src/allors/promise/core/http/AxiosHttp';
 
@@ -11,7 +11,7 @@ export class Fixture {
 
     metaPopulation: MetaPopulation;
     m: Meta;
-    scope: Scope;
+    ctx: Context;
 
     pull: PullFactory;
     tree: TreeFactory;
@@ -30,7 +30,7 @@ export class Fixture {
         await http.login('TestAuthentication/Token', 'administrator');
         await http.get('Test/Setup', { population });
         const database = new Database(http);
-        this.scope = new Scope(database, workspace);
+        this.ctx = new Context(database, workspace);
 
         this.tree = new TreeFactory(this.m);
         this.fetch = new FetchFactory(this.m);

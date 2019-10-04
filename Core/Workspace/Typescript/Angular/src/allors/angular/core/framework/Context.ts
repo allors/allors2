@@ -1,6 +1,6 @@
 import { Observable, of } from 'rxjs';
 
-import { ISession, Session, PullResponse, SyncRequest, IWorkspace, SyncResponse, PushRequest, PushResponse, PushRequestObject, Method, InvokeOptions, InvokeResponse, ObjectType, ISessionObject, SecurityResponse, Workspace } from '../../../framework';
+import { ISession, Session, PullResponse, SyncRequest, IWorkspace, SyncResponse, PushRequest, PushResponse, PushRequestObject, Method, InvokeOptions, InvokeResponse, ObjectType, ISessionObject, SecurityResponse, Workspace, SecurityRequest } from '../../../framework';
 
 import { Loaded } from './responses/Loaded';
 import { switchMap, map } from 'rxjs/operators';
@@ -54,23 +54,16 @@ export class Context {
                 switchMap((syncResponse: SyncResponse) => {
                   const securityRequest = this.workspace.sync(syncResponse);
                   if (securityRequest) {
-                    return this.database
-                      .security(securityRequest)
+                    return this.security(securityRequest)
                       .pipe(
-                        map((securityResponse: SecurityResponse) => {
-                          this.workspace.security(securityResponse);
-                          const loaded: Loaded = new Loaded(this.session, pullResponse);
-                          return loaded;
-                        })
-                      )
+                        map((v) => new Loaded(this.session, pullResponse))
+                      );
                   } else {
-                    const loaded: Loaded = new Loaded(this.session, pullResponse);
-                    return of(loaded);
+                    return of(new Loaded(this.session, pullResponse));
                   }
                 }));
           } else {
-            const loaded: Loaded = new Loaded(this.session, pullResponse);
-            return of(loaded);
+            return of(new Loaded(this.session, pullResponse));
           }
         })
       );
@@ -116,5 +109,26 @@ export class Context {
       .pipe(
         map((invokeResponse: InvokeResponse) => new Invoked(this.session, invokeResponse))
       );
+  }
+
+
+  private security(request: SecurityRequest): Observable<SecurityRequest> {
+
+    return this.database
+      .security(request)
+      .pipe(
+        switchMap((response: SecurityResponse) => {
+          const phase2Request = this.workspace.security(response);
+          if (phase2Request) {
+            return this.database
+              .security(phase2Request)
+              .pipe(
+                map((phase2Response: SecurityResponse) => {
+                  return this.workspace.security(phase2Response);
+                }));
+          } else {
+            return of(phase2Request);
+          }
+        }));
   }
 }

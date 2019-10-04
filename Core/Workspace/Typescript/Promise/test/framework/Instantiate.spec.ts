@@ -17,7 +17,7 @@ describe('Instantiate',
       fixture = new Fixture();
       await fixture.init();
 
-      const { m, scope } = fixture;
+      const { m, ctx } = fixture;
 
       const pulls = [
         new Pull({
@@ -32,9 +32,9 @@ describe('Instantiate',
         }),
       ];
 
-      scope.session.reset();
+      ctx.session.reset();
 
-      const loaded = await scope
+      const loaded = await ctx
         .load(new PullRequest({ pulls }));
 
       people = loaded.collections['People'] as Person[];
@@ -44,7 +44,7 @@ describe('Instantiate',
       () => {
         it('should return person', async () => {
 
-          const { m, scope } = fixture;
+          const { m, ctx } = fixture;
 
           const object = people[0].id;
 
@@ -54,9 +54,9 @@ describe('Instantiate',
             }),
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
-          const loaded = await scope
+          const loaded = await ctx
             .load(new PullRequest({ pulls }));
 
           const person = loaded.objects['Person'] as Person;
@@ -71,7 +71,7 @@ describe('Instantiate',
       () => {
         it('should return all people', async () => {
 
-          const { m, scope } = fixture;
+          const { m, ctx } = fixture;
 
           const pulls = [
             new Pull({
@@ -95,9 +95,9 @@ describe('Instantiate',
             }),
           ];
 
-          scope.session.reset();
+          ctx.session.reset();
 
-          const loaded = await scope
+          const loaded = await ctx
             .load(new PullRequest({ pulls }));
 
           people = loaded.collections['People'] as Person[];

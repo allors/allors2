@@ -122,7 +122,13 @@ namespace Allors.Workspace
             if (securityRequest != null)
             {
                 var securityResponse = await this.database.Security(securityRequest);
-                this.workspace.Security(securityResponse);
+                securityRequest = this.workspace.Security(securityResponse);
+
+                if (securityRequest != null)
+                {
+                    securityResponse = await this.database.Security(securityRequest);
+                    this.workspace.Security(securityResponse);
+                }
             }
         }
     }

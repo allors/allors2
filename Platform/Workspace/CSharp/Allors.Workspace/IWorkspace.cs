@@ -20,7 +20,7 @@ namespace Allors.Workspace
 
         SecurityRequest Sync(SyncResponse syncResponse);
 
-        void Security(SecurityResponse securityResponse);
+        SecurityRequest Security(SecurityResponse securityResponse);
 
         IWorkspaceObject Get(long id);
 
