@@ -15,6 +15,7 @@ namespace Allors.Server
     public class SecurityResponseBuilder
     {
         private static readonly PrefetchPolicy AccessControlPrefetchPolicy;
+        private static readonly PrefetchPolicy PermissionPrefetchPolicy;
 
         private readonly AccessControlsCompressor accessControlsCompressor;
         private readonly AccessControlLists acls;
@@ -24,10 +25,18 @@ namespace Allors.Server
         private readonly ISession session;
         private readonly User user;
 
-        static SecurityResponseBuilder() =>
+        static SecurityResponseBuilder()
+        {
             AccessControlPrefetchPolicy = new PrefetchPolicyBuilder()
-                .WithRule(M.AccessControl.EffectivePermissions)
+                .WithRule(M.AccessControl.EffectiveWorkspacePermissions)
                 .Build();
+
+            PermissionPrefetchPolicy = new PrefetchPolicyBuilder()
+                .WithRule(M.Permission.ConcreteClassPointer)
+                .WithRule(M.Permission.OperandTypePointer)
+                .WithRule(M.Permission.OperationEnum)
+                .Build();
+        }
 
         public SecurityResponseBuilder(ISession session, User user, SecurityRequest securityRequest)
         {
@@ -57,7 +66,7 @@ namespace Allors.Server
                     {
                         I = v.Strategy.ObjectId.ToString(),
                         V = v.Strategy.ObjectVersion.ToString(),
-                        P = v.EffectivePermissions.Where(w => w.OperandType.Workspace).Select(w => w.Id.ToString()).ToArray(),
+                        P = v.EffectiveWorkspacePermissions.Select(w => w.Id.ToString()).ToArray(),
                     }).ToArray();
             }
 

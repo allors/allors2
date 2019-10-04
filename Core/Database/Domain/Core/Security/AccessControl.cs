@@ -18,6 +18,7 @@ namespace Allors.Domain
 
             this.EffectiveUsers = this.SubjectGroups.SelectMany(v => v.Members).Union(this.Subjects).ToArray();
             this.EffectivePermissions = this.Role?.Permissions;
+            this.EffectiveWorkspacePermissions = this.EffectivePermissions.Where(v => v.OperandType.Workspace).ToArray();
 
             // Invalidate cache
             this.CacheId = Guid.NewGuid();
