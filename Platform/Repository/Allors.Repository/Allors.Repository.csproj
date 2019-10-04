@@ -13,6 +13,6 @@
     <Compile Include="..\Domain\Attributes\Multiplicity.cs" Link="Domain\Multiplicity.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Database\Allors.Database.Protocol\Allors.Database.Protocol.csproj" />
+    <ProjectReference Include="..\..\Protocol\Allors.Protocol\Allors.Protocol.csproj" />
   </ItemGroup>
 </Project>

@@ -9,8 +9,4 @@
     <Compile Include="..\..\..\Core\Repository\Domain\Core*\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\Database\Allors.Database.Protocol\Allors.Database.Protocol.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -293,9 +293,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Database\Allors.Database.Protocol\Allors.Database.Protocol.csproj">
-      <Project>{9f12fd7c-1abb-47f7-bc8e-215ef4188a2c}</Project>
-      <Name>Allors.Database.Protocol</Name>
+    <ProjectReference Include="..\..\..\..\Platform\Protocol\Allors.Protocol\Allors.Protocol.csproj">
+      <Project>{caa54ba6-a4f9-4ada-98b6-833df07b4824}</Project>
+      <Name>Allors.Protocol</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters.Remote\Allors.Workspace.Adapters.Remote.csproj">
       <Project>{6ac69e65-1e09-4f93-b26c-696e2b1a64a3}</Project>

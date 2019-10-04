@@ -5,7 +5,4 @@
   <ItemGroup>
     <Compile Include="..\..\..\Platform\Repository\Domain\Attributes*\**\*.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\Database\Allors.Database.Protocol\Allors.Database.Protocol.csproj" />
-  </ItemGroup>
 </Project>
