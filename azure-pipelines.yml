@@ -3,33 +3,33 @@ trigger:
 
 stages:
 - stage: Test
-  jobs:  
+  jobs:
   - job: Test
     timeoutInMinutes: 120
 
     pool:
       vmImage: 'windows-2019'
-    
+
     strategy:
       matrix:
         adapters_memory:
-          target: '-target AdaptersTestMemory'
+          target: 'AdaptersTestMemory'
         adapters_sqlclient:
-          target: '-target AdaptersTestSqlClient'
+          target: 'AdaptersTestSqlClient'
         adapters_npgsql:
-          target: '-target AdaptersTestNpgsql'
+          target: 'AdaptersTestNpgsql'
         core_database:
-          target: '-target CoreDatabaseTest'
+          target: 'CoreDatabaseTest'
         core_workspace:
-          target: '-target CoreWorkspaceTest'
+          target: 'CoreWorkspaceTest'
         base_database:
-          target: '-target BaseDatabaseTest'
+          target: 'BaseDatabaseTest'
         base_workspace_typescript:
-          target: '-target BaseWorkspaceTypescriptTest'
+          target: 'BaseWorkspaceTypescriptTest'
         base_workspace_csharp:
-          target: '-target BaseWorkspaceCSharpTest'
+          target: 'BaseWorkspaceCSharpTest'
       maxParallel: 10
-    
+
     steps:
     - task: UseDotNet@2
       displayName: 'Use .NET Core 3.0 sdk'
@@ -41,13 +41,14 @@ stages:
       inputs:
         targetType: 'filePath'
         filePath: 'build.ps1'
-        arguments: $(target)
+        arguments: -target $(target)
         failOnStderr: true
-      displayName: $(target)
+      displayName: Running $(target)
     - task: PublishTestResults@2
       condition: always()
       inputs:
+        testRunTitle: $(target)
         testResultsFormat: 'VSTest'
         testResultsFiles: '*.trx'
         searchFolder: 'artifacts/tests'
-      displayName: 'Publish Test results'
+      displayName: 'Publish Test results for $(target)'

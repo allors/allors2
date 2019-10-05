@@ -1,4 +1,4 @@
-﻿// <copyright file="DriverManager.cs" company="Allors bvba">
+// <copyright file="DriverManager.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -50,6 +50,10 @@ namespace Tests
                               new ChromeDriver(chromeWebDriver, options) :
                               new ChromeDriver(Environment.CurrentDirectory, options);
 
+            // TODO: lower timeouts
+            this.Driver.Manage().Timeouts().PageLoad = TimeSpan.FromMinutes(5);
+            this.Driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromMinutes(5);
+
             // Move to monitor on the left
             this.Driver.Manage().Window.Position = new Point(-800, 0);
             try
@@ -83,13 +87,13 @@ namespace Tests
                         {
                             try
                             {
-                                Process.Start("taskkill", "/F /IM chrome.exe").WaitForExit();
+                                Process.Start("taskkill", "/F /IM chrome.exe")?.WaitForExit();
                             }
                             finally
                             {
                                 try
                                 {
-                                    Process.Start("taskkill", "/F /IM chromedriver.exe").WaitForExit();
+                                    Process.Start("taskkill", "/F /IM chromedriver.exe")?.WaitForExit();
                                 }
                                 finally
                                 {
@@ -99,11 +103,11 @@ namespace Tests
                         }
                         else if (this.Driver is FirefoxDriver)
                         {
-                            Process.Start("taskkill", "/F /IM firefox.exe").WaitForExit();
+                            Process.Start("taskkill", "/F /IM firefox.exe")?.WaitForExit();
                         }
                         else if (this.Driver is InternetExplorerDriver)
                         {
-                            Process.Start("taskkill", "/F /IM iexplore.exe").WaitForExit();
+                            Process.Start("taskkill", "/F /IM iexplore.exe")?.WaitForExit();
                         }
                         else
                         {
