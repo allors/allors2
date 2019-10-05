@@ -24,12 +24,15 @@ namespace Allors.Server
 
         private readonly IFetchService fetchService;
 
-        public PullInstantiate(ISession session, Pull pull, User user, IFetchService fetchService)
+        private readonly IAccessControlLists acls;
+
+        public PullInstantiate(ISession session, Pull pull, User user, IFetchService fetchService, IAccessControlLists acls)
         {
             this.session = session;
             this.pull = pull;
             this.user = user;
             this.fetchService = fetchService;
+            this.acls = acls;
         }
 
         public void Execute(PullResponseBuilder response)
@@ -66,22 +69,20 @@ namespace Allors.Server
 
                             if (fetch.Step != null)
                             {
-                                var aclCache = new AccessControlLists(this.user);
-
                                 var propertyType = fetch.Step.End.PropertyType;
 
                                 if (fetch.Step.IsOne)
                                 {
                                     name = name ?? propertyType.SingularName;
 
-                                    @object = (IObject)fetch.Step.Get(@object, aclCache);
+                                    @object = (IObject)fetch.Step.Get(@object, this.acls);
                                     response.AddObject(name, @object, include);
                                 }
                                 else
                                 {
                                     name = name ?? propertyType.PluralName;
 
-                                    var stepResult = fetch.Step.Get(@object, aclCache);
+                                    var stepResult = fetch.Step.Get(@object, this.acls);
                                     var objects = stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? new IObject[0];
 
                                     if (result.Skip.HasValue || result.Take.HasValue)

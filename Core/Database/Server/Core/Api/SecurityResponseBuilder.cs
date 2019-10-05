@@ -18,7 +18,7 @@ namespace Allors.Server
         private static readonly PrefetchPolicy PermissionPrefetchPolicy;
 
         private readonly AccessControlsCompressor accessControlsCompressor;
-        private readonly AccessControlLists acls;
+        private readonly IAccessControlLists acls;
         private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
         private readonly Compressor compressor;
         private readonly SecurityRequest securityRequest;
@@ -43,7 +43,7 @@ namespace Allors.Server
             this.session = session;
             this.user = user;
             this.securityRequest = securityRequest;
-            this.acls = new AccessControlLists(this.user);
+            this.acls = new WorkspaceAccessControlLists(this.user);
 
             this.compressor = new Compressor();
             this.accessControlsCompressor = new AccessControlsCompressor(compressor, this.acls);

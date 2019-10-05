@@ -17,7 +17,7 @@ namespace Allors.Server
     public class SyncResponseBuilder
     {
         private readonly AccessControlsCompressor accessControlsCompressor;
-        private readonly AccessControlLists acls;
+        private readonly IAccessControlLists acls;
         private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
         private readonly MetaObjectCompressor metaObjectCompressor;
         private readonly ISession session;
@@ -29,7 +29,7 @@ namespace Allors.Server
             this.session = session;
             this.user = user;
             this.syncRequest = syncRequest;
-            this.acls = new AccessControlLists(this.user);
+            this.acls = new WorkspaceAccessControlLists(this.user);
 
             var compressor = new Compressor();
             this.metaObjectCompressor = new MetaObjectCompressor(compressor);
@@ -106,7 +106,7 @@ namespace Allors.Server
                 }).ToArray(),
             };
 
-            syncResponse.AccessControls = this.acls.AccessControls
+            syncResponse.AccessControls = this.acls.EffectivePermissionIdsByAccessControl.Keys
                 .Select(v => new[]
                 {
                     v.Strategy.ObjectId.ToString(),

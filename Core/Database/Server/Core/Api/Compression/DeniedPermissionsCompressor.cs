@@ -12,9 +12,9 @@ namespace Allors.Server
     internal class DeniedPermissionsCompressor
     {
         private readonly Compressor compressor;
-        private readonly AccessControlLists acls;
+        private readonly IAccessControlLists acls;
 
-        internal DeniedPermissionsCompressor(Compressor compressor, AccessControlLists acls)
+        internal DeniedPermissionsCompressor(Compressor compressor, IAccessControlLists acls)
         {
             this.compressor = compressor;
             this.acls = acls;

@@ -16,8 +16,6 @@ namespace Allors.Domain
 
     public static partial class UserExtensions
     {
-        private static PrefetchPolicy prefetchPolicy;
-
         public static void CoreOnPostBuild(this User @this, ObjectOnPostBuild method)
         {
             if (!@this.ExistNormalizedUserName)
@@ -60,57 +58,6 @@ namespace Allors.Domain
             }
 
             return hash.ToString();
-        }
-
-        public static IReadOnlyDictionary<AccessControl, HashSet<long>> EffectivePermissionsByAccessControl(this User user)
-        {
-            var session = user.Session();
-
-            var effectivePermissionsByAccessControl = new Dictionary<AccessControl, HashSet<long>>();
-
-            var caches = session.GetCache<AccessControlCacheEntry>();
-            List<AccessControl> misses = null;
-            foreach (AccessControl accessControl in user.AccessControlsWhereEffectiveUser)
-            {
-                caches.TryGetValue(accessControl.Id, out var cache);
-                if (cache == null || !accessControl.CacheId.Equals(cache.CacheId))
-                {
-                    if (misses == null)
-                    {
-                        misses = new List<AccessControl>();
-                    }
-
-                    misses.Add(accessControl);
-                }
-                else
-                {
-                    effectivePermissionsByAccessControl.Add(accessControl, cache.EffectivePermissionIds);
-                }
-            }
-
-            if (misses != null)
-            {
-                if (misses.Count > 1)
-                {
-                    if (prefetchPolicy == null)
-                    {
-                        prefetchPolicy = new PrefetchPolicyBuilder()
-                            .WithRule(M.AccessControl.EffectivePermissions)
-                            .Build();
-                    }
-
-                    session.Prefetch(prefetchPolicy, misses);
-                }
-
-                foreach (var accessControl in misses)
-                {
-                    var cache = new AccessControlCacheEntry(accessControl);
-                    caches[accessControl.Id] = cache;
-                    effectivePermissionsByAccessControl.Add(accessControl, cache.EffectivePermissionIds);
-                }
-            }
-
-            return effectivePermissionsByAccessControl;
         }
     }
 }

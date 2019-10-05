@@ -26,8 +26,6 @@ namespace Allors.Workspace.Local
             this.ExtentService = extentService;
         }
 
-        public Allors.IDatabase Database => this.DatabaseService.Database;
-
         public IDatabaseService DatabaseService { get; }
 
         public IExtentService ExtentService { get; }
@@ -35,6 +33,8 @@ namespace Allors.Workspace.Local
         public IFetchService FetchService { get; }
 
         public ITreeService TreeService { get; }
+
+        public Allors.IDatabase Database => this.DatabaseService.Database;
 
         public Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null)
         {
@@ -55,6 +55,7 @@ namespace Allors.Workspace.Local
             {
                 var user = session.GetUser();
                 var response = new PullResponseBuilder(user, this.TreeService);
+                var acls = new WorkspaceAccessControlLists(user);
 
                 if (pullRequest.P != null)
                 {
@@ -64,12 +65,12 @@ namespace Allors.Workspace.Local
 
                         if (pull.Object != null)
                         {
-                            var pullInstantiate = new PullInstantiate(session, pull, user, this.FetchService);
+                            var pullInstantiate = new PullInstantiate(session, pull, user, this.FetchService, acls);
                             pullInstantiate.Execute(response);
                         }
                         else
                         {
-                            var pullExtent = new PullExtent(session, pull, user, this.ExtentService, this.FetchService);
+                            var pullExtent = new PullExtent(session, pull, user, this.ExtentService, this.FetchService, acls);
                             pullExtent.Execute(response);
                         }
                     }

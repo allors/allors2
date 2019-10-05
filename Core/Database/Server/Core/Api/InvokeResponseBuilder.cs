@@ -21,7 +21,7 @@ namespace Allors.Server
         private readonly bool isolated;
         private readonly bool continueOnError;
 
-        private readonly AccessControlLists acls;
+        private readonly IAccessControlLists acls;
 
         public InvokeResponseBuilder(ISession session, User user, InvokeRequest invokeRequest)
         {
@@ -31,7 +31,7 @@ namespace Allors.Server
             this.isolated = invokeRequest.O?.I ?? false;
             this.continueOnError = invokeRequest.O?.C ?? false;
 
-            this.acls = new AccessControlLists(this.user);
+            this.acls = new WorkspaceAccessControlLists(this.user);
         }
 
         public InvokeResponse Build()

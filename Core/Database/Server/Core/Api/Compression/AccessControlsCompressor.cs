@@ -12,9 +12,9 @@ namespace Allors.Server
     internal class AccessControlsCompressor
     {
         private readonly Compressor compressor;
-        private readonly AccessControlLists acls;
+        private readonly IAccessControlLists acls;
 
-        internal AccessControlsCompressor(Compressor compressor, AccessControlLists acls)
+        internal AccessControlsCompressor(Compressor compressor, IAccessControlLists acls)
         {
             this.compressor = compressor;
             this.acls = acls;

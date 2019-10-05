@@ -20,14 +20,16 @@ namespace Allors.Server
         private readonly User user;
         private readonly IExtentService extentService;
         private readonly IFetchService fetchService;
+        private readonly IAccessControlLists acls;
 
-        public PullExtent(ISession session, Pull pull, User user, IExtentService extentService, IFetchService fetchService)
+        public PullExtent(ISession session, Pull pull, User user, IExtentService extentService, IFetchService fetchService, IAccessControlLists acls)
         {
             this.session = session;
             this.pull = pull;
             this.user = user;
             this.extentService = extentService;
             this.fetchService = fetchService;
+            this.acls = acls;
         }
 
         public void Execute(PullResponseBuilder response)
@@ -60,13 +62,11 @@ namespace Allors.Server
 
                             if (fetch.Step != null)
                             {
-                                var aclCache = new AccessControlLists(this.user);
-
                                 objects = fetch.Step.IsOne ?
-                                              objects.Select(v => fetch.Step.Get(v, aclCache)).Where(v => v != null).Cast<IObject>().Distinct().ToArray() :
+                                              objects.Select(v => fetch.Step.Get(v, this.acls)).Where(v => v != null).Cast<IObject>().Distinct().ToArray() :
                                               objects.SelectMany(v =>
                                               {
-                                                  var stepResult = fetch.Step.Get(v, aclCache);
+                                                  var stepResult = fetch.Step.Get(v, this.acls);
                                                   return stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? Array.Empty<IObject>();
                                               }).Distinct().ToArray();
 

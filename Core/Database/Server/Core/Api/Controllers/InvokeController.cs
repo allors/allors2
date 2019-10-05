@@ -43,8 +43,7 @@ namespace Allors.Server
                         {
                             using (var session = this.DatabaseService.Database.CreateSession())
                             {
-                                var responseBuilder =
-                                    new InvokeResponseBuilder(session, session.GetUser(), request);
+                                var responseBuilder = new InvokeResponseBuilder(session, session.GetUser(), request);
                                 var response = responseBuilder.Build();
                                 return response;
                             }

@@ -55,6 +55,8 @@ namespace Allors.Server.Controllers
                             var user = session.GetUser();
                             var response = new PullResponseBuilder(user, this.TreeService);
 
+                            var acls = new WorkspaceAccessControlLists(user);
+
                             if (request.P != null)
                             {
                                 foreach (var p in request.P)
@@ -63,12 +65,12 @@ namespace Allors.Server.Controllers
 
                                     if (pull.Object != null)
                                     {
-                                        var pullInstantiate = new PullInstantiate(session, pull, user, this.FetchService);
+                                        var pullInstantiate = new PullInstantiate(session, pull, user, this.FetchService, acls);
                                         pullInstantiate.Execute(response);
                                     }
                                     else
                                     {
-                                        var pullExtent = new PullExtent(session, pull, user, this.ExtentService, this.FetchService);
+                                        var pullExtent = new PullExtent(session, pull, user, this.ExtentService, this.FetchService, acls);
                                         pullExtent.Execute(response);
                                     }
                                 }
