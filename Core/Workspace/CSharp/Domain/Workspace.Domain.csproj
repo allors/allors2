@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
@@ -12,5 +12,4 @@
     <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Adapters.csproj" />
     <ProjectReference Include="..\Meta\Workspace.Meta.csproj" />
   </ItemGroup>
-
 </Project>

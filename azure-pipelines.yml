@@ -2,7 +2,7 @@ trigger:
 - master
 
 stages:
-- stage: Test
+- stage: Platform
   jobs:
   - job: Test
     timeoutInMinutes: 120
@@ -51,4 +51,4 @@ stages:
         testResultsFormat: 'VSTest'
         testResultsFiles: '*.trx'
         searchFolder: 'artifacts/tests'
-      displayName: 'Publish Test results for $(target)'
+      displayName: 'Results for $(target)'

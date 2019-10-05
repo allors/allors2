@@ -44,7 +44,7 @@ namespace Blazor.Bootstrap.ServerSide
 
             services.AddSingleton<Allors.Workspace.Local.LocalDatabase>();
             services.AddSingleton<Allors.Workspace.IDatabase>(provider => provider.GetRequiredService<Allors.Workspace.Local.LocalDatabase>());
-            services.AddSingleton((serviceProvider) =>
+            services.AddSingleton(serviceProvider =>
             {
                 var objectFactory = new Allors.Workspace.ObjectFactory(Allors.Workspace.Meta.MetaPopulation.Instance, typeof(Allors.Workspace.Domain.User));
                 var workspace = new Allors.Workspace.Workspace(objectFactory);
@@ -52,10 +52,10 @@ namespace Blazor.Bootstrap.ServerSide
             });
 
             // Server Side Blazor doesn't register HttpClient by default
-            if (!services.Any(x => x.ServiceType == typeof(HttpClient)))
+            if (services.All(x => x.ServiceType != typeof(HttpClient)))
             {
                 // Setup HttpClient for server side in a client side compatible fashion
-                services.AddScoped<HttpClient>(s =>
+                services.AddScoped(s =>
                 {
                     // Creating the NavigationManager needs to wait until the JS Runtime is initialized, so defer it.
                     var navigationManager = s.GetRequiredService<NavigationManager>();
@@ -73,13 +73,13 @@ namespace Blazor.Bootstrap.ServerSide
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.ApplicationServices.GetRequiredService<IDatabaseService>().Database = new Database(
-                 app.ApplicationServices,
-                 new Configuration
-                 {
-                     ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User)),
-                     ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
-                     CommandTimeout = 600,
-                 });
+                app.ApplicationServices,
+                new Configuration
+                {
+                    ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User)),
+                    ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
+                    CommandTimeout = 600,
+                });
 
             if (env.IsDevelopment())
             {
@@ -99,6 +99,7 @@ namespace Blazor.Bootstrap.ServerSide
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseResponseCaching();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

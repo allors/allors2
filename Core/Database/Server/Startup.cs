@@ -29,51 +29,6 @@ namespace Allors.Server
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSingleton(this.Configuration);
-
-            // Allors
-            services.AddAllors();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IPolicyService, PolicyService>();
-            services.AddSingleton<IExtentService, ExtentService>();
-            /* Uncomment next line to enable derivation logging */
-            /* services.AddDerivationLogging(); */
-
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                    builder =>
-                    {
-                        builder
-                            .WithOrigins("http://localhost:4000", "http://localhost:4200", "http://localhost:9876")
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials();
-                    });
-            });
-
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddAllorsStores();
-
-            services.AddAuthentication(option => option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.Configuration.GetSection("JwtToken:Key").Value)),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                    };
-                });
-
-            services.AddResponseCaching();
-            services.AddControllers();
-        }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -125,6 +80,48 @@ namespace Allors.Server
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllers();
             });
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton(this.Configuration);
+
+            // Allors
+            services.AddAllors();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IPolicyService, PolicyService>();
+            services.AddSingleton<IExtentService, ExtentService>();
+            /* Uncomment next line to enable derivation logging */
+            /* services.AddDerivationLogging(); */
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder => builder
+                            .WithOrigins("http://localhost:4000", "http://localhost:4200", "http://localhost:9876")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials());
+            });
+
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddAllorsStores();
+
+            services.AddAuthentication(option => option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.Configuration.GetSection("JwtToken:Key").Value)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                    };
+                });
+
+            services.AddResponseCaching();
+            services.AddControllers();
         }
     }
 }
