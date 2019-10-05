@@ -1,4 +1,4 @@
-﻿// <copyright file="DriverManager.cs" company="Allors bvba">
+// <copyright file="DriverManager.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -49,6 +49,10 @@ namespace Tests
             this.Driver = Directory.Exists(chromeWebDriver) ?
                 new ChromeDriver(chromeWebDriver, options) :
                 new ChromeDriver(Environment.CurrentDirectory, options);
+
+            // TODO: lower timeouts
+            this.Driver.Manage().Timeouts().PageLoad = TimeSpan.FromMinutes(5);
+            this.Driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromMinutes(5);
 
             // Move to monitor on the left
             this.Driver.Manage().Window.Position = new Point(-800, 0);
