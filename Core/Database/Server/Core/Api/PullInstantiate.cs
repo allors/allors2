@@ -20,17 +20,14 @@ namespace Allors.Server
 
         private readonly Pull pull;
 
-        private readonly User user;
+        private readonly IAccessControlLists acls;
 
         private readonly IFetchService fetchService;
 
-        private readonly IAccessControlLists acls;
-
-        public PullInstantiate(ISession session, Pull pull, User user, IFetchService fetchService, IAccessControlLists acls)
+        public PullInstantiate(ISession session, Pull pull, IAccessControlLists acls, IFetchService fetchService)
         {
             this.session = session;
             this.pull = pull;
-            this.user = user;
             this.fetchService = fetchService;
             this.acls = acls;
         }

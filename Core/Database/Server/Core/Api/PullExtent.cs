@@ -17,16 +17,14 @@ namespace Allors.Server
     {
         private readonly ISession session;
         private readonly Pull pull;
-        private readonly User user;
         private readonly IExtentService extentService;
         private readonly IFetchService fetchService;
         private readonly IAccessControlLists acls;
 
-        public PullExtent(ISession session, Pull pull, User user, IExtentService extentService, IFetchService fetchService, IAccessControlLists acls)
+        public PullExtent(ISession session, Pull pull, IAccessControlLists acls, IExtentService extentService, IFetchService fetchService)
         {
             this.session = session;
             this.pull = pull;
-            this.user = user;
             this.extentService = extentService;
             this.fetchService = fetchService;
             this.acls = acls;

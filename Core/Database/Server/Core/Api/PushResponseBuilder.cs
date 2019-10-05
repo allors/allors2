@@ -17,16 +17,14 @@ namespace Allors.Server
     {
         private readonly ISession session;
         private readonly PushRequest pushRequest;
-        private readonly User user;
         private readonly IAccessControlLists acls;
         private readonly MetaObjectDecompressor metaObjectDecompressor;
 
-        public PushResponseBuilder(ISession session, User user, PushRequest pushRequest)
+        public PushResponseBuilder(ISession session, PushRequest pushRequest, IAccessControlLists acls)
         {
             this.session = session;
-            this.user = user;
             this.pushRequest = pushRequest;
-            this.acls = new WorkspaceAccessControlLists(this.user);
+            this.acls = acls;
 
             var compressor = new Decompressor();
             this.metaObjectDecompressor = new MetaObjectDecompressor(compressor, session.Database.MetaPopulation);

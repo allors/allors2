@@ -22,14 +22,12 @@ namespace Allors.Server
         private readonly MetaObjectCompressor metaObjectCompressor;
         private readonly ISession session;
         private readonly SyncRequest syncRequest;
-        private readonly User user;
 
-        public SyncResponseBuilder(ISession session, User user, SyncRequest syncRequest)
+        public SyncResponseBuilder(ISession session, SyncRequest syncRequest, IAccessControlLists acls)
         {
             this.session = session;
-            this.user = user;
             this.syncRequest = syncRequest;
-            this.acls = new WorkspaceAccessControlLists(this.user);
+            this.acls = acls;
 
             var compressor = new Compressor();
             this.metaObjectCompressor = new MetaObjectCompressor(compressor);

@@ -40,8 +40,8 @@ namespace Allors.Workspace.Local
         {
             using (var session = this.Database.CreateSession())
             {
-                var user = session.GetUser();
-                var responseBuilder = new InvokeResponseBuilder(session, user, invokeRequest);
+                var acls = new WorkspaceAccessControlLists(session.GetUser());
+                var responseBuilder = new InvokeResponseBuilder(session, invokeRequest, acls);
                 var response = responseBuilder.Build();
                 return System.Threading.Tasks.Task.FromResult(response);
             }
@@ -53,9 +53,8 @@ namespace Allors.Workspace.Local
         {
             using (var session = this.Database.CreateSession())
             {
-                var user = session.GetUser();
-                var response = new PullResponseBuilder(user, this.TreeService);
-                var acls = new WorkspaceAccessControlLists(user);
+                var acls = new WorkspaceAccessControlLists(session.GetUser());
+                var response = new PullResponseBuilder(acls, this.TreeService);
 
                 if (pullRequest.P != null)
                 {
@@ -65,12 +64,12 @@ namespace Allors.Workspace.Local
 
                         if (pull.Object != null)
                         {
-                            var pullInstantiate = new PullInstantiate(session, pull, user, this.FetchService, acls);
+                            var pullInstantiate = new PullInstantiate(session, pull, acls, this.FetchService);
                             pullInstantiate.Execute(response);
                         }
                         else
                         {
-                            var pullExtent = new PullExtent(session, pull, user, this.ExtentService, this.FetchService, acls);
+                            var pullExtent = new PullExtent(session, pull, acls, this.ExtentService, this.FetchService);
                             pullExtent.Execute(response);
                         }
                     }
@@ -86,8 +85,8 @@ namespace Allors.Workspace.Local
         {
             using (var session = this.Database.CreateSession())
             {
-                var user = session.GetUser();
-                var responseBuilder = new PushResponseBuilder(session, user, pushRequest);
+                var acls = new WorkspaceAccessControlLists(session.GetUser());
+                var responseBuilder = new PushResponseBuilder(session, pushRequest, acls);
                 var response = responseBuilder.Build();
                 if (!response.HasErrors)
                 {
@@ -102,8 +101,8 @@ namespace Allors.Workspace.Local
         {
             using (var session = this.Database.CreateSession())
             {
-                var user = session.GetUser();
-                var responseBuilder = new SyncResponseBuilder(session, user, syncRequest);
+                var acls = new WorkspaceAccessControlLists(session.GetUser());
+                var responseBuilder = new SyncResponseBuilder(session, syncRequest, acls);
                 var response = responseBuilder.Build();
                 return System.Threading.Tasks.Task.FromResult(response);
             }
@@ -113,8 +112,8 @@ namespace Allors.Workspace.Local
         {
             using (var session = this.Database.CreateSession())
             {
-                var user = session.GetUser();
-                var responseBuilder = new SecurityResponseBuilder(session, user, securityRequest);
+                var acls = new WorkspaceAccessControlLists(session.GetUser());
+                var responseBuilder = new SecurityResponseBuilder(session, securityRequest, acls);
                 var response = responseBuilder.Build();
                 return System.Threading.Tasks.Task.FromResult(response);
             }

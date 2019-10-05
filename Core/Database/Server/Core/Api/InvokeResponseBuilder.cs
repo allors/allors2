@@ -15,23 +15,19 @@ namespace Allors.Server
     public class InvokeResponseBuilder
     {
         private readonly ISession session;
-        private readonly User user;
+        private readonly IAccessControlLists acls;
         private readonly Invocation[] invocations;
-
         private readonly bool isolated;
         private readonly bool continueOnError;
-
-        private readonly IAccessControlLists acls;
-
-        public InvokeResponseBuilder(ISession session, User user, InvokeRequest invokeRequest)
+        
+        public InvokeResponseBuilder(ISession session, InvokeRequest invokeRequest, IAccessControlLists acls)
         {
             this.session = session;
-            this.user = user;
             this.invocations = invokeRequest.I;
             this.isolated = invokeRequest.O?.I ?? false;
             this.continueOnError = invokeRequest.O?.C ?? false;
 
-            this.acls = new WorkspaceAccessControlLists(this.user);
+            this.acls = acls;
         }
 
         public InvokeResponse Build()

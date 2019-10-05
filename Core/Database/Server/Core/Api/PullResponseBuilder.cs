@@ -17,7 +17,7 @@ namespace Allors.Server
     public class PullResponseBuilder
     {
         private readonly AccessControlsCompressor accessControlsCompressor;
-        private readonly AccessControlLists acls;
+        private readonly IAccessControlLists acls;
         private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
         private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
         private readonly Dictionary<string, IObject> objectByName = new Dictionary<string, IObject>();
@@ -25,12 +25,12 @@ namespace Allors.Server
         private readonly ITreeService treeService;
         private readonly Dictionary<string, string> valueByName = new Dictionary<string, string>();
 
-        public PullResponseBuilder(User user, ITreeService treeService)
+        public PullResponseBuilder(IAccessControlLists acls, ITreeService treeService)
         {
-            this.acls = new AccessControlLists(user);
-            this.objects = new HashSet<IObject>();
+            this.acls = acls;
             this.treeService = treeService;
 
+            this.objects = new HashSet<IObject>();
             var compressor = new Compressor();
             this.accessControlsCompressor = new AccessControlsCompressor(compressor, this.acls);
             this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(compressor, this.acls);
@@ -139,7 +139,7 @@ namespace Allors.Server
                 NamedValues = this.valueByName,
             };
 
-            pullResponse.AccessControls = this.acls.AccessControls
+            pullResponse.AccessControls = this.acls.EffectivePermissionIdsByAccessControl.Keys
                 .Select(v => new[]
                 {
                     v.Strategy.ObjectId.ToString(),

@@ -17,13 +17,13 @@ namespace Allors.Server
         private static readonly PrefetchPolicy AccessControlPrefetchPolicy;
         private static readonly PrefetchPolicy PermissionPrefetchPolicy;
 
-        private readonly AccessControlsCompressor accessControlsCompressor;
+        private readonly ISession session;
+        private readonly SecurityRequest securityRequest;
         private readonly IAccessControlLists acls;
+
+        private readonly AccessControlsCompressor accessControlsCompressor;
         private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
         private readonly Compressor compressor;
-        private readonly SecurityRequest securityRequest;
-        private readonly ISession session;
-        private readonly User user;
 
         static SecurityResponseBuilder()
         {
@@ -38,12 +38,11 @@ namespace Allors.Server
                 .Build();
         }
 
-        public SecurityResponseBuilder(ISession session, User user, SecurityRequest securityRequest)
+        public SecurityResponseBuilder(ISession session, SecurityRequest securityRequest, IAccessControlLists acls)
         {
             this.session = session;
-            this.user = user;
             this.securityRequest = securityRequest;
-            this.acls = new WorkspaceAccessControlLists(this.user);
+            this.acls = acls;
 
             this.compressor = new Compressor();
             this.accessControlsCompressor = new AccessControlsCompressor(compressor, this.acls);

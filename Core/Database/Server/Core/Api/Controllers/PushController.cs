@@ -43,7 +43,8 @@ namespace Allors.Server
 
                         using (var session = this.DatabaseService.Database.CreateSession())
                         {
-                            var responseBuilder = new PushResponseBuilder(session, session.GetUser(), request);
+                            var acls = new WorkspaceAccessControlLists(session.GetUser());
+                            var responseBuilder = new PushResponseBuilder(session, request, acls);
                             var response = responseBuilder.Build();
                             return response;
                         }

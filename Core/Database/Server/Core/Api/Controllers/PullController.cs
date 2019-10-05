@@ -52,10 +52,8 @@ namespace Allors.Server.Controllers
                     {
                         using (var session = this.DatabaseService.Database.CreateSession())
                         {
-                            var user = session.GetUser();
-                            var response = new PullResponseBuilder(user, this.TreeService);
-
-                            var acls = new WorkspaceAccessControlLists(user);
+                            var acls = new WorkspaceAccessControlLists(session.GetUser());
+                            var response = new PullResponseBuilder(acls, this.TreeService);
 
                             if (request.P != null)
                             {
@@ -65,12 +63,12 @@ namespace Allors.Server.Controllers
 
                                     if (pull.Object != null)
                                     {
-                                        var pullInstantiate = new PullInstantiate(session, pull, user, this.FetchService, acls);
+                                        var pullInstantiate = new PullInstantiate(session, pull, acls, this.FetchService);
                                         pullInstantiate.Execute(response);
                                     }
                                     else
                                     {
-                                        var pullExtent = new PullExtent(session, pull, user, this.ExtentService, this.FetchService, acls);
+                                        var pullExtent = new PullExtent(session, pull, acls, this.ExtentService, this.FetchService);
                                         pullExtent.Execute(response);
                                     }
                                 }
