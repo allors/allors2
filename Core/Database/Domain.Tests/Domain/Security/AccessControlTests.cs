@@ -17,7 +17,7 @@ namespace Tests
         public override Config Config => new Config { SetupSecurity = true };
 
         [Fact]
-        public void GivenNoAccessControlWhenCreatingAAccessControlWithoutARoleThenAccessControlIsInvalid()
+        public void GivenNoAccessControlWhenCreatingAnAccessControlWithoutARoleThenAccessControlIsInvalid()
         {
             var userGroup = new UserGroupBuilder(this.Session).WithName("UserGroup").Build();
             var securityToken = new SecurityTokenBuilder(this.Session).Build();

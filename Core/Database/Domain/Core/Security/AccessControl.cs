@@ -20,7 +20,7 @@ namespace Allors.Domain
 
             var permissions = this.Role?.Permissions.ToArray();
             this.EffectivePermissions = permissions;
-            this.EffectiveWorkspacePermissions = permissions.Where(v => v.OperandType.Workspace).ToArray();
+            this.EffectiveWorkspacePermissions = permissions?.Where(v => v.OperandType.Workspace).ToArray();
 
             // Invalidate cache
             this.CacheId = Guid.NewGuid();
