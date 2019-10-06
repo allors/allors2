@@ -106,7 +106,7 @@ namespace Allors.Server
                 }
 
                 this.objects.Add(@object);
-                this.objectByName.Add(name, @object);
+                this.objectByName[name] = @object;
                 tree?.Resolve(@object, this.acls, this.objects);
             }
         }

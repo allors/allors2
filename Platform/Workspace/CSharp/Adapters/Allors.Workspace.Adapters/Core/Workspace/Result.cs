@@ -27,11 +27,11 @@ namespace Allors.Workspace
                 pair => pair.Value);
         }
 
-        public Dictionary<string, ISessionObject> Objects { get; }
+        public IDictionary<string, ISessionObject> Objects { get; }
 
-        public Dictionary<string, ISessionObject[]> Collections { get; }
+        public IDictionary<string, ISessionObject[]> Collections { get; }
 
-        public Dictionary<string, string> Values { get; }
+        public IDictionary<string, string> Values { get; }
 
         private IWorkspace Workspace { get; }
 
@@ -42,23 +42,19 @@ namespace Allors.Workspace
             return this.GetCollection<T>(key);
         }
 
-        public T[] GetCollection<T>(string key) => this.Collections[key]?.Cast<T>().ToArray();
+        public T[] GetCollection<T>(string key) => this.Collections.TryGetValue(key, out var collection) ? collection?.Cast<T>().ToArray() : null;
 
-        public void GetCollection<T>(string key, out T[] value) => value = this.Collections[key]?.Cast<T>().ToArray();
-
-        public T GetObject<T>() where T : SessionObject
+        public T GetObject<T>()
+            where T : SessionObject
         {
             var objectType = this.Workspace.ObjectFactory.GetObjectType<T>();
             var key = objectType.SingularName;
             return this.GetObject<T>(key);
         }
 
-        public T GetObject<T>(string key) where T : SessionObject => (T)this.Objects[key];
-
-        public void GetObject<T>(string key, out T value) where T : SessionObject => value = (T)this.Objects[key];
+        public T GetObject<T>(string key)
+            where T : SessionObject => this.Objects.TryGetValue(key, out var @object) ? (T)@object : null;
 
         public string GetValue(string key) => this.Values[key];
-
-        public void GetValue(string key, out string value) => value = this.Values[key];
     }
 }
