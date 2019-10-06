@@ -70,14 +70,14 @@ namespace Allors.Server
 
                                 if (fetch.Step.IsOne)
                                 {
-                                    name = name ?? propertyType.SingularName;
+                                    name ??= propertyType.SingularName;
 
                                     @object = (IObject)fetch.Step.Get(@object, this.acls);
                                     response.AddObject(name, @object, include);
                                 }
                                 else
                                 {
-                                    name = name ?? propertyType.PluralName;
+                                    name ??= propertyType.PluralName;
 
                                     var stepResult = fetch.Step.Get(@object, this.acls);
                                     var objects = stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult)?.ToArray() ?? new IObject[0];
@@ -103,13 +103,13 @@ namespace Allors.Server
                             }
                             else
                             {
-                                name = name ?? this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
+                                name ??= this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
                                 response.AddObject(name, @object, include);
                             }
                         }
                         else
                         {
-                            name = name ?? this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
+                            name ??= this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
                             response.AddObject(name, @object);
                         }
                     }

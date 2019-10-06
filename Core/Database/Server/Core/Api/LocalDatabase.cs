@@ -5,6 +5,8 @@
 
 namespace Allors.Workspace.Local
 {
+    using System;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using Allors.Domain;
     using Allors.Protocol.Data;
@@ -13,17 +15,20 @@ namespace Allors.Workspace.Local
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
     using Allors.Services;
+    using Microsoft.Extensions.Logging;
     using Protocol.Remote.Security;
     using Server;
+    using Task = System.Threading.Tasks.Task;
 
     public class LocalDatabase : IDatabase
     {
-        public LocalDatabase(IDatabaseService databaseService, ITreeService treeService, IFetchService fetchService, IExtentService extentService)
+        public LocalDatabase(IDatabaseService databaseService, ITreeService treeService, IFetchService fetchService, IExtentService extentService, ILogger<LocalDatabase> logger)
         {
             this.DatabaseService = databaseService;
             this.TreeService = treeService;
             this.FetchService = fetchService;
             this.ExtentService = extentService;
+            this.Logger = logger;
         }
 
         public IDatabaseService DatabaseService { get; }
@@ -34,88 +39,130 @@ namespace Allors.Workspace.Local
 
         public ITreeService TreeService { get; }
 
+        public ILogger<LocalDatabase> Logger { get; set; }
+
         public Allors.IDatabase Database => this.DatabaseService.Database;
 
-        public Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null)
+        public Task<InvokeResponse> Invoke(InvokeRequest request, InvokeOptions options = null)
         {
-            using (var session = this.Database.CreateSession())
+            try
             {
-                var acls = new WorkspaceAccessControlLists(session.GetUser());
-                var responseBuilder = new InvokeResponseBuilder(session, invokeRequest, acls);
-                var response = responseBuilder.Build();
-                return System.Threading.Tasks.Task.FromResult(response);
+                using (var session = this.Database.CreateSession())
+                {
+                    var acls = new WorkspaceAccessControlLists(session.GetUser());
+                    var responseBuilder = new InvokeResponseBuilder(session, request, acls);
+                    var response = responseBuilder.Build();
+                    return System.Threading.Tasks.Task.FromResult(response);
+                }
+            }
+            catch (Exception e)
+            {
+                this.Logger.LogError(e, "InvokeRequest {request}", request);
+                throw;
             }
         }
 
-        public Task<InvokeResponse> Invoke(string service, object args) => throw new System.NotSupportedException();
+        public Task<InvokeResponse> Invoke(string service, object args) => throw new NotSupportedException();
 
-        public Task<PullResponse> Pull(PullRequest pullRequest)
+        public Task<PullResponse> Pull(PullRequest request)
         {
-            using (var session = this.Database.CreateSession())
+            try
             {
-                var acls = new WorkspaceAccessControlLists(session.GetUser());
-                var response = new PullResponseBuilder(acls, this.TreeService);
-
-                if (pullRequest.P != null)
+                using (var session = this.Database.CreateSession())
                 {
-                    foreach (var p in pullRequest.P)
-                    {
-                        var pull = p.Load(session);
+                    var acls = new WorkspaceAccessControlLists(session.GetUser());
+                    var response = new PullResponseBuilder(acls, this.TreeService);
 
-                        if (pull.Object != null)
+                    if (request.P != null)
+                    {
+                        foreach (var p in request.P)
                         {
-                            var pullInstantiate = new PullInstantiate(session, pull, acls, this.FetchService);
-                            pullInstantiate.Execute(response);
-                        }
-                        else
-                        {
-                            var pullExtent = new PullExtent(session, pull, acls, this.ExtentService, this.FetchService);
-                            pullExtent.Execute(response);
+                            var pull = p.Load(session);
+
+                            if (pull.Object != null)
+                            {
+                                var pullInstantiate = new PullInstantiate(session, pull, acls, this.FetchService);
+                                pullInstantiate.Execute(response);
+                            }
+                            else
+                            {
+                                var pullExtent = new PullExtent(session, pull, acls, this.ExtentService, this.FetchService);
+                                pullExtent.Execute(response);
+                            }
                         }
                     }
-                }
 
-                return System.Threading.Tasks.Task.FromResult(response.Build());
+                    return Task.FromResult(response.Build());
+                }
+            }
+            catch (Exception e)
+            {
+                this.Logger.LogError(e, "PullRequest {request}", request);
+                throw;
             }
         }
 
-        public Task<PullResponse> Pull(string service, object args) => throw new System.NotSupportedException();
+        public Task<PullResponse> Pull(string service, object args) => throw new NotSupportedException();
 
-        public Task<PushResponse> Push(PushRequest pushRequest)
+        public Task<PushResponse> Push(PushRequest request)
         {
-            using (var session = this.Database.CreateSession())
+            try
             {
-                var acls = new WorkspaceAccessControlLists(session.GetUser());
-                var responseBuilder = new PushResponseBuilder(session, pushRequest, acls);
-                var response = responseBuilder.Build();
-                if (!response.HasErrors)
+                using (var session = this.Database.CreateSession())
                 {
-                    session.Commit();
+                    var acls = new WorkspaceAccessControlLists(session.GetUser());
+                    var responseBuilder = new PushResponseBuilder(session, request, acls);
+                    var response = responseBuilder.Build();
+                    if (!response.HasErrors)
+                    {
+                        session.Commit();
+                    }
+
+                    return Task.FromResult(response);
                 }
-
-                return System.Threading.Tasks.Task.FromResult(response);
+            }
+            catch (Exception e)
+            {
+                this.Logger.LogError(e, "PushRequest {request}", request);
+                throw;
             }
         }
 
-        public Task<SyncResponse> Sync(SyncRequest syncRequest)
+        public Task<SyncResponse> Sync(SyncRequest request)
         {
-            using (var session = this.Database.CreateSession())
+            try
             {
-                var acls = new WorkspaceAccessControlLists(session.GetUser());
-                var responseBuilder = new SyncResponseBuilder(session, syncRequest, acls);
-                var response = responseBuilder.Build();
-                return System.Threading.Tasks.Task.FromResult(response);
+                using (var session = this.Database.CreateSession())
+                {
+                    var acls = new WorkspaceAccessControlLists(session.GetUser());
+                    var responseBuilder = new SyncResponseBuilder(session, request, acls);
+                    var response = responseBuilder.Build();
+                    return Task.FromResult(response);
+                }
+            }
+            catch (Exception e)
+            {
+                this.Logger.LogError(e, "SyncRequest {request}", request);
+                throw;
             }
         }
 
-        public Task<SecurityResponse> Security(SecurityRequest securityRequest)
+        public Task<SecurityResponse> Security(SecurityRequest request)
         {
-            using (var session = this.Database.CreateSession())
+            try
             {
-                var acls = new WorkspaceAccessControlLists(session.GetUser());
-                var responseBuilder = new SecurityResponseBuilder(session, securityRequest, acls);
-                var response = responseBuilder.Build();
-                return System.Threading.Tasks.Task.FromResult(response);
+                using (var session = this.Database.CreateSession())
+                {
+                    var acls = new WorkspaceAccessControlLists(session.GetUser());
+                    var responseBuilder = new SecurityResponseBuilder(session, request, acls);
+                    var response = responseBuilder.Build();
+                    return Task.FromResult(response);
+                }
+            }
+            catch (Exception e)
+            {
+                this.Logger.LogError(e, "SecurityRequest {request}", request);
+                throw;
             }
         }
     }
