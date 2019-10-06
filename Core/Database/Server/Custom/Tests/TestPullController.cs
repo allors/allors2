@@ -31,7 +31,8 @@ namespace Allors.Server.Controllers
         {
             try
             {
-                var response = new PullResponseBuilder(this.Session.GetUser(), this.TreeService);
+                var acls = new WorkspaceAccessControlLists(this.Session.GetUser());
+                var response = new PullResponseBuilder(acls, this.TreeService);
                 return this.Ok(response.Build());
             }
             catch (Exception e)
