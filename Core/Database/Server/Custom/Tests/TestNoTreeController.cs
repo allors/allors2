@@ -27,9 +27,9 @@ namespace Allors.Server.Controllers
         [HttpPost]
         public IActionResult Pull()
         {
-            var user = this.Session.GetUser();
-            var response = new PullResponseBuilder(user, this.TreeService);
-            response.AddObject("object", user);
+            var acls = new WorkspaceAccessControlLists(this.Session.GetUser());
+            var response = new PullResponseBuilder(acls, this.TreeService);
+            response.AddObject("object", acls.User);
             response.AddCollection("collection", new Organisations(this.Session).Extent());
             return this.Ok(response.Build());
         }

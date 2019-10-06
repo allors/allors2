@@ -32,7 +32,8 @@ namespace Allors.Server.Controllers
         {
             try
             {
-                var response = new PullResponseBuilder(this.Session.GetUser(), this.TreeService);
+                var acls = new WorkspaceAccessControlLists(this.Session.GetUser());
+                var response = new PullResponseBuilder(acls, this.TreeService);
                 var organisation = new Organisations(this.Session).FindBy(M.Organisation.Owner, this.Session.GetUser());
                 response.AddObject("root", organisation, M.Organisation.AngularShareholders);
                 return this.Ok(response.Build());

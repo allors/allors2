@@ -27,7 +27,8 @@ namespace Allors.Server.Controllers
         [HttpPost]
         public IActionResult Pull([FromBody] Model model)
         {
-            var response = new PullResponseBuilder(this.allors.Session.GetUser(), this.TreeService);
+            var acls = new WorkspaceAccessControlLists(this.allors.Session.GetUser());
+            var response = new PullResponseBuilder(acls, this.TreeService);
 
             var person = this.allors.Session.Instantiate(model.Id);
             response.AddObject("person", person);
