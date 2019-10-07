@@ -6,7 +6,7 @@ import { switchMap, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService, TestScope } from '../../../../../../angular';
-import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship, SerialisedInventoryItem, Facility } from '../../../../../../domain';
+import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship, SerialisedInventoryItem, Facility, ProductCategory } from '../../../../../../domain';
 import { SaveService, FiltersService } from '../../../../../../material';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -31,6 +31,9 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
   part: Part;
   currentSuppliers: Organisation[];
   currentFacility: Facility;
+  categories: ProductCategory[];
+  originalCategories: ProductCategory[] = [];
+  selectedCategories: ProductCategory[] = [];
 
   private subscription: Subscription;
 
@@ -120,6 +123,11 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
             this.fetcher.internalOrganisation,
             this.fetcher.locales,
             pull.SerialisedItem({
+              name: 'OriginalCategories',
+              object: id,
+              fetch: { ProductCategoriesWhereAdditionalSerialisedItem : x }
+            }),
+            pull.SerialisedItem({
               object: id,
               fetch: {
                 PartWhereSerialisedItem: {
@@ -153,6 +161,7 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
               predicate: new Equals({ propertyType: m.Ownership.IsActive, value: true }),
               sort: new Sort(m.Ownership.Name),
             }),
+            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
           ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
@@ -174,6 +183,10 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
         this.ownerships = loaded.collections.Ownerships as Enumeration[];
         this.part = loaded.objects.Part as Part;
         this.parts = loaded.collections.Parts as Part[];
+
+        this.categories = loaded.collections.ProductCategories as ProductCategory[];
+        this.originalCategories = loaded.collections.OriginalCategories as ProductCategory[];
+        this.selectedCategories = this.originalCategories;
 
         const serialisedInventoryItems = loaded.collections.SerialisedInventoryItems as SerialisedInventoryItem[];
         const inventoryItem = serialisedInventoryItems.find(v => v.Quantity === 1);
@@ -219,5 +232,22 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
 
   private onSave() {
     this.part.AddSerialisedItem(this.serialisedItem);
+
+    this.selectedCategories.forEach((category: ProductCategory) => {
+      category.AddAdditionalSerialisedItem(this.serialisedItem);
+
+      const index = this.originalCategories.indexOf(category);
+      if (index > -1) {
+        this.originalCategories.splice(index, 1);
+      }
+    });
+
+    this.originalCategories.forEach((category: ProductCategory) => {
+      category.RemoveAdditionalSerialisedItem(this.serialisedItem);
+    });
+  }
+
+  public setDirty(): void {
+    this.allors.context.session.hasChanges = true;
   }
 }

@@ -39,6 +39,16 @@
             </div>
 
             <div class="row">
+              <mat-form-field class="col-md">
+                <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Additional Categories" multiple="true"
+                  (ngModelChange)="setDirty()">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let category of categories" [value]="category"> {{ category.Name }} </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+  
+            <div class="row">
               <a-mat-textarea class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Description">
               </a-mat-textarea>
             </div>
