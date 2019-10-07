@@ -1,6 +1,12 @@
 @echo off
 
 cd \temp
-ng new material --routing=true --style=scss
+
+DEL /F/Q/S material > NUL
+RMDIR /Q/S material
+
+CALL ng new material --routing=true --style=scss
 cd material
-ng add @angular/material
+CALL ng add @angular/material --defaults=true
+
+pause

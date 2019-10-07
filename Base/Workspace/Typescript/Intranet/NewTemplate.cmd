@@ -1,6 +1,12 @@
 @echo off
 
 cd \temp
-ng new intranet --routing=true --style=scss
+
+DEL /F/Q/S intranet > NUL
+RMDIR /Q/S intranet
+
+CALL ng new intranet --routing=true --style=scss
 cd intranet
-ng add @angular/material
+CALL ng add @angular/material --defaults=true
+
+pause
