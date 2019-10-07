@@ -1,12 +1,11 @@
 // tslint:disable: directive-selector
 // tslint:disable: directive-class-suffix
-import { AfterViewInit, Input, OnDestroy, QueryList, ViewChildren, Directive } from '@angular/core';
+import { AfterViewInit, Input, OnDestroy, QueryList, ViewChildren, Injectable } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { ISessionObject, } from '../../../framework';
 import { Field } from './Field';
 
-// See https://github.com/angular/angular/issues/30080
-@Directive({selector: 'ivy-workaround-model-field'})
+@Injectable()
 export abstract class ModelField extends Field implements AfterViewInit, OnDestroy {
 
   @Input()

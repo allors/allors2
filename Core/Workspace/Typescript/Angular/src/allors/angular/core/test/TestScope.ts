@@ -1,8 +1,7 @@
-import { HostBinding, Component } from '@angular/core';
+import { HostBinding, Injectable } from '@angular/core';
 
-// See https://github.com/angular/angular/issues/30080
-@Component({ template: '' })
+@Injectable()
 export abstract class TestScope {
   @HostBinding('attr.data-test-scope')
-  private testScope = this.constructor.name;
+  testScope = this.constructor.name;
 }
