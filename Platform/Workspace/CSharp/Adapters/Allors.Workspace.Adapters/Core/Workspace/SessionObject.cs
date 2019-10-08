@@ -25,7 +25,9 @@ namespace Allors.Workspace
 
         protected SessionObject(Session session) => this.Session = session;
 
-        public ISession Session { get; }
+        ISession ISessionObject.Session => this.Session;
+
+        public Session Session { get; }
 
         public IWorkspaceObject WorkspaceObject { get; set; }
 
@@ -279,6 +281,46 @@ namespace Allors.Workspace
             this.changedRoleByRoleType = null;
 
             this.roleByRoleType = new Dictionary<IRoleType, object>();
+        }
+
+        internal object GetForAssociation(IRoleType roleType)
+        {
+            if (!this.roleByRoleType.TryGetValue(roleType, out var value))
+            {
+                if (this.NewId == null)
+                {
+                    var workspaceRole = this.WorkspaceObject.Roles?.FirstOrDefault(v => v.RoleType == roleType);
+                    if (workspaceRole?.Value != null)
+                    {
+                        if (roleType.ObjectType.IsUnit)
+                        {
+                            value = workspaceRole.Value;
+                        }
+                        else
+                        {
+                            if (roleType.IsOne)
+                            {
+                                value = this.Session.GetForAssociation((long)workspaceRole.Value);
+                            }
+                            else
+                            {
+                                var ids = (long[])workspaceRole.Value;
+                                var array = ids.Select(v => this.Session.GetForAssociation(v))
+                                    .Where(v => v != null)
+                                    .ToArray();
+                                value = array;
+                            }
+                        }
+                    }
+                }
+
+                if (value == null && roleType.IsMany)
+                {
+                    value = this.Session.Workspace.ObjectFactory.EmptyArray(roleType.ObjectType);
+                }
+            }
+
+            return value;
         }
 
         private PushRequestRole[] SaveRoles()

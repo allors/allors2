@@ -116,7 +116,7 @@ namespace Allors.Workspace
                 {
                     if (roleType.IsOne)
                     {
-                        var role = (ISessionObject)association.Get(roleType);
+                        var role = (SessionObject)((SessionObject)association).GetForAssociation(roleType);
                         if (role != null && role.Id == @object.Id)
                         {
                             yield return association;
@@ -124,7 +124,7 @@ namespace Allors.Workspace
                     }
                     else
                     {
-                        var roles = (ISessionObject[])association.Get(roleType);
+                        var roles = (ISessionObject[])((SessionObject)association).GetForAssociation(roleType);
                         if (roles != null && roles.Contains(@object))
                         {
                             yield return association;
@@ -132,6 +132,16 @@ namespace Allors.Workspace
                     }
                 }
             }
+        }
+
+        internal ISessionObject GetForAssociation(long id)
+        {
+            if (!this.sessionObjectById.TryGetValue(id, out var sessionObject))
+            {
+                this.newSessionObjectById.TryGetValue(id, out sessionObject);
+            }
+
+            return sessionObject;
         }
     }
 }
