@@ -166,16 +166,6 @@ namespace Allors.Repository
         public Product[] Products { get; set; }
 
         #region Allors
-        [Id("6D456E17-10D5-4879-A3DC-0898ABF5D8D3")]
-        [AssociationId("76406EB8-9BEC-4681-8804-4A836144272E")]
-        [RoleId("451D6548-5943-411E-B72A-B73A70555200")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        public SerialisedItem[] AdditionalSerialisedItems { get; set; }
-
-        #region Allors
         [Id("293A6FED-2EFD-464F-9FCB-5C24E74DCE80")]
         [AssociationId("00A1038B-DA0E-4FA4-8458-46D3B6420AA9")]
         [RoleId("E3EE43F8-81B5-45EC-BF82-987EC4D45344")]

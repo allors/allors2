@@ -357,6 +357,15 @@ namespace Allors.Repository
         public bool AvailableForSale { get; set; }
 
         #region Allors
+        [Id("D5E98D57-6DAC-46E6-A30A-E70044EC5C40")]
+        [AssociationId("340B7FCA-2052-424E-9F18-48F5D4789C9E")]
+        [RoleId("971EDD90-1F7B-41C0-836A-A52550CE81AE")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool ShowOnFrontPage { get; set; }
+
+        #region Allors
         [Id("BB954677-BEB7-4092-96C6-44D36503174D")]
         [AssociationId("9EB5189B-3F6F-423A-A48C-05B1EB337169")]
         [RoleId("E6382C24-8AC5-4E3E-B6E3-14AE7B48241E")]

@@ -108,14 +108,6 @@ namespace Allors.Domain
                     .Where(w => w.AvailableForSale))
                 .ToArray();
 
-            foreach (SerialisedItem additionalSerialisedItem in this.AdditionalSerialisedItems)
-            {
-                if (!this.AllSerialisedItemsForSale.Contains(additionalSerialisedItem))
-                {
-                    this.AllSerialisedItemsForSale.Append(additionalSerialisedItem);
-                }
-            }
-
             this.AllNonSerialisedInventoryItemsForSale = descendantsAndSelf
                 .SelectMany(
                     v => this.AllParts

@@ -7,7 +7,7 @@
     <div class="container-fluid">
 
       <div class="row">
-        <a-mat-select class="col-md-6" [object]="supplierOffering" [roleType]="m.SupplierOffering.Supplier" [options]="part.SuppliedBy" display="displayName"></a-mat-select>
+        <a-mat-select class="col-md-6" [object]="supplierOffering" [roleType]="m.SupplierOffering.Supplier" [options]="currentSuppliers" display="displayName"></a-mat-select>
       </div>
 
       <div class="row">
@@ -22,7 +22,7 @@
 
       <div class="row">
         <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.SupplierProductName" ></a-mat-input>
-        <a-mat-input class="col-md" [object]="supplierOffering" [roleType]="m.SupplierOffering.SupplierProductId"></a-mat-input>
+        <a-mat-input class="col-myd" [object]="supplierOffering" [roleType]="m.SupplierOffering.SupplierProductId"></a-mat-input>
       </div>
 
       <div class="row">

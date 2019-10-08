@@ -1,7 +1,8 @@
 <div *ngIf="panel.isCollapsed && part" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
   <div class="container mb-3">
     <div class="row rounded" style="background-color: white;">
-      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
+      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start"
+        style="background-color: lightseagreen">
         <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
       </div>
       <div class="col-9 col-md-10 p-3">
@@ -48,7 +49,8 @@
               <mat-card>
                 <mat-card-header>Add a new brand</mat-card-header>
                 <mat-card-content>
-                  <brand-inline (cancelled)="addBrand = false" (saved)="brandAdded($event); addBrand = false"></brand-inline>
+                  <brand-inline (cancelled)="addBrand = false" (saved)="brandAdded($event); addBrand = false">
+                  </brand-inline>
                 </mat-card-content>
               </mat-card>
             </div>
@@ -56,7 +58,8 @@
             <div class="col-md">
               <div class="row">
                 <mat-form-field class="col">
-                  <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false" (ngModelChange)="setDirty()">
+                  <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false"
+                    (ngModelChange)="setDirty()">
                     <mat-option>None</mat-option>
                     <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
                   </mat-select>
@@ -71,17 +74,16 @@
               <mat-card *ngIf="addModel">
                 <mat-card-header>Add a new model</mat-card-header>
                 <mat-card-content>
-                  <model-inline (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false"></model-inline>
+                  <model-inline (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false">
+                  </model-inline>
                 </mat-card-content>
               </mat-card>
             </div>
           </div>
 
           <div class="row">
-            <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ProductType" [options]="productTypes"
-              display="Name" (selected)="update()"></a-mat-select>
-            <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind" [options]="inventoryItemKinds"
-              display="Name"></a-mat-select>
+            <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind"
+              [options]="inventoryItemKinds" display="Name"></a-mat-select>
           </div>
 
           <div class="row">
@@ -93,9 +95,7 @@
 
           <div class="row">
             <mat-form-field class="col-md">
-              <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true" (ngModelChange)="setDirty()">
-                <mat-option *ngFor="let supplier of currentSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
-              </mat-select>
+              <input matInput [(ngModel)]="suppliers" name="suppliers" placeholder="Supplied By" readonly>
             </mat-form-field>
             <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ManufacturedBy" [options]="manufacturers"
               display="Name"></a-mat-select>
@@ -116,7 +116,8 @@
               <div *ngFor="let locale of locales; let i = index">
                 <mat-divider *ngIf="i > 0"></mat-divider>
                 <div class="row">
-                  <a-mat-localised-text class="col-md-12" [object]="part" [roleType]="m.Part.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+                  <a-mat-localised-text class="col-md-12" [object]="part" [roleType]="m.Part.LocalisedNames"
+                    [locale]="locale"></a-mat-localised-text>
                 </div>
               </div>
             </mat-expansion-panel>
@@ -127,14 +128,19 @@
           <div class="container-fluid">
 
             <div class="row" *ngFor="let productCharacteristicValue of part.SerialisedItemCharacteristics">
-              <a-mat-input class="col-md" *ngIf="productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
-                [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
+              <a-mat-input class="col-md"
+                *ngIf="productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
+                [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value"
+                [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure.Name + ')'">
+              </a-mat-input>
             </div>
 
             <div class="row" *ngFor="let productCharacteristicValue of part.SerialisedItemCharacteristics">
-              <a-mat-textarea class="col-md" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
-                [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"
-                class="col-md-12"></a-mat-textarea>
+              <a-mat-textarea class="col-md"
+                *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
+                [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value"
+                [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name" class="col-md-12">
+              </a-mat-textarea>
             </div>
 
             <div class="row">
@@ -147,9 +153,11 @@
                 <div *ngFor="let locale of locales; let i = index" class="row">
                   <mat-divider *ngIf="i > 0"></mat-divider>
                   <div class="row" *ngFor="let productCharacteristicValue of part.SerialisedItemCharacteristics">
-                    <a-mat-localised-text class="col-md-12" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
+                    <a-mat-localised-text class="col-md-12"
+                      *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure"
                       [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.LocalisedValues"
-                      [locale]="locale" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"></a-mat-localised-text>
+                      [locale]="locale" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name">
+                    </a-mat-localised-text>
                   </div>
                 </div>
               </mat-expansion-panel>
@@ -193,7 +201,8 @@
         <mat-tab label="Images">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-file class="col-md-12" [object]="part" [roleType]="m.Part.PrimaryPhoto" accept="image/*"></a-mat-file>
+              <a-mat-file class="col-md-12" [object]="part" [roleType]="m.Part.PrimaryPhoto" accept="image/*">
+              </a-mat-file>
               <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.Photos" accept="image/*"></a-mat-files>
             </div>
           </div>
@@ -202,7 +211,8 @@
         <mat-tab label="Documents">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.ElectronicDocuments" accept="image/*"></a-mat-files>
+              <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.ElectronicDocuments" accept="image/*">
+              </a-mat-files>
             </div>
           </div>
         </mat-tab>
@@ -211,7 +221,8 @@
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+      <button mat-button class="ml-2" color="primary" type="submit"
+        [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
       <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
     </mat-card-actions>
   </mat-card>

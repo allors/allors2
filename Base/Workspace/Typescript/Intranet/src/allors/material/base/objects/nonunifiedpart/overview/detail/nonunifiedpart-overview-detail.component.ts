@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService, TestScope } from '../../../../../../angular';
-import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, ProductIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering, Settings, SupplierRelationship } from '../../../../../../domain';
+import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, ProductIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, Settings } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -28,10 +28,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
   inventoryItemKinds: InventoryItemKind[];
   productTypes: ProductType[];
   manufacturers: Organisation[];
-  suppliers: Organisation[];
-  activeSuppliers: Organisation[];
-  selectedSuppliers: Organisation[];
-  supplierOfferings: SupplierOffering[];
   brands: Brand[];
   selectedBrand: Brand;
   models: Model[];
@@ -45,7 +41,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
   currentSellingPrice: PriceComponent;
   internalOrganisation: Organisation;
   settings: Settings;
-  currentSuppliers: Set<Organisation>;
+  suppliers: string;
 
   private subscription: Subscription;
 
@@ -147,14 +143,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
               {
                 object: id,
                 fetch: {
-                  SupplierOfferingsWherePart: x
-                }
-              }
-            ),
-            pull.Part(
-              {
-                object: id,
-                fetch: {
                   PriceComponentsWherePart: x
                 }
               }
@@ -165,11 +153,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
             pull.Facility(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
-            pull.SupplierRelationship({
-              include: {
-                Supplier: x
-              }
-            }),
             pull.Brand({
               include: {
                 Models: x
@@ -191,6 +174,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         const now = moment.utc();
 
         this.part = loaded.objects.Part as Part;
+        this.suppliers = this.part.SuppliedBy.map(w => w.PartyName).join(', ')
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.brands = loaded.collections.Brands as Brand[];
@@ -200,10 +184,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
         this.settings = loaded.objects.Settings as Settings;
 
-        const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
-        this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
-
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
@@ -211,18 +191,12 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
 
         this.partNumber = this.part.ProductIdentifications.find(v => v.ProductIdentificationType === partNumberType);
 
-        this.suppliers = this.part.SuppliedBy as Organisation[];
-        this.selectedSuppliers = this.suppliers;
-
         this.selectedBrand = this.part.Brand;
         this.selectedModel = this.part.Model;
 
         if (this.selectedBrand) {
           this.brandSelected(this.selectedBrand);
         }
-
-        this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-
       });
 
   }
@@ -306,52 +280,5 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
 
     this.part.Brand = this.selectedBrand;
     this.part.Model = this.selectedModel;
-
-    if (this.suppliers !== undefined) {
-      const suppliersToDelete = this.suppliers.filter(v => v);
-
-      if (this.selectedSuppliers !== undefined) {
-        this.selectedSuppliers.forEach((supplier: Organisation) => {
-          const index = suppliersToDelete.indexOf(supplier);
-          if (index > -1) {
-            suppliersToDelete.splice(index, 1);
-          }
-
-          const now = moment.utc();
-          const supplierOffering = this.supplierOfferings.find((v) =>
-            v.Supplier === supplier &&
-            moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
-
-          if (supplierOffering === undefined) {
-            this.supplierOfferings.push(this.newSupplierOffering(supplier));
-          } else {
-            supplierOffering.ThroughDate = null;
-          }
-        });
-      }
-
-      if (suppliersToDelete !== undefined) {
-        suppliersToDelete.forEach((supplier: Organisation) => {
-          const now = moment.utc();
-          const supplierOffering = this.supplierOfferings.find((v) =>
-            v.Supplier === supplier &&
-            moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
-
-          if (supplierOffering !== undefined) {
-            supplierOffering.ThroughDate = moment.utc().toISOString();
-          }
-        });
-      }
-    }
-  }
-
-  private newSupplierOffering(supplier: Organisation): SupplierOffering {
-
-    const supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
-    supplierOffering.Supplier = supplier;
-    supplierOffering.Part = this.part;
-    supplierOffering.UnitOfMeasure = this.part.UnitOfMeasure;
-    supplierOffering.Currency = this.settings.PreferredCurrency;
-    return supplierOffering;
   }
 }
