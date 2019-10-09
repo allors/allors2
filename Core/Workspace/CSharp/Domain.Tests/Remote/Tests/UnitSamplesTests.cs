@@ -25,7 +25,7 @@ namespace Tests.Remote
 
                     var result = await context.Load(new { step = 0 }, "TestUnitSamples");
 
-                    result.GetObject("unitSample", out UnitSample unitSample);
+                    var unitSample = result.GetObject<UnitSample>("unitSample");
 
                     Assert.False(unitSample.ExistAllorsBinary);
                     Assert.False(unitSample.ExistAllorsBoolean);
@@ -46,7 +46,7 @@ namespace Tests.Remote
 
                     var result = await context.Load(new { step = 1 }, "TestUnitSamples");
 
-                    result.GetObject("unitSample", out UnitSample unitSample);
+                    var unitSample = result.GetObject<UnitSample>("unitSample");
 
                     Assert.True(unitSample.ExistAllorsBinary);
                     Assert.True(unitSample.ExistAllorsBoolean);
