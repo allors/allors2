@@ -40,7 +40,8 @@ namespace Tests
             options.AddUserProfilePreference("browser.cache.memory.enable", false);
             options.AddUserProfilePreference("browser.cache.offline.enable", false);
             options.AddUserProfilePreference("network.http.use-cache", false);
-            options.AddArguments("disable-infobars");
+            options.AddExcludedArgument("enable-automation");
+            options.AddAdditionalCapability("useAutomationExtension", false);
 
             options.AddArgument("no-sandbox");
 
