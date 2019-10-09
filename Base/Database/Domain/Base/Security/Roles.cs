@@ -17,6 +17,7 @@ namespace Allors.Domain
         public static readonly Guid SalesAccountManagerId = new Guid("213B1C2C-742A-4F74-9AE2-9587266D9EB9");
         public static readonly Guid LocalAdministratorId = new Guid("1F8DCC58-5647-4969-ABF2-C4A380880995");
         public static readonly Guid EmployeeId = new Guid("A084F8C0-A130-4D2F-8404-8A11D3D93F14");
+        public static readonly Guid ManagerId = new Guid("EA23FA11-234D-4A42-99B2-B14D21909431");
 
         public Role ProductQuoteApprover => this.Sticky[ProductQuoteApproverId];
 
@@ -34,6 +35,8 @@ namespace Allors.Domain
 
         public Role Employee => this.Sticky[EmployeeId];
 
+        public Role Manager => this.Sticky[ManagerId];
+
         protected override void BaseSetup(Setup setup)
         {
             new RoleBuilder(this.Session).WithName("ProductQuote approver").WithUniqueId(ProductQuoteApproverId).Build();
@@ -44,6 +47,7 @@ namespace Allors.Domain
             new RoleBuilder(this.Session).WithName("Sales Account Manager").WithUniqueId(SalesAccountManagerId).Build();
             new RoleBuilder(this.Session).WithName("Local Administrator").WithUniqueId(LocalAdministratorId).Build();
             new RoleBuilder(this.Session).WithName("Employee").WithUniqueId(EmployeeId).Build();
+            new RoleBuilder(this.Session).WithName("Manager").WithUniqueId(ManagerId).Build();
         }
     }
 }
