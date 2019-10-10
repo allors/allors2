@@ -73,6 +73,34 @@ export class Session implements ISession {
     return sessionObject;
   }
 
+  public getForAssociation(id: string): ISessionObject {
+    if (!id) {
+      return undefined;
+    }
+
+    let sessionObject: ISessionObject = this.existingSessionObjectById.get(id);
+    if (sessionObject === undefined) {
+      sessionObject = this.newSessionObjectById.get(id);
+
+      if (sessionObject === undefined) {
+        const workspaceObject: WorkspaceObject = this.workspace.getForAssociation(id);
+
+        if (workspaceObject) {
+          const constructor: any = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
+          sessionObject = new constructor();
+          sessionObject.session = this;
+          sessionObject.workspaceObject = workspaceObject;
+          sessionObject.objectType = workspaceObject.objectType;
+
+          this.existingSessionObjectById.set(sessionObject.id, sessionObject);
+          this.addByObjectTypeId(sessionObject);
+        }
+      }
+    }
+
+    return sessionObject;
+  }
+
   public create(objectType: ObjectType | string): ISessionObject {
 
     if (typeof objectType === 'string') {
@@ -171,19 +199,20 @@ export class Session implements ISession {
     const associations: ISessionObject[] = [];
 
     associationClasses.forEach((associationClass) => {
+      this.getAll(associationClass);
       const sessionObjectById = this.sessionObjectByIdByClass.get(associationClass);
       if (sessionObjectById) {
         for (const association of sessionObjectById.values()) {
           if (!associationIds.has(association.id) && association.canRead(roleType)) {
             if (roleType.isOne) {
-              const role: ISessionObject = association.get(roleType);
+              const role: ISessionObject = (association as SessionObject).getForAssociation(roleType);
               if (role && role.id === object.id) {
                 associationIds.add(association.id);
                 associations.push(association);
               }
             } else {
-              const roles: ISessionObject[] = association.get(roleType);
-              if (roles && roles.indexOf(association) > -1) {
+              const roles: ISessionObject[] = (association as SessionObject).getForAssociation(roleType);
+              if (roles && roles.find(v => v === object)) {
                 associationIds.add(association.id);
                 associations.push(association);
               }
@@ -222,6 +251,13 @@ export class Session implements ISession {
     });
 
     return associations;
+  }
+
+  private getAll(objectType: ObjectType): void {
+    const workspaceObjects = this.workspace.workspaceObjectsByClass.get(objectType);
+    for (const workspaceObject of workspaceObjects) {
+      this.get(workspaceObject.id);
+    }
   }
 
   private addByObjectTypeId(sessionObject: ISessionObject) {

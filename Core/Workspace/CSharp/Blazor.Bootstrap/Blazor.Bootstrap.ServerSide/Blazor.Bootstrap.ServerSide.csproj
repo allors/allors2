@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <LangVersion>7.3</LangVersion>
     <UserSecretsId>aspnet-Blazor.Bootstrap.ServerSide-680F7022-6888-47A7-A965-C04965A395FA</UserSecretsId>
   </PropertyGroup>
 
@@ -22,10 +21,6 @@
 
   <ItemGroup>
     <Compile Include="..\..\..\..\Database\Server\Core*\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="..\..\..\..\Database\Server\Core\Api\Compression\PermissionsCompressor.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,26 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node ./postinstall.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/angular": "^1.6.56",
+    "@types/angular-cookies": "^1.4.5",
+    "@types/angular-loading-bar": "0.0.35",
+    "@types/angular-toastr": "^1.6.34",
+    "@types/angular-translate": "^2.16.0",
+    "@types/angular-ui-bootstrap": "^1.0.0",
+    "@types/angular-ui-router": "^1.1.40",
+    "@types/jquery": "^2.0.54",
+    "@types/lodash": "^4.14.143",
+    "@types/moment": "^2.13.0",
+    "@types/ui-select": "^0.13.29",
+    "jsnlog": "^2.29.0",
+    "lnk": "^1.1.0"
+  }
+}

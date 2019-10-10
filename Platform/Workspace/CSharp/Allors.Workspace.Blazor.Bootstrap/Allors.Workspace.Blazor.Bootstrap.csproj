@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <LangVersion>7.3</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
     <RootNamespace>Allors.Workspace.Blazor.Bootstrap</RootNamespace>
     <AssemblyName>Allors.Workspace.Blazor.Bootstrap</AssemblyName>
