@@ -159,6 +159,44 @@ export class SessionObject implements ISessionObject {
     return value;
   }
 
+  public getForAssociation(roleType: RoleType): any {
+    if (this.roleByRoleType === undefined) {
+      return undefined;
+    }
+
+    let value = this.roleByRoleType.get(roleType);
+    if (value === undefined) {
+      if (this.newId === undefined) {
+        if (roleType.objectType.isUnit) {
+          value = this.workspaceObject.roleByRoleTypeId.get(roleType.id);
+          if (value === undefined) {
+            value = null;
+          }
+        } else {
+            if (roleType.isOne) {
+              const role: string = this.workspaceObject.roleByRoleTypeId.get(roleType.id);
+              value = role ? this.session.getForAssociation(role) : null;
+            } else {
+              const roles: string[] = this.workspaceObject.roleByRoleTypeId.get(roleType.id);
+              value = roles ? roles.map((role) => {
+                return this.session.getForAssociation(role);
+              }) : [];
+            }
+        }
+      } else {
+        if (roleType.objectType.isComposite && roleType.isMany) {
+          value = [];
+        } else {
+          value = null;
+        }
+      }
+
+      this.roleByRoleType.set(roleType, value);
+    }
+
+    return value;
+  }
+
   public set(roleType: RoleType, value: any) {
     this.assertExists();
 

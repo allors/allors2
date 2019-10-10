@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Site": {
+      "commandName": "Project",
+      "launchBrowser": true
+    }
+  }
+}

@@ -156,6 +156,11 @@ export class Workspace implements IWorkspace {
     return workspaceObject;
   }
 
+  getForAssociation(id: string): WorkspaceObject {
+    const workspaceObject = this.workspaceObjectById.get(id);
+    return workspaceObject;
+  }
+
   diff(response: PullResponse): SyncRequest {
 
     const decompressor = new Decompressor();
