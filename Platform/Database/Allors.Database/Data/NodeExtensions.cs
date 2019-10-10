@@ -5,12 +5,11 @@
 
 namespace Allors.Data
 {
-    using System.Collections.Generic;
     using System.Linq;
 
-    public static class TreeNodeExtensions
+    public static class NodeExtensions
     {
-        public static PrefetchPolicy BuildPrefetchPolicy(this TreeNode[] treeNodes)
+        public static PrefetchPolicy BuildPrefetchPolicy(this Node[] treeNodes)
         {
             var prefetchPolicyBuilder = new PrefetchPolicyBuilder();
 
@@ -22,7 +21,7 @@ namespace Allors.Data
             return prefetchPolicyBuilder.Build();
         }
 
-        public static Protocol.Data.Node[] Save(this TreeNode[] treeNodes) =>
+        public static Protocol.Data.Node[] Save(this Node[] treeNodes) =>
             treeNodes.Select(v => v.Save()).ToArray();
     }
 }

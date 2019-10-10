@@ -18,11 +18,13 @@
   "include": [
     "@types/jl.d.ts",
     "@types/moment.d.ts",
-    "wwwroot/Allors/**/*",
+    "wwwroot/Core/**/*",
+    "wwwroot/generated/**/*",
+    "wwwroot/Custom/**/*",
     "wwwroot/app/**/*"
   ],
     "exclude": [
-        "wwwroot/Allors/Client/Core/Angular/components/bootstrap/registerTemplates.ts"
+        "wwwroot/Core/Angular/components/bootstrap/registerTemplates.ts"
     ],
     "compileOnSave": true
 }

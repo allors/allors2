@@ -25,6 +25,11 @@ namespace Allors.Server
         private readonly ITreeService treeService;
         private readonly Dictionary<string, string> valueByName = new Dictionary<string, string>();
 
+        public PullResponseBuilder(User user, ITreeService treeService = null)
+            : this(new WorkspaceAccessControlLists(user), treeService)
+        {
+        }
+
         public PullResponseBuilder(IAccessControlLists acls, ITreeService treeService)
         {
             this.acls = acls;
@@ -40,7 +45,7 @@ namespace Allors.Server
         {
             var inputList = (collection as IList<IObject>) ?? collection?.ToArray() ?? Array.Empty<IObject>();
 
-            TreeNode[] tree = null;
+            Node[] tree = null;
             if (full && inputList.Count > 0)
             {
                 var @object = inputList.FirstOrDefault();
@@ -50,7 +55,7 @@ namespace Allors.Server
             this.AddCollection(name, inputList, tree);
         }
 
-        public void AddCollection(string name, IEnumerable<IObject> collection, TreeNode[] tree)
+        public void AddCollection(string name, IEnumerable<IObject> collection, Node[] tree)
         {
             if (collection != null)
             {
@@ -83,7 +88,7 @@ namespace Allors.Server
         {
             if (@object != null)
             {
-                TreeNode[] tree = null;
+                Node[] tree = null;
                 if (full)
                 {
                     tree = @object.Strategy.Session.Database.FullTree(@object.Strategy.Class, this.treeService);
@@ -93,7 +98,7 @@ namespace Allors.Server
             }
         }
 
-        public void AddObject(string name, IObject @object, TreeNode[] tree)
+        public void AddObject(string name, IObject @object, Node[] tree)
         {
             if (@object != null)
             {

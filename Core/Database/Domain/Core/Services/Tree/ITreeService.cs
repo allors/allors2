@@ -10,8 +10,8 @@ namespace Allors.Services
 
     public partial interface ITreeService : IStateful
     {
-        TreeNode[] Get(IComposite composite);
+        Node[] Get(IComposite composite);
 
-        void Set(IComposite composite, TreeNode[] tree);
+        void Set(IComposite composite, Node[] tree);
     }
 }

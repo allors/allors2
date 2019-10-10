@@ -15,12 +15,20 @@
     <link href="/lib/angular-block-ui/dist/angular-block-ui.css" rel="stylesheet" asp-append-version="true">
     <link href="/lib/angular-toastr/dist/angular-toastr.css" rel="stylesheet" asp-append-version="true">
     <link href="/lib/angular-loading-bar/build/loading-bar.css" rel="stylesheet" asp-append-version="true">
+    <link href="/site.css" rel="stylesheet" asp-append-version="true">
 </head>
 
 <body ng-controller="mainController as main">
 
-    <!-- Navigation -->
-    <div ng-include="'app/shell/layout.html'"></div>
+    <nav ng-include="'app/shell/navbar.html'" class="navbar navbar-inverse navbar-fixed-top"></nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div ng-include="'app/shell/sidebar.html'" class="col-sm-3 col-md-2 sidebar"></div>
+            <div ui-view class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            </div>
+        </div>
+    </div>
 
     <script src="/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
     <script src="/lib/lodash/lodash.js" asp-append-version="true"></script>

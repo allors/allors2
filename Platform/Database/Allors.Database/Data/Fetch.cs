@@ -29,7 +29,7 @@ namespace Allors.Data
         {
         }
 
-        public TreeNode[] Include { get; set; }
+        public Node[] Include { get; set; }
 
         public Step Step { get; set; }
 

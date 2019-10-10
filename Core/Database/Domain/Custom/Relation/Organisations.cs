@@ -36,8 +36,8 @@ namespace Allors.Domain
             {
                 Include = new[]
                     {
-                        new TreeNode(M.Organisation.Owner),
-                        new TreeNode(M.Organisation.Employees),
+                        new Node(M.Organisation.Owner),
+                        new Node(M.Organisation.Employees),
                     },
             };
         }

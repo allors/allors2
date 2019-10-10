@@ -1,4 +1,4 @@
-/// <reference path="../../../Client/generated/domain/Person.g.ts" />
+/// <reference path="../../generated/domain/Person.g.ts" />
 /// <reference path="../../Core/Workspace/Domain/extend.ts" />
 namespace Allors.Domain
 {

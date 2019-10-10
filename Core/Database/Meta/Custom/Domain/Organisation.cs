@@ -9,9 +9,9 @@ namespace Allors.Meta
 
     public partial class MetaOrganisation
     {
-        public TreeNode[] AngularEmployees { get; private set; }
+        public Node[] AngularEmployees { get; private set; }
 
-        public TreeNode[] AngularShareholders { get; private set; }
+        public Node[] AngularShareholders { get; private set; }
 
         internal override void CustomExtend()
         {
@@ -22,11 +22,11 @@ namespace Allors.Meta
 
             this.AngularEmployees = new[]
             {
-                new TreeNode(organisation.Employees),
+                new Node(organisation.Employees),
             };
 
             this.AngularShareholders = new[] {
-                new TreeNode(organisation.Shareholders)
+                new Node(organisation.Shareholders)
                     .Add(person.Photo),
             };
         }

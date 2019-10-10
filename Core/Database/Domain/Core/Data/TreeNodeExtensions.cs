@@ -11,7 +11,7 @@ namespace Allors.Data
 
     public static class TreeNodeExtensions
     {
-        public static void Resolve(this TreeNode[] treeNodes, IObject @object, IAccessControlLists acls, ISet<IObject> objects)
+        public static void Resolve(this Node[] treeNodes, IObject @object, IAccessControlLists acls, ISet<IObject> objects)
         {
             if (@object != null)
             {
@@ -22,7 +22,7 @@ namespace Allors.Data
             }
         }
 
-        public static void Resolve(this TreeNode @this, IObject @object, IAccessControlLists acls, ISet<IObject> objects)
+        public static void Resolve(this Node @this, IObject @object, IAccessControlLists acls, ISet<IObject> objects)
         {
             if (@object != null)
             {

@@ -9,15 +9,15 @@ namespace Allors.Protocol.Data
 
     public static class TreeNodeExtensions
     {
-        public static void Load(this Node @this, ISession session, Allors.Data.TreeNode treeNode)
+        public static void Load(this Node @this, ISession session, Allors.Data.Node node)
         {
             if (@this.Nodes != null)
             {
                 foreach (var childProtocolTreeNode in @this.Nodes)
                 {
                     var childPropertyType = childProtocolTreeNode.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(childProtocolTreeNode.PropertyType.Value) : null;
-                    var childTreeNode = new Allors.Data.TreeNode(childPropertyType);
-                    treeNode.Add(childTreeNode);
+                    var childTreeNode = new Allors.Data.Node(childPropertyType);
+                    node.Add(childTreeNode);
                     childProtocolTreeNode.Load(session, childTreeNode);
                 }
             }

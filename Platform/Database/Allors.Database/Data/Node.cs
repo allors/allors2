@@ -10,9 +10,9 @@ namespace Allors.Data
     using System.Linq;
     using Allors.Meta;
 
-    public class TreeNode
+    public class Node
     {
-        public TreeNode(IPropertyType propertyType, TreeNode[] nodes = null)
+        public Node(IPropertyType propertyType, Node[] nodes = null)
         {
             this.PropertyType = propertyType;
             this.Composite = propertyType.ObjectType.IsComposite ? (IComposite)propertyType.ObjectType : null;
@@ -27,7 +27,7 @@ namespace Allors.Data
                     }
                 }
 
-                this.Nodes = nodes ?? new TreeNode[0];
+                this.Nodes = nodes ?? new Node[0];
             }
         }
 
@@ -35,7 +35,7 @@ namespace Allors.Data
 
         public IComposite Composite { get; }
 
-        public TreeNode[] Nodes { get; private set; }
+        public Node[] Nodes { get; private set; }
 
         public Protocol.Data.Node Save() =>
             new Protocol.Data.Node
@@ -63,7 +63,7 @@ namespace Allors.Data
             }
         }
 
-        public TreeNode Add(IEnumerable<IPropertyType> propertyTypes)
+        public Node Add(IEnumerable<IPropertyType> propertyTypes)
         {
             foreach (var propertyType in propertyTypes)
             {
@@ -73,51 +73,51 @@ namespace Allors.Data
             return this;
         }
 
-        public TreeNode Add(IPropertyType propertyType)
+        public Node Add(IPropertyType propertyType)
         {
-            var treeNode = new TreeNode(propertyType);
+            var treeNode = new Node(propertyType);
             this.Add(treeNode);
             return this;
         }
 
-        public TreeNode Add(IPropertyType propertyType, TreeNode[] subTree)
+        public Node Add(IPropertyType propertyType, Node[] subTree)
         {
-            var treeNode = new TreeNode(propertyType, subTree);
+            var treeNode = new Node(propertyType, subTree);
             this.Add(treeNode);
             return this;
         }
 
-        public TreeNode Add(IConcreteRoleType concreteRoleType) => this.Add(concreteRoleType.RoleType);
+        public Node Add(IConcreteRoleType concreteRoleType) => this.Add(concreteRoleType.RoleType);
 
-        public TreeNode Add(IConcreteRoleType concreteRoleType, TreeNode[] subTree)
+        public Node Add(IConcreteRoleType concreteRoleType, Node[] subTree)
         {
-            var treeNode = new TreeNode(concreteRoleType.RoleType, subTree);
+            var treeNode = new Node(concreteRoleType.RoleType, subTree);
             this.Add(treeNode);
             return this;
         }
 
-        internal void Add(TreeNode treeNode)
+        internal void Add(Node node)
         {
-            this.AssertAssignable(treeNode);
-            this.Nodes = this.Nodes.Append(treeNode).ToArray();
+            this.AssertAssignable(node);
+            this.Nodes = this.Nodes.Append(node).ToArray();
         }
 
-        private void AssertAssignable(TreeNode treeNode)
+        private void AssertAssignable(Node node)
         {
             IComposite addedComposite = null;
 
-            if (treeNode.PropertyType is IRoleType roleType)
+            if (node.PropertyType is IRoleType roleType)
             {
                 addedComposite = roleType.AssociationType.ObjectType;
             }
-            else if (treeNode.PropertyType is IAssociationType associationType)
+            else if (node.PropertyType is IAssociationType associationType)
             {
                 addedComposite = (IComposite)associationType.RoleType.ObjectType;
             }
 
             if (addedComposite == null || (!addedComposite.IsAssignableFrom(this.Composite) && !this.Composite.IsAssignableFrom(addedComposite)))
             {
-                throw new ArgumentException(treeNode.PropertyType + " is not a valid tree node on " + this.Composite + ".");
+                throw new ArgumentException(node.PropertyType + " is not a valid tree node on " + this.Composite + ".");
             }
         }
     }

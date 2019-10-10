@@ -1,4 +1,4 @@
-/// <reference path="../../Allors/Client/Core/Angular/Scope.ts" />
+/// <reference path="../../Core/Angular/Scope.ts" />
 namespace App {
 
     export abstract class Page extends Allors.Scope {

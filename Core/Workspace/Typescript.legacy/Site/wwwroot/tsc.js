@@ -3083,558 +3083,6 @@ var Allors;
         Meta.RoleType = RoleType;
     })(Meta = Allors.Meta || (Allors.Meta = {}));
 })(Allors || (Allors = {}));
-/// <reference path="../Core/Angular/components/bootstrap/Form.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/ImageModal.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/CroppedImageModal.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/Static.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/StaticEnum.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/Text.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/TextArea.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/TextAngular.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/Enum.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/Select.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/Typeahead.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/Image.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/CroppedImage.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/Radio.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/RadioButton.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/DatepickerPopup.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/Content.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/internal/Label.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/internal/Labeled.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/internal/LabeledInput.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledContent.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledStaticEnum.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledStatic.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledText.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledTextarea.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledTextAngular.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledEnum.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledSelect.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledTypeahead.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledImage.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledCroppedImage.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledRadio.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledRadioButton.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledDatepickerPopup.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/SelectOne.ts"/>
-/// <reference path="../Core/Angular/components/bootstrap/SelectMany.ts"/>
-var Allors;
-(function (Allors) {
-    var Bootstrap;
-    (function (Bootstrap) {
-        function registerTemplates($templateCache) {
-            // Form
-            // ----
-            Bootstrap.FormTemplate.register($templateCache);
-            // Object
-            // ------
-            // Shared
-            // ------
-            Bootstrap.ImageModalTemplate.register($templateCache);
-            // Fields
-            // ------
-            Bootstrap.StaticTemplate.register($templateCache);
-            Bootstrap.StaticEnumTemplate.register($templateCache);
-            Bootstrap.TextTemplate.register($templateCache);
-            Bootstrap.TextareaTemplate.register($templateCache);
-            Bootstrap.TextAngularTemplate.register($templateCache);
-            Bootstrap.EnumTemplate.register($templateCache);
-            Bootstrap.SelectTemplate.register($templateCache);
-            Bootstrap.TypeaheadTemplate.register($templateCache);
-            Bootstrap.ImageTemplate.register($templateCache);
-            Bootstrap.RadioTemplate.register($templateCache);
-            Bootstrap.RadioButtonTemplate.register($templateCache);
-            Bootstrap.DatepickerPopupTemplate.register($templateCache);
-            Bootstrap.ContentTemplate.register($templateCache);
-            // Field Groups
-            // ------------
-            // Internals
-            Bootstrap.LabeledTemplate.register($templateCache);
-            Bootstrap.LabelTemplate.register($templateCache);
-            Bootstrap.LabeledInputTemplate.register($templateCache);
-            // Controls
-            Bootstrap.LabeledStaticEnumTemplate.register($templateCache);
-            Bootstrap.LabeledStaticTemplate.register($templateCache);
-            Bootstrap.LabeledTextTemplate.register($templateCache);
-            Bootstrap.LabeledTextareaTemplate.register($templateCache);
-            Bootstrap.LabeledTextAngularTemplate.register($templateCache);
-            Bootstrap.LabeledEnumTemplate.register($templateCache);
-            Bootstrap.LabeledSelectTemplate.register($templateCache);
-            Bootstrap.LabeledTypeaheadTemplate.register($templateCache);
-            Bootstrap.LabeledImageTemplate.register($templateCache);
-            Bootstrap.LabeledRadioTemplate.register($templateCache);
-            Bootstrap.LabeledRadioButtonTemplate.register($templateCache);
-            Bootstrap.LabeledDatepickerPopupTemplate.register($templateCache);
-            Bootstrap.LabeledContentTemplate.register($templateCache);
-            // Model
-            // -----
-            Bootstrap.SelectOneTemplate.register($templateCache);
-            Bootstrap.SelectManyTemplate.register($templateCache);
-        }
-        Bootstrap.registerTemplates = registerTemplates;
-    })(Bootstrap = Allors.Bootstrap || (Allors.Bootstrap = {}));
-})(Allors || (Allors = {}));
-// Allors generated file. 
-// Do not edit this file, changes will be overwritten.
-/// <reference path="../../Core/Workspace/SessionObject.ts" />
-var Allors;
-(function (Allors) {
-    var Domain;
-    (function (Domain) {
-        var Person = /** @class */ (function (_super) {
-            __extends(Person, _super);
-            function Person() {
-                return _super !== null && _super.apply(this, arguments) || this;
-            }
-            Object.defineProperty(Person.prototype, "CanReadFirstName", {
-                get: function () {
-                    return this.canRead("FirstName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteFirstName", {
-                get: function () {
-                    return this.canWrite("FirstName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "FirstName", {
-                get: function () {
-                    return this.get("FirstName");
-                },
-                set: function (value) {
-                    this.set("FirstName", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadLastName", {
-                get: function () {
-                    return this.canRead("LastName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteLastName", {
-                get: function () {
-                    return this.canWrite("LastName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "LastName", {
-                get: function () {
-                    return this.get("LastName");
-                },
-                set: function (value) {
-                    this.set("LastName", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadMiddleName", {
-                get: function () {
-                    return this.canRead("MiddleName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteMiddleName", {
-                get: function () {
-                    return this.canWrite("MiddleName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "MiddleName", {
-                get: function () {
-                    return this.get("MiddleName");
-                },
-                set: function (value) {
-                    this.set("MiddleName", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadBirthDate", {
-                get: function () {
-                    return this.canRead("BirthDate");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteBirthDate", {
-                get: function () {
-                    return this.canWrite("BirthDate");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "BirthDate", {
-                get: function () {
-                    return this.get("BirthDate");
-                },
-                set: function (value) {
-                    this.set("BirthDate", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadFullName", {
-                get: function () {
-                    return this.canRead("FullName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "FullName", {
-                get: function () {
-                    return this.get("FullName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadIsStudent", {
-                get: function () {
-                    return this.canRead("IsStudent");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteIsStudent", {
-                get: function () {
-                    return this.canWrite("IsStudent");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "IsStudent", {
-                get: function () {
-                    return this.get("IsStudent");
-                },
-                set: function (value) {
-                    this.set("IsStudent", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadPhoto", {
-                get: function () {
-                    return this.canRead("Photo");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWritePhoto", {
-                get: function () {
-                    return this.canWrite("Photo");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "Photo", {
-                get: function () {
-                    return this.get("Photo");
-                },
-                set: function (value) {
-                    this.set("Photo", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadPictures", {
-                get: function () {
-                    return this.canRead("Pictures");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWritePictures", {
-                get: function () {
-                    return this.canWrite("Pictures");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "Pictures", {
-                get: function () {
-                    return this.get("Pictures");
-                },
-                set: function (value) {
-                    this.set("Pictures", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Person.prototype.AddPicture = function (value) {
-                return this.add("Pictures", value);
-            };
-            Person.prototype.RemovePicture = function (value) {
-                return this.remove("Pictures", value);
-            };
-            Object.defineProperty(Person.prototype, "CanReadWeight", {
-                get: function () {
-                    return this.canRead("Weight");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteWeight", {
-                get: function () {
-                    return this.canWrite("Weight");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "Weight", {
-                get: function () {
-                    return this.get("Weight");
-                },
-                set: function (value) {
-                    this.set("Weight", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadCycleOne", {
-                get: function () {
-                    return this.canRead("CycleOne");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteCycleOne", {
-                get: function () {
-                    return this.canWrite("CycleOne");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CycleOne", {
-                get: function () {
-                    return this.get("CycleOne");
-                },
-                set: function (value) {
-                    this.set("CycleOne", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadCycleMany", {
-                get: function () {
-                    return this.canRead("CycleMany");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteCycleMany", {
-                get: function () {
-                    return this.canWrite("CycleMany");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CycleMany", {
-                get: function () {
-                    return this.get("CycleMany");
-                },
-                set: function (value) {
-                    this.set("CycleMany", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Person.prototype.AddCycleMany = function (value) {
-                return this.add("CycleMany", value);
-            };
-            Person.prototype.RemoveCycleMany = function (value) {
-                return this.remove("CycleMany", value);
-            };
-            Object.defineProperty(Person.prototype, "CanReadUserName", {
-                get: function () {
-                    return this.canRead("UserName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteUserName", {
-                get: function () {
-                    return this.canWrite("UserName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "UserName", {
-                get: function () {
-                    return this.get("UserName");
-                },
-                set: function (value) {
-                    this.set("UserName", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadNormalizedUserName", {
-                get: function () {
-                    return this.canRead("NormalizedUserName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteNormalizedUserName", {
-                get: function () {
-                    return this.canWrite("NormalizedUserName");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "NormalizedUserName", {
-                get: function () {
-                    return this.get("NormalizedUserName");
-                },
-                set: function (value) {
-                    this.set("NormalizedUserName", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadUserEmail", {
-                get: function () {
-                    return this.canRead("UserEmail");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteUserEmail", {
-                get: function () {
-                    return this.canWrite("UserEmail");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "UserEmail", {
-                get: function () {
-                    return this.get("UserEmail");
-                },
-                set: function (value) {
-                    this.set("UserEmail", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadUserEmailConfirmed", {
-                get: function () {
-                    return this.canRead("UserEmailConfirmed");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteUserEmailConfirmed", {
-                get: function () {
-                    return this.canWrite("UserEmailConfirmed");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "UserEmailConfirmed", {
-                get: function () {
-                    return this.get("UserEmailConfirmed");
-                },
-                set: function (value) {
-                    this.set("UserEmailConfirmed", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadNotificationList", {
-                get: function () {
-                    return this.canRead("NotificationList");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteNotificationList", {
-                get: function () {
-                    return this.canWrite("NotificationList");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "NotificationList", {
-                get: function () {
-                    return this.get("NotificationList");
-                },
-                set: function (value) {
-                    this.set("NotificationList", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanReadUniqueId", {
-                get: function () {
-                    return this.canRead("UniqueId");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanWriteUniqueId", {
-                get: function () {
-                    return this.canWrite("UniqueId");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "UniqueId", {
-                get: function () {
-                    return this.get("UniqueId");
-                },
-                set: function (value) {
-                    this.set("UniqueId", value);
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "CanExecuteDelete", {
-                get: function () {
-                    return this.canExecute("Delete");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(Person.prototype, "Delete", {
-                get: function () {
-                    return new Allors.Method(this, "Delete");
-                },
-                enumerable: true,
-                configurable: true
-            });
-            return Person;
-        }(Allors.SessionObject));
-        Domain.Person = Person;
-    })(Domain = Allors.Domain || (Allors.Domain = {}));
-})(Allors || (Allors = {}));
-/// <reference path="../../../Client/generated/domain/Person.g.ts" />
-/// <reference path="../../Core/Workspace/Domain/extend.ts" />
-var Allors;
-(function (Allors) {
-    var Domain;
-    (function (Domain) {
-        Domain.extend(Domain.Person, {
-            get Fullname() {
-                return this.LastName + (this.FirstName ? ", " : "") + this.FirstName;
-            },
-            set Fullname(value) {
-                // Should be present, otherwise typing to fast in a search box causes an error
-            },
-            toString: function () {
-                return this.FirstName;
-            }
-        });
-    })(Domain = Allors.Domain || (Allors.Domain = {}));
-})(Allors || (Allors = {}));
 // Allors generated file. 
 // Do not edit this file, changes will be overwritten.
 /// <reference path="../../Core/Workspace/SessionObject.ts" />
@@ -10689,6 +10137,447 @@ var Allors;
 (function (Allors) {
     var Domain;
     (function (Domain) {
+        var Person = /** @class */ (function (_super) {
+            __extends(Person, _super);
+            function Person() {
+                return _super !== null && _super.apply(this, arguments) || this;
+            }
+            Object.defineProperty(Person.prototype, "CanReadFirstName", {
+                get: function () {
+                    return this.canRead("FirstName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteFirstName", {
+                get: function () {
+                    return this.canWrite("FirstName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "FirstName", {
+                get: function () {
+                    return this.get("FirstName");
+                },
+                set: function (value) {
+                    this.set("FirstName", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadLastName", {
+                get: function () {
+                    return this.canRead("LastName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteLastName", {
+                get: function () {
+                    return this.canWrite("LastName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "LastName", {
+                get: function () {
+                    return this.get("LastName");
+                },
+                set: function (value) {
+                    this.set("LastName", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadMiddleName", {
+                get: function () {
+                    return this.canRead("MiddleName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteMiddleName", {
+                get: function () {
+                    return this.canWrite("MiddleName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "MiddleName", {
+                get: function () {
+                    return this.get("MiddleName");
+                },
+                set: function (value) {
+                    this.set("MiddleName", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadBirthDate", {
+                get: function () {
+                    return this.canRead("BirthDate");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteBirthDate", {
+                get: function () {
+                    return this.canWrite("BirthDate");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "BirthDate", {
+                get: function () {
+                    return this.get("BirthDate");
+                },
+                set: function (value) {
+                    this.set("BirthDate", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadFullName", {
+                get: function () {
+                    return this.canRead("FullName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "FullName", {
+                get: function () {
+                    return this.get("FullName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadIsStudent", {
+                get: function () {
+                    return this.canRead("IsStudent");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteIsStudent", {
+                get: function () {
+                    return this.canWrite("IsStudent");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "IsStudent", {
+                get: function () {
+                    return this.get("IsStudent");
+                },
+                set: function (value) {
+                    this.set("IsStudent", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadPhoto", {
+                get: function () {
+                    return this.canRead("Photo");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWritePhoto", {
+                get: function () {
+                    return this.canWrite("Photo");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "Photo", {
+                get: function () {
+                    return this.get("Photo");
+                },
+                set: function (value) {
+                    this.set("Photo", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadPictures", {
+                get: function () {
+                    return this.canRead("Pictures");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWritePictures", {
+                get: function () {
+                    return this.canWrite("Pictures");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "Pictures", {
+                get: function () {
+                    return this.get("Pictures");
+                },
+                set: function (value) {
+                    this.set("Pictures", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Person.prototype.AddPicture = function (value) {
+                return this.add("Pictures", value);
+            };
+            Person.prototype.RemovePicture = function (value) {
+                return this.remove("Pictures", value);
+            };
+            Object.defineProperty(Person.prototype, "CanReadWeight", {
+                get: function () {
+                    return this.canRead("Weight");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteWeight", {
+                get: function () {
+                    return this.canWrite("Weight");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "Weight", {
+                get: function () {
+                    return this.get("Weight");
+                },
+                set: function (value) {
+                    this.set("Weight", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadCycleOne", {
+                get: function () {
+                    return this.canRead("CycleOne");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteCycleOne", {
+                get: function () {
+                    return this.canWrite("CycleOne");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CycleOne", {
+                get: function () {
+                    return this.get("CycleOne");
+                },
+                set: function (value) {
+                    this.set("CycleOne", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadCycleMany", {
+                get: function () {
+                    return this.canRead("CycleMany");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteCycleMany", {
+                get: function () {
+                    return this.canWrite("CycleMany");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CycleMany", {
+                get: function () {
+                    return this.get("CycleMany");
+                },
+                set: function (value) {
+                    this.set("CycleMany", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Person.prototype.AddCycleMany = function (value) {
+                return this.add("CycleMany", value);
+            };
+            Person.prototype.RemoveCycleMany = function (value) {
+                return this.remove("CycleMany", value);
+            };
+            Object.defineProperty(Person.prototype, "CanReadUserName", {
+                get: function () {
+                    return this.canRead("UserName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteUserName", {
+                get: function () {
+                    return this.canWrite("UserName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "UserName", {
+                get: function () {
+                    return this.get("UserName");
+                },
+                set: function (value) {
+                    this.set("UserName", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadNormalizedUserName", {
+                get: function () {
+                    return this.canRead("NormalizedUserName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteNormalizedUserName", {
+                get: function () {
+                    return this.canWrite("NormalizedUserName");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "NormalizedUserName", {
+                get: function () {
+                    return this.get("NormalizedUserName");
+                },
+                set: function (value) {
+                    this.set("NormalizedUserName", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadUserEmail", {
+                get: function () {
+                    return this.canRead("UserEmail");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteUserEmail", {
+                get: function () {
+                    return this.canWrite("UserEmail");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "UserEmail", {
+                get: function () {
+                    return this.get("UserEmail");
+                },
+                set: function (value) {
+                    this.set("UserEmail", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadUserEmailConfirmed", {
+                get: function () {
+                    return this.canRead("UserEmailConfirmed");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteUserEmailConfirmed", {
+                get: function () {
+                    return this.canWrite("UserEmailConfirmed");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "UserEmailConfirmed", {
+                get: function () {
+                    return this.get("UserEmailConfirmed");
+                },
+                set: function (value) {
+                    this.set("UserEmailConfirmed", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadNotificationList", {
+                get: function () {
+                    return this.canRead("NotificationList");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteNotificationList", {
+                get: function () {
+                    return this.canWrite("NotificationList");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "NotificationList", {
+                get: function () {
+                    return this.get("NotificationList");
+                },
+                set: function (value) {
+                    this.set("NotificationList", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanReadUniqueId", {
+                get: function () {
+                    return this.canRead("UniqueId");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanWriteUniqueId", {
+                get: function () {
+                    return this.canWrite("UniqueId");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "UniqueId", {
+                get: function () {
+                    return this.get("UniqueId");
+                },
+                set: function (value) {
+                    this.set("UniqueId", value);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "CanExecuteDelete", {
+                get: function () {
+                    return this.canExecute("Delete");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(Person.prototype, "Delete", {
+                get: function () {
+                    return new Allors.Method(this, "Delete");
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return Person;
+        }(Allors.SessionObject));
+        Domain.Person = Person;
+    })(Domain = Allors.Domain || (Allors.Domain = {}));
+})(Allors || (Allors = {}));
+// Allors generated file. 
+// Do not edit this file, changes will be overwritten.
+/// <reference path="../../Core/Workspace/SessionObject.ts" />
+var Allors;
+(function (Allors) {
+    var Domain;
+    (function (Domain) {
         var PreparedExtent = /** @class */ (function (_super) {
             __extends(PreparedExtent, _super);
             function PreparedExtent() {
@@ -14129,6 +14018,117 @@ var Allors;
         };
     })(Data = Allors.Data || (Allors.Data = {}));
 })(Allors || (Allors = {}));
+/// <reference path="../Core/Angular/components/bootstrap/Form.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/ImageModal.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/CroppedImageModal.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/Static.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/StaticEnum.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/Text.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/TextArea.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/TextAngular.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/Enum.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/Select.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/Typeahead.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/Image.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/CroppedImage.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/Radio.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/RadioButton.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/DatepickerPopup.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/Content.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/internal/Label.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/internal/Labeled.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/internal/LabeledInput.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledContent.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledStaticEnum.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledStatic.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledText.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledTextarea.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledTextAngular.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledEnum.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledSelect.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledTypeahead.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledImage.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledCroppedImage.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledRadio.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledRadioButton.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/labeled/LabeledDatepickerPopup.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/SelectOne.ts"/>
+/// <reference path="../Core/Angular/components/bootstrap/SelectMany.ts"/>
+var Allors;
+(function (Allors) {
+    var Bootstrap;
+    (function (Bootstrap) {
+        function registerTemplates($templateCache) {
+            // Form
+            // ----
+            Bootstrap.FormTemplate.register($templateCache);
+            // Object
+            // ------
+            // Shared
+            // ------
+            Bootstrap.ImageModalTemplate.register($templateCache);
+            // Fields
+            // ------
+            Bootstrap.StaticTemplate.register($templateCache);
+            Bootstrap.StaticEnumTemplate.register($templateCache);
+            Bootstrap.TextTemplate.register($templateCache);
+            Bootstrap.TextareaTemplate.register($templateCache);
+            Bootstrap.TextAngularTemplate.register($templateCache);
+            Bootstrap.EnumTemplate.register($templateCache);
+            Bootstrap.SelectTemplate.register($templateCache);
+            Bootstrap.TypeaheadTemplate.register($templateCache);
+            Bootstrap.ImageTemplate.register($templateCache);
+            Bootstrap.RadioTemplate.register($templateCache);
+            Bootstrap.RadioButtonTemplate.register($templateCache);
+            Bootstrap.DatepickerPopupTemplate.register($templateCache);
+            Bootstrap.ContentTemplate.register($templateCache);
+            // Field Groups
+            // ------------
+            // Internals
+            Bootstrap.LabeledTemplate.register($templateCache);
+            Bootstrap.LabelTemplate.register($templateCache);
+            Bootstrap.LabeledInputTemplate.register($templateCache);
+            // Controls
+            Bootstrap.LabeledStaticEnumTemplate.register($templateCache);
+            Bootstrap.LabeledStaticTemplate.register($templateCache);
+            Bootstrap.LabeledTextTemplate.register($templateCache);
+            Bootstrap.LabeledTextareaTemplate.register($templateCache);
+            Bootstrap.LabeledTextAngularTemplate.register($templateCache);
+            Bootstrap.LabeledEnumTemplate.register($templateCache);
+            Bootstrap.LabeledSelectTemplate.register($templateCache);
+            Bootstrap.LabeledTypeaheadTemplate.register($templateCache);
+            Bootstrap.LabeledImageTemplate.register($templateCache);
+            Bootstrap.LabeledRadioTemplate.register($templateCache);
+            Bootstrap.LabeledRadioButtonTemplate.register($templateCache);
+            Bootstrap.LabeledDatepickerPopupTemplate.register($templateCache);
+            Bootstrap.LabeledContentTemplate.register($templateCache);
+            // Model
+            // -----
+            Bootstrap.SelectOneTemplate.register($templateCache);
+            Bootstrap.SelectManyTemplate.register($templateCache);
+        }
+        Bootstrap.registerTemplates = registerTemplates;
+    })(Bootstrap = Allors.Bootstrap || (Allors.Bootstrap = {}));
+})(Allors || (Allors = {}));
+/// <reference path="../../generated/domain/Person.g.ts" />
+/// <reference path="../../Core/Workspace/Domain/extend.ts" />
+var Allors;
+(function (Allors) {
+    var Domain;
+    (function (Domain) {
+        Domain.extend(Domain.Person, {
+            get Fullname() {
+                return this.LastName + (this.FirstName ? ", " : "") + this.FirstName;
+            },
+            set Fullname(value) {
+                // Should be present, otherwise typing to fast in a search box causes an error
+            },
+            toString: function () {
+                return this.FirstName;
+            }
+        });
+    })(Domain = Allors.Domain || (Allors.Domain = {}));
+})(Allors || (Allors = {}));
 var App;
 (function (App) {
     angular.module("app", [
@@ -14378,7 +14378,7 @@ var App;
         })(Tasks = General.Tasks || (General.Tasks = {}));
     })(General = App.General || (App.General = {}));
 })(App || (App = {}));
-/// <reference path="../../Allors/Client/Core/Angular/Scope.ts" />
+/// <reference path="../../Core/Angular/Scope.ts" />
 var App;
 (function (App) {
     var Page = /** @class */ (function (_super) {
