@@ -76,7 +76,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void WithoutAccessControl()
         {
-            var user = new Users(this.Session).GetUser("nobody");
+            var user = new Users(this.Session).GetUser("noacl");
             await this.SignIn(user);
 
             var people = new People(this.Session).Extent();

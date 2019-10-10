@@ -458,7 +458,7 @@ namespace Tests.Mock
             {
                 var savedMathijs = save.NewObjects.First(v => v.NI == mathijs.NewId?.ToString());
 
-                Assert.Equal("Person", savedMathijs.T);
+                Assert.Equal("~1~c799ca62-a554-467d-9aa2-1663293bb37f", savedMathijs.T);
                 Assert.Equal(2, savedMathijs.Roles.Length);
 
                 var savedMathijsFirstName = savedMathijs.Roles.First(v => v.T == "FirstName");
@@ -471,7 +471,7 @@ namespace Tests.Mock
             {
                 var savedAcme2 = save.NewObjects.First(v => v.NI == acme2.NewId?.ToString());
 
-                Assert.Equal("Organisation", savedAcme2.T);
+                Assert.Equal("~2~3a5dcec7-308f-48c7-afee-35d38415aa0b", savedAcme2.T);
                 Assert.Equal(3, savedAcme2.Roles.Length);
 
                 var savedAcme2Manager = savedAcme2.Roles.First(v => v.T == "Manager");
@@ -488,7 +488,7 @@ namespace Tests.Mock
             {
                 var savedAcme3 = save.NewObjects.First(v => v.NI == acme3.NewId?.ToString());
 
-                Assert.Equal("Organisation", savedAcme3.T);
+                Assert.Equal("2", savedAcme3.T);
                 Assert.Equal(3, savedAcme3.Roles.Length);
 
                 var savedAcme3Manager = savedAcme3.Roles.First(v => v.T == "Manager");
