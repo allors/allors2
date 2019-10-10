@@ -1,4 +1,4 @@
-﻿namespace Allors {
+namespace Allors {
     export interface ISession {
         hasChanges: boolean;
 
@@ -110,24 +110,23 @@
 
                     var newSessionObject = this.newSessionObjectById[newId];
 
-                    var syncResponse: Data.SyncResponse = {
-                        responseType: Data.ResponseType.Sync,
-                        userSecurityHash: "#", // This should trigger a load on next check
-                        objects: [
-                            {
-                                i: id,
-                                v: "",
-                                t: newSessionObject.objectType.name,
-                                roles: [],
-                                methods: []
-                            }
-                        ]
-                    }
+                    //var syncResponse: Data.SyncResponse = {
+                    //    responseType: Data.ResponseType.Sync,
+                    //    objects: [
+                    //        {
+                    //            i: id,
+                    //            v: "",
+                    //            t: newSessionObject.objectType.name,
+                    //            roles: [],
+                    //            methods: []
+                    //        }
+                    //    ]
+                    //}
 
                     delete (this.newSessionObjectById[newId]);
                     delete(newSessionObject.newId);
 
-                    this.workspace.sync(syncResponse);
+                    //this.workspace.sync(syncResponse);
                     var workspaceObject = this.workspace.get(id);
                     newSessionObject.workspaceObject = workspaceObject;
 

@@ -22,7 +22,7 @@ namespace App {
                         this.toastr.info("Successfully saved.");
                         resolve(saveResponse);
                     })
-                    .catch((e: Allors.Data.ErrorResponse) => {
+                    .catch((e: Allors.Data.Response) => {
                         if (e.responseType) {
                             this.errorResponse(e);
                             resolve(e);
@@ -50,7 +50,7 @@ namespace App {
                     this.toastr.info("Successfully executed.");
                     resolve(invokeResponse);
                 })
-                    .catch((e: Allors.Data.ErrorResponse) => {
+                    .catch((e: Allors.Data.Response) => {
                         if (e.responseType) {
                             this.errorResponse(e);
                             resolve(e);
@@ -78,7 +78,7 @@ namespace App {
                     this.toastr.info("Successfully executed.");
                     resolve(invokeResponse);
                 })
-                    .catch((e: Allors.Data.ErrorResponse) => {
+                    .catch((e: Allors.Data.Response) => {
                         if (e.responseType) {
                             this.errorResponse(e);
                             resolve(e);
@@ -90,7 +90,7 @@ namespace App {
             });
         }
 
-        public errorResponse(error: Allors.Data.ErrorResponse) {
+        public errorResponse(error: Allors.Data.Response) {
             let title;
             let message = "<div>";
 

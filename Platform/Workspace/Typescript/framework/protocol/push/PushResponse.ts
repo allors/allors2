@@ -1,4 +1,3 @@
-import { DerivationError } from '../DerivationError';
 import { Response } from '../Response';
 import { PushResponseNewObject } from './PushResponseNewObject';
 

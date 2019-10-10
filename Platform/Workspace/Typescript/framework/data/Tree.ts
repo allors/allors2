@@ -1,11 +1,11 @@
 import { ObjectType } from '../meta';
-import { TreeNode } from './TreeNode';
+import { Node } from './Node';
 
 export class Tree {
 
   public objectType: ObjectType;
 
-  public nodes: TreeNode[] | any;
+  public nodes: Node[] | any;
 
   constructor(fields?: Partial<Tree> | ObjectType, literal?) {
     if (fields instanceof ObjectType) {
@@ -15,7 +15,7 @@ export class Tree {
       if (literal) {
         this.nodes = Object.keys(literal)
           .map((propertyName) => {
-            const treeNode = new TreeNode();
+            const treeNode = new Node();
             treeNode.parse(literal, this.objectType as ObjectType, propertyName);
             return treeNode;
           });
@@ -31,7 +31,7 @@ export class Tree {
     if (this.nodes && !(this.nodes instanceof Array)) {
       nodes = Object.keys(this.nodes)
         .map((propertyName) => {
-          const treeNode = new TreeNode();
+          const treeNode = new Node();
           treeNode.parse(this.nodes, this.objectType, propertyName);
           return treeNode;
         });

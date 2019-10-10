@@ -14,15 +14,4 @@ export class Result {
   constructor(fields?: Partial<Result>) {
     Object.assign(this, fields);
   }
-
-  public toJSON(): any {
-
-    return {
-      fetchRef: this.fetchRef,
-      fetch: this.fetch,
-      name: this.name,
-      skip: this.skip,
-      take: this.take,
-    };
-  }
 }

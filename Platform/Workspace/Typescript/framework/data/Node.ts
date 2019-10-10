@@ -1,11 +1,11 @@
 import { ObjectType, PropertyType } from '../meta';
 
-export class TreeNode {
+export class Node {
 
   public propertyType: PropertyType;
-  public nodes: TreeNode[];
+  public nodes: Node[];
 
-  constructor(fields?: Partial<TreeNode>) {
+  constructor(fields?: Partial<Node>) {
     Object.assign(this, fields);
   }
 
@@ -39,7 +39,7 @@ export class TreeNode {
     } else if (property) {
       const nodes = Object.keys(property)
         .map((childPropertyName) => {
-          const childTreeNode = new TreeNode();
+          const childTreeNode = new Node();
           childTreeNode.parse(property, this.propertyType.objectType, childPropertyName);
           return childTreeNode;
         });

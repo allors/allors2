@@ -7,11 +7,4 @@ export class SecurityRequest {
   constructor(fields?: Partial<SecurityRequest>) {
     Object.assign(this, fields);
   }
-
-  public toJSON() {
-    return {
-      accessControls: this.accessControls,
-      permissions: this.permissions,
-    };
-  }
 }

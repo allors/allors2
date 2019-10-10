@@ -1,14 +1,14 @@
 import { ObjectType } from '../meta';
 import { Tree } from './Tree';
 import { Step } from './Step';
-import { TreeNode } from './TreeNode';
+import { Node } from './Node';
 
 const includeKey = 'include';
 
 export class Fetch {
   public step: Step;
 
-  public include: Tree | TreeNode[];
+  public include: Tree | Node[];
 
   constructor(fields?: Partial<Fetch> | ObjectType, literal?: any) {
 

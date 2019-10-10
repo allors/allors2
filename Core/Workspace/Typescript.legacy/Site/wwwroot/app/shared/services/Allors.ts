@@ -14,10 +14,9 @@ namespace App.Services {
             public $uibModal: angular.ui.bootstrap.IModalService,
             public toastr: angular.toastr.IToastrService) {
 
-            const prefix = "/Database/";
             const postfix = "/Pull";
 
-            this.database = new Allors.Database(this.$http, this.$q, prefix, postfix, this.baseUrl);
+            this.database = new Allors.Database(this.$http, this.$q, postfix, this.baseUrl);
             this.workspace = new Allors.Workspace(Allors.Data.metaPopulation);
         }
     }

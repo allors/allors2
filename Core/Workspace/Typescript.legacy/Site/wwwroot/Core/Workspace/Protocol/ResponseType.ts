@@ -1,8 +1,9 @@
-﻿namespace Allors.Data {
+namespace Allors.Data {
     export enum ResponseType {
+        Invoke,
         Pull,
         Sync,
         Push,
-        Invoke
+        Security,
     }
 }

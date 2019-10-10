@@ -1,4 +1,4 @@
-export { TreeNode } from './TreeNode';
+export { Node as TreeNode } from './Node';
 export { Fetch } from './Fetch';
 export { Extent } from './Extent';
 export { Sort } from './Sort';

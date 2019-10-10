@@ -1,9 +1,9 @@
-﻿/// <reference path="allors.module.ts" />
+/// <reference path="allors.module.ts" />
 /// <reference path="../Workspace/Method.ts" />
 
 namespace Allors {
     export class Database {
-        constructor(private $http: angular.IHttpService, public $q: angular.IQService, public prefix: string, public postfix: string, public baseUrl: string) {
+        constructor(private $http: angular.IHttpService, public $q: angular.IQService, public postfix: string, public baseUrl: string) {
         }
 
         authorization: string;
@@ -34,7 +34,7 @@ namespace Allors {
         sync(syncRequest: Data.SyncRequest): angular.IPromise<Data.SyncResponse> {
             return this.$q((resolve, reject) => {
 
-                const serviceName = `${this.baseUrl}${this.prefix}Sync`;
+                const serviceName = `${this.baseUrl}allors/sync`;
                 this.$http.post(serviceName, syncRequest, this.headers)
                     .then((callbackArg: angular.IHttpPromiseCallbackArg<Data.SyncResponse>) => {
                         var response = callbackArg.data;
@@ -51,7 +51,7 @@ namespace Allors {
         push(pushRequest: Data.PushRequest): angular.IPromise<Data.PushResponse> {
             return this.$q((resolve, reject) => {
 
-                const serviceName = `${this.baseUrl}${this.prefix}Push`;
+                const serviceName = `${this.baseUrl}allors/push`;
                 this.$http.post(serviceName, pushRequest, this.headers)
                     .then((callbackArg: angular.IHttpPromiseCallbackArg<Data.PushResponse>) => {
                         var response = callbackArg.data;
@@ -98,7 +98,7 @@ namespace Allors {
                     o: options
                 };
 
-                const serviceName = `${this.baseUrl}${this.prefix}Invoke`;
+                const serviceName = `${this.baseUrl}allors/invoke`;
                 this.$http.post(serviceName, invokeRequest, this.headers)
                     .then((callbackArg: angular.IHttpPromiseCallbackArg<Data.InvokeResponse>) => {
                         var response = callbackArg.data;

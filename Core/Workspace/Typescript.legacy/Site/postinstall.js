@@ -11,5 +11,5 @@ function link(src, dst){
     .catch(() =>  console.log(basename + ' already linked'))
 }
 
-link ('../Angular', 'wwwroot/allors/Client/Core');
-link ('../Workspace', 'wwwroot/allors/Client/Core');
+link ('../Angular', 'wwwroot/Core');
+link ('../Workspace', 'wwwroot/Core');
