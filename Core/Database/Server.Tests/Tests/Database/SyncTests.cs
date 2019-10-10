@@ -71,5 +71,34 @@ namespace Allors.Server.Tests
             Assert.Equal($"{Compressor.IndexMarker}1{Compressor.IndexMarker}{M.Person.Class.IdAsString}", syncObject.T);
             Assert.Equal(person.Strategy.ObjectVersion.ToString(), syncObject.V);
         }
+
+
+        [Fact]
+        public async void WithoutAccessControl()
+        {
+            var user = new Users(this.Session).GetUser("nobody");
+            await this.SignIn(user);
+
+            var people = new People(this.Session).Extent();
+            var person = people[0];
+
+            var uri = new Uri(@"allors/sync", UriKind.Relative);
+
+            var syncRequest = new SyncRequest
+            {
+                Objects = new[] { person.Id.ToString() },
+            };
+            var response = await this.PostAsJsonAsync(uri, syncRequest);
+
+            Assert.True(response.IsSuccessStatusCode);
+
+            var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
+
+            Assert.Single(syncResponse.Objects);
+            var syncObject = syncResponse.Objects[0];
+
+            Assert.Null(syncObject.A);
+            Assert.Null(syncObject.D);
+        }
     }
 }

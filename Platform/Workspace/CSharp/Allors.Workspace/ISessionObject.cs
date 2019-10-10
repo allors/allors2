@@ -11,6 +11,7 @@ namespace Allors.Workspace
     using System.Linq;
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace.Meta;
+    using Protocol;
 
     public interface ISessionObject
     {
@@ -44,7 +45,7 @@ namespace Allors.Workspace
 
         PushRequestObject Save();
 
-        PushRequestNewObject SaveNew();
+        PushRequestNewObject SaveNew(MetaObjectCompressor context);
 
         void Reset();
     }

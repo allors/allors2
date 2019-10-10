@@ -4,36 +4,45 @@ import { data, Meta, TreeFactory, FetchFactory, PullFactory } from '../src/allor
 import { Database, Context } from '../src/allors/promise';
 
 import { AxiosHttp } from '../src/allors/promise/core/http/AxiosHttp';
+import { runInThisContext } from 'vm';
 
 export class Fixture {
 
-    readonly FULL_POPULATION = 'full';
+  readonly FULL_POPULATION = 'full';
 
-    metaPopulation: MetaPopulation;
-    m: Meta;
-    ctx: Context;
+  metaPopulation: MetaPopulation;
+  m: Meta;
+  ctx: Context;
 
-    pull: PullFactory;
-    tree: TreeFactory;
-    fetch: FetchFactory;
+  pull: PullFactory;
+  tree: TreeFactory;
+  fetch: FetchFactory;
 
-    readonly x = new Object();
+  readonly x = new Object();
 
-    async init(population?: string) {
+  private http: AxiosHttp;
 
-        this.metaPopulation = new MetaPopulation(data);
-        this.m = this.metaPopulation as Meta;
-        const workspace = new Workspace(this.metaPopulation);
-        domain.apply(workspace);
+  async init(population?: string) {
 
-        const http = new AxiosHttp('http://localhost:5000/');
-        await http.login('TestAuthentication/Token', 'administrator');
-        await http.get('Test/Setup', { population });
-        const database = new Database(http);
-        this.ctx = new Context(database, workspace);
+    this.http = new AxiosHttp('http://localhost:5000/');
 
-        this.tree = new TreeFactory(this.m);
-        this.fetch = new FetchFactory(this.m);
-        this.pull = new PullFactory(this.m);
-    }
+    this.metaPopulation = new MetaPopulation(data);
+    this.m = this.metaPopulation as Meta;
+    const workspace = new Workspace(this.metaPopulation);
+    domain.apply(workspace);
+
+    await this.login('administrator');
+    await this.http.get('Test/Setup', { population });
+    const database = new Database(this.http);
+    this.ctx = new Context(database, workspace);
+
+    this.tree = new TreeFactory(this.m);
+    this.fetch = new FetchFactory(this.m);
+    this.pull = new PullFactory(this.m);
+
+  }
+
+  async login(user: string) {
+    await this.http.login('TestAuthentication/Token', user);
+  }
 }

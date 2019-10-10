@@ -47,13 +47,16 @@ namespace Tests.Remote
         {
         }
 
+        public void Login(string user)
+        {
+            var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
+            var result = this.Database.Login(uri, user, null).Result;
+        }
+
         private void Init()
         {
-            var init = this.Database.HttpClient.GetAsync(SetupUrl).Result;
-
-            var user = "administrator";
-            var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
-            var loggedIn = this.Database.Login(uri, user, null).Result;
+            var httpResponseMessage = this.Database.HttpClient.GetAsync(SetupUrl).Result;
+            this.Login("administrator");
         }
     }
 }

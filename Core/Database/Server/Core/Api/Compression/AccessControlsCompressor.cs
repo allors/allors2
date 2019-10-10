@@ -23,7 +23,7 @@ namespace Allors.Server
         public string Write(IObject @object)
         {
             var accessControls = this.acls[@object].AccessControls;
-            if (accessControls == null)
+            if (accessControls == null || accessControls.Length == 0)
             {
                 return null;
             }

@@ -1,4 +1,4 @@
-﻿// <copyright file="TestPopulation.cs" company="Allors bvba">
+// <copyright file="TestPopulation.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -29,6 +29,12 @@ namespace Allors.Server.Controllers
 
         private void Full()
         {
+            new PersonBuilder(this.session).WithUserName("noacl").WithFirstName("no").WithLastName("acl").Build();
+
+            var noperm = new PersonBuilder(this.session).WithUserName("noperm").WithFirstName("no").WithLastName("perm").Build();
+            var emptyRole = new RoleBuilder(this.session).WithName("Empty").Build();
+            var acl = new AccessControlBuilder(this.session).WithRole(emptyRole).WithSubject(noperm).WithSecurityToken(this.session.GetSingleton().DefaultSecurityToken).Build();
+
             var c1A = new C1Builder(this.session).WithName("c1A").Build();
             var c1B = new C1Builder(this.session).WithName("c1B").Build();
             var c1C = new C1Builder(this.session).WithName("c1C").Build();

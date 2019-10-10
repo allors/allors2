@@ -13,6 +13,7 @@ namespace Allors.Workspace
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace.Meta;
     using Domain;
+    using Protocol;
     using Protocol.Data;
 
     public class SessionObject : ISessionObject
@@ -255,12 +256,12 @@ namespace Allors.Workspace
             return null;
         }
 
-        public PushRequestNewObject SaveNew()
+        public PushRequestNewObject SaveNew(MetaObjectCompressor compressor)
         {
             var data = new PushRequestNewObject
             {
                 NI = this.NewId.ToString(),
-                T = this.ObjectType.Name,
+                T = compressor.Write(this.ObjectType),
             };
 
             if (this.changedRoleByRoleType != null)

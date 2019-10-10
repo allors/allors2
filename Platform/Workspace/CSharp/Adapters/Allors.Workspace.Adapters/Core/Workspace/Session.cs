@@ -11,6 +11,7 @@ namespace Allors.Workspace
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
     using Allors.Workspace.Meta;
+    using Protocol;
 
     public class Session : ISession
     {
@@ -74,12 +75,17 @@ namespace Allors.Workspace
             }
         }
 
-        public PushRequest PushRequest() =>
-            new PushRequest
+        public PushRequest PushRequest()
+        {
+            var compressor = new Compressor();
+            var metaObjectCompressor = new MetaObjectCompressor(compressor);
+
+            return new PushRequest
             {
-                NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew()).ToArray(),
+                NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew(metaObjectCompressor)).ToArray(),
                 Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray(),
             };
+        }
 
         public void PushResponse(PushResponse pushResponse)
         {

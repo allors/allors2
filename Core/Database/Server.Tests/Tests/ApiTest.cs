@@ -61,7 +61,7 @@ namespace Allors.Server.Tests
 
             this.HttpClient.DefaultRequestHeaders.Accept.Clear();
             this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var result = this.HttpClient.GetAsync("Test/Setup").Result;
+            var result = this.HttpClient.GetAsync("Test/Setup?population=full").Result;
 
             this.Session = database.CreateSession();
         }
