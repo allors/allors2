@@ -35,6 +35,7 @@ export class WorkspaceObject implements IWorkspaceObject {
     this.workspace = workspace;
     this.cachedAccessControls = null;
     this.cachedDeniedPermissions = null;
+    this.roleByRoleTypeId = new Map();
   }
 
   new(id: string, objectType: ObjectType) {
