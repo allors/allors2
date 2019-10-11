@@ -36,7 +36,8 @@ export class FetcherService {
         ActiveCollectionMethods: x,
         ActiveCustomers: x,
         ActiveEmployees: x,
-        ActiveSuppliers: x
+        ActiveSuppliers: x,
+        LocalAdministrators : x
       }
     });
   }

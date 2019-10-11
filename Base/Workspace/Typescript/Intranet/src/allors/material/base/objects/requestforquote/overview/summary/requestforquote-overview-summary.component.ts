@@ -111,7 +111,7 @@ export class RequestForQuoteOverviewSummaryComponent {
 
   public createQuote(): void {
 
-    this.panel.manager.context.invoke(this.requestForQuote.CreateQuote)
+    this.panel.manager.context.invoke(this.requestForQuote.Create)
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully created a quote.', 'close', { duration: 5000 });

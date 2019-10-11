@@ -365,6 +365,13 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
           CurrentContacts: x,
         }
       }),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
+        }
+      }),
     ];
 
     this.allors.context

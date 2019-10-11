@@ -260,6 +260,14 @@ namespace Allors.Repository
         DateTime EstimatedArrivalDate { get; set; }
 
         #region Allors
+
+        [Id("11D44169-2D96-4310-AD6C-59417D8CA0C2")]
+
+        #endregion
+        [Workspace]
+        void Create();
+
+        #region Allors
         [Id("F6B4B2D0-A896-480E-A441-F15AB11A3CC9")]
         #endregion
         [Workspace]

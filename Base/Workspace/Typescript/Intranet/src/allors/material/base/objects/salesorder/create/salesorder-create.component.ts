@@ -338,6 +338,13 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
           CurrentContacts: x,
         }
       }),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -390,7 +397,14 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
             CurrentContacts: x,
           }
         }
-      )
+      ),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
+        }
+      }),
     ];
 
     this.allors.context

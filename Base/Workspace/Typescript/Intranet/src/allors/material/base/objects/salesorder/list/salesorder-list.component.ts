@@ -7,10 +7,10 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals, Filter, ContainedIn } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, UserId, FetcherService } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
-import { SalesOrder, Party, SalesOrderState, SerialisedItem, Product } from '../../../../../domain';
+import { SalesOrder, Party, SalesOrderState, SerialisedItem, Product, Organisation, UserGroup, Person } from '../../../../../domain';
 import { MethodService } from '../../../../../material/core/services/actions';
 
 interface Row extends TableRow {
@@ -39,6 +39,10 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
   ship: Action;
   invoice: Action;
 
+  user: Person;
+  internalOrganisation: Organisation;
+  canCreate: boolean;
+
   private subscription: Subscription;
 
   constructor(
@@ -53,6 +57,8 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
     public navigation: NavigationService,
     public mediaService: MediaService,
     private internalOrganisationId: InternalOrganisationId,
+    private userId: UserId,
+    private fetcher: FetcherService,
     titleService: Title,
   ) {
     super();
@@ -182,6 +188,13 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
           internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
+            pull.Person({
+              object: this.userId.value
+            }),
+            pull.UserGroup({
+              include: { Members: x }
+            }),
             pull.SalesOrder({
               predicate,
               sort: sorter.create(sort),
@@ -202,6 +215,15 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
+
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.user = loaded.objects.Person as Person;
+        const localAdministrator = this.internalOrganisation.LocalAdministrators.includes(this.user);
+        const userGroups = loaded.collections.UserGroups as UserGroup[];
+        const administratorUserGroup = userGroups.find((v: UserGroup) => v.UniqueId === 'cdc04209-683b-429c-bed2-440851f430df');
+        const administrator = administratorUserGroup.Members.includes(this.user);
+        this.canCreate = localAdministrator || administrator;
+
         const requests = loaded.collections.SalesOrders as SalesOrder[];
         this.table.total = loaded.values.SalesOrders_total;
         this.table.data = requests.map((v) => {

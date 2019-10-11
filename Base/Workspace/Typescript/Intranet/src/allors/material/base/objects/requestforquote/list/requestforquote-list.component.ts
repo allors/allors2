@@ -6,10 +6,10 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FetcherService, UserId } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
-import { Request, RequestState, Party } from '../../../../../domain';
+import { Request, RequestState, Party, Organisation, Person, UserGroup } from '../../../../../domain';
 
 interface Row extends TableRow {
   object: Request;
@@ -33,6 +33,10 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
 
   delete: Action;
 
+  user: Person;
+  internalOrganisation: Organisation;
+  canCreate: boolean;
+
   private subscription: Subscription;
 
   constructor(
@@ -45,6 +49,8 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
     public navigation: NavigationService,
     public mediaService: MediaService,
     private internalOrganisationId: InternalOrganisationId,
+    private userId: UserId,
+    private fetcher: FetcherService,
     titleService: Title,
   ) {
     super();
@@ -128,6 +134,13 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
           internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
+            pull.Person({
+              object: this.userId.value
+            }),
+            pull.UserGroup({
+              include: { Members: x }
+            }),
             pull.Request({
               predicate,
               sort: sorter.create(sort),
@@ -145,6 +158,15 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
+
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.user = loaded.objects.Person as Person;
+        const localAdministrator = this.internalOrganisation.LocalAdministrators.includes(this.user);
+        const userGroups = loaded.collections.UserGroups as UserGroup[];
+        const administratorUserGroup = userGroups.find((v: UserGroup) => v.UniqueId === 'cdc04209-683b-429c-bed2-440851f430df');
+        const administrator = administratorUserGroup.Members.includes(this.user);
+        this.canCreate = localAdministrator || administrator;
+
         const requests = loaded.collections.Requests as Request[];
         this.table.total = loaded.values.Requests_total;
         this.table.data = requests.map((v) => {
