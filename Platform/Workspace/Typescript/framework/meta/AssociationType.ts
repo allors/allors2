@@ -13,6 +13,7 @@ export class AssociationType implements PropertyType {
   isOne: boolean;
 
   constructor(public relationType: RelationType) {
+    relationType.associationType = this;
     this.metaPopulation = relationType.metaPopulation;
   }
 

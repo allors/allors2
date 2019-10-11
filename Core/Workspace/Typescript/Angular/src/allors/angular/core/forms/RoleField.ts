@@ -110,7 +110,7 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   }
 
   get required(): boolean {
-    return this.assignedRequired ? this.assignedRequired : this.roleType.isRequired;
+    return this.assignedRequired ? this.assignedRequired : this.roleType.isRequired(this.object.objectType);
   }
 
   get disabled(): boolean {

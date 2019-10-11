@@ -4,9 +4,9 @@ import { MetaObject } from './MetaObject';
 import { Kind, ObjectType } from './ObjectType';
 import { unitIdByTypeName } from './Units';
 import { RelationType } from './RelationType';
-import { ConcreteRoleType } from './ConcreteRoleType';
 import { MethodType } from './MethodType';
-import { RoleType } from './RoleType';
+import { RoleType, RoleTypeVirtual } from './RoleType';
+import { AssociationType } from './AssociationType';
 
 export class MetaPopulation {
   readonly metaObjectById: Map<string, MetaObject>;
@@ -117,36 +117,38 @@ export class MetaPopulation {
 
     // RelationTypes
     this.relationTypes = data.relationTypes.map((relationTypeData) => {
+      const dataRoleType = relationTypeData.roleType;
+      const dataAssociationType = relationTypeData.associationType;
+
       const relationType = new RelationType(this);
       relationType.id = relationTypeData.id;
 
-      const dataAssociationType = relationTypeData.associationType;
-      const associationType = relationType.associationType;
+      const associationType = new AssociationType(relationType);
+      relationType.associationType = associationType;
       associationType.id = dataAssociationType.id;
       associationType.objectType = this.metaObjectById.get(dataAssociationType.objectTypeId) as ObjectType;
       associationType.name = dataAssociationType.name;
       associationType.isOne = dataAssociationType.isOne;
 
-      const dataRoleType = relationTypeData.roleType;
-      const roleType = relationType.roleType;
+      const roleTypeVirtual = new RoleTypeVirtual();
+      roleTypeVirtual.isRequired = dataRoleType.isRequired;
+
+      const roleType = new RoleType(relationType, roleTypeVirtual);
+      relationType.roleType = roleType;
       roleType.id = dataRoleType.id;
       roleType.objectType = this.metaObjectById.get(dataRoleType.objectTypeId) as ObjectType;
       roleType.singular = dataRoleType.singular;
       roleType.plural = dataRoleType.plural;
       roleType.isOne = dataRoleType.isOne;
-      roleType.isRequired = dataRoleType.isRequired;
-
       roleType.name = roleType.isOne ? roleType.singular : roleType.plural;
+
 
       if (relationTypeData.concreteRoleTypes) {
         relationTypeData.concreteRoleTypes.forEach((dataConcreteRoleType) => {
-          const concreteRoleType = new ConcreteRoleType(this);
-          concreteRoleType.relationType = relationType;
-          concreteRoleType.roleType = roleType;
-          concreteRoleType.isRequired = dataConcreteRoleType.isRequired;
-
+          const roleTypeOverride = new RoleTypeVirtual();
+          roleTypeOverride.isRequired = dataConcreteRoleType.isRequired;
           const objectType = this.metaObjectById.get(dataConcreteRoleType.objectTypeId) as ObjectType;
-          relationType.concreteRoleTypeByClass.set(objectType, concreteRoleType);
+          roleType.overridesByClass.set(objectType, roleTypeOverride);
         });
       }
 
@@ -170,22 +172,6 @@ export class MetaPopulation {
 
       return relationType;
     });
-
-    // Derive ConcreteRoleTypes
-    this.classes
-      .forEach((objectType) => {
-        objectType.roleTypes = objectType.roleTypes.map(roleType => {
-          const relationType = roleType.relationType;
-          if (relationType.associationType.objectType.isInterface) {
-            const concreteRoleType = relationType.concreteRoleTypeByClass.get(objectType);
-            if (concreteRoleType) {
-              return concreteRoleType;
-            }
-          }
-
-          return roleType;
-        });
-      });
 
     // Derive RoleType and AssociationType By Name
     this.composites

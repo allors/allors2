@@ -1,5 +1,5 @@
 namespace Allors.Meta.Data {
-    export interface MetaData {
+    export interface MetaPopulationData {
         domains: string[];
         interfaces?: ObjectTypeData[];
         classes?: ObjectTypeData[];

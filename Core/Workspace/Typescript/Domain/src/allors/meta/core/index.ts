@@ -1,2 +1,2 @@
 import './ObjectType';
-import './RelationType';
+import './RoleType';

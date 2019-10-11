@@ -49,7 +49,7 @@ describe('Load',
 
       });
 
-    describe('as somenone with an access control but without permissions',
+    describe('as someone with an access control but without permissions',
       () => {
         it('should return no accesscontrol', async () => {
 

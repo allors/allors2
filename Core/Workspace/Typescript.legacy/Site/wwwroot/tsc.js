@@ -6480,6 +6480,29 @@ var Allors;
     Allors.Events = Events;
 })(Allors || (Allors = {}));
 /// <reference path="allors.module.ts" />
+var Allors;
+(function (Allors) {
+    var Loaded = /** @class */ (function () {
+        function Loaded(session, response) {
+            var _this = this;
+            this.objects = {};
+            this.collections = {};
+            this.values = {};
+            _.map(response.namedObjects, function (v, k) {
+                _this.objects[k] = session.get(v);
+            });
+            _.map(response.namedCollections, function (v, k) {
+                _this.collections[k] = _.map(v, function (obj) { return session.get(obj); });
+            });
+            _.map(response.namedValues, function (v, k) {
+                _this.values[k] = v;
+            });
+        }
+        return Loaded;
+    }());
+    Allors.Loaded = Loaded;
+})(Allors || (Allors = {}));
+/// <reference path="allors.module.ts" />
 /// <reference path="../Workspace/Method.ts" />
 var Allors;
 (function (Allors) {
@@ -8645,6 +8668,58 @@ var Allors;
 })(Allors || (Allors = {}));
 var Allors;
 (function (Allors) {
+    var Protocol;
+    (function (Protocol) {
+        var ids = Allors.Meta.ids;
+        function serializeObject(roles) {
+            if (roles) {
+                return Object
+                    .keys(roles)
+                    .reduce(function (obj, v) {
+                    obj[v] = serialize(roles[v]);
+                    return obj;
+                }, {});
+            }
+            return {};
+        }
+        Protocol.serializeObject = serializeObject;
+        function serializeArray(roles) {
+            if (roles) {
+                return roles.map(function (v) { return serialize(v); });
+            }
+            return [];
+        }
+        Protocol.serializeArray = serializeArray;
+        function serialize(role) {
+            if (role === undefined || role === null) {
+                return null;
+            }
+            if (typeof role === 'string') {
+                return role;
+            }
+            if (role instanceof Date) {
+                return role.toISOString();
+            }
+            return role.toString();
+        }
+        Protocol.serialize = serialize;
+        function deserialize(value, objectType) {
+            switch (objectType.id) {
+                case ids.Boolean:
+                    return value === 'true' ? true : false;
+                case ids.Float:
+                    return parseFloat(value);
+                case ids.Integer:
+                    return parseInt(value, 10);
+            }
+            return value;
+        }
+        Protocol.deserialize = deserialize;
+    })(Protocol = Allors.Protocol || (Allors.Protocol = {}));
+})(Allors || (Allors = {}));
+/// <reference path="../Workspace/Protocol/Serialization.ts" />
+var Allors;
+(function (Allors) {
     var Compressor = Allors.Protocol.Compressor;
     var deserialize = Allors.Protocol.deserialize;
     var WorkspaceObject = /** @class */ (function () {
@@ -9459,6 +9534,18 @@ var Allors;
 (function (Allors) {
     var Protocol;
     (function (Protocol) {
+        var Operations;
+        (function (Operations) {
+            Operations[Operations["Read"] = 1] = "Read";
+            Operations[Operations["Write"] = 2] = "Write";
+            Operations[Operations["Execute"] = 4] = "Execute";
+        })(Operations = Protocol.Operations || (Protocol.Operations = {}));
+    })(Protocol = Allors.Protocol || (Allors.Protocol = {}));
+})(Allors || (Allors = {}));
+var Allors;
+(function (Allors) {
+    var Protocol;
+    (function (Protocol) {
         Protocol.createMetaDecompressor = function (decompressor, metaPopulation) { return function (compressed) {
             return metaPopulation.metaObjectById.get(decompressor.read(compressed, function (v) { }));
         }; };
@@ -9491,6 +9578,7 @@ var __spread = (this && this.__spread) || function () {
 };
 /// <reference path="./Protocol/Sync/SyncRequest.ts" />
 /// <reference path="./Protocol/Security/SecuriyRequest.ts" />
+/// <reference path="./Protocol/Operations.ts" />
 /// <reference path="./Protocol/Compressor.ts" />
 /// <reference path="./Protocol/Decompressor.ts" />
 var Allors;
@@ -9810,59 +9898,6 @@ var Allors;
 (function (Allors) {
     var Meta;
     (function (Meta) {
-        var ConcreteRoleType = /** @class */ (function () {
-            function ConcreteRoleType(metaPopulation) {
-                this.metaPopulation = metaPopulation;
-            }
-            Object.defineProperty(ConcreteRoleType.prototype, "id", {
-                get: function () { return this.roleType.id; },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ConcreteRoleType.prototype, "objectType", {
-                get: function () { return this.roleType.objectType; },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ConcreteRoleType.prototype, "name", {
-                get: function () { return this.roleType.name; },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ConcreteRoleType.prototype, "singular", {
-                get: function () { return this.roleType.singular; },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ConcreteRoleType.prototype, "plural", {
-                get: function () { return this.roleType.plural; },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ConcreteRoleType.prototype, "isOne", {
-                get: function () { return this.roleType.isOne; },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ConcreteRoleType.prototype, "isMany", {
-                get: function () { return this.roleType.isMany; },
-                enumerable: true,
-                configurable: true
-            });
-            Object.defineProperty(ConcreteRoleType.prototype, "isDerived", {
-                get: function () { return this.roleType.isDerived; },
-                enumerable: true,
-                configurable: true
-            });
-            return ConcreteRoleType;
-        }());
-        Meta.ConcreteRoleType = ConcreteRoleType;
-    })(Meta = Allors.Meta || (Allors.Meta = {}));
-})(Allors || (Allors = {}));
-var Allors;
-(function (Allors) {
-    var Meta;
-    (function (Meta) {
         var MetaPopulation = /** @class */ (function () {
             function MetaPopulation(data) {
                 var _this = this;
@@ -9950,31 +9985,32 @@ var Allors;
                 });
                 // RelationTypes
                 this.relationTypes = data.relationTypes.map(function (relationTypeData) {
+                    var dataRoleType = relationTypeData.roleType;
+                    var dataAssociationType = relationTypeData.associationType;
                     var relationType = new Meta.RelationType(_this);
                     relationType.id = relationTypeData.id;
-                    var dataAssociationType = relationTypeData.associationType;
-                    var associationType = relationType.associationType;
+                    var associationType = new Meta.AssociationType(relationType);
+                    relationType.associationType = associationType;
                     associationType.id = dataAssociationType.id;
                     associationType.objectType = _this.metaObjectById.get(dataAssociationType.objectTypeId);
                     associationType.name = dataAssociationType.name;
                     associationType.isOne = dataAssociationType.isOne;
-                    var dataRoleType = relationTypeData.roleType;
-                    var roleType = relationType.roleType;
+                    var roleTypeVirtual = new Meta.RoleTypeVirtual();
+                    roleTypeVirtual.isRequired = dataRoleType.isRequired;
+                    var roleType = new Meta.RoleType(relationType, roleTypeVirtual);
+                    relationType.roleType = roleType;
                     roleType.id = dataRoleType.id;
                     roleType.objectType = _this.metaObjectById.get(dataRoleType.objectTypeId);
                     roleType.singular = dataRoleType.singular;
                     roleType.plural = dataRoleType.plural;
                     roleType.isOne = dataRoleType.isOne;
-                    roleType.isRequired = dataRoleType.isRequired;
                     roleType.name = roleType.isOne ? roleType.singular : roleType.plural;
                     if (relationTypeData.concreteRoleTypes) {
                         relationTypeData.concreteRoleTypes.forEach(function (dataConcreteRoleType) {
-                            var concreteRoleType = new Meta.ConcreteRoleType(_this);
-                            concreteRoleType.relationType = relationType;
-                            concreteRoleType.roleType = roleType;
-                            concreteRoleType.isRequired = dataConcreteRoleType.isRequired;
+                            var roleTypeOverride = new Meta.RoleTypeVirtual();
+                            roleTypeOverride.isRequired = dataConcreteRoleType.isRequired;
                             var objectType = _this.metaObjectById.get(dataConcreteRoleType.objectTypeId);
-                            relationType.concreteRoleTypeByClass.set(objectType, concreteRoleType);
+                            roleType.overridesByClass.set(objectType, roleTypeOverride);
                         });
                     }
                     associationType.objectType.exclusiveRoleTypes.push(roleType);
@@ -9991,20 +10027,6 @@ var Allors;
                     _this.metaObjectById.set(relationType.roleType.id, relationType.roleType);
                     _this.metaObjectById.set(relationType.associationType.id, relationType.associationType);
                     return relationType;
-                });
-                // Derive ConcreteRoleTypes
-                this.classes
-                    .forEach(function (objectType) {
-                    objectType.roleTypes = objectType.roleTypes.map(function (roleType) {
-                        var relationType = roleType.relationType;
-                        if (relationType.associationType.objectType.isInterface) {
-                            var concreteRoleType = relationType.concreteRoleTypeByClass.get(objectType);
-                            if (concreteRoleType) {
-                                return concreteRoleType;
-                            }
-                        }
-                        return roleType;
-                    });
                 });
                 // Derive RoleType and AssociationType By Name
                 this.composites
@@ -10179,9 +10201,6 @@ var Allors;
             function RelationType(metaPopulation) {
                 this.metaPopulation = metaPopulation;
                 this.metaPopulation = metaPopulation;
-                this.associationType = new Meta.AssociationType(this);
-                this.roleType = new Meta.RoleType(this);
-                this.concreteRoleTypeByClass = new Map();
             }
             return RelationType;
         }());
@@ -10192,11 +10211,24 @@ var Allors;
 (function (Allors) {
     var Meta;
     (function (Meta) {
-        var RoleType = /** @class */ (function () {
-            function RoleType(relationType) {
-                this.relationType = relationType;
-                this.metaPopulation = relationType.metaPopulation;
+        var RoleTypeVirtual = /** @class */ (function () {
+            function RoleTypeVirtual() {
             }
+            return RoleTypeVirtual;
+        }());
+        Meta.RoleTypeVirtual = RoleTypeVirtual;
+        var RoleType = /** @class */ (function () {
+            function RoleType(relationType, virtual) {
+                this.relationType = relationType;
+                this.virtual = virtual;
+                relationType.roleType = this;
+                this.metaPopulation = relationType.metaPopulation;
+                this.overridesByClass = new Map();
+            }
+            RoleType.prototype.isRequired = function (objectType) {
+                var override = this.overridesByClass.get(objectType);
+                return override ? override.isRequired : this.virtual.isRequired;
+            };
             Object.defineProperty(RoleType.prototype, "isMany", {
                 get: function () { return !this.isOne; },
                 enumerable: true,
@@ -10211,18 +10243,6 @@ var Allors;
 (function (Allors) {
     var Protocol;
     (function (Protocol) {
-        var Operations;
-        (function (Operations) {
-            Operations[Operations["Read"] = 1] = "Read";
-            Operations[Operations["Write"] = 2] = "Write";
-            Operations[Operations["Execute"] = 4] = "Execute";
-        })(Operations = Protocol.Operations || (Protocol.Operations = {}));
-    })(Protocol = Allors.Protocol || (Allors.Protocol = {}));
-})(Allors || (Allors = {}));
-var Allors;
-(function (Allors) {
-    var Protocol;
-    (function (Protocol) {
         var ResponseType;
         (function (ResponseType) {
             ResponseType[ResponseType["Invoke"] = 0] = "Invoke";
@@ -10231,57 +10251,6 @@ var Allors;
             ResponseType[ResponseType["Push"] = 3] = "Push";
             ResponseType[ResponseType["Security"] = 4] = "Security";
         })(ResponseType = Protocol.ResponseType || (Protocol.ResponseType = {}));
-    })(Protocol = Allors.Protocol || (Allors.Protocol = {}));
-})(Allors || (Allors = {}));
-var Allors;
-(function (Allors) {
-    var Protocol;
-    (function (Protocol) {
-        var ids = Allors.Meta.ids;
-        function serializeObject(roles) {
-            if (roles) {
-                return Object
-                    .keys(roles)
-                    .reduce(function (obj, v) {
-                    obj[v] = serialize(roles[v]);
-                    return obj;
-                }, {});
-            }
-            return {};
-        }
-        Protocol.serializeObject = serializeObject;
-        function serializeArray(roles) {
-            if (roles) {
-                return roles.map(function (v) { return serialize(v); });
-            }
-            return [];
-        }
-        Protocol.serializeArray = serializeArray;
-        function serialize(role) {
-            if (role === undefined || role === null) {
-                return null;
-            }
-            if (typeof role === 'string') {
-                return role;
-            }
-            if (role instanceof Date) {
-                return role.toISOString();
-            }
-            return role.toString();
-        }
-        Protocol.serialize = serialize;
-        function deserialize(value, objectType) {
-            switch (objectType.id) {
-                case ids.Boolean:
-                    return value === 'true' ? true : false;
-                case ids.Float:
-                    return parseFloat(value);
-                case ids.Integer:
-                    return parseInt(value, 10);
-            }
-            return value;
-        }
-        Protocol.deserialize = deserialize;
     })(Protocol = Allors.Protocol || (Allors.Protocol = {}));
 })(Allors || (Allors = {}));
 /// <reference path="../Core/Angular/components/bootstrap/Form.ts"/>
@@ -10778,6 +10747,26 @@ var App;
 })(App || (App = {}));
 var App;
 (function (App) {
+    var General;
+    (function (General) {
+        var Home;
+        (function (Home) {
+            var IndexController = /** @class */ (function () {
+                function IndexController($log, $state) {
+                    this.$log = $log;
+                    this.$state = $state;
+                }
+                IndexController.$inject = ["$log", "$state"];
+                return IndexController;
+            }());
+            angular
+                .module("app")
+                .controller("homeController", IndexController);
+        })(Home = General.Home || (General.Home = {}));
+    })(General = App.General || (App.General = {}));
+})(App || (App = {}));
+var App;
+(function (App) {
     var Pages;
     (function (Pages) {
         var Person;
@@ -10866,47 +10855,4 @@ var App;
             .controller("mainController", MainController);
     })(Shell = App.Shell || (App.Shell = {}));
 })(App || (App = {}));
-var App;
-(function (App) {
-    var General;
-    (function (General) {
-        var Home;
-        (function (Home) {
-            var IndexController = /** @class */ (function () {
-                function IndexController($log, $state) {
-                    this.$log = $log;
-                    this.$state = $state;
-                }
-                IndexController.$inject = ["$log", "$state"];
-                return IndexController;
-            }());
-            angular
-                .module("app")
-                .controller("homeController", IndexController);
-        })(Home = General.Home || (General.Home = {}));
-    })(General = App.General || (App.General = {}));
-})(App || (App = {}));
-/// <reference path="allors.module.ts" />
-var Allors;
-(function (Allors) {
-    var Loaded = /** @class */ (function () {
-        function Loaded(session, response) {
-            var _this = this;
-            this.objects = {};
-            this.collections = {};
-            this.values = {};
-            _.map(response.namedObjects, function (v, k) {
-                _this.objects[k] = session.get(v);
-            });
-            _.map(response.namedCollections, function (v, k) {
-                _this.collections[k] = _.map(v, function (obj) { return session.get(obj); });
-            });
-            _.map(response.namedValues, function (v, k) {
-                _this.values[k] = v;
-            });
-        }
-        return Loaded;
-    }());
-    Allors.Loaded = Loaded;
-})(Allors || (Allors = {}));
 //# sourceMappingURL=tsc.js.map

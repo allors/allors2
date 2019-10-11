@@ -66,7 +66,7 @@
       "./Core/Workspace/Protocol/Compressor.ts",
       "./Core/Angular/Database.ts",
       "./Core/Angular/Events.ts",
-      "./Core/Angular/Result.ts",
+      "./Core/Angular/Loaded.ts",
       "./Core/Angular/Scope.ts",
       "./Core/Angular/components/bootstrap/Form.ts",
       "./Core/Angular/components/bootstrap/internal/Field.ts",
@@ -111,17 +111,18 @@
       "./Core/Angular/filters/humanize.ts",
       "./Core/Workspace/AccessControl.ts",
       "./Core/Workspace/Permission.ts",
+      "./Core/Workspace/Protocol/Serialization.ts",
       "./Core/Workspace/WorkspaceObject.ts",
       "./Core/Workspace/Protocol/Push/PushRequest.ts",
       "./Core/Workspace/SessionObject.ts",
       "./Core/Workspace/Session.ts",
       "./Core/Workspace/Protocol/Sync/SyncRequest.ts",
       "./Core/Workspace/Protocol/Security/SecuriyRequest.ts",
+      "./Core/Workspace/Protocol/Operations.ts",
       "./Core/Workspace/Protocol/Decompressor.ts",
       "./Core/Workspace/Workspace.ts",
       "./Core/Workspace/Domain/Domain.ts",
       "./Core/Workspace/Meta/AssociationType.ts",
-      "./Core/Workspace/Meta/ConcreteRoleType.ts",
       "./Core/Workspace/Meta/MetaObject.ts",
       "./Core/Workspace/Meta/MetaPopulation.ts",
       "./Core/Workspace/Meta/MethodType.ts",
@@ -131,10 +132,8 @@
       "./Core/Workspace/Meta/RelationType.ts",
       "./Core/Workspace/Meta/RoleType.ts",
       "./Core/Workspace/Meta/Data/Data.ts",
-      "./Core/Workspace/Protocol/Operations.ts",
       "./Core/Workspace/Protocol/Response.ts",
       "./Core/Workspace/Protocol/ResponseType.ts",
-      "./Core/Workspace/Protocol/Serialization.ts",
       "./Core/Workspace/Protocol/Invoke/InvokeRequest.ts",
       "./Core/Workspace/Protocol/Invoke/InvokeResponse.ts",
       "./Core/Workspace/Protocol/Push/PushResponse.ts",
@@ -168,26 +167,26 @@
           "data": "typescript:values"
         },
         {
-          "pos": 328557,
-          "end": 329154,
+          "pos": 330719,
+          "end": 331316,
           "kind": "emitHelpers",
           "data": "typescript:extends"
         },
         {
-          "pos": 426624,
-          "end": 427128,
+          "pos": 430563,
+          "end": 431067,
           "kind": "emitHelpers",
           "data": "typescript:read"
         },
         {
-          "pos": 459269,
-          "end": 459439,
+          "pos": 463701,
+          "end": 463871,
           "kind": "emitHelpers",
           "data": "typescript:spread"
         },
         {
           "pos": 0,
-          "end": 523276,
+          "end": 523017,
           "kind": "text"
         }
       ]

@@ -3,21 +3,33 @@ import { ObjectType } from './ObjectType';
 import { RelationType } from './RelationType';
 import { MetaPopulation } from './MetaPopulation';
 
+export class RoleTypeVirtual {
+  isRequired: boolean;
+}
+
 export class RoleType implements PropertyType {
-    metaPopulation: MetaPopulation;
+  metaPopulation: MetaPopulation;
 
-    id: string;
-    objectType: ObjectType;
-    name: string;
-    singular: string;
-    plural: string;
-    isOne: boolean;
-    isDerived: boolean;
-    isRequired: boolean;
+  overridesByClass: Map<ObjectType, RoleTypeVirtual>;
 
-    constructor(public relationType: RelationType) {
-        this.metaPopulation = relationType.metaPopulation;
-    }
+  id: string;
+  objectType: ObjectType;
+  name: string;
+  singular: string;
+  plural: string;
+  isOne: boolean;
+  isDerived: boolean;
 
-    get isMany(): boolean { return !this.isOne; }
+  isRequired(objectType: ObjectType) {
+    const override = this.overridesByClass.get(objectType);
+    return override ? override.isRequired : this.virtual.isRequired;
+  }
+
+  constructor(public relationType: RelationType, private virtual: RoleTypeVirtual) {
+    relationType.roleType = this;
+    this.metaPopulation = relationType.metaPopulation;
+    this.overridesByClass = new Map();
+  }
+
+  get isMany(): boolean { return !this.isOne; }
 }

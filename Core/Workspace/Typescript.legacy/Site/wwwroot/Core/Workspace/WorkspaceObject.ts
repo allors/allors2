@@ -1,3 +1,4 @@
+/// <reference path="../Workspace/Protocol/Serialization.ts" />
 namespace Allors {
   import MetaObject = Meta.MetaObject;
   import ObjectType = Meta.ObjectType;

@@ -1,5 +1,6 @@
 /// <reference path="./Protocol/Sync/SyncRequest.ts" />
 /// <reference path="./Protocol/Security/SecuriyRequest.ts" />
+/// <reference path="./Protocol/Operations.ts" />
 /// <reference path="./Protocol/Compressor.ts" />
 /// <reference path="./Protocol/Decompressor.ts" />
 namespace Allors {

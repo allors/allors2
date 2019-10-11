@@ -91,4 +91,5 @@ namespace Allors.Meta {
       return this.kind === Kind.class;
     }
   }
+
 }
