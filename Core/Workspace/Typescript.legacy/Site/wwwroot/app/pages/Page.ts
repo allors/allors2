@@ -18,11 +18,11 @@ namespace App {
         save(): angular.IPromise<any> {
             return this.$q((resolve, reject) => {
                 super.save()
-                    .then((saveResponse: Allors.Data.PushResponse) => {
+                    .then((saveResponse: Allors.Protocol.PushResponse) => {
                         this.toastr.info("Successfully saved.");
                         resolve(saveResponse);
                     })
-                    .catch((e: Allors.Data.Response) => {
+                    .catch((e: Allors.Protocol.Response) => {
                         if (e.responseType) {
                             this.errorResponse(e);
                             resolve(e);
@@ -34,23 +34,23 @@ namespace App {
             });
         }
 
-        invoke(method: Allors.Method): angular.IPromise<Allors.Data.InvokeResponse>;
+        invoke(method: Allors.Method): angular.IPromise<Allors.Protocol.InvokeResponse>;
         invoke(service: string, args?: any): angular.IPromise<any>;
         invoke(methodOrService: Allors.Method | string, args?: any): angular.IPromise<any> {
             return this.$q((resolve, reject) => {
 
-                var superInvoke: angular.IPromise<Allors.Data.InvokeResponse>;
+                var superInvoke: angular.IPromise<Allors.Protocol.InvokeResponse>;
                 if (methodOrService instanceof Allors.Method) {
                     superInvoke = super.invoke(methodOrService);
                 } else {
                     superInvoke = super.invoke(methodOrService as string, args);
                 }
 
-                superInvoke.then((invokeResponse: Allors.Data.InvokeResponse) => {
+                superInvoke.then((invokeResponse: Allors.Protocol.InvokeResponse) => {
                     this.toastr.info("Successfully executed.");
                     resolve(invokeResponse);
                 })
-                    .catch((e: Allors.Data.Response) => {
+                    .catch((e: Allors.Protocol.Response) => {
                         if (e.responseType) {
                             this.errorResponse(e);
                             resolve(e);
@@ -62,23 +62,23 @@ namespace App {
             });
         }
 
-        saveAndInvoke(method: Allors.Method): angular.IPromise<Allors.Data.InvokeResponse>;
+        saveAndInvoke(method: Allors.Method): angular.IPromise<Allors.Protocol.InvokeResponse>;
         saveAndInvoke(service: string, args?: any): angular.IPromise<any>;
         saveAndInvoke(methodOrService: Allors.Method | string, args?: any): angular.IPromise<any> {
             return this.$q((resolve, reject) => {
 
-                var superSaveAndInvoke: angular.IPromise<Allors.Data.InvokeResponse>;
+                var superSaveAndInvoke: angular.IPromise<Allors.Protocol.InvokeResponse>;
                 if (methodOrService instanceof Allors.Method) {
                     superSaveAndInvoke = super.saveAndInvoke(methodOrService);
                 } else {
                     superSaveAndInvoke = super.saveAndInvoke(methodOrService as string, args);
                 }
 
-                superSaveAndInvoke.then((invokeResponse: Allors.Data.InvokeResponse) => {
+                superSaveAndInvoke.then((invokeResponse: Allors.Protocol.InvokeResponse) => {
                     this.toastr.info("Successfully executed.");
                     resolve(invokeResponse);
                 })
-                    .catch((e: Allors.Data.Response) => {
+                    .catch((e: Allors.Protocol.Response) => {
                         if (e.responseType) {
                             this.errorResponse(e);
                             resolve(e);
@@ -90,7 +90,7 @@ namespace App {
             });
         }
 
-        public errorResponse(error: Allors.Data.Response) {
+        public errorResponse(error: Allors.Protocol.Response) {
             let title;
             let message = "<div>";
 

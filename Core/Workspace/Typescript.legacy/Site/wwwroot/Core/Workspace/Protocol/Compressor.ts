@@ -1,4 +1,4 @@
-namespace Allors.Data {
+namespace Allors.Protocol {
   export class Compressor {
     static readonly indexMarker = '~';
     static readonly itemSeparator = ',';

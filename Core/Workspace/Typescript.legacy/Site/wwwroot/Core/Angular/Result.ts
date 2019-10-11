@@ -6,7 +6,7 @@ namespace Allors {
         collections: { [name: string]: ISessionObject[]; } = {};
         values: { [name: string]: any; } = {};
 
-        constructor(session: ISession, response: Data.PullResponse) {
+        constructor(session: ISession, response: Protocol.PullResponse) {
             _.map(response.namedObjects, (v, k) => {
                 this.objects[k] = session.get(v);
             });

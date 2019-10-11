@@ -2,7 +2,6 @@
   "bundle": {
     "commonSourceDirectory": "./",
     "sourceFiles": [
-      "./Core/Workspace/SessionObject.ts",
       "./generated/domain/AccessControl.g.ts",
       "./generated/domain/ApproveTask.g.ts",
       "./generated/domain/AutomatedAgent.g.ts",
@@ -108,7 +107,15 @@
       "./Core/Angular/directives/focus.ts",
       "./Core/Angular/directives/modelDataUri.ts",
       "./Core/Angular/filters/humanize.ts",
+      "./Core/Workspace/AccessControl.ts",
+      "./Core/Workspace/Permission.ts",
       "./Core/Workspace/Session.ts",
+      "./Core/Workspace/Protocol/Push/PushRequest.ts",
+      "./Core/Workspace/SessionObject.ts",
+      "./Core/Workspace/Protocol/Sync/SyncRequest.ts",
+      "./Core/Workspace/Protocol/Security/SecuriyRequest.ts",
+      "./Core/Workspace/Protocol/Compressor.ts",
+      "./Core/Workspace/Protocol/Decompressor.ts",
       "./Core/Workspace/Workspace.ts",
       "./Core/Workspace/WorkspaceObject.ts",
       "./Core/Workspace/Domain/extend.ts",
@@ -123,18 +130,15 @@
       "./Core/Workspace/Meta/RelationType.ts",
       "./Core/Workspace/Meta/RoleType.ts",
       "./Core/Workspace/Meta/Data/Data.ts",
-      "./Core/Workspace/Protocol/Compressor.ts",
-      "./Core/Workspace/Protocol/Decompressor.ts",
+      "./Core/Workspace/Protocol/Operations.ts",
       "./Core/Workspace/Protocol/Response.ts",
       "./Core/Workspace/Protocol/ResponseType.ts",
+      "./Core/Workspace/Protocol/Serialization.ts",
       "./Core/Workspace/Protocol/Invoke/InvokeRequest.ts",
       "./Core/Workspace/Protocol/Invoke/InvokeResponse.ts",
-      "./Core/Workspace/Protocol/Push/PushRequest.ts",
       "./Core/Workspace/Protocol/Push/PushResponse.ts",
       "./Core/Workspace/Protocol/Push/PushResponseNewObject.ts",
       "./Core/Workspace/Protocol/Security/SecurityResponse.ts",
-      "./Core/Workspace/Protocol/Security/SecuriyRequest.ts",
-      "./Core/Workspace/Protocol/Sync/SyncRequest.ts",
       "./Core/Workspace/Protocol/Sync/SyncResponse.ts",
       "./Core/Workspace/Protocol/pull/PullResponse.ts",
       "./Custom/registerTemplates.ts",
@@ -157,18 +161,36 @@
     "js": {
       "sections": [
         {
-          "pos": 9286,
-          "end": 9883,
+          "pos": 297712,
+          "end": 298182,
+          "kind": "emitHelpers",
+          "data": "typescript:values"
+        },
+        {
+          "pos": 327298,
+          "end": 327895,
           "kind": "emitHelpers",
           "data": "typescript:extends"
         },
         {
+          "pos": 435211,
+          "end": 435715,
+          "kind": "emitHelpers",
+          "data": "typescript:read"
+        },
+        {
+          "pos": 454190,
+          "end": 454360,
+          "kind": "emitHelpers",
+          "data": "typescript:spread"
+        },
+        {
           "pos": 0,
-          "end": 821593,
+          "end": 521523,
           "kind": "text"
         }
       ]
     }
   },
-  "version": "3.6.3"
+  "version": "3.6.2"
 }

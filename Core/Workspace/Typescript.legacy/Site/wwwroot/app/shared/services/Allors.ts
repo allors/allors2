@@ -17,7 +17,7 @@ namespace App.Services {
             const postfix = "/Pull";
 
             this.database = new Allors.Database(this.$http, this.$q, postfix, this.baseUrl);
-            this.workspace = new Allors.Workspace(Allors.Data.metaPopulation);
+            this.workspace = new Allors.Workspace(Allors.Protocol.metaPopulation);
         }
     }
     angular.module("app")

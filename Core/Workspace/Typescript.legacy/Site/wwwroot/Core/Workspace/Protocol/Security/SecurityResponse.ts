@@ -1,4 +1,4 @@
-namespace Allors.Data {
+namespace Allors.Protocol {
 
     export interface SecurityResponse extends Response {
         accessControls?: SecurityResponseAccessControl[];

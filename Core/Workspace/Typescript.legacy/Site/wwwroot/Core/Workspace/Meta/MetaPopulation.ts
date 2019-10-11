@@ -11,7 +11,7 @@ namespace Allors.Meta {
     readonly relationTypes: RelationType[];
     readonly methodTypes: MethodType[];
 
-    constructor(data: Data.Data) {
+    constructor(data: Data.MetaData) {
 
       this.metaObjectById = new Map();
       this.objectTypeByName = new Map();
@@ -61,10 +61,10 @@ namespace Allors.Meta {
         return objectType;
       });
 
-      const dataObjectTypes = [].concat(data.interfaces).concat(data.classes);
+      const dataObjectTypes = ([] as Data.ObjectTypeData[]).concat(data.interfaces).concat(data.classes);
 
       // Create Type Hierarchy
-      dataObjectTypes.forEach((dataObjectType: Data.Interface | Data.Class) => {
+      dataObjectTypes.forEach((dataObjectType) => {
         const objectType = this.metaObjectById.get(dataObjectType.id) as ObjectType;
         objectType.interfaces = dataObjectType.interfaceIds
           ? dataObjectType.interfaceIds.map((v) => this.metaObjectById.get(v) as ObjectType)

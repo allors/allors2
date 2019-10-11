@@ -1,4 +1,4 @@
-namespace Allors.Data {
+namespace Allors.Protocol {
   export class SecurityRequest {
 
     public accessControls: string[];

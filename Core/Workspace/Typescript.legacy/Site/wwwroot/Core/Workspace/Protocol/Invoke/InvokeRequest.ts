@@ -1,4 +1,4 @@
-namespace Allors.Data {
+namespace Allors.Protocol {
 
     export interface InvokeRequest {
         i: Invocation[];

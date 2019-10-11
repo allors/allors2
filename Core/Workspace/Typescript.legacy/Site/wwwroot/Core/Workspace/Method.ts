@@ -1,9 +1,10 @@
-﻿namespace Allors
-{
-    export class Method {
+namespace Allors {
+  import MethodType = Meta.MethodType;
+
+  export class Method {
         constructor(
             public object: SessionObject,
-            public name: string) {
+            public name: MethodType) {
         }
     }
 }
