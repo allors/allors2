@@ -1,94 +1,130 @@
-﻿namespace Allors {
-    export interface IWorkspaceObject {
+namespace Allors {
+  import MetaObject = Meta.MetaObject;
+  import ObjectType = Meta.ObjectType;
+  import RoleType = Meta.RoleType;
+
+  import SyncResponseObject = Protocol.SyncResponseObject;
+  import Compressor = Protocol.Compressor;
+  import deserialize = Protocol.deserialize;
+
+  export interface IWorkspaceObject {
+        workspace: IWorkspace;
+        objectType: ObjectType;
         id: string;
         version: string;
-        userSecurityHash: string;
-        objectType: Meta.ObjectType;
+        roleByRoleTypeId: Map<string, any>;
 
-        workspace: IWorkspace;
-        roles: any;
-        methods: any;
-
-        canRead(roleTypeName: string): boolean;
-        canWrite(roleTypeName: string): boolean;
-        canExecute(methodName: string): boolean;
+        isPermitted(permission: Permission): boolean;
     }
 
     export class WorkspaceObject implements IWorkspaceObject {
-        workspace: IWorkspace;
-        roles: any;
-        methods: any;
+        workspace: Workspace;
+        objectType: ObjectType;
+        id: string;
+        version: string;
+        sortedAccessControlIds: string;
+        sortedDeniedPermissionIds: string;
 
-        private i: string;
-        private v: string;
-        private u: string;
-        private t: string;
+        roleByRoleTypeId: Map<string, any>;
 
-        constructor(workspace: IWorkspace, loadResponse: Data.SyncResponse, loadObject: Data.SyncResponseObject) {
+        private cachedSortedAccessControlIds: string;
+        private cachedSortedDeniedPermissionIds: string;
+        private cachedAccessControls: AccessControl[];
+        private cachedDeniedPermissions: Set<Permission>;
+
+        constructor(workspace: Workspace) {
             this.workspace = workspace;
-            this.i = loadObject.i;
-            this.v = loadObject.v;
-            this.u = loadResponse.userSecurityHash;
-            this.t = loadObject.t;
+            this.cachedAccessControls = null;
+            this.cachedDeniedPermissions = null;
+            this.roleByRoleTypeId = new Map();
+        }
 
-            this.roles = {};
-            this.methods = {};
+        new(id: string, objectType: ObjectType) {
+            this.objectType = objectType;
+            this.id = id;
+            this.version = '0';
+        }
 
-            var objectType = this.workspace.objectTypeByName[this.t];
+        sync(
+            syncResponseObject: SyncResponseObject,
+            sortedAccessControlIdsDecompress: (compressed: string) => string,
+            sortedDeniedPermissionIdsDecompress: (compressed: string) => string,
+            metaDecompress: (compressed: string) => MetaObject) {
 
-            _.forEach(loadObject.roles, role => {
-                var [name, access] = role;
-                var canRead = access.indexOf("r") !== -1;
-                var canWrite = access.indexOf("w") !== -1;
+            this.id = syncResponseObject.i;
+            this.version = syncResponseObject.v;
+            this.objectType = metaDecompress(syncResponseObject.t) as ObjectType;
 
-                this.roles[`CanRead${name}`] = canRead;
-                this.roles[`CanWrite${name}`] = canWrite;
-                
-                if (canRead) {
-                    const roleType = objectType.roleTypeByName[name];
-                    let value = role[2];
-                    if (value && roleType.isUnit && roleType.objectType === "DateTime") {
-                        value = new Date(value as string);
+            this.roleByRoleTypeId = new Map();
+            if (syncResponseObject.r) {
+                syncResponseObject.r.forEach((role) => {
+                    const roleTypeId = role.t;
+                    const roleType = metaDecompress(roleTypeId) as RoleType;
+
+                    let value: any = role.v;
+                    if (roleType.objectType.isUnit) {
+                        value = deserialize(value, roleType.objectType);
+                    } else {
+                        if (roleType.isMany) {
+                            value = (value as string).split(Compressor.itemSeparator);
+                        }
                     }
-                    this.roles[name] = value;
+
+                    this.roleByRoleTypeId.set(roleType.id, value);
+                });
+            }
+
+            this.sortedAccessControlIds = sortedAccessControlIdsDecompress(syncResponseObject.a);
+            this.sortedDeniedPermissionIds = sortedDeniedPermissionIdsDecompress(syncResponseObject.d);
+        }
+
+        isPermitted(permission: Permission): boolean {
+            if (permission == null) {
+                return false;
+            }
+
+            if (this.sortedAccessControlIds !== this.cachedSortedAccessControlIds) {
+                this.cachedSortedAccessControlIds = this.sortedAccessControlIds;
+                if (this.sortedAccessControlIds) {
+                    this.cachedAccessControls = this.sortedAccessControlIds
+                        .split(Compressor.itemSeparator)
+                        .map(v => this.workspace.accessControlById.get(v));
+                } else {
+                    this.sortedAccessControlIds = null;
                 }
+            }
 
-            });
+            if (this.sortedDeniedPermissionIds !== this.cachedSortedDeniedPermissionIds) {
+                this.cachedSortedDeniedPermissionIds = this.sortedDeniedPermissionIds;
+                if (this.sortedDeniedPermissionIds) {
+                    this.cachedDeniedPermissions = new Set();
+                    this.sortedDeniedPermissionIds
+                        .split(Compressor.itemSeparator)
+                        .forEach(v => this.cachedDeniedPermissions.add(this.workspace.permissionById.get(v)));
+                } else {
+                    this.cachedDeniedPermissions = null;
+                }
+            }
 
-            _.forEach(loadObject.methods, method => {
-                var [name, access] = method;
-                var canExecute = access.indexOf("x") !== -1;
+            if (this.cachedDeniedPermissions && this.cachedDeniedPermissions.has(permission)) {
+                return false;
+            }
 
-                this.methods[`CanExecute${name}`] = canExecute;
-            });
+            if (this.cachedAccessControls) {
+                for (const accessControl of this.cachedAccessControls) {
+                    if (accessControl.permissionIds.has(permission.id)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
-        get id(): string {
-            return this.i;
+        invalidate() {
+            this.version = '';
         }
 
-        get version(): string {
-            return this.v;
-        }
-
-        get userSecurityHash(): string {
-            return this.u;
-        }
-
-        get objectType(): Meta.ObjectType {
-            return this.workspace.objectTypeByName[this.t];
-        }
-
-        canRead(roleTypeName: string): boolean {
-            return this.roles[`CanRead${roleTypeName}`];
-        }
-
-        canWrite(roleTypeName: string): boolean {
-            return this.roles[`CanWrite${roleTypeName}`];
-        }
-
-        canExecute(methodName: string): boolean {
-            return this.methods[`CanExecute${methodName}`];
-        }
     }
+
 }

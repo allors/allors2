@@ -7,7 +7,7 @@ import { SecurityRequest } from '../protocol/security/SecurityRequest';
 import { SecurityResponse } from '../protocol/security/SecurityResponse';
 
 import { Compressor } from '../protocol/Compressor';
-import { Decompressor, createMetaDecompressor as createMetaDecompress } from '../protocol/Decompressor';
+import { Decompressor, createMetaDecompressor } from '../protocol/Decompressor';
 import { Operations } from '../protocol/Operations';
 
 import { SessionObject } from './SessionObject';
@@ -191,7 +191,7 @@ export class Workspace implements IWorkspace {
     const decompressor = new Decompressor();
     const missingAccessControlIds = new Set<string>();
     const missingPermissionIds = new Set<string>();
-    const metaDecompress = createMetaDecompress(decompressor, this.metaPopulation);
+    const metaDecompress = createMetaDecompressor(decompressor, this.metaPopulation);
 
     const sortedAccessControlIdsDecompress = (compressed: string): string => {
       return decompressor.read(compressed, first => {
@@ -248,7 +248,7 @@ export class Workspace implements IWorkspace {
 
   security(securityResponse: SecurityResponse): SecurityRequest {
     const decompressor = new Decompressor();
-    const metaDecompress = createMetaDecompress(decompressor, this.metaPopulation);
+    const metaDecompress = createMetaDecompressor(decompressor, this.metaPopulation);
 
     if (securityResponse.permissions) {
       securityResponse.permissions.forEach(v => {

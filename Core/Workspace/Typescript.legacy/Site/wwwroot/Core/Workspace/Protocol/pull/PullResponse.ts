@@ -1,4 +1,4 @@
-namespace Allors.Data {
+namespace Allors.Protocol {
     export interface PullResponse extends Response {
         namedCollections?: { [id: string]: string[]; };
         namedObjects?: { [id: string]: string; };

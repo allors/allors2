@@ -7,6 +7,7 @@ import { ResponseType, SyncRequest, SyncResponse, PullRequest, Pull } from '../.
 import { InvokeRequest, InvokeResponse, InvokeOptions } from '../../../framework';
 import { Method } from '../../../framework';
 import { services } from '../../../framework/database';
+import { Compressor } from 'src/allors/framework/protocol/Compressor';
 
 export class Database {
 
@@ -97,13 +98,16 @@ export class Database {
     }
   }
 
-  invokeMethods(methods: Method[], options?: InvokeOptions): Observable<InvokeResponse> {
+  private invokeMethods(methods: Method[], options?: InvokeOptions): Observable<InvokeResponse> {
+
+    const compressor = new Compressor()
+
     const invokeRequest: InvokeRequest = {
       i: methods.map(v => {
         return {
           i: v.object.id,
-          m: v.methodType.name,
           v: v.object.version,
+          m: compressor.write(v.methodType.id),
         };
       }),
       o: options

@@ -1,12 +1,12 @@
-﻿/// <reference path="allors.module.ts" />
+/// <reference path="allors.module.ts" />
 namespace Allors {
-    export class Result {
+    export class Loaded {
 
         objects: { [name: string]: ISessionObject; } = {};
         collections: { [name: string]: ISessionObject[]; } = {};
         values: { [name: string]: any; } = {};
 
-        constructor(session: ISession, response: Data.PullResponse) {
+        constructor(session: ISession, response: Protocol.PullResponse) {
             _.map(response.namedObjects, (v, k) => {
                 this.objects[k] = session.get(v);
             });

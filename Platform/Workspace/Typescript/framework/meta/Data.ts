@@ -1,41 +1,34 @@
-export interface Data {
+export interface MetaData {
     domains: string[];
-    interfaces?: Interface[];
-    classes?: Class[];
-    relationTypes?: RelationType[];
-    methodTypes?: MethodType[];
+    interfaces?: ObjectTypeData[];
+    classes?: ObjectTypeData[];
+    relationTypes?: RelationTypeData[];
+    methodTypes?: MethodTypeData[];
 }
 
-export interface Interface {
+export interface ObjectTypeData {
     id: string;
     name: string;
     plural: string;
     interfaceIds?: string[];
 }
 
-export interface Class {
+export interface RelationTypeData {
     id: string;
-    name: string;
-    plural: string;
-    interfaceIds?: string[];
-}
-
-export interface RelationType {
-    id: string;
-    associationType: AssociationType;
-    roleType: RoleType;
-    concreteRoleTypes?: ConcreteRoleType[];
+    associationType: AssociationTypeData;
+    roleType: RoleTypeData;
+    concreteRoleTypes?: ConcreteRoleTypeData[];
     isDerived?: boolean;
 }
 
-export interface AssociationType {
+export interface AssociationTypeData {
     id: string;
     objectTypeId: string;
     name: string;
     isOne: boolean;
 }
 
-export interface RoleType {
+export interface RoleTypeData {
     id: string;
     objectTypeId: string;
     singular: string;
@@ -45,12 +38,12 @@ export interface RoleType {
     isRequired?: boolean;
 }
 
-export interface ConcreteRoleType {
+export interface ConcreteRoleTypeData {
     objectTypeId: string;
     isRequired: boolean;
 }
 
-export interface MethodType {
+export interface MethodTypeData {
     id: string;
     objectTypeId: string;
     name: string;

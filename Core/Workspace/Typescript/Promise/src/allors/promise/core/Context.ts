@@ -26,7 +26,6 @@ export class Context {
         .pull(requestOrCustomService, customArgs)
         .then((pullResponse: PullResponse) => {
           const syncRequest = this.workspace.diff(pullResponse);
-
           if (syncRequest.objects.length > 0) {
             return this.database
               .sync(syncRequest)

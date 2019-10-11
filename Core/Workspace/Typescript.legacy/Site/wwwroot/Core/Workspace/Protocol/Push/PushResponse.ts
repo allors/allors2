@@ -1,5 +1,5 @@
-namespace Allors.Data {
+namespace Allors.Protocol {
     export interface PushResponse extends Response {
-        newObjects?: Allors.Data.PushResponseNewObject[];
+        newObjects?: Allors.Protocol.PushResponseNewObject[];
     }
 }

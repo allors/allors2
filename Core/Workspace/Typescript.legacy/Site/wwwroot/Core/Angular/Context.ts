@@ -1,4 +1,4 @@
-﻿/// <reference path="allors.module.ts" />
+/// <reference path="allors.module.ts" />
 /// <reference path="../Workspace/Method.ts" />
 namespace Allors {
     export class Context {
@@ -21,17 +21,41 @@ namespace Allors {
 
                 return this.database
                     .pull(this.name, params)
-                    .then((response: Data.PullResponse) => {
+                    .then((response: Protocol.PullResponse) => {
                         try {
-                            const requireLoadIds = this.workspace.diff(response);
-
-                            if (requireLoadIds.objects.length > 0) {
-                                this.database.sync(requireLoadIds)
-                                    .then((loadResponse: Data.SyncResponse) => {
-                                        this.workspace.sync(loadResponse);
+                            const syncRequest = this.workspace.diff(response);
+                            if (syncRequest.objects.length > 0) {
+                                this.database.sync(syncRequest)
+                                    .then((syncResponse: Protocol.SyncResponse) => {
+                                        const securityRequest = this.workspace.sync(syncResponse);
                                         this.update(response);
                                         this.session.reset();
-                                        resolve();
+
+                                        if (securityRequest) {
+                                          this.database
+                                            .security(securityRequest)
+                                            .then(v => {
+                                              const securityRequest2 = this.workspace.security(v);
+                                              if (securityRequest2) {
+                                                this.database
+                                                  .security(securityRequest2)
+                                                  .then(v => {
+                                                    this.workspace.security(v);
+                                                    resolve();
+                                                  })
+                                                  .catch((e) => {
+                                                    reject(e);
+                                                  });
+                                              } else {
+                                                resolve();
+                                              }
+                                            })
+                                            .catch((e) => {
+                                              reject(e);
+                                            });
+                                        } else {
+                                          resolve();
+                                        }
                                     })
                                     .catch(e2 => {
                                         reject(e2);
@@ -52,26 +76,26 @@ namespace Allors {
             });
         }
 
-        query(service: string, params: any): angular.IPromise<Result> {
+        query(service: string, params: any): angular.IPromise<Loaded> {
             return this.$q((resolve, reject) => {
 
                 this.database.pull(service, params)
                     .then(v => {
                         try {
-                            const response = v as Data.PullResponse;
+                            const response = v as Protocol.PullResponse;
                             const requireLoadIds = this.workspace.diff(response);
 
                             if (requireLoadIds.objects.length > 0) {
                                 this.database.sync(requireLoadIds)
                                     .then(u => {
-                                        var loadResponse = u as Data.SyncResponse;
+                                        var loadResponse = u as Protocol.SyncResponse;
                                         this.workspace.sync(loadResponse);
-                                        const result = new Result(this.session, response);
+                                        const result = new Loaded(this.session, response);
                                         resolve(result);
                                     })
                                     .catch((e2) => reject(e2));
                             } else {
-                                const result = new Result(this.session, response);
+                                const result = new Loaded(this.session, response);
                                 resolve(result);
                             }
                         } catch (e) {
@@ -83,18 +107,18 @@ namespace Allors {
             });
         }
         
-        save(): angular.IPromise<Data.PushResponse> {
+        save(): angular.IPromise<Protocol.PushResponse> {
             return this.$q((resolve, reject) => {
 
                 try {
                     const pushRequest = this.session.pushRequest();
                     this.database
                         .push(pushRequest)
-                        .then((pushResponse: Data.PushResponse) => {
+                        .then((pushResponse: Protocol.PushResponse) => {
                             try {
                                 this.session.pushResponse(pushResponse);
 
-                                const syncRequest = new Data.SyncRequest();
+                                const syncRequest = new Protocol.SyncRequest();
                                 syncRequest.objects = pushRequest.objects.map(v=>v.i);
                                 if (pushResponse.newObjects) {
                                     for (let newObject of pushResponse.newObjects) {
@@ -125,9 +149,9 @@ namespace Allors {
             });
         }
 
-        invoke(method: Method): angular.IPromise<Data.InvokeResponse>;
-        invoke(service: string, args?: any): angular.IPromise<Data.InvokeResponse>;
-        invoke(methodOrService: Method | string, args?: any): angular.IPromise<Data.InvokeResponse> {
+        invoke(method: Method): angular.IPromise<Protocol.InvokeResponse>;
+        invoke(service: string, args?: any): angular.IPromise<Protocol.InvokeResponse>;
+        invoke(methodOrService: Method | string, args?: any): angular.IPromise<Protocol.InvokeResponse> {
 
             if (methodOrService instanceof Method) {
                 return this.database.invoke(methodOrService);
@@ -136,7 +160,7 @@ namespace Allors {
             }
         }
         
-        private update(response: Data.PullResponse): void {
+        private update(response: Protocol.PullResponse): void {
 
             this.objects = { };
             this.collections  = { };

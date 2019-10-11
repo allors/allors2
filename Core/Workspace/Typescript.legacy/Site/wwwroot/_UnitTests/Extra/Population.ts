@@ -7,7 +7,7 @@ module Extra {
         john: Allors.Domain.Person;
 
         constructor() {
-            this.workspace = new Allors.Workspace(Allors.Data.metaPopulation);
+            this.workspace = new Allors.Workspace(Allors.Protocol.metaPopulation);
             this.session = new Allors.Session(this.workspace);
 
             this.john = this.createPerson("John");

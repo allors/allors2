@@ -1,4 +1,4 @@
-namespace Allors.Data {
+namespace Allors.Protocol {
     export interface SyncResponse extends Response {
         accessControls?: string[][];
         objects: SyncResponseObject[];

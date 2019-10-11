@@ -1,4 +1,4 @@
-import { Class, Data, Interface } from './Data';
+import { MetaData } from './Data';
 
 import { MetaObject } from './MetaObject';
 import { Kind, ObjectType } from './ObjectType';
@@ -20,7 +20,7 @@ export class MetaPopulation {
   readonly relationTypes: RelationType[];
   readonly methodTypes: MethodType[];
 
-  constructor(data: Data) {
+  constructor(data: MetaData) {
 
     this.metaObjectById = new Map();
     this.objectTypeByName = new Map();
@@ -73,7 +73,7 @@ export class MetaPopulation {
     const dataObjectTypes = [].concat(data.interfaces).concat(data.classes);
 
     // Create Type Hierarchy
-    dataObjectTypes.forEach((dataObjectType: Interface | Class) => {
+    dataObjectTypes.forEach((dataObjectType) => {
       const objectType = this.metaObjectById.get(dataObjectType.id) as ObjectType;
       objectType.interfaces = dataObjectType.interfaceIds ? dataObjectType.interfaceIds.map((v) => this.metaObjectById.get(v) as ObjectType) : [];
     });
