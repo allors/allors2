@@ -320,14 +320,14 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
 
         const salesInvoices = loaded.collections.SalesInvoices as SalesInvoice[];
         this.table.total = loaded.values.SalesInvoices_total;
-        this.table.data = salesInvoices.map((v) => {
+        this.table.data = salesInvoices.filter(v => v.CanReadInvoiceNumber).map((v) => {
           return {
             object: v,
             number: v.InvoiceNumber,
             type: `${v.SalesInvoiceType && v.SalesInvoiceType.Name}`,
-            billedTo: v.BillToCustomer.displayName,
+            billedTo: v.BillToCustomer && v.BillToCustomer.displayName,
             state: `${v.SalesInvoiceState && v.SalesInvoiceState.Name}`,
-            reference: `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,
+            reference: v.SalesInvoiceState && `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,
             description: v.Description,
             totalExVat: v.TotalExVat,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()

@@ -226,11 +226,11 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
 
         const orders = loaded.collections.PurchaseOrders as PurchaseOrder[];
         this.table.total = loaded.values.PurchaseOrders_total;
-        this.table.data = orders.map((v) => {
+        this.table.data = orders.filter(v => v.CanReadOrderNumber).map((v) => {
           return {
             object: v,
             number: `${v.OrderNumber}`,
-            supplier: v.TakenViaSupplier.displayName,
+            supplier: v.TakenViaSupplier && v.TakenViaSupplier.displayName,
             state: `${v.PurchaseOrderState && v.PurchaseOrderState.Name}`,
             customerReference: `${v.Description || ''}`,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()

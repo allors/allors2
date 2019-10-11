@@ -42,7 +42,7 @@
               <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true"
                 (ngModelChange)="setDirty()">
                 <mat-option>None</mat-option>
-                <mat-option *ngFor="let category of categories" [value]="category"> {{ category.Name }} </mat-option>
+                <mat-option *ngFor="let category of categories" [value]="category"> {{ category.displayName }} </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
