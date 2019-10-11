@@ -7,7 +7,7 @@ import { ResponseType, SyncRequest, SyncResponse, PullRequest, Pull } from '../.
 import { InvokeRequest, InvokeResponse, InvokeOptions } from '../../../framework';
 import { Method } from '../../../framework';
 import { services } from '../../../framework/database';
-import { Compressor } from 'src/allors/framework/protocol/Compressor';
+import { Compressor } from '../../../framework/protocol/Compressor';
 
 export class Database {
 
