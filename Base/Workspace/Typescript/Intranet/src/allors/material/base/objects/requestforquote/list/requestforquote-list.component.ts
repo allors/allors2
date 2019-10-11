@@ -169,7 +169,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
 
         const requests = loaded.collections.Requests as Request[];
         this.table.total = loaded.values.Requests_total;
-        this.table.data = requests.map((v) => {
+        this.table.data = requests.filter(v => v.CanReadRequestNumber).map((v) => {
           return {
             object: v,
             number: `${v.RequestNumber}`,

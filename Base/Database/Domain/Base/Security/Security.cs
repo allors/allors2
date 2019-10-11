@@ -26,9 +26,13 @@ namespace Allors.Domain
 
         public void GrantManager(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.ManagerId, objectType, operations);
 
+        public void GrantExceptManager(ObjectType objectType, ICollection<IOperandType> excepts, params Operations[] operations) => this.GrantExcept(Roles.ManagerId, objectType, excepts, operations);
+
         public void GrantSalesAccountManager(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.SalesAccountManagerId, objectType, operations);
 
         public void GrantExceptSalesAccountManager(ObjectType objectType, ICollection<IOperandType> excepts, params Operations[] operations) => this.GrantExcept(Roles.SalesAccountManagerId, objectType, excepts, operations);
+
+        public void GrantExceptGuest(ObjectType objectType, ICollection<IOperandType> excepts, params Operations[] operations) => this.GrantExcept(Roles.GuestId, objectType, excepts, operations);
 
         private void BaseOnPreSetup()
         {

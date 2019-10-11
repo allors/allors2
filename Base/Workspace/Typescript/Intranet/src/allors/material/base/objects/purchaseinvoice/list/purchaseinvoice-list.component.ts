@@ -270,14 +270,14 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
 
         const purchaseInvoices = loaded.collections.PurchaseInvoices as PurchaseInvoice[];
         this.table.total = loaded.values.PurchaseInvoices_total;
-        this.table.data = purchaseInvoices.map((v) => {
+        this.table.data = purchaseInvoices.filter(v => v.CanReadInvoiceNumber).map((v) => {
           return {
             object: v,
             number: v.InvoiceNumber,
             type: `${v.PurchaseInvoiceType && v.PurchaseInvoiceType.Name}`,
-            billedFrom: v.BilledFrom.displayName,
+            billedFrom: v.BilledFrom && v.BilledFrom.displayName,
             state: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
-            reference: `${v.CustomerReference} - ${v.PurchaseInvoiceState.Name}`,
+            reference: v.PurchaseInvoiceState.Name && `${v.CustomerReference} - ${v.PurchaseInvoiceState.Name}`,
             dueDate: v.DueDate && moment(v.DueDate).format('MMM Do YY'),
             totalExVat: v.TotalExVat,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
