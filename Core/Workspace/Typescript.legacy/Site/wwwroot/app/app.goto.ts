@@ -1,4 +1,4 @@
-﻿module App
+module App
 {
     var app = angular.module("app");
 

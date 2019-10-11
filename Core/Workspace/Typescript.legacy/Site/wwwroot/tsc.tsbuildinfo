@@ -58,10 +58,12 @@
       "./generated/domain/Version.g.ts",
       "./generated/domain/WorkItem.g.ts",
       "./generated/meta/data.g.ts",
+      "./generated/meta/domain.g.ts",
       "./generated/meta/ids.g.ts",
       "./Core/Angular/allors.module.ts",
       "./Core/Workspace/Method.ts",
       "./Core/Angular/Context.ts",
+      "./Core/Workspace/Protocol/Compressor.ts",
       "./Core/Angular/Database.ts",
       "./Core/Angular/Events.ts",
       "./Core/Angular/Result.ts",
@@ -109,16 +111,15 @@
       "./Core/Angular/filters/humanize.ts",
       "./Core/Workspace/AccessControl.ts",
       "./Core/Workspace/Permission.ts",
-      "./Core/Workspace/Session.ts",
+      "./Core/Workspace/WorkspaceObject.ts",
       "./Core/Workspace/Protocol/Push/PushRequest.ts",
       "./Core/Workspace/SessionObject.ts",
+      "./Core/Workspace/Session.ts",
       "./Core/Workspace/Protocol/Sync/SyncRequest.ts",
       "./Core/Workspace/Protocol/Security/SecuriyRequest.ts",
-      "./Core/Workspace/Protocol/Compressor.ts",
       "./Core/Workspace/Protocol/Decompressor.ts",
       "./Core/Workspace/Workspace.ts",
-      "./Core/Workspace/WorkspaceObject.ts",
-      "./Core/Workspace/Domain/extend.ts",
+      "./Core/Workspace/Domain/Domain.ts",
       "./Core/Workspace/Meta/AssociationType.ts",
       "./Core/Workspace/Meta/ConcreteRoleType.ts",
       "./Core/Workspace/Meta/MetaObject.ts",
@@ -161,36 +162,36 @@
     "js": {
       "sections": [
         {
-          "pos": 297712,
-          "end": 298182,
+          "pos": 297730,
+          "end": 298200,
           "kind": "emitHelpers",
           "data": "typescript:values"
         },
         {
-          "pos": 327298,
-          "end": 327895,
+          "pos": 328557,
+          "end": 329154,
           "kind": "emitHelpers",
           "data": "typescript:extends"
         },
         {
-          "pos": 435211,
-          "end": 435715,
+          "pos": 426624,
+          "end": 427128,
           "kind": "emitHelpers",
           "data": "typescript:read"
         },
         {
-          "pos": 454190,
-          "end": 454360,
+          "pos": 459269,
+          "end": 459439,
           "kind": "emitHelpers",
           "data": "typescript:spread"
         },
         {
           "pos": 0,
-          "end": 521523,
+          "end": 523276,
           "kind": "text"
         }
       ]
     }
   },
-  "version": "3.6.2"
+  "version": "3.6.3"
 }

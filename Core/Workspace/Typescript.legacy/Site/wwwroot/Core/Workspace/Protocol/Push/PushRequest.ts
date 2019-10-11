@@ -2,6 +2,10 @@ namespace Allors.Protocol {
     export class PushRequest {
         newObjects: PushRequestNewObject[];
         objects: PushRequestObject[];
+
+        constructor(fields?: Partial<PushRequest>) {
+          Object.assign(this, fields);
+        }
     }
 
     export class PushRequestNewObject {

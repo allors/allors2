@@ -1,7 +1,7 @@
 namespace Allors.Protocol {
-  import MetaPopulation = Meta.MetaPopulation;
+    import MetaPopulation = Meta.MetaPopulation;
 
-  export const createMetaDecompressor = (decompressor: Decompressor, metaPopulation: MetaPopulation) => (compressed: string) => {
+    export const createMetaDecompressor = (decompressor: Decompressor, metaPopulation: MetaPopulation) => (compressed: string) => {
         return metaPopulation.metaObjectById.get(decompressor.read(compressed, v => { }));
     };
 

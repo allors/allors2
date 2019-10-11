@@ -3,20 +3,21 @@
 /// <reference path="./Protocol/Compressor.ts" />
 /// <reference path="./Protocol/Decompressor.ts" />
 namespace Allors {
-  import MetaPopulation = Meta.MetaPopulation;
-  import OperandType = Meta.OperandType;
-  import ObjectType = Meta.ObjectType;
+    import MetaPopulation = Meta.MetaPopulation;
+    import OperandType = Meta.OperandType;
+    import ObjectType = Meta.ObjectType;
 
-  import PullResponse = Protocol.PullResponse;
-  import SyncRequest = Protocol.SyncRequest;
-  import SyncResponse = Protocol.SyncResponse;
-  import SecurityRequest = Protocol.SecurityRequest;
-  import SecurityResponse = Protocol.SecurityResponse;
-  import Operations = Protocol.Operations;
-  import Decompressor = Protocol.Decompressor;
-  import Compressor = Protocol.Compressor;
+    import PullResponse = Protocol.PullResponse;
+    import SyncRequest = Protocol.SyncRequest;
+    import SyncResponse = Protocol.SyncResponse;
+    import SecurityRequest = Protocol.SecurityRequest;
+    import SecurityResponse = Protocol.SecurityResponse;
+    import Operations = Protocol.Operations;
+    import Decompressor = Protocol.Decompressor;
+    import Compressor = Protocol.Compressor;
+    import createMetaDecompressor = Protocol.createMetaDecompressor;
 
-  export interface IWorkspace {
+    export interface IWorkspace {
         metaPopulation: MetaPopulation;
         constructorByObjectType: Map<ObjectType, typeof SessionObject>;
 
@@ -192,7 +193,7 @@ namespace Allors {
             const decompressor = new Decompressor();
             const missingAccessControlIds = new Set<string>();
             const missingPermissionIds = new Set<string>();
-            const metaDecompress = createMetaDecompress(decompressor, this.metaPopulation);
+            const metaDecompress = createMetaDecompressor(decompressor, this.metaPopulation);
 
             const sortedAccessControlIdsDecompress = (compressed: string): string => {
                 return decompressor.read(compressed, first => {
@@ -249,7 +250,7 @@ namespace Allors {
 
         security(securityResponse: SecurityResponse): SecurityRequest {
             const decompressor = new Decompressor();
-            const metaDecompress = createMetaDecompress(decompressor, this.metaPopulation);
+            const metaDecompress = createMetaDecompressor(decompressor, this.metaPopulation);
 
             if (securityResponse.permissions) {
                 securityResponse.permissions.forEach(v => {

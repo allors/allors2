@@ -6070,9 +6070,9 @@ var Allors;
 var Allors;
 (function (Allors) {
     var Method = /** @class */ (function () {
-        function Method(object, name) {
+        function Method(object, methodType) {
             this.object = object;
-            this.name = name;
+            this.methodType = methodType;
         }
         return Method;
     }());
@@ -6111,14 +6111,40 @@ var Allors;
                     .pull(_this.name, params)
                     .then(function (response) {
                     try {
-                        var requireLoadIds = _this.workspace.diff(response);
-                        if (requireLoadIds.objects.length > 0) {
-                            _this.database.sync(requireLoadIds)
-                                .then(function (loadResponse) {
-                                _this.workspace.sync(loadResponse);
+                        var syncRequest = _this.workspace.diff(response);
+                        if (syncRequest.objects.length > 0) {
+                            _this.database.sync(syncRequest)
+                                .then(function (syncResponse) {
+                                var securityRequest = _this.workspace.sync(syncResponse);
                                 _this.update(response);
                                 _this.session.reset();
-                                resolve();
+                                if (securityRequest) {
+                                    _this.database
+                                        .security(securityRequest)
+                                        .then(function (v) {
+                                        var securityRequest2 = _this.workspace.security(v);
+                                        if (securityRequest2) {
+                                            _this.database
+                                                .security(securityRequest2)
+                                                .then(function (v) {
+                                                _this.workspace.security(v);
+                                                resolve();
+                                            })
+                                                .catch(function (e) {
+                                                reject(e);
+                                            });
+                                        }
+                                        else {
+                                            resolve();
+                                        }
+                                    })
+                                        .catch(function (e) {
+                                        reject(e);
+                                    });
+                                }
+                                else {
+                                    resolve();
+                                }
                             })
                                 .catch(function (e2) {
                                 reject(e2);
@@ -6152,13 +6178,13 @@ var Allors;
                                 .then(function (u) {
                                 var loadResponse = u;
                                 _this.workspace.sync(loadResponse);
-                                var result = new Allors.Result(_this.session, response_1);
+                                var result = new Allors.Loaded(_this.session, response_1);
                                 resolve(result);
                             })
                                 .catch(function (e2) { return reject(e2); });
                         }
                         else {
-                            var result = new Allors.Result(_this.session, response_1);
+                            var result = new Allors.Loaded(_this.session, response_1);
                             resolve(result);
                         }
                     }
@@ -6247,10 +6273,39 @@ var Allors;
     }());
     Allors.Context = Context;
 })(Allors || (Allors = {}));
-/// <reference path="allors.module.ts" />
-/// <reference path="../Workspace/Method.ts" />
 var Allors;
 (function (Allors) {
+    var Protocol;
+    (function (Protocol) {
+        var Compressor = /** @class */ (function () {
+            function Compressor() {
+                this.keyByValue = {};
+                this.counter = 0;
+            }
+            Compressor.prototype.write = function (value) {
+                if (value === undefined || value === null) {
+                    return null;
+                }
+                if (this.keyByValue.hasOwnProperty(value)) {
+                    return this.keyByValue[value];
+                }
+                var key = (++this.counter).toString();
+                this.keyByValue[value] = key;
+                return "" + Compressor.indexMarker + key + Compressor.indexMarker + value;
+            };
+            Compressor.indexMarker = '~';
+            Compressor.itemSeparator = ',';
+            return Compressor;
+        }());
+        Protocol.Compressor = Compressor;
+    })(Protocol = Allors.Protocol || (Allors.Protocol = {}));
+})(Allors || (Allors = {}));
+/// <reference path="allors.module.ts" />
+/// <reference path="../Workspace/Method.ts" />
+/// <reference path="../Workspace/Protocol/Compressor.ts" />
+var Allors;
+(function (Allors) {
+    var Compressor = Allors.Protocol.Compressor;
     var Database = /** @class */ (function () {
         function Database($http, $q, postfix, baseUrl) {
             this.$http = $http;
@@ -6317,6 +6372,21 @@ var Allors;
                 });
             });
         };
+        Database.prototype.security = function (securityRequest) {
+            var _this = this;
+            return this.$q(function (resolve, reject) {
+                var serviceName = _this.baseUrl + "allors/security";
+                _this.$http.post(serviceName, securityRequest, _this.headers)
+                    .then(function (callbackArg) {
+                    var response = callbackArg.data;
+                    response.responseType = Allors.Protocol.ResponseType.Security;
+                    resolve(response);
+                })
+                    .catch(function (e) {
+                    reject(e);
+                });
+            });
+        };
         Database.prototype.invoke = function (methodOrService, args) {
             if (methodOrService instanceof Allors.Method) {
                 return this.invokeMethods([methodOrService]);
@@ -6330,13 +6400,14 @@ var Allors;
         };
         Database.prototype.invokeMethods = function (methods, options) {
             var _this = this;
+            var compressor = new Compressor();
             return this.$q(function (resolve, reject) {
                 var invokeRequest = {
                     i: methods.map(function (v) {
                         return {
                             i: v.object.id,
-                            m: v.name,
                             v: v.object.version,
+                            m: compressor.write(v.methodType.id),
                         };
                     }),
                     o: options
@@ -6407,29 +6478,6 @@ var Allors;
         return Events;
     }());
     Allors.Events = Events;
-})(Allors || (Allors = {}));
-/// <reference path="allors.module.ts" />
-var Allors;
-(function (Allors) {
-    var Result = /** @class */ (function () {
-        function Result(session, response) {
-            var _this = this;
-            this.objects = {};
-            this.collections = {};
-            this.values = {};
-            _.map(response.namedObjects, function (v, k) {
-                _this.objects[k] = session.get(v);
-            });
-            _.map(response.namedCollections, function (v, k) {
-                _this.collections[k] = _.map(v, function (obj) { return session.get(obj); });
-            });
-            _.map(response.namedValues, function (v, k) {
-                _this.values[k] = v;
-            });
-        }
-        return Result;
-    }());
-    Allors.Result = Result;
 })(Allors || (Allors = {}));
 /// <reference path="allors.module.ts" />
 /// <reference path="../Workspace/Method.ts" />
@@ -7771,9 +7819,9 @@ var Allors;
             Object.defineProperty(TextController.prototype, "htmlType", {
                 get: function () {
                     if (this.roleType) {
-                        if (this.roleType.objectType === "Integer" ||
-                            this.roleType.objectType === "Decimal" ||
-                            this.roleType.objectType === "Float") {
+                        if (this.roleType.objectType.isInteger ||
+                            this.roleType.objectType.isDecimal ||
+                            this.roleType.objectType.isFloat) {
                             return "number";
                         }
                     }
@@ -8597,292 +8645,110 @@ var Allors;
 })(Allors || (Allors = {}));
 var Allors;
 (function (Allors) {
-    var PushRequest = Allors.Protocol.PushRequest;
     var Compressor = Allors.Protocol.Compressor;
-    var Operations = Allors.Protocol.Operations;
-    var Session = /** @class */ (function () {
-        function Session(workspace) {
+    var deserialize = Allors.Protocol.deserialize;
+    var WorkspaceObject = /** @class */ (function () {
+        function WorkspaceObject(workspace) {
             this.workspace = workspace;
-            this.hasChanges = false;
-            this.existingSessionObjectById = new Map();
-            this.newSessionObjectById = new Map();
-            this.sessionObjectByIdByClass = new Map();
+            this.cachedAccessControls = null;
+            this.cachedDeniedPermissions = null;
+            this.roleByRoleTypeId = new Map();
         }
-        Session.prototype.get = function (id) {
-            if (!id) {
-                return undefined;
-            }
-            var sessionObject = this.existingSessionObjectById.get(id);
-            if (sessionObject === undefined) {
-                sessionObject = this.newSessionObjectById.get(id);
-                if (sessionObject === undefined) {
-                    var workspaceObject = this.workspace.get(id);
-                    var constructor = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
-                    sessionObject = new constructor();
-                    sessionObject.session = this;
-                    sessionObject.workspaceObject = workspaceObject;
-                    sessionObject.objectType = workspaceObject.objectType;
-                    this.existingSessionObjectById.set(sessionObject.id, sessionObject);
-                    this.addByObjectTypeId(sessionObject);
-                }
-            }
-            return sessionObject;
+        WorkspaceObject.prototype.new = function (id, objectType) {
+            this.objectType = objectType;
+            this.id = id;
+            this.version = '0';
         };
-        Session.prototype.getForAssociation = function (id) {
-            if (!id) {
-                return undefined;
-            }
-            var sessionObject = this.existingSessionObjectById.get(id);
-            if (sessionObject === undefined) {
-                sessionObject = this.newSessionObjectById.get(id);
-                if (sessionObject === undefined) {
-                    var workspaceObject = this.workspace.getForAssociation(id);
-                    if (workspaceObject) {
-                        var constructor = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
-                        sessionObject = new constructor();
-                        sessionObject.session = this;
-                        sessionObject.workspaceObject = workspaceObject;
-                        sessionObject.objectType = workspaceObject.objectType;
-                        this.existingSessionObjectById.set(sessionObject.id, sessionObject);
-                        this.addByObjectTypeId(sessionObject);
+        WorkspaceObject.prototype.sync = function (syncResponseObject, sortedAccessControlIdsDecompress, sortedDeniedPermissionIdsDecompress, metaDecompress) {
+            var _this = this;
+            this.id = syncResponseObject.i;
+            this.version = syncResponseObject.v;
+            this.objectType = metaDecompress(syncResponseObject.t);
+            this.roleByRoleTypeId = new Map();
+            if (syncResponseObject.r) {
+                syncResponseObject.r.forEach(function (role) {
+                    var roleTypeId = role.t;
+                    var roleType = metaDecompress(roleTypeId);
+                    var value = role.v;
+                    if (roleType.objectType.isUnit) {
+                        value = deserialize(value, roleType.objectType);
                     }
+                    else {
+                        if (roleType.isMany) {
+                            value = value.split(Compressor.itemSeparator);
+                        }
+                    }
+                    _this.roleByRoleTypeId.set(roleType.id, value);
+                });
+            }
+            this.sortedAccessControlIds = sortedAccessControlIdsDecompress(syncResponseObject.a);
+            this.sortedDeniedPermissionIds = sortedDeniedPermissionIdsDecompress(syncResponseObject.d);
+        };
+        WorkspaceObject.prototype.isPermitted = function (permission) {
+            var e_2, _a;
+            var _this = this;
+            if (permission == null) {
+                return false;
+            }
+            if (this.sortedAccessControlIds !== this.cachedSortedAccessControlIds) {
+                this.cachedSortedAccessControlIds = this.sortedAccessControlIds;
+                if (this.sortedAccessControlIds) {
+                    this.cachedAccessControls = this.sortedAccessControlIds
+                        .split(Compressor.itemSeparator)
+                        .map(function (v) { return _this.workspace.accessControlById.get(v); });
+                }
+                else {
+                    this.sortedAccessControlIds = null;
                 }
             }
-            return sessionObject;
-        };
-        Session.prototype.create = function (objectType) {
-            if (typeof objectType === 'string') {
-                objectType = this.workspace.metaPopulation.objectTypeByName.get(objectType);
+            if (this.sortedDeniedPermissionIds !== this.cachedSortedDeniedPermissionIds) {
+                this.cachedSortedDeniedPermissionIds = this.sortedDeniedPermissionIds;
+                if (this.sortedDeniedPermissionIds) {
+                    this.cachedDeniedPermissions = new Set();
+                    this.sortedDeniedPermissionIds
+                        .split(Compressor.itemSeparator)
+                        .forEach(function (v) { return _this.cachedDeniedPermissions.add(_this.workspace.permissionById.get(v)); });
+                }
+                else {
+                    this.cachedDeniedPermissions = null;
+                }
             }
-            var constructor = this.workspace.constructorByObjectType.get(objectType);
-            var newSessionObject = new constructor();
-            newSessionObject.session = this;
-            newSessionObject.objectType = objectType;
-            newSessionObject.newId = (--Session.idCounter).toString();
-            this.newSessionObjectById.set(newSessionObject.newId, newSessionObject);
-            this.addByObjectTypeId(newSessionObject);
-            this.hasChanges = true;
-            return newSessionObject;
-        };
-        Session.prototype.delete = function (object) {
-            var e_2, _a, e_3, _b;
-            if (!object.isNew) {
-                throw new Error('Existing objects can not be deleted');
+            if (this.cachedDeniedPermissions && this.cachedDeniedPermissions.has(permission)) {
+                return false;
             }
-            var newSessionObject = object;
-            var newId = newSessionObject.newId;
-            if (this.newSessionObjectById.has(newId)) {
+            if (this.cachedAccessControls) {
                 try {
-                    for (var _c = __values(this.newSessionObjectById.values()), _d = _c.next(); !_d.done; _d = _c.next()) {
-                        var sessionObject = _d.value;
-                        sessionObject.onDelete(newSessionObject);
+                    for (var _b = __values(this.cachedAccessControls), _c = _b.next(); !_c.done; _c = _b.next()) {
+                        var accessControl = _c.value;
+                        if (accessControl.permissionIds.has(permission.id)) {
+                            return true;
+                        }
                     }
                 }
                 catch (e_2_1) { e_2 = { error: e_2_1 }; }
                 finally {
                     try {
-                        if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
+                        if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                     }
                     finally { if (e_2) throw e_2.error; }
                 }
-                try {
-                    for (var _e = __values(this.existingSessionObjectById.values()), _f = _e.next(); !_f.done; _f = _e.next()) {
-                        var sessionObject = _f.value;
-                        sessionObject.onDelete(newSessionObject);
-                    }
-                }
-                catch (e_3_1) { e_3 = { error: e_3_1 }; }
-                finally {
-                    try {
-                        if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
-                    }
-                    finally { if (e_3) throw e_3.error; }
-                }
-                var objectType = newSessionObject.objectType;
-                newSessionObject.reset();
-                this.newSessionObjectById.delete(newId);
-                this.removeByObjectTypeId(objectType, newId);
             }
+            return false;
         };
-        Session.prototype.reset = function () {
-            var e_4, _a, e_5, _b;
-            try {
-                for (var _c = __values(this.newSessionObjectById.values()), _d = _c.next(); !_d.done; _d = _c.next()) {
-                    var sessionObject = _d.value;
-                    sessionObject.reset();
-                }
-            }
-            catch (e_4_1) { e_4 = { error: e_4_1 }; }
-            finally {
-                try {
-                    if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
-                }
-                finally { if (e_4) throw e_4.error; }
-            }
-            try {
-                for (var _e = __values(this.existingSessionObjectById.values()), _f = _e.next(); !_f.done; _f = _e.next()) {
-                    var sessionObject = _f.value;
-                    sessionObject.reset();
-                }
-            }
-            catch (e_5_1) { e_5 = { error: e_5_1 }; }
-            finally {
-                try {
-                    if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
-                }
-                finally { if (e_5) throw e_5.error; }
-            }
-            this.hasChanges = false;
+        WorkspaceObject.prototype.invalidate = function () {
+            this.version = '';
         };
-        Session.prototype.pushRequest = function () {
-            var compressor = new Compressor();
-            return new PushRequest({
-                newObjects: Array.from(this.newSessionObjectById.values()).map(function (v) { return v.saveNew(compressor); }).filter(function (v) { return v !== undefined; }),
-                objects: Array.from(this.existingSessionObjectById.values()).map(function (v) { return v.save(compressor); }).filter(function (v) { return v !== undefined; }),
-            });
-        };
-        Session.prototype.pushResponse = function (pushResponse) {
-            var _this = this;
-            if (pushResponse.newObjects) {
-                pushResponse.newObjects.forEach(function (pushResponseNewObject) {
-                    var newId = pushResponseNewObject.ni;
-                    var id = pushResponseNewObject.i;
-                    var sessionObject = _this.newSessionObjectById.get(newId);
-                    delete sessionObject.newId;
-                    sessionObject.workspaceObject = _this.workspace.new(id, sessionObject.objectType);
-                    _this.newSessionObjectById.delete(newId);
-                    _this.existingSessionObjectById.set(id, sessionObject);
-                    _this.removeByObjectTypeId(sessionObject.objectType, newId);
-                    _this.addByObjectTypeId(sessionObject);
-                });
-            }
-            if (Object.getOwnPropertyNames(this.newSessionObjectById).length !== 0) {
-                throw new Error('Not all new objects received ids');
-            }
-        };
-        Session.prototype.getAssociation = function (object, associationType) {
-            var _this = this;
-            var associationClasses = associationType.objectType.classes;
-            var roleType = associationType.relationType.roleType;
-            var associationIds = new Set();
-            var associations = [];
-            associationClasses.forEach(function (associationClass) {
-                var e_6, _a;
-                _this.getAll(associationClass);
-                var sessionObjectById = _this.sessionObjectByIdByClass.get(associationClass);
-                if (sessionObjectById) {
-                    try {
-                        for (var _b = __values(sessionObjectById.values()), _c = _b.next(); !_c.done; _c = _b.next()) {
-                            var association = _c.value;
-                            if (!associationIds.has(association.id) && association.canRead(roleType)) {
-                                if (roleType.isOne) {
-                                    var role = association.getForAssociation(roleType);
-                                    if (role && role.id === object.id) {
-                                        associationIds.add(association.id);
-                                        associations.push(association);
-                                    }
-                                }
-                                else {
-                                    var roles = association.getForAssociation(roleType);
-                                    if (roles && roles.find(function (v) { return v === object; })) {
-                                        associationIds.add(association.id);
-                                        associations.push(association);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch (e_6_1) { e_6 = { error: e_6_1 }; }
-                    finally {
-                        try {
-                            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
-                        }
-                        finally { if (e_6) throw e_6.error; }
-                    }
-                }
-            });
-            if (associationType.isOne && associations.length > 0) {
-                return associations;
-            }
-            associationClasses.forEach(function (associationClass) {
-                var e_7, _a;
-                var workspaceObjects = _this.workspace.workspaceObjectsByClass.get(associationClass);
-                try {
-                    for (var workspaceObjects_1 = __values(workspaceObjects), workspaceObjects_1_1 = workspaceObjects_1.next(); !workspaceObjects_1_1.done; workspaceObjects_1_1 = workspaceObjects_1.next()) {
-                        var workspaceObject = workspaceObjects_1_1.value;
-                        if (!associationIds.has(workspaceObject.id)) {
-                            var permission = _this.workspace.permission(workspaceObject.objectType, roleType, Operations.Read);
-                            if (workspaceObject.isPermitted(permission)) {
-                                if (roleType.isOne) {
-                                    var role = workspaceObject.roleByRoleTypeId.get(roleType.id);
-                                    if (object.id === role) {
-                                        associations.push(_this.get(workspaceObject.id));
-                                        break;
-                                    }
-                                }
-                                else {
-                                    var roles = workspaceObject.roleByRoleTypeId.get(roleType.id);
-                                    if (roles && roles.indexOf(workspaceObject.id) > -1) {
-                                        associationIds.add(workspaceObject.id);
-                                        associations.push(_this.get(workspaceObject.id));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (e_7_1) { e_7 = { error: e_7_1 }; }
-                finally {
-                    try {
-                        if (workspaceObjects_1_1 && !workspaceObjects_1_1.done && (_a = workspaceObjects_1.return)) _a.call(workspaceObjects_1);
-                    }
-                    finally { if (e_7) throw e_7.error; }
-                }
-            });
-            return associations;
-        };
-        Session.prototype.getAll = function (objectType) {
-            var e_8, _a;
-            var workspaceObjects = this.workspace.workspaceObjectsByClass.get(objectType);
-            try {
-                for (var workspaceObjects_2 = __values(workspaceObjects), workspaceObjects_2_1 = workspaceObjects_2.next(); !workspaceObjects_2_1.done; workspaceObjects_2_1 = workspaceObjects_2.next()) {
-                    var workspaceObject = workspaceObjects_2_1.value;
-                    this.get(workspaceObject.id);
-                }
-            }
-            catch (e_8_1) { e_8 = { error: e_8_1 }; }
-            finally {
-                try {
-                    if (workspaceObjects_2_1 && !workspaceObjects_2_1.done && (_a = workspaceObjects_2.return)) _a.call(workspaceObjects_2);
-                }
-                finally { if (e_8) throw e_8.error; }
-            }
-        };
-        Session.prototype.addByObjectTypeId = function (sessionObject) {
-            var sessionObjectById = this.sessionObjectByIdByClass.get(sessionObject.objectType);
-            if (!sessionObjectById) {
-                sessionObjectById = new Map();
-                this.sessionObjectByIdByClass.set(sessionObject.objectType, sessionObjectById);
-            }
-            sessionObjectById.set(sessionObject.id, sessionObject);
-        };
-        Session.prototype.removeByObjectTypeId = function (objectType, id) {
-            var sessionObjectById = this.sessionObjectByIdByClass.get(objectType);
-            if (sessionObjectById) {
-                sessionObjectById.delete(id);
-            }
-        };
-        Session.idCounter = 0;
-        return Session;
+        return WorkspaceObject;
     }());
-    Allors.Session = Session;
+    Allors.WorkspaceObject = WorkspaceObject;
 })(Allors || (Allors = {}));
 var Allors;
 (function (Allors) {
     var Protocol;
     (function (Protocol) {
         var PushRequest = /** @class */ (function () {
-            function PushRequest() {
+            function PushRequest(fields) {
+                Object.assign(this, fields);
             }
             return PushRequest;
         }());
@@ -9184,7 +9050,7 @@ var Allors;
             delete this.changedRoleByRoleType;
         };
         SessionObject.prototype.onDelete = function (deleted) {
-            var e_9, _a;
+            var e_3, _a;
             if (this.changedRoleByRoleType !== undefined) {
                 try {
                     for (var _b = __values(this.changedRoleByRoleType), _c = _b.next(); !_c.done; _c = _b.next()) {
@@ -9205,12 +9071,12 @@ var Allors;
                         }
                     }
                 }
-                catch (e_9_1) { e_9 = { error: e_9_1 }; }
+                catch (e_3_1) { e_3 = { error: e_3_1 }; }
                 finally {
                     try {
                         if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                     }
-                    finally { if (e_9) throw e_9.error; }
+                    finally { if (e_3) throw e_3.error; }
                 }
             }
         };
@@ -9223,7 +9089,7 @@ var Allors;
             }
         };
         SessionObject.prototype.saveRoles = function (compressor) {
-            var e_10, _a;
+            var e_4, _a;
             var saveRoles = new Array();
             if (this.changedRoleByRoleType) {
                 var _loop_1 = function (roleType, value) {
@@ -9264,12 +9130,12 @@ var Allors;
                         _loop_1(roleType, value);
                     }
                 }
-                catch (e_10_1) { e_10 = { error: e_10_1 }; }
+                catch (e_4_1) { e_4 = { error: e_4_1 }; }
                 finally {
                     try {
                         if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                     }
-                    finally { if (e_10) throw e_10.error; }
+                    finally { if (e_4) throw e_4.error; }
                 }
                 return saveRoles;
             }
@@ -9278,12 +9144,298 @@ var Allors;
     }());
     Allors.SessionObject = SessionObject;
 })(Allors || (Allors = {}));
+/// <reference path="./Protocol/Compressor.ts" />
+/// <reference path="./WorkspaceObject.ts" />
+/// <reference path="./SessionObject.ts" />
+var Allors;
+(function (Allors) {
+    var PushRequest = Allors.Protocol.PushRequest;
+    var Compressor = Allors.Protocol.Compressor;
+    var Operations = Allors.Protocol.Operations;
+    var Session = /** @class */ (function () {
+        function Session(workspace) {
+            this.workspace = workspace;
+            this.hasChanges = false;
+            this.existingSessionObjectById = new Map();
+            this.newSessionObjectById = new Map();
+            this.sessionObjectByIdByClass = new Map();
+        }
+        Session.prototype.get = function (id) {
+            if (!id) {
+                return undefined;
+            }
+            var sessionObject = this.existingSessionObjectById.get(id);
+            if (sessionObject === undefined) {
+                sessionObject = this.newSessionObjectById.get(id);
+                if (sessionObject === undefined) {
+                    var workspaceObject = this.workspace.get(id);
+                    var constructor = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
+                    sessionObject = new constructor();
+                    sessionObject.session = this;
+                    sessionObject.workspaceObject = workspaceObject;
+                    sessionObject.objectType = workspaceObject.objectType;
+                    this.existingSessionObjectById.set(sessionObject.id, sessionObject);
+                    this.addByObjectTypeId(sessionObject);
+                }
+            }
+            return sessionObject;
+        };
+        Session.prototype.getForAssociation = function (id) {
+            if (!id) {
+                return undefined;
+            }
+            var sessionObject = this.existingSessionObjectById.get(id);
+            if (sessionObject === undefined) {
+                sessionObject = this.newSessionObjectById.get(id);
+                if (sessionObject === undefined) {
+                    var workspaceObject = this.workspace.getForAssociation(id);
+                    if (workspaceObject) {
+                        var constructor = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
+                        sessionObject = new constructor();
+                        sessionObject.session = this;
+                        sessionObject.workspaceObject = workspaceObject;
+                        sessionObject.objectType = workspaceObject.objectType;
+                        this.existingSessionObjectById.set(sessionObject.id, sessionObject);
+                        this.addByObjectTypeId(sessionObject);
+                    }
+                }
+            }
+            return sessionObject;
+        };
+        Session.prototype.create = function (objectType) {
+            if (typeof objectType === 'string') {
+                objectType = this.workspace.metaPopulation.objectTypeByName.get(objectType);
+            }
+            var constructor = this.workspace.constructorByObjectType.get(objectType);
+            var newSessionObject = new constructor();
+            newSessionObject.session = this;
+            newSessionObject.objectType = objectType;
+            newSessionObject.newId = (--Session.idCounter).toString();
+            this.newSessionObjectById.set(newSessionObject.newId, newSessionObject);
+            this.addByObjectTypeId(newSessionObject);
+            this.hasChanges = true;
+            return newSessionObject;
+        };
+        Session.prototype.delete = function (object) {
+            var e_5, _a, e_6, _b;
+            if (!object.isNew) {
+                throw new Error('Existing objects can not be deleted');
+            }
+            var newSessionObject = object;
+            var newId = newSessionObject.newId;
+            if (this.newSessionObjectById.has(newId)) {
+                try {
+                    for (var _c = __values(this.newSessionObjectById.values()), _d = _c.next(); !_d.done; _d = _c.next()) {
+                        var sessionObject = _d.value;
+                        sessionObject.onDelete(newSessionObject);
+                    }
+                }
+                catch (e_5_1) { e_5 = { error: e_5_1 }; }
+                finally {
+                    try {
+                        if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
+                    }
+                    finally { if (e_5) throw e_5.error; }
+                }
+                try {
+                    for (var _e = __values(this.existingSessionObjectById.values()), _f = _e.next(); !_f.done; _f = _e.next()) {
+                        var sessionObject = _f.value;
+                        sessionObject.onDelete(newSessionObject);
+                    }
+                }
+                catch (e_6_1) { e_6 = { error: e_6_1 }; }
+                finally {
+                    try {
+                        if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
+                    }
+                    finally { if (e_6) throw e_6.error; }
+                }
+                var objectType = newSessionObject.objectType;
+                newSessionObject.reset();
+                this.newSessionObjectById.delete(newId);
+                this.removeByObjectTypeId(objectType, newId);
+            }
+        };
+        Session.prototype.reset = function () {
+            var e_7, _a, e_8, _b;
+            try {
+                for (var _c = __values(this.newSessionObjectById.values()), _d = _c.next(); !_d.done; _d = _c.next()) {
+                    var sessionObject = _d.value;
+                    sessionObject.reset();
+                }
+            }
+            catch (e_7_1) { e_7 = { error: e_7_1 }; }
+            finally {
+                try {
+                    if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
+                }
+                finally { if (e_7) throw e_7.error; }
+            }
+            try {
+                for (var _e = __values(this.existingSessionObjectById.values()), _f = _e.next(); !_f.done; _f = _e.next()) {
+                    var sessionObject = _f.value;
+                    sessionObject.reset();
+                }
+            }
+            catch (e_8_1) { e_8 = { error: e_8_1 }; }
+            finally {
+                try {
+                    if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
+                }
+                finally { if (e_8) throw e_8.error; }
+            }
+            this.hasChanges = false;
+        };
+        Session.prototype.pushRequest = function () {
+            var compressor = new Compressor();
+            return new PushRequest({
+                newObjects: Array.from(this.newSessionObjectById.values()).map(function (v) { return v.saveNew(compressor); }).filter(function (v) { return v !== undefined; }),
+                objects: Array.from(this.existingSessionObjectById.values()).map(function (v) { return v.save(compressor); }).filter(function (v) { return v !== undefined; }),
+            });
+        };
+        Session.prototype.pushResponse = function (pushResponse) {
+            var _this = this;
+            if (pushResponse.newObjects) {
+                pushResponse.newObjects.forEach(function (pushResponseNewObject) {
+                    var newId = pushResponseNewObject.ni;
+                    var id = pushResponseNewObject.i;
+                    var sessionObject = _this.newSessionObjectById.get(newId);
+                    delete sessionObject.newId;
+                    sessionObject.workspaceObject = _this.workspace.new(id, sessionObject.objectType);
+                    _this.newSessionObjectById.delete(newId);
+                    _this.existingSessionObjectById.set(id, sessionObject);
+                    _this.removeByObjectTypeId(sessionObject.objectType, newId);
+                    _this.addByObjectTypeId(sessionObject);
+                });
+            }
+            if (Object.getOwnPropertyNames(this.newSessionObjectById).length !== 0) {
+                throw new Error('Not all new objects received ids');
+            }
+        };
+        Session.prototype.getAssociation = function (object, associationType) {
+            var _this = this;
+            var associationClasses = associationType.objectType.classes;
+            var roleType = associationType.relationType.roleType;
+            var associationIds = new Set();
+            var associations = [];
+            associationClasses.forEach(function (associationClass) {
+                var e_9, _a;
+                _this.getAll(associationClass);
+                var sessionObjectById = _this.sessionObjectByIdByClass.get(associationClass);
+                if (sessionObjectById) {
+                    try {
+                        for (var _b = __values(sessionObjectById.values()), _c = _b.next(); !_c.done; _c = _b.next()) {
+                            var association = _c.value;
+                            if (!associationIds.has(association.id) && association.canRead(roleType)) {
+                                if (roleType.isOne) {
+                                    var role = association.getForAssociation(roleType);
+                                    if (role && role.id === object.id) {
+                                        associationIds.add(association.id);
+                                        associations.push(association);
+                                    }
+                                }
+                                else {
+                                    var roles = association.getForAssociation(roleType);
+                                    if (roles && roles.find(function (v) { return v === object; })) {
+                                        associationIds.add(association.id);
+                                        associations.push(association);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (e_9_1) { e_9 = { error: e_9_1 }; }
+                    finally {
+                        try {
+                            if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+                        }
+                        finally { if (e_9) throw e_9.error; }
+                    }
+                }
+            });
+            if (associationType.isOne && associations.length > 0) {
+                return associations;
+            }
+            associationClasses.forEach(function (associationClass) {
+                var e_10, _a;
+                var workspaceObjects = _this.workspace.workspaceObjectsByClass.get(associationClass);
+                try {
+                    for (var workspaceObjects_1 = __values(workspaceObjects), workspaceObjects_1_1 = workspaceObjects_1.next(); !workspaceObjects_1_1.done; workspaceObjects_1_1 = workspaceObjects_1.next()) {
+                        var workspaceObject = workspaceObjects_1_1.value;
+                        if (!associationIds.has(workspaceObject.id)) {
+                            var permission = _this.workspace.permission(workspaceObject.objectType, roleType, Operations.Read);
+                            if (workspaceObject.isPermitted(permission)) {
+                                if (roleType.isOne) {
+                                    var role = workspaceObject.roleByRoleTypeId.get(roleType.id);
+                                    if (object.id === role) {
+                                        associations.push(_this.get(workspaceObject.id));
+                                        break;
+                                    }
+                                }
+                                else {
+                                    var roles = workspaceObject.roleByRoleTypeId.get(roleType.id);
+                                    if (roles && roles.indexOf(workspaceObject.id) > -1) {
+                                        associationIds.add(workspaceObject.id);
+                                        associations.push(_this.get(workspaceObject.id));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (e_10_1) { e_10 = { error: e_10_1 }; }
+                finally {
+                    try {
+                        if (workspaceObjects_1_1 && !workspaceObjects_1_1.done && (_a = workspaceObjects_1.return)) _a.call(workspaceObjects_1);
+                    }
+                    finally { if (e_10) throw e_10.error; }
+                }
+            });
+            return associations;
+        };
+        Session.prototype.getAll = function (objectType) {
+            var e_11, _a;
+            var workspaceObjects = this.workspace.workspaceObjectsByClass.get(objectType);
+            try {
+                for (var workspaceObjects_2 = __values(workspaceObjects), workspaceObjects_2_1 = workspaceObjects_2.next(); !workspaceObjects_2_1.done; workspaceObjects_2_1 = workspaceObjects_2.next()) {
+                    var workspaceObject = workspaceObjects_2_1.value;
+                    this.get(workspaceObject.id);
+                }
+            }
+            catch (e_11_1) { e_11 = { error: e_11_1 }; }
+            finally {
+                try {
+                    if (workspaceObjects_2_1 && !workspaceObjects_2_1.done && (_a = workspaceObjects_2.return)) _a.call(workspaceObjects_2);
+                }
+                finally { if (e_11) throw e_11.error; }
+            }
+        };
+        Session.prototype.addByObjectTypeId = function (sessionObject) {
+            var sessionObjectById = this.sessionObjectByIdByClass.get(sessionObject.objectType);
+            if (!sessionObjectById) {
+                sessionObjectById = new Map();
+                this.sessionObjectByIdByClass.set(sessionObject.objectType, sessionObjectById);
+            }
+            sessionObjectById.set(sessionObject.id, sessionObject);
+        };
+        Session.prototype.removeByObjectTypeId = function (objectType, id) {
+            var sessionObjectById = this.sessionObjectByIdByClass.get(objectType);
+            if (sessionObjectById) {
+                sessionObjectById.delete(id);
+            }
+        };
+        Session.idCounter = 0;
+        return Session;
+    }());
+    Allors.Session = Session;
+})(Allors || (Allors = {}));
 var Allors;
 (function (Allors) {
     var Protocol;
     (function (Protocol) {
         var SyncRequest = /** @class */ (function () {
-            function SyncRequest() {
+            function SyncRequest(fields) {
+                Object.assign(this, fields);
             }
             return SyncRequest;
         }());
@@ -9295,38 +9447,12 @@ var Allors;
     var Protocol;
     (function (Protocol) {
         var SecurityRequest = /** @class */ (function () {
-            function SecurityRequest() {
+            function SecurityRequest(fields) {
+                Object.assign(this, fields);
             }
             return SecurityRequest;
         }());
         Protocol.SecurityRequest = SecurityRequest;
-    })(Protocol = Allors.Protocol || (Allors.Protocol = {}));
-})(Allors || (Allors = {}));
-var Allors;
-(function (Allors) {
-    var Protocol;
-    (function (Protocol) {
-        var Compressor = /** @class */ (function () {
-            function Compressor() {
-                this.keyByValue = {};
-                this.counter = 0;
-            }
-            Compressor.prototype.write = function (value) {
-                if (value === undefined || value === null) {
-                    return null;
-                }
-                if (this.keyByValue.hasOwnProperty(value)) {
-                    return this.keyByValue[value];
-                }
-                var key = (++this.counter).toString();
-                this.keyByValue[value] = key;
-                return "" + Compressor.indexMarker + key + Compressor.indexMarker + value;
-            };
-            Compressor.indexMarker = '~';
-            Compressor.itemSeparator = ',';
-            return Compressor;
-        }());
-        Protocol.Compressor = Compressor;
     })(Protocol = Allors.Protocol || (Allors.Protocol = {}));
 })(Allors || (Allors = {}));
 var Allors;
@@ -9374,9 +9500,10 @@ var Allors;
     var Operations = Allors.Protocol.Operations;
     var Decompressor = Allors.Protocol.Decompressor;
     var Compressor = Allors.Protocol.Compressor;
+    var createMetaDecompressor = Allors.Protocol.createMetaDecompressor;
     var Workspace = /** @class */ (function () {
         function Workspace(metaPopulation) {
-            var e_11, _a;
+            var e_12, _a;
             var _this = this;
             this.metaPopulation = metaPopulation;
             this.constructorByObjectType = new Map();
@@ -9388,12 +9515,12 @@ var Allors;
                     this.workspaceObjectsByClass.set(objectType, new Set());
                 }
             }
-            catch (e_11_1) { e_11 = { error: e_11_1 }; }
+            catch (e_12_1) { e_12 = { error: e_12_1 }; }
             finally {
                 try {
                     if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                 }
-                finally { if (e_11) throw e_11.error; }
+                finally { if (e_12) throw e_12.error; }
             }
             this.accessControlById = new Map();
             this.permissionById = new Map();
@@ -9515,7 +9642,7 @@ var Allors;
             var decompressor = new Decompressor();
             var missingAccessControlIds = new Set();
             var missingPermissionIds = new Set();
-            var metaDecompress = createMetaDecompress(decompressor, this.metaPopulation);
+            var metaDecompress = createMetaDecompressor(decompressor, this.metaPopulation);
             var sortedAccessControlIdsDecompress = function (compressed) {
                 return decompressor.read(compressed, function (first) {
                     first
@@ -9565,7 +9692,7 @@ var Allors;
         Workspace.prototype.security = function (securityResponse) {
             var _this = this;
             var decompressor = new Decompressor();
-            var metaDecompress = createMetaDecompress(decompressor, this.metaPopulation);
+            var metaDecompress = createMetaDecompressor(decompressor, this.metaPopulation);
             if (securityResponse.permissions) {
                 securityResponse.permissions.forEach(function (v) {
                     var id = v[0];
@@ -9641,114 +9768,23 @@ var Allors;
 })(Allors || (Allors = {}));
 var Allors;
 (function (Allors) {
-    var Compressor = Allors.Protocol.Compressor;
-    var deserialize = Allors.Protocol.deserialize;
-    var WorkspaceObject = /** @class */ (function () {
-        function WorkspaceObject(workspace) {
-            this.workspace = workspace;
-            this.cachedAccessControls = null;
-            this.cachedDeniedPermissions = null;
-            this.roleByRoleTypeId = new Map();
-        }
-        WorkspaceObject.prototype.new = function (id, objectType) {
-            this.objectType = objectType;
-            this.id = id;
-            this.version = '0';
-        };
-        WorkspaceObject.prototype.sync = function (syncResponseObject, sortedAccessControlIdsDecompress, sortedDeniedPermissionIdsDecompress, metaDecompress) {
-            var _this = this;
-            this.id = syncResponseObject.i;
-            this.version = syncResponseObject.v;
-            this.objectType = metaDecompress(syncResponseObject.t);
-            this.roleByRoleTypeId = new Map();
-            if (syncResponseObject.r) {
-                syncResponseObject.r.forEach(function (role) {
-                    var roleTypeId = role.t;
-                    var roleType = metaDecompress(roleTypeId);
-                    var value = role.v;
-                    if (roleType.objectType.isUnit) {
-                        value = deserialize(value, roleType.objectType);
-                    }
-                    else {
-                        if (roleType.isMany) {
-                            value = value.split(Compressor.itemSeparator);
-                        }
-                    }
-                    _this.roleByRoleTypeId.set(roleType.id, value);
-                });
-            }
-            this.sortedAccessControlIds = sortedAccessControlIdsDecompress(syncResponseObject.a);
-            this.sortedDeniedPermissionIds = sortedDeniedPermissionIdsDecompress(syncResponseObject.d);
-        };
-        WorkspaceObject.prototype.isPermitted = function (permission) {
-            var e_12, _a;
-            var _this = this;
-            if (permission == null) {
-                return false;
-            }
-            if (this.sortedAccessControlIds !== this.cachedSortedAccessControlIds) {
-                this.cachedSortedAccessControlIds = this.sortedAccessControlIds;
-                if (this.sortedAccessControlIds) {
-                    this.cachedAccessControls = this.sortedAccessControlIds
-                        .split(Compressor.itemSeparator)
-                        .map(function (v) { return _this.workspace.accessControlById.get(v); });
-                }
-                else {
-                    this.sortedAccessControlIds = null;
-                }
-            }
-            if (this.sortedDeniedPermissionIds !== this.cachedSortedDeniedPermissionIds) {
-                this.cachedSortedDeniedPermissionIds = this.sortedDeniedPermissionIds;
-                if (this.sortedDeniedPermissionIds) {
-                    this.cachedDeniedPermissions = new Set();
-                    this.sortedDeniedPermissionIds
-                        .split(Compressor.itemSeparator)
-                        .forEach(function (v) { return _this.cachedDeniedPermissions.add(_this.workspace.permissionById.get(v)); });
-                }
-                else {
-                    this.cachedDeniedPermissions = null;
-                }
-            }
-            if (this.cachedDeniedPermissions && this.cachedDeniedPermissions.has(permission)) {
-                return false;
-            }
-            if (this.cachedAccessControls) {
-                try {
-                    for (var _b = __values(this.cachedAccessControls), _c = _b.next(); !_c.done; _c = _b.next()) {
-                        var accessControl = _c.value;
-                        if (accessControl.permissionIds.has(permission.id)) {
-                            return true;
-                        }
-                    }
-                }
-                catch (e_12_1) { e_12 = { error: e_12_1 }; }
-                finally {
-                    try {
-                        if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
-                    }
-                    finally { if (e_12) throw e_12.error; }
-                }
-            }
-            return false;
-        };
-        WorkspaceObject.prototype.invalidate = function () {
-            this.version = '';
-        };
-        return WorkspaceObject;
-    }());
-    Allors.WorkspaceObject = WorkspaceObject;
-})(Allors || (Allors = {}));
-var Allors;
-(function (Allors) {
     var Domain;
-    (function (Domain) {
-        function extend(type, extension) {
-            Object.getOwnPropertyNames(extension).forEach(function (name) {
-                var ownPropertyDescriptor = Object.getOwnPropertyDescriptor(extension, name);
-                Object.defineProperty(type.prototype, name, ownPropertyDescriptor);
-            });
-        }
-        Domain.extend = extend;
+    (function (Domain_1) {
+        var Domain = /** @class */ (function () {
+            function Domain() {
+                this.extensions = [];
+            }
+            Domain.prototype.extend = function (extension) {
+                this.extensions.push(extension);
+            };
+            Domain.prototype.apply = function (workspace) {
+                this.extensions.forEach(function (v) {
+                    v(workspace);
+                });
+            };
+            return Domain;
+        }());
+        Domain_1.domain = new Domain();
     })(Domain = Allors.Domain || (Allors.Domain = {}));
 })(Allors || (Allors = {}));
 var Allors;
@@ -10341,21 +10377,36 @@ var Allors;
     })(Bootstrap = Allors.Bootstrap || (Allors.Bootstrap = {}));
 })(Allors || (Allors = {}));
 /// <reference path="../../generated/domain/Person.g.ts" />
-/// <reference path="../../Core/Workspace/Domain/extend.ts" />
+/// <reference path="../../Core/Workspace/Domain/Domain.ts" />
 var Allors;
 (function (Allors) {
     var Domain;
     (function (Domain) {
-        Domain.extend(Person, {
-            get Fullname() {
-                return this.LastName + (this.FirstName ? ", " : "") + this.FirstName;
-            },
-            set Fullname(value) {
-                // Should be present, otherwise typing to fast in a search box causes an error
-            },
-            toString: function () {
-                return this.FirstName;
-            }
+        Domain.domain.extend(function (workspace) {
+            var m = workspace.metaPopulation;
+            var person = workspace.constructorByObjectType.get(m.Person).prototype;
+            person.toString = function () {
+                return "Hello " + this.displayName;
+            };
+            Object.defineProperty(person, 'displayName', {
+                get: function () {
+                    if (this.FirstName || this.LastName) {
+                        if (this.FirstName && this.LastName) {
+                            return this.FirstName + ' ' + this.LastName;
+                        }
+                        else if (this.LastName) {
+                            return this.LastName;
+                        }
+                        else {
+                            return this.FirstName;
+                        }
+                    }
+                    if (this.UserName) {
+                        return this.UserName;
+                    }
+                    return 'N/A';
+                },
+            });
         });
     })(Domain = Allors.Domain || (Allors.Domain = {}));
 })(Allors || (Allors = {}));
@@ -10727,26 +10778,6 @@ var App;
 })(App || (App = {}));
 var App;
 (function (App) {
-    var General;
-    (function (General) {
-        var Home;
-        (function (Home) {
-            var IndexController = /** @class */ (function () {
-                function IndexController($log, $state) {
-                    this.$log = $log;
-                    this.$state = $state;
-                }
-                IndexController.$inject = ["$log", "$state"];
-                return IndexController;
-            }());
-            angular
-                .module("app")
-                .controller("homeController", IndexController);
-        })(Home = General.Home || (General.Home = {}));
-    })(General = App.General || (App.General = {}));
-})(App || (App = {}));
-var App;
-(function (App) {
     var Pages;
     (function (Pages) {
         var Person;
@@ -10769,6 +10800,10 @@ var App;
 (function (App) {
     var Services;
     (function (Services) {
+        var Data = Allors.Meta.Data;
+        var MetaPopulation = Allors.Meta.MetaPopulation;
+        var Workspace = Allors.Workspace;
+        var Domain = Allors.Domain;
         var AllorsService = /** @class */ (function () {
             function AllorsService($log, $http, $q, $rootScope, $uibModal, toastr) {
                 this.$log = $log;
@@ -10779,8 +10814,11 @@ var App;
                 this.toastr = toastr;
                 this.baseUrl = "";
                 var postfix = "/Pull";
+                var metaPopulation = new MetaPopulation(Data.data);
+                var workspace = new Workspace(metaPopulation);
+                Domain.domain.apply(workspace);
                 this.database = new Allors.Database(this.$http, this.$q, postfix, this.baseUrl);
-                this.workspace = new Allors.Workspace(Allors.Protocol.metaPopulation);
+                this.workspace = new Allors.Workspace(metaPopulation);
             }
             AllorsService.$inject = ["$log", "$http", "$q", "$rootScope", "$uibModal", "toastr"];
             return AllorsService;
@@ -10828,4 +10866,47 @@ var App;
             .controller("mainController", MainController);
     })(Shell = App.Shell || (App.Shell = {}));
 })(App || (App = {}));
+var App;
+(function (App) {
+    var General;
+    (function (General) {
+        var Home;
+        (function (Home) {
+            var IndexController = /** @class */ (function () {
+                function IndexController($log, $state) {
+                    this.$log = $log;
+                    this.$state = $state;
+                }
+                IndexController.$inject = ["$log", "$state"];
+                return IndexController;
+            }());
+            angular
+                .module("app")
+                .controller("homeController", IndexController);
+        })(Home = General.Home || (General.Home = {}));
+    })(General = App.General || (App.General = {}));
+})(App || (App = {}));
+/// <reference path="allors.module.ts" />
+var Allors;
+(function (Allors) {
+    var Loaded = /** @class */ (function () {
+        function Loaded(session, response) {
+            var _this = this;
+            this.objects = {};
+            this.collections = {};
+            this.values = {};
+            _.map(response.namedObjects, function (v, k) {
+                _this.objects[k] = session.get(v);
+            });
+            _.map(response.namedCollections, function (v, k) {
+                _this.collections[k] = _.map(v, function (obj) { return session.get(obj); });
+            });
+            _.map(response.namedValues, function (v, k) {
+                _this.values[k] = v;
+            });
+        }
+        return Loaded;
+    }());
+    Allors.Loaded = Loaded;
+})(Allors || (Allors = {}));
 //# sourceMappingURL=tsc.js.map

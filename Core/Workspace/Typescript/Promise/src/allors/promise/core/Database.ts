@@ -105,8 +105,8 @@ export class Database {
           i: methods.map((v) => {
             return {
               i: v.object.id,
-              m: v.methodType.name,
               v: v.object.version,
+              m: v.methodType.name,
             };
           })
         };

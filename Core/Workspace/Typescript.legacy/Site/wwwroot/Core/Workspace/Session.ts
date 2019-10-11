@@ -1,9 +1,13 @@
+/// <reference path="./Protocol/Compressor.ts" />
+/// <reference path="./WorkspaceObject.ts" />
+/// <reference path="./SessionObject.ts" />
 namespace Allors {
   import ObjectType = Meta.ObjectType;
   import PushRequest = Protocol.PushRequest;
   import PushResponse = Protocol.PushResponse;
   import Compressor = Protocol.Compressor;
   import Operations = Protocol.Operations;
+  import AssociationType = Meta.AssociationType;
 
   export interface ISession {
 
@@ -29,10 +33,10 @@ namespace Allors {
 
         public hasChanges: boolean;
 
-        private existingSessionObjectById: Map<string, ISessionObject>;
-        private newSessionObjectById: Map<string, ISessionObject>;
+        private existingSessionObjectById: Map<string, SessionObject>;
+        private newSessionObjectById: Map<string, SessionObject>;
 
-        private sessionObjectByIdByClass: Map<ObjectType, Map<string, ISessionObject>>;
+        private sessionObjectByIdByClass: Map<ObjectType, Map<string, SessionObject>>;
 
         constructor(public workspace: Workspace) {
             this.hasChanges = false;
@@ -48,14 +52,14 @@ namespace Allors {
                 return undefined;
             }
 
-            let sessionObject: ISessionObject = this.existingSessionObjectById.get(id);
+            let sessionObject = this.existingSessionObjectById.get(id);
             if (sessionObject === undefined) {
                 sessionObject = this.newSessionObjectById.get(id);
 
                 if (sessionObject === undefined) {
                     const workspaceObject: WorkspaceObject = this.workspace.get(id);
 
-                    const constructor: any = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
+                    const constructor = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
                     sessionObject = new constructor();
                     sessionObject.session = this;
                     sessionObject.workspaceObject = workspaceObject;
@@ -74,7 +78,7 @@ namespace Allors {
                 return undefined;
             }
 
-            let sessionObject: ISessionObject = this.existingSessionObjectById.get(id);
+            let sessionObject = this.existingSessionObjectById.get(id);
             if (sessionObject === undefined) {
                 sessionObject = this.newSessionObjectById.get(id);
 
@@ -82,7 +86,7 @@ namespace Allors {
                     const workspaceObject: WorkspaceObject = this.workspace.getForAssociation(id);
 
                     if (workspaceObject) {
-                        const constructor: any = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
+                        const constructor = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
                         sessionObject = new constructor();
                         sessionObject.session = this;
                         sessionObject.workspaceObject = workspaceObject;
@@ -103,8 +107,8 @@ namespace Allors {
                 objectType = this.workspace.metaPopulation.objectTypeByName.get(objectType);
             }
 
-            const constructor: any = this.workspace.constructorByObjectType.get(objectType);
-            const newSessionObject: ISessionObject = new constructor();
+            const constructor = this.workspace.constructorByObjectType.get(objectType);
+            const newSessionObject: SessionObject = new constructor();
             newSessionObject.session = this;
             newSessionObject.objectType = objectType;
             newSessionObject.newId = (--Session.idCounter).toString();
@@ -128,11 +132,11 @@ namespace Allors {
             if (this.newSessionObjectById.has(newId)) {
 
                 for (const sessionObject of this.newSessionObjectById.values()) {
-                    (sessionObject as SessionObject).onDelete(newSessionObject);
+                    sessionObject.onDelete(newSessionObject);
                 }
 
                 for (const sessionObject of this.existingSessionObjectById.values()) {
-                    (sessionObject as SessionObject).onDelete(newSessionObject);
+                    sessionObject.onDelete(newSessionObject);
                 }
 
                 const objectType = newSessionObject.objectType;
@@ -146,11 +150,11 @@ namespace Allors {
         public reset(): void {
 
             for (const sessionObject of this.newSessionObjectById.values()) {
-                (sessionObject as SessionObject).reset();
+                sessionObject.reset();
             }
 
             for (const sessionObject of this.existingSessionObjectById.values()) {
-                (sessionObject as SessionObject).reset();
+                sessionObject.reset();
             }
 
             this.hasChanges = false;
@@ -263,7 +267,7 @@ namespace Allors {
                 this.sessionObjectByIdByClass.set(sessionObject.objectType, sessionObjectById);
             }
 
-            sessionObjectById.set(sessionObject.id, sessionObject);
+            sessionObjectById.set(sessionObject.id, sessionObject as SessionObject);
         }
 
         private removeByObjectTypeId(objectType: ObjectType, id: string) {

@@ -1,6 +1,6 @@
-﻿/// <reference path="allors.module.ts" />
+/// <reference path="allors.module.ts" />
 namespace Allors {
-    export class Result {
+    export class Loaded {
 
         objects: { [name: string]: ISessionObject; } = {};
         collections: { [name: string]: ISessionObject[]; } = {};

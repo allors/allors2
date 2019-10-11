@@ -1,4 +1,4 @@
-﻿/// <reference path="../../allors.module.ts" />
+/// <reference path="../../allors.module.ts" />
 /// <reference path="internal/Field.ts" />
 namespace Allors.Bootstrap {
     export class TextTemplate {
@@ -38,9 +38,9 @@ namespace Allors.Bootstrap {
 
         get htmlType(): string {
             if (this.roleType) {
-                if (this.roleType.objectType === "Integer" ||
-                    this.roleType.objectType === "Decimal" ||
-                    this.roleType.objectType === "Float") {
+                if (this.roleType.objectType.isInteger||
+                    this.roleType.objectType.isDecimal ||
+                    this.roleType.objectType.isFloat) {
                     return "number";
                 }
             }

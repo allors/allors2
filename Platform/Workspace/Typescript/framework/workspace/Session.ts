@@ -33,10 +33,10 @@ export class Session implements ISession {
 
   public hasChanges: boolean;
 
-  private existingSessionObjectById: Map<string, ISessionObject>;
-  private newSessionObjectById: Map<string, ISessionObject>;
+  private existingSessionObjectById: Map<string, SessionObject>;
+  private newSessionObjectById: Map<string, SessionObject>;
 
-  private sessionObjectByIdByClass: Map<ObjectType, Map<string, ISessionObject>>;
+  private sessionObjectByIdByClass: Map<ObjectType, Map<string, SessionObject>>;
 
   constructor(public workspace: Workspace) {
     this.hasChanges = false;
@@ -52,14 +52,14 @@ export class Session implements ISession {
       return undefined;
     }
 
-    let sessionObject: ISessionObject = this.existingSessionObjectById.get(id);
+    let sessionObject = this.existingSessionObjectById.get(id);
     if (sessionObject === undefined) {
       sessionObject = this.newSessionObjectById.get(id);
 
       if (sessionObject === undefined) {
         const workspaceObject: WorkspaceObject = this.workspace.get(id);
 
-        const constructor: any = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
+        const constructor: typeof SessionObject = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
         sessionObject = new constructor();
         sessionObject.session = this;
         sessionObject.workspaceObject = workspaceObject;
@@ -78,7 +78,7 @@ export class Session implements ISession {
       return undefined;
     }
 
-    let sessionObject: ISessionObject = this.existingSessionObjectById.get(id);
+    let sessionObject = this.existingSessionObjectById.get(id);
     if (sessionObject === undefined) {
       sessionObject = this.newSessionObjectById.get(id);
 
@@ -86,7 +86,7 @@ export class Session implements ISession {
         const workspaceObject: WorkspaceObject = this.workspace.getForAssociation(id);
 
         if (workspaceObject) {
-          const constructor: any = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
+          const constructor = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
           sessionObject = new constructor();
           sessionObject.session = this;
           sessionObject.workspaceObject = workspaceObject;
@@ -107,8 +107,8 @@ export class Session implements ISession {
       objectType = this.workspace.metaPopulation.objectTypeByName.get(objectType);
     }
 
-    const constructor: any = this.workspace.constructorByObjectType.get(objectType);
-    const newSessionObject: ISessionObject = new constructor();
+    const constructor = this.workspace.constructorByObjectType.get(objectType);
+    const newSessionObject = new constructor();
     newSessionObject.session = this;
     newSessionObject.objectType = objectType;
     newSessionObject.newId = (--Session.idCounter).toString();
@@ -132,11 +132,11 @@ export class Session implements ISession {
     if (this.newSessionObjectById.has(newId)) {
 
       for (const sessionObject of this.newSessionObjectById.values()) {
-        (sessionObject as SessionObject).onDelete(newSessionObject);
+        sessionObject.onDelete(newSessionObject);
       }
 
       for (const sessionObject of this.existingSessionObjectById.values()) {
-        (sessionObject as SessionObject).onDelete(newSessionObject);
+        sessionObject.onDelete(newSessionObject);
       }
 
       const objectType = newSessionObject.objectType;
@@ -150,11 +150,11 @@ export class Session implements ISession {
   public reset(): void {
 
     for (const sessionObject of this.newSessionObjectById.values()) {
-      (sessionObject as SessionObject).reset();
+      sessionObject.reset();
     }
 
     for (const sessionObject of this.existingSessionObjectById.values()) {
-      (sessionObject as SessionObject).reset();
+      sessionObject.reset();
     }
 
     this.hasChanges = false;
@@ -196,7 +196,7 @@ export class Session implements ISession {
     const roleType = associationType.relationType.roleType;
 
     const associationIds = new Set<string>();
-    const associations: ISessionObject[] = [];
+    const associations: SessionObject[] = [];
 
     associationClasses.forEach((associationClass) => {
       this.getAll(associationClass);
@@ -205,13 +205,13 @@ export class Session implements ISession {
         for (const association of sessionObjectById.values()) {
           if (!associationIds.has(association.id) && association.canRead(roleType)) {
             if (roleType.isOne) {
-              const role: ISessionObject = (association as SessionObject).getForAssociation(roleType);
+              const role: SessionObject = association.getForAssociation(roleType);
               if (role && role.id === object.id) {
                 associationIds.add(association.id);
                 associations.push(association);
               }
             } else {
-              const roles: ISessionObject[] = (association as SessionObject).getForAssociation(roleType);
+              const roles: SessionObject[] = association.getForAssociation(roleType);
               if (roles && roles.find(v => v === object)) {
                 associationIds.add(association.id);
                 associations.push(association);
@@ -235,14 +235,14 @@ export class Session implements ISession {
             if (roleType.isOne) {
               const role: string = workspaceObject.roleByRoleTypeId.get(roleType.id);
               if (object.id === role) {
-                associations.push(this.get(workspaceObject.id));
+                associations.push(this.get(workspaceObject.id) as SessionObject);
                 break;
               }
             } else {
               const roles: string[] = workspaceObject.roleByRoleTypeId.get(roleType.id);
               if (roles && roles.indexOf(workspaceObject.id) > -1) {
                 associationIds.add(workspaceObject.id);
-                associations.push(this.get(workspaceObject.id));
+                associations.push(this.get(workspaceObject.id) as SessionObject);
               }
             }
           }
@@ -260,7 +260,7 @@ export class Session implements ISession {
     }
   }
 
-  private addByObjectTypeId(sessionObject: ISessionObject) {
+  private addByObjectTypeId(sessionObject: SessionObject) {
     let sessionObjectById = this.sessionObjectByIdByClass.get(sessionObject.objectType);
     if (!sessionObjectById) {
       sessionObjectById = new Map();

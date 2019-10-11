@@ -1,7 +1,13 @@
 /// <reference path="allors.module.ts" />
 /// <reference path="../Workspace/Method.ts" />
-
+/// <reference path="../Workspace/Protocol/Compressor.ts" />
 namespace Allors {
+    import Invocation = Protocol.Invocation;
+    import Compressor = Protocol.Compressor;
+    import SecurityRequest = Protocol.SecurityRequest;
+    import SecurityResponse = Protocol.SecurityResponse;
+    import ResponseType = Protocol.ResponseType;
+
     export class Database {
         constructor(private $http: angular.IHttpService, public $q: angular.IQService, public postfix: string, public baseUrl: string) {
         }
@@ -70,6 +76,23 @@ namespace Allors {
             });
         }
 
+        security(securityRequest: SecurityRequest): angular.IPromise<Protocol.SecurityResponse> {
+            return this.$q((resolve, reject) => {
+
+                const serviceName = `${this.baseUrl}allors/security`;
+                this.$http.post(serviceName, securityRequest, this.headers)
+                    .then((callbackArg: angular.IHttpPromiseCallbackArg<Protocol.SecurityResponse>) => {
+                        var response = callbackArg.data;
+                        response.responseType = Protocol.ResponseType.Security;
+                        resolve(response);
+                    })
+                    .catch(e => {
+                        reject(e);
+                    });
+
+            });
+        }
+
         invoke(method: Method): angular.IPromise<Protocol.InvokeResponse>;
         invoke(methods: Method[], options: Protocol.InvokeOptions): angular.IPromise<Protocol.InvokeResponse>;
         invoke(service: string, args?: any): angular.IPromise<Protocol.InvokeResponse>;
@@ -85,16 +108,18 @@ namespace Allors {
 
         private invokeMethods(methods: Method[], options?: Protocol.InvokeOptions): angular.IPromise<Protocol.InvokeResponse> {
 
+            const compressor = new Compressor();
+
             return this.$q((resolve, reject) => {
 
                 const invokeRequest: Protocol.InvokeRequest = {
                     i: methods.map(v => {
                         return {
                             i: v.object.id,
-                            m: v.name,
                             v: v.object.version,
+                            m: compressor.write(v.methodType.id),
                         };
-                    }),
+                    }) as Invocation[],
                     o: options
                 };
 

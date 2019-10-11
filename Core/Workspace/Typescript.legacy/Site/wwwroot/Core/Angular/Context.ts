@@ -1,4 +1,4 @@
-﻿/// <reference path="allors.module.ts" />
+/// <reference path="allors.module.ts" />
 /// <reference path="../Workspace/Method.ts" />
 namespace Allors {
     export class Context {
@@ -23,15 +23,39 @@ namespace Allors {
                     .pull(this.name, params)
                     .then((response: Protocol.PullResponse) => {
                         try {
-                            const requireLoadIds = this.workspace.diff(response);
-
-                            if (requireLoadIds.objects.length > 0) {
-                                this.database.sync(requireLoadIds)
-                                    .then((loadResponse: Protocol.SyncResponse) => {
-                                        this.workspace.sync(loadResponse);
+                            const syncRequest = this.workspace.diff(response);
+                            if (syncRequest.objects.length > 0) {
+                                this.database.sync(syncRequest)
+                                    .then((syncResponse: Protocol.SyncResponse) => {
+                                        const securityRequest = this.workspace.sync(syncResponse);
                                         this.update(response);
                                         this.session.reset();
-                                        resolve();
+
+                                        if (securityRequest) {
+                                          this.database
+                                            .security(securityRequest)
+                                            .then(v => {
+                                              const securityRequest2 = this.workspace.security(v);
+                                              if (securityRequest2) {
+                                                this.database
+                                                  .security(securityRequest2)
+                                                  .then(v => {
+                                                    this.workspace.security(v);
+                                                    resolve();
+                                                  })
+                                                  .catch((e) => {
+                                                    reject(e);
+                                                  });
+                                              } else {
+                                                resolve();
+                                              }
+                                            })
+                                            .catch((e) => {
+                                              reject(e);
+                                            });
+                                        } else {
+                                          resolve();
+                                        }
                                     })
                                     .catch(e2 => {
                                         reject(e2);
@@ -52,7 +76,7 @@ namespace Allors {
             });
         }
 
-        query(service: string, params: any): angular.IPromise<Result> {
+        query(service: string, params: any): angular.IPromise<Loaded> {
             return this.$q((resolve, reject) => {
 
                 this.database.pull(service, params)
@@ -66,12 +90,12 @@ namespace Allors {
                                     .then(u => {
                                         var loadResponse = u as Protocol.SyncResponse;
                                         this.workspace.sync(loadResponse);
-                                        const result = new Result(this.session, response);
+                                        const result = new Loaded(this.session, response);
                                         resolve(result);
                                     })
                                     .catch((e2) => reject(e2));
                             } else {
-                                const result = new Result(this.session, response);
+                                const result = new Loaded(this.session, response);
                                 resolve(result);
                             }
                         } catch (e) {
