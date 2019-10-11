@@ -500,6 +500,8 @@ namespace Allors.Repository
         [Workspace]
         public void Send() { }
 
+        public void Create() { }
+
         #region Allors
         [Id("96AF8F69-F1A4-420A-8D9D-AF61EB061620")]
         #endregion

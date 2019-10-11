@@ -371,6 +371,14 @@ namespace Allors.Repository
         Person ContactPerson { get; set; }
 
         #region Allors
+
+        [Id("8C858157-B9BC-4E2C-97BC-646066532854")]
+
+        #endregion
+        [Workspace]
+        void Create();
+
+        #region Allors
         [Id("519F70DC-0C4C-43E7-8929-378D8871CD84")]
         #endregion
         [Workspace]

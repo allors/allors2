@@ -130,6 +130,8 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
+        public void Create() { }
+
         public void Invoice() { }
 
         public void Print() { }

@@ -132,6 +132,8 @@ namespace Allors.Repository
         public void Invoice() { }
 
         public void Print() { }
+
+        public void Create() { }
         #endregion
     }
 }

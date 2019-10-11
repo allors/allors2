@@ -150,6 +150,8 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
+        public void Create() { }
+
         public void Approve() { }
 
         public void Reject() { }

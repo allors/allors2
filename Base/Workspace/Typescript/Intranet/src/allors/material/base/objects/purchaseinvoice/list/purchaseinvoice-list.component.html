@@ -28,7 +28,9 @@
         </mat-toolbar>
       </div>
 
-      <a-mat-factory-fab [objectType]="metaService.m.PurchaseInvoice" (created)="refreshService.refresh()"></a-mat-factory-fab>
+      <div *ngIf="canCreate">
+        <a-mat-factory-fab [objectType]="metaService.m.PurchaseInvoice" (created)="refreshService.refresh()"></a-mat-factory-fab>
+      </div>
 
       <div class="a-search container-fluid">
         <a-mat-filter></a-mat-filter>

@@ -277,5 +277,13 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         InvoiceItem[] ValidInvoiceItems { get; set; }
+
+        #region Allors
+
+        [Id("B9226E72-AD90-4195-9DC7-64A26D12E6A3")]
+
+        #endregion
+        [Workspace]
+        void Create();
     }
 }

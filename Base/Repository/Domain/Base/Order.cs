@@ -276,6 +276,14 @@ namespace Allors.Repository
         DateTime DeliveryDate { get; set; }
 
         #region Allors
+
+        [Id("14B59435-4304-4070-AA25-EFDAB6431E73")]
+
+        #endregion
+        [Workspace]
+        void Create();
+
+        #region Allors
         [Id("116D62FC-04E5-407C-B044-7092454C8806")]
         #endregion
         [Workspace]

@@ -6,10 +6,10 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, UserId, FetcherService } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../../../material';
 
-import { Quote, QuoteState, Party } from '../../../../../domain';
+import { Quote, QuoteState, Party, Organisation, Person, UserGroup } from '../../../../../domain';
 
 interface Row extends TableRow {
   object: Quote;
@@ -34,6 +34,10 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
   delete: Action;
   print: Action;
 
+  user: Person;
+  internalOrganisation: Organisation;
+  canCreate: boolean;
+
   private subscription: Subscription;
 
   constructor(
@@ -47,6 +51,8 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
     public navigation: NavigationService,
     public mediaService: MediaService,
     private internalOrganisationId: InternalOrganisationId,
+    private userId: UserId,
+    private fetcher: FetcherService,
     titleService: Title,
   ) {
     super();
@@ -133,6 +139,13 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
           internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
+            this.fetcher.internalOrganisation,
+            pull.Person({
+              object: this.userId.value
+            }),
+            pull.UserGroup({
+              include: { Members: x }
+            }),
             pull.Quote({
               predicate,
               sort: sorter.create(sort),
@@ -153,6 +166,15 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
+
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.user = loaded.objects.Person as Person;
+        const localAdministrator = this.internalOrganisation.LocalAdministrators.includes(this.user);
+        const userGroups = loaded.collections.UserGroups as UserGroup[];
+        const administratorUserGroup = userGroups.find((v: UserGroup) => v.UniqueId === 'cdc04209-683b-429c-bed2-440851f430df');
+        const administrator = administratorUserGroup.Members.includes(this.user);
+        this.canCreate = localAdministrator || administrator;
+
         const requests = loaded.collections.Quotes as Quote[];
         this.table.total = loaded.values.Requests_total;
         this.table.data = requests.map((v) => {

@@ -411,6 +411,13 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
           CurrentContacts: x,
         }
       }),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
+        }
+      }),
     ];
 
     this.allors.context
@@ -456,6 +463,13 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
         object: party,
         fetch: {
           CurrentContacts: x,
+        }
+      }),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
         }
       }),
     ];

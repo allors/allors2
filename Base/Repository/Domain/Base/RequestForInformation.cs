@@ -125,6 +125,8 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Print() { }
+
+        public void Create() { }
         #endregion
     }
 }

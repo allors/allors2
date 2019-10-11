@@ -452,6 +452,13 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
           CurrentContacts: x,
         }
       }),
+      pull.Party({
+        object: party,
+        include: {
+          PreferredCurrency: x,
+          VatRegime: x,
+        }
+      }),
     ];
 
     this.allors.context
