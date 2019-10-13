@@ -10440,7 +10440,7 @@ var App;
     app.config(config);
     config.$inject = ["$provide"];
     function config($provide) {
-        var jsnlog = JL("Angular");
+        var jsnlog = JL("AngularJS");
         $provide.decorator("$log", ["$delegate",
             function ($delegate) {
                 return new Logger(jsnlog, $delegate);
