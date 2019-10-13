@@ -99,7 +99,6 @@ namespace Allors.Server
             var jsnlogConfiguration = new JsnlogConfiguration
             {
                 corsAllowedOriginsRegex = ".*",
-                defaultAjaxUrl = "logging",
                 serverSideMessageFormat = env.IsDevelopment() ?
                                             "%requestId | %url | %message" :
                                             "%requestId | %url | %userHostAddress | %userAgent | %message",

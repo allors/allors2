@@ -6,7 +6,7 @@ module App {
     config.$inject = ["$provide"];
     function config($provide): void {
 
-        var jsnlog = JL("Angular");
+        var jsnlog = JL("AngularJS");
 
         $provide.decorator("$log", ["$delegate",
             $delegate => {

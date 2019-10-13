@@ -21,7 +21,7 @@ export class RoleType implements PropertyType {
   isDerived: boolean;
 
   isRequired(objectType: ObjectType) {
-    const override = this.overridesByClass.get(objectType);
+    const override = objectType ? this.overridesByClass.get(objectType) : null;
     return override ? override.isRequired : this.virtual.isRequired;
   }
 
