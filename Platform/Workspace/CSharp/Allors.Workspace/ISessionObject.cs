@@ -43,7 +43,7 @@ namespace Allors.Workspace
 
         void Remove(IRoleType roleType, ISessionObject value);
 
-        PushRequestObject Save();
+        PushRequestObject Save(MetaObjectCompressor context);
 
         PushRequestNewObject SaveNew(MetaObjectCompressor context);
 

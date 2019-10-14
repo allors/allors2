@@ -239,7 +239,7 @@ namespace Allors.Workspace
 
         public T[] GetAssociations<T>(IAssociationType associationType) => this.Session.GetAssociation(this, associationType).Cast<T>().ToArray();
 
-        public PushRequestObject Save()
+        public PushRequestObject Save(MetaObjectCompressor compressor)
         {
             if (this.changedRoleByRoleType != null)
             {
@@ -247,7 +247,7 @@ namespace Allors.Workspace
                 {
                     I = this.Id.ToString(),
                     V = this.Version.ToString(),
-                    Roles = this.SaveRoles(),
+                    Roles = this.SaveRoles(compressor),
                 };
 
                 return data;
@@ -266,7 +266,7 @@ namespace Allors.Workspace
 
             if (this.changedRoleByRoleType != null)
             {
-                data.Roles = this.SaveRoles();
+                data.Roles = this.SaveRoles(compressor);
             }
 
             return data;
@@ -324,7 +324,7 @@ namespace Allors.Workspace
             return value;
         }
 
-        private PushRequestRole[] SaveRoles()
+        private PushRequestRole[] SaveRoles(MetaObjectCompressor compressor)
         {
             var saveRoles = new List<PushRequestRole>();
 
@@ -333,7 +333,7 @@ namespace Allors.Workspace
                 var roleType = keyValuePair.Key;
                 var roleValue = keyValuePair.Value;
 
-                var pushRequestRole = new PushRequestRole { T = roleType.PropertyName };
+                var pushRequestRole = new PushRequestRole { T = compressor.Write(roleType) };
 
                 if (roleType.ObjectType.IsUnit)
                 {

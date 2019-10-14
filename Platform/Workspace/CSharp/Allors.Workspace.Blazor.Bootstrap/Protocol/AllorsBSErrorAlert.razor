@@ -1,0 +1,116 @@
+@using Allors.Protocol.Remote
+@if (HasErrors)
+{
+    <BSAlert Color="Color.Danger" IsDismissible="true">
+        <h3>@title</h3>
+        <hr/>
+        @if (isAccessError)
+        {
+            <h4>You do not have the required rights.</h4>
+            <ul>
+                @foreach (var error in Response.AccessErrors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        }
+
+        @if (isVersionError)
+        {
+            <h4>Modifications were detected since last access</h4>
+            <ul>
+                @foreach (var error in Response.VersionErrors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        }
+
+        @if (isMissingError)
+        {
+            <h4>Access to a deleted object was requested.</h4>
+            <ul>
+                @foreach (var error in Response.MissingErrors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        }
+
+        @if (isDerivationError)
+        {
+            <h4>Following errors were encountered during derivation.</h4>
+            <ul>
+                @foreach (var error in Response.DerivationErrors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        }
+
+        @if (isOtherError)
+        {
+            @Response.ErrorMessage
+        }
+
+    </BSAlert>
+
+}
+
+@code {
+    [Parameter]
+    public ErrorResponse Response { get; set; }
+
+    string title;
+
+    bool isAccessError;
+
+    bool isVersionError;
+
+    bool isMissingError;
+
+    bool isDerivationError;
+
+    bool isOtherError;
+
+    bool HasErrors => this.Response?.HasErrors == true;
+
+    protected override void OnParametersSet()
+    {
+        this.title = null;
+        isAccessError = false;
+        isVersionError = false;
+        isMissingError = false;
+        isDerivationError = false;
+        isOtherError = false;
+
+        if (this.HasErrors)
+        {
+            if (this.Response.AccessErrors?.Length > 0)
+            {
+                this.isAccessError = true;
+                this.title = "Access Error";
+            }
+            else if (this.Response.VersionErrors?.Length > 0)
+            {
+                this.isVersionError = true;
+                this.title = "Concurrency Error";
+            }
+            else if (this.Response.MissingErrors?.Length > 0)
+            {
+                this.isMissingError = true;
+                this.title = "Missing Error";
+            }
+            else if (this.Response.DerivationErrors?.Length > 0)
+            {
+                this.isDerivationError = true;
+                this.title = "Derivation Errors";
+            }
+            else
+            {
+                this.isOtherError = true;
+                this.title = "Error";
+            }
+        }
+    }
+}

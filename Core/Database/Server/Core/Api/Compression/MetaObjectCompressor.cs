@@ -8,7 +8,7 @@ namespace Allors.Server
     using Meta;
     using Protocol;
 
-    internal class MetaObjectCompressor
+    public class MetaObjectCompressor
     {
         private readonly Compressor compressor;
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="ErrorResponseExtension.cs" company="Allors bvba">
+// <copyright file="ErrorResponseExtension.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,17 +10,18 @@ namespace Allors.Server
 
     using Allors.Domain;
     using Allors.Protocol.Remote;
+    using Protocol;
 
     public static class ErrorResponseExtensions
     {
-        public static void AddDerivationErrors(this ErrorResponse @this, IValidation validation)
+        public static void AddDerivationErrors(this ErrorResponse @this, IValidation validation, MetaObjectCompressor metaObjectCompressor)
         {
             foreach (var derivationError in validation.Errors)
             {
                 var derivationErrorResponse = new DerivationErrorResponse
                 {
                     M = derivationError.Message,
-                    R = derivationError.Relations.Select(x => new[] { x.Association.Id.ToString(), x.RoleType.Name }).ToArray(),
+                    R = derivationError.Relations.Select(x => new[] { x.Association.Id.ToString(), metaObjectCompressor.Write(x.RoleType) }).ToArray(),
                 };
 
                 @this.DerivationErrors = @this.DerivationErrors != null ?
