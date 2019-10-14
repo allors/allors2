@@ -21,10 +21,6 @@ namespace Allors.Server
         private readonly SecurityRequest securityRequest;
         private readonly IAccessControlLists acls;
 
-        private readonly AccessControlsCompressor accessControlsCompressor;
-        private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
-        private readonly Compressor compressor;
-
         static SecurityResponseBuilder()
         {
             AccessControlPrefetchPolicy = new PrefetchPolicyBuilder()
@@ -43,10 +39,6 @@ namespace Allors.Server
             this.session = session;
             this.securityRequest = securityRequest;
             this.acls = acls;
-
-            this.compressor = new Compressor();
-            this.accessControlsCompressor = new AccessControlsCompressor(compressor, this.acls);
-            this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(compressor, this.acls);
         }
 
         public SecurityResponse Build()
@@ -78,8 +70,8 @@ namespace Allors.Server
                     new[]
                     {
                         v.Strategy.ObjectId.ToString(),
-                        this.compressor.Write(v.ConcreteClassPointer.ToString("D")),
-                        this.compressor.Write(v.OperandTypePointer.ToString("D")),
+                        v.ConcreteClassPointer.ToString("D"),
+                        v.OperandTypePointer.ToString("D"),
                         v.OperationEnum.ToString(),
                     }).ToArray();
             }

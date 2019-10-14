@@ -16,10 +16,10 @@ namespace Allors.Workspace
 
     public class Workspace : IWorkspace
     {
-        private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> executePermissionByOperandTypeByClass;
-        private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> readPermissionByOperandTypeByClass;
         private readonly Dictionary<long, WorkspaceObject> workspaceObjectById;
+        private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> readPermissionByOperandTypeByClass;
         private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> writePermissionByOperandTypeByClass;
+        private readonly Dictionary<IClass, Dictionary<IOperandType, Permission>> executePermissionByOperandTypeByClass;
 
         public Workspace(ObjectFactory objectFactory)
         {
@@ -44,7 +44,7 @@ namespace Allors.Workspace
 
         public SyncRequest Diff(PullResponse response)
         {
-            var ctx = new PullResponseContext(this.AccessControlById, this.PermissionById);
+            var ctx = new ResponseContext(this, this.AccessControlById, this.PermissionById);
 
             var syncRequest = new SyncRequest
             {
@@ -104,7 +104,7 @@ namespace Allors.Workspace
 
         public SecurityRequest Sync(SyncResponse syncResponse)
         {
-            var ctx = new SyncResponseContext(this, this.AccessControlById, this.PermissionById);
+            var ctx = new ResponseContext(this, this.AccessControlById, this.PermissionById);
             foreach (var syncResponseObject in syncResponse.Objects)
             {
                 var workspaceObject = new WorkspaceObject(ctx, syncResponseObject);
@@ -125,15 +125,13 @@ namespace Allors.Workspace
 
         public SecurityRequest Security(SecurityResponse securityResponse)
         {
-            var ctx = new SecurityResponseContext(this);
-
             if (securityResponse.Permissions != null)
             {
                 foreach (var syncResponsePermission in securityResponse.Permissions)
                 {
                     var id = long.Parse(syncResponsePermission[0]);
-                    var @class = (IClass)ctx.MetaObjectDecompressor.Read(syncResponsePermission[1]);
-                    var operandType = (IOperandType)ctx.MetaObjectDecompressor.Read(syncResponsePermission[2]);
+                    var @class = (IClass)this.ObjectFactory.MetaPopulation.Find(Guid.Parse(syncResponsePermission[1]));
+                    var operandType = (IOperandType)this.ObjectFactory.MetaPopulation.Find(Guid.Parse(syncResponsePermission[2]));
                     Enum.TryParse(syncResponsePermission[3], out Operations operation);
 
                     var permission = new Permission(id, @class, operandType, operation);

@@ -10,14 +10,13 @@ namespace Allors.Workspace
     using Meta;
     using Protocol.Data;
     using Protocol.Remote.Sync;
-    using Server;
 
     public class WorkspaceRole : IWorkspaceRole
     {
-        internal WorkspaceRole(MetaObjectDecompressor decompressor, SyncResponseRole syncResponseRole)
+        internal WorkspaceRole(IMetaPopulation metaPopulation, SyncResponseRole syncResponseRole)
         {
             var value = syncResponseRole.V;
-            this.RoleType = (IRoleType)decompressor.Read(syncResponseRole.T);
+            this.RoleType = (IRoleType)metaPopulation.Find(Guid.Parse(syncResponseRole.T));
 
             var objectType = this.RoleType.ObjectType;
             if (objectType.IsUnit)

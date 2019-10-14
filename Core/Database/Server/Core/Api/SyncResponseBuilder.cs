@@ -11,13 +11,14 @@ namespace Allors.Server
     using Allors.Protocol.Remote.Sync;
     using Protocol;
     using Protocol.Data;
+    using Protocol.Remote;
 
     public class SyncResponseBuilder
     {
-        private readonly AccessControlsCompressor accessControlsCompressor;
+        private readonly AccessControlsWriter accessControlsWriter;
         private readonly IAccessControlLists acls;
-        private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
-        private readonly MetaObjectCompressor metaObjectCompressor;
+        private readonly PermissionsWriter permissionsWriter;
+
         private readonly ISession session;
         private readonly SyncRequest syncRequest;
 
@@ -27,10 +28,8 @@ namespace Allors.Server
             this.syncRequest = syncRequest;
             this.acls = acls;
 
-            var compressor = new Compressor();
-            this.metaObjectCompressor = new MetaObjectCompressor(compressor);
-            this.accessControlsCompressor = new AccessControlsCompressor(compressor, this.acls);
-            this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(compressor, this.acls);
+            this.accessControlsWriter = new AccessControlsWriter(this.acls);
+            this.permissionsWriter = new PermissionsWriter(this.acls);
         }
 
         public SyncResponse Build()
@@ -54,7 +53,7 @@ namespace Allors.Server
 
             SyncResponseRole CreateSyncResponseRole(IObject @object, IRoleType roleType)
             {
-                var syncResponseRole = new SyncResponseRole { T = this.metaObjectCompressor.Write(roleType) };
+                var syncResponseRole = new SyncResponseRole { T = roleType.IdAsString };
 
                 if (roleType.ObjectType.IsUnit)
                 {
@@ -70,7 +69,7 @@ namespace Allors.Server
                     if (roles.Count > 0)
                     {
                         syncResponseRole.V = string.Join(
-                            separator: Compressor.ItemSeparator,
+                            separator: Encoding.Separator,
                             values: roles
                                 .Cast<IObject>()
                                 .Select(roleObject => roleObject.Id.ToString()));
@@ -91,13 +90,13 @@ namespace Allors.Server
                     {
                         I = v.Id.ToString(),
                         V = v.Strategy.ObjectVersion.ToString(),
-                        T = this.metaObjectCompressor.Write(v.Strategy.Class),
+                        T = v.Strategy.Class.IdAsString,
                         R = @class.WorkspaceRoleTypes
                             .Where(w => acl.CanRead(w) && v.Strategy.ExistRole(w.RelationType))
                             .Select(w => CreateSyncResponseRole(v, w))
                             .ToArray(),
-                        A = this.accessControlsCompressor.Write(v),
-                        D = this.deniedPermissionsCompressor.Write(v),
+                        A = this.accessControlsWriter.Write(v),
+                        D = this.permissionsWriter.Write(v),
                     };
                 }).ToArray(),
             };

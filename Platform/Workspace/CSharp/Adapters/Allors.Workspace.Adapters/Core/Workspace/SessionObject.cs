@@ -239,7 +239,7 @@ namespace Allors.Workspace
 
         public T[] GetAssociations<T>(IAssociationType associationType) => this.Session.GetAssociation(this, associationType).Cast<T>().ToArray();
 
-        public PushRequestObject Save(MetaObjectCompressor compressor)
+        public PushRequestObject Save()
         {
             if (this.changedRoleByRoleType != null)
             {
@@ -247,7 +247,7 @@ namespace Allors.Workspace
                 {
                     I = this.Id.ToString(),
                     V = this.Version.ToString(),
-                    Roles = this.SaveRoles(compressor),
+                    Roles = this.SaveRoles(),
                 };
 
                 return data;
@@ -256,17 +256,17 @@ namespace Allors.Workspace
             return null;
         }
 
-        public PushRequestNewObject SaveNew(MetaObjectCompressor compressor)
+        public PushRequestNewObject SaveNew()
         {
             var data = new PushRequestNewObject
             {
                 NI = this.NewId.ToString(),
-                T = compressor.Write(this.ObjectType),
+                T = this.ObjectType.IdAsString,
             };
 
             if (this.changedRoleByRoleType != null)
             {
-                data.Roles = this.SaveRoles(compressor);
+                data.Roles = this.SaveRoles();
             }
 
             return data;
@@ -324,7 +324,7 @@ namespace Allors.Workspace
             return value;
         }
 
-        private PushRequestRole[] SaveRoles(MetaObjectCompressor compressor)
+        private PushRequestRole[] SaveRoles()
         {
             var saveRoles = new List<PushRequestRole>();
 
@@ -333,7 +333,7 @@ namespace Allors.Workspace
                 var roleType = keyValuePair.Key;
                 var roleValue = keyValuePair.Value;
 
-                var pushRequestRole = new PushRequestRole { T = compressor.Write(roleType) };
+                var pushRequestRole = new PushRequestRole { T = roleType.IdAsString };
 
                 if (roleType.ObjectType.IsUnit)
                 {

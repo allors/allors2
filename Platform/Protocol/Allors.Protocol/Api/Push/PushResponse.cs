@@ -5,7 +5,7 @@
 
 namespace Allors.Protocol.Remote.Push
 {
-    public class PushResponse : ErrorResponse
+    public class PushResponse : Response
     {
         public PushResponseNewObject[] NewObjects { get; set; }
     }

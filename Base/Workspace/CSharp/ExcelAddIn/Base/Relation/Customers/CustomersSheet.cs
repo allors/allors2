@@ -104,7 +104,7 @@ namespace Allors.Excel.Customers
             this.ToWorkspace();
         }
 
-        protected override void OnSaved(ErrorResponse response)
+        protected override void OnSaved(Response response)
         {
             if (!response.HasErrors)
             {

@@ -6,14 +6,13 @@ import { SyncResponse } from './../protocol/sync/SyncResponse';
 import { SecurityRequest } from '../protocol/security/SecurityRequest';
 import { SecurityResponse } from '../protocol/security/SecurityResponse';
 
-import { Compressor } from '../protocol/Compressor';
-import { Decompressor, createMetaDecompressor } from '../protocol/Decompressor';
 import { Operations } from '../protocol/Operations';
 
 import { SessionObject } from './SessionObject';
 import { WorkspaceObject } from './WorkspaceObject';
 import { AccessControl } from './AccessControl';
 import { Permission } from './Permission';
+import { Compressor } from '../protocol/Compressor';
 
 export interface IWorkspace {
   metaPopulation: MetaPopulation;
@@ -163,16 +162,12 @@ export class Workspace implements IWorkspace {
 
   diff(response: PullResponse): SyncRequest {
 
-    const decompressor = new Decompressor();
     return new SyncRequest(
       {
         objects: response.objects
           .filter((syncRequestObject) => {
-            const [id, version, compressedSortedAccessControlIds, compressedSortedDeniedPermissionIds] = syncRequestObject;
+            const [id, version, sortedAccessControlIds, sortedDeniedPermissionIds] = syncRequestObject;
             const workspaceObject = this.workspaceObjectById.get(id);
-
-            const sortedAccessControlIds = decompressor.read(compressedSortedAccessControlIds, v => v);
-            const sortedDeniedPermissionIds = decompressor.read(compressedSortedDeniedPermissionIds, v => v);
 
             return (workspaceObject === undefined) ||
               (workspaceObject === null) ||
@@ -188,40 +183,38 @@ export class Workspace implements IWorkspace {
   }
 
   sync(syncResponse: SyncResponse): SecurityRequest {
-    const decompressor = new Decompressor();
     const missingAccessControlIds = new Set<string>();
     const missingPermissionIds = new Set<string>();
-    const metaDecompress = createMetaDecompressor(decompressor, this.metaPopulation);
 
     const sortedAccessControlIdsDecompress = (compressed: string): string => {
-      return decompressor.read(compressed, first => {
-        first
-          .split(Compressor.itemSeparator)
-          .forEach(v => {
-            if (!this.accessControlById.has(v)) {
-              missingAccessControlIds.add(v);
-            }
-          });
-      });
+      compressed
+        .split(Compressor.itemSeparator)
+        .forEach(v => {
+          if (!this.accessControlById.has(v)) {
+            missingAccessControlIds.add(v);
+          }
+        });
+
+      return compressed;
     };
 
     const sortedDeniedPermissionIdsDecompress = (compressed: string): string => {
-      return decompressor.read(compressed, first => {
-        first
-          .split(Compressor.itemSeparator)
-          .forEach(v => {
-            if (!this.permissionById.has(v)) {
-              missingPermissionIds.add(v);
-            }
-          });
-      });
+      compressed
+        .split(Compressor.itemSeparator)
+        .forEach(v => {
+          if (!this.permissionById.has(v)) {
+            missingPermissionIds.add(v);
+          }
+        });
+
+      return compressed;
     };
 
     if (syncResponse.objects) {
       syncResponse.objects
         .forEach((v) => {
           const workspaceObject = new WorkspaceObject(this);
-          workspaceObject.sync(v, sortedAccessControlIdsDecompress, sortedDeniedPermissionIdsDecompress, metaDecompress);
+          workspaceObject.sync(v, sortedAccessControlIdsDecompress, sortedDeniedPermissionIdsDecompress, this.metaPopulation);
           this.add(workspaceObject);
         });
     }
@@ -247,14 +240,12 @@ export class Workspace implements IWorkspace {
   }
 
   security(securityResponse: SecurityResponse): SecurityRequest {
-    const decompressor = new Decompressor();
-    const metaDecompress = createMetaDecompressor(decompressor, this.metaPopulation);
 
     if (securityResponse.permissions) {
       securityResponse.permissions.forEach(v => {
         const id = v[0];
-        const objectType = metaDecompress(v[1]) as ObjectType;
-        const operandType = metaDecompress(v[2]) as OperandType;
+        const objectType = this.metaPopulation.metaObjectById.get(v[1]) as ObjectType;
+        const operandType = this.metaPopulation.metaObjectById.get(v[2]) as OperandType;
         const operation = parseInt(v[3], 10);
 
         let permission = this.permissionById.get(id);

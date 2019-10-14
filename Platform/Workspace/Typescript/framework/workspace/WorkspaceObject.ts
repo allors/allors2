@@ -1,4 +1,4 @@
-import { ObjectType, MetaObject, RoleType } from '../meta';
+import { ObjectType, MetaObject, RoleType, MetaPopulation } from '../meta';
 import { SyncResponseObject } from '../protocol/sync/SyncResponseObject';
 import { IWorkspace, Workspace } from './Workspace';
 import { Permission } from './Permission';
@@ -48,17 +48,17 @@ export class WorkspaceObject implements IWorkspaceObject {
     syncResponseObject: SyncResponseObject,
     sortedAccessControlIdsDecompress: (compressed: string) => string,
     sortedDeniedPermissionIdsDecompress: (compressed: string) => string,
-    metaDecompress: (compressed: string) => MetaObject) {
+    metaPopulation: MetaPopulation) {
 
     this.id = syncResponseObject.i;
     this.version = syncResponseObject.v;
-    this.objectType = metaDecompress(syncResponseObject.t) as ObjectType;
+    this.objectType = metaPopulation.metaObjectById.get(syncResponseObject.t) as ObjectType;
 
     this.roleByRoleTypeId = new Map();
     if (syncResponseObject.r) {
       syncResponseObject.r.forEach((role) => {
         const roleTypeId = role.t;
-        const roleType = metaDecompress(roleTypeId) as RoleType;
+        const roleType = metaPopulation.metaObjectById.get(roleTypeId) as RoleType;
 
         let value: any = role.v;
         if (roleType.objectType.isUnit) {

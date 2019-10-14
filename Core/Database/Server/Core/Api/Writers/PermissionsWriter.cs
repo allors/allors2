@@ -8,15 +8,14 @@ namespace Allors.Server
     using System.Linq;
     using Domain;
     using Protocol;
+    using Protocol.Remote;
 
-    internal class DeniedPermissionsCompressor
+    internal class PermissionsWriter
     {
-        private readonly Compressor compressor;
         private readonly IAccessControlLists acls;
 
-        internal DeniedPermissionsCompressor(Compressor compressor, IAccessControlLists acls)
+        internal PermissionsWriter(IAccessControlLists acls)
         {
-            this.compressor = compressor;
             this.acls = acls;
         }
 
@@ -28,8 +27,8 @@ namespace Allors.Server
                 return null;
             }
 
-            var sortedPermissionIds = string.Join(Compressor.ItemSeparator, deniedPermissionIds.OrderBy(v => v));
-            return this.compressor.Write(sortedPermissionIds);
+            var sortedPermissionIds = string.Join(Encoding.Separator, deniedPermissionIds.OrderBy(v => v));
+            return sortedPermissionIds;
         }
     }
 }

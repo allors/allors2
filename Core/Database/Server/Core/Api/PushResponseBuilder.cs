@@ -5,6 +5,7 @@
 
 namespace Allors.Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Domain;
@@ -18,20 +19,14 @@ namespace Allors.Server
         private readonly ISession session;
         private readonly PushRequest pushRequest;
         private readonly IAccessControlLists acls;
-        private readonly MetaObjectDecompressor metaObjectDecompressor;
-        private readonly MetaObjectCompressor metaObjectCompressor;
+        private readonly IMetaPopulation metaPopulation;
 
         public PushResponseBuilder(ISession session, PushRequest pushRequest, IAccessControlLists acls)
         {
             this.session = session;
             this.pushRequest = pushRequest;
             this.acls = acls;
-
-            var decompressor = new Decompressor();
-            this.metaObjectDecompressor = new MetaObjectDecompressor(decompressor, session.Database.MetaPopulation);
-
-            var compressor = new Compressor();
-            this.metaObjectCompressor = new MetaObjectCompressor(compressor);
+            this.metaPopulation = this.session.Database.MetaPopulation;
         }
 
         public PushResponse Build()
@@ -44,7 +39,7 @@ namespace Allors.Server
                     x => x.NI,
                     x =>
                         {
-                            var cls = (IClass)this.metaObjectDecompressor.Read(x.T);
+                            var cls = (IClass)this.metaPopulation.Find(Guid.Parse(x.T));
                             return (IObject)Allors.ObjectBuilder.Build(this.session, cls);
                         });
             }
@@ -133,7 +128,7 @@ namespace Allors.Server
 
             if (validation.HasErrors)
             {
-                pushResponse.AddDerivationErrors(validation, this.metaObjectCompressor);
+                pushResponse.AddDerivationErrors(validation);
             }
 
             if (!pushResponse.HasErrors)
@@ -172,7 +167,7 @@ namespace Allors.Server
                 var roleTypes = composite.WorkspaceRoleTypes;
                 var acl = this.acls[obj];
 
-                var roleType = (IRoleType)this.metaObjectDecompressor.Read(pushRequestRole.T);
+                var roleType = (IRoleType)this.metaPopulation.Find(Guid.Parse(pushRequestRole.T));
                 if (roleType != null)
                 {
                     if (acl.CanWrite(roleType))

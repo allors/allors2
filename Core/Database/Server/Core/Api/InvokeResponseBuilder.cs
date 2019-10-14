@@ -20,7 +20,6 @@ namespace Allors.Server
         private readonly Invocation[] invocations;
         private readonly bool isolated;
         private readonly bool continueOnError;
-        private MetaObjectCompressor metaObjectCompressor;
 
         public InvokeResponseBuilder(ISession session, InvokeRequest invokeRequest, IAccessControlLists acls)
         {
@@ -30,9 +29,6 @@ namespace Allors.Server
             this.continueOnError = invokeRequest.O?.C ?? false;
 
             this.acls = acls;
-
-            var compressor = new Compressor();
-            this.metaObjectCompressor = new MetaObjectCompressor(compressor);
         }
 
         public InvokeResponse Build()
@@ -49,7 +45,7 @@ namespace Allors.Server
                         if (validation.HasErrors)
                         {
                             error = true;
-                            invokeResponse.AddDerivationErrors(validation, this.metaObjectCompressor);
+                            invokeResponse.AddDerivationErrors(validation);
                         }
                     }
 
@@ -88,7 +84,7 @@ namespace Allors.Server
                     var validation = this.session.Derive(false);
                     if (validation.HasErrors)
                     {
-                        invokeResponse.AddDerivationErrors(validation, this.metaObjectCompressor);
+                        invokeResponse.AddDerivationErrors(validation);
                     }
                     else
                     {
@@ -158,7 +154,7 @@ namespace Allors.Server
             var validation = this.session.Derive(false);
             if (validation.HasErrors)
             {
-                invokeResponse.AddDerivationErrors(validation, this.metaObjectCompressor);
+                invokeResponse.AddDerivationErrors(validation);
                 return true;
             }
 

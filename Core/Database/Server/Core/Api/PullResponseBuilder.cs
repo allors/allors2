@@ -16,10 +16,10 @@ namespace Allors.Server
 
     public class PullResponseBuilder
     {
-        private readonly AccessControlsCompressor accessControlsCompressor;
+        private readonly AccessControlsWriter accessControlsWriter;
         private readonly IAccessControlLists acls;
         private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
-        private readonly DeniedPermissionsCompressor deniedPermissionsCompressor;
+        private readonly PermissionsWriter permissionsWriter;
         private readonly Dictionary<string, IObject> objectByName = new Dictionary<string, IObject>();
         private readonly HashSet<IObject> objects;
         private readonly ITreeService treeService;
@@ -36,9 +36,8 @@ namespace Allors.Server
             this.treeService = treeService;
 
             this.objects = new HashSet<IObject>();
-            var compressor = new Compressor();
-            this.accessControlsCompressor = new AccessControlsCompressor(compressor, this.acls);
-            this.deniedPermissionsCompressor = new DeniedPermissionsCompressor(compressor, this.acls);
+            this.accessControlsWriter = new AccessControlsWriter(this.acls);
+            this.permissionsWriter = new PermissionsWriter(this.acls);
         }
 
         public void AddCollection(string name, IEnumerable<IObject> collection, bool full = false)
@@ -133,8 +132,8 @@ namespace Allors.Server
                     var strategy = v.Strategy;
                     var id = strategy.ObjectId.ToString();
                     var version = strategy.ObjectVersion.ToString();
-                    var accessControls = this.accessControlsCompressor.Write(v);
-                    var deniedPermissions = this.deniedPermissionsCompressor.Write(v);
+                    var accessControls = this.accessControlsWriter.Write(v);
+                    var deniedPermissions = this.permissionsWriter.Write(v);
                     return deniedPermissions != null
                         ? new[] { id, version, accessControls, deniedPermissions }
                         : new[] { id, version, accessControls };

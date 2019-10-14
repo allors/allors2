@@ -5,13 +5,8 @@
 
 namespace Allors.Workspace
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
     using Allors.Protocol.Remote.Push;
     using Allors.Workspace.Meta;
-    using Protocol;
 
     public interface ISessionObject
     {
@@ -43,9 +38,9 @@ namespace Allors.Workspace
 
         void Remove(IRoleType roleType, ISessionObject value);
 
-        PushRequestObject Save(MetaObjectCompressor context);
+        PushRequestObject Save();
 
-        PushRequestNewObject SaveNew(MetaObjectCompressor context);
+        PushRequestNewObject SaveNew();
 
         void Reset();
     }

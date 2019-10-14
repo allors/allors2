@@ -75,17 +75,12 @@ namespace Allors.Workspace
             }
         }
 
-        public PushRequest PushRequest()
-        {
-            var compressor = new Compressor();
-            var metaObjectCompressor = new MetaObjectCompressor(compressor);
-
-            return new PushRequest
+        public PushRequest PushRequest() =>
+            new PushRequest
             {
-                NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew(metaObjectCompressor)).ToArray(),
-                Objects = this.sessionObjectById.Select(v => v.Value.Save(metaObjectCompressor)).Where(v => v != null).ToArray(),
+                NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew()).ToArray(),
+                Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray(),
             };
-        }
 
         public void PushResponse(PushResponse pushResponse)
         {
