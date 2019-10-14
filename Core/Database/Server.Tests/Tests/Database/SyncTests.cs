@@ -68,7 +68,7 @@ namespace Allors.Server.Tests
             var syncObject = syncResponse.Objects[0];
 
             Assert.Equal(person.Id.ToString(), syncObject.I);
-            Assert.Equal($"{Compressor.IndexMarker}1{Compressor.IndexMarker}{M.Person.Class.IdAsString}", syncObject.T);
+            Assert.Equal($"{M.Person.Class.IdAsString}", syncObject.T);
             Assert.Equal(person.Strategy.ObjectVersion.ToString(), syncObject.V);
         }
 

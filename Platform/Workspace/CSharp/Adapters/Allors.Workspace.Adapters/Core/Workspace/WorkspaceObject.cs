@@ -11,6 +11,7 @@ namespace Allors.Workspace
     using System.Linq;
     using Domain;
     using Protocol;
+    using Protocol.Remote;
 
     public class WorkspaceObject : IWorkspaceObject
     {
@@ -26,13 +27,15 @@ namespace Allors.Workspace
             this.Version = 0;
         }
 
-        internal WorkspaceObject(SyncResponseContext ctx, SyncResponseObject syncResponseObject)
+        internal WorkspaceObject(ResponseContext ctx, SyncResponseObject syncResponseObject)
         {
+            var metaPopulation = this.Workspace.ObjectFactory.MetaPopulation;
+
             this.Workspace = ctx.Workspace;
             this.Id = long.Parse(syncResponseObject.I);
-            this.Class = (IClass)ctx.MetaObjectDecompressor.Read(syncResponseObject.T);
+            this.Class = (IClass)metaPopulation.Find(Guid.Parse(syncResponseObject.T));
             this.Version = !string.IsNullOrEmpty(syncResponseObject.V) ? long.Parse(syncResponseObject.V) : 0;
-            this.Roles = syncResponseObject.R?.Select(v => new WorkspaceRole(ctx.MetaObjectDecompressor, v)).Cast<IWorkspaceRole>().ToArray();
+            this.Roles = syncResponseObject.R?.Select(v => new WorkspaceRole(metaPopulation, v)).Cast<IWorkspaceRole>().ToArray();
             this.SortedAccessControlIds = ctx.ReadSortedAccessControlIds(syncResponseObject.A);
             this.SortedDeniedPermissionIds = ctx.ReadSortedDeniedPermissionIds(syncResponseObject.D);
         }
@@ -62,10 +65,10 @@ namespace Allors.Workspace
 
             if (this.accessControls == null && this.SortedAccessControlIds != null)
             {
-                this.accessControls = this.SortedAccessControlIds.Split(Compressor.ItemSeparator).Select(v => this.Workspace.AccessControlById[long.Parse(v)]).ToArray();
+                this.accessControls = this.SortedAccessControlIds.Split(Encoding.Separator).Select(v => this.Workspace.AccessControlById[long.Parse(v)]).ToArray();
                 if (this.deniedPermissions != null)
                 {
-                    this.deniedPermissions = this.SortedDeniedPermissionIds.Split(Compressor.ItemSeparator).Select(v => this.Workspace.PermissionById[long.Parse(v)]).ToArray();
+                    this.deniedPermissions = this.SortedDeniedPermissionIds.Split(Encoding.Separator).Select(v => this.Workspace.PermissionById[long.Parse(v)]).ToArray();
                 }
             }
 

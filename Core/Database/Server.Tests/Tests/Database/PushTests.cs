@@ -18,8 +18,6 @@ namespace Allors.Server.Tests
         [Fact]
         public async void WorkspaceNewObject()
         {
-            var compressor = new Compressor();
-
             var administrator = new Users(this.Session).GetUser("administrator");
             await this.SignIn(administrator);
 
@@ -27,7 +25,7 @@ namespace Allors.Server.Tests
 
             var pushRequest = new PushRequest
             {
-                NewObjects = new[] { new PushRequestNewObject { T = compressor.Write(M.Build.Class.IdAsString), NI = "-1" }, },
+                NewObjects = new[] { new PushRequestNewObject { T = M.Build.Class.IdAsString, NI = "-1" }, },
             };
 
             var response = await this.PostAsJsonAsync(uri, pushRequest);

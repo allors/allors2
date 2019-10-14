@@ -83,7 +83,7 @@ namespace Allors.Excel
         {
             await this.OnSaving();
 
-            ErrorResponse response = await this.Context.Save();
+            Response response = await this.Context.Save();
 
             if (response.HasErrors)
             {
@@ -132,7 +132,7 @@ namespace Allors.Excel
         {
             await this.OnSaving();
 
-            ErrorResponse response = await this.Context.Save();
+            Response response = await this.Context.Save();
 
             if (response.HasErrors)
             {
@@ -157,7 +157,7 @@ namespace Allors.Excel
         {
             await this.OnSaving();
 
-            ErrorResponse response = await this.Context.Save();
+            Response response = await this.Context.Save();
 
             if (response.HasErrors)
             {
@@ -205,11 +205,11 @@ namespace Allors.Excel
 
         protected abstract Task OnSaving();
 
-        protected virtual void OnSaved(ErrorResponse response)
+        protected virtual void OnSaved(Response response)
         {
         }
 
-        protected virtual void OnInvoked(ErrorResponse response)
+        protected virtual void OnInvoked(Response response)
         {
         }
     }

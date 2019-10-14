@@ -9,7 +9,6 @@ import { ISession, Session } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
 import { Operations } from '../protocol/Operations';
 import { serialize } from '../protocol/Serialization';
-import { Compressor } from '../protocol/Compressor';
 
 export interface IObject {
   id: string;
@@ -41,8 +40,8 @@ export interface ISessionObject extends IObject {
 
   getAssociation(associationType: AssociationType): any;
 
-  save(compressor: Compressor): PushRequestObject;
-  saveNew(compressor: Compressor): PushRequestNewObject;
+  save(): PushRequestObject;
+  saveNew(): PushRequestNewObject;
   reset();
 }
 
@@ -271,27 +270,27 @@ export class SessionObject implements ISessionObject {
     return associations;
   }
 
-  public save(compressor: Compressor): PushRequestObject {
+  public save(): PushRequestObject {
     if (this.changedRoleByRoleType !== undefined) {
       const data = new PushRequestObject();
       data.i = this.id;
       data.v = this.version;
-      data.roles = this.saveRoles(compressor);
+      data.roles = this.saveRoles();
       return data;
     }
 
     return undefined;
   }
 
-  public saveNew(compressor: Compressor): PushRequestNewObject {
+  public saveNew(): PushRequestNewObject {
     this.assertExists();
 
     const data = new PushRequestNewObject();
     data.ni = this.newId;
-    data.t = compressor.write(this.objectType.id);
+    data.t = this.objectType.id;
 
     if (this.changedRoleByRoleType !== undefined) {
-      data.roles = this.saveRoles(compressor);
+      data.roles = this.saveRoles();
     }
 
     return data;
@@ -342,14 +341,14 @@ export class SessionObject implements ISessionObject {
     }
   }
 
-  private saveRoles(compressor: Compressor): PushRequestRole[] {
+  private saveRoles(): PushRequestRole[] {
     const saveRoles = new Array<PushRequestRole>();
 
     if (this.changedRoleByRoleType) {
 
       for (const [roleType, value] of this.changedRoleByRoleType) {
         const saveRole = new PushRequestRole();
-        saveRole.t = compressor.write(roleType.id);
+        saveRole.t = roleType.id;
 
         let role = value;
         if (roleType.objectType.isUnit) {

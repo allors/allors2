@@ -38,14 +38,13 @@ namespace Tests.Mock
         public void Diff()
         {
             this.Workspace.Sync(Fixture.LoadData);
-            var compressor = new Compressor();
             var pullResponse = new PullResponse
             {
                 Objects =
                        new[]
                            {
-                                new[] { "1", "1001", compressor.Write("101") },
-                                new[] { "2", "1002", compressor.Write("102"), compressor.Write("103") },
+                                new[] { "1", "1001", "101" },
+                                new[] { "2", "1002", "102", "103" },
                                 new[] { "3", "1003" },
                            },
             };
@@ -59,14 +58,13 @@ namespace Tests.Mock
         public void DiffVersion()
         {
             this.Workspace.Sync(Fixture.LoadData);
-            var compressor = new Compressor();
             var pullResponse = new PullResponse
             {
                 Objects =
                     new[]
                     {
-                        new[] { "1", "1001", compressor.Write("101") },
-                        new[] { "2", "1002", compressor.Write("102"), compressor.Write("103") },
+                        new[] { "1", "1001", "101" },
+                        new[] { "2", "1002", "102", "103" },
                         new[] { "3", "1004" },
                     },
             };
@@ -82,14 +80,13 @@ namespace Tests.Mock
         public void DiffAccessControl()
         {
             this.Workspace.Sync(Fixture.LoadData);
-            var compressor = new Compressor();
             var pullResponse = new PullResponse
             {
                 Objects =
                     new[]
                     {
-                        new[] { "1", "1001", compressor.Write("201") },
-                        new[] { "2", "1002", compressor.Write("102"), compressor.Write("103") },
+                        new[] { "1", "1001", "201" },
+                        new[] { "2", "1002", "102", "103" },
                         new[] { "3", "1003" },
                     },
             };
@@ -105,14 +102,13 @@ namespace Tests.Mock
         public void DiffChangeDeniedPermission()
         {
             this.Workspace.Sync(Fixture.LoadData);
-            var compressor = new Compressor();
             var pullResponse = new PullResponse
             {
                 Objects =
                     new[]
                     {
-                        new[] { "1", "1001", compressor.Write("101") },
-                        new[] { "2", "1002", compressor.Write("102"), compressor.Write("104") },
+                        new[] { "1", "1001", "101" },
+                        new[] { "2", "1002", "102", "104" },
                         new[] { "3", "1003" },
                     },
             };
@@ -128,14 +124,13 @@ namespace Tests.Mock
         public void DiffAddDeniedPermission()
         {
             this.Workspace.Sync(Fixture.LoadData);
-            var compressor = new Compressor();
             var pullResponse = new PullResponse
             {
                 Objects =
                     new[]
                     {
-                        new[] { "1", "1001", compressor.Write("101"), compressor.Write("104") },
-                        new[] { "2", "1002", compressor.Write("102"), compressor.Write("103") },
+                        new[] { "1", "1001", "101", "104" },
+                        new[] { "2", "1002", "102", "103" },
                         new[] { "3", "1003" },
                     },
             };
@@ -151,14 +146,13 @@ namespace Tests.Mock
         public void DiffRemoveDeniedPermission()
         {
             this.Workspace.Sync(Fixture.LoadData);
-            var compressor = new Compressor();
             var pullResponse = new PullResponse
             {
                 Objects =
                     new[]
                     {
-                        //new[] { "1", "1001", compressor.Write("101") },
-                        new[] { "2", "1002", compressor.Write("102") },
+                        //new[] { "1", "1001", "101" },
+                        new[] { "2", "1002", "102" },
                         //new[] { "3", "1003" },
                     },
             };

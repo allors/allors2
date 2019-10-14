@@ -10,37 +10,36 @@ namespace Allors.Server
 
     using Allors.Domain;
     using Allors.Protocol.Remote;
-    using Protocol;
 
     public static class ErrorResponseExtensions
     {
-        public static void AddDerivationErrors(this ErrorResponse @this, IValidation validation, MetaObjectCompressor metaObjectCompressor)
+        public static void AddDerivationErrors(this Response @this, IValidation validation)
         {
             foreach (var derivationError in validation.Errors)
             {
-                var derivationErrorResponse = new DerivationErrorResponse
+                var derivationErrorResponse = new ResponseDerivationError
                 {
                     M = derivationError.Message,
-                    R = derivationError.Relations.Select(x => new[] { x.Association.Id.ToString(), metaObjectCompressor.Write(x.RoleType) }).ToArray(),
+                    R = derivationError.Relations.Select(x => new[] { x.Association.Id.ToString(), x.RoleType.IdAsString }).ToArray(),
                 };
 
                 @this.DerivationErrors = @this.DerivationErrors != null ?
-                                             new List<DerivationErrorResponse>(@this.DerivationErrors) { derivationErrorResponse }.ToArray() :
-                                             new List<DerivationErrorResponse> { derivationErrorResponse }.ToArray();
+                                             new List<ResponseDerivationError>(@this.DerivationErrors) { derivationErrorResponse }.ToArray() :
+                                             new List<ResponseDerivationError> { derivationErrorResponse }.ToArray();
             }
         }
 
-        public static void AddVersionError(this ErrorResponse @this, IObject obj) =>
+        public static void AddVersionError(this Response @this, IObject obj) =>
             @this.VersionErrors = @this.VersionErrors != null ?
                 new List<string>(@this.VersionErrors) { obj.Id.ToString() }.ToArray() :
                 new List<string> { obj.Id.ToString() }.ToArray();
 
-        public static void AddAccessError(this ErrorResponse @this, IObject obj) =>
+        public static void AddAccessError(this Response @this, IObject obj) =>
             @this.AccessErrors = @this.AccessErrors != null ?
                 new List<string>(@this.AccessErrors) { obj.Id.ToString() }.ToArray() :
                 new List<string> { obj.Id.ToString() }.ToArray();
 
-        public static void AddMissingError(this ErrorResponse @this, string id) =>
+        public static void AddMissingError(this Response @this, string id) =>
             @this.MissingErrors = @this.MissingErrors != null ?
                 new List<string>(@this.MissingErrors) { id }.ToArray() :
                 new List<string> { id }.ToArray();

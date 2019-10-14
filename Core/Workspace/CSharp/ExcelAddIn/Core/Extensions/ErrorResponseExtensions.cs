@@ -15,7 +15,7 @@ namespace Allors.Excel
 
     public static class MessageBoxExtensions
     {
-        public static void Show(this ErrorResponse error)
+        public static void Show(this Response error)
         {
             if (error.AccessErrors?.Length > 0)
             {
@@ -41,41 +41,41 @@ namespace Allors.Excel
             }
         }
 
-        public static void Log(this ErrorResponse errorResponse, Session session)
+        public static void Log(this Response response, Session session)
         {
             var logger = LogManager.GetCurrentClassLogger();
 
-            if (errorResponse.AccessErrors?.Length > 0)
+            if (response.AccessErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.AccessErrors)
+                foreach (var error in response.AccessErrors)
                 {
                     logger.Error("Access error: " + Message(session, error));
                 }
             }
-            else if (errorResponse.VersionErrors?.Length > 0)
+            else if (response.VersionErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.VersionErrors)
+                foreach (var error in response.VersionErrors)
                 {
                     logger.Error("Version error: " + Message(session, error));
                 }
             }
-            else if (errorResponse.MissingErrors?.Length > 0)
+            else if (response.MissingErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.MissingErrors)
+                foreach (var error in response.MissingErrors)
                 {
                     logger.Error("Missing error: " + Message(session, error));
                 }
             }
-            else if (errorResponse.DerivationErrors?.Length > 0)
+            else if (response.DerivationErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.DerivationErrors)
+                foreach (var error in response.DerivationErrors)
                 {
                     logger.Error("Derivation error: " + error.M);
                 }
             }
             else
             {
-                logger.Error($@"{errorResponse.ErrorMessage}");
+                logger.Error($@"{response.ErrorMessage}");
             }
         }
 

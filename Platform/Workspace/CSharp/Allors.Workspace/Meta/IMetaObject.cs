@@ -14,6 +14,8 @@ namespace Allors.Workspace.Meta
     {
         Guid Id { get; }
 
+        string IdAsString { get; }
+
         IMetaPopulation MetaPopulation { get; }
     }
 }

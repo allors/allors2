@@ -161,10 +161,9 @@ export class Session implements ISession {
   }
 
   public pushRequest(): PushRequest {
-    const compressor = new Compressor();
     return new PushRequest({
-      newObjects: Array.from(this.newSessionObjectById.values()).map(v => v.saveNew(compressor)).filter(v => v !== undefined),
-      objects: Array.from(this.existingSessionObjectById.values()).map(v => v.save(compressor)).filter(v => v !== undefined),
+      newObjects: Array.from(this.newSessionObjectById.values()).map(v => v.saveNew()).filter(v => v !== undefined),
+      objects: Array.from(this.existingSessionObjectById.values()).map(v => v.save()).filter(v => v !== undefined),
     });
   }
 

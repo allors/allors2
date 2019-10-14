@@ -8,15 +8,14 @@ namespace Allors.Server
     using System.Linq;
     using Domain;
     using Protocol;
+    using Protocol.Remote;
 
-    internal class AccessControlsCompressor
+    internal class AccessControlsWriter
     {
-        private readonly Compressor compressor;
         private readonly IAccessControlLists acls;
 
-        internal AccessControlsCompressor(Compressor compressor, IAccessControlLists acls)
+        internal AccessControlsWriter(IAccessControlLists acls)
         {
-            this.compressor = compressor;
             this.acls = acls;
         }
 
@@ -28,8 +27,8 @@ namespace Allors.Server
                 return null;
             }
 
-            var sortedAccessControlIds = string.Join(Compressor.ItemSeparator, accessControls.OrderBy(v => v.Id).Select(v => v.Id));
-            return this.compressor.Write(sortedAccessControlIds);
+            var sortedAccessControlIds = string.Join(Encoding.Separator, accessControls.OrderBy(v => v.Id).Select(v => v.Id));
+            return sortedAccessControlIds;
         }
     }
 }

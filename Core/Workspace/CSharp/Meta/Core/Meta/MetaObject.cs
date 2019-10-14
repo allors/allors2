@@ -32,6 +32,7 @@ namespace Allors.Workspace.Meta
             {
                 this.MetaPopulation.AssertUnlocked();
                 this.id = value;
+                this.IdAsString = this.id.ToString("D");
                 this.MetaPopulation.Stale();
             }
         }
@@ -40,7 +41,7 @@ namespace Allors.Workspace.Meta
         /// Gets the id as a string.
         /// </summary>
         /// <value>The id as a string.</value>
-        public string IdAsString => this.Id.ToString("D");
+        public string IdAsString { get; private set; }
 
         /// <summary>
         /// Gets the validation name.
