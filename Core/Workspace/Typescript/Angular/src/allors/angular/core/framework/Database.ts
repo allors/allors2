@@ -100,14 +100,12 @@ export class Database {
 
   private invokeMethods(methods: Method[], options?: InvokeOptions): Observable<InvokeResponse> {
 
-    const compressor = new Compressor()
-
     const invokeRequest: InvokeRequest = {
       i: methods.map(v => {
         return {
           i: v.object.id,
           v: v.object.version,
-          m: compressor.write(v.methodType.id),
+          m: v.methodType.id,
         };
       }),
       o: options

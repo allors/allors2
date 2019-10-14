@@ -187,25 +187,29 @@ export class Workspace implements IWorkspace {
     const missingPermissionIds = new Set<string>();
 
     const sortedAccessControlIdsDecompress = (compressed: string): string => {
-      compressed
-        .split(Compressor.itemSeparator)
-        .forEach(v => {
-          if (!this.accessControlById.has(v)) {
-            missingAccessControlIds.add(v);
-          }
-        });
+      if (compressed) {
+        compressed
+          .split(Compressor.itemSeparator)
+          .forEach(v => {
+            if (!this.accessControlById.has(v)) {
+              missingAccessControlIds.add(v);
+            }
+          });
+      }
 
       return compressed;
     };
 
     const sortedDeniedPermissionIdsDecompress = (compressed: string): string => {
-      compressed
-        .split(Compressor.itemSeparator)
-        .forEach(v => {
-          if (!this.permissionById.has(v)) {
-            missingPermissionIds.add(v);
-          }
-        });
+      if (compressed) {
+        compressed
+          .split(Compressor.itemSeparator)
+          .forEach(v => {
+            if (!this.permissionById.has(v)) {
+              missingPermissionIds.add(v);
+            }
+          });
+      }
 
       return compressed;
     };
