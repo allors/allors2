@@ -19,6 +19,7 @@ namespace Allors.Server
         private readonly PushRequest pushRequest;
         private readonly IAccessControlLists acls;
         private readonly MetaObjectDecompressor metaObjectDecompressor;
+        private readonly MetaObjectCompressor metaObjectCompressor;
 
         public PushResponseBuilder(ISession session, PushRequest pushRequest, IAccessControlLists acls)
         {
@@ -26,16 +27,17 @@ namespace Allors.Server
             this.pushRequest = pushRequest;
             this.acls = acls;
 
-            var compressor = new Decompressor();
-            this.metaObjectDecompressor = new MetaObjectDecompressor(compressor, session.Database.MetaPopulation);
+            var decompressor = new Decompressor();
+            this.metaObjectDecompressor = new MetaObjectDecompressor(decompressor, session.Database.MetaPopulation);
+
+            var compressor = new Compressor();
+            this.metaObjectCompressor = new MetaObjectCompressor(compressor);
         }
 
         public PushResponse Build()
         {
             var pushResponse = new PushResponse();
-
             Dictionary<string, IObject> objectByNewId = null;
-
             if (this.pushRequest.NewObjects != null && this.pushRequest.NewObjects.Length > 0)
             {
                 objectByNewId = this.pushRequest.NewObjects.ToDictionary(
@@ -131,7 +133,7 @@ namespace Allors.Server
 
             if (validation.HasErrors)
             {
-                pushResponse.AddDerivationErrors(validation);
+                pushResponse.AddDerivationErrors(validation, this.metaObjectCompressor);
             }
 
             if (!pushResponse.HasErrors)

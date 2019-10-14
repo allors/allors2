@@ -11,6 +11,7 @@ namespace Allors.Server
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Remote.Invoke;
+    using Protocol;
 
     public class InvokeResponseBuilder
     {
@@ -19,7 +20,8 @@ namespace Allors.Server
         private readonly Invocation[] invocations;
         private readonly bool isolated;
         private readonly bool continueOnError;
-        
+        private MetaObjectCompressor metaObjectCompressor;
+
         public InvokeResponseBuilder(ISession session, InvokeRequest invokeRequest, IAccessControlLists acls)
         {
             this.session = session;
@@ -28,12 +30,14 @@ namespace Allors.Server
             this.continueOnError = invokeRequest.O?.C ?? false;
 
             this.acls = acls;
+
+            var compressor = new Compressor();
+            this.metaObjectCompressor = new MetaObjectCompressor(compressor);
         }
 
         public InvokeResponse Build()
         {
             var invokeResponse = new InvokeResponse();
-
             if (this.isolated)
             {
                 foreach (var invocation in this.invocations)
@@ -45,7 +49,7 @@ namespace Allors.Server
                         if (validation.HasErrors)
                         {
                             error = true;
-                            invokeResponse.AddDerivationErrors(validation);
+                            invokeResponse.AddDerivationErrors(validation, this.metaObjectCompressor);
                         }
                     }
 
@@ -84,7 +88,7 @@ namespace Allors.Server
                     var validation = this.session.Derive(false);
                     if (validation.HasErrors)
                     {
-                        invokeResponse.AddDerivationErrors(validation);
+                        invokeResponse.AddDerivationErrors(validation, this.metaObjectCompressor);
                     }
                     else
                     {
@@ -154,7 +158,7 @@ namespace Allors.Server
             var validation = this.session.Derive(false);
             if (validation.HasErrors)
             {
-                invokeResponse.AddDerivationErrors(validation);
+                invokeResponse.AddDerivationErrors(validation, this.metaObjectCompressor);
                 return true;
             }
 

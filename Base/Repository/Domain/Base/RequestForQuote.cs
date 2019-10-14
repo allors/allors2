@@ -100,11 +100,7 @@ namespace Allors.Repository
         [Workspace]
         public RequestForQuoteVersion[] AllVersions { get; set; }
         #endregion
-
-        #region Allors
-        [Id("A57F9C84-A17D-4F5E-91EE-C0AD38EF6985")]
-        #endregion
-
+        
         #region inherited methods
         public void Cancel() { }
 

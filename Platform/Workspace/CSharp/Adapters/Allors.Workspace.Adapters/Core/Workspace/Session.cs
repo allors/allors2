@@ -83,7 +83,7 @@ namespace Allors.Workspace
             return new PushRequest
             {
                 NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew(metaObjectCompressor)).ToArray(),
-                Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray(),
+                Objects = this.sessionObjectById.Select(v => v.Value.Save(metaObjectCompressor)).Where(v => v != null).ToArray(),
             };
         }
 
