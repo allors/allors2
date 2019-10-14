@@ -138,8 +138,8 @@ namespace Tests.Mock
             Assert.Equal("1001", savedKoen.V);
             Assert.Equal(2, savedKoen.Roles.Length);
 
-            var savedKoenFirstName = savedKoen.Roles.First(v => v.T == "FirstName");
-            var savedKoenLastName = savedKoen.Roles.First(v => v.T == "LastName");
+            var savedKoenFirstName = savedKoen.Roles.First(v => v.T == M.Person.FirstName.IdAsString);
+            var savedKoenLastName = savedKoen.Roles.First(v => v.T == M.Person.LastName.IdAsString);
 
             Assert.Equal("K", savedKoenFirstName.S);
             Assert.Null(savedKoenFirstName.A);
@@ -153,8 +153,8 @@ namespace Tests.Mock
             Assert.Equal("1003", savedMartien.V);
             Assert.Equal(2, savedMartien.Roles.Length);
 
-            var savedMartienFirstName = savedMartien.Roles.First(v => v.T == "FirstName");
-            var savedMartienMiddleName = savedMartien.Roles.First(v => v.T == "MiddleName");
+            var savedMartienFirstName = savedMartien.Roles.First(v => v.T == M.Person.FirstName.IdAsString);
+            var savedMartienMiddleName = savedMartien.Roles.First(v => v.T == M.Person.MiddleName.IdAsString);
 
             Assert.Equal("Martinus", savedMartienFirstName.S);
             Assert.Null(savedMartienFirstName.A);
@@ -261,8 +261,8 @@ namespace Tests.Mock
             Assert.Equal("1101", savedAcme.V);
             Assert.Equal(2, savedAcme.Roles.Length);
 
-            var savedAcmeOwner = savedAcme.Roles.First(v => v.T == "Owner");
-            var savedAcmeManager = savedAcme.Roles.First(v => v.T == "Manager");
+            var savedAcmeOwner = savedAcme.Roles.First(v => v.T == M.Organisation.Owner.IdAsString);
+            var savedAcmeManager = savedAcme.Roles.First(v => v.T == M.Organisation.Manager.IdAsString);
 
             Assert.Equal("3", savedAcmeOwner.S);
             Assert.Null(savedAcmeOwner.A);
@@ -276,7 +276,7 @@ namespace Tests.Mock
             Assert.Equal("1102", savedOcme.V);
             Assert.Single(savedOcme.Roles);
 
-            var savedOcmeOwner = savedOcme.Roles.First(v => v.T == "Owner");
+            var savedOcmeOwner = savedOcme.Roles.First(v => v.T == M.Organisation.Owner.IdAsString);
 
             Assert.Null(savedOcmeOwner.S);
             Assert.Null(savedOcmeOwner.A);
@@ -390,7 +390,7 @@ namespace Tests.Mock
             Assert.Equal("1101", savedAcme.V);
             Assert.Single(savedAcme.Roles);
 
-            var savedAcmeEmployees = savedAcme.Roles.First(v => v.T == "Employees");
+            var savedAcmeEmployees = savedAcme.Roles.First(v => v.T == M.Organisation.Employees.IdAsString);
 
             Assert.Null(savedAcmeEmployees.S);
             Assert.Empty(savedAcmeEmployees.A);
@@ -403,7 +403,7 @@ namespace Tests.Mock
             Assert.Equal("1102", savedOcme.V);
             Assert.Single(savedOcme.Roles);
 
-            var savedOcmeEmployees = savedOcme.Roles.First(v => v.T == "Employees");
+            var savedOcmeEmployees = savedOcme.Roles.First(v => v.T == M.Organisation.Employees.IdAsString);
 
             Assert.Null(savedOcmeEmployees.S);
             Assert.Equal(2, savedOcmeEmployees.A.Length);
@@ -418,7 +418,7 @@ namespace Tests.Mock
             Assert.Equal("1103", savedIcme.V);
             Assert.Single(savedIcme.Roles);
 
-            var savedIcmeEmployees = savedIcme.Roles.First(v => v.T == "Employees");
+            var savedIcmeEmployees = savedIcme.Roles.First(v => v.T == M.Organisation.Employees.IdAsString);
 
             Assert.Null(savedIcmeEmployees.S);
             Assert.Equal(3, savedIcmeEmployees.A.Length);
@@ -458,27 +458,27 @@ namespace Tests.Mock
             {
                 var savedMathijs = save.NewObjects.First(v => v.NI == mathijs.NewId?.ToString());
 
-                Assert.Equal("~1~c799ca62-a554-467d-9aa2-1663293bb37f", savedMathijs.T);
+                Assert.Equal(M.Person.Class.IdAsString, savedMathijs.T);
                 Assert.Equal(2, savedMathijs.Roles.Length);
 
-                var savedMathijsFirstName = savedMathijs.Roles.First(v => v.T == "FirstName");
+                var savedMathijsFirstName = savedMathijs.Roles.First(v => v.T == M.Person.FirstName.IdAsString);
                 Assert.Equal("Mathijs", savedMathijsFirstName.S);
 
-                var savedMathijsLastName = savedMathijs.Roles.First(v => v.T == "LastName");
+                var savedMathijsLastName = savedMathijs.Roles.First(v => v.T == M.Person.LastName.IdAsString);
                 Assert.Equal("Verwer", savedMathijsLastName.S);
             }
 
             {
                 var savedAcme2 = save.NewObjects.First(v => v.NI == acme2.NewId?.ToString());
 
-                Assert.Equal("~2~3a5dcec7-308f-48c7-afee-35d38415aa0b", savedAcme2.T);
+                Assert.Equal(M.Organisation.Class.IdAsString, savedAcme2.T);
                 Assert.Equal(3, savedAcme2.Roles.Length);
 
-                var savedAcme2Manager = savedAcme2.Roles.First(v => v.T == "Manager");
+                var savedAcme2Manager = savedAcme2.Roles.First(v => v.T == M.Organisation.Manager.IdAsString);
 
                 Assert.Equal(mathijs.NewId.ToString(), savedAcme2Manager.S);
 
-                var savedAcme2Employees = savedAcme2.Roles.First(v => v.T == "Employees");
+                var savedAcme2Employees = savedAcme2.Roles.First(v => v.T == M.Organisation.Employees.IdAsString);
 
                 Assert.Null(savedAcme2Employees.S);
                 Assert.Contains(mathijs.NewId?.ToString(), savedAcme2Employees.A);
@@ -488,14 +488,14 @@ namespace Tests.Mock
             {
                 var savedAcme3 = save.NewObjects.First(v => v.NI == acme3.NewId?.ToString());
 
-                Assert.Equal("2", savedAcme3.T);
+                Assert.Equal(M.Organisation.Class.IdAsString, savedAcme3.T);
                 Assert.Equal(3, savedAcme3.Roles.Length);
 
-                var savedAcme3Manager = savedAcme3.Roles.First(v => v.T == "Manager");
+                var savedAcme3Manager = savedAcme3.Roles.First(v => v.T == M.Organisation.Manager.IdAsString);
 
                 Assert.Equal("3", savedAcme3Manager.S);
 
-                var savedAcme3Employees = savedAcme3.Roles.First(v => v.T == "Employees");
+                var savedAcme3Employees = savedAcme3.Roles.First(v => v.T == M.Organisation.Employees.IdAsString);
 
                 Assert.Null(savedAcme3Employees.S);
                 Assert.Contains("3", savedAcme3Employees.A);

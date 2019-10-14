@@ -29,13 +29,11 @@ namespace Allors.Workspace
 
         internal WorkspaceObject(ResponseContext ctx, SyncResponseObject syncResponseObject)
         {
-            var metaPopulation = this.Workspace.ObjectFactory.MetaPopulation;
-
             this.Workspace = ctx.Workspace;
             this.Id = long.Parse(syncResponseObject.I);
-            this.Class = (IClass)metaPopulation.Find(Guid.Parse(syncResponseObject.T));
+            this.Class = (IClass)this.Workspace.ObjectFactory.MetaPopulation.Find(Guid.Parse(syncResponseObject.T));
             this.Version = !string.IsNullOrEmpty(syncResponseObject.V) ? long.Parse(syncResponseObject.V) : 0;
-            this.Roles = syncResponseObject.R?.Select(v => new WorkspaceRole(metaPopulation, v)).Cast<IWorkspaceRole>().ToArray();
+            this.Roles = syncResponseObject.R?.Select(v => new WorkspaceRole(this.Workspace.ObjectFactory.MetaPopulation, v)).Cast<IWorkspaceRole>().ToArray();
             this.SortedAccessControlIds = ctx.ReadSortedAccessControlIds(syncResponseObject.A);
             this.SortedDeniedPermissionIds = ctx.ReadSortedDeniedPermissionIds(syncResponseObject.D);
         }
