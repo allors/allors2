@@ -1,4 +1,3 @@
-import { Decompressor } from '../../src/allors/framework/protocol/Decompressor';
 import { MetaObject } from '../../src/allors/framework/meta/MetaObject';
 import { PushRequest } from '../../src/allors/framework/protocol/push/PushRequest';
 import { MetaPopulation } from '../../src/allors/framework/meta/MetaPopulation';
@@ -6,11 +5,8 @@ import { MetaPopulation } from '../../src/allors/framework/meta/MetaPopulation';
 export class PushRequestInfo {
   metaTypeByKey: Map<string, MetaObject>;
 
-  private decompressor: Decompressor;
-
   constructor(pushRequest: PushRequest, meta: MetaPopulation) {
     this.metaTypeByKey = new Map();
-    this.decompressor = new Decompressor();
 
     const keys: Set<string> = new Set();
 
@@ -24,7 +20,7 @@ export class PushRequestInfo {
     });
 
     keys.forEach(key => {
-      const id = this.decompressor.read(key, v => v);
+      const id = key;
       const objectType = meta.metaObjectById.get(id);
       this.metaTypeByKey.set(key, objectType);
     });

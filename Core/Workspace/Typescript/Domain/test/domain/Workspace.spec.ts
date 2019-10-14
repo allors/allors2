@@ -2,11 +2,10 @@ import { assert } from 'chai';
 import 'mocha';
 
 import { domain } from '../../src/allors/domain';
-import { MetaPopulation, PullResponse, PushResponse, ResponseType, Session, Workspace } from '../../src/allors/framework';
+import { MetaPopulation, PullResponse, ResponseType, Workspace } from '../../src/allors/framework';
 import { data, Meta } from '../../src/allors/meta';
 
 import { syncResponse, securityResponse, securityResponse2 } from './fixture';
-import { Compressor } from '../../src/allors/framework/protocol/Compressor';
 
 describe('Workspace',
   () => {
@@ -43,12 +42,10 @@ describe('Workspace',
         });
 
         it('should require load objects only for changed version', () => {
-          const c = new Compressor();
-
           const pullResponse: PullResponse = {
             hasErrors: false,
             objects: [
-              ['101', '1101', c.write('801')],
+              ['101', '1101', '801'],
               ['102', '1102'],
               ['103', '1104'],
             ],
@@ -70,13 +67,11 @@ describe('Workspace',
         });
 
         it('should require load objects for all objects', () => {
-          const c = new Compressor();
-
           const pullResponse: PullResponse = {
             hasErrors: false,
             objects: [
-              ['101', '1101', c.write('801'), c.write('904')],
-              ['102', '1102', c.write('801')],
+              ['101', '1101', '801', '904'],
+              ['102', '1102', '801'],
               ['103', '1103'],
             ],
             responseType: ResponseType.Pull,

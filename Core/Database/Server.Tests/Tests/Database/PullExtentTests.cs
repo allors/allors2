@@ -77,8 +77,8 @@ namespace Allors.Server.Tests
 
             Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
             Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
-            Assert.Equal($"~1~{this.PrintAccessControls(acl)}", @object[2]);
-            Assert.Equal($"~2~{this.PrintDeniedPermissions(acl)}", @object[3]);
+            Assert.Equal($"{this.PrintAccessControls(acl)}", @object[2]);
+            Assert.Equal($"{this.PrintDeniedPermissions(acl)}", @object[3]);
         }
 
         [Fact]
@@ -196,7 +196,7 @@ namespace Allors.Server.Tests
 
             Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
             Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
-            Assert.Equal($"~1~{this.PrintAccessControls(acl)}", @object[2]);
+            Assert.Equal($"{this.PrintAccessControls(acl)}", @object[2]);
         }
 
         [Fact]
@@ -252,7 +252,7 @@ namespace Allors.Server.Tests
 
             Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
             Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
-            Assert.Equal($"~1~{this.PrintAccessControls(acl)}", @object[2]);
+            Assert.Equal($"{this.PrintAccessControls(acl)}", @object[2]);
         }
     }
 }
