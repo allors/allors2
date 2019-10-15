@@ -193,7 +193,7 @@ namespace Allors.Repository
 
         #endregion
         [Workspace]
-        void Create();
+        void CreateQuote();
 
         #region Allors
         [Id("B30EDA48-5E99-44AE-B3A9-D053BCFA4895")]
