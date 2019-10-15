@@ -113,7 +113,7 @@ namespace Allors.Server
 
             var composite = (Composite)obj.Strategy.Class;
             var methodTypes = composite.WorkspaceMethodTypes;
-            var methodType = methodTypes.FirstOrDefault(x => x.Name.Equals(invocation.M));
+            var methodType = methodTypes.FirstOrDefault(x => x.Id.Equals(Guid.Parse(invocation.M)));
 
             if (methodType == null)
             {

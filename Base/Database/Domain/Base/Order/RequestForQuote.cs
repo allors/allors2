@@ -28,7 +28,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCreateQuote(RequestForQuote Method)
+        public void BaseCreateQuote(RequestForQuoteCreateQuote Method)
         {
             this.RequestState = new RequestStates(this.Strategy.Session).Quoted;
             this.QuoteThis();
@@ -65,9 +65,11 @@ namespace Allors.Domain
                 productQuote.AddQuoteItem(
                     new QuoteItemBuilder(this.Strategy.Session)
                     .WithProduct(requestItem.Product)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.strategy.Session).ProductItem)
                     .WithSerialisedItem(requestItem.SerialisedItem)
                     .WithProductFeature(requestItem.ProductFeature)
                     .WithQuantity(requestItem.Quantity)
+                    .WithAssignedUnitPrice(requestItem.SerialisedItem.ExpectedSalesPrice)
                     .WithUnitOfMeasure(requestItem.UnitOfMeasure)
                     .WithRequestItem(requestItem)
                     .WithInternalComment(requestItem.InternalComment).Build());
