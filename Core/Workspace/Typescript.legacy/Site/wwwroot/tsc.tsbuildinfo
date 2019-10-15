@@ -2,64 +2,6 @@
   "bundle": {
     "commonSourceDirectory": "./",
     "sourceFiles": [
-      "./generated/domain/AccessControl.g.ts",
-      "./generated/domain/ApproveTask.g.ts",
-      "./generated/domain/AutomatedAgent.g.ts",
-      "./generated/domain/C1.g.ts",
-      "./generated/domain/C2.g.ts",
-      "./generated/domain/Counter.g.ts",
-      "./generated/domain/Country.g.ts",
-      "./generated/domain/Currency.g.ts",
-      "./generated/domain/Data.g.ts",
-      "./generated/domain/Deletable.g.ts",
-      "./generated/domain/Dependent.g.ts",
-      "./generated/domain/Enumeration.g.ts",
-      "./generated/domain/Gender.g.ts",
-      "./generated/domain/I1.g.ts",
-      "./generated/domain/I12.g.ts",
-      "./generated/domain/I2.g.ts",
-      "./generated/domain/Language.g.ts",
-      "./generated/domain/Locale.g.ts",
-      "./generated/domain/Localised.g.ts",
-      "./generated/domain/LocalisedMedia.g.ts",
-      "./generated/domain/LocalisedText.g.ts",
-      "./generated/domain/Login.g.ts",
-      "./generated/domain/Media.g.ts",
-      "./generated/domain/MediaContent.g.ts",
-      "./generated/domain/Notification.g.ts",
-      "./generated/domain/NotificationList.g.ts",
-      "./generated/domain/ObjectState.g.ts",
-      "./generated/domain/Order.g.ts",
-      "./generated/domain/OrderLine.g.ts",
-      "./generated/domain/OrderLineVersion.g.ts",
-      "./generated/domain/OrderState.g.ts",
-      "./generated/domain/OrderVersion.g.ts",
-      "./generated/domain/Organisation.g.ts",
-      "./generated/domain/PaymentState.g.ts",
-      "./generated/domain/Permission.g.ts",
-      "./generated/domain/Person.g.ts",
-      "./generated/domain/PreparedExtent.g.ts",
-      "./generated/domain/PreparedFetch.g.ts",
-      "./generated/domain/PrintDocument.g.ts",
-      "./generated/domain/Printable.g.ts",
-      "./generated/domain/Role.g.ts",
-      "./generated/domain/S1.g.ts",
-      "./generated/domain/SecurityToken.g.ts",
-      "./generated/domain/ShipmentState.g.ts",
-      "./generated/domain/Singleton.g.ts",
-      "./generated/domain/Task.g.ts",
-      "./generated/domain/TaskAssignment.g.ts",
-      "./generated/domain/Template.g.ts",
-      "./generated/domain/TemplateType.g.ts",
-      "./generated/domain/UniquelyIdentifiable.g.ts",
-      "./generated/domain/UnitSample.g.ts",
-      "./generated/domain/User.g.ts",
-      "./generated/domain/UserGroup.g.ts",
-      "./generated/domain/Version.g.ts",
-      "./generated/domain/WorkItem.g.ts",
-      "./generated/meta/data.g.ts",
-      "./generated/meta/domain.g.ts",
-      "./generated/meta/ids.g.ts",
       "./Core/Angular/allors.module.ts",
       "./Core/Workspace/Method.ts",
       "./Core/Angular/Context.ts",
@@ -161,36 +103,36 @@
     "js": {
       "sections": [
         {
-          "pos": 297730,
-          "end": 298200,
+          "pos": 412,
+          "end": 882,
           "kind": "emitHelpers",
           "data": "typescript:values"
         },
         {
-          "pos": 330719,
-          "end": 331316,
+          "pos": 33401,
+          "end": 33998,
           "kind": "emitHelpers",
           "data": "typescript:extends"
         },
         {
-          "pos": 430563,
-          "end": 431067,
+          "pos": 133245,
+          "end": 133749,
           "kind": "emitHelpers",
           "data": "typescript:read"
         },
         {
-          "pos": 463701,
-          "end": 463871,
+          "pos": 166383,
+          "end": 166553,
           "kind": "emitHelpers",
           "data": "typescript:spread"
         },
         {
           "pos": 0,
-          "end": 523019,
+          "end": 225618,
           "kind": "text"
         }
       ]
     }
   },
-  "version": "3.6.3"
+  "version": "3.6.2"
 }
