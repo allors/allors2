@@ -295,6 +295,8 @@ namespace Allors.Domain
 
         public void GrantGuest(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.GuestId, objectType, operations);
 
+        public void GrantGuestCreator(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.GuestCreatorId, objectType, operations);
+
         public void GrantOwner(ObjectType objectType, params Operations[] operations) => this.Grant(Roles.OwnerId, objectType, operations);
 
         private void CoreOnPostSetup()

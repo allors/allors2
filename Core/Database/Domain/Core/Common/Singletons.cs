@@ -31,29 +31,37 @@ namespace Allors.Domain
                 singleton.InitialSecurityToken = new SecurityTokenBuilder(this.Session).Build();
                 singleton.DefaultSecurityToken = new SecurityTokenBuilder(this.Session).Build();
 
-                // Initial
-                singleton.CreatorsAccessControl = new AccessControlBuilder(this.Session)
+                // Initial: Creator
+                var creatorsAccessControl = new AccessControlBuilder(this.Session)
                     .WithRole(new Roles(this.Session).Creator)
                     .WithSubjectGroup(new UserGroups(this.Session).Creators)
                     .Build();
 
-                singleton.InitialSecurityToken.AddAccessControl(singleton.CreatorsAccessControl);
+                singleton.InitialSecurityToken.AddAccessControl(creatorsAccessControl);
 
-                // Administrator
-                singleton.AdministratorsAccessControl = new AccessControlBuilder(this.Session)
+                // Initial: Guest Creator
+                var guestCreatorsAccessControl = new AccessControlBuilder(this.Session)
+                    .WithRole(new Roles(this.Session).GuestCreator)
+                    .WithSubjectGroup(new UserGroups(this.Session).Guests)
+                    .Build();
+
+                singleton.InitialSecurityToken.AddAccessControl(guestCreatorsAccessControl);
+
+                // Default: Administrator
+                var administratorsAccessControl = new AccessControlBuilder(this.Session)
                     .WithRole(new Roles(this.Session).Administrator)
                     .WithSubjectGroup(new UserGroups(this.Session).Administrators)
                     .Build();
 
-                singleton.DefaultSecurityToken.AddAccessControl(singleton.AdministratorsAccessControl);
+                singleton.DefaultSecurityToken.AddAccessControl(administratorsAccessControl);
 
-                // Guest
-                singleton.GuestAccessControl = new AccessControlBuilder(this.Session)
+                // Default: Guest
+                var guestAccessControl = new AccessControlBuilder(this.Session)
                     .WithRole(new Roles(this.Session).Guest)
                     .WithSubjectGroup(new UserGroups(this.Session).Guests)
                     .Build();
 
-                singleton.DefaultSecurityToken.AddAccessControl(singleton.GuestAccessControl);
+                singleton.DefaultSecurityToken.AddAccessControl(guestAccessControl);
             }
         }
     }
