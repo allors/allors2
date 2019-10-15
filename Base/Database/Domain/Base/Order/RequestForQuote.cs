@@ -28,7 +28,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCreateQuote(RequestForQuoteCreate Method)
+        public void BaseCreateQuote(RequestForQuote Method)
         {
             this.RequestState = new RequestStates(this.Strategy.Session).Quoted;
             this.QuoteThis();
