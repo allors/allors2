@@ -29,7 +29,7 @@ namespace Allors.Domain
             var hold = this.Meta.Hold;
             var submit = this.Meta.Submit;
             var reject = this.Meta.Reject;
-            var createQuote = this.Meta.CreateQuote;
+            var createQuote = this.Meta.Create;
 
             config.Deny(this.ObjectType, quoted, cancel, hold, submit, reject, createQuote);
             config.Deny(this.ObjectType, submitted, submit);
