@@ -22,7 +22,7 @@ Steps to run
 
 1. Run "Server.cmd" to start the backend
 2. Run "CodeIntranet.cmd" to open the project in your default IDE/Editor (assuming you have Visual Studio Code setup and set as the default)
-3. Type "ng serve" and wait until the process is completed
+3. Type "ng serve" in the terminal and wait until the process is completed
 4. Install "Debugger for Chrome" extension
 5. Then select Debug from menu or hit F5 and voila!
 6. now in the login screen, use "administrator" as username and keep password empty
