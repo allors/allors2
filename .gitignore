@@ -8,6 +8,7 @@ build/Properties/launchSettings.json
 .gitignore.swp
 **/tsc.js
 **/tsc.js.map
+**/tsc.tsbuildinfo
 
 # https://github.com/JetBrains/resharper-rider-samples/blob/master/.gitignore
 # ---------------------------------------------------------------------------
@@ -338,3 +339,6 @@ paket-files/
 *.sln.iml
 
 
+Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js
+Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.js.map
+Core/Workspace/Typescript.legacy/Site/wwwroot/tsc.tsbuildinfo
