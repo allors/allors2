@@ -9,6 +9,7 @@ namespace Allors.Workspace
     using System.Linq;
     using Meta;
     using Protocol.Data;
+    using Protocol.Remote;
     using Protocol.Remote.Sync;
 
     public class WorkspaceRole : IWorkspaceRole
@@ -32,7 +33,7 @@ namespace Allors.Workspace
                 else
                 {
                     this.Value = value != null
-                        ? value.Split(',').Select(long.Parse).ToArray()
+                        ? value.Split(Encoding.Separator).Select(long.Parse).ToArray()
                         : Array.Empty<long>();
                 }
             }

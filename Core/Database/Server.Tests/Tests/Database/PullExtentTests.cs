@@ -13,7 +13,7 @@ namespace Allors.Server.Tests
     using Allors.Meta;
     using Allors.Protocol.Data;
     using Allors.Protocol.Remote.Pull;
-
+    using Protocol.Remote;
     using Xunit;
     using Version = System.Version;
 
@@ -21,10 +21,10 @@ namespace Allors.Server.Tests
     public class PullExtentTests : ApiTest
     {
         private Func<IAccessControlList, string> PrintAccessControls =>
-            acl => string.Join(',', acl.AccessControls.OrderBy(v => v).Select(v => v.Id.ToString()));
+            acl => string.Join(Encoding.Separator, acl.AccessControls.OrderBy(v => v).Select(v => v.Id.ToString()));
 
         private Func<IAccessControlList, string> PrintDeniedPermissions =>
-            acl => string.Join(',', acl.DeniedPermissionIds.OrderBy(v => v).Select(v => v.ToString()));
+            acl => string.Join(Encoding.Separator, acl.DeniedPermissionIds.OrderBy(v => v).Select(v => v.ToString()));
 
         [Fact]
         public async void WithDeniedPermissions()

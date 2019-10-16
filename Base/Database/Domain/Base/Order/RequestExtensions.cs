@@ -9,8 +9,6 @@ namespace Allors.Domain
 
     public static partial class RequestExtensions
     {
-        public static void BaseOnBuild(this Request @this, ObjectOnBuild method) => @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
-
         public static void BaseOnDerive(this Request @this, ObjectOnDerive method)
         {
             if (!@this.ExistRecipient)

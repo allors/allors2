@@ -15,8 +15,6 @@ namespace Allors.Domain
             {
                 @this.QuoteState = new QuoteStates(@this.Strategy.Session).Created;
             }
-
-            @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
         }
 
         public static void BaseOnDerive(this Quote @this, ObjectOnDerive method)

@@ -32,7 +32,6 @@ namespace Allors.Domain
                 @this.Owner = owner;
             }
 
-            @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().InitialSecurityToken);
             @this.DeriveOwnerSecurity();
         }
 

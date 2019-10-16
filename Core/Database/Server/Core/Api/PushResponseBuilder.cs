@@ -11,7 +11,6 @@ namespace Allors.Server
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Remote.Push;
-    using Protocol;
     using Protocol.Data;
 
     public class PushResponseBuilder

@@ -32,27 +32,31 @@ namespace Allors.Workspace
 
         internal string ReadSortedAccessControlIds(string value)
         {
-            foreach (var accessControlId in value
-                .Split(Encoding.Separator)
-                .Select(v => long.Parse(v))
-                .Where(v => !this.accessControlById.ContainsKey(v)))
+            if (value != null)
             {
-                this.MissingAccessControlIds.Add(accessControlId);
+                foreach (var accessControlId in value
+                    .Split(Encoding.Separator)
+                    .Select(v => long.Parse(v))
+                    .Where(v => !this.accessControlById.ContainsKey(v)))
+                {
+                    this.MissingAccessControlIds.Add(accessControlId);
+                }
             }
 
             return value;
         }
 
-        internal string ReadSortedDeniedPermissionIds(string compressed)
+        internal string ReadSortedDeniedPermissionIds(string value)
         {
-            var value = compressed;
-
-            foreach (var permissionId in value
-                .Split(Encoding.Separator)
-                .Select(v => long.Parse(v))
-                .Where(v => !this.permissionById.ContainsKey(v)))
+            if (value != null)
             {
-                this.MissingPermissionIds.Add(permissionId);
+                foreach (var permissionId in value
+                    .Split(Encoding.Separator)
+                    .Select(v => long.Parse(v))
+                    .Where(v => !this.permissionById.ContainsKey(v)))
+                {
+                    this.MissingPermissionIds.Add(permissionId);
+                }
             }
 
             return value;

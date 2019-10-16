@@ -2,17 +2,39 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Allors.Domain.User" Collapsed="true" HideInheritanceLine="true">
     <Position X="6.25" Y="3" Width="1.5" />
-    <InheritanceLine Type="Allors.Domain.AccessControlledObject" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAGAAAAAAQAACBAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.AccessControl" HideInheritanceLine="true">
-    <Position X="3.25" Y="2.25" Width="1.5" />
-    <InheritanceLine Type="Allors.Domain.AccessControlledObject" IsHidden="true" />
+    <Position X="3.25" Y="2.25" Width="2" />
+    <AssociationLine Name="SubjectGroups" Type="Allors.Domain.UserGroup" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.25" Y="2.438" />
+        <Point X="6.25" Y="2.438" />
+        <Point X="6.25" Y="2.188" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Subjects" Type="Allors.Domain.User" FixedToPoint="true">
+      <Path>
+        <Point X="5.25" Y="3.438" />
+        <Point X="6.25" Y="3.438" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Role" Type="Allors.Domain.Role" FixedToPoint="true">
+      <Path>
+        <Point X="4.062" Y="3.612" />
+        <Point X="4.062" Y="4.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="EffectiveUsers" Type="Allors.Domain.User">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.118" Y="0.368" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAACAAAAAEAAAAAAAAAAAAIAAAAAQAAAAAAA=</HashCode>
+      <HashCode>AAAAAEAAAACAAAAAEAAAAAAQAAAAAIAAAAAQAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -25,7 +47,6 @@
   </Interface>
   <Interface Name="Allors.Domain.Permission" HideInheritanceLine="true">
     <Position X="3.25" Y="6.5" Width="1.75" />
-    <InheritanceLine Type="Allors.Domain.AccessControlledObject" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -33,7 +54,12 @@
   </Interface>
   <Interface Name="Allors.Domain.Role" HideInheritanceLine="true">
     <Position X="3.25" Y="4.5" Width="1.5" />
-    <InheritanceLine Type="Allors.Domain.AccessControlledObject" IsHidden="true" />
+    <AssociationLine Name="Permissions" Type="Allors.Domain.Permission" FixedFromPoint="true">
+      <Path>
+        <Point X="3.75" Y="5.733" />
+        <Point X="3.75" Y="6.5" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -44,7 +70,6 @@
   </Interface>
   <Interface Name="Allors.Domain.UserGroup" Collapsed="true" HideInheritanceLine="true">
     <Position X="6.25" Y="1.75" Width="1.5" />
-    <InheritanceLine Type="Allors.Domain.AccessControlledObject" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -74,7 +99,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAoAAAAAAAAAgAIAQAAAIAAAgAAAAAgAAAABQAAAg=</HashCode>
+      <HashCode>AAAApAAAAAAAAAgAIAQAAAIAAAgAAAAAgQAAAJQAAAg=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -82,13 +107,13 @@
       <Property Name="DefaultSecurityToken" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.AccessControlledObject">
+  <Interface Name="Allors.Domain.Object">
     <Position X="0.5" Y="4.25" Width="2" />
     <AssociationLine Name="DeniedPermissions" Type="Allors.Domain.Permission" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="1.5" Y="5.247" />
-        <Point X="1.5" Y="7.688" />
-        <Point X="3.25" Y="7.688" />
+        <Point X="1.5" Y="5.118" />
+        <Point X="1.5" Y="7.75" />
+        <Point X="3.25" Y="7.75" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>

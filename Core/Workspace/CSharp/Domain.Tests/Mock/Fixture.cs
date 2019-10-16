@@ -64,7 +64,7 @@ namespace Tests.Mock
                         {
                             new SyncResponseRole { T = M.Organisation.Name.IdAsString, V = "Acme" },
                             new SyncResponseRole { T = M.Organisation.Owner.IdAsString, V = "1" },
-                            new SyncResponseRole { T = M.Organisation.Employees.IdAsString, V = "1,2,3" },
+                            new SyncResponseRole { T = M.Organisation.Employees.IdAsString, V = "1|2|3" },
                             new SyncResponseRole { T = M.Organisation.Manager.IdAsString},
                         },
                     },

@@ -16,6 +16,8 @@ namespace Allors.Domain
 
         public static readonly Guid GuestId = new Guid("86445257-3F62-41e0-8B4A-2DF9FB18A8AA");
 
+        public static readonly Guid GuestCreatorId = new Guid("5281A811-81A2-4381-94BB-90B1AED0CC40");
+
         // DAC
         public static readonly Guid CreatorId = new Guid("3A3D1E25-4A91-4D07-8203-A9F3EA691598");
 
@@ -26,6 +28,8 @@ namespace Allors.Domain
         public Role Administrator => this.Sticky[AdministratorId];
 
         public Role Guest => this.Sticky[GuestId];
+
+        public Role GuestCreator => this.Sticky[GuestCreatorId];
 
         public Role Creator => this.Sticky[CreatorId];
 
@@ -38,6 +42,7 @@ namespace Allors.Domain
             // Horizontal Roles
             new RoleBuilder(this.Session).WithName("Administrator").WithUniqueId(AdministratorId).Build();
             new RoleBuilder(this.Session).WithName("Guest").WithUniqueId(GuestId).Build();
+            new RoleBuilder(this.Session).WithName("GuestCreator").WithUniqueId(GuestCreatorId).Build();
 
             // DAC emulation
             new RoleBuilder(this.Session).WithName("Creator").WithUniqueId(CreatorId).Build();

@@ -298,7 +298,7 @@ namespace Allors.Domain
             {
                 if (!unitBasePrice.HasValue)
                 {
-                    derivation.Validation.AddError(quoteItem, M.SalesOrderItem.UnitBasePrice, "No BasePrice with a Price");
+                    derivation.Validation.AddError(quoteItem, M.QuoteItem.UnitBasePrice, "No BasePrice with a Price");
                     return;
                 }
 
