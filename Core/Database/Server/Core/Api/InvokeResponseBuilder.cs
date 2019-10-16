@@ -81,15 +81,7 @@ namespace Allors.Server
                 }
                 else
                 {
-                    var validation = this.session.Derive(false);
-                    if (validation.HasErrors)
-                    {
-                        invokeResponse.AddDerivationErrors(validation);
-                    }
-                    else
-                    {
-                        this.session.Commit();
-                    }
+                    this.session.Commit();
                 }
             }
 

@@ -33,7 +33,10 @@ describe('Method',
           const result = await ctx.invoke(organisation.JustDoIt);
           assert.isFalse(result.response.hasErrors);
 
-          const loaded2 = await ctx.load(pull.Organisation({object: organisation}));
+          const organisationPull = pull.Organisation({object: organisation});
+          await ctx.load(organisationPull);
+
+          ctx.session.reset();
 
           assert.isTrue(organisation.JustDidIt);
         });

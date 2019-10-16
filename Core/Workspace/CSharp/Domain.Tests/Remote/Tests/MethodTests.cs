@@ -42,11 +42,13 @@ namespace Tests.Remote
                     {
                         new Pull
                         {
-                            Object=  organisation,
+                            Object = organisation,
                         },
                     };
 
                     organisation = (await context.Load(pull)).GetObject<Organisation>();
+
+                    context.Session.Reset();
 
                     Assert.True(organisation.JustDidIt);
                 });
