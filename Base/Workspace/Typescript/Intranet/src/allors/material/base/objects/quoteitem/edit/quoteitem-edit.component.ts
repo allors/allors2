@@ -189,6 +189,8 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
     this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
+    this.quoteItem.AssignedUnitPrice = this.serialisedItem.ExpectedSalesPrice;
+    this.quoteItem.Quantity = '1';
   }
 
   public save(): void {

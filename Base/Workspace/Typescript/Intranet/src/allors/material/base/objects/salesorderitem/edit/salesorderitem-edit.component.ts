@@ -32,6 +32,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   serialisedItemStates: SerialisedItemState[];
+  soldState: SerialisedItemState;
   invoiceItemTypes: InvoiceItemType[];
   productItemType: InvoiceItemType;
   part: Part;
@@ -140,6 +141,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
+        this.soldState = this.serialisedItemStates.find((v: SerialisedItemState) => v.UniqueId === 'feccf869-98d7-4e9c-8979-5611a43918bc');
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
 
@@ -209,6 +211,9 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
     this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
+    this.orderItem.AssignedUnitPrice = this.serialisedItem.ExpectedSalesPrice;
+    this.orderItem.QuantityOrdered = '1';
+    this.orderItem.NewSerialisedItemState = this.soldState;
   }
 
   private onSave() {
