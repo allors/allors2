@@ -69,7 +69,7 @@ namespace Allors.Domain
                     .WithSerialisedItem(requestItem.SerialisedItem)
                     .WithProductFeature(requestItem.ProductFeature)
                     .WithQuantity(requestItem.Quantity)
-                    .WithAssignedUnitPrice(requestItem.SerialisedItem.ExpectedSalesPrice)
+                    .WithAssignedUnitPrice(requestItem.SerialisedItem.ExpectedSalesPrice > 0? requestItem.SerialisedItem.ExpectedSalesPrice : 1M)
                     .WithUnitOfMeasure(requestItem.UnitOfMeasure)
                     .WithRequestItem(requestItem)
                     .WithInternalComment(requestItem.InternalComment).Build());
