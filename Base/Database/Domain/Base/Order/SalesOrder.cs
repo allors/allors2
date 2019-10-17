@@ -934,7 +934,7 @@ namespace Allors.Domain
             // Calculate Unit Price (with Discounts and Surcharges)
             if (salesOrderItem.AssignedUnitPrice.HasValue)
             {
-                salesOrderItem.UnitBasePrice = unitBasePrice ?? 0M;
+                salesOrderItem.UnitBasePrice = unitBasePrice ?? salesOrderItem.AssignedUnitPrice.Value;
                 salesOrderItem.UnitDiscount = 0;
                 salesOrderItem.UnitSurcharge = 0;
                 salesOrderItem.UnitPrice = salesOrderItem.AssignedUnitPrice.Value;
