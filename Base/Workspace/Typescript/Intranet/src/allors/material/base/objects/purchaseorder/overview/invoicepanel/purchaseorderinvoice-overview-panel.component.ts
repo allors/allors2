@@ -306,7 +306,8 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
           .subscribe((invoked: Invoked) => {
             this.refreshService.refresh();
             this.snackBar.open('Successfully removed from invoice.', 'close', { duration: 5000 });
-          });
+          },
+          this.saveService.errorHandler);
       }
     });
   }

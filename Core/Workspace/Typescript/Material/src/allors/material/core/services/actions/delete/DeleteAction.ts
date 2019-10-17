@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { Deletable } from '../../../../../domain';
 import { Action, ActionTarget, Invoked, Context, RefreshService} from '../../../../../angular';
 import { AllorsMaterialDialogService } from '../../dialog';
+import { SaveService } from '../../save';
 
 export class DeleteAction implements Action {
 
@@ -12,6 +13,7 @@ export class DeleteAction implements Action {
   constructor(
     refreshService: RefreshService,
     dialogService: AllorsMaterialDialogService,
+    saveService: SaveService,
     snackBar: MatSnackBar,
     context: Context) {
     this.execute = (target: ActionTarget) => {
@@ -32,7 +34,8 @@ export class DeleteAction implements Action {
                   snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                   refreshService.refresh();
                   this.result.next(true);
-                });
+                },
+                saveService.errorHandler);
             }
           });
       }

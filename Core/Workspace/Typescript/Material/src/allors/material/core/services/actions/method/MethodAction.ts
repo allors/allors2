@@ -5,6 +5,7 @@ import { Action, ActionTarget, Invoked, Context, RefreshService} from '../../../
 import { MethodType, ISessionObject } from '../../../../../framework';
 
 import { MethodConfig } from './MethodConfig';
+import { SaveService } from '../../save';
 
 export class MethodAction implements Action {
 
@@ -14,6 +15,7 @@ export class MethodAction implements Action {
     refreshService: RefreshService,
     snackBar: MatSnackBar,
     context: Context,
+    saveService: SaveService,
     public methodType: MethodType,
     public config: MethodConfig) {
 
@@ -28,7 +30,8 @@ export class MethodAction implements Action {
             snackBar.open('Successfully executed ' + methodType.name + '.', 'close', { duration: 5000 });
             refreshService.refresh();
             this.result.next(true);
-          });
+          },
+          saveService.errorHandler);
       }
     };
   }

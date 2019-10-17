@@ -4,7 +4,7 @@ import { Good, PurchaseOrder, PurchaseInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort, Equals } from '../../../../../../../allors/framework';
-import { PrintService } from '../../../../../../material';
+import { PrintService, SaveService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -28,6 +28,8 @@ export class PurchasInvoiceOverviewSummaryComponent {
     public metaService: MetaService,
     public navigation: NavigationService,
     public printService: PrintService,
+    private saveService: SaveService,
+
     public refreshService: RefreshService,
     public snackBar: MatSnackBar) {
 
@@ -105,7 +107,8 @@ export class PurchasInvoiceOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public cancel(): void {
@@ -114,7 +117,8 @@ export class PurchasInvoiceOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public reopen(): void {
@@ -123,7 +127,8 @@ export class PurchasInvoiceOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public approve(): void {
@@ -132,7 +137,8 @@ export class PurchasInvoiceOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public reject(): void {
@@ -141,7 +147,8 @@ export class PurchasInvoiceOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public createSalesInvoice(invoice: PurchaseInvoice): void {
@@ -150,7 +157,8 @@ export class PurchasInvoiceOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.snackBar.open('Successfully created a sales invoice.', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      });
+      },
+      this.saveService.errorHandler);
   }
 }
 

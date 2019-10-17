@@ -3,7 +3,7 @@ import { PanelService, NavigationService, MetaService, Invoked, RefreshService, 
 import { PurchaseOrder, PurchaseInvoice} from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PrintService } from '../../../../../../material';
+import { PrintService, SaveService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -25,6 +25,8 @@ export class PurchaseOrderOverviewSummaryComponent {
     public metaService: MetaService,
     public navigation: NavigationService,
     public printService: PrintService,
+    private saveService: SaveService,
+
     public refreshService: RefreshService,
     public snackBar: MatSnackBar) {
 
@@ -77,7 +79,8 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public cancel(): void {
@@ -86,7 +89,8 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public reject(): void {
@@ -95,7 +99,8 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public hold(): void {
@@ -104,7 +109,8 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public continue(): void {
@@ -113,7 +119,8 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public confirm(): void {
@@ -122,7 +129,8 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public reopen(): void {
@@ -131,7 +139,8 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public send(): void {
@@ -140,7 +149,8 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public invoice(): void {
@@ -149,7 +159,8 @@ export class PurchaseOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully created purchase invoice', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public quickReceive(): void {
@@ -159,6 +170,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.panel.toggle();
         this.snackBar.open('inventory created for all items', 'close', { duration: 5000 });
         this.refreshService.refresh();
-      });
+      },
+      this.saveService.errorHandler);
   }
 }

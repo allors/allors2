@@ -3,7 +3,7 @@ import { PanelService, NavigationService, MetaService, RefreshService, Invoked, 
 import { WorkTask, SalesInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PrintService } from '../../../../../../../allors/material';
+import { PrintService, SaveService } from '../../../../../../../allors/material';
 import { Equals, And, ContainedIn, Filter } from '../../../../../../../allors/framework';
 
 @Component({
@@ -28,6 +28,7 @@ export class WorkTaskOverviewSummaryComponent {
     public navigation: NavigationService,
     public refreshService: RefreshService,
     public printService: PrintService,
+    private saveService: SaveService,
     public snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
@@ -113,7 +114,8 @@ export class WorkTaskOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public reopen(): void {
@@ -122,7 +124,8 @@ export class WorkTaskOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public complete(): void {
@@ -131,7 +134,8 @@ export class WorkTaskOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully completed.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public invoice(): void {
@@ -140,6 +144,7 @@ export class WorkTaskOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully invoiced.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 }
