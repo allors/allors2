@@ -3,7 +3,7 @@ import { PanelService, NavigationService, MetaService, Invoked, RefreshService, 
 import { ProductQuote, SalesOrder, RequestForQuote } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PrintService } from '../../../../../../material';
+import { PrintService, SaveService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -25,6 +25,7 @@ export class ProductQuoteOverviewSummaryComponent {
     public metaService: MetaService,
     public navigation: NavigationService,
     public printService: PrintService,
+    private saveService: SaveService,
     public refreshService: RefreshService,
     public snackBar: MatSnackBar) {
 
@@ -100,7 +101,9 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public order(): void {
@@ -109,7 +112,8 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully created a salesorder.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public cancel(): void {
@@ -118,7 +122,8 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public reject(): void {
@@ -127,7 +132,8 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public Order(): void {
@@ -136,6 +142,7 @@ export class ProductQuoteOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('SalesOrder successfully created.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 }

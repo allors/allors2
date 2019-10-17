@@ -4,7 +4,7 @@ import { Good, SalesOrder, SalesInvoice, RepeatingSalesInvoice, SalesTerm, Sales
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort, Equals } from '../../../../../../../allors/framework';
-import { PrintService } from '../../../../../../material';
+import { PrintService, SaveService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -31,6 +31,7 @@ export class SalesInvoiceOverviewSummaryComponent {
     public navigation: NavigationService,
     public printService: PrintService,
     public refreshService: RefreshService,
+    private saveService: SaveService,
     public snackBar: MatSnackBar) {
 
     this.m = this.metaService.m;
@@ -137,7 +138,8 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully sent.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public cancel(): void {
@@ -146,7 +148,8 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public writeOff(): void {
@@ -155,7 +158,8 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public reopen(): void {
@@ -164,7 +168,8 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully Reopened.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public credit(): void {
@@ -173,7 +178,8 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully Credited.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 
   public copy(): void {
@@ -182,7 +188,8 @@ export class SalesInvoiceOverviewSummaryComponent {
       .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully copied.', 'close', { duration: 5000 });
-      });
+      },
+      this.saveService.errorHandler);
   }
 }
 
