@@ -12,7 +12,7 @@
                 "--colors",
                 "--recursive",
                 "--inspect-brk",
-                "${workspaceFolder}/dist/**/Create.spec.js",
+                "${workspaceFolder}/dist/**/Method.spec.js",
             ],
             "stopOnEntry": false,
             "internalConsoleOptions": "openOnSessionStart",

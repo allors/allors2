@@ -106,7 +106,7 @@ export class Database {
             return {
               i: v.object.id,
               v: v.object.version,
-              m: v.methodType.name,
+              m: v.methodType.id,
             };
           })
         };
@@ -130,8 +130,8 @@ export class Database {
         const invokeRequest: InvokeRequest = {
           i: [{
             i: method.object.id,
-            m: method.methodType.name,
             v: method.object.version,
+            m: method.methodType.id,
           }]
         };
 

@@ -1,0 +1,197 @@
+group Project;
+
+TemplateId() ::= <<516D4D6C-9AD1-41f6-88AA-181AAE0126C5>>
+TemplateName() ::= <<Allors Project>>
+TemplateVersion() ::= <<1.0.3>>
+TemplateAllors() ::= <<1.0>>
+TemplateConfiguration(domain) ::= <<
+$!
+Copyright 2002-2013 Allors bvba.
+
+Dual Licensed under
+  a) the Lesser General Public Licence v3 (LGPL)
+  b) the Allors License
+
+The LGPL License is included in the file lgpl.txt.
+The Allors License is an addendum to your contract.
+
+Allors Platform is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+For more information visit http://www.allors.com/legal
+!$
+<allors version="1.0">
+$domain.domains:{part|
+    $part.DeclaredObjectTypes:{objectType|
+        <generation template="compositeObjectType" input="$objectType.Id $" output="$part.Name$/$objectType.SingularName$.cs"/>
+    }$
+}$
+</allors>
+>>
+
+compositeObjectType(domain,objectType) ::= <<
+$if(objectType.IsInterface)$
+namespace Allors.Repository
+{
+    using System;
+    using Attributes;
+
+    #region Allors
+    [Id("$objectType.IdAsString$")]
+    #endregion
+	public partial interface $objectType.name$ : $if(objectType.existDirectSupertypes)$ $objectType.directSupertypes:{directSupertype|$directSupertype.SingularName$}; separator=", "$ $endif$
+    {
+$objectType.exclusiveRoleTypes:{roleType|$interfaceExclusiveRoleType()$}$
+$objectType.exclusiveMethodTypes:{methodType|$interfaceExclusiveMethodType()$}$
+    }
+}
+$endif$
+
+$if(objectType.IsClass)$
+namespace Allors.Repository
+{
+    using System;
+    using Attributes;
+
+    #region Allors
+    [Id("$objectType.IdAsString$")]
+    #endregion
+    public partial class $objectType.name$ : $if(objectType.existDirectSupertypes)$ $objectType.directSupertypes:{directSupertype|$directSupertype.SingularName$}; separator=", "$ $endif$
+    {
+        #region inherited properties
+$objectType.Supertypes:{supertype|$supertype.exclusiveRoleTypes:{roleType|$classInheritedRoleType()$}$}; separator="\n"$
+        #endregion
+
+$objectType.exclusiveRoleTypes:{roleType|$classExclusiveRoleType()$}$
+
+        #region inherited methods
+$objectType.Supertypes:{supertype|$supertype.exclusiveMethodTypes:{methodType|$classInheritedMethodType()$}$}; separator="\n"$
+        #endregion
+
+$objectType.exclusiveMethodTypes:{methodType|$classExclusiveMethodType()$}; separator="\n"$
+    }
+}
+$endif$
+>>
+
+interfaceExclusiveRoleType() ::= <<
+$allorsRoleType()$
+$if(roleType.ObjectType.IsUnit)$
+        $objectType(roleType.ObjectType)$ $roleType.SingularName$ { get; set; }
+$else$
+$if(roleType.IsMany)$
+        $objectType(roleType.ObjectType)$[] $roleType.PluralName$ { get; set; }
+$else$
+        $objectType(roleType.ObjectType)$ $roleType.SingularName$ { get; set; }
+$endif$
+$endif$
+>>
+
+interfaceExclusiveMethodType() ::= <<
+$methodType.Groups:{group|         [Group("$group$")]}; separator="\n"$
+        void $methodType.Name$();
+>>
+
+classInheritedRoleType() ::= <<
+$if(roleType.ObjectType.IsUnit)$
+        public $objectType(roleType.ObjectType)$ $roleType.SingularName$ { get; set; }
+$else$
+$if(roleType.IsMany)$
+        public $objectType(roleType.ObjectType)$[] $roleType.PluralName$ { get; set; }
+$else$
+        public $objectType(roleType.ObjectType)$ $roleType.SingularName$ { get; set; }
+$endif$
+$endif$
+>>
+
+classExclusiveRoleType() ::= <<
+$allorsRoleType()$
+$if(roleType.ObjectType.IsUnit)$
+        public $objectType(roleType.ObjectType)$ $roleType.SingularName$ { get; set; }
+$else$
+$if(roleType.IsMany)$
+        public $objectType(roleType.ObjectType)$[] $roleType.PluralName$ { get; set; }
+$else$
+        public $objectType(roleType.ObjectType)$ $roleType.SingularName$ { get; set; }
+$endif$
+$endif$
+>>
+
+classInheritedMethodType() ::= <<
+        public void $methodType.Name$(){}
+>>
+
+classExclusiveMethodType() ::= <<
+        public void $methodType.Name$(){}
+>>
+
+allorsRoleType() ::= <<
+$\n$
+        #region Allors
+        [Id("$roleType.RelationType.IdAsString$")]
+        [AssociationId("$roleType.AssociationType.IdAsString$")]
+        [RoleId("$roleType.IdAsString$")]
+$if(roleType.ObjectType.IsComposite)$        [Multiplicity(Multiplicity.$multiplicity(roleType.RelationType)$)]$endif$
+$if(roleType.RelationType.IsDerived)$        [Derived]$endif$
+$if(roleType.RelationType.IsIndexed)$        [Indexed]$endif$
+$if(roleType.IsRequired)$        [Required]$endif$
+$if(roleType.IsUnique)$        [Unique]$endif$
+$if(roleType.ExistSize)$        [Size($roleType.Size$)]$endif$
+$if(roleType.ExistPrecision)$        [Precision($roleType.Precision$)]$endif$
+$if(roleType.ExistScale)$        [Scale($roleType.Scale$)]$endif$
+        #endregion
+>>
+
+multiplicity(relationType) ::= <<
+$if(relationType.IsOneToOne)$
+OneToOne
+$endif$
+$if(relationType.IsOneToMany)$
+OneToMany
+$endif$
+$if(relationType.IsManyToMany)$
+ManyToMany
+$endif$
+$if(relationType.IsManyToOne)$
+ManyToOne
+$endif$
+>>
+
+objectType(objectType) ::= <<
+$if(objectType.IsUnit)$
+$if(objectType.IsBinary)$
+    byte[]
+$endif$
+$if(objectType.IsBoolean)$
+    bool
+$endif$
+$if(objectType.IsDecimal)$
+    decimal
+$endif$
+$if(objectType.IsDate)$
+    DateTime
+$endif$
+$if(objectType.IsDateTime)$
+    DateTime
+$endif$
+$if(objectType.IsFloat)$
+    double
+$endif$
+$if(objectType.IsInteger)$
+    int
+$endif$
+$if(objectType.IsLong)$
+    int
+$endif$
+$if(objectType.IsString)$
+    string
+$endif$
+$if(objectType.IsUnique)$
+    Guid
+$endif$
+$else$
+    $objectType.SingularName$
+$endif$
+>>

@@ -39,7 +39,7 @@ namespace Allors.Workspace
                 {
                     I = v.Object.Id.ToString(),
                     V = v.Object.Version.ToString(),
-                    M = v.Name,
+                    M = v.MethodType.IdAsString,
                 }).ToArray(),
                 O = options,
             };
