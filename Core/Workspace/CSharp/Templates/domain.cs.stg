@@ -2,7 +2,7 @@ delimiters "$", "$"
 
 TemplateId() ::= <<07F63139-1791-4F55-AAED-F1A6D8D40055>>
 TemplateName() ::= <<Allors C# Workspace Domain>>
-TemplateVersion() ::= <<1.0.6>>
+TemplateVersion() ::= <<1.0.7>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(meta) ::= <<
 $!
@@ -200,7 +200,7 @@ classMethodType() ::= <<
 			{
 				get
 				{
-					return new Method(this, "$methodType.Name$");
+					return new Method(this, this.Meta.$methodType.Name$);
 				}
 			}
 >>

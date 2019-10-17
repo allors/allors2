@@ -28,6 +28,11 @@ namespace Allors.Domain
             }
         }
 
+        public void CustomJustDoIt(OrganisationJustDoIt method)
+        {
+            this.JustDidIt = true;
+        }
+
         public override string ToString() => this.Name;
     }
 }

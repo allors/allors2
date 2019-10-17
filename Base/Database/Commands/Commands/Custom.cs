@@ -52,12 +52,21 @@ namespace Commands
 
         public int OnExecute(CommandLineApplication app)
         {
-            return this.CheckSecurity();
+            return this.MetaStatistics();
+            //return this.CheckSecurity();
             //return this.PrintPurchaseInvoice();
             //return this.PrintSalesInvoice();
             //return this.PrintProductQuote();
             //return this.PrintWorkTask();
             //return this.MonthlyScheduler();
+        }
+
+        private int MetaStatistics()
+        {
+            var metaPopulation = this.databaseService.Database.MetaPopulation;
+            Console.WriteLine("Workspace ObjectTypes: " + metaPopulation.Composites.Cast<Composite>().Count(v => v.Workspace));
+
+            return 0;
         }
 
         private int CheckSecurity()

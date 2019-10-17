@@ -194,6 +194,15 @@ namespace Allors.Repository
         [Workspace]
         public Data[] ManyDatas { get; set; }
 
+        #region Allors
+        [Id("BC94072C-8F69-45AE-AED0-C056758F78F3")]
+        [AssociationId("B399309C-4729-45F9-A29B-5C0AB242601A")]
+        [RoleId("DCBD1AF0-9F39-4558-A084-28449BE3D5C4")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool JustDidIt { get; set; }
+
         #region inherited methods
         public void OnBuild() { }
 

@@ -3,8 +3,6 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Threading;
-
 namespace Allors.Domain
 {
     using Allors.Meta;
@@ -45,7 +43,7 @@ namespace Allors.Domain
                 this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
 
-            if (this.ExistRequestWhereRequestItem && this.RequestWhereRequestItem.RequestState.Equals(new RequestStates(this.Strategy.Session).Cancelled))
+            if (this.ExistRequestWhereRequestItem && new RequestStates(this.Strategy.Session).Cancelled.Equals(this.RequestWhereRequestItem.RequestState))
             {
                 this.Cancel();
             }

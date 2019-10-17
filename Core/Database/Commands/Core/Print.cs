@@ -37,7 +37,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var administrator = new Users(session).GetUser("administrator");
+                var administrator = new Users(session).GetUser(Users.AdministratorUserName);
                 session.SetUser(administrator);
 
                 var printDocuments = new PrintDocuments(session).Extent();
