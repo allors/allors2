@@ -482,6 +482,7 @@ namespace Allors.Domain
 
             var userGroups = new UserGroups(this.Session);
             userGroups.Creators.AddMember(localAdmin);
+            userGroups.Employees.AddMember(localAdmin);
 
             this.Session.Derive(true);
             this.Session.Commit();
