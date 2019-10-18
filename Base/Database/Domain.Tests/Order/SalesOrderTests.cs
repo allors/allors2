@@ -1665,7 +1665,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(0, order.TotalBasePrice);
+            Assert.Equal(45, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
             Assert.Equal(0, order.TotalSurcharge);
             Assert.Equal(7.5m, order.TotalShippingAndHandling);
@@ -1716,7 +1716,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(0, order.TotalBasePrice);
+            Assert.Equal(45, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
             Assert.Equal(0, order.TotalSurcharge);
             Assert.Equal(2.25m, order.TotalShippingAndHandling);
@@ -1767,7 +1767,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(0, order.TotalBasePrice);
+            Assert.Equal(45, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
             Assert.Equal(0, order.TotalSurcharge);
             Assert.Equal(0, order.TotalShippingAndHandling);
@@ -1862,7 +1862,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(0, order.TotalBasePrice);
+            Assert.Equal(45, order.TotalBasePrice);
             Assert.Equal(0, order.TotalDiscount);
             Assert.Equal(0, order.TotalSurcharge);
             Assert.Equal(0, order.TotalShippingAndHandling);
@@ -1990,6 +1990,8 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
+            this.Session.Derive();
+
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
             var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
             var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
@@ -2012,7 +2014,6 @@ namespace Allors.Domain
             Assert.True(derivationLog.HasErrors);
             Assert.Contains(M.Priceable.UnitBasePrice, derivationLog.Errors[0].RoleTypes);
 
-            Assert.Equal(0, item4.UnitBasePrice);
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
             Assert.Contains(item3, order.ValidOrderItems);
@@ -2121,6 +2122,78 @@ namespace Allors.Domain
             Assert.Equal(1, item1.OrderShipmentsWhereOrderItem[0].Quantity);
             Assert.Equal(2, item2.OrderShipmentsWhereOrderItem[0].Quantity);
             Assert.Equal(5, item3.OrderShipmentsWhereOrderItem[0].Quantity);
+        }
+
+        [Fact]
+        public void GivenSalesOrderForSerialisedItem_WhenConfirmed_ThenShipmentItemIsCreated()
+        {
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            var good1 = new NonUnifiedGoodBuilder(this.Session)
+                .WithName("good1")
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate21)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("1")
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                    .Build())
+                .Build();
+
+            var serialisedItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").WithAvailableForSale(true).Build();
+            good1.Part.AddSerialisedItem(serialisedItem1);
+
+            new SerialisedInventoryItemBuilder(this.Session).WithFacility(this.InternalOrganisation.FacilitiesWhereOwner.First).WithPart(good1.Part).WithSerialisedItem(serialisedItem1).Build();
+
+            this.Session.Derive();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(mechelenAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithPartyContactMechanism(shipToMechelen).Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            order.AddSalesOrderItem(item1);
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            //var derivation = new Logging.Derivation(this.Session, new DerivationConfig
+            //    {
+            //        DerivationLogFunc = () => new CustomListDerivationLog(),
+            //    }
+            //);
+
+            //derivation.Derive();
+
+            //var list = ((CustomListDerivationLog)derivation.DerivationLog).List;
+            //list.RemoveAll(v => !v.StartsWith("Dependency"));
+
+            this.Session.Derive();
+
+            var shipment = customer.ShipmentsWhereShipToParty.First;
+
+            Assert.Equal(1, shipment.ShipmentItems.Count);
+            Assert.Equal(1, item1.OrderShipmentsWhereOrderItem[0].Quantity);
         }
 
         [Fact]

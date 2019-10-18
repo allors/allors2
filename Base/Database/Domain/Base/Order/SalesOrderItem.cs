@@ -91,6 +91,11 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this.ReservedFromNonSerialisedInventoryItem, this);
             }
+
+            if (this.ExistReservedFromSerialisedInventoryItem)
+            {
+                derivation.AddDependency(this.ReservedFromSerialisedInventoryItem, this);
+            }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)
@@ -212,7 +217,7 @@ namespace Allors.Domain
 
             if (this.IsValid)
             {
-                if (this.Part != null && salesOrder.TakenBy != null)
+                if (this.Part != null && salesOrder?.TakenBy != null)
                 {
                     if (this.Part.InventoryItemKind.Serialised)
                     {

@@ -300,7 +300,6 @@ namespace Allors.Domain
             var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);
             var salesOrderItemPaymentStates = new SalesOrderItemPaymentStates(derivation.Session);
             var salesOrderItemInvoiceStates = new SalesOrderItemInvoiceStates(derivation.Session);
-            var salesOrderItemStates = new SalesOrderItemStates(derivation.Session);
 
             // SalesOrder Shipment State
             if (validOrderItems.Any())
@@ -358,35 +357,7 @@ namespace Allors.Domain
                 }
             }
 
-            // SalesOrderItem States
-            foreach (var salesOrderItem in validOrderItems)
-            {
-                if (this.SalesOrderState.InProcess &&
-                    (salesOrderItem.SalesOrderItemState.Created || salesOrderItem.SalesOrderItemState.OnHold))
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.InProcess;
-                }
-
-                if (this.SalesOrderState.OnHold && salesOrderItem.SalesOrderItemState.InProcess)
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.OnHold;
-                }
-
-                if (this.SalesOrderState.Finished)
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Finished;
-                }
-
-                if (this.SalesOrderState.Cancelled)
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Cancelled;
-                }
-
-                if (this.SalesOrderState.Rejected)
-                {
-                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Rejected;
-                }
-            }
+            this.SetSalesOrderItemState();
 
             var currentPriceComponents = new PriceComponents(session).CurrentPriceComponents(this.OrderDate);
 
@@ -571,6 +542,42 @@ namespace Allors.Domain
             this.ResetPrintDocument();
         }
 
+        private void SetSalesOrderItemState()
+        {
+            var validOrderItems = this.SalesOrderItems.Where(v => v.IsValid).ToArray();
+            var salesOrderItemStates = new SalesOrderItemStates(this.strategy.Session);
+
+            // SalesOrderItem States
+            foreach (var salesOrderItem in validOrderItems)
+            {
+                if (this.SalesOrderState.InProcess &&
+                    (salesOrderItem.SalesOrderItemState.Created || salesOrderItem.SalesOrderItemState.OnHold))
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.InProcess;
+                }
+
+                if (this.SalesOrderState.OnHold && salesOrderItem.SalesOrderItemState.InProcess)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.OnHold;
+                }
+
+                if (this.SalesOrderState.Finished)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Finished;
+                }
+
+                if (this.SalesOrderState.Cancelled)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Cancelled;
+                }
+
+                if (this.SalesOrderState.Rejected)
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.Rejected;
+                }
+            }
+        }
+
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
             var derivation = method.Derivation;
@@ -663,6 +670,7 @@ namespace Allors.Domain
         {
             this.OnCancelOrReject();
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Cancelled;
+            this.SetSalesOrderItemState();
         }
 
         public void BaseConfirm(OrderConfirm method)
@@ -681,21 +689,40 @@ namespace Allors.Domain
             {
                 this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
             }
+
+            this.SetSalesOrderItemState();
         }
 
         public void BaseReject(OrderReject method)
         {
             this.OnCancelOrReject();
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
+            this.SetSalesOrderItemState();
         }
 
-        public void BaseHold(OrderHold method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
+        public void BaseHold(OrderHold method)
+        {
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
+            this.SetSalesOrderItemState();
+        }
 
-        public void BaseApprove(OrderApprove method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+        public void BaseApprove(OrderApprove method)
+        {
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+            this.SetSalesOrderItemState();
+        }
 
-        public void BaseContinue(OrderContinue method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+        public void BaseContinue(OrderContinue method)
+        {
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+            this.SetSalesOrderItemState();
+        }
 
-        public void BaseComplete(OrderComplete method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
+        public void BaseComplete(OrderComplete method)
+        {
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
+            this.SetSalesOrderItemState();
+        }
 
         public void BaseShip(SalesOrderShip method)
         {
