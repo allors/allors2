@@ -1,0 +1,10 @@
+@inherits ABSInputBase
+
+<BSFormGroup>
+    <BSLabel>@DerivedLabel</BSLabel>
+    <BSInput @bind-Value="Model"></BSInput>
+    <BSFormFeedback For="@(() => Model)" />
+</BSFormGroup>
+
+@code {
+}
