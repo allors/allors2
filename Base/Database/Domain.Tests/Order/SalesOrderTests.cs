@@ -2101,6 +2101,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .WithOrderKind(new OrderKindBuilder(this.Session).WithDescription("auto").WithScheduleManually(false).Build())
                 .Build();
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();

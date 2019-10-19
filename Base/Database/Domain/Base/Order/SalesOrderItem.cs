@@ -323,9 +323,20 @@ namespace Allors.Domain
 
                     if (this.ExistReservedFromSerialisedInventoryItem)
                     {
+                        var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault(v => v.InventoryItem.Equals(this.ReservedFromSerialisedInventoryItem));
+                        if (inventoryAssignment == null)
+                        {
+                            new SalesOrderItemInventoryAssignmentBuilder(this.strategy.Session)
+                                .WithSalesOrderItem(this)
+                                .WithInventoryItem(this.ReservedFromSerialisedInventoryItem)
+                                .WithQuantity(1)
+                                .Build();
+
+                            this.QuantityRequestsShipping = 1;
+                        }
+
                         this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Assigned;
                         this.QuantityReserved = 1;
-                        this.QuantityRequestsShipping = 1;
                     }
                 }
 
