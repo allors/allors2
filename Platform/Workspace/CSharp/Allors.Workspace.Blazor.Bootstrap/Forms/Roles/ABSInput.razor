@@ -1,10 +1,7 @@
-@inherits ABSInputBase
+@inherits RoleField
 
 <BSFormGroup>
-    <BSLabel>@DerivedLabel</BSLabel>
+    <BSLabel>@Label</BSLabel>
     <BSInput @bind-Value="Model"></BSInput>
     <BSFormFeedback For="@(() => Model)" />
 </BSFormGroup>
-
-@code {
-}

@@ -1,0 +1,8 @@
+@inherits RoleField
+
+<BSFormGroup>
+    <BSFormGroup IsCheck="true">
+        <BSBasicInput InputType="InputType.Checkbox" Id="@Name" @bind-Value="Model" />
+        <BSLabel For="@Name">@Label</BSLabel>
+    </BSFormGroup>
+</BSFormGroup>

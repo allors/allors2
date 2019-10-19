@@ -7,27 +7,27 @@ namespace Allors.Workspace.Blazor
 
     public partial class RoleField : Field, IDisposable
     {
-        public ISessionObject Object { get; set; }
+        private ISessionObject @object;
+        private string name;
+        private bool disable;
+        private bool required;
+        private string label;
 
-        public IRoleType RoleType { get; set; }
-
-        public string AssignedName { get; set; }
-
-        public bool AssignedDisabled { get; set; }
-
-        public bool AssignedRequired { get; set; }
-
-        public string AssignedLabel { get; set; }
-
-        public bool Readonly { get; set; }
-
-        public string Hint { get; set; }
-
-        public bool Focus { get; set; }
-
-        public bool EmptyStringIsNull { get; set; } = true;
+        [Parameter]
+        public ISessionObject Object
+        {
+            get => this.@object ?? (ISessionObject)this.EditContext.Model;
+            set => this.@object = value;
+        }
 
         public bool ExistObject => this.Object != null;
+
+        [Parameter]
+        public IRoleType RoleType { get; set; }
+
+        public bool CanRead => this.ExistObject && this.Object.CanRead(this.RoleType);
+
+        public bool CanWrite => this.ExistObject && this.Object.CanWrite(this.RoleType);
 
         public object Model
         {
@@ -48,9 +48,47 @@ namespace Allors.Workspace.Blazor
             }
         }
 
-        public bool CanRead => this.ExistObject && this.Object.CanRead(this.RoleType);
+        [Parameter]
+        public string Name
+        {
+            get => !string.IsNullOrWhiteSpace(this.name)
+                    ? this.name
+                    : this.RoleType.Name + '_' + this.Object?.Id;
+            set => this.name = value;
+        }
 
-        public bool CanWrite => this.ExistObject && this.Object.CanWrite(this.RoleType);
+        [Parameter]
+        public string Label
+        {
+            get => !string.IsNullOrWhiteSpace(this.label) ? this.label : this.RoleType.Name; // TODO: Humanize(this.RoleType.Name);
+            set => this.label = value;
+        }
+
+        [Parameter]
+        public bool Disable
+        {
+            get => this.disable || !this.CanWrite;
+            set => this.disable = value;
+        }
+
+        [Parameter]
+        public bool Required
+        {
+            get => this.required ? this.required : this.RoleType.IsRequired;
+            set => this.required = value;
+        }
+
+        [Parameter]
+        public bool Readonly { get; set; }
+
+        [Parameter]
+        public string Hint { get; set; }
+
+        [Parameter]
+        public bool Focus { get; set; }
+
+        [Parameter]
+        public bool EmptyStringIsNull { get; set; } = true;
 
         public string TextType
         {
@@ -67,14 +105,6 @@ namespace Allors.Workspace.Blazor
 
             }
         }
-
-        public string Name => !string.IsNullOrWhiteSpace(this.AssignedName) ? this.AssignedName : this.RoleType.Name + '_' + this.Object?.Id.ToString("N");
-
-        public string Label => !string.IsNullOrWhiteSpace(this.AssignedLabel) ? this.AssignedLabel : this.RoleType.Name; // TODO: Humanize(this.RoleType.Name);
-
-        public bool Required => this.AssignedRequired ? this.AssignedRequired : this.RoleType.IsRequired;
-
-        public bool Disable => !this.CanWrite || this.AssignedDisabled;
 
         public string DataAllorsId => this.Object?.Id.ToString("D");
 
@@ -98,7 +128,7 @@ namespace Allors.Workspace.Blazor
             }
         }
 
-        void System.IDisposable.Dispose() => this.Validation.Remove(this);
+        void IDisposable.Dispose() => this.Validation.Remove(this);
 
         public override void Validate(ValidationMessageStore messages)
         {

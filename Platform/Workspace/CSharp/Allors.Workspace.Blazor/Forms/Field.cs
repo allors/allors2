@@ -1,6 +1,5 @@
 namespace Allors.Workspace.Blazor
 {
-    using Meta;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Forms;
 
@@ -11,15 +10,6 @@ namespace Allors.Workspace.Blazor
 
         [CascadingParameter]
         public AllorsValidation Validation { get; set; }
-
-        [Parameter]
-        public IRoleType RoleType { get; set; }
-
-        [Parameter]
-        public ISessionObject Object { get; set; }
-
-        [Parameter]
-        public string Label { get; set; }
 
         [Parameter]
         public bool FullWidth { get; set; } = true;
