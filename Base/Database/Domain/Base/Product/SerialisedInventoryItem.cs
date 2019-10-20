@@ -49,6 +49,8 @@ namespace Allors.Domain
                 var message = "Invalid transaction";
                 derivation.Validation.AddError(this, this.Meta.Quantity, message);
             }
+
+            this.Part.OnDerive(x => x.WithDerivation(derivation));
         }
 
         public void BaseOnDeriveQuantity(IDerivation derivation)

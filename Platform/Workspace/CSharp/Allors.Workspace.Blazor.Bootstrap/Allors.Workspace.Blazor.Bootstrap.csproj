@@ -10,7 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Forms\Roles\ABSRadio.razor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="CarouselItem.cs" />
+    <Content Include="Forms\Roles\ABSRadioGroup.razor.cs" />
   </ItemGroup>
 
   <ItemGroup>

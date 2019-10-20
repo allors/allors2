@@ -97,56 +97,58 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
     const goodPullName = `${panel.name}_${this.m.Good.name}`;
 
     panel.onPull = (pulls) => {
-      const { m, pull, x } = this.metaService;
+      if (this.panel.isCollapsed) {
+        const { m, pull, x } = this.metaService;
 
-      const { id } = this.panel.manager;
+        const { id } = this.panel.manager;
 
-      pulls.push(
-        pull.SalesInvoice({
-          name: salesInvoicePullName,
-          object: id,
-          include: {
-            SalesInvoiceItems: {
-              Product: x,
-              InvoiceItemType: x,
-            },
-            SalesTerms: {
-              TermType: x,
-            },
-            VatRegime: {
-              VatRate: x
-            },
-            AssignedVatClause: x,
-            DerivedVatClause: x,
-            Currency: x,
-            BillToCustomer: x,
-            BillToContactPerson: x,
-            ShipToCustomer: x,
-            ShipToContactPerson: x,
-            ShipToEndCustomer: x,
-            ShipToEndCustomerContactPerson: x,
-            SalesInvoiceState: x,
-            CreatedBy: x,
-            LastModifiedBy: x,
-            BillToContactMechanism: {
-              PostalAddress_Country: x
-            },
-            ShipToAddress: {
-              Country: x
-            },
-            BillToEndCustomerContactMechanism: {
-              PostalAddress_Country: x
-            },
-            ShipToEndCustomerAddress: {
-              Country: x
+        pulls.push(
+          pull.SalesInvoice({
+            name: salesInvoicePullName,
+            object: id,
+            include: {
+              SalesInvoiceItems: {
+                Product: x,
+                InvoiceItemType: x,
+              },
+              SalesTerms: {
+                TermType: x,
+              },
+              VatRegime: {
+                VatRate: x
+              },
+              AssignedVatClause: x,
+              DerivedVatClause: x,
+              Currency: x,
+              BillToCustomer: x,
+              BillToContactPerson: x,
+              ShipToCustomer: x,
+              ShipToContactPerson: x,
+              ShipToEndCustomer: x,
+              ShipToEndCustomerContactPerson: x,
+              SalesInvoiceState: x,
+              CreatedBy: x,
+              LastModifiedBy: x,
+              BillToContactMechanism: {
+                PostalAddress_Country: x
+              },
+              ShipToAddress: {
+                Country: x
+              },
+              BillToEndCustomerContactMechanism: {
+                PostalAddress_Country: x
+              },
+              ShipToEndCustomerAddress: {
+                Country: x
+              }
             }
-          }
-        }),
-        pull.Good({
-          name: goodPullName,
-          sort: new Sort(m.Good.Name),
-        }),
-      );
+          }),
+          pull.Good({
+            name: goodPullName,
+            sort: new Sort(m.Good.Name),
+          }),
+        );
+      }
     };
 
     panel.onPulled = (loaded) => {

@@ -80,6 +80,11 @@ namespace Allors.Domain
                     .WithFacility(inventoryItem.Facility)
                     .Build();
 
+                if (inventoryItem is SerialisedInventoryItem serialisedInventoryItem)
+                {
+                    newTransaction.SerialisedItem = serialisedInventoryItem.SerialisedItem;
+                }
+
                 newTransaction.InventoryItem = inventoryItem;
                 this.AddInventoryItemTransaction(newTransaction);
             }

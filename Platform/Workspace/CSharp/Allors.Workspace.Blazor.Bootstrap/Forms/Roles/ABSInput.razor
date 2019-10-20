@@ -1,0 +1,7 @@
+@inherits RoleField
+
+<BSFormGroup>
+    <BSLabel>@Label</BSLabel>
+    <BSInput @bind-Value="Model"></BSInput>
+    <BSFormFeedback For="@(() => Model)" />
+</BSFormGroup>

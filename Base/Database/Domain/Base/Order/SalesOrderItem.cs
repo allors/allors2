@@ -91,6 +91,11 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this.ReservedFromNonSerialisedInventoryItem, this);
             }
+
+            if (this.ExistReservedFromSerialisedInventoryItem)
+            {
+                derivation.AddDependency(this.ReservedFromSerialisedInventoryItem, this);
+            }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)
@@ -212,7 +217,7 @@ namespace Allors.Domain
 
             if (this.IsValid)
             {
-                if (this.Part != null && salesOrder.TakenBy != null)
+                if (this.Part != null && salesOrder?.TakenBy != null)
                 {
                     if (this.Part.InventoryItemKind.Serialised)
                     {
@@ -318,9 +323,20 @@ namespace Allors.Domain
 
                     if (this.ExistReservedFromSerialisedInventoryItem)
                     {
+                        var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault(v => v.InventoryItem.Equals(this.ReservedFromSerialisedInventoryItem));
+                        if (inventoryAssignment == null)
+                        {
+                            new SalesOrderItemInventoryAssignmentBuilder(this.strategy.Session)
+                                .WithSalesOrderItem(this)
+                                .WithInventoryItem(this.ReservedFromSerialisedInventoryItem)
+                                .WithQuantity(1)
+                                .Build();
+
+                            this.QuantityRequestsShipping = 1;
+                        }
+
                         this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Assigned;
                         this.QuantityReserved = 1;
-                        this.QuantityRequestsShipping = 1;
                     }
                 }
 
