@@ -70,7 +70,6 @@ namespace Allors.Domain
 
             var userGroups = new UserGroups(this.Session);
             userGroups.Creators.AddMember(salesaccm);
-            userGroups.Employees.AddMember(salesaccm);
 
             this.Session.Derive(true);
 
