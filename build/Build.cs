@@ -54,6 +54,11 @@ partial class Build : NukeBuild
         TaskKill();
     }
 
+    Target ResetDatabase => _ => _
+        .DependsOn(AdaptersResetDatabase)
+        .DependsOn(CoreResetDatabase)
+        .DependsOn(BaseResetDatabase);
+
     Target Clean => _ => _
         .Executes(() =>
         {

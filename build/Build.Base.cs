@@ -11,9 +11,17 @@ using static Nuke.Common.Tools.Npm.NpmTasks;
 
 partial class Build
 {
-    private Target Base => _ => _
-         .DependsOn(Clean)
-         .DependsOn(BaseTest);
+    Target BaseResetDatabase => _ => _
+        .Executes(() =>
+        {
+            var database = "Base";
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Drop(database);
+                sqlServer.Create(database);
+            }
+        });
 
     private Target BaseDatabaseTest => _ => _
          .DependsOn(BaseDatabaseTestDomain);
@@ -81,12 +89,7 @@ partial class Build
                  .SetOutput(Paths.ArtifactsBaseServer);
              DotNetPublish(dotNetPublishSettings);
          });
-
-    private Target BaseTest => _ => _
-         .DependsOn(BaseDatabaseTest)
-         .DependsOn(BaseWorkspaceCSharpTest)
-         .DependsOn(BaseWorkspaceTypescriptTest);
-
+    
     private Target BaseWorkspaceAutotest => _ => _
          .DependsOn(BaseWorkspaceSetup)
          .Executes(() =>
@@ -150,6 +153,7 @@ partial class Build
          .DependsOn(BaseWorkspaceSetup)
          .DependsOn(BasePublishServer)
          .DependsOn(BasePublishCommands)
+         .DependsOn(BaseResetDatabase)
          .Executes(async () =>
          {
              using (var sqlServer = new SqlServer())
@@ -178,6 +182,7 @@ partial class Build
          .DependsOn(BaseWorkspaceAutotest)
          .DependsOn(BasePublishServer)
          .DependsOn(BasePublishCommands)
+         .DependsOn(BaseResetDatabase)
          .Executes(async () =>
          {
              using (var sqlServer = new SqlServer())
@@ -204,4 +209,13 @@ partial class Build
          .DependsOn(BaseWorkspaceTypescriptDomain)
          .DependsOn(BaseWorkspaceTypescriptIntranet)
          .DependsOn(BaseWorkspaceTypescriptIntranetTests);
+
+    private Target BaseTest => _ => _
+        .DependsOn(BaseDatabaseTest)
+        .DependsOn(BaseWorkspaceCSharpTest)
+        .DependsOn(BaseWorkspaceTypescriptTest);
+
+    private Target Base => _ => _
+        .DependsOn(Clean)
+        .DependsOn(BaseTest);
 }
