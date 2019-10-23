@@ -377,6 +377,7 @@ namespace Allors.Domain
 
             var userGroups = new UserGroups(this.Session);
             userGroups.Creators.AddMember(worker);
+            userGroups.Employees.AddMember(worker);
 
             this.Session.Derive(true);
             this.Session.Commit();
