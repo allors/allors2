@@ -98,7 +98,6 @@ namespace Tests.OrganisationTests
                 .IndustryClassifications.Toggle(industryClassification.Name)
                 .CustomClassifications.Toggle(customOrganisationClassification.Name)
                 .IsManufacturer.Set(true)
-                .IsInternalOrganisation.Set(true)
                 .Comment.Set("comment")
                 .SAVE.Click();
 
@@ -118,7 +117,6 @@ namespace Tests.OrganisationTests
             Assert.Contains(industryClassification, organisation.IndustryClassifications);
             Assert.Contains(customOrganisationClassification, organisation.CustomClassifications);
             Assert.True(organisation.IsManufacturer);
-            Assert.True(organisation.IsInternalOrganisation);
             Assert.Equal("comment", organisation.Comment);
         }
     }

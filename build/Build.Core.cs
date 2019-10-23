@@ -9,6 +9,18 @@ using static Nuke.Common.Tools.Npm.NpmTasks;
 
 partial class Build
 {
+    Target CoreResetDatabase => _ => _
+        .Executes(() =>
+        {
+            var database = "Core";
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Drop(database);
+                sqlServer.Create(database);
+            }
+        });
+
     Target CoreGenerate => _ => _
         .After(Clean)
         .Executes(() =>
@@ -55,6 +67,7 @@ partial class Build
         .DependsOn(CoreGenerate)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
+        .DependsOn(CoreResetDatabase)
         .Executes(async () =>
         {
             using (var sqlServer = new SqlServer())
@@ -121,6 +134,7 @@ partial class Build
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(EnsureDirectories)
+        .DependsOn(CoreResetDatabase)
         .Executes(async () =>
         {
             using (var sqlServer = new SqlServer())
@@ -144,6 +158,7 @@ partial class Build
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(EnsureDirectories)
+        .DependsOn(CoreResetDatabase)
         .Executes(async () =>
         {
             using (var sqlServer = new SqlServer())
@@ -168,6 +183,7 @@ partial class Build
         .DependsOn(CoreWorkspaceSetup)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
+        .DependsOn(CoreResetDatabase)
         .Executes(async () =>
         {
             using (var sqlServer = new SqlServer())
@@ -192,6 +208,7 @@ partial class Build
         .DependsOn(CoreWorkspaceAutotest)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
+        .DependsOn(CoreResetDatabase)
         .Executes(async () =>
         {
             using (var sqlServer = new SqlServer())
@@ -216,6 +233,7 @@ partial class Build
     Target CoreWorkspaceCSharpDomainTests => _ => _
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
+        .DependsOn(CoreResetDatabase)
         .Executes(async () =>
         {
             using (var sqlServer = new SqlServer())

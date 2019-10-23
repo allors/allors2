@@ -35,7 +35,7 @@ namespace Allors
                 var belgium = new Countries(session).CountryByIsoCode["BE"];
                 var euro = belgium.Currency;
 
-                var bank = new BankBuilder(session).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
+                var bank = new BankBuilder(session).WithCountry(belgium).WithName("ING BelgiÃ«").WithBic("BBRUBEBB").Build();
 
                 var ownBankAccount = new OwnBankAccountBuilder(session)
                     .WithBankAccount(new BankAccountBuilder(session).WithBank(bank)
@@ -101,9 +101,15 @@ namespace Allors
 
                 var customer = new OrganisationBuilder(session).WithName("customer").WithLocale(singleton.DefaultLocale).Build();
                 var supplier = new OrganisationBuilder(session).WithName("supplier").WithLocale(singleton.DefaultLocale).Build();
-                var purchaser = new PersonBuilder(session).WithLastName("purchaser").WithUserName("purchaser").Build();
-                var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("salesRep").Build();
-                var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("orderProcessor").Build();
+
+                var purchaser = new PersonBuilder(session).WithLastName("purchaser").WithUserName("The").Build();
+                var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("The").Build();
+                var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("The").Build();
+
+                // Adding newly created persons to EmployeeUserGroup as employees do not have any permission when created
+                singleton.EmployeeUserGroup.AddMember(purchaser);
+                singleton.EmployeeUserGroup.AddMember(salesrep);
+                singleton.EmployeeUserGroup.AddMember(orderProcessor);
 
                 new CustomerRelationshipBuilder(session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(session.Now()).Build();
 

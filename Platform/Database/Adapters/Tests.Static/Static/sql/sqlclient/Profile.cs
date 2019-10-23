@@ -71,7 +71,7 @@ namespace Allors.Database.Adapters.SqlClient
             {
                 if (Settings.IsWindows)
                 {
-                    return @"Server=(localdb)\MSSQLLocalDB;Integrated Security=true";
+                    return @"Server=(localdb)\MSSQLLocalDB;Database=Adapters;Integrated Security=true";
                 }
 
                 return "server=localhost;database=object;User Id=SA;Password=Allors123";
