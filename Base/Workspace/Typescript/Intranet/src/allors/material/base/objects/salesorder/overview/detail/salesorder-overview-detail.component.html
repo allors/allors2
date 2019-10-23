@@ -155,7 +155,7 @@
             <mat-card>
               <mat-card-header>Add a new ContactMechanism</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism (saved)="billToContactMechanismAdded($event)" (cancelled)="addBillToContactMechanism = false">
+                <party-contactmechanism (saved)="billToContactMechanismAdded($event); addBillToContactMechanism = false" (cancelled)="addBillToContactMechanism = false">
                 </party-contactmechanism>
               </mat-card-content>
             </mat-card>
@@ -221,7 +221,7 @@
             <mat-card>
               <mat-card-header>Add a new contact mechanism</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="addShipToEndCustomerAddress = false">
+                <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event); addShipToEndCustomerAddress = false" (cancelled)="addShipToEndCustomerAddress = false">
                 </party-contactmechanism-postaladdress>
               </mat-card-content>
             </mat-card>
@@ -287,7 +287,7 @@
             <mat-card>
               <mat-card-header>Add a new contact mechanism</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism (saved)="billToEndCustomerContactMechanismAdded($event)" (cancelled)="addBillToEndCustomerContactMechanism = false">
+                <party-contactmechanism (saved)="billToEndCustomerContactMechanismAdded($event); addBillToEndCustomerContactMechanism = false" (cancelled)="addBillToEndCustomerContactMechanism = false">
                 </party-contactmechanism>
               </mat-card-content>
             </mat-card>
