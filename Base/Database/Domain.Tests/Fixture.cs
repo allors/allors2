@@ -102,9 +102,9 @@ namespace Allors
                 var customer = new OrganisationBuilder(session).WithName("customer").WithLocale(singleton.DefaultLocale).Build();
                 var supplier = new OrganisationBuilder(session).WithName("supplier").WithLocale(singleton.DefaultLocale).Build();
 
-                var purchaser = new PersonBuilder(session).WithLastName("Purchaser").WithUserName("The").Build();
-                var salesrep = new PersonBuilder(session).WithLastName("SalesRep").WithUserName("The").Build();
-                var orderProcessor = new PersonBuilder(session).WithLastName("OrderProcessor").WithUserName("The").Build();
+                var purchaser = new PersonBuilder(session).WithLastName("purchaser").WithUserName("The").Build();
+                var salesrep = new PersonBuilder(session).WithLastName("salesRep").WithUserName("The").Build();
+                var orderProcessor = new PersonBuilder(session).WithLastName("orderProcessor").WithUserName("The").Build();
 
                 // Adding newly created persons to EmployeeUserGroup as employees do not have any permission when created
                 singleton.EmployeeUserGroup.AddMember(purchaser);
