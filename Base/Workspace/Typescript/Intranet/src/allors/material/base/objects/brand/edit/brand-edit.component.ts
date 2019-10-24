@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { Brand } from '../../../../../domain';
+import { Saved, ContextService, MetaService, RefreshService, TestScope, FetcherService } from '../../../../../angular';
+import { Brand, Locale } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -21,6 +21,7 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
   public m: Meta;
 
   public brand: Brand;
+  locales: Locale[];
 
   private subscription: Subscription;
 
@@ -31,6 +32,7 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
+    private fetcher: FetcherService,
   ) {
 
     super();
@@ -49,6 +51,7 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
           const isCreate = this.data.id === undefined;
 
           const pulls = [
+            this.fetcher.locales,
             pull.Brand({
               object: this.data.id,
               include: {
@@ -68,6 +71,7 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
       .subscribe(({ loaded, isCreate }) => {
 
         this.allors.context.reset();
+        this.locales = loaded.collections.AdditionalLocales as Locale[];
 
         if (isCreate) {
           this.title = 'Add Brand';
