@@ -12,11 +12,17 @@
       <a-mat-input class="col-md" [object]="brand" [roleType]="m.Brand.Description"></a-mat-input>
     </div>
 
+    <div class="row pt-3">
+      <a-mat-file class="col-md-12" [object]="brand" [roleType]="m.Brand.LogoImage"
+        accept="image/*"></a-mat-file>
+    </div>
+
   </mat-dialog-content>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
-    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+    <button mat-button class="ml-2" color="primary" type="submit"
+      [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
   </div>
 
 </form>

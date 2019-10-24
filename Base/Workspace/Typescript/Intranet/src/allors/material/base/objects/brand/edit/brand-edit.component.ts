@@ -51,6 +51,10 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
           const pulls = [
             pull.Brand({
               object: this.data.id,
+              include: {
+                LogoImage: x,
+                Models: x
+              }
             }),
           ];
 
