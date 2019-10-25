@@ -42,7 +42,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithNextServiceDate(faker.Date.Future(refDate: serviceDate));
             @this.WithSerialNumber(faker.Random.AlphaNumeric(12));
             @this.WithOwnership(faker.Random.ListItem(@this.Session.Extent<Ownership>()));
-            @this.WithAcquisitionYear(serviceDate.Year - 1);
             @this.WithManufacturingYear(serviceDate.Year - 5);
             @this.WithLifeTime(lifetime);
             @this.WithDepreciationYears(faker.Random.Int(0, lifetime));
