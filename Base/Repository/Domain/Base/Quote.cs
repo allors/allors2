@@ -379,6 +379,14 @@ namespace Allors.Repository
         void Create();
 
         #region Allors
+
+        [Id("70F1138B-1383-4AA1-A08E-6C99F71F3F07")]
+
+        #endregion
+        [Workspace]
+        void Reopen();
+
+        #region Allors
         [Id("519F70DC-0C4C-43E7-8929-378D8871CD84")]
         #endregion
         [Workspace]

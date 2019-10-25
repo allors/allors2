@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using Allors.Meta;
+
 namespace Allors.Domain
 {
     using System.Linq;
@@ -50,10 +52,61 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseApprove(this Quote @this, QuoteApprove method) => @this.QuoteState = new QuoteStates(@this.Strategy.Session).Approved;
+        public static void BaseApprove(this Quote @this, QuoteApprove method)
+        {
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Approved;
+            SetItemState(@this);
+        }
 
-        public static void BaseReject(this Quote @this, QuoteReject method) => @this.QuoteState = new QuoteStates(@this.Strategy.Session).Rejected;
+        public static void BaseReopen(this Quote @this, QuoteReopen method)
+        {
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Created;
+            SetItemState(@this);
+        }
 
-        public static void BaseCancel(this Quote @this, QuoteCancel method) => @this.QuoteState = new QuoteStates(@this.Strategy.Session).Cancelled;
+        public static void BaseReject(this Quote @this, QuoteReject method)
+        {
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Rejected;
+            SetItemState(@this);
+        }
+
+        public static void BaseCancel(this Quote @this, QuoteCancel method)
+        {
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Cancelled;
+            SetItemState(@this);
+        }
+
+        private static void SetItemState(this Quote @this)
+        {
+            var quoteItemStates = new QuoteItemStates(@this.Strategy.Session);
+
+            foreach (QuoteItem quoteItem in @this.QuoteItems)
+            {
+                if (@this.QuoteState.IsCancelled)
+                {
+                    if (!Equals(quoteItem.QuoteItemState, quoteItemStates.Rejected))
+                    {
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Cancelled;
+                    }
+                }
+
+                if (@this.QuoteState.IsRejected)
+                {
+                    if (!Equals(quoteItem.QuoteItemState, quoteItemStates.Cancelled))
+                    {
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Rejected;
+                    }
+                }
+
+                if (@this.QuoteState.IsApproved)
+                {
+                    if (!Equals(quoteItem.QuoteItemState, quoteItemStates.Cancelled)
+                        && !Equals(quoteItem.QuoteItemState, quoteItemStates.Rejected))
+                    {
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Approved;
+                    }
+                }
+            }
+        }
     }
 }

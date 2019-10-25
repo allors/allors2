@@ -11,6 +11,7 @@ namespace Allors.Domain
     {
         protected override void BaseSetup(Setup setup)
         {
+            var employeeUserGroup = this.Session.GetSingleton().EmployeeUserGroup;
             var internalOrganisations = new Organisations(this.Session).InternalOrganisations();
 
             var users = new Users(this.Session).Extent();
@@ -20,6 +21,7 @@ namespace Allors.Domain
                 foreach (var internalOrganisation in internalOrganisations)
                 {
                     new EmploymentBuilder(this.Session).WithEmployer(internalOrganisation).WithEmployee(person).Build();
+                    employeeUserGroup.AddMember(person);
                 }
             }
         }

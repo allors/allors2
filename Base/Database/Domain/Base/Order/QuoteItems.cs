@@ -12,6 +12,7 @@ namespace Allors.Domain
             var draft = new QuoteItemStates(this.Session).Draft;
             var cancelled = new QuoteItemStates(this.Session).Cancelled;
             var submitted = new QuoteItemStates(this.Session).Submitted;
+            var approved = new QuoteItemStates(this.Session).Approved;
             var ordered = new QuoteItemStates(this.Session).Ordered;
             var rejected = new QuoteItemStates(this.Session).Rejected;
 
@@ -26,6 +27,7 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, cancelled, Operations.Write);
             config.Deny(this.ObjectType, ordered, Operations.Write);
+            config.Deny(this.ObjectType, approved, Operations.Write);
         }
     }
 }

@@ -133,7 +133,7 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
             internalOrganisationId
           ];
-        }, [, , , , ,]),
+        }, [, , , , , ]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           internalOrganisationPredicate.object = internalOrganisationId;
@@ -169,15 +169,21 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.user = loaded.objects.Person as Person;
+
         const localAdministrator = this.internalOrganisation.LocalAdministrators.includes(this.user);
         const userGroups = loaded.collections.UserGroups as UserGroup[];
+
         const administratorUserGroup = userGroups.find((v: UserGroup) => v.UniqueId === 'cdc04209-683b-429c-bed2-440851f430df');
         const administrator = administratorUserGroup.Members.includes(this.user);
-        this.canCreate = localAdministrator || administrator;
 
-        const requests = loaded.collections.Quotes as Quote[];
-        this.table.total = loaded.values.Requests_total;
-        this.table.data = requests.filter(v => v.CanReadQuoteNumber).map((v) => {
+        const salesAccountManagerUserGroup = userGroups.find((v: UserGroup) => v.UniqueId === '449ea7ce-124b-4e19-afdf-46cafb8d7b20');
+        const salesAccountManager = salesAccountManagerUserGroup.Members.includes(this.user);
+
+        this.canCreate = localAdministrator || administrator || salesAccountManager;
+
+        const quotes = loaded.collections.Quotes as Quote[];
+        this.table.total = loaded.values.Quotes_total;
+        this.table.data = quotes.filter(v => v.CanReadQuoteNumber).map((v) => {
           return {
             object: v,
             number: `${v.QuoteNumber}`,

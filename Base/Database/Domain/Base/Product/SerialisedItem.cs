@@ -42,6 +42,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            derivation.Validation.AssertExistsAtMostOne(this, this.Meta.AcquiredDate, this.Meta.AcquisitionYear);
+
             if (!this.ExistName && this.ExistPartWhereSerialisedItem)
             {
                 this.Name = this.PartWhereSerialisedItem.Name;
