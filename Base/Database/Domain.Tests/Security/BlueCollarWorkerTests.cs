@@ -124,7 +124,7 @@ namespace Allors.Domain
 
             Assert.Equal(new WorkEffortStates(this.Session).Created, workTask.WorkEffortState);
 
-            this.SetIdentity(worker.UserName);
+            this.Session.SetUser(worker);
 
             var acl = new AccessControlLists(worker)[inventoryAssignment];
             Assert.True(acl.CanRead(M.WorkEffortInventoryAssignment.InventoryItem));
@@ -188,7 +188,7 @@ namespace Allors.Domain
 
             Assert.Equal(new WorkEffortStates(this.Session).Created, workTask.WorkEffortState);
 
-            this.SetIdentity(worker.UserName);
+            this.Session.SetUser(worker);
 
             var acl = new AccessControlLists(worker)[inventoryAssignment];
             Assert.False(acl.CanRead(M.WorkEffortInventoryAssignment.InventoryItem));
@@ -232,7 +232,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity(worker.UserName);
+            this.Session.SetUser(worker);
 
             var acl = new AccessControlLists(worker)[workTask];
             Assert.True(acl.CanRead(M.WorkTask.WorkDone));
@@ -268,7 +268,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity(worker.UserName);
+            this.Session.SetUser(worker);
 
             var acl = new AccessControlLists(worker)[workTask];
             Assert.False(acl.CanRead(M.WorkTask.WorkDone));
@@ -310,7 +310,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity(worker.UserName);
+            this.Session.SetUser(worker);
 
             var acl = new AccessControlLists(worker)[timeEntry];
             Assert.True(acl.CanRead(M.TimeEntry.ThroughDate));
@@ -354,7 +354,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity(worker.UserName);
+            this.Session.SetUser(worker);
 
             var acl = new AccessControlLists(worker)[timeEntry];
             Assert.False(acl.CanRead(M.TimeEntry.ThroughDate));
@@ -382,7 +382,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
             this.Session.Commit();
 
-            this.SetIdentity(worker.UserName);
+            this.Session.SetUser(worker);
 
             var acl = new AccessControlLists(worker)[internalOrganisation];
             Assert.True(acl.CanRead(M.Organisation.Name));

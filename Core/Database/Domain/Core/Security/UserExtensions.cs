@@ -5,30 +5,25 @@
 
 namespace Allors.Domain
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
-
     using Allors.Services;
-    using Meta;
     using Microsoft.Extensions.DependencyInjection;
 
     public static partial class UserExtensions
     {
         public static void CoreOnPostBuild(this User @this, ObjectOnPostBuild method)
         {
-            if (!@this.ExistNormalizedUserName)
+            if (!@this.ExistNotificationList)
             {
-                @this.NormalizedUserName = @this.UserName?.ToUpperInvariant();
+                @this.NotificationList = new NotificationListBuilder(@this.Strategy.Session).Build();
             }
         }
 
-        public static void SetPassword(this User @this, string clearTextPassword)
+        public static User SetPassword(this User @this, string clearTextPassword)
         {
-            var securityService = @this.Strategy.Session.ServiceProvider.GetRequiredService<IPasswordService>();
+            var securityService = @this.Session().ServiceProvider.GetRequiredService<IPasswordService>();
             var passwordHash = securityService.HashPassword(@this.UserName, clearTextPassword);
             @this.UserPasswordHash = passwordHash;
+            return @this;
         }
 
         public static bool VerifyPassword(this User @this, string clearTextPassword)
@@ -38,26 +33,24 @@ namespace Allors.Domain
                 return false;
             }
 
-            var securityService = @this.Strategy.Session.ServiceProvider.GetRequiredService<IPasswordService>();
+            var securityService = @this.Session().ServiceProvider.GetRequiredService<IPasswordService>();
             return securityService.VerifyHashedPassword(@this.UserName, @this.UserPasswordHash, clearTextPassword);
         }
 
-        public static string SecurityHash(this User @this)
+        public static void CoreDelete(this User @this, DeletableDelete method)
         {
-            var accessControls = @this.AccessControlsWhereEffectiveUser;
-
-            // TODO: Append a Salt
-            var idsWithVersion = string.Join(":", accessControls.OrderBy(v => v.Id).Select(v => v.Id + v.Strategy.ObjectVersion));
-
-            var crypt = SHA256.Create();
-            var hash = new StringBuilder();
-            var crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(idsWithVersion), 0, Encoding.UTF8.GetByteCount(idsWithVersion));
-            foreach (var theByte in crypto)
+            foreach (Login login in @this.Logins)
             {
-                hash.Append(theByte.ToString("x2"));
+                login.Delete();
             }
 
-            return hash.ToString();
+            @this.NotificationList?.Delete();
+        }
+
+        public static void CoreOnDerive(this User @this, ObjectOnDerive method)
+        {
+            @this.NormalizedUserName = Users.Normalize(@this.UserName);
+            @this.NormalizedUserEmail = Users.Normalize(@this.UserEmail);
         }
     }
 }

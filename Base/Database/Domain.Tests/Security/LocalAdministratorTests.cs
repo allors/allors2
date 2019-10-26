@@ -123,7 +123,7 @@ namespace Allors.Domain
 
             Assert.Equal(new WorkEffortStates(this.Session).Created, workTask.WorkEffortState);
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             var acl = new AccessControlLists(localAdmin)[inventoryAssignment];
             Assert.True(acl.CanRead(M.WorkEffortInventoryAssignment.InventoryItem));
@@ -184,7 +184,7 @@ namespace Allors.Domain
 
             Assert.Equal(new WorkEffortStates(this.Session).Created, workTask.WorkEffortState);
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             var acl = new AccessControlLists(localAdmin)[inventoryAssignment];
             Assert.False(acl.CanRead(M.WorkEffortInventoryAssignment.InventoryItem));
@@ -227,7 +227,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             var acl = new AccessControlLists(localAdmin)[workTask];
             Assert.True(acl.CanRead(M.WorkTask.WorkDone));
@@ -262,7 +262,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             var acl = new AccessControlLists(localAdmin)[workTask];
             Assert.False(acl.CanRead(M.WorkTask.WorkDone));
@@ -303,7 +303,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             var acl = new AccessControlLists(localAdmin)[timeEntry];
             Assert.True(acl.CanRead(M.TimeEntry.ThroughDate));
@@ -346,7 +346,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             var acl = new AccessControlLists(localAdmin)[timeEntry];
             Assert.False(acl.CanRead(M.TimeEntry.ThroughDate));
@@ -381,7 +381,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             Assert.True(salesInvoice.Strategy.IsNewInSession);
 
@@ -450,7 +450,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             Assert.True(salesInvoice.Strategy.IsNewInSession);
 
@@ -487,7 +487,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
             this.Session.Commit();
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             var acl = new AccessControlLists(localAdmin)[internalOrganisation];
             Assert.True(acl.CanRead(M.Organisation.Name));
@@ -515,7 +515,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
             this.Session.Commit();
 
-            this.SetIdentity(localAdmin.UserName);
+            this.Session.SetUser(localAdmin);
 
             var acl = new AccessControlLists(localAdmin)[userGroup];
             Assert.True(acl.CanRead(M.UserGroup.Members));

@@ -1007,7 +1007,7 @@ namespace Allors.Domain
             this.Session.Commit();
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
             pickList.SetPicked();
 
             this.Session.Derive();
@@ -1374,7 +1374,7 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             this.Session.Derive();
 
@@ -1425,7 +1425,7 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.Equal(5, pickList.PickListItems[0].Quantity);
 
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             this.Session.Derive();
 
@@ -1580,7 +1580,7 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             new OrderShipmentBuilder(this.Session)
                 .WithOrderItem(orderItem)
@@ -1929,7 +1929,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
@@ -1961,7 +1962,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
@@ -1995,7 +1997,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
@@ -2019,7 +2022,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
             pickList.SetPicked();
 
             this.Session.Derive();
@@ -2057,7 +2060,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
@@ -2092,7 +2096,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
@@ -2126,7 +2131,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
@@ -2153,7 +2159,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
             pickList.SetPicked();
 
             this.Session.Derive();
@@ -2198,7 +2204,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(this.good)
@@ -2232,7 +2239,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
@@ -2256,7 +2264,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
             pickList.SetPicked();
 
             this.Session.Derive();

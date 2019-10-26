@@ -9,7 +9,7 @@ namespace Blazor.Bootstrap.ServerSide
     using Allors.Services;
     using Blazor.Bootstrap.ServerSide.Areas.Identity;
     using BlazorStrap;
-    using Identity;
+    using Allors.Security;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Authorization;

@@ -10,7 +10,6 @@ namespace Allors.Server.Tests
     using Allors.Domain;
     using Server;
 
-    using Microsoft.AspNetCore.Identity;
     using Xunit;
 
     [Collection("Api")]
@@ -19,12 +18,16 @@ namespace Allors.Server.Tests
     {
         public SignInTests()
         {
-            var passwordHasher = new PasswordHasher<string>();
+            new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
 
-            new PersonBuilder(this.Session).WithUserName("John").Build();
+            var jane = new PersonBuilder(this.Session)
+                .WithFirstName("Jane")
+                .WithLastName("Doe")
+                .WithUserName("jane@example.com")
+                .Build()
+                .SetPassword("p@ssw0rd");
 
-            var hash = passwordHasher.HashPassword("Jane", "p@ssw0rd");
-            new PersonBuilder(this.Session).WithUserName("Jane").WithUserPasswordHash(hash).Build();
+            this.Session.Derive();
             this.Session.Commit();
         }
 

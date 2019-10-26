@@ -75,10 +75,10 @@ namespace Commands
             {
                 var people = new People(session);
 
-                var administrator = people.FindBy(M.Person.UserName, "administrator");
+                var jane = people.FindBy(M.Person.FirstName, "jane");
                 var john = people.FindBy(M.Person.FirstName, "john");
 
-                var acls = new AccessControlLists(administrator);
+                var acls = new AccessControlLists(jane);
                 var acl = acls[john];
 
                 var accessControl = acl.AccessControls.Single();

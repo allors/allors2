@@ -39,29 +39,6 @@ namespace Allors.Domain
             }
         }
 
-        public void CustomOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
-            // Validation
-            if (!Users.GuestUserName.Equals(this.UserName) && !Users.AdministratorUserName.Equals(this.UserName))
-            {
-                derivation.Validation.AssertExists(this, M.Person.LastName);
-            }
-
-            // Derivation
-            if (this.ExistFirstName && this.ExistLastName)
-            {
-                this.FullName = this.FirstName + " " + this.LastName;
-            }
-            else if (this.ExistFirstName)
-            {
-                this.FullName = this.FirstName;
-            }
-            else
-            {
-                this.FullName = this.LastName;
-            }
-        }
+        public void CustomOnDerive(ObjectOnDerive method) => this.FullName = this.FirstName + " " + this.LastName;
     }
 }

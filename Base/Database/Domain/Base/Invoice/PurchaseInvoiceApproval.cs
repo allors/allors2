@@ -5,6 +5,9 @@
 
 namespace Allors.Domain
 {
+    using System;
+    using System.Collections.Generic;
+
     public partial class PurchaseInvoiceApproval
     {
         public void BaseApprove(PurchaseInvoiceApprovalApprove method)
@@ -75,7 +78,7 @@ namespace Allors.Domain
 
             // Assignments
             var participants = this.ExistDateClosed
-                                   ? People.EmptyList
+                                   ? (IEnumerable<Person>)Array.Empty<Person>()
                                    : this.PurchaseInvoice.BilledTo.PurchaseInvoiceApprovers;
             this.AssignParticipants(participants);
         }

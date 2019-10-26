@@ -9,22 +9,11 @@ namespace Allors.Domain
     using System.Xml;
     using System.Xml.Serialization;
 
-    using Allors;
-
-    /// <summary>
-    /// A user of this application.
-    /// </summary>
     public partial class Users
     {
-        public const string GuestUserName = "Guest";
-        public const string AdministratorUserName = "Administrator";
+        internal static string Normalize(string value) => value?.Normalize().ToUpperInvariant();
 
-        public User GetUser(string userId)
-        {
-            // TODO: cache
-            var user = this.FindBy(this.Meta.UserName, userId);
-            return user;
-        }
+        public User GetUser(string userName) => this.FindBy(this.Meta.NormalizedUserName, Users.Normalize(userName));
 
         public void SavePasswords(XmlWriter writer)
         {
@@ -72,21 +61,6 @@ namespace Allors.Domain
 
                 public string PasswordHash { get; set; }
             }
-        }
-
-        private class CachedUser
-        {
-            private readonly string objectId;
-
-            public CachedUser(User user)
-            {
-                this.objectId = user.Id.ToString();
-                this.UserId = user.UserName.ToLower();
-            }
-
-            public string UserId { get; set; }
-
-            public User GetUser(ISession session) => (User)session.Instantiate(this.objectId);
         }
     }
 }

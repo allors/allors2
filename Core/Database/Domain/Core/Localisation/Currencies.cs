@@ -49,7 +49,7 @@ namespace Allors.Domain
                 { "CLP", "Chilean Peso" },
                 { "CNY", "Chinese Yuan" },
                 { "COP", "Colombian Peso" },
-                { "CRC", "Costa Rican Colón" },
+                { "CRC", "Costa Rican ColÃ³n" },
                 { "CUC", "Cuban Convertible Peso" },
                 { "CUP", "Cuban Peso" },
                 { "CVE", "Cape Verdean Escudo" },
@@ -85,7 +85,7 @@ namespace Allors.Domain
                 { "INR", "Indian Rupee" },
                 { "IQD", "Iraqi Dinar" },
                 { "IRR", "Iranian Rial" },
-                { "ISK", "Icelandic Króna" },
+                { "ISK", "Icelandic KrÃ³na" },
                 { "JEP", "Jersey Pound" },
                 { "JMD", "Jamaican Dollar" },
                 { "JOD", "Jordanian Dinar" },
@@ -124,7 +124,7 @@ namespace Allors.Domain
                 { "MZN", "Mozambican Metical" },
                 { "NAD", "Namibian Dollar" },
                 { "NGN", "Nigerian Naira" },
-                { "NIO", "Nicaraguan Córdoba" },
+                { "NIO", "Nicaraguan CÃ³rdoba" },
                 { "NOK", "Norwegian Krone" },
                 { "NPR", "Nepalese Rupee" },
                 { "NZD", "New Zealand Dollar" },
@@ -151,8 +151,8 @@ namespace Allors.Domain
                 { "SLL", "Sierra Leonean Leone" },
                 { "SOS", "Somali Shilling" },
                 { "SRD", "Surinamese Dollar" },
-                { "STD", "São Tomé and Príncipe Dobra" },
-                { "SVC", "Salvadoran Colón" },
+                { "STD", "SÃ£o TomÃ© and PrÃ­ncipe Dobra" },
+                { "SVC", "Salvadoran ColÃ³n" },
                 { "SYP", "Syrian Pound" },
                 { "SZL", "Swazi Lilangeni" },
                 { "THB", "Thai Baht" },
@@ -169,7 +169,7 @@ namespace Allors.Domain
                 { "USD", "United States Dollar" },
                 { "UYU", "Uruguayan Peso" },
                 { "UZS", "Uzbekistan Som" },
-                { "VEF", "Venezuelan Bolívar Fuerte" },
+                { "VEF", "Venezuelan BolÃ­var Fuerte" },
                 { "VND", "Vietnamese Dong" },
                 { "VUV", "Vanuatu Vatu" },
                 { "WST", "Samoan Tala" },
@@ -198,12 +198,6 @@ namespace Allors.Domain
                     .WithIsActive(true)
                     .Build();
             }
-        }
-
-        protected override void CoreSecure(Security config)
-        {
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

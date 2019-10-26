@@ -5,7 +5,7 @@ namespace Allors.Server
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-    using Identity;
+    using Security;
     using JSNLog;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;

@@ -49,12 +49,5 @@ namespace Allors.Domain
             new LocaleBuilder(this.Session).WithName(DutchNetherlandsName).WithCountry(netherlands).WithLanguage(dutch).Build();
             new LocaleBuilder(this.Session).WithName(DutchBelgiumName).WithCountry(belgium).WithLanguage(dutch).Build();
         }
-
-        protected override void CoreSecure(Security config)
-        {
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
-        }
     }
 }

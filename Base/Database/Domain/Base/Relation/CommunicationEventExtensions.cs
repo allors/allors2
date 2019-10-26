@@ -31,13 +31,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!@this.ExistOwner)
+            if (!@this.ExistOwner && @this.Strategy.Session.GetUser() is Person owner)
             {
-                if (!(@this.Strategy.Session.GetUser() is Person owner))
-                {
-                    owner = @this.Strategy.Session.GetSingleton().Guest as Person;
-                }
-
                 @this.Owner = owner;
             }
 

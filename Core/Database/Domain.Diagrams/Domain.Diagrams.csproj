@@ -61,11 +61,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="States.cd" />
-    <None Include="Relation.cd" />
-    <None Include="Security.cd" />
-    <None Include="Temp.cd" />
+    <None Include="Security\Authentication.cd" />
+    <None Include="Security\Authorization.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

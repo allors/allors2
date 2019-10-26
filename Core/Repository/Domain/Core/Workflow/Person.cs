@@ -13,20 +13,9 @@ namespace Allors.Repository
     #region Allors
     [Id("c799ca62-a554-467d-9aa2-1663293bb37f")]
     #endregion
-    public partial class Person : User, UniquelyIdentifiable
+    public partial class Person : User
     {
         #region inherited properties
-        public bool UserEmailConfirmed { get; set; }
-
-        public string UserName { get; set; }
-
-        public string NormalizedUserName { get; set; }
-
-        public string UserEmail { get; set; }
-
-        public string UserPasswordHash { get; set; }
-
-        public NotificationList NotificationList { get; set; }
 
         public SecurityToken OwnerSecurityToken { get; set; }
 
@@ -38,6 +27,25 @@ namespace Allors.Repository
 
         public Guid UniqueId { get; set; }
 
+        public string UserName { get; set; }
+
+        public string NormalizedUserName { get; set; }
+
+        public string UserPasswordHash { get; set; }
+
+        public string UserEmail { get; set; }
+
+        public string NormalizedUserEmail { get; set; }
+
+        public bool UserEmailConfirmed { get; set; }
+
+        public string SecurityStamp { get; set; }
+
+        public IdentityClaim[] IdentityClaims { get; set; }
+
+        public Login[] Logins { get; set; }
+
+        public NotificationList NotificationList { get; set; }
         #endregion
 
         #region Allors
@@ -46,17 +54,9 @@ namespace Allors.Repository
         [RoleId("f10ea049-6d24-4ca2-8efa-032fcf3000b3")]
         [Size(256)]
         #endregion
+        [Required]
         [Workspace]
         public string FirstName { get; set; }
-
-        #region Allors
-        [Id("8a3e4664-bb40-4208-8e90-a1b5be323f27")]
-        [AssociationId("9b48ff56-afef-4501-ac97-6173731ff2c9")]
-        [RoleId("ace04ad8-bf64-4fc3-8216-14a720d3105d")]
-        [Size(256)]
-        #endregion
-        [Workspace]
-        public string LastName { get; set; }
 
         #region Allors
         [Id("eb18bb28-da9c-47b4-a091-2f8f2303dcb6")]
@@ -66,6 +66,16 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public string MiddleName { get; set; }
+
+        #region Allors
+        [Id("8a3e4664-bb40-4208-8e90-a1b5be323f27")]
+        [AssociationId("9b48ff56-afef-4501-ac97-6173731ff2c9")]
+        [RoleId("ace04ad8-bf64-4fc3-8216-14a720d3105d")]
+        [Size(256)]
+        #endregion
+        [Required]
+        [Workspace]
+        public string LastName { get; set; }
 
         #region inherited methods
 

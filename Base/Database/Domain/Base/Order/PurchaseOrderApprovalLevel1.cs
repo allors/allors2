@@ -5,6 +5,9 @@
 
 namespace Allors.Domain
 {
+    using System;
+    using System.Collections.Generic;
+
     public partial class PurchaseOrderApprovalLevel1
     {
         public void BaseApprove(PurchaseOrderApprovalLevel1Approve method)
@@ -75,7 +78,7 @@ namespace Allors.Domain
 
             // Assignments
             var participants = this.ExistDateClosed
-                                   ? People.EmptyList
+                                   ? (IEnumerable<Person>)Array.Empty<Person>()
                                    : this.PurchaseOrder.PurchaseOrderState.IsAwaitingApprovalLevel1 ? this.PurchaseOrder.OrderedBy.PurchaseOrderApproversLevel1 : this.PurchaseOrder.OrderedBy.PurchaseOrderApproversLevel2;
             this.AssignParticipants(participants);
         }

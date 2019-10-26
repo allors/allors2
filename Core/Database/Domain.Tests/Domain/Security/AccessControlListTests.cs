@@ -17,9 +17,9 @@ namespace Tests
         [Fact]
         public void GivenAnAuthenticationPopulatonWhenCreatingAnAccessListForGuestThenPermissionIsDenied()
         {
-            var guest = new PersonBuilder(this.Session).WithUserName("guest").WithLastName("Guest").Build();
-            var administrator = new PersonBuilder(this.Session).WithUserName("admin").WithLastName("Administrator").Build();
-            var user = new PersonBuilder(this.Session).WithUserName("user").WithLastName("User").Build();
+            var guest = new AutomatedAgentBuilder(this.Session).WithUserName("Guest").Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Jane").WithLastName("Doe").Build();
+            var user = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
 
             this.Session.GetSingleton().Guest = guest;
             new UserGroups(this.Session).FindBy(M.UserGroup.Name, "Administrators").AddMember(administrator);

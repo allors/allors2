@@ -25,9 +25,9 @@ namespace Allors
         {
             var genders = new Genders(this.session);
 
-            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@example.com").WithNormalizedUserName("JOHN@EXAMPLE.COM").WithGender(genders.Male).Build();
-            var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@example.com").WithNormalizedUserName("JANE@EXAMPLE.COM").WithGender(genders.Female).Build();
-            var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").WithUserName("jenny@example.com").WithNormalizedUserName("JENNY@EXAMPLE.COM").WithGender(genders.Other).Build();
+            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@example.com").WithGender(genders.Male).Build();
+            var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@example.com").WithGender(genders.Female).Build();
+            var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").WithUserName("jenny@example.com").WithGender(genders.Other).Build();
 
             john.SetPassword("john");
             jane.SetPassword("jane");

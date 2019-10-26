@@ -6,10 +6,8 @@
 namespace Allors.Server.Tests
 {
     using System;
-    using Allors.Domain;
+    using Domain;
     using Server;
-
-    using Microsoft.AspNetCore.Identity;
 
     using Xunit;
 
@@ -18,9 +16,14 @@ namespace Allors.Server.Tests
     {
         public SignOutTests()
         {
-            var passwordHasher = new PasswordHasher<string>();
-            var hash = passwordHasher.HashPassword("Jane", "p@ssw0rd");
-            new PersonBuilder(this.Session).WithUserName("Jane").WithUserPasswordHash(hash).Build();
+            var jane = new PersonBuilder(this.Session)
+                .WithFirstName("Jane")
+                .WithLastName("Doe")
+                .WithUserName("jane@example.com")
+                .Build()
+                .SetPassword("p@ssw0rd");
+
+            this.Session.Derive();
             this.Session.Commit();
         }
 
@@ -29,7 +32,7 @@ namespace Allors.Server.Tests
         {
             var args = new AuthenticationTokenRequest
             {
-                UserName = "Jane",
+                UserName = "jane@example.com",
                 Password = "p@ssw0rd",
             };
 

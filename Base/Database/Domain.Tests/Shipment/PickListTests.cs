@@ -119,7 +119,7 @@ namespace Allors.Domain
 
             var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0]
                 .PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             //// item5: only 4 out of 5 are actually picked
             foreach (PickListItem pickListItem in pickList.PickListItems)
@@ -227,7 +227,7 @@ namespace Allors.Domain
 
             var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0]
                 .PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             //// item3: only 4 out of 5 are actually picked
             PickListItem adjustedPicklistItem = null;
@@ -467,7 +467,7 @@ namespace Allors.Domain
 
             var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0]
                 .PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 
@@ -490,7 +490,8 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            this.SetIdentity("Administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var pickList = new PickListBuilder(this.Session).Build();
 
@@ -506,7 +507,8 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            this.SetIdentity("orderProcessor");
+            User user = this.OrderProcessor;
+            this.Session.SetUser(user);
 
             var pickList = new PickListBuilder(this.Session).Build();
 
@@ -527,7 +529,8 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            this.SetIdentity("orderProcessor");
+            User user = this.OrderProcessor;
+            this.Session.SetUser(user);
 
             var pickList = new PickListBuilder(this.Session).Build();
 

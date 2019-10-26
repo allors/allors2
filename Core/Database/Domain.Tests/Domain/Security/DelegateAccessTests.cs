@@ -17,7 +17,8 @@ namespace Tests
         [Fact]
         public void DelegateAccessReturnsTokens()
         {
-            var administrator = new People(this.Session).FindBy(M.Person.UserName, "Administrator");
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@example.com").Build();
+            new UserGroups(this.Session).Administrators.AddMember(administrator);
             var accessClass = new AccessClassBuilder(this.Session).Build();
 
             var acl = new AccessControlLists(administrator)[accessClass];
@@ -33,7 +34,8 @@ namespace Tests
         [Fact]
         public void DelegateAccessReturnsNoTokens()
         {
-            var administrator = new People(this.Session).FindBy(M.Person.UserName, "Administrator");
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@example.com").Build();
+            new UserGroups(this.Session).Administrators.AddMember(administrator);
             var accessClass = new AccessClassBuilder(this.Session).WithBlock(true).Build();
 
             // Use default security from Singleton

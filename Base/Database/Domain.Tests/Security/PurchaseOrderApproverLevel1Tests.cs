@@ -125,7 +125,7 @@ namespace Allors.Domain
 
             Assert.True(order.PurchaseOrderState.IsAwaitingApprovalLevel1);
 
-            this.SetIdentity("approver");
+            this.Session.SetUser(approver);
 
             var acl = new AccessControlLists(approver)[order];
             Assert.True(acl.CanExecute(M.PurchaseOrder.Approve));
@@ -174,7 +174,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity(approver.UserName);
+            this.Session.SetUser(approver);
 
             var purchaseOrderApproval = order.PurchaseOrderApprovalsLevel1WherePurchaseOrder.First;
             var acl = new AccessControlLists(approver)[purchaseOrderApproval];

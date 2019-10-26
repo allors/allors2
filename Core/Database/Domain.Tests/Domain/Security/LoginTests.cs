@@ -19,12 +19,16 @@ namespace Tests
         [Fact]
         public void WhenDeletingUserThenLoginShouldAlsoBeDeleted()
         {
-            var user = new PersonBuilder(this.Session).WithUserName("User").WithLastName("User").Build();
-            var login = new LoginBuilder(this.Session).WithUser(user).WithProvider("MyProvider").WithKey("XXXYYYZZZ").Build();
+            var person = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").WithUserName("john@example.com").Build();
 
             this.Session.Derive();
 
-            user.Delete();
+            var login = new LoginBuilder(this.Session).WithProvider("MyProvider").WithKey("XXXYYYZZZ").Build();
+            person.AddLogin(login);
+
+            this.Session.Derive();
+
+            person.Delete();
 
             this.Session.Derive();
 

@@ -1139,14 +1139,11 @@ namespace Allors.Domain
                 .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithLastName("Administrator").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity("administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
@@ -1178,16 +1175,13 @@ namespace Allors.Domain
                 .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity("administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
@@ -1251,16 +1245,13 @@ namespace Allors.Domain
                 .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity("Administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
@@ -1308,16 +1299,13 @@ namespace Allors.Domain
                 .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity("administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
@@ -1357,14 +1345,11 @@ namespace Allors.Domain
                 .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity("administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
@@ -1400,14 +1385,11 @@ namespace Allors.Domain
                 .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
-            var administrators = new UserGroups(this.Session).Administrators;
-            administrators.AddMember(administrator);
-
             this.Session.Derive();
             this.Session.Commit();
 
-            this.SetIdentity("administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")

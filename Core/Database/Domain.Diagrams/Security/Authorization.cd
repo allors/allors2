@@ -1,16 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Allors.Domain.User" Collapsed="true">
-    <Position X="8.25" Y="1.75" Width="1.5" />
+    <Position X="7.5" Y="1.5" Width="2" />
+    <Members>
+      <Property Name="NotificationList" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAGAAAAAAQAACBAAAAA=</HashCode>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAQAGAAAAIAQAQCBAAAAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.AccessControl">
-    <Position X="5" Y="1" Width="1.5" />
+    <Position X="4.25" Y="1" Width="1.5" />
+    <AssociationLine Name="EffectiveWorkspacePermissions" Type="Allors.Domain.Permission" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="1.545" />
+        <Point X="3.682" Y="1.545" />
+        <Point X="3.682" Y="6.188" />
+        <Point X="4.25" Y="6.188" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAACAAAAAEAAAAAAAAAAAAIAAAAAQAAAAAAA=</HashCode>
+      <HashCode>AAAAAEAAAACAAAAAEAAAAAAQAAAAAIAAAAAQAAAAAAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -18,18 +29,19 @@
       <Property Name="Subjects" />
       <Property Name="Role" />
       <Property Name="EffectivePermissions" />
+      <Property Name="EffectiveWorkspacePermissions" />
       <Property Name="EffectiveUsers" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Permission">
-    <Position X="5" Y="5.25" Width="1.75" />
+    <Position X="4.25" Y="5.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.Role">
-    <Position X="5" Y="3.25" Width="1.5" />
+    <Position X="4.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
@@ -39,7 +51,7 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.UserGroup" Collapsed="true">
-    <Position X="8.25" Y="0.75" Width="1.5" />
+    <Position X="7.5" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAEAAAAAAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
@@ -49,7 +61,7 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.SecurityToken">
-    <Position X="1.5" Y="1" Width="1.5" />
+    <Position X="0.75" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
@@ -59,7 +71,7 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Object">
-    <Position X="1.25" Y="4.75" Width="2" />
+    <Position X="0.5" Y="6" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>generated\domain.g.cs</FileName>
@@ -68,6 +80,20 @@
       <Property Name="DeniedPermissions" />
       <Property Name="SecurityTokens" />
     </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.AutomatedAgent" Collapsed="true">
+    <Position X="8.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Person" Collapsed="true">
+    <Position X="6.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QARBAEACAEAAAKCAMEAQAAQAACAAAAAAAAAACAQAAAg=</HashCode>
+      <FileName>generated\domain.g.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

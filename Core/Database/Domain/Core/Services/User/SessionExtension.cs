@@ -6,7 +6,7 @@
 namespace Allors.Domain
 {
     using Allors.Services;
-
+    using Meta;
     using Microsoft.Extensions.DependencyInjection;
 
     public static partial class SessionExtension
@@ -15,15 +15,13 @@ namespace Allors.Domain
         {
             var userService = @this.ServiceProvider.GetRequiredService<IUserService>();
             var userName = userService.UserName;
-            var users = new Users(@this);
-            var user = users.GetUser(userName) ?? @this.GetSingleton()?.Guest;
-            return user;
+            return new Users(@this).GetUser(userName);
         }
 
         public static void SetUser(this ISession @this, User user)
         {
             var userService = @this.ServiceProvider.GetRequiredService<IUserService>();
-            userService.UserName = user?.UserName;
+            userService.UserName = user.UserName;
         }
     }
 }

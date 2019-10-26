@@ -187,7 +187,12 @@ namespace Allors.Domain
                 partyName.Append(this.LastName);
             }
 
-            return partyName.Length > 0 ? partyName.ToString() : $"[{this.UserName}]";
+            if (partyName.Length == 0)
+            {
+                partyName.Append($"[{this.UserName}]");
+            }
+
+            return partyName.ToString();
         }
     }
 }

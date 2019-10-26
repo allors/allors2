@@ -5,6 +5,9 @@
 
 namespace Allors.Domain
 {
+    using System;
+    using System.Collections.Generic;
+
     public partial class ProductQuoteApproval
     {
         public void BaseOnDerive(ObjectOnDerive method)
@@ -21,7 +24,7 @@ namespace Allors.Domain
 
             // Assignments
             var participants = this.ExistDateClosed
-                                   ? People.EmptyList
+                                   ? (IEnumerable<Person>)Array.Empty<Person>()
                                    : this.ProductQuote.Issuer.ProductQuoteApprovers;
             this.AssignParticipants(participants);
         }

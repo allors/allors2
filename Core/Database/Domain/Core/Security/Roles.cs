@@ -48,12 +48,5 @@ namespace Allors.Domain
             new RoleBuilder(this.Session).WithName("Creator").WithUniqueId(CreatorId).Build();
             new RoleBuilder(this.Session).WithName("Owner").WithUniqueId(OwnerId).Build();
         }
-
-        protected override void CoreSecure(Security config)
-        {
-            var full = new[] { Domain.Operations.Read, Domain.Operations.Write, Domain.Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
-        }
     }
 }

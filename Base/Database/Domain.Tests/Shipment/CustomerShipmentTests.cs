@@ -564,7 +564,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 
@@ -691,7 +691,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 
@@ -753,7 +753,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
             pickList.SetPicked();
 
             this.Session.Derive();
@@ -912,7 +912,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 
@@ -983,7 +983,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 
@@ -1061,7 +1061,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 
@@ -1131,7 +1131,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
             pickList.SetPicked();
 
             this.Session.Derive();
@@ -1220,7 +1220,7 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 
@@ -1255,7 +1255,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            this.SetIdentity("Administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
 
@@ -1278,7 +1279,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            this.SetIdentity("orderProcessor");
+            User user = this.OrderProcessor;
+            this.Session.SetUser(user);
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
 
@@ -1299,7 +1301,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenObjectStateIsShipped_ThenCheckTransitions()
         {
-            this.SetIdentity("administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var assessable = new VatRegimes(this.Session).Assessable;
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
@@ -1348,7 +1351,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 

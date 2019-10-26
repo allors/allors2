@@ -34,7 +34,7 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            this.SetIdentity(salesaccm.UserName);
+            this.Session.SetUser(salesaccm);
 
             var acl = new AccessControlLists(salesaccm)[person];
             Assert.True(acl.CanRead(M.Person.FirstName));
@@ -73,7 +73,7 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            this.SetIdentity(salesaccm.UserName);
+            this.Session.SetUser(salesaccm);
 
             Assert.True(salesInvoice.Strategy.IsNewInSession);
 
@@ -111,7 +111,7 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            this.SetIdentity(salesaccm.UserName);
+            this.Session.SetUser(salesaccm);
 
             var acl = new AccessControlLists(salesaccm)[good];
             Assert.True(acl.CanRead(M.Good.Name));

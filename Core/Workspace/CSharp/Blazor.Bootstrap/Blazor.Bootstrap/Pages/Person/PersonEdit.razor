@@ -6,21 +6,21 @@
 
 @if (person != null)
 {
-    <AllorsBSForm Model="@person" OnValidSubmit="@HandleValidSubmit">
+    <ABSForm Model="@person" OnValidSubmit="@HandleValidSubmit">
         <ValidationSummary />
 
         <BSRow>
             <BSCol>
-                <AllorsInput RoleType="@M.Person.FirstName" />
+                <ABSInput RoleType="@M.Person.FirstName" />
             </BSCol>
             <BSCol>
-                <AllorsInput RoleType="@M.Person.LastName" />
+                <ABSInput RoleType="@M.Person.LastName" />
             </BSCol>
         </BSRow>
 
         <BSRow>
             <BSCol>
-                <AllorsDateInput RoleType="@M.Person.BirthDate" />
+                <ABSDateInput RoleType="@M.Person.BirthDate" />
             </BSCol>
         </BSRow>
 
@@ -30,7 +30,7 @@
             </BSCol>
         </BSRow>
 
-    </AllorsBSForm>
+    </ABSForm>
 }
 
 @code {
