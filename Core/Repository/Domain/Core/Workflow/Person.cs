@@ -54,7 +54,6 @@ namespace Allors.Repository
         [RoleId("f10ea049-6d24-4ca2-8efa-032fcf3000b3")]
         [Size(256)]
         #endregion
-        [Required]
         [Workspace]
         public string FirstName { get; set; }
 
@@ -73,7 +72,6 @@ namespace Allors.Repository
         [RoleId("ace04ad8-bf64-4fc3-8216-14a720d3105d")]
         [Size(256)]
         #endregion
-        [Required]
         [Workspace]
         public string LastName { get; set; }
 
