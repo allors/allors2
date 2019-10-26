@@ -6,25 +6,25 @@ import { switchMap } from 'rxjs/operators';
 import { PullRequest } from '../../../../../framework';
 import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, UserId } from '../../../../../angular';
 
-import { Task, Person } from '../../../../../domain';
+import { Notification, Person } from '../../../../../domain';
 
 import { ObjectService } from '../../../../core/services/object';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'taskassignment-link',
-  templateUrl: './taskassignment-link.component.html',
+  selector: 'notification-link',
+  templateUrl: './notification-link.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class TaskAssignmentLinkComponent implements OnInit, OnDestroy {
+export class NotificationLinkComponent implements OnInit, OnDestroy {
 
-  tasks: Task[];
+  notifications: Notification[];
 
   private subscription: Subscription;
 
-  get nrOfTasks() {
-    if (this.tasks) {
-      const count = this.tasks.filter(v => !v.DateClosed).length;
+  get nrOfNotifications() {
+    if (this.notifications) {
+      const count = this.notifications.length;
       if (count < 99) {
         return count;
       } else if (count < 1000) {
@@ -54,13 +54,13 @@ export class TaskAssignmentLinkComponent implements OnInit, OnDestroy {
         switchMap(() => {
 
           const pulls = [
-            pull.Task({
-              include: {
-                Participants: x
-              }
-            }),
             pull.Person({
-              object: this.userId.value
+              object: this.userId.value,
+              include: {
+                NotificationList: {
+                  UnconfirmedNotifications: x
+                }
+              }
             })];
 
           return this.allors.context.load(new PullRequest({ pulls }));
@@ -70,9 +70,7 @@ export class TaskAssignmentLinkComponent implements OnInit, OnDestroy {
         this.allors.context.reset();
 
         const user = loaded.objects.Person as Person;
-
-        const allTasks = loaded.collections.Tasks as Task[];
-        this.tasks = allTasks.filter(v => v.Participants.indexOf(user) > -1);
+        this.notifications = user.NotificationList.UnconfirmedNotifications;
       });
   }
 
@@ -82,7 +80,7 @@ export class TaskAssignmentLinkComponent implements OnInit, OnDestroy {
     }
   }
 
-  toTasks() {
-    this.navigation.list(this.metaService.m.TaskAssignment);
+  toNotifications() {
+    this.navigation.list(this.metaService.m.Notification);
   }
 }

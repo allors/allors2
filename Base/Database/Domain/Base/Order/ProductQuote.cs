@@ -396,7 +396,9 @@ namespace Allors.Domain
                 .WithQuote(this)
                 .Build();
 
-            var quoteItems = this.QuoteItems.Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted)).ToArray();
+            var quoteItems = this.QuoteItems
+                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted) || i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Approved))
+                .ToArray();
 
             foreach (var quoteItem in quoteItems)
             {

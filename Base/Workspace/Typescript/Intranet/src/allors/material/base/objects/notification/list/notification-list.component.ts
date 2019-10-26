@@ -5,29 +5,30 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, UserId, TestScope } from '../../../../../angular';
-import { Sorter, TableRow, Table, EditService } from '../../../..';
-import { TaskAssignment } from '../../../../../domain';
+import { PullRequest } from '../../../../../framework';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, UserId, TestScope } from '../../../../../angular';
+import { TableRow, Table, DeleteService, MethodService } from '../../../..';
+import { Notification } from '../../../../../domain';
 import { ObjectService } from '../../../../core/services/object';
 
 interface Row extends TableRow {
-  object: TaskAssignment;
+  object: Notification;
   title: string;
+  description: string;
   dateCreated: string;
 }
 
 @Component({
-  templateUrl: './taskassignment-list.component.html',
+  templateUrl: './notification-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class TaskAssignmentListComponent extends TestScope implements OnInit, OnDestroy {
+export class NotificationListComponent extends TestScope implements OnInit, OnDestroy {
 
   public title = 'Tasks';
 
   table: Table<Row>;
 
-  edit: Action;
+  confirm: Action;
 
   private subscription: Subscription;
 
@@ -37,7 +38,7 @@ export class TaskAssignmentListComponent extends TestScope implements OnInit, On
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
-    public editService: EditService,
+    public methodService: MethodService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     private userId: UserId,
@@ -49,21 +50,18 @@ export class TaskAssignmentListComponent extends TestScope implements OnInit, On
 
     const { m } = this.metaService;
 
-    this.edit = editService.edit(m.TaskAssignment.Task);
-    this.edit.result.subscribe((v) => {
-      this.table.selection.clear();
-    });
+    this.confirm = methodService.create(allors.context, m.Notification.Confirm, { name: 'Confirm' });
 
     this.table = new Table({
       selection: true,
       columns: [
         'title',
+        'description',
         'dateCreated'
       ],
       actions: [
-        this.edit
+        this.confirm
       ],
-      defaultAction: this.edit,
       pageSize: 50,
       initialSort: 'dateCreated'
     });
@@ -71,26 +69,7 @@ export class TaskAssignmentListComponent extends TestScope implements OnInit, On
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
-
-    const predicate = new And([
-      new Equals({ propertyType: m.TaskAssignment.User, object: this.userId.value }),
-      new ContainedIn({
-        propertyType: m.TaskAssignment.Task,
-        extent: new Filter({
-          objectType: m.Task,
-          predicate: new Like({ roleType: m.Task.Title, parameter: 'title' }),
-        })
-      }),
-    ]);
-
-    this.filterService.init(predicate);
-
-    const sorter = new Sorter(
-      {
-        dateCreated: m.Task.DateCreated,
-      }
-    );
+    const { pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
@@ -101,22 +80,17 @@ export class TaskAssignmentListComponent extends TestScope implements OnInit, On
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , ,]),
-        switchMap(([, filterFields, sort, pageEvent]) => {
+        }, [, , , , ]),
+        switchMap(([, , ]) => {
 
           const pulls = [
-            pull.TaskAssignment({
-              predicate,
-              // sort: sorter.create(sort),
-              include: {
-                Task: {
-                  WorkItem: x
-                },
-                User: x
-              },
-              parameters: this.filterService.parameters(filterFields),
-              skip: pageEvent.pageIndex * pageEvent.pageSize,
-              take: pageEvent.pageSize,
+            pull.Person({
+              object: this.userId.value,
+              fetch: {
+                NotificationList: {
+                  UnconfirmedNotifications: x
+                }
+              }
             })];
 
           return this.allors.context.load(new PullRequest({ pulls }));
@@ -124,13 +98,14 @@ export class TaskAssignmentListComponent extends TestScope implements OnInit, On
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const taskAssignments = loaded.collections.TaskAssignments as TaskAssignment[];
-        this.table.total = loaded.values.TaskAssignments_total;
-        this.table.data = taskAssignments.map((v) => {
+        const notifications = loaded.collections.UnconfirmedNotifications as Notification[];
+        this.table.total = loaded.values.Notifications_total;
+        this.table.data = notifications.map((v) => {
           return {
             object: v,
-            title: v.Task.Title,
-            dateCreated: moment(v.Task.DateCreated).fromNow()
+            title: v.Title,
+            description: v.Description,
+            dateCreated: moment(v.DateCreated).fromNow()
           } as Row;
         });
       });

@@ -23,6 +23,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         #endregion
+        [Workspace]
         public Notification[] Notifications { get; set; }
 
         #region Allors
@@ -44,6 +45,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Derived]
+        [Workspace]
         public Notification[] ConfirmedNotifications { get; set; }
 
         #region inherited methods

@@ -103,6 +103,7 @@ export class ProductQuoteApprovalEditComponent extends TestScope implements OnIn
         switchMap(() => methodCall)
       )
       .subscribe((invoked: Invoked) => {
+
         const data: IObject = {
           id: this.productQuoteApproval.id,
           objectType: this.productQuoteApproval.objectType,
