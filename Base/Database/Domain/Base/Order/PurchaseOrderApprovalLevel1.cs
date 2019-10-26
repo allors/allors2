@@ -12,6 +12,26 @@ namespace Allors.Domain
             this.AssignPerformer();
 
             this.PurchaseOrder.Approve();
+
+            if (!this.ExistApprovalNotification && this.PurchaseOrder.ExistCreatedBy)
+            {
+                var now = this.Strategy.Session.Now();
+                var workItemDescription = this.WorkItem.WorkItemDescription;
+                var performerName = this.Performer.LastName + " " + this.Performer.FirstName;
+                var comment = this.Comment ?? "N/A";
+
+                var description = $"<h2>Approved...</h2>" +
+                                  $"<p>On {now:D} {workItemDescription} was rejected by {performerName}</p>" +
+                                  $"<h3>Comment</h3>" +
+                                  $"<p>{comment}</p>";
+
+                this.ApprovalNotification = new NotificationBuilder(this.strategy.Session)
+                    .WithTitle("PurchaseOrder approved")
+                    .WithDescription(description)
+                    .Build();
+
+                this.PurchaseOrder.CreatedBy.NotificationList.AddNotification(this.ApprovalNotification);
+            }
         }
 
         public void BaseReject(PurchaseOrderApprovalLevel1Reject method)
