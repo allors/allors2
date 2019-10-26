@@ -1,4 +1,4 @@
-﻿// <copyright file="Notification.cs" company="Allors bvba">
+// <copyright file="Notification.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -26,6 +26,8 @@ namespace Allors.Domain
 
             derivation.AddDependency(this.NotificationListWhereNotification, this);
         }
+
+        public void BaseConfirm(NotificationConfirm method) => this.Confirmed = true;
 
         public void CoreOnDerive(ObjectOnDerive method)
         {

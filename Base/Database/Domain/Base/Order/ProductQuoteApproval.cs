@@ -26,7 +26,7 @@ namespace Allors.Domain
             this.AssignParticipants(participants);
         }
 
-        public void BaseApprove(ProductQuoteApprovalReject method)
+        public void BaseApprove(ProductQuoteApprovalApprove method)
         {
             this.AssignPerformer();
 
