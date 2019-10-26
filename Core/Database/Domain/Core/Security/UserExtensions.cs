@@ -10,12 +10,10 @@ namespace Allors.Domain
 
     public static partial class UserExtensions
     {
-        public static void CoreOnPostBuild(this User @this, ObjectOnPostBuild method)
+        public static bool IsAdministrator(this User @this)
         {
-            if (!@this.ExistNotificationList)
-            {
-                @this.NotificationList = new NotificationListBuilder(@this.Strategy.Session).Build();
-            }
+            var administrators = new UserGroups(@this.Session()).Administrators;
+            return administrators.Members.Contains(@this);
         }
 
         public static User SetPassword(this User @this, string clearTextPassword)
@@ -37,20 +35,46 @@ namespace Allors.Domain
             return securityService.VerifyHashedPassword(@this.UserName, @this.UserPasswordHash, clearTextPassword);
         }
 
-        public static void CoreDelete(this User @this, DeletableDelete method)
+        public static void CoreOnPostBuild(this User @this, ObjectOnPostBuild method)
         {
-            foreach (Login login in @this.Logins)
+            if (!@this.ExistNotificationList)
             {
-                login.Delete();
+                @this.NotificationList = new NotificationListBuilder(@this.Strategy.Session).Build();
             }
 
-            @this.NotificationList?.Delete();
+            if (!@this.ExistOwnerAccessControl)
+            {
+                var ownerRole = new Roles(@this.Strategy.Session).Owner;
+                @this.OwnerAccessControl = new AccessControlBuilder(@this.Strategy.Session)
+                    .WithRole(ownerRole)
+                    .WithSubject(@this)
+                    .Build();
+            }
+
+            if (!@this.ExistOwnerSecurityToken)
+            {
+                @this.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
+                    .WithAccessControl(@this.OwnerAccessControl)
+                    .Build();
+            }
         }
 
         public static void CoreOnDerive(this User @this, ObjectOnDerive method)
         {
             @this.NormalizedUserName = Users.Normalize(@this.UserName);
             @this.NormalizedUserEmail = Users.Normalize(@this.UserEmail);
+        }
+
+        public static void CoreDelete(this User @this, DeletableDelete method)
+        {
+            @this.OwnerAccessControl?.Delete();
+            @this.OwnerSecurityToken?.Delete();
+            foreach (Login login in @this.Logins)
+            {
+                login.Delete();
+            }
+
+            @this.NotificationList?.Delete();
         }
     }
 }
