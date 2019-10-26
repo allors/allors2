@@ -104,7 +104,7 @@ export class NotificationListComponent extends TestScope implements OnInit, OnDe
           return {
             object: v,
             title: v.Title,
-            description: unescape(v.Description),
+            description: v.Description,
             dateCreated: moment(v.DateCreated).fromNow()
           } as Row;
         });

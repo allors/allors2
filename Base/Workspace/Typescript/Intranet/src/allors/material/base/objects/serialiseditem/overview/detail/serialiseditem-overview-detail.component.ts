@@ -113,6 +113,7 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                 SecondaryPhotos: x,
                 AdditionalPhotos: x,
                 PrivatePhotos: x,
+                ElectronicDocuments: x,
                 PurchaseOrder: x,
                 SuppliedBy: x
               }

@@ -318,6 +318,14 @@
           </mat-tab-group>
         </mat-tab>
 
+        <mat-tab label="Documents">
+          <div class="container-fluid">
+            <div class="row pt-3">
+              <a-mat-files class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.ElectronicDocuments" accept="image/*"></a-mat-files>
+            </div>
+          </div>
+        </mat-tab>
+
       </mat-tab-group>
     </mat-card-content>
     <mat-card-actions>
