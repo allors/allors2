@@ -27,9 +27,6 @@ namespace Allors.Domain
 
             if (setup.Config.SetupSecurity)
             {
-                singleton.InitialSecurityToken = new SecurityTokenBuilder(this.Session).Build();
-                singleton.DefaultSecurityToken = new SecurityTokenBuilder(this.Session).Build();
-
                 // Initial: Guest Creator
                 var guestCreatorsAccessControl = new AccessControlBuilder(this.Session)
                     .WithRole(new Roles(this.Session).GuestCreator)

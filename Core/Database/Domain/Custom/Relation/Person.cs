@@ -28,7 +28,7 @@ namespace Allors.Domain
                 return this.LastName;
             }
 
-            return base.ToString();
+            return this.UserName;
         }
 
         public void CustomOnInit(ObjectOnInit method)

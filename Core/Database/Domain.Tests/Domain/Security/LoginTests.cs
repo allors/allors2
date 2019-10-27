@@ -19,7 +19,7 @@ namespace Tests
         [Fact]
         public void WhenDeletingUserThenLoginShouldAlsoBeDeleted()
         {
-            var person = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").WithUserName("john@example.com").Build();
+            var person = new PersonBuilder(this.Session).WithUserName("user").Build();
 
             this.Session.Derive();
 

@@ -18,15 +18,8 @@ namespace Allors.Server.Tests
     {
         public SignInTests()
         {
-            new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
-
-            var jane = new PersonBuilder(this.Session)
-                .WithFirstName("Jane")
-                .WithLastName("Doe")
-                .WithUserName("jane@example.com")
-                .Build()
-                .SetPassword("p@ssw0rd");
-
+            new PersonBuilder(this.Session).WithUserName("John").Build();
+            new PersonBuilder(this.Session).WithUserName("Jane").Build().SetPassword("p@ssw0rd");
             this.Session.Derive();
             this.Session.Commit();
         }

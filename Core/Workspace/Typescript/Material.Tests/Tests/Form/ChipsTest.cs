@@ -27,8 +27,7 @@ namespace Tests
         [Fact]
         public void AddOne()
         {
-            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@example.com");
-
+            var jane = new Users(this.Session).GetUser("jane@example.com");
             var before = new Datas(this.Session).Extent().ToArray();
 
             this.page.Chips.Add("jane", "jane@example.com");
@@ -50,9 +49,8 @@ namespace Tests
         [Fact]
         public void AddTwo()
         {
-            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@example.com");
-            var john = new People(this.Session).FindBy(M.Person.UserName, "john@example.com");
-
+            var jane = new Users(this.Session).GetUser("jane@example.com");
+            var john = new Users(this.Session).GetUser("john@example.com");
             var before = new Datas(this.Session).Extent().ToArray();
 
             this.page.Chips.Add("jane", "jane@example.com");

@@ -20,10 +20,18 @@ namespace Allors.Server.Tests
     public class PullExtentTests : ApiTest
     {
         private Func<IAccessControlList, string> PrintAccessControls =>
-            acl => string.Join(Encoding.Separator, acl.AccessControls.OrderBy(v => v).Select(v => v.Id.ToString()));
+            acl =>
+            {
+                var orderedAcls = acl.AccessControls.OrderBy(v => v).Select(v => v.Id.ToString()).ToArray();
+                return orderedAcls.Any() ? string.Join(Encoding.Separator, orderedAcls) : null;
+            };
 
         private Func<IAccessControlList, string> PrintDeniedPermissions =>
-            acl => string.Join(Encoding.Separator, acl.DeniedPermissionIds.OrderBy(v => v).Select(v => v.ToString()));
+            acl =>
+            {
+                var orderedDeniedPermissions = acl.DeniedPermissionIds.OrderBy(v => v).Select(v => v.ToString()).ToArray();
+                return orderedDeniedPermissions.Any() ? string.Join(Encoding.Separator, orderedDeniedPermissions) : null;
+            };
 
         [Fact]
         public async void WithDeniedPermissions()
@@ -75,8 +83,8 @@ namespace Allors.Server.Tests
 
             Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
             Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
-            Assert.Equal($"{this.PrintAccessControls(acl)}", @object[2]);
-            Assert.Equal($"{this.PrintDeniedPermissions(acl)}", @object[3]);
+            Assert.Equal(this.PrintAccessControls(acl), @object[2]);
+            Assert.Equal(this.PrintDeniedPermissions(acl), @object[3]);
         }
 
         [Fact]
@@ -191,7 +199,7 @@ namespace Allors.Server.Tests
 
             Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
             Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
-            Assert.Equal($"{this.PrintAccessControls(acl)}", @object[2]);
+            Assert.Equal(this.PrintAccessControls(acl), @object[2]);
         }
 
         [Fact]
@@ -246,7 +254,7 @@ namespace Allors.Server.Tests
 
             Assert.Equal(data.Strategy.ObjectId.ToString(), @object[0]);
             Assert.Equal(data.Strategy.ObjectVersion.ToString(), @object[1]);
-            Assert.Equal($"{this.PrintAccessControls(acl)}", @object[2]);
+            Assert.Equal(this.PrintAccessControls(acl), @object[2]);
         }
     }
 }

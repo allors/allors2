@@ -27,8 +27,7 @@ namespace Tests
         [Fact]
         public void Initial()
         {
-            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@example.com");
-
+            var jane = new Users(this.Session).GetUser("jane@example.com");
             var before = new Datas(this.Session).Extent().ToArray();
 
             this.page.AutocompleteFilter.Select("jane", "jane@example.com");

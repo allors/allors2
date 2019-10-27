@@ -24,7 +24,7 @@ namespace Allors.Server
             var accessControls = this.acls[@object].AccessControls;
             if (accessControls == null || accessControls.Length == 0)
             {
-                return string.Empty;
+                return null;
             }
 
             var sortedAccessControlIds = string.Join(Encoding.Separator, accessControls.OrderBy(v => v.Id).Select(v => v.Id));

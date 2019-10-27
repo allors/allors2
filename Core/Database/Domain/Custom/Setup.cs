@@ -25,12 +25,12 @@ namespace Allors
         {
             var genders = new Genders(this.session);
 
-            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@example.com").WithGender(genders.Male).Build();
             var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@example.com").WithGender(genders.Female).Build();
+            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@example.com").WithGender(genders.Male).Build();
             var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").WithUserName("jenny@example.com").WithGender(genders.Other).Build();
 
-            john.SetPassword("john");
             jane.SetPassword("jane");
+            john.SetPassword("john");
             jenny.SetPassword("jenny");
 
             var acme = new OrganisationBuilder(this.session)

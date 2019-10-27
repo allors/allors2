@@ -16,13 +16,7 @@ namespace Allors.Server.Tests
     {
         public SignOutTests()
         {
-            var jane = new PersonBuilder(this.Session)
-                .WithFirstName("Jane")
-                .WithLastName("Doe")
-                .WithUserName("jane@example.com")
-                .Build()
-                .SetPassword("p@ssw0rd");
-
+            new PersonBuilder(this.Session).WithUserName("user").Build().SetPassword("p@ssw0rd");
             this.Session.Derive();
             this.Session.Commit();
         }
@@ -32,7 +26,7 @@ namespace Allors.Server.Tests
         {
             var args = new AuthenticationTokenRequest
             {
-                UserName = "jane@example.com",
+                UserName = "user",
                 Password = "p@ssw0rd",
             };
 

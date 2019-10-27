@@ -16,7 +16,8 @@ namespace Allors.Domain
             return administrators.Members.Contains(@this);
         }
 
-        public static User SetPassword(this User @this, string clearTextPassword)
+        public static T SetPassword<T>(this T @this, string clearTextPassword)
+            where T : User
         {
             var securityService = @this.Session().ServiceProvider.GetRequiredService<IPasswordService>();
             var passwordHash = securityService.HashPassword(@this.UserName, clearTextPassword);

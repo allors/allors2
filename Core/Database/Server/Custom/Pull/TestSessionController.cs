@@ -23,7 +23,6 @@ namespace Allors.Server.Controllers
 
         public ITreeService TreeService { get; }
 
-
         [HttpPost]
         [AllowAnonymous]
         [Authorize]
