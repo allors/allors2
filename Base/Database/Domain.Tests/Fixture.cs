@@ -20,11 +20,7 @@ namespace Allors
             {
                 new Setup(session, config).Apply();
 
-                var administrator = new PersonBuilder(session)
-                    .WithFirstName("Jane")
-                    .WithLastName("Doe")
-                    .WithUserName("administrator")
-                    .Build();
+                var administrator = new PersonBuilder(session).WithUserName("administrator").Build();
 
                 new UserGroups(session).Administrators.AddMember(administrator);
 

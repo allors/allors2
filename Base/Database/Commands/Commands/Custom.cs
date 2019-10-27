@@ -101,8 +101,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
+                session.SetUser(session.GetSingleton().Scheduler);
 
                 var templateFilePath = "domain/templates/PurchaseInvoice.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
@@ -164,8 +163,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
+                session.SetUser(session.GetSingleton().Scheduler);
 
                 var templateFilePath = "domain/templates/SalesInvoice.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
@@ -227,8 +225,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
+                session.SetUser(session.GetSingleton().Scheduler);
 
                 var templateFilePath = "domain/templates/ProductQuote.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
@@ -290,8 +287,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
+                session.SetUser(session.GetSingleton().Scheduler);
 
                 var templateFilePath = "domain/templates/WorkTask.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
@@ -354,8 +350,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
+                session.SetUser(session.GetSingleton().Scheduler);
 
                 WorkTasks.BaseMonthly(session);
 

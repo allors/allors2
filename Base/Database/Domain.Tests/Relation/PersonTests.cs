@@ -180,7 +180,7 @@ namespace Allors.Domain
         {
             var existingAdministrator = this.Administrator;
             var secondAdministrator = new PersonBuilder(this.Session).WithLastName("second admin").Build();
-            Assert.False(secondAdministrator.IsAdministrator);
+            Assert.False(secondAdministrator.IsAdministrator());
 
             var internalOrganisation = this.InternalOrganisation;
 
@@ -200,7 +200,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.True(secondAdministrator.IsAdministrator);
+            Assert.True(secondAdministrator.IsAdministrator());
 
             acl = new AccessControlLists(existingAdministrator)[internalOrganisation];
             Assert.True(acl.CanRead(M.Organisation.Name));

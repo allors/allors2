@@ -65,7 +65,8 @@ namespace Allors.Server.Controllers
                     session.Derive();
                     session.Commit();
 
-                    var administrator = new Users(session).GetUser("administrator");
+                    var administrator = new PersonBuilder(session).WithUserName("administrator").Build();
+                    new UserGroups(session).Administrators.AddMember(administrator);
                     session.SetUser(administrator);
 
                     new TestPopulation(session, population).Apply();

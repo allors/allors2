@@ -15,7 +15,6 @@ namespace Allors.Server.Tests
     using Allors.Protocol.Remote.Pull;
     using Protocol.Remote;
     using Xunit;
-    using Version = System.Version;
 
     [Collection("Api")]
     public class PullExtentTests : ApiTest
@@ -29,8 +28,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void WithDeniedPermissions()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             var data = new DataBuilder(this.Session).WithString("First").Build();
             var permission = new Permissions(this.Session).Extent().First(v => v.ConcreteClass == M.Data.Class);
@@ -70,7 +68,7 @@ namespace Allors.Server.Tests
 
             var @object = objects[0];
 
-            var acls = new AccessControlLists(administrator);
+            var acls = new AccessControlLists(this.Administrator);
             var acl = acls[data];
 
             Assert.Equal(4, @object.Length);
@@ -84,8 +82,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void WithExtentRef()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             this.Session.Commit();
 
@@ -117,8 +114,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void WithFetchRef()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             this.Session.Commit();
 
@@ -150,8 +146,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void WithoutDeniedPermissions()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             var data = new DataBuilder(this.Session).WithString("First").Build();
 
@@ -189,7 +184,7 @@ namespace Allors.Server.Tests
 
             var @object = objects[0];
 
-            var acls = new AccessControlLists(administrator);
+            var acls = new AccessControlLists(this.Administrator);
             var acl = acls[data];
 
             Assert.Equal(3, @object.Length);
@@ -202,8 +197,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void WithResult()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             var data = new DataBuilder(this.Session).WithString("First").Build();
 
@@ -245,7 +239,7 @@ namespace Allors.Server.Tests
 
             var @object = objects[0];
 
-            var acls = new AccessControlLists(administrator);
+            var acls = new AccessControlLists(this.Administrator);
             var acl = acls[data];
 
             Assert.Equal(3, @object.Length);

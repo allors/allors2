@@ -65,8 +65,7 @@ namespace Allors.Server.Controllers
                     session.Derive();
                     session.Commit();
 
-                    //var administrator = new Users(session).GetUser("administrator");
-                    //session.SetUser(administrator);
+                    //session.SetUser(session.GetSingleton().Scheduler);
 
                     //session.Derive();
                     //session.Commit();

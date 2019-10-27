@@ -76,6 +76,8 @@ namespace Allors.Server.Tests
 
         protected HttpClientHandler HttpClientHandler { get; set; }
 
+        protected User Administrator => new Users(this.Session).GetUser("administrator");
+
         public void Dispose()
         {
             this.Session.Rollback();

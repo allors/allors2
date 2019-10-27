@@ -18,14 +18,14 @@ namespace Allors.Domain
                     return "Default";
                 }
 
-                if (this.ExistSingletonsWhereAdministratorSecurityToken)
-                {
-                    return "Administrator";
-                }
-
                 if (this.ExistSingletonsWhereInitialSecurityToken)
                 {
                     return "Initial";
+                }
+
+                if (this.ExistSingletonsWhereAdministratorSecurityToken)
+                {
+                    return "Administrator";
                 }
 
                 var toString = string.Join(",", this.AccessControls.ToArray().Select(v => v.ToString()));

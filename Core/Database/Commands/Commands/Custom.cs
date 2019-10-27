@@ -1,4 +1,4 @@
-﻿// <copyright file="Custom.cs" company="Allors bvba">
+// <copyright file="Custom.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -34,8 +34,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
+                session.SetUser(session.GetSingleton().Scheduler);
 
                 // Custom code
                 session.Derive();

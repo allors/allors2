@@ -1219,7 +1219,7 @@ namespace Allors.Domain
         ////    new Invoices(this.Session).Populate();
         ////    new SalesInvoices(this.Session).Populate();
 
-        ////    Person administrator = new PersonBuilder(this.Session).WithUserName("administrator").WithLastName("administrator").Build();
+        ////    Person administrator = new PersonBuilder(this.Session).WithUserName("administrator").Build();
         ////    securityPopulation.CoreAdministrators.AddMember(administrator);
 
         ////    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("administrator", "Forms"), new string[0]);
