@@ -9,13 +9,16 @@ namespace Allors.Domain
 
     public partial class AccessControl
     {
-        public override string ToString()
+        public string DebuggerDisplay
         {
-            var userNames = this.Subjects.Select(v => v.UserName);
-            var groupNames = this.SubjectGroups.Select(v => v.Name);
-            var names = string.Join(",", userNames.Union(groupNames));
+            get
+            {
+                var userNames = this.Subjects.Select(v => v.UserName);
+                var groupNames = this.SubjectGroups.Select(v => v.Name);
+                var names = string.Join(",", userNames.Union(groupNames));
 
-            return $"{this.Role.Name}: {names} [{this.strategy.ObjectId}]";
+                return $"{this.Role.Name}: {names} [{this.strategy.ObjectId}]";
+            }
         }
     }
 }

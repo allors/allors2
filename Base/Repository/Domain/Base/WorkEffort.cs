@@ -47,28 +47,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("7CDA479C-E7D8-4EE2-8005-7CF73CC88819")]
-        [AssociationId("E7633664-4A2C-4D68-9D26-9096FBD41171")]
-        [RoleId("2637A073-0E41-4B0B-BDD0-F2F48BE588BC")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Required]
-        [Derived]
-        SecurityToken OwnerSecurityToken { get; set; }
-
-        #region Allors
-        [Id("0315B5F6-F35C-4C7D-9CC9-F9E2DA4C19DB")]
-        [AssociationId("0AEFF8C3-F18B-4B50-A865-5FEB0549A7C6")]
-        [RoleId("1734195B-F174-4832-8DF8-B5D7AD05E497")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Required]
-        [Derived]
-        AccessControl OwnerAccessControl { get; set; }
-
-        #region Allors
         [Id("15F7EFA9-5A93-4921-8C42-D9CEC1F0EA63")]
         [AssociationId("0CB7203D-3745-453B-AE00-E4ED11DB059D")]
         [RoleId("D57F7A30-5D2A-4B7E-9E66-31C1D4EEDF90")]

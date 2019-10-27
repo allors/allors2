@@ -11,7 +11,8 @@ namespace Allors.Domain
 
     public class DemoTests : DomainTest
     {
-        public DemoTests() : base(false)
+        public DemoTests()
+            : base(false)
         {
         }
 

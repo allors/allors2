@@ -491,20 +491,20 @@ line2")
                     .Build();
             }
 
-            var aOrganisation = new Organisations(@this.Session()).FindBy(M.Organisation.IsInternalOrganisation, false);
+            var anOrganisation = new Organisations(@this.Session()).FindBy(M.Organisation.IsInternalOrganisation, false);
 
             var item = new SerialisedItemBuilder(@this.Session())
                 .WithSerialNumber("112")
                 .WithSerialisedItemState(new SerialisedItemStates(@this.Session()).Sold)
                 .WithAvailableForSale(false)
-                .WithOwnedBy(aOrganisation)
+                .WithOwnedBy(anOrganisation)
                 .Build();
 
             nonSerialisedPart2.AddSerialisedItem(item);
 
             var workTask = new WorkTaskBuilder(@this.Session())
                 .WithTakenBy(allors)
-                .WithCustomer(aOrganisation)
+                .WithCustomer(anOrganisation)
                 .WithName("maintenance")
                 .Build();
 
@@ -523,7 +523,7 @@ line2")
                 .WithName("Task")
                 .WithTakenBy(allors)
                 .WithFacility(new Facilities(@this.Session()).Extent().First)
-                .WithCustomer(aOrganisation)
+                .WithCustomer(anOrganisation)
                 .WithWorkEffortPurpose(new WorkEffortPurposes(@this.Session()).Maintenance)
                 .WithSpecialTerms("Net 45 Days")
                 .Build();
