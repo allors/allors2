@@ -12,7 +12,6 @@ namespace Allors
     using Domain;
     using Domain.TestPopulation;
     using Meta;
-    using Person = Domain.Person;
 
     public static class SingletonExtensions
     {
@@ -21,7 +20,10 @@ namespace Allors
             var dutchLocale = new Locales(@this.Session()).DutchNetherlands;
             @this.AddAdditionalLocale(dutchLocale);
 
-            var administrator = (Person)new UserGroups(@this.Session()).Administrators.Members.First;
+            var administrator = new PersonBuilder(@this.Session()).WithUserName("administrator").Build();
+            new UserGroups(@this.Session()).Administrators.AddMember(administrator);
+
+            @this.Session().Derive();
 
             var euro = new Currencies(@this.Session()).FindBy(M.Currency.IsoCode, "EUR");
 

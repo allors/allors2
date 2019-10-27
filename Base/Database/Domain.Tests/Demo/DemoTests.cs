@@ -26,8 +26,6 @@ namespace Allors.Domain
             session.Derive();
             session.Commit();
 
-            session.SetUser(this.Administrator);
-
             new Upgrade(session, null).Execute();
 
             session.Derive();

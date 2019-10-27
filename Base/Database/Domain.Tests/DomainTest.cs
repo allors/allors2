@@ -35,13 +35,13 @@ namespace Allors
 
         protected Organisation InternalOrganisation => this.Session.Extent<Organisation>().First(v => v.IsInternalOrganisation);
 
-        protected Person Administrator => this.GetUser("administrator");
+        protected Person Administrator => this.GetPersonByUserName("administrator");
 
-        protected Person OrderProcessor => this.GetUser("orderProcessor");
+        protected Person OrderProcessor => this.GetPersonByUserName("orderProcessor");
 
-        protected Person SalesRep => this.GetUser("salesRep");
+        protected Person SalesRep => this.GetPersonByUserName("salesRep");
 
-        protected Person Purchaser => this.GetUser("purchaser");
+        protected Person Purchaser => this.GetPersonByUserName("purchaser");
 
         protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
@@ -80,6 +80,6 @@ namespace Allors
             }
         }
 
-        private Person GetUser(string userName) => (Person)new Users(this.Session).GetUser(userName);
+        private Person GetPersonByUserName(string userName) => new People(this.Session).FindBy(M.User.UserName, userName);
     }
 }
