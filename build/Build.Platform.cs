@@ -1,18 +1,22 @@
-using System.IO;
-using System.Linq;
 using Nuke.Common;
-using Nuke.Common.Execution;
-using Nuke.Common.Git;
-using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.GitVersion;
-using Nuke.Common.Tools.Npm;
-using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 partial class Build
 {
+    Target AdaptersResetDatabase => _ => _
+        .Executes(() =>
+        {
+            var database = "Adapters";
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Drop(database);
+                sqlServer.Create(database);
+            }
+        });
+
     Target AdaptersGenerate => _ => _
         .After(Clean)
         .Executes(() =>
@@ -38,6 +42,7 @@ partial class Build
 
     Target AdaptersTestSqlClient => _ => _
         .DependsOn(AdaptersGenerate)
+        .DependsOn(AdaptersResetDatabase)
         .Executes(() =>
         {
             using (var database = new SqlServer())

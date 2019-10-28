@@ -10,15 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MartinCostello.SqlLocalDb" Version="2.0.0" />
-    <PackageReference Include="Nuke.Common" Version="0.22.1" />
-    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.1"/>
+    <PackageReference Include="MartinCostello.SqlLocalDb" Version="3.0.0" />
+    <PackageReference Include="Nuke.Common" Version="0.22.2" />
+    <PackageReference Include="GitVersion.CommandLine.DotNetCore" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <NukeSpecificationFiles Include="**\*.json" Exclude="bin\**;obj\**" />
     <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
+    <Compile Remove="_ReSharper.Caches\**" />
+    <EmbeddedResource Remove="_ReSharper.Caches\**" />
     <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
+    <None Remove="_ReSharper.Caches\**" />
+    <NukeExternalFiles Remove="_ReSharper.Caches\**" />
+    <NukeSpecificationFiles Remove="_ReSharper.Caches\**" />
 
     <!-- Common build related files -->
     <None Include="..\build.ps1" />
