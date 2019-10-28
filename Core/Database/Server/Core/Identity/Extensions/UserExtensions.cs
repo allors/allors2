@@ -15,9 +15,18 @@ namespace Allors.Security
             {
                 Id = @this.Id.ToString(),
                 UserName = @this.UserName,
+                NormalizedUserName = @this.NormalizedUserName,
                 PasswordHash = @this.UserPasswordHash,
                 Email = @this.UserEmail,
+                NormalizedEmail = @this.NormalizedUserEmail,
                 EmailConfirmed = @this.UserEmailConfirmed,
+                SecurityStamp = @this.UserSecurityStamp,
+                PhoneNumber = @this.UserPhoneNumber,
+                PhoneNumberConfirmed = @this.UserPhoneNumberConfirmed,
+                TwoFactorEnabled = @this.UserTwoFactorEnabled,
+                LockoutEnd = @this.UserLockoutEnd,
+                LockoutEnabled = @this.UserLockoutEnabled,
+                AccessFailedCount = @this.UserAccessFailedCount,
             };
     }
 }

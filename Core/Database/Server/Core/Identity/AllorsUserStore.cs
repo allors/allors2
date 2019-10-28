@@ -22,11 +22,11 @@ namespace Allors.Security
     public class AllorsUserStore : IUserPasswordStore<IdentityUser>,
                                    IUserLoginStore<IdentityUser>,
                                    IUserClaimStore<IdentityUser>,
-                                   IUserSecurityStampStore<IdentityUser>
-    // IUserTwoFactorStore<IdentityUser>,
-    // IUserEmailStore<IdentityUser>,
-    // IUserLockoutStore<IdentityUser>,
-    // IUserPhoneNumberStore<IdentityUser>
+                                   IUserSecurityStampStore<IdentityUser>,
+                                   IUserTwoFactorStore<IdentityUser>,
+                                   IUserEmailStore<IdentityUser>,
+                                   IUserLockoutStore<IdentityUser>,
+                                   IUserPhoneNumberStore<IdentityUser>
     {
         private readonly IDatabase database;
 
@@ -79,6 +79,14 @@ namespace Allors.Security
                         .WithUserPasswordHash(identityUser.PasswordHash)
                         .WithUserEmail(identityUser.Email)
                         .WithUserEmailConfirmed(identityUser.EmailConfirmed)
+                        .WithUserPasswordHash(identityUser.PasswordHash)
+                        .WithUserSecurityStamp(identityUser.SecurityStamp)
+                        .WithUserPhoneNumber(identityUser.PhoneNumber)
+                        .WithUserPhoneNumberConfirmed(identityUser.PhoneNumberConfirmed)
+                        .WithUserTwoFactorEnabled(identityUser.TwoFactorEnabled)
+                        .WithUserLockoutEnd(identityUser.LockoutEnd?.UtcDateTime)
+                        .WithUserLockoutEnabled(identityUser.LockoutEnabled)
+                        .WithUserAccessFailedCount(identityUser.AccessFailedCount)
                         .Build();
 
                     new UserGroups(session).Creators.AddMember(user);
@@ -110,6 +118,14 @@ namespace Allors.Security
                     user.UserPasswordHash = identityUser.PasswordHash;
                     user.UserEmail = identityUser.Email;
                     user.UserEmailConfirmed = identityUser.EmailConfirmed;
+                    user.UserPasswordHash = identityUser.PasswordHash;
+                    user.UserSecurityStamp = identityUser.SecurityStamp;
+                    user.UserPhoneNumber = identityUser.PhoneNumber;
+                    user.UserPhoneNumberConfirmed = identityUser.PhoneNumberConfirmed;
+                    user.UserTwoFactorEnabled = identityUser.TwoFactorEnabled;
+                    user.UserLockoutEnd = identityUser.LockoutEnd?.UtcDateTime;
+                    user.UserLockoutEnabled = identityUser.LockoutEnabled;
+                    user.UserAccessFailedCount = identityUser.AccessFailedCount;
 
                     session.Derive();
                     session.Commit();
@@ -366,26 +382,148 @@ namespace Allors.Security
         public async Task<string> GetSecurityStampAsync(IdentityUser identityUser, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            using (var session = this.database.CreateSession())
-            {
-                var user = identityUser.User(session);
-                return user.SecurityStamp;
-            }
+            return identityUser.SecurityStamp;
         }
 
         public async Task SetSecurityStampAsync(IdentityUser identityUser, string stamp, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            identityUser.SecurityStamp = stamp;
+        }
 
+        #endregion
+
+        #region IUserTwoFactorStore
+        public async Task<bool> GetTwoFactorEnabledAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.TwoFactorEnabled;
+        }
+
+        public async Task SetTwoFactorEnabledAsync(IdentityUser user, bool enabled, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            user.TwoFactorEnabled = enabled;
+        }
+
+        #endregion
+
+        #region IUserEmailStore
+        public async Task<IdentityUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             using (var session = this.database.CreateSession())
             {
-                var user = identityUser.User(session);
-                user.SecurityStamp = stamp;
-
-                session.Derive();
-                session.Commit();
+                var user = new Users(session).FindBy(M.User.NormalizedUserEmail, normalizedEmail);
+                return user?.AsIdentityUser();
             }
+        }
+
+        public async Task<string> GetEmailAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.Email;
+        }
+
+        public async Task<bool> GetEmailConfirmedAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.EmailConfirmed;
+        }
+
+        public async Task<string> GetNormalizedEmailAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.NormalizedEmail;
+        }
+
+        public async Task SetEmailAsync(IdentityUser user, string email, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            user.Email = email;
+        }
+
+        public async Task SetEmailConfirmedAsync(IdentityUser user, bool confirmed, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            user.EmailConfirmed = confirmed;
+        }
+
+        public async Task SetNormalizedEmailAsync(IdentityUser user, string normalizedEmail, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            user.NormalizedEmail = normalizedEmail;
+        }
+        #endregion
+
+        #region IUserLockoutStore
+        public async Task<int> GetAccessFailedCountAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.AccessFailedCount;
+        }
+
+        public async Task<bool> GetLockoutEnabledAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.LockoutEnabled;
+        }
+
+        public async Task<DateTimeOffset?> GetLockoutEndDateAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.LockoutEnd;
+        }
+
+        public async Task<int> IncrementAccessFailedCountAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return ++user.AccessFailedCount;
+        }
+
+        public async Task ResetAccessFailedCountAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            user.AccessFailedCount = default;
+        }
+
+        public async Task SetLockoutEnabledAsync(IdentityUser user, bool enabled, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            user.LockoutEnabled = enabled;
+        }
+
+        public async Task SetLockoutEndDateAsync(IdentityUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            user.LockoutEnd = lockoutEnd;
+        }
+
+        #endregion
+
+        #region IUserPhoneNumberStore
+        public async Task<string> GetPhoneNumberAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.PhoneNumber;
+        }
+
+        public async Task<bool> GetPhoneNumberConfirmedAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return user.PhoneNumberConfirmed;
+        }
+
+        public async Task SetPhoneNumberAsync(IdentityUser user, string phoneNumber, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            user.PhoneNumber = phoneNumber;
+        }
+
+        public async Task SetPhoneNumberConfirmedAsync(IdentityUser user, bool confirmed, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            user.PhoneNumberConfirmed = confirmed;
         }
 
         #endregion

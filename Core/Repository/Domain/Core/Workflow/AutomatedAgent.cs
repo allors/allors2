@@ -32,7 +32,19 @@ namespace Allors.Repository
 
         public bool UserEmailConfirmed { get; set; }
 
-        public string SecurityStamp { get; set; }
+        public string UserSecurityStamp { get; set; }
+
+        public string UserPhoneNumber { get; set; }
+
+        public bool UserPhoneNumberConfirmed { get; set; }
+
+        public bool UserTwoFactorEnabled { get; set; }
+
+        public DateTime UserLockoutEnd { get; set; }
+
+        public bool UserLockoutEnabled { get; set; }
+
+        public int UserAccessFailedCount { get; set; }
 
         public IdentityClaim[] IdentityClaims { get; set; }
 
