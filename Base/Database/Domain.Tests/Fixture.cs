@@ -109,6 +109,12 @@ namespace Allors
                 singleton.EmployeeUserGroup.AddMember(purchaser);
                 singleton.EmployeeUserGroup.AddMember(salesrep);
                 singleton.EmployeeUserGroup.AddMember(orderProcessor);
+                singleton.EmployeeUserGroup.AddMember(administrator);
+
+                new UserGroups(session).Creators.AddMember(purchaser);
+                new UserGroups(session).Creators.AddMember(salesrep);
+                new UserGroups(session).Creators.AddMember(orderProcessor);
+                new UserGroups(session).Creators.AddMember(administrator);
 
                 new CustomerRelationshipBuilder(session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(session.Now()).Build();
 

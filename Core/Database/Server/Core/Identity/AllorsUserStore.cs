@@ -81,6 +81,8 @@ namespace Allors.Security
                         .WithUserEmailConfirmed(identityUser.EmailConfirmed)
                         .Build();
 
+                    new UserGroups(session).Creators.AddMember(user);
+
                     session.Derive();
                     session.Commit();
 
