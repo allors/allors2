@@ -88,19 +88,26 @@ export class ProductQuoteApprovalEditComponent extends TestScope implements OnIn
   }
 
   approve(): void {
-    this.saveAndInvoke(this.allors.context.invoke(this.productQuoteApproval.Approve));
+    this.saveAndInvoke(() => this.allors.context.invoke(this.productQuoteApproval.Approve));
   }
 
   reject(): void {
-    this.saveAndInvoke(this.allors.context.invoke(this.productQuoteApproval.Reject));
+    this.saveAndInvoke(() => this.allors.context.invoke(this.productQuoteApproval.Reject));
   }
 
-  saveAndInvoke(methodCall: Observable<Invoked>): void {
+  saveAndInvoke(methodCall: () => Observable<Invoked>): void {
+    const { m, pull, x } = this.metaService;
 
     this.allors.context
       .save()
       .pipe(
-        switchMap(() => methodCall)
+        switchMap(() => {
+          return this.allors.context.load(pull.ProductQuoteApproval({ object: this.data.id }));
+        }),
+        switchMap(() => {
+          this.allors.context.reset();
+          return methodCall();
+        })
       )
       .subscribe((invoked: Invoked) => {
 
@@ -114,5 +121,4 @@ export class ProductQuoteApprovalEditComponent extends TestScope implements OnIn
         this.saveService.errorHandler
       );
   }
-
 }

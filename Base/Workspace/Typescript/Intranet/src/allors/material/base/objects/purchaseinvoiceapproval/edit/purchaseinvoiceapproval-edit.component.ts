@@ -87,19 +87,26 @@ export class PurchaseInvoiceApprovalEditComponent extends TestScope implements O
   }
 
   approve(): void {
-    this.saveAndInvoke(this.allors.context.invoke(this.purchaseInvoiceApproval.Approve));
+    this.saveAndInvoke(() => this.allors.context.invoke(this.purchaseInvoiceApproval.Approve));
   }
 
   reject(): void {
-    this.saveAndInvoke(this.allors.context.invoke(this.purchaseInvoiceApproval.Reject));
+    this.saveAndInvoke(() => this.allors.context.invoke(this.purchaseInvoiceApproval.Reject));
   }
 
-  saveAndInvoke(methodCall: Observable<Invoked>): void {
+  saveAndInvoke(methodCall: () => Observable<Invoked>): void {
+    const { m, pull, x } = this.metaService;
 
     this.allors.context
       .save()
       .pipe(
-        switchMap(() => methodCall)
+        switchMap(() => {
+          return this.allors.context.load(pull.PurchaseInvoiceApproval({ object: this.data.id }));
+        }),
+        switchMap(() => {
+          this.allors.context.reset();
+          return methodCall();
+        })
       )
       .subscribe((invoked: Invoked) => {
         const data: IObject = {
