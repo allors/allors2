@@ -78,6 +78,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate0)
                 .WithUniqueId(IntraCommunautairId)
                 .WithIsActive(true)
+                .WithVatClause(new VatClauses(this.Session).Intracommunautair)
                 .Build();
 
             new VatRegimeBuilder(this.Session)
@@ -86,6 +87,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate0)
                 .WithUniqueId(ServiceB2BId)
                 .WithIsActive(true)
+                .WithVatClause(new VatClauses(this.Session).ServiceB2B)
                 .Build();
 
             new VatRegimeBuilder(this.Session)
