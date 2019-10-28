@@ -6,6 +6,7 @@
 
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -73,7 +74,54 @@ namespace Allors.Repository
         [RoleId("4A0170A0-25CC-4F51-95E2-9F7359EFAD54")]
         #endregion
         [Size(256)]
-        string SecurityStamp { get; set; }
+        string UserSecurityStamp { get; set; }
+
+        #region Allors
+        [Id("34F1AB65-94A0-4440-B770-1B79495DA77D")]
+        [AssociationId("7FBE00D5-4ED1-49C1-8201-DE9DAFF10A0F")]
+        [RoleId("BA41D249-0A04-456B-BC86-6D8F3A379563")]
+        #endregion
+        [Size(256)]
+        string UserPhoneNumber { get; set; }
+
+        #region Allors
+        [Id("DAD0F093-1D42-4F82-857B-D00255D1468A")]
+        [AssociationId("BD7C3131-2DD1-49E4-9596-2B31D9889544")]
+        [RoleId("45A576E2-5FE7-43EE-A772-586F3991E1D4")]
+        #endregion
+        [Required]
+        bool UserPhoneNumberConfirmed { get; set; }
+
+        #region Allors
+        [Id("C1D83C41-11D2-4B0D-8D4C-9FA85489CA32")]
+        [AssociationId("CE827B10-AA14-45C7-8F06-6AC6B8CC0A23")]
+        [RoleId("C6D6CA80-8C79-4CEC-B3EE-5908855D9F15")]
+        #endregion
+        [Required]
+        bool UserTwoFactorEnabled { get; set; }
+
+        #region Allors
+        [Id("00731A56-8921-443B-9F85-FB4AB2841019")]
+        [AssociationId("70FC8B48-47FD-4427-965E-BB2D2F6479B7")]
+        [RoleId("A73F50E8-9876-44DF-8F61-00F032F59249")]
+        #endregion
+        DateTime UserLockoutEnd { get; set; }
+
+        #region Allors
+        [Id("552F0C55-92E2-4923-A1FE-579170F4EE3C")]
+        [AssociationId("8C3956B9-0523-4245-BA56-52EAD273349F")]
+        [RoleId("1895F1BA-39F7-4C77-AE7F-A490F5F270F2")]
+        #endregion
+        [Required]
+        bool UserLockoutEnabled { get; set; }
+
+        #region Allors
+        [Id("01E02A45-5ECF-4E44-85FA-3A2A3678C0BB")]
+        [AssociationId("4AAA415A-D820-4DA8-A551-2323785F394F")]
+        [RoleId("280FD9F7-5ECE-4AD5-818C-4349389ABC1E")]
+        #endregion
+        [Required]
+        int UserAccessFailedCount { get; set; }
 
         #region Allors
         [Id("1C53F0D3-FA27-4018-ACBE-88A1E5F5C386")]
