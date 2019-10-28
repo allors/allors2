@@ -10,7 +10,6 @@ namespace Allors.Domain
 
     public partial class VatRegimes
     {
-        private static readonly Guid CoContractorId = new Guid("49D061B2-A9F9-408b-B781-409ECC3D54FC");
         private static readonly Guid PrivatePersonId = new Guid("001A6A60-CC8A-4e6a-8FC0-BCE9707FA496");
         private static readonly Guid AssessableId = new Guid("5973BE64-C785-480f-AF30-74D32C6D6AF9");
         private static readonly Guid ExportId = new Guid("3268B6E5-995D-4f4b-B94E-AF4BE25F4282");
@@ -19,8 +18,6 @@ namespace Allors.Domain
         private static readonly Guid ExemptId = new Guid("82986030-5E18-43c1-8CBE-9832ACD4151D");
 
         private UniquelyIdentifiableSticky<VatRegime> cache;
-
-        public VatRegime CoContractor => this.Cache[CoContractorId];
 
         public VatRegime PrivatePerson => this.Cache[PrivatePersonId];
 
@@ -50,14 +47,6 @@ namespace Allors.Domain
             var vatRate21 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 21);
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
-            new VatRegimeBuilder(this.Session)
-                .WithName("Co-Contractor")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Medecontractant").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate0)
-                .WithUniqueId(CoContractorId)
-                .WithIsActive(true)
-                .Build();
 
             new VatRegimeBuilder(this.Session)
                 .WithName("Private Person")
