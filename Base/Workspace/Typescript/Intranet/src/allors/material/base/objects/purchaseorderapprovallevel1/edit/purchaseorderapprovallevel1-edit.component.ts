@@ -87,19 +87,26 @@ export class PurchaseOrderApprovalLevel1EditComponent extends TestScope implemen
   }
 
   approve(): void {
-    this.saveAndInvoke(this.allors.context.invoke(this.purchaseOrderApproval.Approve));
+    this.saveAndInvoke(() => this.allors.context.invoke(this.purchaseOrderApproval.Approve));
   }
 
   reject(): void {
-    this.saveAndInvoke(this.allors.context.invoke(this.purchaseOrderApproval.Reject));
+    this.saveAndInvoke(() => this.allors.context.invoke(this.purchaseOrderApproval.Reject));
   }
 
-  saveAndInvoke(methodCall: Observable<Invoked> ): void {
+  saveAndInvoke(methodCall: () => Observable<Invoked>): void {
+    const { m, pull, x } = this.metaService;
 
     this.allors.context
       .save()
       .pipe(
-        switchMap(() => methodCall)
+        switchMap(() => {
+          return this.allors.context.load(pull.PurchaseOrderApprovalLevel1({ object: this.data.id }));
+        }),
+        switchMap(() => {
+          this.allors.context.reset();
+          return methodCall();
+        })
       )
       .subscribe((invoked: Invoked) => {
         const data: IObject = {
@@ -112,5 +119,4 @@ export class PurchaseOrderApprovalLevel1EditComponent extends TestScope implemen
         this.saveService.errorHandler
       );
   }
-
 }
