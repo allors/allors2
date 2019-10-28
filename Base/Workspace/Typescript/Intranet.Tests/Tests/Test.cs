@@ -145,11 +145,11 @@ namespace Tests
 
         public virtual void Dispose() => this.DriverManager.Stop();
 
-        public void Login(string userName = "administrator")
+        public void Login(string userName = "firstemployee@allors.com")
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
             var login = new LoginComponent(this.Driver);
-            login.Login();
+            login.Login(userName);
         }
     }
 }
