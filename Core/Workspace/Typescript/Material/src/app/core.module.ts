@@ -3,14 +3,14 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
-import { MAT_MOMENT_DATE_FORMATS, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { environment } from '../environments/environment';
 
 import { AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule } from '../allors/angular';
 
 import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule } from '../allors/material';
+import { SaveModule } from 'src/allors/material/core/services/save';
 
 @NgModule({
   imports: [
@@ -22,6 +22,7 @@ import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModul
     AllorsModule.forRoot({ url: environment.url }),
     AuthenticationModule.forRoot({ url: environment.url + environment.authenticationUrl }),
     LoggingModule.forRoot({ console: true }),
+    SaveModule,
 
     AllorsBarcodeModule.forRoot(),
     AllorsFocusModule.forRoot(),

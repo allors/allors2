@@ -29,7 +29,9 @@ namespace Tests
                 .WithUserName("administrator")
                 .Build();
 
+            new UserGroups(this.session).Creators.AddMember(person);
             new UserGroups(this.session).Administrators.AddMember(person);
+
             this.session.Derive();
         }
     }
