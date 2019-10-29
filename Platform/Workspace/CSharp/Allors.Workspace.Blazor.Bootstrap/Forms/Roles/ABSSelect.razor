@@ -1,0 +1,11 @@
+@inherits ABSSelectBase
+
+<BSFormGroup>
+    <BSLabel>@Label</BSLabel>
+    <BSBasicInput InputType="InputType.Select" @bind-Value="ModelId">
+        @foreach (var option in Options)
+        {
+            <option value="@option.Id">@(DisplayOption(option))</option>
+        }
+    </BSBasicInput>
+</BSFormGroup>
