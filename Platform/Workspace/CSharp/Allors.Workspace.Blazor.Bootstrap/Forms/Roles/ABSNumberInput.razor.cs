@@ -5,7 +5,7 @@ namespace Allors.Workspace.Blazor.Bootstrap.Forms.Roles
 
     public class ABSNumberInputBase : RoleField
     {
-        public int IntModel { get => (int)this.Model; set => this.Model = value; }
+        public int? IntModel { get => (int?)this.Model; set => this.Model = value; }
 
         public BlazorStrap.InputType InputType
         {
