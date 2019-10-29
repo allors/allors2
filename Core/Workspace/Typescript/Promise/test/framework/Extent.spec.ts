@@ -39,7 +39,7 @@ describe('Extent',
 
           assert.isArray(people);
           assert.isNotEmpty(people);
-          assert.equal(7, people.length);
+          assert.equal(6, people.length);
         });
       });
 

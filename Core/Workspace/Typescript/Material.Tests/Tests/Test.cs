@@ -42,8 +42,6 @@ namespace Tests
             CultureInfo.CurrentCulture = new CultureInfo("nl-BE");
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
 
-
-
             const string root = "/config/core";
             var configurationBuilder = new ConfigurationBuilder();
             configurationBuilder.AddCrossPlatform(".");
