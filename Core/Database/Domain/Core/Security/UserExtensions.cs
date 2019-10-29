@@ -7,6 +7,7 @@ namespace Allors.Domain
 {
     using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
+    using System;
 
     public static partial class UserExtensions
     {
@@ -57,6 +58,11 @@ namespace Allors.Domain
                 @this.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
                     .WithAccessControl(@this.OwnerAccessControl)
                     .Build();
+            }
+
+            if (!@this.ExistUserSecurityStamp)
+            {
+                @this.UserSecurityStamp = Guid.NewGuid().ToString();
             }
         }
 
