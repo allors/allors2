@@ -30,7 +30,7 @@ describe('Extent', () => {
         const loaded: Loaded = await fixture.allors.context.load(new PullRequest({ pulls })).toPromise();
         const people = loaded.collections.People as Person[];
 
-        expect(people).toBeArrayOfSize(7);
+        expect(people).toBeArrayOfSize(6);
       });
     });
 
