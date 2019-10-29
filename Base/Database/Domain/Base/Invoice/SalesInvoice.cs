@@ -545,15 +545,7 @@ namespace Allors.Domain
             // this.BaseOnDeriveRevenues(derivation);
             var singleton = this.strategy.Session.GetSingleton();
 
-            this.SecurityTokens = new[]
-            {
-                singleton.DefaultSecurityToken,
-            };
-
-            if (this.ExistBilledFrom)
-            {
-                this.AddSecurityToken(this.BilledFrom.LocalAdministratorSecurityToken);
-            }
+            this.AddSecurityToken(singleton.DefaultSecurityToken);
 
             this.Sync(this.strategy.Session);
 

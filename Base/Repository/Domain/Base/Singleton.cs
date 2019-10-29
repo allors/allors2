@@ -41,37 +41,6 @@ namespace Allors.Repository
         public SecurityToken AdministratorSecurityToken { get; set; }
 
         #region Allors
-        [Id("4387233F-2B33-4F5D-9340-6DB8BCFB8286")]
-        [AssociationId("5C4EF372-0A84-4BB6-BD83-B4A1E805204A")]
-        [RoleId("E7DB50A5-3586-48D6-9A17-0C323E3C5F63")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Indexed]
-        public Person[] SalesAccountManagers { get; set; }
-
-        #region Allors
-        [Id("F7C97E4F-9A44-43CC-86F4-6C8505944864")]
-        [AssociationId("471D052F-2F52-4676-B2A6-807FEFB787CB")]
-        [RoleId("28E28CF3-E540-4C06-97BB-80EF03E33825")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public UserGroup SalesAccountManagerUserGroup { get; set; }
-
-        #region Allors
-        [Id("89F804D5-1CF7-45CF-B5F2-22036DDDD059")]
-        [AssociationId("01DBEF60-BEB9-4338-B9BC-871BE6A53372")]
-        [RoleId("39E9AE46-C61C-4CBB-9E68-9D2605252F89")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Derived]
-        public AccessControl SalesAccountManagerAccessControl { get; set; }
-
-        #region Allors
         [Id("3BA81A3E-2F3D-4270-BEF8-CF72CD978355")]
         [AssociationId("61ABB4A7-79AA-4388-8C0D-1369BC862046")]
         [RoleId("6799208F-C7FB-4CBD-B5F7-180C8A212B13")]

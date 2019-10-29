@@ -38,8 +38,6 @@ namespace Allors.Domain
             {
                 this.LogoImage = new MediaBuilder(this.Strategy.Session).WithInData(this.GetResourceBytes("allors.png")).Build();
             }
-
-            this.SalesAccountManagerUserGroup.Members = this.SalesAccountManagers.ToArray();
         }
 
         private byte[] GetResourceBytes(string name)
