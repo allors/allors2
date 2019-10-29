@@ -16,10 +16,6 @@ namespace Allors.Repository
     {
         #region inherited properties
 
-        public SecurityToken OwnerSecurityToken { get; set; }
-
-        public AccessControl OwnerAccessControl { get; set; }
-
         public Organisation TakenBy { get; set; }
 
         public Organisation ExecutedBy { get; set; }

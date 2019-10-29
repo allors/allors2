@@ -20,17 +20,16 @@ namespace Allors
             {
                 new Setup(session, config).Apply();
 
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
-
-                var singleton = session.GetSingleton();
+                var administrator = new PersonBuilder(session).WithUserName("administrator").Build();
 
                 new UserGroups(session).Administrators.AddMember(administrator);
 
-                singleton.Guest = new PersonBuilder(session).WithUserName("guest").WithLastName("guest").Build();
+                session.SetUser(administrator);
 
                 session.Derive();
                 session.Commit();
+
+                var singleton = session.GetSingleton();
 
                 var belgium = new Countries(session).CountryByIsoCode["BE"];
                 var euro = belgium.Currency;
@@ -102,14 +101,20 @@ namespace Allors
                 var customer = new OrganisationBuilder(session).WithName("customer").WithLocale(singleton.DefaultLocale).Build();
                 var supplier = new OrganisationBuilder(session).WithName("supplier").WithLocale(singleton.DefaultLocale).Build();
 
-                var purchaser = new PersonBuilder(session).WithLastName("Purchaser").WithUserName("The").Build();
-                var salesrep = new PersonBuilder(session).WithLastName("SalesRep").WithUserName("The").Build();
-                var orderProcessor = new PersonBuilder(session).WithLastName("OrderProcessor").WithUserName("The").Build();
+                var purchaser = new PersonBuilder(session).WithFirstName("The").WithLastName("purchaser").WithUserName("purchaser").Build();
+                var salesrep = new PersonBuilder(session).WithFirstName("The").WithLastName("salesRep").WithUserName("salesRep").Build();
+                var orderProcessor = new PersonBuilder(session).WithFirstName("The").WithLastName("orderProcessor").WithUserName("orderProcessor").Build();
 
                 // Adding newly created persons to EmployeeUserGroup as employees do not have any permission when created
                 singleton.EmployeeUserGroup.AddMember(purchaser);
                 singleton.EmployeeUserGroup.AddMember(salesrep);
                 singleton.EmployeeUserGroup.AddMember(orderProcessor);
+                singleton.EmployeeUserGroup.AddMember(administrator);
+
+                new UserGroups(session).Creators.AddMember(purchaser);
+                new UserGroups(session).Creators.AddMember(salesrep);
+                new UserGroups(session).Creators.AddMember(orderProcessor);
+                new UserGroups(session).Creators.AddMember(administrator);
 
                 new CustomerRelationshipBuilder(session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(session.Now()).Build();
 

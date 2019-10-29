@@ -24,28 +24,6 @@ namespace Allors.Repository
         WorkEffortState WorkEffortState { get; set; }
 
         #region Allors
-        [Id("B21C5325-79BF-4B8F-B504-F7AD673E0E47")]
-        [AssociationId("CF0DFA8A-D07E-423E-97DC-979F3C1B1C33")]
-        [RoleId("FC38FBF5-E93D-4B26-9065-0B70DAADB61A")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Derived]
-        SecurityToken OwnerSecurityToken { get; set; }
-
-        #region Allors
-        [Id("300459D2-962B-48E9-ABD4-637DE3C70670")]
-        [AssociationId("BA014E41-E04B-4153-BF18-6F8FBC4F01F1")]
-        [RoleId("7843685D-7597-4C23-977D-FC893587735E")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
-        [Derived]
-        AccessControl OwnerAccessControl { get; set; }
-
-        #region Allors
         [Id("C8F73224-717F-4E55-99BC-23507CDE4967")]
         [AssociationId("202E3160-F290-4DEA-97BB-B3FB01A93B49")]
         [RoleId("0AF7FAC8-043E-4A41-B7CF-2137970243FF")]

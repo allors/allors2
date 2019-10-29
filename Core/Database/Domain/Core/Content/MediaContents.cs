@@ -50,13 +50,6 @@ namespace Allors.Domain
             return "application/octet-stream";
         }
 
-        protected override void CoreSecure(Security config)
-        {
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
-        }
-
         private static bool Match(IReadOnlyList<byte> content, IReadOnlyList<byte> signature)
         {
             if (content.Count > signature.Count)

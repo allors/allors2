@@ -29,7 +29,7 @@ namespace Allors.Workspace.Blazor
 
         public bool CanWrite => this.ExistObject && this.Object.CanWrite(this.RoleType);
 
-        public object Model
+        public virtual object Model
         {
             get => this.ExistObject ? this.Object.Get(this.RoleType) : null;
 

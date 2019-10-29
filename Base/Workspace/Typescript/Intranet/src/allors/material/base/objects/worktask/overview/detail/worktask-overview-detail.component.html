@@ -78,7 +78,7 @@
             <mat-card>
               <mat-card-header>Add a new contact mechanism</mat-card-header>
               <mat-card-content>
-                <person-inline (cancelled)="addContactPerson = false" (saved)="contactPersonAdded($event)">
+                <person-inline (cancelled)="addContactPerson = false" (saved)="contactPersonAdded($event); addContactPerson = false">
                 </person-inline>
               </mat-card-content>
             </mat-card>

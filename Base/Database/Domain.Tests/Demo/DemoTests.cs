@@ -11,7 +11,8 @@ namespace Allors.Domain
 
     public class DemoTests : DomainTest
     {
-        public DemoTests() : base(false)
+        public DemoTests()
+            : base(false)
         {
         }
 
@@ -25,9 +26,6 @@ namespace Allors.Domain
 
             session.Derive();
             session.Commit();
-
-            var administrator = new Users(session).GetUser("administrator");
-            session.SetUser(administrator);
 
             new Upgrade(session, null).Execute();
 

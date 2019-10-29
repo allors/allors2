@@ -72,22 +72,6 @@ namespace Allors.Domain
             {
                 this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
-
-            if (this.QuoteWhereQuoteItem.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Cancelled))
-            {
-                if (this.QuoteItemState != new QuoteItemStates(this.Strategy.Session).Rejected)
-                {
-                    this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Cancelled;
-                }
-            }
-
-            if (this.QuoteWhereQuoteItem.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Rejected))
-            {
-                if (this.QuoteItemState != new QuoteItemStates(this.Strategy.Session).Cancelled)
-                {
-                    this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Rejected;
-                }
-            }
         }
 
         public void BaseCancel(QuoteItemCancel method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Cancelled;

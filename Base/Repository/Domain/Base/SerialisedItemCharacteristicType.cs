@@ -39,6 +39,16 @@ namespace Allors.Repository
         [Workspace]
         public IUnitOfMeasure UnitOfMeasure { get; set; }
 
+        #region Allors
+        [Id("E15CA0FB-5C27-471D-A803-D24021E42B2E")]
+        [AssociationId("2419AB63-BF7A-4261-99A8-090C94752661")]
+        [RoleId("6486D3B2-AE24-441F-A9E2-3B1B7083032A")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Required]
+        public bool Public { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

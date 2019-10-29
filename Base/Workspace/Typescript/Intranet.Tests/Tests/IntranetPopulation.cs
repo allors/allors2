@@ -139,8 +139,8 @@ namespace Tests
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
 
             this.SetupUser(allors, "firstemployee@allors.com", "first", "allors employee", "letmein");
-            this.SetupUser(allors, "firstemployee@allors.com", "second", "allors employee", "letmein");
-            this.SetupUser(dipu, "firstemployee@allors.com", "first", "dipu employee", "letmein");
+            this.SetupUser(allors, "secondemployee@allors.com", "second", "allors employee", "letmein");
+            this.SetupUser(dipu, "firstemployee@dipu.com", "first", "dipu employee", "letmein");
 
             var facility = new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")

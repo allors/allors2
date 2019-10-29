@@ -15,7 +15,7 @@ namespace Allors.Repository
     {
         #region inherited properties
         #endregion
-
+        
         #region Allors
         [Id("18262218-a14f-48c3-87a5-87196d3b5974")]
         [AssociationId("3f067cf5-4fcb-4be4-9afb-15ba37700658")]
@@ -35,13 +35,13 @@ namespace Allors.Repository
         public string Provider { get; set; }
 
         #region Allors
-        [Id("c2d950ad-39d3-40f1-8817-11a026e9890b")]
-        [AssociationId("e8091111-9f92-41a9-b4b1-4e8f277ea575")]
-        [RoleId("150daf84-13ce-4b5f-83e6-64c7ef4f81c6")]
+        [Id("B7957FD9-A43C-4E1E-844E-CA115DD33B23")]
+        [AssociationId("1F4A70BF-4BC2-4919-BB0A-6C6B7545CEE9")]
+        [RoleId("99E78F55-FE53-4F78-A135-4058E1C4A71F")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        public User User { get; set; }
+        [Size(256)]
+        public string DisplayName { get; set; }
 
         #region inherited methods
 

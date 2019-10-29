@@ -17,14 +17,11 @@ namespace Tests
     public class PersonTests : DomainTest
     {
         [Fact]
-        public void LastNameIsRequired()
+        public void NoRequiredFields()
         {
-            var rainer = new PersonBuilder(this.Session).WithFirstName("Rainer").Build();
+            new PersonBuilder(this.Session).Build();
             var log = this.Session.Derive(false);
-
-            Assert.Equal(log.Errors.Length, 1);
-            var error = log.Errors[0];
-            Assert.Equal(error.RoleTypes[0], M.Person.LastName);
+            Assert.Equal(0, log.Errors.Length);
         }
 
         [Fact]
@@ -33,7 +30,7 @@ namespace Tests
             var john = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
             this.Session.Derive();
 
-            Assert.Equal(john.FullName, "John Doe");
+            Assert.Equal("John Doe", john.FullName);
         }
     }
 }

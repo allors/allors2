@@ -1,4 +1,4 @@
-﻿// <copyright file="Languages.cs" company="Allors bvba">
+// <copyright file="Languages.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -208,13 +208,6 @@ namespace Allors.Domain
                     .WithNativeName(data[i, 2])
                     .Build();
             }
-        }
-
-        protected override void CoreSecure(Security config)
-        {
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
         }
     }
 }

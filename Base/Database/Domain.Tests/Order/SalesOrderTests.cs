@@ -100,7 +100,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             // var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
             // derivation.Derive();
@@ -189,7 +189,7 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
             this.Session.Derive();
@@ -240,7 +240,7 @@ namespace Allors.Domain
             shipment = (CustomerShipment)item2.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 
@@ -295,7 +295,7 @@ namespace Allors.Domain
             shipment = (CustomerShipment)item3.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
 
@@ -387,7 +387,7 @@ namespace Allors.Domain
             var pickList1 = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.Equal(3, pickList1.PickListItems[0].Quantity);
 
-            pickList1.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList1.Picker = this.OrderProcessor;
 
             this.Session.Derive();
 
@@ -474,7 +474,7 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
-            pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
+            pickList.Picker = this.OrderProcessor;
 
             this.Session.Derive();
 
@@ -2839,7 +2839,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity(Users.AdministratorUserName);
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(this.InternalOrganisation)
@@ -2871,7 +2872,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity(Users.AdministratorUserName);
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(this.InternalOrganisation)
@@ -2907,7 +2909,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity("customer");
+            this.Session.SetUser(customer);
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(this.InternalOrganisation)
@@ -2943,7 +2945,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity("customer");
+            this.Session.SetUser(customer);
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(this.InternalOrganisation)
@@ -2979,7 +2981,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity("customer");
+            this.Session.SetUser(customer);
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(this.InternalOrganisation)
@@ -3020,7 +3022,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.SetIdentity(Users.AdministratorUserName);
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(this.InternalOrganisation)

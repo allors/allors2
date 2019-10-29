@@ -47,7 +47,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
         [Indexed]
-        public User Guest { get; set; }
+        public AutomatedAgent Guest { get; set; }
+
+        #region Allors
+        [Id("F5DB3956-2715-487B-B872-CEF97F70566B")]
+        [AssociationId("2702B7E9-EDB0-4DF5-968F-1F68AEF6DCA0")]
+        [RoleId("D60B0381-24B3-4EF0-97D7-CF0BFB952830")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        [Indexed]
+        public AutomatedAgent Scheduler { get; set; }
 
         #region Allors
         [Id("6A6E0852-C984-47B8-939D-8E0B0B042B9D")]

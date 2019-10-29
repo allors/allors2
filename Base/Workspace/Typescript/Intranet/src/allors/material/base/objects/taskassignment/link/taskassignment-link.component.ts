@@ -4,9 +4,9 @@ import { Subscription, } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { PullRequest } from '../../../../../framework';
-import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, UserId } from '../../../../../angular';
 
-import { Task } from '../../../../../domain';
+import { Task, Person } from '../../../../../domain';
 
 import { ObjectService } from '../../../../core/services/object';
 
@@ -40,7 +40,9 @@ export class TaskAssignmentLinkComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
-    public navigation: NavigationService) {
+    public navigation: NavigationService,
+    private userId: UserId,
+    ) {
   }
 
   ngOnInit(): void {
@@ -53,6 +55,12 @@ export class TaskAssignmentLinkComponent implements OnInit, OnDestroy {
 
           const pulls = [
             pull.Task({
+              include: {
+                Participants: x
+              }
+            }),
+            pull.Person({
+              object: this.userId.value
             })];
 
           return this.allors.context.load(new PullRequest({ pulls }));
@@ -60,7 +68,11 @@ export class TaskAssignmentLinkComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        this.tasks = loaded.collections.Tasks as Task[];
+
+        const user = loaded.objects.Person as Person;
+
+        const allTasks = loaded.collections.Tasks as Task[];
+        this.tasks = allTasks.filter(v => v.Participants.indexOf(user) > -1);
       });
   }
 

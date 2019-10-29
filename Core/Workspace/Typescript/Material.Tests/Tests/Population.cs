@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using Allors.Domain;
+
 namespace Tests
 {
     using System.IO;
@@ -21,6 +23,16 @@ namespace Tests
             this.dataPath = dataPath;
         }
 
-        public void Execute() => this.session.Derive();
+        public void Execute()
+        {
+            var person = new PersonBuilder(this.session)
+                .WithUserName("administrator")
+                .Build();
+
+            new UserGroups(this.session).Creators.AddMember(person);
+            new UserGroups(this.session).Administrators.AddMember(person);
+
+            this.session.Derive();
+        }
     }
 }

@@ -6,6 +6,7 @@
 
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -19,21 +20,43 @@ namespace Allors.Repository
 
         public AccessControl OwnerAccessControl { get; set; }
 
-        public bool UserEmailConfirmed { get; set; }
-
         public string UserName { get; set; }
 
         public string NormalizedUserName { get; set; }
 
+        public string UserPasswordHash { get; set; }
+
         public string UserEmail { get; set; }
 
-        public string UserPasswordHash { get; set; }
+        public string NormalizedUserEmail { get; set; }
+
+        public bool UserEmailConfirmed { get; set; }
+
+        public string UserSecurityStamp { get; set; }
+
+        public string UserPhoneNumber { get; set; }
+
+        public bool UserPhoneNumberConfirmed { get; set; }
+
+        public bool UserTwoFactorEnabled { get; set; }
+
+        public DateTime UserLockoutEnd { get; set; }
+
+        public bool UserLockoutEnabled { get; set; }
+
+        public int UserAccessFailedCount { get; set; }
+
+        public IdentityClaim[] IdentityClaims { get; set; }
+
+        public Login[] Logins { get; set; }
 
         public NotificationList NotificationList { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public Guid UniqueId { get; set; }
 
         #endregion
 
@@ -51,7 +74,6 @@ namespace Allors.Repository
         [AssociationId("31925ed6-e66c-4718-963f-c8a71d566fe8")]
         [RoleId("eee42775-b172-4fde-9042-a0f9b2224ec3")]
         #endregion
-        [Required]
         [Size(-1)]
         public string Description { get; set; }
 

@@ -18,8 +18,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void WorkspaceNewObject()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             var uri = new Uri(@"allors/push", UriKind.Relative);
 
@@ -42,8 +41,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void DeletedObject()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             var organisation = new OrganisationBuilder(this.Session).Build();
             this.Session.Commit();

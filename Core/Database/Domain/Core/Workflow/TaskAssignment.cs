@@ -1,4 +1,4 @@
-﻿// <copyright file="TaskAssignment.cs" company="Allors bvba">
+// <copyright file="TaskAssignment.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -12,7 +12,7 @@ namespace Allors.Domain
             var singleton = this.Strategy.Session.GetSingleton();
             this.SecurityTokens = new[] { singleton.DefaultSecurityToken, this.User?.OwnerSecurityToken };
 
-            this.Task?.ManageNotification(this);
+            //this.Task?.ManageNotification(this);
         }
 
         public void CoreDelete(DeletableDelete method) => this.Notification?.Delete();

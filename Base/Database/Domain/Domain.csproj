@@ -1,11 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Allors.Domain</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="28.3.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
   </ItemGroup>
 
@@ -17,10 +16,6 @@
 
   <ItemGroup>
     <Compile Include="..\..\..\Core\Database\Domain\Core*\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="..\..\..\Core\Database\Domain\Core\Security\Cache\AccessControlCache.cs" />
   </ItemGroup>
 
   <ItemGroup>

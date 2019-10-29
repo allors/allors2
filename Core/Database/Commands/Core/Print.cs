@@ -1,4 +1,4 @@
-﻿// <copyright file="Print.cs" company="Allors bvba">
+// <copyright file="Print.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -37,8 +37,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var administrator = new Users(session).GetUser(Users.AdministratorUserName);
-                session.SetUser(administrator);
+                session.SetUser(session.GetSingleton().Scheduler);
 
                 var printDocuments = new PrintDocuments(session).Extent();
                 printDocuments.Filter.AddNot().AddExists(M.PrintDocument.Media);

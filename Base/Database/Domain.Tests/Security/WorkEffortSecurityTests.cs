@@ -26,10 +26,10 @@ namespace Allors.Domain
 
             Assert.Equal(new WorkEffortStates(this.Session).Created, workTask.WorkEffortState);
 
-            var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
-            this.SetIdentity(Users.AdministratorUserName);
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
-            var acl = new AccessControlLists(administrator)[workTask];
+            var acl = new AccessControlLists(this.Administrator)[workTask];
             Assert.True(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
             Assert.False(acl.CanExecute(M.WorkEffort.Complete));
@@ -53,10 +53,10 @@ namespace Allors.Domain
 
             Assert.Equal(new WorkEffortStates(this.Session).Completed, workTask.WorkEffortState);
 
-            var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
-            this.SetIdentity(Users.AdministratorUserName);
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
-            var acl = new AccessControlLists(administrator)[workTask];
+            var acl = new AccessControlLists(this.Administrator)[workTask];
             Assert.True(acl.CanExecute(M.WorkEffort.Invoice));
             Assert.True(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
@@ -96,10 +96,10 @@ namespace Allors.Domain
 
             Assert.Equal(new WorkEffortStates(this.Session).Cancelled, workTask.WorkEffortState);
 
-            var administrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
-            this.SetIdentity(Users.AdministratorUserName);
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
-            var acl = new AccessControlLists(administrator)[timeEntry];
+            var acl = new AccessControlLists(this.Administrator)[timeEntry];
             Assert.False(acl.CanWrite(M.TimeEntry.AmountOfTime));
         }
     }

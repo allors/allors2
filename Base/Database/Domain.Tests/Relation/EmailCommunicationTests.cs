@@ -19,7 +19,7 @@ namespace Allors.Domain
             var addresseeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee@allors.com").Build();
 
             var communication = new EmailCommunicationBuilder(this.Session)
-                .WithOwner(new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName))
+                .WithOwner(this.Administrator)
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
                 .WithFromEmail(originatorEmail)

@@ -34,10 +34,29 @@ namespace Allors.Repository
         [Id("C603F7EA-5201-464A-B657-BE23D42EF6DB")]
         [AssociationId("F733AB79-19D8-4829-97BB-51E3AC79D672")]
         [RoleId("68C0B00C-E857-4B2F-A6BC-4804C8B6AFFD")]
+        #endregion
         [Required]
         [Workspace]
-        #endregion
         public string Name { get; set; }
+
+        #region Allors
+        [Id("852D8EF7-8ABD-4125-84E3-84DCF96014AC")]
+        [AssociationId("E1EF6B59-6A8C-463A-857E-4482BC328440")]
+        [RoleId("6DF04623-2D58-4E49-9A80-4571847C74DC")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        public string Description { get; set; }
+
+        #region Allors
+        [Id("7AB21625-164A-4686-A59E-5D64013EE9CC")]
+        [AssociationId("80BE5856-1C83-44DC-9C0A-83F89003937A")]
+        [RoleId("2C9A347F-F822-4005-8962-A0DAD2F2FEF2")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public LocalisedText[] LocalisedDescriptions { get; set; }
 
         #region Allors
         [Id("0DA86868-CD0A-4370-BD47-34790A22860F")]

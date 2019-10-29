@@ -1539,12 +1539,5 @@ namespace Allors.Domain
                 country.Currency = currency;
             }
         }
-
-        protected override void CoreSecure(Security config)
-        {
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
-        }
     }
 }

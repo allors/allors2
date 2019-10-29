@@ -14,6 +14,7 @@ namespace Allors
     using Allors.Services;
     using Bogus;
     using Microsoft.Extensions.DependencyInjection;
+    using Person = Domain.Person;
 
     public class DomainTest : IDisposable
     {
@@ -33,6 +34,14 @@ namespace Allors
         }
 
         protected Organisation InternalOrganisation => this.Session.Extent<Organisation>().First(v => v.IsInternalOrganisation);
+
+        protected Person Administrator => this.GetPersonByUserName("administrator");
+
+        protected Person OrderProcessor => this.GetPersonByUserName("orderProcessor");
+
+        protected Person SalesRep => this.GetPersonByUserName("salesRep");
+
+        protected Person Purchaser => this.GetPersonByUserName("purchaser");
 
         protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
@@ -71,11 +80,6 @@ namespace Allors
             }
         }
 
-        protected void SetIdentity(string identity)
-        {
-            var users = new Users(this.Session);
-            var user = users.GetUser(identity) ?? this.Session.GetSingleton().Guest;
-            this.Session.SetUser(user);
-        }
+        private Person GetPersonByUserName(string userName) => new People(this.Session).FindBy(M.User.UserName, userName);
     }
 }

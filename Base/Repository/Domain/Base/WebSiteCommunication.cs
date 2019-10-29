@@ -26,10 +26,6 @@ namespace Allors.Repository
 
         public ObjectState[] ObjectStates { get; set; }
 
-        public SecurityToken OwnerSecurityToken { get; set; }
-
-        public AccessControl OwnerAccessControl { get; set; }
-
         public DateTime ScheduledStart { get; set; }
 
         public Party FromParty { get; set; }

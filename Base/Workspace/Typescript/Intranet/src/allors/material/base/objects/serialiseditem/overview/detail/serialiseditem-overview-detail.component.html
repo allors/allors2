@@ -59,11 +59,6 @@
             </div>
 
             <div class="row">
-              <a-mat-static class="col-md" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem"
-                [roleType]="m.SerialisedItem.SuppliedBy" display="Name"></a-mat-static>
-              <a-mat-select class="col-md" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem"
-                [roleType]="m.SerialisedItem.AssignedSuppliedBy" [options]="currentSuppliers" display="Name"
-                label="Supplied By"></a-mat-select>
               <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy"
                 [filter]="filtersService.partiesFilter.create(allors.context)" display="displayName">
               </a-mat-autocomplete>
@@ -128,10 +123,14 @@
           <div class="container-fluid">
 
             <div class="row pt-3">
+              <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.AcquiredDate"></a-mat-datepicker>
               <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.AcquisitionYear">
               </a-mat-input>
               <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.ManufacturingYear">
               </a-mat-input>
+            </div>
+
+            <div class="row">
               <mat-form-field class="col-md">
                 <input matInput [(ngModel)]="serialisedItem.age" name="age" placeholder="Age" readonly>
               </mat-form-field>
@@ -213,6 +212,22 @@
                 <input matInput [(ngModel)]="serialisedItem.marketValue" name="marketValue" placeholder="Market Value"
                   readonly>
               </mat-form-field>
+              <a-mat-static class="col-md" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.SuppliedBy" display="Name"></a-mat-static>
+              <a-mat-select class="col-md" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem"
+                [roleType]="m.SerialisedItem.AssignedSuppliedBy" [options]="currentSuppliers" display="Name"
+                label="Supplied By"></a-mat-select>
+            </div>
+
+            <div class="row">
+              <mat-form-field class="col">
+                <input type="number" matInput [(ngModel)]="serialisedItem.grossBookValue" name="grossBookValue"
+                  placeholder="Gross Book Value" readonly>
+              </mat-form-field>
+              <mat-form-field class="col">
+                <input type="number" matInput [(ngModel)]="serialisedItem.expectedPosa" name="expectedPosa"
+                  placeholder="Expected Posa" readonly>
+              </mat-form-field>
             </div>
 
             <div class="row">
@@ -227,17 +242,6 @@
                 [roleType]="m.SerialisedItem.ExpectedRentalPriceDryLease"></a-mat-input>
               <a-mat-input class="col" [object]="serialisedItem"
                 [roleType]="m.SerialisedItem.ExpectedRentalPriceFullService"></a-mat-input>
-            </div>
-
-            <div class="row">
-              <mat-form-field class="col">
-                <input type="number" matInput [(ngModel)]="serialisedItem.grossBookValue" name="grossBookValue"
-                  placeholder="Gross Book Value" readonly>
-              </mat-form-field>
-              <mat-form-field class="col">
-                <input type="number" matInput [(ngModel)]="serialisedItem.expectedPosa" name="expectedPosa"
-                  placeholder="Expected Posa" readonly>
-              </mat-form-field>
             </div>
           </div>
         </mat-tab>
@@ -312,6 +316,14 @@
                   </div>
                 </mat-tab>
           </mat-tab-group>
+        </mat-tab>
+
+        <mat-tab label="Documents">
+          <div class="container-fluid">
+            <div class="row pt-3">
+              <a-mat-files class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.ElectronicDocuments" accept="image/*"></a-mat-files>
+            </div>
+          </div>
         </mat-tab>
 
       </mat-tab-group>

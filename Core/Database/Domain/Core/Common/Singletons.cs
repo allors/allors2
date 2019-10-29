@@ -39,14 +39,6 @@ namespace Allors.Domain
 
                 singleton.InitialSecurityToken.AddAccessControl(creatorsAccessControl);
 
-                // Initial: Guest Creator
-                var guestCreatorsAccessControl = new AccessControlBuilder(this.Session)
-                    .WithRole(new Roles(this.Session).GuestCreator)
-                    .WithSubjectGroup(new UserGroups(this.Session).Guests)
-                    .Build();
-
-                singleton.InitialSecurityToken.AddAccessControl(guestCreatorsAccessControl);
-
                 // Default: Administrator
                 var administratorsAccessControl = new AccessControlBuilder(this.Session)
                     .WithRole(new Roles(this.Session).Administrator)
@@ -54,14 +46,6 @@ namespace Allors.Domain
                     .Build();
 
                 singleton.DefaultSecurityToken.AddAccessControl(administratorsAccessControl);
-
-                // Default: Guest
-                var guestAccessControl = new AccessControlBuilder(this.Session)
-                    .WithRole(new Roles(this.Session).Guest)
-                    .WithSubjectGroup(new UserGroups(this.Session).Guests)
-                    .Build();
-
-                singleton.DefaultSecurityToken.AddAccessControl(guestAccessControl);
             }
         }
     }

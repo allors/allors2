@@ -25,16 +25,14 @@ namespace Allors.Domain
         [Fact]
         public void GivenPerson_WhenEmployed_ThenIsEmployeeEqualsTrue()
         {
-            var salesRep = new PersonBuilder(this.Session).WithLastName("salesRep").Build();
-
             var employment = new EmploymentBuilder(this.Session)
-                .WithEmployee(salesRep)
+                .WithEmployee(this.SalesRep)
                 .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
 
-            Assert.True(salesRep.BaseIsActiveEmployee(this.Session.Now()));
+            Assert.True(this.SalesRep.BaseIsActiveEmployee(this.Session.Now()));
         }
 
         [Fact]
@@ -180,15 +178,16 @@ namespace Allors.Domain
         [Fact]
         public void GivenLoggedUserIsAdministrator_WhenAccessingSingleton_ThenLoggedInUserIsGrantedAccess()
         {
-            var existingAdministrator = new People(this.Session).FindBy(M.Person.UserName, Users.AdministratorUserName);
+            var existingAdministrator = this.Administrator;
             var secondAdministrator = new PersonBuilder(this.Session).WithLastName("second admin").Build();
-            Assert.False(secondAdministrator.IsAdministrator);
+            Assert.False(secondAdministrator.IsAdministrator());
 
             var internalOrganisation = this.InternalOrganisation;
 
             this.Session.Derive();
 
-            this.SetIdentity(Users.AdministratorUserName);
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var acl = new AccessControlLists(existingAdministrator)[internalOrganisation];
             Assert.True(acl.CanRead(M.Organisation.Name));
@@ -201,7 +200,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.True(secondAdministrator.IsAdministrator);
+            Assert.True(secondAdministrator.IsAdministrator());
 
             acl = new AccessControlLists(existingAdministrator)[internalOrganisation];
             Assert.True(acl.CanRead(M.Organisation.Name));

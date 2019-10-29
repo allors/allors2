@@ -17,13 +17,6 @@ namespace Tests
         [Fact]
         public void GivenAnAuthenticationPopulatonWhenCreatingAnAccessListForGuestThenPermissionIsDenied()
         {
-            var guest = new PersonBuilder(this.Session).WithUserName("guest").WithLastName("Guest").Build();
-            var administrator = new PersonBuilder(this.Session).WithUserName("admin").WithLastName("Administrator").Build();
-            var user = new PersonBuilder(this.Session).WithUserName("user").WithLastName("User").Build();
-
-            this.Session.GetSingleton().Guest = guest;
-            new UserGroups(this.Session).FindBy(M.UserGroup.Name, "Administrators").AddMember(administrator);
-
             this.Session.Derive(true);
             this.Session.Commit();
 
@@ -32,7 +25,7 @@ namespace Tests
             {
                 session.Commit();
 
-                var acls = new AccessControlLists(guest);
+                var acls = new AccessControlLists(this.Session.GetSingleton().Guest);
                 foreach (Object aco in (IObject[])session.Extent(M.Organisation.ObjectType))
                 {
                     // When

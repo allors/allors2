@@ -15,10 +15,6 @@ namespace Allors.Repository
     {
         #region inherited properties
 
-        public SecurityToken OwnerSecurityToken { get; set; }
-
-        public AccessControl OwnerAccessControl { get; set; }
-
         public DateTime ScheduledStart { get; set; }
 
         public Party FromParty { get; set; }

@@ -19,8 +19,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void DeletedObject()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             var organisation = new OrganisationBuilder(this.Session).Build();
             this.Session.Commit();
@@ -46,8 +45,7 @@ namespace Allors.Server.Tests
         [Fact]
         public async void ExistingObject()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             var people = new People(this.Session).Extent();
             var person = people[0];

@@ -112,14 +112,14 @@ namespace Allors.Domain
         [Fact]
         public void GivenCurrentUserIsKnown_WhenAccessingFaceToFaceCommunicationWithOwner_ThenOwnerSecurityTokenIsApplied()
         {
-            this.SetIdentity("user");
-
             var owner = new PersonBuilder(this.Session).WithLastName("owner").Build();
             var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").Build();
             var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").Build();
 
             this.Session.Derive();
             this.Session.Commit();
+
+            this.Session.SetUser(owner);
 
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithOwner(owner)

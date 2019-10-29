@@ -23,8 +23,6 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
-        public Guid UniqueId { get; set; }
-
         public string Comment { get; set; }
 
         public LocalisedText[] LocalisedComments { get; set; }

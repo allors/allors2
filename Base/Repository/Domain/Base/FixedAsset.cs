@@ -104,5 +104,16 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         LocalisedText[] LocalisedKeywords { get; set; }
+
+        #region Allors
+        [Id("A6B9848C-A306-4653-BE23-11ED7D0CB79C")]
+        [AssociationId("8DAEF9B4-153D-49C8-B4B7-0F2AF071C82C")]
+        [RoleId("8ABFFF90-0042-4EF9-8A52-C52BD8CA6D18")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        Media[] ElectronicDocuments { get; set; }
+
     }
 }

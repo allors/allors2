@@ -12,6 +12,7 @@ import { Person, Data, Organisation } from '../../../../domain';
 import { PullRequest } from '../../../../framework';
 import { SearchFactory, Loaded, WorkspaceService, ContextService, MetaService, TestScope } from '../../../../angular';
 import { RadioGroupOption } from '../../../../material';
+import { SaveService } from 'src/allors/material/core/services/save';
 
 @Component({
   templateUrl: './form.component.html',
@@ -44,6 +45,7 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
     private workspaceService: WorkspaceService,
     private titleService: Title,
     private route: ActivatedRoute,
+    private saveService: SaveService,
   ) {
 
     super();
@@ -145,7 +147,9 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
       .subscribe(() => {
         this.data = undefined;
         this.refresh();
-      });
+      },
+      this.saveService.errorHandler
+    );
   }
 
   public goBack(): void {

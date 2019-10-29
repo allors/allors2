@@ -25,12 +25,12 @@ namespace Allors
         {
             var genders = new Genders(this.session);
 
-            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@example.com").WithNormalizedUserName("JOHN@EXAMPLE.COM").WithGender(genders.Male).Build();
-            var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@example.com").WithNormalizedUserName("JANE@EXAMPLE.COM").WithGender(genders.Female).Build();
-            var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").WithUserName("jenny@example.com").WithNormalizedUserName("JENNY@EXAMPLE.COM").WithGender(genders.Other).Build();
+            var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@example.com").WithGender(genders.Female).Build();
+            var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@example.com").WithGender(genders.Male).Build();
+            var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").WithUserName("jenny@example.com").WithGender(genders.Other).Build();
 
-            john.SetPassword("john");
             jane.SetPassword("jane");
+            john.SetPassword("john");
             jenny.SetPassword("jenny");
 
             var acme = new OrganisationBuilder(this.session)
@@ -56,8 +56,8 @@ namespace Allors
             var cycleOrganisation1 = new OrganisationBuilder(this.session).WithName("Organisatin Cycle One").Build();
             var cycleOrganisation2 = new OrganisationBuilder(this.session).WithName("Organisatin Cycle Two").Build();
 
-            var cyclePerson1 = new PersonBuilder(this.session).WithFirstName("Person Cycle").WithLastName("One").WithUserName("cycle@one.org").Build();
-            var cyclePerson2 = new PersonBuilder(this.session).WithFirstName("Person Cycle").WithLastName("Two").WithUserName("cycle@one.org").Build();
+            var cyclePerson1 = new PersonBuilder(this.session).WithFirstName("Person Cycle").WithLastName("One").WithUserName("cycle1@one.org").Build();
+            var cyclePerson2 = new PersonBuilder(this.session).WithFirstName("Person Cycle").WithLastName("Two").WithUserName("cycle2@one.org").Build();
 
             // One
             cycleOrganisation1.CycleOne = cyclePerson1;

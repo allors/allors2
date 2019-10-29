@@ -4,7 +4,7 @@ namespace Razor
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-    using Identity;
+    using Allors.Security;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;

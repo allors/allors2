@@ -20,10 +20,6 @@ namespace Allors.Repository
 
         public WorkEffortState WorkEffortState { get; set; }
 
-        public SecurityToken OwnerSecurityToken { get; set; }
-
-        public AccessControl OwnerAccessControl { get; set; }
-
         public string Name { get; set; }
 
         public string Description { get; set; }

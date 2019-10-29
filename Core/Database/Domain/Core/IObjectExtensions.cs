@@ -7,9 +7,6 @@ namespace Allors
 {
     public static partial class IObjectExtensions
     {
-        public static ISession Session(this IObject @this)
-        {
-            return @this.Strategy.Session;
-        }
+        public static ISession Session(this IObject @this) => @this.Strategy.Session;
     }
 }

@@ -23,10 +23,6 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public void BaseApprove(ProductQuoteApprove method) => this.QuoteState = new QuoteStates(this.strategy.Session).Approved;
-
-        public void BaseReject(ProductQuoteReject method) => this.QuoteState = new QuoteStates(this.strategy.Session).Rejected;
-
         public void BaseOrder(ProductQuoteOrder method)
         {
             this.QuoteState = new QuoteStates(this.Strategy.Session).Ordered;
@@ -400,7 +396,9 @@ namespace Allors.Domain
                 .WithQuote(this)
                 .Build();
 
-            var quoteItems = this.QuoteItems.Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted)).ToArray();
+            var quoteItems = this.QuoteItems
+                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted) || i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Approved))
+                .ToArray();
 
             foreach (var quoteItem in quoteItems)
             {

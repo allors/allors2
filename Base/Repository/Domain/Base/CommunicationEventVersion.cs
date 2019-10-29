@@ -61,28 +61,6 @@ namespace Allors.Repository
         DateTime LastModifiedDate { get; set; }
 
         #region Allors
-        [Id("9BB7DC70-AA96-4936-B20E-E3CB56E15126")]
-        [AssociationId("0FF04FF1-51A6-44A2-867F-C423C0769AE9")]
-        [RoleId("5015C868-E1B6-47F3-886D-B6DF3A609310")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        [Derived]
-        SecurityToken OwnerSecurityToken { get; set; }
-
-        #region Allors
-        [Id("B787B7AF-78E0-4837-A28C-1B3DB30308B6")]
-        [AssociationId("F66A122B-FDB8-4545-AF69-83046150FDC6")]
-        [RoleId("3D5644BF-91D7-4051-BFA3-32C9BE8D7FCE")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
-        [Indexed]
-        [Derived]
-        AccessControl OwnerAccessControl { get; set; }
-
-        #region Allors
         [Id("9D549ABA-3EB6-44C1-BB29-BEF13A50D41E")]
         [AssociationId("339906B2-B895-4C7B-9C09-6FD821E0B904")]
         [RoleId("06766417-AC8A-4E8A-AC40-1C56C8F3B57B")]

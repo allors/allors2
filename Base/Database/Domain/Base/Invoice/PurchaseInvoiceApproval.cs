@@ -5,6 +5,9 @@
 
 namespace Allors.Domain
 {
+    using System;
+    using System.Collections.Generic;
+
     public partial class PurchaseInvoiceApproval
     {
         public void BaseApprove(PurchaseInvoiceApprovalApprove method)
@@ -12,6 +15,26 @@ namespace Allors.Domain
             this.AssignPerformer();
 
             this.PurchaseInvoice.Approve();
+
+            if (!this.ExistApprovalNotification && this.PurchaseInvoice.ExistCreatedBy)
+            {
+                var now = this.Strategy.Session.Now();
+                var workItemDescription = this.WorkItem.WorkItemDescription;
+                var performerName = this.Performer.LastName + " " + this.Performer.FirstName;
+                var comment = this.Comment ?? "N/A";
+
+                var description = $"<h2>Approved...</h2>" +
+                                  $"<p>On {now:D} {workItemDescription} was approved by {performerName}</p>" +
+                                  $"<h3>Comment</h3>" +
+                                  $"<p>{comment}</p>";
+
+                this.ApprovalNotification = new NotificationBuilder(this.strategy.Session)
+                    .WithTitle("PurchaseInvoice approved")
+                    .WithDescription(description)
+                    .Build();
+
+                this.PurchaseInvoice.CreatedBy.NotificationList.AddNotification(this.ApprovalNotification);
+            }
         }
 
         public void BaseReject(PurchaseInvoiceApprovalReject method)
@@ -55,7 +78,7 @@ namespace Allors.Domain
 
             // Assignments
             var participants = this.ExistDateClosed
-                                   ? People.EmptyList
+                                   ? (IEnumerable<Person>)Array.Empty<Person>()
                                    : this.PurchaseInvoice.BilledTo.PurchaseInvoiceApprovers;
             this.AssignParticipants(participants);
         }

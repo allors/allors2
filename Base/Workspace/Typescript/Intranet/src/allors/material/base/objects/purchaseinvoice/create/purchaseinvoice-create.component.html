@@ -252,7 +252,7 @@
         <mat-card>
           <mat-card-header>Add a new postal address</mat-card-header>
           <mat-card-content>
-            <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="addShipToEndCustomerAddress = false">
+            <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event); addShipToEndCustomerAddress = false" (cancelled)="addShipToEndCustomerAddress = false">
             </party-contactmechanism-postaladdress>
           </mat-card-content>
         </mat-card>

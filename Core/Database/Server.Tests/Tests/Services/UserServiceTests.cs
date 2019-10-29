@@ -17,20 +17,18 @@ namespace Allors.Server.Tests
         [Fact]
         public async void SignedIn()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             var uri = new Uri("TestSession/UserName", UriKind.Relative);
             var response = await this.HttpClient.PostAsync(uri, null);
             var content = await response.Content.ReadAsStringAsync();
-            Assert.Equal("Administrator", content);
+            Assert.Equal("administrator", content);
         }
 
         [Fact]
         public async void SignedOut()
         {
-            var administrator = new Users(this.Session).GetUser("administrator");
-            await this.SignIn(administrator);
+            await this.SignIn(this.Administrator);
 
             this.SignOut();
 

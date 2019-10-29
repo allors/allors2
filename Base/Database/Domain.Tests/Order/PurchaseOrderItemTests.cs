@@ -349,7 +349,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -382,7 +383,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -416,7 +418,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("Administrator");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -462,7 +465,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity(Users.AdministratorUserName);
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -498,7 +502,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -533,7 +538,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -570,7 +576,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -608,7 +615,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -643,7 +651,8 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.SetIdentity("admin");
+            User user = this.Administrator;
+            this.Session.SetUser(user);
 
             var item = new PurchaseOrderItemBuilder(this.Session)
                 .WithPart(this.finishedGood)

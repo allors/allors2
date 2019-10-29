@@ -18,7 +18,7 @@ namespace Allors.Domain
         public void Person()
         {
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
-            this.SetIdentity(employee.UserName);
+            this.Session.SetUser(employee);
 
             var acl = new AccessControlLists(employee)[employee];
             Assert.True(acl.CanRead(M.Person.FirstName));
@@ -31,7 +31,7 @@ namespace Allors.Domain
             var good = new Goods(this.Session).Extent().First();
 
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
-            this.SetIdentity(employee.UserName);
+            this.Session.SetUser(employee);
 
             var acl = new AccessControlLists(employee)[good];
             Assert.True(acl.CanRead(M.Good.Name));
@@ -50,7 +50,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
-            this.SetIdentity(employee.UserName);
+            this.Session.SetUser(employee);
 
             Assert.True(workTask.Strategy.IsNewInSession);
 
@@ -72,7 +72,7 @@ namespace Allors.Domain
             this.Session.Commit();
 
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
-            this.SetIdentity(employee.UserName);
+            this.Session.SetUser(employee);
 
             Assert.False(workTask.Strategy.IsNewInSession);
 
@@ -99,7 +99,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
-            this.SetIdentity(employee.UserName);
+            this.Session.SetUser(employee);
 
             Assert.True(salesInvoice.Strategy.IsNewInSession);
 
@@ -122,7 +122,7 @@ namespace Allors.Domain
             var userGroup = new UserGroups(this.Session).Administrators;
 
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
-            this.SetIdentity(employee.UserName);
+            this.Session.SetUser(employee);
 
             var acl = new AccessControlLists(employee)[userGroup];
             Assert.True(acl.CanRead(M.UserGroup.Members));
@@ -133,7 +133,7 @@ namespace Allors.Domain
         public void Singleton()
         {
             var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
-            this.SetIdentity(employee.UserName);
+            this.Session.SetUser(employee);
 
             var acl = new AccessControlLists(employee)[this.Session.GetSingleton()];
             Assert.True(acl.CanRead(M.Singleton.SalesAccountManagerUserGroup));

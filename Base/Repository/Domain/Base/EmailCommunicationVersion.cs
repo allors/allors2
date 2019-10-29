@@ -20,10 +20,6 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
-        public SecurityToken OwnerSecurityToken { get; set; }
-
-        public AccessControl OwnerAccessControl { get; set; }
-
         public DateTime ScheduledStart { get; set; }
 
         public Party FromParty { get; set; }

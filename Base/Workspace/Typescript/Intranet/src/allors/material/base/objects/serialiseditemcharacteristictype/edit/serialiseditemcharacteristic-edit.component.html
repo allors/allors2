@@ -6,12 +6,13 @@
 
     <div class="row">
       <a-mat-input class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedItemCharacteristicType.Name"></a-mat-input>
+      <a-mat-select class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedItemCharacteristicType.UnitOfMeasure"
+                    [options]="allUoms" display="Name"></a-mat-select>
     </div>
 
     <div class="row">
-      <a-mat-select class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedItemCharacteristicType.UnitOfMeasure"
-                    [options]="allUoms" display="Name"></a-mat-select>
       <a-mat-slidetoggle class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedItemCharacteristicType.IsActive"></a-mat-slidetoggle>
+      <a-mat-slidetoggle class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedItemCharacteristicType.Public"></a-mat-slidetoggle>
     </div>
 
     <div class="row">

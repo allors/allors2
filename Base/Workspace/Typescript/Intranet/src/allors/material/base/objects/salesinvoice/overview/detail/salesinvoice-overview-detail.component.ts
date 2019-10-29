@@ -2,12 +2,13 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope, InternalOrganisationId } from '../../../../../../angular';
 import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship, VatClause, Country } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService, FiltersService } from '../../../../../../material';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -82,6 +83,8 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
     public refreshService: RefreshService,
     private saveService: SaveService,
     private fetcher: FetcherService,
+    private snackBar: MatSnackBar,
+    private internalOrganisationId: InternalOrganisationId
   ) {
     super();
 
@@ -92,7 +95,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
     panel.icon = 'business';
     panel.expandable = true;
 
-    // Normal
+    // Collapsed
     const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
     const goodPullName = `${panel.name}_${this.m.Good.name}`;
 
@@ -100,12 +103,12 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
       if (this.panel.isCollapsed) {
         const { m, pull, x } = this.metaService;
 
-        const { id } = this.panel.manager;
-
         pulls.push(
+
+          this.fetcher.internalOrganisation,
           pull.SalesInvoice({
             name: salesInvoicePullName,
-            object: id,
+            object: this.panel.manager.id,
             include: {
               SalesInvoiceItems: {
                 Product: x,
@@ -152,8 +155,11 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
     };
 
     panel.onPulled = (loaded) => {
-      this.goods = loaded.collections.Goods as Good[];
-      this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
+      if (this.panel.isCollapsed) {
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        this.goods = loaded.collections.Goods as Good[];
+        this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
+      }
     };
   }
 

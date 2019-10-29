@@ -49,8 +49,7 @@ namespace Commands
                 session.Derive();
                 session.Commit();
 
-                var administrator = new Users(session).GetUser("administrator");
-                session.SetUser(administrator);
+                session.SetUser(session.GetSingleton().Scheduler);
 
                 new Allors.Upgrade(session, this.dataPath).Execute();
 

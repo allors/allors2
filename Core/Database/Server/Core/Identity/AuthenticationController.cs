@@ -7,15 +7,14 @@ namespace Allors.Server
 {
     using System.Threading.Tasks;
 
-    using Allors.Services;
-
-    using Identity.Models;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+
+    using Services;
+    using Security;
 
     public class AuthenticationController : Controller
     {

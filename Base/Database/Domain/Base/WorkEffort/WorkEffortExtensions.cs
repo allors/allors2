@@ -22,17 +22,10 @@ namespace Allors.Domain
                 @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Created;
             }
 
-            if (!@this.ExistOwner)
+            if (!@this.ExistOwner && @this.Strategy.Session.GetUser() is Person owner)
             {
-                if (!(@this.Strategy.Session.GetUser() is Person owner))
-                {
-                    owner = @this.Strategy.Session.GetSingleton().Guest as Person;
-                }
-
                 @this.Owner = owner;
             }
-
-            @this.DeriveOwnerSecurity();
         }
 
         public static void BaseOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
@@ -69,7 +62,6 @@ namespace Allors.Domain
                 @this.ExecutedBy = @this.TakenBy;
             }
 
-            @this.DeriveOwnerSecurity();
             @this.DeriveSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
@@ -120,25 +112,6 @@ namespace Allors.Domain
                 }
 
                 method.Result = true;
-            }
-        }
-
-        private static void DeriveOwnerSecurity(this WorkEffort @this)
-        {
-            if (!@this.ExistOwnerAccessControl)
-            {
-                var ownerRole = new Roles(@this.Strategy.Session).Owner;
-                @this.OwnerAccessControl = new AccessControlBuilder(@this.Strategy.Session)
-                    .WithRole(ownerRole)
-                    .WithSubject(@this.Owner)
-                    .Build();
-            }
-
-            if (!@this.ExistOwnerSecurityToken)
-            {
-                @this.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
-                    .WithAccessControl(@this.OwnerAccessControl)
-                    .Build();
             }
         }
 

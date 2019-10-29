@@ -3,13 +3,14 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Identity.Models
+namespace Allors.Security
 {
     using System;
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
     using System.Text;
-
+    using Allors;
+    using Allors.Domain;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
@@ -52,5 +53,7 @@ namespace Identity.Models
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public static User User(this IdentityUser @this, ISession session) => (User)session.Instantiate(@this.Id);
     }
 }

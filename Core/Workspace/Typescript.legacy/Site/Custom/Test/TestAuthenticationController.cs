@@ -7,12 +7,12 @@ namespace Allors.Server
 {
     using System.Threading.Tasks;
 
-    using Identity.Models;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+
+    using Allors.Security;
 
     public class TestAuthenticationController : Controller
     {

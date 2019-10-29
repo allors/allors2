@@ -13,17 +13,10 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableSticky<TemplateType> sticky;
 
-        public Sticky<Guid, TemplateType> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<TemplateType>(this.Session));
+        public Sticky<Guid, TemplateType> Sticky => this.sticky ??= new UniquelyIdentifiableSticky<TemplateType>(this.Session);
 
         public TemplateType OpenDocumentType => this.Sticky[OpenDocumentTypeId];
 
         protected override void CoreSetup(Setup setup) => new TemplateTypeBuilder(this.Session).WithUniqueId(OpenDocumentTypeId).WithName("Odt Template").Build();
-
-        protected override void CoreSecure(Security config)
-        {
-            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
-
-            config.GrantAdministrator(this.ObjectType, full);
-        }
     }
 }
