@@ -10,7 +10,7 @@ import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { SaveService } from '../../../../../../material';
 import { switchMap, filter } from 'rxjs/operators';
-import { VatRegime, Currency } from 'src/allors/domain/generated';
+import { VatRegime, Currency } from '../../../../../../domain/generated';
 
 @Component({
   // tslint:disable-next-line:component-selector
