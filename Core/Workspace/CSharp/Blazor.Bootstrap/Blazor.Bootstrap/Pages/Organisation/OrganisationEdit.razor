@@ -1,5 +1,4 @@
 @page "/organisation/edit/{id}"
-@using Polly
 @using Context = Allors.Workspace.Context
 @using Result = Allors.Workspace.Data.Result
 @using Task = System.Threading.Tasks.Task
@@ -18,7 +17,7 @@
         </BSRow>
 
         <BSRow>
-            <ABSSelect RoleType="@M.Organisation.Owner" Options="@people" DisplayOption="@(v => ((Person) v).FullName)"/>
+            <ABSSelect RoleType="@M.Organisation.Owner" Options="@people" Required="true" DisplayOption="@(v => ((Person) v).FullName)"/>
         </BSRow>
 
         <BSRow>
