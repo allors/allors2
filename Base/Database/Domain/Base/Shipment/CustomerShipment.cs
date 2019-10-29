@@ -357,6 +357,7 @@ namespace Allors.Domain
                                 .WithProduct(salesOrderItem.Product)
                                 .WithQuantity(orderShipment.Quantity)
                                 .WithAssignedUnitPrice(salesOrderItem.UnitPrice)
+                                .WithAssignedVatRegime(salesOrderItem.AssignedVatRegime)
                                 .WithDescription(salesOrderItem.Description)
                                 .WithInternalComment(salesOrderItem.InternalComment)
                                 .WithMessage(salesOrderItem.Message)
