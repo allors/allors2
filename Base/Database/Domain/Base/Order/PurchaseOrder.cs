@@ -494,6 +494,7 @@ namespace Allors.Domain
                             .WithAssignedUnitPrice(orderItem.UnitPrice)
                             .WithPart(orderItem.Part)
                             .WithQuantity(orderItem.QuantityOrdered)
+                            .WithAssignedVatRegime(orderItem.AssignedVatRegime)
                             .WithDescription(orderItem.Description)
                             .WithInternalComment(orderItem.InternalComment)
                             .WithMessage(orderItem.Message)

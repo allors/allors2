@@ -614,6 +614,7 @@ namespace Allors.Domain
                     var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
                         .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
                         .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice)
+                        .WithAssignedVatRegime(salesInvoiceItem.AssignedVatRegime)
                         .WithProduct(salesInvoiceItem.Product)
                         .WithQuantity(salesInvoiceItem.Quantity)
                         .WithComment(salesInvoiceItem.Comment)
