@@ -36,9 +36,10 @@ namespace Allors.Repository
         public string InternalComment { get; set; }
 
         public Document[] Documents { get; set; }
-
-        public Media[] ElectronicDocuments { get; set; }
-        public LocalisedMedia[] LocalisedElectronicDocuments { get; set; }
+        public Media[] TechnicalDocuments { get; set; }
+        public LocalisedMedia[] LocalisedTechnicalDocuments { get; set; }
+        public Media[] SalesDocuments { get; set; }
+        public LocalisedMedia[] LocalisedSalesDocuments { get; set; }
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
 

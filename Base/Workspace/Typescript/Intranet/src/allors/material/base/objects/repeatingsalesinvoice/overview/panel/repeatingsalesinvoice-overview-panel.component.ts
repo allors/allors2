@@ -63,7 +63,7 @@ export class RepeatingSalesInvoiceOverviewPanelComponent extends TestScope {
     this.m = this.metaService.m;
 
     panel.name = 'repeatinginvoice';
-    panel.title = 'Repeating Invoices';
+    panel.title = 'Repeating Sales Invoices';
     panel.icon = 'business';
     panel.expandable = true;
 

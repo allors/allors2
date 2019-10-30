@@ -88,7 +88,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        Media[] ElectronicDocuments { get; set; }
+        Media[] TechnicalDocuments { get; set; }
 
         #region Allors
         [Id("AFBF7196-1EDC-4F3A-845B-E583E6EFA6B8")]
@@ -98,7 +98,27 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         [Workspace]
-        LocalisedMedia[] LocalisedElectronicDocuments { get; set; }
+        LocalisedMedia[] LocalisedTechnicalDocuments { get; set; }
+
+        #region Allors
+        [Id("CC24D35C-7760-4CFC-832E-C22B358C8243")]
+        [AssociationId("DCCC70F4-B250-4122-AA0C-CC3F09F3247F")]
+        [RoleId("4EFD687F-F167-4BD2-BB8E-C9C83187080C")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        Media[] SalesDocuments { get; set; }
+
+        #region Allors
+        [Id("AD64C076-15ED-4ACB-A829-A1540E71D1A3")]
+        [AssociationId("F1D5F940-24A2-43B0-AB10-EF1EC0DD9D4D")]
+        [RoleId("AA58A908-2191-48A4-8A88-14F6EF6BF0B8")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        LocalisedMedia[] LocalisedSalesDocuments { get; set; }
 
         #region Allors
         [Id("9b66342e-48ac-4761-b375-b9b60d94b005")]

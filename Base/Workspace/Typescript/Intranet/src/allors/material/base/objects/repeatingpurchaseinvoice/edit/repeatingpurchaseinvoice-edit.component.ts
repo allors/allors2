@@ -89,16 +89,16 @@ export class RepeatingPurchaseInvoiceEditComponent extends TestScope implements 
         this.daysOfWeek = loaded.collections.DaysOfWeek as DayOfWeek[];
 
         if (isCreate) {
-          this.title = 'Create Repeating Invoice';
+          this.title = 'Create Repeating Purchase Invoice';
           this.repeatinginvoice = this.allors.context.create('RepeatingPurchaseInvoice') as RepeatingPurchaseInvoice;
           this.repeatinginvoice.Supplier = this.supplier;
           this.repeatinginvoice.InternalOrganisation = this.internalOrganisation;
         } else {
 
           if (this.repeatinginvoice.CanWriteFrequency) {
-            this.title = 'Edit Repeating Invoice';
+            this.title = 'Edit Repeating Purchase Invoice';
           } else {
-            this.title = 'View Repeating Invoice';
+            this.title = 'View Repeating Purchase Invoice';
           }
         }
       });

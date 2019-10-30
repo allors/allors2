@@ -32,7 +32,7 @@ namespace Allors.Domain
                     var supplierRelationship = this.TakenViaSupplier.SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
                     if (supplierRelationship != null &&
                         supplierRelationship.NeedsApproval &&
-                        (!supplierRelationship.ExistApprovalThresholdLevel1 || this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel1))
+                        supplierRelationship.ExistApprovalThresholdLevel1 && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel1)
                     {
                         return true;
                     }
@@ -356,7 +356,15 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseConfirm(OrderConfirm method) => this.PurchaseOrderState = this.NeedsApprovalLevel1 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel1 : new PurchaseOrderStates(this.Strategy.Session).InProcess;
+        public void BaseConfirm(OrderConfirm method)
+        {
+            this.PurchaseOrderState = this.NeedsApprovalLevel1
+                ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel1
+                : this.PurchaseOrderState = this.NeedsApprovalLevel2
+                    ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel2
+                    : new PurchaseOrderStates(this.Strategy.Session).InProcess;
+
+        }
 
         public void BaseReject(OrderReject method)
         {
