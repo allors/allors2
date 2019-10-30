@@ -42,10 +42,10 @@ namespace Allors.Domain
                 var performerName = this.Performer.LastName + " " + this.Performer.FirstName;
                 var comment = this.Comment ?? "N/A";
 
-                var description = $"Approved...\r\n" +
-                                  $"On {now:D} {workItemDescription} was approved by {performerName}\r\n" +
-                                  $"Comment\r\n" +
-                                  $"{comment}";
+                var description = $"<h2>Approved...</h2>" +
+                                  $"<p>On {now:D} {workItemDescription} was approved by {performerName}</p>" +
+                                  $"<h3>Comment</h3>" +
+                                  $"<p>{comment}</p>";
 
                 this.ApprovalNotification = new NotificationBuilder(this.strategy.Session)
                     .WithTitle("ProductQuote approved")

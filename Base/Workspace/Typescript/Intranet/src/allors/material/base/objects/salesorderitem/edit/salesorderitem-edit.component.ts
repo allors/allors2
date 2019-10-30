@@ -297,6 +297,19 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
     this.orderItem.NewSerialisedItemState = this.soldState;
   }
 
+  public update(): void {
+    const { context } = this.allors;
+
+    context
+      .save()
+      .subscribe(() => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+        this.saveService.errorHandler
+      );
+  }
+
   private onSave() {
 
     if (this.orderItem.InvoiceItemType !== this.productItemType) {

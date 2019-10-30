@@ -14,7 +14,7 @@ import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../core/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { VatRegime, Currency } from 'src/allors/domain/generated';
+import { VatRegime, Currency } from '../../../../../domain/generated';
 
 @Component({
   templateUrl: './organisation-create.component.html',

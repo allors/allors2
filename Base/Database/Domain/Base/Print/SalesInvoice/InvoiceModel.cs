@@ -3,13 +3,17 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using System.Linq;
+
 namespace Allors.Domain.Print.SalesInvoiceModel
 {
     public class InvoiceModel
     {
         public InvoiceModel(SalesInvoice invoice)
         {
-            this.Title = invoice.SalesInvoiceType.Equals(new SalesInvoiceTypes(invoice.Strategy.Session).CreditNote) ? "CREDIT NOTE" : "INVOICE";
+            var session = invoice.Strategy.Session;
+
+            this.Title = invoice.SalesInvoiceType.Equals(new SalesInvoiceTypes(session).CreditNote) ? "CREDIT NOTE" : "INVOICE";
             this.Description = invoice.Description;
             this.Number = invoice.InvoiceNumber;
             this.Date = invoice.InvoiceDate.ToString("yyyy-MM-dd");
@@ -17,7 +21,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.CustomerReference = invoice.CustomerReference;
 
             // TODO: Where does the currency come from?
-            var currency = "€";
+            var currency = "â‚¬";
             this.SubTotal = invoice.TotalBasePrice.ToString("0.00") + " " + currency;
             this.Deposit = invoice.AmountPaid.ToString("0.00") + " " + currency;
             this.TotalExVat = invoice.TotalExVat.ToString("0.00") + " " + currency;
@@ -26,6 +30,23 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.TotalIncVat = invoice.TotalIncVat.ToString("0.00") + " " + currency;
 
             this.PaymentNetDays = invoice.PaymentNetDays;
+
+            string TakenByCountry = null;
+            if (invoice.BilledFrom.PartyContactMechanisms?.FirstOrDefault(v => v.ContactPurposes.Any(p => Equals(p, new ContactMechanismPurposes(session).RegisteredOffice)))?.ContactMechanism is PostalAddress registeredOffice)
+            {
+                TakenByCountry = registeredOffice.Country.IsoCode;
+            }
+
+            if (TakenByCountry == "BE")
+            {
+                this.VatClause = invoice.DerivedVatClause?.LocalisedClause.First(v => v.Locale.Equals(new Locales(session).DutchNetherlands)).Text;
+
+                if (Equals(invoice.DerivedVatClause, new VatClauses(session).BeArt14Par2))
+                {
+                    var shipToCountry = invoice.ShipToAddress?.Country?.Name;
+                    this.VatClause = this.VatClause.Replace("{shipToCountry}", shipToCountry);
+                }
+            }
         }
 
         public string Title { get; }
@@ -53,5 +74,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public string TotalIncVat { get; }
 
         public int PaymentNetDays { get; }
+
+        public string VatClause { get; set; }
     }
 }

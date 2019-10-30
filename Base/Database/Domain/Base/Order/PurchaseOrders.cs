@@ -54,6 +54,7 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, received, cancel, reject, quickReceive);
             config.Deny(this.ObjectType, completed, approve, reject, hold, @continue, confirm, cancel, reopen, send, quickReceive);
 
+            config.Deny(this.ObjectType, inProcess, Operations.Write);
             config.Deny(this.ObjectType, cancelled, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, completed, Operations.Write);

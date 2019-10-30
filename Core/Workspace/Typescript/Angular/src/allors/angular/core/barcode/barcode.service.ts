@@ -22,8 +22,7 @@ export class AllorsBarcodeService {
         }, []),
         debounceTime(50),
         filter((events) => {
-          console.log(events)
-          return events.length > 1;
+          return events.length > 4;
         }),
         map((events) => {
           return events.map(v => v.key).join('').trim();
@@ -31,7 +30,5 @@ export class AllorsBarcodeService {
       );
 
     this.scan$ = merge(scanner, this.simulateSubject);
-
-    //this.scan$.subscribe((v) => alert(v));
   }
 }

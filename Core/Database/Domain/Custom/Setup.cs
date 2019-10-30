@@ -33,6 +33,11 @@ namespace Allors
             john.SetPassword("john");
             jenny.SetPassword("jenny");
 
+            new UserGroups(this.session).Administrators.AddMember(jane);
+            new UserGroups(this.session).Creators.AddMember(jane);
+            new UserGroups(this.session).Creators.AddMember(john);
+            new UserGroups(this.session).Creators.AddMember(jenny);
+
             var acme = new OrganisationBuilder(this.session)
                 .WithName("Acme")
                 .WithOwner(jane)
@@ -49,8 +54,6 @@ namespace Allors
                     .WithEmployee(jane)
                     .Build();
             }
-
-            new UserGroups(this.session).Administrators.AddMember(john);
 
             // Create cycles between Organisation and Person
             var cycleOrganisation1 = new OrganisationBuilder(this.session).WithName("Organisatin Cycle One").Build();

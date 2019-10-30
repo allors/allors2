@@ -1,4 +1,7 @@
 @page "/organisation/edit/{id}"
+@using Context = Allors.Workspace.Context
+@using Result = Allors.Workspace.Data.Result
+@using Task = System.Threading.Tasks.Task
 @attribute [Authorize]
 @inject IDatabase Database
 @inject Workspace Workspace
@@ -7,10 +10,14 @@
 @if (organisation != null)
 {
     <ABSForm Model="@organisation" OnValidSubmit="@HandleValidSubmit">
-        <ValidationSummary />
+        <ValidationSummary/>
 
         <BSRow>
-            <ABSStringInput RoleType="@M.Organisation.Name" />
+            <ABSStringInput RoleType="@M.Organisation.Name"/>
+        </BSRow>
+
+        <BSRow>
+            <ABSSelect RoleType="@M.Organisation.Owner" Options="@people" Required="true" DisplayOption="@(v => ((Person) v).FullName)"/>
         </BSRow>
 
         <BSRow>
@@ -29,39 +36,48 @@
 
     Organisation organisation;
 
-    protected override async System.Threading.Tasks.Task OnInitializedAsync()
-    {
-        this.Context = new Context(this.Database, this.Workspace);
+    Person[] people;
 
-        var pull = new Pull
+    protected override async Task OnInitializedAsync()
+    {
+        Context = new Context(Database, Workspace);
+
+        var pull = new[]
         {
-            ObjectId = id,
-            Results = new[]
+            new Pull
             {
-                new Allors.Workspace.Data.Result
+                ObjectId = id,
+                Results = new[]
                 {
-                   Fetch = new Fetch
-                   {
-                       Include = new OrganisationNodeBuilder(
-                           v=> {
-                               v.Owner();
-                           }),
-                   }
+                    new Result
+                    {
+                        Fetch = new Fetch
+                        {
+                            Include = new OrganisationNodeBuilder(
+                                v => { v.Owner(); })
+                        }
+                    }
+                }
+            },
+            new Pull
+            {
+                Extent = new Filter(M.Person.ObjectType),
             }
-        }
         };
 
-        var result = await this.Context.Load(pull);
+        var result = await Context.Load(pull);
 
-        this.organisation = result.GetObject<Organisation>("Organisation");
+        organisation = result.GetObject<Organisation>("Organisation");
+        people = result.GetCollection<Person>();
     }
 
-    public async System.Threading.Tasks.Task HandleValidSubmit()
+    public async Task HandleValidSubmit()
     {
-        var response = await this.Context.Save();
+        var response = await Context.Save();
         if (!response.HasErrors)
         {
-            this.NavigationManager.NavigateTo("/organisation/list");
+            NavigationManager.NavigateTo("/organisation/list");
         }
     }
+
 }
