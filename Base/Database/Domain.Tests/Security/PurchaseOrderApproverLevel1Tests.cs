@@ -81,7 +81,12 @@ namespace Allors.Domain
         [Fact]
         public void PurchaseOrder_Approve()
         {
-            var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithIsInternalOrganisation(true).Build();
+            var organisation = new OrganisationBuilder(this.Session)
+                .WithName("organisation")
+                .WithIsInternalOrganisation(true)
+                .WithPurchaseOrderApprovalThresholdLevel1(1000)
+                .Build();
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -115,6 +120,16 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(takenViaContactMechanism)
                 .WithFacility(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse))
                 .Build();
+
+            this.Session.Derive();
+
+            var item = new PurchaseOrderItemBuilder(this.Session)
+                .WithSurchargeAdjustment(new SurchargeAdjustmentBuilder(this.Session).WithAmount(1000).Build())
+                .WithQuantityOrdered(1)
+                .WithAssignedUnitPrice(1000)
+                .Build();
+
+            order.AddPurchaseOrderItem(item);
 
             this.Session.Derive();
 
@@ -134,7 +149,12 @@ namespace Allors.Domain
         [Fact]
         public void PurchaseOrderApproval()
         {
-            var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithIsInternalOrganisation(true).Build();
+            var organisation = new OrganisationBuilder(this.Session)
+                .WithName("organisation")
+                .WithIsInternalOrganisation(true)
+                .WithPurchaseOrderApprovalThresholdLevel1(1000)
+                .Build();
+
             this.Session.Derive();
 
             var approver = new PersonBuilder(this.Session)
@@ -167,6 +187,16 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(takenViaContactMechanism)
                 .WithFacility(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse))
                 .Build();
+
+            this.Session.Derive();
+
+            var item = new PurchaseOrderItemBuilder(this.Session)
+                .WithSurchargeAdjustment(new SurchargeAdjustmentBuilder(this.Session).WithAmount(1000).Build())
+                .WithQuantityOrdered(1)
+                .WithAssignedUnitPrice(1000)
+                .Build();
+
+            order.AddPurchaseOrderItem(item);
 
             this.Session.Derive();
 

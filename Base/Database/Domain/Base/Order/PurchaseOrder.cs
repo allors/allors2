@@ -363,7 +363,6 @@ namespace Allors.Domain
                 : this.PurchaseOrderState = this.NeedsApprovalLevel2
                     ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel2
                     : new PurchaseOrderStates(this.Strategy.Session).InProcess;
-
         }
 
         public void BaseReject(OrderReject method)

@@ -149,7 +149,7 @@ namespace Allors.Domain
 
             this.BaseDeriveVatRegime(derivation);
 
-            if (this.Part.InventoryItemKind.Serialised)
+            if (this.ExistPart && this.Part.InventoryItemKind.Serialised)
             {
                 derivation.Validation.AssertAtLeastOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
                 derivation.Validation.AssertExistsAtMostOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
