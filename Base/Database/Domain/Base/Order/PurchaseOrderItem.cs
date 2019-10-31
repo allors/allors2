@@ -25,7 +25,7 @@ namespace Allors.Domain
 
         #endregion Transitional
 
-        public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsCancelledByOrder || this.PurchaseOrderItemState.IsRejected);
+        public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsRejected);
 
         public string SupplierReference
         {
@@ -103,8 +103,6 @@ namespace Allors.Domain
                 this.QuantityReceived = 1;
             }
         }
-
-        public void CancelFromOrder() => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).CancelledByOrder;
 
         public void BaseCancel(OrderItemCancel method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Cancelled;
 

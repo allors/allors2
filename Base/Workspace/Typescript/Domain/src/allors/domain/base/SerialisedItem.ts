@@ -30,7 +30,7 @@ domain.extend((workspace) => {
   Object.defineProperty(obj, 'age', {
     configurable: true,
     get(this: SerialisedItem) {
-      if (this.ManufacturingYear) {
+      if (this.CanReadPurchasePrice && this.ManufacturingYear) {
         return new Date().getFullYear() - this.ManufacturingYear;
       } else {
         return 0;
@@ -41,7 +41,7 @@ domain.extend((workspace) => {
   Object.defineProperty(obj, 'yearsToGo', {
     configurable: true,
     get(this: SerialisedItem) {
-      if (this.ManufacturingYear) {
+      if (this.CanReadPurchasePrice && this.ManufacturingYear) {
         return this.LifeTime - this.age < 0 ? 0 : this.LifeTime - this.age;
       } else {
         return 0;
@@ -52,14 +52,18 @@ domain.extend((workspace) => {
   Object.defineProperty(obj, 'goingConcern', {
     configurable: true,
     get(this: SerialisedItem) {
-      return Math.round((parseFloat(this.ReplacementValue) * this.yearsToGo) / this.LifeTime);
+      if (this.CanReadPurchasePrice) {
+        return Math.round((parseFloat(this.ReplacementValue) * this.yearsToGo) / this.LifeTime);
+      } else {
+        return 0;
+      }
     },
   });
 
   Object.defineProperty(obj, 'marketValue', {
     configurable: true,
     get(this: SerialisedItem) {
-      if (this.ManufacturingYear) {
+      if (this.CanReadPurchasePrice && this.ManufacturingYear) {
         return Math.round(parseFloat(this.ReplacementValue) * Math.exp(-2.045 * this.age / this.LifeTime));
       } else {
         return 0;
@@ -70,14 +74,22 @@ domain.extend((workspace) => {
   Object.defineProperty(obj, 'grossBookValue', {
     configurable: true,
     get(this: SerialisedItem) {
-      return Math.round(parseFloat(this.PurchasePrice) + parseFloat(this.RefurbishCost) + parseFloat(this.TransportCost));
+      if (this.CanReadPurchasePrice) {
+        return Math.round(parseFloat(this.PurchasePrice) + parseFloat(this.RefurbishCost) + parseFloat(this.TransportCost));
+      } else {
+        return 0;
+      }
     },
   });
 
   Object.defineProperty(obj, 'expectedPosa', {
     configurable: true,
     get(this: SerialisedItem) {
-      return parseFloat(this.ExpectedSalesPrice) - this.grossBookValue;
+      if (this.CanReadPurchasePrice) {
+        return parseFloat(this.ExpectedSalesPrice) - this.grossBookValue;
+      } else {
+        return 0;
+      }
     },
   });
 

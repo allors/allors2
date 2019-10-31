@@ -13,8 +13,6 @@ namespace Allors.Domain
 
         public bool IsCancelled => Equals(this.UniqueId, PurchaseOrderItemStates.CancelledId);
 
-        public bool IsCancelledByOrder => Equals(this.UniqueId, PurchaseOrderItemStates.CancelledByOrderId);
-
         public bool IsCompleted => Equals(this.UniqueId, PurchaseOrderItemStates.CompletedId);
 
         public bool IsRejected => Equals(this.UniqueId, PurchaseOrderItemStates.RejectedId);

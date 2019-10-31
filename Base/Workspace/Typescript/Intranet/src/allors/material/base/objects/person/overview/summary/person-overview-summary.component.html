@@ -2,11 +2,15 @@
 
   <mat-card-header (click)="panel.manager.toggle('detail')" style="cursor: pointer;">
     <div mat-card-avatar>
-      <mat-icon style="font-size: 36px">person</mat-icon>
+      <mat-icon *ngIf="!person.Picture" style="font-size: 36px">person</mat-icon>
+
+      <div *ngIf="person.Picture">
+          <img mat-card-image [src]="src">
+      </div>
     </div>
     <mat-card-title>{{person.displayName}}</mat-card-title>
     <mat-card-subtitle>
-       <div>
+      <div>
         {{contactKindsText}}
       </div>
 

@@ -48,7 +48,7 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, rejected, approve, reject, hold, @continue, confirm, cancel, send, quickReceive, invoice);
             config.Deny(this.ObjectType, awaitingApprovalLevel1, hold, @continue, confirm, cancel, reopen, send, quickReceive, @continue);
             config.Deny(this.ObjectType, awaitingApprovalLevel2, hold, @continue, confirm, cancel, reopen, send, quickReceive, @continue);
-            config.Deny(this.ObjectType, inProcess, approve, reject, @continue, confirm, reopen);
+            config.Deny(this.ObjectType, inProcess, approve, reject, @continue, confirm);
             config.Deny(this.ObjectType, sent, approve, reject, hold, @continue, confirm, reopen, send);
             config.Deny(this.ObjectType, partiallyReceived, cancel, reject);
             config.Deny(this.ObjectType, received, cancel, reject, quickReceive);
