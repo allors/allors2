@@ -150,13 +150,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.SecurityTokens = new[]
-            {
-                this.strategy.Session.GetSingleton().DefaultSecurityToken,
-                this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken,
-                this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken,
-            };
-
             if (this.TakenViaSupplier is Organisation supplier)
             {
                 if (!this.OrderedBy.ActiveSuppliers.Contains(supplier))
@@ -288,17 +281,7 @@ namespace Allors.Domain
 
             var singleton = this.strategy.Session.GetSingleton();
 
-            this.SecurityTokens = new[]
-            {
-                singleton.DefaultSecurityToken,
-            };
-
-            if (this.ExistOrderedBy)
-            {
-                this.AddSecurityToken(this.OrderedBy.LocalAdministratorSecurityToken);
-                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken);
-                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken);
-            }
+            this.AddSecurityToken(singleton.DefaultSecurityToken);
 
             this.Sync(this.Strategy.Session);
 
