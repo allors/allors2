@@ -74,6 +74,7 @@ export class RepeatingPurchaseInvoiceOverviewPanelComponent extends TestScope {
     this.table = new Table({
       selection: true,
       columns: [
+        { name: 'internalOrganisation' },
         { name: 'frequency', sort },
         { name: 'dayOfWeek', sort },
         { name: 'previousExecutionDate', sort },
@@ -116,12 +117,12 @@ export class RepeatingPurchaseInvoiceOverviewPanelComponent extends TestScope {
     panel.onPulled = (loaded) => {
       this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
-      const repeatingInvoices = loaded.collections[pullName] as RepeatingPurchaseInvoice[];
-      this.objects = repeatingInvoices.filter(v => v.InternalOrganisation === this.internalOrganisation);
+      this.objects = loaded.collections[pullName] as RepeatingPurchaseInvoice[];
 
       this.table.data = this.objects.map((v) => {
         return {
           object: v,
+          internalOrganisation: v.InternalOrganisation.PartyName,
           frequency: v.Frequency.Name,
           dayOfWeek: v.DayOfWeek && v.DayOfWeek.Name,
           previousExecutionDate: v.PreviousExecutionDate && moment(v.PreviousExecutionDate).format('L'),

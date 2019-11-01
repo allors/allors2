@@ -25,7 +25,7 @@ export class RepeatingPurchaseInvoiceEditComponent extends TestScope implements 
   frequencies: TimeFrequency[];
   daysOfWeek: DayOfWeek[];
   supplier: Organisation;
-  internalOrganisation: Organisation;
+  internalOrganisations: Organisation[];
 
   private subscription: Subscription;
 
@@ -56,8 +56,11 @@ export class RepeatingPurchaseInvoiceEditComponent extends TestScope implements 
           const id = this.data.id;
 
           const pulls = [
-            this.fetcher.internalOrganisation,
             pull.Organisation({ object: this.data.associationId }),
+            pull.Organisation({
+              name: 'InternalOrganisations',
+              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
+            }),
             pull.RepeatingPurchaseInvoice({
               object: id,
               include: {
@@ -82,17 +85,16 @@ export class RepeatingPurchaseInvoiceEditComponent extends TestScope implements 
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.supplier = loaded.objects.Organisation as Organisation;
         this.repeatinginvoice = loaded.objects.RepeatingPurchaseInvoice as RepeatingPurchaseInvoice;
         this.frequencies = loaded.collections.TimeFrequencies as TimeFrequency[];
         this.daysOfWeek = loaded.collections.DaysOfWeek as DayOfWeek[];
+        this.internalOrganisations = loaded.collections.InternalOrganisations as Organisation[];
 
         if (isCreate) {
           this.title = 'Create Repeating Purchase Invoice';
           this.repeatinginvoice = this.allors.context.create('RepeatingPurchaseInvoice') as RepeatingPurchaseInvoice;
           this.repeatinginvoice.Supplier = this.supplier;
-          this.repeatinginvoice.InternalOrganisation = this.internalOrganisation;
         } else {
 
           if (this.repeatinginvoice.CanWriteFrequency) {

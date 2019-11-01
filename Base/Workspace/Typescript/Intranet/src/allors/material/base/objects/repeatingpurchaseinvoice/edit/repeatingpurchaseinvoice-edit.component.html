@@ -5,6 +5,11 @@
   <mat-dialog-content>
 
     <div class="row">
+      <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingPurchaseInvoice.InternalOrganisation"
+        [options]="internalOrganisations" display="Name"></a-mat-select>
+    </div>
+
+    <div class="row">
       <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingPurchaseInvoice.Frequency"
         [options]="frequencies" display="Name"></a-mat-select>
       <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingPurchaseInvoice.DayOfWeek"
