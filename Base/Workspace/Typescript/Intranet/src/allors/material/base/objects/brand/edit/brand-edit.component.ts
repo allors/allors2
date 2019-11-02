@@ -56,7 +56,8 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
               object: this.data.id,
               include: {
                 LogoImage: x,
-                Models: x
+                Models: x,
+                LocalisedDescriptions: x
               }
             }),
           ];

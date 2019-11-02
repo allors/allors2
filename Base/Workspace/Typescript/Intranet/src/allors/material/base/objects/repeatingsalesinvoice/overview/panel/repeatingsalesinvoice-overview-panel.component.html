@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div *ngIf="!invoice">
+  <div *ngIf="!repeatingInvoice">
     <a-mat-factory-fab [objectType]="metaService.m.RepeatingSalesInvoice" [createData]="createData"
       (created)="this.refreshService.refresh()"></a-mat-factory-fab>
   </div>
