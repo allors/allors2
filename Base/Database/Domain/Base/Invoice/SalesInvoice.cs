@@ -160,7 +160,7 @@ namespace Allors.Domain
                 this.InvoiceNumber = this.Store.DeriveNextTemporaryInvoiceNumber();
             }
 
-            if (!this.ExistBilledFromContactMechanism)
+            if (!this.ExistBilledFromContactMechanism && this.ExistBilledFrom)
             {
                 this.BilledFromContactMechanism = this.BilledFrom.ExistBillingAddress ? this.BilledFrom.BillingAddress : this.BilledFrom.GeneralCorrespondence;
             }
