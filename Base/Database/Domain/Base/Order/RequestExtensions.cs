@@ -30,15 +30,7 @@ namespace Allors.Domain
 
             var singleton = @this.Strategy.Session.GetSingleton();
 
-            @this.SecurityTokens = new[]
-            {
-                singleton.DefaultSecurityToken,
-            };
-
-            if (@this.ExistRecipient)
-            {
-                @this.AddSecurityToken(@this.Recipient.LocalAdministratorSecurityToken);
-            }
+            @this.AddSecurityToken(singleton.DefaultSecurityToken);
         }
 
         public static void DeriveInitialObjectState(this Request @this)

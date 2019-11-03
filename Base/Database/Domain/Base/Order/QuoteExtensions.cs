@@ -40,16 +40,7 @@ namespace Allors.Domain
 
             var singleton = @this.Strategy.Session.GetSingleton();
 
-            @this.SecurityTokens = new[]
-            {
-                singleton.DefaultSecurityToken,
-            };
-
-            if (@this.ExistIssuer)
-            {
-                @this.AddSecurityToken(@this.Issuer.ProductQuoteApproverSecurityToken);
-                @this.AddSecurityToken(@this.Issuer.LocalAdministratorSecurityToken);
-            }
+            @this.AddSecurityToken(singleton.DefaultSecurityToken);
         }
 
         public static void BaseApprove(this Quote @this, QuoteApprove method)
