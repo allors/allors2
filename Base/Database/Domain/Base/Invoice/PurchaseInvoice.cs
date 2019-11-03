@@ -333,6 +333,15 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseReopen(PurchaseInvoiceReopen method)
+        {
+            this.PurchaseInvoiceState = this.PreviousPurchaseInvoiceState;
+            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.InvoiceItems)
+            {
+                purchaseInvoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItem.PreviousPurchaseInvoiceItemState;
+            }
+        }
+
         public void BaseApprove(PurchaseInvoiceApprove method)
         {
             this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).NotPaid;

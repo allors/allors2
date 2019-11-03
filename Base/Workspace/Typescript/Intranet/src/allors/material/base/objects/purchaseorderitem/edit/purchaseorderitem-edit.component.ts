@@ -112,6 +112,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           if (isCreate && this.data.associationId) {
             pulls.push(
               pull.SupplierOffering({
+                name: `AllSupplierOfferings`,
                 include: {
                   Part: x,
                   Supplier: x
@@ -145,7 +146,12 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
 
-        this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
+        if (isCreate) {
+          this.supplierOfferings = loaded.collections.AllSupplierOfferings as SupplierOffering[];
+        } else {
+          this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
+        }
+
         this.parts = this.supplierOfferings
           .filter(v => v.Supplier === this.order.TakenViaSupplier && v.Supplier === this.order.TakenViaSupplier && moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)))
           .map(v => v.Part)

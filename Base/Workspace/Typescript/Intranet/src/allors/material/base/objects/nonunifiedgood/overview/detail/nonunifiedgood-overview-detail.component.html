@@ -72,17 +72,6 @@
           </div>
         </mat-tab>
 
-        <!-- <mat-tab label="Dimensions">
-          <div class="container-fluid">
-
-            <div class="row pt-3" *ngFor="let productDimension of productDimensions">
-              <a-mat-input class="col-md" [object]="productDimension" [roleType]="m.ProductDimension.Value"
-                [label]="productDimension.Dimension.Name + ' (' + productDimension.Dimension.UnitOfMeasure.Name + ')'"></a-mat-input>
-            </div>
-
-          </div>
-        </mat-tab> -->
-
         <mat-tab label="Comments">
           <div class="container-fluid">
             <div class="row pt-3">
@@ -127,7 +116,12 @@
         <mat-tab label="Documents">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.ElectronicDocuments" accept="image/*"></a-mat-files>
+              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.TechnicalDocuments" accept="image/*"></a-mat-files>
+            </div>
+          </div>
+          <div class="container-fluid">
+            <div class="row pt-3">
+              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.SalesDocuments" accept="image/*"></a-mat-files>
             </div>
           </div>
         </mat-tab>
