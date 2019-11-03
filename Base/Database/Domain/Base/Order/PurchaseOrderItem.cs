@@ -25,7 +25,7 @@ namespace Allors.Domain
 
         #endregion Transitional
 
-        public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsCancelledByOrder || this.PurchaseOrderItemState.IsRejected);
+        public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsRejected);
 
         public string SupplierReference
         {
@@ -104,8 +104,6 @@ namespace Allors.Domain
             }
         }
 
-        public void CancelFromOrder() => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).CancelledByOrder;
-
         public void BaseCancel(OrderItemCancel method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Cancelled;
 
         public void BaseReject(OrderItemReject method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Rejected;
@@ -149,7 +147,7 @@ namespace Allors.Domain
 
             this.BaseDeriveVatRegime(derivation);
 
-            if (this.Part.InventoryItemKind.Serialised)
+            if (this.ExistPart && this.Part.InventoryItemKind.Serialised)
             {
                 derivation.Validation.AssertAtLeastOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
                 derivation.Validation.AssertExistsAtMostOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);

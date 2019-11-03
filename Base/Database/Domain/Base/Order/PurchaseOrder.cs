@@ -230,11 +230,11 @@ namespace Allors.Domain
             }
 
             // PurchaseOrderItem States
-            foreach (var purchaseOrderItem in validOrderItems)
+            foreach (PurchaseOrderItem purchaseOrderItem in this.PurchaseOrderItems)
             {
                 if (this.PurchaseOrderState.IsCreated)
                 {
-                    if (purchaseOrderItem.PurchaseOrderItemState.IsCancelledByOrder)
+                    if (!purchaseOrderItem.PurchaseOrderItemState.IsCancelled && !purchaseOrderItem.PurchaseOrderItemState.IsRejected)
                     {
                         purchaseOrderItem.PurchaseOrderItemState = purchaseOrderItemStates.Created;
                     }
@@ -256,17 +256,17 @@ namespace Allors.Domain
                     purchaseOrderItem.PurchaseOrderItemState = purchaseOrderItemStates.Sent;
                 }
 
-                if (this.PurchaseOrderState.IsFinished)
+                if (purchaseOrderItem.IsValid && this.PurchaseOrderState.IsFinished)
                 {
                     purchaseOrderItem.PurchaseOrderItemState = purchaseOrderItemStates.Finished;
                 }
 
-                if (this.PurchaseOrderState.IsCancelled)
+                if (purchaseOrderItem.IsValid && this.PurchaseOrderState.IsCancelled)
                 {
                     purchaseOrderItem.PurchaseOrderItemState = purchaseOrderItemStates.Cancelled;
                 }
 
-                if (this.PurchaseOrderState.IsRejected)
+                if (purchaseOrderItem.IsValid && this.PurchaseOrderState.IsRejected)
                 {
                     purchaseOrderItem.PurchaseOrderItemState = purchaseOrderItemStates.Rejected;
                 }
@@ -279,9 +279,17 @@ namespace Allors.Domain
 
             this.DeriveWorkflow();
 
-            var singleton = this.strategy.Session.GetSingleton();
+            this.SecurityTokens = new[]
+            {
+                this.strategy.Session.GetSingleton().DefaultSecurityToken,
+            };
 
-            this.AddSecurityToken(singleton.DefaultSecurityToken);
+            if (this.ExistOrderedBy)
+            {
+                this.AddSecurityToken(this.OrderedBy.LocalAdministratorSecurityToken);
+                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken);
+                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken);
+            }
 
             this.Sync(this.Strategy.Session);
 
@@ -330,14 +338,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCancel(OrderCancel method)
-        {
-            this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Cancelled;
-            foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
-            {
-                purchaseOrderItem.CancelFromOrder();
-            }
-        }
+        public void BaseCancel(OrderCancel method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Cancelled;
 
         public void BaseConfirm(OrderConfirm method)
         {
@@ -346,7 +347,6 @@ namespace Allors.Domain
                 : this.PurchaseOrderState = this.NeedsApprovalLevel2
                     ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel2
                     : new PurchaseOrderStates(this.Strategy.Session).InProcess;
-
         }
 
         public void BaseReject(OrderReject method)

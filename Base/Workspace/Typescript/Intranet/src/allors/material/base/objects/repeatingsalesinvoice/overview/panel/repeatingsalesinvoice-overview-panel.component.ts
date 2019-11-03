@@ -25,6 +25,7 @@ interface Row extends TableRow {
   providers: [ContextService, PanelService]
 })
 export class RepeatingSalesInvoiceOverviewPanelComponent extends TestScope {
+  repeatingInvoice: RepeatingSalesInvoice;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -119,12 +120,12 @@ export class RepeatingSalesInvoiceOverviewPanelComponent extends TestScope {
 
     panel.onPulled = (loaded) => {
 
-      const repeatingInvoice = loaded.objects[pullName] as RepeatingSalesInvoice;
+      this.repeatingInvoice = loaded.objects[pullName] as RepeatingSalesInvoice;
       this.invoice = loaded.objects[invoicePullName] as SalesInvoice;
 
-      if (repeatingInvoice) {
+      if (this.repeatingInvoice) {
         this.objects.splice(0, this.objects.length);
-        this.objects.push(repeatingInvoice);
+        this.objects.push(this.repeatingInvoice);
       }
 
       this.table.data = this.objects.map((v) => {

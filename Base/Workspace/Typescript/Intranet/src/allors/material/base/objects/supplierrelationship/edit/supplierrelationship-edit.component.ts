@@ -6,7 +6,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, TestScope, Context } from '../../../../../angular';
-import { SupplierRelationship, Organisation } from '../../../../../domain/';
+import { SupplierRelationship, Organisation } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta, ids } from '../../../../../meta';

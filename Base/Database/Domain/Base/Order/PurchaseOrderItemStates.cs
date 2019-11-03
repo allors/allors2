@@ -12,7 +12,6 @@ namespace Allors.Domain
         public static readonly Guid CreatedId = new Guid("57273ADE-A813-40ba-B319-EF8D62AC92B6");
         public static readonly Guid AwaitingApprovalId = new Guid("BB3F365A-BC0D-44ff-9682-0D9FF910C637");
         public static readonly Guid CancelledId = new Guid("7342A3E6-69E4-49a7-9C2E-93574BF14072");
-        public static readonly Guid CancelledByOrderId = new Guid("23F051B3-1A9A-4B0A-B6A5-24CB8EBE6248");
         public static readonly Guid CompletedId = new Guid("9B338149-43EA-4091-BBD8-C3485337FBC5");
         public static readonly Guid RejectedId = new Guid("0CD96679-4699-42de-9AB6-C4DA197F907D");
         public static readonly Guid OnHoldId = new Guid("BEB5870C-0542-42fa-B2FC-5D2BD21673B7");
@@ -27,8 +26,6 @@ namespace Allors.Domain
         public PurchaseOrderItemState AwaitingApproval => this.StateCache[AwaitingApprovalId];
 
         public PurchaseOrderItemState Cancelled => this.StateCache[CancelledId];
-
-        public PurchaseOrderItemState CancelledByOrder => this.StateCache[CancelledByOrderId];
 
         public PurchaseOrderItemState Completed => this.StateCache[CompletedId];
 
@@ -58,11 +55,6 @@ namespace Allors.Domain
 
             new PurchaseOrderItemStateBuilder(this.Session)
                 .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(CancelledByOrderId)
                 .WithName("Cancelled")
                 .Build();
 

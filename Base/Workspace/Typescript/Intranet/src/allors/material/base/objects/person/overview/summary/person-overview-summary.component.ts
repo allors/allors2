@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, TestScope } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService, TestScope, MediaService } from '../../../../../../angular';
 import { Person, Organisation, OrganisationContactKind, OrganisationContactRelationship } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 
@@ -20,7 +20,8 @@ export class PersonOverviewSummaryComponent extends TestScope {
   constructor(
     @Self() public panel: PanelService,
     public metaService: MetaService,
-    public navigation: NavigationService
+    public navigation: NavigationService,
+    private mediaService: MediaService
   ) {
     super();
 
@@ -51,6 +52,7 @@ export class PersonOverviewSummaryComponent extends TestScope {
             Locale: x,
             LastModifiedBy: x,
             Salutation: x,
+            Picture: x,
             PartyContactMechanisms: partyContactMechanismTree,
             CurrentPartyContactMechanisms: partyContactMechanismTree,
             InactivePartyContactMechanisms: partyContactMechanismTree,
@@ -90,5 +92,16 @@ export class PersonOverviewSummaryComponent extends TestScope {
         }
       }
     };
+  }
+
+  get src(): string {
+    const media = this.person.Picture;
+    if (media) {
+      if (media.InDataUri) {
+        return media.InDataUri;
+      } else if (media.UniqueId) {
+        return this.mediaService.url(media);
+      }
+    }
   }
 }
