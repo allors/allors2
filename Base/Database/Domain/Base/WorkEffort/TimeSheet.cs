@@ -6,14 +6,10 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
 
     public partial class TimeSheet
     {
-        public void BaseOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-        }
-
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
@@ -25,6 +21,17 @@ namespace Allors.Domain
                     derivation.AddDependency(timeEntry, this);
                 }
             }
+        }
+
+        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            var securityTokens = this.Worker.InternalOrganisationsWhereActiveEmployee
+                .SelectMany(v => new[] { v.BlueCollarWorkerSecurityToken, v.LocalAdministratorSecurityToken })
+                .Where(v => v != null)
+                .Append(this.Session().GetSingleton().DefaultSecurityToken)
+                .Append(this.Worker.OwnerSecurityToken)
+                .ToArray();
+            method.SecurityTokens = securityTokens;
         }
 
         public void BaseDelete(DeletableDelete method)
