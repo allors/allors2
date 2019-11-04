@@ -10,7 +10,7 @@ namespace Allors.Repository
     #region Allors
     [Id("02E8DA1B-0551-411E-BDFA-52F053EC7D4A")]
     #endregion
-    public partial class TimeSheet : Deletable, Object
+    public partial class TimeSheet : Deletable, DelegatedAccessControlledObject
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -56,6 +56,7 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+        public void DelegateAccess() { }
 
         public void Delete() { }
         #endregion

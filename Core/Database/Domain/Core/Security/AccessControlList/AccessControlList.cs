@@ -103,6 +103,10 @@ namespace Allors.Domain
                 {
                     var delegatedAccess = controlledObject.DelegateAccess();
                     securityTokens = delegatedAccess.SecurityTokens;
+                    if (securityTokens != null && securityTokens.Any(v => v == null))
+                    {
+                        securityTokens = securityTokens.Where(v => v != null).ToArray();
+                    }
 
                     var delegatedAccessDeniedPermissions = delegatedAccess.DeniedPermissions;
                     if (delegatedAccessDeniedPermissions != null && delegatedAccessDeniedPermissions.Length > 0)

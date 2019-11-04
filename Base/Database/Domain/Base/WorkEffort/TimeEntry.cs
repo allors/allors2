@@ -165,7 +165,8 @@ namespace Allors.Domain
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            method.SecurityTokens = this.WorkEffort?.SecurityTokens.ToArray();
+            var workEffortSecurityTokens = this.WorkEffort?.SecurityTokens ?? Array.Empty<SecurityToken>();
+            method.SecurityTokens = workEffortSecurityTokens.Append(this.Worker?.OwnerSecurityToken).ToArray();
             method.DeniedPermissions = this.WorkEffort?.DeniedPermissions.ToArray();
         }
     }
