@@ -100,54 +100,6 @@ namespace Allors.Repository
 
         public Person[] SalesReps { get; set; }
 
-        public Person[] ProductQuoteApprovers { get; set; }
-
-        public SecurityToken ProductQuoteApproverSecurityToken { get; set; }
-
-        public AccessControl ProductQuoteApproverAccessControl { get; set; }
-
-        public UserGroup ProductQuoteApproverUserGroup { get; set; }
-
-        public Person[] PurchaseOrderApproversLevel1 { get; set; }
-
-        public SecurityToken PurchaseOrderApproverLevel1SecurityToken { get; set; }
-
-        public AccessControl PurchaseOrderApproverLevel1AccessControl { get; set; }
-
-        public UserGroup PurchaseOrderApproverLevel1UserGroup { get; set; }
-
-        public Person[] PurchaseOrderApproversLevel2 { get; set; }
-
-        public SecurityToken PurchaseOrderApproverLevel2SecurityToken { get; set; }
-
-        public AccessControl PurchaseOrderApproverLevel2AccessControl { get; set; }
-
-        public UserGroup PurchaseOrderApproverLevel2UserGroup { get; set; }
-
-        public Person[] PurchaseInvoiceApprovers { get; set; }
-
-        public SecurityToken PurchaseInvoiceApproverSecurityToken { get; set; }
-
-        public AccessControl PurchaseInvoiceApproverAccessControl { get; set; }
-
-        public UserGroup PurchaseInvoiceApproverUserGroup { get; set; }
-
-        public Person[] BlueCollarWorkers { get; set; }
-
-        public SecurityToken BlueCollarWorkerSecurityToken { get; set; }
-
-        public AccessControl BlueCollarWorkerAccessControl { get; set; }
-
-        public UserGroup BlueCollarWorkerUserGroup { get; set; }
-
-        public Person[] LocalAdministrators { get; set; }
-
-        public SecurityToken LocalAdministratorSecurityToken { get; set; }
-
-        public AccessControl LocalAdministratorAccessControl { get; set; }
-
-        public UserGroup LocalAdministratorUserGroup { get; set; }
-
         public GeneralLedgerAccount GlAccount { get; set; }
 
         public Party[] ActiveCustomers { get; set; }
