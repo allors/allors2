@@ -11,6 +11,7 @@ namespace Allors.Domain
     public partial class Security
     {
         public void GrantExceptEmployee(ObjectType objectType, ICollection<IOperandType> excepts, params Operations[] operations) => this.GrantExcept(Roles.EmployeeId, objectType, excepts, operations);
+
         public void GrantExceptGuest(ObjectType objectType, ICollection<IOperandType> excepts, params Operations[] operations) => this.GrantExcept(Roles.GuestId, objectType, excepts, operations);
 
         private void BaseOnPreSetup()
