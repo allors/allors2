@@ -25,12 +25,7 @@ namespace Allors.Domain
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            var securityTokens = this.Worker.InternalOrganisationsWhereActiveEmployee
-                .SelectMany(v => new[] { v.BlueCollarWorkerSecurityToken, v.LocalAdministratorSecurityToken })
-                .Where(v => v != null)
-                .Append(this.Session().GetSingleton().DefaultSecurityToken)
-                .Append(this.Worker.OwnerSecurityToken)
-                .ToArray();
+            var securityTokens = new[] { this.Session().GetSingleton().DefaultSecurityToken, this.Worker.OwnerSecurityToken };
             method.SecurityTokens = securityTokens;
         }
 

@@ -35,19 +35,6 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             this.ResetPrintDocument();
-
-            var singleton = this.strategy.Session.GetSingleton();
-
-            this.SecurityTokens = new[]
-            {
-                singleton.DefaultSecurityToken,
-            };
-
-            if (this.ExistTakenBy)
-            {
-                this.AddSecurityToken(this.TakenBy.BlueCollarWorkerSecurityToken);
-                this.AddSecurityToken(this.TakenBy.LocalAdministratorSecurityToken);
-            }
         }
 
         public void BasePrint(PrintablePrint method)

@@ -76,11 +76,14 @@ namespace Allors.Domain
                 this.DateClosed = this.strategy.Session.Now();
             }
 
-            // Assignments
-            var participants = this.ExistDateClosed
-                                   ? (IEnumerable<Person>)Array.Empty<Person>()
-                                   : this.PurchaseOrder.PurchaseOrderState.IsAwaitingApprovalLevel1 ? this.PurchaseOrder.OrderedBy.PurchaseOrderApproversLevel1 : this.PurchaseOrder.OrderedBy.PurchaseOrderApproversLevel2;
-            this.AssignParticipants(participants);
+            if (this.Participants.Count == 0)
+            {
+                // Assignments
+                var participants = this.ExistDateClosed
+                                       ? (IEnumerable<Person>)Array.Empty<Person>()
+                                       : (Person[])new UserGroups(this.Strategy.Session).Administrators.Members.ToArray();
+                this.AssignParticipants(participants);
+            }
         }
 
         public void ManageNotification(TaskAssignment taskAssignment)
