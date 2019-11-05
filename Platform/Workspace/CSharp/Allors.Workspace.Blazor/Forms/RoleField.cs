@@ -65,6 +65,9 @@ namespace Allors.Workspace.Blazor
         }
 
         [Parameter]
+        public bool ShowLabel { get; set; } = true;
+
+        [Parameter]
         public bool Disable
         {
             get => this.disable || !this.CanWrite;
