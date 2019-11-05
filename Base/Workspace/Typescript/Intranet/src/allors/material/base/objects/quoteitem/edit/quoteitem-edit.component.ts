@@ -243,34 +243,37 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
   }
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    const onOtherRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
-      .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
-        && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));
 
-    const onOtherQuoteItem = serialisedItem.QuoteItemsWhereSerialisedItem
-      .find(v => (v.QuoteItemState === this.draftQuoteItem || v.QuoteItemState === this.submittedQuoteItem || v.QuoteItemState === this.approvedQuoteItem)
-        && (v.QuoteWhereQuoteItem.QuoteState === this.createdQuote || v.QuoteWhereQuoteItem.QuoteState === this.approvedQuote));
+    if (serialisedItem !== undefined) {
+      const onOtherRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
+        .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
+          && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));
 
-    const onOtherOrderItem = serialisedItem.SalesOrderItemsWhereSerialisedItem
-      .find(v => (v.SalesOrderItemState === this.createdOrderItem || v.SalesOrderItemState === this.onHoldOrderItem || v.SalesOrderItemState === this.inProcessOrderItem)
-        && (v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.provisionalOrder || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.requestsApprovalOrder) 
-            || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.onHoldOrder || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.inProcessOrder);
+      const onOtherQuoteItem = serialisedItem.QuoteItemsWhereSerialisedItem
+        .find(v => (v.QuoteItemState === this.draftQuoteItem || v.QuoteItemState === this.submittedQuoteItem || v.QuoteItemState === this.approvedQuoteItem)
+          && (v.QuoteWhereQuoteItem.QuoteState === this.createdQuote || v.QuoteWhereQuoteItem.QuoteState === this.approvedQuote));
 
-    if (onOtherRequestItem) {
-      this.snackBar.open(`Item already requested with ${onOtherRequestItem.RequestWhereRequestItem.RequestNumber}`, 'close');
+      const onOtherOrderItem = serialisedItem.SalesOrderItemsWhereSerialisedItem
+        .find(v => (v.SalesOrderItemState === this.createdOrderItem || v.SalesOrderItemState === this.onHoldOrderItem || v.SalesOrderItemState === this.inProcessOrderItem)
+          && (v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.provisionalOrder || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.requestsApprovalOrder)
+          || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.onHoldOrder || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.inProcessOrder);
+
+      if (onOtherRequestItem) {
+        this.snackBar.open(`Item already requested with ${onOtherRequestItem.RequestWhereRequestItem.RequestNumber}`, 'close');
+      }
+
+      if (onOtherQuoteItem) {
+        this.snackBar.open(`Item already quoted with ${onOtherQuoteItem.QuoteWhereQuoteItem.QuoteNumber}`, 'close');
+      }
+
+      if (onOtherOrderItem) {
+        this.snackBar.open(`Item already ordered with ${onOtherOrderItem.SalesOrderWhereSalesOrderItem.OrderNumber}`, 'close');
+      }
+
+      this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
+      this.quoteItem.AssignedUnitPrice = this.serialisedItem.ExpectedSalesPrice;
+      this.quoteItem.Quantity = '1';
     }
-
-    if (onOtherQuoteItem) {
-      this.snackBar.open(`Item already quoted with ${onOtherQuoteItem.QuoteWhereQuoteItem.QuoteNumber}`, 'close');
-    }
-
-    if (onOtherOrderItem) {
-      this.snackBar.open(`Item already ordered with ${onOtherOrderItem.SalesOrderWhereSalesOrderItem.OrderNumber}`, 'close');
-    }
-
-    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
-    this.quoteItem.AssignedUnitPrice = this.serialisedItem.ExpectedSalesPrice;
-    this.quoteItem.Quantity = '1';
   }
 
   public save(): void {
