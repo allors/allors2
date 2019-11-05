@@ -61,10 +61,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
             @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
             @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
-            @this.WithTechnicalDocument(new MediaBuilder(@this.Session).WithFileName("technical doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
-            @this.WithTechnicalDocument(new MediaBuilder(@this.Session).WithFileName("technical doc2.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
-            @this.WithSalesDocument(new MediaBuilder(@this.Session).WithFileName("sales doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
-            @this.WithSalesDocument(new MediaBuilder(@this.Session).WithFileName("sales doc2.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
+            @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
+            @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc2.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
             @this.WithProductIdentification(new SkuIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithProductIdentification(new EanIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithProductIdentification(new ManufacturerIdentificationBuilder(@this.Session).WithDefaults().Build());
@@ -85,7 +83,7 @@ namespace Allors.Domain.TestPopulation
                 @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Words().ToString()).WithLocale(additionalLocale).Build());
 
                 var localisedDocument = new MediaBuilder(@this.Session).WithFileName($"doc1.{additionalLocale.Country.IsoCode}.pdf").WithInData(faker.Random.Bytes(1000)).Build();
-                @this.WithLocalisedTechnicalDocument(new LocalisedMediaBuilder(@this.Session).WithMedia(localisedDocument).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedElectronicDocument(new LocalisedMediaBuilder(@this.Session).WithMedia(localisedDocument).WithLocale(additionalLocale).Build());
             }
 
             return @this;
@@ -128,10 +126,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
             @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
             @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
-            @this.WithTechnicalDocument(new MediaBuilder(@this.Session).WithFileName("technical doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
-            @this.WithTechnicalDocument(new MediaBuilder(@this.Session).WithFileName("technical doc2.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
-            @this.WithSalesDocument(new MediaBuilder(@this.Session).WithFileName("sales doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
-            @this.WithSalesDocument(new MediaBuilder(@this.Session).WithFileName("sales doc2.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
+            @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
+            @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc2.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
             @this.WithProductIdentification(new SkuIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithProductIdentification(new EanIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithProductIdentification(new ManufacturerIdentificationBuilder(@this.Session).WithDefaults().Build());
@@ -150,7 +146,7 @@ namespace Allors.Domain.TestPopulation
                 @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Words().ToString()).WithLocale(additionalLocale).Build());
 
                 var localisedDocument = new MediaBuilder(@this.Session).WithFileName($"doc1.{additionalLocale.Country.IsoCode}.pdf").WithInData(faker.Random.Bytes(1000)).Build();
-                @this.WithLocalisedTechnicalDocument(new LocalisedMediaBuilder(@this.Session).WithMedia(localisedDocument).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedElectronicDocument(new LocalisedMediaBuilder(@this.Session).WithMedia(localisedDocument).WithLocale(additionalLocale).Build());
             }
             return @this;
         }

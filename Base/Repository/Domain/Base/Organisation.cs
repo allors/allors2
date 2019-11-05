@@ -464,5 +464,18 @@ namespace Allors.Repository
 
         public void Delete() { }
         #endregion
+
+        public void CreateRequest() { }
+
+        public void CreateQuote() { }
+
+        public void CreatePurchaseOrder() { }
+
+        public void CreatePurchaseInvoice() { }
+
+        public void CreateSalesOrder() { }
+
+        public void CreateSalesInvoice() { }
+
     }
 }

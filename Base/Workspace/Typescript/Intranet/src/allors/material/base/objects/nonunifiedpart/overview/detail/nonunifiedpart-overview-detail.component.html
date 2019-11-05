@@ -211,14 +211,10 @@
         <mat-tab label="Documents">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.LocalisedTechnicalDocuments" accept="image/*">
+              <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.LocalisedElectronicDocuments" accept="image/*">
               </a-mat-files>
             </div>
-            <div class="row pt-3">
-              <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.LocalisedSalesDocuments" accept="image/*">
-              </a-mat-files>
             </div>
-          </div>
         </mat-tab>
       </mat-tab-group>
 
