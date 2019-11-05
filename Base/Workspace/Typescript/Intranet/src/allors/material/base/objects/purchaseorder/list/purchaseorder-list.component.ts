@@ -192,9 +192,6 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
             pull.Person({
               object: this.userId.value
             }),
-            pull.UserGroup({
-              include: { Members: x }
-            }),
             pull.PurchaseOrder({
               predicate,
               sort: sorter.create(sort),
@@ -218,11 +215,8 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.user = loaded.objects.Person as Person;
-        const localAdministrator = this.internalOrganisation.LocalAdministrators.includes(this.user);
-        const userGroups = loaded.collections.UserGroups as UserGroup[];
-        const administratorUserGroup = userGroups.find((v: UserGroup) => v.UniqueId === 'cdc04209-683b-429c-bed2-440851f430df');
-        const administrator = administratorUserGroup.Members.includes(this.user);
-        this.canCreate = localAdministrator || administrator;
+
+        this.canCreate = this.internalOrganisation.CanExecuteCreatePurchaseOrder;
 
         const orders = loaded.collections.PurchaseOrders as PurchaseOrder[];
         this.table.total = loaded.values.PurchaseOrders_total;

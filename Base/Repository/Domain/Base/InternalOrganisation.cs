@@ -854,5 +854,41 @@ namespace Allors.Repository
         #region inherited methods
 
         #endregion
+
+        #region Allors
+        [Id("B6586173-5AC6-457F-8605-070DA9E2631B")]
+        #endregion
+        [Workspace]
+        void CreateRequest();
+
+        #region Allors
+        [Id("281E2CDB-6A14-47CF-9D43-446C4C9F67E1")]
+        #endregion
+        [Workspace]
+        void CreateQuote();
+
+        #region Allors
+        [Id("CF3F43B4-6A32-44A7-911A-39E7293D2877")]
+        #endregion
+        [Workspace]
+        void CreatePurchaseOrder();
+
+        #region Allors
+        [Id("94E92634-F1B0-43B9-B1B0-C36774C2B9F0")]
+        #endregion
+        [Workspace]
+        void CreatePurchaseInvoice();
+
+        #region Allors
+        [Id("8FA98D9E-A991-405A-9B90-8C639BF4701E")]
+        #endregion
+        [Workspace]
+        void CreateSalesOrder();
+
+        #region Allors
+        [Id("AE8895B9-9F31-428E-909C-D1F75741F150")]
+        #endregion
+        [Workspace]
+        void CreateSalesInvoice();
     }
 }

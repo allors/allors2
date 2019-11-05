@@ -234,9 +234,6 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
             pull.Person({
               object: this.userId.value
             }),
-            pull.UserGroup({
-              include: { Members: x }
-            }),
             pull.PurchaseInvoice({
               predicate,
               sort: sorter.create(sort),
@@ -262,11 +259,8 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.user = loaded.objects.Person as Person;
-        const localAdministrator = this.internalOrganisation.LocalAdministrators.includes(this.user);
-        const userGroups = loaded.collections.UserGroups as UserGroup[];
-        const administratorUserGroup = userGroups.find((v: UserGroup) => v.UniqueId === 'cdc04209-683b-429c-bed2-440851f430df');
-        const administrator = administratorUserGroup.Members.includes(this.user);
-        this.canCreate = localAdministrator || administrator;
+
+        this.canCreate = this.internalOrganisation.CanExecuteCreatePurchaseInvoice;
 
         const purchaseInvoices = loaded.collections.PurchaseInvoices as PurchaseInvoice[];
         this.table.total = loaded.values.PurchaseInvoices_total;
