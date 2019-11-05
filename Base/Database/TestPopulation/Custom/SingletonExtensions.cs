@@ -128,8 +128,6 @@ namespace Allors
 
             // Give Administrator access
             new EmploymentBuilder(@this.Session()).WithEmployee(administrator).WithEmployer(allors).Build();
-            allors.AddProductQuoteApprover(administrator);
-            allors.AddBlueCollarWorker(administrator);
 
             @this.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
 
@@ -140,17 +138,9 @@ namespace Allors
             var allorsPurchaseOrderApproverLevel1 = allors.CreateEmployee("letmein", faker);
             var allorsPurchaseOrderApproverLevel2 = allors.CreateEmployee("letmein", faker);
 
-            allors.ProductQuoteApprovers = new[] { allorsProductQuoteApprover, administrator };
-            allors.PurchaseInvoiceApprovers = new[] { allorsPurchaseInvoiceApprover, administrator };
-            allors.PurchaseOrderApproversLevel1 = new[] { allorsPurchaseOrderApproverLevel1, administrator };
-            allors.PurchaseOrderApproversLevel2 = new[] { allorsPurchaseOrderApproverLevel2, administrator };
-
             var dipuEmployee = dipu.CreateEmployee("letmein", faker);
             var dipuProductQuoteApprover = dipu.CreateEmployee("letmein", faker);
             var dipuPurchaseInvoiceApprover = dipu.CreateEmployee("letmein", faker);
-
-            dipu.ProductQuoteApprovers = new[] { dipuProductQuoteApprover, administrator };
-            dipu.PurchaseInvoiceApprovers = new[] { dipuPurchaseInvoiceApprover, administrator };
 
             new FacilityBuilder(@this.Session())
                 .WithName("Allors warehouse 2")
