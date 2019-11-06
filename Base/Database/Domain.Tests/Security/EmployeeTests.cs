@@ -77,7 +77,7 @@ namespace Allors.Domain
             Assert.False(workTask.Strategy.IsNewInSession);
 
             var acl = new AccessControlLists(employee)[workTask];
-            Assert.False(acl.CanRead(M.WorkTask.Name));
+            Assert.True(acl.CanRead(M.WorkTask.Name));
             Assert.False(acl.CanWrite(M.WorkTask.Name));
         }
 
@@ -104,7 +104,7 @@ namespace Allors.Domain
             Assert.True(salesInvoice.Strategy.IsNewInSession);
 
             var acl = new AccessControlLists(employee)[salesInvoice];
-            Assert.False(acl.CanRead(M.SalesInvoice.Description));
+            Assert.True(acl.CanRead(M.SalesInvoice.Description));
             Assert.False(acl.CanWrite(M.SalesInvoice.Description));
 
             this.Session.Commit();
@@ -112,7 +112,7 @@ namespace Allors.Domain
             Assert.False(salesInvoice.Strategy.IsNewInSession);
 
             acl = new AccessControlLists(employee)[salesInvoice];
-            Assert.False(acl.CanRead(M.SalesInvoice.Description));
+            Assert.True(acl.CanRead(M.SalesInvoice.Description));
             Assert.False(acl.CanWrite(M.SalesInvoice.Description));
         }
 

@@ -7,6 +7,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public partial class PurchaseOrderApprovalLevel1
     {
@@ -81,7 +82,7 @@ namespace Allors.Domain
                 // Assignments
                 var participants = this.ExistDateClosed
                                        ? (IEnumerable<Person>)Array.Empty<Person>()
-                                       : (Person[])new UserGroups(this.Strategy.Session).Administrators.Members.ToArray();
+                                       : new UserGroups(this.Strategy.Session).Administrators.Members.Select(v => (Person)v).ToArray();
                 this.AssignParticipants(participants);
             }
         }

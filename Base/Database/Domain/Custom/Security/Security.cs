@@ -14,6 +14,17 @@ namespace Allors.Domain
 
         private void CustomOnPreSetup()
         {
+            // Default access policy
+            var security = new Security(this.session);
+
+            var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
+
+            foreach (ObjectType @class in this.session.Database.MetaPopulation.Classes)
+            {
+                security.GrantAdministrator(@class, full);
+                security.Grantemployee(@class, Operations.Read);
+                security.GrantCreator(@class, full);
+            }
         }
 
         private void CustomOnPostSetup()

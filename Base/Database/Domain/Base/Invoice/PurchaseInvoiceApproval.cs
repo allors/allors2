@@ -81,8 +81,8 @@ namespace Allors.Domain
             {
                 // Assignments
                 var participants = this.ExistDateClosed
-                                       ? (IEnumerable<Person>)Array.Empty<Person>()
-                                       : (Person[])new UserGroups(this.Strategy.Session).Administrators.Members.ToArray();
+                    ? (IEnumerable<Person>)Array.Empty<Person>()
+                    : new UserGroups(this.Strategy.Session).Administrators.Members.Select(v => (Person)v).ToArray();
                 this.AssignParticipants(participants);
             }
         }
