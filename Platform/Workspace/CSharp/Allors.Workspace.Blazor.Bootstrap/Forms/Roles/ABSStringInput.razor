@@ -1,7 +1,10 @@
 @inherits ABSStringInputBase
 
-<BSFormGroup>
-    <BSLabel>@Label</BSLabel>
-    <BSInput InputType="InputType" @bind-Value="StringModel"></BSInput>
-    <BSFormFeedback For="@(() => Model)" />
-</BSFormGroup>
+    <BSFormGroup>
+        @if (ShowLabel)
+        {
+            <BSLabel>@Label</BSLabel>
+        }
+        <BSInput InputType="InputType" @bind-Value="StringModel"></BSInput>
+        <BSFormFeedback For="@(() => Model)" />
+    </BSFormGroup>
