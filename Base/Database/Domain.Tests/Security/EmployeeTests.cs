@@ -55,8 +55,8 @@ namespace Allors.Domain
             Assert.True(workTask.Strategy.IsNewInSession);
 
             var acl = new AccessControlLists(employee)[workTask];
-            Assert.False(acl.CanRead(M.WorkTask.Name));
-            Assert.False(acl.CanWrite(M.WorkTask.Name));
+            Assert.True(acl.CanRead(M.WorkTask.Name));
+            Assert.True(acl.CanWrite(M.WorkTask.Name));
         }
 
         [Fact]
