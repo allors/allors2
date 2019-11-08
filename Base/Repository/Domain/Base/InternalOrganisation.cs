@@ -594,6 +594,7 @@ namespace Allors.Repository
         [AssociationId("A411F97A-56FE-4C8B-9CB7-216484C7C5EA")]
         [RoleId("8683265F-33D4-4D03-99EC-4F356F73FE98")]
         #endregion
+        [Required]
         [Workspace]
         decimal PurchaseOrderApprovalThresholdLevel1 { get; set; }
 
@@ -602,6 +603,7 @@ namespace Allors.Repository
         [AssociationId("20F750C3-3973-499A-BC67-69CC8C02E16C")]
         [RoleId("A158C47E-62E2-4B56-A12B-1B837071F08E")]
         #endregion
+        [Required]
         [Workspace]
         decimal PurchaseOrderApprovalThresholdLevel2 { get; set; }
 

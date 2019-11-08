@@ -64,7 +64,6 @@ namespace Allors.Repository
         [AssociationId("CD76AE94-2B41-44B0-8085-995AC7A2A2EB")]
         [RoleId("1B9652BB-C074-46AB-AA3E-C2645CC1BAFF")]
         #endregion
-        [Required]
         [Workspace]
         public decimal ApprovalThresholdLevel1 { get; set; }
 
@@ -73,7 +72,6 @@ namespace Allors.Repository
         [AssociationId("B673D04F-3ECE-4452-84D6-27E3DC1BC772")]
         [RoleId("D73494F3-20FC-40A5-94BF-D45004731C5A")]
         #endregion
-        [Required]
         [Workspace]
         public decimal ApprovalThresholdLevel2 { get; set; }
 
