@@ -35,7 +35,7 @@ namespace Allors.Domain
 
         public static bool BaseIsActiveCustomer(this Party party, InternalOrganisation internalOrganisation, DateTime? date)
         {
-            if (date == DateTime.MinValue)
+            if (date == DateTime.MinValue || internalOrganisation == null)
             {
                 return false;
             }

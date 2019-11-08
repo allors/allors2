@@ -194,16 +194,7 @@ namespace Allors.Domain
 
             var singleton = this.strategy.Session.GetSingleton();
 
-            this.SecurityTokens = new[]
-            {
-                singleton.DefaultSecurityToken,
-            };
-
-            if (this.ExistBilledTo)
-            {
-                this.AddSecurityToken(this.BilledTo.LocalAdministratorSecurityToken);
-                this.AddSecurityToken(this.BilledTo.PurchaseInvoiceApproverSecurityToken);
-            }
+            this.AddSecurityToken(singleton.DefaultSecurityToken);
 
             this.Sync(this.strategy.Session);
 

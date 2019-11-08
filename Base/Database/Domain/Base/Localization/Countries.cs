@@ -72,17 +72,17 @@ namespace Allors.Domain
 
     public class IbanData
     {
-        public int Lenght;
+        public int Length;
         public string RegexStructure;
 
         public IbanData()
         {
         }
 
-        public IbanData(int lenght, string regexStructure)
+        public IbanData(int length, string regexStructure)
             : this()
         {
-            this.Lenght = lenght;
+            this.Length = length;
             this.RegexStructure = regexStructure;
         }
     }

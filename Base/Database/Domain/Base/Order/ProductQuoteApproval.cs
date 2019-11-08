@@ -7,6 +7,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public partial class ProductQuoteApproval
     {
@@ -22,11 +23,14 @@ namespace Allors.Domain
                 this.DateClosed = this.strategy.Session.Now();
             }
 
-            // Assignments
-            var participants = this.ExistDateClosed
-                                   ? (IEnumerable<Person>)Array.Empty<Person>()
-                                   : this.ProductQuote.Issuer.ProductQuoteApprovers;
-            this.AssignParticipants(participants);
+            if (this.Participants.Count == 0)
+            {
+                // Assignments
+                var participants = this.ExistDateClosed
+                                       ? (IEnumerable<Person>)Array.Empty<Person>()
+                                       : new UserGroups(this.Strategy.Session).Administrators.Members.Select(v => (Person)v).ToArray();
+                this.AssignParticipants(participants);
+            }
         }
 
         public void BaseApprove(ProductQuoteApprovalApprove method)

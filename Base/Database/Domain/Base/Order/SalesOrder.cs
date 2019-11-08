@@ -527,15 +527,7 @@ namespace Allors.Domain
 
             var singleton = session.GetSingleton();
 
-            this.SecurityTokens = new[]
-            {
-                singleton.DefaultSecurityToken,
-            };
-
-            if (this.ExistTakenBy)
-            {
-                this.AddSecurityToken(this.TakenBy.LocalAdministratorSecurityToken);
-            }
+            this.AddSecurityToken(singleton.DefaultSecurityToken);
 
             this.Sync(session);
 

@@ -15,7 +15,7 @@ namespace Allors.Domain
 
                 if (Countries.IbanDataByCountry.TryGetValue(this.IsoCode, out var ibanData))
                 {
-                    this.IbanLength = ibanData.Lenght;
+                    this.IbanLength = ibanData.Length;
                     this.IbanRegex = ibanData.RegexStructure;
                 }
                 else

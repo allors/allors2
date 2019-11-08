@@ -62,7 +62,6 @@ namespace Allors.Domain
                 @this.ExecutedBy = @this.TakenBy;
             }
 
-            @this.DeriveSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
             @this.DeriveCanInvoice();
@@ -113,19 +112,6 @@ namespace Allors.Domain
 
                 method.Result = true;
             }
-        }
-
-        private static void DeriveSecurity(this WorkEffort @this)
-        {
-            var session = @this.Strategy.Session;
-
-            var singleton = session.GetSingleton();
-
-            @this.SecurityTokens = new[]
-            {
-                singleton.DefaultSecurityToken,
-                @this.ExecutedBy.BlueCollarWorkerSecurityToken,
-            };
         }
 
         private static void VerifyWorkEffortPartyAssignments(this WorkEffort @this, IDerivation derivation)

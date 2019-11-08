@@ -279,17 +279,7 @@ namespace Allors.Domain
 
             this.DeriveWorkflow();
 
-            this.SecurityTokens = new[]
-            {
-                this.strategy.Session.GetSingleton().DefaultSecurityToken,
-            };
-
-            if (this.ExistOrderedBy)
-            {
-                this.AddSecurityToken(this.OrderedBy.LocalAdministratorSecurityToken);
-                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken);
-                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken);
-            }
+            this.AddSecurityToken(this.strategy.Session.GetSingleton().DefaultSecurityToken);
 
             this.Sync(this.Strategy.Session);
 

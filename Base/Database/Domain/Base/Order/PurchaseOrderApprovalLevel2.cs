@@ -7,6 +7,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public partial class PurchaseOrderApprovalLevel2
     {
@@ -76,11 +77,14 @@ namespace Allors.Domain
                 this.DateClosed = this.strategy.Session.Now();
             }
 
-            // Assignments
-            var participants = this.ExistDateClosed
-                                   ? (IEnumerable<Person>)Array.Empty<Person>()
-                                   : this.PurchaseOrder.PurchaseOrderState.IsAwaitingApprovalLevel2 ? this.PurchaseOrder.OrderedBy.PurchaseOrderApproversLevel2 : this.PurchaseOrder.OrderedBy.PurchaseOrderApproversLevel2;
-            this.AssignParticipants(participants);
+            if (this.Participants.Count == 0)
+            {
+                // Assignments
+                var participants = this.ExistDateClosed
+                                       ? (IEnumerable<Person>)Array.Empty<Person>()
+                                       : new UserGroups(this.Strategy.Session).Administrators.Members.Select(v => (Person)v).ToArray();
+                this.AssignParticipants(participants);
+            }
         }
 
         public void ManageNotification(TaskAssignment taskAssignment)

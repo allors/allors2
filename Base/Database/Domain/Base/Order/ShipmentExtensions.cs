@@ -11,20 +11,7 @@ namespace Allors.Domain
         {
             var singleton = @this.Strategy.Session.GetSingleton();
 
-            @this.SecurityTokens = new[]
-            {
-                singleton.DefaultSecurityToken,
-            };
-
-            if (@this.ExistShipFromParty && @this.ShipFromParty is InternalOrganisation from)
-            {
-                @this.AddSecurityToken(from.LocalAdministratorSecurityToken);
-            }
-
-            if (@this.ExistShipToParty && @this.ShipToParty is InternalOrganisation to)
-            {
-                @this.AddSecurityToken(to.LocalAdministratorSecurityToken);
-            }
+            @this.AddSecurityToken(singleton.DefaultSecurityToken);
         }
     }
 }
