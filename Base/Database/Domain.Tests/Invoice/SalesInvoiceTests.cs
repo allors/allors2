@@ -109,6 +109,43 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenSalesInvoice_WhenDerivingWithMultipleInternalOrganisations_ThenBilledFromMustExist()
+        {
+            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.IsInternalOrganisation, true);
+
+            var anotherInternalOrganisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
+                .WithDoAccounting(false)
+                .WithName("internalOrganisation")
+                .WithPreferredCurrency(new Currencies(this.Session).CurrencyByCode["EUR"])
+                .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
+                .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
+                .WithPurchaseOrderNumberPrefix("purchase orderno: ")
+                .WithSubAccountCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+                .Build();
+
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            ContactMechanism billToContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            this.Session.Commit();
+
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(billToContactMechanism)
+                .Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            invoice.BilledFrom = this.InternalOrganisation;
+
+            Assert.False(this.Session.Derive(true).HasErrors);
+        }
+
+        [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenBillToCustomerMustBeActiveCustomer()
         {
             var customer = new OrganisationBuilder(this.Session)

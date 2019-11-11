@@ -185,7 +185,7 @@ namespace Allors.Domain
                 this.ShipToAddress = this.ShipToCustomer.ShippingAddress;
             }
 
-            if (!this.ExistCurrency)
+            if (!this.ExistCurrency && this.ExistBilledFrom)
             {
                 if (this.ExistBillToCustomer && (this.BillToCustomer.ExistPreferredCurrency || this.BillToCustomer.ExistLocale))
                 {
