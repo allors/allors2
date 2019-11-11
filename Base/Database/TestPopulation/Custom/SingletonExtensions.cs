@@ -161,29 +161,9 @@ namespace Allors
             var serialisedPart1 = allors.CreateSerialisedNonUnifiedPart(faker);
             var serialisedPart2 = allors.CreateSerialisedNonUnifiedPart(faker);
 
-            var good1 = new NonUnifiedGoodBuilder(@this.Session())
-                .WithProductIdentification(new ProductNumberBuilder(@this.Session())
-                    .WithIdentification("G1")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(@this.Session()).Good).Build())
-                .WithName("Tiny blue round gizmo")
-                .WithLocalisedName(new LocalisedTextBuilder(@this.Session()).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
-                .WithDescription("Perfect blue with nice curves")
-                .WithLocalisedDescription(new LocalisedTextBuilder(@this.Session()).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate)
-                .WithPart(nonSerialisedPart1)
-                .Build();
+            var good1 = new NonUnifiedGoodBuilder(@this.Session()).WithNonSerialisedPartDefaults(allors).Build();
 
-            var good2 = new NonUnifiedGoodBuilder(@this.Session())
-                .WithProductIdentification(new ProductNumberBuilder(@this.Session())
-                    .WithIdentification("G2")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(@this.Session()).Good).Build())
-                .WithName("Tiny red round gizmo")
-                .WithLocalisedName(new LocalisedTextBuilder(@this.Session()).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
-                .WithDescription("Perfect red with nice curves")
-                .WithLocalisedDescription(new LocalisedTextBuilder(@this.Session()).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate)
-                .WithPart(serialisedPart1)
-                .Build();
+            var good2 = new NonUnifiedGoodBuilder(@this.Session()).WithSerialisedPartDefaults(allors).Build();
 
             var serialisedItem = new SerialisedItemBuilder(@this.Session()).WithDefaults(allors).Build();
             serialisedPart1.AddSerialisedItem(serialisedItem);
@@ -196,27 +176,9 @@ namespace Allors
                 .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(@this.Session()).Available)
                 .Build();
 
-            var good3 = new NonUnifiedGoodBuilder(@this.Session())
-                .WithProductIdentification(new ProductNumberBuilder(@this.Session())
-                    .WithIdentification("G3")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(@this.Session()).Good).Build())
-                .WithName("Tiny green round gizmo")
-                .WithLocalisedName(new LocalisedTextBuilder(@this.Session()).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
-                .WithDescription("Perfect red with nice curves")
-                .WithLocalisedDescription(new LocalisedTextBuilder(@this.Session()).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate)
-                .WithPart(nonSerialisedPart2)
-                .Build();
+            var good3 = new NonUnifiedGoodBuilder(@this.Session()).WithNonSerialisedPartDefaults(allors).Build();
 
-            var good4 = new NonUnifiedGoodBuilder(@this.Session())
-                .WithProductIdentification(new ProductNumberBuilder(@this.Session())
-                    .WithIdentification("G4")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(@this.Session()).Good).Build())
-                .WithName("Tiny purple round gizmo")
-                .WithLocalisedName(new LocalisedTextBuilder(@this.Session()).WithText("Zeer kleine paarse ronde gizmo").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate)
-                .WithPart(serialisedPart2)
-                .Build();
+            var good4 = new NonUnifiedGoodBuilder(@this.Session()).WithSerialisedPartDefaults(allors).Build();
 
             var productCategory1 = new ProductCategoryBuilder(@this.Session())
                 .WithInternalOrganisation(allors)
