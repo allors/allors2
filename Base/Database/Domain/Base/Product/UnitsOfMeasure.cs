@@ -10,71 +10,62 @@ namespace Allors.Domain
     public partial class UnitsOfMeasure
     {
         // Quantity
-        private static readonly Guid PackId = new Guid("C4EC577A-D682-433c-BD70-84538BE83209");
-
-        private static readonly Guid PairId = new Guid("62CB31EB-CD70-4836-B20F-1088C6CA9DCB");
-        private static readonly Guid PieceId = new Guid("F4BBDB52-3441-4768-92D4-729C6C5D6F1B");
-        private static readonly Guid PeopleId = new Guid("13274801-52FD-47E8-A15B-8508E848C140");
+        internal static readonly Guid PackId = new Guid("C4EC577A-D682-433c-BD70-84538BE83209");
+        internal static readonly Guid PairId = new Guid("62CB31EB-CD70-4836-B20F-1088C6CA9DCB");
+        internal static readonly Guid PieceId = new Guid("F4BBDB52-3441-4768-92D4-729C6C5D6F1B");
+        internal static readonly Guid PeopleId = new Guid("13274801-52FD-47E8-A15B-8508E848C140");
 
         // Length, width, distance, thickness
-        private static readonly Guid MillimeterId = new Guid("A7F83AEF-20DB-42D8-9AB6-2D5821353BE8");
-
-        private static readonly Guid CentimeterId = new Guid("7D81FFC7-E77D-4a00-916D-49F2B1CCA12E");
-        private static readonly Guid MeterId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
-        private static readonly Guid KilometerId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
+        internal static readonly Guid MillimeterId = new Guid("A7F83AEF-20DB-42D8-9AB6-2D5821353BE8");
+        internal static readonly Guid CentimeterId = new Guid("7D81FFC7-E77D-4a00-916D-49F2B1CCA12E");
+        internal static readonly Guid MeterId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
+        internal static readonly Guid KilometerId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
 
         // Mass
-        private static readonly Guid MilligramId = new Guid("43E19BE3-5F7D-441D-A6B3-52EC1B7A2F84");
-
-        private static readonly Guid GramId = new Guid("F108E442-3A85-4F69-81ED-51BA9FC39A39");
-        private static readonly Guid KilogramId = new Guid("652A99BB-2B11-4DA7-B938-7A8EC1061A09");
-        private static readonly Guid MetricTonId = new Guid("140145F7-EB1C-45B9-9B94-982254B88B5D");
+        internal static readonly Guid MilligramId = new Guid("43E19BE3-5F7D-441D-A6B3-52EC1B7A2F84");
+        internal static readonly Guid GramId = new Guid("F108E442-3A85-4F69-81ED-51BA9FC39A39");
+        internal static readonly Guid KilogramId = new Guid("652A99BB-2B11-4DA7-B938-7A8EC1061A09");
+        internal static readonly Guid MetricTonId = new Guid("140145F7-EB1C-45B9-9B94-982254B88B5D");
 
         // Area
-        private static readonly Guid SquareMeterId = new Guid("B2BEEECC-4C04-487A-BA79-EE48AC555800");
-
-        private static readonly Guid HectareId = new Guid("7B28A3B1-0717-47E1-9AD9-133D885B7F7A");
-        private static readonly Guid SquareKilometerId = new Guid("4FA765C6-FAF0-4C72-808D-71E25603A45D");
+        internal static readonly Guid SquareMeterId = new Guid("B2BEEECC-4C04-487A-BA79-EE48AC555800");
+        internal static readonly Guid HectareId = new Guid("7B28A3B1-0717-47E1-9AD9-133D885B7F7A");
+        internal static readonly Guid SquareKilometerId = new Guid("4FA765C6-FAF0-4C72-808D-71E25603A45D");
 
         // Volume
-        private static readonly Guid MilliLiterId = new Guid("6DE02A90-1605-46B4-9BD5-88BD4690A5B2");
-
-        private static readonly Guid CubicCentimeterId = new Guid("F6289FF0-87E8-4ADC-92E3-C5D532BA515F");
-        private static readonly Guid LiterId = new Guid("C0F2845D-3CBC-4FE7-970B-8C06AFB75ABC");
-        private static readonly Guid CubicMeterId = new Guid("F573E22F-9450-4E0A-B177-4142DFAAE829");
+        internal static readonly Guid MilliLiterId = new Guid("6DE02A90-1605-46B4-9BD5-88BD4690A5B2");
+        internal static readonly Guid CubicCentimeterId = new Guid("F6289FF0-87E8-4ADC-92E3-C5D532BA515F");
+        internal static readonly Guid LiterId = new Guid("C0F2845D-3CBC-4FE7-970B-8C06AFB75ABC");
+        internal static readonly Guid CubicMeterId = new Guid("F573E22F-9450-4E0A-B177-4142DFAAE829");
 
         // Velocity
-        private static readonly Guid MeterPerSecondId = new Guid("66A4216C-46E8-4212-B456-76F968505F25");
-
-        private static readonly Guid KilometerPerHourId = new Guid("E3A61B56-2CD1-42E6-9360-1F83F3D15195");
+        internal static readonly Guid MeterPerSecondId = new Guid("66A4216C-46E8-4212-B456-76F968505F25");
+        internal static readonly Guid KilometerPerHourId = new Guid("E3A61B56-2CD1-42E6-9360-1F83F3D15195");
 
         // Density
-        private static readonly Guid KilogramPerCubicMeterId = new Guid("C4519054-1F73-4C81-92C8-DFF2FBB12F4A");
+        internal static readonly Guid KilogramPerCubicMeterId = new Guid("C4519054-1F73-4C81-92C8-DFF2FBB12F4A");
 
         // Force
-        private static readonly Guid NewtonId = new Guid("E569CBD7-9975-4A19-9C42-BE8219FB954D");
+        internal static readonly Guid NewtonId = new Guid("E569CBD7-9975-4A19-9C42-BE8219FB954D");
 
         // Pressure
-        private static readonly Guid KiloPascalId = new Guid("65F45C76-FDA6-4A79-9A46-A676148B0E45");
+        internal static readonly Guid KiloPascalId = new Guid("65F45C76-FDA6-4A79-9A46-A676148B0E45");
 
         // Power
-        private static readonly Guid WattId = new Guid("ADF494B5-120F-475E-95F0-3EFC2B64FBE7");
-
-        private static readonly Guid KiloWattId = new Guid("71B7DCDD-A98D-4005-AFE8-8C5366847ECB");
+        internal static readonly Guid WattId = new Guid("ADF494B5-120F-475E-95F0-3EFC2B64FBE7");
+        internal static readonly Guid KiloWattId = new Guid("71B7DCDD-A98D-4005-AFE8-8C5366847ECB");
 
         // Energy
-        private static readonly Guid KiloJouleId = new Guid("9F31AAF8-B4BC-48A3-A34B-795E4B082CEC");
-
-        private static readonly Guid MegaJouleId = new Guid("56D154BA-F16B-43AC-BCD7-B81EC670932D");
-        private static readonly Guid KiloWattHourId = new Guid("83C65E69-0048-4474-9F53-4EA89FA26194");
+        internal static readonly Guid KiloJouleId = new Guid("9F31AAF8-B4BC-48A3-A34B-795E4B082CEC");
+        internal static readonly Guid MegaJouleId = new Guid("56D154BA-F16B-43AC-BCD7-B81EC670932D");
+        internal static readonly Guid KiloWattHourId = new Guid("83C65E69-0048-4474-9F53-4EA89FA26194");
 
         // Temperature
-        private static readonly Guid DegreeCelsiusId = new Guid("A9D40912-E1DE-4A75-8CEE-8AE7FD4E9F3D");
+        internal static readonly Guid DegreeCelsiusId = new Guid("A9D40912-E1DE-4A75-8CEE-8AE7FD4E9F3D");
 
         // Electric
-        private static readonly Guid AmpereId = new Guid("6CAA7DD3-608F-40A6-AE26-9141517D8C45");
-
-        private static readonly Guid VoltId = new Guid("A15B7AFB-660C-455D-A5C7-03D3D32B29CB");
+        internal static readonly Guid AmpereId = new Guid("6CAA7DD3-608F-40A6-AE26-9141517D8C45");
+        internal static readonly Guid VoltId = new Guid("A15B7AFB-660C-455D-A5C7-03D3D32B29CB");
 
         private UniquelyIdentifiableSticky<UnitOfMeasure> cache;
 
@@ -148,257 +139,353 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("pack")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("pakket").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PackId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Pack == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("pack")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("pakket").WithLocale(dutchLocale).Build())
+                    .WithUniqueId(PackId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("pair")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("paar").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PairId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Pair == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("pair")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("paar").WithLocale(dutchLocale).Build())
+                    .WithUniqueId(PairId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("piece")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("stuk").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PieceId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Piece == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("piece")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("stuk").WithLocale(dutchLocale).Build())
+                    .WithUniqueId(PieceId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("people")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("personen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PeopleId)
-                .WithIsActive(true)
-                .Build();
+            if (this.People == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("people")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("personen").WithLocale(dutchLocale).Build())
+                    .WithUniqueId(PeopleId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("millimeter")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("millimeter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("mm")
-                .WithUniqueId(MillimeterId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Millimeter == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("millimeter")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("millimeter").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("mm")
+                    .WithUniqueId(MillimeterId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("centimeter")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("centimeter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("cm")
-                .WithUniqueId(CentimeterId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Centimeter == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("centimeter")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("centimeter").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("cm")
+                    .WithUniqueId(CentimeterId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("meter")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("m")
-                .WithUniqueId(MeterId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Meter == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("meter")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("m")
+                    .WithUniqueId(MeterId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("kilometer")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilometer").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("km")
-                .WithUniqueId(KilometerId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Kilometer == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("kilometer")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilometer").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("km")
+                    .WithUniqueId(KilometerId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("milligram")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("milligram").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("mg")
-                .WithUniqueId(MilligramId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Milligram == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("milligram")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("milligram").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("mg")
+                    .WithUniqueId(MilligramId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("gram")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gram").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("g")
-                .WithUniqueId(GramId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Gram == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("gram")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gram").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("g")
+                    .WithUniqueId(GramId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("kilogram")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilogram").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("kg")
-                .WithUniqueId(KilogramId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Kilogram == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("kilogram")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilogram").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("kg")
+                    .WithUniqueId(KilogramId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("metric ton")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ton").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("t")
-                .WithUniqueId(MetricTonId)
-                .WithIsActive(true)
-                .Build();
+            if (this.MetricTon == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("metric ton")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ton").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("t")
+                    .WithUniqueId(MetricTonId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("degree Celsius")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("graden Celsius").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("°C")
-                .WithUniqueId(DegreeCelsiusId)
-                .WithIsActive(true)
-                .Build();
+            if (this.DegreeCelsius == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("degree Celsius")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("graden Celsius").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("°C")
+                    .WithUniqueId(DegreeCelsiusId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("square meter")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante meter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("m²")
-                .WithUniqueId(SquareMeterId)
-                .WithIsActive(true)
-                .Build();
+            if (this.SquareMeter == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("square meter")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante meter").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("m²")
+                    .WithUniqueId(SquareMeterId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("hectare")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("hectare").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("ha")
-                .WithUniqueId(HectareId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Hectare == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("hectare")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("hectare").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("ha")
+                    .WithUniqueId(HectareId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("square kilometer")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante kilometer").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("km²")
-                .WithUniqueId(SquareKilometerId)
-                .WithIsActive(true)
-                .Build();
+            if (this.SquareKilometer == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("square kilometer")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante kilometer").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("km²")
+                    .WithUniqueId(SquareKilometerId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("milliliter")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("milliliter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("ml")
-                .WithUniqueId(MilliLiterId)
-                .WithIsActive(true)
-                .Build();
+            if (this.MilliLiter == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("milliliter")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("milliliter").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("ml")
+                    .WithUniqueId(MilliLiterId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("Cubic centimeter")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke centimeter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("cm³")
-                .WithUniqueId(CubicCentimeterId)
-                .WithIsActive(true)
-                .Build();
+            if (this.CubicCentimeter == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("Cubic centimeter")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke centimeter").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("cm³")
+                    .WithUniqueId(CubicCentimeterId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("liter")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("liter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("L")
-                .WithUniqueId(LiterId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Liter == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("liter")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("liter").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("L")
+                    .WithUniqueId(LiterId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("Cubic meter")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke meter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("m³")
-                .WithUniqueId(CubicMeterId)
-                .WithIsActive(true)
-                .Build();
+            if (this.CubicMeter == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("Cubic meter")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke meter").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("m³")
+                    .WithUniqueId(CubicMeterId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("meter per second")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter per seconde").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("m/s")
-                .WithUniqueId(MeterPerSecondId)
-                .WithIsActive(true)
-                .Build();
+            if (this.MeterPerSecond == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("meter per second")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter per seconde").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("m/s")
+                    .WithUniqueId(MeterPerSecondId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("kilometer per hour")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilometer per uur").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("km/h")
-                .WithUniqueId(KilometerPerHourId)
-                .WithIsActive(true)
-                .Build();
+            if (this.KilometerPerHour == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("kilometer per hour")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilometer per uur").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("km/h")
+                    .WithUniqueId(KilometerPerHourId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("kilogram per cubic meter")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilogram per kubieke meter").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("kg/m³")
-                .WithUniqueId(KilogramPerCubicMeterId)
-                .WithIsActive(true)
-                .Build();
+            if (this.KilogramPerCubicMeter == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("kilogram per cubic meter")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilogram per kubieke meter").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("kg/m³")
+                    .WithUniqueId(KilogramPerCubicMeterId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("newton")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("newton").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("N")
-                .WithUniqueId(NewtonId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Newton == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("newton")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("newton").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("N")
+                    .WithUniqueId(NewtonId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("kilopascal")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilopascal").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("kPa")
-                .WithUniqueId(KiloPascalId)
-                .WithIsActive(true)
-                .Build();
+            if (this.KiloPascal == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("kilopascal")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilopascal").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("kPa")
+                    .WithUniqueId(KiloPascalId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("watt")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("watt").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("W")
-                .WithUniqueId(WattId)
-                .WithIsActive(true)
-                .Build();
+            if (this.Watt == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("watt")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("watt").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("W")
+                    .WithUniqueId(WattId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("kilowatt")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilowatt").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("kW")
-                .WithUniqueId(KiloWattId)
-                .WithIsActive(true)
-                .Build();
+            if (this.KiloWatt == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("kilowatt")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilowatt").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("kW")
+                    .WithUniqueId(KiloWattId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("kilojoule")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilojoule").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("kJ")
-                .WithUniqueId(KiloJouleId)
-                .WithIsActive(true)
-                .Build();
+            if (this.KiloJoule == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("kilojoule")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilojoule").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("kJ")
+                    .WithUniqueId(KiloJouleId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("megajoule")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("megajoule").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("MJ")
-                .WithUniqueId(MegaJouleId)
-                .WithIsActive(true)
-                .Build();
+            if (this.MegaJoule == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("megajoule")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("megajoule").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("MJ")
+                    .WithUniqueId(MegaJouleId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("kilowatt hour")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilowatt uur").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("kW·h")
-                .WithUniqueId(KiloWattHourId)
-                .WithIsActive(true)
-                .Build();
+            if (this.KiloWattHour == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("kilowatt hour")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilowatt uur").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("kW·h")
+                    .WithUniqueId(KiloWattHourId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("ampere")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ampere").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("A")
-                .WithUniqueId(KiloWattHourId)
-                .WithIsActive(true)
-                .Build();
+            if (this.KiloWattHour == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("ampere")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ampere").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("A")
+                    .WithUniqueId(KiloWattHourId)
+                    .WithIsActive(true)
+                    .Build();
+            }
 
-            new UnitOfMeasureBuilder(this.Session)
-                .WithName("volt")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("volt").WithLocale(dutchLocale).Build())
-                .WithAbbreviation("V")
-                .WithUniqueId(KiloWattHourId)
-                .WithIsActive(true)
-                .Build();
+            if (this.KiloWattHour == null)
+            {
+                new UnitOfMeasureBuilder(this.Session)
+                    .WithName("volt")
+                    .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("volt").WithLocale(dutchLocale).Build())
+                    .WithAbbreviation("V")
+                    .WithUniqueId(KiloWattHourId)
+                    .WithIsActive(true)
+                    .Build();
+            }
         }
     }
 }

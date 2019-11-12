@@ -5,6 +5,7 @@ import './Organisation';
 import './Party';
 import './Person';
 import './PostalAddress';
+import './PartCategory';
 import './ProductCategory';
 import './PurchaseOrder';
 import './PurchaseOrderItem';
