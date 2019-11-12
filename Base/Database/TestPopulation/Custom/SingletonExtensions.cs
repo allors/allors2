@@ -291,6 +291,7 @@ namespace Allors
                     .WithComment($"Comment {i}")
                     .WithQuantity(1)
                     .WithAssignedUnitPrice(100)
+                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).ProductItem)
                     .Build();
 
                 productQuote.AddQuoteItem(quoteItem);
