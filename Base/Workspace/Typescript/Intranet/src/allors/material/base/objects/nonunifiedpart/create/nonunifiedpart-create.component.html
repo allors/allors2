@@ -59,6 +59,16 @@
       </div>
 
       <div class="row">
+        <mat-form-field class="col-md">
+          <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true"
+            (ngModelChange)="setDirty()">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category"> {{ category.displayName }} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
         <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ProductType" [options]="productTypes"
           display="Name"></a-mat-select>
         <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind" [options]="inventoryItemKinds"
@@ -74,15 +84,11 @@
 
       <div class="row">
         <mat-form-field class="col-md">
-          <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
-            <mat-option *ngFor="let supplier of currentSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
+          <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category"> {{ category.displayName }} </mat-option>
           </mat-select>
         </mat-form-field>
-        <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ManufacturedBy" [options]="manufacturers"
-          display="Name"></a-mat-select>
-      </div>
-
-      <div class="row">
         <a-mat-input class="col-md-6" [object]="part" [roleType]="m.Part.HsCode"></a-mat-input>
       </div>
 

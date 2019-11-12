@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, TestScope } from '../../../../../angular';
-import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship, NonUnifiedPart } from '../../../../../domain';
+import { Facility, Locale, Organisation, Part, InventoryItemKind, ProductType, SupplierOffering, Brand, Model, ProductIdentificationType, PartNumber, UnitOfMeasure, Settings, SupplierRelationship, NonUnifiedPart, PartCategory } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -45,6 +45,8 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
   unitsOfMeasure: UnitOfMeasure[];
   settings: Settings;
   currentSuppliers: Set<Organisation>;
+  selectedCategories: PartCategory[] = [];
+  categories: PartCategory[];
 
   private subscription: Subscription;
 
@@ -81,6 +83,7 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
             pull.ProductIdentificationType(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
+            pull.PartCategory({ sort: new Sort(m.PartCategory.Name) }),
             pull.SupplierRelationship({
               include: {
                 Supplier: x
@@ -113,6 +116,7 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.facilities = loaded.collections.Facilities as Facility[];
         this.manufacturers = loaded.collections.Organisations as Organisation[];
+        this.categories = loaded.collections.PartCategories as PartCategory[];
         this.settings = loaded.objects.Settings as Settings;
 
         const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
@@ -217,6 +221,10 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
 
     this.part.Brand = this.selectedBrand;
     this.part.Model = this.selectedModel;
+
+    this.selectedCategories.forEach((category: PartCategory) => {
+      category.AddPart(this.part);
+    });
 
     if (this.selectedSuppliers !== undefined) {
       this.selectedSuppliers.forEach((supplier: Organisation) => {
