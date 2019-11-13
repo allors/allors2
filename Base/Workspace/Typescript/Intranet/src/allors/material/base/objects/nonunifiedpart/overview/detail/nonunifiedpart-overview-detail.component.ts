@@ -137,6 +137,12 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
                 LocalisedComments: {
                   Locale: x,
                 },
+                LocalisedNames: {
+                  Locale: x,
+                },
+                LocalisedDescriptions: {
+                  Locale: x,
+                },
                 LocalisedKeywords: {
                   Locale: x,
                 },
