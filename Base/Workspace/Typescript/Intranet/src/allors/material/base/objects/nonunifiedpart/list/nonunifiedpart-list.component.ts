@@ -4,11 +4,11 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
+import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
 
-import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart } from '../../../../../domain';
+import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -16,6 +16,7 @@ interface Row extends TableRow {
   object: Part;
   name: string;
   partNo: string;
+  categories: string;
   type: string;
   qoh: string;
   brand: string;
@@ -65,6 +66,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       columns: [
         { name: 'name', sort: true },
         { name: 'partNo' },
+        { name: 'categories' },
         { name: 'type' },
         { name: 'qoh' },
         { name: 'brand' },
@@ -84,7 +86,20 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Like({ roleType: m.Part.Name, parameter: 'name' }),
+      new Or([
+        new Like({ roleType: m.Part.Name, parameter: 'name' }),
+        new ContainedIn({
+          propertyType: m.Part.LocalisedNames,
+          extent: new Filter({
+            objectType: m.LocalisedText,
+            predicate: new Like({
+              roleType: m.LocalisedText.Text,
+              parameter: 'name'
+            })
+          })
+        }),
+      ]),
+      new Contains({ propertyType: m.Part.PartCategoriesWherePart, parameter: 'category' }),
       new Like({ roleType: m.Part.Keywords, parameter: 'keyword' }),
       new Like({ roleType: m.Part.HsCode, parameter: 'hsCode' }),
       new Contains({ propertyType: m.Part.ProductIdentifications, parameter: 'identification' }),
@@ -115,6 +130,11 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         })
       }),
     ]);
+
+    const categorySearch = new SearchFactory({
+      objectType: m.PartCategory,
+      roleTypes: [m.PartCategory.Name],
+    });
 
     const typeSearch = new SearchFactory({
       objectType: m.ProductType,
@@ -155,6 +175,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate,
       {
+        category: { search: categorySearch, display: (v: PartCategory) => v && v.Name },
         supplier: { search: this.filtersService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
         manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
         brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
@@ -185,7 +206,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , , , ]),
+        }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           const pulls = [
@@ -206,6 +227,18 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),
+            pull.NonUnifiedPart({
+              predicate,
+              sort: sorter.create(sort),
+              fetch: {
+                PartCategoriesWherePart: {
+                  include: {
+                    Parts: x,
+                    PrimaryAncestors: x
+                  }
+                },
+              }
+            }),
             pull.ProductIdentificationType(),
             pull.BasePrice(),
           ];
@@ -220,6 +253,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
+        const categories = loaded.collections.PartCategories as PartCategory[];
 
         const partNumberByPart = this.parts.reduce((map, obj) => {
           map[obj.id] = obj.ProductIdentifications.filter(v => v.ProductIdentificationType === partNumberType).map(w => w.Identification);
@@ -234,6 +268,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             name: v.Name,
             partNo: partNumberByPart[v.id][0],
             qoh: v.QuantityOnHand,
+            categories: categories.filter(w => w.Parts.includes(v)).map((w) => w.displayName).join(', '),
             type: v.ProductType ? v.ProductType.Name : '',
             brand: v.Brand ? v.Brand.Name : '',
             model: v.Model ? v.Model.Name : '',
