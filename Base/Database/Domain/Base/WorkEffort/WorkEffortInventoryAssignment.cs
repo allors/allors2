@@ -65,8 +65,8 @@ namespace Allors.Domain
                 this.UnitPurchasePrice = 0M;
             }
 
-            var unitSellingPrice = this.CalculateSellingPrice().Result.HasValue ? this.CalculateSellingPrice().Result.Value : 0M;
-            this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
+            var unitSellingPrice = this.BaseCalculateSellingPrice().HasValue ? this.BaseCalculateSellingPrice() : 0M;
+            this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? (decimal)unitSellingPrice;
 
             if (this.ExistAssignment)
             {
@@ -78,16 +78,13 @@ namespace Allors.Domain
         {
         }
 
-        public void BaseCalculateSellingPrice(WorkEffortInventoryAssignmentCalculateSellingPrice method)
+        public decimal? BaseCalculateSellingPrice()
         {
-            if (!method.Result.HasValue)
-            {
-                var part = this.InventoryItem.Part;
-                var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
-                var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
+            var part = this.InventoryItem.Part;
+            var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
+            var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
 
-                method.Result = currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
-            }
+            return currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
         }
 
         private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)
