@@ -3,7 +3,7 @@ using Nuke.Common.Tooling;
 
 partial class IIS : IDisposable
 {
-    private const string Appcmd = @"%SYSTEMROOT%\System32\inetsrv\appcmd";
+    private const string Appcmd = @"C:\Windows\System32\inetsrv\appcmd.exe";
 
     private readonly string[] appPoolNames;
 
