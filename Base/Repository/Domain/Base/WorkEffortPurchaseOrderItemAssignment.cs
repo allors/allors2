@@ -116,14 +116,5 @@ namespace Allors.Repository
         public void DelegateAccess() { }
 
         #endregion
-
-        #region Allors
-
-        [Id("ED46B74C-516F-4041-ADA6-37C7E69EA1B2")]
-
-        #endregion
-        public void CalculateSellingPrice()
-        {
-        }
     }
 }
