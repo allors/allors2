@@ -21,9 +21,15 @@ namespace Blazor.Bootstrap.ServerSide
 
     public class Startup
     {
-        public Startup(IConfiguration configuration) => this.Configuration = configuration;
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        {
+            this.Configuration = configuration;
+            this.Environment = env;
+        }
 
         public IConfiguration Configuration { get; }
+
+        public IWebHostEnvironment Environment { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -39,7 +45,13 @@ namespace Blazor.Bootstrap.ServerSide
                .AddAllorsStores();
 
             services.AddRazorPages();
-            services.AddServerSideBlazor();
+            services.AddServerSideBlazor().AddCircuitOptions(circuitOptions =>
+            {
+                if (this.Environment.IsDevelopment())
+                {
+                    circuitOptions.DetailedErrors = true;
+                }
+            });
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
             services.AddSingleton<Allors.Workspace.Local.LocalDatabase>();
