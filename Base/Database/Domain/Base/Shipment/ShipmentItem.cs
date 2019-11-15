@@ -9,8 +9,15 @@ namespace Allors.Domain
     {
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            method.SecurityTokens = this.SyncedShipment?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.SyncedShipment?.DeniedPermissions.ToArray();
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.SyncedShipment?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.SyncedShipment?.DeniedPermissions.ToArray();
+            }
         }
 
         public void BaseDelete(DeletableDelete method)

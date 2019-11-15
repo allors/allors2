@@ -43,8 +43,15 @@ namespace Allors.Domain
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
+            }
         }
 
         public void BaseOnBuild(ObjectOnBuild method)

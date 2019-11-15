@@ -21,8 +21,15 @@ namespace Allors.Domain
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+            }
         }
     }
 }

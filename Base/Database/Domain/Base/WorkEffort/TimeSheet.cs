@@ -25,8 +25,11 @@ namespace Allors.Domain
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            var securityTokens = new[] { this.Session().GetSingleton().DefaultSecurityToken, this.Worker.OwnerSecurityToken };
-            method.SecurityTokens = securityTokens;
+            if (method.SecurityTokens == null)
+            {
+                var securityTokens = new[] { this.Session().GetSingleton().DefaultSecurityToken, this.Worker.OwnerSecurityToken };
+                method.SecurityTokens = securityTokens;
+            }
         }
 
         public void BaseDelete(DeletableDelete method)
