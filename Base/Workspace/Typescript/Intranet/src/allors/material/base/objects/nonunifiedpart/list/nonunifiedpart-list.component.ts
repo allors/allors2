@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
+import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
 
@@ -84,7 +84,19 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
-      new Like({ roleType: m.Part.Name, parameter: 'name' }),
+      new Or([
+        new Like({ roleType: m.Part.Name, parameter: 'name' }),
+        new ContainedIn({
+          propertyType: m.Part.LocalisedNames,
+          extent: new Filter({
+            objectType: m.LocalisedText,
+            predicate: new Like({
+              roleType: m.LocalisedText.Text,
+              parameter: 'name'
+            })
+          })
+        }),
+      ]),
       new Like({ roleType: m.Part.Keywords, parameter: 'keyword' }),
       new Like({ roleType: m.Part.HsCode, parameter: 'hsCode' }),
       new Contains({ propertyType: m.Part.ProductIdentifications, parameter: 'identification' }),

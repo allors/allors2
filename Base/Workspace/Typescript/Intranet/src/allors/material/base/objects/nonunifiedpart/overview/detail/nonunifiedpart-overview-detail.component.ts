@@ -131,6 +131,9 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
                 ProductIdentifications: {
                   ProductIdentificationType: x,
                 },
+                LocalisedNames: {
+                  Locale: x,
+                },
                 LocalisedComments: {
                   Locale: x,
                 },
