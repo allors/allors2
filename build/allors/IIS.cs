@@ -1,18 +1,27 @@
 using System;
 using Nuke.Common.Tooling;
-using static Nuke.Common.IO.PathConstruction;
 
 partial class IIS : IDisposable
 {
-    private IProcess Process { get; set; }
+    private const string Appcmd = @"C:\Windows\System32\inetsrv\appcmd.exe";
 
-    public IIS()
+    private readonly string[] appPoolNames;
+
+    public IIS(params string[] appPoolNames)
     {
-        ProcessTasks.StartProcess("iisreset", "/stop").WaitForExit();
+        this.appPoolNames = appPoolNames;
+
+        foreach (var appPoolName in this.appPoolNames)
+        {
+            ProcessTasks.StartProcess(Appcmd, @$"STOP APPPOOL ""{appPoolName}""").WaitForExit();
+        }
     }
 
     public void Dispose()
     {
-        ProcessTasks.StartProcess("iisreset", "/start").WaitForExit();
+        foreach (var appPoolName in this.appPoolNames)
+        {
+            ProcessTasks.StartProcess(Appcmd, @$"START APPPOOL ""{appPoolName}""").WaitForExit();
+        }
     }
 }
