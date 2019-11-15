@@ -9,7 +9,7 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
-    [Id("81B8CCCB-E8F7-416C-8372-877B82956F10")]
+    [Id("27A26380-7007-4A18-8054-D7A446604452")]
     #endregion
     public partial class PartCategory : UniquelyIdentifiable, Deletable, Object
     {
@@ -23,9 +23,9 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("674BF176-971B-40FB-AAD9-9D5606950B73")]
-        [AssociationId("75D480CF-D6EC-49E9-8D46-F91A8FFBBDDD")]
-        [RoleId("894DF94F-7112-402E-878F-E19194BC67C3")]
+        [Id("5982BEDE-D784-4356-8523-9D1DD2B774BC")]
+        [AssociationId("ED228E98-B8F2-4928-B6F7-A56CF1FCDA22")]
+        [RoleId("8D97201D-03D3-4169-A5D9-DDD5953D258A")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
@@ -33,9 +33,9 @@ namespace Allors.Repository
         public PartCategory PrimaryParent { get; set; }
 
         #region Allors
-        [Id("DFE04587-B255-434F-A0BC-25FC9BA47AD6")]
-        [AssociationId("7B8AD268-2B7D-4852-865F-5D498C66736B")]
-        [RoleId("B8986EE4-9FB0-4745-8021-20B4EABF7883")]
+        [Id("67645C78-0428-4B8C-946E-1E1F9AABEA2C")]
+        [AssociationId("9C3B224C-260B-41C6-A0A1-7D11448BDA00")]
+        [RoleId("44032CB4-20ED-458B-A141-91C3BCE8B262")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
@@ -44,9 +44,9 @@ namespace Allors.Repository
         public PartCategory[] PrimaryAncestors { get; set; }
 
         #region Allors
-        [Id("D06C2840-DC85-435E-8852-E66EA8C3C7DA")]
-        [AssociationId("B21E6B01-CF05-43B4-B683-BF25FDB1AC22")]
-        [RoleId("2F0BF64A-5FE2-4FE4-89E7-E7A08BD161D6")]
+        [Id("71F448B7-9486-4A12-8495-C61307C41924")]
+        [AssociationId("D83C3C1F-7C23-4031-9412-486CB0E032BA")]
+        [RoleId("81143B0E-488C-4BDC-8E7A-7E70CB19E8FD")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
@@ -54,9 +54,9 @@ namespace Allors.Repository
         public PartCategory[] SecondaryParents { get; set; }
 
         #region Allors
-        [Id("EFEF3C19-F36D-441B-A134-18C287A56CBD")]
-        [AssociationId("35D519F4-213A-45E2-9F9A-52CF5D984E0D")]
-        [RoleId("F1ABC5EF-F3FA-4BC6-80B4-4C82DB5FBB53")]
+        [Id("F005F74D-E7E4-4488-82A0-55C0384FF255")]
+        [AssociationId("9040D0DC-77FC-4F61-9406-04A9EB0C57DB")]
+        [RoleId("C7AAE518-B854-45D1-B5D2-79BCEB53E3FF")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
@@ -65,9 +65,9 @@ namespace Allors.Repository
         public PartCategory[] Children { get; set; }
 
         #region Allors
-        [Id("A5603B32-74AA-4F33-9413-91D9D3EEEC34")]
-        [AssociationId("280C03F4-A484-47CF-8FDA-EEBFFA87F66B")]
-        [RoleId("9E99C825-4B1E-448F-8E06-B9E7CCB31225")]
+        [Id("80890B4C-80D7-438F-ADC6-F9078F2A2882")]
+        [AssociationId("5F18173E-76DF-4043-BCDA-C4BFCA05B582")]
+        [RoleId("346DC4DD-0CD9-4128-BF92-17C04D4B26C5")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
@@ -76,9 +76,9 @@ namespace Allors.Repository
         public PartCategory[] Descendants { get; set; }
 
         #region Allors
-        [Id("4C66BBBF-7B21-4EE4-A7FE-C2384CCAA71D")]
-        [AssociationId("90BDF07C-0F60-4655-8F09-6B59347DC493")]
-        [RoleId("069A762E-D9A8-47BB-BB4F-67128B7D680B")]
+        [Id("D129AEC4-5345-40AC-BFBF-1AF849B21544")]
+        [AssociationId("1938F738-5AF2-431C-BF63-9F3D2D03BB70")]
+        [RoleId("E09CE22A-5CB9-41EA-9F7D-C4850A0B6BC4")]
         #endregion
         [Required]
         [Size(256)]
@@ -86,9 +86,9 @@ namespace Allors.Repository
         public string Name { get; set; }
 
         #region Allors
-        [Id("1C0C4A04-FB3E-4829-8881-05AE393469A3")]
-        [AssociationId("0DB1AEA3-12F4-4556-99C3-B5E5C9E623C2")]
-        [RoleId("F378D7FF-F898-46AD-B8A2-0074077A082D")]
+        [Id("CF6C83F2-6CDC-4E9B-A757-79F8A71C2BD7")]
+        [AssociationId("64522A77-C76F-422E-A85E-CA060CCE171D")]
+        [RoleId("D1A1D0E8-3264-40CA-87B2-4CC720418966")]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
@@ -96,18 +96,18 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedNames { get; set; }
 
         #region Allors
-        [Id("2928B33B-7E55-44BC-9083-E6B53902C03B")]
-        [AssociationId("2DA26EB7-43E0-4C7C-9BCC-8433DB3CA046")]
-        [RoleId("0042D1C5-32AD-46AC-AC31-E05CE68313AC")]
+        [Id("9D3D6A2A-3CA8-4A1F-B736-60268EF8F73B")]
+        [AssociationId("2A7D8940-145E-4E90-BF10-15FFBC136A98")]
+        [RoleId("6FB816BF-EFA2-4C7F-8940-886F97884A0D")]
         #endregion
         [Size(-1)]
         [Workspace]
         public string Description { get; set; }
 
         #region Allors
-        [Id("766D1DEA-4377-4AB9-A990-D4D49DD2A2D6")]
-        [AssociationId("A20397B2-776F-4271-ABF1-36728161536C")]
-        [RoleId("E01D041D-662F-4A90-A3A2-0ED9C7205DAB")]
+        [Id("7E3C4257-E2E7-4C42-A51C-26B939E9524F")]
+        [AssociationId("B79B8CC2-384F-467B-AB59-6CC2599D0D89")]
+        [RoleId("AA28BB55-FC01-47D9-AE98-442214D47B84")]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
@@ -115,9 +115,9 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedDescriptions { get; set; }
 
         #region Allors
-        [Id("B49ED81B-AFE8-4AAE-A8B1-2BB12FEF4151")]
-        [AssociationId("4C153688-DAAA-4C67-AF58-BD01946330D5")]
-        [RoleId("6AAC81DF-A4AD-4557-B68B-AE6177F7C23A")]
+        [Id("90BA0958-81FD-4249-A2F4-53A12DA2F33A")]
+        [AssociationId("4D779492-57E9-4A7B-BBDD-2DC2D1741E83")]
+        [RoleId("BC424F59-7EFC-4671-A61F-1AB07979A7D7")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
@@ -125,9 +125,9 @@ namespace Allors.Repository
         public Media CategoryImage { get; set; }
 
         #region Allors
-        [Id("DE88E6AB-B8B3-4E84-BA42-630DE3D4C17D")]
-        [AssociationId("15FD1707-C1B7-4706-8FDE-FB68B3016B0B")]
-        [RoleId("7520D343-39CF-41CD-B7C6-F23FA86DE83D")]
+        [Id("FAC3039F-B0BF-44B6-8DEF-6CDF81886148")]
+        [AssociationId("C5F27EFD-0417-4DC6-B466-855D5762697F")]
+        [RoleId("642055D0-0EE4-4856-A692-8A6846AADB9E")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]

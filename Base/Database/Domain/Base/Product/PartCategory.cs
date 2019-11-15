@@ -81,6 +81,8 @@ namespace Allors.Domain
 
                 this.Descendants = descendants.ToArray();
             }
+
+            var descendantsAndSelf = this.Descendants.Append(this).ToArray();
         }
     }
 }

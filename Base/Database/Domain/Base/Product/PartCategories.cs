@@ -1,15 +1,15 @@
-// <copyright file="ProductCategories.cs" company="Allors bvba">
+// <copyright file="PartCategories.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace Allors.Domain
 {
-    public partial class ProductCategories
+    public partial class PartCategories
     {
-        private UniquelyIdentifiableSticky<ProductCategory> cache;
+        private UniquelyIdentifiableSticky<PartCategory> cache;
 
-        public Extent<ProductCategory> RootCategories
+        public Extent<PartCategory> RootCategories
         {
             get
             {
@@ -19,6 +19,6 @@ namespace Allors.Domain
             }
         }
 
-        private UniquelyIdentifiableSticky<ProductCategory> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ProductCategory>(this.Session));
+        private UniquelyIdentifiableSticky<PartCategory> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PartCategory>(this.Session));
     }
 }
