@@ -39,7 +39,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md" *ngIf="derivedBillingRate">Rate used is {{derivedBillingRate}}</div>
+      <div class="col-md" *ngIf="timeEntry.BillingRate">Rate used is {{timeEntry.BillingRate}}</div>
       <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.AssignedBillingRate"></a-mat-input>
       <a-mat-static class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.BillingFrequency" display="Name" label="Frequency"></a-mat-static>
     </div>
@@ -55,7 +55,8 @@
   </mat-dialog-content>
 
   <div mat-dialog-actions>
-    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges || !selectedWorker">SAVE</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE & CLOSE</button>
+    <button mat-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
     <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
   </div>
 

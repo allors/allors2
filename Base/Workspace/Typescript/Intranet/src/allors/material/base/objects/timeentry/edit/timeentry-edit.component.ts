@@ -43,6 +43,7 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
     public dialogRef: MatDialogRef<TimeEntryEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
+    private snackBar: MatSnackBar,
     private saveService: SaveService,
   ) {
     super();
@@ -181,42 +182,6 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
           }
         },
       }),
-      pull.Party({
-        object: party.id,
-        fetch: {
-          PartyRates: {
-            include: {
-              RateType: x,
-              Frequency: x
-            }
-          }
-        },
-      }),
-      pull.WorkEffort({
-        object: this.data.associationId,
-        fetch: {
-          WorkEffortAssignmentRatesWhereWorkEffort: {
-            include: {
-              RateType: x,
-              Frequency: x
-            }
-          }
-        }
-      }),
-      pull.WorkEffort({
-        name: 'customerRates',
-        object: this.data.associationId,
-        fetch: {
-          Customer: {
-            PartyRates: {
-              include: {
-                RateType: x,
-                Frequency: x
-              }
-            }
-          }
-        }
-      }),
     ];
 
     this.allors.context
@@ -224,24 +189,20 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
       .subscribe((loaded) => {
 
         this.timeSheet = loaded.objects.TimeSheet as TimeSheet;
-
-        const partyRates = loaded.collections.PartyRates as PartyRate[];
-        this.partyRate = partyRates.find(v => v.RateType === this.timeEntry.RateType && v.Frequency === this.timeEntry.BillingFrequency
-          && v.FromDate <= this.timeEntry.FromDate
-          && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
-
-        const workEffortAssignmentRates = loaded.collections.WorkEffortAssignmentRates as WorkEffortAssignmentRate[];
-        this.workEffortRate = workEffortAssignmentRates.find(v => v.RateType === this.timeEntry.RateType
-          && v.Frequency === this.timeEntry.BillingFrequency
-          && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
-
-        const customerRates = loaded.collections.customerRates as PartyRate[];
-        this.customerRate = customerRates.find(v => v.RateType === this.timeEntry.RateType
-          && v.Frequency === this.timeEntry.BillingFrequency
-          && v.FromDate <= this.timeEntry.FromDate && (v.ThroughDate === null || v.ThroughDate >= this.timeEntry.FromDate));
-
-        this.derivedBillingRate = this.workEffortRate && this.workEffortRate.Rate || this.customerRate && this.customerRate.Rate || this.partyRate && this.partyRate.Rate;
       });
+  }
+
+  public update(): void {
+    const { context } = this.allors;
+
+    context
+      .save()
+      .subscribe(() => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+        this.saveService.errorHandler
+      );
   }
 
   public save(): void {
