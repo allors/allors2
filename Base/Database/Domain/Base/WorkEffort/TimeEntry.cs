@@ -103,6 +103,17 @@ namespace Allors.Domain
                         billingRate = partyRate.Rate;
                     }
                 }
+
+                if (billingRate == 0 && this.ExistWorkEffort && this.WorkEffort.ExistExecutedBy)
+                {
+                    var partyRate = this.WorkEffort.ExecutedBy.PartyRates.FirstOrDefault(v => v.RateType.Equals(this.RateType)
+                                                                               && v.Frequency.Equals(this.BillingFrequency)
+                                                                               && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
+                    if (partyRate != null)
+                    {
+                        billingRate = partyRate.Rate;
+                    }
+                }
             }
 
             this.BillingRate = billingRate;
@@ -112,13 +123,14 @@ namespace Allors.Domain
                 derivation.Validation.AssertExists(this, this.Meta.BillingFrequency);
             }
 
-            if (this.ExistAmountOfTime)
-            {
-                derivation.Validation.AssertExists(this, this.Meta.TimeFrequency);
-            }
+            //if (this.ExistAmountOfTime)
+            //{
+            //    derivation.Validation.AssertExists(this, this.Meta.TimeFrequency);
+            //}
 
             // calculate AmountOfTime Or ThroughDate
             var frequencies = new TimeFrequencies(this.Strategy.Session);
+            this.AmountOfTime = null;
 
             var minutes = 0M;
             if (this.ThroughDate != null)
@@ -144,6 +156,21 @@ namespace Allors.Domain
                 this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
 
                 this.AmountOfTime = this.AssignedAmountOfTime;
+            }
+            else
+            {
+                var timeSpan = this.Session().Now() - this.FromDate;
+                minutes = (decimal)timeSpan.TotalMinutes;
+                var amount = frequencies.Minute.ConvertToFrequency(minutes, this.TimeFrequency);
+
+                if (amount == null)
+                {
+                    this.RemoveAmountOfTime();
+                }
+                else
+                {
+                    this.AmountOfTime = Math.Round((decimal)amount, 2);
+                }
             }
 
             if (this.ExistBillingRate && this.ExistBillingFrequency)
