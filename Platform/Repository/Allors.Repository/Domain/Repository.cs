@@ -1,4 +1,4 @@
-﻿// <copyright file="Repository.cs" company="Allors bvba">
+// <copyright file="Repository.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -207,8 +207,7 @@ namespace Allors.Repository.Domain
                 var document = repositoryProject.DocumentBySyntaxTree[syntaxTree];
                 var fileInfo = new FileInfo(document.FilePath);
 
-                var interfaceDeclaration = root.DescendantNodes().OfType<InterfaceDeclarationSyntax>().SingleOrDefault();
-                if (interfaceDeclaration != null)
+                foreach (var interfaceDeclaration in root.DescendantNodes().OfType<InterfaceDeclarationSyntax>())
                 {
                     var typeModel = (ITypeSymbol)semanticModel.GetDeclaredSymbol(interfaceDeclaration);
                     var idAttribute = typeModel.GetAttributes().FirstOrDefault(v => v.AttributeClass.Name.Equals("IdAttribute"));
@@ -242,8 +241,7 @@ namespace Allors.Repository.Domain
                     }
                 }
 
-                var classDeclaration = root.DescendantNodes().OfType<ClassDeclarationSyntax>().SingleOrDefault();
-                if (classDeclaration != null)
+                foreach (var classDeclaration in root.DescendantNodes().OfType<ClassDeclarationSyntax>())
                 {
                     var typeModel = (ITypeSymbol)semanticModel.GetDeclaredSymbol(classDeclaration);
                     var idAttribute = typeModel.GetAttributes().FirstOrDefault(v => v.AttributeClass.Name.Equals("IdAttribute"));

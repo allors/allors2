@@ -209,6 +209,8 @@ namespace Allors.Meta
             }
         }
 
+        public string MediaType { get; set; }
+
         public bool Workspace => this.RelationType.Workspace;
 
         /// <summary>
