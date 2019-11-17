@@ -1,0 +1,11 @@
+<mat-form-field class="col">
+  <textarea aFocus [aFocusTrigger]="roleType" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+    cdkAutosizeMaxRows="10" [(ngModel)]="model" [name]="name" [placeholder]="label + ' (markdown)'"
+    [required]="required" [disabled]="disabled" [readonly]="readonly" [attr.data-allors-id]="dataAllorsId"
+    [attr.data-allors-roletype]="dataAllorsRoleType"></textarea>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</mat-form-field>
+
+<mat-card *ngIf="html">
+  <div [innerHtml]="html"></div>
+</mat-card>

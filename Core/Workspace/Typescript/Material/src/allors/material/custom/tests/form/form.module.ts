@@ -12,9 +12,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import {
   AllorsMaterialAssociationSelectModule,
-  AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialDatetimepickerModule, AllorsMaterialSelectModule, AllorsMaterialInputModule,
-  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialFileModule, AllorsMaterialFilesModule,
-  AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialTextAreaModule, AllorsMaterialSideNavToggleModule
+  AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialDatetimepickerModule,
+  AllorsMaterialSelectModule, AllorsMaterialInputModule,
+  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule,
+  AllorsMaterialFileModule, AllorsMaterialFilesModule,
+  AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSliderModule,
+  AllorsMaterialSlideToggleModule, AllorsMaterialTextAreaModule, AllorsMaterialSideNavToggleModule,
+  AllorsMaterialMarkdownModule
 } from '../../../../material';
 
 import { FormComponent } from './form.component';
@@ -50,6 +54,7 @@ export { FormComponent } from './form.component';
     AllorsMaterialFilesModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
+    AllorsMaterialMarkdownModule,
     AllorsMaterialRadioGroupModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,

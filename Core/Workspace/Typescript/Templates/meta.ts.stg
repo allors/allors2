@@ -286,7 +286,10 @@ relationType(relationType) ::= <<
           "plural": "$relationType.RoleType.PluralPropertyName$",
           "isUnit": $boolean(relationType.RoleType.ObjectType.IsUnit)$,
           "isOne": $boolean(relationType.RoleType.IsOne)$,
-          "isRequired": $boolean(relationType.RoleType.IsRequired)$
+          "isRequired": $boolean(relationType.RoleType.IsRequired)$$if(relationType.RoleType.MediaType)$,
+          "mediaType": "$relationType.RoleType.MediaType$"
+$endif$
+
         },
 $if(relationType.ConcreteRoleTypes)$
         "concreteRoleTypes":
