@@ -1,4 +1,4 @@
-namespace Allors.Workspace.Blazor.Html
+namespace Allors.Workspace.Blazor.Forms.Roles
 {
     using Markdig;
 
@@ -9,7 +9,8 @@ namespace Allors.Workspace.Blazor.Html
             get
             {
                 var model = this.Model as string;
-                return !string.IsNullOrEmpty(model) ? Markdown.ToHtml(model) : string.Empty;
+                var html = !string.IsNullOrEmpty(model) ? Markdown.ToHtml(model) : string.Empty;
+                return html;
             }
         }
     }
