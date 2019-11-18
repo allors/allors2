@@ -26,7 +26,6 @@ export class AllorsMaterialMarkdownComponent extends RoleField {
   constructor(
     @Optional() parentForm: NgForm,
     private ngZone: NgZone) {
-
     super(parentForm);
   }
 

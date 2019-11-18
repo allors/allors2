@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { AllorsFocusModule } from '../../../../../angular';
 
@@ -18,6 +20,8 @@ export { AllorsMaterialLocalisedMarkdownComponent } from './localisedmarkdown.co
   imports: [
     FormsModule,
     CommonModule,
+    MatCardModule,
+    MatGridListModule,
     MatInputModule,
     AllorsFocusModule
   ],

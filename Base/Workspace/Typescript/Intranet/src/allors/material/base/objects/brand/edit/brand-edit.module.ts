@@ -33,6 +33,7 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/s
 import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
+import { AllorsMaterialMarkdownModule } from '../../../../core/components/role/markdown';
 
 import { BrandEditComponent } from './brand-edit.component';
 export { BrandEditComponent } from './brand-edit.component';
@@ -56,6 +57,7 @@ export { BrandEditComponent } from './brand-edit.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
+    AllorsMaterialMarkdownModule,
     AllorsMaterialLocalisedMarkdownModule,
     CommonModule,
     FormsModule,

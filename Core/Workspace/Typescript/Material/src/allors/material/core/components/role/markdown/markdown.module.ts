@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { AllorsFocusModule } from '../../../../../angular';
 
@@ -20,6 +21,7 @@ export { AllorsMaterialMarkdownComponent } from './markdown.component';
     FormsModule,
     CommonModule,
     MatCardModule,
+    MatGridListModule,
     MatInputModule,
     AllorsFocusModule
   ],
