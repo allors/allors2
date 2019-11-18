@@ -31,6 +31,7 @@ import { AllorsMaterialFooterModule } from '../../../../../core/components/foote
 import { AllorsMaterialLocalisedTextModule } from '../../../../../core/components/role/localisedtext';
 import { AllorsMaterialFilesModule } from '../../../../../core/components/role/files';
 import { AllorsMaterialDatepickerModule } from '../../../../../core/components/role/datepicker';
+import { AllorsMaterialMarkdownModule } from '../../../../../core/components/role/markdown';
 
 import { BrandInlineModule } from '../../../brand/inline/brand-inline.module';
 import { ModelInlineModule } from '../../../model/inline/model-inline.module';
@@ -60,6 +61,7 @@ export { UnifiedGoodOverviewDetailComponent } from './unifiedgood-overview-detai
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
+    AllorsMaterialMarkdownModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
     FormsModule,

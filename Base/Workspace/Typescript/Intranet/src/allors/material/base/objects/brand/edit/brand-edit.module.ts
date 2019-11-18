@@ -22,7 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
-import { AllorsMaterialChipsModule } from '../../../../core/components/role/chips';
+import { AllorsMaterialLocalisedMarkdownModule } from '../../../../core/components/role/localisedmarkdown';
 import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
 import { AllorsMaterialFilesModule } from '../../../..//core/components/role/files';
@@ -56,6 +56,7 @@ export { BrandEditComponent } from './brand-edit.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
+    AllorsMaterialLocalisedMarkdownModule,
     CommonModule,
     FormsModule,
     MatAutocompleteModule,

@@ -31,6 +31,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../core/components/
 import { AllorsMaterialStaticModule } from '../../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../core/components/role/textarea';
 import { AllorsMaterialFooterModule } from '../../../../../core/components/footer';
+import { AllorsMaterialMarkdownModule } from '../../../../../core/components/role/markdown';
 
 import { SerialisedItemOverviewDetailComponent } from './serialiseditem-overview-detail.component';
 export { SerialisedItemOverviewDetailComponent } from './serialiseditem-overview-detail.component';
@@ -56,6 +57,7 @@ export { SerialisedItemOverviewDetailComponent } from './serialiseditem-overview
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
+    AllorsMaterialMarkdownModule,
     CommonModule,
     FormsModule,
     MatButtonModule,
