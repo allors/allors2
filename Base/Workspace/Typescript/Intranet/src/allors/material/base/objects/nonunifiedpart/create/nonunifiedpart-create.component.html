@@ -5,7 +5,8 @@
   <mat-dialog-content>
     <div class="container-fluid">
       <div class="row">
-        <a-mat-input *ngIf="!settings.UsePartNumberCounter"class="col-md" [object]="partNumber" [roleType]="m.PartNumber.Identification"></a-mat-input>
+        <a-mat-input *ngIf="!settings.UsePartNumberCounter" class="col-md" [object]="partNumber"
+          [roleType]="m.PartNumber.Identification"></a-mat-input>
         <a-mat-input class="col-md" [object]="part" [roleType]="m.Part.Name"></a-mat-input>
       </div>
 
@@ -29,7 +30,8 @@
           <mat-card>
             <mat-card-header>Add a new brand</mat-card-header>
             <mat-card-content>
-              <brand-inline (cancelled)="addBrand = false" (saved)="brandAdded($event); addBrand = false"></brand-inline>
+              <brand-inline (cancelled)="addBrand = false" (saved)="brandAdded($event); addBrand = false">
+              </brand-inline>
             </mat-card-content>
           </mat-card>
         </div>
@@ -52,7 +54,8 @@
           <mat-card *ngIf="addModel">
             <mat-card-header>Add a new model</mat-card-header>
             <mat-card-content>
-              <model-inline (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false"></model-inline>
+              <model-inline (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false">
+              </model-inline>
             </mat-card-content>
           </mat-card>
         </div>
@@ -61,8 +64,8 @@
       <div class="row">
         <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ProductType" [options]="productTypes"
           display="Name"></a-mat-select>
-        <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind" [options]="inventoryItemKinds"
-          display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind"
+          [options]="inventoryItemKinds" display="Name"></a-mat-select>
       </div>
 
       <div class="row">
@@ -75,7 +78,8 @@
       <div class="row">
         <mat-form-field class="col-md">
           <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
-            <mat-option *ngFor="let supplier of currentSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
+            <mat-option *ngFor="let supplier of currentSuppliers" [value]="supplier">{{ supplier.PartyName }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
         <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ManufacturedBy" [options]="manufacturers"
@@ -83,6 +87,13 @@
       </div>
 
       <div class="row">
+        <mat-form-field class="col-md">
+          <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category"> {{ category.Name }} </mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <a-mat-input class="col-md-6" [object]="part" [roleType]="m.Part.HsCode"></a-mat-input>
       </div>
 
@@ -101,7 +112,8 @@
           <div *ngFor="let locale of locales; let i = index">
             <mat-divider *ngIf="i > 0"></mat-divider>
             <div class="row">
-              <a-mat-localised-text class="col-md-12" [object]="part" [roleType]="m.Part.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+              <a-mat-localised-text class="col-md-12" [object]="part" [roleType]="m.Part.LocalisedNames"
+                [locale]="locale"></a-mat-localised-text>
             </div>
           </div>
         </mat-expansion-panel>
@@ -112,7 +124,8 @@
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
-    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+    <button mat-button class="ml-2" color="primary" type="submit"
+      [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
   </div>
 
 </form>

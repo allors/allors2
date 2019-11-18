@@ -8,7 +8,7 @@ import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or } fro
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
 
-import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart } from '../../../../../domain';
+import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -17,6 +17,7 @@ interface Row extends TableRow {
   name: string;
   partNo: string;
   type: string;
+  categories: string;
   qoh: string;
   brand: string;
   model: string;
@@ -66,6 +67,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         { name: 'name', sort: true },
         { name: 'partNo' },
         { name: 'type' },
+        { name: 'categories' },
         { name: 'qoh' },
         { name: 'brand' },
         { name: 'model' },
@@ -116,6 +118,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       new Equals({ propertyType: m.Part.Model, parameter: 'model' }),
       new Equals({ propertyType: m.Part.InventoryItemKind, parameter: 'kind' }),
       new Equals({ propertyType: m.Part.ProductType, parameter: 'type' }),
+      new Contains({ propertyType: m.NonUnifiedPart.PartCategoriesWherePart, parameter: 'category' }),
       new ContainedIn({
         propertyType: m.Part.InventoryItemsWherePart,
         extent: new Filter({
@@ -137,6 +140,11 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       objectType: m.InventoryItemKind,
       predicates: [new Equals({ propertyType: m.Enumeration.IsActive, value: true })],
       roleTypes: [m.InventoryItemKind.Name],
+    });
+
+    const categorySearch = new SearchFactory({
+      objectType: m.PartCategory,
+      roleTypes: [m.PartCategory.Name],
     });
 
     const brandSearch = new SearchFactory({
@@ -173,6 +181,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         model: { search: modelSearch, display: (v: Model) => v && v.Name },
         kind: { search: kindSearch, display: (v: InventoryItemKind) => v && v.Name },
         type: { search: typeSearch, display: (v: ProductType) => v && v.Name },
+        category: { search: categorySearch, display: (v: PartCategory) => v && v.Name },
         identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
         facility: { search: facilitySearch, display: (v: Facility) => v && v.Name },
       });
@@ -217,6 +226,18 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
+            }),
+            pull.NonUnifiedPart({
+              predicate,
+              sort: sorter.create(sort),
+              fetch: {
+                PartCategoriesWherePart: {
+                  include: {
+                    Parts: x,
+                    PrimaryAncestors: x
+                  }
+                },
+              }
             }),
             pull.ProductIdentificationType(),
             pull.BasePrice(),
