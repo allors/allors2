@@ -1,8 +1,12 @@
-import { Component, Input, OnChanges, Optional , SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, Optional, SimpleChange, SimpleChanges, ViewChild, NgZone } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+
+import * as marked from 'marked';
 
 import { RoleField, humanize } from '../../../../../angular';
 import { Locale, LocalisedText } from '../../../../../domain';
+import { take } from 'rxjs/operators';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -11,11 +15,21 @@ import { Locale, LocalisedText } from '../../../../../domain';
 })
 export class AllorsMaterialLocalisedMarkdownComponent extends RoleField {
 
+  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
+
   @Input()
   public locale: Locale;
 
-  constructor(@Optional() parentForm: NgForm) {
+  constructor(
+    @Optional() parentForm: NgForm,
+    private ngZone: NgZone) {
     super(parentForm);
+  }
+
+  get html(): string {
+    if (this.localisedText) {
+      return marked.parser(marked.lexer(this.localisedText));
+    }
   }
 
   get localisedObject(): LocalisedText {
@@ -54,5 +68,11 @@ export class AllorsMaterialLocalisedMarkdownComponent extends RoleField {
 
     const label = this.assignedLabel ? this.assignedLabel : humanize(name);
     return label + ' (' + this.locale.Language.Name + ')';
+  }
+
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this.ngZone.onStable.pipe(take(1))
+      .subscribe(() => this.autosize.resizeToFitContent(true));
   }
 }

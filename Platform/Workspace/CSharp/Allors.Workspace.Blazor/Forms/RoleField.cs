@@ -131,7 +131,7 @@ namespace Allors.Workspace.Blazor
             }
         }
 
-        void IDisposable.Dispose() => this.Validation.Remove(this);
+        void IDisposable.Dispose() => this.Validation?.Remove(this);
 
         public override void Validate(ValidationMessageStore messages)
         {
