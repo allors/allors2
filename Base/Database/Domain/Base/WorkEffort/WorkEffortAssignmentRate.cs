@@ -50,8 +50,15 @@ namespace Allors.Domain
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            method.SecurityTokens = this.WorkEffort?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.WorkEffort?.DeniedPermissions.ToArray();
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.WorkEffort?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.WorkEffort?.DeniedPermissions.ToArray();
+            }
         }
     }
 }

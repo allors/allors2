@@ -207,6 +207,7 @@ $if(property.AttributeByName.Unique)$		relationType.RoleType.IsUnique = $propert
 $if(property.AttributeByName.Size)$		relationType.RoleType.Size = $property.AttributeByName.Size.Value$;$endif$
 $if(property.AttributeByName.Precision)$		relationType.RoleType.Precision = $property.AttributeByName.Precision.Value$;$endif$
 $if(property.AttributeByName.Scale)$		relationType.RoleType.Scale = $property.AttributeByName.Scale.Value$;$endif$
+$if(property.AttributeByName.MediaType)$		relationType.RoleType.MediaType = "$property.AttributeByName.MediaType.Value$";$endif$
 		Meta$composite.SingularName$.Instance.$property.RoleName$ = relationType.RoleType;
 	}
 >>

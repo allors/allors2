@@ -28,7 +28,7 @@ namespace Tests
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.TextArea.Value = "Hello";
+            this.page.PlainText.Value = "Hello";
 
             this.page.SAVE.Click();
 
@@ -41,7 +41,7 @@ namespace Tests
 
             var data = after.Except(before).First();
 
-            Assert.Equal("Hello", data.TextArea);
+            Assert.Equal("Hello", data.PlainText);
         }
     }
 }

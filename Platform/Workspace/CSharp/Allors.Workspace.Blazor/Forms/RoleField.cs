@@ -16,7 +16,7 @@ namespace Allors.Workspace.Blazor
         [Parameter]
         public ISessionObject Object
         {
-            get => this.@object ?? (ISessionObject)this.EditContext.Model;
+            get => this.@object ?? (ISessionObject)this.EditContext?.Model;
             set => this.@object = value;
         }
 
@@ -149,7 +149,7 @@ namespace Allors.Workspace.Blazor
         {
             if (firstRender)
             {
-                this.Validation.Add(this);
+                this.Validation?.Add(this);
             }
         }
     }

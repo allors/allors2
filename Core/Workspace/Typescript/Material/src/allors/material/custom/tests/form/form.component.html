@@ -53,13 +53,17 @@
 
         <div class="row">
           <a-mat-slidetoggle class="col-md" [object]="data" [roleType]="m.Data.SlideToggle"></a-mat-slidetoggle>
-          <a-mat-textarea class="col-md" [object]="data" [roleType]="m.Data.TextArea"></a-mat-textarea>
+          <a-mat-textarea class="col-md" [object]="data" [roleType]="m.Data.PlainText"></a-mat-textarea>
         </div>
 
+        <div class="row">
+          <a-mat-markdown class="col-md" [object]="data" [roleType]="m.Data.Markdown"></a-mat-markdown>
+        </div>
 
         <div class="row">
           <a-mat-association-select class="col-md" [object]="data" [associationType]="m.Data.OrganisationsWhereOneData" display="displayName"></a-mat-association-select>
         </div>
+
 
       </mat-card-content>
     </mat-card>

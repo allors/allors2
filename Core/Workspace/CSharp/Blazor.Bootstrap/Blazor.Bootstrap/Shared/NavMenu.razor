@@ -1,4 +1,3 @@
-@using Microsoft.AspNetCore.Components
 @inject NavigationManager NavigationManager
 
 <BSNavbar IsExpand="true">
@@ -60,13 +59,14 @@
         InvokeAsync(StateHasChanged);
     }
 
-    protected async override System.Threading.Tasks.Task OnInitializedAsync()
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
         const string relations = "Relations";
+        const string misc = "Misc";
 
-        groups = new string[] { relations };
+        groups = new string[] { relations, misc };
         navItems = new[]
         {
             new NavItem()
@@ -80,6 +80,12 @@
                 Group = relations,
                 Name = "People",
                 Url = "person/list",
+            },
+            new NavItem()
+            {
+                Group = misc,
+                Name = "MediaTyped",
+                Url = "mediatyped/list",
             },
         }.OrderBy(i => i.Name).ToArray();
     }

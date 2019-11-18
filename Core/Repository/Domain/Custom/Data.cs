@@ -142,7 +142,18 @@ namespace Allors.Repository
         [RoleId("3AF4AA7C-27F4-490C-B0F4-434FB2D981F1")]
         #endregion
         [Workspace]
-        public string TextArea { get; set; }
+        [MediaType("text/plain")]
+        public string PlainText { get; set; }
+
+        #region Allors
+        [Id("A01C4AD6-A07E-48D0-B3FB-A35ADEDC9050")]
+        [AssociationId("053E9EDC-ABFC-474E-8D6B-827DEC42DBFB")]
+        [RoleId("CC1FB0B7-1AF7-4C71-AAD7-4076DEFCC3AE")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        [MediaType("text/markdown")]
+        public string Markdown { get; set; }
 
         #region inherited methods
 

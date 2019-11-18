@@ -67,7 +67,7 @@
 
         var result = await Context.Load(pull);
 
-        organisation = result.GetObject<Organisation>("Organisation");
+        organisation = result.GetObject<Organisation>();
         people = result.GetCollection<Person>();
     }
 

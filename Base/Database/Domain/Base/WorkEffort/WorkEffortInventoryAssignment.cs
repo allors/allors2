@@ -12,8 +12,15 @@ namespace Allors.Domain
     {
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+            }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)
@@ -65,17 +72,13 @@ namespace Allors.Domain
                 this.UnitPurchasePrice = 0M;
             }
 
-            var unitSellingPrice = this.BaseCalculateSellingPrice().HasValue ? this.BaseCalculateSellingPrice() : 0M;
-            this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? (decimal)unitSellingPrice;
+            var unitSellingPrice = this.BaseCalculateSellingPrice() ?? 0M;
+            this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
 
             if (this.ExistAssignment)
             {
                 this.Assignment.ResetPrintDocument();
             }
-        }
-
-        public void BaseOnPostDerive(ObjectOnPostDerive method)
-        {
         }
 
         public decimal? BaseCalculateSellingPrice()

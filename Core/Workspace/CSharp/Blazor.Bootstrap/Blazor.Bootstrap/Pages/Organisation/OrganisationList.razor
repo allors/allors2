@@ -40,6 +40,6 @@
 
         var result = await context.Load(pull);
 
-        this.organisations = result.GetCollection<Organisation>("Organisations");
+        this.organisations = result.GetCollection<Organisation>();
     }
 }

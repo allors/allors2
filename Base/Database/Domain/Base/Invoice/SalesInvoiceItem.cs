@@ -54,8 +54,15 @@ namespace Allors.Domain
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            method.SecurityTokens = this.SyncedInvoice?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.SyncedInvoice?.DeniedPermissions.ToArray();
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.SyncedInvoice?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.SyncedInvoice?.DeniedPermissions.ToArray();
+            }
         }
 
         public void SetActualDiscountAmount(decimal amount)

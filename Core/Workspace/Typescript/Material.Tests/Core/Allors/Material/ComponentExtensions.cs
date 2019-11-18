@@ -43,5 +43,7 @@ namespace Components
         public static MatTable<T> MatTable<T>(this T @this, By selector = null) where T : Component => new MatTable<T>(@this, selector);
 
         public static MatTextarea<T> MatTextarea<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatTextarea<T>(@this, roleType, scopes);
+
+        public static MatMarkdown<T> MatMarkdown<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatMarkdown<T>(@this, roleType, scopes);
     }
 }

@@ -19,7 +19,7 @@ namespace Allors.Domain
                 this.UnitPurchasePrice = this.PurchaseOrderItem.UnitPrice;
             }
 
-            var unitSellingPrice = this.BaseCalculateSellingPrice().HasValue ? (decimal)this.BaseCalculateSellingPrice() : 0M;
+            var unitSellingPrice = this.BaseCalculateSellingPrice() ?? 0M;
             this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
 
             if (this.ExistAssignment)
@@ -30,8 +30,15 @@ namespace Allors.Domain
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
-            method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
-            method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+            }
         }
 
         public decimal? BaseCalculateSellingPrice()

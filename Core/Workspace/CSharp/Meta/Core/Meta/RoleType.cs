@@ -21,7 +21,7 @@ namespace Allors.Workspace.Meta
 
         public bool IsUnique { get; set; }
 
-        public string TextType { get; set; }
+        public string MediaType { get; set; }
 
         private ObjectType objectType;
 
