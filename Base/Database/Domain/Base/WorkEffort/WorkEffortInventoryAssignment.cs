@@ -72,8 +72,11 @@ namespace Allors.Domain
                 this.UnitPurchasePrice = 0M;
             }
 
-            var unitSellingPrice = this.BaseCalculateSellingPrice() ?? 0M;
-            this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
+            if (this.UnitSellingPrice == 0)
+            {
+                var unitSellingPrice = this.BaseCalculateSellingPrice() ?? 0M;
+                this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
+            }
 
             if (this.ExistAssignment)
             {
