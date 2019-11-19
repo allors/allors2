@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService, TestScope } from '../../../../../../angular';
-import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, ProductIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, Settings } from '../../../../../../domain';
+import { Locale, Organisation, Facility, ProductType, Brand, Model, Part, ProductIdentificationType, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, Settings, PartCategory } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -42,6 +42,9 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
   internalOrganisation: Organisation;
   settings: Settings;
   suppliers: string;
+  categories: PartCategory[];
+  originalCategories: PartCategory[] = [];
+  selectedCategories: PartCategory[] = [];
 
   private subscription: Subscription;
 
@@ -156,6 +159,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
             pull.Facility(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
+            pull.PartCategory({ sort: new Sort(m.PartCategory.Name) }),
             pull.Brand({
               include: {
                 Models: x
@@ -164,7 +168,12 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
             }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
-            })
+            }),
+            pull.NonUnifiedPart({
+              name: 'OriginalCategories',
+              object: id,
+              fetch: { PartCategoriesWherePart: x }
+            }),
           ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
@@ -177,6 +186,9 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         const now = moment.utc();
 
         this.part = loaded.objects.Part as Part;
+        this.originalCategories = loaded.collections.OriginalCategories as PartCategory[];
+        this.selectedCategories = this.originalCategories;
+
         this.suppliers = this.part.SuppliedBy.map(w => w.PartyName).join(', ')
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
@@ -280,6 +292,19 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
   }
 
   private onSave() {
+
+    this.selectedCategories.forEach((category: PartCategory) => {
+      category.AddPart(this.part);
+
+      const index = this.originalCategories.indexOf(category);
+      if (index > -1) {
+        this.originalCategories.splice(index, 1);
+      }
+    });
+
+    this.originalCategories.forEach((category: PartCategory) => {
+      category.RemovePart(this.part);
+    });
 
     this.part.Brand = this.selectedBrand;
     this.part.Model = this.selectedModel;
