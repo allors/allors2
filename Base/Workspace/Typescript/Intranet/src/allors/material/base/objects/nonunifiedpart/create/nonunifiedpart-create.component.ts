@@ -45,8 +45,8 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
   unitsOfMeasure: UnitOfMeasure[];
   settings: Settings;
   currentSuppliers: Set<Organisation>;
-  selectedCategories: PartCategory[] = [];
   categories: PartCategory[];
+  selectedCategories: PartCategory[] = [];
 
   private subscription: Subscription;
 
@@ -82,8 +82,8 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
             pull.InventoryItemKind(),
             pull.ProductIdentificationType(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
-            pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
             pull.PartCategory({ sort: new Sort(m.PartCategory.Name) }),
+            pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
             pull.SupplierRelationship({
               include: {
                 Supplier: x
@@ -218,13 +218,12 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
   }
 
   private onSave() {
-
-    this.part.Brand = this.selectedBrand;
-    this.part.Model = this.selectedModel;
-
     this.selectedCategories.forEach((category: PartCategory) => {
       category.AddPart(this.part);
     });
+
+    this.part.Brand = this.selectedBrand;
+    this.part.Model = this.selectedModel;
 
     if (this.selectedSuppliers !== undefined) {
       this.selectedSuppliers.forEach((supplier: Organisation) => {

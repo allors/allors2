@@ -29,7 +29,7 @@
           </div>
 
           <div class="row">
-            <a-mat-textarea class="col-md" [object]="good" [roleType]="m.UnifiedGood.Description"></a-mat-textarea>
+            <a-mat-markdown class="col-md" [object]="good" [roleType]="m.UnifiedGood.Description"></a-mat-markdown>
           </div>
 
           <div class="row">
@@ -120,7 +120,7 @@
             <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.UnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
           </div>
 
-          <div class="row">
+          <div class="row pb-1">
             <mat-expansion-panel class="col" *ngIf="locales">
               <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -154,7 +154,7 @@
                 class="col-md-12"></a-mat-textarea>
             </div>
 
-            <div class="row">
+            <div class="row pb-1">
               <mat-expansion-panel class="col" *ngIf="locales">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
@@ -183,7 +183,7 @@
               <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.UnifiedGood.Comment"></a-mat-textarea>
             </div>
 
-            <div class="row">
+            <div class="row pb-1">
               <mat-expansion-panel class="col" *ngIf="locales">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
