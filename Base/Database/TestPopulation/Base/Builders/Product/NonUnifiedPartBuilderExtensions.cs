@@ -14,10 +14,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
-
 namespace Allors.Domain.TestPopulation
 {
+    using Allors.Meta;
     using Bogus;
 
     public static partial class NonUnifiedPartBuilderExtensions
@@ -148,6 +147,7 @@ namespace Allors.Domain.TestPopulation
                 var localisedDocument = new MediaBuilder(@this.Session).WithFileName($"doc1.{additionalLocale.Country.IsoCode}.pdf").WithInData(faker.Random.Bytes(1000)).Build();
                 @this.WithLocalisedElectronicDocument(new LocalisedMediaBuilder(@this.Session).WithMedia(localisedDocument).WithLocale(additionalLocale).Build());
             }
+
             return @this;
         }
     }
