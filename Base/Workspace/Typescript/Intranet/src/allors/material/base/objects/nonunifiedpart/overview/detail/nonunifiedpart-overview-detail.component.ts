@@ -41,10 +41,10 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
   currentSellingPrice: PriceComponent;
   internalOrganisation: Organisation;
   settings: Settings;
+  suppliers: string;
+  categories: PartCategory[];
   originalCategories: PartCategory[] = [];
   selectedCategories: PartCategory[] = [];
-  categories: PartCategory[];
-  suppliers: string;
 
   private subscription: Subscription;
 
@@ -140,12 +140,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
                 LocalisedComments: {
                   Locale: x,
                 },
-                LocalisedNames: {
-                  Locale: x,
-                },
-                LocalisedDescriptions: {
-                  Locale: x,
-                },
                 LocalisedKeywords: {
                   Locale: x,
                 },
@@ -175,7 +169,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
             }),
-            pull.Part({
+            pull.NonUnifiedPart({
               name: 'OriginalCategories',
               object: id,
               fetch: { PartCategoriesWherePart: x }
@@ -194,7 +188,8 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         this.part = loaded.objects.Part as Part;
         this.originalCategories = loaded.collections.OriginalCategories as PartCategory[];
         this.selectedCategories = this.originalCategories;
-        this.suppliers = this.part.SuppliedBy.map(w => w.PartyName).join(', ');
+
+        this.suppliers = this.part.SuppliedBy.map(w => w.PartyName).join(', ')
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.brands = loaded.collections.Brands as Brand[];
@@ -202,7 +197,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         this.facilities = loaded.collections.Facilities as Facility[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         this.manufacturers = loaded.collections.Organisations as Organisation[];
-        this.categories = loaded.collections.PartCategories as PartCategory[];
         this.settings = loaded.objects.Settings as Settings;
 
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
@@ -299,8 +293,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
 
   private onSave() {
 
-    this.part.Brand = this.selectedBrand;
-    this.part.Model = this.selectedModel;
     this.selectedCategories.forEach((category: PartCategory) => {
       category.AddPart(this.part);
 
@@ -313,5 +305,8 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
     this.originalCategories.forEach((category: PartCategory) => {
       category.RemovePart(this.part);
     });
+
+    this.part.Brand = this.selectedBrand;
+    this.part.Model = this.selectedModel;
   }
 }
