@@ -197,6 +197,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         this.facilities = loaded.collections.Facilities as Facility[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         this.manufacturers = loaded.collections.Organisations as Organisation[];
+        this.categories = loaded.collections.PartCategories as PartCategory[];
         this.settings = loaded.objects.Settings as Settings;
 
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
