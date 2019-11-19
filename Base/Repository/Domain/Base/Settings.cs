@@ -156,6 +156,33 @@ namespace Allors.Repository
         [Workspace]
         public bool UseGlobalProductNumber { get; set; }
 
+        #region Allors
+        [Id("8EA90F9A-A0D6-4FAB-ABCC-80AF7234F95E")]
+        [AssociationId("C323174E-BBEE-4D90-B498-FC282345B90D")]
+        [RoleId("3E431BED-B733-4136-9990-BA35C4ED145E")]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal InternalSurchargePercentage { get; set; }
+
+        #region Allors
+        [Id("1B38C6A4-532D-4494-A621-69F3126801D3")]
+        [AssociationId("0C630125-24C6-421F-82B4-ACB4F8177A18")]
+        [RoleId("A19B4BD5-765F-4988-B368-A5D1BA42860F")]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal PartSurchargePercentage { get; set; }
+
+        #region Allors
+        [Id("846B4409-D586-4AAA-9755-763D8726A739")]
+        [AssociationId("79C1D786-9A6B-4EF9-B9F6-F6499C66A39D")]
+        [RoleId("BD45A80B-9F61-47E2-8595-3856AA75C56E")]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal SubletSurchargePercentage { get; set; }
+
         #region inherited methods
 
         public Permission[] DeniedPermissions { get; set; }

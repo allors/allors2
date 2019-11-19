@@ -6,6 +6,9 @@
 
 namespace Allors.Domain
 {
+    using System;
+    using System.Linq;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Xunit;
 
@@ -152,6 +155,108 @@ namespace Allors.Domain
             Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
             Assert.Equal(before + 1, settings.DefaultFacility.InventoryItemsWhereFacility.Count);
             Assert.Single(secondFacility.InventoryItemsWhereFacility);
+        }
+
+        [Fact]
+        public void GivenSupplierOffering_WhenCalculatingUnitSellingPrice_ThenConsiderHighestHistoricalPurchaseRate()
+        {
+            var settings = this.Session.GetSingleton().Settings;
+
+            var supplier_1 = new OrganisationBuilder(this.Session).WithName("supplier uno").Build();
+            var supplier_2 = new OrganisationBuilder(this.Session).WithName("supplier dos").Build();
+            var supplier_3 = new OrganisationBuilder(this.Session).WithName("supplier tres").Build();
+            var supplier_4 = new OrganisationBuilder(this.Session).WithName("supplier cuatro").Build();
+
+            var internalOrganisation = new Organisations(this.Session).Extent().First(v => Equals(v.Name, "internalOrganisation"));
+
+            new SupplierRelationshipBuilder(this.Session)
+                .WithSupplier(supplier_1)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithFromDate(this.Session.Now().AddYears(-3))
+                .Build();
+            new SupplierRelationshipBuilder(this.Session)
+                .WithSupplier(supplier_2)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithFromDate(this.Session.Now().AddYears(-2))
+                .Build();
+            new SupplierRelationshipBuilder(this.Session)
+                .WithSupplier(supplier_3)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .Build();
+            new SupplierRelationshipBuilder(this.Session)
+                .WithSupplier(supplier_4)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithFromDate(this.Session.Now().AddMonths(-6))
+                .Build();
+
+            var finishedGood = new NonUnifiedPartBuilder(this.Session)
+                .WithNonSerialisedDefaults(internalOrganisation)
+                .Build();
+
+            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
+            var piece = new UnitsOfMeasure(this.Session).Piece;
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(finishedGood)
+                .WithSupplier(supplier_1)
+                .WithFromDate(this.Session.Now().AddMonths(-6))
+                .WithThroughDate(this.Session.Now().AddMonths(-3))
+                .WithUnitOfMeasure(piece)
+                .WithPrice(100)
+                .WithCurrency(euro)
+                .Build();
+
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(finishedGood)
+                .WithSupplier(supplier_2)
+                .WithFromDate(this.Session.Now().AddYears(-1))
+                .WithThroughDate(this.Session.Now().AddDays(-1))
+                .WithUnitOfMeasure(piece)
+                .WithPrice(120)
+                .WithCurrency(euro)
+                .Build();
+
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(finishedGood)
+                .WithSupplier(supplier_3)
+                .WithFromDate(this.Session.Now())
+                .WithUnitOfMeasure(piece)
+                .WithPrice(99)
+                .WithCurrency(euro)
+                .Build();
+
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(finishedGood)
+                .WithSupplier(supplier_4)
+                .WithFromDate(this.Session.Now().AddDays(7))
+                .WithThroughDate(this.Session.Now().AddDays(30))
+                .WithUnitOfMeasure(piece)
+                .WithPrice(135)
+                .WithCurrency(euro)
+                .Build();
+
+            this.Session.Derive();
+
+            var customer = internalOrganisation.CreateB2BCustomer(this.Session.Faker());
+
+            var workEffort = new WorkTaskBuilder(this.Session)
+                .WithName("Activity")
+                .WithCustomer(customer)
+                .WithTakenBy(internalOrganisation)
+                .Build();
+
+            var workEffortInventoryAssignement = new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workEffort)
+                .WithInventoryItem(finishedGood.InventoryItemsWherePart.First())
+                .WithQuantity(1)
+                .Build();
+
+            this.Session.Derive();
+
+            // Purchase price times InternalSurchargePercentage
+            var sellingPrice = Math.Round(135 * (1 + (this.Session.GetSingleton().Settings.PartSurchargePercentage / 100)), 2);
+
+            Assert.Equal(sellingPrice, workEffortInventoryAssignement.UnitSellingPrice);
         }
     }
 }
