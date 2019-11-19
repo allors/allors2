@@ -9,6 +9,8 @@
 </BSFormGroup>
 
 @code {
+    //TODO: Inherit from rolefield
+
     [CascadingParameter]
     public EditContext EditContext { get; set; }
 
@@ -26,6 +28,8 @@
 
     [Parameter]
     public bool FullWidth { get; set; } = true;
+
+    public IPropertyType PropertyType { get => this.RoleType; }
 
     public ISessionObject DerivedObject
     {
