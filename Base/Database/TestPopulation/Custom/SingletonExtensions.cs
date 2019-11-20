@@ -1,17 +1,16 @@
-// <copyright file="Setup.cs" company="Allors bvba">
+// <copyright file="SingletonExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace Allors
 {
-    using System;
     using System.IO;
     using System.Linq;
+    using Allors.Domain;
+    using Allors.Domain.TestPopulation;
+    using Allors.Meta;
     using Bogus;
-    using Domain;
-    using Domain.TestPopulation;
-    using Meta;
 
     public static class SingletonExtensions
     {
