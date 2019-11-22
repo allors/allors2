@@ -5,15 +5,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AllorsFocusModule } from '../../../../../angular';
 
 import { AllorsMaterialFileComponent } from './file.component';
 export { AllorsMaterialFileComponent } from './file.component';
 
+import { FilePreviewComponent } from './preview/file-preview.component';
+
 @NgModule({
   declarations: [
     AllorsMaterialFileComponent,
+    FilePreviewComponent,
+  ],
+  entryComponents: [
+    FilePreviewComponent,
   ],
   exports: [
     AllorsMaterialFileComponent,
@@ -21,6 +28,7 @@ export { AllorsMaterialFileComponent } from './file.component';
   imports: [
     CommonModule,
     FormsModule,
+    FlexLayoutModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
@@ -28,4 +36,4 @@ export { AllorsMaterialFileComponent } from './file.component';
     AllorsFocusModule
   ],
 })
-export class AllorsMaterialFileModule {}
+export class AllorsMaterialFileModule { }
