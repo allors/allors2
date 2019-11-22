@@ -21,7 +21,11 @@ export class AllorsMaterialFileComponent extends RoleField {
   @Input()
   accept = '*/*';
 
-  constructor(@Optional() parentForm: NgForm, private mediaService: MediaService, private dialog: MatDialog) {
+  constructor(
+    @Optional() parentForm: NgForm,
+    private dialog: MatDialog,
+    private mediaService: MediaService,
+  ) {
     super(parentForm);
   }
 
@@ -29,18 +33,12 @@ export class AllorsMaterialFileComponent extends RoleField {
     return this.model;
   }
 
-  get fieldValue(): string {
-    return this.media ? this.media.FileName : '';
+  set media(value: Media) {
+    this.model = value;
   }
 
-  get src(): string {
-    if (this.media) {
-      if (this.media.InDataUri) {
-        return this.media.InDataUri;
-      } else if (this.media.UniqueId) {
-        return this.mediaService.url(this.media);
-      }
-    }
+  get fieldValue(): string {
+    return this.media ? this.media.FileName : '';
   }
 
   public preview(): void {
@@ -54,6 +52,11 @@ export class AllorsMaterialFileComponent extends RoleField {
     });
   }
 
+  public download(): void {
+    const url = this.mediaService.url(this.media);
+    window.open(url);
+  }
+
   public delete(): void {
     this.model = undefined;
   }
@@ -64,9 +67,10 @@ export class AllorsMaterialFileComponent extends RoleField {
     const file = files[0];
 
     if (this.ExistObject) {
-      if (!this.model) {
+      if (!this.media) {
         const session: ISession = this.object.session;
-        this.model = session.create('Media');
+        this.media = session.create('Media') as Media;
+        this.media.InType = file.type;
       }
     }
 

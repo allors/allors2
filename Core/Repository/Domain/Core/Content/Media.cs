@@ -46,6 +46,16 @@ namespace Allors.Repository
         public MediaContent MediaContent { get; set; }
 
         #region Allors
+        [Id("DCBF8D02-84A5-4C1B-B2C1-16D6E97EEA06")]
+        [AssociationId("FDF2AC38-3E6E-4D32-A21B-DFB7DF6B7082")]
+        [RoleId("DEBD5F4C-A863-471B-A2C9-70001D9AE8F3")]
+        #endregion
+        [Indexed]
+        [Size(1024)]
+        [Workspace]
+        public string InType { get; set; }
+
+        #region Allors
         [Id("18236718-1835-430C-A936-7EC461EEE2CF")]
         [AssociationId("8A79E6C5-4BAE-468D-B57C-C7788D3E21E3")]
         [RoleId("877ABDC8-8915-4640-8871-8CEF7EF69072")]

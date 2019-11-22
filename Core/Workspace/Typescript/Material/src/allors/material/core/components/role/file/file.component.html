@@ -16,9 +16,13 @@
         [placeholder]="label">
     </mat-form-field>
 
-    <button *ngIf="model" mat-icon-button type="button" (click)="preview()" title="Preview">
-        <mat-icon>pageview</mat-icon>
-      </button>
+    <button *ngIf="model && media.isImage" mat-icon-button type="button" (click)="preview()" title="Preview">
+      <mat-icon>image</mat-icon>
+    </button>
+
+    <button *ngIf="model && !media.isImage && !media.InData && !media.InDataUri" mat-icon-button type="button" (click)="download()" title="Download">
+      <mat-icon>cloud_download</mat-icon>
+    </button>
 
     <button *ngIf="model" mat-icon-button type="button" (click)="delete()" title="Delete">
       <mat-icon>delete</mat-icon>
