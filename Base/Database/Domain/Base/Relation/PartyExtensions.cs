@@ -83,11 +83,6 @@ namespace Allors.Domain
         {
             var session = party.Strategy.Session;
 
-            if (!party.ExistLocale)
-            {
-                party.Locale = session.GetSingleton().DefaultLocale;
-            }
-
             if (!party.ExistPreferredCurrency)
             {
                 party.PreferredCurrency = session.GetSingleton().Settings.PreferredCurrency;

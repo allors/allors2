@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { Saved, ContextService, MetaService, FetcherService, InternalOrganisationId, TestScope, SingletonId } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, LegalForm } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -61,6 +61,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
     private fetcher: FetcherService,
+    private singletonId: SingletonId,
     private internalOrganisationId: InternalOrganisationId,
   ) {
 
@@ -83,6 +84,17 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
           const pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.locales,
+            pull.Singleton({
+              object: this.singletonId.value,
+              fetch: {
+                Locales: {
+                  include: {
+                    Language: x,
+                    Country: x
+                  }
+                }
+              }
+            }),
             pull.Organisation({ object: id }),
             pull.OrganisationRole(),
             pull.Currency({
@@ -157,7 +169,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
         }
 
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.locales = loaded.collections.AdditionalLocales as Locale[];
+        this.locales = loaded.collections.Locales as Locale[] || [];
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
