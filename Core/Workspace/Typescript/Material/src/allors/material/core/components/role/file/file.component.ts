@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, Optional, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
 import { RoleField, MediaService } from '../../../../../angular';
 import { Media } from '../../../../../domain';
-import { ISession, ISessionObject } from '../../../../../framework';
+import { ISession } from '../../../../../framework';
+
+import { FilePreviewComponent } from './preview/file-preview.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -11,13 +14,18 @@ import { ISession, ISessionObject } from '../../../../../framework';
   templateUrl: './file.component.html',
 })
 export class AllorsMaterialFileComponent extends RoleField {
+
   @Output()
   changed: EventEmitter<RoleField> = new EventEmitter<RoleField>();
 
   @Input()
-  accept = 'image/*';
+  accept = '*/*';
 
-  constructor(@Optional() parentForm: NgForm, private mediaService: MediaService) {
+  constructor(
+    @Optional() parentForm: NgForm,
+    private dialog: MatDialog,
+    private mediaService: MediaService,
+  ) {
     super(parentForm);
   }
 
@@ -25,18 +33,28 @@ export class AllorsMaterialFileComponent extends RoleField {
     return this.model;
   }
 
-  get fieldValue(): string {
-    return this.media ? '1 image' : '';
+  set media(value: Media) {
+    this.model = value;
   }
 
-  get src(): string {
-    if (this.media) {
-      if (this.media.InDataUri) {
-        return this.media.InDataUri;
-      } else if (this.media.UniqueId) {
-        return this.mediaService.url(this.media);
-      }
-    }
+  get fieldValue(): string {
+    return this.media ? this.media.FileName : '';
+  }
+
+  public preview(): void {
+    const dialogRef = this.dialog.open(FilePreviewComponent, {
+      width: '250px',
+      data: { media: this.media }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  public download(): void {
+    const url = this.mediaService.url(this.media);
+    window.open(url);
   }
 
   public delete(): void {
@@ -46,12 +64,13 @@ export class AllorsMaterialFileComponent extends RoleField {
   public onFileInput(event) {
 
     const files = event.srcElement.files;
-    const file  = files[0];
+    const file = files[0];
 
     if (this.ExistObject) {
-      if (!this.model) {
+      if (!this.media) {
         const session: ISession = this.object.session;
-        this.model = session.create('Media');
+        this.media = session.create('Media') as Media;
+        this.media.InType = file.type;
       }
     }
 

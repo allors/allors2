@@ -32,13 +32,11 @@
     <Position X="6" Y="5" Width="1.5" />
     <AssociationLine Name="Part" Type="Allors.Domain.Part" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="6.625" Y="5.691" />
-        <Point X="6.625" Y="6.372" />
+        <Point X="6.75" Y="5.691" />
+        <Point X="6.75" Y="6.372" />
         <Point X="12.117" Y="6.372" />
-        <Point X="12.117" Y="2.545" />
-        <Point X="10.125" Y="2.545" />
-        <Point X="10.125" Y="2.562" />
-        <Point X="9.75" Y="2.562" />
+        <Point X="12.117" Y="2.625" />
+        <Point X="9.75" Y="2.625" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -50,7 +48,15 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.UnifiedGood" Collapsed="true">
-    <Position X="9.5" Y="5" Width="1.5" />
+    <Position X="9.25" Y="5.25" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.Good" FixedFromPoint="true">
+      <Path>
+        <Point X="7.5" Y="4.125" />
+        <Point X="7.74" Y="4.125" />
+        <Point X="7.74" Y="5.66" />
+        <Point X="9.25" Y="5.66" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -60,6 +66,21 @@
     <Position X="8.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAEQAQAAAAAACQAAAAQAGAQAAAAAAgAAgBACABBBA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.NonUnifiedPart" Collapsed="true">
+    <Position X="8" Y="3.75" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.Part" FixedFromPoint="true">
+      <Path>
+        <Point X="8.25" Y="2.625" />
+        <Point X="7.822" Y="2.625" />
+        <Point X="7.822" Y="4.096" />
+        <Point X="8" Y="4.096" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

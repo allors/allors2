@@ -54,6 +54,11 @@ namespace Allors.Domain
             {
                 this.Cancel();
             }
+
+            if (this.ExistSerialisedItem)
+            {
+                this.Quantity = 1;
+            }
         }
 
         public void BaseCancel(RequestItemCancel method) => this.RequestItemState = new RequestItemStates(this.Strategy.Session).Cancelled;

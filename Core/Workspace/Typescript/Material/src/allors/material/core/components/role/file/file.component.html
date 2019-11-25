@@ -1,24 +1,35 @@
 <div [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
-  <div class="row">
+  <div class="row" *ngIf="!model">
     <mat-form-field class="col">
-      <input aFocus [aFocusTrigger]="roleType" matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
+      <input aFocus [aFocusTrigger]="roleType" matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label"
+        readonly (click)="fileInput.click()">
     </mat-form-field>
 
-    <button mat-icon-button type="button" (click)="fileInput.click()">
-      <mat-icon>add_to_photos</mat-icon>
+    <button mat-icon-button type="button" (click)="fileInput.click()" title="Add">
+      <mat-icon>add_box</mat-icon>
     </button>
+  </div>
+
+  <div class="row" *ngIf="model">
+    <mat-form-field class="col">
+      <input aFocus [aFocusTrigger]="roleType" matInput [(ngModel)]="media.FileName" [name]="name"
+        [placeholder]="label">
+    </mat-form-field>
+
+    <button *ngIf="model && media.isImage" mat-icon-button type="button" (click)="preview()" title="Preview">
+      <mat-icon>image</mat-icon>
+    </button>
+
+    <button *ngIf="model && !media.isImage && !media.InData && !media.InDataUri" mat-icon-button type="button" (click)="download()" title="Download">
+      <mat-icon>cloud_download</mat-icon>
+    </button>
+
+    <button *ngIf="model" mat-icon-button type="button" (click)="delete()" title="Delete">
+      <mat-icon>delete</mat-icon>
+    </button>
+
   </div>
 
   <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
 
-  <div *ngIf="model" class="row" style="margin-bottom: 1rem;">
-    <div class="col-2">
-      <mat-card>
-        <img mat-card-image [src]="src">
-        <mat-card-actions>
-          <a mat-button (click)="delete()">DELETE</a>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  </div>
 </div>

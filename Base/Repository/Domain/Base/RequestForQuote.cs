@@ -100,7 +100,7 @@ namespace Allors.Repository
         [Workspace]
         public RequestForQuoteVersion[] AllVersions { get; set; }
         #endregion
-        
+
         #region inherited methods
         public void Cancel() { }
 

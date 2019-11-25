@@ -1,4 +1,4 @@
-// <copyright file="NonUnifiedGoodBuilderExtensions.cs" company="Allors bvba">
+// <copyright file="UnifiedGoodBuilderExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -8,9 +8,9 @@ namespace Allors.Domain.TestPopulation
 {
     using Allors.Meta;
 
-    public static partial class NonUnifiedGoodBuilderExtensions
+    public static partial class UnifiedGoodBuilderExtensions
     {
-        public static NonUnifiedGoodBuilder WithNonSerialisedPartDefaults(this NonUnifiedGoodBuilder @this, Organisation internalOrganisation)
+        public static UnifiedGoodBuilder WithNonSerialisedDefaults(this UnifiedGoodBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
@@ -39,10 +39,10 @@ namespace Allors.Domain.TestPopulation
             }
 
             @this.WithName(faker.Commerce.ProductMaterial());
-            @this.WithPart(new NonUnifiedPartBuilder(@this.Session).WithNonSerialisedDefaults(internalOrganisation).Build());
             @this.WithDescription(faker.Lorem.Words().ToString());
             @this.WithComment(faker.Lorem.Words().ToString());
             @this.WithInternalComment(faker.Lorem.Words().ToString());
+            @this.WithInventoryItemKind(new InventoryItemKinds(@this.Session).NonSerialised);
             @this.WithKeywords(faker.Lorem.Words().ToString());
             @this.WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece);
             @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
@@ -69,7 +69,7 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static NonUnifiedGoodBuilder WithSerialisedPartDefaults(this NonUnifiedGoodBuilder @this, Organisation internalOrganisation)
+        public static UnifiedGoodBuilder WithSerialisedDefaults(this UnifiedGoodBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
@@ -98,10 +98,10 @@ namespace Allors.Domain.TestPopulation
             }
 
             @this.WithName(faker.Commerce.ProductMaterial());
-            @this.WithPart(new NonUnifiedPartBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation, faker).Build());
             @this.WithDescription(faker.Lorem.Words().ToString());
             @this.WithComment(faker.Lorem.Words().ToString());
             @this.WithInternalComment(faker.Lorem.Words().ToString());
+            @this.WithInventoryItemKind(new InventoryItemKinds(@this.Session).Serialised);
             @this.WithKeywords(faker.Lorem.Words().ToString());
             @this.WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece);
             @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
@@ -112,6 +112,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithProductIdentification(new SkuIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithProductIdentification(new EanIdentificationBuilder(@this.Session).WithDefaults().Build());
             @this.WithProductIdentification(new ManufacturerIdentificationBuilder(@this.Session).WithDefaults().Build());
+            @this.WithSerialisedItem(new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build());
             @this.WithVatRate(faker.Random.ListItem(@this.Session.Extent<VatRate>()));
 
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)

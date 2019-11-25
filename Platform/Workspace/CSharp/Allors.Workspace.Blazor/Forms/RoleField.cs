@@ -14,7 +14,7 @@ namespace Allors.Workspace.Blazor
         private string label;
 
         [Parameter]
-        public ISessionObject Object
+        public override ISessionObject Object
         {
             get => this.@object ?? (ISessionObject)this.EditContext?.Model;
             set => this.@object = value;
@@ -113,7 +113,9 @@ namespace Allors.Workspace.Blazor
 
         public string DataAllorsRoleType => this.RoleType?.Id.ToString("D");
 
-        public FieldIdentifier FieldIdentifier => new FieldIdentifier(this, "Model");
+        public override FieldIdentifier FieldIdentifier => new FieldIdentifier(this, "Model");
+
+        public override IPropertyType PropertyType { get => this.RoleType; }
 
         public void Add(ISessionObject value)
         {
@@ -131,7 +133,7 @@ namespace Allors.Workspace.Blazor
             }
         }
 
-        void IDisposable.Dispose() => this.Validation?.Remove(this);
+        void IDisposable.Dispose() => this.ValidationFields?.Remove(this);
 
         public override void Validate(ValidationMessageStore messages)
         {
@@ -149,7 +151,7 @@ namespace Allors.Workspace.Blazor
         {
             if (firstRender)
             {
-                this.Validation?.Add(this);
+                this.ValidationFields?.Add(this);
             }
         }
     }
