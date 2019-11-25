@@ -1,4 +1,4 @@
-namespace Allors.Workspace.Blazor
+namespace Allors.Workspace.Blazor.Validation
 {
     using Allors.Workspace.Meta;
     using Microsoft.AspNetCore.Components.Forms;

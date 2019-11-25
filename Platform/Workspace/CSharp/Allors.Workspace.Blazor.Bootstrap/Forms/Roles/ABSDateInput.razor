@@ -1,5 +1,6 @@
 @implements IAllorsValidationField
 @using System
+@using Allors.Workspace.Blazor.Validation
 @implements System.IDisposable
 
 <BSFormGroup>
@@ -15,7 +16,7 @@
     public EditContext EditContext { get; set; }
 
     [CascadingParameter]
-    public AllorsValidation Validation { get; set; }
+    public AllorsValidationFields ValidationFields { get; set; }
 
     [Parameter]
     public IRoleType RoleType { get; set; }
@@ -88,14 +89,14 @@
 
     void System.IDisposable.Dispose()
     {
-        this.Validation.Remove(this);
+        this.ValidationFields.Remove(this);
     }
 
     override protected void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            this.Validation.Add(this);
+            this.ValidationFields.Add(this);
         }
     }
 }

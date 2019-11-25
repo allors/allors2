@@ -133,7 +133,7 @@ namespace Allors.Workspace.Blazor
             }
         }
 
-        void IDisposable.Dispose() => this.Validation?.Remove(this);
+        void IDisposable.Dispose() => this.ValidationFields?.Remove(this);
 
         public override void Validate(ValidationMessageStore messages)
         {
@@ -151,7 +151,7 @@ namespace Allors.Workspace.Blazor
         {
             if (firstRender)
             {
-                this.Validation?.Add(this);
+                this.ValidationFields?.Add(this);
             }
         }
     }

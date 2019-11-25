@@ -3,6 +3,7 @@ namespace Allors.Workspace.Blazor
     using Allors.Workspace.Meta;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Forms;
+    using Validation;
 
     public abstract class Field : ComponentBase, IAllorsValidationField
     {
@@ -10,7 +11,7 @@ namespace Allors.Workspace.Blazor
         public EditContext EditContext { get; set; }
 
         [CascadingParameter]
-        public AllorsValidation Validation { get; set; }
+        public AllorsValidationFields ValidationFields { get; set; }
 
         [Parameter]
         public bool FullWidth { get; set; } = true;

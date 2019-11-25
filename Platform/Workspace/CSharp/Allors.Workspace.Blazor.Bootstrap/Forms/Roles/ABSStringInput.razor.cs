@@ -1,8 +1,5 @@
 namespace Allors.Workspace.Blazor.Bootstrap.Forms.Roles
 {
-    using System;
-    using Microsoft.AspNetCore.Components;
-
     public class ABSStringInputBase : RoleField
     {
         public string StringModel { get => (string)this.Model; set => this.Model = value; }
@@ -18,7 +15,5 @@ namespace Allors.Workspace.Blazor.Bootstrap.Forms.Roles
                 return BlazorStrap.InputType.Text;
             }
         }
-
     }
-
 }
