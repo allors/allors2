@@ -1,38 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Allors.Workspace.Blazor.Validation.AllorsValidationFields">
-    <Position X="6" Y="2" Width="1.5" />
+  <Class Name="Allors.Workspace.Blazor.Validation.Fields">
+    <Position X="8.5" Y="2" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
-      <FileName>Forms\Validation\AllorsValidationFields.cs</FileName>
-      <NewMemberFileName>Forms\Validation\AllorsValidator.cs</NewMemberFileName>
+      <HashCode>AAIAAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Forms\Validation\Fields.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Microsoft.AspNetCore.Components.Forms.EditContext">
     <Position X="1.5" Y="2" Width="2.75" />
     <TypeIdentifier />
   </Class>
-  <Class Name="Allors.Workspace.Blazor.Validation.DefaultAllorsValidation">
-    <Position X="9.25" Y="4" Width="2" />
+  <Class Name="Allors.Workspace.Blazor.Validation.DefaultValidator">
+    <Position X="5.75" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Forms\Validation\DefaultAllorsValidation.cs</FileName>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAgAA=</HashCode>
+      <FileName>Forms\Validation\DefaultValidator.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <ShowAsAssociation>
+      <Property Name="EditContext" />
+      <Property Name="Fields" />
+    </ShowAsAssociation>
   </Class>
-  <Interface Name="Allors.Workspace.Blazor.Validation.IAllorsValidation">
-    <Position X="9.25" Y="2" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAEAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Forms\Validation\IAllorsValidation.cs</FileName>
-      <NewMemberFileName>Forms\Validation\IAllorsValidationField.cs</NewMemberFileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Workspace.Blazor.Validation.IAllorsValidationField">
-    <Position X="15.75" Y="2" Width="1.75" />
+  <Interface Name="Allors.Workspace.Blazor.Validation.IField">
+    <Position X="11.5" Y="2" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAACAAAAgAAAAAAAAAAAAAAAAIAACAAAAAAA=</HashCode>
-      <FileName>Forms\Validation\IAllorsValidationField.cs</FileName>
+      <FileName>Forms\Validation\IField.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

@@ -1,26 +1,33 @@
 namespace Allors.Workspace.Blazor
 {
     using Allors.Workspace.Meta;
+    using Markdig.Helpers;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Forms;
     using Validation;
 
-    public abstract class Field : ComponentBase, IAllorsValidationField
+    public abstract class Field : ComponentBase, IField
     {
         [CascadingParameter]
         public EditContext EditContext { get; set; }
 
         [CascadingParameter]
-        public AllorsValidationFields ValidationFields { get; set; }
+        public Fields ValidationFields { get; set; }
 
         [Parameter]
         public bool FullWidth { get; set; } = true;
+
+        [Parameter]
+        public bool HideValidation { get; set; } = true;
+
+        [Parameter]
+        public string ValidMessage { get; set; }
 
         public abstract IPropertyType PropertyType { get; }
 
         public abstract ISessionObject Object { get; set; }
 
-        public abstract FieldIdentifier FieldIdentifier { get;  }
+        public abstract FieldIdentifier FieldIdentifier { get; }
 
         public abstract void Validate(ValidationMessageStore messages);
     }

@@ -5,33 +5,32 @@ namespace Allors.Workspace.Blazor.Validation
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Forms;
 
-    public partial class AllorsValidator : ComponentBase
+    public partial class DefaultValidator : ComponentBase
     {
         [CascadingParameter]
         public EditContext EditContext { get; set; }
 
         [CascadingParameter]
-        public AllorsValidationFields ValidationFields { get; set; }
-
-        [Parameter]
-        public IAllorsValidation Validation { get; set; }
+        public Fields Fields { get; set; }
 
         /// <inheritdoc />
         protected override void OnInitialized()
         {
             if (this.EditContext == null)
             {
-                throw new InvalidOperationException($"{nameof(AllorsValidator)} requires a cascading parameter of type {nameof(this.EditContext)}.");
+                throw new InvalidOperationException($"{nameof(DefaultValidator)} requires cascading parameters {nameof(this.EditContext)} and {nameof(this.Fields)}.");
             }
-
-            this.Validation ??= new DefaultAllorsValidation();
 
             var messages = new ValidationMessageStore(this.EditContext);
 
             // Perform object-level validation on request
             this.EditContext.OnValidationRequested += (sender, eventArgs) =>
             {
-                this.Validation.OnValidationRequested(this.ValidationFields, messages);
+                messages.Clear();
+                foreach (var field in this.Fields.Items)
+                {
+                    field.Validate(messages);
+                }
 
                 this.EditContext.NotifyValidationStateChanged();
             };
@@ -39,9 +38,9 @@ namespace Allors.Workspace.Blazor.Validation
             // Perform per-field validation on each field edit
             this.EditContext.OnFieldChanged += (sender, eventArgs) =>
             {
-                foreach (var field in this.ValidationFields.Fields.Where(v => v == eventArgs.FieldIdentifier.Model))
+                foreach (var field in this.Fields.Items.Where(v => v == eventArgs.FieldIdentifier.Model))
                 {
-                    this.Validation.OnFieldChanged(this.ValidationFields, field, messages);
+                    field.Validate(messages);
                 }
 
                 this.EditContext.NotifyValidationStateChanged();
