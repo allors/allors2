@@ -1,4 +1,4 @@
-import { Component, Optional, ViewChild, NgZone } from '@angular/core';
+import { Component, Optional, ViewChild, NgZone, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { take } from 'rxjs/operators';
@@ -16,6 +16,14 @@ import { Test, RoleField } from '../../../../../angular';
 export class AllorsMaterialMarkdownComponent extends RoleField {
 
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
+
+  @ViewChild('heightSource', { static: false }) heightSource: ElementRef;
+
+  get height(): string {
+    if (this.heightSource && this.heightSource.nativeElement) {
+      return this.heightSource.nativeElement.getBoundingClientRect().height + 10;
+    }
+  }
 
   get html(): string {
     if (this.model) {
