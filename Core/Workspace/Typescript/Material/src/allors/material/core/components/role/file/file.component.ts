@@ -36,7 +36,7 @@ export class AllorsMaterialFileComponent extends RoleField {
   }
 
   get fieldValue(): string {
-    return this.media ? this.media.FileName : '';
+    return this.media ? '1 file' : '';
   }
 
   get src(): string {
@@ -45,11 +45,6 @@ export class AllorsMaterialFileComponent extends RoleField {
     } else if (this.media.UniqueId) {
       return this.mediaService.url(this.media);
     }
-  }
-
-  public download(): void {
-    const url = this.mediaService.url(this.media);
-    window.open(url);
   }
 
   public delete(): void {
@@ -61,18 +56,15 @@ export class AllorsMaterialFileComponent extends RoleField {
     const files = event.srcElement.files;
     const file = files[0];
 
-    if (this.ExistObject) {
-      if (!this.media) {
-        const session: ISession = this.object.session;
-        this.media = session.create('Media') as Media;
-        this.media.InType = file.type;
-      }
-    }
+    const session: ISession = this.object.session;
+    const media = session.create('Media') as Media;
+    media.InType = file.type;
 
     const reader: FileReader = new FileReader();
     const load: () => void = () => {
-      this.media.FileName = file.name;
-      this.media.InDataUri = reader.result as string;
+      media.FileName = file.name;
+      media.InDataUri = reader.result as string;
+      this.media = media;
       this.changed.emit(this);
     };
 

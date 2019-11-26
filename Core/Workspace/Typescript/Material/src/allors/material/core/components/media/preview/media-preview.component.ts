@@ -1,20 +1,20 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MediaService } from '../../../../../../angular';
+import { MediaService } from '../../../../../angular';
 
 import { DialogData } from './dialog.data';
 
-import { Media } from '../../../../../../domain';
+import { Media } from '../../../../../domain';
 
 @Component({
-  templateUrl: './image-preview.component.html',
+  templateUrl: './media-preview.component.html',
 })
-export class ImagePreviewComponent {
+export class AllorMediaPreviewComponent {
 
   media: Media;
 
   constructor(
-    public dialogRef: MatDialogRef<ImagePreviewComponent>,
+    public dialogRef: MatDialogRef<AllorMediaPreviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private mediaService: MediaService
   ) {

@@ -8,6 +8,7 @@ export * from './core/components/launcher/launcher.module';
 export * from './core/components/sidemenu/sidemenu.module';
 export * from './core/components/sidenavtoggle/sidenavtoggle.module';
 export * from './core/components/table/table.module';
+export * from './core/components/media/media.module';
 
 export * from './core/components/association/select/select.module';
 
@@ -16,7 +17,6 @@ export * from './core/components/role/checkbox/checkbox.module';
 export * from './core/components/role/chips/chips.module';
 export * from './core/components/role/datepicker/datepicker.module';
 export * from './core/components/role/datetimepicker/datetimepicker.module';
-export * from './core/components/role/image/image.module';
 export * from './core/components/role/file/file.module';
 export * from './core/components/role/files/files.module';
 export * from './core/components/role/input/input.module';

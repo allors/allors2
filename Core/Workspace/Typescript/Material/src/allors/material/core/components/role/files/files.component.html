@@ -1,7 +1,8 @@
 <div [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
   <div class="row">
     <mat-form-field class="col">
-      <input aFocus [aFocusTrigger]="roleType" matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
+      <input aFocus [aFocusTrigger]="roleType" matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label"
+        readonly (click)="fileInput.click()">
     </mat-form-field>
 
     <button mat-icon-button type="button" (click)="fileInput.click()">
@@ -9,16 +10,12 @@
     </button>
   </div>
 
-  <input #fileInput type="file" (change)="onFileInput($event); fileInput.value = '';" style="display:none;" multiple="multiple" />
+  <input #fileInput type="file" (change)="onFileInput($event); fileInput.value = '';" style="display:none;"
+    multiple="multiple" />
 
   <div *ngIf="model" class="row" style="margin-bottom: 1rem;">
-    <div class="col-2 d-flex" *ngFor="let media of medias">
-      <mat-card class="flex-fill d-flex flex-column justify-content-between">
-        <img mat-card-image [src]="src(media)">
-        <mat-card-actions>
-          <a mat-button (click)="delete(media)">DELETE</a>
-        </mat-card-actions>
-      </mat-card>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 d-flex" *ngFor="let media of medias">
+      <a-mat-media [media]="media" (delete)="delete(media)"></a-mat-media>
     </div>
   </div>
 </div>

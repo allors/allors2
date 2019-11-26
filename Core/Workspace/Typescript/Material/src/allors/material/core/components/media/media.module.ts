@@ -7,23 +7,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { AllorsFocusModule } from '../../../../../angular';
+import { AllorsFocusModule } from '../../../../angular';
 
-import { AllorsMaterialImageComponent } from './image.component';
-export { AllorsMaterialImageComponent } from './image.component';
+import { AllorsMaterialMediaComponent } from './media.component';
+export { AllorsMaterialMediaComponent } from './media.component';
 
-import { ImagePreviewComponent } from './preview/image-preview.component';
+import { AllorMediaPreviewComponent } from './preview/media-preview.component';
 
 @NgModule({
   declarations: [
-    AllorsMaterialImageComponent,
-    ImagePreviewComponent,
+    AllorsMaterialMediaComponent,
+    AllorMediaPreviewComponent,
   ],
   entryComponents: [
-    ImagePreviewComponent,
+    AllorMediaPreviewComponent,
   ],
   exports: [
-    AllorsMaterialImageComponent,
+    AllorsMaterialMediaComponent,
   ],
   imports: [
     CommonModule,
@@ -36,4 +36,4 @@ import { ImagePreviewComponent } from './preview/image-preview.component';
     AllorsFocusModule
   ],
 })
-export class AllorsMaterialImageModule { }
+export class AllorsMaterialMediaModule { }

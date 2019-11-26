@@ -27,7 +27,7 @@ export class AllorsMaterialFilesComponent extends RoleField {
 
   get fieldValue(): string {
     if (this.medias && this.medias.length > 0) {
-      return this.medias.length + ' image' + (this.medias.length > 1 ? 's' : '');
+      return this.medias.length + ' file' + (this.medias.length > 1 ? 's' : '');
     }
 
     return '';

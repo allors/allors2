@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { AllorsFocusModule } from '../../../../../angular';
+import { AllorsMaterialMediaModule } from '../../../../../material/core/components/media';
 
 import { AllorsMaterialFilesComponent } from './files.component';
 export { AllorsMaterialFilesComponent } from './files.component';
@@ -25,7 +26,8 @@ export { AllorsMaterialFilesComponent } from './files.component';
     MatCardModule,
     MatIconModule,
     MatInputModule,
-    AllorsFocusModule
+    AllorsFocusModule,
+    AllorsMaterialMediaModule
   ],
 })
 export class AllorsMaterialFilesModule {}
