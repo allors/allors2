@@ -21,7 +21,7 @@ namespace Components
 
         public IWebElement Input => this.Driver.FindElement(new ByChained(this.Selector, By.CssSelector("input[type='file']")));
 
-        public IWebElement Delete => this.Driver.FindElement(new ByChained(this.Selector, By.LinkText("DELETE")));
+        public IWebElement Delete => this.Driver.FindElement(new ByChained(this.Selector, By.XPath($".//mat-icon[contains(text(), 'delete')]")));
 
         public void Upload(string fileName)
         {
