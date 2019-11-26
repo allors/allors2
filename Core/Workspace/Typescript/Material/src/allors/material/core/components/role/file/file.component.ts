@@ -6,8 +6,6 @@ import { RoleField, MediaService } from '../../../../../angular';
 import { Media } from '../../../../../domain';
 import { ISession } from '../../../../../framework';
 
-import { FilePreviewComponent } from './preview/file-preview.component';
-
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'a-mat-file',
@@ -41,15 +39,12 @@ export class AllorsMaterialFileComponent extends RoleField {
     return this.media ? this.media.FileName : '';
   }
 
-  public preview(): void {
-    const dialogRef = this.dialog.open(FilePreviewComponent, {
-      width: '250px',
-      data: { media: this.media }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+  get src(): string {
+    if (this.media.InDataUri) {
+      return this.media.InDataUri;
+    } else if (this.media.UniqueId) {
+      return this.mediaService.url(this.media);
+    }
   }
 
   public download(): void {

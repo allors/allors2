@@ -7,7 +7,10 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { environment } from '../environments/environment';
 
-import { AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule } from '../allors/angular';
+import {
+  AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule,
+  AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule
+} from '../allors/angular';
 
 import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule } from '../allors/material';
 import { SaveModule } from 'src/allors/material/core/services/save';

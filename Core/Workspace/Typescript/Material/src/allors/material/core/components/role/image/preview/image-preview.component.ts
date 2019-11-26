@@ -7,14 +7,14 @@ import { DialogData } from './dialog.data';
 import { Media } from '../../../../../../domain';
 
 @Component({
-  templateUrl: './file-preview.component.html',
+  templateUrl: './image-preview.component.html',
 })
-export class FilePreviewComponent {
+export class ImagePreviewComponent {
 
   media: Media;
 
   constructor(
-    public dialogRef: MatDialogRef<FilePreviewComponent>,
+    public dialogRef: MatDialogRef<ImagePreviewComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private mediaService: MediaService
   ) {

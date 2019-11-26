@@ -8,17 +8,22 @@ import { MatInputModule } from '@angular/material/input';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AllorsFocusModule } from '../../../../../angular';
-import { AllorsMaterialImageModule } from '../../../../../material/core/components/role/image';
 
-import { AllorsMaterialFileComponent } from './file.component';
-export { AllorsMaterialFileComponent } from './file.component';
+import { AllorsMaterialImageComponent } from './image.component';
+export { AllorsMaterialImageComponent } from './image.component';
+
+import { ImagePreviewComponent } from './preview/image-preview.component';
 
 @NgModule({
   declarations: [
-    AllorsMaterialFileComponent,
+    AllorsMaterialImageComponent,
+    ImagePreviewComponent,
+  ],
+  entryComponents: [
+    ImagePreviewComponent,
   ],
   exports: [
-    AllorsMaterialFileComponent,
+    AllorsMaterialImageComponent,
   ],
   imports: [
     CommonModule,
@@ -28,8 +33,7 @@ export { AllorsMaterialFileComponent } from './file.component';
     MatCardModule,
     MatIconModule,
     MatInputModule,
-    AllorsFocusModule,
-    AllorsMaterialImageModule
+    AllorsFocusModule
   ],
 })
-export class AllorsMaterialFileModule { }
+export class AllorsMaterialImageModule { }

@@ -16,20 +16,22 @@
         [placeholder]="label">
     </mat-form-field>
 
-    <button *ngIf="model && media.isImage" mat-icon-button type="button" (click)="preview()" title="Preview">
-      <mat-icon>image</mat-icon>
-    </button>
-
-    <button *ngIf="model && !media.isImage && !media.InData && !media.InDataUri" mat-icon-button type="button" (click)="download()" title="Download">
+    <button *ngIf="model && !media.isImage && !media.InData && !media.InDataUri" mat-icon-button type="button"
+      (click)="download()" title="Download">
       <mat-icon>cloud_download</mat-icon>
     </button>
 
     <button *ngIf="model" mat-icon-button type="button" (click)="delete()" title="Delete">
       <mat-icon>delete</mat-icon>
     </button>
-
   </div>
 
   <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+
+  <div *ngIf="model && model.isImage" class="row" style="margin-bottom: 1rem;">
+    <div class="col-4 col-md-3 col-lg-2 d-flex">
+      <a-mat-image *ngIf="model.isImage" [media]="model"></a-mat-image>
+    </div>
+  </div>
 
 </div>

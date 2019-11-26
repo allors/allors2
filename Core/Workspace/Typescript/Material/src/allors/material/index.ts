@@ -16,6 +16,7 @@ export * from './core/components/role/checkbox/checkbox.module';
 export * from './core/components/role/chips/chips.module';
 export * from './core/components/role/datepicker/datepicker.module';
 export * from './core/components/role/datetimepicker/datetimepicker.module';
+export * from './core/components/role/image/image.module';
 export * from './core/components/role/file/file.module';
 export * from './core/components/role/files/files.module';
 export * from './core/components/role/input/input.module';
