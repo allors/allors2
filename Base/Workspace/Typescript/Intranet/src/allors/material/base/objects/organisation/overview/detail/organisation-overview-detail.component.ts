@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, PanelService, FetcherService, TestScope } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, FetcherService, TestScope, SingletonId } from '../../../../../../angular';
 import { CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, LegalForm } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -41,6 +41,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
     public saveService: SaveService,
     public location: Location,
     private route: ActivatedRoute,
+    private singletonId: SingletonId,
     private fetcher: FetcherService
   ) {
     super();
@@ -88,12 +89,23 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
         switchMap(() => {
           this.organisation = undefined;
 
-          const { m, pull } = this.metaService;
+          const { m, x, pull } = this.metaService;
           const id = this.panel.manager.id;
 
           const pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.locales,
+            pull.Singleton({
+              object: this.singletonId.value,
+              fetch: {
+                Locales: {
+                  include: {
+                    Language: x,
+                    Country: x
+                  }
+                }
+              }
+            }),
             pull.Organisation({ object: id }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
@@ -122,7 +134,8 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
         this.organisation = loaded.objects.Organisation as Organisation;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.locales = loaded.collections.AdditionalLocales as Locale[];
+        this.locales = loaded.collections.AdditionalLocales as Locale[] || [];
+        this.locales.push(loaded.objects.DefaultLocale as Locale);
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];

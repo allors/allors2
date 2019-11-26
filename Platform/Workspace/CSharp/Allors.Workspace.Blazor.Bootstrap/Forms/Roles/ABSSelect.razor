@@ -1,18 +1,18 @@
 @inherits ABSSelectBase
 
-    <BSFormGroup>
-        @if (ShowLabel)
+<BSFormGroup>
+    @if (ShowLabel)
+    {
+        <BSLabel>@Label</BSLabel>
+    }
+    <BSBasicInput InputType="InputType.Select" @bind-Value="ModelId">
+        @if (this.Model == null || !this.Required)
         {
-            <BSLabel>@Label</BSLabel>
+            <option value="0">[none]</option>
         }
-        <BSBasicInput InputType="InputType.Select" @bind-Value="ModelId">
-            @if (this.Model == null || !this.Required)
-            {
-                <option value="0">[none]</option>
-            }
-            @foreach (var option in Options)
-            {
-                <option value="@option.Id">@(DisplayOption(option))</option>
-            }
-        </BSBasicInput>
-    </BSFormGroup>
+        @foreach (var option in Options)
+        {
+            <option value="@option.Id">@(DisplayOption(option))</option>
+        }
+    </BSBasicInput>
+</BSFormGroup>

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope } from '../../../../../../angular';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope, SingletonId } from '../../../../../../angular';
 import { Enumeration, InternalOrganisation, Locale, Organisation, Person, Currency } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -35,6 +35,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
+    private singletonId: SingletonId,
     private fetcher: FetcherService,
   ) {
     super();
@@ -95,6 +96,17 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
           const pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.locales,
+            pull.Singleton({
+              object: this.singletonId.value,
+              fetch: {
+                Locales: {
+                  include: {
+                    Language: x,
+                    Country: x
+                  }
+                }
+              }
+            }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
               sort: new Sort(m.Currency.Name),
@@ -134,7 +146,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
         this.person = loaded.objects.Person as Person;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.locales = loaded.collections.AdditionalLocales as Locale[];
+        this.locales = loaded.collections.Locales as Locale[] || [];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
       });

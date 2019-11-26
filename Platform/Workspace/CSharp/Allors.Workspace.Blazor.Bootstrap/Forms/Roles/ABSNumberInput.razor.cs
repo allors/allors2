@@ -16,7 +16,5 @@ namespace Allors.Workspace.Blazor.Bootstrap.Forms.Roles
                 return BlazorStrap.InputType.Text;
             }
         }
-
     }
-
 }

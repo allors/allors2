@@ -1,6 +1,6 @@
+@using Allors.Workspace.Blazor.Validation
 <BSForm @attributes="Attributes" OnSubmit="@OnSubmit" OnValidSubmit="@OnValidSubmit" OnInvalidSubmit="@OnInvalidSubmit">
-    <CascadingValue Value="@AllorsValidation">
-        <AllorsValidator />
+    <CascadingValue Value="@Fields">
         @ChildContent
     </CascadingValue>
 </BSForm>
@@ -21,5 +21,5 @@
     [Parameter]
     public EventCallback<EditContext> OnInvalidSubmit { get; set; }
 
-    public AllorsValidation AllorsValidation { get; } = new AllorsValidation();
+    public Fields Fields { get; } = new Fields();
 }

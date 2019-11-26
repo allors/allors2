@@ -3,6 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using Allors.Domain.TestPopulation;
+using src.allors.material.@base.objects.organisation.create;
+
 namespace Tests.OrganisationTests
 {
     using System.Linq;
@@ -24,52 +27,6 @@ namespace Tests.OrganisationTests
         {
             this.Login();
             this.organisationListPage = this.Sidenav.NavigateToOrganisations();
-        }
-
-        [Fact]
-        public void Create()
-        {
-            var customOrganisationClassification = new CustomOrganisationClassificationBuilder(this.Session).WithName("Gold").Build();
-            var industryClassification = new IndustryClassificationBuilder(this.Session).WithName("Retail").Build();
-            var legalForm = new LegalForms(this.Session).FindBy(M.LegalForm.Description, "BE - BVBA / SPRL");
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var before = new Organisations(this.Session).Extent().ToArray();
-
-            var organisationCreate = this.organisationListPage.CreateOrganisation();
-
-            organisationCreate
-                .Name.Set("new organisation")
-                .TaxNumber.Set("BE 123 456 789 01")
-                .LegalForm.Set(legalForm.Description)
-                .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
-                .IndustryClassifications.Toggle(industryClassification.Name)
-                .CustomClassifications.Toggle(customOrganisationClassification.Name)
-                .IsManufacturer.Set(true)
-                .IsInternalOrganisation.Set(true)
-                .Comment.Set("comment")
-                .SAVE.Click();
-
-            this.Driver.WaitForAngular();
-            this.Session.Rollback();
-
-            var after = new Organisations(this.Session).Extent().ToArray();
-
-            Assert.Equal(after.Length, before.Length + 1);
-
-            var organisation = after.Except(before).First();
-
-            Assert.Equal("new organisation", organisation.Name);
-            Assert.Equal("BE 123 456 789 01", organisation.TaxNumber);
-            Assert.Equal(legalForm, organisation.LegalForm);
-            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, organisation.Locale);
-            Assert.Contains(industryClassification, organisation.IndustryClassifications);
-            Assert.Contains(customOrganisationClassification, organisation.CustomClassifications);
-            Assert.True(organisation.IsManufacturer);
-            Assert.True(organisation.IsInternalOrganisation);
-            Assert.Equal("comment", organisation.Comment);
         }
 
         [Fact]
@@ -110,14 +67,7 @@ namespace Tests.OrganisationTests
 
             organisation = after.First(v => v.Id.Equals(id));
 
-            Assert.Equal("new organisation", organisation.Name);
-            Assert.Equal("BE 123 456 789 01", organisation.TaxNumber);
-            Assert.Equal(legalForm, organisation.LegalForm);
-            Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, organisation.Locale);
-            Assert.Contains(industryClassification, organisation.IndustryClassifications);
-            Assert.Contains(customOrganisationClassification, organisation.CustomClassifications);
-            Assert.True(organisation.IsManufacturer);
-            Assert.Equal("comment", organisation.Comment);
+
         }
     }
 }

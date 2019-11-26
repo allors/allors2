@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
+import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService, TestScope, SingletonId } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship, Currency } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -57,6 +57,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
     private route: ActivatedRoute,
     private saveService: SaveService,
     private fetcher: FetcherService,
+    private singletonId: SingletonId,
     private internalOrganisationId: InternalOrganisationId,
   ) {
 
@@ -77,6 +78,17 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
           const pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.locales,
+            pull.Singleton({
+              object: this.singletonId.value,
+              fetch: {
+                Locales: {
+                  include: {
+                    Language: x,
+                    Country: x
+                  }
+                }
+              }
+            }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
               sort: new Sort(m.Currency.Name),
@@ -115,7 +127,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
         this.organisations = loaded.collections.Organisations as Organisation[];
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.locales = loaded.collections.AdditionalLocales as Locale[];
+        this.locales = loaded.collections.Locales as Locale[] || [];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
         this.roles = loaded.collections.PersonRoles as PersonRole[];

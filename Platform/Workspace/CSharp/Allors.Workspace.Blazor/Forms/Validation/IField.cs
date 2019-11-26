@@ -1,9 +1,9 @@
-namespace Allors.Workspace.Blazor
+namespace Allors.Workspace.Blazor.Validation
 {
     using Allors.Workspace.Meta;
     using Microsoft.AspNetCore.Components.Forms;
 
-    public partial interface IAllorsValidationField
+    public partial interface IField
     {
         ISessionObject Object { get; }
 

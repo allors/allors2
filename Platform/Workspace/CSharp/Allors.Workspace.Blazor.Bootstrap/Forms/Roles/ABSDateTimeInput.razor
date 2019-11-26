@@ -1,11 +1,12 @@
-@implements IAllorsValidationField
+@implements IField
 @using System
+@using Allors.Workspace.Blazor.Validation
 @implements System.IDisposable
 
 <BSFormGroup>
     <BSLabel>@DerivedLabel</BSLabel>
     <input type="datetime" class="form-control" @bind="Model" />
-    <BSFormFeedback For="@(() => Model)" />
+    <BSFormFeedback For="@(() => Model)" ValidMessage="@ValidMessage"/>
 </BSFormGroup>
 
 @code {
@@ -15,7 +16,7 @@
     public EditContext EditContext { get; set; }
 
     [CascadingParameter]
-    public AllorsValidation Validation { get; set; }
+    public Fields ValidationFields { get; set; }
 
     [Parameter]
     public IRoleType RoleType { get; set; }
@@ -28,6 +29,9 @@
 
     [Parameter]
     public bool FullWidth { get; set; } = true;
+
+    [Parameter]
+    public string ValidMessage { get; set; }
 
     public IPropertyType PropertyType { get => this.RoleType; }
 
@@ -88,14 +92,14 @@
 
     void System.IDisposable.Dispose()
     {
-        this.Validation.Remove(this);
+        this.ValidationFields.Remove(this);
     }
 
     override protected void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            this.Validation.Add(this);
+            this.ValidationFields.Add(this);
         }
     }
 }
