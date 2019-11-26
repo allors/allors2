@@ -40,6 +40,17 @@ namespace Allors.Repository
         public Locale[] AdditionalLocales { get; set; }
 
         #region Allors
+        [Id("615AC72B-B3DF-4057-9B7C-C8528341F5FE")]
+        [AssociationId("5848B9B7-5DAC-41C0-9655-79EA24A814F6")]
+        [RoleId("56DDB161-B92F-4D73-8CDE-61D4BB275DA1")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Derived]
+        [Workspace]
+        public Locale[] Locales { get; set; }
+
+        #region Allors
         [Id("f16652b0-b712-43d7-8d4e-34a22487514d")]
         [AssociationId("c92466b5-55ba-496a-8880-2821f32f8f8e")]
         [RoleId("3a12d798-40c3-40e0-ba9f-9d01b1e39e89")]

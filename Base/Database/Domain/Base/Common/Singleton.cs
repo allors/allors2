@@ -38,6 +38,9 @@ namespace Allors.Domain
             {
                 this.LogoImage = new MediaBuilder(this.Strategy.Session).WithInData(this.GetResourceBytes("allors.png")).Build();
             }
+
+            this.Locales = this.AdditionalLocales;
+            this.AddLocale(this.DefaultLocale);
         }
 
         private byte[] GetResourceBytes(string name)

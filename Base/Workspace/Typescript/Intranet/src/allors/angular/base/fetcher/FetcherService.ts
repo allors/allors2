@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Pull } from '../../../framework';
+import { Pull, Result, Fetch } from '../../../framework';
 import { PullFactory } from '../../../meta';
 
 import { MetaService } from '../../core/framework/MetaService';
@@ -60,7 +60,7 @@ export class FetcherService {
             Country: x
           }
         }
-      },
+      }
     });
   }
 

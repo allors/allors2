@@ -1,0 +1,50 @@
+using System.Linq;
+using Allors.Domain;
+using Xunit;
+
+namespace src.allors.material.@base.objects.organisation.create
+{
+    using OpenQA.Selenium;
+    using Components;
+
+    public static partial class OrganisationCreateComponentExtensions
+    {
+        public static OrganisationCreateComponent Build(this OrganisationCreateComponent @this, Organisation organisation, bool minimal = false)
+        {
+            @this.Name.Set(organisation.Name);
+
+            if (!minimal)
+            {
+                @this.TaxNumber.Set(organisation.TaxNumber);
+                @this.LegalForm.Set(organisation.LegalForm?.Description);
+                @this.Locale.Set(organisation.Locale?.Name);
+
+                foreach (IndustryClassification industryClassification in organisation.IndustryClassifications)
+                {
+                    @this.IndustryClassifications.Toggle(industryClassification.Name);
+                }
+
+                foreach (CustomOrganisationClassification customOrganisationClassification in organisation.CustomClassifications)
+                {
+                    @this.CustomClassifications.Toggle(customOrganisationClassification.Name);
+                }
+
+                @this.IsManufacturer.Set(organisation.IsManufacturer);
+                @this.IsInternalOrganisation.Set(organisation.IsInternalOrganisation);
+                @this.Comment.Set(organisation.Comment);
+            }
+
+            return @this;
+        }
+
+        public static void AssertFull(this OrganisationCreateComponent @this, Organisation organisation)
+        {
+            Assert.True(organisation.ExistName);
+            Assert.True(organisation.ExistTaxNumber);
+            Assert.True(organisation.ExistLegalForm);
+            Assert.True(organisation.ExistLocale);
+            Assert.True(organisation.ExistIsInternalOrganisation);
+            Assert.True(organisation.ExistComment);
+        }
+    }
+}
