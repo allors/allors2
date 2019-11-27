@@ -11,7 +11,6 @@ namespace Allors.Workspace
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
     using Allors.Workspace.Meta;
-    using Protocol;
 
     public class Session : ISession
     {

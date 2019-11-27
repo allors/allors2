@@ -17,14 +17,15 @@ namespace Allors.Workspace
     public class Context
     {
         private readonly IDatabase database;
-        private readonly Workspace workspace;
+        private readonly IWorkspace workspace;
 
-        public Context(IDatabase database, Workspace workspace)
+        public Context(IDatabase database, IWorkspace workspace)
         {
             this.database = database;
             this.workspace = workspace;
 
-            this.Session = new Session(this.workspace);
+            // TODO: remove cast
+            this.Session = new Session((Workspace)this.workspace);
         }
 
         public Session Session { get; }

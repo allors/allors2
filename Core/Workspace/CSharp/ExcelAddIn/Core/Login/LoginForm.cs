@@ -3,12 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace BaseExcelAddIn.Base
+namespace ExcelAddIn
 {
     using System;
     using System.Windows.Forms;
     using Allors.Workspace.Remote;
-    using Nito.AsyncEx;
 
     public partial class LoginForm : Form
     {
@@ -16,7 +15,7 @@ namespace BaseExcelAddIn.Base
         {
             this.InitializeComponent();
 
-            this.button1.Enabled = false;
+            this.loginButton.Enabled = false;
         }
 
         public Uri Uri { get; set; }
@@ -41,11 +40,7 @@ namespace BaseExcelAddIn.Base
                 this.ShowError("Enter Password.");
             }
 
-            AsyncContext.Run(
-                async () =>
-                {
-                    this.IsLoggedIn = await this.Database.Login(this.Uri, this.textBoxUser.Text, this.textBoxPassword.Text);
-                });
+            this.IsLoggedIn = await this.Database.Login(this.Uri, this.textBoxUser.Text, this.textBoxPassword.Text);
 
             if (this.IsLoggedIn)
             {
@@ -72,9 +67,9 @@ namespace BaseExcelAddIn.Base
             this.labelErrorMessage.Visible = false;
         }
 
-        private void TextBoxUser_TextChanged(object sender, EventArgs e) => this.button1.Enabled = this.textBoxUser.Text.Length > 0 && this.textBoxPassword.Text.Length > 0;
+        private void TextBoxUser_TextChanged(object sender, EventArgs e) => this.loginButton.Enabled = this.textBoxUser.Text.Length > 0 && this.textBoxPassword.Text.Length > 0;
 
-        private void TextBoxPassword_TextChanged(object sender, EventArgs e) => this.button1.Enabled = this.textBoxUser.Text.Length > 0 && this.textBoxPassword.Text.Length > 0;
+        private void TextBoxPassword_TextChanged(object sender, EventArgs e) => this.loginButton.Enabled = this.textBoxUser.Text.Length > 0 && this.textBoxPassword.Text.Length > 0;
 
         private void ButtonTogglePassword_Click(object sender, EventArgs e)
         {

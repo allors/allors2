@@ -1,4 +1,4 @@
-﻿namespace BaseExcelAddIn.Base
+﻿namespace ExcelAddIn
 {
     partial class LoginForm
     {
@@ -13,9 +13,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (this.components != null))
             {
-                components.Dispose();
+                this.components.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -32,7 +32,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxUser = new System.Windows.Forms.TextBox();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.loginButton = new System.Windows.Forms.Button();
             this.labelErrorMessage = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonTogglePassword = new System.Windows.Forms.Button();
@@ -45,7 +45,7 @@
             this.label1.Location = new System.Drawing.Point(11, 48);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(109, 20);
+            this.label1.Size = new System.Drawing.Size(169, 31);
             this.label1.TabIndex = 0;
             this.label1.Text = "User Name:";
             // 
@@ -55,7 +55,7 @@
             this.label2.Location = new System.Drawing.Point(13, 102);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 20);
+            this.label2.Size = new System.Drawing.Size(151, 31);
             this.label2.TabIndex = 1;
             this.label2.Text = "Password:";
             // 
@@ -64,7 +64,7 @@
             this.textBoxUser.Location = new System.Drawing.Point(187, 45);
             this.textBoxUser.MaxLength = 48;
             this.textBoxUser.Name = "textBoxUser";
-            this.textBoxUser.Size = new System.Drawing.Size(271, 26);
+            this.textBoxUser.Size = new System.Drawing.Size(271, 38);
             this.textBoxUser.TabIndex = 2;
             this.textBoxUser.TextChanged += new System.EventHandler(this.TextBoxUser_TextChanged);
             // 
@@ -76,20 +76,20 @@
             this.textBoxPassword.MaxLength = 32;
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '*';
-            this.textBoxPassword.Size = new System.Drawing.Size(271, 26);
+            this.textBoxPassword.Size = new System.Drawing.Size(271, 38);
             this.textBoxPassword.TabIndex = 3;
             this.textBoxPassword.TextChanged += new System.EventHandler(this.TextBoxPassword_TextChanged);
             // 
-            // button1
+            // loginButton
             // 
-            this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(187, 171);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(138, 51);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Login";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.loginButton.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.loginButton.Location = new System.Drawing.Point(187, 171);
+            this.loginButton.Name = "loginButton";
+            this.loginButton.Size = new System.Drawing.Size(138, 51);
+            this.loginButton.TabIndex = 4;
+            this.loginButton.Text = "Login";
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.Button1_Click);
             // 
             // labelErrorMessage
             // 
@@ -97,7 +97,7 @@
             this.labelErrorMessage.ForeColor = System.Drawing.Color.Firebrick;
             this.labelErrorMessage.Location = new System.Drawing.Point(181, 241);
             this.labelErrorMessage.Name = "labelErrorMessage";
-            this.labelErrorMessage.Size = new System.Drawing.Size(84, 20);
+            this.labelErrorMessage.Size = new System.Drawing.Size(131, 31);
             this.labelErrorMessage.TabIndex = 5;
             this.labelErrorMessage.Text = "message";
             this.labelErrorMessage.Visible = false;
@@ -127,16 +127,16 @@
             // 
             // LoginForm
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.loginButton;
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(17F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.ClientSize = new System.Drawing.Size(580, 363);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.labelErrorMessage);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.loginButton);
             this.Controls.Add(this.textBoxUser);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -163,7 +163,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxUser;
         private System.Windows.Forms.TextBox textBoxPassword;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button loginButton;
         private System.Windows.Forms.Label labelErrorMessage;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button buttonTogglePassword;
