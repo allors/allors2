@@ -586,7 +586,7 @@ namespace Allors.Domain
 
         private void CreatePickList(IDerivation derivation)
         {
-            if (this.Store.IsImmediatelyPicked && this.ShipmentItems.First.ExistItemIssuancesWhereShipmentItem)
+            if (this.Store.IsImmediatelyPicked && (!this.ExistShipmentItems || this.ShipmentItems.First().ExistItemIssuancesWhereShipmentItem))
             {
                 return;
             }

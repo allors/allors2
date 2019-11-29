@@ -45,6 +45,8 @@ export function appMeta(metaPopulation: MetaPopulation) {
   m.PurchaseOrder.overview = '/purchasing/purchaseorder/:id';
   m.PurchaseReturn.list = '/purchasing/purchasereturns';
 
+  m.Shipment.list = '/shipment/shipments';
+
   m.WorkEffort.list = '/workefforts/workefforts';
   m.WorkTask.overview = '/workefforts/worktask/:id';
 

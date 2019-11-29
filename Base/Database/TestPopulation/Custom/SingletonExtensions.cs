@@ -21,6 +21,7 @@ namespace Allors
 
             var administrator = new PersonBuilder(@this.Session()).WithUserName("administrator").Build();
             new UserGroups(@this.Session()).Administrators.AddMember(administrator);
+            new UserGroups(@this.Session()).Creators.AddMember(administrator);
 
             @this.Session().Derive();
 

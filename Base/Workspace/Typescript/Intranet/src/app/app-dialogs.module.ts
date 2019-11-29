@@ -7,6 +7,7 @@ import { ids } from '../allors/meta/generated';
 import { BasepriceEditComponent, BasepriceEditModule } from '../allors/material/base/objects/baseprice/edit/baseprice-edit.module';
 import { CatalogueEditComponent, CatalogueEditModule } from '../allors/material/base/objects/catalogue/edit/catalogue-edit.module';
 import { CustomerRelationshipEditComponent, CustomerRelationshipEditModule } from '../allors/material/base/objects/customerrelationship/edit/customerrelationship-edit.module';
+import { CustomerShipmentCreateComponent, CustomerShipmentCreateModule } from '../allors/material/base/objects/customershipment/create/customershipment-create.module';
 import { DisbursementEditComponent, DisbursementEditModule } from '../allors/material/base/objects/disbursement/edit/disbursement-edit.module';
 import { EmailAddressCreateComponent, EmailAddressCreateModule } from '../allors/material/base/objects/emailaddress/create/emailaddress-create.module';
 import { EmailAddressEditComponent, EmailAddressEditModule } from '../allors/material/base/objects/emailaddress/edit/emailaddress-edit.module';
@@ -74,6 +75,7 @@ export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
+  [ids.CustomerShipment]: CustomerShipmentCreateComponent,
   [ids.Disbursement]: DisbursementEditComponent,
   [ids.EanIdentification]: ProductIdentificationEditComponent,
   [ids.EmailAddress]: EmailAddressCreateComponent,
@@ -202,6 +204,7 @@ export const edit = {
     BasepriceEditModule,
     CatalogueEditModule,
     CustomerRelationshipEditModule,
+    CustomerShipmentCreateModule,
     DisbursementEditModule,
     EmailAddressCreateModule,
     EmailAddressEditModule,
@@ -267,6 +270,7 @@ export const edit = {
     BasepriceEditComponent,
     CatalogueEditComponent,
     CustomerRelationshipEditComponent,
+    CustomerShipmentCreateComponent,
     DisbursementEditComponent,
     EmailAddressCreateComponent,
     EmailAddressEditComponent,

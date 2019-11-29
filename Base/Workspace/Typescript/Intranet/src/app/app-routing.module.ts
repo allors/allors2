@@ -157,7 +157,14 @@ export const routes: Routes = [
           { path: 'purchaseorder/:id', component: PurchaseOrderOverview.PurchaseOrderOverviewComponent },
           { path: 'purchaseinvoices', component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
           { path: 'purchaseinvoice/:id', component: PurchaseInvoiceOverview.PurchasInvoiceOverviewComponent },
+        ],
+      },
+
+      {
+        path: 'shipment',
+        children: [
           { path: 'shipments', component: ShipmentList.ShipmentListComponent },
+          { path: 'shipment/:id', component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },
 
