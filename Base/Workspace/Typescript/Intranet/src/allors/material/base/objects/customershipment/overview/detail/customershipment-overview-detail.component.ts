@@ -1,33 +1,35 @@
-import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { switchMap, filter } from 'rxjs/operators';
 
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-
-import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope, PanelManagerService } from '../../../../../angular';
-import { ObjectData } from '../../../../../material/core/services/object';
-import { Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CustomerShipment, Facility, Locale, ShipmentMethod, Carrier } from '../../../../../domain';
-import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
-import { Meta } from '../../../../../meta';
-import { SaveService, FiltersService } from '../../../../../material';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope, InternalOrganisationId } from '../../../../../../angular';
+import { Locale, Organisation, CustomerShipment, Currency, PostalAddress, Person, Party, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, PartyContactMechanism } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { Meta } from '../../../../../../meta';
+import { SaveService, FiltersService } from '../../../../../../../allors/material';
 
 @Component({
-  templateUrl: './customershipment-create.component.html',
-  providers: [PanelManagerService, ContextService]
+  // tslint:disable-next-line:component-selector
+  selector: 'customershipment-overview-detail',
+  templateUrl: './customershipment-overview-detail.component.html',
+  providers: [PanelService, ContextService]
 })
-export class CustomerShipmentCreateComponent extends TestScope implements OnInit, OnDestroy {
+export class CustomerShipmentOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
-  public title: string;
-  public subTitle: string;
 
   customerShipment: CustomerShipment;
+
   currencies: Currency[];
   shipToAddresses: PostalAddress[] = [];
   shipToContacts: Person[] = [];
   shipFromAddresses: PostalAddress[] = [];
   shipFromContacts: Person[] = [];
   internalOrganisation: Organisation;
+  facilities: Facility[];
+  locales: Locale[];
+  shipmentMethods: ShipmentMethod[];
+  carriers: Carrier[];
 
   addShipFromAddress = false;
 
@@ -37,90 +39,114 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
   private previousShipToparty: Party;
 
   private subscription: Subscription;
-  facilities: Facility[];
-  locales: Locale[];
-  shipmentMethods: ShipmentMethod[];
-  carriers: Carrier[];
+  private refresh$: BehaviorSubject<Date>;
 
   get shipToCustomerIsPerson(): boolean {
     return !this.customerShipment.ShipToParty || this.customerShipment.ShipToParty.objectType.name === this.m.Person.name;
   }
 
   constructor(
-    @Self() public panelManager: PanelManagerService,
     @Self() public allors: ContextService,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
+    @Self() public panel: PanelService,
+    private metaService: MetaService,
     public filtersService: FiltersService,
-    public dialogRef: MatDialogRef<CustomerShipmentCreateComponent>,
-    public metaService: MetaService,
-    private refreshService: RefreshService,
+    public refreshService: RefreshService,
+    public navigationService: NavigationService,
     private saveService: SaveService,
-    private fetcher: FetcherService,
-    private internalOrganisationId: InternalOrganisationId) {
-
+    private fetcher: FetcherService
+  ) {
     super();
 
     this.m = this.metaService.m;
+    this.refresh$ = new BehaviorSubject(new Date());
+
+    panel.name = 'detail';
+    panel.title = 'Customer Shipment Details';
+    panel.icon = 'local_shipping';
+    panel.expandable = true;
+
+    // Collapsed
+    const pullName = `${this.panel.name}_${this.m.CustomerShipment.name}`;
+
+    panel.onPull = (pulls) => {
+
+      this.customerShipment = undefined;
+
+      if (this.panel.isCollapsed) {
+        const { pull } = this.metaService;
+        const id = this.panel.manager.id;
+
+        pulls.push(
+          this.fetcher.internalOrganisation,
+          pull.CustomerShipment({
+            name: pullName,
+            object: id,
+          }),
+        );
+      }
+    };
+
+    panel.onPulled = (loaded) => {
+      if (this.panel.isCollapsed) {
+        this.customerShipment = loaded.objects[pullName] as CustomerShipment;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+      }
+    };
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.metaService;
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    // Maximized
+    this.subscription = combineLatest(this.refresh$, this.panel.manager.on$)
       .pipe(
-        switchMap(([, internalOrganisationId]) => {
+        filter(() => {
+          return this.panel.isExpanded;
+        }),
+        switchMap(() => {
 
-          const isCreate = this.data.id === undefined;
+          this.customerShipment = undefined;
+
+          const { m, pull, x } = this.metaService;
+          const id = this.panel.manager.id;
 
           const pulls = [
-            this.fetcher.internalOrganisation,
             this.fetcher.locales,
+            this.fetcher.internalOrganisation,
             pull.ShipmentMethod({ sort: new Sort(m.ShipmentMethod.Name) }),
             pull.Carrier({ sort: new Sort(m.Carrier.Name) }),
             pull.Facility({
-              predicate: new Equals({ propertyType: m.Facility.Owner, object: internalOrganisationId }),
+              predicate: new Equals({ propertyType: m.Facility.Owner, object: this.internalOrganisation }),
               sort: new Sort(m.Facility.Name)
             }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: new Sort(m.Organisation.PartyName),
-            })
+            }),
+            pull.CustomerShipment({
+              object: id,
+              include: {
+                ShipFromParty: x,
+                ShipFromAddress: x,
+                ShipFromFacility: x,
+                ShipToParty: x,
+                ShipToAddress: x,
+                ShipToContactPerson: x,
+                Carrier: x,
+                ShipmentState: x
+              }
+            }),
           ];
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
-      .subscribe(({ loaded, isCreate }) => {
-
+      .subscribe((loaded) => {
         this.allors.context.reset();
-        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.locales = loaded.collections.AdditionalLocales as Locale[];
+
+        this.customerShipment = loaded.objects.CustomerShipment as CustomerShipment;
         this.facilities = loaded.collections.Facilities as Facility[];
         this.shipmentMethods = loaded.collections.ShipmentMethods as ShipmentMethod[];
         this.carriers = loaded.collections.Carriers as Carrier[];
-
-        if (isCreate) {
-          this.title = 'Add Customer Shipment';
-          this.customerShipment = this.allors.context.create('CustomerShipment') as CustomerShipment;
-          this.customerShipment.ShipFromParty = this.internalOrganisation;
-
-          if (this.facilities.length === 1) {
-            this.customerShipment.ShipFromFacility = this.facilities[0];
-          }
-        } else {
-          this.customerShipment = loaded.objects.CustomerShipment as CustomerShipment;
-
-          if (this.customerShipment.CanWriteComment) {
-            this.title = 'Edit Customer Shipment';
-          } else {
-            this.title = 'View Customer Shipment';
-          }
-        }
 
         if (this.customerShipment.ShipToParty) {
           this.updateShipToParty(this.customerShipment.ShipToParty);
@@ -132,6 +158,7 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
 
         this.previousShipToparty = this.customerShipment.ShipToParty;
       });
+
   }
 
   public ngOnDestroy(): void {
@@ -142,15 +169,9 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
 
   public save(): void {
 
-    this.allors.context
-      .save()
+    this.allors.context.save()
       .subscribe(() => {
-        const data: IObject = {
-          id: this.customerShipment.id,
-          objectType: this.customerShipment.objectType,
-        };
-
-        this.dialogRef.close(data);
+        this.panel.toggle();
       },
         this.saveService.errorHandler
       );
@@ -264,5 +285,9 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
         this.shipFromAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism) as PostalAddress[];
         this.shipToContacts = loaded.collections.CurrentContacts as Person[];
       });
+  }
+
+  public setDirty(): void {
+    this.allors.context.session.hasChanges = true;
   }
 }

@@ -37,9 +37,9 @@
 
         <div class="col-md">
           <div class="row">
-            <a-mat-select class="col" [object]="customerShipment" [roleType]="m.CustomerShipment.ShipToContactPerson" [options]="shipToContacts"
+            <a-mat-select class="col" [disabled]="shipToCustomerIsPerson" [object]="customerShipment" [roleType]="m.CustomerShipment.ShipToContactPerson" [options]="shipToContacts"
                           display="displayName" label="Customer contact person"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!customerShipment.ShipToParty || !customerShipment.CanWriteShipToContactPerson"
+            <button mat-mini-fab color="accent" [disabled]="!customerShipment.ShipToParty || !customerShipment.CanWriteShipToContactPerson || shipToCustomerIsPerson"
                     type="button" (click)="addShipToContactPerson = !addShipToContactPerson">
               <mat-icon *ngIf="!addShipToContactPerson">add</mat-icon>
               <mat-icon *ngIf="addShipToContactPerson">close</mat-icon>
@@ -58,29 +58,56 @@
       </div>
 
       <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select [object]="customerShipment" [roleType]="m.CustomerShipment.ShipFromAddress" [options]="shipFromAddresses" display="displayName"
+              class="col-md"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!customerShipment.CanWriteShipFromAddress"
+              type="button" (click)="addShipFromAddress = !addShipFromAddress">
+              <mat-icon *ngIf="!addShipFromAddress">add</mat-icon>
+              <mat-icon *ngIf="addShipFromAddress">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 pb-3" *ngIf="addShipFromAddress">
+          <mat-card>
+            <mat-card-header>Add a new ship from address</mat-card-header>
+            <mat-card-content>
+              <party-contactmechanism-postaladdress (cancelled)="addShipFromAddress = false" (saved)="shipFromAddressAdded($event); addShipFromAddress = false">
+              </party-contactmechanism-postaladdress>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.ShipmentMethod" [options]="shipmentMethods" display="Name"></a-mat-select>
         <a-mat-select class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.ShipFromFacility" [options]="facilities" display="Name"></a-mat-select>
       </div>
 
       <div class="row">
-        <a-mat-markdown class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.Comment"></a-mat-markdown>
+        <a-mat-select class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.Carrier" [options]="carriers" display="Name"></a-mat-select>
       </div>
 
-      <div class="row pb-1">
-        <mat-expansion-panel class="col" *ngIf="locales">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Translations
-            </mat-panel-title>
-          </mat-expansion-panel-header>
+      <div class="row">
+        <a-mat-datepicker class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.EstimatedShipDate" ></a-mat-datepicker>
+        <a-mat-datepicker class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.EstimatedArrivalDate" ></a-mat-datepicker>
+      </div>
 
-          <div *ngFor="let locale of locales; let i = index">
-            <mat-divider *ngIf="i > 0"></mat-divider>
-            <div class="row">
-              <a-mat-localised-markdown class="col-md-12" [object]="customerShipment" [roleType]="m.CustomerShipment.LocalisedComments"
-                                        [locale]="locale"></a-mat-localised-markdown>
-            </div>
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.HandlingInstruction" ></a-mat-textarea>
+      </div>
+  
+      <div class="row">
+        <div class="container-fluid">
+          <div class="row pt-3">
+            <a-mat-files class="col-md-12" [object]="customerShipment" [roleType]="m.CustomerShipment.ElectronicDocuments" accept="image/*"></a-mat-files>
           </div>
-        </mat-expansion-panel>
+        </div>
+    </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.Comment"></a-mat-textarea>
       </div>
     </div>
 

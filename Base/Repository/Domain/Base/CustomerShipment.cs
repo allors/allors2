@@ -53,6 +53,7 @@ namespace Allors.Repository
         public string ShipmentNumber { get; set; }
 
         public Document[] Documents { get; set; }
+        public Media[] ElectronicDocuments { get; set; }
 
         public Person ShipFromContactPerson { get; set; }
 
@@ -161,6 +162,7 @@ namespace Allors.Repository
         #region Allors
         [Id("5FD4DD2D-51CC-46CD-B1C3-138CE68A9580")]
         #endregion
+        [Workspace]
         public void Hold() { }
 
         #region Allors
@@ -171,16 +173,19 @@ namespace Allors.Repository
         #region Allors
         [Id("7464BD56-E36A-4938-886F-1D8C61A062E2")]
         #endregion
+        [Workspace]
         public void Cancel() { }
 
         #region Allors
         [Id("113C76E1-25E7-4CD2-9D82-1DAE38441DE9")]
         #endregion
+        [Workspace]
         public void Continue() { }
 
         #region Allors
         [Id("CB596594-7253-4B2E-8A00-71C062147CD8")]
         #endregion
+        [Workspace]
         public void Ship() { }
 
         #region Allors

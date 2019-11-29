@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatOptionModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,57 +20,47 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+
 import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
 import { AllorsMaterialChipsModule } from '../../../../core/components/role/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
-import { AllorsMaterialFilesModule } from '../../../../core/components/role/files';
+import { AllorsMaterialFilesModule } from '../../../..//core/components/role/files';
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
-import { AllorsMaterialLocalisedMarkdownModule } from '../../../../core/components/role/localisedmarkdown';
 import { AllorsMaterialLocalisedTextModule } from '../../../../core/components/role/localisedtext';
 import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
-import { AllorsMaterialMarkdownModule } from '../../../../core/components/role/markdown';
 
-import { OrganisationInlineModule } from '../../organisation/inline/organisation-inline.module';
-import { PartyInlineModule } from '../../party/inline/party-inline.module';
-import { PersonInlineModule } from '../../person/inline/person-inline.module';
-import { PostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
-import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
-
-import { CustomerShipmentCreateComponent } from './customershipment-create.component';
-export { CustomerShipmentCreateComponent } from './customershipment-create.component';
+import { CarrierEditComponent } from './carrier-edit.component';
+export { CarrierEditComponent } from './carrier-edit.component';
 
 @NgModule({
   declarations: [
-    CustomerShipmentCreateComponent,
+    CarrierEditComponent,
   ],
   exports: [
-    CustomerShipmentCreateComponent,
+    CarrierEditComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-    AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialFilesModule,
     AllorsMaterialInputModule,
-    AllorsMaterialLocalisedMarkdownModule,
     AllorsMaterialLocalisedTextModule,
-    AllorsMaterialMarkdownModule,
-    AllorsMaterialSideNavToggleModule,
     AllorsMaterialSelectModule,
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
     FormsModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
-    MatDatepickerModule,
     MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
@@ -85,13 +75,8 @@ export { CustomerShipmentCreateComponent } from './customershipment-create.compo
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-    ContactMechanismInlineModule,
-    OrganisationInlineModule,
-    PostalAddressInlineModule,
-    PartyInlineModule,
-    PersonInlineModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class CustomerShipmentCreateModule { }
+export class CarrierEditModule { }

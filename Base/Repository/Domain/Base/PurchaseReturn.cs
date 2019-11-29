@@ -54,6 +54,8 @@ namespace Allors.Repository
 
         public Document[] Documents { get; set; }
 
+        public Media[] ElectronicDocuments { get; set; }
+
         public Person ShipFromContactPerson { get; set; }
 
         public Facility ShipFromFacility { get; set; }

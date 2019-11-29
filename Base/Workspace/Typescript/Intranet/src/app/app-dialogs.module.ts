@@ -5,6 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ids } from '../allors/meta/generated';
 
 import { BasepriceEditComponent, BasepriceEditModule } from '../allors/material/base/objects/baseprice/edit/baseprice-edit.module';
+import { CarrierEditComponent, CarrierEditModule } from '../allors/material/base/objects/carrier/edit/carrier-edit.module';
 import { CatalogueEditComponent, CatalogueEditModule } from '../allors/material/base/objects/catalogue/edit/catalogue-edit.module';
 import { CustomerRelationshipEditComponent, CustomerRelationshipEditModule } from '../allors/material/base/objects/customerrelationship/edit/customerrelationship-edit.module';
 import { CustomerShipmentCreateComponent, CustomerShipmentCreateModule } from '../allors/material/base/objects/customershipment/create/customershipment-create.module';
@@ -70,9 +71,11 @@ import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditMo
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/base/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/core/services/object';
+import { CarrierListComponent } from 'src/allors/material/base/objects/carrier/list/carrier-list.module';
 
 export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
+  [ids.Carrier]: CarrierEditComponent,
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
   [ids.CustomerShipment]: CustomerShipmentCreateComponent,
@@ -141,6 +144,7 @@ export const create = {
 
 export const edit = {
   [ids.BasePrice]: BasepriceEditComponent,
+  [ids.Carrier]: CarrierEditComponent,
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
   [ids.Disbursement]: DisbursementEditComponent,
@@ -202,6 +206,7 @@ export const edit = {
     MatDialogModule,
 
     BasepriceEditModule,
+    CarrierEditModule,
     CatalogueEditModule,
     CustomerRelationshipEditModule,
     CustomerShipmentCreateModule,
@@ -268,6 +273,7 @@ export const edit = {
   ],
   entryComponents: [
     BasepriceEditComponent,
+    CarrierEditComponent,
     CatalogueEditComponent,
     CustomerRelationshipEditComponent,
     CustomerShipmentCreateComponent,

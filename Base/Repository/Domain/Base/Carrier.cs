@@ -30,7 +30,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
+        [Workspace]
         public string Name { get; set; }
 
         #region inherited methods

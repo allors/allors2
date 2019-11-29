@@ -114,6 +114,5 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         Media[] ElectronicDocuments { get; set; }
-
     }
 }

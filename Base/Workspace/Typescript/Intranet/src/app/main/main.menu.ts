@@ -52,6 +52,7 @@ export const menu: MenuItem[] = [
     title: 'Shipments', icon: 'local_shipping',
     children: [
       { id: ids.Shipment },
+      { id: ids.Carrier },
     ]
   },
   {

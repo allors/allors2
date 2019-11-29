@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 // Objects
 import * as CataloguesOverview from '../allors/material/base/objects/catalogue/list/catalogue-list.module';
+import * as CarrierList from '../allors/material/base/objects/carrier/list/carrier-list.module';
 import * as CategoriesOverview from '../allors/material/base/objects/productcategory/list/productcategory-list.module';
 import * as CommunicationEventList from '../allors/material/base/objects/communicationevent/list/communicationevent-list.module';
 import * as CommunicationEventWorkTask from '../allors/material/base/objects/communicationevent/worktask/communicationevent-worktask.module';
@@ -45,6 +46,7 @@ import * as SalesOrderOverview from '../allors/material/base/objects/salesorder/
 import * as SerialisedItemList from '../allors/material/base/objects/serialiseditem/list/serialiseditem-list.module';
 import * as SerialisedItemOverview from '../allors/material/base/objects/serialiseditem/overview/serialiseditem-overview.module';
 import * as ShipmentList from '../allors/material/base/objects/shipment/list/shipment-list.module';
+import * as ShipmentOverview from '../allors/material/base/objects/shipment/overview/shipment-overview.module';
 import * as UnifiedGoodList from '../allors/material/base/objects/unifiedgood/list/unifiedgood-list.module';
 import * as UnifiedGoodOverview from '../allors/material/base/objects/unifiedgood/overview/unifiedgood-overview.module';
 import * as WorkEffortList from '../allors/material/base/objects/workeffort/list/workeffort-list.module';
@@ -53,6 +55,7 @@ import * as TaskAssignmentList from '../allors/material/base/objects/taskassignm
 
 const modules = [
 
+  CarrierList.CarrierListModule,
   CommunicationEventList.CommunicationEventListModule,
   CommunicationEventWorkTask.CommunicationEventWorkTaskModule,
   InventoryItemTransactionEdit.InventoryItemTransactionEditModule,
@@ -90,6 +93,7 @@ const modules = [
   SerialisedItemList.SerialisedItemListModule,
   SerialisedItemOverview.SerialisedItemOverviewModule,
   ShipmentList.ShipmentListModule,
+  ShipmentOverview.ShipmentOverviewModule,
   TaskAssignmentList.TaskListModule,
   UnifiedGoodList.UnifiedGoodListModule,
   UnifiedGoodOverview.UnifiedGoodOverviewModule,
@@ -164,7 +168,8 @@ export const routes: Routes = [
         path: 'shipment',
         children: [
           { path: 'shipments', component: ShipmentList.ShipmentListComponent },
-          { path: 'shipment/:id', component: WorkTaskOverview.WorkTaskOverviewComponent },
+          { path: 'shipment/:id', component: ShipmentOverview.ShipmentOverviewComponent },
+          { path: 'carriers', component: CarrierList.CarrierListComponent },
         ],
       },
 
