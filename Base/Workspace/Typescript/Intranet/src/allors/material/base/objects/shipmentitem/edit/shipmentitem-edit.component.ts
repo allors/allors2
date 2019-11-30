@@ -65,7 +65,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
               include: {
                 SyncedShipment: x,
                 Good: x,
-                Part: x
+                Part: x,
+                SerialisedItem: x
               }
             }),
             pull.ShipmentItem({
@@ -94,7 +95,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.shipment = loaded.objects.Shipment as Shipment;
         this.orderShipments = loaded.collections.OrderShipments as OrderShipment[];
         this.goods = loaded.collections.NonUnifiedGoods as NonUnifiedGood[];
 
@@ -109,7 +109,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           if (this.shipmentItem.Good) {
             this.previousGood = this.shipmentItem.Good;
 
-          } 
+          }
 
           if (this.shipmentItem.CanWriteQuantity) {
             this.title = 'Edit Shipment Order Item';
