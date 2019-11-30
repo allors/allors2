@@ -1,25 +1,27 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterModule } from '@angular/router';
 
+import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
+import { AllorsMaterialChipsModule } from '../../../../core/components/role/chips';
+import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
 import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
@@ -28,25 +30,20 @@ import { AllorsMaterialSlideToggleModule } from '../../../../core/components/rol
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
-import { CustomerShipmentOverviewDetailModule } from '../../customershipment/overview/detail/customershipment-overview-detail.module';
-import { ShipmentOverviewSummaryModule } from './summary/shipment-overview-summary.module';
-import { ShipmentItemOverviewPanelModule } from '../../shipmentitem/overview/panel/shipmentitem-overview-panel.module';
-
-export { ShipmentOverviewComponent } from './shipment-overview.component';
-import { ShipmentOverviewComponent } from './shipment-overview.component';
+import { ShipmentItemEditComponent } from './shipmentitem-edit.component';
+export { ShipmentItemEditComponent } from './shipmentitem-edit.component';
 
 @NgModule({
   declarations: [
-    ShipmentOverviewComponent,
+    ShipmentItemEditComponent,
   ],
   exports: [
-    ShipmentOverviewComponent,
+    ShipmentItemEditComponent,
   ],
   imports: [
-    CustomerShipmentOverviewDetailModule,
-    ShipmentOverviewSummaryModule,
-    ShipmentItemOverviewPanelModule,
-
+    AllorsMaterialAutoCompleteModule,
+    AllorsMaterialChipsModule,
+    AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
@@ -54,29 +51,26 @@ import { ShipmentOverviewComponent } from './shipment-overview.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-
+    CommonModule,
+    FormsModule,
     MatButtonModule,
-    MatButtonToggleModule,
     MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
+    MatDatepickerModule,
+    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
     MatMenuModule,
     MatRadioModule,
     MatSelectModule,
+    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-
-    CommonModule,
-    FormsModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class ShipmentOverviewModule { }
+export class ShipmentItemEditModule { }

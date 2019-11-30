@@ -94,6 +94,16 @@ namespace Allors.Repository
         public ShipmentItem[] InResponseToShipmentItems { get; set; }
 
         #region Allors
+        [Id("4B2F0349-ECCE-4D24-B8A7-BB917B86F0F8")]
+        [AssociationId("7E08D29C-230C-4668-84A5-C15633DD805E")]
+        [RoleId("8230E674-BFAD-47C9-88D6-D4D16DC9D913")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public SerialisedItem SerialisedItem { get; set; }
+
+        #region Allors
         [Id("b8ca6fae-0866-4806-9ffd-64d5d2b978f9")]
         [AssociationId("2a9e81f6-6009-4706-a0d0-cd180cb825e6")]
         [RoleId("31227051-0164-40e7-9e37-d1b31719e483")]
@@ -131,6 +141,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Synced]
+        [Workspace]
         public Shipment SyncedShipment { get; set; }
 
         #region inherited methods

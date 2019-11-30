@@ -22,6 +22,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public OrderItem OrderItem { get; set; }
 
         #region Allors
@@ -32,6 +33,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public ShipmentItem ShipmentItem { get; set; }
 
         #region Allors
@@ -42,6 +44,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal Quantity { get; set; }
 
         #region inherited methods

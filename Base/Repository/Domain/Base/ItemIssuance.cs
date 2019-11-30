@@ -67,6 +67,17 @@ namespace Allors.Repository
         [Scale(2)]
         public decimal Quantity { get; set; }
 
+        #region Allors
+        [Id("8DCB7F3A-C47C-4276-9107-2DB60609EE4A")]
+        [AssociationId("B093350B-1D10-4917-8B3E-DE48DF8BE0EF")]
+        [RoleId("7B24A23C-6A5C-43F1-9AA6-5A405BABB80F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Derived]
+        [Workspace]
+        public InventoryItemTransaction[] InventoryItemTransactions { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

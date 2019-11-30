@@ -770,6 +770,21 @@ namespace Allors.Domain
                                         .WithContentsDescription($"{orderItem.QuantityRequestsShipping} * {good}")
                                         .Build();
 
+                                    if (orderItem.ExistSerialisedItem)
+                                    {
+                                        shipmentItem.SerialisedItem = orderItem.SerialisedItem;
+                                    }
+
+                                    //if (orderItem.ExistReservedFromNonSerialisedInventoryItem)
+                                    //{
+                                    //    shipmentItem.AddInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem);
+                                    //}
+
+                                    //if (orderItem.ExistReservedFromSerialisedInventoryItem)
+                                    //{
+                                    //    shipmentItem.AddInventoryItem(orderItem.ReservedFromSerialisedInventoryItem);
+                                    //}
+
                                     pendingShipment.AddShipmentItem(shipmentItem);
                                 }
 
@@ -847,6 +862,11 @@ namespace Allors.Domain
                             .WithInternalComment(orderItem.InternalComment)
                             .WithMessage(orderItem.Message)
                             .Build();
+
+                        if (orderItem.ExistSerialisedItem)
+                        {
+                            invoiceItem.SerialisedItem = orderItem.SerialisedItem;
+                        }
 
                         salesInvoice.AddSalesInvoiceItem(invoiceItem);
 

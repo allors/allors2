@@ -18,9 +18,11 @@
 
       <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
 
-        <customershipment-overview-detail></customershipment-overview-detail>
-
-        <!-- <shipmentitem-overview-panel></shipmentitem-overview-panel> -->
+        <div *ngIf="customerShipment">
+          <customershipment-overview-detail></customershipment-overview-detail>
+        </div>
+        
+        <shipmentitem-overview-panel></shipmentitem-overview-panel>
       </div>
 
     </div>
