@@ -1,11 +1,7 @@
-using System.Linq;
-using Allors.Domain;
-using Xunit;
-
 namespace src.allors.material.@base.objects.organisation.create
 {
-    using OpenQA.Selenium;
-    using Components;
+    using Allors.Domain;
+    using Xunit;
 
     public static partial class OrganisationCreateComponentExtensions
     {
