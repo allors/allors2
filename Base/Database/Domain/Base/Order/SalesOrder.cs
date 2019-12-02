@@ -625,16 +625,6 @@ namespace Allors.Domain
                 this.CanInvoice = false;
             }
 
-            if (!this.CanShip)
-            {
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
-            }
-
-            if (!this.CanInvoice)
-            {
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
-            }
-
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
                 Equals(this.Store.BillingProcess, new BillingProcesses(this.Strategy.Session).BillingForShipmentItems))
             {
@@ -655,6 +645,17 @@ namespace Allors.Domain
             if (this.CanShip)
             {
                 this.Ship();
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
+            }
+
+            if (!this.CanShip)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
+            }
+
+            if (!this.CanInvoice)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
         }
 
@@ -761,7 +762,7 @@ namespace Allors.Domain
                                 if (shipmentItem != null)
                                 {
                                     shipmentItem.Quantity += orderItem.QuantityRequestsShipping;
-                                    shipmentItem.ContentsDescription = $"{shipmentItem.Quantity} * {good}";
+                                    shipmentItem.ContentsDescription = $"{shipmentItem.Quantity} * {good.Name}";
                                 }
                                 else
                                 {
@@ -805,6 +806,7 @@ namespace Allors.Domain
                         }
 
                         shipments.Add(pendingShipment);
+                        this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
                     }
                 }
             }

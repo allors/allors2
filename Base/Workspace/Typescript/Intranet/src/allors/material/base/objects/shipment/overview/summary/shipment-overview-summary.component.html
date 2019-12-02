@@ -23,8 +23,6 @@
     <button *ngIf="customerShipment && customerShipment.CanExecuteHold" mat-button (click)="hold()">Hold</button>
     <button *ngIf="customerShipment && customerShipment.CanExecuteContinue" mat-button (click)="continue()">Continue</button>
     <button *ngIf="customerShipment && customerShipment.CanExecuteShip" mat-button (click)="ship()">Ship</button>
-    <button *ngIf="shipment.CanExecuteInvoice" mat-button (click)="invoice()">Create
-      Invoice</button>
   </mat-card-actions>
 
 </mat-card>
