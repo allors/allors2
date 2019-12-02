@@ -3,9 +3,6 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Domain.TestPopulation;
-using src.allors.material.@base.objects.organisation.create;
-
 namespace Tests.OrganisationTests
 {
     using System.Linq;
@@ -66,8 +63,6 @@ namespace Tests.OrganisationTests
             Assert.Equal(after.Length, before.Length);
 
             organisation = after.First(v => v.Id.Equals(id));
-
-
         }
     }
 }

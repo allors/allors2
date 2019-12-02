@@ -1,4 +1,4 @@
-// <copyright file="PersonEditTest.cs" company="Allors bvba">
+// <copyright file="PersonCreateTest.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -9,15 +9,14 @@ namespace Tests.PersonTests
     using Allors.Domain;
     using Components;
     using src.allors.material.@base.objects.person.list;
-    using src.allors.material.@base.objects.person.overview;
     using Xunit;
 
     [Collection("Test collection")]
-    public class PersonEditTest : Test
+    public class PersonCreateTest : Test
     {
         private readonly PersonListComponent people;
 
-        public PersonEditTest(TestFixture fixture)
+        public PersonCreateTest(TestFixture fixture)
             : base(fixture)
         {
             this.Login();
@@ -25,25 +24,20 @@ namespace Tests.PersonTests
         }
 
         [Fact]
-        public void Edit()
+        public void Create()
         {
             var before = new People(this.Session).Extent().ToArray();
 
-            var person = before.First(v => v.PartyName.Equals("John Doe"));
-            var id = person.Id;
+            var personCreate = this.people.CreatePerson();
 
-            this.people.Table.DefaultAction(person);
-            var personOverview = new PersonOverviewComponent(this.people.Driver);
-            var personOverviewDetail = personOverview.PersonOverviewDetail.Click();
-
-            personOverviewDetail.Salutation.Set(new Salutations(this.Session).Mr.Name)
+            personCreate
+                .Salutation.Set(new Salutations(this.Session).Mr.Name)
                 .FirstName.Set("Jos")
                 .MiddleName.Set("de")
                 .LastName.Set("Smos")
                 .Function.Set("CEO")
                 .Gender.Set(new GenderTypes(this.Session).Male.Name)
                 .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
-                .Comment.Set("unpleasant person")
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -51,9 +45,9 @@ namespace Tests.PersonTests
 
             var after = new People(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length);
+            Assert.Equal(after.Length, before.Length + 1);
 
-            person = after.First(v => v.Id.Equals(id));
+            var person = after.Except(before).First();
 
             Assert.Equal(new Salutations(this.Session).Mr, person.Salutation);
             Assert.Equal("Jos", person.FirstName);
@@ -62,7 +56,6 @@ namespace Tests.PersonTests
             Assert.Equal("CEO", person.Function);
             Assert.Equal(new GenderTypes(this.Session).Male, person.Gender);
             Assert.Equal(this.Session.GetSingleton().AdditionalLocales.First, person.Locale);
-            Assert.Equal("unpleasant person", person.Comment);
         }
     }
 }
