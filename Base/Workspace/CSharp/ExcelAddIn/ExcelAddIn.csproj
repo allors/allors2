@@ -21,7 +21,7 @@
     <ProjectTypeGuids>{BAA0C2D2-18E2-41B9-852F-F413020CAA33};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{97DC9291-7F7C-49F0-9CA3-7919B72888C8}</ProjectGuid>
+    <ProjectGuid>{4EAB9F95-4A2F-4357-ACE8-2BC7890DB38D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>ExcelAddIn</RootNamespace>
@@ -156,72 +156,9 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Client.cs">
-      <Link>Core\Client.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Commands.cs">
-      <Link>Core\Commands.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Data\Row.cs">
-      <Link>Core\Data\Row.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Data\Table.cs">
-      <Link>Core\Data\Table.cs</Link>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Extensions\DataTableExtensions.cs">
-      <Link>Core\Extensions\DataTableExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Extensions\ErrorResponseExtensions.cs">
-      <Link>Core\Extensions\ErrorResponseExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Extensions\ExceptionExtensions.cs">
-      <Link>Core\Extensions\ExceptionExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Extensions\WorksheetExtensions.cs">
-      <Link>Core\Extensions\WorksheetExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Host.cs">
-      <Link>Core\Host.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Login\LoginForm.cs">
-      <Link>Core\Login\LoginForm.cs</Link>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Login\LoginForm.designer.cs">
-      <Link>Core\Login\LoginForm.designer.cs</Link>
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Mediator.cs">
-      <Link>Core\Mediator.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Sheet.cs">
-      <Link>Core\Sheet.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Sheets.cs">
-      <Link>Core\Sheets.cs</Link>
-    </Compile>
-    <Compile Include="AddInManager.cs" />
-    <Compile Include="Base\Commands.cs" />
-    <Compile Include="Base\Mediator.cs" />
-    <Compile Include="Base\PurchaseInvoices\DataSet.Designer.cs" />
-    <Compile Include="Base\PurchaseInvoices\PurchaseInvoicesSheet.cs" />
-    <Compile Include="Base\Relation\Customers\CustomersSheet.cs" />
-    <Compile Include="Base\Relation\Customers\DataSet.Designer.cs" />
-    <Compile Include="Base\Relation\People\DataSet.Designer.cs" />
-    <Compile Include="Base\Relation\People\PeopleSheet.cs" />
-    <Compile Include="Base\Relation\SalesInvoicesOverdue\DataSet.Designer.cs" />
-    <Compile Include="Base\Relation\SalesInvoicesOverdue\SalesInvoicesOverdueSheet.cs" />
-    <Compile Include="Base\Sheet.cs" />
-    <Compile Include="Base\Sheets.cs" />
-    <Compile Include="Config.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="..\..\..\..\Core\Workspace\CSharp\ExcelAddIn\Core\Login\LoginForm.resx">
-      <Link>Core\Login\LoginForm.resx</Link>
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -231,42 +168,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Ribbon.resx">
-      <DependentUpon>Ribbon.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="Base\PurchaseInvoices\DataSet.xsc">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Base\PurchaseInvoices\DataSet.xsd" />
-    <None Include="Base\PurchaseInvoices\DataSet.xss">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Base\Relation\Customers\DataSet.xsc">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Base\Relation\Customers\DataSet.xsd" />
-    <None Include="Base\Relation\Customers\DataSet.xss">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Base\Relation\People\DataSet.xsc">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Base\Relation\People\DataSet.xsd" />
-    <None Include="Base\Relation\People\DataSet.xss">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Base\Relation\SalesInvoicesOverdue\DataSet.xsc">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Base\Relation\SalesInvoicesOverdue\DataSet.xsd" />
-    <None Include="Base\Relation\SalesInvoicesOverdue\DataSet.xss">
-      <DependentUpon>DataSet.xsd</DependentUpon>
-    </None>
     <None Include="ExcelAddIn_TemporaryKey.pfx" />
-    <None Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -274,12 +176,6 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Ribbon.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Ribbon.Designer.cs">
-      <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
@@ -292,43 +188,6 @@
     </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Protocol\Allors.Protocol\Allors.Protocol.csproj">
-      <Project>{caa54ba6-a4f9-4ada-98b6-833df07b4824}</Project>
-      <Name>Allors.Protocol</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters.Remote\Allors.Workspace.Adapters.Remote.csproj">
-      <Project>{6ac69e65-1e09-4f93-b26c-696e2b1a64a3}</Project>
-      <Name>Allors.Workspace.Adapters.Remote</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Adapters.csproj">
-      <Project>{589fee18-80a2-49d1-adfc-49d20891d0ba}</Project>
-      <Name>Allors.Workspace.Adapters</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj">
-      <Project>{81679fa6-2e9b-42e3-aae3-210e7d21e82e}</Project>
-      <Name>Allors.Workspace</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Domain\Workspace.Domain.csproj">
-      <Project>{4ad34589-ae2f-4904-8fbf-438e27640bec}</Project>
-      <Name>Workspace.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Meta\Workspace.Meta.csproj">
-      <Project>{d7f1b1a7-965a-4ba7-a0d2-33d7a3d4b29a}</Project>
-      <Name>Workspace.Meta</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Nito.AsyncEx.StrongNamed">
-      <Version>4.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="NLog">
-      <Version>4.6.8</Version>
-    </PackageReference>
-    <PackageReference Include="System.Net.Http">
-      <Version>4.3.4</Version>
-    </PackageReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -340,7 +199,7 @@
     <ManifestKeyFile>ExcelAddIn_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>92405655F4D85E6C56F31DD3EE4C86DA0B002368</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0324873C244A2921B2BADB0B7E9A148D91429756</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
