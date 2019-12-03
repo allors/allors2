@@ -12,6 +12,7 @@ import { ObjectData, ObjectService } from '../../../../../../material/core/servi
 interface Row extends TableRow {
   object: ShipmentItem;
   item: string;
+  state: string;
   quantity: string;
   picked: string;
   shipped: string;
@@ -37,6 +38,7 @@ export class ShipmentItemOverviewPanelComponent extends TestScope {
 
   delete: Action;
   edit: Action;
+  ship: Action;
 
   get createData(): ObjectData {
     return {
@@ -69,12 +71,14 @@ export class ShipmentItemOverviewPanelComponent extends TestScope {
 
     this.delete = deleteService.delete(panel.manager.context);
     this.edit = editService.edit();
+    this.ship = methodService.create(allors.context, this.m.ShipmentItem.Ship, { name: 'Ship' });
 
     const sort = true;
     this.table = new Table({
       selection: true,
       columns: [
         { name: 'item', sort },
+        { name: 'state', sort },
         { name: 'quantity', sort },
         { name: 'picked', sort },
         { name: 'shipped', sort },
@@ -82,6 +86,7 @@ export class ShipmentItemOverviewPanelComponent extends TestScope {
       actions: [
         this.edit,
         this.delete,
+        this.ship
       ],
       defaultAction: this.edit,
       autoSort: true,
@@ -103,6 +108,7 @@ export class ShipmentItemOverviewPanelComponent extends TestScope {
           fetch: {
             ShipmentItems: {
               include: {
+                ShipmentItemState: x,
                 Good: x,
                 Part: x
               }
@@ -125,6 +131,7 @@ export class ShipmentItemOverviewPanelComponent extends TestScope {
         return {
           object: v,
           item: (v.Good && v.Good.Name) || (v.Part && v.Part.Name) || '',
+          state: `${v.ShipmentItemState && v.ShipmentItemState.Name}`,
           quantity: v.Quantity,
           picked: v.QuantityPicked,
           shipped: v.QuantityShipped,

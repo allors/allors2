@@ -31,6 +31,14 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistShipmentItemState)
+            {
+                this.ShipmentItemState= new ShipmentItemStates(this.Strategy.Session).Created;
+            }
+        }
+
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;

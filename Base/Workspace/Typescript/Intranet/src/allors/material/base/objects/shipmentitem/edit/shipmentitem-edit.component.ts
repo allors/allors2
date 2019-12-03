@@ -66,7 +66,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
                 SyncedShipment: x,
                 Good: x,
                 Part: x,
-                SerialisedItem: x
+                SerialisedItem: x,
+                ShipmentItemState: x
               }
             }),
             pull.ShipmentItem({

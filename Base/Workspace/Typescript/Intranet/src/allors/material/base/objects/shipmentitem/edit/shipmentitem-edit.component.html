@@ -4,6 +4,11 @@
 
   <mat-dialog-content>
 
+    <div class="row" *ngIf="!shipmentItem.isNew">
+      <a-mat-static class="col-md" [object]="shipmentItem" [roleType]="m.ShipmentItem.ShipmentItemState" display="Name"
+                    label="Status"></a-mat-static>
+    </div>
+
     <div class="row">
       <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && orderShipments.length == 0" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good"
                           [options]="goods" display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
