@@ -168,11 +168,11 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty?.ShippingAddress;
             }
 
-            if (this.ShipmentItems.All(v => v.ShipmentItemState.Shipped))
+            if (this.ExistShipmentItems && this.ShipmentItems.All(v => v.ShipmentItemState.Shipped))
             {
                 this.ShipmentState = new ShipmentStates(this.strategy.Session).Shipped;
             }
-            else if (this.ShipmentItems.Any(v => v.ShipmentItemState.Shipped))
+            else if (this.ExistShipmentItems && this.ShipmentItems.Any(v => v.ShipmentItemState.Shipped))
             {
                 this.ShipmentState = new ShipmentStates(this.strategy.Session).PartiallyShipped;
             }

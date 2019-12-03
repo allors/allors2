@@ -747,12 +747,15 @@ namespace Allors.Domain
                         {
                             if (orderItem.ExistProduct && orderItem.ShipToAddress.Equals(address.Key) && orderItem.QuantityRequestsShipping > 0)
                             {
-                                var good = orderItem.Product as UnifiedGood;
+                                var good = orderItem.Product as Good;
+                                var nonUnifiedGood = orderItem.Product as NonUnifiedGood;
+                                var inventoryItemKind = orderItem.Product is UnifiedGood unifiedGood ? unifiedGood.InventoryItemKind : nonUnifiedGood?.Part.InventoryItemKind;
 
                                 ShipmentItem shipmentItem = null;
                                 foreach (ShipmentItem item in pendingShipment.ShipmentItems)
                                 {
-                                    if (good.InventoryItemKind.Equals(new InventoryItemKinds(this.Session()).NonSerialised)
+                                    if (inventoryItemKind != null
+                                        && inventoryItemKind.Equals(new InventoryItemKinds(this.Session()).NonSerialised)
                                         && item.Good.Equals(good)
                                         && !item.ItemIssuancesWhereShipmentItem.Any(v => v.PickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked)))
                                     {
