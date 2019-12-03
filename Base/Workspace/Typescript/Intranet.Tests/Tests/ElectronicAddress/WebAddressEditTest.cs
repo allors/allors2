@@ -27,36 +27,6 @@ namespace Tests.ElectronicAddressTests
         }
 
         [Fact]
-        public void Create()
-        {
-            var before = new WebAddresses(this.Session).Extent().ToArray();
-
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John Doe"));
-
-            this.personListPage.Table.DefaultAction(person);
-            var webAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateWebAddress();
-
-            webAddressCreate
-                .ContactPurposes.Toggle("General Email Address")
-                .ElectronicAddressString.Set("wwww.allors.com")
-                .Description.Set("description")
-                .SAVE.Click();
-
-            this.Driver.WaitForAngular();
-            this.Session.Rollback();
-
-            var after = new WebAddresses(this.Session).Extent().ToArray();
-
-            Assert.Equal(after.Length, before.Length + 1);
-
-            var contactMechanism = after.Except(before).First();
-
-            Assert.Equal("wwww.allors.com", contactMechanism.ElectronicAddressString);
-            Assert.Equal("description", contactMechanism.Description);
-        }
-
-        [Fact]
         public void Edit()
         {
             var extent = new People(this.Session).Extent();
