@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\custom\Workspace\CSharp\Meta\Workspace.Meta.csproj" />
+    <ProjectReference Include="..\..\..\..\Core\Workspace\CSharp\Meta\Workspace.Meta.csproj" />
     <ProjectReference Include="..\Adapters\Allors.Workspace.Adapters.Remote\Allors.Workspace.Adapters.Remote.csproj" />
   </ItemGroup>
 
