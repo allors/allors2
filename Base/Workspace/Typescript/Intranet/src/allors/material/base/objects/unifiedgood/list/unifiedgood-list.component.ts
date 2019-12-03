@@ -102,7 +102,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
 
     const categorySearch = new SearchFactory({
       objectType: m.ProductCategory,
-      roleTypes: [m.ProductCategory.displayName],
+      roleTypes: [m.ProductCategory.DisplayName],
     });
 
     const idSearch = new SearchFactory({
@@ -112,7 +112,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
 
     this.filterService.init(predicate,
       {
-        category: { search: categorySearch, display: (v: ProductCategory) => v && v.Name },
+        category: { search: categorySearch, display: (v: ProductCategory) => v && v.DisplayName },
         identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
         brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
         model: { search: modelSearch, display: (v: Model) => v && v.Name },
@@ -181,7 +181,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
             name: v.Name,
             id: v.ProductIdentifications
                 .find(p => p.ProductIdentificationType.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f' || p.ProductIdentificationType.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6').Identification,
-            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.displayName).join(', '),
+            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.DisplayName).join(', '),
             qoh: v.QuantityOnHand,
             photos: v.Photos.length.toString(),
           } as Row;
