@@ -88,6 +88,11 @@ namespace Allors.Domain
 
         public void BaseOnBuild(ObjectOnBuild method)
         {
+            if (!this.ExistAutoGenerateShipment)
+            {
+                this.AutoGenerateShipment = true;
+            }
+
             if (!this.ExistSalesOrderCounter)
             {
                 this.SalesOrderCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();

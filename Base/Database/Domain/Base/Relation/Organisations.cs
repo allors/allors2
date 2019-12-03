@@ -48,6 +48,7 @@ namespace Allors.Domain
             string creditNoteNumberPrefix,
             bool isImmediatelyPicked,
             bool isAutomaticallyShipped,
+            bool autoGenerateShipment,
             bool useCreditNoteSequence,
             int? requestCounterValue,
             int? quoteCounterValue,
@@ -218,6 +219,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithIsImmediatelyPicked(isImmediatelyPicked)
                 .WithIsAutomaticallyShipped(isAutomaticallyShipped)
+                .WithAutoGenerateShipment(autoGenerateShipment)
                 .WithUseCreditNoteSequence(useCreditNoteSequence)
                 .WithInternalOrganisation(internalOrganisation)
                 .Build();
