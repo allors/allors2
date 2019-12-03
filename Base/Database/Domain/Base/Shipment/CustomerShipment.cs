@@ -45,7 +45,8 @@ namespace Allors.Domain
                 {
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem && salesOrderItem.SalesOrderWhereSalesOrderItem.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).OnHold))
+                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem
+                            && salesOrderItem.SalesOrderWhereSalesOrderItem.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).OnHold))
                         {
                             return false;
                         }
@@ -254,6 +255,8 @@ namespace Allors.Domain
                             inventoryAssignment.Quantity -= orderShipment.Quantity;
                         }
                     }
+
+                    shipmentItem.ShipmentItemState = new ShipmentItemStates(this.Strategy.Session).Shipped;
                 }
             }
         }
