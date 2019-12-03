@@ -36,6 +36,8 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
 
+            this.DisplayName = this.Name;
+
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
             {
                 this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
@@ -68,6 +70,10 @@ namespace Allors.Domain
                 }
 
                 this.PrimaryAncestors = primaryAncestors.ToArray();
+
+                primaryAncestors.Reverse();
+                primaryAncestors.Add(this);
+                this.DisplayName = string.Join("/", primaryAncestors.Select(v => v.Name));
             }
 
             this.Children = this.ProductCategoriesWherePrimaryParent.Union(this.ProductCategoriesWhereSecondaryParent).ToArray();

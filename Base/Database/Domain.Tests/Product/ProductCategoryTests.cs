@@ -88,6 +88,44 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenProductCategory_WhenDeriving_ThenDisplayNameIsSet()
+        {
+            var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithName("1")
+                .Build();
+            var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithName("2")
+                .Build();
+            var productCategory11 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.1")
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
+                .Build();
+            var productCategory12 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2")
+                .WithPrimaryParent(productCategory1)
+                .WithSecondaryParent(productCategory2)
+                .Build();
+            var productCategory111 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.1.1")
+                .WithPrimaryParent(productCategory11)
+                .Build();
+            var productCategory121 = new ProductCategoryBuilder(this.Session)
+                .WithName("1.2.1")
+                .WithPrimaryParent(productCategory12)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal("1", productCategory1.DisplayName);
+            Assert.Equal("2", productCategory2.DisplayName);
+            Assert.Equal("1/1.1", productCategory11.DisplayName);
+            Assert.Equal("1/1.2", productCategory12.DisplayName);
+            Assert.Equal("1/1.1/1.1.1", productCategory111.DisplayName);
+            Assert.Equal("1/1.2/1.2.1", productCategory121.DisplayName);
+        }
+
+        [Fact]
         public void GivenProductCategory_WhenNewParentsAreInserted_ThenProductCategoriesWhereDescendantAreRecalculated()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
