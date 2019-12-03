@@ -1,20 +1,22 @@
-using System.Linq;
-using Allors.Excel;
-using Application.Sheets;
-
 namespace Application
 {
     using System.Collections.Generic;
-    using System.Windows.Forms;
+    using System.Linq;
     using System.Threading.Tasks;
+    using Allors.Excel;
+    using Application.Sheets;
     using Dipu.Excel;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class Program : IProgram
     {
-        public Program(Client client)
+        public Program(ServiceProvider serviceProvider, Client client)
         {
-            Client = client;
+            this.ServiceProvider = serviceProvider;
+            this.Client = client;
         }
+
+        public ServiceProvider ServiceProvider { get; }
 
         public Client Client { get; }
 
@@ -50,7 +52,7 @@ namespace Application
         #region Workbook
         public async Task OnNew(IWorkbook workbook)
         {
-           this.Workbooks.Add(workbook);
+            this.Workbooks.Add(workbook);
         }
 
         public void OnClose(IWorkbook workbook, ref bool cancel)

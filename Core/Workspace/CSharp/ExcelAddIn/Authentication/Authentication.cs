@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -15,10 +15,10 @@ namespace ExcelAddIn
 
         public Authentication(Ribbon ribbon, RemoteDatabase database, Client client, Configuration configuration)
         {
-            Ribbon = ribbon;
-            Database = database;
-            Client = client;
-            Configuration = configuration;
+            this.Ribbon = ribbon;
+            this.Database = database;
+            this.Client = client;
+            this.Configuration = configuration;
         }
 
         public Ribbon Ribbon { get; }
@@ -55,10 +55,7 @@ namespace ExcelAddIn
             this.Database.HttpClient.DefaultRequestHeaders.Authorization = null;
         }
 
-        public async Task Login()
-        {
-            await this.Login(this.Database);
-        }
+        public async Task Login() => await this.Login(this.Database);
 
         private async Task Login(RemoteDatabase database)
         {
@@ -120,7 +117,7 @@ namespace ExcelAddIn
             }
             catch (Exception e)
             {
-                Logger.Error(e);
+                e.Handle();
             }
         }
     }

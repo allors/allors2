@@ -177,6 +177,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dipu.Excel", "lib\excel\Dip
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Base\Workspace\CSharp\ExcelAddIn\ExcelAddIn.csproj", "{4EAB9F95-4A2F-4357-ACE8-2BC7890DB38D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dipu.Excel.Interop", "lib\excel\Dipu.Excel.Interop\Dipu.Excel.Interop.csproj", "{1515E412-6F37-4A52-9912-41B8CBC8DF6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -427,6 +429,10 @@ Global
 		{4EAB9F95-4A2F-4357-ACE8-2BC7890DB38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EAB9F95-4A2F-4357-ACE8-2BC7890DB38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EAB9F95-4A2F-4357-ACE8-2BC7890DB38D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1515E412-6F37-4A52-9912-41B8CBC8DF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1515E412-6F37-4A52-9912-41B8CBC8DF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1515E412-6F37-4A52-9912-41B8CBC8DF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1515E412-6F37-4A52-9912-41B8CBC8DF6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -515,6 +521,7 @@ Global
 		{F8B4F2CE-D23F-44D9-894E-4F561109AAF1} = {50A1B7BA-85A8-4AD0-B90C-829A756CC0E5}
 		{30132D11-2F56-4D32-AF78-1AB957793EB4} = {049E4C58-9FCA-4181-BDB4-64405A87AD49}
 		{4EAB9F95-4A2F-4357-ACE8-2BC7890DB38D} = {C1398D8A-D1F2-4726-8160-91701961E78B}
+		{1515E412-6F37-4A52-9912-41B8CBC8DF6D} = {049E4C58-9FCA-4181-BDB4-64405A87AD49}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00D78C3D-8536-4549-B1EE-C19BD0C50387}

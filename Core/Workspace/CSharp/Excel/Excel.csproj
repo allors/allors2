@@ -34,18 +34,14 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions.cs" />
     <Compile Include="Allors\Core\Binding\RoleTypeBinding.cs" />
     <Compile Include="Allors\Core\Client.cs" />
+    <Compile Include="Allors\Core\Services\IMessageService.cs" />
+    <Compile Include="Allors\Core\Services\IErrorService.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,10 +55,6 @@
     <ProjectReference Include="..\..\..\..\Platform\Protocol\Allors.Protocol\Allors.Protocol.csproj">
       <Project>{caa54ba6-a4f9-4ada-98b6-833df07b4824}</Project>
       <Name>Allors.Protocol</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters.Remote\Allors.Workspace.Adapters.Remote.csproj">
-      <Project>{6ac69e65-1e09-4f93-b26c-696e2b1a64a3}</Project>
-      <Name>Allors.Workspace.Adapters.Remote</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Adapters.csproj">
       <Project>{589fee18-80a2-49d1-adfc-49d20891d0ba}</Project>
@@ -81,6 +73,10 @@
       <Name>Workspace.Meta</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>3.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
