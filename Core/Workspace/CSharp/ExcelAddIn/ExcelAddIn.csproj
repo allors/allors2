@@ -181,21 +181,6 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="..\..\..\..\lib\excel\Dipu.Excel.Embedded\AddIn.cs">
-      <Link>Dipu.Excel.Embedded\AddIn.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\lib\excel\Dipu.Excel.Embedded\Cell.cs">
-      <Link>Dipu.Excel.Embedded\Cell.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\lib\excel\Dipu.Excel.Embedded\Cells.cs">
-      <Link>Dipu.Excel.Embedded\Cells.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\lib\excel\Dipu.Excel.Embedded\Workbook.cs">
-      <Link>Dipu.Excel.Embedded\Workbook.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\..\lib\excel\Dipu.Excel.Embedded\Worksheet.cs">
-      <Link>Dipu.Excel.Embedded\Worksheet.cs</Link>
-    </Compile>
     <Compile Include="Authentication\Authentication.cs" />
     <Compile Include="Authentication\LoginForm.cs">
       <SubType>Form</SubType>
@@ -204,9 +189,22 @@
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Errors\ExceptionExtensions.cs" />
+    <Compile Include="Errors\ErrorResponseExtensions.cs" />
+    <Compile Include="Services\MessageService.cs" />
+    <Compile Include="Services\ErrorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Errors\FormAnimator.cs" />
+    <Compile Include="Errors\NativeMethods.cs" />
+    <Compile Include="Errors\Notification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Errors\Notification.designer.cs">
+      <DependentUpon>Notification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Errors\Toaster.cs" />
     <EmbeddedResource Include="Authentication\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -219,6 +217,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Errors\Notification.resx">
+      <DependentUpon>Notification.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config">
       <TransformOnBuild>true</TransformOnBuild>
     </None>
@@ -256,9 +257,17 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\lib\excel\Dipu.Excel.Interop\Dipu.Excel.Interop.csproj">
+      <Project>{1515e412-6f37-4a52-9912-41b8cbc8df6d}</Project>
+      <Name>Dipu.Excel.Interop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\lib\excel\Dipu.Excel\Dipu.Excel.csproj">
       <Project>{f8a90a68-bb8b-47a3-8efe-b1ee0cbba366}</Project>
       <Name>Dipu.Excel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Platform\Protocol\Allors.Protocol\Allors.Protocol.csproj">
+      <Project>{caa54ba6-a4f9-4ada-98b6-833df07b4824}</Project>
+      <Name>Allors.Protocol</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters.Remote\Allors.Workspace.Adapters.Remote.csproj">
       <Project>{6ac69e65-1e09-4f93-b26c-696e2b1a64a3}</Project>
@@ -289,6 +298,9 @@
     <EmbeddedResource Include="Ribbon.xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>3.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.SlowCheetah">
       <Version>3.2.26</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -313,6 +325,7 @@
       <Version>4.6.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -47,12 +47,12 @@ namespace Allors.Workspace.Blazor.Validation
             };
         }
 
-        protected void AssertExists(IField field, ValidationMessageStore messages, PropertyType propertyType)
+        protected void AssertExists(IField field, ValidationMessageStore messages, IPropertyType propertyType)
         {
             if (field.PropertyType == propertyType)
             {
                 var model = field.Object;
-                var roleType = field.PropertyType as RoleType;
+                var roleType = field.PropertyType as IRoleType;
 
                 if (roleType?.IsOne == true)
                 {
@@ -71,12 +71,12 @@ namespace Allors.Workspace.Blazor.Validation
             }
         }
 
-        protected void AssertNotExists(IField field, ValidationMessageStore messages, PropertyType propertyType)
+        protected void AssertNotExists(IField field, ValidationMessageStore messages, IPropertyType propertyType)
         {
             if (field.PropertyType == propertyType)
             {
                 var model = field.Object;
-                var roleType = field.PropertyType as RoleType;
+                var roleType = field.PropertyType as IRoleType;
 
                 if (roleType?.IsOne == true)
                 {

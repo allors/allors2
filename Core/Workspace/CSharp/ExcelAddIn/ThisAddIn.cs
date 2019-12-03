@@ -1,18 +1,20 @@
-using System;
-using System.Net.Http;
-using System.Threading;
-using System.Windows.Forms;
-using Allors.Excel;
-using Allors.Workspace;
-using Allors.Workspace.Meta;
-using Allors.Workspace.Domain;
-using Allors.Workspace.Remote;
-using Dipu.Excel.Embedded;
-using Application;
-using Nito.AsyncEx;
-
 namespace ExcelAddIn
 {
+    using System;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Windows.Forms;
+    using Allors.Excel;
+    using Allors.Workspace;
+    using Allors.Workspace.Domain;
+    using Allors.Workspace.Meta;
+    using Allors.Workspace.Remote;
+    using Application;
+    using Dipu.Excel.Embedded;
+    using Microsoft.Extensions.DependencyInjection;
+    using Nito.AsyncEx;
+    using ObjectFactory = Allors.Workspace.ObjectFactory;
+
     public partial class ThisAddIn
     {
         private RemoteDatabase database;
@@ -27,16 +29,23 @@ namespace ExcelAddIn
                 BaseAddress = new Uri(configuration.AllorsDatabaseAddress),
             };
 
+            var serviceProvider = new ServiceCollection()
+                // TODO: use DI logging
+                //.AddLogging()
+                .AddSingleton<IMessageService, MessageService>()
+                .AddSingleton<IErrorService, ErrorService>()
+                .BuildServiceProvider();
+
             this.database = new RemoteDatabase(httpClient);
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
             var workspace = new Workspace(objectFactory);
             this.Client = new Client(this.database, workspace);
-            var program = new Program(this.Client);
+            var program = new Program(serviceProvider, this.Client);
 
             this.AddIn = new AddIn(this.Application, program);
             this.Ribbon.AddIn = this.AddIn;
             this.Ribbon.Authentication = new Authentication(this.Ribbon, database, this.Client, configuration);
-            await program.OnStart(AddIn);
+            await program.OnStart(this.AddIn);
         });
 
         public Ribbon Ribbon { get; set; }

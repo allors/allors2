@@ -1,17 +1,15 @@
-using System;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using Allors.Workspace;
-using Allors.Workspace.Data;
-using Allors.Workspace.Domain;
-using Allors.Workspace.Meta;
-using Dipu.Excel;
-using Task = System.Threading.Tasks.Task;
-
 namespace Application.Sheets
 {
+    using System;
+    using System.Drawing;
     using Allors.Excel;
+    using Allors.Workspace;
+    using Allors.Workspace.Data;
+    using Allors.Workspace.Domain;
+    using Allors.Workspace.Meta;
+    using Dipu.Excel;
+    using Microsoft.Extensions.DependencyInjection;
+    using Task = System.Threading.Tasks.Task;
 
     public class PeopleSheet
     {
@@ -20,7 +18,10 @@ namespace Application.Sheets
             this.Context = new Context(program.Client.Database, program.Client.Workspace);
             this.Sheet = program.ActiveWorkbook.CreateSheet();
             this.Binder = new Binder(this.Sheet);
-            this.Binder.ToDomained += BinderOnToDomained;
+            this.Binder.ToDomained += this.BinderOnToDomained;
+
+            this.MessageService = program.ServiceProvider.GetRequiredService<IMessageService>();
+            this.ErrorService = program.ServiceProvider.GetRequiredService<IErrorService>();
         }
 
         public Context Context { get; }
@@ -28,6 +29,10 @@ namespace Application.Sheets
         public IWorksheet Sheet { get; }
 
         public Binder Binder { get; set; }
+
+        public IMessageService MessageService { get; set; }
+
+        public IErrorService ErrorService { get; }
 
         public async Task Load()
         {
@@ -94,15 +99,16 @@ namespace Application.Sheets
         private async void BinderOnToDomained(object sender, EventArgs e)
         {
             var response = await this.Context.Save();
-            await this.Load();
             if (response.HasErrors)
             {
-                MessageBox.Show(response.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.ErrorService.Handle(response, this.Context.Session);
             }
             else
             {
-                MessageBox.Show("Successfully saved.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.MessageService.Show("Successfully saved", "Info");
             }
+
+            await this.Load();
         }
     }
 }

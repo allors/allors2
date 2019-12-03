@@ -9,6 +9,8 @@ using Office = Microsoft.Office.Core;
 
 namespace ExcelAddIn
 {
+    using Allors.Excel;
+
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
     {
@@ -75,7 +77,7 @@ namespace ExcelAddIn
             }
             catch (Exception e)
             {
-                Logger.Error(e);
+                e.Handle();
             }
         }
 
@@ -89,15 +91,12 @@ namespace ExcelAddIn
                 }
                 catch (Exception e)
                 {
-                    Logger.Error(e);
+                    e.Handle();
                 }
             }
         }
 
-        public void Ribbon_Load(Office.IRibbonUI ribbonUI)
-        {
-            this.ribbon = ribbonUI;
-        }
+        public void Ribbon_Load(Office.IRibbonUI ribbonUI) => this.ribbon = ribbonUI;
 
         #endregion
 
