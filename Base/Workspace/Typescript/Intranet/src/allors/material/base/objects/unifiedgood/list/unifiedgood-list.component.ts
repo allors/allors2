@@ -102,7 +102,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
 
     const categorySearch = new SearchFactory({
       objectType: m.ProductCategory,
-      roleTypes: [m.ProductCategory.Name],
+      roleTypes: [m.ProductCategory.displayName],
     });
 
     const idSearch = new SearchFactory({

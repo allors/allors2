@@ -68,6 +68,10 @@ namespace Allors.Domain
                 }
 
                 this.PrimaryAncestors = primaryAncestors.ToArray();
+
+                primaryAncestors.Reverse();
+                this.DisplayName = string.Join("/", primaryAncestors.Select(v => v.Name));
+
             }
 
             this.Children = this.ProductCategoriesWherePrimaryParent.Union(this.ProductCategoriesWhereSecondaryParent).ToArray();
