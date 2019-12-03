@@ -8,6 +8,7 @@ namespace ExcelAddIn
     using System;
     using System.Windows.Forms;
     using Allors.Workspace.Remote;
+    using Nito.AsyncEx;
 
     public partial class LoginForm : Form
     {
@@ -26,7 +27,7 @@ namespace ExcelAddIn
 
         public string UserName { get; set; }
 
-        private async void Button1_Click(object sender, EventArgs e)
+        private async void Button1_Click(object sender, EventArgs e) => AsyncContext.Run(async () =>
         {
             this.HideError();
 
@@ -52,7 +53,8 @@ namespace ExcelAddIn
             {
                 this.ShowError("Login failed.");
             }
-        }
+
+        });
 
         private void ShowError(string message)
         {

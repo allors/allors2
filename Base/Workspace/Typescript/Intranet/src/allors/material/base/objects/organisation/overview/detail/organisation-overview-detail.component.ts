@@ -134,8 +134,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
         this.organisation = loaded.objects.Organisation as Organisation;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.locales = loaded.collections.AdditionalLocales as Locale[] || [];
-        this.locales.push(loaded.objects.DefaultLocale as Locale);
+        this.locales = loaded.collections.Locales as Locale[] || [];
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
