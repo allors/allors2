@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using System.Collections.Generic;
+
 namespace Allors.Domain
 {
     using Allors.Meta;
@@ -31,15 +33,22 @@ namespace Allors.Domain
             var @continue = this.Meta.Continue;
             var ship = this.Meta.Ship;
 
+            var except = new HashSet<IOperandType>
+            {
+                this.Meta.ElectronicDocuments.RoleType,
+            };
+
             config.Deny(this.ObjectType, shipped, hold, @continue);
             config.Deny(this.ObjectType, onHold, ship, hold, @continue);
             config.Deny(this.ObjectType, created, hold, @continue);
             config.Deny(this.ObjectType, picked, @continue);
             config.Deny(this.ObjectType, packed, @continue);
 
+            config.DenyExcept(this.ObjectType, shipped, except, Operations.Execute, Operations.Write);
+
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, partiallyShipped, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, shipped, Operations.Execute, Operations.Write);
+            //config.Deny(this.ObjectType, shipped, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, delivered, Operations.Execute, Operations.Write);
         }
     }

@@ -178,6 +178,40 @@ namespace Allors.Domain
             }
         }
 
+        public void DenyExcept(ObjectType objectType, ObjectState objectState, IEnumerable<IOperandType> excepts, params Operations[] operations)
+        {
+            var actualOperations = operations ?? ReadWriteExecute;
+            foreach (var operation in actualOperations)
+            {
+                Dictionary<IOperandType, Permission> permissionByOperandType;
+                switch (operation)
+                {
+                    case Operations.Read:
+                        this.readPermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
+                        break;
+
+                    case Operations.Write:
+                        this.writePermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
+                        break;
+
+                    case Operations.Execute:
+                        this.executePermissionsByObjectTypeId.TryGetValue(objectType.Id, out permissionByOperandType);
+                        break;
+
+                    default:
+                        throw new Exception("Unkown operation: " + operations);
+                }
+
+                if (permissionByOperandType != null)
+                {
+                    foreach (var dictionaryEntry in permissionByOperandType.Where(v => !excepts.Contains(v.Key)))
+                    {
+                        objectState.AddDeniedPermission(dictionaryEntry.Value);
+                    }
+                }
+            }
+        }
+
         public void Grant(Guid roleId, ObjectType objectType, params Operations[] operations)
         {
             if (this.roleById.TryGetValue(roleId, out var role))
