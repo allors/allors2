@@ -6,7 +6,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope, PanelManagerService } from '../../../../../angular';
 import { ObjectData } from '../../../../../material/core/services/object';
-import { Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CustomerShipment, Facility, Locale, ShipmentMethod, Carrier } from '../../../../../domain';
+import { Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CustomerShipment, Facility, Locale, ShipmentMethod, Carrier, ShipmentPackage } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { SaveService, FiltersService } from '../../../../../material';
@@ -108,6 +108,9 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
           this.title = 'Add Customer Shipment';
           this.customerShipment = this.allors.context.create('CustomerShipment') as CustomerShipment;
           this.customerShipment.ShipFromParty = this.internalOrganisation;
+
+          const shipmentPackage = this.allors.context.create('ShipmentPackage') as ShipmentPackage;
+          this.customerShipment.AddShipmentPackage(shipmentPackage);
 
           if (this.facilities.length === 1) {
             this.customerShipment.ShipFromFacility = this.facilities[0];
