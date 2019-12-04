@@ -74,7 +74,7 @@ namespace Allors.Domain
 
         public void BaseOnDeriveCustomerShipmentItem(IDerivation derivation)
         {
-            if (this.ShipmentWhereShipmentItem is CustomerShipment)
+            if (this.ShipmentWhereShipmentItem is CustomerShipment && Equals(this.ShipmentItemState, new ShipmentItemStates(this.Strategy.Session).Shipped))
             {
                 this.QuantityShipped = 0;
                 foreach (PackagingContent packagingContent in this.PackagingContentsWhereShipmentItem)

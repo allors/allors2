@@ -103,12 +103,20 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
+
+            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
+            pickList.Picker = this.OrderProcessor;
+            pickList.SetPicked();
+
             var package = new ShipmentPackageBuilder(this.Session).Build();
             foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
             {
                 package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
+            this.Session.Derive();
+
+            shipment.Ship();
             this.Session.Derive();
 
             foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
