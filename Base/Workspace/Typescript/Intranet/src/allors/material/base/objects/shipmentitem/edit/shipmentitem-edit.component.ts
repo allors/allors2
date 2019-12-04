@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment } from '../../../../../domain';
+import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SalesOrderItemShipmentState } from '../../../../../domain';
 import { PullRequest, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -33,6 +33,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   private previousGood;
   private subscription: Subscription;
   orderShipments: OrderShipment[];
+  salesOrderItems: SalesOrderItem[];
+  selectedSalesOrderItem: SalesOrderItem;
 
   constructor(
     @Self() public allors: ContextService,
@@ -76,15 +78,30 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
                 OrderShipmentsWhereShipmentItem: x
               }
             }),
+            pull.Shipment({
+              object: this.data.associationId,
+              include: {
+                ShipToAddress: x
+              }
+            }),
+            pull.Shipment({
+              object: this.data.associationId,
+              fetch: {
+                ShipToAddress: {
+                  SalesOrderItemsWhereShipToAddress: {
+                    include: {
+                      Product: x,
+                      SerialisedItem: x,
+                      SalesOrderWhereSalesOrderItem: {
+                        SalesOrderState: x
+                      }
+                    }
+                  }
+                }
+              }
+            }),
+            pull.SalesOrderState(),
           ];
-
-          if (isCreate && this.data.associationId) {
-            pulls.push(
-              pull.Shipment({
-                object: this.data.associationId,
-              })
-            );
-          }
 
           return this.allors.context
             .load(new PullRequest({ pulls }))
@@ -98,6 +115,13 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
         this.orderShipments = loaded.collections.OrderShipments as OrderShipment[];
         this.goods = loaded.collections.NonUnifiedGoods as NonUnifiedGood[];
+        this.shipment = loaded.objects.Shipment as Shipment;
+
+        const salesOrderStates = loaded.collections.SalesOrderStates as SalesOrderState[];
+        const inProcess = salesOrderStates.find((v) => v.UniqueId === 'ddbb678e-9a66-4842-87fd-4e628cff0a75');
+
+        const salesOrderItems = loaded.collections.SalesOrderItems as SalesOrderItem[];
+        this.salesOrderItems = salesOrderItems.filter(v => v.SalesOrderWhereSalesOrderItem.SalesOrderState === inProcess && parseFloat(v.QuantityRequestsShipping) > 0);
 
         if (isCreate) {
           this.title = 'Add Shipment Item';
@@ -129,6 +153,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
   public save(): void {
 
+    this.onSave();
+
     this.allors.context.save()
       .subscribe(() => {
         const data: IObject = {
@@ -142,6 +168,13 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       );
   }
 
+  public salesOrderItemSelected(salesOrderItem: SalesOrderItem): void {
+
+    this.shipmentItem.Good = salesOrderItem.Product as Good;
+    this.shipmentItem.Quantity = salesOrderItem.QuantityRequestsShipping;
+    this.shipmentItem.SerialisedItem = salesOrderItem.SerialisedItem;
+  }
+
   public goodSelected(product: Product): void {
     if (product) {
       this.refreshSerialisedItems(product);
@@ -152,19 +185,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
     this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
     this.shipmentItem.Quantity = '1';
-  }
-
-  public update(): void {
-    const { context } = this.allors;
-
-    context
-      .save()
-      .subscribe(() => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
   }
 
   private refreshSerialisedItems(product: Product): void {
@@ -203,5 +223,14 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           this.previousGood = this.shipmentItem.Good;
         }
       });
+  }
+
+  private onSave() {
+    if (this.selectedSalesOrderItem) {
+      const orderShipment = this.allors.context.create('OrderShipment') as OrderShipment;
+      orderShipment.OrderItem = this.selectedSalesOrderItem;
+      orderShipment.ShipmentItem = this.shipmentItem;
+      orderShipment.Quantity = this.shipmentItem.Quantity;
+    }
   }
 }

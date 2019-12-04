@@ -22,15 +22,6 @@ namespace Allors.Domain
             var created = new ShipmentItemStates(this.Session).Created;
             var picked = new ShipmentItemStates(this.Session).Picked;
             var packed = new ShipmentItemStates(this.Session).Packed;
-            var shipped = new ShipmentItemStates(this.Session).Shipped;
-            var delivered = new ShipmentItemStates(this.Session).Delivered;
-
-            var ship = this.Meta.Ship;
-
-            config.Deny(this.ObjectType, shipped, ship);
-
-            config.Deny(this.ObjectType, shipped, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, delivered, Operations.Execute, Operations.Write);
         }
     }
 }

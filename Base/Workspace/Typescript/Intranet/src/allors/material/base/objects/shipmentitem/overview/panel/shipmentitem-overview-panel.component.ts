@@ -38,7 +38,6 @@ export class ShipmentItemOverviewPanelComponent extends TestScope {
 
   delete: Action;
   edit: Action;
-  ship: Action;
 
   get createData(): ObjectData {
     return {
@@ -71,7 +70,6 @@ export class ShipmentItemOverviewPanelComponent extends TestScope {
 
     this.delete = deleteService.delete(panel.manager.context);
     this.edit = editService.edit();
-    this.ship = methodService.create(allors.context, this.m.ShipmentItem.Ship, { name: 'Ship' });
 
     const sort = true;
     this.table = new Table({
@@ -86,7 +84,6 @@ export class ShipmentItemOverviewPanelComponent extends TestScope {
       actions: [
         this.edit,
         this.delete,
-        this.ship
       ],
       defaultAction: this.edit,
       autoSort: true,

@@ -52,11 +52,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ShipmentWhereShipmentItem.GetType().Name != typeof(CustomerShipment).Name)
-            {
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
-            }
-
             this.BaseOnDeriveCustomerShipmentItem(derivation);
 
             this.BaseOnDerivePurchaseShipmentItem(derivation);
@@ -74,25 +69,12 @@ namespace Allors.Domain
 
         public void BaseOnDeriveCustomerShipmentItem(IDerivation derivation)
         {
-            if (this.ShipmentWhereShipmentItem is CustomerShipment && Equals(this.ShipmentItemState, new ShipmentItemStates(this.Strategy.Session).Shipped))
+            if (this.ShipmentWhereShipmentItem is CustomerShipment && Equals(this.ShipmentWhereShipmentItem.ShipmentState, new ShipmentStates(this.Strategy.Session).Shipped))
             {
                 this.QuantityShipped = 0;
                 foreach (PackagingContent packagingContent in this.PackagingContentsWhereShipmentItem)
                 {
                     this.QuantityShipped += packagingContent.Quantity;
-                }
-            }
-        }
-
-        public void BaseShip(ShipmentItemShip method)
-        {
-            this.ShipmentItemState = new ShipmentItemStates(this.Strategy.Session).Shipped;
-            foreach (OrderShipment orderShipment in this.OrderShipmentsWhereShipmentItem)
-            {
-                var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
-                if (inventoryAssignment != null)
-                {
-                    inventoryAssignment.Quantity -= orderShipment.Quantity;
                 }
             }
         }

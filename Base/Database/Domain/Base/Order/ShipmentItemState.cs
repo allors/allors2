@@ -12,11 +12,5 @@ namespace Allors.Domain
         public bool Picked => Equals(this.UniqueId, ShipmentItemStates.PickedId);
 
         public bool Packed => Equals(this.UniqueId, ShipmentItemStates.PackedId);
-
-        public bool Shipped => Equals(this.UniqueId, ShipmentItemStates.ShippedId);
-
-        public bool Delivered => Equals(this.UniqueId, ShipmentItemStates.DeliveredId);
-
-        public bool Received => Equals(this.UniqueId, ShipmentItemStates.ReceivedId);
     }
 }

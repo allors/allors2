@@ -33,6 +33,7 @@ namespace Allors.Domain
                 {
                     var diff = this.Quantity * -1;
                     salesOrderItem.QuantityPendingShipment -= diff;
+                    salesOrderItem.QuantityRequestsShipping -= diff;
                     customerShipment.BaseOnDeriveQuantityDecreased(this.ShipmentItem, salesOrderItem, diff);
                 }
 

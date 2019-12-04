@@ -199,11 +199,5 @@ namespace Allors.Repository
         public void DelegateAccess() { }
 
         #endregion
-
-        #region Allors
-        [Id("C7464DE9-A343-4626-B13B-C877483A87FB")]
-        #endregion
-        [Workspace]
-        public void Ship() { }
     }
 }
