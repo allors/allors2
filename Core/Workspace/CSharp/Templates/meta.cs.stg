@@ -318,17 +318,14 @@ class(class) ::= <<
 
 		public override Class Class { get; }
 
-		// Defined Methods
-$class.ExclusiveMethodTypes:{method|         public MethodType $method.Name$;}; separator="\n"$
-
-		// Inherited Methods
-$class.InheritedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
+		// MethodTypes
+$class.WorkspaceMethodTypes:{method|         public MethodType $method.Name$;}; separator="\n"$
 
 		// RoleTypes
-$class.RoleTypes:{property|         public RoleType $property.Name$;}; separator="\n"$
+$class.WorkspaceRoleTypes:{property|         public RoleType $property.Name$;}; separator="\n"$
 
 		// Associations
-$class.AssociationTypes:{property|         public AssociationType $property.PropertyName$;}; separator="\n"$
+$class.WorkspaceAssociationTypes:{property|         public AssociationType $property.PropertyName$;}; separator="\n"$
 
 		internal Meta$class.SingularName$(MetaPopulation metaPopulation)
         {

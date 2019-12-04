@@ -642,7 +642,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.CanShip)
+            if (this.CanShip && this.Store.AutoGenerateShipment)
             {
                 this.Ship();
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
@@ -748,11 +748,16 @@ namespace Allors.Domain
                             if (orderItem.ExistProduct && orderItem.ShipToAddress.Equals(address.Key) && orderItem.QuantityRequestsShipping > 0)
                             {
                                 var good = orderItem.Product as Good;
+                                var nonUnifiedGood = orderItem.Product as NonUnifiedGood;
+                                var inventoryItemKind = orderItem.Product is UnifiedGood unifiedGood ? unifiedGood.InventoryItemKind : nonUnifiedGood?.Part.InventoryItemKind;
 
                                 ShipmentItem shipmentItem = null;
                                 foreach (ShipmentItem item in pendingShipment.ShipmentItems)
                                 {
-                                    if (item.Good.Equals(good) && !item.ItemIssuancesWhereShipmentItem.Any(v => v.PickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked)))
+                                    if (inventoryItemKind != null
+                                        && inventoryItemKind.Equals(new InventoryItemKinds(this.Session()).NonSerialised)
+                                        && item.Good.Equals(good)
+                                        && !item.ItemIssuancesWhereShipmentItem.Any(v => v.PickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked)))
                                     {
                                         shipmentItem = item;
                                         break;

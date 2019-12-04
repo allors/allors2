@@ -106,6 +106,14 @@ namespace Allors.Repository
         public string Name { get; set; }
 
         #region Allors
+        [Id("97CB34DD-4E6A-4DCF-90B4-50071752B2D8")]
+        [AssociationId("BDE30913-CEFC-4044-87D9-E032B03BF08A")]
+        [RoleId("022449C3-033B-4629-B343-363091E11A5B")]
+        #endregion
+        [Workspace]
+        public string DisplayName { get; set; }
+
+        #region Allors
         [Id("0FB2F768-8313-450C-94AE-5F9C52B758E8")]
         [AssociationId("A9401345-9CBB-4CD7-A792-57EAEC1C5F53")]
         [RoleId("D307F6DF-1630-422F-A67C-769F9809FABC")]

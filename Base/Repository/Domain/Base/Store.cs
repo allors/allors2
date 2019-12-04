@@ -288,6 +288,15 @@ namespace Allors.Repository
         public bool IsAutomaticallyShipped { get; set; }
 
         #region Allors
+        [Id("8D639C6A-B8C1-4FFA-867F-95B75B4A6807")]
+        [AssociationId("F950FDCE-A7A1-4E10-84BF-6BE4CC3AC9AA")]
+        [RoleId("EDC6EF18-9CB4-4EAD-9FFD-AEEE13508924")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool AutoGenerateShipment { get; set; }
+
+        #region Allors
         [Id("CE31A755-7053-4A27-A0AE-7C38AFA03E2F")]
         [AssociationId("AA22F139-B7D6-4F86-ABCD-7A41ED5366DA")]
         [RoleId("217207B1-5FF6-4DD2-83AF-3E728ADE0BF9")]

@@ -1,48 +1,79 @@
-﻿// <copyright file="Ribbon.cs" company="Allors bvba">
-// Copyright (c) Allors bvba. All rights reserved.
-// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
-// </copyright>
+using System;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
+using Dipu.Excel.Embedded;
+using Nito.AsyncEx;
+using Office = Microsoft.Office.Core;
 
 namespace ExcelAddIn
 {
-    using System;
-
     using Allors.Excel;
 
-    using Microsoft.Office.Tools.Ribbon;
-
-    using Nito.AsyncEx;
-
-    public partial class Ribbon
+    [ComVisible(true)]
+    public class Ribbon : Office.IRibbonExtensibility
     {
-        private Commands Commands { get; set; }
+        private Office.IRibbonUI ribbon;
+        private string userLabel = "Not logged in";
+        private string authenticationLabel = "Log in";
 
-        private Sheets Sheets { get; set; }
+        public AddIn AddIn { get; set; }
 
-        public void Init(Commands commands, Sheets sheets, Mediator mediator)
+        public Authentication Authentication { get; set; }
+
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        #region IRibbonExtensibility Members
+
+        public string GetCustomUI(string ribbonID)
         {
-            this.Sheets = sheets;
-            this.Commands = commands;
-
-            mediator.StateChanged += this.MediatorOnStateChanged;
+            return GetResourceText("ExcelAddIn.Ribbon.xml");
         }
 
-        private void Ribbon_Load(object sender, RibbonUIEventArgs eventArgs)
+        #endregion
+
+        #region Ribbon Labels
+
+        public string UserLabel
         {
+            get => userLabel;
+            set
+            {
+                userLabel = value;
+                this.ribbon.Invalidate();
+            }
         }
 
-        private void SaveButtonClick(object sender, RibbonControlEventArgs eventArgs)
+        public string AuthenticationLabel
+        {
+            get => authenticationLabel;
+            set
+            {
+                authenticationLabel = value;
+                this.ribbon.Invalidate();
+            }
+        }
+
+        public string GetUserLabel(Office.IRibbonControl control)
+        {
+            return this.UserLabel;
+        }
+
+        public string GetAuthenticateLabel(Office.IRibbonControl control)
+        {
+            return this.AuthenticationLabel;
+        }
+
+        #endregion
+
+        #region Ribbon Callbacks
+
+        public void OnAuthenticate(Office.IRibbonControl control)
         {
             try
             {
-                AsyncContext.Run(
-                    async () =>
-                        {
-                            if (this.Commands != null)
-                            {
-                                await this.Commands.Save();
-                            }
-                        });
+                AsyncContext.Run(async () => await this.Authentication.Switch());
             }
             catch (Exception e)
             {
@@ -50,53 +81,47 @@ namespace ExcelAddIn
             }
         }
 
-        private void RefreshButtonClick(object sender, RibbonControlEventArgs eventArgs)
+        public void OnClick(Office.IRibbonControl control)
         {
-            try
+            if (this.AddIn != null)
             {
-                AsyncContext.Run(
-                    async () =>
+                try
+                {
+                    AsyncContext.Run(async () => await this.AddIn.Program.OnHandle(control.Id));
+                }
+                catch (Exception e)
+                {
+                    e.Handle();
+                }
+            }
+        }
+
+        public void Ribbon_Load(Office.IRibbonUI ribbonUI) => this.ribbon = ribbonUI;
+
+        #endregion
+
+        #region Helpers
+
+        private static string GetResourceText(string resourceName)
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            string[] resourceNames = asm.GetManifestResourceNames();
+            for (int i = 0; i < resourceNames.Length; ++i)
+            {
+                if (string.Compare(resourceName, resourceNames[i], StringComparison.OrdinalIgnoreCase) == 0)
+                {
+                    using (StreamReader resourceReader = new StreamReader(asm.GetManifestResourceStream(resourceNames[i])))
+                    {
+                        if (resourceReader != null)
                         {
-                            if (this.Commands != null)
-                            {
-                                await this.Commands.Refresh();
-                            }
-                        });
+                            return resourceReader.ReadToEnd();
+                        }
+                    }
+                }
             }
-            catch (Exception e)
-            {
-                e.Handle();
-            }
+            return null;
         }
 
-        private void PeopleInitializeButtonClick(object sender, RibbonControlEventArgs eventArgs)
-        {
-            try
-            {
-                AsyncContext.Run(
-                    async () =>
-                        {
-                            if (this.Commands != null)
-                            {
-                                await this.Commands.PeopleNew();
-                            }
-                        });
-            }
-            catch (Exception e)
-            {
-                e.Handle();
-            }
-        }
-
-        private void MediatorOnStateChanged(object sender, EventArgs eventArgs)
-        {
-            var sheet = this.Sheets.ActiveSheet;
-            var existSheet = sheet != null;
-
-            this.saveButton.Enabled = existSheet && this.Commands.CanSave;
-            this.refreshButton.Enabled = existSheet && this.Commands.CanRefresh;
-
-            this.peopleInitializeButton.Enabled = this.Commands.CanNew;
-        }
+        #endregion
     }
 }

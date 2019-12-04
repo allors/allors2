@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     public partial class ShipmentItem
@@ -31,6 +33,14 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistShipmentItemState)
+            {
+                this.ShipmentItemState= new ShipmentItemStates(this.Strategy.Session).Created;
+            }
+        }
+
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
@@ -41,6 +51,11 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+
+            if (this.ShipmentWhereShipmentItem.GetType().Name != typeof(CustomerShipment).Name)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
+            }
 
             this.BaseOnDeriveCustomerShipmentItem(derivation);
 
@@ -59,12 +74,25 @@ namespace Allors.Domain
 
         public void BaseOnDeriveCustomerShipmentItem(IDerivation derivation)
         {
-            if (this.ShipmentWhereShipmentItem is CustomerShipment)
+            if (this.ShipmentWhereShipmentItem is CustomerShipment && Equals(this.ShipmentItemState, new ShipmentItemStates(this.Strategy.Session).Shipped))
             {
                 this.QuantityShipped = 0;
                 foreach (PackagingContent packagingContent in this.PackagingContentsWhereShipmentItem)
                 {
                     this.QuantityShipped += packagingContent.Quantity;
+                }
+            }
+        }
+
+        public void BaseShip(ShipmentItemShip method)
+        {
+            this.ShipmentItemState = new ShipmentItemStates(this.Strategy.Session).Shipped;
+            foreach (OrderShipment orderShipment in this.OrderShipmentsWhereShipmentItem)
+            {
+                var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                if (inventoryAssignment != null)
+                {
+                    inventoryAssignment.Quantity -= orderShipment.Quantity;
                 }
             }
         }
