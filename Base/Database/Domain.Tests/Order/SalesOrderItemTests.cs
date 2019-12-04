@@ -903,8 +903,15 @@ namespace Allors.Domain
             this.Session.Derive();
 
             this.order.Confirm();
+            var derivation = new Logging.Derivation(this.Session, new DerivationConfig
+                {
+                    DerivationLogFunc = () => new CustomListDerivationLog(),
+                }
+            );
 
-            this.Session.Derive();
+            derivation.Derive();
+
+            //this.Session.Derive();
 
             Assert.Equal(100, item.QuantityOrdered);
             Assert.Equal(0, item.QuantityShipped);

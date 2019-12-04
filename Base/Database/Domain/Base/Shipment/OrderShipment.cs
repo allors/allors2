@@ -27,19 +27,25 @@ namespace Allors.Domain
 
             if (this.ShipmentItem.ShipmentWhereShipmentItem is CustomerShipment customerShipment && this.OrderItem is SalesOrderItem salesOrderItem)
             {
-                var quantityPendingShipment = this.OrderItem?.OrderShipmentsWhereOrderItem?.Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.strategy.Session).Shipped)).Sum(v => v.Quantity);
+                var quantityPendingShipment = this.OrderItem?.OrderShipmentsWhereOrderItem?
+                    .Where(v => v.ExistShipmentItem
+                                && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.strategy.Session).Shipped))
+                    .Sum(v => v.Quantity);
 
                 if (salesOrderItem.QuantityPendingShipment > quantityPendingShipment)
                 {
                     var diff = this.Quantity * -1;
                     salesOrderItem.QuantityPendingShipment -= diff;
-                    salesOrderItem.QuantityRequestsShipping -= diff;
                     customerShipment.BaseOnDeriveQuantityDecreased(this.ShipmentItem, salesOrderItem, diff);
                 }
 
                 if (this.strategy.IsNewInSession)
                 {
                     var quantityPicked = this.OrderItem.OrderShipmentsWhereOrderItem.Select(v => v.ShipmentItem?.ItemIssuancesWhereShipmentItem.Sum(z => z.PickListItem.Quantity)).Sum();
+                    if (salesOrderItem.QuantityRequestsShipping > 0)
+                    {
+                        salesOrderItem.QuantityRequestsShipping -= this.Quantity;
+                    }
 
                     if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem && this.Quantity > salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityOnHand + quantityPicked)
                     {
