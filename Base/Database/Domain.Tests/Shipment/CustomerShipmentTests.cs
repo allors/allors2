@@ -4,6 +4,8 @@
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
 
+using System.ComponentModel;
+
 namespace Allors.Domain
 {
     using Allors.Meta;
@@ -1245,6 +1247,7 @@ namespace Allors.Domain
         }
     }
 
+    [Trait("Category", "Security")]
     public class CustomerShipmentSecurityTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };
@@ -1373,6 +1376,7 @@ namespace Allors.Domain
             Assert.Equal(new ShipmentStates(this.Session).Shipped, shipment.ShipmentState);
             Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
             Assert.False(acl.CanWrite(M.Shipment.HandlingInstruction));
+            Assert.True(acl.CanWrite(M.Shipment.ElectronicDocuments));
         }
     }
 }

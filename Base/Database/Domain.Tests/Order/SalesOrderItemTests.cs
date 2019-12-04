@@ -1633,6 +1633,7 @@ namespace Allors.Domain
         }
     }
 
+    [Trait("Category", "Security")]
     public class SalesOrderItemSecurityTests : DomainTest
     {
         private ProductCategory productCategory;

@@ -2824,6 +2824,7 @@ namespace Allors.Domain
         }
     }
 
+    [Trait("Category", "Security")]
     public class SalesOrderSecurityTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };

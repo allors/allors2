@@ -171,6 +171,7 @@ namespace Allors.Domain
         }
     }
 
+    [Trait("Category", "Security")]
     public class PersonSecurityTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };

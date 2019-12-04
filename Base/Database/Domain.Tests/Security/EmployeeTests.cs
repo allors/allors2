@@ -10,6 +10,7 @@ namespace Allors.Domain
     using Allors.Meta;
     using Xunit;
 
+    [Trait("Category", "Security")]
     public class EmployeeSecurityTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };

@@ -267,6 +267,7 @@ namespace Allors.Domain
         }
     }
 
+    [Trait("Category", "Security")]
     public class PurchaseOrderItemSecurityTests : DomainTest
     {
         private Part finishedGood;

@@ -80,6 +80,7 @@ namespace Allors.Domain
         }
     }
 
+    [Trait("Category", "Security")]
     public class FaceToFaceCommunicationSecurityTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };
