@@ -28,67 +28,6 @@ namespace Tests.EmailCommunicationTests
         }
 
         [Fact]
-        public void Create()
-        {
-            var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.PartyName.Equals("Acme"));
-            var contact = organisation.CurrentContacts.First;
-
-            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
-
-            var employeeEmailAddress = employee.PersonalEmailAddress;
-            var personEmailAddress = organisation.CurrentContacts.First.PersonalEmailAddress;
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var before = new EmailCommunications(this.Session).Extent().ToArray();
-
-            this.organisationListPage.Table.DefaultAction(organisation);
-            var organisationOverview = new OrganisationOverviewComponent(this.organisationListPage.Driver);
-            var communicationEventOverview = organisationOverview.CommunicationeventOverviewPanel.Click();
-            var emailCommunicationEdit = communicationEventOverview.CreateEmailCommunication();
-
-            emailCommunicationEdit
-                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
-                .FromParty.Set(employee.PartyName)
-                .FromEmail.Set(employeeEmailAddress.ElectronicAddressString)
-                .ToParty.Set(contact.PartyName)
-                .ToEmail.Set(personEmailAddress.ElectronicAddressString)
-                .SubjectTemplate.Set("subject")
-                .BodyTemplate.Set("body")
-                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
-                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
-                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
-                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
-                .SAVE.Click();
-
-            this.Driver.WaitForAngular();
-            this.Session.Rollback();
-
-            var after = new EmailCommunications(this.Session).Extent().ToArray();
-
-            Assert.Equal(after.Length, before.Length + 1);
-
-            var communicationEvent = after.Except(before).First();
-
-            Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Appointment, communicationEvent.EventPurposes);
-            Assert.Equal(employee, communicationEvent.FromParty);
-            Assert.Equal(employeeEmailAddress, communicationEvent.FromEmail);
-            Assert.Equal(contact, communicationEvent.ToParty);
-            Assert.Equal(personEmailAddress, communicationEvent.ToEmail);
-            Assert.Equal("subject", communicationEvent.EmailTemplate.SubjectTemplate);
-            Assert.Equal("body", communicationEvent.EmailTemplate.BodyTemplate);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
-        }
-
-        [Fact]
         public void Edit()
         {
             var organisations = new Organisations(this.Session).Extent();

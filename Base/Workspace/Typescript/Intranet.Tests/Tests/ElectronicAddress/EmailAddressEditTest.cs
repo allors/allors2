@@ -27,36 +27,6 @@ namespace Tests.ElectronicAddressTests
         }
 
         [Fact]
-        public void Create()
-        {
-            var before = new EmailAddresses(this.Session).Extent().ToArray();
-
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John Doe"));
-
-            this.personListPage.Table.DefaultAction(person);
-            var emailAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateEmailAddress();
-
-            emailAddressCreate
-                .ContactPurposes.Toggle("General Phone Number")
-                .ElectronicAddressString.Set("me@myself.com")
-                .Description.Set("description")
-                .SAVE.Click();
-
-            this.Driver.WaitForAngular();
-            this.Session.Rollback();
-
-            var after = new EmailAddresses(this.Session).Extent().ToArray();
-
-            Assert.Equal(after.Length, before.Length + 1);
-
-            var contactMechanism = after.Except(before).First();
-
-            Assert.Equal("me@myself.com", contactMechanism.ElectronicAddressString);
-            Assert.Equal("description", contactMechanism.Description);
-        }
-
-        [Fact]
         public void Edit()
         {
             var extent = new People(this.Session).Extent();
