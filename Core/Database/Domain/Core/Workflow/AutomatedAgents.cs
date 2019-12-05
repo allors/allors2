@@ -21,12 +21,17 @@ namespace Allors.Domain
 
         public AutomatedAgent Scheduler => this.Cache[SchedulerId];
 
+        protected override void CorePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.UserGroup);
+
         protected override void CoreSetup(Setup setup)
         {
             var merge = this.Cache.Merger().Action();
 
-            merge(GuestId, v => v.UserName = "Guest");
+            var guest = merge(GuestId, v => v.UserName = "Guest");
             merge(SchedulerId, v => v.UserName = "Scheduler");
+
+            var userGroups = new UserGroups(this.Session);
+            userGroups.Guests.AddMember(guest);
         }
     }
 }

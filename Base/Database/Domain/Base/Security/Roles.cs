@@ -15,7 +15,9 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            new RoleBuilder(this.Session).WithName("Employee").WithUniqueId(EmployeeId).Build();
+            var merge = this.Cache.Merger().Action();
+
+            merge(EmployeeId, v => v.Name = "Employee");
         }
     }
 }

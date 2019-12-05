@@ -20,7 +20,7 @@ namespace Allors.Domain
         public UserGroup Managers => this.Cache[ManagersId];
 
         public UserGroup SalesAccountManagers => this.Cache[SalesAccountManagersId];
-        
+
         protected override void BaseSetup(Setup setup)
         {
             var merge = this.cache.Merger().Action();

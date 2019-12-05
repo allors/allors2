@@ -21,12 +21,7 @@ namespace Allors.Domain
             }
         }
 
-        protected override void BasePrepare(Setup setup)
-        {
-            base.BasePrepare(setup);
-
-            setup.AddDependency(this.ObjectType, M.PickListState);
-        }
+        protected override void BasePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.PickListState);
 
         protected override void BaseSecure(Security config)
         {

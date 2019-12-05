@@ -34,7 +34,8 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                session.SetUser(session.GetSingleton().Scheduler);
+                var scheduler = new AutomatedAgents(session).Scheduler;
+                session.SetUser(scheduler);
 
                 // Custom code
                 session.Derive();

@@ -9,12 +9,7 @@ namespace Allors.Domain
 
     public partial class SalesOrders
     {
-        protected override void BasePrepare(Setup setup)
-        {
-            base.BasePrepare(setup);
-
-            setup.AddDependency(this.ObjectType, M.SalesOrderState);
-        }
+        protected override void BasePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.SalesOrderState);
 
         protected override void BaseSecure(Security config)
         {

@@ -23,7 +23,7 @@ namespace Allors.Domain
                     return "Initial";
                 }
 
-                if (this.ExistSingletonsWhereAdministratorSecurityToken)
+                if (this.UniqueId == Domain.SecurityTokens.AdministratorSecurityTokenId)
                 {
                     return "Administrator";
                 }

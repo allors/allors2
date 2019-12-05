@@ -85,7 +85,8 @@ namespace Allors.Domain
 
             if (!party.ExistPreferredCurrency)
             {
-                party.PreferredCurrency = session.GetSingleton().Settings.PreferredCurrency;
+                var singleton = session.GetSingleton();
+                party.PreferredCurrency = singleton.Settings.PreferredCurrency;
             }
         }
 

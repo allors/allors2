@@ -13,9 +13,12 @@ namespace Allors.Repository
     #region Allors
     [Id("c4d93d5e-34c3-4731-9d37-47a8e801d9a8")]
     #endregion
-    public partial class AccessControl : Cachable, Deletable, Object
+    public partial class AccessControl : UniquelyIdentifiable, Cachable, Deletable
     {
         #region inherited properties
+
+        public Guid UniqueId { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }

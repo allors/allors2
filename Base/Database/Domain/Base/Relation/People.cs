@@ -9,9 +9,20 @@ namespace Allors.Domain
 
     public partial class People
     {
+        protected override void BasePrepare(Setup setup)
+        {
+            setup.AddDependency(this.Meta.ObjectType, M.Role);
+            setup.AddDependency(this.Meta.ObjectType, M.PersonRole);
+            setup.AddDependency(this.Meta.ObjectType, M.InternalOrganisation);
+            setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
+            setup.AddDependency(this.ObjectType, M.ContactMechanismPurpose.ObjectType);
+            setup.AddDependency(this.ObjectType, M.InternalOrganisation.ObjectType);
+            setup.AddDependency(this.ObjectType, M.PersonalTitle.ObjectType);
+        }
+
         protected override void BaseSetup(Setup setup)
         {
-            var employeeUserGroup = this.Session.GetSingleton().EmployeeUserGroup;
+            var employeeUserGroup = new UserGroups(this.Session).Employees;
             var internalOrganisations = new Organisations(this.Session).InternalOrganisations();
 
             var people = new People(this.Session).Extent();
@@ -24,17 +35,6 @@ namespace Allors.Domain
                     employeeUserGroup.AddMember(person);
                 }
             }
-        }
-
-        protected override void BasePrepare(Setup setup)
-        {
-            setup.AddDependency(this.Meta.ObjectType, M.Role);
-            setup.AddDependency(this.Meta.ObjectType, M.PersonRole);
-            setup.AddDependency(this.Meta.ObjectType, M.InternalOrganisation);
-            setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
-            setup.AddDependency(this.ObjectType, M.ContactMechanismPurpose.ObjectType);
-            setup.AddDependency(this.ObjectType, M.InternalOrganisation.ObjectType);
-            setup.AddDependency(this.ObjectType, M.PersonalTitle.ObjectType);
         }
 
         protected override void BaseSecure(Security config)

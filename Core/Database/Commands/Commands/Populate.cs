@@ -46,7 +46,8 @@ namespace Commands
                 session.Derive();
                 session.Commit();
 
-                session.SetUser(session.GetSingleton().Scheduler);
+                var scheduler = new AutomatedAgents(session).Scheduler;
+                session.SetUser(scheduler);
 
                 new Allors.Upgrade(session, this.dataPath).Execute();
 

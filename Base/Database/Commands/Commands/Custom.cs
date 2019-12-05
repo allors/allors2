@@ -101,7 +101,8 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                session.SetUser(session.GetSingleton().Scheduler);
+                var scheduler = new AutomatedAgents(session).Scheduler;
+                session.SetUser(scheduler);
 
                 var templateFilePath = "domain/templates/PurchaseInvoice.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
@@ -163,7 +164,8 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                session.SetUser(session.GetSingleton().Scheduler);
+                var scheduler = new AutomatedAgents(session).Scheduler;
+                session.SetUser(scheduler);
 
                 var templateFilePath = "domain/templates/SalesInvoice.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
@@ -225,7 +227,8 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                session.SetUser(session.GetSingleton().Scheduler);
+                var scheduler = new AutomatedAgents(session).Scheduler;
+                session.SetUser(scheduler);
 
                 var templateFilePath = "domain/templates/ProductQuote.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
@@ -287,7 +290,8 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                session.SetUser(session.GetSingleton().Scheduler);
+                var scheduler = new AutomatedAgents(session).Scheduler;
+                session.SetUser(scheduler);
 
                 var templateFilePath = "domain/templates/WorkTask.odt";
                 var templateFileInfo = new FileInfo(templateFilePath);
@@ -350,7 +354,8 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                session.SetUser(session.GetSingleton().Scheduler);
+                var scheduler = new AutomatedAgents(session).Scheduler;
+                session.SetUser(scheduler);
 
                 WorkTasks.BaseMonthly(session);
 

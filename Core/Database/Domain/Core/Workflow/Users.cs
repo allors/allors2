@@ -13,7 +13,7 @@ namespace Allors.Domain
     {
         internal static string Normalize(string value) => value?.Normalize().ToUpperInvariant();
 
-        public User GetUser(string userName) => this.FindBy(this.Meta.NormalizedUserName, Users.Normalize(userName)) ?? this.Session.GetSingleton().Guest;
+        public User GetUser(string userName) => this.FindBy(this.Meta.NormalizedUserName, Users.Normalize(userName)) ?? new AutomatedAgents(this.Session).Guest;
 
         public void SavePasswords(XmlWriter writer)
         {

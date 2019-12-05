@@ -35,8 +35,6 @@ namespace Allors.Domain
 
         protected override void BasePrepare(Setup setup)
         {
-            base.BasePrepare(setup);
-
             setup.AddDependency(this.ObjectType, M.VatRate);
             setup.AddDependency(this.ObjectType, M.VatClause);
         }

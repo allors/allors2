@@ -106,10 +106,11 @@ namespace Allors
                 var orderProcessor = new PersonBuilder(session).WithFirstName("The").WithLastName("orderProcessor").WithUserName("orderProcessor").Build();
 
                 // Adding newly created persons to EmployeeUserGroup as employees do not have any permission when created
-                singleton.EmployeeUserGroup.AddMember(purchaser);
-                singleton.EmployeeUserGroup.AddMember(salesrep);
-                singleton.EmployeeUserGroup.AddMember(orderProcessor);
-                singleton.EmployeeUserGroup.AddMember(administrator);
+                var employeesUserGroup = new UserGroups(session).Employees;
+                employeesUserGroup.AddMember(purchaser);
+                employeesUserGroup.AddMember(salesrep);
+                employeesUserGroup.AddMember(orderProcessor);
+                employeesUserGroup.AddMember(administrator);
 
                 new UserGroups(session).Creators.AddMember(purchaser);
                 new UserGroups(session).Creators.AddMember(salesrep);

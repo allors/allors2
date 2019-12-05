@@ -35,6 +35,7 @@ namespace Allors.Domain
 
             merge(CreatedId, v => v.Name = "Created");
             merge(ApprovedId, v => v.Name = "Approved");
+            merge(OrderedId, v => v.Name = "Ordered");
             merge(CancelledId, v => v.Name = "Cancelled");
             merge(RejectedId, v => v.Name = "Rejected");
         }

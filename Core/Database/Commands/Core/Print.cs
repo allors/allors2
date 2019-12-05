@@ -37,7 +37,8 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                session.SetUser(session.GetSingleton().Scheduler);
+                var scheduler = new AutomatedAgents(session).Scheduler;
+                session.SetUser(scheduler);
 
                 var printDocuments = new PrintDocuments(session).Extent();
                 printDocuments.Filter.AddNot().AddExists(M.PrintDocument.Media);

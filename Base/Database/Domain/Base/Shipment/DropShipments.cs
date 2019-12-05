@@ -9,11 +9,6 @@ namespace Allors.Domain
 
     public partial class DropShipments
     {
-        protected override void BasePrepare(Setup setup)
-        {
-            base.BasePrepare(setup);
-
-            setup.AddDependency(this.ObjectType, M.ShipmentState);
-        }
+        protected override void BasePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.ShipmentState);
     }
 }

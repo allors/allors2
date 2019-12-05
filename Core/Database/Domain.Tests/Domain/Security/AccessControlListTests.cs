@@ -25,7 +25,8 @@ namespace Tests
             {
                 session.Commit();
 
-                var acls = new AccessControlLists(this.Session.GetSingleton().Guest);
+                var guest = new AutomatedAgents(this.Session).Guest;
+                var acls = new AccessControlLists(guest);
                 foreach (Object aco in (IObject[])session.Extent(M.Organisation.ObjectType))
                 {
                     // When
