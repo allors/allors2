@@ -60,6 +60,17 @@
       </div>
     </div>
 
+    <div *ngFor="let shipment of shipments">
+      <div (click)="navigation.overview(shipment)" style="cursor: pointer;">
+        <div style="color: grey">
+          Shipment
+        </div>
+        <div>
+          {{shipment?.ShipmentNumber}}
+        </div>
+      </div>
+    </div>
+
     <div *ngFor="let salesInvoice of salesInvoices">
       <div (click)="navigation.overview(salesInvoice)" style="cursor: pointer;">
         <div style="color: grey">

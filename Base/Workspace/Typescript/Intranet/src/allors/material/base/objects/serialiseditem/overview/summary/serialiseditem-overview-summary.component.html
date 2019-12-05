@@ -47,5 +47,55 @@
         {{serialisedItem.RentedBy.displayName}}
       </div>
     </div>
+
+    <div *ngIf="request" (click)="navigation.overview(request)"
+      style="cursor: pointer;">
+      <div>
+        <div style="color: grey">
+          Latest Request
+        </div>
+        {{request.RequestNumber}}
+      </div>
+    </div>
+
+    <div *ngIf="quote" (click)="navigation.overview(quote)"
+      style="cursor: pointer;">
+      <div>
+        <div style="color: grey">
+          Latest Quote
+        </div>
+        {{quote.QuoteNumber}}
+      </div>
+    </div>
+
+    <div *ngIf="order" (click)="navigation.overview(order)"
+      style="cursor: pointer;">
+      <div>
+        <div style="color: grey">
+          Latest Order
+        </div>
+        {{order.OrderNumber}}
+      </div>
+    </div>
+
+    <div *ngIf="shipment" (click)="navigation.overview(shipment)"
+      style="cursor: pointer;">
+      <div>
+        <div style="color: grey">
+          Latest Shipment
+        </div>
+        {{shipment.ShipmentNumber}}
+      </div>
+    </div>
+
+    <div *ngIf="invoice" (click)="navigation.overview(invoice)"
+      style="cursor: pointer;">
+      <div>
+        <div style="color: grey">
+          Latest Invoice
+        </div>
+        {{invoice.InvoiceNumber}}
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>

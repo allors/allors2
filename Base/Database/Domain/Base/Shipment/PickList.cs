@@ -97,12 +97,14 @@ namespace Allors.Domain
                     foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
                     {
                         var shipment = itemIssuance.ShipmentItem.ShipmentWhereShipmentItem as CustomerShipment;
+                        var package = shipment?.ShipmentPackages.FirstOrDefault();
 
-                        if (shipment?.ShipmentPackages[0].PackagingContents.Count == 0)
+                        if (package != null && package.PackagingContents.FirstOrDefault(v => v.ShipmentItem.Equals(itemIssuance.ShipmentItem)) == null)
                         {
-                            shipment?.ShipmentPackages[0].AddPackagingContent(
+                            package.AddPackagingContent(
                                 new PackagingContentBuilder(this.Strategy.Session)
-                                    .WithShipmentItem(itemIssuance.ShipmentItem).WithQuantity(itemIssuance.Quantity)
+                                    .WithShipmentItem(itemIssuance.ShipmentItem)
+                                    .WithQuantity(itemIssuance.Quantity)
                                     .Build());
                         }
                     }

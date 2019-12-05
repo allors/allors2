@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
-import { PurchaseShipment, ShipmentItem, Order } from '../../../../../../domain';
+import { PurchaseShipment, ShipmentItem, PurchaseOrder } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort, Equals } from '../../../../../../../allors/framework';
@@ -17,7 +17,7 @@ export class PurchaseShipmentOverviewSummaryComponent {
   m: Meta;
 
   shipment: PurchaseShipment;
-  order: Order;
+  purchaseOrders: PurchaseOrder[] = [];
   shipmentItems: ShipmentItem[] = [];
 
   constructor(
@@ -60,12 +60,25 @@ export class PurchaseShipmentOverviewSummaryComponent {
             },
           }
         }),
+        pull.Shipment({
+          object: this.panel.manager.id,
+          fetch: {
+            ShipmentItems: {
+              OrderShipmentsWhereShipmentItem: {
+                OrderItem: {
+                  OrderWhereValidOrderItem: x
+                }
+              }
+            }
+          }
+        }),
       );
     };
 
     panel.onPulled = (loaded) => {
       this.shipment = loaded.objects[shipmentPullName] as PurchaseShipment;
       this.shipmentItems = loaded.collections[shipmentPullName] as ShipmentItem[];
+      this.purchaseOrders = loaded.collections.Orders as PurchaseOrder[];
     };
   }
 }

@@ -39,7 +39,7 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, shipped, hold, @continue);
             config.Deny(this.ObjectType, onHold, ship, hold, @continue);
             config.Deny(this.ObjectType, created, hold, @continue);
-            config.Deny(this.ObjectType, picked, @continue);
+            config.Deny(this.ObjectType, picked, ship, @continue);
             config.Deny(this.ObjectType, packed, @continue);
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);

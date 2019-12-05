@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
-import { ProductQuote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../../domain';
+import { ProductQuote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, Shipment } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort, Equals } from '../../../../../../../allors/framework';
@@ -20,6 +20,7 @@ export class SalesOrderOverviewSummaryComponent {
   quote: ProductQuote;
   orderItems: SalesOrderItem[] = [];
   goods: Good[] = [];
+  shipments: Shipment[] = [];
   salesInvoices: SalesInvoice[] = [];
   billingProcesses: BillingProcess[];
   billingForOrderItems: BillingProcess;
@@ -45,6 +46,7 @@ export class SalesOrderOverviewSummaryComponent {
 
     const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
     const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
+    const shipmentPullName = `${panel.name}_${this.m.Shipment.name}`;
     const goodPullName = `${panel.name}_${this.m.Good.name}`;
     const billingProcessPullName = `${panel.name}_${this.m.BillingProcess.name}`;
     const serialisedInventoryItemStatePullName = `${panel.name}_${this.m.SerialisedInventoryItemState.name}`;
@@ -106,6 +108,19 @@ export class SalesOrderOverviewSummaryComponent {
           object: this.panel.manager.id,
           fetch: { SalesInvoicesWhereSalesOrder: x }
         }),
+        pull.SalesOrder({
+          name: shipmentPullName,
+          object: this.panel.manager.id,
+          fetch: {
+            SalesOrderItems: {
+              OrderShipmentsWhereOrderItem: {
+                ShipmentItem: {
+                  ShipmentWhereShipmentItem: x
+                }
+              }
+            }
+          }
+        }),
         pull.Good({
           name: goodPullName,
           sort: new Sort(m.Good.Name),
@@ -131,6 +146,7 @@ export class SalesOrderOverviewSummaryComponent {
       this.inventoryItemStates = loaded.collections[serialisedInventoryItemStatePullName] as SerialisedInventoryItemState[];
 
       this.salesInvoices = loaded.collections[salesInvoicePullName] as SalesInvoice[];
+      this.shipments = loaded.collections[shipmentPullName] as Shipment[];
     };
   }
 

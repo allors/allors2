@@ -18,6 +18,19 @@
 
   </mat-card-header>
 
+  <mat-card-content>
+    <div *ngFor="let salesOrder of salesOrders">
+      <div (click)="navigation.overview(salesOrder)" style="cursor: pointer;">
+        <div style="color: grey">
+          Sales Order
+        </div>
+        <div>
+          {{salesOrder?.OrderNumber}}
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+
   <mat-card-actions>
     <button *ngIf="shipment.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
     <button *ngIf="shipment.CanExecuteHold" mat-button (click)="hold()">Hold</button>
