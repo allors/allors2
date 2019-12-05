@@ -9,7 +9,7 @@ namespace Allors.Domain
     {
         private Sticky<string, Currency> currencyByCode;
 
-        public Sticky<string, Currency> CurrencyByCode => this.currencyByCode ?? (this.currencyByCode = new Sticky<string, Currency>(this.Session, this.Meta.IsoCode));
+        public Sticky<string, Currency> CurrencyByCode => this.currencyByCode ??= new Sticky<string, Currency>(this.Session, this.Meta.IsoCode);
 
         protected override void CoreSetup(Setup setup)
         {
@@ -189,14 +189,16 @@ namespace Allors.Domain
                 { "ZWL", "Zimbabwean Dollar" },
             };
 
+            var merge = this.CurrencyByCode.Merger().Action();
+
             var count = data.Length / 2;
             for (var i = 0; i < count; i++)
             {
-                new CurrencyBuilder(this.Session)
-                    .WithIsoCode(data[i, 0])
-                    .WithName(data[i, 1])
-                    .WithIsActive(true)
-                    .Build();
+                merge(data[i, 0], v =>
+                {
+                    v.Name = data[i, 1];
+                    v.IsActive = true;
+                });
             }
         }
     }

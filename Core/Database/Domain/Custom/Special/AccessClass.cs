@@ -14,8 +14,10 @@ namespace Allors.Domain
                 return;
             }
 
-            var singleton = this.strategy.Session.GetSingleton();
-            method.SecurityTokens = new[] { singleton.DefaultSecurityToken, singleton.InitialSecurityToken };
+            var defaultSecurityToken = new SecurityTokens(this.Session()).DefaultSecurityToken;
+            var initialSecurityToken = new SecurityTokens(this.Session()).InitialSecurityToken;
+
+            method.SecurityTokens = new[] { defaultSecurityToken, initialSecurityToken };
         }
     }
 }

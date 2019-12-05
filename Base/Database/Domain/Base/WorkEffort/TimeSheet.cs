@@ -27,7 +27,7 @@ namespace Allors.Domain
         {
             if (method.SecurityTokens == null)
             {
-                var securityTokens = new[] { this.Session().GetSingleton().DefaultSecurityToken, this.Worker.OwnerSecurityToken };
+                var securityTokens = new[] { new SecurityTokens(this.Session()).DefaultSecurityToken, this.Worker.OwnerSecurityToken };
                 method.SecurityTokens = securityTokens;
             }
         }

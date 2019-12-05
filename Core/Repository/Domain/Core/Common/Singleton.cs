@@ -71,22 +71,40 @@ namespace Allors.Repository
         public AutomatedAgent Scheduler { get; set; }
 
         #region Allors
-        [Id("6A6E0852-C984-47B8-939D-8E0B0B042B9D")]
-        [AssociationId("E783AFBE-EF70-4AC1-8C0A-5DFE6FEDFBE0")]
-        [RoleId("BCF431F6-10CD-4F33-873D-0B2F1A1EA09D")]
+        [Id("1AEFD075-5D5C-4920-ABB6-3F1BA9F9DB34")]
+        [AssociationId("B7BD78A5-01F0-46F8-9196-AE112CF3429E")]
+        [RoleId("227BE09B-6608-40EE-9086-FE9FB590383F")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
-        public SecurityToken InitialSecurityToken { get; set; }
+        public AccessControl CreatorsAccessControl { get; set; }
 
         #region Allors
-        [Id("f579494b-e550-4be6-9d93-84618ac78704")]
-        [AssociationId("33f17e75-99cc-417e-99f3-c29080f08f0a")]
-        [RoleId("ca9e3469-583c-4950-ba2c-1bc3a0fc3e96")]
+        [Id("FF5E235A-9CA3-42C1-B501-C13915946779")]
+        [AssociationId("A8CFEEBB-A997-45DD-BA88-C7AABCA1453B")]
+        [RoleId("59DE2B56-8F38-4638-B17D-5CA83235A1DE")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
-        public SecurityToken DefaultSecurityToken { get; set; }
+        public AccessControl AdministratorsAccessControl { get; set; }
+
+        #region Allors
+        [Id("B302534B-0A79-4B77-B3FA-1D3AB981B802")]
+        [AssociationId("0CB2364D-56F9-4472-A713-ECC1A6AB901E")]
+        [RoleId("46E40245-541D-44A4-B5BB-55C340366068")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        public AccessControl GuestCreatorsAccessControl { get; set; }
+
+        #region Allors
+        [Id("785662B2-605D-45BB-A3B0-A972BB946EC2")]
+        [AssociationId("194F2346-4762-4FC5-AEDC-EA0071BF9C62")]
+        [RoleId("0FB862DA-F53E-48CD-B95E-895BC7978BED")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        public AccessControl GuestAccessControl { get; set; }
 
         #region Allors
         [Id("B2166062-84DA-449D-B34F-983A0C81BC31")]

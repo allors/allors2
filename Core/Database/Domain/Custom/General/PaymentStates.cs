@@ -14,21 +14,23 @@ namespace Allors.Domain
         private static readonly Guid PartiallyPaidId = new Guid("1801737F-2760-4600-9243-7E6BDD8A224D");
         private static readonly Guid PaidId = new Guid("04FAD96A-2B0F-4F07-ABB7-57657A34E422");
 
-        private UniquelyIdentifiableSticky<PaymentState> sticky;
+        private UniquelyIdentifiableSticky<PaymentState> cache;
 
-        public Sticky<Guid, PaymentState> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<PaymentState>(this.Session));
+        public Sticky<Guid, PaymentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PaymentState>(this.Session);
 
-        public PaymentState Unpaid => this.Sticky[UnpaidId];
+        public PaymentState Unpaid => this.Cache[UnpaidId];
 
-        public PaymentState PartiallyPaid => this.Sticky[PartiallyPaidId];
+        public PaymentState PartiallyPaid => this.Cache[PartiallyPaidId];
 
-        public PaymentState Paid => this.Sticky[PaidId];
+        public PaymentState Paid => this.Cache[PaidId];
 
         protected override void CoreSetup(Setup setup)
         {
-            new PaymentStateBuilder(this.Session).WithUniqueId(UnpaidId).WithName("Unpaid").Build();
-            new PaymentStateBuilder(this.Session).WithUniqueId(PartiallyPaidId).WithName("PartiallyPaid").Build();
-            new PaymentStateBuilder(this.Session).WithUniqueId(PaidId).WithName("Paid").Build();
+            var merge = this.Cache.Merger().Action();
+
+            merge(UnpaidId, v => v.Name = "Unpaid");
+            merge(PartiallyPaidId, v => v.Name = "PartiallyPaid");
+            merge(PaidId, v => v.Name = "Paid");
         }
     }
 }

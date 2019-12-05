@@ -15,24 +15,26 @@ namespace Allors.Domain
         private static readonly Guid ClosedId = new Guid("0750D8B3-3B10-465F-BBC0-81D12F40A3DF");
         private static readonly Guid CancelledId = new Guid("F72CEBEE-D12C-4321-83A3-77019A7B8C76");
 
-        private UniquelyIdentifiableSticky<OrderState> sticky;
+        private UniquelyIdentifiableSticky<OrderState> cache;
 
-        public Sticky<Guid, OrderState> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<OrderState>(this.Session));
+        public Sticky<Guid, OrderState> Cache => this.cache ??= new UniquelyIdentifiableSticky<OrderState>(this.Session);
 
-        public OrderState Initial => this.Sticky[InitialId];
+        public OrderState Initial => this.Cache[InitialId];
 
-        public OrderState Confirmed => this.Sticky[ConfirmedId];
+        public OrderState Confirmed => this.Cache[ConfirmedId];
 
-        public OrderState Closed => this.Sticky[ClosedId];
+        public OrderState Closed => this.Cache[ClosedId];
 
-        public OrderState Cancelled => this.Sticky[CancelledId];
+        public OrderState Cancelled => this.Cache[CancelledId];
 
         protected override void CoreSetup(Setup setup)
         {
-            new OrderStateBuilder(this.Session).WithUniqueId(InitialId).WithName("Initial").Build();
-            new OrderStateBuilder(this.Session).WithUniqueId(ConfirmedId).WithName("Confirmed").Build();
-            new OrderStateBuilder(this.Session).WithUniqueId(ClosedId).WithName("Closed").Build();
-            new OrderStateBuilder(this.Session).WithUniqueId(CancelledId).WithName("Cancelled").Build();
+            var merge = this.Cache.Merger().Action();
+
+            merge(InitialId, v => v.Name = "Initial");
+            merge(ConfirmedId, v => v.Name = "Confirmed");
+            merge(ClosedId, v => v.Name = "Closed");
+            merge(CancelledId, v => v.Name = "Cancelled");
         }
     }
 }

@@ -9,9 +9,8 @@ namespace Allors.Domain
     {
         public static void BaseOnDerive(this Shipment @this, ObjectOnDerive method)
         {
-            var singleton = @this.Strategy.Session.GetSingleton();
-
-            @this.AddSecurityToken(singleton.DefaultSecurityToken);
+            var session = @this.Strategy.Session;
+            @this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);
         }
     }
 }

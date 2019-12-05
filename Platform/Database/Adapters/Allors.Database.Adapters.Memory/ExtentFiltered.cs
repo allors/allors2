@@ -26,7 +26,7 @@ namespace Allors.Database.Adapters.Memory
             extent.UpgradeTo(this);
         }
 
-        public override ICompositePredicate Filter => this.filter ?? (this.filter = new And(this));
+        public override ICompositePredicate Filter => this.filter ??= new And(this);
 
         public override IComposite ObjectType => this.objectType;
 

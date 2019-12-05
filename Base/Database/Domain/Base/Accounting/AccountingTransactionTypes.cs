@@ -36,14 +36,15 @@ namespace Allors.Domain
 
         public AccountingTransactionType General => this.Cache[GeneralId];
 
-        private UniquelyIdentifiableSticky<AccountingTransactionType> Cache => this.cache
-                                                                              ?? (this.cache = new UniquelyIdentifiableSticky<AccountingTransactionType>(this.Session));
+        private UniquelyIdentifiableSticky<AccountingTransactionType> Cache => this.cache ??= new UniquelyIdentifiableSticky<AccountingTransactionType>(this.Session);
 
         protected override void BasePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.Locale);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
+
+            var merge = this.Cache.Merger().Action();
 
             new AccountingTransactionTypeBuilder(this.Session)
                 .WithName("Bank statement")

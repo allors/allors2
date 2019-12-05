@@ -35,10 +35,10 @@ namespace Allors.Domain
             {
                 if (this.ExistNotificationListWhereNotification && this.NotificationListWhereNotification.ExistUserWhereNotificationList)
                 {
-                    var singleton = this.Strategy.Session.GetSingleton();
                     var user = this.NotificationListWhereNotification.UserWhereNotificationList;
+                    var defaultSecurityToken = new SecurityTokens(this.Session()).DefaultSecurityToken;
 
-                    this.SecurityTokens = new[] { user.OwnerSecurityToken, singleton.DefaultSecurityToken };
+                    this.SecurityTokens = new[] { user.OwnerSecurityToken, defaultSecurityToken };
                 }
             }
         }

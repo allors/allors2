@@ -27,34 +27,16 @@ namespace Allors.Domain
 
         public QuoteState Rejected => this.StateCache[RejectedId];
 
-        private UniquelyIdentifiableSticky<QuoteState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<QuoteState>(this.Session));
+        private UniquelyIdentifiableSticky<QuoteState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<QuoteState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new QuoteStateBuilder(this.Session)
-                .WithUniqueId(CreatedId)
-                .WithName("Created")
-                .Build();
+            var merge = this.StateCache.Merger().Action();
 
-            new QuoteStateBuilder(this.Session)
-                .WithUniqueId(ApprovedId)
-                .WithName("Approved")
-                .Build();
-
-            new QuoteStateBuilder(this.Session)
-                .WithUniqueId(OrderedId)
-                .WithName("Ordered")
-                .Build();
-
-            new QuoteStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new QuoteStateBuilder(this.Session)
-                .WithUniqueId(RejectedId)
-                .WithName("Rejected")
-                .Build();
+            merge(CreatedId, v => v.Name = "Created");
+            merge(ApprovedId, v => v.Name = "Approved");
+            merge(CancelledId, v => v.Name = "Cancelled");
+            merge(RejectedId, v => v.Name = "Rejected");
         }
     }
 }

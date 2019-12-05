@@ -27,7 +27,7 @@ namespace Allors.Domain
                     .WithRole(employeeRole)
                     .Build();
 
-                singleton.DefaultSecurityToken.AddAccessControl(singleton.EmployeeAccessControl);
+                new SecurityTokens(this.Session).DefaultSecurityToken.AddAccessControl(singleton.EmployeeAccessControl);
             }
         }
     }

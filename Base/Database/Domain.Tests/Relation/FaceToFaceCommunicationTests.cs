@@ -106,7 +106,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(2, communication.SecurityTokens.Count);
-            Assert.Contains(this.Session.GetSingleton().DefaultSecurityToken, communication.SecurityTokens);
+            Assert.Contains(new SecurityTokens(this.Session).DefaultSecurityToken, communication.SecurityTokens);
             Assert.Contains(owner.OwnerSecurityToken, communication.SecurityTokens);
         }
 
@@ -133,7 +133,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(2, communication.SecurityTokens.Count);
-            Assert.Contains(this.Session.GetSingleton().DefaultSecurityToken, communication.SecurityTokens);
+            Assert.Contains(new SecurityTokens(this.Session).DefaultSecurityToken, communication.SecurityTokens);
             Assert.Contains(owner.OwnerSecurityToken, communication.SecurityTokens);
         }
     }

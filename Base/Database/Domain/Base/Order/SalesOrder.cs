@@ -527,7 +527,7 @@ namespace Allors.Domain
 
             var singleton = session.GetSingleton();
 
-            this.AddSecurityToken(singleton.DefaultSecurityToken);
+            this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);
 
             this.Sync(session);
 

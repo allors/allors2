@@ -3,8 +3,6 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors.Meta;
-
 namespace Allors.Domain
 {
     using System.Linq;
@@ -21,9 +19,11 @@ namespace Allors.Domain
 
         public static void BaseOnDerive(this Quote @this, ObjectOnDerive method)
         {
+            var session = @this.Strategy.Session;
+
             if (!@this.ExistIssuer)
             {
-                var internalOrganisations = new Organisations(@this.Strategy.Session).InternalOrganisations();
+                var internalOrganisations = new Organisations(session).InternalOrganisations();
 
                 if (internalOrganisations.Count() == 1)
                 {
@@ -33,14 +33,12 @@ namespace Allors.Domain
 
             if (!@this.ExistQuoteNumber && @this.ExistIssuer)
             {
-                @this.QuoteNumber = @this.Issuer.NextQuoteNumber(@this.Strategy.Session.Now().Year);
+                @this.QuoteNumber = @this.Issuer.NextQuoteNumber(session.Now().Year);
             }
 
-            @this.Currency = @this.Currency ?? @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
+            @this.Currency ??= @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
 
-            var singleton = @this.Strategy.Session.GetSingleton();
-
-            @this.AddSecurityToken(singleton.DefaultSecurityToken);
+            @this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);
         }
 
         public static void BaseApprove(this Quote @this, QuoteApprove method)

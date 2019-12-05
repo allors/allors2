@@ -47,7 +47,9 @@ export function appMeta(metaPopulation: MetaPopulation) {
 
   m.Shipment.list = '/shipment/shipments';
   m.CustomerShipment.list = '/shipment/shipments';
-  m.CustomerShipment.overview = '/shipment/shipment/:id';
+  m.CustomerShipment.overview = '/shipment/customershipment/:id';
+  m.PurchaseShipment.list = '/shipment/shipments';
+  m.PurchaseShipment.overview = '/shipment/purchaseshipment/:id';
   m.Carrier.list = '/shipment/carriers';
 
   m.WorkEffort.list = '/workefforts/workefforts';

@@ -132,10 +132,10 @@ namespace Allors.Domain
 
                 if (securityTokens == null || securityTokens.Length == 0)
                 {
-                    var singleton = session.GetSingleton();
+                    var tokens = new SecurityTokens(session);
                     securityTokens = strategy.IsNewInSession
-                                          ? new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken }
-                                          : new[] { singleton.DefaultSecurityToken };
+                                          ? new[] { tokens.InitialSecurityToken ?? tokens.DefaultSecurityToken }
+                                          : new[] { tokens.DefaultSecurityToken };
                 }
 
                 this.accessControls = securityTokens.SelectMany(v => v.AccessControls)

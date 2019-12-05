@@ -14,29 +14,20 @@ namespace Allors.Domain
         public static readonly Guid AdministratorsId = new Guid("CDC04209-683B-429C-BED2-440851F430DF");
         public static readonly Guid CreatorsId = new Guid("F0D8132B-79D6-4A30-A866-EF6E5C952761");
 
-        // TODO: Move to Base
-        public static readonly Guid EmployeesId = new Guid("ED2D31E3-E18E-4C08-9AF3-F9D849D0F6B2");
-        public static readonly Guid SalesAccountManagersId = new Guid("449EA7CE-124B-4E19-AFDF-46CAFB8D7B20");
+        private UniquelyIdentifiableSticky<UserGroup> cache;
 
-        private UniquelyIdentifiableSticky<UserGroup> sticky;
+        public UserGroup Administrators => this.Cache[AdministratorsId];
 
-        public UserGroup Administrators => this.Sticky[AdministratorsId];
+        public UserGroup Creators => this.Cache[CreatorsId];
 
-        public UserGroup Creators => this.Sticky[CreatorsId];
-        
-        public UserGroup Employees => this.Sticky[EmployeesId];
-
-        public UserGroup SalesAccountManagers => this.Sticky[SalesAccountManagersId];
-
-        private UniquelyIdentifiableSticky<UserGroup> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<UserGroup>(this.Session));
+        private UniquelyIdentifiableSticky<UserGroup> Cache => this.cache ??= new UniquelyIdentifiableSticky<UserGroup>(this.Session);
 
         protected override void CoreSetup(Setup setup)
         {
-            // Default Groups
-            new UserGroupBuilder(this.Session).WithName("Administrators").WithUniqueId(AdministratorsId).Build();
-            new UserGroupBuilder(this.Session).WithName("Creators").WithUniqueId(CreatorsId).Build();
-            new UserGroupBuilder(this.Session).WithName("Employees").WithUniqueId(EmployeesId).Build();
-            new UserGroupBuilder(this.Session).WithName("Sales AccountManagers").WithUniqueId(SalesAccountManagersId).Build();
+            var merge = this.Cache.Merger().Action();
+
+            merge(AdministratorsId, v => v.Name = "Administrators");
+            merge(CreatorsId, v => v.Name = "Creators");
         }
     }
 }

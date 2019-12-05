@@ -14,9 +14,6 @@ namespace Allors.Domain
     public class Sticky<TKey, TObject>
         where TObject : class, IObject
     {
-        private readonly ISession session;
-        private readonly RoleType roleType;
-
         private IDictionary<TKey, long> cache;
 
         public Sticky(ISession session, RoleType roleType)
@@ -26,9 +23,13 @@ namespace Allors.Domain
                 throw new ArgumentException("ObjectType of RoleType should be a Unit");
             }
 
-            this.roleType = roleType;
-            this.session = session;
+            this.Session = session;
+            this.RoleType = roleType;
         }
+
+        public ISession Session { get; }
+
+        public RoleType RoleType { get; }
 
         public TObject this[TKey key]
         {
@@ -36,13 +37,13 @@ namespace Allors.Domain
             {
                 if (this.cache == null)
                 {
-                    this.cache = this.session.GetSticky<TKey>(typeof(TObject), this.roleType);
+                    this.cache = this.Session.GetSticky<TKey>(typeof(TObject), this.RoleType);
                 }
 
                 if (!this.cache.TryGetValue(key, out var objectId))
                 {
-                    var extent = this.session.Extent<TObject>();
-                    extent.Filter.AddEquals(this.roleType, key);
+                    var extent = this.Session.Extent<TObject>();
+                    extent.Filter.AddEquals(this.RoleType, key);
 
                     var @object = extent.First;
                     if (@object != null)
@@ -55,8 +56,41 @@ namespace Allors.Domain
                     }
                 }
 
-                return (TObject)this.session.Instantiate(objectId);
+                return (TObject)this.Session.Instantiate(objectId);
             }
+        }
+
+        public StickyMerger<TKey, TObject> Merger() => new StickyMerger<TKey, TObject>(this);
+
+        public class StickyMerger<TKey, TObject>
+            where TObject : class, IObject
+        {
+            private readonly Sticky<TKey, TObject> sticky;
+            private readonly ISession session;
+            private readonly IClass @class;
+            private readonly IRelationType relationType;
+
+            internal StickyMerger(Sticky<TKey, TObject> sticky)
+            {
+                this.sticky = sticky;
+                this.session = sticky.Session;
+                this.@class = (IClass)this.session.Database.ObjectFactory.GetObjectTypeForType(typeof(TObject));
+                this.relationType = this.sticky.RoleType.RelationType;
+            }
+
+            public Func<TKey, Action<TObject>, TObject> Action() =>
+                (id, action) =>
+                {
+                    var @object = this.sticky[id];
+                    if (@object == null)
+                    {
+                        @object = (TObject)Allors.ObjectBuilder.Build(this.session, this.@class);
+                        @object.Strategy.SetUnitRole(this.relationType, id);
+                        action(@object);
+                    }
+
+                    return @object;
+                };
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Tests
             this.Session.Derive();
             this.Session.Commit();
 
-            var defaultSecurityToken = this.Session.GetSingleton().DefaultSecurityToken;
+            var defaultSecurityToken = new SecurityTokens(this.Session).DefaultSecurityToken;
             var dstAcs = defaultSecurityToken.AccessControls.Where(v => v.EffectiveUsers.Contains(administrator));
             var dstAcs2 = defaultSecurityToken.AccessControls.Where(v => v.SubjectGroups.Contains(administrators));
 

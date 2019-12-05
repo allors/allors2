@@ -102,7 +102,7 @@ namespace Allors.Server.Tests
                   {
                       new Pull
                           {
-                              ExtentRef = Organisations.ExtentByName,
+                              ExtentRef = PreparedExtents.ByName,
                               Parameters = new Dictionary<string, string> { ["name"] = "Acme" },
                           },
                   },
@@ -134,7 +134,7 @@ namespace Allors.Server.Tests
                   {
                       new Pull
                           {
-                              ExtentRef = Organisations.ExtentByName,
+                              ExtentRef = PreparedExtents.ByName,
                               Parameters = new Dictionary<string, string> { ["name"] = "Acme" },
                           },
                   },

@@ -11,7 +11,7 @@ namespace Allors.Domain
     using Allors.Meta;
 
     public class UniquelyIdentifiableSticky<TObject> : Sticky<Guid, TObject>
-        where TObject : class, IObject
+        where TObject : class, UniquelyIdentifiable
     {
         public UniquelyIdentifiableSticky(ISession session)
             : base(session, M.UniquelyIdentifiable.UniqueId)
