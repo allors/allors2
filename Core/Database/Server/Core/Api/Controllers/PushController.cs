@@ -40,7 +40,6 @@ namespace Allors.Server
                 {
                     try
                     {
-
                         using (var session = this.DatabaseService.Database.CreateSession())
                         {
                             var acls = new WorkspaceAccessControlLists(session.GetUser());
