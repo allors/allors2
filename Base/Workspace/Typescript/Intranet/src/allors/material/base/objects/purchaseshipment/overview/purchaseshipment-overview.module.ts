@@ -28,25 +28,23 @@ import { AllorsMaterialSlideToggleModule } from '../../../../core/components/rol
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
-import { CustomerShipmentOverviewDetailModule } from '../../customershipment/overview/detail/customershipment-overview-detail.module';
-import { PurchaseShipmentOverviewDetailModule } from '../../purchaseshipment/overview/detail/purchaseshipment-overview-detail.module';
-import { ShipmentOverviewSummaryModule } from './summary/shipment-overview-summary.module';
+import { PurchaseShipmentOverviewSummaryModule } from './summary/purchaseshipment-overview-summary.module';
+import { PurchaseShipmentOverviewDetailModule } from './detail/purchaseshipment-overview-detail.module';
 import { ShipmentItemOverviewPanelModule } from '../../shipmentitem/overview/panel/shipmentitem-overview-panel.module';
 
-export { ShipmentOverviewComponent } from './shipment-overview.component';
-import { ShipmentOverviewComponent } from './shipment-overview.component';
+import { PurchaseShipmentOverviewComponent } from './purchaseshipment-overview.component';
+export { PurchaseShipmentOverviewComponent } from './purchaseshipment-overview.component';
 
 @NgModule({
   declarations: [
-    ShipmentOverviewComponent,
+    PurchaseShipmentOverviewComponent,
   ],
   exports: [
-    ShipmentOverviewComponent,
+    PurchaseShipmentOverviewComponent,
   ],
   imports: [
-    CustomerShipmentOverviewDetailModule,
     PurchaseShipmentOverviewDetailModule,
-    ShipmentOverviewSummaryModule,
+    PurchaseShipmentOverviewSummaryModule,
     ShipmentItemOverviewPanelModule,
 
     AllorsMaterialFileModule,
@@ -81,4 +79,4 @@ import { ShipmentOverviewComponent } from './shipment-overview.component';
     RouterModule,
   ],
 })
-export class ShipmentOverviewModule { }
+export class PurchaseShipmentOverviewModule { }

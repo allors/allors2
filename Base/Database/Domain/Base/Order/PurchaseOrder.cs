@@ -382,6 +382,7 @@ namespace Allors.Domain
                 var shipment = new PurchaseShipmentBuilder(session)
                     .WithShipmentMethod(new ShipmentMethods(session).Ground)
                     .WithShipToParty(this.OrderedBy)
+                    .WithShipToAddress(this.ShipToAddress)
                     .WithShipFromParty(this.TakenViaSupplier)
                     .WithShipToFacility(this.Facility)
                     .Build();

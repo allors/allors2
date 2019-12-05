@@ -26,15 +26,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../core/components/
 import { AllorsMaterialStaticModule } from '../../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../core/components/role/textarea';
 
-import { ShipmentOverviewSummaryComponent } from './shipment-overview-summary.component';
-export { ShipmentOverviewSummaryComponent } from './shipment-overview-summary.component';
+import { PurchaseShipmentOverviewSummaryComponent } from './purchaseshipment-overview-summary.component';
+export { PurchaseShipmentOverviewSummaryComponent } from './purchaseshipment-overview-summary.component';
 
 @NgModule({
   declarations: [
-    ShipmentOverviewSummaryComponent,
+    PurchaseShipmentOverviewSummaryComponent,
   ],
   exports: [
-    ShipmentOverviewSummaryComponent,
+    PurchaseShipmentOverviewSummaryComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -66,4 +66,4 @@ export { ShipmentOverviewSummaryComponent } from './shipment-overview-summary.co
     RouterModule,
   ],
 })
-export class ShipmentOverviewSummaryModule { }
+export class PurchaseShipmentOverviewSummaryModule { }

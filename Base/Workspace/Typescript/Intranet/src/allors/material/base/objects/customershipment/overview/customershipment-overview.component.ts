@@ -9,14 +9,14 @@ import { ProductQuote, Good, CustomerShipment, ShipmentItem, SalesInvoice, Billi
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 
 @Component({
-  templateUrl: './shipment-overview.component.html',
+  templateUrl: './customershipment-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class ShipmentOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
+export class CustomerShipmentOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
-  title = 'Shipment';
+  title = 'Customer Shipment';
 
-  public shipment: Shipment;
+  public shipment: CustomerShipment;
   public orderItems: ShipmentItem[] = [];
   public goods: Good[] = [];
   public salesInvoice: SalesInvoice;
@@ -26,8 +26,6 @@ export class ShipmentOverviewComponent extends TestScope implements AfterViewIni
   public inventoryItemStates: SerialisedInventoryItemState[];
 
   subscription: Subscription;
-  isCustomerShipment: boolean;
-  isPurchaseShipment: boolean;
 
   constructor(
     @Self() public panelManager: PanelManagerService,
@@ -92,9 +90,7 @@ export class ShipmentOverviewComponent extends TestScope implements AfterViewIni
 
         this.panelManager.onPulled(loaded);
 
-        this.shipment = loaded.objects.Shipment as Shipment;
-        this.isCustomerShipment = this.shipment.objectType === this.metaService.m.CustomerShipment;
-        this.isPurchaseShipment = this.shipment.objectType === this.metaService.m.PurchaseShipment;
+        this.shipment = loaded.objects.Shipment as CustomerShipment;
       });
   }
 

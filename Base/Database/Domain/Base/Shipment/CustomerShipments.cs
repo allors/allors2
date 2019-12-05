@@ -24,7 +24,6 @@ namespace Allors.Domain
             var picked = new ShipmentStates(this.Session).Picked;
             var packed = new ShipmentStates(this.Session).Packed;
             var shipped = new ShipmentStates(this.Session).Shipped;
-            var delivered = new ShipmentStates(this.Session).Delivered;
             var cancelled = new ShipmentStates(this.Session).Cancelled;
             var onHold = new ShipmentStates(this.Session).OnHold;
 
@@ -45,7 +44,6 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.DenyExcept(this.ObjectType, shipped, except, Operations.Execute, Operations.Write);
-            config.DenyExcept(this.ObjectType, delivered, except, Operations.Execute, Operations.Write);
         }
     }
 }

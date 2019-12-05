@@ -22,7 +22,6 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
 
   currencies: Currency[];
   shipToAddresses: PostalAddress[] = [];
-  shipFromAddresses: PostalAddress[] = [];
   shipToContacts: Person[] = [];
   shipFromContacts: Person[] = [];
   internalOrganisation: Organisation;
@@ -30,7 +29,6 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
   locales: Locale[];
   shipmentMethods: ShipmentMethod[];
   carriers: Carrier[];
-  addShipFromAddress = false;
   addShipToAddress = false;
   addShipFromContactPerson = false;
 
@@ -50,7 +48,8 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
-    private fetcher: FetcherService
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId
   ) {
     super();
 
@@ -108,7 +107,26 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
 
           const pulls = [
             this.fetcher.locales,
-            this.fetcher.internalOrganisation,
+            pull.InternalOrganisation(
+              {
+                object: this.internalOrganisationId.value,
+                fetch: {
+                  CurrentPartyContactMechanisms: {
+                    include: {
+                      ContactMechanism: {
+                        PostalAddress_Country: x
+                      }
+                    }
+                  }
+                }
+              }
+            ),
+            pull.InternalOrganisation({
+              object: this.internalOrganisationId.value,
+              fetch: {
+                CurrentContacts: x,
+              }
+            }),
             pull.ShipmentMethod({ sort: new Sort(m.ShipmentMethod.Name) }),
             pull.Carrier({ sort: new Sort(m.Carrier.Name) }),
             pull.Facility({
@@ -142,14 +160,14 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
       .subscribe((loaded) => {
         this.allors.context.reset();
 
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism) as PostalAddress[];
+        this.shipToContacts = loaded.collections.CurrentContacts as Person[];
+
         this.purchaseShipment = loaded.objects.PurchaseShipment as PurchaseShipment;
         this.facilities = loaded.collections.Facilities as Facility[];
         this.shipmentMethods = loaded.collections.ShipmentMethods as ShipmentMethod[];
         this.carriers = loaded.collections.Carriers as Carrier[];
-
-        if (this.purchaseShipment.ShipToParty) {
-          this.updateShipToParty(this.purchaseShipment.ShipToParty);
-        }
 
         if (this.purchaseShipment.ShipFromParty) {
           this.updateShipFromParty(this.purchaseShipment.ShipFromParty);
@@ -195,52 +213,8 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
     this.purchaseShipment.ShipToAddress = postalAddress;
   }
 
-  public shipFromAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-
-    this.shipFromAddresses.push(partyContactMechanism.ContactMechanism as PostalAddress);
-    this.purchaseShipment.ShipFromParty.AddPartyContactMechanism(partyContactMechanism);
-    this.purchaseShipment.ShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
-  }
-
   public supplierSelected(customer: Party) {
     this.updateShipFromParty(customer);
-  }
-
-  private updateShipToParty(internalOrganisation: Party): void {
-
-    const { pull, x } = this.metaService;
-
-    const pulls = [
-      pull.Party(
-        {
-          object: internalOrganisation,
-          fetch: {
-            CurrentPartyContactMechanisms: {
-              include: {
-                ContactMechanism: {
-                  PostalAddress_Country: x
-                }
-              }
-            }
-          }
-        }
-      ),
-      pull.Party({
-        object: internalOrganisation,
-        fetch: {
-          CurrentContacts: x,
-        }
-      }),
-    ];
-
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism) as PostalAddress[];
-        this.shipToContacts = loaded.collections.CurrentContacts as Person[];
-      });
   }
 
   private updateShipFromParty(organisation: Party): void {
@@ -248,20 +222,6 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
     const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Party(
-        {
-          object: organisation,
-          fetch: {
-            CurrentPartyContactMechanisms: {
-              include: {
-                ContactMechanism: {
-                  PostalAddress_Country: x
-                }
-              }
-            }
-          }
-        }
-      ),
       pull.Party({
         object: organisation,
         fetch: {
@@ -274,8 +234,6 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.shipFromAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism) as PostalAddress[];
         this.shipFromContacts = loaded.collections.CurrentContacts as Person[];
       });
   }
