@@ -33,27 +33,6 @@
         <div class="row">
           <div class="col-md">
             <div class="row">
-              <a-mat-select [object]="purchaseShipment" [roleType]="m.PurchaseShipment.ShipFromAddress" [options]="shipFromAddresses" display="displayName"
-                class="col-md"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="!purchaseShipment.CanWriteShipFromAddress"
-                type="button" (click)="addShipFromAddress = !addShipFromAddress">
-                <mat-icon *ngIf="!addShipFromAddress">add</mat-icon>
-                <mat-icon *ngIf="addShipFromAddress">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12 pb-3" *ngIf="addShipFromAddress">
-            <mat-card>
-              <mat-card-header>Add a new ship from address</mat-card-header>
-              <mat-card-content>
-                <party-contactmechanism-postaladdress (cancelled)="addShipFromAddress = false" (saved)="shipFromAddressAdded($event); addShipFromAddress = false">
-                </party-contactmechanism-postaladdress>
-              </mat-card-content>
-            </mat-card>
-          </div>
-  
-          <div class="col-md">
-            <div class="row">
               <a-mat-select class="col" [disabled]="shipFromCustomerIsPerson" [object]="purchaseShipment" [roleType]="m.PurchaseShipment.ShipFromContactPerson" [options]="shipFromContacts"
                             display="displayName" label="Supplier contact person"></a-mat-select>
               <button mat-mini-fab color="accent" [disabled]="!purchaseShipment.ShipFromParty || !purchaseShipment.CanWriteShipFromContactPerson || shipFromCustomerIsPerson"

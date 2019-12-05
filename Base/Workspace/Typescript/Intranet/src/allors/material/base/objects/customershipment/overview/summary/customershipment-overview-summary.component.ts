@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, Invoked, RefreshService,  Action } from '../../../../../../angular';
-import { Shipment, CustomerShipment, ShipmentItem, Order } from '../../../../../../domain';
+import { CustomerShipment, ShipmentItem, Order } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort, Equals } from '../../../../../../../allors/framework';
@@ -8,18 +8,17 @@ import { PrintService, SaveService } from '../../../../../../material';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'shipment-overview-summary',
-  templateUrl: './shipment-overview-summary.component.html',
+  selector: 'customershipment-overview-summary',
+  templateUrl: './customershipment-overview-summary.component.html',
   providers: [PanelService]
 })
-export class ShipmentOverviewSummaryComponent {
+export class CustomerShipmentOverviewSummaryComponent {
 
   m: Meta;
 
-  shipment: Shipment;
+  shipment: CustomerShipment;
   order: Order;
   shipmentItems: ShipmentItem[] = [];
-  customerShipment: CustomerShipment;
 
   constructor(
     @Self() public panel: PanelService,
@@ -65,8 +64,7 @@ export class ShipmentOverviewSummaryComponent {
     };
 
     panel.onPulled = (loaded) => {
-      this.shipment = loaded.objects[shipmentPullName] as Shipment;
-      this.customerShipment = loaded.objects[shipmentPullName] as CustomerShipment;
+      this.shipment = loaded.objects[shipmentPullName] as CustomerShipment;
       this.shipmentItems = loaded.collections[shipmentPullName] as ShipmentItem[];
     };
   }
@@ -83,7 +81,7 @@ export class ShipmentOverviewSummaryComponent {
 
   public cancel(): void {
 
-    this.panel.manager.context.invoke(this.customerShipment.Cancel)
+    this.panel.manager.context.invoke(this.shipment.Cancel)
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -93,7 +91,7 @@ export class ShipmentOverviewSummaryComponent {
 
   public hold(): void {
 
-    this.panel.manager.context.invoke(this.customerShipment.Hold)
+    this.panel.manager.context.invoke(this.shipment.Hold)
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
@@ -103,7 +101,7 @@ export class ShipmentOverviewSummaryComponent {
 
   public continue(): void {
 
-    this.panel.manager.context.invoke(this.customerShipment.Continue)
+    this.panel.manager.context.invoke(this.shipment.Continue)
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
@@ -113,7 +111,7 @@ export class ShipmentOverviewSummaryComponent {
 
   public ship(): void {
 
-    this.panel.manager.context.invoke(this.customerShipment.Ship)
+    this.panel.manager.context.invoke(this.shipment.Ship)
       .subscribe((invoked: Invoked) => {
         this.panel.toggle();
         this.snackBar.open('Successfully shipped.', 'close', { duration: 5000 });
