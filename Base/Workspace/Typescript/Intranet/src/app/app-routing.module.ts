@@ -13,6 +13,7 @@ import * as CarrierList from '../allors/material/base/objects/carrier/list/carri
 import * as CategoriesOverview from '../allors/material/base/objects/productcategory/list/productcategory-list.module';
 import * as CommunicationEventList from '../allors/material/base/objects/communicationevent/list/communicationevent-list.module';
 import * as CommunicationEventWorkTask from '../allors/material/base/objects/communicationevent/worktask/communicationevent-worktask.module';
+import * as CustomerShipmentOverview from '../allors/material/base/objects/customershipment/overview/customershipment-overview.module';
 import * as GoodList from '../allors/material/base/objects/good/list/good-list.module';
 import * as InventoryItemTransactionEdit from '../allors/material/base/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import * as NonUnifiedGoodOverview from '../allors/material/base/objects/nonunifiedgood/overview/nonunifiedgood-overview.module';
@@ -33,6 +34,7 @@ import * as PurchaseInvoiceOverview from '../allors/material/base/objects/purcha
 import * as PurchaseInvoiceItemEdit from '../allors/material/base/objects/purchaseinvoiceitem/edit/purchaseinvoiceitem-edit.module';
 import * as PurchaseOrderList from '../allors/material/base/objects/purchaseorder/list/purchaseorder-list.module';
 import * as PurchaseOrderOverview from '../allors/material/base/objects/purchaseorder/overview/purchaseorder-overview.module';
+import * as PurchaseShipmentOverview from '../allors/material/base/objects/purchaseshipment/overview/purchaseshipment-overview.module';
 import * as QuoteItemEdit from '../allors/material/base/objects/quoteitem/edit/quoteitem-edit.module';
 import * as RepeatingSalesInvoiceEdit from '../allors/material/base/objects/repeatingsalesinvoice/edit/repeatingsalesinvoice-edit.module';
 import * as RequestItemEdit from '../allors/material/base/objects/requestitem/edit/requestitem-edit.module';
@@ -46,7 +48,6 @@ import * as SalesOrderOverview from '../allors/material/base/objects/salesorder/
 import * as SerialisedItemList from '../allors/material/base/objects/serialiseditem/list/serialiseditem-list.module';
 import * as SerialisedItemOverview from '../allors/material/base/objects/serialiseditem/overview/serialiseditem-overview.module';
 import * as ShipmentList from '../allors/material/base/objects/shipment/list/shipment-list.module';
-import * as ShipmentOverview from '../allors/material/base/objects/shipment/overview/shipment-overview.module';
 import * as UnifiedGoodList from '../allors/material/base/objects/unifiedgood/list/unifiedgood-list.module';
 import * as UnifiedGoodOverview from '../allors/material/base/objects/unifiedgood/overview/unifiedgood-overview.module';
 import * as WorkEffortList from '../allors/material/base/objects/workeffort/list/workeffort-list.module';
@@ -58,6 +59,7 @@ const modules = [
   CarrierList.CarrierListModule,
   CommunicationEventList.CommunicationEventListModule,
   CommunicationEventWorkTask.CommunicationEventWorkTaskModule,
+  CustomerShipmentOverview.CustomerShipmentOverviewModule,
   InventoryItemTransactionEdit.InventoryItemTransactionEditModule,
   OrganisationList.OrganisationListModule,
   OrganisationOverview.OrganisationOverviewModule,
@@ -85,6 +87,7 @@ const modules = [
   ProductTypesOverview.ProductTypesOverviewModule,
   PurchaseOrderList.PurchaseOrderListModule,
   PurchaseOrderOverview.PurchaseOrderOverviewModule,
+  PurchaseShipmentOverview.PurchaseShipmentOverviewModule,
   SalesInvoiceList.SalesInvoiceListModule,
   SalesInvoiceOverview.SalesInvoiceOverviewModule,
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
@@ -93,7 +96,6 @@ const modules = [
   SerialisedItemList.SerialisedItemListModule,
   SerialisedItemOverview.SerialisedItemOverviewModule,
   ShipmentList.ShipmentListModule,
-  ShipmentOverview.ShipmentOverviewModule,
   TaskAssignmentList.TaskListModule,
   UnifiedGoodList.UnifiedGoodListModule,
   UnifiedGoodOverview.UnifiedGoodOverviewModule,
@@ -168,7 +170,8 @@ export const routes: Routes = [
         path: 'shipment',
         children: [
           { path: 'shipments', component: ShipmentList.ShipmentListComponent },
-          { path: 'shipment/:id', component: ShipmentOverview.ShipmentOverviewComponent },
+          { path: 'customershipment/:id', component: CustomerShipmentOverview.CustomerShipmentOverviewComponent },
+          { path: 'purchaseshipment/:id', component: PurchaseShipmentOverview.PurchaseShipmentOverviewComponent },
           { path: 'carriers', component: CarrierList.CarrierListComponent },
         ],
       },
