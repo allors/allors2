@@ -9,8 +9,8 @@ namespace Allors.Domain
     {
         public void CoreOnDerive(ObjectOnDerive method)
         {
-            var singleton = this.Strategy.Session.GetSingleton();
-            this.SecurityTokens = new[] { singleton.DefaultSecurityToken, this.User?.OwnerSecurityToken };
+            var defaultSecurityToken = new SecurityTokens(this.Session()).DefaultSecurityToken;
+            this.SecurityTokens = new[] { defaultSecurityToken, this.User?.OwnerSecurityToken };
 
             //this.Task?.ManageNotification(this);
         }

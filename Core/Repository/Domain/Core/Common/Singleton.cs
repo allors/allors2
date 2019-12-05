@@ -71,24 +71,6 @@ namespace Allors.Repository
         public AutomatedAgent Scheduler { get; set; }
 
         #region Allors
-        [Id("6A6E0852-C984-47B8-939D-8E0B0B042B9D")]
-        [AssociationId("E783AFBE-EF70-4AC1-8C0A-5DFE6FEDFBE0")]
-        [RoleId("BCF431F6-10CD-4F33-873D-0B2F1A1EA09D")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        public SecurityToken InitialSecurityToken { get; set; }
-
-        #region Allors
-        [Id("f579494b-e550-4be6-9d93-84618ac78704")]
-        [AssociationId("33f17e75-99cc-417e-99f3-c29080f08f0a")]
-        [RoleId("ca9e3469-583c-4950-ba2c-1bc3a0fc3e96")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        public SecurityToken DefaultSecurityToken { get; set; }
-
-        #region Allors
         [Id("1AEFD075-5D5C-4920-ABB6-3F1BA9F9DB34")]
         [AssociationId("B7BD78A5-01F0-46F8-9196-AE112CF3429E")]
         [RoleId("227BE09B-6608-40EE-9086-FE9FB590383F")]

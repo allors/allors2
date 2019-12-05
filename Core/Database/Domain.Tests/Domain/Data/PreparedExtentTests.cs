@@ -21,6 +21,8 @@ namespace Tests
         [Fact]
         public async void WithParameter()
         {
+            var organisations = new Organisations(this.Session).Extent().ToArray();
+
             var extentService = this.Session.ServiceProvider.GetRequiredService<IExtentService>();
             var organizationByName = extentService.Get(PreparedExtents.ByName);
 

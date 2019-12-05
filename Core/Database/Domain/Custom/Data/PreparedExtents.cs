@@ -21,7 +21,7 @@ namespace Allors.Domain
             merge(ByName, v =>
             {
                 v.Description = "Organisation by name";
-                v.Extent = new Filter(this.Meta.Class) { Predicate = new Equals(this.Meta.Name) { Parameter = "name" } };
+                v.Extent = new Filter(M.Organisation.Class) { Predicate = new Equals(M.Organisation.Name) { Parameter = "name" } };
             });
         }
     }

@@ -6,14 +6,17 @@
 
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
     [Id("a53f1aed-0e3f-4c3c-9600-dc579cccf893")]
     #endregion
-    public partial class SecurityToken : Deletable
+    public partial class SecurityToken : UniquelyIdentifiable, Deletable
     {
         #region inherited properties
+        public Guid UniqueId { get; set; }
+
         #endregion
 
         #region Allors

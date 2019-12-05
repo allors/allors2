@@ -15,6 +15,7 @@ namespace Allors.Domain
         {
             base.CorePrepare(setup);
 
+            setup.AddDependency(this.ObjectType, M.SecurityToken.ObjectType);
             setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
             setup.AddDependency(this.ObjectType, M.Role.ObjectType);
             setup.AddDependency(this.ObjectType, M.UserGroup.ObjectType);
@@ -31,11 +32,10 @@ namespace Allors.Domain
             singleton.Guest = automatedAgents.Guest;
             singleton.Scheduler = automatedAgents.Scheduler;
 
+            var securityTokens = new SecurityTokens(this.Session);
+
             if (setup.Config.SetupSecurity)
             {
-                singleton.InitialSecurityToken ??= new SecurityTokenBuilder(this.Session).Build();
-                singleton.DefaultSecurityToken ??= new SecurityTokenBuilder(this.Session).Build();
-
                 var roles = new Roles(this.Session);
                 var userGroups = new UserGroups(this.Session);
 
@@ -44,28 +44,28 @@ namespace Allors.Domain
                 creators.Role = roles.Creator;
                 creators.AddSubjectGroup(userGroups.Creators);
 
-                singleton.InitialSecurityToken.AddAccessControl(creators);
+                securityTokens.InitialSecurityToken.AddAccessControl(creators);
 
                 // Initial => Guest Creator
                 var guestCreators = singleton.GuestCreatorsAccessControl ??= new AccessControlBuilder(this.Session).Build();
                 guestCreators.Role = roles.GuestCreator;
                 guestCreators.AddSubject(singleton.Guest);
 
-                singleton.InitialSecurityToken.AddAccessControl(guestCreators);
+                securityTokens.InitialSecurityToken.AddAccessControl(guestCreators);
 
                 // Default => Administrator
                 var administrators = singleton.AdministratorsAccessControl ??= new AccessControlBuilder(this.Session).Build();
                 administrators.Role = roles.Administrator;
                 administrators.AddSubjectGroup(userGroups.Administrators);
 
-                singleton.DefaultSecurityToken.AddAccessControl(administrators);
+                securityTokens.DefaultSecurityToken.AddAccessControl(administrators);
 
                 // Default => Guest
                 var guest = singleton.GuestAccessControl ??= new AccessControlBuilder(this.Session).Build();
                 guest.Role = roles.Guest;
                 guest.AddSubject(singleton.Guest);
 
-                singleton.DefaultSecurityToken.AddAccessControl(guest);
+                securityTokens.DefaultSecurityToken.AddAccessControl(guest);
             }
         }
     }

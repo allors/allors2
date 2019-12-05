@@ -1,4 +1,4 @@
-﻿// <copyright file="TaskExtensions.cs" company="Allors bvba">
+// <copyright file="TaskExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -51,8 +51,8 @@ namespace Allors.Domain
             @this.Participants = participantSet.ToArray();
 
             // Manage Security
-            var singleton = session.GetSingleton();
-            var securityTokens = new HashSet<SecurityToken> { singleton.DefaultSecurityToken };
+            var defaultSecurityToken = new SecurityTokens(session).DefaultSecurityToken;
+            var securityTokens = new HashSet<SecurityToken> { defaultSecurityToken };
             var ownerSecurityTokens = participantSet.Where(v => v.ExistOwnerSecurityToken).Select(v => v.OwnerSecurityToken);
             securityTokens.UnionWith(ownerSecurityTokens);
             @this.SecurityTokens = securityTokens.ToArray();
