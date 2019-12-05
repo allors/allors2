@@ -22,7 +22,7 @@ namespace Tests
         public async void WithParameter()
         {
             var extentService = this.Session.ServiceProvider.GetRequiredService<IExtentService>();
-            var organizationByName = extentService.Get(Organisations.ExtentByName);
+            var organizationByName = extentService.Get(PreparedExtents.ByName);
 
             var arguments = new Dictionary<string, string>
             {

@@ -9,7 +9,7 @@ namespace Allors.Domain
     {
         private Sticky<string, Language> languageByCode;
 
-        public Sticky<string, Language> LanguageByCode => this.languageByCode ?? (this.languageByCode = new Sticky<string, Language>(this.Session, this.Meta.IsoCode));
+        public Sticky<string, Language> LanguageByCode => this.languageByCode ??= new Sticky<string, Language>(this.Session, this.Meta.IsoCode);
 
         protected override void CoreSetup(Setup setup)
         {
@@ -199,14 +199,16 @@ namespace Allors.Domain
                 { "za", "Zhuang, Chuang", "Saɯ cueŋƅ, Saw cuengh" },
             };
 
+            var merge = this.LanguageByCode.Merger().Action();
+
             var count = data.Length / 3;
             for (var i = 0; i < count; i++)
             {
-                new LanguageBuilder(this.Session)
-                    .WithIsoCode(data[i, 0])
-                    .WithName(data[i, 1])
-                    .WithNativeName(data[i, 2])
-                    .Build();
+                merge(data[i, 0], v =>
+                {
+                    v.Name = data[i, 1];
+                    v.NativeName = data[i, 2];
+                });
             }
         }
     }

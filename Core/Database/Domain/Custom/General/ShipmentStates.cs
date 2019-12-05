@@ -14,21 +14,23 @@ namespace Allors.Domain
         private static readonly Guid PartiallyShippedId = new Guid("1801737F-2760-4600-9243-7E6BDD8A224D");
         private static readonly Guid ShippedId = new Guid("04FAD96A-2B0F-4F07-ABB7-57657A34E422");
 
-        private UniquelyIdentifiableSticky<ShipmentState> sticky;
+        private UniquelyIdentifiableSticky<ShipmentState> cache;
 
-        public Sticky<Guid, ShipmentState> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<ShipmentState>(this.Session));
+        public Sticky<Guid, ShipmentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<ShipmentState>(this.Session);
 
-        public ShipmentState NotShipped => this.Sticky[NotShippedId];
+        public ShipmentState NotShipped => this.Cache[NotShippedId];
 
-        public ShipmentState PartiallyShipped => this.Sticky[PartiallyShippedId];
+        public ShipmentState PartiallyShipped => this.Cache[PartiallyShippedId];
 
-        public ShipmentState Shipped => this.Sticky[ShippedId];
+        public ShipmentState Shipped => this.Cache[ShippedId];
 
         protected override void CoreSetup(Setup setup)
         {
-            new ShipmentStateBuilder(this.Session).WithUniqueId(NotShippedId).WithName("NotShipped").Build();
-            new ShipmentStateBuilder(this.Session).WithUniqueId(PartiallyShippedId).WithName("PartiallyShipped").Build();
-            new ShipmentStateBuilder(this.Session).WithUniqueId(ShippedId).WithName("Shipped").Build();
+            var merge = this.Cache.Merger().Action();
+
+            merge(NotShippedId, v => v.Name = "NotShipped");
+            merge(PartiallyShippedId, v => v.Name = "PartiallyShipped");
+            merge(ShippedId, v => v.Name = "Shipped");
         }
     }
 }

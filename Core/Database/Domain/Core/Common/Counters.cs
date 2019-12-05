@@ -11,13 +11,13 @@ namespace Allors.Domain
 
     public partial class Counters
     {
-        private UniquelyIdentifiableSticky<Counter> sticky;
+        private UniquelyIdentifiableSticky<Counter> cache;
 
-        private UniquelyIdentifiableSticky<Counter> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<Counter>(this.Session));
+        private UniquelyIdentifiableSticky<Counter> Cache => this.cache ??= new UniquelyIdentifiableSticky<Counter>(this.Session);
 
         public static int NextValue(ISession session, Guid counterId)
         {
-            int NextValue(Counter counter)
+            static int NextValue(Counter counter)
             {
                 counter.Value += 1;
                 return counter.Value;
@@ -25,19 +25,17 @@ namespace Allors.Domain
 
             if (session.Database.IsShared)
             {
-                using (var outOfBandSession = session.Database.CreateSession())
+                using var outOfBandSession = session.Database.CreateSession();
+                var outOfBandCounter = new Counters(outOfBandSession).Cache[counterId];
+                if (outOfBandCounter != null)
                 {
-                    var outOfBandCounter = new Counters(outOfBandSession).Sticky[counterId];
-                    if (outOfBandCounter != null)
-                    {
-                        var value = NextValue(outOfBandCounter);
-                        outOfBandSession.Commit();
-                        return value;
-                    }
+                    var value = NextValue(outOfBandCounter);
+                    outOfBandSession.Commit();
+                    return value;
                 }
             }
 
-            var sessionCounter = new Counters(session).Sticky[counterId];
+            var sessionCounter = new Counters(session).Cache[counterId];
             return NextValue(sessionCounter);
         }
     }
