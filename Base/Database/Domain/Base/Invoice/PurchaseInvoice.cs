@@ -194,7 +194,7 @@ namespace Allors.Domain
 
             var singleton = this.strategy.Session.GetSingleton();
 
-            this.AddSecurityToken(singleton.DefaultSecurityToken);
+            this.AddSecurityToken(new SecurityTokens(this.Session()).DefaultSecurityToken);
 
             this.Sync(this.strategy.Session);
 

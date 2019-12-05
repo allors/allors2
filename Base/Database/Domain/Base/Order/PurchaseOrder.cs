@@ -279,7 +279,7 @@ namespace Allors.Domain
 
             this.DeriveWorkflow();
 
-            this.AddSecurityToken(this.strategy.Session.GetSingleton().DefaultSecurityToken);
+            this.AddSecurityToken(new SecurityTokens(this.Session()).DefaultSecurityToken);
 
             this.Sync(this.Strategy.Session);
 

@@ -13,12 +13,12 @@ namespace Allors.Domain
         {
             get
             {
-                if (this.ExistSingletonsWhereDefaultSecurityToken)
+                if (this.UniqueId == Domain.SecurityTokens.DefaultSecurityTokenId)
                 {
                     return "Default";
                 }
 
-                if (this.ExistSingletonsWhereInitialSecurityToken)
+                if (this.UniqueId == Domain.SecurityTokens.InitialSecurityTokenId)
                 {
                     return "Initial";
                 }

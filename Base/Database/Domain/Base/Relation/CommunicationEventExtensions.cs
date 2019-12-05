@@ -80,7 +80,8 @@ namespace Allors.Domain
 
         public static void BaseOnPostDerive(this CommunicationEvent @this, ObjectOnPostDerive method)
         {
-            @this.AddSecurityToken(@this.Strategy.Session.GetSingleton().DefaultSecurityToken);
+            var session = @this.Strategy.Session;
+            @this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);
             @this.AddSecurityToken(@this.Owner?.OwnerSecurityToken);
         }
 

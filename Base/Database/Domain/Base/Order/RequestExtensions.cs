@@ -11,9 +11,10 @@ namespace Allors.Domain
     {
         public static void BaseOnDerive(this Request @this, ObjectOnDerive method)
         {
+            var session = @this.Strategy.Session;
             if (!@this.ExistRecipient)
             {
-                var internalOrganisations = new Organisations(@this.Strategy.Session).InternalOrganisations();
+                var internalOrganisations = new Organisations(session).InternalOrganisations();
 
                 if (internalOrganisations.Count() == 1)
                 {
@@ -23,14 +24,13 @@ namespace Allors.Domain
 
             if (@this.ExistRecipient && !@this.ExistRequestNumber)
             {
-                @this.RequestNumber = @this.Recipient.NextRequestNumber(@this.Strategy.Session.Now().Year);
+                @this.RequestNumber = @this.Recipient.NextRequestNumber(session.Now().Year);
             }
 
             @this.DeriveInitialObjectState();
 
-            var singleton = @this.Strategy.Session.GetSingleton();
 
-            @this.AddSecurityToken(singleton.DefaultSecurityToken);
+            @this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);
         }
 
         public static void DeriveInitialObjectState(this Request @this)
