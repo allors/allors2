@@ -10,10 +10,15 @@ namespace Allors.Excel
 
         public RoleType RoleType { get; }
 
-        public RoleTypeBinding(ISessionObject @object, RoleType roleType)
+        public bool OneWayBinding { get; }
+
+        public bool TwoWayBinding => !this.OneWayBinding;
+
+        public RoleTypeBinding(ISessionObject @object, RoleType roleType, bool oneWayBinding = false)
         {
             Object = @object;
             RoleType = roleType;
+            this.OneWayBinding = oneWayBinding;
         }
 
         public void ToCell(ICell cell)
@@ -23,7 +28,10 @@ namespace Allors.Excel
 
         public void ToDomain(ICell cell)
         {
-            this.Object.Set(this.RoleType, cell.Value);
+            if (this.TwoWayBinding)
+            {
+                this.Object.Set(this.RoleType, cell.Value);
+            }
         }
     }
 }
