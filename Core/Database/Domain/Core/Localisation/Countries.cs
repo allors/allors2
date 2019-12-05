@@ -13,7 +13,7 @@ namespace Allors.Domain
     {
         private Sticky<string, Country> countryByIsoCode;
 
-        public Sticky<string, Country> CountryByIsoCode => this.countryByIsoCode ?? (this.countryByIsoCode = new Sticky<string, Country>(this.Session, M.Country.IsoCode));
+        public Sticky<string, Country> CountryByIsoCode => this.countryByIsoCode ??= new Sticky<string, Country>(this.Session, M.Country.IsoCode);
 
         protected override void CorePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.Currency.ObjectType);
 
@@ -1517,13 +1517,13 @@ namespace Allors.Domain
                 },
             };
 
+            var merge = this.CountryByIsoCode.Merger().Action();
+
             var count = data.Length / 4;
             for (var i = 0; i < count; i++)
             {
-                new CountryBuilder(this.Session)
-                    .WithName(data[i, 0])
-                    .WithIsoCode(data[i, 1])
-                    .Build();
+                var index = i;
+                merge(data[index, 1], v => v.Name = data[index, 0]);
             }
 
             var currencyCodeByCountryCode = new Dictionary<string, string>

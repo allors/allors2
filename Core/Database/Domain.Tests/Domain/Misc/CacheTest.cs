@@ -24,12 +24,12 @@ namespace Tests
             {
                 session.Commit();
 
-                var cachedOrganisation = new Organisations(session).Sticky[existingOrganisation.UniqueId];
+                var cachedOrganisation = new Organisations(session).Cache[existingOrganisation.UniqueId];
                 Assert.Equal(existingOrganisation.UniqueId, cachedOrganisation.UniqueId);
                 Assert.Same(session, cachedOrganisation.Strategy.Session);
 
                 var newOrganisation = new OrganisationBuilder(session).WithName("new organisation").Build();
-                cachedOrganisation = new Organisations(session).Sticky[newOrganisation.UniqueId];
+                cachedOrganisation = new Organisations(session).Cache[newOrganisation.UniqueId];
                 Assert.Equal(newOrganisation.UniqueId, cachedOrganisation.UniqueId);
                 Assert.Same(session, cachedOrganisation.Strategy.Session);
 

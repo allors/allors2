@@ -89,6 +89,42 @@ namespace Allors.Repository
         public SecurityToken DefaultSecurityToken { get; set; }
 
         #region Allors
+        [Id("1AEFD075-5D5C-4920-ABB6-3F1BA9F9DB34")]
+        [AssociationId("B7BD78A5-01F0-46F8-9196-AE112CF3429E")]
+        [RoleId("227BE09B-6608-40EE-9086-FE9FB590383F")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        public AccessControl CreatorsAccessControl { get; set; }
+
+        #region Allors
+        [Id("FF5E235A-9CA3-42C1-B501-C13915946779")]
+        [AssociationId("A8CFEEBB-A997-45DD-BA88-C7AABCA1453B")]
+        [RoleId("59DE2B56-8F38-4638-B17D-5CA83235A1DE")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        public AccessControl AdministratorsAccessControl { get; set; }
+
+        #region Allors
+        [Id("B302534B-0A79-4B77-B3FA-1D3AB981B802")]
+        [AssociationId("0CB2364D-56F9-4472-A713-ECC1A6AB901E")]
+        [RoleId("46E40245-541D-44A4-B5BB-55C340366068")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        public AccessControl GuestCreatorsAccessControl { get; set; }
+
+        #region Allors
+        [Id("785662B2-605D-45BB-A3B0-A972BB946EC2")]
+        [AssociationId("194F2346-4762-4FC5-AEDC-EA0071BF9C62")]
+        [RoleId("0FB862DA-F53E-48CD-B95E-895BC7978BED")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        public AccessControl GuestAccessControl { get; set; }
+
+        #region Allors
         [Id("B2166062-84DA-449D-B34F-983A0C81BC31")]
         [AssociationId("22096B27-ED3C-4640-BB60-EB7338A779FB")]
         [RoleId("1E931D15-5137-4C6D-91ED-9CC5C3C95BEF")]

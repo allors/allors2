@@ -16,7 +16,7 @@ namespace Allors.Domain
 
         private Sticky<string, Locale> localeByIdentifier;
 
-        public Sticky<string, Locale> LocaleByIdentifier => this.localeByIdentifier ?? (this.localeByIdentifier = new Sticky<string, Locale>(this.Session, this.Meta.Name));
+        public Sticky<string, Locale> LocaleByIdentifier => this.localeByIdentifier ??= new Sticky<string, Locale>(this.Session, this.Meta.Name);
 
         public Locale EnglishGreatBritain => this.FindBy(this.Meta.Name, EnglishGreatBritainName);
 
@@ -35,19 +35,33 @@ namespace Allors.Domain
         protected override void CoreSetup(Setup setup)
         {
             var countries = new Countries(this.Session);
-            var greatBritain = countries.CountryByIsoCode["GB"];
-            var usa = countries.CountryByIsoCode["US"];
-            var netherlands = countries.CountryByIsoCode["NL"];
-            var belgium = countries.CountryByIsoCode["BE"];
-
             var languages = new Languages(this.Session);
-            var english = languages.LanguageByCode["en"];
-            var dutch = languages.LanguageByCode["nl"];
 
-            new LocaleBuilder(this.Session).WithName(EnglishGreatBritainName).WithCountry(greatBritain).WithLanguage(english).Build();
-            new LocaleBuilder(this.Session).WithName(EnglishUnitedStatesName).WithCountry(usa).WithLanguage(english).Build();
-            new LocaleBuilder(this.Session).WithName(DutchNetherlandsName).WithCountry(netherlands).WithLanguage(dutch).Build();
-            new LocaleBuilder(this.Session).WithName(DutchBelgiumName).WithCountry(belgium).WithLanguage(dutch).Build();
+            var merge = this.LocaleByIdentifier.Merger().Action();
+
+            merge(EnglishGreatBritainName, v =>
+            {
+                v.Country = countries.CountryByIsoCode["GB"];
+                v.Language = languages.LanguageByCode["en"];
+            });
+
+            merge(EnglishUnitedStatesName, v =>
+            {
+                v.Country = countries.CountryByIsoCode["US"];
+                v.Language = languages.LanguageByCode["en"];
+            });
+
+            merge(DutchNetherlandsName, v =>
+            {
+                v.Country = countries.CountryByIsoCode["NL"];
+                v.Language = languages.LanguageByCode["nl"];
+            });
+
+            merge(DutchBelgiumName, v =>
+            {
+                v.Country = countries.CountryByIsoCode["BE"];
+                v.Language = languages.LanguageByCode["nl"];
+            });
         }
     }
 }

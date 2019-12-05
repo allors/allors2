@@ -17,7 +17,5 @@ namespace Allors.Domain
             : base(session, M.UniquelyIdentifiable.UniqueId)
         {
         }
-
-        public Merger<TObject> Merger() => new Merger<TObject>(this);
     }
 }

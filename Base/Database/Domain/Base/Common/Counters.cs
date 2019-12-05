@@ -28,7 +28,7 @@ namespace Allors.Domain
             {
                 using (var outOfBandSession = session.Database.CreateSession())
                 {
-                    var outOfBandCounter = new Counters(outOfBandSession).Sticky[counterId];
+                    var outOfBandCounter = new Counters(outOfBandSession).Cache[counterId];
                     if (outOfBandCounter != null)
                     {
                         var value = NextElfProefValue(outOfBandCounter);
@@ -38,7 +38,7 @@ namespace Allors.Domain
                 }
             }
 
-            var sessionCounter = new Counters(session).Sticky[counterId];
+            var sessionCounter = new Counters(session).Cache[counterId];
             return NextElfProefValue(sessionCounter);
         }
 

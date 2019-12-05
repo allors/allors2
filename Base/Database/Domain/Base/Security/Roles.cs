@@ -11,7 +11,7 @@ namespace Allors.Domain
     {
         public static readonly Guid EmployeeId = new Guid("A084F8C0-A130-4D2F-8404-8A11D3D93F14");
 
-        public Role Employee => this.Sticky[EmployeeId];
+        public Role Employee => this.Cache[EmployeeId];
 
         protected override void BaseSetup(Setup setup)
         {

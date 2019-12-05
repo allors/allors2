@@ -14,11 +14,11 @@ namespace Allors.Domain
         public static readonly Guid ProcurementId = new Guid("ACB4E8EE-61CC-48AA-BB0A-75B279A03049");
         public static readonly Guid SalesId = new Guid("052F86E8-D40D-43CC-9555-9C3107500116");
 
-        public Role Operations => this.Sticky[OperationsId];
+        public Role Operations => this.Cache[OperationsId];
 
-        public Role Procurement => this.Sticky[ProcurementId];
+        public Role Procurement => this.Cache[ProcurementId];
 
-        public Role Sales => this.Sticky[SalesId];
+        public Role Sales => this.Cache[SalesId];
 
         protected override void CustomSetup(Setup setup)
         {

@@ -21,27 +21,29 @@ namespace Allors.Domain
 
         public static readonly Guid OwnerId = new Guid("E22EA50F-E616-4429-92D5-B91684AD3C2A");
 
-        private UniquelyIdentifiableSticky<Role> sticky;
+        private UniquelyIdentifiableSticky<Role> cache;
 
-        public Role Administrator => this.Sticky[AdministratorId];
+        public Role Administrator => this.Cache[AdministratorId];
 
-        public Role Guest => this.Sticky[GuestId];
+        public Role Guest => this.Cache[GuestId];
 
-        public Role GuestCreator => this.Sticky[GuestCreatorId];
+        public Role GuestCreator => this.Cache[GuestCreatorId];
 
-        public Role Creator => this.Sticky[CreatorId];
+        public Role Creator => this.Cache[CreatorId];
 
-        public Role Owner => this.Sticky[OwnerId];
+        public Role Owner => this.Cache[OwnerId];
 
-        private UniquelyIdentifiableSticky<Role> Sticky => this.sticky ??= new UniquelyIdentifiableSticky<Role>(this.Session);
+        private UniquelyIdentifiableSticky<Role> Cache => this.cache ??= new UniquelyIdentifiableSticky<Role>(this.Session);
 
         protected override void CoreSetup(Setup setup)
         {
-            new RoleBuilder(this.Session).WithName("Administrator").WithUniqueId(AdministratorId).Build();
-            new RoleBuilder(this.Session).WithName("Guest").WithUniqueId(GuestId).Build();
-            new RoleBuilder(this.Session).WithName("GuestCreator").WithUniqueId(GuestCreatorId).Build();
-            new RoleBuilder(this.Session).WithName("Creator").WithUniqueId(CreatorId).Build();
-            new RoleBuilder(this.Session).WithName("Owner").WithUniqueId(OwnerId).Build();
+            var merge = this.Cache.Merger().Action();
+
+            merge(AdministratorId, v => v.Name = "Administrator");
+            merge(GuestId, v => v.Name = "Guest");
+            merge(GuestCreatorId, v => v.Name = "GuestCreator");
+            merge(CreatorId, v => v.Name = "Creator");
+            merge(OwnerId, v => v.Name = "Owner");
         }
     }
 }

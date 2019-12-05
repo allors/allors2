@@ -13,37 +13,20 @@ namespace Allors.Domain
         public static readonly Guid GuestId = new Guid("1261CB56-67F2-4725-AF7D-604A117ABBEC");
         public static readonly Guid SchedulerId = new Guid("037C4B36-5950-4D32-BA95-85CCED5668DD");
 
-        protected override void CorePrepare(Setup setup) => setup.AddDependency(this.Meta.ObjectType, M.Singleton.ObjectType);
+        private UniquelyIdentifiableSticky<AutomatedAgent> cache;
+
+        public UniquelyIdentifiableSticky<AutomatedAgent> Cache => this.cache ??= new UniquelyIdentifiableSticky<AutomatedAgent>(this.Session);
+
+        public AutomatedAgent Guest => this.Cache[GuestId];
+
+        public AutomatedAgent Scheduler => this.Cache[SchedulerId];
 
         protected override void CoreSetup(Setup setup)
         {
-            var singleton = this.Session.GetSingleton();
+            var merge = this.Cache.Merger().Action();
 
-            var guest = new AutomatedAgentBuilder(this.Session).WithUniqueId(GuestId).WithUserName("Guest").Build();
-            singleton.Guest = guest;
-
-            var scheduler = new AutomatedAgentBuilder(this.Session).WithUniqueId(SchedulerId).WithUserName("Scheduler").Build();
-            singleton.Scheduler = scheduler;
-
-            if (setup.Config.SetupSecurity)
-            {
-                // Initial: Guest Creator
-                var guestCreatorsAccessControl = new AccessControlBuilder(this.Session)
-                    .WithRole(new Roles(this.Session).GuestCreator)
-                    .WithSubject(singleton.Guest)
-                    .Build();
-
-                singleton.InitialSecurityToken.AddAccessControl(guestCreatorsAccessControl);
-
-                // Default: Guest
-                var guestAccessControl = new AccessControlBuilder(this.Session)
-                    .WithRole(new Roles(this.Session).Guest)
-                    .WithSubject(singleton.Guest)
-                    .Build();
-
-                singleton.DefaultSecurityToken.AddAccessControl(guestAccessControl);
-            }
-
+            merge(GuestId, v => v.UserName = "Guest");
+            merge(SchedulerId, v => v.UserName = "Scheduler");
         }
     }
 }
