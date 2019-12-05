@@ -3,7 +3,8 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a (click)="navigation.list(metaService.m.CustomerShipment)">CustomerShipments</a> / {{shipment?.ShipmentNumber}}
+        <a (click)="navigation.list(metaService.m.CustomerShipment)">CustomerShipments</a> /
+        {{shipment?.ShipmentNumber}}
       </div>
     </div>
   </div>
@@ -18,8 +19,14 @@
 
       <div class="col-md-8 align-self-stretch" [ngClass]="panelManager.panelContainerClass">
 
-        <customershipment-overview-detail></customershipment-overview-detail>
-        
+        <div *ngIf="!isPurchaseShipment">
+          <customershipment-overview-detail></customershipment-overview-detail>
+        </div>
+
+        <div *ngIf="!isCustomerShipment">
+          <purchaseshipment-overview-detail></purchaseshipment-overview-detail>
+        </div>
+
         <shipmentitem-overview-panel></shipmentitem-overview-panel>
       </div>
 

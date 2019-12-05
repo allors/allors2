@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Equals, Filter, ContainedIn } from '../../../../../framework';
+import { PullRequest, And, Equals, Filter, ContainedIn, Or } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
@@ -86,11 +86,15 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
 
     const { m, pull, x } = this.metaService;
 
-    const internalOrganisationPredicate = new Equals({ propertyType: m.Shipment.ShipFromParty });
+    const fromInternalOrganisationPredicate = new Equals({ propertyType: m.Shipment.ShipFromParty });
+    const toInternalOrganisationPredicate = new Equals({ propertyType: m.Shipment.ShipToParty });
     const supplierPredicate = new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation });
 
     const predicate = new And([
-      internalOrganisationPredicate,
+      new Or([
+        fromInternalOrganisationPredicate,
+        toInternalOrganisationPredicate,
+      ]),
       new Equals({ propertyType: m.Shipment.ShipmentNumber, parameter: 'number' }),
       new Equals({ propertyType: m.Shipment.ShipmentState, parameter: 'state' }),
       new Equals({ propertyType: m.Shipment.ShipToParty, parameter: 'supplier' }),
@@ -152,7 +156,8 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
         }, [ , , , , , ]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
-          internalOrganisationPredicate.object = internalOrganisationId;
+          fromInternalOrganisationPredicate.object = internalOrganisationId;
+          toInternalOrganisationPredicate.object = internalOrganisationId;
           supplierPredicate.object = internalOrganisationId;
 
           const pulls = [

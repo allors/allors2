@@ -3,46 +3,43 @@ import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope, InternalOrganisationId } from '../../../../../../angular';
-import { Locale, Organisation, CustomerShipment, Currency, PostalAddress, Person, Party, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, PartyContactMechanism } from '../../../../../../domain';
+import { Locale, Organisation, PurchaseShipment, Currency, PostalAddress, Person, Party, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, PartyContactMechanism } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { SaveService, FiltersService } from '../../../../../../../allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'customershipment-overview-detail',
-  templateUrl: './customershipment-overview-detail.component.html',
+  selector: 'purchaseshipment-overview-detail',
+  templateUrl: './purchaseshipment-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class CustomerShipmentOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
+export class PurchaseShipmentOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
 
   readonly m: Meta;
 
-  customerShipment: CustomerShipment;
+  purchaseShipment: PurchaseShipment;
 
   currencies: Currency[];
   shipToAddresses: PostalAddress[] = [];
-  shipToContacts: Person[] = [];
   shipFromAddresses: PostalAddress[] = [];
+  shipToContacts: Person[] = [];
   shipFromContacts: Person[] = [];
   internalOrganisation: Organisation;
   facilities: Facility[];
   locales: Locale[];
   shipmentMethods: ShipmentMethod[];
   carriers: Carrier[];
-
   addShipFromAddress = false;
-
   addShipToAddress = false;
-  addShipToContactPerson = false;
-
-  private previousShipToparty: Party;
+  addShipFromContactPerson = false;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
+  previousShipFromParty: Party;
 
-  get shipToCustomerIsPerson(): boolean {
-    return !this.customerShipment.ShipToParty || this.customerShipment.ShipToParty.objectType.name === this.m.Person.name;
+  get shipFromCustomerIsPerson(): boolean {
+    return !this.purchaseShipment.ShipFromParty || this.purchaseShipment.ShipFromParty.objectType.name === this.m.Person.name;
   }
 
   constructor(
@@ -61,16 +58,16 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
     this.refresh$ = new BehaviorSubject(new Date());
 
     panel.name = 'detail';
-    panel.title = 'Customer Shipment Details';
+    panel.title = 'Purchase Shipment Details';
     panel.icon = 'local_shipping';
     panel.expandable = true;
 
     // Collapsed
-    const pullName = `${this.panel.name}_${this.m.CustomerShipment.name}`;
+    const pullName = `${this.panel.name}_${this.m.PurchaseShipment.name}`;
 
     panel.onPull = (pulls) => {
 
-      this.customerShipment = undefined;
+      this.purchaseShipment = undefined;
 
       if (this.panel.isCollapsed) {
         const { pull } = this.metaService;
@@ -78,7 +75,7 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
 
         pulls.push(
           this.fetcher.internalOrganisation,
-          pull.CustomerShipment({
+          pull.PurchaseShipment({
             name: pullName,
             object: id,
           }),
@@ -88,7 +85,7 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
 
     panel.onPulled = (loaded) => {
       if (this.panel.isCollapsed) {
-        this.customerShipment = loaded.objects[pullName] as CustomerShipment;
+        this.purchaseShipment = loaded.objects[pullName] as PurchaseShipment;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
       }
     };
@@ -104,7 +101,7 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
         }),
         switchMap(() => {
 
-          this.customerShipment = undefined;
+          this.purchaseShipment = undefined;
 
           const { m, pull, x } = this.metaService;
           const id = this.panel.manager.id;
@@ -122,15 +119,16 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: new Sort(m.Organisation.PartyName),
             }),
-            pull.CustomerShipment({
+            pull.PurchaseShipment({
               object: id,
               include: {
                 ShipFromParty: x,
                 ShipFromAddress: x,
                 ShipFromFacility: x,
                 ShipToParty: x,
-                ShipToAddress: x,
                 ShipToContactPerson: x,
+                ShipToAddress: x,
+                ShipFromContactPerson: x,
                 Carrier: x,
                 ShipmentState: x,
                 ElectronicDocuments: x
@@ -144,20 +142,20 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        this.customerShipment = loaded.objects.CustomerShipment as CustomerShipment;
+        this.purchaseShipment = loaded.objects.PurchaseShipment as PurchaseShipment;
         this.facilities = loaded.collections.Facilities as Facility[];
         this.shipmentMethods = loaded.collections.ShipmentMethods as ShipmentMethod[];
         this.carriers = loaded.collections.Carriers as Carrier[];
 
-        if (this.customerShipment.ShipToParty) {
-          this.updateShipToParty(this.customerShipment.ShipToParty);
+        if (this.purchaseShipment.ShipToParty) {
+          this.updateShipToParty(this.purchaseShipment.ShipToParty);
         }
 
-        if (this.customerShipment.ShipFromParty) {
-          this.updateShipFromParty(this.customerShipment.ShipFromParty);
+        if (this.purchaseShipment.ShipFromParty) {
+          this.updateShipFromParty(this.purchaseShipment.ShipFromParty);
         }
 
-        this.previousShipToparty = this.customerShipment.ShipToParty;
+        this.previousShipFromParty = this.purchaseShipment.ShipFromParty;
       });
 
   }
@@ -178,44 +176,44 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
       );
   }
 
-  public shipToContactPersonAdded(person: Person): void {
+  public shipFromContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.customerShipment.ShipToParty as Organisation;
+    organisationContactRelationship.Organisation = this.purchaseShipment.ShipFromParty as Organisation;
     organisationContactRelationship.Contact = person;
 
-    this.shipToContacts.push(person);
-    this.customerShipment.ShipToContactPerson = person;
+    this.shipFromContacts.push(person);
+    this.purchaseShipment.ShipFromContactPerson = person;
   }
 
   public shipToAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
-    this.customerShipment.ShipToParty.AddPartyContactMechanism(partyContactMechanism);
+    this.purchaseShipment.ShipToParty.AddPartyContactMechanism(partyContactMechanism);
 
     const postalAddress = partyContactMechanism.ContactMechanism as PostalAddress;
     this.shipToAddresses.push(postalAddress);
-    this.customerShipment.ShipToAddress = postalAddress;
+    this.purchaseShipment.ShipToAddress = postalAddress;
   }
 
   public shipFromAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipFromAddresses.push(partyContactMechanism.ContactMechanism as PostalAddress);
-    this.customerShipment.ShipFromParty.AddPartyContactMechanism(partyContactMechanism);
-    this.customerShipment.ShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.purchaseShipment.ShipFromParty.AddPartyContactMechanism(partyContactMechanism);
+    this.purchaseShipment.ShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public customerSelected(customer: Party) {
-    this.updateShipToParty(customer);
+  public supplierSelected(customer: Party) {
+    this.updateShipFromParty(customer);
   }
 
-  private updateShipToParty(customer: Party): void {
+  private updateShipToParty(internalOrganisation: Party): void {
 
     const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party(
         {
-          object: customer,
+          object: internalOrganisation,
           fetch: {
             CurrentPartyContactMechanisms: {
               include: {
@@ -228,7 +226,7 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
         }
       ),
       pull.Party({
-        object: customer,
+        object: internalOrganisation,
         fetch: {
           CurrentContacts: x,
         }
@@ -238,12 +236,6 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
     this.allors.context
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
-
-        if (this.customerShipment.ShipToParty !== this.previousShipToparty) {
-          this.customerShipment.ShipToAddress = null;
-          this.customerShipment.ShipToContactPerson = null;
-          this.previousShipToparty = this.customerShipment.ShipToParty;
-        }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism) as PostalAddress[];
@@ -284,7 +276,7 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipFromAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism) as PostalAddress[];
-        this.shipToContacts = loaded.collections.CurrentContacts as Person[];
+        this.shipFromContacts = loaded.collections.CurrentContacts as Person[];
       });
   }
 

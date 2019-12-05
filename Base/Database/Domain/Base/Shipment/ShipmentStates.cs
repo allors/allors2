@@ -12,7 +12,6 @@ namespace Allors.Domain
         private static readonly Guid CreatedId = new Guid("854AD6A0-B2D1-4b92-8C3D-E9E72DD19AFD");
         private static readonly Guid PickedId = new Guid("C63C5D25-F139-490f-86D1-2E9E51F5C0A5");
         private static readonly Guid PackedId = new Guid("DCABE845-A6F2-49d9-BBAE-06FB47012A21");
-        private static readonly Guid PartiallyShippedId = new Guid("A3B59706-53FE-4DD6-8D10-1762B6352C37");
         private static readonly Guid ShippedId = new Guid("B8B115A4-6E5D-4400-BCA7-4224AE1708AA");
         private static readonly Guid DeliveredId = new Guid("B30666C1-9954-4ae1-8F94-A1591B7E35ED");
         private static readonly Guid ReceivedId = new Guid("28EBB252-4DDB-4B14-80F5-765AE59254A0");
@@ -26,8 +25,6 @@ namespace Allors.Domain
         public ShipmentState Picked => this.StateCache[PickedId];
 
         public ShipmentState Packed => this.StateCache[PackedId];
-
-        public ShipmentState PartiallyShipped => this.StateCache[PartiallyShippedId];
 
         public ShipmentState Shipped => this.StateCache[ShippedId];
 
@@ -57,11 +54,6 @@ namespace Allors.Domain
             new ShipmentStateBuilder(this.Session)
                 .WithUniqueId(PackedId)
                 .WithName("Packed")
-                .Build();
-
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(PartiallyShippedId)
-                .WithName("Partially Shipped")
                 .Build();
 
             new ShipmentStateBuilder(this.Session)

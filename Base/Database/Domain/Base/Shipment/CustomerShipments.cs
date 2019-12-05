@@ -23,7 +23,6 @@ namespace Allors.Domain
             var created = new ShipmentStates(this.Session).Created;
             var picked = new ShipmentStates(this.Session).Picked;
             var packed = new ShipmentStates(this.Session).Packed;
-            var partiallyShipped = new ShipmentStates(this.Session).PartiallyShipped;
             var shipped = new ShipmentStates(this.Session).Shipped;
             var delivered = new ShipmentStates(this.Session).Delivered;
             var cancelled = new ShipmentStates(this.Session).Cancelled;
@@ -44,12 +43,9 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, picked, @continue);
             config.Deny(this.ObjectType, packed, @continue);
 
-            config.DenyExcept(this.ObjectType, shipped, except, Operations.Execute, Operations.Write);
-
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, partiallyShipped, Operations.Execute, Operations.Write);
-            //config.Deny(this.ObjectType, shipped, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, delivered, Operations.Execute, Operations.Write);
+            config.DenyExcept(this.ObjectType, shipped, except, Operations.Execute, Operations.Write);
+            config.DenyExcept(this.ObjectType, delivered, except, Operations.Execute, Operations.Write);
         }
     }
 }

@@ -29,6 +29,7 @@ import { AllorsMaterialStaticModule } from '../../../../core/components/role/sta
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
 import { CustomerShipmentOverviewDetailModule } from '../../customershipment/overview/detail/customershipment-overview-detail.module';
+import { PurchaseShipmentOverviewDetailModule } from '../../purchaseshipment/overview/detail/purchaseshipment-overview-detail.module';
 import { ShipmentOverviewSummaryModule } from './summary/shipment-overview-summary.module';
 import { ShipmentItemOverviewPanelModule } from '../../shipmentitem/overview/panel/shipmentitem-overview-panel.module';
 
@@ -44,6 +45,7 @@ import { ShipmentOverviewComponent } from './shipment-overview.component';
   ],
   imports: [
     CustomerShipmentOverviewDetailModule,
+    PurchaseShipmentOverviewDetailModule,
     ShipmentOverviewSummaryModule,
     ShipmentItemOverviewPanelModule,
 

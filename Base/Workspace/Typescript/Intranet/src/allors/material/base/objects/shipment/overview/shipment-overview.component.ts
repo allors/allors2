@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { ProductQuote, Good, CustomerShipment, ShipmentItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, Shipment } from '../../../../../domain';
+import { ProductQuote, Good, CustomerShipment, ShipmentItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, Shipment, PurchaseShipment } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 
 @Component({
@@ -14,7 +14,7 @@ import { PullRequest, Sort, Equals } from '../../../../../framework';
 })
 export class ShipmentOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
-  title = 'Sales Order';
+  title = 'Shipment';
 
   public shipment: Shipment;
   public orderItems: ShipmentItem[] = [];
@@ -26,7 +26,8 @@ export class ShipmentOverviewComponent extends TestScope implements AfterViewIni
   public inventoryItemStates: SerialisedInventoryItemState[];
 
   subscription: Subscription;
-  customerShipment: CustomerShipment;
+  isCustomerShipment: boolean;
+  isPurchaseShipment: boolean;
 
   constructor(
     @Self() public panelManager: PanelManagerService,
@@ -92,7 +93,8 @@ export class ShipmentOverviewComponent extends TestScope implements AfterViewIni
         this.panelManager.onPulled(loaded);
 
         this.shipment = loaded.objects.Shipment as Shipment;
-        this.customerShipment = loaded.objects.Shipment as CustomerShipment;
+        this.isCustomerShipment = this.shipment.objectType === this.metaService.m.CustomerShipment;
+        this.isPurchaseShipment = this.shipment.objectType === this.metaService.m.PurchaseShipment;
       });
   }
 
