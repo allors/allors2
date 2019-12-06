@@ -51,6 +51,7 @@ namespace Allors.Domain
                 if (setup.Config.SetupSecurity)
                 {
                     v.AddAccessControl(accessControls.Administrator);
+                    v.AddAccessControl(accessControls.Employees);
                     v.AddAccessControl(accessControls.Guest);
                 }
             });
