@@ -18,12 +18,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-
-
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
-
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../core/components/role/localisedtext';
+import { AllorsMaterialMarkdownModule } from '../../../../core/components/role/markdown';
 import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
@@ -44,6 +42,7 @@ export { CatalogueEditComponent } from './catalogue-edit.component';
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
+    AllorsMaterialMarkdownModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
