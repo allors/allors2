@@ -63,12 +63,6 @@ namespace Allors.Domain
                     v.AddSubjectGroup(userGroups.Administrators);
                 });
 
-                merge(EmployeesId, v =>
-                {
-                    v.Role = roles.Employee;
-                    v.AddSubjectGroup(userGroups.Employees);
-                });
-
                 merge(GuestId, v =>
                 {
                     v.Role = roles.Guest;

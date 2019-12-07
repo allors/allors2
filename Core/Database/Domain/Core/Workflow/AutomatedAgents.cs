@@ -12,6 +12,7 @@ namespace Allors.Domain
     {
         public static readonly Guid GuestId = new Guid("1261CB56-67F2-4725-AF7D-604A117ABBEC");
         public static readonly Guid SchedulerId = new Guid("037C4B36-5950-4D32-BA95-85CCED5668DD");
+        public static readonly Guid WorkerId = new Guid("3488D55C-D8D9-4CD9-B54F-3E02765F6090");
 
         private UniquelyIdentifiableSticky<AutomatedAgent> cache;
 
@@ -21,7 +22,13 @@ namespace Allors.Domain
 
         public AutomatedAgent Scheduler => this.Cache[SchedulerId];
 
-        protected override void CorePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.UserGroup);
+        public AutomatedAgent Worker => this.Cache[WorkerId];
+
+        protected override void CorePrepare(Setup setup)
+        {
+            setup.AddDependency(this.ObjectType, M.UserGroup);
+            setup.AddDependency(this.ObjectType, M.SecurityToken);
+        }
 
         protected override void CoreSetup(Setup setup)
         {
@@ -29,6 +36,7 @@ namespace Allors.Domain
 
             var guest = merge(GuestId, v => v.UserName = "Guest");
             merge(SchedulerId, v => v.UserName = "Scheduler");
+            merge(WorkerId, v => v.UserName = "Worker");
 
             var userGroups = new UserGroups(this.Session);
             userGroups.Guests.AddMember(guest);
