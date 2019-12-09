@@ -30,33 +30,36 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new EmploymentTerminationBuilder(this.Session)
-                .WithName("Resignation")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ontslag genomen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ResignationId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new EmploymentTerminationBuilder(this.Session)
-                .WithName("Fired")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ontslagen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FiredId)
-                .WithIsActive(true)
-                .Build();
+            merge(ResignationId, v =>
+            {
+                v.Name = "Resignation";
+                localisedName.Set(v, dutchLocale, "Ontslag genomen");
+                v.IsActive = true;
+            });
 
-            new EmploymentTerminationBuilder(this.Session)
-                .WithName("Retirement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Pensioen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(RetirenmentId)
-                .WithIsActive(true)
-                .Build();
+            merge(FiredId, v =>
+            {
+                v.Name = "Fired";
+                localisedName.Set(v, dutchLocale, "Ontslagen");
+                v.IsActive = true;
+            });
 
-            new EmploymentTerminationBuilder(this.Session)
-                .WithName("Deceased")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overleden").WithLocale(dutchLocale).Build())
-                .WithUniqueId(DeceasedId)
-                .WithIsActive(true)
-                .Build();
+            merge(RetirenmentId, v =>
+            {
+                v.Name = "Retirement";
+                localisedName.Set(v, dutchLocale, "Pensioen");
+                v.IsActive = true;
+            });
+
+            merge(DeceasedId, v =>
+            {
+                v.Name = "Deceased";
+                localisedName.Set(v, dutchLocale, "Overleden");
+                v.IsActive = true;
+            });
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Allors.Domain
 
         public SalesOrderItemShipmentState Shipped => this.StateCache[ShippedId];
 
-        private UniquelyIdentifiableSticky<SalesOrderItemShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderItemShipmentState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesOrderItemShipmentState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SalesOrderItemShipmentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

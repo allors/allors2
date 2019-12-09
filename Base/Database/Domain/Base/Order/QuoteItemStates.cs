@@ -30,7 +30,7 @@ namespace Allors.Domain
 
         public QuoteItemState Ordered => this.StateCache[OrderedId];
 
-        private UniquelyIdentifiableSticky<QuoteItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<QuoteItemState>(this.Session));
+        private UniquelyIdentifiableSticky<QuoteItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<QuoteItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

@@ -33,7 +33,7 @@ namespace Allors.Domain
 
         public RequirementState FullfilledByOtherEnterprise => this.StateCache[FullfilledByOtherEnterpriseId];
 
-        private UniquelyIdentifiableSticky<RequirementState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<RequirementState>(this.Session));
+        private UniquelyIdentifiableSticky<RequirementState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<RequirementState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

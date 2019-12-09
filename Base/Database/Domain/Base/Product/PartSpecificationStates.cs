@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public PartSpecificationState RequirementSpecified => this.StateCache[RequirementSpecifiedId];
 
-        private UniquelyIdentifiableSticky<PartSpecificationState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PartSpecificationState>(this.Session));
+        private UniquelyIdentifiableSticky<PartSpecificationState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<PartSpecificationState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

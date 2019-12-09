@@ -11,6 +11,6 @@ namespace Allors.Domain
     {
         private Sticky<string, City> cityByName;
 
-        public Sticky<string, City> CityByName => this.cityByName ?? (this.cityByName = new Sticky<string, City>(this.Session, M.City.Name));
+        public Sticky<string, City> CityByName => this.cityByName ??= new Sticky<string, City>(this.Session, M.City.Name);
     }
 }

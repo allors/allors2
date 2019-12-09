@@ -36,7 +36,7 @@ namespace Allors.Domain
 
         public SerialisedInventoryItemState Assigned => this.StateCache[AssignedId];
 
-        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SerialisedInventoryItemState>(this.Session));
+        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SerialisedInventoryItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

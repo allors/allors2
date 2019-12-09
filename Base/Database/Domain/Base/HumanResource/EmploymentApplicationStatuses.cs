@@ -36,47 +36,50 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new EmploymentApplicationStatusBuilder(this.Session)
-                .WithName("Received")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ontvangen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ReceivedId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new EmploymentApplicationStatusBuilder(this.Session)
-                .WithName("Reviewed")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gereviewed").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ReviewedId)
-                .WithIsActive(true)
-                .Build();
+            merge(ReceivedId, v =>
+            {
+                v.Name = "Received";
+                localisedName.Set(v, dutchLocale, "Ontvangen");
+                v.IsActive = true;
+            });
 
-            new EmploymentApplicationStatusBuilder(this.Session)
-                .WithName("Filed")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ingediend").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FiledId)
-                .WithIsActive(true)
-                .Build();
+            merge(ReceivedId, v =>
+            {
+                v.Name = "Reviewed";
+                localisedName.Set(v, dutchLocale, "Gereviewed");
+                v.IsActive = true;
+            });
 
-            new EmploymentApplicationStatusBuilder(this.Session)
-                .WithName("Rejected")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Geweigerd").WithLocale(dutchLocale).Build())
-                .WithUniqueId(RejectedId)
-                .WithIsActive(true)
-                .Build();
+            merge(FiledId, v =>
+            {
+                v.Name = "Filed";
+                localisedName.Set(v, dutchLocale, "Ingediend");
+                v.IsActive = true;
+            });
 
-            new EmploymentApplicationStatusBuilder(this.Session)
-                .WithName("Notified Of Non Interested")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet geïnteresseerd beantwoord").WithLocale(dutchLocale).Build())
-                .WithUniqueId(NotifiedOfNonInterestedId)
-                .WithIsActive(true)
-                .Build();
+            merge(RejectedId, v =>
+            {
+                v.Name = "Rejected";
+                localisedName.Set(v, dutchLocale, "Geweigerd");
+                v.IsActive = true;
+            });
 
-            new EmploymentApplicationStatusBuilder(this.Session)
-                .WithName("Employed")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aangenomen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(EmployedId)
-                .WithIsActive(true)
-                .Build();
+            merge(NotifiedOfNonInterestedId, v =>
+            {
+                v.Name = "Notified Of Non Interested";
+                localisedName.Set(v, dutchLocale, "Niet geïnteresseerd beantwoord");
+                v.IsActive = true;
+            });
+
+            merge(EmployedId, v =>
+            {
+                v.Name = "Employed";
+                localisedName.Set(v, dutchLocale, "Aangenomen");
+                v.IsActive = true;
+            });
         }
     }
 }

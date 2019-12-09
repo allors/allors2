@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public NonSerialisedInventoryItemState Scrap => this.StateCache[ScrapId];
 
-        private UniquelyIdentifiableSticky<NonSerialisedInventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<NonSerialisedInventoryItemState>(this.Session));
+        private UniquelyIdentifiableSticky<NonSerialisedInventoryItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<NonSerialisedInventoryItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

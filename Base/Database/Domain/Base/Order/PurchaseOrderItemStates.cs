@@ -39,7 +39,7 @@ namespace Allors.Domain
 
         public PurchaseOrderItemState Sent => this.StateCache[SentId];
 
-        private UniquelyIdentifiableSticky<PurchaseOrderItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseOrderItemState>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseOrderItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<PurchaseOrderItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

@@ -30,33 +30,36 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new SkillRatingBuilder(this.Session)
-                .WithName("Poor")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Slecht").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PoorId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new SkillRatingBuilder(this.Session)
-                .WithName("Fair")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Matig").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FairId)
-                .WithIsActive(true)
-                .Build();
+            merge(PoorId, v =>
+            {
+                v.Name = "Poor";
+                localisedName.Set(v, dutchLocale, "Slecht");
+                v.IsActive = true;
+            });
 
-            new SkillRatingBuilder(this.Session)
-                .WithName("Good")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goed").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GoodId)
-                .WithIsActive(true)
-                .Build();
+            merge(FairId, v =>
+            {
+                v.Name = "Fair";
+                localisedName.Set(v, dutchLocale, "Matig");
+                v.IsActive = true;
+            });
 
-            new SkillRatingBuilder(this.Session)
-                .WithName("Excellent")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitstekend").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ExcellentId)
-                .WithIsActive(true)
-                .Build();
+            merge(GoodId, v =>
+            {
+                v.Name = "Good";
+                localisedName.Set(v, dutchLocale, "Goed");
+                v.IsActive = true;
+            });
+
+            merge(ExcellentId, v =>
+            {
+                v.Name = "Excellent";
+                localisedName.Set(v, dutchLocale, "Uitstekend");
+                v.IsActive = true;
+            });
         }
     }
 }

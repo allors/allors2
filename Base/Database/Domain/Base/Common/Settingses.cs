@@ -15,26 +15,33 @@ namespace Allors.Domain
         {
             setup.AddDependency(this.ObjectType, M.Singleton);
             setup.AddDependency(this.ObjectType, M.InventoryStrategy);
+            setup.AddDependency(this.ObjectType, M.Currency);
         }
 
         protected override void BaseSetup(Setup setup)
         {
-            var settings = new SettingsBuilder(this.Session)
-                .WithInventoryStrategy(new InventoryStrategies(this.Session).Standard)
-                .WithSkuPrefix("Sku")
-                .WithSkuCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
-                .WithSerialisedItemPrefix("S")
-                .WithSerialisedItemCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
-                .WithPreferredCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithProductNumberCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
-                .WithProductNumberPrefix("art-")
+            var singleton = this.Session.GetSingleton();
+            singleton.Settings ??= new SettingsBuilder(this.Session)
                 .WithUseProductNumberCounter(true)
-                .WithPartNumberCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
-                .WithPartNumberPrefix("part-")
                 .WithUsePartNumberCounter(true)
                 .Build();
 
-            this.Session.GetSingleton().Settings = settings;
+            var settings = singleton.Settings;
+
+            var inventoryStrategy = new InventoryStrategies(this.Session).Standard;
+            var preferredCurrency = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
+
+            settings.InventoryStrategy ??= inventoryStrategy;
+            settings.SkuPrefix ??= "Sku";
+            settings.SerialisedItemPrefix ??= "S";
+            settings.ProductNumberPrefix ??= "art-";
+            settings.PartNumberPrefix ??= "part-";
+            settings.PreferredCurrency ??= preferredCurrency;
+
+            settings.SkuCounter ??= new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+            settings.SerialisedItemCounter ??= new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+            settings.ProductNumberCounter ??= new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+            settings.PartNumberCounter ??= new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
         }
     }
 }

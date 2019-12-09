@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public PickListState OnHold => this.StateCache[OnHoldId];
 
-        private UniquelyIdentifiableSticky<PickListState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PickListState>(this.Session));
+        private UniquelyIdentifiableSticky<PickListState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<PickListState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

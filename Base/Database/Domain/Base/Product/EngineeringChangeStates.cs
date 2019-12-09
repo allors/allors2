@@ -21,7 +21,7 @@ namespace Allors.Domain
 
         public EngineeringChangeObjectState Released => this.StateCache[ReleasedId];
 
-        private UniquelyIdentifiableSticky<EngineeringChangeObjectState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<EngineeringChangeObjectState>(this.Session));
+        private UniquelyIdentifiableSticky<EngineeringChangeObjectState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<EngineeringChangeObjectState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

@@ -18,67 +18,37 @@ namespace Allors.Domain
         public static readonly Guid CancelledId = new Guid("60650051-F1F1-4dd6-90C8-5E744093D2EE");
         public static readonly Guid RejectedId = new Guid("26E27DDC-0782-4C29-B4BE-FF1E7AEE788A");
 
-        private UniquelyIdentifiableSticky<PurchaseInvoiceState> stateCache;
+        private UniquelyIdentifiableSticky<PurchaseInvoiceState> cache;
 
-        public PurchaseInvoiceState Created => this.StateCache[CreatedId];
+        public PurchaseInvoiceState Created => this.Cache[CreatedId];
 
-        public PurchaseInvoiceState AwaitingApproval => this.StateCache[AwaitingApprovalId];
+        public PurchaseInvoiceState AwaitingApproval => this.Cache[AwaitingApprovalId];
 
-        public PurchaseInvoiceState Received => this.StateCache[ReceivedId];
+        public PurchaseInvoiceState Received => this.Cache[ReceivedId];
 
-        public PurchaseInvoiceState PartiallyPaid => this.StateCache[PartiallyPaidId];
+        public PurchaseInvoiceState PartiallyPaid => this.Cache[PartiallyPaidId];
 
-        public PurchaseInvoiceState NotPaid => this.StateCache[NotPaidId];
+        public PurchaseInvoiceState NotPaid => this.Cache[NotPaidId];
 
-        public PurchaseInvoiceState Paid => this.StateCache[PaidId];
+        public PurchaseInvoiceState Paid => this.Cache[PaidId];
 
-        public PurchaseInvoiceState Cancelled => this.StateCache[CancelledId];
+        public PurchaseInvoiceState Cancelled => this.Cache[CancelledId];
 
-        public PurchaseInvoiceState Rejected => this.StateCache[RejectedId];
+        public PurchaseInvoiceState Rejected => this.Cache[RejectedId];
 
-        private UniquelyIdentifiableSticky<PurchaseInvoiceState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseInvoiceState>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseInvoiceState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PurchaseInvoiceState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new PurchaseInvoiceStateBuilder(this.Session)
-                .WithUniqueId(CreatedId)
-                .WithName("Created")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new PurchaseInvoiceStateBuilder(this.Session)
-                .WithUniqueId(AwaitingApprovalId)
-                .WithName("AwaitingApproval")
-                .Build();
-
-            new PurchaseInvoiceStateBuilder(this.Session)
-                .WithUniqueId(ReceivedId)
-                .WithName("Received")
-                .Build();
-
-            new PurchaseInvoiceStateBuilder(this.Session)
-                .WithUniqueId(PartiallyPaidId)
-                .WithName("Partially Paid")
-                .Build();
-
-            new PurchaseInvoiceStateBuilder(this.Session)
-                .WithUniqueId(NotPaidId)
-                .WithName("Not Paid")
-                .Build();
-
-            new PurchaseInvoiceStateBuilder(this.Session)
-                .WithUniqueId(PaidId)
-                .WithName("Paid")
-                .Build();
-
-            new PurchaseInvoiceStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new PurchaseInvoiceStateBuilder(this.Session)
-                .WithUniqueId(RejectedId)
-                .WithName("Rejected")
-                .Build();
+            merge(CreatedId, v => v.Name = "Created");
+            merge(ReceivedId, v => v.Name = "Received");
+            merge(PartiallyPaidId, v => v.Name = "Partially Paid");
+            merge(NotPaidId, v => v.Name = "Not Paid");
+            merge(PaidId, v => v.Name = "Paid");
+            merge(CancelledId, v => v.Name = "Cancelled");
+            merge(RejectedId, v => v.Name = "Rejected");
         }
     }
 }

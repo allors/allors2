@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public CaseState Completed => this.StateCache[CompletedId];
 
-        private UniquelyIdentifiableSticky<CaseState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<CaseState>(this.Session));
+        private UniquelyIdentifiableSticky<CaseState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<CaseState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

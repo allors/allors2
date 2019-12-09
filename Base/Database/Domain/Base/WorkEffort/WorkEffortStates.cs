@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public WorkEffortState Cancelled => this.StateCache[CancelledId];
 
-        private UniquelyIdentifiableSticky<WorkEffortState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<WorkEffortState>(this.Session));
+        private UniquelyIdentifiableSticky<WorkEffortState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<WorkEffortState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

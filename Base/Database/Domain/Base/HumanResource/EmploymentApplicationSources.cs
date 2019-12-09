@@ -27,26 +27,29 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new EmploymentApplicationSourceBuilder(this.Session)
-                .WithName("NewsPaper")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Krant").WithLocale(dutchLocale).Build())
-                .WithUniqueId(NewsPaperId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new EmploymentApplicationSourceBuilder(this.Session)
-                .WithName("PersonallReferal")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Persoonlijk doorverwezen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PersonallReferalId)
-                .WithIsActive(true)
-                .Build();
+            merge(NewsPaperId, v =>
+            {
+                v.Name = "NewsPaper";
+                localisedName.Set(v, dutchLocale, "Krant");
+                v.IsActive = true;
+            });
 
-            new EmploymentApplicationSourceBuilder(this.Session)
-                .WithName("Internet")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Internet").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InternetId)
-                .WithIsActive(true)
-                .Build();
+            merge(PersonallReferalId, v =>
+            {
+                v.Name = "PersonallReferal";
+                localisedName.Set(v, dutchLocale, "Persoonlijk doorverwezen");
+                v.IsActive = true;
+            });
+
+            merge(InternetId, v =>
+            {
+                v.Name = "Internet";
+                localisedName.Set(v, dutchLocale, "Internet");
+                v.IsActive = true;
+            });
         }
     }
 }

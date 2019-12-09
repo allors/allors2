@@ -21,12 +21,15 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new SkillBuilder(this.Session)
-                .WithName("Project Management")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project Management").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProjectManagementId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
+
+            merge(ProjectManagementId, v =>
+            {
+                v.Name = "Project Management";
+                localisedName.Set(v, dutchLocale, "Project Management");
+                v.IsActive = true;
+            });
         }
     }
 }

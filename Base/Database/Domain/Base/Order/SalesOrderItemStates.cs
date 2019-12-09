@@ -33,7 +33,7 @@ namespace Allors.Domain
 
         public SalesOrderItemState InProcess => this.StateCache[InProcessId];
 
-        private UniquelyIdentifiableSticky<SalesOrderItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderItemState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesOrderItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SalesOrderItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

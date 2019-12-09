@@ -42,7 +42,7 @@ namespace Allors.Domain
 
         public SerialisedItemState Assigned => this.StateCache[AssignedId];
 
-        private UniquelyIdentifiableSticky<SerialisedItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SerialisedItemState>(this.Session));
+        private UniquelyIdentifiableSticky<SerialisedItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SerialisedItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

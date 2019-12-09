@@ -30,7 +30,7 @@ namespace Allors.Domain
 
         public RequestState Rejected => this.StateCache[RejectedId];
 
-        private UniquelyIdentifiableSticky<RequestState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<RequestState>(this.Session));
+        private UniquelyIdentifiableSticky<RequestState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<RequestState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

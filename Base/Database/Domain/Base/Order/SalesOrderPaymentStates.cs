@@ -21,7 +21,7 @@ namespace Allors.Domain
 
         public SalesOrderPaymentState Paid => this.StateCache[PaidId];
 
-        private UniquelyIdentifiableSticky<SalesOrderPaymentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderPaymentState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesOrderPaymentState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SalesOrderPaymentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

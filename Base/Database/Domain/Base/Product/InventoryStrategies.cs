@@ -16,7 +16,7 @@ namespace Allors.Domain
 
         public InventoryStrategy Standard => this.StateCache[StandardId];
 
-        private UniquelyIdentifiableSticky<InventoryStrategy> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<InventoryStrategy>(this.Session));
+        private UniquelyIdentifiableSticky<InventoryStrategy> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<InventoryStrategy>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

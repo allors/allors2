@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public RequestItemState Quoted => this.StateCache[QuotedId];
 
-        private UniquelyIdentifiableSticky<RequestItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<RequestItemState>(this.Session));
+        private UniquelyIdentifiableSticky<RequestItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<RequestItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
