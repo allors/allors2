@@ -36,7 +36,7 @@ namespace Allors.Domain
 
         public ProductIdentificationType Good => this.Cache[GoodId];
 
-        private UniquelyIdentifiableSticky<ProductIdentificationType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ProductIdentificationType>(this.Session));
+        private UniquelyIdentifiableSticky<ProductIdentificationType> Cache => this.cache ??= new UniquelyIdentifiableSticky<ProductIdentificationType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

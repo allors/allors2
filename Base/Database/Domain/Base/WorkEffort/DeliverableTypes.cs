@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public DeliverableType MarketAnalysis => this.Cache[MarketAnalysisId];
 
-        private UniquelyIdentifiableSticky<DeliverableType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<DeliverableType>(this.Session));
+        private UniquelyIdentifiableSticky<DeliverableType> Cache => this.cache ??= new UniquelyIdentifiableSticky<DeliverableType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

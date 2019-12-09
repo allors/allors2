@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public BillingProcess BillingForTimeEntries => this.Cache[BillingForTimeEntriesId];
 
-        private UniquelyIdentifiableSticky<BillingProcess> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<BillingProcess>(this.Session));
+        private UniquelyIdentifiableSticky<BillingProcess> Cache => this.cache ??= new UniquelyIdentifiableSticky<BillingProcess>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

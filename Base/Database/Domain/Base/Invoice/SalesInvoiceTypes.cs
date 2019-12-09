@@ -18,7 +18,7 @@ namespace Allors.Domain
 
         public SalesInvoiceType CreditNote => this.Cache[CreditNoteId];
 
-        private UniquelyIdentifiableSticky<SalesInvoiceType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<SalesInvoiceType>(this.Session));
+        private UniquelyIdentifiableSticky<SalesInvoiceType> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesInvoiceType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

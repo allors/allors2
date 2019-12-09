@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public EmploymentTerminationReason Moved => this.Cache[MovedId];
 
-        private UniquelyIdentifiableSticky<EmploymentTerminationReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EmploymentTerminationReason>(this.Session));
+        private UniquelyIdentifiableSticky<EmploymentTerminationReason> Cache => this.cache ??= new UniquelyIdentifiableSticky<EmploymentTerminationReason>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

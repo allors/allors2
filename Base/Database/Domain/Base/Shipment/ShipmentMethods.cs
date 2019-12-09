@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public ShipmentMethod ExWorks => this.Cache[ExWorksId];
 
-        private UniquelyIdentifiableSticky<ShipmentMethod> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ShipmentMethod>(this.Session));
+        private UniquelyIdentifiableSticky<ShipmentMethod> Cache => this.cache ??= new UniquelyIdentifiableSticky<ShipmentMethod>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

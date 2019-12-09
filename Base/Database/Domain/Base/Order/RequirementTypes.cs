@@ -30,7 +30,7 @@ namespace Allors.Domain
 
         public RequirementType WorkRequirement => this.Cache[WorkRequirementId];
 
-        private UniquelyIdentifiableSticky<RequirementType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<RequirementType>(this.Session));
+        private UniquelyIdentifiableSticky<RequirementType> Cache => this.cache ??= new UniquelyIdentifiableSticky<RequirementType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

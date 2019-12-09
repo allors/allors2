@@ -21,7 +21,7 @@ namespace Allors.Domain
 
         public ContactMechanismType Fax => this.Cache[FaxId];
 
-        private UniquelyIdentifiableSticky<ContactMechanismType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ContactMechanismType>(this.Session));
+        private UniquelyIdentifiableSticky<ContactMechanismType> Cache => this.cache ??= new UniquelyIdentifiableSticky<ContactMechanismType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

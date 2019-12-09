@@ -21,7 +21,7 @@ namespace Allors.Domain
 
         public GenderType Other => this.Cache[OtherId];
 
-        private UniquelyIdentifiableSticky<GenderType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<GenderType>(this.Session));
+        private UniquelyIdentifiableSticky<GenderType> Cache => this.cache ??= new UniquelyIdentifiableSticky<GenderType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

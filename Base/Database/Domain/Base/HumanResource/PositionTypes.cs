@@ -9,6 +9,6 @@ namespace Allors.Domain
     {
         private UniquelyIdentifiableSticky<PositionType> cache;
 
-        private UniquelyIdentifiableSticky<PositionType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PositionType>(this.Session));
+        private UniquelyIdentifiableSticky<PositionType> Cache => this.cache ??= new UniquelyIdentifiableSticky<PositionType>(this.Session);
     }
 }

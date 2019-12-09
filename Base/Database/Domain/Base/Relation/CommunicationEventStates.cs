@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public CommunicationEventState Cancelled => this.Cache[CancelledId];
 
-        private UniquelyIdentifiableSticky<CommunicationEventState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<CommunicationEventState>(this.Session));
+        private UniquelyIdentifiableSticky<CommunicationEventState> Cache => this.cache ??= new UniquelyIdentifiableSticky<CommunicationEventState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

@@ -30,7 +30,7 @@ namespace Allors.Domain
 
         public EmploymentApplicationStatus Employed => this.Cache[EmployedId];
 
-        private UniquelyIdentifiableSticky<EmploymentApplicationStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EmploymentApplicationStatus>(this.Session));
+        private UniquelyIdentifiableSticky<EmploymentApplicationStatus> Cache => this.cache ??= new UniquelyIdentifiableSticky<EmploymentApplicationStatus>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
@@ -66,7 +66,7 @@ namespace Allors.Domain
 
             new EmploymentApplicationStatusBuilder(this.Session)
                 .WithName("Notified Of Non Interested")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet geïnteresseerd beantwoord").WithLocale(dutchLocale).Build())
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet geÃ¯nteresseerd beantwoord").WithLocale(dutchLocale).Build())
                 .WithUniqueId(NotifiedOfNonInterestedId)
                 .WithIsActive(true)
                 .Build();

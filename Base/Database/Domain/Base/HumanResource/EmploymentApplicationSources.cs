@@ -21,7 +21,7 @@ namespace Allors.Domain
 
         public EmploymentApplicationSource Internet => this.Cache[InternetId];
 
-        private UniquelyIdentifiableSticky<EmploymentApplicationSource> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EmploymentApplicationSource>(this.Session));
+        private UniquelyIdentifiableSticky<EmploymentApplicationSource> Cache => this.cache ??= new UniquelyIdentifiableSticky<EmploymentApplicationSource>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

@@ -18,7 +18,7 @@ namespace Allors.Domain
 
         public InvoiceSequence RestartOnFiscalYear => this.Cache[RestartOnFiscalYearId];
 
-        private UniquelyIdentifiableSticky<InvoiceSequence> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InvoiceSequence>(this.Session));
+        private UniquelyIdentifiableSticky<InvoiceSequence> Cache => this.cache ??= new UniquelyIdentifiableSticky<InvoiceSequence>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

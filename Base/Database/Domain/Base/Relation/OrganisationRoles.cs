@@ -21,7 +21,7 @@ namespace Allors.Domain
 
         public OrganisationRole Manufacturer => this.Cache[ManufacturerId];
 
-        private UniquelyIdentifiableSticky<OrganisationRole> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<OrganisationRole>(this.Session));
+        private UniquelyIdentifiableSticky<OrganisationRole> Cache => this.cache ??= new UniquelyIdentifiableSticky<OrganisationRole>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

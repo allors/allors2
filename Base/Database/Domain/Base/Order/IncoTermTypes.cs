@@ -45,7 +45,7 @@ namespace Allors.Domain
 
         public IncoTermType Cif => this.Cache[CifId];
 
-        private UniquelyIdentifiableSticky<IncoTermType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<IncoTermType>(this.Session));
+        private UniquelyIdentifiableSticky<IncoTermType> Cache => this.cache ??= new UniquelyIdentifiableSticky<IncoTermType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

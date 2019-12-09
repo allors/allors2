@@ -18,7 +18,7 @@ namespace Allors.Domain
 
         public FacilityType StorageLocation => this.Cache[StorageLocationId];
 
-        private UniquelyIdentifiableSticky<FacilityType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<FacilityType>(this.Session));
+        private UniquelyIdentifiableSticky<FacilityType> Cache => this.cache ??= new UniquelyIdentifiableSticky<FacilityType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

@@ -15,7 +15,7 @@ namespace Allors.Domain
 
         public Skill ProjectManagement => this.Cache[ProjectManagementId];
 
-        private UniquelyIdentifiableSticky<Skill> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Skill>(this.Session));
+        private UniquelyIdentifiableSticky<Skill> Cache => this.cache ??= new UniquelyIdentifiableSticky<Skill>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

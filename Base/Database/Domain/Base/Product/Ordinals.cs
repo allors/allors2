@@ -21,7 +21,7 @@ namespace Allors.Domain
 
         public Ordinal Third => this.Cache[ThirdId];
 
-        private UniquelyIdentifiableSticky<Ordinal> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Ordinal>(this.Session));
+        private UniquelyIdentifiableSticky<Ordinal> Cache => this.cache ??= new UniquelyIdentifiableSticky<Ordinal>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

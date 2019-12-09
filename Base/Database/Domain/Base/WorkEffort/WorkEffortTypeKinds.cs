@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public WorkEffortTypeKind WorkTask => this.Cache[WorkTaskId];
 
-        private UniquelyIdentifiableSticky<WorkEffortTypeKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<WorkEffortTypeKind>(this.Session));
+        private UniquelyIdentifiableSticky<WorkEffortTypeKind> Cache => this.cache ??= new UniquelyIdentifiableSticky<WorkEffortTypeKind>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public SkillLevel Expert => this.Cache[ExpertId];
 
-        private UniquelyIdentifiableSticky<SkillLevel> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<SkillLevel>(this.Session));
+        private UniquelyIdentifiableSticky<SkillLevel> Cache => this.cache ??= new UniquelyIdentifiableSticky<SkillLevel>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

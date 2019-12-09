@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public EmploymentTermination Deceased => this.Cache[DeceasedId];
 
-        private UniquelyIdentifiableSticky<EmploymentTermination> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EmploymentTermination>(this.Session));
+        private UniquelyIdentifiableSticky<EmploymentTermination> Cache => this.cache ??= new UniquelyIdentifiableSticky<EmploymentTermination>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

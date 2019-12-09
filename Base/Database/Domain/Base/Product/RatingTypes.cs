@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public RatingType Outstanding => this.Cache[OutstandingId];
 
-        private UniquelyIdentifiableSticky<RatingType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<RatingType>(this.Session));
+        private UniquelyIdentifiableSticky<RatingType> Cache => this.cache ??= new UniquelyIdentifiableSticky<RatingType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

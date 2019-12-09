@@ -45,7 +45,7 @@ namespace Allors.Domain
 
         public CommunicationEventPurpose Interview => this.Cache[InterviewId];
 
-        private UniquelyIdentifiableSticky<CommunicationEventPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<CommunicationEventPurpose>(this.Session));
+        private UniquelyIdentifiableSticky<CommunicationEventPurpose> Cache => this.cache ??= new UniquelyIdentifiableSticky<CommunicationEventPurpose>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

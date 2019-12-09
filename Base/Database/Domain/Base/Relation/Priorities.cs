@@ -33,7 +33,7 @@ namespace Allors.Domain
 
         public Priority Third => this.Cache[ThirdId];
 
-        private UniquelyIdentifiableSticky<Priority> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Priority>(this.Session));
+        private UniquelyIdentifiableSticky<Priority> Cache => this.cache ??= new UniquelyIdentifiableSticky<Priority>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

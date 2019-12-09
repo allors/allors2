@@ -36,7 +36,7 @@ namespace Allors.Domain
 
         public WorkEffortPurpose Research => this.Cache[ResearchId];
 
-        private UniquelyIdentifiableSticky<WorkEffortPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<WorkEffortPurpose>(this.Session));
+        private UniquelyIdentifiableSticky<WorkEffortPurpose> Cache => this.cache ??= new UniquelyIdentifiableSticky<WorkEffortPurpose>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

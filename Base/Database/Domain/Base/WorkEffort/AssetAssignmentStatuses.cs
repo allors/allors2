@@ -18,7 +18,7 @@ namespace Allors.Domain
 
         public AssetAssignmentStatus Assigned => this.Cache[AssignedId];
 
-        private UniquelyIdentifiableSticky<AssetAssignmentStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<AssetAssignmentStatus>(this.Session));
+        private UniquelyIdentifiableSticky<AssetAssignmentStatus> Cache => this.cache ??= new UniquelyIdentifiableSticky<AssetAssignmentStatus>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

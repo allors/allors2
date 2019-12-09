@@ -42,7 +42,7 @@ namespace Allors.Domain
 
         public InventoryTransactionReason Consumption => this.Cache[ConsumptionId];
 
-        private UniquelyIdentifiableSticky<InventoryTransactionReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InventoryTransactionReason>(this.Session));
+        private UniquelyIdentifiableSticky<InventoryTransactionReason> Cache => this.cache ??= new UniquelyIdentifiableSticky<InventoryTransactionReason>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

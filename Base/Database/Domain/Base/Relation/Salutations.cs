@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public Salutation Mme => this.Cache[MmeId];
 
-        private UniquelyIdentifiableSticky<Salutation> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Salutation>(this.Session));
+        private UniquelyIdentifiableSticky<Salutation> Cache => this.cache ??= new UniquelyIdentifiableSticky<Salutation>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

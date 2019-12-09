@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public PersonRole Customer => this.Cache[CustomerId];
 
-        private UniquelyIdentifiableSticky<PersonRole> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PersonRole>(this.Session));
+        private UniquelyIdentifiableSticky<PersonRole> Cache => this.cache ??= new UniquelyIdentifiableSticky<PersonRole>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

@@ -31,7 +31,7 @@ namespace Allors.Domain
 
         public VatRegime Exempt => this.Cache[ExemptId];
 
-        private UniquelyIdentifiableSticky<VatRegime> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<VatRegime>(this.Session));
+        private UniquelyIdentifiableSticky<VatRegime> Cache => this.cache ??= new UniquelyIdentifiableSticky<VatRegime>(this.Session);
 
         protected override void BasePrepare(Setup setup)
         {
@@ -41,60 +41,63 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            var vatRate0 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 0);
-            var vatRate21 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 21);
+            var vatRate0 = new VatRates(this.Session).Zero;
+            var vatRate21 = new VatRates(this.Session).TwentyOne;
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new VatRegimeBuilder(this.Session)
-                .WithName("Private Person")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("particulier").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate21)
-                .WithUniqueId(PrivatePersonId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new VatRegimeBuilder(this.Session)
-                .WithName("VAT Assessable 21%")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("BTW-plichtig 21%").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate21)
-                .WithUniqueId(AssessableId)
-                .WithIsActive(true)
-                .Build();
+            merge(PrivatePersonId, v =>
+            {
+                v.Name = "Private Person";
+                localisedName.Set(v, dutchLocale, "particulier");
+                v.VatRate = vatRate21;
+                v.IsActive = true;
+            });
 
-            new VatRegimeBuilder(this.Session)
-                .WithName("Export")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Export").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate0)
-                .WithUniqueId(ExportId)
-                .WithIsActive(true)
-                .Build();
+            merge(AssessableId, v =>
+            {
+                v.Name = "VAT Assessable 21%";
+                localisedName.Set(v, dutchLocale, "BTW-plichtig 21%");
+                v.VatRate = vatRate21;
+                v.IsActive = true;
+            });
 
-            new VatRegimeBuilder(this.Session)
-                .WithName("Intracommunautair")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intracommunautair").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate0)
-                .WithUniqueId(IntraCommunautairId)
-                .WithIsActive(true)
-                .WithVatClause(new VatClauses(this.Session).Intracommunautair)
-                .Build();
+            merge(ExportId, v =>
+            {
+                v.Name = "Export";
+                localisedName.Set(v, dutchLocale, "Export");
+                v.VatRate = vatRate0;
+                v.IsActive = true;
+            });
 
-            new VatRegimeBuilder(this.Session)
-                .WithName("Service B2B: Not VAT assessable")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Service B2B: Niet BTW-plichtig").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate0)
-                .WithUniqueId(ServiceB2BId)
-                .WithIsActive(true)
-                .WithVatClause(new VatClauses(this.Session).ServiceB2B)
-                .Build();
+            merge(IntraCommunautairId, v =>
+            {
+                v.Name = "Intracommunautair";
+                localisedName.Set(v, dutchLocale, "Intracommunautair");
+                v.VatRate = vatRate0;
+                v.VatClause = new VatClauses(this.Session).Intracommunautair;
+                v.IsActive = true;
+            });
 
-            new VatRegimeBuilder(this.Session)
-                .WithName("Exempt")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vrijgesteld").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ExemptId)
-                .WithVatRate(vatRate0)
-                .WithIsActive(true)
-                .Build();
+            merge(ServiceB2BId, v =>
+            {
+                v.Name = "Service B2B: Not VAT assessable";
+                localisedName.Set(v, dutchLocale, "Service B2B: Niet BTW-plichtig");
+                v.VatRate = vatRate0;
+                v.VatClause = new VatClauses(this.Session).ServiceB2B;
+                v.IsActive = true;
+            });
+
+            merge(ExemptId, v =>
+            {
+                v.Name = "Exempt";
+                localisedName.Set(v, dutchLocale, "Vrijgesteld");
+                v.VatRate = vatRate0;
+                v.IsActive = true;
+            });
         }
     }
 }

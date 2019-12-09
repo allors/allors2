@@ -45,94 +45,142 @@ namespace Allors.Domain
 
         public TimeFrequency Year => this.Cache[YearId];
 
-        private UniquelyIdentifiableSticky<TimeFrequency> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<TimeFrequency>(this.Session));
+        private UniquelyIdentifiableSticky<TimeFrequency> Cache => this.cache ??= new UniquelyIdentifiableSticky<TimeFrequency>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            this.NewTimeFrequency("millisecond", "milliseconde", dutchLocale, "ms", MillisecondId, true);
-            this.NewTimeFrequency("second", "seconde", dutchLocale, "sec", SecondId, true);
-            this.NewTimeFrequency("minute", "minuut", dutchLocale, "min", MinuteId, true);
-            this.NewTimeFrequency("hour", "uur", dutchLocale, "hr", HourId, true);
-            this.NewTimeFrequency("day", "dag", dutchLocale, "dy", DayId, true);
-            this.NewTimeFrequency("week", "week", dutchLocale, "wk", WeekId, true);
-            this.NewTimeFrequency("fortnight", "2 weken", dutchLocale, FortnightId, true);
-            this.NewTimeFrequency("month", "maand", dutchLocale, "mth", MonthId, true);
-            this.NewTimeFrequency("semester", "half jar", dutchLocale, SemesterId, true);
-            this.NewTimeFrequency("trimester", "kwartall", dutchLocale, TrimesterId, true);
-            this.NewTimeFrequency("year", "jaar", dutchLocale, "yr", YearId, true);
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
+            var unitOfMeasureConversion = new UnitOfMeasureConversionAccessor(this.Meta.UnitOfMeasureConversions);
 
-            // Millisecond to UOM Conversions
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 1m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 1m / 1000m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1m / 60000m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m / 3600000m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m / 86400000m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 604800000m));
+            merge(MillisecondId, v =>
+            {
+                v.Name = "millisecond";
+                v.Abbreviation = "ms";
+                localisedName.Set(v, dutchLocale, "milliseconde");
+                v.IsActive = true;
 
-            // Second to UOM Conversions
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 1000m));
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 1m));
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1m / 60m));
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m / 3600m));
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m / 86400m));
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 604800m));
+                unitOfMeasureConversion.Set(v, this.Millisecond, 1m);
+                unitOfMeasureConversion.Set(v, this.Second, 1m / 1000m);
+                unitOfMeasureConversion.Set(v, this.Minute, 1m / 60000m);
+                unitOfMeasureConversion.Set(v, this.Hour, 1m / 3600000m);
+                unitOfMeasureConversion.Set(v, this.Day, 1m / 86400000m);
+                unitOfMeasureConversion.Set(v, this.Week, 1m / 604800000m);
+            });
 
-            // Minute To UOM Conversions
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 60000m));
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 60m));
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1m));
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m / 60m));
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m / 1440m));
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 10080m));
+            merge(SecondId, v =>
+            {
+                v.Name = "second";
+                v.Abbreviation = "sec";
+                localisedName.Set(v, dutchLocale, "seconde");
+                v.IsActive = true;
 
-            // Hour to UOM Conversions
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 3600000m));
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 3600m));
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 60m));
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m));
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m / 24m));
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 168m));
+                unitOfMeasureConversion.Set(v, this.Millisecond, 1000m);
+                unitOfMeasureConversion.Set(v, this.Second, 1m);
+                unitOfMeasureConversion.Set(v, this.Minute, 1m / 60m);
+                unitOfMeasureConversion.Set(v, this.Hour, 1m / 3600m);
+                unitOfMeasureConversion.Set(v, this.Day, 1m / 86400m);
+                unitOfMeasureConversion.Set(v, this.Week, 1m / 604800m);
+            });
 
-            // Day to UOM Conversions
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 86400000m));
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 86400m));
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1440m));
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 24m));
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m));
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 7m));
+            merge(MinuteId, v =>
+            {
+                v.Name = "minute";
+                v.Abbreviation = "min";
+                localisedName.Set(v, dutchLocale, "minuut");
+                v.IsActive = true;
 
-            // Week to UOM Conversions
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 604800000m));
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 604800m));
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 10080m));
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 168m));
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 7m));
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m));
+                unitOfMeasureConversion.Set(v, this.Millisecond, 60000m);
+                unitOfMeasureConversion.Set(v, this.Second, 60m);
+                unitOfMeasureConversion.Set(v, this.Minute, 1m);
+                unitOfMeasureConversion.Set(v, this.Hour, 1m / 60m);
+                unitOfMeasureConversion.Set(v, this.Day, 1m / 1440m);
+                unitOfMeasureConversion.Set(v, this.Week, 1m / 10080m);
+            });
+
+            merge(HourId, v =>
+            {
+                v.Name = "hour";
+                v.Abbreviation = "hr";
+                localisedName.Set(v, dutchLocale, "uur");
+                v.IsActive = true;
+
+                unitOfMeasureConversion.Set(v, this.Millisecond, 3600000m);
+                unitOfMeasureConversion.Set(v, this.Second, 3600m);
+                unitOfMeasureConversion.Set(v, this.Minute, 60m);
+                unitOfMeasureConversion.Set(v, this.Hour, 1m);
+                unitOfMeasureConversion.Set(v, this.Day, 1m / 24m);
+                unitOfMeasureConversion.Set(v, this.Week, 1m / 168m);
+            });
+
+            merge(DayId, v =>
+            {
+                v.Name = "day";
+                v.Abbreviation = "dy";
+                localisedName.Set(v, dutchLocale, "dag");
+                v.IsActive = true;
+
+                unitOfMeasureConversion.Set(v, this.Millisecond, 86400000m);
+                unitOfMeasureConversion.Set(v, this.Second, 86400m);
+                unitOfMeasureConversion.Set(v, this.Minute, 1440m);
+                unitOfMeasureConversion.Set(v, this.Hour, 24m);
+                unitOfMeasureConversion.Set(v, this.Day, 1m);
+                unitOfMeasureConversion.Set(v, this.Week, 1m / 7m);
+            });
+
+            merge(WeekId, v =>
+            {
+                v.Name = "week";
+                v.Abbreviation = "wk";
+                localisedName.Set(v, dutchLocale, "week");
+                v.IsActive = true;
+
+                unitOfMeasureConversion.Set(v, this.Millisecond, 604800000m);
+                unitOfMeasureConversion.Set(v, this.Second, 604800m);
+                unitOfMeasureConversion.Set(v, this.Minute, 10080m);
+                unitOfMeasureConversion.Set(v, this.Hour, 168m);
+                unitOfMeasureConversion.Set(v, this.Day, 7m);
+                unitOfMeasureConversion.Set(v, this.Week, 1m);
+            });
+
+            merge(FortnightId, v =>
+            {
+                v.Name = "fortnight";
+                localisedName.Set(v, dutchLocale, "2 weken");
+                v.IsActive = true;
+            });
+
+            merge(MonthId, v =>
+            {
+                v.Name = "month";
+                v.Abbreviation = "mth";
+                localisedName.Set(v, dutchLocale, "maand");
+                v.IsActive = true;
+            });
+
+            merge(SemesterId, v =>
+            {
+                v.Name = "semester";
+                localisedName.Set(v, dutchLocale, "half jaar");
+                v.IsActive = true;
+            });
+
+            merge(TrimesterId, v =>
+            {
+                v.Name = "trimester";
+                localisedName.Set(v, dutchLocale, "kwartaal");
+                v.IsActive = true;
+            });
+
+            merge(YearId, v =>
+            {
+                v.Name = "year";
+                v.Abbreviation = "yr";
+                localisedName.Set(v, dutchLocale, "jaar");
+                v.IsActive = true;
+            });
         }
-
-        private TimeFrequency NewTimeFrequency(string name, string localName, Locale locale, Guid uniqueId, bool isActive)
-            => new TimeFrequencyBuilder(this.Session)
-                .WithName(name)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText(localName).WithLocale(locale).Build())
-                .WithUniqueId(uniqueId)
-                .WithIsActive(isActive)
-                .Build();
-
-        private TimeFrequency NewTimeFrequency(string name, string localName, Locale locale, string abbrev, Guid uniqueId, bool isActive)
-            => new TimeFrequencyBuilder(this.Session)
-                .WithName(name)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText(localName).WithLocale(locale).Build())
-                .WithAbbreviation(abbrev)
-                .WithUniqueId(uniqueId)
-                .WithIsActive(isActive)
-                .Build();
-
-        private UnitOfMeasureConversion NewFrequencyConversion(TimeFrequency toFrequency, decimal conversionFactor)
-            => new UnitOfMeasureConversionBuilder(this.Session)
-            .WithToUnitOfMeasure(toFrequency)
-            .WithConversionFactor(conversionFactor)
-            .Build();
     }
 }

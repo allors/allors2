@@ -18,7 +18,7 @@ namespace Allors.Domain
 
         public DeductionType Insurance => this.Cache[InsuranceId];
 
-        private UniquelyIdentifiableSticky<DeductionType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<DeductionType>(this.Session));
+        private UniquelyIdentifiableSticky<DeductionType> Cache => this.cache ??= new UniquelyIdentifiableSticky<DeductionType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

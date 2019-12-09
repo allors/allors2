@@ -21,7 +21,7 @@ namespace Allors.Domain
 
         public OrganisationUnit Subsidiary => this.Cache[SubsidiaryId];
 
-        private UniquelyIdentifiableSticky<OrganisationUnit> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<OrganisationUnit>(this.Session));
+        private UniquelyIdentifiableSticky<OrganisationUnit> Cache => this.cache ??= new UniquelyIdentifiableSticky<OrganisationUnit>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

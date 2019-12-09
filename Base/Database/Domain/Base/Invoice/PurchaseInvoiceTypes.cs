@@ -18,7 +18,7 @@ namespace Allors.Domain
 
         public PurchaseInvoiceType PurchaseReturn => this.Cache[PurchaseReturnId];
 
-        private UniquelyIdentifiableSticky<PurchaseInvoiceType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PurchaseInvoiceType>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseInvoiceType> Cache => this.cache ??= new UniquelyIdentifiableSticky<PurchaseInvoiceType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

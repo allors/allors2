@@ -18,7 +18,7 @@ namespace Allors.Domain
 
         public PersonalTitle Miss => this.Cache[MissId];
         
-        private UniquelyIdentifiableSticky<PersonalTitle> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PersonalTitle>(this.Session));
+        private UniquelyIdentifiableSticky<PersonalTitle> Cache => this.cache ??= new UniquelyIdentifiableSticky<PersonalTitle>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

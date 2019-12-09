@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public OrganisationContactKind SupplierContact => this.Cache[SupplierContactId];
 
-        private UniquelyIdentifiableSticky<OrganisationContactKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<OrganisationContactKind>(this.Session));
+        private UniquelyIdentifiableSticky<OrganisationContactKind> Cache => this.cache ??= new UniquelyIdentifiableSticky<OrganisationContactKind>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public DebitCreditConstant Credit => this.Cache[CreditId];
 
-        private UniquelyIdentifiableSticky<DebitCreditConstant> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<DebitCreditConstant>(this.Session));
+        private UniquelyIdentifiableSticky<DebitCreditConstant> Cache => this.cache ??= new UniquelyIdentifiableSticky<DebitCreditConstant>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new DebitCreditConstantBuilder(this.Session)
-                .WithName("Debit")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Debet").WithLocale(dutchLocale).Build())
-                .WithUniqueId(DebitId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new DebitCreditConstantBuilder(this.Session)
-                .WithName("Credit")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Credit").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CreditId)
-                .WithIsActive(true)
-                .Build();
+            merge(DebitId, v =>
+            {
+                v.Name = "Debit";
+                localisedName.Set(v, dutchLocale, "Debet");
+                v.IsActive = true;
+            });
+
+            merge(CreditId, v =>
+            {
+                v.Name = "Credit";
+                localisedName.Set(v, dutchLocale, "Credit");
+                v.IsActive = true;
+            });
         }
     }
 }

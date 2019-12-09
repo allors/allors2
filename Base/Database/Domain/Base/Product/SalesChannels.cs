@@ -39,7 +39,7 @@ namespace Allors.Domain
 
         public SalesChannel EbayChannel => this.Cache[EbayChannelId];
 
-        private UniquelyIdentifiableSticky<SalesChannel> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<SalesChannel>(this.Session));
+        private UniquelyIdentifiableSticky<SalesChannel> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesChannel>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

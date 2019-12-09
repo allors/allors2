@@ -54,7 +54,7 @@ namespace Allors.Domain
 
         public InvoiceItemType WorkDone => this.Cache[WorkDoneId];
 
-        private UniquelyIdentifiableSticky<InvoiceItemType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InvoiceItemType>(this.Session));
+        private UniquelyIdentifiableSticky<InvoiceItemType> Cache => this.cache ??= new UniquelyIdentifiableSticky<InvoiceItemType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

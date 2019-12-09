@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public OrderTermType NonReturnableSalesItem => this.Cache[NonReturnableSalesItemId];
 
-        private UniquelyIdentifiableSticky<OrderTermType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<OrderTermType>(this.Session));
+        private UniquelyIdentifiableSticky<OrderTermType> Cache => this.cache ??= new UniquelyIdentifiableSticky<OrderTermType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

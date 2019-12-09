@@ -77,7 +77,7 @@ namespace Allors.Domain
 
         public ContactMechanismPurpose Operations => this.Cache[OperationsId];
 
-        private UniquelyIdentifiableSticky<ContactMechanismPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ContactMechanismPurpose>(this.Session));
+        private UniquelyIdentifiableSticky<ContactMechanismPurpose> Cache => this.cache ??= new UniquelyIdentifiableSticky<ContactMechanismPurpose>(this.Session);
 
         protected override void BasePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
 

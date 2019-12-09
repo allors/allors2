@@ -30,7 +30,7 @@ namespace Allors.Domain
 
         public InvoiceTermType Other => this.Cache[OtherId];
 
-        private UniquelyIdentifiableSticky<InvoiceTermType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InvoiceTermType>(this.Session));
+        private UniquelyIdentifiableSticky<InvoiceTermType> Cache => this.cache ??= new UniquelyIdentifiableSticky<InvoiceTermType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

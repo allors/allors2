@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public CostCenterSplitMethod Bottom => this.Cache[BottomId];
 
-        private UniquelyIdentifiableSticky<CostCenterSplitMethod> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<CostCenterSplitMethod>(this.Session));
+        private UniquelyIdentifiableSticky<CostCenterSplitMethod> Cache => this.cache ??= new UniquelyIdentifiableSticky<CostCenterSplitMethod>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new DebitCreditConstantBuilder(this.Session)
-                .WithName("Use top level´s cost center GL-account")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gebruik grootboekrekening van kostenplaats van hoogste niveau").WithLocale(dutchLocale).Build())
-                .WithUniqueId(Topid)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new DebitCreditConstantBuilder(this.Session)
-                .WithName("Use bottom level´s cost center GL-account")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gebruik grootboekrekening van kostenplaats van laagste niveau").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BottomId)
-                .WithIsActive(true)
-                .Build();
+            merge(Topid, v =>
+            {
+                v.Name = "Use top levelÂ´s cost center GL-account";
+                localisedName.Set(v, dutchLocale, "Gebruik grootboekrekening van kostenplaats van hoogste niveau");
+                v.IsActive = true;
+            });
+
+            merge(BottomId, v =>
+            {
+                v.Name = "Use bottom levelÂ´s cost center GL-account";
+                localisedName.Set(v, dutchLocale, "Gebruik grootboekrekening van kostenplaats van laagste niveau");
+                v.IsActive = true;
+            });
         }
     }
 }

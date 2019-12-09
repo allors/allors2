@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public PositionStatus PositionClosed => this.Cache[PositionClosedId];
 
-        private UniquelyIdentifiableSticky<PositionStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PositionStatus>(this.Session));
+        private UniquelyIdentifiableSticky<PositionStatus> Cache => this.cache ??= new UniquelyIdentifiableSticky<PositionStatus>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

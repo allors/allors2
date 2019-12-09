@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public ProductFeatureApplicabilityKind Selectable => this.Cache[SelectableId];
 
-        private UniquelyIdentifiableSticky<ProductFeatureApplicabilityKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ProductFeatureApplicabilityKind>(this.Session));
+        private UniquelyIdentifiableSticky<ProductFeatureApplicabilityKind> Cache => this.cache ??= new UniquelyIdentifiableSticky<ProductFeatureApplicabilityKind>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

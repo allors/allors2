@@ -24,7 +24,7 @@ namespace Allors.Domain
 
         public MaritalStatus Widowed => this.Cache[WidowedId];
 
-        private UniquelyIdentifiableSticky<MaritalStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<MaritalStatus>(this.Session));
+        private UniquelyIdentifiableSticky<MaritalStatus> Cache => this.cache ??= new UniquelyIdentifiableSticky<MaritalStatus>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

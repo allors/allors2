@@ -27,7 +27,7 @@ namespace Allors.Domain
 
         public Carrier Customer => this.Cache[CustomerId];
 
-        private UniquelyIdentifiableSticky<Carrier> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Carrier>(this.Session));
+        private UniquelyIdentifiableSticky<Carrier> Cache => this.cache ??= new UniquelyIdentifiableSticky<Carrier>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

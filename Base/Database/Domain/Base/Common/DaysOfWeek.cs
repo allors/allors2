@@ -1,4 +1,4 @@
-﻿// <copyright file="DaysOfWeek.cs" company="Allors bvba">
+// <copyright file="DaysOfWeek.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -33,7 +33,7 @@ namespace Allors.Domain
 
         public DayOfWeek Saturday => this.Cache[SaturdayId];
 
-        private UniquelyIdentifiableSticky<DayOfWeek> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<DayOfWeek>(this.Session));
+        private UniquelyIdentifiableSticky<DayOfWeek> Cache => this.cache ??= new UniquelyIdentifiableSticky<DayOfWeek>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

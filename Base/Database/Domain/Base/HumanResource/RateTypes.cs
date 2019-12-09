@@ -35,7 +35,7 @@ namespace Allors.Domain
         // public RateType HighestPayRate => this.Cache[HighestPayRateId];
 
         // public RateType LowestPayRate => this.Cache[LowestPayRateId];
-        private UniquelyIdentifiableSticky<RateType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<RateType>(this.Session));
+        private UniquelyIdentifiableSticky<RateType> Cache => this.cache ??= new UniquelyIdentifiableSticky<RateType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

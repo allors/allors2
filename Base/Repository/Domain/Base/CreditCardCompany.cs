@@ -5,18 +5,20 @@
 
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
     [Id("86d934de-a5cf-46d3-aad3-2626c43ebc85")]
     #endregion
-    public partial class CreditCardCompany : Object
+    public partial class CreditCardCompany : UniquelyIdentifiable
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
+        public Guid UniqueId { get; set; }
         #endregion
 
         #region Allors
@@ -46,6 +48,5 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         #endregion
-
     }
 }

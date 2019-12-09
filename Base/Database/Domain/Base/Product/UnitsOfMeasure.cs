@@ -133,7 +133,7 @@ namespace Allors.Domain
 
         public UnitOfMeasure Volt => this.Cache[VoltId];
 
-        private UniquelyIdentifiableSticky<UnitOfMeasure> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<UnitOfMeasure>(this.Session));
+        private UniquelyIdentifiableSticky<UnitOfMeasure> Cache => this.cache ??= new UniquelyIdentifiableSticky<UnitOfMeasure>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

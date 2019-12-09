@@ -18,7 +18,7 @@ namespace Allors.Domain
 
         public CatScope Public => this.Cache[PublicId];
 
-        private UniquelyIdentifiableSticky<CatScope> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<CatScope>(this.Session));
+        private UniquelyIdentifiableSticky<CatScope> Cache => this.cache ??= new UniquelyIdentifiableSticky<CatScope>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

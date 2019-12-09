@@ -30,7 +30,7 @@ namespace Allors.Domain
 
         public PartSpecificationType Tolerance => this.Cache[ToleranceId];
 
-        private UniquelyIdentifiableSticky<PartSpecificationType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PartSpecificationType>(this.Session));
+        private UniquelyIdentifiableSticky<PartSpecificationType> Cache => this.cache ??= new UniquelyIdentifiableSticky<PartSpecificationType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
