@@ -43,6 +43,7 @@ namespace Allors.Domain
             var merge = this.Cache.Merger().Action();
 
             merge(CreatedId, v => v.Name = "Created");
+            merge(AwaitingApprovalId, v => v.Name = "Awaiting Approval");
             merge(ReceivedId, v => v.Name = "Received");
             merge(PartiallyPaidId, v => v.Name = "Partially Paid");
             merge(NotPaidId, v => v.Name = "Not Paid");

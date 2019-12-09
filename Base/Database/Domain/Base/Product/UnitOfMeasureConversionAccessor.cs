@@ -18,7 +18,7 @@ namespace Allors.Domain
             var unitOfMeasureConversions = @object.Strategy.GetCompositeRoles(this.relationType);
             foreach (UnitOfMeasureConversion unitOfMeasureConversion in unitOfMeasureConversions)
             {
-                if (unitOfMeasureConversion?.ToUnitOfMeasure.Equals(toUnitOfMeasure) == true)
+                if (unitOfMeasureConversion?.ToUnitOfMeasure?.Equals(toUnitOfMeasure) == true)
                 {
                     return unitOfMeasureConversion.ConversionFactor;
                 }
@@ -32,7 +32,7 @@ namespace Allors.Domain
             var unitOfMeasureConversions = @object.Strategy.GetCompositeRoles(this.relationType);
             foreach (UnitOfMeasureConversion existingUnitOfMeasureConversion in unitOfMeasureConversions)
             {
-                if (existingUnitOfMeasureConversion?.ToUnitOfMeasure.Equals(toUnitOfMeasure) == true)
+                if (existingUnitOfMeasureConversion?.ToUnitOfMeasure?.Equals(toUnitOfMeasure) == true)
                 {
                     existingUnitOfMeasureConversion.ConversionFactor = conversionFactor;
                     return;

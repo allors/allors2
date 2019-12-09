@@ -18,7 +18,7 @@ namespace Allors.Domain
             var localisedTexts = @object.Strategy.GetCompositeRoles(this.relationType);
             foreach (LocalisedText localisedText in localisedTexts)
             {
-                if (localisedText?.Locale.Equals(locale) == true)
+                if (localisedText?.Locale?.Equals(locale) == true)
                 {
                     return localisedText.Text;
                 }
@@ -32,7 +32,7 @@ namespace Allors.Domain
             var localisedTexts = @object.Strategy.GetCompositeRoles(this.relationType);
             foreach (LocalisedText existingLocalisedText in localisedTexts)
             {
-                if (existingLocalisedText?.Locale.Equals(locale) == true)
+                if (existingLocalisedText?.Locale?.Equals(locale) == true)
                 {
                     existingLocalisedText.Text = text;
                     return;

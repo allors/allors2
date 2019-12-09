@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class TimeFrequencies
     {
@@ -47,6 +48,12 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableSticky<TimeFrequency> Cache => this.cache ??= new UniquelyIdentifiableSticky<TimeFrequency>(this.Session);
 
+        protected override void BasePrepare(Setup setup)
+        {
+            setup.AddDependency(this.ObjectType, M.Locale);
+            setup.AddDependency(this.ObjectType, M.UnitOfMeasure);
+        }
+
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
@@ -61,13 +68,6 @@ namespace Allors.Domain
                 v.Abbreviation = "ms";
                 localisedName.Set(v, dutchLocale, "milliseconde");
                 v.IsActive = true;
-
-                unitOfMeasureConversion.Set(v, this.Millisecond, 1m);
-                unitOfMeasureConversion.Set(v, this.Second, 1m / 1000m);
-                unitOfMeasureConversion.Set(v, this.Minute, 1m / 60000m);
-                unitOfMeasureConversion.Set(v, this.Hour, 1m / 3600000m);
-                unitOfMeasureConversion.Set(v, this.Day, 1m / 86400000m);
-                unitOfMeasureConversion.Set(v, this.Week, 1m / 604800000m);
             });
 
             merge(SecondId, v =>
@@ -76,13 +76,6 @@ namespace Allors.Domain
                 v.Abbreviation = "sec";
                 localisedName.Set(v, dutchLocale, "seconde");
                 v.IsActive = true;
-
-                unitOfMeasureConversion.Set(v, this.Millisecond, 1000m);
-                unitOfMeasureConversion.Set(v, this.Second, 1m);
-                unitOfMeasureConversion.Set(v, this.Minute, 1m / 60m);
-                unitOfMeasureConversion.Set(v, this.Hour, 1m / 3600m);
-                unitOfMeasureConversion.Set(v, this.Day, 1m / 86400m);
-                unitOfMeasureConversion.Set(v, this.Week, 1m / 604800m);
             });
 
             merge(MinuteId, v =>
@@ -91,13 +84,6 @@ namespace Allors.Domain
                 v.Abbreviation = "min";
                 localisedName.Set(v, dutchLocale, "minuut");
                 v.IsActive = true;
-
-                unitOfMeasureConversion.Set(v, this.Millisecond, 60000m);
-                unitOfMeasureConversion.Set(v, this.Second, 60m);
-                unitOfMeasureConversion.Set(v, this.Minute, 1m);
-                unitOfMeasureConversion.Set(v, this.Hour, 1m / 60m);
-                unitOfMeasureConversion.Set(v, this.Day, 1m / 1440m);
-                unitOfMeasureConversion.Set(v, this.Week, 1m / 10080m);
             });
 
             merge(HourId, v =>
@@ -106,13 +92,6 @@ namespace Allors.Domain
                 v.Abbreviation = "hr";
                 localisedName.Set(v, dutchLocale, "uur");
                 v.IsActive = true;
-
-                unitOfMeasureConversion.Set(v, this.Millisecond, 3600000m);
-                unitOfMeasureConversion.Set(v, this.Second, 3600m);
-                unitOfMeasureConversion.Set(v, this.Minute, 60m);
-                unitOfMeasureConversion.Set(v, this.Hour, 1m);
-                unitOfMeasureConversion.Set(v, this.Day, 1m / 24m);
-                unitOfMeasureConversion.Set(v, this.Week, 1m / 168m);
             });
 
             merge(DayId, v =>
@@ -121,13 +100,6 @@ namespace Allors.Domain
                 v.Abbreviation = "dy";
                 localisedName.Set(v, dutchLocale, "dag");
                 v.IsActive = true;
-
-                unitOfMeasureConversion.Set(v, this.Millisecond, 86400000m);
-                unitOfMeasureConversion.Set(v, this.Second, 86400m);
-                unitOfMeasureConversion.Set(v, this.Minute, 1440m);
-                unitOfMeasureConversion.Set(v, this.Hour, 24m);
-                unitOfMeasureConversion.Set(v, this.Day, 1m);
-                unitOfMeasureConversion.Set(v, this.Week, 1m / 7m);
             });
 
             merge(WeekId, v =>
@@ -136,13 +108,6 @@ namespace Allors.Domain
                 v.Abbreviation = "wk";
                 localisedName.Set(v, dutchLocale, "week");
                 v.IsActive = true;
-
-                unitOfMeasureConversion.Set(v, this.Millisecond, 604800000m);
-                unitOfMeasureConversion.Set(v, this.Second, 604800m);
-                unitOfMeasureConversion.Set(v, this.Minute, 10080m);
-                unitOfMeasureConversion.Set(v, this.Hour, 168m);
-                unitOfMeasureConversion.Set(v, this.Day, 7m);
-                unitOfMeasureConversion.Set(v, this.Week, 1m);
             });
 
             merge(FortnightId, v =>
@@ -181,6 +146,49 @@ namespace Allors.Domain
                 localisedName.Set(v, dutchLocale, "jaar");
                 v.IsActive = true;
             });
+
+            // Conversions
+            unitOfMeasureConversion.Set(this.Millisecond, this.Millisecond, 1m);
+            unitOfMeasureConversion.Set(this.Millisecond, this.Second, 1m / 1000m);
+            unitOfMeasureConversion.Set(this.Millisecond, this.Minute, 1m / 60000m);
+            unitOfMeasureConversion.Set(this.Millisecond, this.Hour, 1m / 3600000m);
+            unitOfMeasureConversion.Set(this.Millisecond, this.Day, 1m / 86400000m);
+            unitOfMeasureConversion.Set(this.Millisecond, this.Week, 1m / 604800000m);
+
+            unitOfMeasureConversion.Set(this.Second, this.Millisecond, 1000m);
+            unitOfMeasureConversion.Set(this.Second, this.Second, 1m);
+            unitOfMeasureConversion.Set(this.Second, this.Minute, 1m / 60m);
+            unitOfMeasureConversion.Set(this.Second, this.Hour, 1m / 3600m);
+            unitOfMeasureConversion.Set(this.Second, this.Day, 1m / 86400m);
+            unitOfMeasureConversion.Set(this.Second, this.Week, 1m / 604800m);
+
+            unitOfMeasureConversion.Set(this.Minute, this.Millisecond, 60000m);
+            unitOfMeasureConversion.Set(this.Minute, this.Second, 60m);
+            unitOfMeasureConversion.Set(this.Minute, this.Minute, 1m);
+            unitOfMeasureConversion.Set(this.Minute, this.Hour, 1m / 60m);
+            unitOfMeasureConversion.Set(this.Minute, this.Day, 1m / 1440m);
+            unitOfMeasureConversion.Set(this.Minute, this.Week, 1m / 10080m);
+
+            unitOfMeasureConversion.Set(this.Hour, this.Millisecond, 3600000m);
+            unitOfMeasureConversion.Set(this.Hour, this.Second, 3600m);
+            unitOfMeasureConversion.Set(this.Hour, this.Minute, 60m);
+            unitOfMeasureConversion.Set(this.Hour, this.Hour, 1m);
+            unitOfMeasureConversion.Set(this.Hour, this.Day, 1m / 24m);
+            unitOfMeasureConversion.Set(this.Hour, this.Week, 1m / 168m);
+
+            unitOfMeasureConversion.Set(this.Day, this.Millisecond, 86400000m);
+            unitOfMeasureConversion.Set(this.Day, this.Second, 86400m);
+            unitOfMeasureConversion.Set(this.Day, this.Minute, 1440m);
+            unitOfMeasureConversion.Set(this.Day, this.Hour, 24m);
+            unitOfMeasureConversion.Set(this.Day, this.Day, 1m);
+            unitOfMeasureConversion.Set(this.Day, this.Week, 1m / 7m);
+
+            unitOfMeasureConversion.Set(this.Week, this.Millisecond, 604800000m);
+            unitOfMeasureConversion.Set(this.Week, this.Second, 604800m);
+            unitOfMeasureConversion.Set(this.Week, this.Minute, 10080m);
+            unitOfMeasureConversion.Set(this.Week, this.Hour, 168m);
+            unitOfMeasureConversion.Set(this.Week, this.Day, 7m);
+            unitOfMeasureConversion.Set(this.Week, this.Week, 1m);
         }
     }
 }
