@@ -27,26 +27,29 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new ContactMechanismTypeBuilder(this.Session)
-                .WithName("Phone")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Telefoon").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PhoneId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new ContactMechanismTypeBuilder(this.Session)
-                .WithName("Mobile Phone")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mobiel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MobilePhoneId)
-                .WithIsActive(true)
-                .Build();
+            merge(PhoneId, v =>
+            {
+                v.Name = "Phone";
+                localisedName.Set(v, dutchLocale, "Telefoon");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismTypeBuilder(this.Session)
-                .WithName("Fax")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fax").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FaxId)
-                .WithIsActive(true)
-                .Build();
+            merge(MobilePhoneId, v =>
+            {
+                v.Name = "Mobile Phone";
+                localisedName.Set(v, dutchLocale, "Mobiel");
+                v.IsActive = true;
+            });
+
+            merge(MobilePhoneId, v =>
+            {
+                v.Name = "FaxId";
+                localisedName.Set(v, dutchLocale, "Fax");
+                v.IsActive = true;
+            });
         }
     }
 }

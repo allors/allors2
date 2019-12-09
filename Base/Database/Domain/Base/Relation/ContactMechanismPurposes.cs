@@ -85,152 +85,155 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Registerd Office")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Statutaire zetel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(RegisteredOfficeId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Head Quarters")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoofdkwartier").WithLocale(dutchLocale).Build())
-                .WithUniqueId(HeadQuartersId)
-                .WithIsActive(true)
-                .Build();
+            merge(RegisteredOfficeId, v =>
+            {
+                v.Name = "Registerd Office";
+                localisedName.Set(v, dutchLocale, "Statutaire zetel");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Sales Office")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoops bureau").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SalesOfficeId)
-                .WithIsActive(true)
-                .Build();
+            merge(HeadQuartersId, v =>
+            {
+                v.Name = "Head Quarters";
+                localisedName.Set(v, dutchLocale, "Hoofdkwartier");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Home Address")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Thuis adres").WithLocale(dutchLocale).Build())
-                .WithUniqueId(HomeAddressId)
-                .WithIsActive(true)
-                .Build();
+            merge(SalesOfficeId, v =>
+            {
+                v.Name = "Sales Office";
+                localisedName.Set(v, dutchLocale, "Verkoops bureau");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("General correspondence address")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Algemeen correspondentie adres").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GeneralCorrespondenceId)
-                .WithIsActive(true)
-                .Build();
+            merge(HomeAddressId, v =>
+            {
+                v.Name = "Home Address";
+                localisedName.Set(v, dutchLocale, "Thuis adres");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("General Phone Number")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Algemeen telefoonnummer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GeneralPhoneNumberId)
-                .WithIsActive(true)
-                .Build();
+            merge(GeneralCorrespondenceId, v =>
+            {
+                v.Name = "General correspondence address";
+                localisedName.Set(v, dutchLocale, "Algemeen correspondentie adres");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("General Fax Number")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Algemeen fax nummer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GeneralFaxNumberId)
-                .WithIsActive(true)
-                .Build();
+            merge(GeneralPhoneNumberId, v =>
+            {
+                v.Name = "General Phone Number";
+                localisedName.Set(v, dutchLocale, "Algemeen telefoonnummer");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("General Email Address")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Algemeen email adres").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GeneralEmailId)
-                .WithIsActive(true)
-                .Build();
+            merge(GeneralFaxNumberId, v =>
+            {
+                v.Name = "General Fax Number";
+                localisedName.Set(v, dutchLocale, "Algemeen fax nummer");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Billing Address")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Factuuradres").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BillingAddressId)
-                .WithIsActive(true)
-                .Build();
+            merge(GeneralEmailId, v =>
+            {
+                v.Name = "General Email Address";
+                localisedName.Set(v, dutchLocale, "Algemeen email adres");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Internet Address")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Internet adres").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InternetAddressId)
-                .WithIsActive(true)
-                .Build();
+            merge(BillingAddressId, v =>
+            {
+                v.Name = "Factuuradres";
+                localisedName.Set(v, dutchLocale, "Billing Address");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Order Address")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ander adres").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OrderAddressId)
-                .WithIsActive(true)
-                .Build();
+            merge(InternetAddressId, v =>
+            {
+                v.Name = "Internet Address";
+                localisedName.Set(v, dutchLocale, "Internet adres");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Shipping Address")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verzendadres").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ShippingAddressId)
-                .WithIsActive(true)
-                .Build();
+            merge(OrderAddressId, v =>
+            {
+                v.Name = "Order Address";
+                localisedName.Set(v, dutchLocale, "Order adres");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Billing Inquiries Phone")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Facturatie vragen telefoon").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BillingInquiriesPhoneId)
-                .WithIsActive(true)
-                .Build();
+            merge(ShippingAddressId, v =>
+            {
+                v.Name = "Shipping Address";
+                localisedName.Set(v, dutchLocale, "Verzendadres");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Order Inquiries Phone")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Order vragen telefoon").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OrderInquiriesPhoneId)
-                .WithIsActive(true)
-                .Build();
+            merge(BillingInquiriesPhoneId, v =>
+            {
+                v.Name = "Billing Inquiries Phone";
+                localisedName.Set(v, dutchLocale, "Facturatie vragen telefoon");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Shipping Inquiries Phone")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Transport vragen telefoon").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ShippingInquiriesPhoneId)
-                .WithIsActive(true)
-                .Build();
+            merge(OrderInquiriesPhoneId, v =>
+            {
+                v.Name = "Order Inquiries Phone";
+                localisedName.Set(v, dutchLocale, "Order vragen telefoon");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Billing Inquiries Fax")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Facturatie vragen fax").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BillingInquiriesFaxId)
-                .WithIsActive(true)
-                .Build();
+            merge(ShippingInquiriesPhoneId, v =>
+            {
+                v.Name = "Shipping Inquiries Phone";
+                localisedName.Set(v, dutchLocale, "Transport vragen telefoon");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Order Inquiries Fax")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Order vragen fax").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OrderInquiriesFaxId)
-                .WithIsActive(true)
-                .Build();
+            merge(BillingInquiriesFaxId, v =>
+            {
+                v.Name = "Billing Inquiries Fax";
+                localisedName.Set(v, dutchLocale, "Facturatie vragen fax");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Shipping Inquiries Fax")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Transport vragen fax").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ShippingInquiriesFaxId)
-                .WithIsActive(true)
-                .Build();
+            merge(OrderInquiriesFaxId, v =>
+            {
+                v.Name = "Order Inquiries Fax";
+                localisedName.Set(v, dutchLocale, "Order vragen fax");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Personal Email Address")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Persoonlijk email adres").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PersonalEmailAddressId)
-                .WithIsActive(true)
-                .Build();
+            merge(ShippingInquiriesFaxId, v =>
+            {
+                v.Name = "Shipping Inquiries Fax";
+                localisedName.Set(v, dutchLocale, "Transport vragen fax");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Cellphone")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mobiel nummer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MobilePhoneNumberId)
-                .WithIsActive(true)
-                .Build();
+            merge(PersonalEmailAddressId, v =>
+            {
+                v.Name = "Personal Email Address";
+                localisedName.Set(v, dutchLocale, "Persoonlijk email adres");
+                v.IsActive = true;
+            });
 
-            new ContactMechanismPurposeBuilder(this.Session)
-                .WithName("Operations")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Operations").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OperationsId)
-                .WithIsActive(true)
-                .Build();
+            merge(MobilePhoneNumberId, v =>
+            {
+                v.Name = "Cellphone";
+                localisedName.Set(v, dutchLocale, "Mobiel nummer");
+                v.IsActive = true;
+            });
+
+            merge(OperationsId, v =>
+            {
+                v.Name = "Operations";
+                localisedName.Set(v, dutchLocale, "Operations");
+                v.IsActive = true;
+            });
         }
     }
 }

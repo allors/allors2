@@ -28,25 +28,12 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            new CommunicationEventStateBuilder(this.Session)
-                .WithName("Scheduled")
-                .WithUniqueId(ScheduledId)
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new CommunicationEventStateBuilder(this.Session)
-                .WithName("In Progress")
-                .WithUniqueId(InProgressId)
-                .Build();
-
-            new CommunicationEventStateBuilder(this.Session)
-                .WithName("Completed")
-                .WithUniqueId(CompletedId)
-                .Build();
-
-            new CommunicationEventStateBuilder(this.Session)
-                .WithName("Cancelled")
-                .WithUniqueId(CancelledId)
-                .Build();
+            merge(ScheduledId, v => v.Name = "Scheduled");
+            merge(InProgressId, v => v.Name = "In Progress");
+            merge(CompletedId, v => v.Name = "Completed");
+            merge(CancelledId, v => v.Name = "Cancelled");
         }
     }
 }

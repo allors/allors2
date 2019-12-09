@@ -27,26 +27,29 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new GenderTypeBuilder(this.Session)
-                .WithName("Male")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mannelijk").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MaleId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new GenderTypeBuilder(this.Session)
-                .WithName("Female")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vrouwelijk").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FemaleId)
-                .WithIsActive(true)
-                .Build();
+            merge(MaleId, v =>
+            {
+                v.Name = "Male";
+                localisedName.Set(v, dutchLocale, "Mannelijk");
+                v.IsActive = true;
+            });
 
-            new GenderTypeBuilder(this.Session)
-                .WithName("Other")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Anders").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FemaleId)
-                .WithIsActive(true)
-                .Build();
+            merge(FemaleId, v =>
+            {
+                v.Name = "Female";
+                localisedName.Set(v, dutchLocale, "Vrouwelijk");
+                v.IsActive = true;
+            });
+
+            merge(OtherId, v =>
+            {
+                v.Name = "Other";
+                localisedName.Set(v, dutchLocale, "Anders");
+                v.IsActive = true;
+            });
         }
     }
 }

@@ -15,46 +15,29 @@ namespace Allors.Domain
         private static readonly Guid CompletedId = new Guid("8203E84A-3299-448a-982E-4A79534CAB85");
         private static readonly Guid OpenedId = new Guid("4FF18EE3-C827-47a8-A5DE-EFA29CE9BB68");
 
-        private UniquelyIdentifiableSticky<CaseState> stateCache;
+        private UniquelyIdentifiableSticky<CaseState> cache;
 
-        public CaseState Opened => this.StateCache[OpenedId];
+        public CaseState Opened => this.Cache[OpenedId];
 
-        public CaseState Closed => this.StateCache[ClosedId];
+        public CaseState Closed => this.Cache[ClosedId];
 
-        public CaseState Read => this.StateCache[ReadId];
+        public CaseState Read => this.Cache[ReadId];
 
-        public CaseState InProgress => this.StateCache[InProgressId];
+        public CaseState InProgress => this.Cache[InProgressId];
 
-        public CaseState Completed => this.StateCache[CompletedId];
+        public CaseState Completed => this.Cache[CompletedId];
 
-        private UniquelyIdentifiableSticky<CaseState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<CaseState>(this.Session);
+        private UniquelyIdentifiableSticky<CaseState> Cache => this.cache ??= new UniquelyIdentifiableSticky<CaseState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new CaseStateBuilder(this.Session)
-                .WithUniqueId(ClosedId)
-                .WithName("Closed")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new CaseStateBuilder(this.Session)
-                .WithUniqueId(CompletedId)
-                .WithName("Completed")
-                .Build();
-
-            new CaseStateBuilder(this.Session)
-                .WithUniqueId(InProgressId)
-                .WithName("In Progress")
-                .Build();
-
-            new CaseStateBuilder(this.Session)
-                .WithUniqueId(OpenedId)
-                .WithName("Open")
-                .Build();
-
-            new CaseStateBuilder(this.Session)
-                .WithUniqueId(ReadId)
-                .WithName("Read")
-                .Build();
+            merge(ClosedId, v => v.Name = "Closed");
+            merge(CompletedId, v => v.Name = "Completed");
+            merge(InProgressId, v => v.Name = "In Progress");
+            merge(OpenedId, v => v.Name = "Open");
+            merge(ReadId, v => v.Name = "Read");
         }
     }
 }
