@@ -13,32 +13,23 @@ namespace Allors.Domain
         internal static readonly Guid PaidId = new Guid("0C84C6F6-3204-4f7f-9BFA-FA4CBA643177");
         internal static readonly Guid PartiallyPaidId = new Guid("F9E8E105-F84E-4550-A725-25CE6E96614E");
 
-        private UniquelyIdentifiableSticky<SalesOrderPaymentState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderPaymentState> cache;
 
-        public SalesOrderPaymentState NotPaid => this.StateCache[NotPaidId];
+        public SalesOrderPaymentState NotPaid => this.Cache[NotPaidId];
 
-        public SalesOrderPaymentState PartiallyPaid => this.StateCache[PartiallyPaidId];
+        public SalesOrderPaymentState PartiallyPaid => this.Cache[PartiallyPaidId];
 
-        public SalesOrderPaymentState Paid => this.StateCache[PaidId];
+        public SalesOrderPaymentState Paid => this.Cache[PaidId];
 
-        private UniquelyIdentifiableSticky<SalesOrderPaymentState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SalesOrderPaymentState>(this.Session);
+        private UniquelyIdentifiableSticky<SalesOrderPaymentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesOrderPaymentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new SalesOrderPaymentStateBuilder(this.Session)
-                .WithUniqueId(NotPaidId)
-                .WithName("Not Paid")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SalesOrderPaymentStateBuilder(this.Session)
-                .WithUniqueId(PartiallyPaidId)
-                .WithName("Partially Paid")
-                .Build();
-
-            new SalesOrderPaymentStateBuilder(this.Session)
-                .WithUniqueId(PaidId)
-                .WithName("Paid")
-                .Build();
+            merge(NotPaidId, v => v.Name = "Not Paid");
+            merge(PartiallyPaidId, v => v.Name = "Partially Paid");
+            merge(PaidId, v => v.Name = "Paid");
         }
     }
 }

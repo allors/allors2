@@ -13,32 +13,23 @@ namespace Allors.Domain
         public static readonly Guid PaidId = new Guid("4BCF3FA8-5B30-482b-A762-2BF43721E045");
         public static readonly Guid PartiallyPaidId = new Guid("CB502944-27D9-4aad-9DAC-5D1F5A344D08");
 
-        private UniquelyIdentifiableSticky<PurchaseOrderPaymentState> stateCache;
+        private UniquelyIdentifiableSticky<PurchaseOrderPaymentState> cache;
 
-        public PurchaseOrderPaymentState NotPaid => this.StateCache[NotPaidId];
+        public PurchaseOrderPaymentState NotPaid => this.Cache[NotPaidId];
 
-        public PurchaseOrderPaymentState Paid => this.StateCache[PaidId];
+        public PurchaseOrderPaymentState Paid => this.Cache[PaidId];
 
-        public PurchaseOrderPaymentState PartiallyPaid => this.StateCache[PartiallyPaidId];
+        public PurchaseOrderPaymentState PartiallyPaid => this.Cache[PartiallyPaidId];
 
-        private UniquelyIdentifiableSticky<PurchaseOrderPaymentState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<PurchaseOrderPaymentState>(this.Session);
+        private UniquelyIdentifiableSticky<PurchaseOrderPaymentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PurchaseOrderPaymentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new PurchaseOrderPaymentStateBuilder(this.Session)
-                .WithUniqueId(NotPaidId)
-                .WithName("Not Paid")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new PurchaseOrderPaymentStateBuilder(this.Session)
-                .WithUniqueId(PaidId)
-                .WithName("Paid")
-                .Build();
-
-            new PurchaseOrderPaymentStateBuilder(this.Session)
-                .WithUniqueId(PartiallyPaidId)
-                .WithName("Partially Paid")
-                .Build();
+            merge(NotPaidId, v => v.Name = "Not Paid");
+            merge(PaidId, v => v.Name = "Paid");
+            merge(PartiallyPaidId, v => v.Name = "Partially Paid");
         }
     }
 }

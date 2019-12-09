@@ -34,49 +34,52 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            var belgianLocale = new Locales(this.Session).DutchNetherlands;
+            var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new InvoiceTermTypeBuilder(this.Session)
-                .WithName("Payment-net days")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betaaltermijn").WithLocale(belgianLocale).Build())
-                .WithUniqueId(PaymentNetDaysId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new InvoiceTermTypeBuilder(this.Session)
-                .WithName("Penalty for late fee")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boete late betaling").WithLocale(belgianLocale).Build())
-                .WithUniqueId(LateFeeId)
-                .WithIsActive(true)
-                .Build();
+            merge(PaymentNetDaysId, v =>
+            {
+                v.Name = "Payment-net days";
+                localisedName.Set(v, dutchLocale, "Betaaltermijn");
+                v.IsActive = true;
+            });
 
-            new InvoiceTermTypeBuilder(this.Session)
-                .WithName("Penalty for collection agency")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boete incassobureau").WithLocale(belgianLocale).Build())
-                .WithUniqueId(CollectionAgencyPenaltyId)
-                .WithIsActive(true)
-                .Build();
+            merge(LateFeeId, v =>
+            {
+                v.Name = "Penalty for late fee";
+                localisedName.Set(v, dutchLocale, "Boete late betaling");
+                v.IsActive = true;
+            });
 
-            new InvoiceTermTypeBuilder(this.Session)
-                .WithName("Payment condition: 100% before transport")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betalings voorwaarde: 100% voorafgaand aan verzending").WithLocale(belgianLocale).Build())
-                .WithUniqueId(PayFullBeforeTransportId)
-                .WithIsActive(true)
-                .Build();
+            merge(CollectionAgencyPenaltyId, v =>
+            {
+                v.Name = "Penalty for collection agency";
+                localisedName.Set(v, dutchLocale, "Boete incassobureau");
+                v.IsActive = true;
+            });
 
-            new InvoiceTermTypeBuilder(this.Session)
-                .WithName("Payment condition: 50% on order and 50% before transport")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betalings voorwaarde: 50% bij order en 50% voorafgaand aan verzending").WithLocale(belgianLocale).Build())
-                .WithUniqueId(PayHalfBeforeTransportId)
-                .WithIsActive(true)
-                .Build();
+            merge(PayFullBeforeTransportId, v =>
+            {
+                v.Name = "Payment condition: 100% before transport";
+                localisedName.Set(v, dutchLocale, "Betalings voorwaarde: 100% voorafgaand aan verzending");
+                v.IsActive = true;
+            });
 
-            new InvoiceTermTypeBuilder(this.Session)
-                .WithName("Other")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overige").WithLocale(belgianLocale).Build())
-                .WithUniqueId(PayHalfBeforeTransportId)
-                .WithIsActive(true)
-                .Build();
+            merge(PayHalfBeforeTransportId, v =>
+            {
+                v.Name = "Payment condition: 50% on order and 50% before transport";
+                localisedName.Set(v, dutchLocale, "Betalings voorwaarde: 50% bij order en 50% voorafgaand aan verzending");
+                v.IsActive = true;
+            });
+
+            merge(OtherId, v =>
+            {
+                v.Name = "Other";
+                localisedName.Set(v, dutchLocale, "Overige");
+                v.IsActive = true;
+            });
         }
     }
 }

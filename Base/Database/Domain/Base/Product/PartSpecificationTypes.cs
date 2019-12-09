@@ -36,47 +36,50 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PartSpecificationTypeBuilder(this.Session)
-                .WithName("Constraint Specification")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Constraint Specification").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ConstraintSpecificationId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new PartSpecificationTypeBuilder(this.Session)
-                .WithName("Operating Condition")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Operating Condition").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OperatingConditionId)
-                .WithIsActive(true)
-                .Build();
+            merge(ConstraintSpecificationId, v =>
+            {
+                v.Name = "Constraint Specification";
+                localisedName.Set(v, dutchLocale, "Constraint Specification");
+                v.IsActive = true;
+            });
 
-            new PartSpecificationTypeBuilder(this.Session)
-                .WithName("Part Specification")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Part Specification").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PartSpecificationId)
-                .WithIsActive(true)
-                .Build();
+            merge(OperatingConditionId, v =>
+            {
+                v.Name = "Operating Condition";
+                localisedName.Set(v, dutchLocale, "Operating Condition");
+                v.IsActive = true;
+            });
 
-            new PartSpecificationTypeBuilder(this.Session)
-                .WithName("Performance Specification")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Performance Specification").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PerformanceSpecificationId)
-                .WithIsActive(true)
-                .Build();
+            merge(PartSpecificationId, v =>
+            {
+                v.Name = "Part Specification";
+                localisedName.Set(v, dutchLocale, "Part Specification");
+                v.IsActive = true;
+            });
 
-            new PartSpecificationTypeBuilder(this.Session)
-                .WithName("Testing Requirement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Testing Requirement").WithLocale(dutchLocale).Build())
-                .WithUniqueId(TestingRequirementId)
-                .WithIsActive(true)
-                .Build();
+            merge(PerformanceSpecificationId, v =>
+            {
+                v.Name = "Performance Specification";
+                localisedName.Set(v, dutchLocale, "Performance Specification");
+                v.IsActive = true;
+            });
 
-            new PartSpecificationTypeBuilder(this.Session)
-                .WithName("Tolerance")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tolerance").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ToleranceId)
-                .WithIsActive(true)
-                .Build();
+            merge(TestingRequirementId, v =>
+            {
+                v.Name = "Testing Requirement";
+                localisedName.Set(v, dutchLocale, "Testing Requirement");
+                v.IsActive = true;
+            });
+
+            merge(ToleranceId, v =>
+            {
+                v.Name = "Tolerance";
+                localisedName.Set(v, dutchLocale, "Tolerance");
+                v.IsActive = true;
+            });
         }
     }
 }

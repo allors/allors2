@@ -13,32 +13,23 @@ namespace Allors.Domain
         internal static readonly Guid InvoicedId = new Guid("F7F0142F-65EF-4D7A-8485-B5A44623BFAC");
         internal static readonly Guid PartiallyInvoicedId = new Guid("718DCE12-201C-4ECA-A385-767E6AAA89E4");
 
-        private UniquelyIdentifiableSticky<SalesOrderItemInvoiceState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderItemInvoiceState> cache;
 
-        public SalesOrderItemInvoiceState NotInvoiced => this.StateCache[NotInvoicedId];
+        public SalesOrderItemInvoiceState NotInvoiced => this.Cache[NotInvoicedId];
 
-        public SalesOrderItemInvoiceState Invoiced => this.StateCache[InvoicedId];
+        public SalesOrderItemInvoiceState Invoiced => this.Cache[InvoicedId];
 
-        public SalesOrderItemInvoiceState PartiallyInvoiced => this.StateCache[PartiallyInvoicedId];
+        public SalesOrderItemInvoiceState PartiallyInvoiced => this.Cache[PartiallyInvoicedId];
 
-        private UniquelyIdentifiableSticky<SalesOrderItemInvoiceState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SalesOrderItemInvoiceState>(this.Session);
+        private UniquelyIdentifiableSticky<SalesOrderItemInvoiceState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesOrderItemInvoiceState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new SalesOrderItemInvoiceStateBuilder(this.Session)
-                .WithUniqueId(NotInvoicedId)
-                .WithName("Not Invoiced")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SalesOrderItemInvoiceStateBuilder(this.Session)
-                .WithUniqueId(PartiallyInvoicedId)
-                .WithName("Partially Invoiced")
-                .Build();
-
-            new SalesOrderItemInvoiceStateBuilder(this.Session)
-                .WithUniqueId(InvoicedId)
-                .WithName("Invoiced")
-                .Build();
+            merge(NotInvoicedId, v => v.Name = "Not Invoiced");
+            merge(PartiallyInvoicedId, v => v.Name = "Partially Invoiced");
+            merge(InvoicedId, v => v.Name = "Invoiced");
         }
     }
 }

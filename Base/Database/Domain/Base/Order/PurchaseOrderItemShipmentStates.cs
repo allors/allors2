@@ -13,32 +13,23 @@ namespace Allors.Domain
         internal static readonly Guid PartiallyReceivedId = new Guid("C142144A-8CAE-4D2B-A56B-94BAF236227A");
         internal static readonly Guid ReceivedId = new Guid("AD66619F-BB48-42AF-B019-3E4028AD7B6B");
 
-        private UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState> stateCache;
+        private UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState> cache;
 
-        public PurchaseOrderItemShipmentState NotReceived => this.StateCache[NotReceivedId];
+        public PurchaseOrderItemShipmentState NotReceived => this.Cache[NotReceivedId];
 
-        public PurchaseOrderItemShipmentState PartiallyReceived => this.StateCache[PartiallyReceivedId];
+        public PurchaseOrderItemShipmentState PartiallyReceived => this.Cache[PartiallyReceivedId];
 
-        public PurchaseOrderItemShipmentState Received => this.StateCache[ReceivedId];
+        public PurchaseOrderItemShipmentState Received => this.Cache[ReceivedId];
 
-        private UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState>(this.Session);
+        private UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PurchaseOrderItemShipmentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new PurchaseOrderItemShipmentStateBuilder(this.Session)
-                .WithUniqueId(NotReceivedId)
-                .WithName("Not Received")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new PurchaseOrderItemShipmentStateBuilder(this.Session)
-                .WithUniqueId(PartiallyReceivedId)
-                .WithName("Partially Received")
-                .Build();
-
-            new PurchaseOrderItemShipmentStateBuilder(this.Session)
-                .WithUniqueId(ReceivedId)
-                .WithName("Received")
-                .Build();
+            merge(NotReceivedId, v => v.Name = "Not Received");
+            merge(PartiallyReceivedId, v => v.Name = "Partially Received");
+            merge(ReceivedId, v => v.Name = "Received");
         }
     }
 }

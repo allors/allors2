@@ -42,61 +42,64 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new ProductIdentificationTypeBuilder(this.Session)
-                .WithName("SKU")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("SKU").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SkuId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new ProductIdentificationTypeBuilder(this.Session)
-                .WithName("ISBN")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ISBN").WithLocale(dutchLocale).Build())
-                .WithUniqueId(IsbnId)
-                .WithIsActive(true)
-                .Build();
+            merge(SkuId, v =>
+            {
+                v.Name = "SKU";
+                localisedName.Set(v, dutchLocale, "SKU");
+                v.IsActive = true;
+            });
 
-            new ProductIdentificationTypeBuilder(this.Session)
-                .WithName("UPCA")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("UPCA").WithLocale(dutchLocale).Build())
-                .WithUniqueId(UpcaId)
-                .WithIsActive(true)
-                .Build();
+            merge(IsbnId, v =>
+            {
+                v.Name = "ISBN";
+                localisedName.Set(v, dutchLocale, "ISBN");
+                v.IsActive = true;
+            });
 
-            new ProductIdentificationTypeBuilder(this.Session)
-                .WithName("UPCE")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("UPCE").WithLocale(dutchLocale).Build())
-                .WithUniqueId(UpceId)
-                .WithIsActive(true)
-                .Build();
+            merge(UpcaId, v =>
+            {
+                v.Name = "UPCA";
+                localisedName.Set(v, dutchLocale, "UPCA");
+                v.IsActive = true;
+            });
 
-            new ProductIdentificationTypeBuilder(this.Session)
-                .WithName("EAN")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("EAN").WithLocale(dutchLocale).Build())
-                .WithUniqueId(EanId)
-                .WithIsActive(true)
-                .Build();
+            merge(UpceId, v =>
+            {
+                v.Name = "UPCE";
+                localisedName.Set(v, dutchLocale, "UPCE");
+                v.IsActive = true;
+            });
 
-            new ProductIdentificationTypeBuilder(this.Session)
-                .WithName("Manufacturer Id")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fabrikant Id").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ManufacturerId)
-                .WithIsActive(true)
-                .Build();
+            merge(EanId, v =>
+            {
+                v.Name = "EAN";
+                localisedName.Set(v, dutchLocale, "EAN");
+                v.IsActive = true;
+            });
 
-            new ProductIdentificationTypeBuilder(this.Session)
-                .WithName("Product Id")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product Id").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GoodId)
-                .WithIsActive(true)
-                .Build();
+            merge(ManufacturerId, v =>
+            {
+                v.Name = "Manufacturer Id";
+                localisedName.Set(v, dutchLocale, "Fabrikant Id");
+                v.IsActive = true;
+            });
 
-            new ProductIdentificationTypeBuilder(this.Session)
-                .WithName("Part Id")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Part Id").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PartId)
-                .WithIsActive(true)
-                .Build();
+            merge(GoodId, v =>
+            {
+                v.Name = "Product Id";
+                localisedName.Set(v, dutchLocale, "Product Id");
+                v.IsActive = true;
+            });
+
+            merge(PartId, v =>
+            {
+                v.Name = "Part Id";
+                localisedName.Set(v, dutchLocale, "Part Id");
+                v.IsActive = true;
+            });
         }
     }
 }

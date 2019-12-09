@@ -49,84 +49,87 @@ namespace Allors.Domain
 
         protected override void BaseSetup(Setup setup)
         {
-            var belgianLocale = new Locales(this.Session).DutchNetherlands;
+            var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm EXW (Ex Works)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm EXW (Af fabriek)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(ExwId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm FCA (Free Carrier)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FCA (Vrachtvrij tot vervoerder)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(FcaId)
-                .WithIsActive(true)
-                .Build();
+            merge(ExwId, v =>
+            {
+                v.Name = "Incoterm EXW (Ex Works)";
+                localisedName.Set(v, dutchLocale, "Incoterm EXW (Af fabriek)");
+                v.IsActive = true;
+            });
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm CPT (Carriage Paid To)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CPT (Vrachtvrij tot)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(CptId)
-                .WithIsActive(true)
-                .Build();
+            merge(FcaId, v =>
+            {
+                v.Name = "Incoterm FCA (Free Carrier)";
+                localisedName.Set(v, dutchLocale, "Incoterm FCA (Vrachtvrij tot vervoerder)");
+                v.IsActive = true;
+            });
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm CIP (Carriage and Insurance Paid To)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CIP (Vrachtvrij inclusief verzekering tot)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(CipId)
-                .WithIsActive(true)
-                .Build();
+            merge(CptId, v =>
+            {
+                v.Name = "Incoterm CPT (Carriage Paid To)";
+                localisedName.Set(v, dutchLocale, "Incoterm CPT (Vrachtvrij tot)");
+                v.IsActive = true;
+            });
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm DAT (Delivered At Terminal)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DAT (Franco terminal)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(DatId)
-                .WithIsActive(true)
-                .Build();
+            merge(CipId, v =>
+            {
+                v.Name = "Incoterm CIP (Carriage and Insurance Paid To))";
+                localisedName.Set(v, dutchLocale, "Incoterm CIP (Vrachtvrij inclusief verzekering tot)");
+                v.IsActive = true;
+            });
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm DAP (Delivered At Place)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DAP (Franco ter plaatse)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(DapId)
-                .WithIsActive(true)
-                .Build();
+            merge(DatId, v =>
+            {
+                v.Name = "Incoterm DAT (Delivered At Terminal)";
+                localisedName.Set(v, dutchLocale, "Incoterm DAT (Franco terminal)");
+                v.IsActive = true;
+            });
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm DDP (Delivered Duty Paid)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DDP (Franco inclusief rechten)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(DdpId)
-                .WithIsActive(true)
-                .Build();
+            merge(DapId, v =>
+            {
+                v.Name = "Incoterm DAP (Delivered At Place)";
+                localisedName.Set(v, dutchLocale, "Incoterm DAP (Franco ter plaatse)");
+                v.IsActive = true;
+            });
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm FAS (Free Alongside Ship)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FAS (Vrij langszij schip)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(CifId)
-                .WithIsActive(true)
-                .Build();
+            merge(DdpId, v =>
+            {
+                v.Name = "Incoterm DDP (Delivered Duty Paid)";
+                localisedName.Set(v, dutchLocale, "Incoterm DDP (Franco inclusief rechten)");
+                v.IsActive = true;
+            });
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm FOB (Free On Board)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FOB (Vrij aan boord)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(CifId)
-                .WithIsActive(true)
-                .Build();
+            merge(FasId, v =>
+            {
+                v.Name = "Incoterm FAS (Free Alongside Ship)";
+                localisedName.Set(v, dutchLocale, "Incoterm FAS (Vrij langszij schip)");
+                v.IsActive = true;
+            });
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm CFR (Cost and Freight)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CFR (Kostprijs en vracht)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(CifId)
-                .WithIsActive(true)
-                .Build();
+            merge(FobId, v =>
+            {
+                v.Name = "Incoterm FOB (Free On Board)";
+                localisedName.Set(v, dutchLocale, "Incoterm FOB (Vrij aan boord)");
+                v.IsActive = true;
+            });
 
-            new IncoTermTypeBuilder(this.Session)
-                .WithName("Incoterm CIF (Cost, Insurance and Freight)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CIF (Kostprijs, verzekering en vracht)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(CifId)
-                .WithIsActive(true)
-                .Build();
+            merge(CfrId, v =>
+            {
+                v.Name = "Incoterm CFR (Cost and Freight)";
+                localisedName.Set(v, dutchLocale, "Incoterm CFR (Kostprijs en vracht)");
+                v.IsActive = true;
+            });
+
+            merge(CifId, v =>
+            {
+                v.Name = "Incoterm CIF (Cost, Insurance and Freight)";
+                localisedName.Set(v, dutchLocale, "Incoterm CIF (Kostprijs, verzekering en vracht)");
+                v.IsActive = true;
+            });
         }
     }
 }

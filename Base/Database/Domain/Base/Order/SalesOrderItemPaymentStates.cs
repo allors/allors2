@@ -13,32 +13,23 @@ namespace Allors.Domain
         internal static readonly Guid PaidId = new Guid("086840CD-F7A6-4c04-A565-1D0AE07FED00");
         internal static readonly Guid PartiallyPaidId = new Guid("110F12F8-8AC6-40fb-8208-7697A36E88D7");
 
-        private UniquelyIdentifiableSticky<SalesOrderItemPaymentState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderItemPaymentState> cache;
 
-        public SalesOrderItemPaymentState NotPaid => this.StateCache[NotPaidId];
+        public SalesOrderItemPaymentState NotPaid => this.Cache[NotPaidId];
 
-        public SalesOrderItemPaymentState Paid => this.StateCache[PaidId];
+        public SalesOrderItemPaymentState Paid => this.Cache[PaidId];
 
-        public SalesOrderItemPaymentState PartiallyPaid => this.StateCache[PartiallyPaidId];
+        public SalesOrderItemPaymentState PartiallyPaid => this.Cache[PartiallyPaidId];
 
-        private UniquelyIdentifiableSticky<SalesOrderItemPaymentState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SalesOrderItemPaymentState>(this.Session);
+        private UniquelyIdentifiableSticky<SalesOrderItemPaymentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesOrderItemPaymentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new SalesOrderItemPaymentStateBuilder(this.Session)
-                .WithUniqueId(NotPaidId)
-                .WithName("Not Paid")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SalesOrderItemPaymentStateBuilder(this.Session)
-                .WithUniqueId(PartiallyPaidId)
-                .WithName("Partially Paid")
-                .Build();
-
-            new SalesOrderItemPaymentStateBuilder(this.Session)
-                .WithUniqueId(PaidId)
-                .WithName("Paid")
-                .Build();
+            merge(NotPaidId, v => v.Name = "Not Paid");
+            merge(PartiallyPaidId, v => v.Name = "Partially Paid");
+            merge(PaidId, v => v.Name = "Paid");
         }
     }
 }

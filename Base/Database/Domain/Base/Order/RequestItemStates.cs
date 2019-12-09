@@ -14,39 +14,26 @@ namespace Allors.Domain
         private static readonly Guid CancelledId = new Guid("E98A3001-C343-4925-9D95-CE370DFC98E7");
         private static readonly Guid QuotedId = new Guid("D12FF2E4-8CB2-4CA0-8864-A90819D0EE19");
 
-        private UniquelyIdentifiableSticky<RequestItemState> stateCache;
+        private UniquelyIdentifiableSticky<RequestItemState> cache;
 
-        public RequestItemState Draft => this.StateCache[DraftId];
+        public RequestItemState Draft => this.Cache[DraftId];
 
-        public RequestItemState Submitted => this.StateCache[SubmittedId];
+        public RequestItemState Submitted => this.Cache[SubmittedId];
 
-        public RequestItemState Cancelled => this.StateCache[CancelledId];
+        public RequestItemState Cancelled => this.Cache[CancelledId];
 
-        public RequestItemState Quoted => this.StateCache[QuotedId];
+        public RequestItemState Quoted => this.Cache[QuotedId];
 
-        private UniquelyIdentifiableSticky<RequestItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<RequestItemState>(this.Session);
+        private UniquelyIdentifiableSticky<RequestItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<RequestItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new RequestItemStateBuilder(this.Session)
-                .WithUniqueId(DraftId)
-                .WithName("Anonymous")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new RequestItemStateBuilder(this.Session)
-                .WithUniqueId(SubmittedId)
-                .WithName("Submitted")
-                .Build();
-
-            new RequestItemStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new RequestItemStateBuilder(this.Session)
-                .WithUniqueId(QuotedId)
-                .WithName("quoted")
-                .Build();
+            merge(DraftId, v => v.Name = "Draft");
+            merge(SubmittedId, v => v.Name = "Submitted");
+            merge(CancelledId, v => v.Name = "Cancelled");
+            merge(QuotedId, v => v.Name = "Quoted");
         }
     }
 }

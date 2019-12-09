@@ -18,75 +18,38 @@ namespace Allors.Domain
         private static readonly Guid NotAvailableId = new Guid("E553F107-FFB1-4F80-9EA0-4C436FD1F736");
         private static readonly Guid AssignedId = new Guid("3AD2DEC0-65AB-4E31-BDE0-3227727D9329");
 
-        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> stateCache;
+        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> cache;
 
-        public SerialisedInventoryItemState Good => this.StateCache[GoodId];
+        public SerialisedInventoryItemState Good => this.Cache[GoodId];
 
-        public SerialisedInventoryItemState BeingRepaired => this.StateCache[BeingRepairedId];
+        public SerialisedInventoryItemState BeingRepaired => this.Cache[BeingRepairedId];
 
-        public SerialisedInventoryItemState SlightlyDamaged => this.StateCache[SlightlyDamagedId];
+        public SerialisedInventoryItemState SlightlyDamaged => this.Cache[SlightlyDamagedId];
 
-        public SerialisedInventoryItemState Defective => this.StateCache[DefectiveId];
+        public SerialisedInventoryItemState Defective => this.Cache[DefectiveId];
 
-        public SerialisedInventoryItemState Scrap => this.StateCache[ScrapId];
+        public SerialisedInventoryItemState Scrap => this.Cache[ScrapId];
 
-        public SerialisedInventoryItemState Available => this.StateCache[AvailableId];
+        public SerialisedInventoryItemState Available => this.Cache[AvailableId];
 
-        public SerialisedInventoryItemState NotAvailable => this.StateCache[NotAvailableId];
+        public SerialisedInventoryItemState NotAvailable => this.Cache[NotAvailableId];
 
-        public SerialisedInventoryItemState Assigned => this.StateCache[AssignedId];
+        public SerialisedInventoryItemState Assigned => this.Cache[AssignedId];
 
-        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SerialisedInventoryItemState>(this.Session);
+        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SerialisedInventoryItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(GoodId)
-                .WithName("In good order")
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(BeingRepairedId)
-                .WithName("Being Repaired")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(SlightlyDamagedId)
-                .WithName("Slightly Damaged")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(DefectiveId)
-                .WithName("Defective")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(ScrapId)
-                .WithName("Scrap")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(AvailableId)
-                .WithName("Available")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(NotAvailableId)
-                .WithName("Not Available")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(AssignedId)
-                .WithName("Assigned")
-                .WithIsActive(true)
-                .Build();
+            merge(GoodId, v => v.Name = "In good order");
+            merge(BeingRepairedId, v => v.Name = "Being Repaired");
+            merge(SlightlyDamagedId, v => v.Name = "Slightly Damaged");
+            merge(DefectiveId, v => v.Name = "Defective");
+            merge(ScrapId, v => v.Name = "Scrap");
+            merge(AvailableId, v => v.Name = "Available");
+            merge(NotAvailableId, v => v.Name = "Not Available");
+            merge(AssignedId, v => v.Name = "Assigned");
         }
     }
 }

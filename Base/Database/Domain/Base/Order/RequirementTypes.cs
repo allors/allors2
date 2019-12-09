@@ -36,47 +36,50 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new RequirementTypeBuilder(this.Session)
-                .WithName("Customer Requirement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant vereiste").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CustomerRequirementId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new RequirementTypeBuilder(this.Session)
-                .WithName("Internal Requirement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interne vereiste").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InternalRequirementId)
-                .WithIsActive(true)
-                .Build();
+            merge(CustomerRequirementId, v =>
+            {
+                v.Name = "Customer Requirement";
+                localisedName.Set(v, dutchLocale, "Klant vereiste");
+                v.IsActive = true;
+            });
 
-            new RequirementTypeBuilder(this.Session)
-                .WithName("Product Requirement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product vereiste").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProductRequirementId)
-                .WithIsActive(true)
-                .Build();
+            merge(InternalRequirementId, v =>
+            {
+                v.Name = "Internal Requirement";
+                localisedName.Set(v, dutchLocale, "Interne vereiste");
+                v.IsActive = true;
+            });
 
-            new RequirementTypeBuilder(this.Session)
-                .WithName("Project Requirement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project vereiste").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProjectRequirementId)
-                .WithIsActive(true)
-                .Build();
+            merge(ProductRequirementId, v =>
+            {
+                v.Name = "Product Requirement";
+                localisedName.Set(v, dutchLocale, "Product vereiste");
+                v.IsActive = true;
+            });
 
-            new RequirementTypeBuilder(this.Session)
-                .WithName("Resource Requirement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Resource vereiste").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ResourceRequirementId)
-                .WithIsActive(true)
-                .Build();
+            merge(ProjectRequirementId, v =>
+            {
+                v.Name = "Project Requirement";
+                localisedName.Set(v, dutchLocale, "Project vereiste");
+                v.IsActive = true;
+            });
 
-            new RequirementTypeBuilder(this.Session)
-                .WithName("Work Requirement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Werk vereiste").WithLocale(dutchLocale).Build())
-                .WithUniqueId(WorkRequirementId)
-                .WithIsActive(true)
-                .Build();
+            merge(ResourceRequirementId, v =>
+            {
+                v.Name = "Resource Requirement";
+                localisedName.Set(v, dutchLocale, "Resource vereiste");
+                v.IsActive = true;
+            });
+
+            merge(WorkRequirementId, v =>
+            {
+                v.Name = "Work Requirement";
+                localisedName.Set(v, dutchLocale, "Werk vereiste");
+                v.IsActive = true;
+            });
         }
     }
 }

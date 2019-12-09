@@ -15,7 +15,7 @@ namespace Allors.Domain
         private static readonly Guid FaxChannelId = new Guid("06B1A63D-AC2C-434d-947E-465058E6C2BB");
         private static readonly Guid PhoneChannelId = new Guid("04F7E8BE-CAB5-481a-8250-1C126B06D5E0");
         private static readonly Guid EmailChannelId = new Guid("88E3D10B-CF0E-439a-8D75-6B68909E6D8E");
-        private static readonly Guid SnailMailChannelId = new Guid("7EFBA4C0-A853-4c61-8862-B606EF5C1B63");
+        private static readonly Guid MailChannelId = new Guid("7EFBA4C0-A853-4c61-8862-B606EF5C1B63");
         private static readonly Guid AffiliateChannelId = new Guid("0FC9C19F-2005-4d7b-80B3-C7C862048CFA");
         private static readonly Guid EbayChannelId = new Guid("93FFD696-F11F-4cc1-A461-367AFCFD0579");
 
@@ -33,7 +33,7 @@ namespace Allors.Domain
 
         public SalesChannel EmailChannel => this.Cache[EmailChannelId];
 
-        public SalesChannel SnailMailChannel => this.Cache[SnailMailChannelId];
+        public SalesChannel MailChannel => this.Cache[MailChannelId];
 
         public SalesChannel AffiliateChannel => this.Cache[AffiliateChannelId];
 
@@ -45,68 +45,78 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new SalesChannelBuilder(this.Session)
-                .WithName("No Channel")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Geen verkoopkanaal").WithLocale(dutchLocale).Build())
-                .WithUniqueId(NoChannelId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new SalesChannelBuilder(this.Session)
-                .WithName("via Web")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via Web").WithLocale(dutchLocale).Build())
-                .WithUniqueId(WebChannelId)
-                .WithIsActive(true)
-                .Build();
+            merge(NoChannelId, v =>
+            {
+                v.Name = "No Channel";
+                localisedName.Set(v, dutchLocale, "Geen verkoopkanaal");
+                v.IsActive = true;
+            });
 
-            new SalesChannelBuilder(this.Session)
-                .WithName("POS Channel")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kassa Kanaal").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PosChannelId)
-                .WithIsActive(true)
-                .Build();
+            merge(WebChannelId, v =>
+            {
+                v.Name = "via Web";
+                localisedName.Set(v, dutchLocale, "via Web");
+                v.IsActive = true;
+            });
 
-            new SalesChannelBuilder(this.Session)
-                .WithName("by Fax")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via Fax").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FaxChannelId)
-                .WithIsActive(true)
-                .Build();
+            merge(PosChannelId, v =>
+            {
+                v.Name = "POS Channel";
+                localisedName.Set(v, dutchLocale, "Kassa Kanaal");
+                v.IsActive = true;
+            });
 
-            new SalesChannelBuilder(this.Session)
-                .WithName("by Phone")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Telefonisch").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PhoneChannelId)
-                .WithIsActive(true)
-                .Build();
+            merge(PosChannelId, v =>
+            {
+                v.Name = "POS Channel";
+                localisedName.Set(v, dutchLocale, "Kassa Kanaal");
+                v.IsActive = true;
+            });
 
-            new SalesChannelBuilder(this.Session)
-                .WithName("via E-Mail")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via E-Mail").WithLocale(dutchLocale).Build())
-                .WithUniqueId(EmailChannelId)
-                .WithIsActive(true)
-                .Build();
+            merge(FaxChannelId, v =>
+            {
+                v.Name = "by Fax";
+                localisedName.Set(v, dutchLocale, "Kassa Kanaal");
+                v.IsActive = true;
+            });
 
-            new SalesChannelBuilder(this.Session)
-                .WithName("Snail mail Channel")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via Post").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SnailMailChannelId)
-                .WithIsActive(true)
-                .Build();
+            merge(PhoneChannelId, v =>
+            {
+                v.Name = "by Phone";
+                localisedName.Set(v, dutchLocale, "Telefonisch");
+                v.IsActive = true;
+            });
 
-            new SalesChannelBuilder(this.Session)
-                .WithName("Affiliate Channel")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Affiliate Kanaal").WithLocale(dutchLocale).Build())
-                .WithUniqueId(AffiliateChannelId)
-                .WithIsActive(true)
-                .Build();
+            merge(EmailChannelId, v =>
+            {
+                v.Name = "via E-Mail";
+                localisedName.Set(v, dutchLocale, "via E-Mail");
+                v.IsActive = true;
+            });
 
-            new SalesChannelBuilder(this.Session)
-                .WithName("via eBay")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via eBay").WithLocale(dutchLocale).Build())
-                .WithUniqueId(EbayChannelId)
-                .WithIsActive(true)
-                .Build();
+            merge(MailChannelId, v =>
+            {
+                v.Name = "by Mail";
+                localisedName.Set(v, dutchLocale, "via Post");
+                v.IsActive = true;
+            });
+
+            merge(AffiliateChannelId, v =>
+            {
+                v.Name = "Affiliate Channel";
+                localisedName.Set(v, dutchLocale, "Affiliate Kanaal");
+                v.IsActive = true;
+            });
+
+            merge(EbayChannelId, v =>
+            {
+                v.Name = "via eBay";
+                localisedName.Set(v, dutchLocale, "via eBay");
+                v.IsActive = true;
+            });
         }
     }
 }

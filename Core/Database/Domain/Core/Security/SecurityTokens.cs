@@ -24,12 +24,7 @@ namespace Allors.Domain
 
         private UniquelyIdentifiableSticky<SecurityToken> Cache => this.cache ??= new UniquelyIdentifiableSticky<SecurityToken>(this.Session);
 
-        protected override void CorePrepare(Setup setup)
-        {
-            base.CorePrepare(setup);
-
-            setup.AddDependency(this.ObjectType, M.AccessControl.ObjectType);
-        }
+        protected override void CorePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.AccessControl.ObjectType);
 
         protected override void CoreSetup(Setup setup)
         {

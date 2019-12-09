@@ -13,32 +13,23 @@ namespace Allors.Domain
         internal static readonly Guid PartiallyShippedId = new Guid("E0FF4A01-CF9B-4dc7-ACF6-145F38F48AD1");
         internal static readonly Guid ShippedId = new Guid("E91BAA87-DF5F-4a6c-B380-B683AD17AE18");
 
-        private UniquelyIdentifiableSticky<SalesOrderItemShipmentState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderItemShipmentState> cache;
 
-        public SalesOrderItemShipmentState NotShipped => this.StateCache[NotShippedId];
+        public SalesOrderItemShipmentState NotShipped => this.Cache[NotShippedId];
 
-        public SalesOrderItemShipmentState PartiallyShipped => this.StateCache[PartiallyShippedId];
+        public SalesOrderItemShipmentState PartiallyShipped => this.Cache[PartiallyShippedId];
 
-        public SalesOrderItemShipmentState Shipped => this.StateCache[ShippedId];
+        public SalesOrderItemShipmentState Shipped => this.Cache[ShippedId];
 
-        private UniquelyIdentifiableSticky<SalesOrderItemShipmentState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SalesOrderItemShipmentState>(this.Session);
+        private UniquelyIdentifiableSticky<SalesOrderItemShipmentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesOrderItemShipmentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new SalesOrderItemShipmentStateBuilder(this.Session)
-                .WithUniqueId(NotShippedId)
-                .WithName("Not Shipped")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SalesOrderItemShipmentStateBuilder(this.Session)
-                .WithUniqueId(PartiallyShippedId)
-                .WithName("Partially Shipped")
-                .Build();
-
-            new SalesOrderItemShipmentStateBuilder(this.Session)
-                .WithUniqueId(ShippedId)
-                .WithName("Shipped")
-                .Build();
+            merge(NotShippedId, v => v.Name = "Not Shipped");
+            merge(PartiallyShippedId, v => v.Name = "Partially Shipped");
+            merge(ShippedId, v => v.Name = "Shipped");
         }
     }
 }

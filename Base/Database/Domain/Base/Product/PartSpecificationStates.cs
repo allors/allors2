@@ -15,46 +15,30 @@ namespace Allors.Domain
         private static readonly Guid TestedId = new Guid("E87C46E1-D357-4cb8-B2DA-2BB7ADAF4970");
         private static readonly Guid ApprovedId = new Guid("B1FE3774-BD98-4230-9371-717F97DCD25B");
         private static readonly Guid RequirementSpecifiedId = new Guid("3604C076-EB3E-44c8-B855-D4F20918EC70");
-        private UniquelyIdentifiableSticky<PartSpecificationState> stateCache;
 
-        public PartSpecificationState Created => this.StateCache[CreatedId];
+        private UniquelyIdentifiableSticky<PartSpecificationState> cache;
 
-        public PartSpecificationState Designed => this.StateCache[DesignedId];
+        public PartSpecificationState Created => this.Cache[CreatedId];
 
-        public PartSpecificationState Tested => this.StateCache[TestedId];
+        public PartSpecificationState Designed => this.Cache[DesignedId];
 
-        public PartSpecificationState Approved => this.StateCache[ApprovedId];
+        public PartSpecificationState Tested => this.Cache[TestedId];
 
-        public PartSpecificationState RequirementSpecified => this.StateCache[RequirementSpecifiedId];
+        public PartSpecificationState Approved => this.Cache[ApprovedId];
 
-        private UniquelyIdentifiableSticky<PartSpecificationState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<PartSpecificationState>(this.Session);
+        public PartSpecificationState RequirementSpecified => this.Cache[RequirementSpecifiedId];
+
+        private UniquelyIdentifiableSticky<PartSpecificationState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PartSpecificationState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new PartSpecificationStateBuilder(this.Session)
-                .WithUniqueId(CreatedId)
-                .WithName("Created")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new PartSpecificationStateBuilder(this.Session)
-                .WithUniqueId(DesignedId)
-                .WithName("Designed")
-                .Build();
-
-            new PartSpecificationStateBuilder(this.Session)
-                .WithUniqueId(TestedId)
-                .WithName("Tested")
-                .Build();
-
-            new PartSpecificationStateBuilder(this.Session)
-                .WithUniqueId(ApprovedId)
-                .WithName("Approved")
-                .Build();
-
-            new PartSpecificationStateBuilder(this.Session)
-                .WithUniqueId(RequirementSpecifiedId)
-                .WithName("Requirement Specified")
-                .Build();
+            merge(CreatedId, v => v.Name = "Created");
+            merge(DesignedId, v => v.Name = "Designed");
+            merge(TestedId, v => v.Name = "Tested");
+            merge(ApprovedId, v => v.Name = "Approved");
+            merge(RequirementSpecifiedId, v => v.Name = "Requirement Specified");
         }
     }
 }

@@ -20,91 +20,44 @@ namespace Allors.Domain
         private static readonly Guid AvailableId = new Guid("2FE8050B-C970-4A14-8156-ABEAA9FF0140");
         private static readonly Guid AssignedId = new Guid("20338765-67A6-4ED0-83C0-A9B0831E6B40");
 
-        private UniquelyIdentifiableSticky<SerialisedItemState> stateCache;
+        private UniquelyIdentifiableSticky<SerialisedItemState> cache;
 
-        public SerialisedItemState NA => this.StateCache[NaId];
+        public SerialisedItemState NA => this.Cache[NaId];
 
-        public SerialisedItemState Sold => this.StateCache[SoldId];
+        public SerialisedItemState Sold => this.Cache[SoldId];
 
-        public SerialisedItemState InRent => this.StateCache[InRentId];
+        public SerialisedItemState InRent => this.Cache[InRentId];
 
-        public SerialisedItemState Good => this.StateCache[GoodId];
+        public SerialisedItemState Good => this.Cache[GoodId];
 
-        public SerialisedItemState BeingRepaired => this.StateCache[BeingRepairedId];
+        public SerialisedItemState BeingRepaired => this.Cache[BeingRepairedId];
 
-        public SerialisedItemState SlightlyDamaged => this.StateCache[SlightlyDamagedId];
+        public SerialisedItemState SlightlyDamaged => this.Cache[SlightlyDamagedId];
 
-        public SerialisedItemState Defective => this.StateCache[DefectiveId];
+        public SerialisedItemState Defective => this.Cache[DefectiveId];
 
-        public SerialisedItemState Scrap => this.StateCache[ScrapId];
+        public SerialisedItemState Scrap => this.Cache[ScrapId];
 
-        public SerialisedItemState Available => this.StateCache[AvailableId];
+        public SerialisedItemState Available => this.Cache[AvailableId];
 
-        public SerialisedItemState Assigned => this.StateCache[AssignedId];
+        public SerialisedItemState Assigned => this.Cache[AssignedId];
 
-        private UniquelyIdentifiableSticky<SerialisedItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SerialisedItemState>(this.Session);
+        private UniquelyIdentifiableSticky<SerialisedItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SerialisedItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(NaId)
-                .WithName("N/A")
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(SoldId)
-                .WithName("Sold")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(InRentId)
-                .WithName("InRent")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(GoodId)
-                .WithName("In good order")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(BeingRepairedId)
-                .WithName("Being Repaired")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(SlightlyDamagedId)
-                .WithName("Slightly Damaged")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(DefectiveId)
-                .WithName("Defective")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(ScrapId)
-                .WithName("Scrap")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(AvailableId)
-                .WithName("Available")
-                .WithIsActive(true)
-                .Build();
-
-            new SerialisedItemStateBuilder(this.Session)
-                .WithUniqueId(AssignedId)
-                .WithName("Assigned")
-                .WithIsActive(true)
-                .Build();
+            merge(NaId, v => v.Name = "N/A");
+            merge(SoldId, v => v.Name = "Sold");
+            merge(InRentId, v => v.Name = "InRent");
+            merge(GoodId, v => v.Name = "In good order");
+            merge(BeingRepairedId, v => v.Name = "Being Repaired");
+            merge(SlightlyDamagedId, v => v.Name = "Slightly Damaged");
+            merge(DefectiveId, v => v.Name = "Defective");
+            merge(ScrapId, v => v.Name = "Scrap");
+            merge(AvailableId, v => v.Name = "Available");
+            merge(AssignedId, v => v.Name = "Assigned");
         }
     }
 }

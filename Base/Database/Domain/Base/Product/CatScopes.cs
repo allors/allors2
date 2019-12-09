@@ -24,19 +24,22 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new CatScopeBuilder(this.Session)
-                .WithName("Private")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Prive").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PrivateId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new CatScopeBuilder(this.Session)
-                .WithName("Public")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Publiek").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PublicId)
-                .WithIsActive(true)
-                .Build();
+            merge(PrivateId, v =>
+            {
+                v.Name = "Private";
+                localisedName.Set(v, dutchLocale, "Prive");
+                v.IsActive = true;
+            });
+
+            merge(PublicId, v =>
+            {
+                v.Name = "Public";
+                localisedName.Set(v, dutchLocale, "Publiek");
+                v.IsActive = true;
+            });
         }
     }
 }

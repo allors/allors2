@@ -30,8 +30,6 @@ namespace Allors.Domain
 
         protected override void CorePrepare(Setup setup)
         {
-            base.CorePrepare(setup);
-
             setup.AddDependency(this.ObjectType, M.Role.ObjectType);
             setup.AddDependency(this.ObjectType, M.UserGroup.ObjectType);
         }

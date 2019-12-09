@@ -18,67 +18,38 @@ namespace Allors.Domain
         internal static readonly Guid InProcessId = new Guid("ddbb678e-9a66-4842-87fd-4e628cff0a75");
         internal static readonly Guid FinishedId = new Guid("DFE75006-81FD-424a-AF58-2528A657155D");
 
-        private UniquelyIdentifiableSticky<SalesOrderState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderState> cache;
 
-        public SalesOrderState Provisional => this.StateCache[ProvisionalId];
+        public SalesOrderState Provisional => this.Cache[ProvisionalId];
 
-        public SalesOrderState RequestsApproval => this.StateCache[RequestsApprovalId];
+        public SalesOrderState RequestsApproval => this.Cache[RequestsApprovalId];
 
-        public SalesOrderState Cancelled => this.StateCache[CancelledId];
+        public SalesOrderState Cancelled => this.Cache[CancelledId];
 
-        public SalesOrderState Completed => this.StateCache[CompletedId];
+        public SalesOrderState Completed => this.Cache[CompletedId];
 
-        public SalesOrderState Rejected => this.StateCache[RejectedId];
+        public SalesOrderState Rejected => this.Cache[RejectedId];
 
-        public SalesOrderState Finished => this.StateCache[FinishedId];
+        public SalesOrderState Finished => this.Cache[FinishedId];
 
-        public SalesOrderState OnHold => this.StateCache[OnHoldId];
+        public SalesOrderState OnHold => this.Cache[OnHoldId];
 
-        public SalesOrderState InProcess => this.StateCache[InProcessId];
+        public SalesOrderState InProcess => this.Cache[InProcessId];
 
-        private UniquelyIdentifiableSticky<SalesOrderState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<SalesOrderState>(this.Session);
+        private UniquelyIdentifiableSticky<SalesOrderState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesOrderState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(ProvisionalId)
-                .WithName("Created")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(RequestsApprovalId)
-                .WithName("Requests Approval")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(CompletedId)
-                .WithName("Completed")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(RejectedId)
-                .WithName("Rejected")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(OnHoldId)
-                .WithName("On Hold")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(InProcessId)
-                .WithName("In Process")
-                .Build();
-
-            new SalesOrderStateBuilder(this.Session)
-                .WithUniqueId(FinishedId)
-                .WithName("Finished")
-                .Build();
+            merge(ProvisionalId, v => v.Name = "Created");
+            merge(RequestsApprovalId, v => v.Name = "Requests Approval");
+            merge(CancelledId, v => v.Name = "Cancelled");
+            merge(CompletedId, v => v.Name = "Completed");
+            merge(RejectedId, v => v.Name = "Rejected");
+            merge(OnHoldId, v => v.Name = "On Hold");
+            merge(InProcessId, v => v.Name = "In Process");
+            merge(FinishedId, v => v.Name = "Finished");
         }
     }
 }

@@ -19,74 +19,41 @@ namespace Allors.Domain
         public static readonly Guid SentId = new Guid("9A707175-547D-4B2F-9780-1750E7878A59");
         public static readonly Guid FinishedId = new Guid("4166228F-0ECC-444b-A45E-43794184DBB9");
 
-        private UniquelyIdentifiableSticky<PurchaseOrderItemState> stateCache;
+        private UniquelyIdentifiableSticky<PurchaseOrderItemState> cache;
 
-        public PurchaseOrderItemState Created => this.StateCache[CreatedId];
+        public PurchaseOrderItemState Created => this.Cache[CreatedId];
 
-        public PurchaseOrderItemState AwaitingApproval => this.StateCache[AwaitingApprovalId];
+        public PurchaseOrderItemState AwaitingApproval => this.Cache[AwaitingApprovalId];
 
-        public PurchaseOrderItemState Cancelled => this.StateCache[CancelledId];
+        public PurchaseOrderItemState Cancelled => this.Cache[CancelledId];
 
-        public PurchaseOrderItemState Completed => this.StateCache[CompletedId];
+        public PurchaseOrderItemState Completed => this.Cache[CompletedId];
 
-        public PurchaseOrderItemState Rejected => this.StateCache[RejectedId];
+        public PurchaseOrderItemState Rejected => this.Cache[RejectedId];
 
-        public PurchaseOrderItemState Finished => this.StateCache[FinishedId];
+        public PurchaseOrderItemState Finished => this.Cache[FinishedId];
 
-        public PurchaseOrderItemState OnHold => this.StateCache[OnHoldId];
+        public PurchaseOrderItemState OnHold => this.Cache[OnHoldId];
 
-        public PurchaseOrderItemState InProcess => this.StateCache[InProcessId];
+        public PurchaseOrderItemState InProcess => this.Cache[InProcessId];
 
-        public PurchaseOrderItemState Sent => this.StateCache[SentId];
+        public PurchaseOrderItemState Sent => this.Cache[SentId];
 
-        private UniquelyIdentifiableSticky<PurchaseOrderItemState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<PurchaseOrderItemState>(this.Session);
+        private UniquelyIdentifiableSticky<PurchaseOrderItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PurchaseOrderItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(CreatedId)
-                .WithName("Created")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(AwaitingApprovalId)
-                .WithName("Awaiting Approval")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(CompletedId)
-                .WithName("Completed")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(RejectedId)
-                .WithName("Rejected")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(OnHoldId)
-                .WithName("On Hold")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(InProcessId)
-                .WithName("In Process")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(SentId)
-                .WithName("Sent")
-                .Build();
-
-            new PurchaseOrderItemStateBuilder(this.Session)
-                .WithUniqueId(FinishedId)
-                .WithName("Finished")
-                .Build();
+            merge(CreatedId, v => v.Name = "Created");
+            merge(AwaitingApprovalId, v => v.Name = "Awaiting Approval");
+            merge(CancelledId, v => v.Name = "Cancelled");
+            merge(CompletedId, v => v.Name = "Completed");
+            merge(RejectedId, v => v.Name = "Rejected");
+            merge(OnHoldId, v => v.Name = "On Hold");
+            merge(InProcessId, v => v.Name = "In Process");
+            merge(SentId, v => v.Name = "Sent");
+            merge(FinishedId, v => v.Name = "Finished");
         }
     }
 }

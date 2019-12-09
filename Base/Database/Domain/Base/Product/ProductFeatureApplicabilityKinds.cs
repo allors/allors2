@@ -30,33 +30,36 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new ProductFeatureApplicabilityKindBuilder(this.Session)
-                .WithName("Required")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verplicht").WithLocale(dutchLocale).Build())
-                .WithUniqueId(RequiredId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new ProductFeatureApplicabilityKindBuilder(this.Session)
-                .WithName("Standard")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Standaard").WithLocale(dutchLocale).Build())
-                .WithUniqueId(StandardId)
-                .WithIsActive(true)
-                .Build();
+            merge(RequiredId, v =>
+            {
+                v.Name = "Required";
+                localisedName.Set(v, dutchLocale, "Verplicht");
+                v.IsActive = true;
+            });
 
-            new ProductFeatureApplicabilityKindBuilder(this.Session)
-                .WithName("Optional")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Optioneel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OptionalId)
-                .WithIsActive(true)
-                .Build();
+            merge(RequiredId, v =>
+            {
+                v.Name = "Standard";
+                localisedName.Set(v, dutchLocale, "Standaard");
+                v.IsActive = true;
+            });
 
-            new ProductFeatureApplicabilityKindBuilder(this.Session)
-                .WithName("Selectable")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Selecteerbaar").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SelectableId)
-                .WithIsActive(true)
-                .Build();
+            merge(OptionalId, v =>
+            {
+                v.Name = "Optional";
+                localisedName.Set(v, dutchLocale, "Optioneel");
+                v.IsActive = true;
+            });
+
+            merge(OptionalId, v =>
+            {
+                v.Name = "Selectable";
+                localisedName.Set(v, dutchLocale, "Selecteerbaar");
+                v.IsActive = true;
+            });
         }
     }
 }

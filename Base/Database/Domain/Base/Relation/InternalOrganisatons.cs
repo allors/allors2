@@ -11,8 +11,6 @@ namespace Allors.Domain
     {
         protected override void BasePrepare(Setup setup)
         {
-            base.CorePrepare(setup);
-
             setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
             setup.AddDependency(this.ObjectType, M.TemplateType.ObjectType);
             setup.AddDependency(this.ObjectType, M.ShipmentMethod.ObjectType);
