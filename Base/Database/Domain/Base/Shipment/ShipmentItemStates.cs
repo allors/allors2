@@ -13,33 +13,23 @@ namespace Allors.Domain
         public static readonly Guid PickedId = new Guid("A8E2014F-C4CB-4A6F-8CCF-0875E439D1F3");
         public static readonly Guid PackedId = new Guid("91853258-C875-4F85-BD84-EF1EBD2E5930");
 
-        private UniquelyIdentifiableSticky<ShipmentItemState> stateCache;
+        private UniquelyIdentifiableSticky<ShipmentItemState> cache;
 
-        public ShipmentItemState Created => this.StateCache[CreatedId];
+        public ShipmentItemState Created => this.Cache[CreatedId];
 
-        public ShipmentItemState Picked => this.StateCache[PickedId];
+        public ShipmentItemState Picked => this.Cache[PickedId];
 
-        public ShipmentItemState Packed => this.StateCache[PackedId];
+        public ShipmentItemState Packed => this.Cache[PackedId];
 
-        private UniquelyIdentifiableSticky<ShipmentItemState> StateCache => this.stateCache
-                                    ?? (this.stateCache = new UniquelyIdentifiableSticky<ShipmentItemState>(this.Session));
+        private UniquelyIdentifiableSticky<ShipmentItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<ShipmentItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new ShipmentItemStateBuilder(this.Session)
-                .WithUniqueId(CreatedId)
-                .WithName("Created")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new ShipmentItemStateBuilder(this.Session)
-                .WithUniqueId(PickedId)
-                .WithName("Picked")
-                .Build();
-
-            new ShipmentItemStateBuilder(this.Session)
-                .WithUniqueId(PackedId)
-                .WithName("Packed")
-                .Build();
+            merge(CreatedId, v => v.Name = "Created");
+            merge(PickedId, v => v.Name = "Picked");
+            merge(PackedId, v => v.Name = "Packed");
         }
     }
 }

@@ -33,40 +33,43 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new ShipmentMethodBuilder(this.Session)
-                .WithName("Ground")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weg").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GroundId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new ShipmentMethodBuilder(this.Session)
-                .WithName("Rail")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Spoor").WithLocale(dutchLocale).Build())
-                .WithUniqueId(RailId)
-                .WithIsActive(true)
-                .Build();
+            merge(GroundId, v =>
+            {
+                v.Name = "Ground";
+                localisedName.Set(v, dutchLocale, "Weg");
+                v.IsActive = true;
+            });
 
-            new ShipmentMethodBuilder(this.Session)
-                .WithName("Air")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vliegtuig").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FirstClassAirId)
-                .WithIsActive(true)
-                .Build();
+            merge(RailId, v =>
+            {
+                v.Name = "Rail";
+                localisedName.Set(v, dutchLocale, "Spoor");
+                v.IsActive = true;
+            });
 
-            new ShipmentMethodBuilder(this.Session)
-                .WithName("Boat")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boot").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BoatId)
-                .WithIsActive(true)
-                .Build();
+            merge(FirstClassAirId, v =>
+            {
+                v.Name = "Air";
+                localisedName.Set(v, dutchLocale, "Vliegtuig");
+                v.IsActive = true;
+            });
 
-            new ShipmentMethodBuilder(this.Session)
-                .WithName("Ex works")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Af fabriek").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ExWorksId)
-                .WithIsActive(true)
-                .Build();
+            merge(BoatId, v =>
+            {
+                v.Name = "Boat";
+                localisedName.Set(v, dutchLocale, "Boot");
+                v.IsActive = true;
+            });
+
+            merge(ExWorksId, v =>
+            {
+                v.Name = "Ex works";
+                localisedName.Set(v, dutchLocale, "Af fabriek");
+                v.IsActive = true;
+            });
         }
     }
 }

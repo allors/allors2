@@ -30,33 +30,36 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new MaritalStatusBuilder(this.Session)
-                .WithName("Single")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Alleenstaand").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SingleId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new MaritalStatusBuilder(this.Session)
-                .WithName("Married")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gehuwd").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MarriedId)
-                .WithIsActive(true)
-                .Build();
+            merge(SingleId, v =>
+            {
+                v.Name = "Single";
+                localisedName.Set(v, dutchLocale, "Alleenstaand");
+                v.IsActive = true;
+            });
 
-            new MaritalStatusBuilder(this.Session)
-                .WithName("Divorced")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gescheiden").WithLocale(dutchLocale).Build())
-                .WithUniqueId(DivorcedId)
-                .WithIsActive(true)
-                .Build();
+            merge(MarriedId, v =>
+            {
+                v.Name = "Married";
+                localisedName.Set(v, dutchLocale, "Gehuwd");
+                v.IsActive = true;
+            });
 
-            new MaritalStatusBuilder(this.Session)
-                .WithName("Widowed")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weduw(e)(naar)").WithLocale(dutchLocale).Build())
-                .WithUniqueId(WidowedId)
-                .WithIsActive(true)
-                .Build();
+            merge(DivorcedId, v =>
+            {
+                v.Name = "Divorced";
+                localisedName.Set(v, dutchLocale, "Gescheiden");
+                v.IsActive = true;
+            });
+
+            merge(WidowedId, v =>
+            {
+                v.Name = "Widowed";
+                localisedName.Set(v, dutchLocale, "Weduw(e)(naar)");
+                v.IsActive = true;
+            });
         }
     }
 }

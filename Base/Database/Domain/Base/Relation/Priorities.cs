@@ -39,54 +39,57 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PriorityBuilder(this.Session)
-                .WithName("Very High")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoog").WithLocale(dutchLocale).Build())
-                .WithUniqueId(VeryHighId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new PriorityBuilder(this.Session)
-                .WithName("High")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoog").WithLocale(dutchLocale).Build())
-                .WithUniqueId(HighId)
-                .WithIsActive(true)
-                .Build();
+            merge(VeryHighId, v =>
+            {
+                v.Name = "Very High";
+                localisedName.Set(v, dutchLocale, "Zeer hoog");
+                v.IsActive = true;
+            });
 
-            new PriorityBuilder(this.Session)
-                .WithName("Medium")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gemiddeld").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MediumId)
-                .WithIsActive(true)
-                .Build();
+            merge(HighId, v =>
+            {
+                v.Name = "High";
+                localisedName.Set(v, dutchLocale, "Hoog");
+                v.IsActive = true;
+            });
 
-            new PriorityBuilder(this.Session)
-                .WithName("Low")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Laag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(LowId)
-                .WithIsActive(true)
-                .Build();
+            merge(MediumId, v =>
+            {
+                v.Name = "Medium";
+                localisedName.Set(v, dutchLocale, "Gemiddeld");
+                v.IsActive = true;
+            });
 
-            new PriorityBuilder(this.Session)
-                .WithName("First")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Eerste").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FirstId)
-                .WithIsActive(true)
-                .Build();
+            merge(LowId, v =>
+            {
+                v.Name = "Low";
+                localisedName.Set(v, dutchLocale, "Laag");
+                v.IsActive = true;
+            });
 
-            new PriorityBuilder(this.Session)
-                .WithName("Third")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tweede").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SecondId)
-                .WithIsActive(true)
-                .Build();
+            merge(FirstId, v =>
+            {
+                v.Name = "First";
+                localisedName.Set(v, dutchLocale, "Eerste");
+                v.IsActive = true;
+            });
 
-            new PriorityBuilder(this.Session)
-                .WithName("Third")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Derde").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ThirdId)
-                .WithIsActive(true)
-                .Build();
+            merge(SecondId, v =>
+            {
+                v.Name = "Second";
+                localisedName.Set(v, dutchLocale, "Tweede");
+                v.IsActive = true;
+            });
+
+            merge(ThirdId, v =>
+            {
+                v.Name = "Third";
+                localisedName.Set(v, dutchLocale, "Derde");
+                v.IsActive = true;
+            });
         }
     }
 }

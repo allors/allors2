@@ -27,26 +27,29 @@ namespace Allors.Domain
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new OrganisationRoleBuilder(this.Session)
-                .WithName("Customer")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CustomerId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new OrganisationRoleBuilder(this.Session)
-                .WithName("Supplier")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Leverancier").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SupplierId)
-                .WithIsActive(true)
-                .Build();
+            merge(CustomerId, v =>
+            {
+                v.Name = "Customer";
+                localisedName.Set(v, dutchLocale, "Klant");
+                v.IsActive = true;
+            });
 
-            new OrganisationRoleBuilder(this.Session)
-                .WithName("Manufacturer")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fabrikant").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ManufacturerId)
-                .WithIsActive(true)
-                .Build();
+            merge(SupplierId, v =>
+            {
+                v.Name = "Supplier";
+                localisedName.Set(v, dutchLocale, "Leverancier");
+                v.IsActive = true;
+            });
+
+            merge(ManufacturerId, v =>
+            {
+                v.Name = "Manufacturer";
+                localisedName.Set(v, dutchLocale, "Fabrikant");
+                v.IsActive = true;
+            });
         }
     }
 }
