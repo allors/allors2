@@ -15,6 +15,7 @@ namespace Allors.Workspace.Local
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
     using Allors.Services;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Protocol.Remote.Security;
     using Server;
@@ -22,6 +23,15 @@ namespace Allors.Workspace.Local
 
     public class LocalDatabase : IDatabase
     {
+        public LocalDatabase(IServiceProvider serviceProvider) :
+            this(serviceProvider.GetRequiredService<IDatabaseService>(),
+                serviceProvider.GetRequiredService<ITreeService>(),
+                serviceProvider.GetRequiredService<IFetchService>(),
+                serviceProvider.GetRequiredService<IExtentService>(),
+                serviceProvider.GetRequiredService<ILogger<LocalDatabase>>())
+        {
+        }
+
         public LocalDatabase(IDatabaseService databaseService, ITreeService treeService, IFetchService fetchService, IExtentService extentService, ILogger<LocalDatabase> logger)
         {
             this.DatabaseService = databaseService;
