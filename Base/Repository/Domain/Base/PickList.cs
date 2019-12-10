@@ -95,16 +95,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("0bdfcd8a-af37-41a7-be2c-db7848d4fd05")]
-        [AssociationId("88919577-6835-4c84-9e3d-a1ec50fc5c2b")]
-        [RoleId("6042abcd-a859-42bb-818d-9409f7b08d7a")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Workspace]
-        public CustomerShipment CustomerShipmentCorrection { get; set; }
-
-        #region Allors
         [Id("3bb68c85-4e2b-42b8-b5fb-18a66c58c283")]
         [AssociationId("11fddfe2-9b04-4b53-a4ff-6f571e73c32a")]
         [RoleId("a139b102-f8a9-43f1-9b14-d3c76f7be294")]

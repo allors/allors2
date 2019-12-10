@@ -115,25 +115,18 @@ namespace Allors.Domain
             // TODO: Test for changes in these relations for performance reasons
             var quantityCommittedOut = 0M;
 
-            foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
-            {
-                foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
-                {
-                    foreach (OrderShipment orderShipment in itemIssuance.ShipmentItem.OrderShipmentsWhereShipmentItem)
-                    {
-                        var orderKind = orderShipment.OrderItem?.OrderWhereValidOrderItem?.OrderKind;
-                        if (orderKind?.ScheduleManually == true)
-                        {
-                            quantityCommittedOut += pickListItem.Quantity;
-                        }
-                    }
-                }
+            //foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
+            //{
+            //    foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
+            //    {
+            //        quantityCommittedOut += itemIssuance.Quantity;
+            //    }
 
-                if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
-                {
-                    quantityCommittedOut -= pickListItem.QuantityPicked;
-                }
-            }
+            //    if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+            //    {
+            //        quantityCommittedOut -= pickListItem.QuantityPicked;
+            //    }
+            //}
 
             foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
             {

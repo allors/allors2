@@ -14,13 +14,15 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            var partiallyShipped = new SalesOrderItemShipmentStates(this.Session).PartiallyShipped;
-            var shipped = new SalesOrderItemShipmentStates(this.Session).Shipped;
             var inProcess = new SalesOrderItemStates(this.Session).InProcess;
             var cancelled = new SalesOrderItemStates(this.Session).Cancelled;
             var rejected = new SalesOrderItemStates(this.Session).Rejected;
             var completed = new SalesOrderItemStates(this.Session).Completed;
             var finished = new SalesOrderItemStates(this.Session).Finished;
+
+            var partiallyShipped = new SalesOrderItemShipmentStates(this.Session).PartiallyShipped;
+            var inProgress = new SalesOrderItemShipmentStates(this.Session).InProgress;
+            var shipped = new SalesOrderItemShipmentStates(this.Session).Shipped;
 
             var product = this.Meta.Product;
             config.Deny(this.ObjectType, shipped, product);
@@ -30,6 +32,7 @@ namespace Allors.Domain
             var reject = this.Meta.Reject;
             var delete = this.Meta.Delete;
 
+            config.Deny(this.ObjectType, inProgress, delete, cancel, reject);
             config.Deny(this.ObjectType, partiallyShipped, delete, cancel, reject);
             config.Deny(this.ObjectType, shipped, delete, cancel, reject);
             config.Deny(this.ObjectType, completed, delete, cancel, reject);

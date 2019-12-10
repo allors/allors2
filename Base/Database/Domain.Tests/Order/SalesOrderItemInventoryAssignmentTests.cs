@@ -144,27 +144,24 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderItem_WhenChangingQuantity_ThenInventoryReservationsChange()
         {
-            this.salesOrderItem.QuantityOrdered = 1;
+            this.salesOrderItem.QuantityOrdered = 6;
 
             this.Session.Derive();
 
-            Assert.True(this.salesOrderItem.SalesOrderItemState.InProcess);
-            Assert.Single(this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem);
-
             var transaction = this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.First.InventoryItemTransactions.Last();
             Assert.Equal(this.part, transaction.Part);
-            Assert.Equal(-2, transaction.Quantity);
+            Assert.Equal(3, transaction.Quantity);
             Assert.Equal(this.reasons.Reservation, transaction.Reason);
 
             var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First();
 
             Assert.Equal(11, inventoryItem.QuantityOnHand);
-            Assert.Equal(1, inventoryItem.QuantityCommittedOut);
-            Assert.Equal(10, inventoryItem.AvailableToPromise);
+            Assert.Equal(6, inventoryItem.QuantityCommittedOut);
+            Assert.Equal(5, inventoryItem.AvailableToPromise);
 
-            Assert.Equal(1, this.salesOrderItem.QuantityReserved);
+            Assert.Equal(6, this.salesOrderItem.QuantityReserved);
 
-            Assert.Equal(1, this.part.QuantityCommittedOut);
+            Assert.Equal(6, this.part.QuantityCommittedOut);
             Assert.Equal(11, this.part.QuantityOnHand);
         }
     }

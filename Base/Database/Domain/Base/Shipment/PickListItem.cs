@@ -70,5 +70,13 @@ namespace Allors.Domain
                 }
             }
         }
+
+        public void BaseDelete(PickListItemDelete method)
+        {
+            foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
+            {
+                itemIssuance.Delete();
+            }
+        }
     }
 }

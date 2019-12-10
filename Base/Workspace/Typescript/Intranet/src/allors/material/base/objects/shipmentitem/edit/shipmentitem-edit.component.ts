@@ -5,8 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SalesOrderItemShipmentState } from '../../../../../domain';
-import { PullRequest, IObject } from '../../../../../framework';
+import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SalesOrderItemShipmentState, SerialisedItemState } from '../../../../../domain';
+import { PullRequest, IObject, Equals, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
@@ -29,7 +29,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   part: Part;
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
-
+  serialisedItemStates: SerialisedItemState[];
+  
   private previousGood;
   private subscription: Subscription;
   orderShipments: OrderShipment[];
@@ -53,7 +54,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.metaService;
+    const { pull, x, m } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
@@ -101,6 +102,12 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
               }
             }),
             pull.SalesOrderState(),
+            pull.SerialisedInventoryItemState(
+              {
+                predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
+                sort: new Sort(m.SerialisedInventoryItemState.Name),
+              }
+            ),
           ];
 
           return this.allors.context
@@ -116,6 +123,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         this.orderShipments = loaded.collections.OrderShipments as OrderShipment[];
         this.goods = loaded.collections.NonUnifiedGoods as NonUnifiedGood[];
         this.shipment = loaded.objects.Shipment as Shipment;
+        this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
 
         const salesOrderStates = loaded.collections.SalesOrderStates as SalesOrderState[];
         const inProcess = salesOrderStates.find((v) => v.UniqueId === 'ddbb678e-9a66-4842-87fd-4e628cff0a75');

@@ -10,12 +10,15 @@ namespace Allors.Domain
     public partial class ShipmentItemStates
     {
         public static readonly Guid CreatedId = new Guid("E05818B1-2660-4879-B5A8-8CA96F324F7B");
+        public static readonly Guid PickingId = new Guid("F9043ADD-E106-4646-8B02-6B10EFBB2E87");
         public static readonly Guid PickedId = new Guid("A8E2014F-C4CB-4A6F-8CCF-0875E439D1F3");
         public static readonly Guid PackedId = new Guid("91853258-C875-4F85-BD84-EF1EBD2E5930");
 
         private UniquelyIdentifiableSticky<ShipmentItemState> cache;
 
         public ShipmentItemState Created => this.Cache[CreatedId];
+
+        public ShipmentItemState Picking => this.Cache[PickingId];
 
         public ShipmentItemState Picked => this.Cache[PickedId];
 
@@ -28,6 +31,7 @@ namespace Allors.Domain
             var merge = this.Cache.Merger().Action();
 
             merge(CreatedId, v => v.Name = "Created");
+            merge(PickingId, v => v.Name = "Picking");
             merge(PickedId, v => v.Name = "Picked");
             merge(PackedId, v => v.Name = "Packed");
         }

@@ -99,6 +99,9 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
 
@@ -188,6 +191,9 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
 
@@ -238,6 +244,9 @@ namespace Allors.Domain
             this.Session.Derive();
 
             shipment = (CustomerShipment)item2.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+
+            shipment.Pick();
+            this.Session.Derive();
 
             pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
@@ -293,6 +302,9 @@ namespace Allors.Domain
             this.Session.Derive();
 
             shipment = (CustomerShipment)item3.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+
+            shipment.Pick();
+            this.Session.Derive();
 
             pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
@@ -384,6 +396,9 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList1 = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.Equal(3, pickList1.PickListItems[0].Quantity);
 
@@ -413,175 +428,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            shipment.Pick();
+            this.Session.Derive();
+
             Assert.Equal(5, shipment.ShipmentItems.First.Quantity);
 
             var pickList2 = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[1].PickListItem.PickListWherePickListItem;
             Assert.Equal(2, pickList2.PickListItems[0].Quantity);
-        }
-
-        [Fact]
-        public void GivenSalesOrderWithPendingShipmentAndAssignedPickList_WhenOrderIsCancelled_ThenNegativePickListIsCreatedAndSingleOrderShipmentIsCancelled()
-        {
-            var assessable = new VatRegimes(this.Session).Assessable;
-            var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
-            assessable.VatRate = vatRate0;
-
-            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
-
-            this.Session.Derive();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
-
-            this.Session.Derive();
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithVatRegime(assessable)
-                .WithShipToAddress(mechelenAddress)
-                .Build();
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good1)
-                .WithQuantityOrdered(10)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            order.Confirm();
-
-            this.Session.Derive();
-
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
-            Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(10, pickList.PickListItems[0].Quantity);
-
-            pickList.Picker = this.OrderProcessor;
-
-            this.Session.Derive();
-
-            order.Cancel();
-
-            this.Session.Derive();
-
-            var negativePickList = order.ShipToCustomer.PickListsWhereShipToParty[1];
-            Assert.Equal(-10, negativePickList.PickListItems[0].Quantity);
-
-            Assert.Equal(new ShipmentStates(this.Session).Cancelled, shipment.ShipmentState);
-        }
-
-        [Fact]
-        public void GivenSalesOrderWithPickList_WhenOrderIsCancelled_ThenPickListIsCancelledAndSingleOrderShipmentIsCancelled()
-        {
-            var store = this.Session.Extent<Store>().First;
-            store.IsImmediatelyPicked = false;
-
-            var assessable = new VatRegimes(this.Session).Assessable;
-            var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
-            assessable.VatRate = vatRate0;
-
-            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
-
-            this.Session.Derive();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
-
-            this.Session.Derive();
-
-            var order1 = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(mechelenAddress)
-                .WithVatRegime(assessable)
-                .Build();
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good)
-                .WithQuantityOrdered(10)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            order1.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            order1.Confirm();
-
-            this.Session.Derive();
-
-            var order2 = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(mechelenAddress)
-                .WithVatRegime(assessable)
-                .Build();
-
-            item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good)
-                .WithQuantityOrdered(20)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            order2.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            order2.Confirm();
-
-            this.Session.Derive();
-
-            var shipment = (CustomerShipment)customer.ShipmentsWhereShipToParty[0];
-            Assert.Equal(30, shipment.ShipmentItems[0].Quantity);
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(30, pickList.PickListItems[0].Quantity);
-
-            order1.Cancel();
-
-            this.Session.Derive();
-
-            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
-            Assert.Equal(new PickListStates(this.Session).Created, pickList.PickListState);
-            Assert.Equal(20, pickList.PickListItems[0].Quantity);
-
-            order2.Cancel();
-
-            this.Session.Derive();
-
-            Assert.Equal(new ShipmentStates(this.Session).Cancelled, shipment.ShipmentState);
-            Assert.Equal(new PickListStates(this.Session).Cancelled, pickList.PickListState);
         }
 
         [Fact]
@@ -3033,7 +2886,6 @@ namespace Allors.Domain
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
-
             this.Session.Derive();
 
             order.Confirm();
@@ -3053,6 +2905,51 @@ namespace Allors.Domain
             Assert.False(acl.CanExecute(M.SalesOrder.Reject));
             Assert.False(acl.CanExecute(M.SalesOrder.Approve));
             Assert.False(acl.CanExecute(M.SalesOrder.Hold));
+        }
+
+        [Fact]
+        public void GivenSalesOrder_WhenShipmentStateIsInProgress_ThenCancelIsNotAllowed()
+        {
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+
+            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
+
+            this.Session.Derive();
+
+            User user = this.Administrator;
+            this.Session.SetUser(user);
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .WithBillToContactMechanism(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(good)
+                .WithQuantityOrdered(1)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderShipmentStates(this.Session).InProgress, order.SalesOrderShipmentState);
+            var acl = new AccessControlLists(this.Session.GetUser())[order];
+            Assert.False(acl.CanExecute(M.SalesOrder.Cancel));
         }
     }
 }

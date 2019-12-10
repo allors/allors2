@@ -22,6 +22,10 @@ namespace Allors.Domain
             var completed = new SalesOrderStates(this.Session).Completed;
             var finished = new SalesOrderStates(this.Session).Finished;
 
+            var partiallyShipped = new SalesOrderShipmentStates(this.Session).PartiallyShipped;
+            var inProgress = new SalesOrderShipmentStates(this.Session).InProgress;
+            var shipped = new SalesOrderShipmentStates(this.Session).Shipped;
+
             var reject = this.Meta.Reject;
             var complete = this.Meta.Complete;
             var cancel = this.Meta.Cancel;
@@ -40,6 +44,10 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, rejected, reject, ship, invoice);
             config.Deny(this.ObjectType, cancelled, cancel, ship, invoice);
             config.Deny(this.ObjectType, completed, complete, reject, cancel, approve, hold, @continue, confirm, invoice);
+
+            config.Deny(this.ObjectType, inProgress, cancel, reject);
+            config.Deny(this.ObjectType, partiallyShipped, cancel, reject);
+            config.Deny(this.ObjectType, shipped, cancel, reject);
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);

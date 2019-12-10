@@ -312,6 +312,10 @@ namespace Allors.Domain
                 {
                     this.SalesOrderShipmentState = salesOrderShipmentStates.NotShipped;
                 }
+                else if (validOrderItems.Any(v => v.SalesOrderItemShipmentState.InProgress))
+                {
+                    this.SalesOrderShipmentState = salesOrderShipmentStates.InProgress;
+                }
                 else
                 {
                     this.SalesOrderShipmentState = salesOrderShipmentStates.PartiallyShipped;
@@ -782,15 +786,20 @@ namespace Allors.Domain
                                         shipmentItem.SerialisedItem = orderItem.SerialisedItem;
                                     }
 
-                                    //if (orderItem.ExistReservedFromNonSerialisedInventoryItem)
-                                    //{
-                                    //    shipmentItem.AddInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem);
-                                    //}
+                                    if (orderItem.ExistNewSerialisedItemState)
+                                    {
+                                        shipmentItem.NewSerialisedItemState = orderItem.NewSerialisedItemState;
+                                    }
 
-                                    //if (orderItem.ExistReservedFromSerialisedInventoryItem)
-                                    //{
-                                    //    shipmentItem.AddInventoryItem(orderItem.ReservedFromSerialisedInventoryItem);
-                                    //}
+                                    if (orderItem.ExistReservedFromNonSerialisedInventoryItem)
+                                    {
+                                        shipmentItem.AddReservedFromInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem);
+                                    }
+
+                                    if (orderItem.ExistReservedFromSerialisedInventoryItem)
+                                    {
+                                        shipmentItem.AddReservedFromInventoryItem(orderItem.ReservedFromSerialisedInventoryItem);
+                                    }
 
                                     pendingShipment.AddShipmentItem(shipmentItem);
                                 }
