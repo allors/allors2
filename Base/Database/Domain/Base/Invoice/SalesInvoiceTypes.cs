@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public SalesInvoiceType CreditNote => this.Cache[CreditNoteId];
 
-        private UniquelyIdentifiableSticky<SalesInvoiceType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<SalesInvoiceType>(this.Session));
+        private UniquelyIdentifiableSticky<SalesInvoiceType> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesInvoiceType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new SalesInvoiceTypeBuilder(this.Session)
-                .WithName("Sales invoice")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop factuur").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SalesInvoiceId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new SalesInvoiceTypeBuilder(this.Session)
-                .WithName("Credit Note")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Credit Nota").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CreditNoteId)
-                .WithIsActive(true)
-                .Build();
+            merge(SalesInvoiceId, v =>
+            {
+                v.Name = "Sales invoice";
+                localisedName.Set(v, dutchLocale, "Verkoop factuur");
+                v.IsActive = true;
+            });
+
+            merge(CreditNoteId, v =>
+            {
+                v.Name = "Credit Note";
+                localisedName.Set(v, dutchLocale, "Credit Nota");
+                v.IsActive = true;
+            });
         }
     }
 }

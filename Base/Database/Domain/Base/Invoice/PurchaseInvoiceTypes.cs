@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public PurchaseInvoiceType PurchaseReturn => this.Cache[PurchaseReturnId];
 
-        private UniquelyIdentifiableSticky<PurchaseInvoiceType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PurchaseInvoiceType>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseInvoiceType> Cache => this.cache ??= new UniquelyIdentifiableSticky<PurchaseInvoiceType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PurchaseInvoiceTypeBuilder(this.Session)
-                .WithName("Purchase invoice")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aankoop factuur").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PurchaseInvoiceId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new PurchaseInvoiceTypeBuilder(this.Session)
-                .WithName("Purchase return")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aankoop factuur retour").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PurchaseReturnId)
-                .WithIsActive(true)
-                .Build();
+            merge(PurchaseInvoiceId, v =>
+            {
+                v.Name = "Purchase invoice";
+                localisedName.Set(v, dutchLocale, "Aankoop factuur");
+                v.IsActive = true;
+            });
+
+            merge(PurchaseReturnId, v =>
+            {
+                v.Name = "Purchase return";
+                localisedName.Set(v, dutchLocale, "Aankoop factuur retour");
+                v.IsActive = true;
+            });
         }
     }
 }

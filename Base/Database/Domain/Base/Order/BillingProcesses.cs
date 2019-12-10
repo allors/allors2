@@ -24,39 +24,35 @@ namespace Allors.Domain
 
         public BillingProcess BillingForTimeEntries => this.Cache[BillingForTimeEntriesId];
 
-        private UniquelyIdentifiableSticky<BillingProcess> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<BillingProcess>(this.Session));
+        private UniquelyIdentifiableSticky<BillingProcess> Cache => this.cache ??= new UniquelyIdentifiableSticky<BillingProcess>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
+            var merge = this.Cache.Merger().Action();
 
-            new BillingProcessBuilder(this.Session)
-                .WithName("Billing for Order Items")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Order Items").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BillingForOrderItemsId)
-                .WithIsActive(true)
-                .Build();
+            merge(BillingForOrderItemsId, v =>
+            {
+                v.Name = "Billing for Order Items";
+                v.IsActive = true;
+            });
 
-            new BillingProcessBuilder(this.Session)
-                .WithName("Billing for Shipment Items")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BillingForShipmentItemsId)
-                .WithIsActive(true)
-                .Build();
+            merge(BillingForShipmentItemsId, v =>
+            {
+                v.Name = "Billing for Shipment Items";
+                v.IsActive = true;
+            });
 
-            new BillingProcessBuilder(this.Session)
-                .WithName("Billing for Work Efforts")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BillingForWorkEffortsId)
-                .WithIsActive(true)
-                .Build();
+            merge(BillingForWorkEffortsId, v =>
+            {
+                v.Name = "Billing for Work Efforts";
+                v.IsActive = true;
+            });
 
-            new BillingProcessBuilder(this.Session)
-                .WithName("Billing for Time Entries")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BillingForTimeEntriesId)
-                .WithIsActive(true)
-                .Build();
+            merge(BillingForTimeEntriesId, v =>
+            {
+                v.Name = "Billing for Time Entries";
+                v.IsActive = true;
+            });
         }
     }
 }

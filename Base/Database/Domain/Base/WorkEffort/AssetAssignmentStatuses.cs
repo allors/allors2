@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public AssetAssignmentStatus Assigned => this.Cache[AssignedId];
 
-        private UniquelyIdentifiableSticky<AssetAssignmentStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<AssetAssignmentStatus>(this.Session));
+        private UniquelyIdentifiableSticky<AssetAssignmentStatus> Cache => this.cache ??= new UniquelyIdentifiableSticky<AssetAssignmentStatus>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new AssetAssignmentStatusBuilder(this.Session)
-                .WithName("Requested")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aangevraagd").WithLocale(dutchLocale).Build())
-                .WithUniqueId(RequestedId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new AssetAssignmentStatusBuilder(this.Session)
-                .WithName("Assigned")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Toegekend").WithLocale(dutchLocale).Build())
-                .WithUniqueId(AssignedId)
-                .WithIsActive(true)
-                .Build();
+            merge(RequestedId, v =>
+            {
+                v.Name = "Requested";
+                localisedName.Set(v, dutchLocale, "Aangevraagd");
+                v.IsActive = true;
+            });
+
+            merge(AssignedId, v =>
+            {
+                v.Name = "Assigned";
+                localisedName.Set(v, dutchLocale, "Toegekend");
+                v.IsActive = true;
+            });
         }
     }
 }

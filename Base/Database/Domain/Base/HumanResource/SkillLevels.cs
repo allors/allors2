@@ -24,39 +24,42 @@ namespace Allors.Domain
 
         public SkillLevel Expert => this.Cache[ExpertId];
 
-        private UniquelyIdentifiableSticky<SkillLevel> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<SkillLevel>(this.Session));
+        private UniquelyIdentifiableSticky<SkillLevel> Cache => this.cache ??= new UniquelyIdentifiableSticky<SkillLevel>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new SkillLevelBuilder(this.Session)
-                .WithName("Beginner")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Starter").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BeginnerId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new SkillLevelBuilder(this.Session)
-                .WithName("Intermediate")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intermediate").WithLocale(dutchLocale).Build())
-                .WithUniqueId(IntermediateId)
-                .WithIsActive(true)
-                .Build();
+            merge(BeginnerId, v =>
+            {
+                v.Name = "Beginner";
+                localisedName.Set(v, dutchLocale, "Starter");
+                v.IsActive = true;
+            });
 
-            new SkillLevelBuilder(this.Session)
-                .WithName("Advanced")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ervaren").WithLocale(dutchLocale).Build())
-                .WithUniqueId(AdvancedId)
-                .WithIsActive(true)
-                .Build();
+            merge(IntermediateId, v =>
+            {
+                v.Name = "Intermediate";
+                localisedName.Set(v, dutchLocale, "Intermediate");
+                v.IsActive = true;
+            });
 
-            new SkillLevelBuilder(this.Session)
-                .WithName("Expert")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Expert").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ExpertId)
-                .WithIsActive(true)
-                .Build();
+            merge(AdvancedId, v =>
+            {
+                v.Name = "Advanced";
+                localisedName.Set(v, dutchLocale, "Ervaren");
+                v.IsActive = true;
+            });
+
+            merge(ExpertId, v =>
+            {
+                v.Name = "Expert";
+                localisedName.Set(v, dutchLocale, "Expert");
+                v.IsActive = true;
+            });
         }
     }
 }

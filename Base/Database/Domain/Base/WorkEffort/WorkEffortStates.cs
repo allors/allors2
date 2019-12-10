@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class WorkEffortStates
     {
@@ -15,48 +16,34 @@ namespace Allors.Domain
         private static readonly Guid CompletedId = new Guid("4D942F82-3B8F-4248-9EBC-22B1E5F05D93");
         private static readonly Guid FinishedId = new Guid("6A9716A1-8174-4B26-86EB-22A265B74E78");
 
-        private UniquelyIdentifiableSticky<WorkEffortState> stateCache;
+        private UniquelyIdentifiableSticky<WorkEffortState> cache;
 
-        public WorkEffortState Created => this.StateCache[CreatedId];
+        public WorkEffortState Created => this.Cache[CreatedId];
 
-        public WorkEffortState InProgress => this.StateCache[InProgressId];
+        public WorkEffortState InProgress => this.Cache[InProgressId];
 
-        public WorkEffortState Completed => this.StateCache[CompletedId];
+        public WorkEffortState Completed => this.Cache[CompletedId];
 
-        public WorkEffortState Finished => this.StateCache[FinishedId];
+        public WorkEffortState Finished => this.Cache[FinishedId];
 
-        public WorkEffortState Cancelled => this.StateCache[CancelledId];
+        public WorkEffortState Cancelled => this.Cache[CancelledId];
 
-        private UniquelyIdentifiableSticky<WorkEffortState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<WorkEffortState>(this.Session));
+        private UniquelyIdentifiableSticky<WorkEffortState> Cache => this.cache ??= new UniquelyIdentifiableSticky<WorkEffortState>(this.Session);
+
+        protected override void BasePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.InventoryTransactionReason);
 
         protected override void BaseSetup(Setup setup)
         {
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            new WorkEffortStateBuilder(this.Session)
-                .WithUniqueId(CreatedId)
-                .WithName("Created")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new WorkEffortStateBuilder(this.Session)
-                .WithUniqueId(InProgressId)
-                .WithName("In Progress")
-                .Build();
+            merge(CreatedId, v => v.Name = "Created");
+            merge(InProgressId, v => v.Name = "In Progress");
+            merge(CompletedId, v => v.Name = "Completed");
+            merge(FinishedId, v => v.Name = "Finished");
+            merge(CancelledId, v => v.Name = "Cancelled");
 
-            new WorkEffortStateBuilder(this.Session)
-                .WithUniqueId(CompletedId)
-                .WithName("Completed")
-                .Build();
-
-            new WorkEffortStateBuilder(this.Session)
-                .WithUniqueId(FinishedId)
-                .WithName("Finished")
-                .Build();
-
-            new WorkEffortStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
 
             // The created state is the initial and re-opened state (Cancel Consumption for Re-Open)
             this.Created.AddInventoryTransactionReasonsToCreate(reasons.Reservation);

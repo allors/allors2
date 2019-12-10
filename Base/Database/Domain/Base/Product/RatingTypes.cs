@@ -24,39 +24,42 @@ namespace Allors.Domain
 
         public RatingType Outstanding => this.Cache[OutstandingId];
 
-        private UniquelyIdentifiableSticky<RatingType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<RatingType>(this.Session));
+        private UniquelyIdentifiableSticky<RatingType> Cache => this.cache ??= new UniquelyIdentifiableSticky<RatingType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new RatingTypeBuilder(this.Session)
-                .WithName("Poor")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Laag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PoorId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new RatingTypeBuilder(this.Session)
-                .WithName("Fair")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Redelijk").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FairId)
-                .WithIsActive(true)
-                .Build();
+            merge(PoorId, v =>
+            {
+                v.Name = "Poor";
+                localisedName.Set(v, dutchLocale, "Laag");
+                v.IsActive = true;
+            });
 
-            new RatingTypeBuilder(this.Session)
-                .WithName("Good")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goed").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GoodId)
-                .WithIsActive(true)
-                .Build();
+            merge(FairId, v =>
+            {
+                v.Name = "Fair";
+                localisedName.Set(v, dutchLocale, "Redelijk");
+                v.IsActive = true;
+            });
 
-            new RatingTypeBuilder(this.Session)
-                .WithName("Outstanding")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitstekend").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OutstandingId)
-                .WithIsActive(true)
-                .Build();
+            merge(GoodId, v =>
+            {
+                v.Name = "Good";
+                localisedName.Set(v, dutchLocale, "Goed");
+                v.IsActive = true;
+            });
+
+            merge(OutstandingId, v =>
+            {
+                v.Name = "Outstanding";
+                localisedName.Set(v, dutchLocale, "Uitstekend");
+                v.IsActive = true;
+            });
         }
     }
 }

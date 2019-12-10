@@ -36,67 +36,70 @@ namespace Allors.Domain
 
         public WorkEffortPurpose Research => this.Cache[ResearchId];
 
-        private UniquelyIdentifiableSticky<WorkEffortPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<WorkEffortPurpose>(this.Session));
+        private UniquelyIdentifiableSticky<WorkEffortPurpose> Cache => this.cache ??= new UniquelyIdentifiableSticky<WorkEffortPurpose>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Meeting")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vergadering").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MeetingId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Phone Call")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Telefoon gesprek").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PhonecallId)
-                .WithIsActive(true)
-                .Build();
+            merge(MeetingId, v =>
+            {
+                v.Name = "Meeting";
+                localisedName.Set(v, dutchLocale, "Vergadering");
+                v.IsActive = true;
+            });
 
-            new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Email")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Email").WithLocale(dutchLocale).Build())
-                .WithUniqueId(EmailId)
-                .WithIsActive(true)
-                .Build();
+            merge(PhonecallId, v =>
+            {
+                v.Name = "Phone Call";
+                localisedName.Set(v, dutchLocale, "Telefoon gesprek");
+                v.IsActive = true;
+            });
 
-            new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Support")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Support").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SupportId)
-                .WithIsActive(true)
-                .Build();
+            merge(EmailId, v =>
+            {
+                v.Name = "Email";
+                localisedName.Set(v, dutchLocale, "Email");
+                v.IsActive = true;
+            });
 
-            new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Maintenance")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderhoud").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MaintenanceId)
-                .WithIsActive(true)
-                .Build();
+            merge(SupportId, v =>
+            {
+                v.Name = "Support";
+                localisedName.Set(v, dutchLocale, "Support");
+                v.IsActive = true;
+            });
 
-            new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Production Run")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Productie run").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProductionRunId)
-                .WithIsActive(true)
-                .Build();
+            merge(MaintenanceId, v =>
+            {
+                v.Name = "Maintenance";
+                localisedName.Set(v, dutchLocale, "Onderhoud");
+                v.IsActive = true;
+            });
 
-            new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Workflow")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Workflow").WithLocale(dutchLocale).Build())
-                .WithUniqueId(WorkFlowId)
-                .WithIsActive(true)
-                .Build();
+            merge(ProductionRunId, v =>
+            {
+                v.Name = "Production Run";
+                localisedName.Set(v, dutchLocale, "Productie run");
+                v.IsActive = true;
+            });
 
-            new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Research")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderzoek").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ResearchId)
-                .WithIsActive(true)
-                .Build();
+            merge(WorkFlowId, v =>
+            {
+                v.Name = "Workflow";
+                localisedName.Set(v, dutchLocale, "Workflow");
+                v.IsActive = true;
+            });
+
+            merge(ResearchId, v =>
+            {
+                v.Name = "Research";
+                localisedName.Set(v, dutchLocale, "Onderzoek");
+                v.IsActive = true;
+            });
         }
     }
 }

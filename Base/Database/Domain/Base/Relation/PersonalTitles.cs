@@ -6,7 +6,7 @@
 namespace Allors.Domain
 {
     using System;
-    
+
     public partial class PersonalTitles
     {
         private static readonly Guid MisterId = new Guid("510D5267-4E69-45F7-B99E-CABAF7E42EB2");
@@ -17,26 +17,29 @@ namespace Allors.Domain
         public PersonalTitle Mister => this.Cache[MisterId];
 
         public PersonalTitle Miss => this.Cache[MissId];
-        
-        private UniquelyIdentifiableSticky<PersonalTitle> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PersonalTitle>(this.Session));
+
+        private UniquelyIdentifiableSticky<PersonalTitle> Cache => this.cache ??= new UniquelyIdentifiableSticky<PersonalTitle>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PersonalTitleBuilder(this.Session)
-                .WithName("Mister")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mijnheer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MisterId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new PersonalTitleBuilder(this.Session)
-                .WithName("Miss")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mevrouw").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MissId)
-                .WithIsActive(true)
-                .Build();
+            merge(MisterId, v =>
+            {
+                v.Name = "Mister";
+                localisedName.Set(v, dutchLocale, "Mijnheer");
+                v.IsActive = true;
+            });
+
+            merge(MissId, v =>
+            {
+                v.Name = "Miss";
+                localisedName.Set(v, dutchLocale, "Mevrouw");
+                v.IsActive = true;
+            });
         }
     }
 }

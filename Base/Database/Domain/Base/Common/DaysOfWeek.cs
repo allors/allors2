@@ -1,4 +1,4 @@
-﻿// <copyright file="DaysOfWeek.cs" company="Allors bvba">
+// <copyright file="DaysOfWeek.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -33,60 +33,63 @@ namespace Allors.Domain
 
         public DayOfWeek Saturday => this.Cache[SaturdayId];
 
-        private UniquelyIdentifiableSticky<DayOfWeek> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<DayOfWeek>(this.Session));
+        private UniquelyIdentifiableSticky<DayOfWeek> Cache => this.cache ??= new UniquelyIdentifiableSticky<DayOfWeek>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new DayOfWeekBuilder(this.Session)
-                .WithName("Sunday")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zondag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SundayId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new DayOfWeekBuilder(this.Session)
-                .WithName("Monday")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Maandag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MondayId)
-                .WithIsActive(true)
-                .Build();
+            merge(SundayId, v =>
+            {
+                v.Name = "Sunday";
+                localisedName.Set(v, dutchLocale, "Zondag");
+                v.IsActive = true;
+            });
 
-            new DayOfWeekBuilder(this.Session)
-                .WithName("Tuesday")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("dinsdag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(TuesdayId)
-                .WithIsActive(true)
-                .Build();
+            merge(MondayId, v =>
+            {
+                v.Name = "Monday";
+                localisedName.Set(v, dutchLocale, "Maandag");
+                v.IsActive = true;
+            });
 
-            new DayOfWeekBuilder(this.Session)
-                .WithName("Wednesday")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Woensdag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(WednesdayId)
-                .WithIsActive(true)
-                .Build();
+            merge(TuesdayId, v =>
+            {
+                v.Name = "Tuesday";
+                localisedName.Set(v, dutchLocale, "Dinsdag");
+                v.IsActive = true;
+            });
 
-            new DayOfWeekBuilder(this.Session)
-                .WithName("Thursday")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Donderdag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ThursdayId)
-                .WithIsActive(true)
-                .Build();
+            merge(WednesdayId, v =>
+            {
+                v.Name = "Wednesday";
+                localisedName.Set(v, dutchLocale, "Woensdag");
+                v.IsActive = true;
+            });
 
-            new DayOfWeekBuilder(this.Session)
-                .WithName("Friday")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vrijdag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FridayId)
-                .WithIsActive(true)
-                .Build();
+            merge(ThursdayId, v =>
+            {
+                v.Name = "Thursday";
+                localisedName.Set(v, dutchLocale, "Donderdag");
+                v.IsActive = true;
+            });
 
-            new DayOfWeekBuilder(this.Session)
-                .WithName("Saturday")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zaterdag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SaturdayId)
-                .WithIsActive(true)
-                .Build();
+            merge(FridayId, v =>
+            {
+                v.Name = "Friday";
+                localisedName.Set(v, dutchLocale, "Vrijdag");
+                v.IsActive = true;
+            });
+
+            merge(SaturdayId, v =>
+            {
+                v.Name = "Saturday";
+                localisedName.Set(v, dutchLocale, "Zaterdag");
+                v.IsActive = true;
+            });
         }
     }
 }

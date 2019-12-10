@@ -9,11 +9,6 @@ namespace Allors.Domain
 
     public partial class Templates
     {
-        protected override void CorePrepare(Setup setup)
-        {
-            base.CorePrepare(setup);
-
-            setup.AddDependency(this.ObjectType, M.TemplateType.ObjectType);
-        }
+        protected override void CorePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.TemplateType.ObjectType);
     }
 }

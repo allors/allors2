@@ -27,46 +27,49 @@ namespace Allors.Domain
 
         public OrderTermType NonReturnableSalesItem => this.Cache[NonReturnableSalesItemId];
 
-        private UniquelyIdentifiableSticky<OrderTermType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<OrderTermType>(this.Session));
+        private UniquelyIdentifiableSticky<OrderTermType> Cache => this.cache ??= new UniquelyIdentifiableSticky<OrderTermType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            var belgianLocale = new Locales(this.Session).DutchNetherlands;
+            var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new OrderTermTypeBuilder(this.Session)
-                .WithName("Percentage Cancellation Charge")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Procent annulerings toeslag").WithLocale(belgianLocale).Build())
-                .WithUniqueId(PercentageCancellationChargeId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new OrderTermTypeBuilder(this.Session)
-                .WithName("Days Cancellation Without Penalty")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aantal dagen annulatie zonder kost").WithLocale(belgianLocale).Build())
-                .WithUniqueId(DaysCancellationWithoutPenaltyId)
-                .WithIsActive(true)
-                .Build();
+            merge(PercentageCancellationChargeId, v =>
+            {
+                v.Name = "Percentage Cancellation Charge";
+                localisedName.Set(v, dutchLocale, "Procent annulerings toeslag");
+                v.IsActive = true;
+            });
 
-            new OrderTermTypeBuilder(this.Session)
-                .WithName("Percentage Penalty Non Performance")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Percentage toeslag slechte (non performance)").WithLocale(belgianLocale).Build())
-                .WithUniqueId(PercentagePenaltyNonPerformanceId)
-                .WithIsActive(true)
-                .Build();
+            merge(DaysCancellationWithoutPenaltyId, v =>
+            {
+                v.Name = "Days Cancellation Without Penalty";
+                localisedName.Set(v, dutchLocale, "Aantal dagen annulatie zonder kost");
+                v.IsActive = true;
+            });
 
-            new OrderTermTypeBuilder(this.Session)
-                .WithName("Days Within Which Deliverary Must Occur")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aantal dagen waarbinnen levering moet gebeuren").WithLocale(belgianLocale).Build())
-                .WithUniqueId(DaysWithinWhichDeliveraryMustOccurId)
-                .WithIsActive(true)
-                .Build();
+            merge(PercentagePenaltyNonPerformanceId, v =>
+            {
+                v.Name = "Percentage Penalty Non Performance";
+                localisedName.Set(v, dutchLocale, "Percentage toeslag slechte (non performance)");
+                v.IsActive = true;
+            });
 
-            new OrderTermTypeBuilder(this.Session)
-                .WithName("Non returnable sales item")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet retourneerbaat item").WithLocale(belgianLocale).Build())
-                .WithUniqueId(NonReturnableSalesItemId)
-                .WithIsActive(true)
-                .Build();
+            merge(DaysWithinWhichDeliveraryMustOccurId, v =>
+            {
+                v.Name = "Days Within Which Deliverary Must Occur";
+                localisedName.Set(v, dutchLocale, "Aantal dagen waarbinnen levering moet gebeuren");
+                v.IsActive = true;
+            });
+
+            merge(NonReturnableSalesItemId, v =>
+            {
+                v.Name = "Non returnable sales item";
+                localisedName.Set(v, dutchLocale, "Niet retourneerbaat item");
+                v.IsActive = true;
+            });
         }
     }
 }

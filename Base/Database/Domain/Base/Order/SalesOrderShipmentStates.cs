@@ -14,39 +14,26 @@ namespace Allors.Domain
         internal static readonly Guid PartiallyShippedId = new Guid("40B4EFB9-42A4-43d9-BCE9-39E55FD9D507");
         internal static readonly Guid InProgressId = new Guid("461CCCC8-8661-47C3-868E-CBFE2146063B");
 
-        private UniquelyIdentifiableSticky<SalesOrderShipmentState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderShipmentState> cache;
 
-        public SalesOrderShipmentState NotShipped => this.StateCache[NotShippedId];
+        public SalesOrderShipmentState NotShipped => this.Cache[NotShippedId];
 
-        public SalesOrderShipmentState Shipped => this.StateCache[ShippedId];
+        public SalesOrderShipmentState Shipped => this.Cache[ShippedId];
 
-        public SalesOrderShipmentState PartiallyShipped => this.StateCache[PartiallyShippedId];
+        public SalesOrderShipmentState PartiallyShipped => this.Cache[PartiallyShippedId];
 
-        public SalesOrderShipmentState InProgress => this.StateCache[InProgressId];
+        public SalesOrderShipmentState InProgress => this.Cache[InProgressId];
 
-        private UniquelyIdentifiableSticky<SalesOrderShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderShipmentState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesOrderShipmentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesOrderShipmentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new SalesOrderShipmentStateBuilder(this.Session)
-                .WithUniqueId(NotShippedId)
-                .WithName("Not Shipped")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SalesOrderShipmentStateBuilder(this.Session)
-                .WithUniqueId(PartiallyShippedId)
-                .WithName("Partially Shipped")
-                .Build();
-
-            new SalesOrderShipmentStateBuilder(this.Session)
-                .WithUniqueId(ShippedId)
-                .WithName("Shipped")
-                .Build();
-
-            new SalesOrderShipmentStateBuilder(this.Session)
-                .WithUniqueId(InProgressId)
-                .WithName("In Progress")
-                .Build();
+            merge(NotShippedId, v => v.Name = "Not Shipped");
+            merge(PartiallyShippedId, v => v.Name = "Partially Shipped");
+            merge(ShippedId, v => v.Name = "Shipped");
+            merge(InProgressId, v => v.Name = "In Progress");
         }
     }
 }

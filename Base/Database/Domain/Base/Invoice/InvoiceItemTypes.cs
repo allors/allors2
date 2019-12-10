@@ -54,109 +54,112 @@ namespace Allors.Domain
 
         public InvoiceItemType WorkDone => this.Cache[WorkDoneId];
 
-        private UniquelyIdentifiableSticky<InvoiceItemType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InvoiceItemType>(this.Session));
+        private UniquelyIdentifiableSticky<InvoiceItemType> Cache => this.cache ??= new UniquelyIdentifiableSticky<InvoiceItemType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Fee")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Honorarium").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FeeId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Discount")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Korting").WithLocale(dutchLocale).Build())
-                .WithUniqueId(DiscountId)
-                .WithIsActive(true)
-                .Build();
+            merge(FeeId, v =>
+            {
+                v.Name = "Fee";
+                localisedName.Set(v, dutchLocale, "Honorarium");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Interest Charge")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interest toeslag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InterestChargeId)
-                .WithIsActive(true)
-                .Build();
+            merge(DiscountId, v =>
+            {
+                v.Name = "Discount";
+                localisedName.Set(v, dutchLocale, "Korting");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Miscellaneous Charge")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overige toeslag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MiscChargeId)
-                .WithIsActive(true)
-                .Build();
+            merge(InterestChargeId, v =>
+            {
+                v.Name = "Interest Charge";
+                localisedName.Set(v, dutchLocale, "Interest toeslag");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Promotion")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoopbevordering ").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PromotionId)
-                .WithIsActive(true)
-                .Build();
+            merge(MiscChargeId, v =>
+            {
+                v.Name = "Miscellaneous Charge";
+                localisedName.Set(v, dutchLocale, "Overige toeslag");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Shipping & Handling")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bezorgkosten").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ShippingAndHandlingId)
-                .WithIsActive(true)
-                .Build();
+            merge(PromotionId, v =>
+            {
+                v.Name = "Promotion";
+                localisedName.Set(v, dutchLocale, "Verkoopbevordering");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Surcharge")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Toeslag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SurchargeId)
-                .WithIsActive(true)
-                .Build();
+            merge(ShippingAndHandlingId, v =>
+            {
+                v.Name = "Shipping & Handling";
+                localisedName.Set(v, dutchLocale, "Bezorgkosten");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Warranty")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Garantie").WithLocale(dutchLocale).Build())
-                .WithUniqueId(WarrantyId)
-                .WithIsActive(true)
-                .Build();
+            merge(SurchargeId, v =>
+            {
+                v.Name = "Surcharge";
+                localisedName.Set(v, dutchLocale, "Toeslag");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Product Feature")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product onderdeel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProductFeatureItemId)
-                .WithIsActive(true)
-                .Build();
+            merge(WarrantyId, v =>
+            {
+                v.Name = "Warranty";
+                localisedName.Set(v, dutchLocale, "Garantie");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Part Item")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderdeel item").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PartItemId)
-                .WithIsActive(true)
-                .Build();
+            merge(ProductFeatureItemId, v =>
+            {
+                v.Name = "Product Feature";
+                localisedName.Set(v, dutchLocale, "Product onderdeel");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Product")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProductItemId)
-                .WithIsActive(true)
-                .Build();
+            merge(PartItemId, v =>
+            {
+                v.Name = "Part Item";
+                localisedName.Set(v, dutchLocale, "Onderdeel");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Time")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tijd").WithLocale(dutchLocale).Build())
-                .WithUniqueId(TimeId)
-                .WithIsActive(true)
-                .Build();
+            merge(ProductItemId, v =>
+            {
+                v.Name = "Product";
+                localisedName.Set(v, dutchLocale, "Product");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Freight Charge")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vracht toeslag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FreightChargeId)
-                .WithIsActive(true)
-                .Build();
+            merge(TimeId, v =>
+            {
+                v.Name = "Time";
+                localisedName.Set(v, dutchLocale, "Tijd");
+                v.IsActive = true;
+            });
 
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("Work Done")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitgevoerde werkzaamheden").WithLocale(dutchLocale).Build())
-                .WithUniqueId(WorkDoneId)
-                .WithIsActive(true)
-                .Build();
+            merge(FreightChargeId, v =>
+            {
+                v.Name = "Freight Charge";
+                localisedName.Set(v, dutchLocale, "Vracht toeslag");
+                v.IsActive = true;
+            });
+
+            merge(WorkDoneId, v =>
+            {
+                v.Name = "Work Done";
+                localisedName.Set(v, dutchLocale, "Uitgevoerde werkzaamheden");
+                v.IsActive = true;
+            });
         }
     }
 }

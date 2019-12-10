@@ -37,7 +37,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         [Workspace]
-        public LocalisedText[] LocalisedClause { get; set; }
+        public LocalisedText[] LocalisedClauses { get; set; }
 
         #region inherited methods
 

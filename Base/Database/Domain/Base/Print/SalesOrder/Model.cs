@@ -32,7 +32,7 @@ namespace Allors.Domain.Print.SalesOrderModel
 
             if (TakenByCountry == "BE")
             {
-                this.VatClause = order.DerivedVatClause?.LocalisedClause.First(v => v.Locale.Equals(new Locales(session).DutchNetherlands)).Text;
+                this.VatClause = order.DerivedVatClause?.LocalisedClauses.First(v => v.Locale.Equals(new Locales(session).DutchNetherlands)).Text;
 
                 if (Equals(order.DerivedVatClause, new VatClauses(session).BeArt14Par2))
                 {

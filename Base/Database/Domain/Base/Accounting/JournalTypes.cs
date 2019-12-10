@@ -30,53 +30,56 @@ namespace Allors.Domain
 
         public JournalType Purchase => this.Cache[PurchaseId];
 
-        private UniquelyIdentifiableSticky<JournalType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<JournalType>(this.Session));
+        private UniquelyIdentifiableSticky<JournalType> Cache => this.cache ??= new UniquelyIdentifiableSticky<JournalType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new JournalTypeBuilder(this.Session)
-                .WithName("Cash")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kas").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CashId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new JournalTypeBuilder(this.Session)
-                .WithName("Bank")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bank").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BankId)
-                .WithIsActive(true)
-                .Build();
+            merge(CashId, v =>
+            {
+                v.Name = "Cash";
+                localisedName.Set(v, dutchLocale, "Kas");
+                v.IsActive = true;
+            });
 
-            new JournalTypeBuilder(this.Session)
-                .WithName("Giro")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Giro").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GiroId)
-                .WithIsActive(true)
-                .Build();
+            merge(BankId, v =>
+            {
+                v.Name = "Bank";
+                localisedName.Set(v, dutchLocale, "Bank");
+                v.IsActive = true;
+            });
 
-            new JournalTypeBuilder(this.Session)
-                .WithName("General")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Memoriaal").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GeneralId)
-                .WithIsActive(true)
-                .Build();
+            merge(GiroId, v =>
+            {
+                v.Name = "Giro";
+                localisedName.Set(v, dutchLocale, "Giro");
+                v.IsActive = true;
+            });
 
-            new JournalTypeBuilder(this.Session)
-                .WithName("Sales")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SalesId)
-                .WithIsActive(true)
-                .Build();
+            merge(GeneralId, v =>
+            {
+                v.Name = "General";
+                localisedName.Set(v, dutchLocale, "Memoriaal");
+                v.IsActive = true;
+            });
 
-            new JournalTypeBuilder(this.Session)
-                .WithName("Purchase")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PurchaseId)
-                .WithIsActive(true)
-                .Build();
+            merge(SalesId, v =>
+            {
+                v.Name = "Sales";
+                localisedName.Set(v, dutchLocale, "Verkoop");
+                v.IsActive = true;
+            });
+
+            merge(PurchaseId, v =>
+            {
+                v.Name = "Purchase";
+                localisedName.Set(v, dutchLocale, "Aankoop");
+                v.IsActive = true;
+            });
         }
     }
 }

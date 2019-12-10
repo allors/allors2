@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
     using Allors.Meta;
 
     public partial class AccountingTransactionTypes
@@ -45,62 +46,63 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new AccountingTransactionTypeBuilder(this.Session)
-                .WithName("Bank statement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bankafschrift").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BankStatementId)
-                .WithIsActive(true)
-                .Build();
+            merge(BankStatementId, v =>
+            {
+                v.Name = "Bank statement";
+                localisedName.Set(v, dutchLocale, "Bankafschrift");
+                v.IsActive = true;
+            });
 
-            new AccountingTransactionTypeBuilder(this.Session)
-                .WithName("Payment receipt")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Binnenkomende betaling").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PaymentReceiptId)
-                .WithIsActive(true)
-                .Build();
+            merge(PaymentReceiptId, v =>
+            {
+                v.Name = "Payment receipt";
+                localisedName.Set(v, dutchLocale, "Binnenkomende betaling");
+                v.IsActive = true;
+            });
 
-            new AccountingTransactionTypeBuilder(this.Session)
-                .WithName("Payment disbursement")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitgaande betaling").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PaymentDisbursementId)
-                .WithIsActive(true)
-                .Build();
+            merge(PaymentDisbursementId, v =>
+            {
+                v.Name = "Payment disbursement";
+                localisedName.Set(v, dutchLocale, "Uitgaande betaling");
+                v.IsActive = true;
+            });
 
-            new AccountingTransactionTypeBuilder(this.Session)
-                .WithName("Accounts payable")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Debiteuren post").WithLocale(dutchLocale).Build())
-                .WithUniqueId(AccountsPayableId)
-                .WithIsActive(true)
-                .Build();
+            merge(AccountsPayableId, v =>
+            {
+                v.Name = "Accounts payable";
+                localisedName.Set(v, dutchLocale, "Debiteuren post");
+                v.IsActive = true;
+            });
 
-            new AccountingTransactionTypeBuilder(this.Session)
-                .WithName("Accounts receivable")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Crediteuren post").WithLocale(dutchLocale).Build())
-                .WithUniqueId(AccountsReceivableId)
-                .WithIsActive(true)
-                .Build();
+            merge(AccountsReceivableId, v =>
+            {
+                v.Name = "Accounts receivable";
+                localisedName.Set(v, dutchLocale, "Crediteuren post");
+                v.IsActive = true;
+            });
 
-            new AccountingTransactionTypeBuilder(this.Session)
-                .WithName("Budget posting")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Budget post").WithLocale(dutchLocale).Build())
-                .WithUniqueId(BudgettingId)
-                .WithIsActive(true)
-                .Build();
+            merge(BudgettingId, v =>
+            {
+                v.Name = "Budget posting";
+                localisedName.Set(v, dutchLocale, "Budget post");
+                v.IsActive = true;
+            });
 
-            new AccountingTransactionTypeBuilder(this.Session)
-                .WithName("Inventory adjustment")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Voorraad aanpassing").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InventoryAdjustmentId)
-                .WithIsActive(true)
-                .Build();
+            merge(InventoryAdjustmentId, v =>
+            {
+                v.Name = "Inventory adjustment";
+                localisedName.Set(v, dutchLocale, "Voorraad aanpassing");
+                v.IsActive = true;
+            });
 
-            new AccountingTransactionTypeBuilder(this.Session)
-                .WithName("General")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overige").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GeneralId)
-                .WithIsActive(true)
-                .Build();
+            merge(GeneralId, v =>
+            {
+                v.Name = "General";
+                localisedName.Set(v, dutchLocale, "Overige");
+                v.IsActive = true;
+            });
         }
     }
 }

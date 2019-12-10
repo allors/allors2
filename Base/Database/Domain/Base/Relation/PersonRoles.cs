@@ -24,39 +24,42 @@ namespace Allors.Domain
 
         public PersonRole Customer => this.Cache[CustomerId];
 
-        private UniquelyIdentifiableSticky<PersonRole> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PersonRole>(this.Session));
+        private UniquelyIdentifiableSticky<PersonRole> Cache => this.cache ??= new UniquelyIdentifiableSticky<PersonRole>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PersonRoleBuilder(this.Session)
-                .WithName("Employee")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Werknemer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(EmployeeId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new PersonRoleBuilder(this.Session)
-                .WithName("Sales Rep")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoper").WithLocale(dutchLocale).Build())
-                .WithUniqueId(EmployeeId)
-                .WithIsActive(true)
-                .Build();
+            merge(EmployeeId, v =>
+            {
+                v.Name = "Employee";
+                localisedName.Set(v, dutchLocale, "Werknemer");
+                v.IsActive = true;
+            });
 
-            new PersonRoleBuilder(this.Session)
-                .WithName("Organisation Contact")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Contact").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ContactId)
-                .WithIsActive(true)
-                .Build();
+            merge(EmployeeId, v =>
+            {
+                v.Name = "Sales Rep";
+                localisedName.Set(v, dutchLocale, "Verkoper");
+                v.IsActive = true;
+            });
 
-            new PersonRoleBuilder(this.Session)
-                .WithName("Customer")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CustomerId)
-                .WithIsActive(true)
-                .Build();
+            merge(ContactId, v =>
+            {
+                v.Name = "Organisation Contact";
+                localisedName.Set(v, dutchLocale, "Contact");
+                v.IsActive = true;
+            });
+
+            merge(CustomerId, v =>
+            {
+                v.Name = "Customer";
+                localisedName.Set(v, dutchLocale, "Klant");
+                v.IsActive = true;
+            });
         }
     }
 }

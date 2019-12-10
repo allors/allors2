@@ -17,60 +17,35 @@ namespace Allors.Domain
         private static readonly Guid PendingApprovalFromClientId = new Guid("A6216522-44DA-404d-92A3-61160F814A15");
         private static readonly Guid FullfilledByOtherEnterpriseId = new Guid("10E9F384-541D-4fb3-ABDC-539EC291EFC6");
 
-        private UniquelyIdentifiableSticky<RequirementState> stateCache;
+        private UniquelyIdentifiableSticky<RequirementState> cache;
 
-        public RequirementState Active => this.StateCache[ActiveId];
+        public RequirementState Active => this.Cache[ActiveId];
 
-        public RequirementState Inactive => this.StateCache[InactiveId];
+        public RequirementState Inactive => this.Cache[InactiveId];
 
-        public RequirementState OnHold => this.StateCache[OnHoldId];
+        public RequirementState OnHold => this.Cache[OnHoldId];
 
-        public RequirementState Cancelled => this.StateCache[CancelledId];
+        public RequirementState Cancelled => this.Cache[CancelledId];
 
-        public RequirementState Closed => this.StateCache[ClosedId];
+        public RequirementState Closed => this.Cache[ClosedId];
 
-        public RequirementState PendingApprovalFromClient => this.StateCache[PendingApprovalFromClientId];
+        public RequirementState PendingApprovalFromClient => this.Cache[PendingApprovalFromClientId];
 
-        public RequirementState FullfilledByOtherEnterprise => this.StateCache[FullfilledByOtherEnterpriseId];
+        public RequirementState FullfilledByOtherEnterprise => this.Cache[FullfilledByOtherEnterpriseId];
 
-        private UniquelyIdentifiableSticky<RequirementState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<RequirementState>(this.Session));
+        private UniquelyIdentifiableSticky<RequirementState> Cache => this.cache ??= new UniquelyIdentifiableSticky<RequirementState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new RequirementStateBuilder(this.Session)
-                .WithUniqueId(ActiveId)
-                .WithName("Active")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new RequirementStateBuilder(this.Session)
-                .WithUniqueId(InactiveId)
-                .WithName("Inactive")
-                .Build();
-
-            new RequirementStateBuilder(this.Session)
-                .WithUniqueId(OnHoldId)
-                .WithName("On Hold")
-                .Build();
-
-            new RequirementStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new RequirementStateBuilder(this.Session)
-                .WithUniqueId(ClosedId)
-                .WithName("Closed")
-                .Build();
-
-            new RequirementStateBuilder(this.Session)
-                .WithUniqueId(PendingApprovalFromClientId)
-                .WithName("Pending Approval From Client")
-                .Build();
-
-            new RequirementStateBuilder(this.Session)
-                .WithUniqueId(FullfilledByOtherEnterpriseId)
-                .WithName("Fullfilled By Other Enterprise")
-                .Build();
+            merge(ActiveId, v => v.Name = "Active");
+            merge(InactiveId, v => v.Name = "Inactive");
+            merge(OnHoldId, v => v.Name = "On Hold");
+            merge(CancelledId, v => v.Name = "Cancelled");
+            merge(ClosedId, v => v.Name = "Closed");
+            merge(PendingApprovalFromClientId, v => v.Name = "Pending Approval From Client");
+            merge(FullfilledByOtherEnterpriseId, v => v.Name = "Fullfilled By Other Enterprise");
         }
     }
 }

@@ -17,60 +17,35 @@ namespace Allors.Domain
         public static readonly Guid CancelledId = new Guid("D521BBFA-1E18-453c-862F-28EBC0DA10C1");
         public static readonly Guid CancelledByInvoiceId = new Guid("3EE18D08-9AEA-445D-8E19-0616E4A61B0E");
 
-        private UniquelyIdentifiableSticky<SalesInvoiceItemState> stateCache;
+        private UniquelyIdentifiableSticky<SalesInvoiceItemState> cache;
 
-        public SalesInvoiceItemState NotPaid => this.StateCache[NotPaidId];
+        public SalesInvoiceItemState NotPaid => this.Cache[NotPaidId];
 
-        public SalesInvoiceItemState PartiallyPaid => this.StateCache[PartiallyPaidId];
+        public SalesInvoiceItemState PartiallyPaid => this.Cache[PartiallyPaidId];
 
-        public SalesInvoiceItemState Paid => this.StateCache[PaidId];
+        public SalesInvoiceItemState Paid => this.Cache[PaidId];
 
-        public SalesInvoiceItemState ReadyForPosting => this.StateCache[ReadyForPostingId];
+        public SalesInvoiceItemState ReadyForPosting => this.Cache[ReadyForPostingId];
 
-        public SalesInvoiceItemState WrittenOff => this.StateCache[WrittenOffId];
+        public SalesInvoiceItemState WrittenOff => this.Cache[WrittenOffId];
 
-        public SalesInvoiceItemState Cancelled => this.StateCache[CancelledId];
+        public SalesInvoiceItemState Cancelled => this.Cache[CancelledId];
 
-        public SalesInvoiceItemState CancelledByInvoice => this.StateCache[CancelledByInvoiceId];
+        public SalesInvoiceItemState CancelledByInvoice => this.Cache[CancelledByInvoiceId];
 
-        private UniquelyIdentifiableSticky<SalesInvoiceItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesInvoiceItemState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesInvoiceItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesInvoiceItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new SalesInvoiceItemStateBuilder(this.Session)
-                .WithUniqueId(NotPaidId)
-                .WithName("NotPaid")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SalesInvoiceItemStateBuilder(this.Session)
-                .WithUniqueId(PartiallyPaidId)
-                .WithName("Partially Paid")
-                .Build();
-
-            new SalesInvoiceItemStateBuilder(this.Session)
-                .WithUniqueId(PaidId)
-                .WithName("Paid")
-                .Build();
-
-            new SalesInvoiceItemStateBuilder(this.Session)
-                .WithUniqueId(ReadyForPostingId)
-                .WithName("Ready For Posting")
-                .Build();
-
-            new SalesInvoiceItemStateBuilder(this.Session)
-                .WithUniqueId(WrittenOffId)
-                .WithName("Written Off")
-                .Build();
-
-            new SalesInvoiceItemStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new SalesInvoiceItemStateBuilder(this.Session)
-                .WithUniqueId(CancelledByInvoiceId)
-                .WithName("Cancelled")
-                .Build();
+            merge(NotPaidId, v => v.Name = "Not Paid");
+            merge(PartiallyPaidId, v => v.Name = "Partially Paid");
+            merge(PaidId, v => v.Name = "Paid");
+            merge(ReadyForPostingId, v => v.Name = "Ready For Posting");
+            merge(WrittenOffId, v => v.Name = "Written Off");
+            merge(CancelledId, v => v.Name = "Cancelled");
+            merge(CancelledByInvoiceId, v => v.Name = "Cancelled By Invoice");
         }
     }
 }

@@ -27,46 +27,49 @@ namespace Allors.Domain
 
         public PositionStatus PositionClosed => this.Cache[PositionClosedId];
 
-        private UniquelyIdentifiableSticky<PositionStatus> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PositionStatus>(this.Session));
+        private UniquelyIdentifiableSticky<PositionStatus> Cache => this.cache ??= new UniquelyIdentifiableSticky<PositionStatus>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new PositionStatusBuilder(this.Session)
-                .WithName("Planned For")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gepland").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PlannedForId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new PositionStatusBuilder(this.Session)
-                .WithName("Active")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Actief").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ActiveId)
-                .WithIsActive(true)
-                .Build();
+            merge(PlannedForId, v =>
+            {
+                v.Name = "Planned For";
+                localisedName.Set(v, dutchLocale, "Gepland");
+                v.IsActive = true;
+            });
 
-            new PositionStatusBuilder(this.Session)
-                .WithName("Open")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Open").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PositionOpenId)
-                .WithIsActive(true)
-                .Build();
+            merge(ActiveId, v =>
+            {
+                v.Name = "Active";
+                localisedName.Set(v, dutchLocale, "Actief");
+                v.IsActive = true;
+            });
 
-            new PositionStatusBuilder(this.Session)
-                .WithName("Inactive")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet actief").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InactiveId)
-                .WithIsActive(true)
-                .Build();
+            merge(PositionOpenId, v =>
+            {
+                v.Name = "Open";
+                localisedName.Set(v, dutchLocale, "Open");
+                v.IsActive = true;
+            });
 
-            new PositionStatusBuilder(this.Session)
-                .WithName("Closed")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gesloten").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PositionClosedId)
-                .WithIsActive(true)
-                .Build();
+            merge(InactiveId, v =>
+            {
+                v.Name = "Inactivef";
+                localisedName.Set(v, dutchLocale, "Niet actief");
+                v.IsActive = true;
+            });
+
+            merge(PositionClosedId, v =>
+            {
+                v.Name = "Closed";
+                localisedName.Set(v, dutchLocale, "Gesloten");
+                v.IsActive = true;
+            });
         }
     }
 }

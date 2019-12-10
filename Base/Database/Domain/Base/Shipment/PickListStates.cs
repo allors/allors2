@@ -14,39 +14,26 @@ namespace Allors.Domain
         private static readonly Guid CancelledId = new Guid("CD552AF5-E695-4329-BF87-5644C2EA98F3");
         private static readonly Guid OnHoldId = new Guid("1733E2B0-48CA-4731-8F3C-93C6CF3A9543");
 
-        private UniquelyIdentifiableSticky<PickListState> stateCache;
+        private UniquelyIdentifiableSticky<PickListState> cache;
 
-        public PickListState Created => this.StateCache[CreatedId];
+        public PickListState Created => this.Cache[CreatedId];
 
-        public PickListState Picked => this.StateCache[PickedId];
+        public PickListState Picked => this.Cache[PickedId];
 
-        public PickListState Cancelled => this.StateCache[CancelledId];
+        public PickListState Cancelled => this.Cache[CancelledId];
 
-        public PickListState OnHold => this.StateCache[OnHoldId];
+        public PickListState OnHold => this.Cache[OnHoldId];
 
-        private UniquelyIdentifiableSticky<PickListState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PickListState>(this.Session));
+        private UniquelyIdentifiableSticky<PickListState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PickListState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new PickListStateBuilder(this.Session)
-                .WithUniqueId(CreatedId)
-                .WithName("Created")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new PickListStateBuilder(this.Session)
-                .WithUniqueId(PickedId)
-                .WithName("Picked")
-                .Build();
-
-            new PickListStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new PickListStateBuilder(this.Session)
-                .WithUniqueId(OnHoldId)
-                .WithName("On Hold")
-                .Build();
+            merge(CreatedId, v => v.Name = "Created");
+            merge(PickedId, v => v.Name = "Picked");
+            merge(CancelledId, v => v.Name = "Cancelled");
+            merge(OnHoldId, v => v.Name = "On Hold");
         }
     }
 }

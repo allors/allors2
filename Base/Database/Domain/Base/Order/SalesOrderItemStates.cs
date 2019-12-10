@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class SalesOrderItemStates
     {
@@ -17,72 +18,71 @@ namespace Allors.Domain
         internal static readonly Guid InProcessId = new Guid("E08401F7-1DEB-4b27-B0C5-8F034BFFEBD5");
         internal static readonly Guid FinishedId = new Guid("33C0ED0C-FDFE-45ff-A008-7A638094A94A");
 
-        private UniquelyIdentifiableSticky<SalesOrderItemState> stateCache;
+        private UniquelyIdentifiableSticky<SalesOrderItemState> cache;
 
-        public SalesOrderItemState Created => this.StateCache[CreatedId];
+        public SalesOrderItemState Created => this.Cache[CreatedId];
 
-        public SalesOrderItemState Cancelled => this.StateCache[CancelledId];
+        public SalesOrderItemState Cancelled => this.Cache[CancelledId];
 
-        public SalesOrderItemState Completed => this.StateCache[CompletedId];
+        public SalesOrderItemState Completed => this.Cache[CompletedId];
 
-        public SalesOrderItemState Rejected => this.StateCache[RejectedId];
+        public SalesOrderItemState Rejected => this.Cache[RejectedId];
 
-        public SalesOrderItemState Finished => this.StateCache[FinishedId];
+        public SalesOrderItemState Finished => this.Cache[FinishedId];
 
-        public SalesOrderItemState OnHold => this.StateCache[OnHoldId];
+        public SalesOrderItemState OnHold => this.Cache[OnHoldId];
 
-        public SalesOrderItemState InProcess => this.StateCache[InProcessId];
+        public SalesOrderItemState InProcess => this.Cache[InProcessId];
 
-        private UniquelyIdentifiableSticky<SalesOrderItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SalesOrderItemState>(this.Session));
+        private UniquelyIdentifiableSticky<SalesOrderItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesOrderItemState>(this.Session);
+
+        protected override void BasePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.InventoryTransactionReason.ObjectType);
 
         protected override void BaseSetup(Setup setup)
         {
             var reasons = new InventoryTransactionReasons(this.Session);
 
-            new SalesOrderItemStateBuilder(this.Session)
-                .WithUniqueId(CreatedId)
-                .WithName("Created")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new SalesOrderItemStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
+            merge(CreatedId, v =>
+            {
+                v.Name = "Created";
+                v.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            });
 
-            new SalesOrderItemStateBuilder(this.Session)
-                .WithUniqueId(CompletedId)
-                .WithName("Completed")
-                .Build();
+            merge(CancelledId, v =>
+            {
+                v.Name = "Cancelled";
+                v.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
+            });
 
-            new SalesOrderItemStateBuilder(this.Session)
-                .WithUniqueId(RejectedId)
-                .WithName("Rejected")
-                .Build();
+            merge(CompletedId, v =>
+            {
+                v.Name = "Completed";
+                v.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            });
 
-            new SalesOrderItemStateBuilder(this.Session)
-                .WithUniqueId(OnHoldId)
-                .WithName("On Hold")
-                .Build();
+            merge(RejectedId, v =>
+            {
+                v.Name = "Rejected";
+                v.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
+            });
 
-            new SalesOrderItemStateBuilder(this.Session)
-                .WithUniqueId(InProcessId)
-                .WithName("In Process")
-                .Build();
+            merge(OnHoldId, v =>
+            {
+                v.Name = "On Hold";
+            });
 
-            new SalesOrderItemStateBuilder(this.Session)
-                .WithUniqueId(FinishedId)
-                .WithName("Finished")
-                .Build();
+            merge(InProcessId, v =>
+            {
+                v.Name = "In Process";
+                v.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            });
 
-            this.Created.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
-
-            this.InProcess.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
-
-            this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
-
-            this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
-
-            this.Rejected.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
+            merge(FinishedId, v =>
+            {
+                v.Name = "Finished";
+            });
         }
     }
 }

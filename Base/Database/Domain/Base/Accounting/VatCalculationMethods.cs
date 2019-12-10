@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public VatCalculationMethod Invoice => this.Cache[InvoiceId];
 
-        private UniquelyIdentifiableSticky<VatCalculationMethod> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<VatCalculationMethod>(this.Session));
+        private UniquelyIdentifiableSticky<VatCalculationMethod> Cache => this.cache ??= new UniquelyIdentifiableSticky<VatCalculationMethod>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new VatCalculationMethodBuilder(this.Session)
-                .WithName("Cash management scheme")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kasstelsel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CashId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new VatCalculationMethodBuilder(this.Session)
-                .WithName("Incoice management scheme")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Factuurstelsel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InvoiceId)
-                .WithIsActive(true)
-                .Build();
+            merge(CashId, v =>
+            {
+                v.Name = "Cash management scheme";
+                localisedName.Set(v, dutchLocale, "Kasstelsel");
+                v.IsActive = true;
+            });
+
+            merge(InvoiceId, v =>
+            {
+                v.Name = "Invoice management scheme";
+                localisedName.Set(v, dutchLocale, "Factuurstelsel");
+                v.IsActive = true;
+            });
         }
     }
 }

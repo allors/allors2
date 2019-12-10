@@ -21,32 +21,35 @@ namespace Allors.Domain
 
         public CostOfGoodsSoldMethod Average => this.Cache[AverageId];
 
-        private UniquelyIdentifiableSticky<CostOfGoodsSoldMethod> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<CostOfGoodsSoldMethod>(this.Session));
+        private UniquelyIdentifiableSticky<CostOfGoodsSoldMethod> Cache => this.cache ??= new UniquelyIdentifiableSticky<CostOfGoodsSoldMethod>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new DebitCreditConstantBuilder(this.Session)
-                .WithName("FiFo")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("FiFo").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FiFoId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new DebitCreditConstantBuilder(this.Session)
-                .WithName("LiFo")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("LiFo").WithLocale(dutchLocale).Build())
-                .WithUniqueId(LiFoId)
-                .WithIsActive(true)
-                .Build();
+            merge(FiFoId, v =>
+            {
+                v.Name = "FiFo";
+                localisedName.Set(v, dutchLocale, "FiFo");
+                v.IsActive = true;
+            });
 
-            new DebitCreditConstantBuilder(this.Session)
-                .WithName("Average price")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gemiddelde prijs").WithLocale(dutchLocale).Build())
-                .WithUniqueId(AverageId)
-                .WithIsActive(true)
-                .Build();
+            merge(LiFoId, v =>
+            {
+                v.Name = "LiFo";
+                localisedName.Set(v, dutchLocale, "LiFo");
+                v.IsActive = true;
+            });
+
+            merge(AverageId, v =>
+            {
+                v.Name = "Average price";
+                localisedName.Set(v, dutchLocale, "Gemiddelde prijs");
+                v.IsActive = true;
+            });
         }
     }
 }

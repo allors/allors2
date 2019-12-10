@@ -5,6 +5,8 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using Allors.Meta;
 
     public partial class People
@@ -27,12 +29,25 @@ namespace Allors.Domain
 
             var people = new People(this.Session).Extent();
 
+            var employeesByEmployer = new Employments(this.Session).Extent()
+                .GroupBy(v => v.Employer)
+                .ToDictionary(v => v.Key, v => new HashSet<Person>(v.Select(w => w.Employee).ToArray()));
+
             foreach (Person person in people)
             {
                 foreach (var internalOrganisation in internalOrganisations)
                 {
-                    new EmploymentBuilder(this.Session).WithEmployer(internalOrganisation).WithEmployee(person).Build();
                     employeeUserGroup.AddMember(person);
+
+                    if (employeesByEmployer.TryGetValue(internalOrganisation, out var employees))
+                    {
+                        if (employees.Contains(person))
+                        {
+                            break;
+                        }
+                    }
+
+                    new EmploymentBuilder(this.Session).WithEmployer(internalOrganisation).WithEmployee(person).Build();
                 }
             }
         }

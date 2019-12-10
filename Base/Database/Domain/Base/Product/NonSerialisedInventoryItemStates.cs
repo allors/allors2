@@ -15,51 +15,53 @@ namespace Allors.Domain
         private static readonly Guid DefectiveId = new Guid("C0E10011-1BA4-412f-B426-103C1C11B879");
         private static readonly Guid ScrapId = new Guid("CF51C221-111C-4666-8E97-CC060643C5FD");
 
-        private UniquelyIdentifiableSticky<NonSerialisedInventoryItemState> stateCache;
+        private UniquelyIdentifiableSticky<NonSerialisedInventoryItemState> cache;
 
-        public NonSerialisedInventoryItemState Good => this.StateCache[GoodId];
+        public NonSerialisedInventoryItemState Good => this.Cache[GoodId];
 
-        public NonSerialisedInventoryItemState BeingRepaired => this.StateCache[BeingRepairedId];
+        public NonSerialisedInventoryItemState BeingRepaired => this.Cache[BeingRepairedId];
 
-        public NonSerialisedInventoryItemState SlightlyDamaged => this.StateCache[SlightlyDamagedId];
+        public NonSerialisedInventoryItemState SlightlyDamaged => this.Cache[SlightlyDamagedId];
 
-        public NonSerialisedInventoryItemState Defective => this.StateCache[DefectiveId];
+        public NonSerialisedInventoryItemState Defective => this.Cache[DefectiveId];
 
-        public NonSerialisedInventoryItemState Scrap => this.StateCache[ScrapId];
+        public NonSerialisedInventoryItemState Scrap => this.Cache[ScrapId];
 
-        private UniquelyIdentifiableSticky<NonSerialisedInventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<NonSerialisedInventoryItemState>(this.Session));
+        private UniquelyIdentifiableSticky<NonSerialisedInventoryItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<NonSerialisedInventoryItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new NonSerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(GoodId)
-                .WithName("Good")
-                .WithAvailableForSale(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new NonSerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(BeingRepairedId)
-                .WithName("Being Repared")
-                .WithAvailableForSale(false)
-                .Build();
+            merge(GoodId, v =>
+            {
+                v.Name = "Good";
+                v.AvailableForSale = true;
+            });
 
-            new NonSerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(SlightlyDamagedId)
-                .WithName("Slightly Damaged")
-                .WithAvailableForSale(true)
-                .Build();
+            merge(BeingRepairedId, v =>
+            {
+                v.Name = "Being Repared";
+                v.AvailableForSale = false;
+            });
 
-            new NonSerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(DefectiveId)
-                .WithName("Defective")
-                .WithAvailableForSale(false)
-                .Build();
+            merge(SlightlyDamagedId, v =>
+            {
+                v.Name = "Slightly Damaged";
+                v.AvailableForSale = true;
+            });
 
-            new NonSerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(ScrapId)
-                .WithName("Scrap")
-                .WithAvailableForSale(false)
-                .Build();
+            merge(DefectiveId, v =>
+            {
+                v.Name = "Defective";
+                v.AvailableForSale = false;
+            });
+
+            merge(ScrapId, v =>
+            {
+                v.Name = "Scrap";
+                v.AvailableForSale = false;
+            });
         }
     }
 }

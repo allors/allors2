@@ -27,46 +27,49 @@ namespace Allors.Domain
 
         public WorkEffortTypeKind WorkTask => this.Cache[WorkTaskId];
 
-        private UniquelyIdentifiableSticky<WorkEffortTypeKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<WorkEffortTypeKind>(this.Session));
+        private UniquelyIdentifiableSticky<WorkEffortTypeKind> Cache => this.cache ??= new UniquelyIdentifiableSticky<WorkEffortTypeKind>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Program")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Programma").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProgramId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Project")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProjectId)
-                .WithIsActive(true)
-                .Build();
+            merge(ProgramId, v =>
+            {
+                v.Name = "Program";
+                localisedName.Set(v, dutchLocale, "Programma");
+                v.IsActive = true;
+            });
 
-            new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Phase")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fase").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PhaseId)
-                .WithIsActive(true)
-                .Build();
+            merge(ProjectId, v =>
+            {
+                v.Name = "Project";
+                localisedName.Set(v, dutchLocale, "Project");
+                v.IsActive = true;
+            });
 
-            new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Activity")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Activiteit").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ActivityId)
-                .WithIsActive(true)
-                .Build();
+            merge(PhaseId, v =>
+            {
+                v.Name = "Phase";
+                localisedName.Set(v, dutchLocale, "Fase");
+                v.IsActive = true;
+            });
 
-            new WorkEffortTypeKindBuilder(this.Session)
-                .WithName("Task")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Taak").WithLocale(dutchLocale).Build())
-                .WithUniqueId(WorkTaskId)
-                .WithIsActive(true)
-                .Build();
+            merge(ActivityId, v =>
+            {
+                v.Name = "Activity";
+                localisedName.Set(v, dutchLocale, "Activiteit");
+                v.IsActive = true;
+            });
+
+            merge(WorkTaskId, v =>
+            {
+                v.Name = "Task";
+                localisedName.Set(v, dutchLocale, "Taak");
+                v.IsActive = true;
+            });
         }
     }
 }

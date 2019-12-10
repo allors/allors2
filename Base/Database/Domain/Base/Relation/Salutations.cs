@@ -27,46 +27,49 @@ namespace Allors.Domain
 
         public Salutation Mme => this.Cache[MmeId];
 
-        private UniquelyIdentifiableSticky<Salutation> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Salutation>(this.Session));
+        private UniquelyIdentifiableSticky<Salutation> Cache => this.cache ??= new UniquelyIdentifiableSticky<Salutation>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new SalutationBuilder(this.Session)
-                .WithName("Mr.")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mr.").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MrId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new SalutationBuilder(this.Session)
-                .WithName("Mrs.")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mvr.").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MrsId)
-                .WithIsActive(true)
-                .Build();
+            merge(MrId, v =>
+            {
+                v.Name = "Mr.";
+                localisedName.Set(v, dutchLocale, "Mr.");
+                v.IsActive = true;
+            });
 
-            new SalutationBuilder(this.Session)
-                .WithName("Dr.")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dr.").WithLocale(dutchLocale).Build())
-                .WithUniqueId(DrId)
-                .WithIsActive(true)
-                .Build();
+            merge(MrsId, v =>
+            {
+                v.Name = "Mrs.";
+                localisedName.Set(v, dutchLocale, "Mvr.");
+                v.IsActive = true;
+            });
 
-            new SalutationBuilder(this.Session)
-                .WithName("Ms.")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Juff.").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MsId)
-                .WithIsActive(true)
-                .Build();
+            merge(DrId, v =>
+            {
+                v.Name = "Dr.";
+                localisedName.Set(v, dutchLocale, "Dr.");
+                v.IsActive = true;
+            });
 
-            new SalutationBuilder(this.Session)
-                .WithName("Mme.")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mvr.").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MmeId)
-                .WithIsActive(true)
-                .Build();
+            merge(MsId, v =>
+            {
+                v.Name = "Ms.";
+                localisedName.Set(v, dutchLocale, "Juff.");
+                v.IsActive = true;
+            });
+
+            merge(MmeId, v =>
+            {
+                v.Name = "Mme.";
+                localisedName.Set(v, dutchLocale, "Mvr.");
+                v.IsActive = true;
+            });
         }
     }
 }

@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public Ownership Trading => this.Cache[TradingId];
 
-        private UniquelyIdentifiableSticky<Ownership> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Ownership>(this.Session));
+        private UniquelyIdentifiableSticky<Ownership> Cache => this.cache ??= new UniquelyIdentifiableSticky<Ownership>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new OwnershipBuilder(this.Session)
-                .WithName("Own")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Eigen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OwnId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new OwnershipBuilder(this.Session)
-                .WithName("Trading")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Handel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(TradingId)
-                .WithIsActive(true)
-                .Build();
+            merge(OwnId, v =>
+            {
+                v.Name = "Own";
+                localisedName.Set(v, dutchLocale, "Eigen");
+                v.IsActive = true;
+            });
+
+            merge(TradingId, v =>
+            {
+                v.Name = "Trading";
+                localisedName.Set(v, dutchLocale, "Handel");
+                v.IsActive = true;
+            });
         }
     }
 }

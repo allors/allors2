@@ -19,24 +19,15 @@ namespace Allors.Domain
 
         public BudgetState Closed => this.Cache[ClosedId];
 
-        private UniquelyIdentifiableSticky<BudgetState> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<BudgetState>(this.Session));
+        private UniquelyIdentifiableSticky<BudgetState> Cache => this.cache ??= new UniquelyIdentifiableSticky<BudgetState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new BudgetStateBuilder(this.Session)
-                .WithUniqueId(OpenedId)
-                .WithName("Open")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new BudgetStateBuilder(this.Session)
-                .WithUniqueId(ClosedId)
-                .WithName("Closed")
-                .Build();
-
-            new BudgetStateBuilder(this.Session)
-                .WithUniqueId(ReopenedId)
-                .WithName("Reopened")
-                .Build();
+            merge(OpenedId, v => v.Name = "Open");
+            merge(ClosedId, v => v.Name = "Closed");
+            merge(ReopenedId, v => v.Name = "Reopened");
         }
     }
 }

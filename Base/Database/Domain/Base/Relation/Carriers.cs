@@ -27,15 +27,17 @@ namespace Allors.Domain
 
         public Carrier Customer => this.Cache[CustomerId];
 
-        private UniquelyIdentifiableSticky<Carrier> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Carrier>(this.Session));
+        private UniquelyIdentifiableSticky<Carrier> Cache => this.cache ??= new UniquelyIdentifiableSticky<Carrier>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new CarrierBuilder(this.Session).WithName("GLS").WithUniqueId(GlsId).Build();
-            new CarrierBuilder(this.Session).WithName("UPS").WithUniqueId(UpsId).Build();
-            new CarrierBuilder(this.Session).WithName("FEDEX").WithUniqueId(FedexId).Build();
-            new CarrierBuilder(this.Session).WithName("DHL").WithUniqueId(DhlId).Build();
-            new CarrierBuilder(this.Session).WithName("Customer").WithUniqueId(CustomerId).Build();
+            var merge = this.Cache.Merger().Action();
+
+            merge(GlsId, v => v.Name = "GLS");
+            merge(UpsId, v => v.Name = "UPS");
+            merge(FedexId, v => v.Name = "FEDEX");
+            merge(DhlId, v => v.Name = "DHL");
+            merge(CustomerId, v => v.Name = "Customer");
         }
     }
 }

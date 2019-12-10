@@ -11,16 +11,11 @@ namespace Allors.Domain
     {
         public Singleton Instance => this.Session.GetSingleton();
 
-        protected override void CorePrepare(Setup setup)
-        {
-            base.CorePrepare(setup);
-
-            setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
-        }
+        protected override void CorePrepare(Setup setup) => setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
 
         protected override void CoreSetup(Setup setup)
         {
-            var singleton = new SingletonBuilder(this.Session).Build();
+            var singleton = this.Session.GetSingleton() ?? new SingletonBuilder(this.Session).Build();
 
             singleton.DefaultLocale = new Locales(this.Session).EnglishGreatBritain;
         }

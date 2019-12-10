@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public FacilityType StorageLocation => this.Cache[StorageLocationId];
 
-        private UniquelyIdentifiableSticky<FacilityType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<FacilityType>(this.Session));
+        private UniquelyIdentifiableSticky<FacilityType> Cache => this.cache ??= new UniquelyIdentifiableSticky<FacilityType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new FacilityTypeBuilder(this.Session)
-                .WithName("Warehouse")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Magazijn").WithLocale(dutchLocale).Build())
-                .WithUniqueId(WarehouseId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new FacilityTypeBuilder(this.Session)
-                .WithName("Storage location")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Opslag plaats").WithLocale(dutchLocale).Build())
-                .WithUniqueId(StorageLocationId)
-                .WithIsActive(true)
-                .Build();
+            merge(WarehouseId, v =>
+            {
+                v.Name = "Warehouse";
+                localisedName.Set(v, dutchLocale, "Magazijn");
+                v.IsActive = true;
+            });
+
+            merge(StorageLocationId, v =>
+            {
+                v.Name = "Storage location";
+                localisedName.Set(v, dutchLocale, "Opslag plaats");
+                v.IsActive = true;
+            });
         }
     }
 }

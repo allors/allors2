@@ -21,31 +21,35 @@ namespace Allors.Domain
 
         public VatRatePurchaseKind Investments => this.Cache[InvestmentsId];
 
-        private UniquelyIdentifiableSticky<VatRatePurchaseKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<VatRatePurchaseKind>(this.Session));
+        private UniquelyIdentifiableSticky<VatRatePurchaseKind> Cache => this.cache ??= new UniquelyIdentifiableSticky<VatRatePurchaseKind>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new VatRatePurchaseKindBuilder(this.Session)
-                .WithName("Goods")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goederen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GoodsId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new VatRatePurchaseKindBuilder(this.Session)
-                .WithName("Services")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Diensten").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ServicesId)
-                .WithIsActive(true)
-                .Build();
+            merge(GoodsId, v =>
+            {
+                v.Name = "Goods";
+                localisedName.Set(v, dutchLocale, "Goederen");
+                v.IsActive = true;
+            });
 
-            new VatRatePurchaseKindBuilder(this.Session)
-                .WithName("Investments")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Investeringen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InvestmentsId).WithIsActive(true)
-                .Build();
+            merge(ServicesId, v =>
+            {
+                v.Name = "Services";
+                localisedName.Set(v, dutchLocale, "Diensten");
+                v.IsActive = true;
+            });
+
+            merge(InvestmentsId, v =>
+            {
+                v.Name = "Investments";
+                localisedName.Set(v, dutchLocale, "Investeringen");
+                v.IsActive = true;
+            });
         }
     }
 }

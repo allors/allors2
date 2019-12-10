@@ -21,32 +21,35 @@ namespace Allors.Domain
 
         public Ordinal Third => this.Cache[ThirdId];
 
-        private UniquelyIdentifiableSticky<Ordinal> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<Ordinal>(this.Session));
+        private UniquelyIdentifiableSticky<Ordinal> Cache => this.cache ??= new UniquelyIdentifiableSticky<Ordinal>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new OrdinalBuilder(this.Session)
-                .WithName("First")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Eerste").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FirstId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new OrdinalBuilder(this.Session)
-                .WithName("Second")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tweede").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SecondId)
-                .WithIsActive(true)
-                .Build();
+            merge(FirstId, v =>
+            {
+                v.Name = "First";
+                localisedName.Set(v, dutchLocale, "Eerste");
+                v.IsActive = true;
+            });
 
-            new OrdinalBuilder(this.Session)
-                .WithName("Third")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Derde").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ThirdId)
-                .WithIsActive(true)
-                .Build();
+            merge(SecondId, v =>
+            {
+                v.Name = "Second";
+                localisedName.Set(v, dutchLocale, "Tweede");
+                v.IsActive = true;
+            });
+
+            merge(ThirdId, v =>
+            {
+                v.Name = "Third";
+                localisedName.Set(v, dutchLocale, "Derde");
+                v.IsActive = true;
+            });
         }
     }
 }

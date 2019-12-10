@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public InventoryItemKind NonSerialised => this.Cache[NonSerialisedId];
 
-        private UniquelyIdentifiableSticky<InventoryItemKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InventoryItemKind>(this.Session));
+        private UniquelyIdentifiableSticky<InventoryItemKind> Cache => this.cache ??= new UniquelyIdentifiableSticky<InventoryItemKind>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new InventoryItemKindBuilder(this.Session)
-                .WithName("Serialised")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Op serienummer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SerialisedId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new InventoryItemKindBuilder(this.Session)
-                .WithName("Non serialised")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zonder serienummer").WithLocale(dutchLocale).Build())
-                .WithUniqueId(NonSerialisedId)
-                .WithIsActive(true)
-                .Build();
+            merge(SerialisedId, v =>
+            {
+                v.Name = "Serialised";
+                localisedName.Set(v, dutchLocale, "Op serienummer");
+                v.IsActive = true;
+            });
+
+            merge(NonSerialisedId, v =>
+            {
+                v.Name = "Non serialised";
+                localisedName.Set(v, dutchLocale, "Zonder serienummer");
+                v.IsActive = true;
+            });
         }
     }
 }

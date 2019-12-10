@@ -24,39 +24,42 @@ namespace Allors.Domain
 
         public DeliverableType MarketAnalysis => this.Cache[MarketAnalysisId];
 
-        private UniquelyIdentifiableSticky<DeliverableType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<DeliverableType>(this.Session));
+        private UniquelyIdentifiableSticky<DeliverableType> Cache => this.cache ??= new UniquelyIdentifiableSticky<DeliverableType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new DeliverableTypeBuilder(this.Session)
-                .WithName("Project Plan")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Projectplan").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ProjectPlanId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new DeliverableTypeBuilder(this.Session)
-                .WithName("Presentation")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Presentatie").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PresentationId)
-                .WithIsActive(true)
-                .Build();
+            merge(ProjectPlanId, v =>
+            {
+                v.Name = "Project Plan";
+                localisedName.Set(v, dutchLocale, "Projectplan");
+                v.IsActive = true;
+            });
 
-            new DeliverableTypeBuilder(this.Session)
-                .WithName("Report")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Rapport").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ReportId)
-                .WithIsActive(true)
-                .Build();
+            merge(PresentationId, v =>
+            {
+                v.Name = "Presentation";
+                localisedName.Set(v, dutchLocale, "Presentatie");
+                v.IsActive = true;
+            });
 
-            new DeliverableTypeBuilder(this.Session)
-                .WithName("Market Analysis")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Markt analyse").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MarketAnalysisId)
-                .WithIsActive(true)
-                .Build();
+            merge(ReportId, v =>
+            {
+                v.Name = "Report";
+                localisedName.Set(v, dutchLocale, "Rapport");
+                v.IsActive = true;
+            });
+
+            merge(MarketAnalysisId, v =>
+            {
+                v.Name = "Market Analysis";
+                localisedName.Set(v, dutchLocale, "Markt analyse");
+                v.IsActive = true;
+            });
         }
     }
 }

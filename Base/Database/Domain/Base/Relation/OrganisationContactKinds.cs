@@ -24,14 +24,16 @@ namespace Allors.Domain
 
         public OrganisationContactKind SupplierContact => this.Cache[SupplierContactId];
 
-        private UniquelyIdentifiableSticky<OrganisationContactKind> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<OrganisationContactKind>(this.Session));
+        private UniquelyIdentifiableSticky<OrganisationContactKind> Cache => this.cache ??= new UniquelyIdentifiableSticky<OrganisationContactKind>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new OrganisationContactKindBuilder(this.Session).WithDescription("General contact").WithUniqueId(GeneralContactId).Build();
-            new OrganisationContactKindBuilder(this.Session).WithDescription("Sales contact").WithUniqueId(SalesContactId).Build();
-            new OrganisationContactKindBuilder(this.Session).WithDescription("Support contact").WithUniqueId(SupportContactId).Build();
-            new OrganisationContactKindBuilder(this.Session).WithDescription("Supplier contact").WithUniqueId(SupplierContactId).Build();
+            var merge = this.Cache.Merger().Action();
+
+            merge(GeneralContactId, v => v.Description = "General contact");
+            merge(SalesContactId, v => v.Description = "Sales contact");
+            merge(SupportContactId, v => v.Description = "Support contact");
+            merge(SupplierContactId, v => v.Description = "Supplier contact");
         }
     }
 }

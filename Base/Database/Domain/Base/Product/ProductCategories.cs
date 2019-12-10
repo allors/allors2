@@ -19,6 +19,6 @@ namespace Allors.Domain
             }
         }
 
-        private UniquelyIdentifiableSticky<ProductCategory> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ProductCategory>(this.Session));
+        private UniquelyIdentifiableSticky<ProductCategory> Cache => this.cache ??= new UniquelyIdentifiableSticky<ProductCategory>(this.Session);
     }
 }

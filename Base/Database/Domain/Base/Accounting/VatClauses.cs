@@ -30,87 +30,67 @@ namespace Allors.Domain
 
         public VatClause BeArt14Par2 => this.Cache[BeArt14Par2Id];
 
-        private UniquelyIdentifiableSticky<VatClause> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<VatClause>(this.Session));
+        private UniquelyIdentifiableSticky<VatClause> Cache => this.cache ??= new UniquelyIdentifiableSticky<VatClause>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
+            var dutchBelgium = new Locales(this.Session).DutchBelgium;
 
-            new VatClauseBuilder(this.Session)
-                .WithName("Rent goods")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verhuur goederen").WithLocale(dutchLocale).Build())
-                .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
-                    .WithText(
-                        @"Dienstverrichting niet onderworpen aan Belgische btw art. 21, § 2 van het Wbtw / Art. 44  /EG.")
-                    .WithLocale(dutchLocale)
-                    .Build())
-                .WithUniqueId(ServiceB2BId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
+            var localisedClause = new LocalisedTextAccessor(this.Meta.LocalisedClauses);
 
-            new VatClauseBuilder(this.Session)
-                .WithName("Intracommunautair")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intracommunautair").WithLocale(dutchLocale).Build())
-                .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
-                    .WithText(
-                        @"Vrijstelling van BTW art. 39bis, eerste lid, 1° van het WBTW / Vrijgesteld || Artikel 138, lid 1 - Richtlijn 2006/112.")
-                    .WithLocale(dutchLocale)
-                    .Build())
-                .WithUniqueId(IntracommunautairId)
-                .WithIsActive(true)
-                .Build();
+            merge(ServiceB2BId, v =>
+            {
+                v.Name = "Rent goods";
+                localisedName.Set(v, dutchLocale, "Verhuur goederen");
+                localisedClause.Set(v, dutchBelgium, "Dienstverrichting niet onderworpen aan Belgische btw art. 21, Â§ 2 van het Wbtw / Art. 44  /EG.");
+                v.IsActive = true;
+            });
 
-            new VatClauseBuilder(this.Session)
-                .WithName("Export goods, transport responsible is you, destination customer")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop buiten EU, transport verantwoordelijk bent u, bestemming klant").WithLocale(dutchLocale).Build())
-                .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
-                    .WithText(
-                        @"Vrijstelling van BTW art. 39 § 1, 1° van het WBTW / Vrijgesteld  || artikel 146, lid 1, onder a) – richtlijn 2006/112.")
-                    .WithLocale(dutchLocale)
-                    .Build())
-                .WithUniqueId(BeArt39Par1Item1Id)
-                .WithIsActive(true)
-                .Build();
+            merge(IntracommunautairId, v =>
+            {
+                v.Name = "Intracommunautair";
+                localisedName.Set(v, dutchLocale, "Intracommunautair");
+                localisedClause.Set(v, dutchBelgium, "Vrijstelling van BTW art. 39bis, eerste lid, 1Â° van het WBTW / Vrijgesteld || Artikel 138, lid 1 - Richtlijn 2006/112.");
+                v.IsActive = true;
+            });
 
-            new VatClauseBuilder(this.Session)
-                .WithName("Export goods, transport responsible is you, destination internal organisation")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop buiten EU, transport verantwoordelijk bent u, bestemming interne organisatie").WithLocale(dutchLocale).Build())
-                .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
-                    .WithText(
-                        @"Levering van goederen niet onderworpen aan Belgische BTW. art. 15, § 2, van het WBTW / Artikel 33, lid 1, onder a) en b) - Richtlijn 2006/112.")
-                    .WithLocale(dutchLocale)
-                    .Build())
-                .WithUniqueId(BeArt15Par2Id)
-                .WithIsActive(true)
-                .Build();
+            merge(BeArt39Par1Item1Id, v =>
+            {
+                v.Name = "Export goods, transport responsible is you, destination customer";
+                localisedName.Set(v, dutchLocale, "Verkoop buiten EU, transport verantwoordelijk bent u, bestemming klant");
+                localisedClause.Set(v, dutchBelgium, "Vrijstelling van BTW art. 39 Â§ 1, 1Â° van het WBTW / Vrijgesteld  || artikel 146, lid 1, onder a) â€“ richtlijn 2006/112.");
+                v.IsActive = true;
+            });
 
-            new VatClauseBuilder(this.Session)
-                .WithName("Export goods, transport responsible is customer, destination customer")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop buiten EU, transport verantwoordelijk is klant, bestemming klant").WithLocale(dutchLocale).Build())
-                .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
-                    .WithText(
-                        @"Vrijstelling van BTW art. 39 § 1, 2° van het WBTW / Vrijgesteld  || artikel 146, lid 1, onder a) – richtlijn 2006/112.")
-                    .WithLocale(dutchLocale)
-                    .Build())
-                .WithUniqueId(BeArt39Par1Item2Id)
-                .WithIsActive(true)
-                .Build();
+            merge(BeArt15Par2Id, v =>
+            {
+                v.Name = "Export goods, transport responsible is you, destination internal organisation";
+                localisedName.Set(v, dutchLocale, "Verkoop buiten EU, transport verantwoordelijk bent u, bestemming interne organisatie");
+                localisedClause.Set(v, dutchBelgium, "Levering van goederen niet onderworpen aan Belgische BTW. art. 15, Â§ 2, van het WBTW / Artikel 33, lid 1, onder a) en b) - Richtlijn 2006/112.");
+                v.IsActive = true;
+            });
 
-            new VatClauseBuilder(this.Session)
-                .WithName("Export goods, transport responsible is customer, destination internal organisation")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop buiten EU, transport verantwoordelijk is klant, bestemming internal organisation").WithLocale(dutchLocale).Build())
-                .WithLocalisedClause(new LocalisedTextBuilder(this.Session)
-                    .WithText(
-                        @"
-Levering van goederen niet onderworpen aan Belgische BTW. art. 14, § 2 van het WBTW / Artikel 32, eerste alinea - Richtlijn 2006/112 Extra vermeldingen:
-De goederen worden niet geïnstalleerd. / The goods are not installed.
-Koper vervoert van België naar {shipToCountry}. / The buyer transports from Belgium to {shipToCountry}"
-)
-                    .WithLocale(dutchLocale)
-                    .Build())
-                .WithUniqueId(BeArt14Par2Id)
-                .WithIsActive(true)
-                .Build();
+            merge(BeArt39Par1Item2Id, v =>
+            {
+                v.Name = "Export goods, transport responsible is customer, destination customer";
+                localisedName.Set(v, dutchLocale, "Verkoop buiten EU, transport verantwoordelijk is klant, bestemming klant");
+                localisedClause.Set(v, dutchBelgium, "Vrijstelling van BTW art. 39 Â§ 1, 2Â° van het WBTW / Vrijgesteld  || artikel 146, lid 1, onder a) â€“ richtlijn 2006/112.");
+                v.IsActive = true;
+            });
+
+            merge(BeArt14Par2Id, v =>
+            {
+                v.Name = "Export goods, transport responsible is customer, destination internal organisation";
+                localisedName.Set(v, dutchLocale, "Verkoop buiten EU, transport verantwoordelijk is klant, bestemming internal organisation");
+                localisedClause.Set(v, dutchBelgium, @"
+Levering van goederen niet onderworpen aan Belgische BTW. art. 14, Â§ 2 van het WBTW / Artikel 32, eerste alinea - Richtlijn 2006/112 Extra vermeldingen:
+De goederen worden niet geÃ¯nstalleerd. / The goods are not installed.
+Koper vervoert van BelgiÃ« naar {shipToCountry}. / The buyer transports from Belgium to {shipToCountry}");
+                v.IsActive = true;
+            });
         }
     }
 }

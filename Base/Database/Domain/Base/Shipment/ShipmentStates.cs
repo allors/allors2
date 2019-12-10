@@ -19,75 +19,41 @@ namespace Allors.Domain
         private static readonly Guid CancelledId = new Guid("1F50B912-C778-4c99-84F9-12DACA1E54C1");
         private static readonly Guid OnHoldId = new Guid("268CB9A7-6965-47E8-AF89-8F915242C23D");
 
-        private UniquelyIdentifiableSticky<ShipmentState> stateCache;
+        private UniquelyIdentifiableSticky<ShipmentState> cache;
 
-        public ShipmentState Created => this.StateCache[CreatedId];
+        public ShipmentState Created => this.Cache[CreatedId];
 
-        public ShipmentState Picking => this.StateCache[PickingId];
+        public ShipmentState Picking => this.Cache[PickingId];
 
-        public ShipmentState Picked => this.StateCache[PickedId];
+        public ShipmentState Picked => this.Cache[PickedId];
 
-        public ShipmentState Packed => this.StateCache[PackedId];
+        public ShipmentState Packed => this.Cache[PackedId];
 
-        public ShipmentState Shipped => this.StateCache[ShippedId];
+        public ShipmentState Shipped => this.Cache[ShippedId];
 
-        public ShipmentState Delivered => this.StateCache[DeliveredId];
+        public ShipmentState Delivered => this.Cache[DeliveredId];
 
-        public ShipmentState Received => this.StateCache[ReceivedId];
+        public ShipmentState Received => this.Cache[ReceivedId];
 
-        public ShipmentState Cancelled => this.StateCache[CancelledId];
+        public ShipmentState Cancelled => this.Cache[CancelledId];
 
-        public ShipmentState OnHold => this.StateCache[OnHoldId];
+        public ShipmentState OnHold => this.Cache[OnHoldId];
 
-        private UniquelyIdentifiableSticky<ShipmentState> StateCache => this.stateCache
-                                    ?? (this.stateCache = new UniquelyIdentifiableSticky<ShipmentState>(this.Session));
+        private UniquelyIdentifiableSticky<ShipmentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<ShipmentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(CreatedId)
-                .WithName("Created")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(PickingId)
-                .WithName("Picking")
-                .Build();
-
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(PickedId)
-                .WithName("Picked")
-                .Build();
-
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(PackedId)
-                .WithName("Packed")
-                .Build();
-
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(ShippedId)
-                .WithName("Shipped")
-                .Build();
-
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(DeliveredId)
-                .WithName("Delivered")
-                .Build();
-
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(ReceivedId)
-                .WithName("Received")
-                .Build();
-
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(CancelledId)
-                .WithName("Cancelled")
-                .Build();
-
-            new ShipmentStateBuilder(this.Session)
-                .WithUniqueId(OnHoldId)
-                .WithName("On hold")
-                .Build();
+            merge(CreatedId, v => v.Name = "Created");
+            merge(PickingId, v => v.Name = "Picking");
+            merge(PickedId, v => v.Name = "Picked");
+            merge(PackedId, v => v.Name = "Packed");
+            merge(ShippedId, v => v.Name = "Shipped");
+            merge(DeliveredId, v => v.Name = "Delivered");
+            merge(ReceivedId, v => v.Name = "Received");
+            merge(CancelledId, v => v.Name = "Cancelled");
+            merge(OnHoldId, v => v.Name = "On hold");
         }
     }
 }

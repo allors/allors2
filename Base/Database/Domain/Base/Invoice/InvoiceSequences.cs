@@ -18,25 +18,28 @@ namespace Allors.Domain
 
         public InvoiceSequence RestartOnFiscalYear => this.Cache[RestartOnFiscalYearId];
 
-        private UniquelyIdentifiableSticky<InvoiceSequence> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InvoiceSequence>(this.Session));
+        private UniquelyIdentifiableSticky<InvoiceSequence> Cache => this.cache ??= new UniquelyIdentifiableSticky<InvoiceSequence>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new InvoiceSequenceBuilder(this.Session)
-                .WithName("Enforced Sequence (no gaps)")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aansluitend genummerd").WithLocale(dutchLocale).Build())
-                .WithUniqueId(EnforcedSequenceId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new InvoiceSequenceBuilder(this.Session)
-                .WithName("Restart each fiscal year (no gaps, reset to '1' each year")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Herstart elk fiscaal jaar (aansluitend, begint elk jaar met nummer '1'").WithLocale(dutchLocale).Build())
-                .WithUniqueId(RestartOnFiscalYearId)
-                .WithIsActive(true)
-                .Build();
+            merge(EnforcedSequenceId, v =>
+            {
+                v.Name = "Enforced Sequence (no gaps)";
+                localisedName.Set(v, dutchLocale, "Aansluitend genummerd");
+                v.IsActive = true;
+            });
+
+            merge(RestartOnFiscalYearId, v =>
+            {
+                v.Name = "Restart each fiscal year (no gaps, reset to '1' each year";
+                localisedName.Set(v, dutchLocale, "Herstart elk fiscaal jaar (aansluitend, begint elk jaar met nummer '1'");
+                v.IsActive = true;
+            });
         }
     }
 }

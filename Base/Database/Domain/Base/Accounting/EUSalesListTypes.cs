@@ -21,30 +21,35 @@ namespace Allors.Domain
 
         public EuSalesListType TriangularTrade => this.Cache[TriangularTradeId];
 
-        private UniquelyIdentifiableSticky<EuSalesListType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EuSalesListType>(this.Session));
+        private UniquelyIdentifiableSticky<EuSalesListType> Cache => this.cache ??= new UniquelyIdentifiableSticky<EuSalesListType>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new EuSalesListTypeBuilder(this.Session)
-                .WithName("Goods")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goederen").WithLocale(dutchLocale).Build())
-                .WithIsActive(true)
-                .WithUniqueId(GoodsId).Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new EuSalesListTypeBuilder(this.Session)
-                .WithName("Services")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Diensten").WithLocale(dutchLocale).Build())
-                .WithIsActive(true)
-                .WithUniqueId(ServicesId).Build();
+            merge(GoodsId, v =>
+            {
+                v.Name = "Goods";
+                localisedName.Set(v, dutchLocale, "Goederen");
+                v.IsActive = true;
+            });
 
-            new EuSalesListTypeBuilder(this.Session)
-                .WithName("Triangular trade")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ABC-transactie").WithLocale(dutchLocale).Build())
-                .WithIsActive(true)
-                .WithUniqueId(TriangularTradeId).Build();
+            merge(ServicesId, v =>
+            {
+                v.Name = "Services";
+                localisedName.Set(v, dutchLocale, "Diensten");
+                v.IsActive = true;
+            });
+
+            merge(TriangularTradeId, v =>
+            {
+                v.Name = "Triangular trade";
+                localisedName.Set(v, dutchLocale, "ABC-transactie");
+                v.IsActive = true;
+            });
         }
     }
 }

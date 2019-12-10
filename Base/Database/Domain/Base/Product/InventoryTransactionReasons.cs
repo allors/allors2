@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System;
+    using Meta;
 
     public partial class InventoryTransactionReasons
     {
@@ -42,7 +43,13 @@ namespace Allors.Domain
 
         public InventoryTransactionReason Consumption => this.Cache[ConsumptionId];
 
-        private UniquelyIdentifiableSticky<InventoryTransactionReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InventoryTransactionReason>(this.Session));
+        private UniquelyIdentifiableSticky<InventoryTransactionReason> Cache => this.cache ??= new UniquelyIdentifiableSticky<InventoryTransactionReason>(this.Session);
+
+        protected override void BasePrepare(Setup setup)
+        {
+            setup.AddDependency(this.Meta.ObjectType, M.SerialisedInventoryItemState);
+            setup.AddDependency(this.Meta.ObjectType, M.NonSerialisedInventoryItemState);
+        }
 
         protected override void BaseSetup(Setup setup)
         {
@@ -50,132 +57,138 @@ namespace Allors.Domain
             var serialisedStates = new SerialisedInventoryItemStates(this.Session);
             var nonSerialisedStates = new NonSerialisedInventoryItemStates(this.Session);
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Sales Order")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bestelling").WithLocale(dutchLocale).Build()) // TODO
-                .WithUniqueId(SalesOrderId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(true) // Increases Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(null) // Does not affect Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Outbound Shipment")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verscheping uitgaand").WithLocale(dutchLocale).Build())
-                .WithUniqueId(OutgoingShipmentId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(false) // Decreases Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(false) // Decreases Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
-                .Build();
+            merge(SalesOrderId, v =>
+            {
+                v.Name = "Sales Order";
+                localisedName.Set(v, dutchLocale, "Bestelling");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = false;
+                v.IncreasesQuantityCommittedOut = true; // Increases Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = null; // Does not affect Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
+            });
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Inbound Shipment")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verscheping inkomend").WithLocale(dutchLocale).Build())
-                .WithUniqueId(IncomingShipmentId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(null) // Decreases Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(true) // Decreases Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
-                .Build();
+            merge(OutgoingShipmentId, v =>
+            {
+                v.Name = "Outbound Shipment";
+                localisedName.Set(v, dutchLocale, "Verscheping uitgaand");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = false;
+                v.IncreasesQuantityCommittedOut = false; // Decreases Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = false; // Decreases Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
+            });
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Theft")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Diefstal").WithLocale(dutchLocale).Build())
-                .WithUniqueId(TheftId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(true)
-                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(false) // Decreases Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
-                .Build();
+            merge(IncomingShipmentId, v =>
+            {
+                v.Name = "Inbound Shipment";
+                localisedName.Set(v, dutchLocale, "Verscheping inkomend");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = false;
+                v.IncreasesQuantityCommittedOut = null; // Decreases Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = true; // Decreases Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
+            });
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Shrinkage")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Inkrimping").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ShrinkageId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(true)
-                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(false) // Decreases Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
-                .Build();
+            merge(TheftId, v =>
+            {
+                v.Name = "Theft";
+                localisedName.Set(v, dutchLocale, "Diefstal");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = true;
+                v.IncreasesQuantityCommittedOut = null; // Does not affect Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = false; // Decreases Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
+            });
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Unknown")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onbekend").WithLocale(dutchLocale).Build())
-                .WithUniqueId(UnknownId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(true)
-                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(true) // Affects Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
-                .Build();
+            merge(ShrinkageId, v =>
+            {
+                v.Name = "Theft";
+                localisedName.Set(v, dutchLocale, "Shrinkage");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = true;
+                v.IncreasesQuantityCommittedOut = null; // Does not affect Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = false; // Decreases Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
+            });
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("State change")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Status update").WithLocale(dutchLocale).Build())
-                .WithUniqueId(StateId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(null) // Does not affect Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Scrap)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Scrap)
-                .Build();
+            merge(UnknownId, v =>
+            {
+                v.Name = "Unknown";
+                localisedName.Set(v, dutchLocale, "Onbekend");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = true;
+                v.IncreasesQuantityCommittedOut = null; // Does not affect Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = true; // Affects Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
+            });
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Physical Count")
-                .WithUniqueId(PhysicalCountId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(true)
-                .WithIncreasesQuantityCommittedOut(null) // Does not affect Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(true) // Increases Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
-                .Build();
+            merge(StateId, v =>
+            {
+                v.Name = "State change";
+                localisedName.Set(v, dutchLocale, "Status update");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = false;
+                v.IncreasesQuantityCommittedOut = null; // Does not affect Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = null; // Does not affect Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Scrap;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Scrap;
+            });
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Consumption")
-                .WithUniqueId(ConsumptionId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(false) // Decreases Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(false) // Decreases Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
-                .Build();
+            merge(PhysicalCountId, v =>
+            {
+                v.Name = "Physical Count";
+                localisedName.Set(v, dutchLocale, "Stocktelling");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = true;
+                v.IncreasesQuantityCommittedOut = null; // Does not affect Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = true; // Increases Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
+            });
 
-            new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Reservation")
-                .WithUniqueId(ReservationId)
-                .WithIsActive(true)
-                .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(true) // Increases Quantity
-                .WithIncreasesQuantityExpectedIn(null) // Does not affect Quantity
-                .WithIncreasesQuantityOnHand(null) // Does not affect Quantity
-                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
-                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
-                .Build();
+            merge(ConsumptionId, v =>
+            {
+                v.Name = "Consumption";
+                localisedName.Set(v, dutchLocale, "Verbruik");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = false;
+                v.IncreasesQuantityCommittedOut = false; // Decreases Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = false; // Decreases Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
+            });
+
+            merge(ReservationId, v =>
+            {
+                v.Name = "Reservation";
+                localisedName.Set(v, dutchLocale, "Gereserveerd");
+                v.IsActive = true;
+                v.IsManualEntryAllowed = false;
+                v.IncreasesQuantityCommittedOut = true; // Increases Quantity
+                v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
+                v.IncreasesQuantityOnHand = null; // Does not affect Quantity
+                v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
+                v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
+            });
         }
     }
 }

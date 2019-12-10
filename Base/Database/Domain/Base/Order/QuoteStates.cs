@@ -15,23 +15,23 @@ namespace Allors.Domain
         public static readonly Guid CancelledId = new Guid("ED013479-08AF-4D02-96A7-3FC8B7BE37EF");
         public static readonly Guid RejectedId = new Guid("C897C8E8-2C01-438B-B4C9-B71AD8CCB7C4");
 
-        private UniquelyIdentifiableSticky<QuoteState> stateCache;
+        private UniquelyIdentifiableSticky<QuoteState> cache;
 
-        public QuoteState Created => this.StateCache[CreatedId];
+        public QuoteState Created => this.Cache[CreatedId];
 
-        public QuoteState Approved => this.StateCache[ApprovedId];
+        public QuoteState Approved => this.Cache[ApprovedId];
 
-        public QuoteState Ordered => this.StateCache[OrderedId];
+        public QuoteState Ordered => this.Cache[OrderedId];
 
-        public QuoteState Cancelled => this.StateCache[CancelledId];
+        public QuoteState Cancelled => this.Cache[CancelledId];
 
-        public QuoteState Rejected => this.StateCache[RejectedId];
+        public QuoteState Rejected => this.Cache[RejectedId];
 
-        private UniquelyIdentifiableSticky<QuoteState> StateCache => this.stateCache ??= new UniquelyIdentifiableSticky<QuoteState>(this.Session);
+        private UniquelyIdentifiableSticky<QuoteState> Cache => this.cache ??= new UniquelyIdentifiableSticky<QuoteState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            var merge = this.StateCache.Merger().Action();
+            var merge = this.Cache.Merger().Action();
 
             merge(CreatedId, v => v.Name = "Created");
             merge(ApprovedId, v => v.Name = "Approved");

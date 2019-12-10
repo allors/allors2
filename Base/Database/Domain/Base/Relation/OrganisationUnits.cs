@@ -21,32 +21,36 @@ namespace Allors.Domain
 
         public OrganisationUnit Subsidiary => this.Cache[SubsidiaryId];
 
-        private UniquelyIdentifiableSticky<OrganisationUnit> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<OrganisationUnit>(this.Session));
+        private UniquelyIdentifiableSticky<OrganisationUnit> Cache => this.cache ??= new UniquelyIdentifiableSticky<OrganisationUnit>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new OrganisationUnitBuilder(this.Session)
-                .WithName("Department")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Departement").WithLocale(dutchLocale).Build())
-                .WithUniqueId(DepartmentId)
-                .WithIsActive(true)
-                .Build();
 
-            new OrganisationUnitBuilder(this.Session)
-                .WithName("Division")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Divisie").WithLocale(dutchLocale).Build())
-                .WithUniqueId(DivisionId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new OrganisationUnitBuilder(this.Session)
-                .WithName("Subsidiary")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dochtermaatschappij").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SubsidiaryId)
-                .WithIsActive(true)
-                .Build();
+            merge(DepartmentId, v =>
+            {
+                v.Name = "Department";
+                localisedName.Set(v, dutchLocale, "Departement");
+                v.IsActive = true;
+            });
+
+            merge(DivisionId, v =>
+            {
+                v.Name = "Division";
+                localisedName.Set(v, dutchLocale, "Divisie");
+                v.IsActive = true;
+            });
+
+            merge(SubsidiaryId, v =>
+            {
+                v.Name = "Subsidiary";
+                localisedName.Set(v, dutchLocale, "Dochtermaatschappij");
+                v.IsActive = true;
+            });
         }
     }
 }

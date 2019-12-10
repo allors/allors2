@@ -21,32 +21,35 @@ namespace Allors.Domain
 
         public VatRateUsage PurchaseAndSales => this.Cache[PurchaseAndSalesId];
 
-        private UniquelyIdentifiableSticky<VatRateUsage> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<VatRateUsage>(this.Session));
+        private UniquelyIdentifiableSticky<VatRateUsage> Cache => this.cache ??= new UniquelyIdentifiableSticky<VatRateUsage>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new VatRateUsageBuilder(this.Session)
-                .WithName("Purchase")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("inkoop").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PurchaseId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new VatRateUsageBuilder(this.Session)
-                .WithName("Sales")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop").WithLocale(dutchLocale).Build())
-                .WithUniqueId(SalesId)
-                .WithIsActive(true)
-                .Build();
+            merge(PurchaseId, v =>
+            {
+                v.Name = "Purchase";
+                localisedName.Set(v, dutchLocale, "Inkoop");
+                v.IsActive = true;
+            });
 
-            new VatRateUsageBuilder(this.Session)
-                .WithName("Purchase & sales")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Inkoop & verkoop").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PurchaseAndSalesId)
-                .WithIsActive(true)
-                .Build();
+            merge(SalesId, v =>
+            {
+                v.Name = "Sales";
+                localisedName.Set(v, dutchLocale, "Verkoop");
+                v.IsActive = true;
+            });
+
+            merge(PurchaseAndSalesId, v =>
+            {
+                v.Name = "Purchase & sales";
+                localisedName.Set(v, dutchLocale, "Inkoop & verkoop");
+                v.IsActive = true;
+            });
         }
     }
 }

@@ -24,40 +24,42 @@ namespace Allors.Domain
 
         public EmploymentTerminationReason Moved => this.Cache[MovedId];
 
-        private UniquelyIdentifiableSticky<EmploymentTerminationReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<EmploymentTerminationReason>(this.Session));
+        private UniquelyIdentifiableSticky<EmploymentTerminationReason> Cache => this.cache ??= new UniquelyIdentifiableSticky<EmploymentTerminationReason>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
-            new EmploymentTerminationReasonBuilder(this.Session)
-                .WithName("Insubordination")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weigering van bevel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InsubordinationId)
-                .WithIsActive(true)
-                .Build();
+            var merge = this.Cache.Merger().Action();
+            var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            new EmploymentTerminationReasonBuilder(this.Session)
-                .WithName("Accepted New Job")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Nieuwe job aangenomen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(AcceptedNewJobId)
-                .WithIsActive(true)
-                .Build();
+            merge(InsubordinationId, v =>
+            {
+                v.Name = "Insubordination";
+                localisedName.Set(v, dutchLocale, "Weigering van bevel");
+                v.IsActive = true;
+            });
 
-            new EmploymentTerminationReasonBuilder(this.Session)
-                .WithName("Non Performance")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Slechte performantie").WithLocale(dutchLocale).Build())
-                .WithUniqueId(NonPerformanceId)
-                .WithIsActive(true)
-                .Build();
+            merge(AcceptedNewJobId, v =>
+            {
+                v.Name = "Accepted New Job";
+                localisedName.Set(v, dutchLocale, "Nieuwe job aangenomen");
+                v.IsActive = true;
+            });
 
-            new EmploymentTerminationReasonBuilder(this.Session)
-                .WithName("Moved")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verhuis").WithLocale(dutchLocale).Build())
-                .WithUniqueId(MovedId)
-                .WithIsActive(true)
-                .Build();
+            merge(NonPerformanceId, v =>
+            {
+                v.Name = "Non Performance";
+                localisedName.Set(v, dutchLocale, "Slechte performantie");
+                v.IsActive = true;
+            });
+
+            merge(MovedId, v =>
+            {
+                v.Name = "Moved";
+                localisedName.Set(v, dutchLocale, "Verhuis");
+                v.IsActive = true;
+            });
         }
     }
 }

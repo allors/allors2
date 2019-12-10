@@ -13,32 +13,23 @@ namespace Allors.Domain
         public static readonly Guid PartiallyReceivedId = new Guid("77ED251D-B004-41e7-B0C4-9769CF7AE73E");
         public static readonly Guid ReceivedId = new Guid("BCCB68CE-A517-44c6-ADDA-DBEB0464D575");
 
-        private UniquelyIdentifiableSticky<PurchaseOrderShipmentState> stateCache;
+        private UniquelyIdentifiableSticky<PurchaseOrderShipmentState> cache;
 
-        public PurchaseOrderShipmentState NotReceived => this.StateCache[NotReceivedId];
+        public PurchaseOrderShipmentState NotReceived => this.Cache[NotReceivedId];
 
-        public PurchaseOrderShipmentState PartiallyReceived => this.StateCache[PartiallyReceivedId];
+        public PurchaseOrderShipmentState PartiallyReceived => this.Cache[PartiallyReceivedId];
 
-        public PurchaseOrderShipmentState Received => this.StateCache[ReceivedId];
+        public PurchaseOrderShipmentState Received => this.Cache[ReceivedId];
 
-        private UniquelyIdentifiableSticky<PurchaseOrderShipmentState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<PurchaseOrderShipmentState>(this.Session));
+        private UniquelyIdentifiableSticky<PurchaseOrderShipmentState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PurchaseOrderShipmentState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
-            new PurchaseOrderShipmentStateBuilder(this.Session)
-                .WithUniqueId(NotReceivedId)
-                .WithName("Not Received")
-                .Build();
+            var merge = this.Cache.Merger().Action();
 
-            new PurchaseOrderShipmentStateBuilder(this.Session)
-                .WithUniqueId(PartiallyReceivedId)
-                .WithName("Partially Received")
-                .Build();
-
-            new PurchaseOrderShipmentStateBuilder(this.Session)
-                .WithUniqueId(ReceivedId)
-                .WithName("Received")
-                .Build();
+            merge(NotReceivedId, v => v.Name = "Not Received");
+            merge(PartiallyReceivedId, v => v.Name = "Partially Received");
+            merge(ReceivedId, v => v.Name = "Received");
         }
     }
 }
