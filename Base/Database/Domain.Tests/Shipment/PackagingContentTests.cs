@@ -103,6 +103,8 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
+            shipment.Pick();
+            this.Session.Derive();
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;

@@ -89,20 +89,23 @@ namespace Allors.Domain
                 .WithVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1)
-                .WithAssignedUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+
             var item2 = new SalesOrderItemBuilder(this.Session)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem)
                 .WithProductFeature(colorWhite).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+
             var item3 = new SalesOrderItemBuilder(this.Session)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem)
                 .WithProductFeature(extraLarge).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+
             item1.AddOrderedWithFeature(item2);
             item1.AddOrderedWithFeature(item3);
-            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2)
-                .WithAssignedUnitPrice(15).Build();
-            var item5 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5)
-                .WithAssignedUnitPrice(15).Build();
+
+            var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+
+            var item5 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
+
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -117,8 +120,10 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
-            var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0]
-                .PickListWherePickListItem;
+            shipment.Pick();
+            this.Session.Derive();
+
+            var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
 
             //// item5: only 4 out of 5 are actually picked
@@ -142,9 +147,9 @@ namespace Allors.Domain
             Assert.Equal(5, item5.QuantityReserved);
             Assert.Equal(0, item5.QuantityRequestsShipping);
             Assert.Equal(97, good1Inventory.QuantityOnHand);
-            Assert.Equal(0, good1Inventory.QuantityCommittedOut);
+            Assert.Equal(3, good1Inventory.QuantityCommittedOut);
             Assert.Equal(96, good2Inventory.QuantityOnHand);
-            Assert.Equal(1, good2Inventory.QuantityCommittedOut);
+            Assert.Equal(4, good2Inventory.QuantityCommittedOut);
         }
 
         [Fact]
@@ -209,12 +214,9 @@ namespace Allors.Domain
                 .WithShipToCustomer(customer)
                 .Build();
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1)
-                .WithAssignedUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2)
-                .WithAssignedUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5)
-                .WithAssignedUnitPrice(15).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -222,11 +224,13 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
-
             this.Session.Derive();
 
-            var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0]
-                .PickListWherePickListItem;
+            var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
+            shipment.Pick();
+            this.Session.Derive();
+
+            var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
 
             //// item3: only 4 out of 5 are actually picked
@@ -241,7 +245,6 @@ namespace Allors.Domain
 
             var itemIssuance = adjustedPicklistItem.ItemIssuancesWherePickListItem[0];
             var shipmentItem = adjustedPicklistItem.ItemIssuancesWherePickListItem[0].ShipmentItem;
-            var shipment = shipmentItem.ShipmentWhereShipmentItem;
 
             Assert.Equal(2, shipment.ShipmentItems.Count);
             Assert.Equal(5, itemIssuance.Quantity);
@@ -355,6 +358,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0]
                 .PickListWherePickListItem;
 
@@ -465,6 +472,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0]
                 .PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
@@ -477,6 +488,106 @@ namespace Allors.Domain
 
             var customerShipment = (CustomerShipment)customer.ShipmentsWhereShipToParty.First;
             Assert.Equal(new ShipmentStates(this.Session).Picked, customerShipment.ShipmentState);
+        }
+
+        [Fact]
+        public void GivenCustomerBuyingFromDifferentStores_WhenShipping_ThenPickListIsCreatedForEachStore()
+        {
+            var store1 = new Stores(this.Session).FindBy(M.Store.Name, "store");
+
+            var store2 = new StoreBuilder(this.Session).WithName("second store")
+                .WithDefaultFacility(new Facilities(this.Session).Extent().First)
+                .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .WithDefaultCarrier(new Carriers(this.Session).Fedex)
+                .WithSalesOrderNumberPrefix("")
+                .WithOutgoingShipmentNumberPrefix("")
+                .Build();
+
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(mechelenAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
+
+            this.Session.Derive(true);
+
+            var order1 = new SalesOrderBuilder(this.Session)
+                .WithStore(store1)
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(mechelenAddress)
+                .WithShipToCustomer(customer)
+                .Build();
+
+            var order1Item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
+            order1.AddSalesOrderItem(order1Item);
+
+            this.Session.Derive(true);
+
+            order1.Confirm();
+
+            this.Session.Derive(true);
+
+            Assert.Single(customer.ShipmentsWhereShipToParty);
+
+            var order2 = new SalesOrderBuilder(this.Session)
+                .WithStore(store1)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .Build();
+
+            var order2Item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
+            order2.AddSalesOrderItem(order2Item);
+
+            this.Session.Derive(true);
+
+            order2.Confirm();
+
+            this.Session.Derive(true);
+
+            Assert.Single(customer.ShipmentsWhereShipToParty);
+
+            var store1Shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress.First(v => v.Store.Equals(store1));
+
+            store1Shipment.Pick();
+            this.Session.Derive();
+
+            var order3 = new SalesOrderBuilder(this.Session)
+                .WithStore(store2)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .Build();
+
+            var order3Item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
+            order3.AddSalesOrderItem(order3Item);
+
+            this.Session.Derive(true);
+
+            order3.Confirm();
+
+            this.Session.Derive(true);
+
+            var store2Shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress.First(v => v.Store.Equals(store2));
+
+            store2Shipment.Pick();
+            this.Session.Derive();
+
+            var store1PickList = customer.PickListsWhereShipToParty.FirstOrDefault(v => v.Store.Equals(store1));
+            var store2PickList = customer.PickListsWhereShipToParty.FirstOrDefault(v => v.Store.Equals(store2));
+
+            Assert.Equal(2, customer.PickListsWhereShipToParty.Count);
+            Assert.NotNull(store1PickList);
+            Assert.Equal(3, store1PickList.PickListItems[0].Quantity);
+            Assert.NotNull(store2PickList);
+            Assert.Equal(5, store2PickList.PickListItems[0].Quantity);
         }
     }
 

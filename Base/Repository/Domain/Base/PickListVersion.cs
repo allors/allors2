@@ -41,16 +41,6 @@ namespace Allors.Repository
         public PickListState PickListState { get; set; }
 
         #region Allors
-        [Id("9A818C4C-D7FD-48B8-A207-E169006BCED8")]
-        [AssociationId("29C88DF6-0E07-4004-A313-40E9753E90C0")]
-        [RoleId("53C7E7B1-F247-48F9-9689-B72B3DBD54A4")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        public CustomerShipment CustomerShipmentCorrection { get; set; }
-
-        #region Allors
         [Id("C793C53B-23DB-44E1-8BAB-B62E3C65FD5F")]
         [AssociationId("28A963BF-2339-4832-AB6D-4DE6102C8957")]
         [RoleId("DBF878A2-F7BB-47BC-B78B-051CBC83D120")]

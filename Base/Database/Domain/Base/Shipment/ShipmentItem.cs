@@ -69,12 +69,24 @@ namespace Allors.Domain
 
         public void BaseOnDeriveCustomerShipmentItem(IDerivation derivation)
         {
-            if (this.ShipmentWhereShipmentItem is CustomerShipment && Equals(this.ShipmentWhereShipmentItem.ShipmentState, new ShipmentStates(this.Strategy.Session).Shipped))
+            if (this.ShipmentWhereShipmentItem is CustomerShipment)
             {
-                this.QuantityShipped = 0;
-                foreach (PackagingContent packagingContent in this.PackagingContentsWhereShipmentItem)
+                this.QuantityPicked = 0;
+                foreach (ItemIssuance itemIssuance in this.ItemIssuancesWhereShipmentItem)
                 {
-                    this.QuantityShipped += packagingContent.Quantity;
+                    if (itemIssuance.PickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                    {
+                        this.QuantityPicked += itemIssuance.Quantity;
+                    }
+                }
+
+                if (Equals(this.ShipmentWhereShipmentItem.ShipmentState, new ShipmentStates(this.Strategy.Session).Shipped))
+                {
+                    this.QuantityShipped = 0;
+                    foreach (ItemIssuance itemIssuance in this.ItemIssuancesWhereShipmentItem)
+                    {
+                        this.QuantityShipped += itemIssuance.Quantity;
+                    }
                 }
             }
         }

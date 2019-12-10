@@ -17,6 +17,9 @@ namespace Allors.Domain
             var created = new ShipmentItemStates(this.Session).Created;
             var picked = new ShipmentItemStates(this.Session).Picked;
             var packed = new ShipmentItemStates(this.Session).Packed;
+
+            config.Deny(this.ObjectType, picked, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, packed, Operations.Execute, Operations.Write);
         }
     }
 }

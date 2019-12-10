@@ -18,6 +18,7 @@ namespace Allors.Domain
             if (derivation.IsModified(this))
             {
                 derivation.AddDependency(this.OrderItem, this);
+                derivation.AddDependency(this.OrderItem.OrderWhereValidOrderItem, this);
             }
         }
 
@@ -42,6 +43,8 @@ namespace Allors.Domain
                 if (this.strategy.IsNewInSession)
                 {
                     var quantityPicked = this.OrderItem.OrderShipmentsWhereOrderItem.Select(v => v.ShipmentItem?.ItemIssuancesWhereShipmentItem.Sum(z => z.PickListItem.Quantity)).Sum();
+                    var pendingFromOthers = salesOrderItem.QuantityPendingShipment - this.Quantity;
+
                     if (salesOrderItem.QuantityRequestsShipping > 0)
                     {
                         salesOrderItem.QuantityRequestsShipping -= this.Quantity;
@@ -57,7 +60,7 @@ namespace Allors.Domain
                     }
                     else
                     {
-                        if (this.Quantity > salesOrderItem.QuantityOrdered - salesOrderItem.QuantityShipped - salesOrderItem.QuantityPendingShipment + salesOrderItem.QuantityReturned + quantityPicked)
+                        if (this.Quantity > salesOrderItem.QuantityOrdered - salesOrderItem.QuantityShipped - pendingFromOthers + salesOrderItem.QuantityReturned + quantityPicked)
                         {
                             derivation.Validation.AddError(this, M.OrderShipment.Quantity, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining);
                         }

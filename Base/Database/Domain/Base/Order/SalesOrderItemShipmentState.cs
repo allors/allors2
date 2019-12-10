@@ -12,5 +12,7 @@ namespace Allors.Domain
         public bool PartiallyShipped => Equals(this.UniqueId, SalesOrderItemShipmentStates.PartiallyShippedId);
 
         public bool Shipped => Equals(this.UniqueId, SalesOrderItemShipmentStates.ShippedId);
+
+        public bool InProgress => Equals(this.UniqueId, SalesOrderItemShipmentStates.InProgressId);
     }
 }

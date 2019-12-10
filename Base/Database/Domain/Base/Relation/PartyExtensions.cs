@@ -68,6 +68,7 @@ namespace Allors.Domain
             foreach (CustomerShipment shipment in shipments)
             {
                 if (shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Created) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Picking) ||
                     shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Picked) ||
                     shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).OnHold) ||
                     shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Packed))

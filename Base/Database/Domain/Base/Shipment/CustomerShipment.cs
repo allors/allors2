@@ -28,11 +28,6 @@ namespace Allors.Domain
                     return false;
                 }
 
-                if (this.PendingPickList != null)
-                {
-                    return false;
-                }
-
                 var picklists = this.ShipToParty.PickListsWhereShipToParty;
                 picklists.Filter.AddEquals(M.PickList.Store, this.Store);
                 picklists.Filter.AddNot().AddEquals(M.PickList.PickListState, new PickListStates(this.Strategy.Session).Picked);
@@ -63,20 +58,11 @@ namespace Allors.Domain
         {
             get
             {
-                var picklists = this.ShipToParty.PickListsWhereShipToParty;
-                picklists.Filter.AddNot().AddExists(M.PickList.Picker);
+                var pickLists = this.ShipToParty.PickListsWhereShipToParty;
+                pickLists.Filter.AddEquals(M.PickList.Store, this.Store);
+                pickLists.Filter.AddNot().AddEquals(M.PickList.PickListState, new PickListStates(this.strategy.Session).Picked);
 
-                PickList pendingPickList = null;
-                foreach (PickList picklist in picklists)
-                {
-                    if (!picklist.IsNegativePickList && !this.Store.IsImmediatelyPicked)
-                    {
-                        pendingPickList = picklist;
-                        break;
-                    }
-                }
-
-                return pendingPickList;
+                return pickLists.FirstOrDefault();
             }
         }
 
@@ -133,7 +119,7 @@ namespace Allors.Domain
 
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    if (orderShipment.ExistOrderItem && !orderShipment.OrderItem.Strategy.IsNewInSession)
+                    if (orderShipment.ExistOrderItem && !orderShipment.Strategy.IsNewInSession)
                     {
                         derivation.AddDependency(this, orderShipment.OrderItem);
                     }
@@ -169,7 +155,6 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty?.ShippingAddress;
             }
 
-            this.CreatePickList(derivation);
             this.BaseOnDeriveShipmentValue(derivation);
             this.BaseOnDeriveCurrentShipmentState(derivation);
 
@@ -185,6 +170,18 @@ namespace Allors.Domain
 
         public void BaseCancel(CustomerShipmentCancel method) => this.ShipmentState = new ShipmentStates(this.Strategy.Session).Cancelled;
 
+        public void BasePick(CustomerShipmentPick method)
+        {
+            this.CreatePickList();
+
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Picking;
+            }
+
+            this.ShipmentState = new ShipmentStates(this.Strategy.Session).Picking;
+        }
+
         public void BaseHold(CustomerShipmentHold method)
         {
             this.HeldManually = true;
@@ -196,7 +193,6 @@ namespace Allors.Domain
             foreach (PickList pickList in this.ShipToParty.PickListsWhereShipToParty)
             {
                 if (this.Store.Equals(pickList.Store) &&
-                    !pickList.IsNegativePickList &&
                     !pickList.ExistPicker)
                 {
                     pickList.Hold();
@@ -214,7 +210,7 @@ namespace Allors.Domain
 
         public void BaseProcessOnContinue(CustomerShipmentProcessOnContinue method)
         {
-            this.ShipmentState = new ShipmentStates(this.Strategy.Session).Created;
+            this.ShipmentState = this.ExistPreviousShipmentState ? this.PreviousShipmentState : new ShipmentStates(this.Strategy.Session).Created;
 
             foreach (PickList pickList in this.ShipToParty.PickListsWhereShipToParty)
             {
@@ -225,9 +221,25 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseSetPicked(CustomerShipmentSetPicked method) => this.ShipmentState = new ShipmentStates(this.Strategy.Session).Picked;
+        public void BaseSetPicked(CustomerShipmentSetPicked method)
+        {
+            this.ShipmentState = new ShipmentStates(this.Strategy.Session).Picked;
 
-        public void BaseSetPacked(CustomerShipmentSetPacked method) => this.ShipmentState = new ShipmentStates(this.Strategy.Session).Packed;
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Picked;
+            }
+        }
+
+        public void BaseSetPacked(CustomerShipmentSetPacked method)
+        {
+            this.ShipmentState = new ShipmentStates(this.Strategy.Session).Packed;
+
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Packed;
+            }
+        }
 
         public void BaseShip(CustomerShipmentShip method)
         {
@@ -378,6 +390,126 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnDeriveShipmentValue(IDerivation derivation)
+        {
+            var shipmentValue = 0M;
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
+                {
+                    shipmentValue += orderShipment.Quantity * orderShipment.OrderItem.UnitPrice;
+                }
+            }
+
+            this.ShipmentValue = shipmentValue;
+        }
+
+        public void BaseOnDeriveCurrentShipmentState(IDerivation derivation)
+        {
+            if (this.ExistShipToParty && this.ExistShipmentItems)
+            {
+                ////cancel shipment if nothing left to ship
+                if (this.ExistShipmentItems && this.PendingPickList == null
+                    && !this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Cancelled))
+                {
+                    var canCancel = true;
+                    foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+                    {
+                        if (shipmentItem.Quantity > 0)
+                        {
+                            canCancel = false;
+                            break;
+                        }
+                    }
+
+                    if (canCancel)
+                    {
+                        this.Cancel();
+                    }
+                }
+
+                if ((this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Picking) ||
+                     this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Picked) ||
+                    this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Packed)) &&
+                    this.ShipToParty.ExistPickListsWhereShipToParty)
+                {
+                    var isPicked = true;
+                    foreach (PickList pickList in this.ShipToParty.PickListsWhereShipToParty)
+                    {
+                        if (this.Store.Equals(pickList.Store) &&
+                            !pickList.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                        {
+                            isPicked = false;
+                        }
+                    }
+
+                    if (isPicked)
+                    {
+                        this.SetPicked();
+                    }
+                }
+
+                if (this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Picked)
+                    || this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Packed))
+                {
+                    var totalShippingQuantity = 0M;
+                    var totalPackagedQuantity = 0M;
+                    foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+                    {
+                        totalShippingQuantity += shipmentItem.Quantity;
+                        foreach (PackagingContent packagingContent in shipmentItem.PackagingContentsWhereShipmentItem)
+                        {
+                            totalPackagedQuantity += packagingContent.Quantity;
+                        }
+                    }
+
+                    if (totalPackagedQuantity == totalShippingQuantity)
+                    {
+                        this.SetPacked();
+                    }
+                }
+
+                if (this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Created)
+                    || this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Picked)
+                    || this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Picked)
+                    || this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Packed))
+                {
+                    if (this.ShipmentValue < this.Store.ShipmentThreshold && !this.ReleasedManually)
+                    {
+                        this.PutOnHold();
+                    }
+                }
+
+                if (this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).OnHold) &&
+                    !this.HeldManually &&
+                    ((this.ShipmentValue >= this.Store.ShipmentThreshold) || this.ReleasedManually))
+                {
+                    this.Continue();
+                }
+            }
+        }
+
+        public void BaseOnDeriveCurrentObjectState(IDerivation derivation)
+        {
+            if (this.ExistShipmentState && !this.ShipmentState.Equals(this.LastShipmentState) &&
+                this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Shipped))
+            {
+                if (Equals(this.Store.BillingProcess, new BillingProcesses(this.Strategy.Session).BillingForShipmentItems))
+                {
+                    this.Invoice();
+                }
+            }
+        }
+
+        private void Sync(ISession session)
+        {
+            // session.Prefetch(this.SyncPrefetch, this);
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                shipmentItem.Sync(this);
+            }
+        }
+
         public void BaseOnDeriveQuantityDecreased(ShipmentItem shipmentItem, SalesOrderItem orderItem, decimal correction)
         {
             var remainingCorrection = correction;
@@ -431,12 +563,6 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.PendingPickList == null)
-            {
-                var shipment = (CustomerShipment)shipmentItem.ShipmentWhereShipmentItem;
-                this.CreateNegativePickList(shipment, orderItem, correction);
-            }
-
             if (shipmentItem.Quantity == 0)
             {
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
@@ -466,151 +592,15 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseOnDeriveShipmentValue(IDerivation derivation)
+        private void CreatePickList()
         {
-            var shipmentValue = 0M;
-            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            if (this.ExistShipmentItems && this.ExistShipToParty)
             {
-                foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
-                {
-                    shipmentValue += orderShipment.Quantity * orderShipment.OrderItem.UnitPrice;
-                }
-            }
+                var pickList = new PickListBuilder(this.Strategy.Session).WithShipToParty(this.ShipToParty).WithStore(this.Store).Build();
 
-            this.ShipmentValue = shipmentValue;
-        }
-
-        public void BaseOnDeriveCurrentShipmentState(IDerivation derivation)
-        {
-            if (this.ExistShipToParty && this.ExistShipmentItems)
-            {
-                ////cancel shipment if nothing left to ship
-                if (this.ExistShipmentItems && this.PendingPickList == null
-                    && !this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Cancelled))
-                {
-                    var canCancel = true;
-                    foreach (ShipmentItem shipmentItem in this.ShipmentItems)
-                    {
-                        if (shipmentItem.Quantity > 0)
-                        {
-                            canCancel = false;
-                            break;
-                        }
-                    }
-
-                    if (canCancel)
-                    {
-                        this.Cancel();
-                    }
-                }
-
-                if ((this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Created) ||
-                    this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Packed)) &&
-                    this.ShipToParty.ExistPickListsWhereShipToParty)
-                {
-                    var isPicked = true;
-                    foreach (PickList pickList in this.ShipToParty.PickListsWhereShipToParty)
-                    {
-                        if (this.Store.Equals(pickList.Store) &&
-                            !pickList.IsNegativePickList &&
-                            !pickList.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
-                        {
-                            isPicked = false;
-                        }
-                    }
-
-                    if (isPicked)
-                    {
-                        this.SetPicked();
-                    }
-                }
-
-                if (this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Picked)
-                    || this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Packed))
-                {
-                    var totalShippingQuantity = 0M;
-                    var totalPackagedQuantity = 0M;
-                    foreach (ShipmentItem shipmentItem in this.ShipmentItems)
-                    {
-                        totalShippingQuantity += shipmentItem.Quantity;
-                        foreach (PackagingContent packagingContent in shipmentItem.PackagingContentsWhereShipmentItem)
-                        {
-                            totalPackagedQuantity += packagingContent.Quantity;
-                        }
-                    }
-
-                    if (totalPackagedQuantity == totalShippingQuantity)
-                    {
-                        this.SetPacked();
-                    }
-                }
-
-                if (this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Created)
-                    || this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Picked)
-                    || this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Packed))
-                {
-                    if (this.ShipmentValue < this.Store.ShipmentThreshold && !this.ReleasedManually)
-                    {
-                        this.PutOnHold();
-                    }
-                }
-
-                if (this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).OnHold) &&
-                    !this.HeldManually &&
-                    ((this.ShipmentValue >= this.Store.ShipmentThreshold) || this.ReleasedManually))
-                {
-                    this.Continue();
-                }
-            }
-        }
-
-        public void BaseOnDeriveCurrentObjectState(IDerivation derivation)
-        {
-            if (this.ExistShipmentState && !this.ShipmentState.Equals(this.LastShipmentState) &&
-                this.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Shipped))
-            {
-                if (Equals(this.Store.BillingProcess, new BillingProcesses(this.Strategy.Session).BillingForShipmentItems))
-                {
-                    this.Invoice();
-                }
-            }
-        }
-
-        private void Sync(ISession session)
-        {
-            // session.Prefetch(this.SyncPrefetch, this);
-            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
-            {
-                shipmentItem.Sync(this);
-            }
-        }
-
-        private void CreatePickList(IDerivation derivation)
-        {
-            if (this.Store.IsImmediatelyPicked && !this.ExistShipmentItems)
-            {
-                return;
-            }
-
-            if (this.ExistShipToParty)
-            {
-                var pendingPickList = this.PendingPickList;
-
-                if (pendingPickList != null)
-                {
-                    foreach (PickListItem pickListItem in pendingPickList.PickListItems)
-                    {
-                        foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
-                        {
-                            itemIssuance.Delete();
-                        }
-
-                        pendingPickList.RemovePickListItem(pickListItem);
-                        pickListItem.Delete();
-                    }
-                }
-
-                foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+                foreach (var shipmentItem in this.ShipmentItems
+                    .Where(v => v.ShipmentItemState.Equals(new ShipmentItemStates(this.strategy.Session).Created)
+                                || v.ShipmentItemState.Equals(new ShipmentItemStates(this.strategy.Session).Picking)))
                 {
                     var quantityIssued = 0M;
                     foreach (ItemIssuance itemIssuance in shipmentItem.ItemIssuancesWhereShipmentItem)
@@ -618,99 +608,116 @@ namespace Allors.Domain
                         quantityIssued += itemIssuance.Quantity;
                     }
 
-                    if (!shipmentItem.ExistItemIssuancesWhereShipmentItem || shipmentItem.Quantity > quantityIssued)
+                    var quantityToIssue = shipmentItem.Quantity - quantityIssued;
+                    if (quantityToIssue == 0)
                     {
-                        var salesOrderItem = shipmentItem.OrderShipmentsWhereShipmentItem[0].OrderItem as SalesOrderItem;
+                        return;
+                    }
 
-                        if (this.PendingPickList == null)
+                    var unifiedGood = shipmentItem.Good as UnifiedGood;
+                    var nonUnifiedGood = shipmentItem.Good as NonUnifiedGood;
+                    var serialized = unifiedGood?.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised);
+                    var part = unifiedGood ?? nonUnifiedGood?.Part;
+
+                    var facilities = ((InternalOrganisation)this.ShipFromParty).FacilitiesWhereOwner;
+                    var inventoryItems = part.InventoryItemsWherePart.Where(v => facilities.Contains(v.Facility));
+                    SerialisedInventoryItem issuedFromSerializedInventoryItem = null;
+
+                    foreach (InventoryItem inventoryItem in shipmentItem.ReservedFromInventoryItems)
+                    {
+                        // shipment item originates from sales order. Sales order item has only 1 ReservedFromInventoryItem.
+                        // Foreach loop wil execute once.
+                        var pickListItem = new PickListItemBuilder(this.Strategy.Session)
+                            .WithInventoryItem(inventoryItem)
+                            .WithQuantity(quantityToIssue)
+                            .Build();
+
+                        new ItemIssuanceBuilder(this.Strategy.Session)
+                            .WithInventoryItem(pickListItem.InventoryItem)
+                            .WithShipmentItem(shipmentItem)
+                            .WithQuantity(pickListItem.Quantity)
+                            .WithPickListItem(pickListItem)
+                            .Build();
+
+                        pickList.AddPickListItem(pickListItem);
+
+                        if (serialized.HasValue && serialized.Value)
                         {
-                            pendingPickList = new PickListBuilder(this.Strategy.Session).WithShipToParty(this.ShipToParty).Build();
+                            issuedFromSerializedInventoryItem = (SerialisedInventoryItem)inventoryItem;
                         }
+                    }
 
-                        PickListItem pickListItem = null;
-                        foreach (PickListItem item in pendingPickList.PickListItems)
+                    // shipment item is not linked to sales order item
+                    if (!shipmentItem.ExistReservedFromInventoryItems)
+                    {
+                        var quantityLeftToIssue = quantityToIssue;
+                        foreach (var inventoryItem in inventoryItems)
                         {
-                            if (salesOrderItem != null && item.InventoryItem.Equals(salesOrderItem.ReservedFromNonSerialisedInventoryItem))
+                            if (serialized.HasValue && serialized.Value && quantityLeftToIssue > 0)
                             {
-                                pickListItem = item;
-                                break;
-                            }
-                        }
-
-                        if (pickListItem != null)
-                        {
-                            pickListItem.Quantity += shipmentItem.Quantity;
-
-                            var itemIssuances = pickListItem.ItemIssuancesWherePickListItem;
-                            itemIssuances.Filter.AddEquals(M.ItemIssuance.ShipmentItem, shipmentItem);
-                            itemIssuances.First.Quantity = shipmentItem.Quantity;
-                        }
-                        else
-                        {
-                            var quantity = shipmentItem.Quantity - quantityIssued;
-                            pickListItem = new PickListItemBuilder(this.Strategy.Session)
-                                .WithInventoryItem(salesOrderItem.ReservedFromNonSerialisedInventoryItem)
-                                .WithQuantity(quantity)
-                                .Build();
-
-                            if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
-                            {
-                                pickListItem.InventoryItem = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
-                            }
-
-                            if (salesOrderItem.ExistReservedFromSerialisedInventoryItem)
-                            {
-                                pickListItem.InventoryItem = salesOrderItem.ReservedFromSerialisedInventoryItem;
-                            }
-
-                            if (salesOrderItem.ExistSerialisedItem)
-                            {
-                                salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.AvailableForSale = false;
-
-                                if (salesOrderItem.ExistNewSerialisedItemState)
+                                var serializedInventoryItem = (SerialisedInventoryItem)inventoryItem;
+                                if (serializedInventoryItem.AvailableToPromise == 1)
                                 {
-                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.SerialisedItemState = salesOrderItem.NewSerialisedItemState;
+                                    var pickListItem = new PickListItemBuilder(this.Strategy.Session)
+                                        .WithInventoryItem(inventoryItem)
+                                        .WithQuantity(quantityLeftToIssue)
+                                        .Build();
 
-                                    if (salesOrderItem.NewSerialisedItemState.Equals(new SerialisedItemStates(this.strategy.Session).Sold))
-                                    {
-                                        salesOrderItem.SerialisedItem.OwnedBy = this.ShipToParty;
-                                    }
+                                    new ItemIssuanceBuilder(this.Strategy.Session)
+                                        .WithInventoryItem(inventoryItem)
+                                        .WithShipmentItem(shipmentItem)
+                                        .WithQuantity(pickListItem.Quantity)
+                                        .WithPickListItem(pickListItem)
+                                        .Build();
+
+                                    pickList.AddPickListItem(pickListItem);
+                                    quantityLeftToIssue = 0;
+                                    issuedFromSerializedInventoryItem = serializedInventoryItem;
                                 }
                             }
+                            else if (quantityLeftToIssue > 0)
+                            {
+                                var nonSerializedInventoryItem = (NonSerialisedInventoryItem)inventoryItem;
+                                var quantity = quantityLeftToIssue > nonSerializedInventoryItem.AvailableToPromise
+                                    ? nonSerializedInventoryItem.AvailableToPromise
+                                    : quantityLeftToIssue;
 
-                            new ItemIssuanceBuilder(this.Strategy.Session)
-                                .WithInventoryItem(pickListItem.InventoryItem)
-                                .WithShipmentItem(shipmentItem)
-                                .WithQuantity(quantity)
-                                .WithPickListItem(pickListItem)
-                                .Build();
+                                if (quantity > 0)
+                                {
+                                    var pickListItem = new PickListItemBuilder(this.Strategy.Session)
+                                        .WithInventoryItem(inventoryItem)
+                                        .WithQuantity(quantity)
+                                        .Build();
+
+                                    new ItemIssuanceBuilder(this.Strategy.Session)
+                                        .WithInventoryItem(inventoryItem)
+                                        .WithShipmentItem(shipmentItem)
+                                        .WithQuantity(pickListItem.Quantity)
+                                        .WithPickListItem(pickListItem)
+                                        .Build();
+
+                                    pickList.AddPickListItem(pickListItem);
+                                    quantityLeftToIssue -= pickListItem.Quantity;
+                                }
+                            }
                         }
+                    }
 
-                        pendingPickList.AddPickListItem(pickListItem);
+                    if (shipmentItem.ExistSerialisedItem && issuedFromSerializedInventoryItem != null)
+                    {
+                        shipmentItem.SerialisedItem.AvailableForSale = false;
+
+                        if (shipmentItem.ExistNewSerialisedItemState)
+                        {
+                            shipmentItem.SerialisedItem.SerialisedItemState = shipmentItem.NewSerialisedItemState;
+
+                            if (shipmentItem.NewSerialisedItemState.Equals(new SerialisedItemStates(this.strategy.Session).Sold))
+                            {
+                                shipmentItem.SerialisedItem.OwnedBy = this.ShipToParty;
+                            }
+                        }
                     }
                 }
-
-                if (pendingPickList != null)
-                {
-                    pendingPickList.OnDerive(x => x.WithDerivation(derivation));
-                }
-            }
-        }
-
-        private void CreateNegativePickList(CustomerShipment shipment, SalesOrderItem orderItem, decimal quantity)
-        {
-            if (this.ExistShipToParty)
-            {
-                var pickList = new PickListBuilder(this.Strategy.Session)
-                    .WithCustomerShipmentCorrection(shipment)
-                    .WithShipToParty(this.ShipToParty)
-                    .WithStore(this.Store)
-                    .Build();
-
-                pickList.AddPickListItem(new PickListItemBuilder(this.Strategy.Session)
-                                        .WithInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem)
-                                        .WithQuantity(0 - quantity)
-                                        .Build());
             }
         }
 

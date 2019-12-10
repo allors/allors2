@@ -145,7 +145,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        public InventoryItem[] InventoryItems { get; set; }
+        public InventoryItem[] ReservedFromInventoryItems { get; set; }
 
         #region Allors
         [Id("b9bfaea8-e5f0-4b0e-955f-df28ed63e8e3")]
@@ -166,6 +166,16 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Good Good { get; set; }
+
+        #region Allors
+        [Id("B5E17B64-5C6D-4318-8E45-3E34D8DAE731")]
+        [AssociationId("A2D446F1-B2EA-4E10-AA43-E4F69E07189B")]
+        [RoleId("AC8E8F2A-E32B-4A4D-BA73-C0D9ED4CFAC2")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItemState NewSerialisedItemState { get; set; }
 
         #region Allors
         [Id("312FC32F-3EB9-492A-AC69-AEC608A48AF4")]

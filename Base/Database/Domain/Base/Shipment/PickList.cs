@@ -18,8 +18,6 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public bool IsNegativePickList => this.ExistPickListItems && this.PickListItems.First.Quantity < 0;
-
         public bool IsComplete
         {
             get
@@ -71,6 +69,7 @@ namespace Allors.Domain
                     .OfType<CustomerShipment>()
                     .Where(shipment =>
                         shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Created)
+                        || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Picking)
                         || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Picked)
                         || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).OnHold)
                         || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Packed)
@@ -81,6 +80,14 @@ namespace Allors.Domain
                         derivation.AddDependency(customerShipment, this);
                     }
                 }
+            }
+        }
+
+        public void BaseDelete(PickListDelete method)
+        {
+            foreach (PickListItem pickListItem in this.PickListItems)
+            {
+                pickListItem.Delete();
             }
         }
 
@@ -116,7 +123,7 @@ namespace Allors.Domain
 
         public void BaseHold(PickListHold method) => this.PickListState = new PickListStates(this.Strategy.Session).OnHold;
 
-        public void BaseContinue(PickListContinue method) => this.PickListState = new PickListStates(this.Strategy.Session).Created;
+        public void BaseContinue(PickListContinue method) => this.PickListState = this.PreviousPickListState;
 
         public void BaseSetPicked(PickListSetPicked method)
         {

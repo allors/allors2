@@ -29,6 +29,10 @@
     </div>
 
     <div class="row">
+      <a-mat-select class="col-md" [object]="shipmentItem" [roleType]="m.ShipmentItem.NewSerialisedItemState" [options]="serialisedItemStates" display="Name" label="Next Item State"></a-mat-select>
+    </div>
+
+    <div class="row">
       <a-mat-textarea class="col-md-12" [object]="shipmentItem" [roleType]="m.ShipmentItem.ContentsDescription"></a-mat-textarea>
     </div>
 

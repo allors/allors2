@@ -5,6 +5,7 @@
 // <summary>Defines the MediaTests type.</summary>
 
 using System.ComponentModel;
+using Allors.Domain.TestPopulation;
 
 namespace Allors.Domain
 {
@@ -238,6 +239,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
+
+            shipment.Pick();
+            this.Session.Derive();
+
             customer.PickListsWhereShipToParty.First.SetPicked();
 
             var package = new ShipmentPackageBuilder(this.Session).Build();
@@ -356,12 +361,6 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(75, shipment.ShipmentValue);
 
-            item1.QuantityOrdered = 3;
-
-            this.Session.Derive();
-
-            Assert.Equal(45, shipment.ShipmentValue);
-
             var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(10).WithAssignedUnitPrice(10).Build();
             order.AddSalesOrderItem(item2);
 
@@ -369,11 +368,11 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(145, shipment.ShipmentValue);
+            Assert.Equal(175, shipment.ShipmentValue);
         }
 
         [Fact]
-        public void GivenShipmentThreshold_WhenNewCustomerShipmentIsBelowThreshold_ThenShipmentAndPicklistAreSetOnHold()
+        public void GivenShipmentThreshold_WhenNewCustomerShipmentIsBelowThreshold_ThenShipmentIsSetOnHold()
         {
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
@@ -412,14 +411,12 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
 
             Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
-            Assert.Equal(new PickListStates(this.Session).OnHold, pickList.PickListState);
         }
 
         [Fact]
-        public void GivenCustomerShipment_WhenShipmentValueFallsBelowThreshold_ThenShipmentAndPendigPicklistAreSetOnHold()
+        public void GivenCustomerShipment_WhenShipmentValueFallsBelowThreshold_ThenShipmentAndPendigPickListAreSetOnHold()
         {
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
@@ -448,7 +445,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(mechelenAddress)
                 .Build();
 
-            var item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(10).WithAssignedUnitPrice(15).Build();
+            var item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(5).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item);
 
             this.Session.Derive();
@@ -458,21 +455,14 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-
-            Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
-            Assert.Equal(new PickListStates(this.Session).Created, pickList.PickListState);
-
-            item.QuantityOrdered = 5;
 
             this.Session.Derive();
 
             Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
-            Assert.Equal(new PickListStates(this.Session).OnHold, pickList.PickListState);
         }
 
         [Fact]
-        public void GivenCustomerShipmentOnHold_WhenShipmentValueRisesAboveThreshold_ThenShipmentAndPendigPicklistAreReleased()
+        public void GivenCustomerShipmentOnHold_WhenShipmentValueRisesAboveThreshold_ThenShipmentIsReleased()
         {
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
@@ -514,17 +504,14 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
 
             Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
-            Assert.Equal(new PickListStates(this.Session).OnHold, pickList.PickListState);
 
             item.QuantityOrdered = 10;
 
             this.Session.Derive();
 
             Assert.Equal(new ShipmentStates(this.Session).Created, shipment.ShipmentState);
-            Assert.Equal(new PickListStates(this.Session).Created, pickList.PickListState);
         }
 
         [Fact]
@@ -564,6 +551,9 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+
+            shipment.Pick();
+            this.Session.Derive();
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
@@ -692,6 +682,9 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
 
@@ -754,10 +747,13 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
-            pickList.SetPicked();
 
+            pickList.SetPicked();
             this.Session.Derive();
 
             var package = new ShipmentPackageBuilder(this.Session).Build();
@@ -825,7 +821,6 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             Assert.Single(customer.ShipmentsWhereShipToParty);
-            Assert.Single(customer.PickListsWhereShipToParty);
 
             var order2 = new SalesOrderBuilder(this.Session)
                 .WithStore(new Stores(this.Session).FindBy(M.Store.Name, "store"))
@@ -843,7 +838,6 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             Assert.Single(customer.ShipmentsWhereShipToParty);
-            Assert.Single(customer.PickListsWhereShipToParty);
 
             var order3 = new SalesOrderBuilder(this.Session)
                 .WithStore(new Stores(this.Session).FindBy(M.Store.Name, "second store"))
@@ -861,7 +855,6 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             Assert.Equal(2, customer.ShipmentsWhereShipToParty.Count);
-            Assert.Single(customer.PickListsWhereShipToParty);
         }
 
         [Fact]
@@ -891,7 +884,6 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             this.Session.Derive();
@@ -912,6 +904,9 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+
+            shipment.Pick();
+            this.Session.Derive();
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
@@ -940,21 +935,21 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenCustomerShipmentWithPendingPickList_WhenTrySetStateToShipped_ThenActionIsNotAllowed()
+        public void GivenCustomerShipmentWithoutOrder_WhenStateIsSetToShipped_ThenInventoryIsUpdated()
         {
-            var store = this.Session.Extent<Store>().First;
-            store.IsImmediatelyPicked = false;
+            var good = new UnifiedGoodBuilder(this.Session).WithNonSerialisedDefaults(this.InternalOrganisation).Build();
 
-            var assessable = new VatRegimes(this.Session).Assessable;
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
-            assessable.VatRate = vatRate21;
+            this.Session.Derive();
 
-            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithQuantity(100)
+                .WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount)
+                .WithPart(good)
+                .Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
                 .WithContactMechanism(mechelenAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -962,57 +957,64 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).Build();
 
             this.Session.Derive();
 
-            var order = new SalesOrderBuilder(this.Session)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithVatRegime(assessable)
+            var shipment = new CustomerShipmentBuilder(this.Session)
+                .WithShipToParty(customer)
+                .WithShipToAddress(mechelenAddress)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .Build();
 
-            var item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
-            order.AddSalesOrderItem(item);
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).WithQuantity(10).Build();
+            shipment.AddShipmentItem(shipmentItem);
 
             this.Session.Derive();
 
-            order.Confirm();
+            var inventory = good.InventoryItemsWherePart.First as NonSerialisedInventoryItem;
 
+            Assert.Equal(100, good.QuantityOnHand);
+            Assert.Equal(100, good.AvailableToPromise);
+            Assert.Equal(100, inventory.QuantityOnHand);
+            Assert.Equal(0, shipmentItem.QuantityPicked);
+            Assert.Equal(0, shipmentItem.QuantityShipped);
+
+            shipment.Pick();
             this.Session.Derive();
-
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
 
             pickList.SetPicked();
-
             this.Session.Derive();
+
+            Assert.Equal(90, good.QuantityOnHand);
+            Assert.Equal(90, good.AvailableToPromise);
+            Assert.Equal(90, inventory.QuantityOnHand);
+            Assert.Equal(10, shipmentItem.QuantityPicked);
+            Assert.Equal(0, shipmentItem.QuantityShipped);
 
             var package = new ShipmentPackageBuilder(this.Session).Build();
+            package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             shipment.AddShipmentPackage(package);
 
-            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
-            {
-                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
-            }
-
             this.Session.Derive();
 
-            item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
-            order.AddSalesOrderItem(item);
-
-            item.Confirm();
-
-            this.Session.Derive();
+            Assert.Equal(90, good.QuantityOnHand);
+            Assert.Equal(90, good.AvailableToPromise);
+            Assert.Equal(90, inventory.QuantityOnHand);
+            Assert.Equal(10, shipmentItem.QuantityPicked);
+            Assert.Equal(0, shipmentItem.QuantityShipped);
 
             shipment.Ship();
-
             this.Session.Derive();
 
-            Assert.Equal(new ShipmentStates(this.Session).Packed, shipment.ShipmentState);
+            Assert.Equal(90, good.QuantityOnHand);
+            Assert.Equal(90, good.AvailableToPromise);
+            Assert.Equal(90, inventory.QuantityOnHand);
+            Assert.Equal(10, shipmentItem.QuantityPicked);
+            Assert.Equal(10, shipmentItem.QuantityShipped);
         }
 
         [Fact]
@@ -1061,6 +1063,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+
+            shipment.Pick();
+
+            this.Session.Derive();
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
@@ -1132,6 +1138,9 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
             pickList.SetPicked();
@@ -1143,12 +1152,8 @@ namespace Allors.Domain
 
             foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
             {
-                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
+                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity - 1).Build());
             }
-
-            this.Session.Derive();
-
-            item.QuantityOrdered = 4;
 
             this.Session.Derive();
 
@@ -1221,6 +1226,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
 
@@ -1352,6 +1361,9 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+
+            shipment.Pick();
+            this.Session.Derive();
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;

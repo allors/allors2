@@ -10,6 +10,7 @@ namespace Allors.Domain
     public partial class ShipmentStates
     {
         private static readonly Guid CreatedId = new Guid("854AD6A0-B2D1-4b92-8C3D-E9E72DD19AFD");
+        private static readonly Guid PickingId = new Guid("1D76DE65-4DE4-494D-8677-653B4D62AA42");
         private static readonly Guid PickedId = new Guid("C63C5D25-F139-490f-86D1-2E9E51F5C0A5");
         private static readonly Guid PackedId = new Guid("DCABE845-A6F2-49d9-BBAE-06FB47012A21");
         private static readonly Guid ShippedId = new Guid("B8B115A4-6E5D-4400-BCA7-4224AE1708AA");
@@ -21,6 +22,8 @@ namespace Allors.Domain
         private UniquelyIdentifiableSticky<ShipmentState> stateCache;
 
         public ShipmentState Created => this.StateCache[CreatedId];
+
+        public ShipmentState Picking => this.StateCache[PickingId];
 
         public ShipmentState Picked => this.StateCache[PickedId];
 
@@ -44,6 +47,11 @@ namespace Allors.Domain
             new ShipmentStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")
+                .Build();
+
+            new ShipmentStateBuilder(this.Session)
+                .WithUniqueId(PickingId)
+                .WithName("Picking")
                 .Build();
 
             new ShipmentStateBuilder(this.Session)

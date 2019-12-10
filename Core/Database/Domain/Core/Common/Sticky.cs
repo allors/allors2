@@ -86,8 +86,9 @@ namespace Allors.Domain
                     {
                         @object = (TObject)Allors.ObjectBuilder.Build(this.session, this.@class);
                         @object.Strategy.SetUnitRole(this.relationType, id);
-                        action(@object);
                     }
+
+                    action(@object);
 
                     return @object;
                 };

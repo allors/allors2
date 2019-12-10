@@ -183,6 +183,12 @@ namespace Allors.Repository
         public void Continue() { }
 
         #region Allors
+        [Id("370CC546-6502-4416-9DFF-3A3D8510E5D4")]
+        #endregion
+        [Workspace]
+        public void Pick() { }
+
+        #region Allors
         [Id("CB596594-7253-4B2E-8A00-71C062147CD8")]
         #endregion
         [Workspace]

@@ -930,7 +930,7 @@ namespace Allors.Domain
         public void GivenConfirmedOrderItemForGood_WhenQuantityOrderedIsDecreased_ThenQuantitiesReservedAndRequestsShippingAndInventoryAvailableToPromiseDecreaseEqually()
         {
             var store = this.Session.Extent<Store>().First;
-            store.IsImmediatelyPicked = false;
+            store.AutoGenerateShipment = false;
 
             this.InstantiateObjects(this.Session);
 
@@ -959,10 +959,10 @@ namespace Allors.Domain
 
             Assert.Equal(50, item.QuantityOrdered);
             Assert.Equal(0, item.QuantityShipped);
-            Assert.Equal(50, item.QuantityPendingShipment);
+            Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(50, item.QuantityReserved);
             Assert.Equal(0, item.QuantityShortFalled);
-            Assert.Equal(0, item.QuantityRequestsShipping);
+            Assert.Equal(50, item.QuantityRequestsShipping);
             Assert.Equal(50, item.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
             Assert.Equal(60, item.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
             Assert.Equal(110, item.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
@@ -998,11 +998,17 @@ namespace Allors.Domain
                 .WithShipToAddress(this.order.ShipToAddress)
                 .WithShipmentPackage(new ShipmentPackageBuilder(this.Session).Build())
                 .WithShipmentMethod(this.order.ShipmentMethod)
-                .WithShipmentItem(new ShipmentItemBuilder(this.Session)
-                    .WithGood(orderItem.Product as Good)
-                    .WithQuantity(100)
-                    .Build())
                 .Build();
+
+            this.Session.Derive();
+
+            var shipmentItem = new ShipmentItemBuilder(this.Session)
+                .WithGood(orderItem.Product as Good)
+                .WithQuantity(100)
+                .WithReservedFromInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem)
+                .Build();
+
+            shipment.AddShipmentItem(shipmentItem);
 
             new OrderShipmentBuilder(this.Session)
                 .WithOrderItem(orderItem)
@@ -1011,20 +1017,22 @@ namespace Allors.Domain
                 .Build();
 
             this.Session.Derive();
-            this.Session.Commit();
+
+            shipment.Pick();
+            this.Session.Derive();
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
-            pickList.SetPicked();
 
+            pickList.SetPicked();
             this.Session.Derive();
 
             var package = new ShipmentPackageBuilder(this.Session).Build();
             shipment.AddShipmentPackage(package);
 
-            foreach (ShipmentItem shipmentItem in shipment.ShipmentItems)
+            foreach (ShipmentItem item in shipment.ShipmentItems)
             {
-                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
+                package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(item).WithQuantity(item.Quantity).Build());
             }
 
             this.Session.Derive();
@@ -1189,43 +1197,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOrderItemWithPendingShipmentAndPendingPickList_WhenQuantityOrderedIsDecreased_ThenPickListQuantityAndShipmentQuantityAreDecreased()
-        {
-            this.InstantiateObjects(this.Session);
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
-
-            this.Session.Derive();
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(10)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            this.order.Confirm();
-
-            this.Session.Derive();
-
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
-            Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(10, pickList.PickListItems[0].Quantity);
-
-            item.QuantityOrdered = 3;
-
-            this.Session.Derive();
-
-            Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(3, pickList.PickListItems[0].Quantity);
-        }
-
-        [Fact]
         public void GivenOrderItemWithPendingShipmentAndItemsShortFalled_WhenQuantityOrderedIsDecreased_ThenItemsShortFalledIsDecreasedAndShipmentIsLeftUnchanged()
         {
             this.InstantiateObjects(this.Session);
@@ -1254,6 +1225,9 @@ namespace Allors.Domain
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
@@ -1266,186 +1240,14 @@ namespace Allors.Domain
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
             Assert.Equal(10, pickList.PickListItems[0].Quantity);
 
-            item.QuantityOrdered = 9;
+            item.QuantityOrdered = 10;
 
             this.Session.Derive();
 
             Assert.Equal(0, item.QuantityShortFalled);
 
-            Assert.Equal(9, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(9, pickList.PickListItems[0].Quantity);
-        }
-
-        [Fact]
-        public void GivenOrderItemWithPendingShipmentAndPendingPickList_WhenOrderItemIsCancelled_ThenPickListQuantityAndShipmentQuantityAreDecreased()
-        {
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
-
-            this.Session.Derive();
-
-            var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            this.InstantiateObjects(this.Session);
-
-            var item1 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            var item2 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(2)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            var item3 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good)
-                .WithQuantityOrdered(7)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item1);
-            this.order.AddSalesOrderItem(item2);
-            this.order.AddSalesOrderItem(item3);
-
-            this.Session.Derive();
-
-            this.order.Confirm();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
-            Assert.Equal(2, shipment.ShipmentItems.Count);
-            Assert.Equal(5, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(7, shipment.ShipmentItems[1].Quantity);
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(5, pickList.PickListItems[0].Quantity);
-            Assert.Equal(7, pickList.PickListItems[1].Quantity);
-
-            item1.Cancel();
-
-            this.Session.Derive();
-
-            Assert.Equal(2, shipment.ShipmentItems.Count);
-            Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(7, shipment.ShipmentItems[1].Quantity);
-
-            Assert.Equal(2, pickList.PickListItems[0].Quantity);
-            Assert.Equal(7, pickList.PickListItems[1].Quantity);
-
-            item3.Cancel();
-
-            this.Session.Derive();
-
-            Assert.Single(shipment.ShipmentItems);
-            Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
-
-            Assert.Single(pickList.PickListItems);
-            Assert.Equal(2, pickList.PickListItems[0].Quantity);
-        }
-
-        [Fact]
-        public void GivenOrderItemWithPendingShipmentAndAssignedPickList_WhenQuantityOrderedIsDecreased_ThenNegativePickListIsCreatedAndShipmentQuantityIsDecreased()
-        {
-            this.InstantiateObjects(this.Session);
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
-
-            this.Session.Derive();
-
-            var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(10)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item);
-
-            this.Session.Derive();
-
-            this.order.Confirm();
-
-            this.Session.Derive();
-
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             Assert.Equal(10, pickList.PickListItems[0].Quantity);
-
-            pickList.Picker = this.OrderProcessor;
-
-            this.Session.Derive();
-
-            item.QuantityOrdered = 3;
-
-            this.Session.Derive();
-
-            var negativePickList = this.order.ShipToCustomer.PickListsWhereShipToParty[1];
-
-            Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(10, pickList.PickListItems[0].Quantity);
-            Assert.Equal(-7, negativePickList.PickListItems[0].Quantity);
-        }
-
-        [Fact]
-        public void GivenOrderItemWithPendingShipmentAndAssignedPickList_WhenOrderItemIsCancelled_ThenNegativePickListIsCreatedAndShipmentItemIsDeleted()
-        {
-            this.InstantiateObjects(this.Session);
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
-
-            this.Session.Derive();
-
-            var item1 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            var item2 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(2)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            this.order.AddSalesOrderItem(item1);
-            this.order.AddSalesOrderItem(item2);
-
-            this.Session.Derive();
-
-            this.order.Confirm();
-
-            this.Session.Derive();
-
-            var shipment = (CustomerShipment)this.order.ShipToCustomer.ShipmentsWhereShipToParty.First;
-            Assert.Equal(5, shipment.ShipmentItems[0].Quantity);
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(5, pickList.PickListItems[0].Quantity);
-
-            pickList.Picker = this.OrderProcessor;
-
-            this.Session.Derive();
-
-            item1.Cancel();
-
-            this.Session.Derive();
-
-            var negativePickList = this.order.ShipToCustomer.PickListsWhereShipToParty[1];
-
-            Assert.Single(shipment.ShipmentItems);
-            Assert.Equal(2, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(5, pickList.PickListItems[0].Quantity);
-            Assert.Equal(-3, negativePickList.PickListItems[0].Quantity);
         }
 
         [Fact]
@@ -1477,7 +1279,6 @@ namespace Allors.Domain
 
             order1.Confirm();
             this.Session.Derive();
-            this.Session.Commit();
 
             var shipment = new CustomerShipmentBuilder(this.Session)
                 .WithShipFromAddress(this.order.TakenBy.ShippingAddress)
@@ -1485,11 +1286,17 @@ namespace Allors.Domain
                 .WithShipToAddress(this.order.ShipToAddress)
                 .WithShipmentPackage(new ShipmentPackageBuilder(this.Session).Build())
                 .WithShipmentMethod(this.order.ShipmentMethod)
-                .WithShipmentItem(new ShipmentItemBuilder(this.Session)
-                    .WithGood(orderItem.Product as Good)
-                    .WithQuantity(5)
-                    .Build())
                 .Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var shipmentItem = new ShipmentItemBuilder(this.Session)
+                .WithGood(orderItem.Product as Good)
+                .WithQuantity(5)
+                .Build();
+
+            shipment.AddShipmentItem(shipmentItem);
 
             new OrderShipmentBuilder(this.Session)
                 .WithOrderItem(orderItem)
@@ -1504,17 +1311,12 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            shipment = new CustomerShipmentBuilder(this.Session)
-                .WithShipFromAddress(this.order.TakenBy.ShippingAddress)
-                .WithShipToParty(this.order.ShipToCustomer)
-                .WithShipToAddress(this.order.ShipToAddress)
-                .WithShipmentPackage(new ShipmentPackageBuilder(this.Session).Build())
-                .WithShipmentMethod(this.order.ShipmentMethod)
-                .WithShipmentItem(new ShipmentItemBuilder(this.Session)
-                    .WithGood(orderItem.Product as Good)
-                    .WithQuantity(3)
-                    .Build())
+            shipmentItem = new ShipmentItemBuilder(this.Session)
+                .WithGood(orderItem.Product as Good)
+                .WithQuantity(3)
                 .Build();
+
+            shipment.AddShipmentItem(shipmentItem);
 
             new OrderShipmentBuilder(this.Session)
                 .WithOrderItem(orderItem)
@@ -1526,83 +1328,6 @@ namespace Allors.Domain
 
             Assert.False(derivationLog.HasErrors);
             Assert.Equal(3, orderItem.QuantityPendingShipment);
-        }
-
-        [Fact]
-        public void GivenManuallyScheduledOrderItemWithPendingShipmentAndAssignedPickList_WhenQuantityRequestsShippingIsDecreased_ThenNegativePickListIsCreatedAndShipmentQuantityIsDecreased()
-        {
-            this.InstantiateObjects(this.Session);
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
-
-            this.Session.Derive();
-
-            var manual = new OrderKindBuilder(this.Session).WithDescription("manual").WithScheduleManually(true).Build();
-
-            var order1 = new SalesOrderBuilder(this.Session)
-                .WithShipToCustomer(this.shipToCustomer)
-                .WithBillToCustomer(this.billToCustomer)
-                .WithShipToAddress(this.shipToContactMechanismMechelen)
-                .WithOrderKind(manual)
-                .Build();
-
-            var orderItem = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(10)
-                .WithAssignedUnitPrice(5)
-                .Build();
-
-            order1.AddSalesOrderItem(orderItem);
-
-            this.Session.Derive();
-
-            order1.Confirm();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var shipment = new CustomerShipmentBuilder(this.Session)
-                .WithShipFromAddress(order1.TakenBy.ShippingAddress)
-                .WithShipToParty(order1.ShipToCustomer)
-                .WithShipToAddress(order1.ShipToAddress)
-                .WithShipmentPackage(new ShipmentPackageBuilder(this.Session).Build())
-                .WithShipmentMethod(order1.ShipmentMethod)
-                .WithShipmentItem(new ShipmentItemBuilder(this.Session)
-                    .WithGood(orderItem.Product as Good)
-                    .WithQuantity(10)
-                    .Build())
-                .Build();
-
-            new OrderShipmentBuilder(this.Session)
-                .WithOrderItem(orderItem)
-                .WithShipmentItem(shipment.ShipmentItems.First)
-                .WithQuantity(10)
-                .Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
-
-            var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
-            Assert.Equal(10, pickList.PickListItems[0].Quantity);
-
-            pickList.Picker = this.OrderProcessor;
-
-            new OrderShipmentBuilder(this.Session)
-                .WithOrderItem(orderItem)
-                .WithShipmentItem(shipment.ShipmentItems.First)
-                .WithQuantity(-7)
-                .Build();
-
-            this.Session.Derive();
-
-            var negativePickList = order1.ShipToCustomer.PickListsWhereShipToParty[1];
-
-            Assert.Equal(3, orderItem.QuantityPendingShipment);
-            Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
-            Assert.Equal(10, pickList.PickListItems[0].Quantity);
-            Assert.Equal(-7, negativePickList.PickListItems[0].Quantity);
         }
 
         private void InstantiateObjects(ISession session)
@@ -2025,14 +1750,16 @@ namespace Allors.Domain
             this.order.Confirm();
 
             this.Session.Derive();
-            this.Session.Commit();
 
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
-            pickList.SetPicked();
 
+            pickList.SetPicked();
             this.Session.Derive();
 
             var package = new ShipmentPackageBuilder(this.Session).Build();
@@ -2046,7 +1773,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             shipment.Ship();
-
             this.Session.Derive();
 
             Assert.Equal(new SalesOrderItemShipmentStates(this.Session).PartiallyShipped, item.SalesOrderItemShipmentState);
@@ -2166,6 +1892,9 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
             pickList.SetPicked();
@@ -2265,16 +1994,17 @@ namespace Allors.Domain
             this.Session.Derive();
 
             this.order.Confirm();
-
             this.Session.Derive();
-            this.Session.Commit();
 
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
+            shipment.Pick();
+            this.Session.Derive();
+
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = this.OrderProcessor;
-            pickList.SetPicked();
 
+            pickList.SetPicked();
             this.Session.Derive();
 
             var package = new ShipmentPackageBuilder(this.Session).Build();
@@ -2288,12 +2018,48 @@ namespace Allors.Domain
             this.Session.Derive();
 
             shipment.Ship();
-
             this.Session.Derive();
 
             Assert.Equal(new SalesOrderItemShipmentStates(this.Session).PartiallyShipped, item.SalesOrderItemShipmentState);
             var acl = new AccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanWrite(M.SalesOrderItem.Product));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenShippingInProgress_ThenCancelIsNotAllowed()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            User user = this.Administrator;
+            this.Session.SetUser(user);
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
+
+            this.Session.Derive();
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            this.order.Confirm();
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderItemShipmentStates(this.Session).InProgress, item.SalesOrderItemShipmentState);
+            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
         }
 
         private void InstantiateObjects(ISession session)

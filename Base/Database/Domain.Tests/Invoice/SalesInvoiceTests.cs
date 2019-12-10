@@ -1097,7 +1097,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSalesOrder_WhenBillngForOrderItemsConfirmedAndConfirmed_ThenInvoiceIsCreated()
+        public void GivenSalesOrder_WhenBillngForOrderItemsAndConfirmed_ThenInvoiceIsCreated()
         {
             var store = this.Session.Extent<Store>().First;
             store.IsAutomaticallyShipped = true;
@@ -1157,7 +1157,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new SalesOrderStates(this.Session).Completed, order.SalesOrderState);
+            Assert.Equal(new SalesOrderStates(this.Session).InProcess, order.SalesOrderState);
             Assert.Equal(new SalesOrderPaymentStates(this.Session).NotPaid, order.SalesOrderPaymentState);
         }
     }
