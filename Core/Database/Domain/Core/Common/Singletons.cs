@@ -15,7 +15,7 @@ namespace Allors.Domain
 
         protected override void CoreSetup(Setup setup)
         {
-            var singleton = new SingletonBuilder(this.Session).Build();
+            var singleton = this.Session.GetSingleton() ?? new SingletonBuilder(this.Session).Build();
 
             singleton.DefaultLocale = new Locales(this.Session).EnglishGreatBritain;
         }

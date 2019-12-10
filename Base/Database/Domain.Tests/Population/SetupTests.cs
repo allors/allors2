@@ -6,6 +6,7 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
     using Bogus;
     using Xunit;
 
@@ -27,10 +28,18 @@ namespace Allors.Domain
             session.Derive();
             session.Commit();
 
+            var objects1 = new Objects(session).Extent().ToArray();
+
             new Setup(session, config).Apply();
 
             session.Derive();
             session.Commit();
+
+            var objects2 = new Objects(session).Extent().ToArray();
+
+            var diff = objects2.Except(objects1).ToArray();
+
+            Assert.Empty(diff);
         }
     }
 }

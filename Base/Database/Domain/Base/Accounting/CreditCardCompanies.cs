@@ -30,10 +30,6 @@ namespace Allors.Domain
             merge(VisaId, v => v.Name = "Visa");
             merge(MasterCardId, v => v.Name = "Master Card");
             merge(AmericanExpressId, v => v.Name = "American Express");
-
-            new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build();
-            new CreditCardCompanyBuilder(this.Session).WithName("Master Card").Build();
-            new CreditCardCompanyBuilder(this.Session).WithName("American Express").Build();
         }
     }
 }
