@@ -15,6 +15,7 @@ namespace Allors.Workspace.Local
     using Allors.Protocol.Remote.Push;
     using Allors.Protocol.Remote.Sync;
     using Allors.Services;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Protocol.Remote.Security;
     using Server;
