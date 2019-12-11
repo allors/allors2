@@ -501,6 +501,7 @@ namespace Allors.Domain
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .WithSalesOrderNumberPrefix("")
                 .WithOutgoingShipmentNumberPrefix("")
+                .WithIsImmediatelyPacked(true)
                 .Build();
 
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");

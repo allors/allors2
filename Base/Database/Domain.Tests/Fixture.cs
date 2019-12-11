@@ -94,6 +94,8 @@ namespace Allors
                     .WithPaymentGracePeriod(10)
                     .WithDefaultCollectionMethod(collectionMethod)
                     .WithIsImmediatelyPicked(false)
+                    .WithAutoGenerateShipmentPackage(false)
+                    .WithIsImmediatelyPacked(true)
                     .Build();
 
                 new ProductCategoryBuilder(session).WithName("Primary Category").Build();

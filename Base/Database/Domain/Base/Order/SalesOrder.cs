@@ -740,11 +740,15 @@ namespace Allors.Domain
                                 .WithShipFromAddress(this.ShipFromAddress)
                                 .WithShipToAddress(address.Key)
                                 .WithShipToParty(address.Value)
-                                .WithShipmentPackage(new ShipmentPackageBuilder(this.Strategy.Session).Build())
                                 .WithStore(this.Store)
                                 .WithShipmentMethod(this.ShipmentMethod)
                                 .WithPaymentMethod(this.PaymentMethod)
                                 .Build();
+
+                            if (this.Store.AutoGenerateShipmentPackage)
+                            {
+                                pendingShipment.AddShipmentPackage(new ShipmentPackageBuilder(this.Strategy.Session).Build());
+                            }
                         }
 
                         foreach (SalesOrderItem orderItem in this.ValidOrderItems)

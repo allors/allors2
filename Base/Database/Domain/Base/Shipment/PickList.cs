@@ -106,7 +106,9 @@ namespace Allors.Domain
                         var shipment = itemIssuance.ShipmentItem.ShipmentWhereShipmentItem as CustomerShipment;
                         var package = shipment?.ShipmentPackages.FirstOrDefault();
 
-                        if (package != null && package.PackagingContents.FirstOrDefault(v => v.ShipmentItem.Equals(itemIssuance.ShipmentItem)) == null)
+                        if (this.Store.AutoGenerateShipmentPackage
+                            && package != null
+                            && package.PackagingContents.FirstOrDefault(v => v.ShipmentItem.Equals(itemIssuance.ShipmentItem)) == null)
                         {
                             package.AddPackagingContent(
                                 new PackagingContentBuilder(this.Strategy.Session)

@@ -463,7 +463,7 @@ namespace Allors.Domain
                         }
                     }
 
-                    if (totalPackagedQuantity == totalShippingQuantity)
+                    if (this.Store.IsImmediatelyPacked && totalPackagedQuantity == totalShippingQuantity)
                     {
                         this.SetPacked();
                     }

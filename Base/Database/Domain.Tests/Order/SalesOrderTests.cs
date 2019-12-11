@@ -2367,6 +2367,7 @@ namespace Allors.Domain
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .WithDefaultCollectionMethod(new PaymentMethods(this.Session).Extent().First)
+                .WithIsImmediatelyPacked(true)
                 .Build();
 
             var shipToAddress = new PostalAddressBuilder(this.Session)
@@ -2455,6 +2456,7 @@ namespace Allors.Domain
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .WithDefaultCollectionMethod(new PaymentMethods(this.Session).Extent().First)
+                .WithIsImmediatelyPacked(true)
                 .Build();
 
             var shipToAddress = new PostalAddressBuilder(this.Session)
@@ -2542,6 +2544,7 @@ namespace Allors.Domain
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .WithDefaultCollectionMethod(new PaymentMethods(this.Session).Extent().First)
+                .WithIsImmediatelyPacked(true)
                 .Build();
 
             var shipToAddress = new PostalAddressBuilder(this.Session)
@@ -2630,6 +2633,7 @@ namespace Allors.Domain
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .WithDefaultCollectionMethod(new PaymentMethods(this.Session).Extent().First)
+                .WithIsImmediatelyPacked(true)
                 .Build();
 
             var shipToAddress = new PostalAddressBuilder(this.Session)

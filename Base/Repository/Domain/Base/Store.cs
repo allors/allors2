@@ -279,6 +279,15 @@ namespace Allors.Repository
         public bool IsImmediatelyPicked { get; set; }
 
         #region Allors
+        [Id("7A014C3C-F593-4528-AE32-EE4BE55D76A4")]
+        [AssociationId("13DE0B1A-3CD0-4DC9-963C-AB529DA3B26E")]
+        [RoleId("F1DDAC44-8A25-4E4B-8F49-B0F2288EB1E9")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool IsImmediatelyPacked { get; set; }
+
+        #region Allors
         [Id("1136BB3C-905C-411B-AFED-FBE04BE132BD")]
         [AssociationId("7008A454-EE6C-402E-BAD0-0D06F76BA294")]
         [RoleId("B427AF19-EBE2-430D-B852-2CF56079F269")]
@@ -295,6 +304,15 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public bool AutoGenerateShipment { get; set; }
+
+        #region Allors
+        [Id("B3E6A681-E883-4FD5-82E4-F5A94F3F5148")]
+        [AssociationId("6238AAB0-7DF1-4C41-9B71-28AFBD8C8F37")]
+        [RoleId("99374B40-A004-4150-B63A-948C4C100A91")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool AutoGenerateShipmentPackage { get; set; }
 
         #region Allors
         [Id("CE31A755-7053-4A27-A0AE-7C38AFA03E2F")]

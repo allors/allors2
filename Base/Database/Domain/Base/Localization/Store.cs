@@ -93,6 +93,11 @@ namespace Allors.Domain
                 this.AutoGenerateShipment = true;
             }
 
+            if (!this.ExistAutoGenerateShipmentPackage)
+            {
+                this.AutoGenerateShipmentPackage = true;
+            }
+
             if (!this.ExistSalesOrderCounter)
             {
                 this.SalesOrderCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();

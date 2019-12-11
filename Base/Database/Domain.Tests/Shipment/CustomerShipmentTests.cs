@@ -111,6 +111,7 @@ namespace Allors.Domain
                 .WithDefaultFacility(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse))
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
+                .WithIsImmediatelyPacked(true)
                 .Build();
 
             var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -143,6 +144,7 @@ namespace Allors.Domain
                 .WithOutgoingShipmentNumberPrefix("the format is ")
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
+                .WithIsImmediatelyPacked(true)
                 .Build();
 
             var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -784,6 +786,7 @@ namespace Allors.Domain
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .WithSalesOrderNumberPrefix("")
                 .WithOutgoingShipmentNumberPrefix("")
+                .WithIsImmediatelyPacked(true)
                 .Build();
 
             var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
