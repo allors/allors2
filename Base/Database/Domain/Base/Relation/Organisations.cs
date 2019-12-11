@@ -47,7 +47,7 @@ namespace Allors.Domain
             string workEffortPrefix,
             string creditNoteNumberPrefix,
             bool isImmediatelyPicked,
-            bool autoGeneratePackagingContent,
+            bool autoGenerateShipmentPackage,
             bool isImmediatelyPacked,
             bool isAutomaticallyShipped,
             bool autoGenerateShipment,
@@ -220,7 +220,7 @@ namespace Allors.Domain
                 .WithBillingProcess(billingProcess)
                 .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithIsImmediatelyPicked(isImmediatelyPicked)
-                .WithAutoGenerateShipmentPackage(autoGeneratePackagingContent)
+                .WithAutoGenerateShipmentPackage(autoGenerateShipmentPackage)
                 .WithIsImmediatelyPacked(isImmediatelyPacked)
                 .WithIsAutomaticallyShipped(isAutomaticallyShipped)
                 .WithAutoGenerateShipment(autoGenerateShipment)
