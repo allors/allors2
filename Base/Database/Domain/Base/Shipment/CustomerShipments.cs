@@ -24,6 +24,7 @@ namespace Allors.Domain
             var onHold = new ShipmentStates(this.Session).OnHold;
 
             var pick = this.Meta.Pick;
+            var setPacked = this.Meta.SetPacked;
             var hold = this.Meta.Hold;
             var @continue = this.Meta.Continue;
             var ship = this.Meta.Ship;
@@ -33,11 +34,11 @@ namespace Allors.Domain
                 this.Meta.ElectronicDocuments.RoleType,
             };
 
-            config.Deny(this.ObjectType, onHold, pick, ship, hold, @continue);
-            config.Deny(this.ObjectType, created, ship, hold, @continue);
-            config.Deny(this.ObjectType, picked, pick, @continue);
+            config.Deny(this.ObjectType, onHold, pick, setPacked, ship, hold);
+            config.Deny(this.ObjectType, created, setPacked, ship, @continue);
+            config.Deny(this.ObjectType, picked, ship, pick, @continue);
             config.Deny(this.ObjectType, packed, pick, @continue);
-            config.Deny(this.ObjectType, picking, pick);
+            config.Deny(this.ObjectType, picking, pick, setPacked, ship, @continue);
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.DenyExcept(this.ObjectType, picking, except, Operations.Write);
