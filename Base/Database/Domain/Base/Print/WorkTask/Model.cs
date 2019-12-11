@@ -22,7 +22,15 @@ namespace Allors.Domain.Print.WorkTaskModel
                 .GroupBy(v => v.BillingRate)
                 .Select(v => new TimeEntryByBillingRateModel(v))
                 .ToArray();
+
+            this.Barcode = BarcodeName(workTask);
         }
+
+        public static string BarcodeName(WorkTask workTask) => $"Barcode{workTask.Id}";
+
+        public string Logo => "Logo";
+
+        public string Barcode { get; }
 
         public WorkTaskModel WorkTask { get; }
 
