@@ -122,6 +122,17 @@ export class CustomerShipmentOverviewSummaryComponent {
       this.saveService.errorHandler);
   }
 
+  public pick(): void {
+
+    this.panel.manager.context.invoke(this.shipment.Pick)
+      .subscribe((invoked: Invoked) => {
+        this.panel.toggle();
+        this.snackBar.open('Successfully picked.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+      this.saveService.errorHandler);
+  }
+
   public ship(): void {
 
     this.panel.manager.context.invoke(this.shipment.Ship)

@@ -34,8 +34,8 @@ namespace Allors.Domain
             };
 
             config.Deny(this.ObjectType, onHold, pick, ship, hold, @continue);
-            config.Deny(this.ObjectType, created, hold, @continue);
-            config.Deny(this.ObjectType, picked, pick, ship, @continue);
+            config.Deny(this.ObjectType, created, ship, hold, @continue);
+            config.Deny(this.ObjectType, picked, pick, @continue);
             config.Deny(this.ObjectType, packed, pick, @continue);
             config.Deny(this.ObjectType, picking, pick);
 
