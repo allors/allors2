@@ -1,4 +1,4 @@
-// <copyright file="NonUnifiedGoodEditTest.cs" company="Allors bvba">
+// <copyright file="NonUnifiedGoodCreateTest.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -9,15 +9,14 @@ namespace Tests.NonUnifiedGood
     using Allors.Domain;
     using Components;
     using src.allors.material.@base.objects.good.list;
-    using src.allors.material.@base.objects.nonunifiedgood.overview;
     using Xunit;
 
     [Collection("Test collection")]
-    public class NonUnifiedGoodEditTest : Test
+    public class NonUnifiedGoodCreateTest : Test
     {
         private readonly GoodListComponent goods;
 
-        public NonUnifiedGoodEditTest(TestFixture fixture)
+        public NonUnifiedGoodCreateTest(TestFixture fixture)
             : base(fixture)
         {
             this.Login();
@@ -25,20 +24,15 @@ namespace Tests.NonUnifiedGood
         }
 
         [Fact]
-        public void Edit()
+        public void Create()
         {
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
 
-            var nonUnifiedGood = before.First();
-            var id = nonUnifiedGood.Id;
+            var nonUnifiedGoodCreate = this.goods.CreateNonUnifiedGood();
 
-            this.goods.Table.DefaultAction(nonUnifiedGood);
-            var goodDetails = new NonUnifiedGoodOverviewComponent(this.goods.Driver);
-            var goodOverviewDetail = goodDetails.NonunifiedgoodOverviewDetail.Click();
-
-            goodOverviewDetail
-                .Name.Set("BMW M3 GTR")
-                .Description.Set("Born to be wild.")
+            nonUnifiedGoodCreate
+                .Name.Set("Mercedes Vito")
+                .Description.Set("Vans. Born to run.")
                 .Part.Set("finished good")
                 .SAVE.Click();
 
@@ -47,11 +41,12 @@ namespace Tests.NonUnifiedGood
 
             var after = new NonUnifiedGoods(this.Session).Extent().ToArray();
 
-            var good = after.First(v => v.Id.Equals(id));
+            Assert.Equal(after.Length, before.Length + 1);
 
-            Assert.Equal(after.Length, before.Length);
-            Assert.Equal("BMW M3 GTR", good.Name);
-            Assert.Equal("Born to be wild.", good.Description);
+            var good = after.Except(before).First();
+
+            Assert.Equal("Mercedes Vito", good.Name);
+            Assert.Equal("Vans. Born to run.", good.Description);
             Assert.Equal("finished good", good.Part.Name);
         }
     }
