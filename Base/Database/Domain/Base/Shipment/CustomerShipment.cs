@@ -250,6 +250,8 @@ namespace Allors.Domain
 
                 foreach (ShipmentItem shipmentItem in this.ShipmentItems)
                 {
+                    shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Shipped;
+
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
                         var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();

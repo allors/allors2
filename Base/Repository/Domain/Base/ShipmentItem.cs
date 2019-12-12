@@ -10,16 +10,21 @@ namespace Allors.Repository
     #region Allors
     [Id("d35c33c3-ca15-4b70-b20d-c51ed068626a")]
     #endregion
-    public partial class ShipmentItem : Deletable, DelegatedAccessControlledObject
+    public partial class ShipmentItem : Transitional, Deletable, DelegatedAccessControlledObject
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
+        public ObjectState[] PreviousObjectStates { get; set; }
+
+        public ObjectState[] LastObjectStates { get; set; }
+
+        public ObjectState[] ObjectStates { get; set; }
+
         #endregion
 
-        #region ObjectStates
         #region ShipmentItemState
         #region Allors
         [Id("016778E4-B815-47B8-AC7D-1C950B3A11FB")]
@@ -50,7 +55,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public ShipmentItemState ShipmentItemState { get; set; }
-        #endregion
         #endregion
 
         #region Allors
