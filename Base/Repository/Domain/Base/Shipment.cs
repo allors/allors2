@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("9c6f4ad8-5a4e-4b6e-96b7-876f7aabcffb")]
     #endregion
-    public partial interface Shipment : Printable, Commentable, Auditable, Transitional
+    public partial interface Shipment : Printable, Commentable, Auditable, Transitional, Deletable
     {
         #region ObjectStates
         #region ShipmentState

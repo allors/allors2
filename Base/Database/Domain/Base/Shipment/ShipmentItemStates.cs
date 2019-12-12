@@ -13,6 +13,7 @@ namespace Allors.Domain
         public static readonly Guid PickingId = new Guid("F9043ADD-E106-4646-8B02-6B10EFBB2E87");
         public static readonly Guid PickedId = new Guid("A8E2014F-C4CB-4A6F-8CCF-0875E439D1F3");
         public static readonly Guid PackedId = new Guid("91853258-C875-4F85-BD84-EF1EBD2E5930");
+        public static readonly Guid ShippedId = new Guid("4377658B-7D0E-4B57-BA8A-15AEB368EEE1");
 
         private UniquelyIdentifiableSticky<ShipmentItemState> cache;
 
@@ -24,6 +25,8 @@ namespace Allors.Domain
 
         public ShipmentItemState Packed => this.Cache[PackedId];
 
+        public ShipmentItemState Shipped => this.Cache[ShippedId];
+
         private UniquelyIdentifiableSticky<ShipmentItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<ShipmentItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
@@ -34,6 +37,7 @@ namespace Allors.Domain
             merge(PickingId, v => v.Name = "Picking");
             merge(PickedId, v => v.Name = "Picked");
             merge(PackedId, v => v.Name = "Packed");
+            merge(ShippedId, v => v.Name = "Shipped");
         }
     }
 }

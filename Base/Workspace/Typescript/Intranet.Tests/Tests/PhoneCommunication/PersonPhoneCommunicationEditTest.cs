@@ -57,59 +57,6 @@ namespace Tests.PhoneCommunicationTests
         }
 
         [Fact]
-        public void Create()
-        {
-            var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var employee = allors.ActiveEmployees.First;
-
-            var before = new PhoneCommunications(this.Session).Extent().ToArray();
-
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("Jane Doe"));
-
-            this.people.Table.DefaultAction(person);
-            var communicationEventOverview = new PersonOverviewComponent(this.people.Driver).CommunicationeventOverviewPanel.Click();
-
-            communicationEventOverview
-                .CreatePhoneCommunication()
-                .LeftVoiceMail.Set(true)
-                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
-                .Subject.Set("subject")
-                .FromParty.Set(person.PartyName)
-                .ToParty.Set(employee.PartyName)
-                .FromPhoneNumber.Set("+1 123 456")
-                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
-                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
-                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
-                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
-                .Comment.Set("comment")
-                .SAVE.Click();
-
-            this.Driver.WaitForAngular();
-            this.Session.Rollback();
-
-            var after = new PhoneCommunications(this.Session).Extent().ToArray();
-
-            Assert.Equal(after.Length, before.Length + 1);
-
-            var communicationEvent = after.Except(before).First();
-
-            Assert.True(communicationEvent.LeftVoiceMail);
-            Assert.Equal(new CommunicationEventStates(this.Session).Completed, communicationEvent.CommunicationEventState);
-            Assert.Contains(new CommunicationEventPurposes(this.Session).Inquiry, communicationEvent.EventPurposes);
-            Assert.Equal(person, communicationEvent.FromParty);
-            Assert.Equal(employee, communicationEvent.ToParty);
-            Assert.Equal(person.GeneralPhoneNumber, communicationEvent.PhoneNumber);
-            Assert.Equal("subject", communicationEvent.Subject);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
-            Assert.Equal("comment", communicationEvent.Comment);
-        }
-
-        [Fact]
         public void Edit()
         {
             var extent = new People(this.Session).Extent();

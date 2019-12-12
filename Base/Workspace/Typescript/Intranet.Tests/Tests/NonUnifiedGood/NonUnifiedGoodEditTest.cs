@@ -7,8 +7,11 @@ namespace Tests.NonUnifiedGood
 {
     using System.Linq;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
+    using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.good.list;
+    using src.allors.material.@base.objects.nonunifiedgood.overview;
     using Xunit;
 
     [Collection("Test collection")]
@@ -24,16 +27,23 @@ namespace Tests.NonUnifiedGood
         }
 
         [Fact]
-        public void Create()
+        public void Edit()
         {
+            var internalOrganisation = new OrganisationBuilder(this.MemorySession).WithInternalOrganisationDefaults().Build();
+
+            var newGood = new NonUnifiedGoodBuilder(this.MemorySession).WithNonSerialisedPartDefaults(internalOrganisation).Build();
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
 
-            var nonUnifiedGoodCreate = this.goods.CreateNonUnifiedGood();
+            var nonUnifiedGood = before.First();
+            var id = nonUnifiedGood.Id;
 
-            nonUnifiedGoodCreate
-                .Name.Set("Mercedes Vito")
-                .Description.Set("Vans. Born to run.")
-                .Part.Set("finished good")
+            this.goods.Table.DefaultAction(nonUnifiedGood);
+            var goodDetails = new NonUnifiedGoodOverviewComponent(this.goods.Driver);
+            var goodOverviewDetail = goodDetails.NonunifiedgoodOverviewDetail.Click();
+
+            goodOverviewDetail
+                .Name.Set(newGood.Name)
+                .Description.Set(newGood.Description)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -41,13 +51,11 @@ namespace Tests.NonUnifiedGood
 
             var after = new NonUnifiedGoods(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length + 1);
+            var good = after.First(v => v.Id.Equals(id));
 
-            var good = after.Except(before).First();
-
-            Assert.Equal("Mercedes Vito", good.Name);
-            Assert.Equal("Vans. Born to run.", good.Description);
-            Assert.Equal("finished good", good.Part.Name);
+            Assert.Equal(after.Length, before.Length);
+            Assert.Equal(newGood.Name, good.Name);
+            Assert.Equal(newGood.Description, good.Description);
         }
     }
 }
