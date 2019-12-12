@@ -172,14 +172,17 @@ namespace Allors.Domain
 
         public void BasePick(CustomerShipmentPick method)
         {
-            this.CreatePickList();
-
-            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            if (!method.Overridden)
             {
-                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Picking;
-            }
+                this.CreatePickList();
 
-            this.ShipmentState = new ShipmentStates(this.Strategy.Session).Picking;
+                foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+                {
+                    shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Picking;
+                }
+
+                this.ShipmentState = new ShipmentStates(this.Strategy.Session).Picking;
+            }
         }
 
         public void BaseHold(CustomerShipmentHold method)
