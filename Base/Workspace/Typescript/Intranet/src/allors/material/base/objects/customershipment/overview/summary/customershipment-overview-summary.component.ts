@@ -18,7 +18,6 @@ export class CustomerShipmentOverviewSummaryComponent {
 
   shipment: CustomerShipment;
   salesOrders: SalesOrder[] = [];
-  shipmentItems: ShipmentItem[] = [];
 
   constructor(
     @Self() public panel: PanelService,
@@ -77,7 +76,6 @@ export class CustomerShipmentOverviewSummaryComponent {
 
     panel.onPulled = (loaded) => {
       this.shipment = loaded.objects[shipmentPullName] as CustomerShipment;
-      this.shipmentItems = loaded.collections[shipmentPullName] as ShipmentItem[];
       this.salesOrders = loaded.collections.Orders as SalesOrder[];
     };
   }

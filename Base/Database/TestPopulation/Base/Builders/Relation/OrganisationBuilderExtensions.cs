@@ -78,5 +78,24 @@ namespace Allors.Domain.TestPopulation
 
             return @this;
         }
+
+        public static OrganisationBuilder WithInternalOrganisationDefaults(this OrganisationBuilder @this)
+        {
+            var faker = @this.Session.Faker();
+
+            var company = faker.Company;
+            var euCountry = new Countries(@this.Session).FindBy(M.Country.IsoCode, faker.PickRandom(Countries.EuMemberStates));
+
+            @this.WithName(company.CompanyName());
+            @this.WithEuListingState(euCountry);
+            @this.WithVatRegime(new VatRegimes(@this.Session).IntraCommunautair);
+            @this.WithLegalForm(faker.Random.ListItem(@this.Session.Extent<LegalForm>()));
+            @this.WithLocale(faker.Random.ListItem(@this.Session.GetSingleton().Locales));
+            @this.WithTaxNumber($"{euCountry.IsoCode}{faker.Random.Number(99999999)}");
+            @this.WithComment(faker.Lorem.Paragraph());
+            @this.WithIsInternalOrganisation(true);
+
+            return @this;
+        }
     }
 }

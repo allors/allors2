@@ -28,17 +28,18 @@ namespace Allors.Domain
             var hold = this.Meta.Hold;
             var @continue = this.Meta.Continue;
             var ship = this.Meta.Ship;
+            var delete = this.Meta.Delete;
 
             var except = new HashSet<IOperandType>
             {
                 this.Meta.ElectronicDocuments.RoleType,
             };
 
-            config.Deny(this.ObjectType, onHold, pick, setPacked, ship, hold);
+            config.Deny(this.ObjectType, onHold, pick, setPacked, ship, hold, delete);
             config.Deny(this.ObjectType, created, setPacked, ship, @continue);
-            config.Deny(this.ObjectType, picked, ship, pick, @continue);
-            config.Deny(this.ObjectType, packed, pick, @continue);
-            config.Deny(this.ObjectType, picking, pick, setPacked, ship, @continue);
+            config.Deny(this.ObjectType, picked, ship, pick, @continue, delete);
+            config.Deny(this.ObjectType, packed, pick, @continue, delete);
+            config.Deny(this.ObjectType, picking, pick, setPacked, ship, @continue, delete);
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.DenyExcept(this.ObjectType, picking, except, Operations.Write);

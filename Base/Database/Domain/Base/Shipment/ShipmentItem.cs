@@ -4,11 +4,24 @@
 // </copyright>
 
 using System.Linq;
+using Allors.Meta;
+using Resources;
 
 namespace Allors.Domain
 {
     public partial class ShipmentItem
     {
+        #region Transitional
+
+        public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
+        {
+            new TransitionalConfiguration(M.ShipmentItem, M.ShipmentItem.ShipmentItemState),
+        };
+
+        public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
+
+        #endregion Transitional
+
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
             if (method.SecurityTokens == null)
@@ -51,6 +64,11 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+
+            if (this.ExistSerialisedItem && this.Quantity != 1)
+            {
+                derivation.Validation.AddError(this, this.Meta.Quantity, ErrorMessages.SerializedItemQuantity);
+            }
 
             this.BaseOnDeriveCustomerShipmentItem(derivation);
 

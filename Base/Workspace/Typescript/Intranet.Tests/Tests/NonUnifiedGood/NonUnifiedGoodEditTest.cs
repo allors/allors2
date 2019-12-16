@@ -7,6 +7,7 @@ namespace Tests.NonUnifiedGood
 {
     using System.Linq;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Components;
     using src.allors.material.@base.objects.good.list;
     using src.allors.material.@base.objects.nonunifiedgood.overview;
@@ -27,6 +28,9 @@ namespace Tests.NonUnifiedGood
         [Fact]
         public void Edit()
         {
+            var internalOrganisation = new OrganisationBuilder(this.MemorySession).WithInternalOrganisationDefaults().Build();
+
+            var newGood = new NonUnifiedGoodBuilder(this.MemorySession).WithNonSerialisedPartDefaults(internalOrganisation).Build();
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
 
             var nonUnifiedGood = before.First();
@@ -37,9 +41,8 @@ namespace Tests.NonUnifiedGood
             var goodOverviewDetail = goodDetails.NonunifiedgoodOverviewDetail.Click();
 
             goodOverviewDetail
-                .Name.Set("BMW M3 GTR")
-                .Description.Set("Born to be wild.")
-                .Part.Set("finished good")
+                .Name.Set(newGood.Name)
+                .Description.Set(newGood.Description)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -50,9 +53,8 @@ namespace Tests.NonUnifiedGood
             var good = after.First(v => v.Id.Equals(id));
 
             Assert.Equal(after.Length, before.Length);
-            Assert.Equal("BMW M3 GTR", good.Name);
-            Assert.Equal("Born to be wild.", good.Description);
-            Assert.Equal("finished good", good.Part.Name);
+            Assert.Equal(newGood.Name, good.Name);
+            Assert.Equal(newGood.Description, good.Description);
         }
     }
 }

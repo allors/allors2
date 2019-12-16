@@ -15,11 +15,15 @@ namespace Allors.Domain
         protected override void BaseSecure(Security config)
         {
             var created = new ShipmentItemStates(this.Session).Created;
+            var picking = new ShipmentItemStates(this.Session).Picking;
             var picked = new ShipmentItemStates(this.Session).Picked;
             var packed = new ShipmentItemStates(this.Session).Packed;
+            var shipped = new ShipmentItemStates(this.Session).Shipped;
 
+            config.Deny(this.ObjectType, picking, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, picked, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, packed, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, shipped, Operations.Execute, Operations.Write);
         }
     }
 }
