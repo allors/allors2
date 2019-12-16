@@ -21,8 +21,17 @@ partial class Build
             }
         });
 
+    private Target CoreMerge => _ => _
+        .Executes(() =>
+        {
+            DotNetRun(s => s
+                .SetProjectFile(Paths.CoreDatabaseMerge)
+                .SetApplicationArguments($"{Paths.CoreDatabaseResourcesCore} {Paths.CoreDatabaseResourcesCustom} {Paths.CoreDatabaseResources}"));
+        });
+
     Target CoreGenerate => _ => _
         .After(Clean)
+        .DependsOn(CoreMerge)
         .Executes(() =>
         {
             DotNetRun(s => s

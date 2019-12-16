@@ -1,4 +1,4 @@
-﻿// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // <copyright file="ResourceFile.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -8,34 +8,46 @@
 
 namespace Allors.R1.Development.Resources
 {
-    using System.Collections;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Resources;
+    using System.Linq;
+    using System.Xml.Linq;
 
     internal class ResourceFile
     {
-        private readonly Dictionary<string, object> dictionary;
-
         internal ResourceFile(FileInfo fileInfo)
         {
-            this.dictionary = new Dictionary<string, object>();
+            this.FileName = fileInfo.Name;
+            this.Document = XDocument.Load(fileInfo.FullName);
+        }
 
-            using (var resxReader = new ResourceReader(fileInfo.FullName))
+        public string FileName { get; }
+
+        public XDocument Document { get; }
+
+        public void Merge(FileInfo fileInfo)
+        {
+            var mergeDocument = XDocument.Load(fileInfo.FullName);
+
+            foreach (var mergeData in mergeDocument.Root.Elements("data"))
             {
-                foreach (DictionaryEntry entry in resxReader)
+                var root = this.Document.Root;
+                var data = root.Elements("data").SingleOrDefault(v => v.Name.LocalName == mergeData.Name.LocalName);
+                if (data != null)
                 {
-                    this.dictionary.Add((string)entry.Key, entry.Value);
+                    data.Value = mergeData.Value;
+                }
+                else
+                {
+                    data = new XElement(mergeData);
+                    root.Add(data);
                 }
             }
         }
 
-        public void Merge(Dictionary<string, object> mergedDictionary)
+        public void Write(DirectoryInfo outputDirectory)
         {
-            foreach (var entry in this.dictionary)
-            {
-                mergedDictionary[entry.Key] = entry.Value;
-            }
+            var fileInfo = new FileInfo(Path.Combine(outputDirectory.FullName, this.FileName));
+            this.Document.Save(fileInfo.FullName);
         }
     }
 }

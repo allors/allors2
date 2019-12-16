@@ -26,6 +26,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DomainErrors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="ErrorMessages.nl.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="ErrorMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
