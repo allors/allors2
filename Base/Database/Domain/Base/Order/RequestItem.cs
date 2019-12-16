@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using Resources;
+
 namespace Allors.Domain
 {
     using Allors.Meta;
@@ -55,9 +57,9 @@ namespace Allors.Domain
                 this.Cancel();
             }
 
-            if (this.ExistSerialisedItem)
+            if (this.ExistSerialisedItem && this.Quantity != 1)
             {
-                this.Quantity = 1;
+                derivation.Validation.AddError(this, this.Meta.Quantity, ErrorMessages.SerializedItemQuantity);
             }
         }
 

@@ -124,6 +124,11 @@ namespace Allors.Domain
                             && ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.strategy.Session).Shipped))
                 .Sum(v => v.Quantity);
 
+            if (this.ExistSerialisedItem && this.QuantityOrdered != 1)
+            {
+                derivation.Validation.AddError(this, this.Meta.QuantityOrdered, ErrorMessages.SerializedItemQuantity);
+            }
+
             if (this.QuantityOrdered < this.QuantityPendingShipment || this.QuantityOrdered < this.QuantityShipped)
             {
                 derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining);

@@ -177,11 +177,20 @@ namespace Allors.Domain
             var salesOrderItems = this.Strategy.Session.Extent<SalesOrderItem>();
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
-            var goods = this.Part is NonUnifiedPart nonUnifiedPart ? nonUnifiedPart.NonUnifiedGoodsWherePart : new[] { this.Part };
+            var nonUnifiedGoods = this.Part.NonUnifiedGoodsWherePart;
+            var unifiedGood = this.Part as UnifiedGood;
 
-            if (goods != null)
+            if (nonUnifiedGoods.Count > 0 || unifiedGood != null)
             {
-                salesOrderItems.Filter.AddContainedIn(M.SalesOrderItem.Product, (Extent)goods);
+                if (unifiedGood != null)
+                {
+                    salesOrderItems.Filter.AddEquals(M.SalesOrderItem.Product, unifiedGood);
+                }
+
+                if (nonUnifiedGoods.Count > 0)
+                {
+                    salesOrderItems.Filter.AddContainedIn(M.SalesOrderItem.Product, (Extent)nonUnifiedGoods);
+                }
 
                 salesOrderItems = this.Strategy.Session.Instantiate(salesOrderItems);
 
