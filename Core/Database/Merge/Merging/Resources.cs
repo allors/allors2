@@ -22,16 +22,20 @@ namespace Allors.R1.Development.Resources
         {
             foreach (var inputDirectory in inputDirectories)
             {
-                foreach (var inputFile in inputDirectory.GetFiles())
+                inputDirectory.Refresh();
+                if (inputDirectory.Exists)
                 {
-                    if (!this.resourceFileByFilename.TryGetValue(inputFile.Name, out var resourceFile))
+                    foreach (var inputFile in inputDirectory.GetFiles())
                     {
-                        resourceFile = new ResourceFile(inputFile);
-                        this.resourceFileByFilename[inputFile.Name] = resourceFile;
-                    }
-                    else
-                    {
-                        resourceFile.Merge(inputFile);
+                        if (!this.resourceFileByFilename.TryGetValue(inputFile.Name, out var resourceFile))
+                        {
+                            resourceFile = new ResourceFile(inputFile);
+                            this.resourceFileByFilename[inputFile.Name] = resourceFile;
+                        }
+                        else
+                        {
+                            resourceFile.Merge(inputFile);
+                        }
                     }
                 }
             }
