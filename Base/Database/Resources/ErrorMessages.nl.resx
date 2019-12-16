@@ -228,4 +228,7 @@
   <data name="SalesOrderItemQuantityToShipNowNotAvailable" xml:space="preserve">
     <value>Het aantal dat nu verzonden moet worden is niet beschikbaar</value>
   </data>
+  <data name="SerializedItemQuantity" xml:space="preserve">
+    <value>Serieel item is uniek.  Aantal moet gelijk zijn aan 1</value>
+  </data>
 </root>
