@@ -8,7 +8,6 @@ namespace Tests.NonUnifiedGood
     using System.Linq;
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
-    using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.good.list;
     using src.allors.material.@base.objects.nonunifiedgood.overview;
