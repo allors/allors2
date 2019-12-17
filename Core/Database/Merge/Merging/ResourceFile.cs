@@ -8,6 +8,7 @@
 
 namespace Allors.R1.Development.Resources
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Xml.Linq;
@@ -30,8 +31,9 @@ namespace Allors.R1.Development.Resources
 
             foreach (var mergeData in mergeDocument.Root.Elements("data"))
             {
-                var root = this.Document.Root;
-                var data = root.Elements("data").SingleOrDefault(v => v.Name.LocalName == mergeData.Name.LocalName);
+                var data = this.Document.Root.Elements("data")
+                    .SingleOrDefault(v => v.Attribute("name")?.Value == mergeData.Attribute("name")?.Value);
+
                 if (data != null)
                 {
                     data.Value = mergeData.Value;
@@ -39,7 +41,7 @@ namespace Allors.R1.Development.Resources
                 else
                 {
                     data = new XElement(mergeData);
-                    root.Add(data);
+                    this.Document.Root.Add(data);
                 }
             }
         }
