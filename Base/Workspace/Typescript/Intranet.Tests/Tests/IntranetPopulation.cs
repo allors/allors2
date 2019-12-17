@@ -11,6 +11,7 @@ namespace Tests
     using System.Reflection;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
 
     public class IntranetPopulation
@@ -143,10 +144,10 @@ namespace Tests
                 purchaseOrderApprovalThresholdLevel2: null);
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
-
-            this.SetupUser(allors, "firstemployee@allors.com", "first", "allors employee", "letmein");
-            this.SetupUser(allors, "secondemployee@allors.com", "second", "allors employee", "letmein");
-            this.SetupUser(dipu, "firstemployee@dipu.com", "first", "dipu employee", "letmein");
+            var faker = this.Session.Faker();
+            allors.CreateAdministrator("letmein", faker);
+            allors.CreateAdministrator("letmein", faker);
+            dipu.CreateAdministrator("letmein", faker);
 
             var facility = new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
@@ -160,8 +161,6 @@ namespace Tests
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .Build();
-
-            var manufacturer = new OrganisationBuilder(this.Session).WithName("Gizmo inc.").WithIsManufacturer(true).Build();
 
             var productType = new ProductTypeBuilder(this.Session)
                 .WithName($"Gizmo Serialised")
@@ -178,74 +177,32 @@ namespace Tests
 
             var vatRate = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var brand = new BrandBuilder(this.Session)
-                .WithName("brand1")
-                .WithModel(new ModelBuilder(this.Session).WithName("model1").Build())
-                .Build();
+            var brand = new BrandBuilder(this.Session).WithDefaults().Build();
 
-            var finishedGood = new NonUnifiedPartBuilder(this.Session)
-                .WithProductIdentification(new SkuIdentificationBuilder(this.Session)
-                    .WithIdentification("10101")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Sku).Build())
-                .WithName("finished good")
-                .WithBrand(brand)
-                .WithModel(brand.Models[0])
-                .WithManufacturedBy(manufacturer)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
+            var good1 = new NonUnifiedGoodBuilder(this.Session).WithNonSerialisedPartDefaults(allors).Build();
 
-            var good1 = new NonUnifiedGoodBuilder(this.Session)
-                .WithName("Tiny blue round gizmo")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
-                .WithDescription("Perfect blue with nice curves")
-                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate)
-                .WithPart(finishedGood)
-                .Build();
-
-            new InventoryItemTransactionBuilder(this.Session).WithPart(finishedGood).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
-
-            var finishedGood2 = new NonUnifiedPartBuilder(this.Session)
-                .WithName("finished good2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
-                .WithProductType(productType)
-                .WithProductIdentification(new SkuIdentificationBuilder(this.Session)
-                    .WithIdentification("10102")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Sku).Build())
-                .WithManufacturedBy(manufacturer)
+            new InventoryItemTransactionBuilder(this.Session)
+                .WithPart(good1.Part)
+                .WithQuantity(100)
+                .WithReason(new InventoryTransactionReasons(this.Session).Unknown)
                 .Build();
 
             var good2 = new NonUnifiedGoodBuilder(this.Session)
-                .WithName("Tiny red round gizmo")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
-                .WithDescription("Perfect red with nice curves")
-                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate)
-                .WithPart(finishedGood2)
+                .WithSerialisedPartDefaults(allors)
                 .Build();
 
-            var serialisedItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
+            var serialisedItem1 = new SerialisedItemBuilder(this.Session).WithDefaults(allors).Build();
 
-            finishedGood2.AddSerialisedItem(serialisedItem1);
+            good2.Part.AddSerialisedItem(serialisedItem1);
 
-            new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem1).WithFacility(allors.StoresWhereInternalOrganisation.First.DefaultFacility).Build();
-
-            var finishedGood3 = new NonUnifiedPartBuilder(this.Session)
-                .WithProductIdentification(new SkuIdentificationBuilder(this.Session)
-                    .WithIdentification("10103")
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Sku).Build())
-                .WithName("finished good3")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithManufacturedBy(manufacturer)
+            new SerialisedInventoryItemBuilder(this.Session)
+                .WithPart(good2.Part)
+                .WithSerialisedItem(serialisedItem1)
+                .WithFacility(allors.StoresWhereInternalOrganisation.First.DefaultFacility)
                 .Build();
 
             var good3 = new NonUnifiedGoodBuilder(this.Session)
-                .WithName("Tiny green round gizmo")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
-                .WithDescription("Perfect red with nice curves")
-                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithVatRate(vatRate)
-                .WithPart(finishedGood3)
+                .WithNonSerialisedPartDefaults(allors)
                 .Build();
 
             var productCategory1 = new ProductCategoryBuilder(this.Session)
@@ -517,7 +474,7 @@ line2")
 
             var purchaseOrderItem1 = new PurchaseOrderItemBuilder(this.Session)
                 .WithDescription("first purchase order item")
-                .WithPart(finishedGood)
+                .WithPart(good1.Part)
                 .WithQuantityOrdered(1)
                 .Build();
 
@@ -715,33 +672,6 @@ line2")
             var templateType = new TemplateTypes(this.Session).OpenDocumentType;
             var template = new TemplateBuilder(this.Session).WithMedia(media).WithTemplateType(templateType).Build();
             return template;
-        }
-
-        private void SetupUser(Organisation organisation, string email, string firstName, string lastName, string password)
-        {
-            var userEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString(email).Build();
-
-            var person = new PersonBuilder(this.Session)
-                .WithUserName(email)
-                .WithFirstName(firstName)
-                .WithLastName(lastName)
-                .WithUserEmail(userEmail.ElectronicAddressString)
-                .WithUserEmailConfirmed(true)
-                .Build();
-
-            person.AddPartyContactMechanism(
-                new PartyContactMechanismBuilder(this.Session)
-                    .WithContactMechanism(userEmail)
-                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress)
-                    .WithUseAsDefault(true)
-                    .Build());
-
-            new EmploymentBuilder(this.Session).WithEmployee(person).WithEmployer(organisation).Build();
-
-            new UserGroups(this.Session).Administrators.AddMember(person);
-            new UserGroups(this.Session).Creators.AddMember(person);
-
-            person.SetPassword(password);
         }
     }
 }

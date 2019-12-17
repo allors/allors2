@@ -22,7 +22,7 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
             @this.WithElectronicAddressString(faker.Internet.Email());
-            @this.WithDescription(faker.Lorem.Word());
+            @this.WithDescription(faker.Lorem.Sentence());
             return @this;
         }
     }
