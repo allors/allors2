@@ -234,4 +234,7 @@
   <data name="WorkEffortRateError" xml:space="preserve">
     <value>Rate for this type already exists</value>
   </data>
+  <data name="SerializedItemQuantity" xml:space="preserve">
+    <value>Serialized item is unique. Quantity must be equal to 1</value>
+  </data>
 </root>

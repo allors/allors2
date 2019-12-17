@@ -228,4 +228,7 @@
   <data name="FrequencyNotSupported" xml:space="preserve">
     <value>Frequentie wordt niet ondersteund</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>Serieel item is uniek.  Aantal moet gelijk zijn aan 1</value>
+  </data>
 </root>
