@@ -4,12 +4,18 @@ public partial class Paths
 {
     public AbsolutePath Core => Root / "core";
     public AbsolutePath CoreRepositoryDomainRepository => Core / "Repository/Domain/Repository.csproj";
-    public AbsolutePath CoreDatabaseMetaGenerated => Core / "Database/Meta/generated";
-    public AbsolutePath CoreDatabaseGenerate => Core / "Database/Generate/Generate.csproj";
-    public AbsolutePath CoreDatabaseServer => Core / "Database/Server";
-    public AbsolutePath CoreDatabaseCommands => Core / "Database/Commands";
-    public AbsolutePath CoreDatabaseDomainTests => Core / "Database/Domain.Tests/Domain.Tests.csproj";
-    public AbsolutePath CoreDatabaseServerTests => Core / "Database/Server.Tests/Server.Tests.csproj";
+
+    public AbsolutePath CoreDatabase => Core / "Database";
+    public AbsolutePath CoreDatabaseMetaGenerated => CoreDatabase / "Meta/generated";
+    public AbsolutePath CoreDatabaseGenerate => CoreDatabase / "Generate/Generate.csproj";
+    public AbsolutePath CoreDatabaseMerge => CoreDatabase / "Merge/Merge.csproj";
+    public AbsolutePath CoreDatabaseServer => CoreDatabase / "Server";
+    public AbsolutePath CoreDatabaseCommands => CoreDatabase / "Commands";
+    public AbsolutePath CoreDatabaseDomainTests => CoreDatabase / "Domain.Tests/Domain.Tests.csproj";
+    public AbsolutePath CoreDatabaseServerTests => CoreDatabase / "Server.Tests/Server.Tests.csproj";
+    public AbsolutePath CoreDatabaseResources => CoreDatabase / "Resources";
+    public AbsolutePath CoreDatabaseResourcesCore => CoreDatabaseResources / "Core";
+    public AbsolutePath CoreDatabaseResourcesCustom => CoreDatabaseResources / "Custom";
 
     public AbsolutePath CoreWorkspaceTypescriptDomain => Core / "Workspace/Typescript/Domain";
     public AbsolutePath CoreWorkspaceTypescriptPromise => Core / "Workspace/Typescript/Promise";

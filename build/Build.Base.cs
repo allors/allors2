@@ -26,6 +26,14 @@ partial class Build
     private Target BaseDatabaseTest => _ => _
          .DependsOn(BaseDatabaseTestDomain);
 
+    private Target BaseMerge => _ => _
+        .Executes(() =>
+        {
+            DotNetRun(s => s
+                .SetProjectFile(Paths.CoreDatabaseMerge)
+                .SetApplicationArguments($"{Paths.CoreDatabaseResourcesCore} {Paths.BaseDatabaseResourcesBase} {Paths.BaseDatabaseResources}"));
+        });
+
     private Target BaseDatabaseTestDomain => _ => _
          .DependsOn(BaseGenerate)
          .Executes(() =>
@@ -38,6 +46,7 @@ partial class Build
 
     private Target BaseGenerate => _ => _
          .After(Clean)
+         .DependsOn(BaseMerge)
          .Executes(() =>
          {
              DotNetRun(s => s

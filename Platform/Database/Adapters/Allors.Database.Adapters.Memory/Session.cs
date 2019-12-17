@@ -13,17 +13,18 @@ namespace Allors.Database.Adapters.Memory
     using Allors.Meta;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Xml;
 
     public class Session : ISession
     {
         private static readonly HashSet<Strategy> EmptyStrategies = new HashSet<Strategy>();
         private static readonly IObject[] EmptyObjects = { };
 
-        private readonly Dictionary<IObjectType, IObjectType[]> concreteClassesByObjectType;
+        private readonly Dictionary<IObjectType, IClass[]> classesByObjectType;
         private bool busyCommittingOrRollingBack;
 
         private Dictionary<long, Strategy> strategyByObjectId;
-        private Dictionary<IObjectType, HashSet<Strategy>> strategiesByObjectType;
+        private Dictionary<IClass, HashSet<Strategy>> strategiesByClass;
 
         private long currentId;
 
@@ -36,7 +37,7 @@ namespace Allors.Database.Adapters.Memory
             this.MemoryDatabase = database;
             this.busyCommittingOrRollingBack = false;
 
-            this.concreteClassesByObjectType = new Dictionary<IObjectType, IObjectType[]>();
+            this.classesByObjectType = new Dictionary<IObjectType, IClass[]>();
 
             this.MemoryChangeSet = new ChangeSet();
 
@@ -87,7 +88,7 @@ namespace Allors.Database.Adapters.Memory
                         {
                             this.strategyByObjectId.Remove(strategy.ObjectId);
 
-                            if (this.strategiesByObjectType.TryGetValue(strategy.UncheckedObjectType, out var strategies))
+                            if (this.strategiesByClass.TryGetValue(strategy.UncheckedObjectType, out var strategies))
                             {
                                 strategies.Remove(strategy);
                             }
@@ -118,7 +119,7 @@ namespace Allors.Database.Adapters.Memory
                         {
                             this.strategyByObjectId.Remove(strategy.ObjectId);
 
-                            if (this.strategiesByObjectType.TryGetValue(strategy.UncheckedObjectType, out var strategies))
+                            if (this.strategiesByClass.TryGetValue(strategy.UncheckedObjectType, out var strategies))
                             {
                                 strategies.Remove(strategy);
                             }
@@ -329,10 +330,10 @@ namespace Allors.Database.Adapters.Memory
         {
             this.strategyByObjectId.Add(strategy.ObjectId, strategy);
 
-            if (!this.strategiesByObjectType.TryGetValue(strategy.UncheckedObjectType, out var strategies))
+            if (!this.strategiesByClass.TryGetValue(strategy.UncheckedObjectType, out var strategies))
             {
                 strategies = new HashSet<Strategy>();
-                this.strategiesByObjectType.Add(strategy.UncheckedObjectType, strategies);
+                this.strategiesByClass.Add(strategy.UncheckedObjectType, strategies);
             }
 
             strategies.Add(strategy);
@@ -340,37 +341,37 @@ namespace Allors.Database.Adapters.Memory
 
         internal virtual HashSet<Strategy> GetStrategiesForExtentIncludingDeleted(IObjectType type)
         {
-            if (!this.concreteClassesByObjectType.TryGetValue(type, out var concreteClasses))
+            if (!this.classesByObjectType.TryGetValue(type, out var classes))
             {
-                var sortedClassAndSubclassList = new List<IObjectType>();
+                var classList = new List<IClass>();
 
-                if (type is IClass)
+                if (type is IClass @class)
                 {
-                    sortedClassAndSubclassList.Add(type);
+                    classList.Add(@class);
                 }
 
                 if (type is IInterface)
                 {
-                    foreach (var subClass in ((IInterface)type).Subclasses)
+                    foreach (var implementingClass in ((IInterface)type).Subclasses)
                     {
-                        sortedClassAndSubclassList.Add(subClass);
+                        classList.Add(implementingClass);
                     }
                 }
 
-                concreteClasses = sortedClassAndSubclassList.ToArray();
+                classes = classList.ToArray();
 
-                this.concreteClassesByObjectType[type] = concreteClasses;
+                this.classesByObjectType[type] = classes;
             }
 
-            switch (concreteClasses.Length)
+            switch (classes.Length)
             {
                 case 0:
                     return EmptyStrategies;
 
                 case 1:
                 {
-                    var objectType = concreteClasses[0];
-                    if (this.strategiesByObjectType.TryGetValue(objectType, out var strategies))
+                    var objectType = classes[0];
+                    if (this.strategiesByClass.TryGetValue(objectType, out var strategies))
                     {
                         return strategies;
                     }
@@ -382,9 +383,9 @@ namespace Allors.Database.Adapters.Memory
                 {
                     var strategies = new HashSet<Strategy>();
 
-                    foreach (var objectType in concreteClasses)
+                    foreach (var objectType in classes)
                     {
-                        if (this.strategiesByObjectType.TryGetValue(objectType, out var objectTypeStrategies))
+                        if (this.strategiesByClass.TryGetValue(objectType, out var objectTypeStrategies))
                         {
                             strategies.UnionWith(objectTypeStrategies);
                         }
@@ -425,11 +426,13 @@ namespace Allors.Database.Adapters.Memory
             save.Execute();
         }
 
+        internal void Save(IStorage storage) => new Storage.Save(storage, this.strategyByObjectId).Execute();
+
         private void Reset()
         {
             // Strategies
             this.strategyByObjectId = new Dictionary<long, Strategy>();
-            this.strategiesByObjectType = new Dictionary<IObjectType, HashSet<Strategy>>();
+            this.strategiesByClass = new Dictionary<IClass, HashSet<Strategy>>();
         }
     }
 }

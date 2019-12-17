@@ -256,6 +256,11 @@ namespace Allors.Database.Adapters.Npgsql
             }
         }
 
+        public void Load(IStorage storage) => throw new NotImplementedException();
+
+        public void Save(IStorage storage) => throw new NotImplementedException();
+
+
         public override string ToString() => "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
 
         public Validation Validate()

@@ -219,4 +219,22 @@
   <data name="SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining" xml:space="preserve">
     <value>The requested quantity to ship immediately is larger than the quantity remaining to ship</value>
   </data>
+  <data name="DateDayOfWeek" xml:space="preserve">
+    <value>Selected date does not match weekday</value>
+  </data>
+  <data name="EndDateBeforeStartDate" xml:space="preserve">
+    <value>End date is before start date</value>
+  </data>
+  <data name="FrequencyNotSupported" xml:space="preserve">
+    <value>Selected frequency is not supported</value>
+  </data>
+  <data name="PaymentAmountIsToSmall" xml:space="preserve">
+    <value>amount is to small</value>
+  </data>
+  <data name="WorkEffortRateError" xml:space="preserve">
+    <value>Rate for this type already exists</value>
+  </data>
+  <data name="SerializedItemQuantity" xml:space="preserve">
+    <value>Serialized item is unique. Quantity must be equal to 1</value>
+  </data>
 </root>
