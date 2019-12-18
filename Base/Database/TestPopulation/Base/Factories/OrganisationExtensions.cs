@@ -3,10 +3,9 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors
+namespace Allors.Domain.TestPopulation
 {
     using Allors.Domain;
-    using Allors.Domain.TestPopulation;
     using Bogus;
     using Person = Allors.Domain.Person;
 
@@ -21,7 +20,7 @@ namespace Allors
                 .WithEmployer(@this)
                 .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
                 .Build();
-
+                
             new UserGroups(@this.Session()).Creators.AddMember(person);
 
             person.SetPassword(password);

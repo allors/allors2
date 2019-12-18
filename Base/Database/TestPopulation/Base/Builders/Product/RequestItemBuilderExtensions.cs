@@ -14,9 +14,9 @@ namespace Allors.Domain.TestPopulation
 
             var finishedGood = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
 
-            @this.WithDescription(faker.Lorem.Sentence().ToString());
-            @this.WithComment(faker.Lorem.Sentence().ToString());
-            @this.WithInternalComment(faker.Lorem.Sentence().ToString());
+            @this.WithDescription(faker.Lorem.Sentence());
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithMaximumAllowedPrice(faker.Random.UInt());
             @this.WithProduct(finishedGood).Build();
             @this.WithRequiredByDate(@this.Session.Now().AddDays(7)).Build();
@@ -31,9 +31,9 @@ namespace Allors.Domain.TestPopulation
 
             var finishedGood = new UnifiedGoodBuilder(@this.Session).WithNonSerialisedDefaults(internalOrganisation).Build();
 
-            @this.WithDescription(faker.Lorem.Sentence().ToString());
-            @this.WithComment(faker.Lorem.Sentence().ToString());
-            @this.WithInternalComment(faker.Lorem.Sentence().ToString());
+            @this.WithDescription(faker.Lorem.Sentence());
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithMaximumAllowedPrice(faker.Random.UInt());
             @this.WithQuantity(faker.Random.UShort());
             @this.WithProduct(finishedGood).Build();

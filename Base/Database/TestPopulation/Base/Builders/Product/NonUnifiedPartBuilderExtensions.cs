@@ -42,10 +42,10 @@ namespace Allors.Domain.TestPopulation
 
             @this.WithInventoryItemKind(new InventoryItemKinds(@this.Session).NonSerialised);
             @this.WithName(faker.Commerce.ProductMaterial());
-            @this.WithDescription(faker.Lorem.Sentence().ToString());
-            @this.WithComment(faker.Lorem.Sentence().ToString());
-            @this.WithInternalComment(faker.Lorem.Sentence().ToString());
-            @this.WithKeywords(faker.Lorem.Sentence().ToString());
+            @this.WithDescription(faker.Lorem.Sentence());
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
+            @this.WithKeywords(faker.Lorem.Sentence());
             @this.WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece);
             @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
             @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
@@ -67,9 +67,9 @@ namespace Allors.Domain.TestPopulation
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
             {
                 @this.WithLocalisedName(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Word()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedDescription(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedComment(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedDescription(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedComment(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence()).WithLocale(additionalLocale).Build());
 
                 var localisedDocument = new MediaBuilder(@this.Session).WithFileName($"doc1.{additionalLocale.Country.IsoCode}.pdf").WithInData(faker.Random.Bytes(1000)).Build();
                 @this.WithLocalisedElectronicDocument(new LocalisedMediaBuilder(@this.Session).WithMedia(localisedDocument).WithLocale(additionalLocale).Build());
@@ -107,10 +107,10 @@ namespace Allors.Domain.TestPopulation
 
             @this.WithInventoryItemKind(new InventoryItemKinds(@this.Session).Serialised);
             @this.WithName(faker.Commerce.ProductMaterial());
-            @this.WithDescription(faker.Lorem.Sentence().ToString());
-            @this.WithComment(faker.Lorem.Sentence().ToString());
-            @this.WithInternalComment(faker.Lorem.Sentence().ToString());
-            @this.WithKeywords(faker.Lorem.Sentence().ToString());
+            @this.WithDescription(faker.Lorem.Sentence());
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
+            @this.WithKeywords(faker.Lorem.Sentence());
             @this.WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece);
             @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
             @this.WithPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 200, height: 56)).Build());
@@ -130,9 +130,9 @@ namespace Allors.Domain.TestPopulation
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
             {
                 @this.WithLocalisedName(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Word()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedDescription(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedComment(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedDescription(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedComment(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence()).WithLocale(additionalLocale).Build());
 
                 var localisedDocument = new MediaBuilder(@this.Session).WithFileName($"doc1.{additionalLocale.Country.IsoCode}.pdf").WithInData(faker.Random.Bytes(1000)).Build();
                 @this.WithLocalisedElectronicDocument(new LocalisedMediaBuilder(@this.Session).WithMedia(localisedDocument).WithLocale(additionalLocale).Build());

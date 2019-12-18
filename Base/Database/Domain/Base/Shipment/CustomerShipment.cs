@@ -155,6 +155,11 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty?.ShippingAddress;
             }
 
+            if (!this.ExistShipFromFacility)
+            {
+                this.ShipFromFacility = ((Organisation)this.ShipFromParty)?.FacilitiesWhereOwner.FirstOrDefault();
+            }
+
             this.BaseOnDeriveShipmentValue(derivation);
             this.BaseOnDeriveCurrentShipmentState(derivation);
 
