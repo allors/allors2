@@ -88,9 +88,14 @@ namespace Allors.Domain
 
         public void BaseOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistAutoGenerateShipment)
+            if (!this.ExistAutoGenerateCustomerShipment)
             {
-                this.AutoGenerateShipment = true;
+                this.AutoGenerateCustomerShipment = true;
+            }
+
+            if (!this.ExistAutoGeneratePurchaseShipment)
+            {
+                this.AutoGeneratePurchaseShipment = true;
             }
 
             if (!this.ExistAutoGenerateShipmentPackage)

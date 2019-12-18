@@ -646,7 +646,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.CanShip && this.Store.AutoGenerateShipment)
+            if (this.CanShip && this.Store.AutoGenerateCustomerShipment)
             {
                 this.Ship();
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));

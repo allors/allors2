@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, Invoked, RefreshService, Action } from '../../../../../../angular';
-import { PurchaseOrder, PurchaseInvoice} from '../../../../../../domain';
+import { PurchaseOrder, PurchaseInvoice, Shipment } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrintService, SaveService } from '../../../../../../material';
@@ -19,6 +19,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   purchaseInvoices: PurchaseInvoice[] = [];
 
   print: Action;
+  shipments: Shipment[];
 
   constructor(
     @Self() public panel: PanelService,
@@ -37,6 +38,7 @@ export class PurchaseOrderOverviewSummaryComponent {
     panel.name = 'summary';
 
     const puchaseOrderPullName = `${panel.name}_${this.m.PurchaseOrder.name}`;
+    const shipmentPullName = `${panel.name}_${this.m.Shipment.name}`;
     const purchaseInvoicePullName = `${panel.name}_${this.m.PurchaseInvoice.name}`;
 
     panel.onPull = (pulls) => {
@@ -60,6 +62,19 @@ export class PurchaseOrderOverviewSummaryComponent {
           }
         }),
         pull.PurchaseOrder({
+          name: shipmentPullName,
+          object: this.panel.manager.id,
+          fetch: {
+            PurchaseOrderItems: {
+              OrderShipmentsWhereOrderItem: {
+                ShipmentItem: {
+                  ShipmentWhereShipmentItem: x
+                }
+              }
+            }
+          }
+        }),
+        pull.PurchaseOrder({
           name: purchaseInvoicePullName,
           object: this.panel.manager.id,
           fetch: { PurchaseInvoicesWherePurchaseOrder: x }
@@ -70,6 +85,7 @@ export class PurchaseOrderOverviewSummaryComponent {
     panel.onPulled = (loaded) => {
       this.order = loaded.objects[puchaseOrderPullName] as PurchaseOrder;
       this.purchaseInvoices = loaded.collections[purchaseInvoicePullName] as PurchaseInvoice[];
+      this.shipments = loaded.collections[shipmentPullName] as Shipment[];
     };
   }
 
@@ -80,7 +96,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public cancel(): void {
@@ -90,7 +106,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public reject(): void {
@@ -100,7 +116,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public hold(): void {
@@ -110,7 +126,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public continue(): void {
@@ -120,7 +136,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public confirm(): void {
@@ -130,7 +146,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public reopen(): void {
@@ -140,7 +156,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public send(): void {
@@ -150,7 +166,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public invoice(): void {
@@ -160,7 +176,7 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully created purchase invoice', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public quickReceive(): void {
@@ -171,6 +187,6 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.snackBar.open('inventory created for all items', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 }

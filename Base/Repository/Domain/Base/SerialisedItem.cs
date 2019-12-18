@@ -305,7 +305,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Workspace]
-        public Organisation SuppliedBy { get; set; }
+        public Party SuppliedBy { get; set; }
 
         #region Allors
         [Id("C16A8A73-84D3-4889-8B95-B8B05CB561DE")]
@@ -315,7 +315,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public Organisation AssignedSuppliedBy { get; set; }
+        public Party AssignedSuppliedBy { get; set; }
 
         #region Allors
         [Id("E9ACD0EE-693C-4459-9F40-D478F538659F")]

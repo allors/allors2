@@ -60,7 +60,7 @@ namespace Allors.Repository
 
         public PostalAddress ShipFromAddress { get; set; }
 
-        public PostalAddress ShipFromContactPerson { get; set; }
+        public Person ShipFromContactPerson { get; set; }
 
         public string HandlingInstruction { get; set; }
 

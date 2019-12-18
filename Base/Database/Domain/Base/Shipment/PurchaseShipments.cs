@@ -15,7 +15,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            var delivered = new ShipmentStates(this.Session).Delivered;
+            var received = new ShipmentStates(this.Session).Received;
             var cancelled = new ShipmentStates(this.Session).Cancelled;
 
             var except = new HashSet<IOperandType>
@@ -24,7 +24,7 @@ namespace Allors.Domain
             };
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
-            config.DenyExcept(this.ObjectType, delivered, except, Operations.Execute, Operations.Write);
+            config.DenyExcept(this.ObjectType, received, except, Operations.Execute, Operations.Write);
         }
     }
 }

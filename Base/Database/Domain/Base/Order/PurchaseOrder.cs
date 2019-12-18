@@ -29,7 +29,7 @@ namespace Allors.Domain
             {
                 if (this.ExistTakenViaSupplier && this.ExistOrderedBy)
                 {
-                    var supplierRelationship = this.TakenViaSupplier.SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
+                    var supplierRelationship = ((Organisation)this.TakenViaSupplier).SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
                     if (supplierRelationship != null &&
                         supplierRelationship.NeedsApproval &&
                         supplierRelationship.ExistApprovalThresholdLevel1 && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel1)
@@ -48,7 +48,7 @@ namespace Allors.Domain
             {
                 if (this.ExistTakenViaSupplier && this.ExistOrderedBy)
                 {
-                    var supplierRelationship = this.TakenViaSupplier.SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
+                    var supplierRelationship = ((Organisation)this.TakenViaSupplier).SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
                     if (supplierRelationship != null &&
                         supplierRelationship.NeedsApproval && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel2)
                     {

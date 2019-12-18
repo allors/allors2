@@ -27,6 +27,7 @@ namespace Allors.Repository
         [RoleId("89d49ef1-a3b6-4404-97d9-024c66e0a1f6")]
         #endregion
         [Size(-1)]
+        [Workspace]
         public string ItemDescription { get; set; }
 
         #region Allors
@@ -37,6 +38,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public InventoryItem InventoryItem { get; set; }
 
         #region Allors
@@ -45,6 +47,7 @@ namespace Allors.Repository
         [RoleId("9cbd890b-c0b5-4a0c-a931-fc5601b5ef0d")]
         #endregion
         [Size(-1)]
+        [Workspace]
         public string RejectionReason { get; set; }
 
         #region Allors
@@ -54,6 +57,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public OrderItem OrderItem { get; set; }
 
         #region Allors
@@ -64,6 +68,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityRejected { get; set; }
 
         #region Allors
@@ -74,6 +79,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public ShipmentItem ShipmentItem { get; set; }
 
         #region Allors
@@ -82,6 +88,7 @@ namespace Allors.Repository
         [RoleId("82ef73a5-8d4e-44a0-a551-b0c1dee958ca")]
         #endregion
         [Required]
+        [Workspace]
         public DateTime ReceivedDateTime { get; set; }
 
         #region Allors
@@ -92,6 +99,7 @@ namespace Allors.Repository
         [Required]
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal QuantityAccepted { get; set; }
 
         #region inherited methods

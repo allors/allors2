@@ -50,7 +50,9 @@ namespace Allors.Domain
             bool autoGenerateShipmentPackage,
             bool isImmediatelyPacked,
             bool isAutomaticallyShipped,
-            bool autoGenerateShipment,
+            bool autoGenerateCustomerShipment,
+            bool isAutomaticallyReceived,
+            bool autoGeneratePurchaseShipment,
             bool useCreditNoteSequence,
             int? requestCounterValue,
             int? quoteCounterValue,
@@ -223,7 +225,9 @@ namespace Allors.Domain
                 .WithAutoGenerateShipmentPackage(autoGenerateShipmentPackage)
                 .WithIsImmediatelyPacked(isImmediatelyPacked)
                 .WithIsAutomaticallyShipped(isAutomaticallyShipped)
-                .WithAutoGenerateShipment(autoGenerateShipment)
+                .WithAutoGenerateCustomerShipment(autoGenerateCustomerShipment)
+                .WithIsAutomaticallyReceived(isAutomaticallyReceived)
+                .WithAutoGeneratePurchaseShipment(autoGeneratePurchaseShipment)
                 .WithUseCreditNoteSequence(useCreditNoteSequence)
                 .WithInternalOrganisation(internalOrganisation)
                 .Build();

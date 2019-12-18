@@ -54,7 +54,6 @@ namespace Allors.Repository
         [RoleId("6fe551cd-0808-466b-9ec9-833098ebad79")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Indexed]
         [Workspace]
         ShipmentMethod ShipmentMethod { get; set; }

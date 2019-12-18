@@ -158,7 +158,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public Organisation BilledFrom { get; set; }
+        public Party BilledFrom { get; set; }
 
         #region Allors
         [Id("0CE57597-A6E0-4F9D-B619-A8688E02A045")]
