@@ -12,6 +12,7 @@ namespace Tests
     using Allors;
     using Allors.Database.Adapters.SqlClient;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Allors.Services;
     using Bogus;
@@ -40,7 +41,8 @@ namespace Tests
         {
             var domainPrint = typeof(User).Assembly.Fingerprint();
             var testPrint = typeof(Test).Assembly.Fingerprint();
-            populationFileInfo = new FileInfo($"population.{domainPrint}.{testPrint}.xml");
+            var testPopulationPrint = typeof(Marker).Assembly.Fingerprint();
+            populationFileInfo = new FileInfo($"population.{domainPrint}.{testPrint}.{testPopulationPrint}.xml");
         }
 
         protected Test(TestFixture fixture)
@@ -162,8 +164,13 @@ namespace Tests
 
         public virtual void Dispose() => this.DriverManager.Stop();
 
-        public void Login(string userName = "firstemployee@allors.com")
+        public void Login(string userName = null)
         {
+            if (string.IsNullOrEmpty(userName))
+            {
+                userName = new UserGroups(this.Session).Administrators.Members.First.UserName;
+            }
+
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
             var login = new LoginComponent(this.Driver);
             login.Login(userName);
