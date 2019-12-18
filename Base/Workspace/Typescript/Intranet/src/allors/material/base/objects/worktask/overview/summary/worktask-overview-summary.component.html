@@ -13,7 +13,7 @@
     </mat-card-subtitle>
 
     <mat-card-subtitle>
-      <div>last modified: {{ workTask.LastModifiedDate | date}} by {{ workTask.LastModifiedBy?.displayName}}</div>
+      <div>last modified: {{ workTask.LastModifiedDate | date:'d/M/yyyy, HH:mm'}} by {{ workTask.LastModifiedBy?.displayName}}</div>
     </mat-card-subtitle>
 
   </mat-card-header>

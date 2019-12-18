@@ -17,7 +17,7 @@
     </mat-card-subtitle>
 
     <mat-card-subtitle>
-      <div>last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy?.displayName}}</div>
+      <div>last modified: {{ organisation.LastModifiedDate | date:'d/M/yyyy, HH:mm'}} by {{ organisation.LastModifiedBy?.displayName}}</div>
     </mat-card-subtitle>
 
   </mat-card-header>
