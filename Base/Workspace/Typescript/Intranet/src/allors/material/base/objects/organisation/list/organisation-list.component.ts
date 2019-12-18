@@ -98,6 +98,22 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
             parameter: 'country'
           })
         })
+      }),
+      new ContainedIn({
+        propertyType: m.Party.PartyContactMechanisms,
+        extent: new Filter({
+          objectType: m.PartyContactMechanism,
+          predicate: new ContainedIn({
+            propertyType: m.PartyContactMechanism.ContactMechanism,
+            extent: new Filter({
+              objectType: m.PostalAddress,
+              predicate: new Like({
+                roleType: m.PostalAddress.Locality,
+                parameter: 'city'
+              })
+            })
+          })
+        })
       })
     ]);
 

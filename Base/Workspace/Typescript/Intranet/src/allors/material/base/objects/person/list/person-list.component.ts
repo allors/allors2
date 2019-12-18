@@ -82,12 +82,34 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
       new Like({ roleType: m.Person.LastName, parameter: 'lastName' }),
       new ContainedIn({
-        propertyType: m.Party.GeneralCorrespondence,
+        propertyType: m.Party.PartyContactMechanisms,
         extent: new Filter({
-          objectType: m.PostalAddress,
+          objectType: m.PartyContactMechanism,
           predicate: new ContainedIn({
-            propertyType: m.PostalAddress.Country,
-            parameter: 'country'
+            propertyType: m.PartyContactMechanism.ContactMechanism,
+            extent: new Filter({
+              objectType: m.PostalAddress,
+              predicate: new ContainedIn({
+                propertyType: m.PostalAddress.Country,
+                parameter: 'country'
+              })
+            })
+          })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.Party.PartyContactMechanisms,
+        extent: new Filter({
+          objectType: m.PartyContactMechanism,
+          predicate: new ContainedIn({
+            propertyType: m.PartyContactMechanism.ContactMechanism,
+            extent: new Filter({
+              objectType: m.PostalAddress,
+              predicate: new Like({
+                roleType: m.PostalAddress.Locality,
+                parameter: 'city'
+              })
+            })
           })
         })
       })
@@ -128,6 +150,9 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
                 Picture: x,
                 GeneralPhoneNumber: x,
                 GeneralEmail: x,
+                GeneralCorrespondence: {
+                  PostalAddress_Country: x
+                },
               },
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
