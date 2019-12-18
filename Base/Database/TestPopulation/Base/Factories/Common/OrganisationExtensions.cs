@@ -29,6 +29,14 @@ namespace Allors
             return person;
         }
 
+        public static Person CreateAdministrator(this Organisation @this, string password, Faker faker)
+        {
+            var person = @this.CreateEmployee(password, faker);
+            new UserGroups(@this.Session()).Administrators.AddMember(person);
+
+            return person;
+        }
+
         public static Organisation CreateB2BCustomer(this Organisation @this, Faker faker)
         {
             var customer = new OrganisationBuilder(@this.Session()).WithDefaults().Build();
@@ -104,13 +112,6 @@ namespace Allors
                     .WithUnitOfMeasure(part.UnitOfMeasure)
                     .Build();
             }
-
-            //new InventoryItemTransactionBuilder(@this.Session())
-            //    .WithPart(part)
-            //    .WithFacility(@this.FacilitiesWhereOwner.First)
-            //    .WithQuantity(faker.Random.Number(1))
-            //    .WithReason(new InventoryTransactionReasons(@this.Session()).Unknown)
-            //    .Build();
 
             return part;
         }

@@ -10,6 +10,7 @@ namespace Allors.Database.Adapters.Memory
     using System.Xml;
 
     using Allors.Meta;
+    using Xml;
 
     public class Database : IDatabase
     {
@@ -79,6 +80,10 @@ namespace Allors.Database.Adapters.Memory
         }
 
         public void Save(XmlWriter writer) => this.Session.Save(writer);
+
+        public void Load(IStorage storage) => new Storage.Load(this).Execute();
+
+        public void Save(IStorage storage) => this.Session.Save(storage);
 
         public bool ContainsConcreteClass(IComposite objectType, IObjectType concreteClass)
         {

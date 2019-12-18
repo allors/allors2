@@ -4,6 +4,8 @@
 // </copyright>
 // <summary>Defines the MediaTests type.</summary>
 
+using Allors.Domain.TestPopulation;
+
 namespace Allors.Domain
 {
     using System;
@@ -312,6 +314,55 @@ namespace Allors.Domain
             Assert.Equal(7, salesItem.QuantityShortFalled);
         }
 
+        [Fact]
+        public void GivenInventoryItemForUnifiedGood_WhenQuantityOnHandIsRaised_ThenSalesOrderItemWithQuantityShortFalledIsUpdated()
+        {
+            var internalOrganisation = new Organisations(this.Session).Extent().First(v => Equals(v.Name, "internalOrganisation"));
+            var unifiedGood = new UnifiedGoodBuilder(this.Session).WithNonSerialisedDefaults(internalOrganisation).Build();
+            var customer = internalOrganisation.CreateB2BCustomer(this.Session.Faker());
+
+            this.Session.Derive();
+
+            this.CreateInventoryTransaction(5, new InventoryTransactionReasons(this.Session).Unknown, unifiedGood);
+
+            this.Session.Derive();
+
+            var order = this.CreateSalesOrder(customer, customer, this.Session.Now());
+            var salesItem1 = this.CreateSalesOrderItem("item1", unifiedGood, 10, 15);
+            order.AddSalesOrderItem(salesItem1);
+
+            this.Session.Derive();
+
+            order.Confirm();
+
+            this.Session.Derive(true);
+
+            Assert.Equal(0, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(5, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+
+            Assert.Equal(0, salesItem1.QuantityRequestsShipping);
+            Assert.Equal(5, salesItem1.QuantityPendingShipment);
+            Assert.Equal(10, salesItem1.QuantityReserved);
+            Assert.Equal(5, salesItem1.QuantityShortFalled);
+
+            Assert.Equal(0, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(5, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+
+            // Re-arrange
+            this.CreateInventoryTransaction(15, new InventoryTransactionReasons(this.Session).Unknown, unifiedGood);
+
+            // Act
+            this.Session.Derive(true);
+
+            Assert.Equal(0, salesItem1.QuantityRequestsShipping);
+            Assert.Equal(10, salesItem1.QuantityPendingShipment);
+            Assert.Equal(10, salesItem1.QuantityReserved);
+            Assert.Equal(0, salesItem1.QuantityShortFalled);
+
+            Assert.Equal(10, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(20, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+        }
+
         // [Fact]
         // public void ReportNonSerialisedInventory()
         // {
@@ -423,10 +474,10 @@ namespace Allors.Domain
         private PartyContactMechanism CreateShipTo(ContactMechanism mechanism, ContactMechanismPurpose purpose, bool isDefault)
             => new PartyContactMechanismBuilder(this.Session).WithContactMechanism(mechanism).WithContactPurpose(purpose).WithUseAsDefault(isDefault).Build();
 
-        private SalesOrder CreateSalesOrder(Person billTo, Person shipTo, DateTime deliveryDate)
+        private SalesOrder CreateSalesOrder(Party billTo, Party shipTo, DateTime deliveryDate)
             => new SalesOrderBuilder(this.Session).WithBillToCustomer(billTo).WithShipToCustomer(shipTo).WithDeliveryDate(deliveryDate).Build();
 
-        private SalesOrder CreateSalesOrder(Person billTo, Person shipTo, DateTime deliveryDate, bool partialShip)
+        private SalesOrder CreateSalesOrder(Party billTo, Party shipTo, DateTime deliveryDate, bool partialShip)
             => new SalesOrderBuilder(this.Session).WithBillToCustomer(billTo).WithShipToCustomer(shipTo).WithDeliveryDate(deliveryDate).WithPartiallyShip(partialShip).Build();
 
         private SalesOrderItem CreateSalesOrderItem(string description, Product product, decimal quantityOrdered, decimal unitPrice)

@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using Resources;
+
 namespace Allors.Domain
 {
     using Allors.Meta;
@@ -68,6 +70,11 @@ namespace Allors.Domain
             if (this.Product is UnifiedGood unifiedGood && unifiedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised) && !this.ExistSerialisedItem)
             {
                 derivation.Validation.AssertExists(this, this.Meta.SerialisedItem);
+            }
+
+            if (this.ExistSerialisedItem && this.Quantity != 1)
+            {
+                derivation.Validation.AddError(this, this.Meta.Quantity, ErrorMessages.SerializedItemQuantity);
             }
 
             if (!this.ExistDetails && this.ExistSerialisedItem)

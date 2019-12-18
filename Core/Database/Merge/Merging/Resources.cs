@@ -1,4 +1,4 @@
-﻿// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // <copyright file="Resources.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -10,51 +10,42 @@ namespace Allors.R1.Development.Resources
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Resources;
+    using System.Runtime.InteropServices.ComTypes;
 
-    public class Resources
+    public class Merger
     {
-        private readonly DirectoryInfo outputDirectory;
+        private readonly Dictionary<string, ResourceFile> resourceFileByFilename;
 
-        private readonly IList<ResourceDirectory> resourceDirectories = new List<ResourceDirectory>();
-        private readonly HashSet<string> fileNames = new HashSet<string>();
+        public Merger() => this.resourceFileByFilename = new Dictionary<string, ResourceFile>();
 
-        public Resources(DirectoryInfo[] inputDirectories, DirectoryInfo outputDirectory)
+        public void Input(DirectoryInfo[] inputDirectories)
         {
-            this.outputDirectory = outputDirectory;
-
-            foreach (var directory in inputDirectories)
+            foreach (var inputDirectory in inputDirectories)
             {
-                this.resourceDirectories.Add(new ResourceDirectory(directory));
-            }
-
-            foreach (var resourceDirectory in this.resourceDirectories)
-            {
-                resourceDirectory.CollectFileNames(this.fileNames);
-            }
-        }
-
-        public void Merge()
-        {
-            foreach (var fileName in this.fileNames)
-            {
-                var dictionary = new Dictionary<string, object>();
-                foreach (var resourceDirectory in this.resourceDirectories)
+                inputDirectory.Refresh();
+                if (inputDirectory.Exists)
                 {
-                    resourceDirectory.Merge(fileName, dictionary);
-
-                    var fileInfo = new FileInfo(Path.Combine(this.outputDirectory.FullName, fileName));
-                    using (var resx = new ResourceWriter(fileInfo.FullName))
+                    foreach (var inputFile in inputDirectory.GetFiles())
                     {
-                        var keys = new List<string>(dictionary.Keys);
-                        keys.Sort(string.CompareOrdinal);
-
-                        foreach (var key in keys)
+                        if (!this.resourceFileByFilename.TryGetValue(inputFile.Name, out var resourceFile))
                         {
-                            resx.AddResource(key, dictionary[key]);
+                            resourceFile = new ResourceFile(inputFile);
+                            this.resourceFileByFilename[inputFile.Name] = resourceFile;
+                        }
+                        else
+                        {
+                            resourceFile.Merge(inputFile);
                         }
                     }
                 }
+            }
+        }
+
+        public void Output(DirectoryInfo outputDirectory)
+        {
+            foreach (var resourceFile in this.resourceFileByFilename.Values)
+            {
+                resourceFile.Write(outputDirectory);
             }
         }
     }
