@@ -7,8 +7,6 @@
 
 namespace Allors.Domain.TestPopulation
 {
-    using Bogus;
-
     public static partial class BrandBuilderExtensions
     {
         public static BrandBuilder WithDefaults(this BrandBuilder @this)

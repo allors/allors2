@@ -1,24 +1,15 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SerialisedItemBuilderExtensions.cs" company="Allors bvba">
-//   Copyright 2002-2012 Allors bvba.
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-// Allors Applications is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// For more information visit http://www.allors.com/legal
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using Allors.Meta;
-
 namespace Allors.Domain.TestPopulation
 {
+    using System;
+    using Allors.Meta;
+
     public static partial class SerialisedItemBuilderExtensions
     {
         public static SerialisedItemBuilder WithDefaults(this SerialisedItemBuilder @this, Organisation internalOrganisation)
@@ -34,9 +25,9 @@ namespace Allors.Domain.TestPopulation
 
             @this.WithName(faker.Lorem.Word());
             @this.WithSerialisedItemState(state);
-            @this.WithDescription(faker.Lorem.Words().ToString());
-            @this.WithKeywords(faker.Lorem.Words().ToString());
-            @this.WithInternalComment(faker.Lorem.Words().ToString());
+            @this.WithDescription(faker.Lorem.Sentence().ToString());
+            @this.WithKeywords(faker.Lorem.Sentence().ToString());
+            @this.WithInternalComment(faker.Lorem.Sentence().ToString());
             @this.WithAcquiredDate(acquiredDate);
             @this.WithLastServiceDate(serviceDate);
             @this.WithNextServiceDate(faker.Date.Future(refDate: serviceDate));
@@ -80,8 +71,8 @@ namespace Allors.Domain.TestPopulation
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
             {
                 @this.WithLocalisedName(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Word()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedDescription(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Words().ToString()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Words().ToString()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedDescription(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
             }
 
             return @this;
