@@ -53,6 +53,7 @@
     <None Include="Order\Overview.cd" />
     <None Include="Products\Inventory Storage.cd" />
     <None Include="Products\Overview.cd" />
+    <None Include="Relation\Communication.cd" />
     <None Include="Relation\Relation.cd" />
     <None Include="Security\Security.cd" />
     <None Include="Security\PurchaseOrderApproval.cd" />

@@ -41,24 +41,29 @@ export class AllorsMaterialDatepickerComponent extends RoleField {
   }
 
   get model(): any {
-    if (this.momentModel) {
-      return this.momentModel;
+    if (this.momentModel == null) {
+      if (this.ExistObject) {
+        const isoString = this.object.get(this.roleType);
+        this.momentModel = isoString ? moment(isoString).clone() : null;
+      }
     }
 
-    return this.ExistObject ? this.object.get(this.roleType) : undefined;
+    return this.momentModel;
   }
 
   set model(value: any) {
-    if (this.ExistObject) {
+    if (!this.ExistObject) {
+      this.momentModel = null;
+    } else {
+
       this.momentModel = value;
 
-      if (value == null) {
+      if (value === null) {
         this.object.set(this.roleType, null);
       } else {
         if (value.isValid()) {
           const isoString = value.toISOString();
           this.object.set(this.roleType, isoString);
-          this.momentModel = null;
         }
       }
     }
