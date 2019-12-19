@@ -21,24 +21,27 @@
   <ItemGroup>
     <NukeSpecificationFiles Include="**\*.json" Exclude="bin\**;obj\**" />
     <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
-    <Compile Remove="_ReSharper.Caches\**" />
-    <EmbeddedResource Remove="_ReSharper.Caches\**" />
     <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
-    <None Remove="_ReSharper.Caches\**" />
-    <NukeExternalFiles Remove="_ReSharper.Caches\**" />
-    <NukeSpecificationFiles Remove="_ReSharper.Caches\**" />
 
     <!-- Common build related files -->
     <None Include="..\build.ps1" />
     <None Include="..\build.sh" />
-    <None Include="..\.nuke" />
-    <None Include="..\global.json" Condition="Exists('..\global.json')" />
-    <None Include="..\nuget.config" Condition="Exists('..\nuget.config')" />
-    <None Include="..\azure-pipelines.yml" Condition="Exists('..\azure-pipelines.yml')" />
-    <None Include="..\Jenkinsfile" Condition="Exists('..\Jenkinsfile')" />
-    <None Include="..\appveyor.yml" Condition="Exists('..\appveyor.yml')" />
-    <None Include="..\.travis.yml" Condition="Exists('..\.travis.yml')" />
-    <None Include="..\GitVersion.yml" Condition="Exists('..\GitVersion.yml')" />
+
+    <None Include="..\.nuke" LinkBase="config" />
+    <None Include="..\global.json" LinkBase="config" Condition="Exists('..\global.json')" />
+    <None Include="..\nuget.config" LinkBase="config" Condition="Exists('..\nuget.config')" />
+    <None Include="..\GitVersion.yml" LinkBase="config" Condition="Exists('..\GitVersion.yml')" />
+
+    <None Include="..\.teamcity\settings.kts" LinkBase="ci" Condition="Exists('..\.teamcity\settings.kts')" />
+    <None Include="..\.github\workflows\*.yml" LinkBase="ci" />
+    <None Include="..\azure-pipelines.yml" LinkBase="ci" Condition="Exists('..\azure-pipelines.yml')" />
+    <None Include="..\Jenkinsfile" LinkBase="ci" Condition="Exists('..\Jenkinsfile')" />
+    <None Include="..\appveyor.yml" LinkBase="ci" Condition="Exists('..\appveyor.yml')" />
+    <None Include="..\.travis.yml" LinkBase="ci" Condition="Exists('..\.travis.yml')" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

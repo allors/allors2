@@ -101,7 +101,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var scheduler = new AutomatedAgents(session).Scheduler;
+                var scheduler = new AutomatedAgents(session).System;
                 session.SetUser(scheduler);
 
                 var templateFilePath = "domain/templates/PurchaseInvoice.odt";
@@ -164,7 +164,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var scheduler = new AutomatedAgents(session).Scheduler;
+                var scheduler = new AutomatedAgents(session).System;
                 session.SetUser(scheduler);
 
                 var templateFilePath = "domain/templates/SalesInvoice.odt";
@@ -227,7 +227,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var scheduler = new AutomatedAgents(session).Scheduler;
+                var scheduler = new AutomatedAgents(session).System;
                 session.SetUser(scheduler);
 
                 var templateFilePath = "domain/templates/ProductQuote.odt";
@@ -290,7 +290,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var scheduler = new AutomatedAgents(session).Scheduler;
+                var scheduler = new AutomatedAgents(session).System;
                 session.SetUser(scheduler);
 
                 var templateFilePath = "domain/templates/WorkTask.odt";
@@ -354,7 +354,7 @@ namespace Commands
             {
                 this.logger.LogInformation("Begin");
 
-                var scheduler = new AutomatedAgents(session).Scheduler;
+                var scheduler = new AutomatedAgents(session).System;
                 session.SetUser(scheduler);
 
                 WorkTasks.BaseMonthly(session);

@@ -14,7 +14,7 @@
     multiple="multiple" />
 
   <div *ngIf="model" class="row" style="margin-bottom: 1rem;">
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 d-flex" *ngFor="let media of medias">
+    <div class="col-6 col-sm-4 col-lg-3 d-flex mb-3" *ngFor="let media of medias">
       <a-mat-media [media]="media" (delete)="delete(media)"></a-mat-media>
     </div>
   </div>
