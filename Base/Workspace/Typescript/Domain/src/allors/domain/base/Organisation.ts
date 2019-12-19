@@ -1,6 +1,6 @@
 import { domain } from '../domain';
 import { Organisation } from '../generated/Organisation.g';
-import { PostalAddress } from '../generated';
+import { PostalAddress, TelecommunicationsNumber } from '../generated';
 import { Meta } from '../../meta/generated/domain.g';
 
 declare module '../generated/Organisation.g' {
@@ -65,7 +65,16 @@ domain.extend((workspace) => {
         displayPhone: {
             configurable: true,
             get(this: Organisation): string {
-                return `${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.displayName : ''}`;
+                const telecommunicationsNumbers = this.PartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber);
+
+                if (telecommunicationsNumbers.length > 0) {
+                    return  telecommunicationsNumbers
+                    .map((v) => {
+                        const telecommunicationsNumber = v.ContactMechanism as TelecommunicationsNumber;
+                        return telecommunicationsNumber.displayName;
+                    })
+                    .reduce((acc: string, cur: string) => acc + ', ' + cur);
+                }
             },
         },
     });

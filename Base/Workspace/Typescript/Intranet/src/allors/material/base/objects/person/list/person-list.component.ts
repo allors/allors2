@@ -60,9 +60,9 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       selection: true,
       columns: [
         { name: 'name', sort: true },
-        { name: 'email', sort: true },
-        { name: 'phone', sort: true },
-        'lastModifiedDate'
+        { name: 'email' },
+        { name: 'phone' },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
@@ -148,11 +148,11 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
               include: {
                 Salutation: x,
                 Picture: x,
-                GeneralPhoneNumber: x,
-                GeneralEmail: x,
-                GeneralCorrespondence: {
-                  PostalAddress_Country: x
-                },
+                PartyContactMechanisms: {
+                  ContactMechanism: {
+                    PostalAddress_Country: x
+                  }
+                }
               },
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,

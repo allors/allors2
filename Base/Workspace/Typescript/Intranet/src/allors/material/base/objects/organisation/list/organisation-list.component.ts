@@ -67,11 +67,11 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       selection: true,
       columns: [
         { name: 'name', sort: true },
-        { name: 'street', sort: true },
-        { name: 'locality', sort: true },
-        { name: 'country', sort: true },
-        { name: 'phone', sort: true },
-        'lastModifiedDate'
+        'street',
+        'locality',
+        'country',
+        'phone',
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
@@ -159,11 +159,11 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
               predicate,
               sort: sorter.create(sort),
               include: {
-                GeneralCorrespondence: {
-                  PostalAddress_Country: x
+                PartyContactMechanisms: {
+                  ContactMechanism: {
+                    PostalAddress_Country: x
+                  }
                 },
-                GeneralPhoneNumber: x,
-                GeneralEmail: x,
               },
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
