@@ -21,9 +21,7 @@ namespace Allors.Domain
             .WithRule(M.Person.SubContractorRelationshipsWhereSubContractor)
             .Build();
 
-        private bool IsDeletable =>
-                    !this.ExistCurrentOrganisationContactRelationships
-            && !this.ExistEmploymentsWhereEmployee
+        private bool IsDeletable => !this.ExistEmploymentsWhereEmployee
             && (!this.ExistTimeSheetWhereWorker || !this.TimeSheetWhereWorker.ExistTimeEntries);
 
         public bool BaseIsActiveEmployee(DateTime? date)
@@ -106,6 +104,11 @@ namespace Allors.Domain
             if (!this.IsDeletable)
             {
                 return;
+            }
+
+            foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereContact)
+            {
+                organisationContactRelationship.Delete();
             }
 
             foreach (PartyFinancialRelationship partyFinancialRelationship in this.PartyFinancialRelationshipsWhereParty)

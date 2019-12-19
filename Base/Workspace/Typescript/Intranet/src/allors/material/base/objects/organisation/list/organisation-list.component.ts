@@ -90,12 +90,18 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
     const predicate = new And([
       new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
       new ContainedIn({
-        propertyType: m.Party.GeneralCorrespondence,
+        propertyType: m.Party.PartyContactMechanisms,
         extent: new Filter({
-          objectType: m.PostalAddress,
+          objectType: m.PartyContactMechanism,
           predicate: new ContainedIn({
-            propertyType: m.PostalAddress.Country,
-            parameter: 'country'
+            propertyType: m.PartyContactMechanism.ContactMechanism,
+            extent: new Filter({
+              objectType: m.PostalAddress,
+              predicate: new ContainedIn({
+                propertyType: m.PostalAddress.Country,
+                parameter: 'country'
+              })
+            })
           })
         })
       }),
