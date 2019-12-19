@@ -9,6 +9,19 @@ namespace Allors.Domain
 
     public static partial class RequestExtensions
     {
+        public static void BaseOnBuild(this Request @this, ObjectOnBuild method)
+        {
+            if (!@this.ExistRequestState && !@this.ExistOriginator)
+            {
+                @this.RequestState = new RequestStates(@this.Session()).Anonymous;
+            }
+
+            if (!@this.ExistRequestState && @this.ExistOriginator)
+            {
+                @this.RequestState = new RequestStates(@this.Session()).Submitted;
+            }
+        }
+
         public static void BaseOnDerive(this Request @this, ObjectOnDerive method)
         {
             var session = @this.Strategy.Session;
@@ -36,15 +49,6 @@ namespace Allors.Domain
         public static void DeriveInitialObjectState(this Request @this)
         {
             var session = @this.Strategy.Session;
-            if (!@this.ExistRequestState && !@this.ExistOriginator)
-            {
-                @this.RequestState = new RequestStates(session).Anonymous;
-            }
-
-            if (!@this.ExistRequestState && @this.ExistOriginator)
-            {
-                @this.RequestState = new RequestStates(session).Submitted;
-            }
 
             if (@this.ExistRequestState && @this.RequestState.Equals(new RequestStates(session).Anonymous) && @this.ExistOriginator)
             {
