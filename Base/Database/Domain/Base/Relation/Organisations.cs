@@ -71,10 +71,6 @@ namespace Allors.Domain
                     .WithCountry(country)
                     .Build();
 
-            var email = new EmailAddressBuilder(session)
-                .WithElectronicAddressString(emailAddress)
-                .Build();
-
             var webSite = new WebAddressBuilder(session)
                 .WithElectronicAddressString(websiteAddress)
                 .Build();
@@ -138,11 +134,19 @@ namespace Allors.Domain
                 internalOrganisation.QuoteCounter = new CounterBuilder(session).WithValue(quoteCounterValue).Build();
             }
 
-            internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
-                .WithUseAsDefault(true)
-                .WithContactMechanism(email)
-                .WithContactPurpose(new ContactMechanismPurposes(session).GeneralEmail)
-                .Build());
+            if (!string.IsNullOrEmpty(emailAddress))
+            {
+                var email = new EmailAddressBuilder(session)
+                    .WithElectronicAddressString(emailAddress)
+                    .Build();
+
+                internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+                    .WithUseAsDefault(true)
+                    .WithContactMechanism(email)
+                    .WithContactPurpose(new ContactMechanismPurposes(session).GeneralEmail)
+                    .Build());
+            }
+
             internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                 .WithUseAsDefault(true)
                 .WithContactMechanism(postalAddress1)

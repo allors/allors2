@@ -1,6 +1,7 @@
 import { domain } from '../domain';
 import { Person } from '../generated/Person.g';
 import { Meta } from '../../meta/generated/domain.g';
+import { EmailAddress, TelecommunicationsNumber } from '../generated';
 
 declare module '../generated/Person.g' {
     interface Person {
@@ -54,9 +55,15 @@ domain.extend((workspace) => {
     Object.defineProperty(obj, 'displayEmail', {
         configurable: true,
         get(this: Person): string {
-            const email = this.GeneralEmail;
-            if (email) {
-                return email.ElectronicAddressString;
+            const emailAddresses = this.PartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.EmailAddress);
+
+            if (emailAddresses.length > 0) {
+                return emailAddresses
+                .map((v) => {
+                    const emailAddress = v.ContactMechanism as EmailAddress;
+                    return emailAddress.ElectronicAddressString;
+                })
+                .reduce((acc: string, cur: string) => acc + ', ' + cur);
             }
         },
     });
@@ -64,10 +71,15 @@ domain.extend((workspace) => {
     Object.defineProperty(obj, 'displayPhone', {
         configurable: true,
         get(this: Person): string {
+            const telecommunicationsNumbers = this.PartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber);
 
-            const phone = this.GeneralPhoneNumber;
-            if (phone) {
-                return `${phone.CountryCode} ${phone.AreaCode} ${phone.ContactNumber}`;
+            if (telecommunicationsNumbers.length > 0) {
+                return  telecommunicationsNumbers
+                .map((v) => {
+                    const telecommunicationsNumber = v.ContactMechanism as TelecommunicationsNumber;
+                    return telecommunicationsNumber.displayName;
+                })
+                .reduce((acc: string, cur: string) => acc + ', ' + cur);
             }
         },
     });

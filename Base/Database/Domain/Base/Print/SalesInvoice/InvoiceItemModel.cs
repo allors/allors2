@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using Markdig;
+
 namespace Allors.Domain.Print.SalesInvoiceModel
 {
     public class InvoiceItemModel
@@ -10,11 +12,14 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public InvoiceItemModel(SalesInvoiceItem item)
         {
             this.Reference = item.InvoiceItemType?.Name;
+
             this.Product = item.ExistProduct ? item.Product?.Name : item.Part?.Name;
             this.Description = item.Description;
+            this.Description = Markdown.ToPlainText(this.Description);
+
             this.Quantity = item.Quantity;
             // TODO: Where does the currency come from?
-            var currency = "€";
+            var currency = "â‚¬";
             this.Price = item.UnitPrice.ToString("0.00") + " " + currency;
             this.Amount = item.TotalExVat.ToString("0.00") + " " + currency;
             this.Comment = item.Comment;
