@@ -650,6 +650,13 @@ line2")
 
             salesOrder.AddSalesOrderItem(salesOrderItem);
 
+            for (int i = 0; i < 10; i++)
+            {
+                allors.CreateB2BCustomer(this.Session.Faker());
+            }
+
+            new CustomerShipmentBuilder(this.Session).WithDefaults(allors).Build();
+
             this.Session.Derive();
         }
 

@@ -15,7 +15,7 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            var customer = internalOrganisation.ActiveCustomers.First;
+            var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
 
             @this.Session.Derive();
 
