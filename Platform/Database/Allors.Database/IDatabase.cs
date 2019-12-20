@@ -6,7 +6,6 @@
 namespace Allors
 {
     using System;
-    using System.IO.IsolatedStorage;
     using System.Xml;
 
     using Allors.Meta;
@@ -98,18 +97,5 @@ namespace Allors
         /// </summary>
         /// <param name="writer">The writer.</param>
         void Save(XmlWriter writer);
-        
-        /// <summary>
-        /// Loads the population from the <see cref="XmlReader"/>.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        void Load(IStorage storage);
-
-        /// <summary>
-        /// Saves the population to the <see cref="XmlWriter"/>.
-        /// </summary>
-        /// <param name="writer">The writer.</param>
-        void Save(IStorage storage);
-
     }
 }
