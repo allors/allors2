@@ -34,7 +34,7 @@ namespace Tests.EmailCommunicationTests
             var person = people.First(v => v.PartyName.Equals("John Doe"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
+            var employee = allors.ActiveEmployees.First();
 
             var employeeEmailAddress = employee.PersonalEmailAddress;
             var personEmailAddress = person.PersonalEmailAddress;
@@ -90,10 +90,10 @@ namespace Tests.EmailCommunicationTests
             Assert.Equal(employeeEmailAddress, editCommunicationEvent.ToEmail);
             Assert.Equal("new subject", editCommunicationEvent.EmailTemplate.SubjectTemplate);
             Assert.Equal("new body", editCommunicationEvent.EmailTemplate.BodyTemplate);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualEnd.Value.Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ScheduledStart);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ScheduledEnd.Value.Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ActualStart.Value.Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ActualEnd.Value.Date);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Tests.PhoneCommunicationTests
             var person = people.First(v => v.PartyName.Equals("Jane Doe"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
+            var firstEmployee = allors.ActiveEmployees.First();
 
             this.editCommunicationEvent = new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
@@ -102,10 +102,10 @@ namespace Tests.PhoneCommunicationTests
             Assert.Equal(employee, communicationEvent.ToParty);
             Assert.Equal(person.GeneralPhoneNumber, communicationEvent.PhoneNumber);
             Assert.Equal("subject", communicationEvent.Subject);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
             Assert.Equal("comment", communicationEvent.Comment);
         }
     }
