@@ -74,35 +74,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenCustomerShipment_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-
-            this.Session.Commit();
-
-            var builder = new CustomerShipmentBuilder(this.Session);
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithShipToParty(customer);
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithShipmentMethod(new ShipmentMethods(this.Session).Ground);
-            builder.Build();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
         public void GivenCustomerShipment_WhenGettingShipmentNumberWithoutFormat_ThenShipmentNumberShouldBeReturned()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();

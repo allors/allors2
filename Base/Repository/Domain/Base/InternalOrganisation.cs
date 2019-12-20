@@ -607,6 +607,24 @@ namespace Allors.Repository
         [Workspace]
         decimal PurchaseOrderApprovalThresholdLevel2 { get; set; }
 
+        #region Allors
+        [Id("ED2D831F-AF76-4C97-9EAD-D0D6644FCA85")]
+        [AssociationId("8D55EBCC-E3FB-47F9-AFBB-C76A85B8CFFE")]
+        [RoleId("8E94A821-9DC7-4F70-A736-017349DE0FB0")]
+        #endregion
+        [Required]
+        [Workspace]
+        bool IsAutomaticallyReceived { get; set; }
+
+        #region Allors
+        [Id("B5A919ED-221C-4EED-AA2A-AE2ACB4B0B24")]
+        [AssociationId("26560586-A3AA-4429-9C65-38D9F206B5F8")]
+        [RoleId("4E983A68-397B-432B-83AA-910C4FE68C3D")]
+        #endregion
+        [Required]
+        [Workspace]
+        bool AutoGeneratePurchaseShipment { get; set; }
+
         #region inherited methods
 
         #endregion

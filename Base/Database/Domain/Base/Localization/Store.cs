@@ -93,11 +93,6 @@ namespace Allors.Domain
                 this.AutoGenerateCustomerShipment = true;
             }
 
-            if (!this.ExistAutoGeneratePurchaseShipment)
-            {
-                this.AutoGeneratePurchaseShipment = true;
-            }
-
             if (!this.ExistAutoGenerateShipmentPackage)
             {
                 this.AutoGenerateShipmentPackage = true;

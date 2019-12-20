@@ -439,6 +439,14 @@ namespace Allors.Domain
                         }
                     }
                 }
+
+                if (shipment.ShipToParty is InternalOrganisation internalOrganisation)
+                {
+                    if (internalOrganisation.IsAutomaticallyReceived)
+                    {
+                        shipment.Receive();
+                    }
+                }
             }
 
             foreach (PurchaseOrderItem orderItem in this.ValidOrderItems.Where(v => !((PurchaseOrderItem)v).ExistPart))

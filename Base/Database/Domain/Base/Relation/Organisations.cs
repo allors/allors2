@@ -104,6 +104,8 @@ namespace Allors.Domain
                 .WithPurchaseOrderNeedsApproval(purchaseOrderNeedsApproval)
                 .WithPurchaseOrderApprovalThresholdLevel1(purchaseOrderApprovalThresholdLevel1)
                 .WithPurchaseOrderApprovalThresholdLevel2(purchaseOrderApprovalThresholdLevel2)
+                .WithAutoGeneratePurchaseShipment(autoGeneratePurchaseShipment)
+                .WithIsAutomaticallyReceived(isAutomaticallyReceived)
                 .Build();
 
             if (purchaseOrderCounterValue != null)
@@ -230,8 +232,6 @@ namespace Allors.Domain
                 .WithIsImmediatelyPacked(isImmediatelyPacked)
                 .WithIsAutomaticallyShipped(isAutomaticallyShipped)
                 .WithAutoGenerateCustomerShipment(autoGenerateCustomerShipment)
-                .WithIsAutomaticallyReceived(isAutomaticallyReceived)
-                .WithAutoGeneratePurchaseShipment(autoGeneratePurchaseShipment)
                 .WithUseCreditNoteSequence(useCreditNoteSequence)
                 .WithInternalOrganisation(internalOrganisation)
                 .Build();
