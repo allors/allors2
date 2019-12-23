@@ -1,4 +1,4 @@
-import { ParametrizedPredicate, Like, Equals, Exists } from '../../../../allors/framework';
+import { ParametrizedPredicate, Like, Equals, Exists, Between } from '../../../../allors/framework';
 import { FilterOptions } from './FilterOptions';
 import { humanize } from '../humanize';
 
@@ -14,13 +14,8 @@ export class FilterFieldDefinition {
     return this.predicate instanceof Exists;
   }
 
-  get isBoolean() {
-    if (this.predicate instanceof Equals) {
-      const equals = this.predicate as Equals;
-      return equals.propertyType.objectType.isBoolean;
-    }
-
-    return this.isExists;
+  get isBetween() {
+    return this.predicate instanceof Between;
   }
 
   get fieldName(): string {

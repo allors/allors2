@@ -3,7 +3,7 @@ import { ISessionObject, PropertyType } from '../../../../allors/framework';
 
 export class FilterOptions {
   search: SearchFactory;
-  display: (v: ISessionObject) => string;
+  display: (v: any) => string;
   initialValue: any;
   exist: PropertyType;
 

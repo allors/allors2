@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { AllorsFocusModule } from '../../../../angular';
 import { AllorsMaterialFilterDialogComponent } from './filter-dialog.component';
@@ -47,6 +48,7 @@ export { AllorsMaterialFilterComponent } from './filter.component';
     MatSlideToggleModule,
     MatStepperModule,
     MatToolbarModule,
+    MatDatepickerModule,
     AllorsFocusModule
   ],
 })
