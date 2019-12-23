@@ -9,7 +9,7 @@ using src.allors.material.@base.objects.customershipment.create;
 using src.allors.material.@base.objects.customershipment.overview;
 using src.allors.material.@base.objects.shipment.list;
 
-namespace Tests.OrganisationTests
+namespace Tests.CustomerShipmentTests
 {
     using System.Linq;
     using Allors.Domain;
@@ -57,7 +57,8 @@ namespace Tests.OrganisationTests
                 .EstimatedShipDate.Set(expected.EstimatedShipDate.Value.Date)
                 .EstimatedArrivalDate.Set(expected.EstimatedArrivalDate.Value.Date)
                 .HandlingInstruction.Set(expected.HandlingInstruction)
-                .Comment.Set(expected.Comment);
+                .Comment.Set(expected.Comment)
+                .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -65,7 +66,7 @@ namespace Tests.OrganisationTests
             var after = new CustomerShipments(this.Session).Extent().ToArray();
             shipment = (CustomerShipment) this.Session.Instantiate(id);
 
-            Assert.Equal(after.Length, before.Length);  
+            Assert.Equal(after.Length, before.Length);
 
             Assert.Equal(expected.ShipToParty.PartyName, shipment.ShipToParty.PartyName);
             Assert.Equal(expected.ShipToAddress.DisplayName(), shipment.ShipToAddress.DisplayName());

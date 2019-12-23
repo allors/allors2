@@ -31,7 +31,7 @@ namespace Tests.PhoneCommunicationTests
             var organisation = people.First(v => v.PartyName.Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
+            var firstEmployee = allors.ActiveEmployees.First();
 
             this.editCommunicationEvent = new PhoneCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
@@ -63,7 +63,7 @@ namespace Tests.PhoneCommunicationTests
             var organisation = extent.First(v => v.PartyName.Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
+            var firstEmployee = allors.ActiveEmployees.First();
 
             var before = new PhoneCommunications(this.Session).Extent().ToArray();
 

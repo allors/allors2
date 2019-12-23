@@ -77,7 +77,7 @@ namespace Allors.Domain
 
             this.ShipToAddress = this.ShipToAddress ?? this.ShipToParty?.ShippingAddress ?? this.ShipToParty?.GeneralCorrespondence as PostalAddress;
 
-            if (!this.ExistShipToFacility && shipToParty != null)
+            if (!this.ExistShipToFacility && shipToParty != null && shipToParty.StoresWhereInternalOrganisation.Count == 1)
             {
                 this.ShipToFacility = shipToParty.StoresWhereInternalOrganisation.Single().DefaultFacility;
             }
