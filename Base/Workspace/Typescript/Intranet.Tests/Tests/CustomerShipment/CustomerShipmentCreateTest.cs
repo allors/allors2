@@ -8,7 +8,7 @@ using Allors.Meta;
 using src.allors.material.@base.objects.customershipment.create;
 using src.allors.material.@base.objects.shipment.list;
 
-namespace Tests.OrganisationTests
+namespace Tests.CustomerShipmentTests
 {
     using System.Linq;
     using Allors.Domain;

@@ -149,9 +149,13 @@ namespace Tests
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
             var faker = this.Session.Faker();
+
+            allors.CreateEmployee("letmein", faker);
             allors.CreateAdministrator("letmein", faker);
             allors.CreateAdministrator("letmein", faker);
+
             dipu.CreateAdministrator("letmein", faker);
+            dipu.CreateEmployee("letmein", faker);
 
             var facility = new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
@@ -656,6 +660,13 @@ line2")
             }
 
             new CustomerShipmentBuilder(this.Session).WithDefaults(allors).Build();
+
+            for (int i = 0; i < 10; i++)
+            {
+                allors.CreateSupplier(this.Session.Faker());
+            }
+
+            new PurchaseShipmentBuilder(this.Session).WithDefaults(allors).Build();
 
             this.Session.Derive();
         }

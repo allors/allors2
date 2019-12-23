@@ -42,6 +42,7 @@ import { PurchaseOrderApprovalLevel2EditComponent, PurchaseOrderApprovalLevel2Ed
 import { PurchaseOrderCreateComponent, PurchaseOrderCreateModule } from '../allors/material/base/objects/purchaseorder/create/purchaseorder-create.module';
 import { PurchaseOrderItemEditComponent, PurchaseOrderItemEditModule } from '../allors/material/base/objects/purchaseorderitem/edit/purchaseorderitem-edit.module';
 import { PurchaseReturnCreateComponent, PurchaseReturnCreateModule } from '../allors/material/base/objects/purchasereturn/create/purchasereturn-create.module';
+import { PurchaseShipmentCreateComponent, PurchaseShipmentCreateModule } from '../allors/material/base/objects/purchaseshipment/create/purchaseshipment-create.module';
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/base/objects/quoteitem/edit/quoteitem-edit.module';
 import { ReceiptEditComponent, ReceiptEditModule } from '../allors/material/base/objects/receipt/edit/receipt-edit.module';
 import { RepeatingPurchaseInvoiceEditComponent, RepeatingPurchaseInvoiceEditModule } from '../allors/material/base/objects/repeatingpurchaseinvoice/edit/repeatingpurchaseinvoice-edit.module';
@@ -113,6 +114,7 @@ export const create = {
   [ids.PurchaseOrder]: PurchaseOrderCreateComponent,
   [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.PurchaseReturn]: PurchaseReturnCreateComponent,
+  [ids.PurchaseShipment]: PurchaseShipmentCreateComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.Receipt]: ReceiptEditComponent,
   [ids.RepeatingPurchaseInvoice]: RepeatingPurchaseInvoiceEditComponent,
@@ -243,6 +245,7 @@ export const edit = {
     PurchaseOrderCreateModule,
     PurchaseOrderItemEditModule,
     PurchaseReturnCreateModule,
+    PurchaseShipmentCreateModule,
     QuoteItemEditModule,
     ReceiptEditModule,
     RepeatingPurchaseInvoiceEditModule,
@@ -310,6 +313,7 @@ export const edit = {
     PurchaseOrderApprovalLevel2EditComponent,
     PurchaseOrderItemEditComponent,
     PurchaseReturnCreateComponent,
+    PurchaseShipmentCreateComponent,
     ReceiptEditComponent,
     RepeatingPurchaseInvoiceEditComponent,
     RepeatingSalesInvoiceEditComponent,
