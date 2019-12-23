@@ -248,7 +248,7 @@ namespace Allors.Domain
             return int.Parse(candidate);
         }
 
-        private static Template CreateOpenDocumentTemplate<T>(this InternalOrganisation @this, byte[] content)
+        public static Template CreateOpenDocumentTemplate<T>(this InternalOrganisation @this, byte[] content)
         {
             var media = new MediaBuilder(@this.Strategy.Session).WithInData(content).Build();
             var templateType = new TemplateTypes(@this.Strategy.Session).OpenDocumentType;
@@ -256,7 +256,7 @@ namespace Allors.Domain
             return template;
         }
 
-        private static byte[] GetResourceBytes(this InternalOrganisation @this, string name)
+        public static byte[] GetResourceBytes(this InternalOrganisation @this, string name)
         {
             var assembly = @this.GetType().GetTypeInfo().Assembly;
             var manifestResourceName = assembly.GetManifestResourceNames().First(v => v.Contains(name));
