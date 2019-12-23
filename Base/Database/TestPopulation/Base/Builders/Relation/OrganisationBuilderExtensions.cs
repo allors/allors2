@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using Bogus.DataSets;
+
 namespace Allors.Domain.TestPopulation
 {
     using Allors.Meta;
@@ -14,10 +16,9 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            var company = faker.Company;
             var euCountry = new Countries(@this.Session).FindBy(M.Country.IsoCode, faker.PickRandom(Countries.EuMemberStates));
 
-            @this.WithName(company.CompanyName());
+            @this.WithName(faker.Company.CompanyName());
             @this.WithEuListingState(euCountry);
             @this.WithVatRegime(new VatRegimes(@this.Session).IntraCommunautair);
             @this.WithLegalForm(faker.Random.ListItem(@this.Session.Extent<LegalForm>()));

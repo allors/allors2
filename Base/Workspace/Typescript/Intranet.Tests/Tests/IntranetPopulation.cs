@@ -151,11 +151,15 @@ namespace Tests
             var faker = this.Session.Faker();
 
             allors.CreateEmployee("letmein", faker);
+            allors.CreateEmployee("letmein", faker);
             allors.CreateAdministrator("letmein", faker);
             allors.CreateAdministrator("letmein", faker);
 
-            dipu.CreateAdministrator("letmein", faker);
             dipu.CreateEmployee("letmein", faker);
+            dipu.CreateEmployee("letmein", faker);
+            dipu.CreateAdministrator("letmein", faker);
+
+            this.Session.Derive();
 
             var facility = new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
