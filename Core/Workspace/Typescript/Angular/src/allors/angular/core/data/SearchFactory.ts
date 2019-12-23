@@ -26,10 +26,8 @@ export class SearchFactory {
       }
 
       terms.forEach((term: string) => {
-        const or: Or = new Or();
-        and.operands.push(or);
         this.options.roleTypes.forEach((roleType: RoleType) => {
-          or.operands.push(new Like({ roleType, value: term + '%' }));
+          and.operands.push(new Like({ roleType, value: '%' + term + '%' }));
         });
       });
 
