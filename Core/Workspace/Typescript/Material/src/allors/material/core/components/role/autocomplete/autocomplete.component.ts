@@ -28,9 +28,7 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
 
   searchControl: FormControl = new FormControl();
 
-  @ViewChild(MatAutocomplete, { static: false }) private autoComplete: MatAutocomplete;
-
-  @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
+   @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
 
   private focused = false;
 
@@ -75,7 +73,6 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
           })
         );
     }
-
   }
 
   ngDoCheck() {

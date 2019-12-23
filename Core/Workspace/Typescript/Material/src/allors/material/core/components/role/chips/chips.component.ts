@@ -1,38 +1,44 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, ElementRef, DoCheck, NgZone } from '@angular/core';
 import { NgForm, FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { concat, debounceTime, distinctUntilChanged, switchMap, map, startWith } from 'rxjs/operators';
+import { concat, debounceTime, distinctUntilChanged, switchMap, map, startWith, filter, take } from 'rxjs/operators';
 
 import { ISessionObject } from '../../../../../framework';
 
 import { RoleField } from '../../../../../angular';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'a-mat-chips',
   templateUrl: './chips.component.html',
 })
-export class AllorsMaterialChipsComponent extends RoleField implements OnInit, OnDestroy {
+export class AllorsMaterialChipsComponent extends RoleField implements OnInit, DoCheck {
 
-  @Input() public display = 'display';
+  @Input() display = 'display';
 
-  @Input() public debounceTime = 400;
+  @Input() debounceTime = 400;
 
-  @Input() public options: ISessionObject[];
+  @Input() options: ISessionObject[];
 
-  @Input() public filter: ((search: string) => Observable<ISessionObject[]>);
+  @Input() filter: ((search: string) => Observable<ISessionObject[]>);
 
-  @Output() public changed: EventEmitter<ISessionObject> = new EventEmitter();
+  @Output() changed: EventEmitter<ISessionObject> = new EventEmitter();
 
-  public filteredOptions: Observable<ISessionObject[]>;
+  filteredOptions: Observable<ISessionObject[]>;
 
-  public searchControl: FormControl = new FormControl();
+  searchControl: FormControl = new FormControl();
+
   @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
 
   @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
 
-  constructor(@Optional() parentForm: NgForm) {
+  private focused = false;
+
+  constructor(
+    @Optional() parentForm: NgForm,
+    private ngZone: NgZone
+  ) {
     super(parentForm);
   }
 
@@ -40,42 +46,59 @@ export class AllorsMaterialChipsComponent extends RoleField implements OnInit, O
     if (this.filter) {
       this.filteredOptions = this.searchControl.valueChanges
         .pipe(
+          filter((v) => v !== null && v !== undefined && v.trim),
           debounceTime(this.debounceTime),
           distinctUntilChanged(),
           switchMap((search: string) => {
             return this.filter(search);
-          })
-        );
+          }))
+        ;
     } else {
       this.filteredOptions = this.searchControl.valueChanges
         .pipe(
+          filter((v) => v !== null && v !== undefined && v.trim),
           debounceTime(this.debounceTime),
           distinctUntilChanged(),
           map((search: string) => {
-            if (search) {
-              const lowerCaseSearch: string = search.trim ? search.trim().toLowerCase() : '';
-              return this.options
-                .filter((v: ISessionObject) => {
-                  const optionDisplay: string = v[this.display]
-                    ? v[this.display].toString().toLowerCase()
-                    : undefined;
-                  if (optionDisplay) {
-                    return optionDisplay.indexOf(lowerCaseSearch) !== -1;
-                  }
-                })
-                .sort(
-                  (a: ISessionObject, b: ISessionObject) =>
-                    a[this.display] !== b[this.display]
-                      ? a[this.display] < b[this.display] ? -1 : 1
-                      : 0,
-                );
-            }
+            const lowerCaseSearch = search.trim().toLowerCase();
+            return this.options
+              .filter((v: ISessionObject) => {
+                const optionDisplay: string = v[this.display]
+                  ? v[this.display].toString().toLowerCase()
+                  : undefined;
+                if (optionDisplay) {
+                  return optionDisplay.indexOf(lowerCaseSearch) !== -1;
+                }
+              })
+              .sort(
+                (a: ISessionObject, b: ISessionObject) =>
+                  a[this.display] !== b[this.display]
+                    ? a[this.display] < b[this.display] ? -1 : 1
+                    : 0,
+              );
           })
         );
     }
   }
 
-  public displayFn(): (val: ISessionObject) => string {
+  ngDoCheck() {
+    if (!this.focused && this.trigger && this.searchControl) {
+      if (!this.trigger.panelOpen && this.searchControl.value !== this.model) {
+        this.searchControl.setValue(this.model);
+      }
+    }
+  }
+
+  inputBlur() {
+    this.focused = false;
+  }
+
+  inputFocus() {
+    this.focused = true;
+    this.trigger._onChange('');
+  }
+
+  displayFn(): (val: ISessionObject) => string {
     return (val: ISessionObject) => {
       if (val) {
         return val ? val[this.display] : '';
@@ -83,25 +106,18 @@ export class AllorsMaterialChipsComponent extends RoleField implements OnInit, O
     };
   }
 
-  public selected(option: ISessionObject): void {
-    this.add(option);
-    this.changed.emit(option);
+  optionSelected(event: MatAutocompleteSelectedEvent): void {
+    this.add(event.option.value);
+    this.changed.emit(this.model);
 
     this.searchControl.reset();
     this.searchInput.nativeElement.value = '';
   }
 
-  public focusout(event): void {
-    if (this.searchControl.value && this.trigger.autocomplete.options.length === 1) {
-      const option = this.trigger.autocomplete.options.first.value;
-      this.add(option);
-      this.changed.emit(option);
-
-    } else {
-      this.changed.emit(undefined);
-    }
-
-    this.searchControl.reset();
-    this.searchInput.nativeElement.value = '';
+  clear(event: Event) {
+    event.stopPropagation();
+    this.model = undefined;
+    this.trigger.closePanel();
+    this.changed.emit(this.model);
   }
 }
