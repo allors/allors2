@@ -31,7 +31,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Workspace]
         ShipmentMethod ShipmentMethod { get; set; }
 
@@ -73,7 +72,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        PostalAddress ShipFromContactPerson { get; set; }
+        Person ShipFromContactPerson { get; set; }
 
         #region Allors
         [Id("D32E5998-6193-47AF-AEAA-F754FCCD9879")]

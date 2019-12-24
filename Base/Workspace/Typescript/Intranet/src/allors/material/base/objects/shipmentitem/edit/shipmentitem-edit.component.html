@@ -3,27 +3,50 @@
   <h3 mat-dialog-title>{{title}}</h3>
 
   <mat-dialog-content>
+    <div *ngIf="isCustomerShipment">
+      <div class="row">
+        <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedSalesOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good"
+                            [options]="goods" display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
+        <a-mat-static class="col-md" *ngIf="selectedSalesOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good" display="Name"></a-mat-static>
+        <a-mat-select class="col-md" *ngIf="shipmentItem.isNew && !selectedSalesOrderItem && serialisedItems.length > 0" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
+                      [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
+        <a-mat-static class="col-md" *ngIf="selectedSalesOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem" display="displayName"></a-mat-static>
+      </div>
+  
+      <div class="row">
+        <mat-form-field class="col-md" >
+          <mat-select name="salesOrderItems" [(ngModel)]="selectedSalesOrderItem" placeholder="salesOrderItems" multiple="false" (ngModelChange)="salesOrderItemSelected($event)">
+            <mat-option *ngFor="let salesOrderItem of salesOrderItems" [value]="salesOrderItem">{{ salesOrderItem.Description }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
 
-    <div class="row">
-      <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedSalesOrderItem && orderShipments.length == 0" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good"
-                          [options]="goods" display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
-      <a-mat-static class="col-md" *ngIf="selectedSalesOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good" display="Name"></a-mat-static>
-      <a-mat-select class="col-md" *ngIf="shipmentItem.isNew && !selectedSalesOrderItem && orderShipments.length == 0 && serialisedItems.length > 0" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
-                    [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
-      <a-mat-static class="col-md" *ngIf="selectedSalesOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem" display="displayName"></a-mat-static>
+    <div *ngIf="isPurchaseShipment">
+      <div class="row">
+        <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.Part"
+                            [options]="parts" display="Name" (changed)="partSelected($event)"></a-mat-autocomplete>
+        <a-mat-static class="col-md" *ngIf="selectedPurchaseOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.Part" display="Name"></a-mat-static>
+        <a-mat-select class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem && serialisedItems.length > 0" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
+                      [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
+        <a-mat-static class="col-md" *ngIf="selectedPurchaseOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem" display="displayName"></a-mat-static>
+      </div>
+  
+      <div class="row">
+        <mat-form-field class="col-md" >
+          <mat-select name="purchaseOrderItems" [(ngModel)]="selectedPurchaseOrderItem" placeholder="purchaseOrderItems" multiple="false" (ngModelChange)="purchaseOrderItemSelected($event)">
+            <mat-option *ngFor="let purchaseOrderItem of purchaseOrderItems" [value]="purchaseOrderItem">{{ purchaseOrderItem.Description }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    
+      <div class="row">
+        <a-mat-select class="col-md" [object]="shipmentReceipt" [roleType]="m.ShipmentReceipt.InventoryItem" [options]="inventoryItems" display="facilityName"></a-mat-select>
+      </div>
     </div>
 
     <div class="row">
-      <mat-form-field class="col-md" >
-        <mat-select name="salesOrderItems" [(ngModel)]="selectedSalesOrderItem" placeholder="salesOrderItems" multiple="false" (ngModelChange)="salesOrderItemSelected($event)">
-          <mat-option *ngFor="let salesOrderItem of salesOrderItems" [value]="salesOrderItem">{{ salesOrderItem.Description }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <a-mat-input class="col-md" *ngIf="orderShipments.length == 0" [object]="shipmentItem" [roleType]="m.ShipmentItem.Quantity"></a-mat-input>
-      <a-mat-static class="col-md" *ngIf="orderShipments.length > 0" [object]="shipmentItem" [roleType]="m.ShipmentItem.Quantity"></a-mat-static>
+      <a-mat-input class="col-md" [object]="shipmentItem" [roleType]="m.ShipmentItem.Quantity"></a-mat-input>
       <a-mat-static class="col-md" [object]="shipmentItem" [roleType]="m.ShipmentItem.QuantityPicked"></a-mat-static>
       <a-mat-static class="col-md" [object]="shipmentItem" [roleType]="m.ShipmentItem.QuantityShipped"></a-mat-static>
     </div>

@@ -930,7 +930,7 @@ namespace Allors.Domain
         public void GivenConfirmedOrderItemForGood_WhenQuantityOrderedIsDecreased_ThenQuantitiesReservedAndRequestsShippingAndInventoryAvailableToPromiseDecreaseEqually()
         {
             var store = this.Session.Extent<Store>().First;
-            store.AutoGenerateShipment = false;
+            store.AutoGenerateCustomerShipment = false;
 
             this.InstantiateObjects(this.Session);
 

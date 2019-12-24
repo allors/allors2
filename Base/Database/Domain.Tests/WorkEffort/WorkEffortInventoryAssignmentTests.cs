@@ -129,6 +129,7 @@ namespace Allors.Domain
             Assert.Equal(0, inventoryItem.AvailableToPromise);
             Assert.Equal(20, inventoryItem.QuantityExpectedIn);
 
+            order.OrderedBy.IsAutomaticallyReceived = true;
             order.QuickReceive();
 
             this.Session.Derive();

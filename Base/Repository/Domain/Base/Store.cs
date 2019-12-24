@@ -303,7 +303,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Workspace]
-        public bool AutoGenerateShipment { get; set; }
+        public bool AutoGenerateCustomerShipment { get; set; }
 
         #region Allors
         [Id("B3E6A681-E883-4FD5-82E4-F5A94F3F5148")]

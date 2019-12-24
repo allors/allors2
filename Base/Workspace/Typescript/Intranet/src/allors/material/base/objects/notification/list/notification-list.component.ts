@@ -24,7 +24,7 @@ interface Row extends TableRow {
 })
 export class NotificationListComponent extends TestScope implements OnInit, OnDestroy {
 
-  public title = 'Tasks';
+  public title = 'Notifications';
 
   table: Table<Row>;
 

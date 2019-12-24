@@ -1,6 +1,8 @@
 import './AutomatedAgent';
 import './ContactMechanism';
 import './EmailAddress';
+import './InventoryItem';
+import './NonSerialisedInventoryItem';
 import './Organisation';
 import './Party';
 import './Person';
@@ -9,6 +11,7 @@ import './PartCategory';
 import './ProductCategory';
 import './PurchaseOrder';
 import './PurchaseOrderItem';
+import './SerialisedInventoryItem';
 import './SerialisedItem';
 import './SerialisedItemCharacteristicType';
 import './TelecommunicationsNumber';

@@ -1,4 +1,4 @@
-import { PropertyType } from '../meta';
+import { PropertyType, ObjectType } from '../meta';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
 export class Exists extends ParametrizedPredicate {
@@ -12,6 +12,10 @@ export class Exists extends ParametrizedPredicate {
     } else {
       Object.assign(this, fields);
     }
+  }
+
+  get objectType(): ObjectType {
+    return this.propertyType.objectType;
   }
 
   public toJSON(): any {

@@ -81,4 +81,15 @@ export class PurchaseShipmentOverviewSummaryComponent {
       this.purchaseOrders = loaded.collections.Orders as PurchaseOrder[];
     };
   }
+
+  public receive(): void {
+
+    this.panel.manager.context.invoke(this.shipment.Receive)
+      .subscribe((invoked: Invoked) => {
+        this.panel.toggle();
+        this.snackBar.open('Successfully received.', 'close', { duration: 5000 });
+        this.refreshService.refresh();
+      },
+      this.saveService.errorHandler);
+  }
 }

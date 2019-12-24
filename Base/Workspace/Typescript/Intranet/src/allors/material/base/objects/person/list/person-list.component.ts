@@ -60,9 +60,9 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       selection: true,
       columns: [
         { name: 'name', sort: true },
-        { name: 'email', sort: true },
-        { name: 'phone', sort: true },
-        'lastModifiedDate'
+        { name: 'email' },
+        { name: 'phone' },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
@@ -82,12 +82,34 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
       new Like({ roleType: m.Person.LastName, parameter: 'lastName' }),
       new ContainedIn({
-        propertyType: m.Party.GeneralCorrespondence,
+        propertyType: m.Party.PartyContactMechanisms,
         extent: new Filter({
-          objectType: m.PostalAddress,
+          objectType: m.PartyContactMechanism,
           predicate: new ContainedIn({
-            propertyType: m.PostalAddress.Country,
-            parameter: 'country'
+            propertyType: m.PartyContactMechanism.ContactMechanism,
+            extent: new Filter({
+              objectType: m.PostalAddress,
+              predicate: new ContainedIn({
+                propertyType: m.PostalAddress.Country,
+                parameter: 'country'
+              })
+            })
+          })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.Party.PartyContactMechanisms,
+        extent: new Filter({
+          objectType: m.PartyContactMechanism,
+          predicate: new ContainedIn({
+            propertyType: m.PartyContactMechanism.ContactMechanism,
+            extent: new Filter({
+              objectType: m.PostalAddress,
+              predicate: new Like({
+                roleType: m.PostalAddress.Locality,
+                parameter: 'city'
+              })
+            })
           })
         })
       })
@@ -126,8 +148,11 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
               include: {
                 Salutation: x,
                 Picture: x,
-                GeneralPhoneNumber: x,
-                GeneralEmail: x,
+                PartyContactMechanisms: {
+                  ContactMechanism: {
+                    PostalAddress_Country: x
+                  }
+                }
               },
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,

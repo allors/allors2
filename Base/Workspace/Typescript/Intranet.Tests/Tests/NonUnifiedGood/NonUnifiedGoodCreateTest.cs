@@ -3,6 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using Allors;
+using Allors.Domain.TestPopulation;
+using Allors.Meta;
+
 namespace Tests.NonUnifiedGood
 {
     using System.Linq;
@@ -28,12 +32,19 @@ namespace Tests.NonUnifiedGood
         {
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
 
+            var internalOrganisation = new Organisations(this.MemorySession).FindBy(M.Organisation.Name, "Allors BVBA");
+            var expected = new NonUnifiedGoodBuilder(this.MemorySession).WithSerialisedPartDefaults(internalOrganisation).Build();
+
+            this.MemorySession.Derive();
+
+            var part = new NonUnifiedParts(this.Session).Extent().First;
+
             var nonUnifiedGoodCreate = this.goods.CreateNonUnifiedGood();
 
             nonUnifiedGoodCreate
-                .Name.Set("Mercedes Vito")
-                .Description.Set("Vans. Born to run.")
-                .Part.Set("finished good")
+                .Name.Set(expected.Name)
+                .Description.Set(expected.Description)
+                .Part.Set(part.Name)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -45,9 +56,9 @@ namespace Tests.NonUnifiedGood
 
             var good = after.Except(before).First();
 
-            Assert.Equal("Mercedes Vito", good.Name);
-            Assert.Equal("Vans. Born to run.", good.Description);
-            Assert.Equal("finished good", good.Part.Name);
+            Assert.Equal(expected.Name, good.Name);
+            Assert.Equal(expected.Description, good.Description);
+            Assert.Equal(part.Name, good.Part.Name);
         }
     }
 }

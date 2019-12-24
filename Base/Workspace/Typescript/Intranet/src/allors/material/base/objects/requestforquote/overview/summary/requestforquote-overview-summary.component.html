@@ -11,7 +11,7 @@
     </mat-card-subtitle>
 
     <mat-card-subtitle>
-      <div>last modified: {{ requestForQuote.LastModifiedDate | date}} by {{ requestForQuote.LastModifiedBy?.displayName}}</div>
+      <div>last modified: {{ requestForQuote.LastModifiedDate | date:'d/M/yyyy, HH:mm' }} by {{ requestForQuote.LastModifiedBy?.displayName}}</div>
     </mat-card-subtitle>
   </mat-card-header>
 

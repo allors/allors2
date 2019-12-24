@@ -33,7 +33,7 @@ namespace Tests.LetterCorrespondenceTests
             var organisation = organisations.First(v => v.PartyName.Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var employee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
+            var employee = allors.ActiveEmployees.First();
 
             var organisationAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -81,10 +81,10 @@ namespace Tests.LetterCorrespondenceTests
             Assert.Equal(organisation, communicationEvent.FromParty);
             Assert.Equal(employee, communicationEvent.ToParty);
             Assert.Equal("subject", communicationEvent.Subject);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
             Assert.Equal("comment", communicationEvent.Comment);
         }
     }

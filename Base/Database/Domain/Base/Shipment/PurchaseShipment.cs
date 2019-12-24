@@ -77,7 +77,7 @@ namespace Allors.Domain
 
             this.ShipToAddress = this.ShipToAddress ?? this.ShipToParty?.ShippingAddress ?? this.ShipToParty?.GeneralCorrespondence as PostalAddress;
 
-            if (!this.ExistShipToFacility && shipToParty != null)
+            if (!this.ExistShipToFacility && shipToParty != null && shipToParty.StoresWhereInternalOrganisation.Count == 1)
             {
                 this.ShipToFacility = shipToParty.StoresWhereInternalOrganisation.Single().DefaultFacility;
             }
@@ -94,10 +94,21 @@ namespace Allors.Domain
 
             if (this.ShipmentItems.Any() && this.ShipmentItems.All(v => v.ShipmentReceiptWhereShipmentItem.QuantityAccepted.Equals(v.ShipmentReceiptWhereShipmentItem.OrderItem?.QuantityOrdered)))
             {
-                this.ShipmentState = new ShipmentStates(this.Strategy.Session).Delivered;
+                this.ShipmentState = new ShipmentStates(this.Strategy.Session).Received;
             }
 
             this.Sync(this.strategy.Session);
+        }
+
+        public void BaseReceive(PurchaseShipmentReceive method)
+        {
+            this.ShipmentState = new ShipmentStates(this.Strategy.Session).Received;
+            this.EstimatedArrivalDate = this.strategy.Session.Now().Date;
+
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Received;
+            }
         }
 
         private void Sync(ISession session)

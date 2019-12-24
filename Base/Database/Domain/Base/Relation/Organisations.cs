@@ -50,7 +50,9 @@ namespace Allors.Domain
             bool autoGenerateShipmentPackage,
             bool isImmediatelyPacked,
             bool isAutomaticallyShipped,
-            bool autoGenerateShipment,
+            bool autoGenerateCustomerShipment,
+            bool isAutomaticallyReceived,
+            bool autoGeneratePurchaseShipment,
             bool useCreditNoteSequence,
             int? requestCounterValue,
             int? quoteCounterValue,
@@ -68,10 +70,6 @@ namespace Allors.Domain
                     .WithLocality(locality)
                     .WithCountry(country)
                     .Build();
-
-            var email = new EmailAddressBuilder(session)
-                .WithElectronicAddressString(emailAddress)
-                .Build();
 
             var webSite = new WebAddressBuilder(session)
                 .WithElectronicAddressString(websiteAddress)
@@ -106,6 +104,8 @@ namespace Allors.Domain
                 .WithPurchaseOrderNeedsApproval(purchaseOrderNeedsApproval)
                 .WithPurchaseOrderApprovalThresholdLevel1(purchaseOrderApprovalThresholdLevel1)
                 .WithPurchaseOrderApprovalThresholdLevel2(purchaseOrderApprovalThresholdLevel2)
+                .WithAutoGeneratePurchaseShipment(autoGeneratePurchaseShipment)
+                .WithIsAutomaticallyReceived(isAutomaticallyReceived)
                 .Build();
 
             if (purchaseOrderCounterValue != null)
@@ -136,11 +136,19 @@ namespace Allors.Domain
                 internalOrganisation.QuoteCounter = new CounterBuilder(session).WithValue(quoteCounterValue).Build();
             }
 
-            internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
-                .WithUseAsDefault(true)
-                .WithContactMechanism(email)
-                .WithContactPurpose(new ContactMechanismPurposes(session).GeneralEmail)
-                .Build());
+            if (!string.IsNullOrEmpty(emailAddress))
+            {
+                var email = new EmailAddressBuilder(session)
+                    .WithElectronicAddressString(emailAddress)
+                    .Build();
+
+                internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+                    .WithUseAsDefault(true)
+                    .WithContactMechanism(email)
+                    .WithContactPurpose(new ContactMechanismPurposes(session).GeneralEmail)
+                    .Build());
+            }
+
             internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                 .WithUseAsDefault(true)
                 .WithContactMechanism(postalAddress1)
@@ -223,7 +231,7 @@ namespace Allors.Domain
                 .WithAutoGenerateShipmentPackage(autoGenerateShipmentPackage)
                 .WithIsImmediatelyPacked(isImmediatelyPacked)
                 .WithIsAutomaticallyShipped(isAutomaticallyShipped)
-                .WithAutoGenerateShipment(autoGenerateShipment)
+                .WithAutoGenerateCustomerShipment(autoGenerateCustomerShipment)
                 .WithUseCreditNoteSequence(useCreditNoteSequence)
                 .WithInternalOrganisation(internalOrganisation)
                 .Build();

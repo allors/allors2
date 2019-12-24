@@ -85,7 +85,7 @@ namespace Allors.Domain
                 if (shipmentReceipt.ExistShipmentItem && !shipmentReceipt.ShipmentItem.Part.InventoryItemKind.Serialised)
                 {
                     var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
-                    if (purchaseShipment.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Delivered))
+                    if (purchaseShipment.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Received))
                     {
                         this.Quantity += (int)shipmentReceipt.QuantityAccepted;
                     }

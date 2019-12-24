@@ -42,6 +42,7 @@ import { PurchaseOrderApprovalLevel2EditComponent, PurchaseOrderApprovalLevel2Ed
 import { PurchaseOrderCreateComponent, PurchaseOrderCreateModule } from '../allors/material/base/objects/purchaseorder/create/purchaseorder-create.module';
 import { PurchaseOrderItemEditComponent, PurchaseOrderItemEditModule } from '../allors/material/base/objects/purchaseorderitem/edit/purchaseorderitem-edit.module';
 import { PurchaseReturnCreateComponent, PurchaseReturnCreateModule } from '../allors/material/base/objects/purchasereturn/create/purchasereturn-create.module';
+import { PurchaseShipmentCreateComponent, PurchaseShipmentCreateModule } from '../allors/material/base/objects/purchaseshipment/create/purchaseshipment-create.module';
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/base/objects/quoteitem/edit/quoteitem-edit.module';
 import { ReceiptEditComponent, ReceiptEditModule } from '../allors/material/base/objects/receipt/edit/receipt-edit.module';
 import { RepeatingPurchaseInvoiceEditComponent, RepeatingPurchaseInvoiceEditModule } from '../allors/material/base/objects/repeatingpurchaseinvoice/edit/repeatingpurchaseinvoice-edit.module';
@@ -55,6 +56,7 @@ import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors
 import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/base/objects/salesterm/edit/salesterm-edit.module';
 import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/base/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
 import { SerialisedItemCreateComponent, SerialisedItemCreateModule } from '../allors/material/base/objects/serialiseditem/create/serialiseditem-create.module';
+import { ShipmentItemEditComponent, ShipmentItemEditModule } from '../allors/material/base/objects/shipmentitem/edit/shipmentitem-edit.module';
 import { SupplierOfferingEditComponent, SupplierOfferingEditModule } from '../allors/material/base/objects/supplieroffering/edit/supplieroffering-edit.module';
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/base/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberCreateComponent, TelecommunicationsNumberCreateModule } from '../allors/material/base/objects/telecommunicationsnumber/create/telecommunicationsnumber-create.module';
@@ -113,6 +115,7 @@ export const create = {
   [ids.PurchaseOrder]: PurchaseOrderCreateComponent,
   [ids.PurchaseOrderItem]: PurchaseOrderItemEditComponent,
   [ids.PurchaseReturn]: PurchaseReturnCreateComponent,
+  [ids.PurchaseShipment]: PurchaseShipmentCreateComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.Receipt]: ReceiptEditComponent,
   [ids.RepeatingPurchaseInvoice]: RepeatingPurchaseInvoiceEditComponent,
@@ -125,6 +128,7 @@ export const create = {
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
   [ids.SerialisedItem]: SerialisedItemCreateComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
+  [ids.ShipmentItem]: ShipmentItemEditComponent,
   [ids.SkuIdentification]: ProductIdentificationEditComponent,
   [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
@@ -185,6 +189,7 @@ export const edit = {
   [ids.SalesInvoiceItem]: SalesInvoiceItemEditComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
+  [ids.ShipmentItem]: ShipmentItemEditComponent,
   [ids.SkuIdentification]: ProductIdentificationEditComponent,
   [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
@@ -243,6 +248,7 @@ export const edit = {
     PurchaseOrderCreateModule,
     PurchaseOrderItemEditModule,
     PurchaseReturnCreateModule,
+    PurchaseShipmentCreateModule,
     QuoteItemEditModule,
     ReceiptEditModule,
     RepeatingPurchaseInvoiceEditModule,
@@ -256,6 +262,7 @@ export const edit = {
     SalesTermEditModule,
     SerialisedItemCreateModule,
     SerialisedItemCharacteristicEditModule,
+    ShipmentItemEditModule,
     SupplierOfferingEditModule,
     SupplierRelationshipEditModule,
     TelecommunicationsNumberCreateModule,
@@ -310,6 +317,7 @@ export const edit = {
     PurchaseOrderApprovalLevel2EditComponent,
     PurchaseOrderItemEditComponent,
     PurchaseReturnCreateComponent,
+    PurchaseShipmentCreateComponent,
     ReceiptEditComponent,
     RepeatingPurchaseInvoiceEditComponent,
     RepeatingSalesInvoiceEditComponent,
@@ -323,6 +331,7 @@ export const edit = {
     SalesTermEditComponent,
     SerialisedItemCreateComponent,
     SerialisedItemCharacteristicEditComponent,
+    ShipmentItemEditComponent,
     SupplierOfferingEditComponent,
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberCreateComponent,

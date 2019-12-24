@@ -25,9 +25,9 @@ namespace Allors.Domain.TestPopulation
 
             @this.WithName(faker.Lorem.Word());
             @this.WithSerialisedItemState(state);
-            @this.WithDescription(faker.Lorem.Sentence().ToString());
-            @this.WithKeywords(faker.Lorem.Sentence().ToString());
-            @this.WithInternalComment(faker.Lorem.Sentence().ToString());
+            @this.WithDescription(faker.Lorem.Sentence());
+            @this.WithKeywords(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithAcquiredDate(acquiredDate);
             @this.WithLastServiceDate(serviceDate);
             @this.WithNextServiceDate(faker.Date.Future(refDate: serviceDate));
@@ -71,8 +71,8 @@ namespace Allors.Domain.TestPopulation
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
             {
                 @this.WithLocalisedName(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Word()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedDescription(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
-                @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence().ToString()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedDescription(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence()).WithLocale(additionalLocale).Build());
+                @this.WithLocalisedKeyword(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence()).WithLocale(additionalLocale).Build());
             }
 
             return @this;

@@ -34,8 +34,8 @@ namespace Tests.FaceToFaceCommunicationTests
             var person = people.First(v => v.PartyName.Equals("John Doe"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var firstEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("first"));
-            var secondEmployee = allors.ActiveEmployees.First(v => v.FirstName.Equals("second"));
+            var firstEmployee = allors.ActiveEmployees.First();
+            var secondEmployee = allors.ActiveEmployees.Last();
 
             var editCommunicationEvent = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
@@ -85,10 +85,10 @@ namespace Tests.FaceToFaceCommunicationTests
             Assert.Equal(person, editCommunicationEvent.ToParty);
             Assert.Equal("new location", editCommunicationEvent.Location);
             Assert.Equal("new subject", editCommunicationEvent.Subject);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualEnd.Value.Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ScheduledStart);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ScheduledEnd.Value.Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ActualStart.Value.Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ActualEnd.Value.Date);
         }
     }
 }

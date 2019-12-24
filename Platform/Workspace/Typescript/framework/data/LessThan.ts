@@ -1,4 +1,4 @@
-import { RoleType } from '../meta';
+import { RoleType, ObjectType } from '../meta';
 import { UnitTypes, serialize } from '../protocol/Serialization';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
@@ -14,6 +14,10 @@ export class LessThan extends ParametrizedPredicate {
     } else {
       Object.assign(this, fields);
     }
+  }
+
+  get objectType(): ObjectType {
+    return this.roleType.objectType;
   }
 
   public toJSON(): any {

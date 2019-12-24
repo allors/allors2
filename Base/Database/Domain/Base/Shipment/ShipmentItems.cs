@@ -19,11 +19,13 @@ namespace Allors.Domain
             var picked = new ShipmentItemStates(this.Session).Picked;
             var packed = new ShipmentItemStates(this.Session).Packed;
             var shipped = new ShipmentItemStates(this.Session).Shipped;
+            var received = new ShipmentItemStates(this.Session).Received;
 
             config.Deny(this.ObjectType, picking, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, picked, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, packed, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, shipped, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, received, Operations.Execute, Operations.Write);
         }
     }
 }

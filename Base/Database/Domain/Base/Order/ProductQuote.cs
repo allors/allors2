@@ -281,6 +281,10 @@ namespace Allors.Domain
                     })).ToArray();
 
             var unitBasePrice = priceComponents.OfType<BasePrice>().Min(v => v.Price);
+            if (!unitBasePrice.HasValue)
+            {
+                unitBasePrice = 0;
+            }
 
             // Calculate Unit Price (with Discounts and Surcharges)
             if (quoteItem.AssignedUnitPrice.HasValue)
@@ -292,12 +296,6 @@ namespace Allors.Domain
             }
             else
             {
-                if (!unitBasePrice.HasValue)
-                {
-                    derivation.Validation.AddError(quoteItem, M.QuoteItem.UnitBasePrice, "No BasePrice with a Price");
-                    return;
-                }
-
                 quoteItem.UnitBasePrice = unitBasePrice.Value;
 
                 quoteItem.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(

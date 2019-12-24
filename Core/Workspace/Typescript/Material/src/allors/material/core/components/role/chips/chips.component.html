@@ -1,13 +1,15 @@
 <mat-form-field *ngIf="!disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
   <mat-chip-list #chipList>
-    <mat-chip *ngFor="let item of model" [removable]="!disabled" (removed)="remove(item)" [attr.data-allors-chip-display]="item[display]">
-      {{item[this.display]}}
-      <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
-    </mat-chip>
-    <input aFocus [aFocusTrigger]="roleType" #searchInput [matChipInputFor]="chipList" [matAutocomplete]="auto" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" (focusout)="focusout($event)">
+    <mat-chip *ngFor="let item of model" [removable]="!disabled" (removed)="remove(item)" [attr.data-allors-chip-display]="item[display]">{{item[this.display]}}<mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon></mat-chip>
+    <input #searchInput [matChipInputFor]="chipList" aFocus (blur)="inputBlur()" (focus)="inputFocus()" [aFocusTrigger]="roleType" [matAutocomplete]="autocomplete" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
   </mat-chip-list>
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn()">
-    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (onSelectionChange)="selected(option)" [attr.data-allors-option-display]="option[display]">
+
+  <button mat-button *ngIf="model.length > 0" matSuffix mat-icon-button aria-label="Clear" (click)="clear($event)">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="displayFn()" (optionSelected)="optionSelected($event)">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [attr.data-allors-option-display]="option[display]">
       {{option[this.display]}}
     </mat-option>
   </mat-autocomplete>

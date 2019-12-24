@@ -190,6 +190,7 @@ namespace Allors.Domain
 
             order.Confirm();
 
+            order.OrderedBy.IsAutomaticallyReceived = true;
             order.QuickReceive();
 
             this.Session.Derive();

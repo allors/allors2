@@ -13,7 +13,7 @@
     </mat-card-subtitle>
 
     <mat-card-subtitle>
-      <div>last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy?.displayName}}</div>
+      <div>last modified: {{ order.LastModifiedDate | date:'d/M/yyyy, HH:mm'}} by {{ order.LastModifiedBy?.displayName}}</div>
     </mat-card-subtitle>
 
   </mat-card-header>
@@ -27,7 +27,18 @@
         {{order.TakenViaSupplier?.displayName}}
       </div>
     </div>
-
+    
+    <div *ngFor="let shipment of shipments">
+      <div (click)="navigation.overview(shipment)" style="cursor: pointer;">
+        <div style="color: grey">
+          Shipment
+        </div>
+        <div>
+          {{shipment?.ShipmentNumber}}
+        </div>
+      </div>
+    </div>
+    
     <div *ngFor="let purchaseInvoice of purchaseInvoices">
       <div (click)="navigation.overview(purchaseInvoice)" style="cursor: pointer;">
         <div style="color: grey">

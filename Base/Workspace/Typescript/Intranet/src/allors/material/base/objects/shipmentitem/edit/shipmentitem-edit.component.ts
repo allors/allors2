@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -5,11 +7,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SalesOrderItemShipmentState, SerialisedItemState, RequestItemState, RequestState, QuoteItemState, QuoteState, ShipmentItemState, ShipmentState } from '../../../../../domain';
+import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SalesOrderItemShipmentState, SerialisedItemState, RequestItemState, RequestState, QuoteItemState, QuoteState, ShipmentItemState, ShipmentState, PurchaseOrderItem, PurchaseOrderState, NonUnifiedPart, SupplierOffering } from '../../../../../domain';
 import { PullRequest, IObject, Equals, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
+import { ShipmentReceipt } from 'src/allors/domain/generated/ShipmentReceipt.g';
 
 @Component({
   templateUrl: './shipmentitem-edit.component.html',
@@ -22,18 +25,21 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   title: string;
   shipment: Shipment;
   shipmentItem: ShipmentItem;
-  goods: NonUnifiedGood[];
+  goods: Product[];
   inventoryItems: InventoryItem[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  part: Part;
-  serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
   serialisedItemStates: SerialisedItemState[];
   soldState: SerialisedItemState;
-  orderShipments: OrderShipment[];
-  salesOrderItems: SalesOrderItem[];
+  orderShipment: OrderShipment;
+  shipmentReceipt: ShipmentReceipt;
+  salesOrderItems: SalesOrderItem[] = [];
   selectedSalesOrderItem: SalesOrderItem;
+  selectedPurchaseOrderItem: PurchaseOrderItem;
+  purchaseOrderItems: PurchaseOrderItem[] = [];
+  parts: NonUnifiedPart[];
+  supplierOfferings: SupplierOffering[];
 
   draftRequestItem: RequestItemState;
   submittedRequestItem: RequestItemState;
@@ -63,8 +69,11 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   pickedShipment: ShipmentState;
   packedShipment: ShipmentState;
   onholdShipment: ShipmentState;
+  isCustomerShipment: boolean;
+  isPurchaseShipment: boolean;
 
   private previousGood;
+  private previousPart;
   private subscription: Subscription;
 
   constructor(
@@ -106,7 +115,11 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
             pull.ShipmentItem({
               object: this.data.id,
               fetch: {
-                OrderShipmentsWhereShipmentItem: x
+                OrderShipmentsWhereShipmentItem: {
+                  include: {
+                    OrderItem: x
+                  }
+                }
               }
             }),
             pull.Shipment({
@@ -131,8 +144,39 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
                 }
               }
             }),
+            pull.Shipment({
+              object: this.data.associationId,
+              fetch: {
+                ShipFromParty: {
+                  PurchaseOrdersWhereTakenViaSupplier: {
+                    include: {
+                      PurchaseOrderItems: {
+                        Part: x,
+                        SerialisedItem: x,
+                        PurchaseOrderItemState: x,
+                        PurchaseOrderWherePurchaseOrderItem: {
+                          PurchaseOrderState: x
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }),
+            pull.Shipment({
+              object: this.data.associationId,
+              fetch: {
+                ShipFromParty: {
+                  SupplierOfferingsWhereSupplier: {
+                    include: {
+                      Part: x,
+                    }
+                  }
+                }
+              }
+            }),
             pull.SerialisedItemState(),
-            pull.NonUnifiedGood({ sort: new Sort(m.NonUnifiedGood.Name) }),
+            pull.Good({ sort: new Sort(m.Good.Name) }),
             pull.SerialisedInventoryItemState(
               {
                 predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
@@ -145,6 +189,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
             pull.QuoteState(),
             pull.SalesOrderItemState(),
             pull.SalesOrderState(),
+            pull.PurchaseOrderItemState(),
+            pull.PurchaseOrderState(),
             pull.ShipmentItemState(),
             pull.ShipmentState(),
           ];
@@ -159,9 +205,14 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.orderShipments = loaded.collections.OrderShipments as OrderShipment[];
-        this.goods = loaded.collections.NonUnifiedGoods as NonUnifiedGood[];
-        this.shipment = loaded.objects.Shipment as Shipment;
+        const now = moment.utc();
+
+        this.goods = loaded.collections.Goods as Good[];
+
+        this.shipmentItem = loaded.objects.ShipmentItem as ShipmentItem;
+        this.shipment = loaded.objects.Shipment as Shipment || this.shipmentItem.SyncedShipment;
+        this.isCustomerShipment = this.shipment.objectType === this.metaService.m.CustomerShipment;
+        this.isPurchaseShipment = this.shipment.objectType === this.metaService.m.PurchaseShipment;
 
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
         this.soldState = this.serialisedItemStates.find((v: SerialisedItemState) => v.UniqueId === 'feccf869-98d7-4e9c-8979-5611a43918bc');
@@ -173,8 +224,10 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         this.onHoldOrder = salesOrderStates.find((v: SalesOrderState) => v.UniqueId === 'f625fb7e-893e-4f68-ab7b-2bc29a644e5b');
         this.inProcessOrder = salesOrderStates.find((v: SalesOrderState) => v.UniqueId === 'ddbb678e-9a66-4842-87fd-4e628cff0a75');
 
-        const salesOrderItems = loaded.collections.SalesOrderItems as SalesOrderItem[];
-        this.salesOrderItems = salesOrderItems.filter(v => v.SalesOrderWhereSalesOrderItem.SalesOrderState === inProcess && parseFloat(v.QuantityRequestsShipping) > 0);
+        const salesOrderItemStates = loaded.collections.SalesOrderItemStates as SalesOrderItemState[];
+        this.createdOrderItem = salesOrderItemStates.find((v: SalesOrderItemState) => v.UniqueId === '5b0993b5-5784-4e8d-b1ad-93affac9a913');
+        this.onHoldOrderItem = salesOrderItemStates.find((v: SalesOrderItemState) => v.UniqueId === '3b185d51-af4a-441e-be0d-f91cfcbdb5d8');
+        this.inProcessOrderItem = salesOrderItemStates.find((v: SalesOrderItemState) => v.UniqueId === 'e08401f7-1deb-4b27-b0c5-8f034bffedb5');
 
         const requestItemStates = loaded.collections.RequestItemStates as RequestItemState[];
         this.draftRequestItem = requestItemStates.find((v: RequestItemState) => v.UniqueId === 'b173dfbe-9421-4697-8ffb-e46afc724490');
@@ -194,11 +247,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         this.createdQuote = quoteStates.find((v: QuoteState) => v.UniqueId === 'b1565cd4-d01a-4623-bf19-8c816df96aa6');
         this.approvedQuote = quoteStates.find((v: QuoteState) => v.UniqueId === '675d6899-1ebb-4fdb-9dc9-b8aef0a135d2');
 
-        const salesOrderItemStates = loaded.collections.SalesOrderItemStates as SalesOrderItemState[];
-        this.createdOrderItem = salesOrderItemStates.find((v: SalesOrderItemState) => v.UniqueId === '5b0993b5-5784-4e8d-b1ad-93affac9a913');
-        this.onHoldOrderItem = salesOrderItemStates.find((v: SalesOrderItemState) => v.UniqueId === '3b185d51-af4a-441e-be0d-f91cfcbdb5d8');
-        this.inProcessOrderItem = salesOrderItemStates.find((v: SalesOrderItemState) => v.UniqueId === 'e08401f7-1deb-4b27-b0c5-8f034bffedb5');
-
         const shipmentItemStates = loaded.collections.ShipmentItemStates as ShipmentItemState[];
         this.createdShipmentItem = shipmentItemStates.find((v: ShipmentItemState) => v.UniqueId === 'e05818b1-2660-4879-b5a8-8ca96f324f7b');
         this.pickingShipmentItem = shipmentItemStates.find((v: ShipmentItemState) => v.UniqueId === 'f9043add-e106-4646-8b02-6b10efbb2e87');
@@ -212,20 +260,72 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         this.packedShipment = shipmentStates.find((v: ShipmentState) => v.UniqueId === 'dcabe845-a6f2-49d9-bbae-06fb47012a21');
         this.onholdShipment = shipmentStates.find((v: ShipmentState) => v.UniqueId === '268cb9a7-6965-47e8-af89-8f915242c23d');
 
+        const purchaseOrderStates = loaded.collections.PurchaseOrderStates as PurchaseOrderState[];
+        const purchaseOrderinProcess = purchaseOrderStates.find((v) => v.UniqueId === '7752f5c5-b19b-4339-a937-0bad768142a8');
+
+        const salesOrderItems = loaded.collections.SalesOrderItems as SalesOrderItem[];
+        if (salesOrderItems) {
+          this.salesOrderItems = salesOrderItems.filter(v => v.SalesOrderWhereSalesOrderItem.SalesOrderState === inProcess && parseFloat(v.QuantityRequestsShipping) > 0);
+        }
+
+        const purchaseOrderItems = loaded.collections.PurchaseOrderItems as PurchaseOrderItem[];
+        if (purchaseOrderItems) {
+          this.purchaseOrderItems = purchaseOrderItems.filter(v => v.PurchaseOrderWherePurchaseOrderItem.PurchaseOrderState === purchaseOrderinProcess);
+        }
+
+        if (this.isPurchaseShipment) {
+          this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
+
+          this.parts = this.supplierOfferings
+            .filter(v => v.Supplier === this.shipment.ShipFromParty && v.Supplier === this.shipment.ShipFromParty && moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)))
+            .map(v => v.Part)
+            .sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        }
+
         if (isCreate) {
           this.title = 'Add Shipment Item';
           this.shipmentItem = this.allors.context.create('ShipmentItem') as ShipmentItem;
           this.shipment.AddShipmentItem(this.shipmentItem);
 
+          if (this.isCustomerShipment) {
+            this.orderShipment = this.allors.context.create('OrderShipment') as OrderShipment;
+          }
+
+          if (this.isPurchaseShipment) {
+            this.shipmentReceipt = this.allors.context.create('ShipmentReceipt') as ShipmentReceipt;
+          }
         } else {
-          this.shipmentItem = loaded.objects.ShipmentItem as ShipmentItem;
+
+          // This UI does not allow shipmentitem to be combination from multiple order items
+          const orderShipments = loaded.collections.OrderShipments as OrderShipment[];
+          if (orderShipments && orderShipments.length > 0) {
+            this.orderShipment = orderShipments[0];
+            if (this.orderShipment.OrderItem) {
+              if (this.isCustomerShipment) {
+                this.selectedSalesOrderItem = this.orderShipment.OrderItem as SalesOrderItem;
+                this.salesOrderItems.push(this.selectedSalesOrderItem);
+              }
+
+              if (this.isPurchaseShipment) {
+                this.selectedPurchaseOrderItem = this.orderShipment.OrderItem as PurchaseOrderItem;
+                this.purchaseOrderItems.push(this.selectedPurchaseOrderItem);
+              }
+            }
+          }
+
+          this.shipmentReceipt = loaded.objects.ShipmentReceipt as ShipmentReceipt;
 
           if (this.shipmentItem.Good) {
             this.previousGood = this.shipmentItem.Good;
-            this.refreshSerialisedItems(this.shipmentItem.Good);
-          } else {
-            this.serialisedItems.push(this.shipmentItem.SerialisedItem);
+            this.loadProduct(this.shipmentItem.Good);
           }
+
+          if (this.shipmentItem.Part) {
+            this.previousPart = this.shipmentItem.Part;
+            this.loadPart(this.shipmentItem.Part);
+          }
+
+          this.serialisedItems.push(this.shipmentItem.SerialisedItem);
 
           if (this.shipmentItem.CanWriteQuantity) {
             this.title = 'Edit Shipment Order Item';
@@ -266,13 +366,27 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
     this.shipmentItem.SerialisedItem = salesOrderItem.SerialisedItem;
   }
 
+  public purchaseOrderItemSelected(purchaseOrderItem: PurchaseOrderItem): void {
+
+    this.shipmentItem.Part = purchaseOrderItem.Part as Part;
+    this.shipmentItem.Quantity = purchaseOrderItem.QuantityOrdered;
+    this.shipmentItem.SerialisedItem = purchaseOrderItem.SerialisedItem;
+  }
+
   public goodSelected(product: Product): void {
     if (product) {
-      this.refreshSerialisedItems(product);
+      this.loadProduct(product);
+    }
+  }
+
+  public partSelected(part: Part): void {
+    if (part) {
+      this.loadPart(part);
     }
   }
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
+
     const onRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
       .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
         && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));
@@ -308,11 +422,10 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       this.snackBar.open(`Item already shipped with ${onOtherShipmentItem.ShipmentWhereShipmentItem.ShipmentNumber}`, 'close');
     }
 
-    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
     this.shipmentItem.Quantity = '1';
   }
 
-  private refreshSerialisedItems(product: Product): void {
+  private loadProduct(product: Product): void {
 
     const { pull, x } = this.metaService;
 
@@ -389,23 +502,60 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
-        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+        const part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
+
+        if (this.isCustomerShipment) {
+          this.serialisedItems = part.SerialisedItems.filter(v => v.AvailableForSale === true);
+        }
 
         if (this.shipmentItem.Good !== this.previousGood) {
           this.shipmentItem.SerialisedItem = null;
-          this.serialisedItem = null;
           this.previousGood = this.shipmentItem.Good;
+        }
+      });
+  }
+
+  private loadPart(part: NonUnifiedPart): void {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
+      pull.NonUnifiedPart({
+        object: part.id,
+        fetch: {
+          InventoryItemsWherePart: {
+            include: {
+              Facility: x
+            }
+          }
+        }
+      }),
+    ];
+
+    this.allors.context
+      .load(new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        this.inventoryItems = loaded.collections.InventoryItems as InventoryItem[];
+
+        if (this.shipmentItem.Part !== this.previousPart) {
+          this.shipmentItem.SerialisedItem = null;
+          this.previousPart = this.shipmentItem.Part;
         }
       });
   }
 
   private onSave() {
     if (this.selectedSalesOrderItem) {
-      const orderShipment = this.allors.context.create('OrderShipment') as OrderShipment;
-      orderShipment.OrderItem = this.selectedSalesOrderItem;
-      orderShipment.ShipmentItem = this.shipmentItem;
-      orderShipment.Quantity = this.shipmentItem.Quantity;
+      this.orderShipment.OrderItem = this.selectedSalesOrderItem;
+      this.orderShipment.ShipmentItem = this.shipmentItem;
+      this.orderShipment.Quantity = this.shipmentItem.Quantity;
+    }
+
+    if (this.isPurchaseShipment) {
+      this.shipmentReceipt.OrderItem = this.selectedPurchaseOrderItem;
+      this.shipmentReceipt.ShipmentItem = this.shipmentItem;
+      this.shipmentReceipt.QuantityAccepted = this.shipmentItem.Quantity;
     }
   }
 }
