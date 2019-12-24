@@ -17,6 +17,7 @@ import { ConfigService } from './app.config.service';
 import { ErrorModule } from './error/error.module';
 
 import { DefaultFiltersService } from '../allors/material/base/services/filters/default.filters.service';
+import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { DefaultFiltersService } from '../allors/material/base/services/filters/
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: { autoActiveFirstOption: true } },
     { provide: FiltersService, useClass: DefaultFiltersService },
     ConfigService
   ]

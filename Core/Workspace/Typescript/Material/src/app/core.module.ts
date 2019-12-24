@@ -45,7 +45,7 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'nl-BE' },
-    {provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: {autoActiveFirstOption: true}}
+    { provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: { autoActiveFirstOption: true } }
   ],
 })
 export class CoreModule {
