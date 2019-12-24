@@ -1,4 +1,4 @@
-// <copyright file="PostalAddressEditTest.cs" company="Allors bvba">
+// <copyright file="PostalAddressCreateTest.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -16,13 +16,13 @@ namespace Tests.PostalAddressTests
     using Xunit;
 
     [Collection("Test collection")]
-    public class PostalAddressEditTest : Test
+    public class PostalAddressCreateTest : Test
     {
         private readonly PersonListComponent people;
 
         private readonly PostalAddress editContactMechanism;
 
-        public PostalAddressEditTest(TestFixture fixture)
+        public PostalAddressCreateTest(TestFixture fixture)
             : base(fixture)
         {
             var people = new People(this.Session).Extent();
@@ -46,25 +46,21 @@ namespace Tests.PostalAddressTests
         }
 
         [Fact]
-        public void Edit()
+        public void Create()
         {
-            var country = new Countries(this.Session).FindBy(M.Country.IsoCode, "NL");
+            var country = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
+
+            var before = new PostalAddresses(this.Session).Extent().ToArray();
 
             var extent = new People(this.Session).Extent();
             var person = extent.First(v => v.PartyName.Equals("John Doe"));
 
-            var before = new PostalAddresses(this.Session).Extent().ToArray();
-
             this.people.Table.DefaultAction(person);
-            var personOverview = new PersonOverviewComponent(this.people.Driver);
+            var postalAddressEditComponent = new PersonOverviewComponent(this.people.Driver).ContactmechanismOverviewPanel.Click().CreatePostalAddress();
 
-            var panelComponent = personOverview.ContactmechanismOverviewPanel.Click();
-            var row = panelComponent.Table.FindRow(this.editContactMechanism);
-            var cell = row.FindCell("contact");
-            cell.Click();
-
-            var postalAddressEditComponent = new PostalAddressEditComponent(this.Driver);
-            postalAddressEditComponent.Address1.Set("addressline 1")
+            postalAddressEditComponent
+                .ContactPurposes.Toggle("General correspondence address")
+                .Address1.Set("addressline 1")
                 .Address2.Set("addressline 2")
                 .Address3.Set("addressline 3")
                 .Locality.Set("city")
@@ -78,16 +74,19 @@ namespace Tests.PostalAddressTests
 
             var after = new PostalAddresses(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length);
+            Assert.Equal(after.Length, before.Length + 1);
 
-            Assert.Equal("addressline 1", this.editContactMechanism.Address1);
-            Assert.Equal("addressline 2", this.editContactMechanism.Address2);
-            Assert.Equal("addressline 3", this.editContactMechanism.Address3);
-            Assert.Equal("addressline 1", this.editContactMechanism.Address1);
-            Assert.Equal("city", this.editContactMechanism.Locality);
-            Assert.Equal("postalcode", this.editContactMechanism.PostalCode);
-            Assert.Equal(country, this.editContactMechanism.Country);
-            Assert.Equal("description", this.editContactMechanism.Description);
+            var contactMechanism = after.Except(before).First();
+            var partyContactMechanism = contactMechanism.PartyContactMechanismsWhereContactMechanism.First;
+
+            Assert.Equal("addressline 1", contactMechanism.Address1);
+            Assert.Equal("addressline 2", contactMechanism.Address2);
+            Assert.Equal("addressline 3", contactMechanism.Address3);
+            Assert.Equal("addressline 1", contactMechanism.Address1);
+            Assert.Equal("city", contactMechanism.Locality);
+            Assert.Equal("postalcode", contactMechanism.PostalCode);
+            Assert.Equal(country, contactMechanism.Country);
+            Assert.Equal("description", contactMechanism.Description);
         }
     }
 }
