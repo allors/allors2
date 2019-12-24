@@ -250,10 +250,7 @@ namespace Tests
             this.Session.Derive();
 
             var acmePostalAddress = new PostalAddressBuilder(this.Session)
-                .WithAddress1($"Acme address 1")
-                .WithLocality($"Acme city")
-                .WithPostalCode("1111")
-                .WithCountry(us)
+                .WithDefaults()
                 .Build();
 
             var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)
