@@ -531,10 +531,7 @@ line2")
             new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(allors).WithFromDate(DateTime.Now.AddDays(-1)).Build();
 
             var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithLocality("Mechelen")
-                .WithPostalCode("2800")
-                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                .WithDefaults()
                 .Build();
 
             var partyContactMechanism = new PartyContactMechanismBuilder(this.Session)
