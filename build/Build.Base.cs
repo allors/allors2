@@ -236,7 +236,7 @@ partial class Build
                             s => s
                                 .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
                                 .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptIntranetTests.trx")
-                                .SetFilter("Category=!Generic")
+                                .SetFilter("Category!=Generic")
                                 .SetResultsDirectory(Paths.ArtifactsTests));
                     }
                 }
