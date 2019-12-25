@@ -244,8 +244,8 @@ partial class Build
         });
 
     private Target BaseWorkspaceTypescriptTest => _ => _
-         .DependsOn(BaseWorkspaceTypescriptDomain)
-         .DependsOn(BaseWorkspaceTypescriptIntranet)
+        .DependsOn(BaseWorkspaceTypescriptDomain)
+        .DependsOn(BaseWorkspaceTypescriptIntranet);
 
     private Target BaseTest => _ => _
         .DependsOn(BaseDatabaseTest)
