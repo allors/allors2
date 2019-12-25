@@ -30,6 +30,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
+        [Trait("Category", "Generic")]
         public async void Navigate()
         {
             this.Login();
@@ -41,6 +42,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
+        [Trait("Category", "Generic")]
         public async void Create()
         {
             this.Login();
@@ -69,6 +71,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
+        [Trait("Category", "Generic")]
         public async void Edit()
         {
             this.Login();
@@ -102,6 +105,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
+        [Trait("Category", "Generic")]
         public async void Overview()
         {
             this.Login();
