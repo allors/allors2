@@ -1,8 +1,6 @@
 namespace Allors.Workspace.Blazor.Bootstrap.Forms.Roles
 {
     using System;
-    using System.Linq;
-    using System.Xml;
     using Microsoft.AspNetCore.Components;
 
     public class ABSSelectBase : RoleField
@@ -18,5 +16,8 @@ namespace Allors.Workspace.Blazor.Bootstrap.Forms.Roles
 
         [Parameter]
         public Func<ISessionObject, string> DisplayOption { get; set; } = o => o.ToString();
+
+        [Parameter]
+        public string EmptyValue { get; set; }
     }
 }

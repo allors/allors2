@@ -1,5 +1,6 @@
 namespace Allors.Workspace.Blazor
 {
+    using System.Collections.Generic;
     using Allors.Workspace.Meta;
     using Markdig.Helpers;
     using Microsoft.AspNetCore.Components;
@@ -22,6 +23,9 @@ namespace Allors.Workspace.Blazor
 
         [Parameter]
         public string ValidMessage { get; set; }
+
+        [Parameter(CaptureUnmatchedValues = true)]
+        public IReadOnlyDictionary<string, object> Attributes { get; set; }
 
         public abstract IPropertyType PropertyType { get; }
 

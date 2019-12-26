@@ -3,7 +3,7 @@
 @using Allors.Workspace.Blazor.Validation
 @implements System.IDisposable
 
-<BSFormGroup>
+<BSFormGroup @attributes="Attributes">
     <BSLabel>@DerivedLabel</BSLabel>
     <input type="date" class="form-control" @bind="Model" />
     <BSFormFeedback For="@(() => Model)" ValidMessage="@ValidMessage" />
@@ -33,6 +33,9 @@
     [Parameter]
     public string ValidMessage { get; set; }
 
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object> Attributes { get; set; }
+    
     public IPropertyType PropertyType { get => this.RoleType; }
 
     public ISessionObject DerivedObject
