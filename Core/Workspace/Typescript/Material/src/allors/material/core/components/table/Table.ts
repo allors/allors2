@@ -139,6 +139,7 @@ export class Table<Row extends TableRow> implements BaseTable {
   }
 
   set data(value: Row[]) {
+    this.selection.clear();
     this.dataSource.data = value;
   }
 
