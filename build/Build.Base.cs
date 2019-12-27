@@ -98,7 +98,7 @@ partial class Build
                  .SetOutput(Paths.ArtifactsBaseServer);
              DotNetPublish(dotNetPublishSettings);
          });
-    
+
     private Target BaseWorkspaceAutotest => _ => _
          .DependsOn(BaseWorkspaceSetup)
          .Executes(() =>
@@ -187,7 +187,7 @@ partial class Build
              }
          });
 
-    private Target BaseWorkspaceTypescriptIntranetTests => _ => _
+    private Target BaseWorkspaceTypescriptIntranetGenericTests => _ => _
          .DependsOn(BaseWorkspaceAutotest)
          .DependsOn(BasePublishServer)
          .DependsOn(BasePublishCommands)
@@ -208,16 +208,44 @@ partial class Build
                              s => s
                                  .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
                                  .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptIntranetTests.trx")
+                                 .SetFilter("Category=Generic")
                                  .SetResultsDirectory(Paths.ArtifactsTests));
                      }
                  }
              }
          });
 
+    private Target BaseWorkspaceTypescriptIntranetSpecificTests => _ => _
+        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(BasePublishServer)
+        .DependsOn(BasePublishCommands)
+        .DependsOn(BaseResetDatabase)
+        .Executes(async () =>
+        {
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Populate(Paths.ArtifactsBaseCommands);
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
+                    {
+                        await server.Ready();
+                        await angular.Init();
+                        DotNetTest(
+                            s => s
+                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
+                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptIntranetTests.trx")
+                                .SetFilter("Category!=Generic")
+                                .SetResultsDirectory(Paths.ArtifactsTests));
+                    }
+                }
+            }
+        });
+
     private Target BaseWorkspaceTypescriptTest => _ => _
-         .DependsOn(BaseWorkspaceTypescriptDomain)
-         .DependsOn(BaseWorkspaceTypescriptIntranet)
-         .DependsOn(BaseWorkspaceTypescriptIntranetTests);
+        .DependsOn(BaseWorkspaceTypescriptDomain)
+        .DependsOn(BaseWorkspaceTypescriptIntranet);
 
     private Target BaseTest => _ => _
         .DependsOn(BaseDatabaseTest)

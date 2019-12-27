@@ -33,6 +33,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
+        [Trait("Category", "Generic")]
         public async void Detail()
         {
             foreach (var page in this.OverviewPages())
@@ -45,6 +46,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
+        [Trait("Category", "Generic")]
         public async void PanelsCreate()
         {
             foreach (var page in this.OverviewPages())
@@ -82,6 +84,7 @@ namespace Tests.ApplicationTests
         }
 
         [Fact]
+        [Trait("Category", "Generic")]
         public async void PanelsEdit()
         {
             foreach (var page in this.OverviewPages())

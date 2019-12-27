@@ -1,4 +1,4 @@
-import { RoleType } from '../meta';
+import { RoleType, ObjectType } from '../meta';
 
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
@@ -14,6 +14,10 @@ export class Like extends ParametrizedPredicate {
     } else {
       Object.assign(this, fields);
     }
+  }
+
+  get objectType(): ObjectType {
+    return this.roleType.objectType;
   }
 
   public toJSON(): any {

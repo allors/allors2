@@ -106,6 +106,18 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                     UnitOfMeasure: x
                   }
                 },
+                LocalisedNames: {
+                  Locale: x,
+                },
+                LocalisedDescriptions: {
+                  Locale: x,
+                },
+                LocalisedComments: {
+                  Locale: x,
+                },
+                LocalisedKeywords: {
+                  Locale: x,
+                },
                 Ownership: x,
                 OwnedBy: x,
                 RentedBy: x,

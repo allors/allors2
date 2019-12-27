@@ -149,9 +149,17 @@ namespace Tests
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
             var faker = this.Session.Faker();
+
+            allors.CreateEmployee("letmein", faker);
+            allors.CreateEmployee("letmein", faker);
             allors.CreateAdministrator("letmein", faker);
             allors.CreateAdministrator("letmein", faker);
+
+            dipu.CreateEmployee("letmein", faker);
+            dipu.CreateEmployee("letmein", faker);
             dipu.CreateAdministrator("letmein", faker);
+
+            this.Session.Derive();
 
             var facility = new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
@@ -242,10 +250,7 @@ namespace Tests
             this.Session.Derive();
 
             var acmePostalAddress = new PostalAddressBuilder(this.Session)
-                .WithAddress1($"Acme address 1")
-                .WithLocality($"Acme city")
-                .WithPostalCode("1111")
-                .WithCountry(us)
+                .WithDefaults()
                 .Build();
 
             var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)
@@ -523,10 +528,7 @@ line2")
             new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(allors).WithFromDate(DateTime.Now.AddDays(-1)).Build();
 
             var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithLocality("Mechelen")
-                .WithPostalCode("2800")
-                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                .WithDefaults()
                 .Build();
 
             var partyContactMechanism = new PartyContactMechanismBuilder(this.Session)
@@ -656,6 +658,13 @@ line2")
             }
 
             new CustomerShipmentBuilder(this.Session).WithDefaults(allors).Build();
+
+            for (int i = 0; i < 10; i++)
+            {
+                allors.CreateSupplier(this.Session.Faker());
+            }
+
+            new PurchaseShipmentBuilder(this.Session).WithDefaults(allors).Build();
 
             this.Session.Derive();
         }

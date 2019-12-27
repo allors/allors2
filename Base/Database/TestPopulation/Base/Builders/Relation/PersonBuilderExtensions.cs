@@ -13,12 +13,11 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            var person = faker.Person;
             var emailAddress = new EmailAddressBuilder(@this.Session).WithDefaults().Build();
             var email = emailAddress.ElectronicAddressString;
 
-            @this.WithFirstName(person.FirstName);
-            @this.WithLastName(person.LastName);
+            @this.WithFirstName(faker.Name.FirstName());
+            @this.WithLastName(faker.Name.LastName());
             @this.WithSalutation(faker.Random.ListItem(@this.Session.Extent<Salutation>()));
             @this.WithGender(faker.Random.ListItem(@this.Session.Extent<GenderType>()));
             @this.WithTitle(faker.Random.ListItem(@this.Session.Extent<PersonalTitle>()));

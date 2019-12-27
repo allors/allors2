@@ -1,5 +1,5 @@
 @using Allors.Workspace.Blazor.Validation
-<BSForm @attributes="Attributes" OnSubmit="@OnSubmit" OnValidSubmit="@OnValidSubmit" OnInvalidSubmit="@OnInvalidSubmit">
+<BSForm OnSubmit="@OnSubmit" OnValidSubmit="@OnValidSubmit" OnInvalidSubmit="@OnInvalidSubmit" @attributes="Attributes">
     <CascadingValue Value="@Fields">
         @ChildContent
     </CascadingValue>

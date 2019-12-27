@@ -26,6 +26,10 @@ stages:
           target: 'BaseDatabaseTest'
         base_workspace_typescript:
           target: 'BaseWorkspaceTypescriptTest'
+        base_workspace_typescript_intranet_generic:
+          target: 'BaseWorkspaceTypescriptIntranetGenericTests'
+        base_workspace_typescript_intranet_specific:
+          target: 'BaseWorkspaceTypescriptIntranetSpecificTests'
         base_workspace_csharp:
           target: 'BaseWorkspaceCSharpTest'
       maxParallel: 10

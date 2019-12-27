@@ -31,10 +31,35 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
     this.filterService = data.filterService;
   }
 
+  get isBetween(): boolean {
+    return this.filterFieldDefinition && this.filterFieldDefinition.isBetween;
+  }
+
+  get placeholder(): string {
+    return this.isBetween ? 'From' : 'Value';
+  }
+
+  get useSearch(): boolean {
+    return this.filterFieldDefinition && !!this.filterFieldDefinition.options.search;
+  }
+
+  get useToggle(): boolean {
+    return this.filterFieldDefinition && !this.filterFieldDefinition.options.search && this.filterFieldDefinition.predicate.objectType.isBoolean;
+  }
+
+  get useDatepicker(): boolean {
+    return this.filterFieldDefinition && !this.filterFieldDefinition.options.search && this.filterFieldDefinition.predicate.objectType.isDateTime;
+  }
+
+  get useInput(): boolean {
+    return this.filterFieldDefinition && !this.filterFieldDefinition.options.search && !this.filterFieldDefinition.predicate.objectType.isBoolean && !this.filterFieldDefinition.predicate.objectType.isDateTime;
+  }
+
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       definition: ['', Validators.required],
-      value: ['', Validators.required]
+      value: ['', Validators.required],
+      value2: ['', Validators.required]
     });
   }
 
@@ -49,7 +74,7 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
 
     let initialValue = filterFieldDefinition.options.initialValue;
     if (initialValue === undefined || initialValue === null) {
-      if (filterFieldDefinition.isBoolean) {
+      if (filterFieldDefinition.predicate.objectType.isBoolean) {
         initialValue = true;
       }
     }
@@ -63,13 +88,29 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
   apply() {
 
     const options = this.filterFieldDefinition && this.filterFieldDefinition.options;
-    const value = this.formGroup.get('value').value;
+    let value = this.formGroup.get('value').value;
+    let value2 = this.formGroup.get('value2').value;
 
-    this.filterService.addFilterField(new FilterField({
-      definition: this.filterFieldDefinition,
-      value: value.id ? value.id : value,
-      display: options.display ? options.display(value) : value,
-    }));
+    if (this.filterFieldDefinition.predicate.objectType.isDateTime) {
+      value = value ? value.toISOString() : null;
+      value2 = value2 ? value2.toISOString() : null;
+    }
+
+    if (!value2) {
+      this.filterService.addFilterField(new FilterField({
+        definition: this.filterFieldDefinition,
+        value: value.id ? value.id : value,
+        display: options.display ? options.display(value) : value,
+      }));
+
+    } else {
+      this.filterService.addFilterField(new FilterField({
+        definition: this.filterFieldDefinition,
+        value,
+        value2,
+        display: options.display ? `${options.display(value)} <-> ${options.display(value2)}` : `${value} <-> ${value2}`,
+      }));
+    }
 
     this.dialogRef.close();
   }

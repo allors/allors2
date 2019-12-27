@@ -37,12 +37,14 @@ namespace Tests.NonUnifiedGood
 
             this.MemorySession.Derive();
 
+            var part = new NonUnifiedParts(this.Session).Extent().First;
+
             var nonUnifiedGoodCreate = this.goods.CreateNonUnifiedGood();
 
             nonUnifiedGoodCreate
                 .Name.Set(expected.Name)
                 .Description.Set(expected.Description)
-                .Part.Set(expected.Part.Name)
+                .Part.Set(part.Name)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -56,7 +58,7 @@ namespace Tests.NonUnifiedGood
 
             Assert.Equal(expected.Name, good.Name);
             Assert.Equal(expected.Description, good.Description);
-            Assert.Equal(expected.Part.Name, good.Part.Name);
+            Assert.Equal(part.Name, good.Part.Name);
         }
     }
 }

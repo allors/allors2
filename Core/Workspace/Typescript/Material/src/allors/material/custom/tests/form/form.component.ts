@@ -55,7 +55,7 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
 
     this.m = this.metaService.m;
 
-    this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
+    this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName, this.m.Person.UserName] });
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
@@ -148,8 +148,8 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
         this.data = undefined;
         this.refresh();
       },
-      this.saveService.errorHandler
-    );
+        this.saveService.errorHandler
+      );
   }
 
   public goBack(): void {

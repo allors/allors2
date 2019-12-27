@@ -1,4 +1,4 @@
-import { PropertyType } from '../meta';
+import { PropertyType, ObjectType } from '../meta';
 import { CompositeTypes } from '../protocol/Serialization';
 import { ISessionObject } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
@@ -17,6 +17,10 @@ export class ContainedIn extends ParametrizedPredicate {
     } else {
       Object.assign(this, fields);
     }
+  }
+
+  get objectType(): ObjectType {
+    return this.propertyType.objectType;
   }
 
   public toJSON(): any {

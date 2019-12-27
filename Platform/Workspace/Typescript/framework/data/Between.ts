@@ -1,13 +1,15 @@
-import { RoleType } from '../meta';
+import { RoleType, ObjectType } from '../meta';
 import { UnitTypes, serializeArray } from '../protocol/Serialization';
-import { Predicate } from './Predicate';
+import { ParametrizedPredicate } from './ParametrizedPredicate';
 
-export class Between implements Predicate {
+export class Between extends ParametrizedPredicate {
   public roleType: RoleType;
-  public param: string;
+  public parameter: string;
   public values: UnitTypes[];
 
   constructor(fields?: Partial<Between>| RoleType) {
+    super();
+
     if ((fields as RoleType).objectType) {
       this.roleType = fields as RoleType;
     } else {
@@ -15,11 +17,15 @@ export class Between implements Predicate {
     }
   }
 
+  get objectType(): ObjectType {
+    return this.roleType.objectType;
+  }
+
   public toJSON(): any {
     return {
       kind: 'Between',
       roleType: this.roleType.id,
-      param: this.param,
+      parameter: this.parameter,
       values: serializeArray(this.values),
     };
   }

@@ -20,7 +20,13 @@ namespace Allors.Domain.TestPopulation
                 .WithEmployer(@this)
                 .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
                 .Build();
-                
+
+            new OrganisationContactRelationshipBuilder(@this.Session())
+                .WithContact(person)
+                .WithOrganisation(@this)
+                .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
+                .Build();
+
             new UserGroups(@this.Session()).Creators.AddMember(person);
 
             person.SetPassword(password);
