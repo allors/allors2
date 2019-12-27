@@ -1,4 +1,4 @@
-<mat-form-field *ngIf="showScanner" [floatLabel]="'never'">
+<mat-form-field *ngIf="showScanner" [floatLabel]="'never'" style="margin-right: 1rem">
   <input matInput placeholder="Enter Barcode" [(ngModel)]="barcode" (keyup.enter)="scan()">
 </mat-form-field>
 
