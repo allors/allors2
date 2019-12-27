@@ -8,6 +8,7 @@ export * from './core/components/launcher/launcher.module';
 export * from './core/components/sidemenu/sidemenu.module';
 export * from './core/components/sidenavtoggle/sidenavtoggle.module';
 export * from './core/components/table/table.module';
+export * from './core/components/scanner/scanner.module';
 
 export * from './core/components/model/autocomplete/autocomplete.module';
 
