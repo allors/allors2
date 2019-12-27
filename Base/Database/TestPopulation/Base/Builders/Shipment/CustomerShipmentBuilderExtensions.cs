@@ -17,8 +17,6 @@ namespace Allors.Domain.TestPopulation
 
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
 
-            @this.Session.Derive();
-
             @this.WithShipFromParty(internalOrganisation);
             @this.WithShipFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
             @this.WithShipToParty(customer);

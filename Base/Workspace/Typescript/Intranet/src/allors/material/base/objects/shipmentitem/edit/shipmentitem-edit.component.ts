@@ -25,7 +25,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   title: string;
   shipment: Shipment;
   shipmentItem: ShipmentItem;
-  goods: Product[];
   inventoryItems: InventoryItem[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
@@ -176,7 +175,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
               }
             }),
             pull.SerialisedItemState(),
-            pull.Good({ sort: new Sort(m.Good.Name) }),
             pull.SerialisedInventoryItemState(
               {
                 predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
@@ -206,8 +204,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         this.allors.context.reset();
 
         const now = moment.utc();
-
-        this.goods = loaded.collections.Goods as Good[];
 
         this.shipmentItem = loaded.objects.ShipmentItem as ShipmentItem;
         this.shipment = loaded.objects.Shipment as Shipment || this.shipmentItem.SyncedShipment;
