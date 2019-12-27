@@ -1,5 +1,5 @@
 <mat-form-field *ngIf="!disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" >
-  <input (blur)="inputBlur()" (focus)="inputFocus()" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" [matAutocomplete]="autocomplete">
+  <input (blur)="inputBlur()" (focus)="inputFocus()" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [readonly]="readonly" [matAutocomplete]="autocomplete">
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 
   <button mat-button *ngIf="model" matSuffix mat-icon-button aria-label="Clear" (click)="clear($event)">

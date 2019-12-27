@@ -74,6 +74,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   private previousGood;
   private previousPart;
   private subscription: Subscription;
+  isSerialized: boolean;
 
   constructor(
     @Self() public allors: ContextService,
@@ -283,10 +284,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           this.shipmentItem = this.allors.context.create('ShipmentItem') as ShipmentItem;
           this.shipment.AddShipmentItem(this.shipmentItem);
 
-          if (this.isCustomerShipment) {
-            this.orderShipment = this.allors.context.create('OrderShipment') as OrderShipment;
-          }
-
           if (this.isPurchaseShipment) {
             this.shipmentReceipt = this.allors.context.create('ShipmentReceipt') as ShipmentReceipt;
           }
@@ -431,6 +428,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         fetch: {
           Part: {
             include: {
+              InventoryItemKind: x,
               SerialisedItems: {
                 RequestItemsWhereSerialisedItem: {
                   RequestItemState: x,
@@ -464,6 +462,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       pull.UnifiedGood({
         object: product.id,
         include: {
+          InventoryItemKind: x,
           SerialisedItems: {
             RequestItemsWhereSerialisedItem: {
               RequestItemState: x,
@@ -499,6 +498,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       .subscribe((loaded) => {
 
         const part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
+
+        this.isSerialized = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
         if (this.isCustomerShipment) {
           this.serialisedItems = part.SerialisedItems.filter(v => v.AvailableForSale === true);
@@ -543,6 +544,11 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
   private onSave() {
     if (this.selectedSalesOrderItem) {
+
+      if (this.orderShipment === undefined) {
+        this.orderShipment = this.allors.context.create('OrderShipment') as OrderShipment;
+      }
+
       this.orderShipment.OrderItem = this.selectedSalesOrderItem;
       this.orderShipment.ShipmentItem = this.shipmentItem;
       this.orderShipment.Quantity = this.shipmentItem.Quantity;
