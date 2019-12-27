@@ -3,14 +3,13 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors;
-using Allors.Domain.TestPopulation;
-using Allors.Meta;
-
 namespace Tests.NonUnifiedGood
 {
     using System.Linq;
+    using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
+    using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.good.list;
     using Xunit;
@@ -32,10 +31,13 @@ namespace Tests.NonUnifiedGood
         {
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
 
-            var internalOrganisation = new Organisations(this.MemorySession).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new NonUnifiedGoodBuilder(this.MemorySession).WithSerialisedPartDefaults(internalOrganisation).Build();
+            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            var expected = new NonUnifiedGoodBuilder(this.Session).WithSerialisedPartDefaults(internalOrganisation).Build();
 
-            this.MemorySession.Derive();
+            this.Session.Derive();
+
+            var expectedName = expected.Name;
+            var expectedDescription = expected.Description;
 
             var part = new NonUnifiedParts(this.Session).Extent().First;
 
@@ -44,8 +46,10 @@ namespace Tests.NonUnifiedGood
             nonUnifiedGoodCreate
                 .Name.Set(expected.Name)
                 .Description.Set(expected.Description)
-                .Part.Set(part.Name)
-                .SAVE.Click();
+                .Part.Set(part.Name);
+
+            this.Session.Rollback();
+            nonUnifiedGoodCreate.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -56,8 +60,8 @@ namespace Tests.NonUnifiedGood
 
             var good = after.Except(before).First();
 
-            Assert.Equal(expected.Name, good.Name);
-            Assert.Equal(expected.Description, good.Description);
+            Assert.Equal(expectedName, good.Name);
+            Assert.Equal(expectedDescription, good.Description);
             Assert.Equal(part.Name, good.Part.Name);
         }
     }
