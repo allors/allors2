@@ -4,6 +4,8 @@
 // </copyright>
 
 using System.Linq;
+using Allors;
+using Allors.Domain.TestPopulation;
 using Components;
 using src.allors.material.@base.objects.customershipment.overview;
 
@@ -41,6 +43,11 @@ namespace Tests.ShipmentItemTests
             goods.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(this.Session).Serialised);
             var serializedGood = goods.First;
 
+            serializedGood.SerialisedItems.First.AvailableForSale = true;
+
+            this.Session.Derive();
+            this.Session.Commit();
+
             var before = customerShipment.ShipmentItems.ToArray();
 
             this.shipmentListPage.Table.DefaultAction(customerShipment);
@@ -49,9 +56,12 @@ namespace Tests.ShipmentItemTests
 
             var shipmentItemCreate = shipmentItemOverview.CreateShipmentItem();
             shipmentItemCreate
-                .Good.Select(serializedGood.Name)
-                .ShipmentItemSerialisedItem_1.Set(serializedGood.SerialisedItems.First.Name)
-                .Quantity.Set("1")
+                .Good.Select(serializedGood.Name);
+            shipmentItemCreate
+                .ShipmentItemSerialisedItem_1.Set(serializedGood.SerialisedItems.First.DisplayName());
+            shipmentItemCreate
+                .Quantity.Set("1");
+            shipmentItemCreate
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
