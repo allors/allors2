@@ -142,6 +142,8 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
 
   save(): void {
 
+    console.log('save');
+
     this.allors.context
       .save()
       .subscribe(() => {

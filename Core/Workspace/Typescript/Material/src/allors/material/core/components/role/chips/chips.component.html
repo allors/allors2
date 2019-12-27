@@ -1,10 +1,10 @@
 <mat-form-field *ngIf="!disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
   <mat-chip-list #chipList>
     <mat-chip *ngFor="let item of model" [removable]="!disabled" (removed)="remove(item)" [attr.data-allors-chip-display]="item[display]">{{item[this.display]}}<mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon></mat-chip>
-    <input #searchInput [matChipInputFor]="chipList" aFocus (blur)="inputBlur()" (focus)="inputFocus()" [aFocusTrigger]="roleType" [matAutocomplete]="autocomplete" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+    <input #searchInput [matChipInputFor]="chipList" aFocus (blur)="inputBlur()" (focus)="inputFocus()" [aFocusTrigger]="roleType" [matAutocomplete]="autocomplete" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [readonly]="readonly">
   </mat-chip-list>
 
-  <button mat-button *ngIf="model.length > 0" matSuffix mat-icon-button aria-label="Clear" (click)="clear($event)">
+  <button type="button" mat-button *ngIf="model.length > 0" matSuffix mat-icon-button aria-label="Clear" (click)="clear($event)">
     <mat-icon>close</mat-icon>
   </button>
 

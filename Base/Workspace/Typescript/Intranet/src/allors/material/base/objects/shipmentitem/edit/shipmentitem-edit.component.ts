@@ -37,7 +37,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   selectedSalesOrderItem: SalesOrderItem;
   selectedPurchaseOrderItem: PurchaseOrderItem;
   purchaseOrderItems: PurchaseOrderItem[] = [];
-  parts: NonUnifiedPart[];
+  parts: Part[];
   supplierOfferings: SupplierOffering[];
 
   draftRequestItem: RequestItemState;
@@ -512,7 +512,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       });
   }
 
-  private loadPart(part: NonUnifiedPart): void {
+  private loadPart(part: Part): void {
 
     const { pull, x } = this.metaService;
 

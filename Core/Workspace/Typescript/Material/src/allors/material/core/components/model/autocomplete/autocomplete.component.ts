@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, DoCheck } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, DoCheck, OnChanges } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
 import { concat, debounceTime, distinctUntilChanged, switchMap, map, filter, tap, startWith } from 'rxjs/operators';
@@ -75,7 +75,6 @@ export class AllorsMaterialModelAutocompleteComponent extends ModelField impleme
           })
         );
     }
-
   }
 
   ngDoCheck() {
