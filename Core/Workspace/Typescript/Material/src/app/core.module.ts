@@ -14,6 +14,7 @@ import {
 
 import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule } from '../allors/material';
 import { SaveModule } from 'src/allors/material/core/services/save';
+import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { SaveModule } from 'src/allors/material/core/services/save';
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'nl-BE' },
+    { provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: { autoActiveFirstOption: true } }
   ],
 })
 export class CoreModule {

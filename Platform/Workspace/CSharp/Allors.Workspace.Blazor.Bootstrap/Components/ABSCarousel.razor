@@ -7,7 +7,7 @@
     }
     else
     {
-        <BSCarousel NumberOfItems="@(Items.Count)">
+        <BSCarousel NumberOfItems="@(Items.Count)" @attributes="Attributes">
             <BSCarouselIndicators NumberOfItems="@(Items.Count)" />
             <div class="carousel-inner">
                 @foreach (var item in Items)
@@ -24,4 +24,7 @@
 @code {
     [Parameter]
     public IList<CarouselItem> Items { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object> Attributes { get; set; }
 }
