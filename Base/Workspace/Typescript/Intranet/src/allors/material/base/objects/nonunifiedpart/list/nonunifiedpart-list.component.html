@@ -21,8 +21,8 @@
                 <mat-icon>delete</mat-icon>
               </button>
 
-              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/parts']">
-                <mat-icon>save_alt</mat-icon>
+              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Print Barcode" (click)="printBarcode(table.selected)">
+                <mat-icon>local_printshop</mat-icon>
               </button>
 
             </div>
