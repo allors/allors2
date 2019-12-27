@@ -5,10 +5,10 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory } from '../../../../../angular';
-import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, SingletonId } from '../../../../../angular';
+import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService, PrintService, SaveService } from '../../../..';
 
-import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory } from '../../../../../domain';
+import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory, NonUnifiedPartBarcodePrint, Singleton } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -36,10 +36,12 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
   edit: Action;
   delete: Action;
+  print: Action;
 
   private subscription: Subscription;
   goodIdentificationTypes: ProductIdentificationType[];
   parts: Part[];
+  nonUnifiedPartBarcodePrint: NonUnifiedPartBarcodePrint;
 
   constructor(
     @Self() public allors: ContextService,
@@ -51,10 +53,15 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
+    public printService: PrintService,
     private filtersService: FiltersService,
+    private saveService: SaveService,
+    private singletonId: SingletonId,
     titleService: Title) {
 
     titleService.setTitle(this.title);
+
+    this.print = printService.print();
 
     this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe(() => {
@@ -239,6 +246,18 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
                 },
               }
             }),
+            pull.Singleton({
+              object: this.singletonId.value,
+              fetch: {
+                NonUnifiedPartBarcodePrint: {
+                  include: {
+                    PrintDocument: {
+                      Media: x
+                    }
+                  }
+                }
+              }
+            }),
             pull.ProductIdentificationType(),
             pull.BasePrice(),
           ];
@@ -249,6 +268,8 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
+
+        this.nonUnifiedPartBarcodePrint = loaded.objects.NonUnifiedPartBarcodePrint as NonUnifiedPartBarcodePrint;
 
         this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
@@ -282,5 +303,20 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  public printBarcode(parts: any): void {
+    const { context } = this.allors;
+
+    this.nonUnifiedPartBarcodePrint.Parts = parts;
+
+    context
+      .save()
+      .subscribe(() => {
+        this.print.execute(this.nonUnifiedPartBarcodePrint);
+        this.refreshService.refresh();
+      },
+        this.saveService.errorHandler
+      );
   }
 }
