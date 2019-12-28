@@ -5,24 +5,32 @@
 
 namespace Tests.PurchaseShipmentTests
 {
-    using Allors;
-    using Allors.Meta;
-    using src.allors.material.@base.objects.purchaseshipment.overview;
-    using src.allors.material.@base.objects.shipment.list;
     using System.Linq;
+    using Allors;
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
+    using Allors.Meta;
     using Components;
+    using src.allors.material.@base.objects.purchaseshipment.overview;
+    using src.allors.material.@base.objects.shipment.list;
     using Xunit;
 
     [Collection("Test collection")]
     public class PurchaseShipmentEditTest : Test
     {
         private readonly ShipmentListComponent shipmentListPage;
+        private Organisation internalOrganisation;
 
         public PurchaseShipmentEditTest(TestFixture fixture)
             : base(fixture)
         {
+            this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+
+            for (int i = 0; i < 10; i++)
+            {
+                this.internalOrganisation.CreateSupplier(this.Session.Faker());
+            }
+
             this.Login();
             this.shipmentListPage = this.Sidenav.NavigateToShipments();
         }
@@ -32,8 +40,7 @@ namespace Tests.PurchaseShipmentTests
         {
             var before = new PurchaseShipments(this.Session).Extent().ToArray();
 
-            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new PurchaseShipmentBuilder(this.Session).WithDefaults(internalOrganisation).Build();
+            var expected = new PurchaseShipmentBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 

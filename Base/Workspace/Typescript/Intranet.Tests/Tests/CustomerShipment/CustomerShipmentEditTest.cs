@@ -3,28 +3,37 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors;
-using Allors.Meta;
-using src.allors.material.@base.objects.customershipment.create;
-using src.allors.material.@base.objects.customershipment.overview;
-using src.allors.material.@base.objects.shipment.list;
-
 namespace Tests.CustomerShipmentTests
 {
     using System.Linq;
+    using Allors;
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
+    using Allors.Meta;
     using Components;
+    using src.allors.material.@base.objects.customershipment.overview;
+    using src.allors.material.@base.objects.shipment.list;
     using Xunit;
 
     [Collection("Test collection")]
     public class CustomerShipmentEditTest : Test
     {
         private readonly ShipmentListComponent shipmentListPage;
+        private Organisation internalOrganisation;
 
         public CustomerShipmentEditTest(TestFixture fixture)
             : base(fixture)
         {
+            this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+
+            for (int i = 0; i < 10; i++)
+            {
+                this.internalOrganisation.CreateB2BCustomer(this.Session.Faker());
+            }
+
+            this.Session.Derive();
+            this.Session.Commit();
+
             this.Login();
             this.shipmentListPage = this.Sidenav.NavigateToShipments();
         }
@@ -34,8 +43,7 @@ namespace Tests.CustomerShipmentTests
         {
             var before = new CustomerShipments(this.Session).Extent().ToArray();
 
-            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new CustomerShipmentBuilder(this.Session).WithDefaults(internalOrganisation).Build();
+            var expected = new CustomerShipmentBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 

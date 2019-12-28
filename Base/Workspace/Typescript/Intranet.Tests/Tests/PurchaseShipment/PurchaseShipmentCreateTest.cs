@@ -19,10 +19,18 @@ namespace Tests.PurchaseShipmentTests
     public class PurchaseShipmentCreateTest : Test
     {
         private readonly ShipmentListComponent shipmentListPage;
+        private Organisation internalOrganisation;
 
         public PurchaseShipmentCreateTest(TestFixture fixture)
             : base(fixture)
         {
+            this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+
+            for (int i = 0; i < 10; i++)
+            {
+                this.internalOrganisation.CreateSupplier(this.Session.Faker());
+            }
+
             this.Login();
             this.shipmentListPage = this.Sidenav.NavigateToShipments();
         }
@@ -32,8 +40,7 @@ namespace Tests.PurchaseShipmentTests
         {
             var before = new PurchaseShipments(this.Session).Extent().ToArray();
 
-            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new PurchaseShipmentBuilder(this.Session).WithDefaults(internalOrganisation).Build();
+            var expected = new PurchaseShipmentBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 
@@ -73,8 +80,7 @@ namespace Tests.PurchaseShipmentTests
         {
             var before = new PurchaseShipments(this.Session).Extent().ToArray();
 
-            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new PurchaseShipmentBuilder(this.Session).WithDefaults(internalOrganisation).Build();
+            var expected = new PurchaseShipmentBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 

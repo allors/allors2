@@ -20,10 +20,21 @@ namespace Tests.CustomerShipmentTests
     public class CustomerShipmentCreateTest : Test
     {
         private readonly ShipmentListComponent shipmentListPage;
+        private Organisation internalOrganisation;
 
         public CustomerShipmentCreateTest(TestFixture fixture)
             : base(fixture)
         {
+            this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+
+            for (int i = 0; i < 10; i++)
+            {
+                this.internalOrganisation.CreateB2BCustomer(this.Session.Faker());
+            }
+
+            this.Session.Derive();
+            this.Session.Commit();
+
             this.Login();
             this.shipmentListPage = this.Sidenav.NavigateToShipments();
         }
@@ -33,8 +44,7 @@ namespace Tests.CustomerShipmentTests
         {
             var before = new CustomerShipments(this.Session).Extent().ToArray();
 
-            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new CustomerShipmentBuilder(this.Session).WithDefaults(internalOrganisation).Build();
+            var expected = new CustomerShipmentBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 
@@ -86,8 +96,7 @@ namespace Tests.CustomerShipmentTests
         {
             var before = new CustomerShipments(this.Session).Extent().ToArray();
 
-            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new CustomerShipmentBuilder(this.Session).WithDefaults(internalOrganisation).Build();
+            var expected = new CustomerShipmentBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 
