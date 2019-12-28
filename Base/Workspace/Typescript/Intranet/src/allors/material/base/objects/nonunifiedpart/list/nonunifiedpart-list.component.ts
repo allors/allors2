@@ -213,7 +213,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , , , ]),
+        }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           const pulls = [
@@ -313,8 +313,34 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     context
       .save()
       .subscribe(() => {
-        this.print.execute(this.nonUnifiedPartBarcodePrint);
-        this.refreshService.refresh();
+
+        const { pull, x } = this.metaService;
+
+        const pulls = [
+          pull.Singleton({
+            object: this.singletonId.value,
+            fetch: {
+              NonUnifiedPartBarcodePrint: {
+                include: {
+                  PrintDocument: {
+                    Media: x
+                  }
+                }
+              }
+            }
+          }),
+        ];
+
+        this.allors.context
+          .load(new PullRequest({ pulls }))
+          .subscribe((loaded) => {
+            this.allors.context.reset();
+
+            this.nonUnifiedPartBarcodePrint = loaded.objects.NonUnifiedPartBarcodePrint as NonUnifiedPartBarcodePrint;
+
+            this.print.execute(this.nonUnifiedPartBarcodePrint);
+            this.refreshService.refresh();
+          });
       },
         this.saveService.errorHandler
       );
