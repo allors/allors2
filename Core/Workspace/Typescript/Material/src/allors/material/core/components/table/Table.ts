@@ -143,6 +143,9 @@ export class Table<Row extends TableRow> implements BaseTable {
       this.selection.clear();
     }
     this.dataSource.data = value;
+    if (this.pageSizeOptions && this.total > Math.max(...this.pageSizeOptions)) {
+      this.pageSizeOptions = [this.pageSize, this.pageSize * 2, this.pageSize * 5, this.total * 1];
+    }
   }
 
   Init(sort: MatSort) {

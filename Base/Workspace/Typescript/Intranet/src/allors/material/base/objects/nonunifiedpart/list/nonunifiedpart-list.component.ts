@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, SingletonId } from '../../../../../angular';
@@ -22,6 +23,7 @@ interface Row extends TableRow {
   brand: string;
   model: string;
   kind: string;
+  lastModifiedDate: string;
 }
 
 @Component({
@@ -78,7 +80,8 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         { name: 'qoh' },
         { name: 'brand' },
         { name: 'model' },
-        { name: 'kind' }
+        { name: 'kind' },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
@@ -196,11 +199,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     const sorter = new Sorter(
       {
         name: m.NonUnifiedPart.Name,
-        // partNo: m.NonUnifiedPartNumber.Identification,
-        // type: m.ProductType.Name,
-        // brand: m.Brand.Name,
-        // model: m.Model.Name,
-        // kind: m.InventoryItemKind.Name
+        lastModifiedDate: m.UnifiedProduct.LastModifiedDate,
       }
     );
 
@@ -294,6 +293,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             brand: v.Brand ? v.Brand.Name : '',
             model: v.Model ? v.Model.Name : '',
             kind: v.InventoryItemKind.Name,
+            lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
       });
