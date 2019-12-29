@@ -6,12 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { AllorsMaterialSideMenuModule } from '../../allors/material';
+import { AllorsMaterialSideMenuModule, AllorsMaterialScannerModule } from '../../allors/material';
 import { InternalOrganisationSelectModule } from '../../allors/material';
 import { TaskAssignmentLinkModule } from '../../allors/material/base/objects/taskassignment/link/taskassignment-link.module';
 
 import { MainComponent } from './main.component';
-import { AllorsDevModule } from '../../allors/material/custom/dev/dev.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +26,7 @@ import { AllorsDevModule } from '../../allors/material/custom/dev/dev.module';
     MatSidenavModule,
     MatToolbarModule,
     AllorsMaterialSideMenuModule,
-    AllorsDevModule,
+    AllorsMaterialScannerModule,
     InternalOrganisationSelectModule,
     TaskAssignmentLinkModule,
   ],

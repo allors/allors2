@@ -3,15 +3,15 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-using Components;
-using src.allors.material.@base.objects.customershipment.overview;
-
 namespace Tests.ShipmentItemTests
 {
+    using System.Linq;
+    using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
-    using src.allors.material.@base.objects.purchaseshipment.overview;
+    using Components;
+    using src.allors.material.@base.objects.customershipment.overview;
     using src.allors.material.@base.objects.shipment.list;
     using Xunit;
 
@@ -24,7 +24,7 @@ namespace Tests.ShipmentItemTests
         public ShipmentItemEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var internalOrganisation = new Organisations(this.MemorySession).FindBy(M.Organisation.Name, "Allors BVBA");
+            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
             var customerShipments = new CustomerShipments(this.Session).Extent();
             customerShipments.Filter.AddEquals(M.CustomerShipment.ShipFromParty.RoleType, internalOrganisation);
@@ -37,11 +37,16 @@ namespace Tests.ShipmentItemTests
         [Fact]
         public void CreateCustomerShipmentItemForUnifiedGoodSerialisedItem()
         {
+            var before = customerShipment.ShipmentItems.ToArray();
+
             var goods = new UnifiedGoods(this.Session).Extent();
             goods.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(this.Session).Serialised);
             var serializedGood = goods.First;
 
-            var before = customerShipment.ShipmentItems.ToArray();
+            serializedGood.SerialisedItems.First.AvailableForSale = true;
+
+            this.Session.Derive();
+            this.Session.Commit();
 
             this.shipmentListPage.Table.DefaultAction(customerShipment);
             var shipmentOverview = new CustomerShipmentOverviewComponent(this.shipmentListPage.Driver);
@@ -50,7 +55,7 @@ namespace Tests.ShipmentItemTests
             var shipmentItemCreate = shipmentItemOverview.CreateShipmentItem();
             shipmentItemCreate
                 .Good.Select(serializedGood.Name)
-                .ShipmentItemSerialisedItem_1.Set(serializedGood.SerialisedItems.First.Name)
+                .ShipmentItemSerialisedItem_1.Set(serializedGood.SerialisedItems.First.DisplayName())
                 .Quantity.Set("1")
                 .SAVE.Click();
 

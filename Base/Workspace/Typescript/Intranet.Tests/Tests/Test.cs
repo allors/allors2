@@ -131,21 +131,6 @@ namespace Tests
             }
 
             this.Session = database.CreateSession();
-
-            {
-                var memoryDatabase = new Allors.Database.Adapters.Memory.Database(services.BuildServiceProvider(), new Allors.Database.Adapters.Memory.Configuration
-                {
-                    ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
-                });
-
-                using (var stringReader = new StringReader(population))
-                using (var reader = XmlReader.Create(stringReader))
-                {
-                    memoryDatabase.Load(reader);
-                }
-
-                this.MemorySession = memoryDatabase.CreateSession();
-            }
         }
 
         public ServiceProvider ServiceProvider { get; set; }
@@ -153,8 +138,6 @@ namespace Tests
         public ILogger Logger { get; set; }
 
         public ISession Session { get; set; }
-
-        public ISession MemorySession { get; set; }
 
         public DriverManager DriverManager { get; }
 

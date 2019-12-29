@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, merge } from 'rxjs';
-import { bufferTime, map, filter, distinct, bufferWhen, scan, debounce, debounceTime } from 'rxjs/operators';
+import { map, filter, scan, debounceTime } from 'rxjs/operators';
 
 @Injectable()
 export class AllorsBarcodeService {
 
   scan$: Observable<string>;
 
-  keypressSubject: Subject<any>;
-  simulateSubject: Subject<any>;
+  private keypressSubject: Subject<any>;
+
+  private simulateSubject: Subject<any>;
 
   constructor() {
     this.keypressSubject = new Subject();
@@ -30,5 +31,13 @@ export class AllorsBarcodeService {
       );
 
     this.scan$ = merge(scanner, this.simulateSubject);
+  }
+
+  onKeypress(event: KeyboardEvent) {
+    this.keypressSubject.next(event);
+  }
+
+  scan(barcode: string) {
+    this.simulateSubject.next(barcode);
   }
 }

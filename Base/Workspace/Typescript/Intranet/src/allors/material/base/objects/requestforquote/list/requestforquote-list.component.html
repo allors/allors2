@@ -12,19 +12,6 @@
 
     <div class="a-content mat-elevation-z8">
 
-      <div class="a-header">
-        <mat-toolbar style="background-color: transparent">
-          <mat-toolbar-row>
-            <div class="pl-3 mr-auto">{{title}}</div>
-            <div>
-              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Delete" (click)="delete.execute(table.selected)">
-                <mat-icon>delete</mat-icon>
-              </button>
-
-            </div>
-          </mat-toolbar-row>
-        </mat-toolbar>
-      </div>
 
       <div *ngIf="canCreate">
         <a-mat-factory-fab [objectType]="metaService.m.RequestForQuote" (created)="navigation.overview($event)"></a-mat-factory-fab>
