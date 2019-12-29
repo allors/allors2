@@ -12,7 +12,6 @@ namespace Tests.PostalAddressTests
     using Components;
     using src.allors.material.@base.objects.person.list;
     using src.allors.material.@base.objects.person.overview;
-    using src.allors.material.@base.objects.postaladdress.edit;
     using Xunit;
 
     [Collection("Test collection")]
