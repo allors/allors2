@@ -3,8 +3,6 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Bogus.DataSets;
-
 namespace Allors.Domain.TestPopulation
 {
     using Allors.Meta;
