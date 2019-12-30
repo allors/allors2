@@ -10,7 +10,7 @@ namespace Allors.Repository
     #region Allors
     [Id("823D3C34-3441-40CF-8ED8-C44694933DC6")]
     #endregion
-    public partial interface UnifiedProduct : Commentable, UniquelyIdentifiable, Deletable, Auditable
+    public partial interface UnifiedProduct : Commentable, UniquelyIdentifiable, Deletable, Auditable, Searchable
     {
         #region Allors
         [Id("1A5619BE-43D0-47CF-B906-0A15277B86A6")]

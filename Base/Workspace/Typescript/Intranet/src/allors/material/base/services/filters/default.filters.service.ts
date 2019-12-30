@@ -22,14 +22,14 @@ export class DefaultFiltersService extends FiltersService {
   get goodsFilter() {
     return new SearchFactory({
       objectType: this.m.Good,
-      roleTypes: [this.m.Good.Name],
+      roleTypes: [this.m.Good.Name, this.m.Good.SearchOptions],
     })
   }
 
   get partsFilter() {
     return new SearchFactory({
       objectType: this.m.Part,
-      roleTypes: [this.m.Part.Name],
+      roleTypes: [this.m.Part.Name, this.m.Part.SearchOptions],
     });
   }
 
@@ -68,7 +68,7 @@ export class DefaultFiltersService extends FiltersService {
   get employeeFilter() {
     return new SearchFactory({
       objectType: this.m.Person,
-      roleTypes: [this.m.Person.PartyName],
+      roleTypes: [this.m.Person.PartyName, this.m.Person.UserName],
       post: (predicate: And) => {
         predicate.operands.push(new ContainedIn({
           propertyType: this.m.Person.EmploymentsWhereEmployee,

@@ -94,6 +94,8 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
 
+        public string SearchOptions { get; set; }
+
         #endregion inheritedProperties
 
         #region inheritedMethods

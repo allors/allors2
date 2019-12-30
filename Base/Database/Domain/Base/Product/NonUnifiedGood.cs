@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using System.Text;
+
 namespace Allors.Domain
 {
     using System.Linq;
@@ -68,6 +70,24 @@ namespace Allors.Domain
             }
 
             this.DeriveVirtualProductPriceComponent();
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var builder = new StringBuilder();
+            if (this.ExistProductIdentifications)
+            {
+                builder.Append(string.Join(" ", this.ProductIdentifications.Select(v => v.Identification)));
+            }
+
+            if (this.ExistProductCategoriesWhereAllProduct)
+            {
+                builder.Append(string.Join(" ", this.ProductCategoriesWhereAllProduct.Select(v => v.Name)));
+            }
+
+            builder.Append(string.Join(" ", this.Keywords));
+
+            this.SearchOptions = builder.ToString();
         }
 
         public void DeriveVirtualProductPriceComponent()
