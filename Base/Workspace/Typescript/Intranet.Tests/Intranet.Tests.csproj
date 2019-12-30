@@ -44,4 +44,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tests\Application\" />
+    <Folder Include="Tests\Catalogue\" />
+    <Folder Include="Tests\CommunicationEvent\" />
+    <Folder Include="Tests\Good\" />
+    <Folder Include="Tests\ProductCategory\" />
+    <Folder Include="Tests\ProductQuote\" />
+    <Folder Include="Tests\ProductType\" />
+    <Folder Include="Tests\PurchaseInvoice\" />
+    <Folder Include="Tests\RequestForQuote\" />
+    <Folder Include="Tests\SalesInvoice\" />
+    <Folder Include="Tests\SalesOrder\" />
+    <Folder Include="Tests\SerialisedItemCharacteristic\" />
+    <Folder Include="Tests\SerialisedItem\" />
+    <Folder Include="Tests\WorkEffort\" />
+  </ItemGroup>
 </Project>
