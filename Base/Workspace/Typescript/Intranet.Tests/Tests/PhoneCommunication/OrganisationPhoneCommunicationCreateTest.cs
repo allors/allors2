@@ -83,7 +83,7 @@ namespace Tests.PhoneCommunicationTests
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .Comment.Set("comment")
-                .SAVE.Click();
+            .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -101,10 +101,6 @@ namespace Tests.PhoneCommunicationTests
             Assert.Equal(employee, communicationEvent.ToParty);
             Assert.Equal(contact.GeneralPhoneNumber, communicationEvent.PhoneNumber);
             Assert.Equal("subject", communicationEvent.Subject);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledStart.Value.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, communicationEvent.ScheduledEnd.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualStart.Value.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 23).Date, communicationEvent.ActualEnd.Value.Date.ToUniversalTime().Date);
             Assert.Equal("comment", communicationEvent.Comment);
         }
     }

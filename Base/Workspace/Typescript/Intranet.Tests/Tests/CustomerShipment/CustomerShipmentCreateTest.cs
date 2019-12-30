@@ -3,17 +3,18 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors;
-using Allors.Meta;
-using src.allors.material.@base.objects.customershipment.create;
-using src.allors.material.@base.objects.shipment.list;
+
 
 namespace Tests.CustomerShipmentTests
 {
     using System.Linq;
+    using Allors;
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
+    using Allors.Meta;
     using Components;
+    using src.allors.material.@base.objects.customershipment.create;
+    using src.allors.material.@base.objects.shipment.list;
     using Xunit;
 
     [Collection("Test collection")]
