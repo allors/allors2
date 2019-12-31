@@ -34,6 +34,8 @@ namespace Allors.Domain
                 this.Name = $"{this.Part?.Name} at {this.Facility?.Name} with state {this.NonSerialisedInventoryItemState?.Name}";
             }
 
+            this.SearchString = this.Part?.SearchString;
+
             this.BaseOnDeriveQuantityOnHand(derivation);
             this.BaseOnDeriveQuantityCommittedOut(derivation);
             this.BaseOnDeriveQuantityExpectedIn(derivation);

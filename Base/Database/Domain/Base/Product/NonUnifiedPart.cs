@@ -37,16 +37,16 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // if (derivation.ChangeSet.Associations.Contains(this.Id))
-            // {
-            //    if (this.ExistInventoryItemsWherePart)
-            //    {
-            //        foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
-            //        {
-            //            derivation.AddDependency(this, inventoryItem);
-            //        }
-            //    }
-            // }
+            if (derivation.HasChangedRoles(this, this.Meta.SearchString))
+            {
+                if (this.ExistInventoryItemsWherePart)
+                {
+                    foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
+                    {
+                        derivation.AddDependency(inventoryItem, this);
+                    }
+                }
+            }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)

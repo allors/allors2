@@ -145,10 +145,10 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
                 objectType: this.m.SupplierOffering,
                 predicate: new And([
                   new Equals({ propertyType: m.SupplierOffering.Supplier, object: this.order.TakenViaSupplier }),
-                  new LessThan({ roleType: m.SupplierOffering.FromDate, value: new Date() }),
+                  new LessThan({ roleType: m.SupplierOffering.FromDate, value: this.order.OrderDate }),
                   new Or([
                     new Not({ operand: new Exists({ propertyType: m.SupplierOffering.ThroughDate }) }),
-                    new GreaterThan({ roleType: m.SupplierOffering.ThroughDate, value: new Date() }),
+                    new GreaterThan({ roleType: m.SupplierOffering.ThroughDate, value: this.order.OrderDate }),
                   ])
                 ])
               })

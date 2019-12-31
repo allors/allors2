@@ -26,8 +26,7 @@
       </div>
 
       <div class="row" *ngIf="invoiceItem.InvoiceItemType === partItemType">
-        <a-mat-autocomplete class="col-md" *ngIf="invoiceItem.isNew" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Part"
-          [options]="parts" display="Name" [filter]="filtersService.partsFilter.create(allors.context)"></a-mat-autocomplete>
+        <a-mat-autocomplete *ngIf="invoiceItem.isNew" class="col-md" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Part" display="Name" [filter]="partsFilter.create(allors.context)"></a-mat-autocomplete>
         <a-mat-static class="col-md" *ngIf="!invoiceItem.isNew" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Part"
           display="Name"></a-mat-static>
       </div>

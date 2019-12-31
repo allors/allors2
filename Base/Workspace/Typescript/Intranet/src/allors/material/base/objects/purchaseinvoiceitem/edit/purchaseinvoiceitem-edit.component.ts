@@ -3,9 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part } from '../../../../../domain';
-import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
+import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -27,12 +27,12 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
   vatRegimes: VatRegime[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  parts: Part[];
   invoiceItemTypes: InvoiceItemType[];
   partItemType: InvoiceItemType;
   productItemType: InvoiceItemType;
 
   private subscription: Subscription;
+  partsFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
@@ -69,11 +69,6 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
                   VatRate: x,
                 }
               }
-            }),
-            pull.Part({
-              sort: [
-                new Sort(m.Part.Name),
-              ],
             }),
             pull.PurchaseInvoiceItem({
               object: id,
@@ -115,12 +110,25 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
         this.invoiceItem = loaded.objects.PurchaseInvoiceItem as PurchaseInvoiceItem;
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
-        this.parts = loaded.collections.Parts as Part[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
+
+        this.partsFilter = new SearchFactory({
+          objectType: this.m.Part,
+          roleTypes: [this.m.Part.Name, this.m.Part.SearchString],
+          post: (predicate: And) => {
+            predicate.operands.push(new ContainedIn({
+              propertyType: this.m.Part.SupplierOfferingsWherePart,
+              extent: new Filter({
+                objectType: this.m.SupplierOffering,
+                predicate: new Equals({ propertyType: m.SupplierOffering.Supplier, object: this.invoice.BilledFrom }),
+              })
+            }));
+          },
+        });
 
         if (isCreate) {
           this.title = 'Add purchase invoice Item';

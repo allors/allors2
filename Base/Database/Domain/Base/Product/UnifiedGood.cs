@@ -54,13 +54,13 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            if (derivation.HasChangedRoles(this, this.Meta.SearchString))
             {
                 if (this.ExistInventoryItemsWherePart)
                 {
                     foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
                     {
-                        derivation.AddDependency(this, inventoryItem);
+                        derivation.AddDependency(inventoryItem, this);
                     }
                 }
             }
