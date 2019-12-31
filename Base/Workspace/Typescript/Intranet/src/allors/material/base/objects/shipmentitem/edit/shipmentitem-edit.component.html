@@ -25,7 +25,7 @@
     <div *ngIf="isPurchaseShipment">
       <div class="row">
         <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.Part"
-                            [options]="parts" display="Name" (changed)="partSelected($event)"></a-mat-autocomplete>
+                      [filter]="supplierPartsFilter.create(allors.context)" display="Name" (changed)="partSelected($event)"></a-mat-autocomplete>
         <a-mat-static class="col-md" *ngIf="selectedPurchaseOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.Part" display="Name"></a-mat-static>
         <a-mat-select class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem && isSerialized" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
                       [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>

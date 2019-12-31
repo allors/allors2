@@ -42,8 +42,6 @@ namespace Allors.Domain
                 this.Name = $"{this.Part?.Name} at {this.Facility?.Name} with state {this.SerialisedInventoryItemState?.Name}";
             }
 
-            this.SearchString = this.Part?.SearchString;
-
             this.BaseOnDeriveQuantity(derivation);
 
             if (this.Quantity < 0 || this.Quantity > 1)
