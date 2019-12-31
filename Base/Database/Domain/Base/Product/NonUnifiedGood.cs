@@ -87,7 +87,7 @@ namespace Allors.Domain
 
             builder.Append(string.Join(" ", this.Keywords));
 
-            this.SearchOptions = builder.ToString();
+            this.SearchString = builder.ToString();
         }
 
         public void DeriveVirtualProductPriceComponent()

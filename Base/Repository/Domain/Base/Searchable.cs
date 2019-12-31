@@ -21,6 +21,6 @@ namespace Allors.Repository
         [Indexed]
         [Size(-1)]
         [Workspace]
-        string SearchOptions{ get; set; }
+        string SearchString{ get; set; }
     }
 }

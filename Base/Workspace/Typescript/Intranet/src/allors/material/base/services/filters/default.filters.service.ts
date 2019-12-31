@@ -22,14 +22,14 @@ export class DefaultFiltersService extends FiltersService {
   get goodsFilter() {
     return new SearchFactory({
       objectType: this.m.Good,
-      roleTypes: [this.m.Good.Name, this.m.Good.SearchOptions],
+      roleTypes: [this.m.Good.Name, this.m.Good.SearchString],
     })
   }
 
   get partsFilter() {
     return new SearchFactory({
       objectType: this.m.Part,
-      roleTypes: [this.m.Part.Name, this.m.Part.SearchOptions],
+      roleTypes: [this.m.Part.Name, this.m.Part.SearchString],
     });
   }
 
