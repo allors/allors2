@@ -50,22 +50,6 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (derivation.HasChangedRoles(this, this.Meta.SearchString))
-            {
-                if (this.ExistInventoryItemsWherePart)
-                {
-                    foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
-                    {
-                        derivation.AddDependency(inventoryItem, this);
-                    }
-                }
-            }
-        }
-
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
