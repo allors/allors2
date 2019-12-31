@@ -31,7 +31,6 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
   vatRegimes: VatRegime[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  goods: NonUnifiedGood[];
   invoiceItemTypes: InvoiceItemType[];
   productItemType: InvoiceItemType;
   facilities: Facility[];
@@ -91,11 +90,6 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
                 }
               }
             }),
-            pull.NonUnifiedGood({
-              sort: [
-                new Sort(m.NonUnifiedGood.Name),
-              ],
-            }),
             pull.SalesInvoiceItem({
               object: id,
               fetch: {
@@ -144,7 +138,6 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
         this.invoiceItem = loaded.objects.SalesInvoiceItem as SalesInvoiceItem;
         this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
-        this.goods = loaded.collections.NonUnifiedGoods as NonUnifiedGood[];
         this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];

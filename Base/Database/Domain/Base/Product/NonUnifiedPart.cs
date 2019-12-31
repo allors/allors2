@@ -111,6 +111,8 @@ namespace Allors.Domain
             if (this.ExistSupplierOfferingsWherePart)
             {
                 builder.Append(string.Join(" ", this.SupplierOfferingsWherePart.Select(v => v.Supplier.PartyName)));
+                builder.Append(string.Join(" ", this.SupplierOfferingsWherePart.Select(v => v.SupplierProductId)));
+                builder.Append(string.Join(" ", this.SupplierOfferingsWherePart.Select(v => v.SupplierProductName)));
             }
 
             if (this.ExistSerialisedItems)

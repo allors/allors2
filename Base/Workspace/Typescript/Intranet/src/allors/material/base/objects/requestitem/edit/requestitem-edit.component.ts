@@ -30,7 +30,6 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
 
   private previousProduct;
   private subscription: Subscription;
-  goods: Good[];
 
   draftRequestItem: RequestItemState;
   submittedRequestItem: RequestItemState;
@@ -95,11 +94,6 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
                 SerialisedItem: x
               }
             }),
-            pull.Good(
-              {
-                sort: new Sort(m.Good.Name),
-              }
-            ),
             pull.UnitOfMeasure({
               predicate: new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true }),
               sort: new Sort(m.UnitOfMeasure.Name)
@@ -133,7 +127,6 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
         this.allors.context.reset();
 
         this.requestItem = loaded.objects.RequestItem as RequestItem;
-        this.goods = loaded.collections.Goods as Good[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId === 'f4bbdb52-3441-4768-92d4-729c6c5d6f1b');
 

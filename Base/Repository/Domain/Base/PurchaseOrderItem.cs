@@ -249,6 +249,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Required]
         [Workspace]
         public Part Part { get; set; }
 

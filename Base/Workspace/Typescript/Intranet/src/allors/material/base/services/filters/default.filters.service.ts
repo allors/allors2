@@ -4,6 +4,7 @@ import { And, ContainedIn, Equals, Filter } from '../../../../framework';
 import { Meta } from '../../../../meta';
 
 import { FiltersService } from './filters.service';
+import { Party} from '../../../../domain';
 
 @Injectable()
 export class DefaultFiltersService extends FiltersService {
