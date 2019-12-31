@@ -18,13 +18,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
+            var part = new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            this.Session.Derive();
+
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new NonUnifiedPartBuilder(this.Session)
-                            .WithProductIdentification(new PartNumberBuilder(this.Session)
-                                .WithIdentification("1")
-                                .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
-                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                            .Build())
+                .WithPart(part)
                 .Build();
 
             this.Session.Derive();
@@ -53,13 +57,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
+            var part = new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            this.Session.Derive();
+
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new NonUnifiedPartBuilder(this.Session)
-                                .WithProductIdentification(new PartNumberBuilder(this.Session)
-                                    .WithIdentification("1")
-                                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
-                                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                                .Build())
+                .WithPart(part)
                 .Build();
 
             this.Session.Derive();

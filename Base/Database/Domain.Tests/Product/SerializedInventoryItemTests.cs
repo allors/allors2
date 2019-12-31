@@ -61,6 +61,9 @@ namespace Allors.Domain
             var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
             var finishedGood = this.CreatePart("1", kinds.Serialised);
             finishedGood.AddSerialisedItem(serialItem);
+
+            this.Session.Derive(true);
+
             var serialInventoryItem = new SerialisedInventoryItemBuilder(this.Session).WithSerialisedItem(serialItem).WithPart(finishedGood).Build();
 
             // Act
