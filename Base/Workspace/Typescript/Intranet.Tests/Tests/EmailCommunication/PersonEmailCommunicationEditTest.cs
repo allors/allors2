@@ -42,6 +42,8 @@ namespace Tests.EmailCommunicationTests
             var editCommunicationEvent = new EmailCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
                 .WithFromEmail(employeeEmailAddress)
+                .WithFromParty(employee)
+                .WithToParty(person)
                 .WithToEmail(personEmailAddress)
                 .WithEmailTemplate(new EmailTemplateBuilder(this.Session).Build())
                 .Build();
