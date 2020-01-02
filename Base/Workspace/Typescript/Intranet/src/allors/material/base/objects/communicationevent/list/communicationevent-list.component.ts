@@ -14,6 +14,7 @@ import { CommunicationEvent } from '../../../../../domain';
 interface Row extends TableRow {
   object: CommunicationEvent;
   name: string;
+  type: string;
   state: string;
   subject: string;
   involved: string;
@@ -62,12 +63,13 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
     this.table = new Table({
       selection: true,
       columns: [
+        { name: 'type' },
         { name: 'state' },
         { name: 'subject', sort: true },
         { name: 'involved' },
         { name: 'started' },
         { name: 'ended' },
-        'lastModifiedDate'
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         this.edit,
@@ -130,6 +132,7 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
         this.table.data = communicationEvents.map((v) => {
           return {
             object: v,
+            type: v.objectType.name,
             state: v.CommunicationEventState && v.CommunicationEventState.Name,
             subject: v.Subject,
             involved: v.InvolvedParties.map((w) => w.displayName).join(', '),

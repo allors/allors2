@@ -8,5 +8,6 @@ export abstract class FiltersService {
     suppliersFilter: SearchFactory;
     employeeFilter: SearchFactory;
     organisationsFilter: SearchFactory;
+    peopleFilter: SearchFactory;
     partiesFilter: SearchFactory;
 }
