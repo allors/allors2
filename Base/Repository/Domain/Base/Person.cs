@@ -113,6 +113,8 @@ namespace Allors.Repository
 
         public bool CollectiveWorkEffortInvoice { get; set; }
 
+        public UserProfile UserProfile { get; set; }
+
         #endregion
 
         #region Versioning

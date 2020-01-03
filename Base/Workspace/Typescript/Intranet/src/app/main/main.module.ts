@@ -9,6 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AllorsMaterialSideMenuModule, AllorsMaterialScannerModule } from '../../allors/material';
 import { InternalOrganisationSelectModule } from '../../allors/material';
 import { TaskAssignmentLinkModule } from '../../allors/material/base/objects/taskassignment/link/taskassignment-link.module';
+import { UserProfileLinkModule } from '../../allors/material/base/objects/userprofile/link/userprofile-link.module';
 
 import { MainComponent } from './main.component';
 
@@ -29,6 +30,7 @@ import { MainComponent } from './main.component';
     AllorsMaterialScannerModule,
     InternalOrganisationSelectModule,
     TaskAssignmentLinkModule,
+    UserProfileLinkModule
   ],
 })
 export class MainModule {
