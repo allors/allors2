@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace.Blazor.Bootstrap\Allors.Workspace.Blazor.Bootstrap.csproj" />
     <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj" />
+    <ProjectReference Include="..\Blazor\Blazor.csproj" />
   </ItemGroup>
 
 </Project>

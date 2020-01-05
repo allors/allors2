@@ -48,28 +48,28 @@
     <Compile Include="Sheets\PeopleSheet.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\lib\excel\Dipu.Excel\Dipu.Excel.csproj">
+    <ProjectReference Include="..\..\..\..\..\lib\excel\Dipu.Excel\Dipu.Excel.csproj">
       <Project>{30132d11-2f56-4d32-af78-1ab957793eb4}</Project>
       <Name>Dipu.Excel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Platform\Protocol\Allors.Protocol\Allors.Protocol.csproj">
+    <ProjectReference Include="..\..\..\..\..\Platform\Protocol\Allors.Protocol\Allors.Protocol.csproj">
       <Project>{caa54ba6-a4f9-4ada-98b6-833df07b4824}</Project>
       <Name>Allors.Protocol</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Adapters.csproj">
+    <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Adapters.csproj">
       <Project>{589fee18-80a2-49d1-adfc-49d20891d0ba}</Project>
       <Name>Allors.Workspace.Adapters</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj">
+    <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj">
       <Project>{81679fa6-2e9b-42e3-aae3-210e7d21e82e}</Project>
       <Name>Allors.Workspace</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\Workspace.Domain.csproj">
-      <Project>{71278842-0445-4429-801a-cbe039a31f9e}</Project>
+    <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj">
+      <Project>{94474285-cafb-4a71-aed2-d6a80564f543}</Project>
       <Name>Workspace.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Meta\Workspace.Meta.csproj">
-      <Project>{75b2e52a-c4b9-49a2-9296-edea1f985149}</Project>
+    <ProjectReference Include="..\..\Meta\Workspace.Meta.csproj">
+      <Project>{ec4af4c3-ec56-491a-a5b3-2d54938d32b1}</Project>
       <Name>Workspace.Meta</Name>
     </ProjectReference>
   </ItemGroup>
