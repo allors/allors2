@@ -153,6 +153,11 @@ namespace Allors.Domain
                 builder.Append(string.Join(" ", this.Model.Name));
             }
 
+            foreach (PartCategory partCategory in this.PartCategoriesWherePart)
+            {
+                builder.Append(string.Join(" ", partCategory.Name));
+            }
+
             builder.Append(string.Join(" ", this.Keywords));
             
             this.SearchString = builder.ToString();

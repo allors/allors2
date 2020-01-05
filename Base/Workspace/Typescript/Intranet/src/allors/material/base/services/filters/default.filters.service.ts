@@ -89,6 +89,13 @@ export class DefaultFiltersService extends FiltersService {
     });
   }
 
+  get peopleFilter() {
+    return new SearchFactory({
+      objectType: this.m.Person,
+      roleTypes: [this.m.Person.PartyName],
+    });
+  }
+
   get partiesFilter() {
     return new SearchFactory({
       objectType: this.m.Party,

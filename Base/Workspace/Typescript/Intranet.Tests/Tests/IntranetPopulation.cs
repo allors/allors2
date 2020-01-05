@@ -285,6 +285,12 @@ namespace Tests
                 .WithUseAsDefault(true)
                 .Build();
 
+            var contact2Email = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(new EmailAddressBuilder(this.Session).WithElectronicAddressString($"contact2@acme.com").Build())
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
             var contact1 = new PersonBuilder(this.Session)
                 .WithFirstName($"John")
                 .WithLastName($"Doe")
@@ -342,8 +348,10 @@ namespace Tests
             new EmailCommunicationBuilder(this.Session)
                 .WithDescription($"Email")
                 .WithSubject($"email")
-                .WithFromEmail(email2)
-                .WithToEmail(email2)
+                .WithFromParty(contact1)
+                .WithToParty(contact2)
+                .WithFromEmail((EmailAddress)contact1Email.ContactMechanism)
+                .WithToEmail((EmailAddress)contact2Email.ContactMechanism)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                 .WithOwner(administrator)
                 .WithActualStart(DateTime.UtcNow)

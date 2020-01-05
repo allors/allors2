@@ -97,21 +97,6 @@ namespace Allors.Domain
         {
             var partiesToRemove = @this.PartiesWhereCommunicationEvent.ToList();
 
-            if (@this.GetType().Name.Equals(typeof(EmailCommunication).Name))
-            {
-                var mail = (EmailCommunication)@this;
-
-                if (mail.ExistFromEmail)
-                {
-                    mail.FromParty = mail.FromEmail.PartyWherePersonalEmailAddress;
-                }
-
-                if (mail.ExistToEmail)
-                {
-                    mail.ToParty = mail.ToEmail.PartyWherePersonalEmailAddress;
-                }
-            }
-
             @this.RemoveInvolvedParties();
 
             if (@this.ExistFromParty)

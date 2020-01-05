@@ -11,7 +11,7 @@ import { PullRequest, Equals, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData } from '../../../../../../allors/material/core/services/object';
-import { SaveService } from '../../../../../../allors/material';
+import { SaveService, FiltersService } from '../../../../../../allors/material';
 
 @Component({
   templateUrl: './organisationcontactrelationship-edit.component.html',
@@ -26,7 +26,6 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
   addContact = false;
 
   private subscription: Subscription;
-  people: Person[];
   party: Party;
   person: Person;
   organisation: Organisation;
@@ -39,6 +38,7 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<OrganisationContactRelationshipEditComponent>,
     public metaService: MetaService,
+    public filtersService: FiltersService,
     public refreshService: RefreshService,
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
@@ -73,8 +73,6 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
             }),
             pull.Organisation({
             }),
-            pull.Person({
-            }),
             pull.OrganisationContactKind({
               sort: new Sort(this.m.OrganisationContactKind.Description)
             }),
@@ -91,7 +89,6 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
 
         this.allors.context.reset();
 
-        this.people = loaded.collections.People as Person[];
         this.organisations = loaded.collections.Organisations as Organisation[];
 
         this.contactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
