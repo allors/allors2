@@ -9,6 +9,13 @@ namespace Allors.Services
 
         public NavigationManager NavigationManager { get; }
 
-        public string Source(Media media, MediaOptions options) => $"//images.weserv.nl/?url={this.NavigationManager.BaseUri}Media/DownloadWithRevision/{media.UniqueId}?revision={media.Revision}";
+        public string BaseUri => this.NavigationManager.BaseUri;
+
+        //public string BaseUri => "https://aviaco-internet.inxin.net/";
+
+        public string Source(Media media, MediaOptions options)
+        {
+            return $"//images.weserv.nl/?url={this.BaseUri}Media/DownloadWithRevision/{media.UniqueId}?revision={media.Revision}";
+        }
     }
 }
