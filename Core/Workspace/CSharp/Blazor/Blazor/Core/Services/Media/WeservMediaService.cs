@@ -11,11 +11,6 @@ namespace Allors.Services
 
         public string BaseUri => this.NavigationManager.BaseUri;
 
-        //public string BaseUri => "https://aviaco-internet.inxin.net/";
-
-        public string Source(Media media, MediaOptions options)
-        {
-            return $"//images.weserv.nl/?url={this.BaseUri}Media/DownloadWithRevision/{media.UniqueId}?revision={media.Revision}";
-        }
+        public string Source(Media media, int? width) => $"//images.weserv.nl/?url={this.BaseUri}Image/{media.UniqueId}/{media.Revision}{(width != null ? $"?w={width}" : string.Empty)}";
     }
 }

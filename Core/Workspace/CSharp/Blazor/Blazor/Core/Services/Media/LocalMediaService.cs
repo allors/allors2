@@ -4,6 +4,6 @@ namespace Allors.Services
 
     public partial class LocalMediaService : IMediaService
     {
-        public string Source(Media media, MediaOptions options) => "/Media/DownloadWithRevision/" + media.UniqueId + "?revision=" + media.Revision;
+        public string Source(Media media, int? width) => $"/Image/{media.UniqueId}/{media.Revision}{(width != null ? $"?w={width}" : string.Empty)}";
     }
 }

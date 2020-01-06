@@ -1,9 +1,9 @@
-using Allors.Workspace.Domain;
-
 namespace Allors.Services
 {
+    using Allors.Workspace.Domain;
+
     public partial interface IMediaService
     {
-        string Source(Media media, MediaOptions options);
+        string Source(Media media, int? width);
     }
 }

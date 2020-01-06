@@ -1,0 +1,43 @@
+@inject NavigationManager NavigationManager
+@inject Allors.Services.IMediaService MediaService
+
+@if (this.Object == null)
+{
+    <img src="/img/no-image.png" @attributes="@Attributes" />
+}
+else
+{
+    <img src="@Source" srcset="@SourceSet" sizes="@Sizes" @attributes="@Attributes">
+}
+
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object> Attributes { get; set; }
+
+    [Parameter]
+    public Allors.Workspace.Domain.Media Object { get; set; }
+
+    [Parameter]
+    public int[] Widths { get; set; }
+
+    private string sizes;
+
+    public string Sizes
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(sizes) && this.Widths?.Length > 0)
+            {
+                return string.Join(", ", this.Widths.SkipLast(1).Select(v => $"(max-width: {v}px) {v}px")) + $", {this.Widths.Last()}px";
+            }
+
+            return sizes;
+        }
+        set => sizes = value;
+    }
+
+    string Source => this.MediaService.Source(this.Object, this.Widths?[0]);
+
+    string SourceSet => this.Widths != null ? string.Join(", ", this.Widths.Select(v => $"{this.MediaService.Source(this.Object, v)} {v}w")) : null;
+
+}
