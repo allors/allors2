@@ -62,7 +62,7 @@ namespace Allors.Server
         }
 
 
-        public byte[] Resize(byte[] src, int width, SKFilterQuality quality = SKFilterQuality.High)
+        public byte[] Resize(byte[] src, int width, SKFilterQuality quality = SKFilterQuality.Medium)
         {
             using var ms = new MemoryStream(src);
             using var sourceBitmap = SKBitmap.Decode(ms);

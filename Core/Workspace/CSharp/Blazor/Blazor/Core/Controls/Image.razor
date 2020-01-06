@@ -20,6 +20,9 @@ else
     [Parameter]
     public int[] Widths { get; set; }
 
+    [Parameter]
+    public int Columns { get; set; } = 1;
+
     private string sizes;
 
     public string Sizes
@@ -28,7 +31,7 @@ else
         {
             if (string.IsNullOrWhiteSpace(sizes) && this.Widths?.Length > 0)
             {
-                return string.Join(", ", this.Widths.SkipLast(1).Select(v => $"(max-width: {v}px) {v}px")) + $", {this.Widths.Last()}px";
+                return string.Join(", ", this.Widths.SkipLast(1).Select(v => $"(max-width: {v * this.Columns}px) {v}px")) + $", {this.Widths.Last()}px";
             }
 
             return sizes;
