@@ -6,7 +6,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AllorsFocusModule } from '../../../../../angular';
 import { AllorsMaterialMediaModule } from '../../../../../material/core/components/media';
@@ -24,7 +23,6 @@ export { AllorsMaterialFileComponent } from './file.component';
   imports: [
     CommonModule,
     FormsModule,
-    FlexLayoutModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,

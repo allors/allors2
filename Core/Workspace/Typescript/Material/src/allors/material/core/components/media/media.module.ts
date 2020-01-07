@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AllorsFocusModule } from '../../../../angular';
 
@@ -28,7 +27,6 @@ import { AllorMediaPreviewComponent } from './preview/media-preview.component';
   imports: [
     CommonModule,
     FormsModule,
-    FlexLayoutModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
