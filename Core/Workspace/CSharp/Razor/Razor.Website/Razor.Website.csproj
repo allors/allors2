@@ -12,18 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.SqlClient\Allors.Database.Adapters.SqlClient.csproj" />
-    <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
-    <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
-    <ProjectReference Include="..\Domain\Workspace.Domain.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.SqlClient\Allors.Database.Adapters.SqlClient.csproj" />
+    <ProjectReference Include="..\..\..\..\Database\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\..\..\Database\Services\Services.csproj" />
+    <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Database\Server\Core*\**\*.cs" />
+    <Compile Include="..\..\..\..\Database\Server\Core*\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="..\..\..\Database\Server\Core\Api\Compression\PermissionsCompressor.cs" />
+    <Compile Remove="..\..\..\..\Database\Server\Core\Api\Compression\PermissionsCompressor.cs" />
   </ItemGroup>
 
   <ItemGroup>

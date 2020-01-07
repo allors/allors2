@@ -14,6 +14,8 @@ namespace Allors.Workspace.Blazor.Bootstrap.Forms.Roles
         [Parameter]
         public Func<ISessionObject, string> DisplayOption { get; set; } = o => o.ToString();
 
+        public string OptionName(ISessionObject option) => this.Name + "_" + option.Id.ToString().Replace("-", "_");
+
         public object IsSelected(ISessionObject option)
         {
             var model = (IEnumerable<ISessionObject>)this.Model;

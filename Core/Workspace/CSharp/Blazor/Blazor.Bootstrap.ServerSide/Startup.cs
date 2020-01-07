@@ -79,6 +79,15 @@ namespace Blazor.Bootstrap.ServerSide
             }
 
             services.AddBootstrapCSS();
+
+            if (this.Environment.IsDevelopment())
+            {
+                services.AddScoped<IMediaService, LocalMediaService>();
+            }
+            else
+            {
+                services.AddScoped<IMediaService, WeservMediaService>();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
