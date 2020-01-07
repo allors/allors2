@@ -12,7 +12,6 @@ namespace Tests.TelecommunicationsNumberTests
     using src.allors.material.@base.objects.person.list;
     using src.allors.material.@base.objects.person.overview;
     using src.allors.material.@base.objects.telecommunicationsnumber.create;
-    using src.allors.material.@base.objects.telecommunicationsnumber.edit;
     using Xunit;
 
     [Collection("Test collection")]
