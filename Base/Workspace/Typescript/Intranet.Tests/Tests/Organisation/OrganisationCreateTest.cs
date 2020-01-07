@@ -3,11 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors;
-
 namespace Tests.OrganisationTests
 {
     using System.Linq;
+    using Allors;
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
     using Components;

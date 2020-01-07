@@ -8,6 +8,7 @@ namespace Tests.PostalAddressTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.person.list;
@@ -28,10 +29,7 @@ namespace Tests.PostalAddressTests
             var person = people.First(v => v.PartyName.Equals("John Doe"));
 
             this.editContactMechanism = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Haverwerf 15")
-                .WithLocality("city")
-                .WithPostalCode("1111")
-                .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                .WithDefaults()
                 .Build();
 
             var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(this.editContactMechanism).Build();
