@@ -27,7 +27,7 @@ namespace Allors.Server
         [AllowAnonymous]
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds)]
         [HttpGet("/image/{idString}/{revisionString}/{*name}")]
-        public virtual IActionResult DownloadWithRevision(string idString, string revisionString, int? w)
+        public virtual IActionResult DownloadWithRevision(string idString, string revisionString, int? w, int? q, string t, string b)
         {
             if (Guid.TryParse(idString, out var id))
             {
@@ -53,6 +53,10 @@ namespace Allors.Server
                             data = this.Resize(data, w.Value);
                         }
 
+                        var type = t;
+                        var quality = q;
+                        var background = b;
+
                         return this.File(data, media.MediaContent.Type, media.FileName);
                     }
                 }
@@ -62,7 +66,7 @@ namespace Allors.Server
         }
 
 
-        public byte[] Resize(byte[] src, int width, SKFilterQuality quality = SKFilterQuality.Medium)
+        public byte[] Resize(byte[] src, int width, SKFilterQuality quality = SKFilterQuality.High)
         {
             using var ms = new MemoryStream(src);
             using var sourceBitmap = SKBitmap.Decode(ms);

@@ -29,6 +29,12 @@ else
     [Parameter]
     public bool? Lazy { get; set; }
 
+    [Parameter]
+    public int? Quality { get; set; }
+
+    [Parameter]
+    public string Type { get; set; }
+
     private string sizes;
 
     public string Sizes
@@ -45,10 +51,9 @@ else
         set => sizes = value;
     }
 
-    string Source => this.MediaService.Source(this.Object, this.Width ?? this.Widths?[0]);
+    string Source => this.MediaService.Source(this.Object, this.Width ?? this.Widths?[0], this.Quality, this.Type);
 
-    string SourceSet => this.Widths != null ? string.Join(", ", this.Widths.Select(v => $"{this.MediaService.Source(this.Object, v)} {v}w")) : null;
+    string SourceSet => this.Widths != null ? string.Join(", ", this.Widths.Select(v => $"{this.MediaService.Source(this.Object, v, this.Quality, this.Type)} {v}w")) : null;
 
     string Loading => this.Lazy == null ? "auto" : this.Lazy.Value ? "lazy" : "eager";
-
 }
