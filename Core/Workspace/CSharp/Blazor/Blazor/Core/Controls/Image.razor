@@ -3,11 +3,11 @@
 
 @if (this.Object == null)
 {
-    <img src="/img/no-image.png" @attributes="@Attributes" />
+    <img src="/img/no-image.png" @attributes="@Attributes" loading="@Loading"/>
 }
 else
 {
-    <img src="@Source" srcset="@SourceSet" sizes="@Sizes" @attributes="@Attributes">
+    <img src="@Source" srcset="@SourceSet" sizes="@Sizes" loading="@Loading" @attributes="@Attributes">
 }
 
 @code {
@@ -18,10 +18,16 @@ else
     public Allors.Workspace.Domain.Media Object { get; set; }
 
     [Parameter]
+    public int? Width { get; set; }
+
+    [Parameter]
     public int[] Widths { get; set; }
 
     [Parameter]
     public int Columns { get; set; } = 1;
+
+    [Parameter]
+    public bool? Lazy { get; set; }
 
     private string sizes;
 
@@ -39,8 +45,10 @@ else
         set => sizes = value;
     }
 
-    string Source => this.MediaService.Source(this.Object, this.Widths?[0]);
+    string Source => this.MediaService.Source(this.Object, this.Width ?? this.Widths?[0]);
 
     string SourceSet => this.Widths != null ? string.Join(", ", this.Widths.Select(v => $"{this.MediaService.Source(this.Object, v)} {v}w")) : null;
+
+    string Loading => this.Lazy == null ? "auto" : this.Lazy.Value ? "lazy" : "eager";
 
 }
