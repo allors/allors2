@@ -8,6 +8,7 @@ namespace Tests.ElectronicAddressTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Components;
     using src.allors.material.@base.objects.emailaddress.edit;
     using src.allors.material.@base.objects.person.list;
@@ -30,7 +31,7 @@ namespace Tests.ElectronicAddressTests
         public void Edit()
         {
             var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John Doe"));
+            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
 
             var electronicAddress = new EmailAddressBuilder(this.Session)
                 .WithElectronicAddressString("info@acme.com")

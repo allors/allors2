@@ -7,6 +7,7 @@ namespace Tests.FaceToFaceCommunicationTests
 {
     using System.Linq;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.organisation.list;
@@ -34,7 +35,7 @@ namespace Tests.FaceToFaceCommunicationTests
             var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
 
             var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme"));
+            var organisation = extent.First(v => v.DisplayName().Equals("Acme"));
             var contact = organisation.CurrentContacts.First;
 
             this.organisationListPage.Table.DefaultAction(organisation);
@@ -45,8 +46,8 @@ namespace Tests.FaceToFaceCommunicationTests
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
                 .Location.Set("location")
                 .Subject.Set("subject")
-                .FromParty.Set(employee.PartyName)
-                .ToParty.Set(contact.PartyName)
+                .FromParty.Set(employee.DisplayName())
+                .ToParty.Set(contact.DisplayName())
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))

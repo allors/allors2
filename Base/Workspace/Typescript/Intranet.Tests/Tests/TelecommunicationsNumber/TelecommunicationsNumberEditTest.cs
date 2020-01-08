@@ -8,6 +8,7 @@ namespace Tests.TelecommunicationsNumberTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Components;
     using src.allors.material.@base.objects.person.list;
     using src.allors.material.@base.objects.person.overview;
@@ -25,7 +26,7 @@ namespace Tests.TelecommunicationsNumberTests
             : base(fixture)
         {
             var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John Doe"));
+            var person = people.First(v => v.DisplayName().Equals("John Doe"));
 
             this.editContactMechanism = new TelecommunicationsNumberBuilder(this.Session)
                 .WithCountryCode("0032")
@@ -47,7 +48,7 @@ namespace Tests.TelecommunicationsNumberTests
         public void Edit()
         {
             var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John Doe"));
+            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
 
             var before = new TelecommunicationsNumbers(this.Session).Extent().ToArray();
 

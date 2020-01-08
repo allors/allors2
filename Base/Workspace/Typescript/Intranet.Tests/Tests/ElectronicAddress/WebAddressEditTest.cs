@@ -8,6 +8,7 @@ namespace Tests.ElectronicAddressTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Components;
     using src.allors.material.@base.objects.person.list;
     using src.allors.material.@base.objects.person.overview;
@@ -30,7 +31,7 @@ namespace Tests.ElectronicAddressTests
         public void Edit()
         {
             var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John Doe"));
+            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
 
             var editContactMechanism = new WebAddressBuilder(this.Session)
                 .WithElectronicAddressString("www.acme.com")

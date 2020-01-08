@@ -26,7 +26,7 @@ namespace Tests.PostalAddressTests
             : base(fixture)
         {
             var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John Doe"));
+            var person = people.First(v => v.DisplayName().Equals("John Doe"));
 
             this.editContactMechanism = new PostalAddressBuilder(this.Session)
                 .WithDefaults()
@@ -50,7 +50,7 @@ namespace Tests.PostalAddressTests
             var before = new PostalAddresses(this.Session).Extent().ToArray();
 
             var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.PartyName.Equals("John Doe"));
+            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
 
             this.people.Table.DefaultAction(person);
             var postalAddressEditComponent = new PersonOverviewComponent(this.people.Driver).ContactmechanismOverviewPanel.Click().CreatePostalAddress();

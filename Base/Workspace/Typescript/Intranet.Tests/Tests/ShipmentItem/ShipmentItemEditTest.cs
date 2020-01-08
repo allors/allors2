@@ -100,8 +100,8 @@ namespace Tests.ShipmentItemTests
 
         //    var actual = after.Except(before).First();
 
-        //    Assert.Equal(expected.ShipFromParty.PartyName, actual.ShipFromParty.PartyName);
-        //    Assert.Equal(expected.ShipToParty.PartyName, actual.ShipToParty.PartyName);
+        //    Assert.Equal(expected.ShipFromParty.DisplayName(), actual.ShipFromParty.DisplayName());
+        //    Assert.Equal(expected.ShipToParty.DisplayName(), actual.ShipToParty.DisplayName());
         //}
     }
 }
