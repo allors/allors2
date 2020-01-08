@@ -8,6 +8,7 @@ namespace Tests.PhoneCommunicationTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.organisation.list;
@@ -28,7 +29,7 @@ namespace Tests.PhoneCommunicationTests
             : base(fixture)
         {
             var people = new Organisations(this.Session).Extent();
-            var organisation = people.First(v => v.PartyName.Equals("Acme"));
+            var organisation = people.First(v => v.DisplayName().Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();
@@ -64,7 +65,7 @@ namespace Tests.PhoneCommunicationTests
         public void Edit()
         {
             var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme"));
+            var organisation = extent.First(v => v.DisplayName().Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();
@@ -84,8 +85,8 @@ namespace Tests.PhoneCommunicationTests
                 .LeftVoiceMail.Set(false)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
-                .FromParty.Set(organisation.PartyName)
-                .ToParty.Set(firstEmployee.PartyName)
+                .FromParty.Set(organisation.DisplayName())
+                .ToParty.Set(firstEmployee.DisplayName())
                 .FromPhoneNumber.Set("+1 111 222")
                 .Subject.Set("new subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))

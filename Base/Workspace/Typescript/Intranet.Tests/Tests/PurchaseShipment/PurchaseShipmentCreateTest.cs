@@ -44,11 +44,11 @@ namespace Tests.PurchaseShipmentTests
 
             this.Session.Derive();
 
-            var expectedShipToPartyPartyName = expected.ShipToParty.PartyName;
+            var expectedShipToPartyPartyName = expected.ShipToParty.DisplayName();
             var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
-            var expectedShipToContactPersonPartyName = expected.ShipToContactPerson.PartyName;
-            var expectedShipFromPartyPartyName = expected.ShipFromParty.PartyName;
-            var expectedShipFromContactPersonPartyName = expected.ShipFromContactPerson.PartyName;
+            var expectedShipToContactPersonPartyName = expected.ShipToContactPerson.DisplayName();
+            var expectedShipFromPartyPartyName = expected.ShipFromParty.DisplayName();
+            var expectedShipFromContactPersonPartyName = expected.ShipFromContactPerson.DisplayName();
 
             var purchaseShipmentCreate = this.shipmentListPage
                 .CreatePurchaseShipment()
@@ -68,11 +68,11 @@ namespace Tests.PurchaseShipmentTests
 
             var actual = after.Except(before).First();
 
-            Assert.Equal(expectedShipFromPartyPartyName, actual.ShipFromParty.PartyName);
-            Assert.Equal(expectedShipFromContactPersonPartyName, actual.ShipFromContactPerson.PartyName);
-            Assert.Equal(expectedShipToPartyPartyName, actual.ShipToParty.PartyName);
+            Assert.Equal(expectedShipFromPartyPartyName, actual.ShipFromParty.DisplayName());
+            Assert.Equal(expectedShipFromContactPersonPartyName, actual.ShipFromContactPerson.DisplayName());
+            Assert.Equal(expectedShipToPartyPartyName, actual.ShipToParty.DisplayName());
             Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress.DisplayName());
-            Assert.Equal(expectedShipToContactPersonPartyName, actual.ShipToContactPerson.PartyName);
+            Assert.Equal(expectedShipToContactPersonPartyName, actual.ShipToContactPerson.DisplayName());
         }
 
         [Fact]
@@ -84,8 +84,8 @@ namespace Tests.PurchaseShipmentTests
 
             this.Session.Derive();
 
-            var expectedShipToPartyPartyName = expected.ShipToParty.PartyName;
-            var expectedShipFromPartyPartyName = expected.ShipFromParty.PartyName;
+            var expectedShipToPartyPartyName = expected.ShipToParty.DisplayName();
+            var expectedShipFromPartyPartyName = expected.ShipFromParty.DisplayName();
 
             var purchaseShipmentCreate = this.shipmentListPage
                 .CreatePurchaseShipment()
@@ -105,8 +105,8 @@ namespace Tests.PurchaseShipmentTests
 
             var actual = after.Except(before).First();
 
-            Assert.Equal(expectedShipFromPartyPartyName, actual.ShipFromParty.PartyName);
-            Assert.Equal(expectedShipToPartyPartyName, actual.ShipToParty.PartyName);
+            Assert.Equal(expectedShipFromPartyPartyName, actual.ShipFromParty.DisplayName());
+            Assert.Equal(expectedShipToPartyPartyName, actual.ShipToParty.DisplayName());
         }
     }
 }

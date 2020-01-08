@@ -31,6 +31,51 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Tests\Application\**" />
+    <Compile Remove="Tests\Catalogue\**" />
+    <Compile Remove="Tests\CommunicationEvent\**" />
+    <Compile Remove="Tests\Good\**" />
+    <Compile Remove="Tests\ProductCategory\**" />
+    <Compile Remove="Tests\ProductQuote\**" />
+    <Compile Remove="Tests\ProductType\**" />
+    <Compile Remove="Tests\PurchaseInvoice\**" />
+    <Compile Remove="Tests\RequestForQuote\**" />
+    <Compile Remove="Tests\SalesInvoice\**" />
+    <Compile Remove="Tests\SalesOrder\**" />
+    <Compile Remove="Tests\SerialisedItemCharacteristic\**" />
+    <Compile Remove="Tests\SerialisedItem\**" />
+    <Compile Remove="Tests\WorkEffort\**" />
+    <EmbeddedResource Remove="Tests\Application\**" />
+    <EmbeddedResource Remove="Tests\Catalogue\**" />
+    <EmbeddedResource Remove="Tests\CommunicationEvent\**" />
+    <EmbeddedResource Remove="Tests\Good\**" />
+    <EmbeddedResource Remove="Tests\ProductCategory\**" />
+    <EmbeddedResource Remove="Tests\ProductQuote\**" />
+    <EmbeddedResource Remove="Tests\ProductType\**" />
+    <EmbeddedResource Remove="Tests\PurchaseInvoice\**" />
+    <EmbeddedResource Remove="Tests\RequestForQuote\**" />
+    <EmbeddedResource Remove="Tests\SalesInvoice\**" />
+    <EmbeddedResource Remove="Tests\SalesOrder\**" />
+    <EmbeddedResource Remove="Tests\SerialisedItemCharacteristic\**" />
+    <EmbeddedResource Remove="Tests\SerialisedItem\**" />
+    <EmbeddedResource Remove="Tests\WorkEffort\**" />
+    <None Remove="Tests\Application\**" />
+    <None Remove="Tests\Catalogue\**" />
+    <None Remove="Tests\CommunicationEvent\**" />
+    <None Remove="Tests\Good\**" />
+    <None Remove="Tests\ProductCategory\**" />
+    <None Remove="Tests\ProductQuote\**" />
+    <None Remove="Tests\ProductType\**" />
+    <None Remove="Tests\PurchaseInvoice\**" />
+    <None Remove="Tests\RequestForQuote\**" />
+    <None Remove="Tests\SalesInvoice\**" />
+    <None Remove="Tests\SalesOrder\**" />
+    <None Remove="Tests\SerialisedItemCharacteristic\**" />
+    <None Remove="Tests\SerialisedItem\**" />
+    <None Remove="Tests\WorkEffort\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -43,22 +88,5 @@
     <None Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Tests\Application\" />
-    <Folder Include="Tests\Catalogue\" />
-    <Folder Include="Tests\CommunicationEvent\" />
-    <Folder Include="Tests\Good\" />
-    <Folder Include="Tests\ProductCategory\" />
-    <Folder Include="Tests\ProductQuote\" />
-    <Folder Include="Tests\ProductType\" />
-    <Folder Include="Tests\PurchaseInvoice\" />
-    <Folder Include="Tests\RequestForQuote\" />
-    <Folder Include="Tests\SalesInvoice\" />
-    <Folder Include="Tests\SalesOrder\" />
-    <Folder Include="Tests\SerialisedItemCharacteristic\" />
-    <Folder Include="Tests\SerialisedItem\" />
-    <Folder Include="Tests\WorkEffort\" />
   </ItemGroup>
 </Project>

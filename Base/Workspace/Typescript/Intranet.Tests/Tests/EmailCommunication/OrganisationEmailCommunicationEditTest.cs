@@ -8,6 +8,7 @@ namespace Tests.EmailCommunicationTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.emailcommunication.edit;
@@ -31,7 +32,7 @@ namespace Tests.EmailCommunicationTests
         public void Edit()
         {
             var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.PartyName.Equals("Acme"));
+            var organisation = organisations.First(v => v.DisplayName().Equals("Acme"));
             var contact = organisation.CurrentContacts.First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
@@ -66,9 +67,9 @@ namespace Tests.EmailCommunicationTests
             emailCommunicationEdit
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
-                .FromParty.Set(contact.PartyName)
+                .FromParty.Set(contact.DisplayName())
                 .FromEmail.Set(personEmailAddress.ElectronicAddressString)
-                .ToParty.Set(employee.PartyName)
+                .ToParty.Set(employee.DisplayName())
                 .ToEmail.Set(employeeEmailAddress.ElectronicAddressString)
                 .SubjectTemplate.Set("new subject")
                 .BodyTemplate.Set("new body")

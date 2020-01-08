@@ -8,6 +8,7 @@ namespace Tests.PartyContactMachanismTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using src.allors.material.@base.objects.person.list;
     using Xunit;
@@ -23,7 +24,7 @@ namespace Tests.PartyContactMachanismTests
             : base(fixture)
         {
             var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John Doe"));
+            var person = people.First(v => v.DisplayName().Equals("John Doe"));
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -50,7 +51,7 @@ namespace Tests.PartyContactMachanismTests
             // var before = new PostalAddresses(this.Session).Extent().ToArray();
 
             // var extent = new People(this.Session).Extent();
-            // var person = extent.First(v => v.PartyName.Equals("John Doe"));
+            // var person = extent.First(v => v.DisplayName().Equals("John Doe"));
 
             // var personOverview = this.people.Select(person);
             // var page = personOverview.NewPostalAddress();
