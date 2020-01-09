@@ -24,6 +24,8 @@ namespace Allors.Repository
 
         public string NormalizedUserName { get; set; }
 
+        public string InUserPassword { get; set; }
+
         public string UserPasswordHash { get; set; }
 
         public string UserEmail { get; set; }

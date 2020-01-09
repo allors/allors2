@@ -70,6 +70,13 @@ namespace Allors.Domain
         {
             @this.NormalizedUserName = Users.Normalize(@this.UserName);
             @this.NormalizedUserEmail = Users.Normalize(@this.UserEmail);
+
+            if (@this.ExistInUserPassword)
+            {
+                var passwordService = @this.Session().ServiceProvider.GetRequiredService<IPasswordService>();
+                @this.UserPasswordHash = passwordService.HashPassword(@this.UserName, @this.InUserPassword);
+                @this.RemoveInUserPassword();
+            }
         }
 
         public static void CoreDelete(this User @this, DeletableDelete method)

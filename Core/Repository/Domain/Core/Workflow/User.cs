@@ -34,6 +34,15 @@ namespace Allors.Repository
         string NormalizedUserName { get; set; }
 
         #region Allors
+        [Id("DCE0EA9D-105B-4E46-A22E-9B02C28DA8DB")]
+        [AssociationId("8A64C6D3-17DB-478C-A8C8-DD003748C4FE")]
+        [RoleId("2129E012-FAF5-429D-9B4B-137A69E1EF46")]
+        [Size(256)]
+        #endregion
+        [Workspace]
+        string InUserPassword { get; set; }
+
+        #region Allors
         [Id("ea0c7596-c0b8-4984-bc25-cb4b4857954e")]
         [AssociationId("8537ddb5-8ce2-4f35-a16f-207f2519ba9c")]
         [RoleId("75ee3ec2-02bb-4666-a6f0-bac84c844dfa")]
