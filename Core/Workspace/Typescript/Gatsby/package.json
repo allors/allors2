@@ -1,0 +1,31 @@
+{
+  "name": "allors-gatsby",
+  "version": "1.0.0",
+  "description": "Allors Gatsby",
+  "scripts": {
+    "postinstall": "node ./postinstall.js",
+    "start": "gatsby develop",
+    "develop": "gatsby develop",
+    "build": "gatsby build",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "gatsby": "^2.18.0",
+    "gatsby-plugin-typescript": "^2.1.18",
+    "gatsby-plugin-typography": "^2.3.17",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-typography": "^0.16.19",
+    "typography": "^0.16.19",
+    "typography-theme-bootstrap": "^0.16.19"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.11",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
+    "@typescript-eslint/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/parser": "^2.8.0",
+    "typescript": "^3.7.2",
+    "lnk": "latest"
+  }
+}

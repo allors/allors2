@@ -44,6 +44,8 @@ namespace Allors
                     { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Material/src/allors/domain/generated" },
                     { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Promise/src/allors/meta/generated" },
                     { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Promise/src/allors/domain/generated" },
+                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Gatsby/src/allors/meta/generated" },
+                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Gatsby/src/allors/domain/generated" },
                     { "Workspace/Typescript.legacy/Templates/meta.ts.stg", "Workspace/Typescript.legacy/Site/wwwroot/generated/meta" },
                     { "Workspace/Typescript.legacy/Templates/domain.ts.stg", "Workspace/Typescript.legacy/Site/wwwroot/generated/domain" },
                 };
