@@ -29,6 +29,15 @@
       </div>
     </div>
 
+    <div *ngFor="let asset of assets" (click)="navigation.overview(asset)" style="cursor: pointer;">
+      <div style="color: grey">
+        Equipment
+      </div>
+      <div>
+        {{asset.displayName}}
+      </div>
+    </div>
+
     <div *ngIf="parent" (click)="navigation.overview(parent)"
       style="cursor: pointer;">
 

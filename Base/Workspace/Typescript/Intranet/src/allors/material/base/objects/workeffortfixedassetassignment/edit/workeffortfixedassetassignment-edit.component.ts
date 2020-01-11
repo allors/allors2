@@ -9,7 +9,7 @@ import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { SaveService } from '../../../../../../allors/material';
+import { SaveService, FiltersService } from '../../../../../../allors/material';
 
 @Component({
   templateUrl: './workeffortfixedassetassignment-edit.component.html',
@@ -23,7 +23,6 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
   workEfforts: WorkEffort[];
   workEffort: WorkEffort;
   assignment: WorkEffort;
-  serialisedItems: SerialisedItem[];
   serialisedItem: SerialisedItem;
   assetAssignmentStatuses: Enumeration[];
   title: string;
@@ -34,6 +33,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<WorkEffortFixedAssetAssignmentEditComponent>,
+    public filtersService: FiltersService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
@@ -74,15 +74,6 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
             pull.WorkEffort({
               sort: new Sort(m.WorkEffort.Name)
             }),
-            pull.WorkEffort({
-              object: this.data.associationId,
-              fetch: {
-                Customer: {
-                  SerialisedItemsWhereOwnedBy: x
-                }
-              },
-              sort: new Sort(m.SerialisedItem.Name)
-            }),
             pull.AssetAssignmentStatus({
               predicate: new Equals({ propertyType: m.AssetAssignmentStatus.IsActive, value: true }),
               sort: new Sort(m.AssetAssignmentStatus.Name)
@@ -103,7 +94,6 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
         this.workEffort = loaded.objects.WorkEffort as WorkEffort;
         this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
-        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
         this.assetAssignmentStatuses = loaded.collections.AssetAssignmentStatuses as Enumeration[];
 
         if (isCreate) {

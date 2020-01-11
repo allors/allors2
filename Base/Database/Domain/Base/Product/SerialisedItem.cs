@@ -57,6 +57,30 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var builder = new StringBuilder();
+
+            builder.Append(this.ItemNumber);
+            builder.Append(string.Join(" ", this.SerialNumber));
+            builder.Append(string.Join(" ", this.Name));
+
+            if (this.ExistOwnedBy)
+            {
+                builder.Append(string.Join(" ", this.OwnedBy.PartyName));
+            }
+
+            if (this.ExistPartWhereSerialisedItem)
+            {
+                builder.Append(string.Join(" ", this.PartWhereSerialisedItem?.Brand?.Name));
+                builder.Append(string.Join(" ", this.PartWhereSerialisedItem?.Model?.Name));
+            }
+
+            builder.Append(string.Join(" ", this.Keywords));
+
+            this.SearchString = builder.ToString();
+        }
+
         public void BaseDelete(DeletableDelete method)
         {
             // TODO: Restrit Delete?

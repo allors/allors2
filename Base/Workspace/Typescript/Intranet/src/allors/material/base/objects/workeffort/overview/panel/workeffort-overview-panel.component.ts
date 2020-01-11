@@ -56,6 +56,7 @@ export class WorkEffortOverviewPanelComponent extends TestScope implements OnIni
   ngOnInit() {
 
     this.panel.name = 'workeffort';
+    // this.panel.title = 'Child Work Orders';
     this.panel.title = 'Child Work Orders';
     this.panel.icon = 'business';
     this.panel.expandable = true;

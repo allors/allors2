@@ -10,19 +10,6 @@ namespace Allors.Domain
 
     public partial class WorkEffortInventoryAssignment
     {
-        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
-        {
-            if (method.SecurityTokens == null)
-            {
-                method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
-            }
-
-            if (method.DeniedPermissions == null)
-            {
-                method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
-            }
-        }
-
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

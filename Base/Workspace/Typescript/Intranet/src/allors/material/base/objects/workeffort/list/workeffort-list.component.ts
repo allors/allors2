@@ -5,9 +5,9 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like, Equals } from '../../../../../framework';
-import { WorkEffort } from '../../../../../domain';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
+import { WorkEffort, Person, FixedAsset } from '../../../../../domain';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId, TestScope, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService, ObjectService } from '../../../../../material';
 
 interface Row extends TableRow {
@@ -17,8 +17,9 @@ interface Row extends TableRow {
   type: string;
   state: string;
   customer: string;
+  equipment: string;
+  worker: string;
   executedBy: string;
-  description: string;
   lastModifiedDate: string;
 }
 
@@ -68,8 +69,9 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
         { name: 'state' },
         { name: 'customer' },
         { name: 'executedBy' },
-        { name: 'description', sort: true },
-        'lastModifiedDate'
+        { name: 'equipment' },
+        { name: 'worker' },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
@@ -91,9 +93,37 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
       new Like({ roleType: m.WorkEffort.WorkEffortNumber, parameter: 'Number' }),
       new Like({ roleType: m.WorkEffort.Name, parameter: 'Name' }),
       new Like({ roleType: m.WorkEffort.Description, parameter: 'Description' }),
+      new ContainedIn({
+        propertyType: m.WorkEffort.WorkEffortPartyAssignmentsWhereAssignment,
+        extent: new Filter({
+          objectType: m.WorkEffortPartyAssignment,
+          predicate: new Equals({ propertyType: m.WorkEffortPartyAssignment.Party, parameter: 'worker' })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.WorkEffort.WorkEffortFixedAssetAssignmentsWhereAssignment,
+        extent: new Filter({
+          objectType: m.WorkEffortFixedAssetAssignment,
+          predicate: new Equals({ propertyType: m.WorkEffortFixedAssetAssignment.FixedAsset, parameter: 'equipment' })
+        })
+      }),
     ]);
 
-    this.filterService.init(predicate);
+    const personSearch = new SearchFactory({
+      objectType: m.Person,
+      roleTypes: [m.Person.PartyName, m.Person.UserName],
+    });
+
+    const equipmentSearch = new SearchFactory({
+      objectType: m.FixedAsset,
+      roleTypes: [m.FixedAsset.SearchString],
+    });
+
+    this.filterService.init(predicate,
+    {
+      worker: { search: personSearch, display: (v: Person) => v && v.displayName },
+      equipment: { search: equipmentSearch, display: (v: FixedAsset) => v && v.displayName },
+    });
 
     const sorter = new Sorter(
       {
@@ -131,6 +161,12 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
                 },
                 WorkEffortState: x,
                 WorkEffortPurposes: x,
+                WorkEffortFixedAssetAssignmentsWhereAssignment: {
+                  FixedAsset: x
+                },
+                WorkEffortPartyAssignmentsWhereAssignment: {
+                  Party: x
+                }
               },
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -153,7 +189,8 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
             state: v.WorkEffortState ? v.WorkEffortState.Name : '',
             customer: v.Customer ? v.Customer.displayName : '',
             executedBy: v.ExecutedBy ? v.ExecutedBy.displayName : '',
-            description: v.Description,
+            equipment: v.WorkEffortFixedAssetAssignmentsWhereAssignment ? v.WorkEffortFixedAssetAssignmentsWhereAssignment.map((w) => w.FixedAsset.displayName).join(', ') : '',
+            worker: v.WorkEffortPartyAssignmentsWhereAssignment ? v.WorkEffortPartyAssignmentsWhereAssignment.map((w) => w.Party.displayName).join(', ') : '',
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });

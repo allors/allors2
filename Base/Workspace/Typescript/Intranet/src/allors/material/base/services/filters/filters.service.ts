@@ -4,6 +4,7 @@ import { SearchFactory } from '../../../../angular';
 export abstract class FiltersService {
     goodsFilter: SearchFactory;
     partsFilter: SearchFactory;
+    serialisedItemsFilter: SearchFactory;
     customersFilter: SearchFactory;
     suppliersFilter: SearchFactory;
     employeeFilter: SearchFactory;
