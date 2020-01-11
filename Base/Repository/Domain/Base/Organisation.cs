@@ -22,10 +22,6 @@ namespace Allors.Repository
 
         public Country EuListingState { get; set; }
 
-        public Person[] StockManagers { get; set; }
-        public SecurityToken StockManagerSecurityToken { get; set; }
-        public AccessControl StockManagerAccessControl { get; set; }
-        public UserGroup StockManagerUserGroup { get; set; }
         public PaymentMethod[] PaymentMethods { get; set; }
 
         public PaymentMethod DefaultCollectionMethod { get; set; }
