@@ -1,3 +1,2 @@
-allors
-gatsby-node.js
-gatsby-node.js.map
+*.js
+*.map

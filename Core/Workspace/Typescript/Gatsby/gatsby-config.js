@@ -5,7 +5,12 @@ module.exports = {
   plugins: [
     {
       resolve: "gatsby-source-allors",
-      options: {},
+      options: {
+        url: "http://localhost:5000/",
+        login: "TestAuthentication/Token",
+        user: "administrator",
+        password: undefined
+      },
     },
     `gatsby-plugin-typescript`
   ],
