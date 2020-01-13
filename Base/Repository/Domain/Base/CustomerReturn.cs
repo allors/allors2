@@ -53,6 +53,7 @@ namespace Allors.Repository
         public string ShipmentNumber { get; set; }
 
         public Document[] Documents { get; set; }
+
         public Media[] ElectronicDocuments { get; set; }
 
         public Person ShipFromContactPerson { get; set; }
