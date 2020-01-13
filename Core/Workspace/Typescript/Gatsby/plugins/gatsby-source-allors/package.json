@@ -1,0 +1,29 @@
+{
+  "name": "gatsby-source-allors",
+  "version": "1.0.0",
+  "description": "Gatsby Source Allors",
+  "scripts": {
+    "postinstall": "node ./postinstall.js",
+    "build": "tsc",
+    "tsc": "tsc",
+    "test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks ./src/**/*.spec.ts",
+    "tc:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./src/**/*.spec.ts",
+    "az:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-trx-reporter ./src/**/*.spec.ts "
+  },
+  "dependencies": {
+    "gatsby": "^2.18.0",
+    "axios": "latest"
+  },
+  "devDependencies": {
+    "@types/chai": "latest",
+    "@types/mocha": "latest",
+    "@types/node": "latest",
+    "chai": "latest",
+    "mocha": "latest",
+    "mocha-teamcity-reporter": "latest",
+    "mocha-trx-reporter": "latest",
+    "typescript": "latest",
+    "ts-node": "latest",
+    "lnk": "latest"
+  }
+}
