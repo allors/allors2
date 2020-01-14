@@ -91,7 +91,7 @@ partial class Build : NukeBuild
                 }
             }
 
-            EnsureCleanDirectory(Paths.Artifacts);
+            DeleteDirectory(Paths.Artifacts);
         });
 
     Target EnsureDirectories => _ => _

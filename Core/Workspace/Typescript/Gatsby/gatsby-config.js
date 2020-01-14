@@ -3,13 +3,15 @@ module.exports = {
     siteName: `Allors Gatsby`,
   },
   plugins: [
-    `gatsby-plugin-typescript`,
     {
-      resolve: `gatsby-plugin-typography`,
+      resolve: "gatsby-source-allors",
       options: {
-        pathToConfigModule: `src/utils/typography.js`,
-        omitGoogleFont: true,
+        url: "http://localhost:5000/",
+        login: "TestAuthentication/Token",
+        user: "administrator",
+        password: undefined
       },
     },
+    `gatsby-plugin-typescript`
   ],
 }

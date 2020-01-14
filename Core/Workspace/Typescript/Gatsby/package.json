@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Allors Gatsby",
   "scripts": {
-    "postinstall": "node ./postinstall.js",
     "start": "gatsby develop",
     "develop": "gatsby develop",
     "build": "gatsby build",
@@ -12,12 +11,8 @@
   "dependencies": {
     "gatsby": "^2.18.0",
     "gatsby-plugin-typescript": "^2.1.18",
-    "gatsby-plugin-typography": "^2.3.17",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-typography": "^0.16.19",
-    "typography": "^0.16.19",
-    "typography-theme-bootstrap": "^0.16.19"
+    "react-dom": "^16.12.0"
   },
   "devDependencies": {
     "@types/node": "^12.12.11",
