@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("84eb0e6e-68e1-478c-a35f-6036d45792be")]
     #endregion
-    public partial interface Task : UniquelyIdentifiable, Deletable, Object
+    public partial interface Task : UniquelyIdentifiable, Deletable
     {
         #region Allors
         [Id("f247de73-70fe-47e4-a763-22ee9c68a476")]
@@ -21,8 +21,8 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Workspace]
-        [Derived]
         WorkItem WorkItem { get; set; }
 
         #region Allors
@@ -42,8 +42,8 @@ namespace Allors.Repository
         [RoleId("ceba2888-2a6e-4822-881b-1101b48f80f3")]
         [Indexed]
         #endregion
+        [Required]
         [Workspace]
-        [Derived]
         DateTime DateCreated { get; set; }
 
         #region Allors
