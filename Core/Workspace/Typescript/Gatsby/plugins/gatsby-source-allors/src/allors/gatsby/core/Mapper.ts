@@ -1,6 +1,7 @@
 import { Loaded } from "../../promise";
 
 import { NodePluginArgs } from "gatsby"
+import { ISessionObject } from "../../framework";
 
 export class Mapper {
 
@@ -11,26 +12,49 @@ export class Mapper {
 
     const { actions: { createNode }, createNodeId, createContentDigest } = this.args;
 
-    const workspace = loaded.session.workspace;
+    const session = loaded.session;
+    const workspace = session.workspace;
     const ids = loaded.response.objects.map(v => v[0]);
+
+    const contentDigestById = loaded.response.objects
+      .reduce((acc, value) => {
+        const id = value[0];
+        const version = value[1];
+        const accessControls = value.length > 2 ? value[2] : undefined;
+        const deniedPermissions = value.length > 3 ? value[3] : undefined;
+
+        let contentDigest = `allors-${id}-${version}`;
+        if (accessControls) {
+          contentDigest += `${accessControls}`
+        }
+
+        if (deniedPermissions) {
+          contentDigest += `${deniedPermissions}`
+        }
+
+        acc[id] = createContentDigest(contentDigest);
+
+        return acc;
+      }, {});
 
     ids.forEach((id) => {
 
-      const obj = workspace.get(id);
-      const type = obj.objectType;
+      const sessionObject = session.get(id);
+      const workspaceObject = workspace.get(id);
+      const type = workspaceObject.objectType;
 
       const node = {
-        id: createNodeId(`allors-${obj.id}`),
+        id: createNodeId(`allors-${workspaceObject.id}`),
         parent: null,
         children: [],
         internal: {
           type: `Allors${type.name}`,
-          contentDigest: createContentDigest(`allors-${obj.id}-${obj.version}`),
+          contentDigest: contentDigestById[id],
         }
       }
 
       type.roleTypes.forEach((roleType => {
-        const role = obj.roleByRoleTypeId.get(roleType.id);
+        const role = workspaceObject.roleByRoleTypeId.get(roleType.id);
 
         if (!!role) {
           if (roleType.objectType.isUnit) {
@@ -51,6 +75,23 @@ export class Mapper {
           }
         }
 
+      }))
+
+      type.associationTypes.forEach((associationType => {
+        const association = sessionObject.getAssociation(associationType);
+        const propertyName = `${associationType.name}___NODE`;
+
+        if (associationType.isOne) {
+          if (!!association) {
+            node[propertyName] = createNodeId(`allors-${association.id}`);
+          }
+        } else {
+          const associationArray = (association as ISessionObject[]);
+          if (associationArray.length > 0) {
+            const associationIds = associationArray.map(w => w.id);
+            node[propertyName] = associationIds.map((w) => createNodeId(`allors-${w}`));
+          }
+        }
       }))
 
       createNode(node);
