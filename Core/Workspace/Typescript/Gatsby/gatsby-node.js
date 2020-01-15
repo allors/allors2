@@ -3,10 +3,11 @@ const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 
 const organisationTemplate = path.resolve(`./src/templates/organisation.tsx`)
 
+/** @param {import("gatsby").CreatePagesArgs } args*/
 exports.createPages = async ({ graphql, actions }) => {
-    const { createPage } = actions
-    const result = await graphql(
-        `
+  const { createPage } = actions
+  const result = await graphql(
+    `
         {
             allAllorsOrganisation {
                 edges {
@@ -18,27 +19,28 @@ exports.createPages = async ({ graphql, actions }) => {
             },
         }
         `
-    );
+  );
 
-    if (result.errors) {
-        throw result.errors
-    }
+  if (result.errors) {
+    throw result.errors
+  }
 
-    const organisationEdges = result.data.allAllorsOrganisation.edges
-    organisationEdges.forEach((edge) => {
-        slug = edge.node.slug;
-        createPage({
-            path: slug,
-            component: organisationTemplate,
-            context: {
-              slug: slug,
-            }
-        })
+  /** @type {import("./graphql-types").AllorsOrganisationConnection } */
+  const allAllorsOrganisation = result.data.allAllorsOrganisation
+  allAllorsOrganisation.edges.forEach((edge) => {
+    const slug = edge.node.slug;
+    createPage({
+      path: slug,
+      component: organisationTemplate,
+      context: {
+        slug: slug,
+      }
     })
+  })
 }
 
-exports.onCreateNode = async ({ node, cache, actions, store, createNodeId }) => {
-  const { createNode } = actions
+/** @param {import("gatsby").CreateNodeArgs} args*/
+exports.onCreateNode = async ({ node, cache, store, createNodeId, reporter, actions: { createNode } }) => {
 
   let fileNode
   if (node.internal.type === "AllorsMedia") {
@@ -49,13 +51,14 @@ exports.onCreateNode = async ({ node, cache, actions, store, createNodeId }) => 
         store,
         cache,
         createNode,
-        createNodeId
+        createNodeId,
+        reporter
       })
     } catch (e) {
       console.log("ERROR: ", e);
     }
   }
-    if (fileNode) {
-      node.localImage___NODE = fileNode.id
-    }
+  if (fileNode) {
+    node.localImage___NODE = fileNode.id
+  }
 }

@@ -83,7 +83,6 @@ export class Mapper {
               }
             }
           }
-
         }))
 
         // Associations
