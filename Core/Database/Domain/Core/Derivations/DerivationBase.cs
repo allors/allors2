@@ -104,9 +104,20 @@ namespace Allors.Domain
             }
         }
 
+        public void MarkAsModified(params Object[] derivables)
+        {
+            // TODO:
+        }
+
         public bool IsModified(Object @object) => this.InDependency(@object) || this.IsCreated(@object) || this.IsForced(@object) || this.HasChangedRoles(@object);
 
         public bool IsModified(Object @object, RelationKind kind) => this.InDependency(@object) || this.IsCreated(@object) || this.IsForced(@object) || this.HasChangedRoles(@object, kind);
+
+        public bool IsMarkedAsModified(Object derivable)
+        {
+            // TODO:
+            return false;
+        }
 
         public bool IsCreated(Object derivable) => this.ChangeSet.Created.Contains(derivable.Id);
 

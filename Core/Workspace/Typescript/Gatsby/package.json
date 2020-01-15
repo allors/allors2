@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Allors Gatsby",
   "scripts": {
+    "clean": "gatsby clean",
     "start": "gatsby develop",
     "develop": "gatsby develop",
     "build": "gatsby build",
