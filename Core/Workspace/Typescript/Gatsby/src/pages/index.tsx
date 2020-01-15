@@ -1,32 +1,16 @@
 import { graphql, Link } from "gatsby"
 import Img from "gatsby-image"
 import * as React from "react"
+
+import { Query } from "../../graphql-types"
 import Layout from "../components/layout"
 
-interface IndexPageProps {
-  data: {
-    site: {
-      siteMetadata: {
-        siteName: string
-      }
-    },
-    allAllorsOrganisation: {
-      edges: [{
-        node: {
-          slug: string,
-          name: string,
-        }
-      }]
-    },
-  }
-}
-
-export default class IndexPage extends React.Component<IndexPageProps> {
+export default class IndexPage extends React.Component<{ data: Query }> {
   public render() {
     const { siteName } = this.props.data.site.siteMetadata;
     const { allAllorsOrganisation } = this.props.data;
 
-    const { allFile } = this.props.data as any;
+    const { allFile } = this.props.data;
     const image = allFile.edges[0].node.childImageSharp.fluid;
 
     return (

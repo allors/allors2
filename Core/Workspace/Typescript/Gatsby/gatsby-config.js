@@ -4,6 +4,7 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-typescript`,
+    `gatsby-plugin-graphql-codegen`,
     {
       resolve: "gatsby-source-allors",
       options: {
