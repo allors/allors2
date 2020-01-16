@@ -1,7 +1,7 @@
 
 import { assert } from 'chai';
 import 'mocha';
-import { Gatsby } from './Gatsby';
+import { GatsbySourceAllors } from '../GatsbySourceAllors';
 
 class FakeNodes {
   public nodes = [];
@@ -36,7 +36,7 @@ describe('gatsby-node',
             password: undefined
           }
 
-          var gatsby = new Gatsby(args, extra);
+          var gatsby = new GatsbySourceAllors(args, extra);
           await gatsby.sourceNodes();
 
           assert.isNotEmpty(fakeNodes.nodes);

@@ -1,9 +1,8 @@
 import { domain } from '../domain';
-import { Media } from '../generated/Media.g';
 import { Meta } from '../../meta';
 import { Organisation } from '../generated';
 
-import createSlug from './createSlug';
+import createSlug from '../gatsby/createSlug';
 
 declare module '../generated/Organisation.g' {
   interface Organisation {

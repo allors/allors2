@@ -1,7 +1,7 @@
-import { Gatsby } from './allors/gatsby/core/Gatsby';
+import { GatsbySourceAllors } from './allors/GatsbySourceAllors';
 
 export async function sourceNodes(args, extra) {
 
-  var gatsby = new Gatsby(args, extra);
+  var gatsby = new GatsbySourceAllors(args, extra);
   await gatsby.sourceNodes();
 }

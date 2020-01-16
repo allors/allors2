@@ -12,7 +12,7 @@
                 "--colors",
                 "--recursive",
                 "--inspect-brk",
-                "${workspaceFolder}/allors/**/*.spec.js",
+                "${workspaceFolder}/allors/tests/**/*.spec.js",
             ],
             "stopOnEntry": false,
             "internalConsoleOptions": "openOnSessionStart",

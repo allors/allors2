@@ -1,13 +1,13 @@
-import { MetaPopulation, Workspace, Pull, Filter, PullRequest } from "../../framework";
-import { Database, Context } from "../../promise";
-import { AxiosHttp } from "../../promise/core/http/AxiosHttp";
-import { data, Meta, TreeFactory, FetchFactory, PullFactory } from "../../meta";
-import { domain, Person } from '../../domain';
-import { Mapper } from "./Mapper";
+import { MetaPopulation, Workspace, PullRequest } from "./framework";
+import { Database, Context } from "./promise";
+import { AxiosHttp } from "./promise/core/http/AxiosHttp";
+import { data, Meta, PullFactory } from "./meta";
+import { domain } from './domain';
+import { Mapper } from "./domain/gatsby/Mapper";
 
 import { NodePluginArgs } from "gatsby"
 
-export class Gatsby {
+export class GatsbySourceAllors {
 
   http: AxiosHttp;
   metaPopulation: MetaPopulation;
@@ -79,6 +79,4 @@ export class Gatsby {
     // Map to Nodes
     this.mapper.map(loaded);
   }
-
 }
-

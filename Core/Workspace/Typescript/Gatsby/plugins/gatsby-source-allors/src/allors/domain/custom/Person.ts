@@ -2,7 +2,7 @@ import { domain } from '../domain';
 import { Meta } from '../../meta';
 import { Person } from '../generated';
 
-import createSlug from './createSlug';
+import createSlug from '../gatsby/createSlug';
 
 declare module '../generated/Person.g' {
   interface Person {
