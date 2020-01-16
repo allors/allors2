@@ -116,7 +116,8 @@
         <mat-tab label="Documents">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.PublicLocalisedElectronicDocuments" accept="image/*"></a-mat-files>
+              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.PublicElectronicDocuments" accept="image/*"></a-mat-files>
+              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.PrivateElectronicDocuments" accept="image/*"></a-mat-files>
             </div>
           </div>
         </mat-tab>

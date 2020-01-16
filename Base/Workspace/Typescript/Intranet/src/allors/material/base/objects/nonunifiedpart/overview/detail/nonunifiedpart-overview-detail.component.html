@@ -218,10 +218,10 @@
         <mat-tab label="Documents">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.PublicLocalisedElectronicDocuments" accept="image/*">
-              </a-mat-files>
+              <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.PublicElectronicDocuments" accept="image/*"></a-mat-files>
+              <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.PrivateElectronicDocuments" accept="image/*"></a-mat-files>
             </div>
-            </div>
+          </div>
         </mat-tab>
       </mat-tab-group>
 
