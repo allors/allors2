@@ -46,7 +46,13 @@ namespace Allors.Repository
 
         public LocalisedText[] LocalisedKeywords { get; set; }
 
-        public Media[] ElectronicDocuments { get; set; }
+        public Media[] PublicElectronicDocuments { get; set; }
+
+        public LocalisedMedia[] PublicLocalisedElectronicDocuments { get; set; }
+
+        public Media[] PrivateElectronicDocuments { get; set; }
+
+        public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
 
         #endregion InheritedProperties
 

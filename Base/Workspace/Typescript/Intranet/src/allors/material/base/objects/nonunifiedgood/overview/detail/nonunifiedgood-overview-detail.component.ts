@@ -138,7 +138,10 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
                 PrimaryPhoto: x,
                 ProductIdentifications: x,
                 Photos: x,
-                LocalisedElectronicDocuments: x,
+                PublicElectronicDocuments: x,
+                PrivateElectronicDocuments: x,
+                PublicLocalisedElectronicDocuments: x,
+                PrivateLocalisedElectronicDocuments: x,
                 LocalisedNames: {
                   Locale: x,
                 },
