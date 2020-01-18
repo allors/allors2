@@ -349,6 +349,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to amount is to small.
+        /// </summary>
+        public static string ReceiptAmountIsToSmall {
+            get {
+                return ResourceManager.GetString("ReceiptAmountIsToSmall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to quantity less than already shipped.
         /// </summary>
         public static string SalesOrderItemLessThanAlreadeyShipped {
@@ -358,7 +367,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to product change not allowed, user cancel order item instead.
+        ///   Looks up a localized string similar to product change not allowed, user cancel orderitem instead.
         /// </summary>
         public static string SalesOrderItemProductChangeNotAllowed {
             get {
@@ -367,7 +376,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The requested quantity to ship is larger than the quantity that is ordered.
+        ///   Looks up a localized string similar to The requested quantity to ship immediately is larger than the quantity that is ordered.
         /// </summary>
         public static string SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered {
             get {
@@ -376,7 +385,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The requested quantity to ship is larger than the quantity remaining to ship.
+        ///   Looks up a localized string similar to The requested quantity to ship immediately is larger than the quantity remaining to ship.
         /// </summary>
         public static string SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining {
             get {
@@ -385,7 +394,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The requested quantity to ship is not available.
+        ///   Looks up a localized string similar to The requested quantity to ship immediately is not available.
         /// </summary>
         public static string SalesOrderItemQuantityToShipNowNotAvailable {
             get {
@@ -399,6 +408,15 @@ namespace Resources {
         public static string SerializedItemQuantity {
             get {
                 return ResourceManager.GetString("SerializedItemQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price is required.
+        /// </summary>
+        public static string UnitPriceRequired {
+            get {
+                return ResourceManager.GetString("UnitPriceRequired", resourceCulture);
             }
         }
         

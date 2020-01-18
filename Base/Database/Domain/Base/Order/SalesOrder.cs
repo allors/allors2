@@ -705,6 +705,12 @@ namespace Allors.Domain
 
         public void BaseApprove(OrderApprove method)
         {
+            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).ReadyForPosting;
+            this.SetSalesOrderItemState();
+        }
+
+        public void BaseSend(OrderApprove method)
+        {
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
             this.SetSalesOrderItemState();
         }
