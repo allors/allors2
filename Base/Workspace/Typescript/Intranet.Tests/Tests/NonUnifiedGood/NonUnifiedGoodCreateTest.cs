@@ -46,7 +46,7 @@ namespace Tests.NonUnifiedGood
             nonUnifiedGoodCreate
                 .Name.Set(expected.Name)
                 .Description.Set(expected.Description)
-                .Part.Set(part.Name);
+                .Part.Select(part.Name);
 
             this.Session.Rollback();
             nonUnifiedGoodCreate.SAVE.Click();

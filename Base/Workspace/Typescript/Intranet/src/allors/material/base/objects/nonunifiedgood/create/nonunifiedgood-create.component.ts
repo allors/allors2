@@ -8,7 +8,7 @@ import { ContextService, NavigationService, MetaService, RefreshService, Fetcher
 import { Locale, ProductCategory, ProductType, Organisation, VatRate, Ownership, Part, ProductIdentificationType, ProductNumber, Settings } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { SaveService } from '../../../..';
+import { SaveService, FiltersService } from '../../../..';
 import { ObjectData } from '../../../../../../allors/material/core/services/object';
 import { Good } from '../../../../../../allors/domain/generated';
 
@@ -30,7 +30,6 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
   vatRates: VatRate[];
   ownerships: Ownership[];
   organisations: Organisation[];
-  parts: Part[];
   goodIdentificationTypes: ProductIdentificationType[];
   productNumber: ProductNumber;
   selectedCategories: ProductCategory[] = [];
@@ -44,6 +43,7 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<NonUnifiedGoodCreateComponent>,
     public metaService: MetaService,
+    public filtersService: FiltersService,
     private refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
@@ -70,13 +70,6 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
             pull.VatRate(),
             pull.ProductIdentificationType(),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
-            pull.Part({
-              include: {
-                Brand: x,
-                Model: x
-              },
-              sort: new Sort(m.Part.Name),
-            })
           ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
@@ -87,7 +80,6 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
         this.allors.context.reset();
 
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
-        this.parts = loaded.collections.Parts as Part[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];

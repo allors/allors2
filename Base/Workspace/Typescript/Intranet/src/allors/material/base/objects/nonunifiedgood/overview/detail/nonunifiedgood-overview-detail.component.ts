@@ -6,7 +6,7 @@ import { ContextService, NavigationService, PanelService, RefreshService, MetaSe
 import { Locale, Organisation, NonUnifiedGood, ProductCategory, ProductType, Brand, Model, Ownership, VatRate, Part, ProductIdentificationType, ProductNumber, ProductFeatureApplicability, ProductDimension } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
-import { SaveService } from '../../../../../../../allors/material';
+import { SaveService, FiltersService } from '../../../../../../../allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -33,7 +33,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
   organisations: Organisation[];
   addBrand = false;
   addModel = false;
-  parts: Part[];
   goodIdentificationTypes: ProductIdentificationType[];
   productNumber: ProductNumber;
   originalCategories: ProductCategory[] = [];
@@ -48,6 +47,7 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     private metaService: MetaService,
+    public filtersService: FiltersService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
@@ -121,13 +121,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
             pull.VatRate(),
             pull.ProductIdentificationType(),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
-            pull.Part({
-              include: {
-                Brand: x,
-                Model: x
-              },
-              sort: new Sort(m.Part.Name),
-            }),
             pull.NonUnifiedGood({
               object: id,
               include: {
@@ -188,7 +181,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
         this.selectedCategories = this.originalCategories;
 
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
-        this.parts = loaded.collections.Parts as Part[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];

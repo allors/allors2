@@ -34,7 +34,7 @@
 
           <div class="row">
             <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
-            <a-mat-select class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Part" [options]="parts" display="Name"></a-mat-select>
+            <a-mat-autocomplete class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Part" [filter]="filtersService.nonUnifiedPartsFilter.create(allors.context)" display="Name"></a-mat-autocomplete>
           </div>
 
           <div class="row">

@@ -34,6 +34,13 @@ export class DefaultFiltersService extends FiltersService {
     });
   }
 
+  get nonUnifiedPartsFilter() {
+    return new SearchFactory({
+      objectType: this.m.NonUnifiedPart,
+      roleTypes: [this.m.NonUnifiedPart.Name, this.m.NonUnifiedPart.SearchString],
+    });
+  }
+
   get serialisedItemsFilter() {
     return new SearchFactory({
       objectType: this.m.SerialisedItem,
