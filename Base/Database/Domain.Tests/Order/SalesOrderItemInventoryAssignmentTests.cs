@@ -73,6 +73,11 @@ namespace Allors.Domain
             salesOrder.Confirm();
 
             this.Session.Derive();
+
+            salesOrder.Send();
+
+            this.Session.Derive();
+
             this.Session.Commit();
         }
 

@@ -23,12 +23,6 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public void BaseSend(ProductQuoteOrder method)
-        {
-            this.QuoteState = new QuoteStates(this.Strategy.Session).Sent;
-            this.SetQuoteItemState();
-        }
-
         public void BaseOrder(ProductQuoteOrder method)
         {
             this.QuoteState = new QuoteStates(this.Strategy.Session).Ordered;
@@ -421,24 +415,6 @@ namespace Allors.Domain
             }
 
             return salesOrder;
-        }
-
-        private void SetQuoteItemState()
-        {
-            var quoteItems = this.QuoteItems
-                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Approved))
-                .ToArray();
-
-            var quoteItemStates = new QuoteItemStates(this.strategy.Session);
-
-            // SalesOrderItem States
-            foreach (var quoteItem in quoteItems)
-            {
-                if (this.QuoteState.IsSent && quoteItem.QuoteItemState.IsApproved)
-                {
-                    quoteItem.QuoteItemState = quoteItemStates.Sent;
-                }
-            }
         }
     }
 }

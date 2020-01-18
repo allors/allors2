@@ -97,6 +97,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
             shipment.Pick();
@@ -186,6 +190,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -391,6 +399,10 @@ namespace Allors.Domain
 
             order1.Confirm();
 
+            order1.Send();
+
+            this.Session.Derive();
+
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -425,6 +437,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order2.Confirm();
+
+            this.Session.Derive();
+
+            order2.Send();
 
             this.Session.Derive();
 
@@ -479,6 +495,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -548,6 +568,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             order.Hold();
 
             this.Session.Derive();
@@ -567,6 +591,10 @@ namespace Allors.Domain
             Assert.Equal(10, item.QuantityShortFalled);
 
             order.Continue();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -634,6 +662,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -757,6 +789,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             Assert.Equal(new SalesOrderStates(this.Session).InProcess, order.SalesOrderState);
             Assert.Equal(10, item.QuantityReserved);
             Assert.Equal(10, item.QuantityPendingShipment);
@@ -851,6 +887,11 @@ namespace Allors.Domain
             order.Approve();
 
             this.Session.Derive();
+
+            order.Send();
+
+            this.Session.Derive();
+
 
             Assert.Equal(new SalesOrderStates(this.Session).InProcess, order.SalesOrderState);
             Assert.Equal(10, item.QuantityReserved);
@@ -968,6 +1009,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             Assert.Equal(new SalesOrderStates(this.Session).InProcess, order.SalesOrderState);
             Assert.Equal(0, item.QuantityReserved);
             Assert.Equal(0, item.QuantityPendingShipment);
@@ -1016,6 +1061,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -1077,6 +1126,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -1170,6 +1223,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             Assert.Equal(new SalesOrderStates(this.Session).InProcess, order.SalesOrderState);
         }
 
@@ -1213,6 +1270,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -1767,6 +1828,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             Assert.Equal(6, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
             Assert.Equal(4, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
             Assert.Equal(3, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
@@ -1809,6 +1874,10 @@ namespace Allors.Domain
             Assert.Equal(4, order.ValidOrderItems.Count);
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -1857,6 +1926,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -1915,6 +1988,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             Assert.Equal(3, order.ValidOrderItems.Count);
             Assert.Contains(item1, order.ValidOrderItems);
             Assert.Contains(item2, order.ValidOrderItems);
@@ -1967,6 +2044,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -2044,6 +2125,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = customer.ShipmentsWhereShipToParty.First;
 
             Assert.Equal(1, shipment.ShipmentItems.Count);
@@ -2116,6 +2201,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -2748,6 +2837,10 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var acl = new AccessControlLists(this.Session.GetUser())[order];
             Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrder.Reject));
@@ -2855,6 +2948,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             order.SalesOrderState = new SalesOrderStates(this.Session).Finished;
 
             this.Session.Derive();
@@ -2893,6 +2990,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -2948,6 +3049,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 

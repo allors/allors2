@@ -546,8 +546,13 @@ namespace Allors.Domain
             // SalesOrderItem States
             foreach (var salesOrderItem in validOrderItems)
             {
-                if (this.SalesOrderState.InProcess &&
+                if (this.SalesOrderState.readyForPosting &&
                     (salesOrderItem.SalesOrderItemState.Created || salesOrderItem.SalesOrderItemState.OnHold))
+                {
+                    salesOrderItem.SalesOrderItemState = salesOrderItemStates.ReadyForPosting;
+                }
+
+                if (this.SalesOrderState.InProcess && (salesOrderItem.SalesOrderItemState.ReadyForPosting || salesOrderItem.SalesOrderItemState.OnHold))
                 {
                     salesOrderItem.SalesOrderItemState = salesOrderItemStates.InProcess;
                 }
@@ -684,7 +689,7 @@ namespace Allors.Domain
             }
             else
             {
-                this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+                this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).ReadyForPosting;
             }
 
             this.SetSalesOrderItemState();
@@ -709,7 +714,7 @@ namespace Allors.Domain
             this.SetSalesOrderItemState();
         }
 
-        public void BaseSend(OrderApprove method)
+        public void BaseSend(SalesOrderSend method)
         {
             this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
             this.SetSalesOrderItemState();
@@ -717,7 +722,7 @@ namespace Allors.Domain
 
         public void BaseContinue(OrderContinue method)
         {
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+            this.SalesOrderState = this.PreviousSalesOrderState;
             this.SetSalesOrderItemState();
         }
 

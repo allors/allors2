@@ -1153,6 +1153,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive(true);
+
             order.Invoice();
 
             this.Session.Derive();
