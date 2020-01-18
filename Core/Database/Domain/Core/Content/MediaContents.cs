@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
+    using System.IO;
 
     public partial class MediaContents
     {
@@ -20,7 +21,7 @@ namespace Allors.Domain
         private static readonly byte[] BmpSignature = { 0x42, 0x4D };
         private static readonly byte[] PdfSignature = { 0x25, 0x50, 0x44, 0x46 };
 
-        public static string Sniff(byte[] content)
+        public static string Sniff(byte[] content, string fileName)
         {
             if (Match(content, PngSignature))
             {
@@ -45,6 +46,19 @@ namespace Allors.Domain
             if (Match(content, PdfSignature))
             {
                 return "application/pdf";
+            }
+
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                var extension = Path.GetExtension(fileName);
+                if (!string.IsNullOrWhiteSpace(extension))
+                {
+                    switch (extension.ToLowerInvariant())
+                    {
+                        case ".md":
+                            return "text/markdown";
+                    }
+                }
             }
 
             return "application/octet-stream";

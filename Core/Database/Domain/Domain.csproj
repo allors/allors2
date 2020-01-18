@@ -4,7 +4,11 @@
     <RootNamespace>Allors.Domain</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Resources\about.md" />
     <None Remove="Resources\madeliefje.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\about.md" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\madeliefje.jpg" />

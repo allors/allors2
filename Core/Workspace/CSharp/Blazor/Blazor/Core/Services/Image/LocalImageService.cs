@@ -3,7 +3,7 @@ namespace Allors.Services
     using System.Collections.Generic;
     using Allors.Workspace.Domain;
 
-    public partial class LocalMediaService : IMediaService
+    public partial class LocalImageService : IImageService
     {
         public string Source(Media media, int? width = null, int? quality = null, string type = null, string background = "FFF")
         {
@@ -22,7 +22,7 @@ namespace Allors.Services
             {
                 parameters.Add($"t={type}");
             }
-            
+
             if (!"png".Equals(type) && "image/png".Equals(media.Type))
             {
                 parameters.Add($"b={background}");

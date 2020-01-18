@@ -22,7 +22,7 @@
         "stopOnEntry": false,
         "runtimeArgs": ["--nolazy"],
         "sourceMaps": false
-      }
+      },
       {
         "name": "Chrome",
         "type": "chrome",

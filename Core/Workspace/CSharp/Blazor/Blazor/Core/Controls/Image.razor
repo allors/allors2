@@ -1,5 +1,5 @@
 @inject NavigationManager NavigationManager
-@inject Allors.Services.IMediaService MediaService
+@inject Allors.Services.IImageService ImageService
 
 @if (this.Object == null)
 {
@@ -51,9 +51,9 @@ else
         set => sizes = value;
     }
 
-    string Source => this.MediaService.Source(this.Object, this.Width ?? this.Widths?[0], this.Quality, this.Type);
+    string Source => this.ImageService.Source(this.Object, this.Width ?? this.Widths?[0], this.Quality, this.Type);
 
-    string SourceSet => this.Widths != null ? string.Join(", ", this.Widths.Select(v => $"{this.MediaService.Source(this.Object, v, this.Quality, this.Type)} {v}w")) : null;
+    string SourceSet => this.Widths != null ? string.Join(", ", this.Widths.Select(v => $"{this.ImageService.Source(this.Object, v, this.Quality, this.Type)} {v}w")) : null;
 
     string Loading => this.Lazy == null ? "auto" : this.Lazy.Value ? "lazy" : "eager";
 }

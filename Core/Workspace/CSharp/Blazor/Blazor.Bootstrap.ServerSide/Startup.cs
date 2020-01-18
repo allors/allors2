@@ -82,11 +82,11 @@ namespace Blazor.Bootstrap.ServerSide
 
             if (this.Environment.IsDevelopment())
             {
-                services.AddScoped<IMediaService, LocalMediaService>();
+                services.AddScoped<IImageService, LocalImageService>();
             }
             else
             {
-                services.AddScoped<IMediaService, WeservMediaService>();
+                services.AddScoped<IImageService, WeservImageService>();
             }
         }
 

@@ -3,8 +3,6 @@ module.exports = {
     siteName: `Allors Gatsby`,
   },
   plugins: [
-    `gatsby-plugin-typescript`,
-    `gatsby-plugin-graphql-codegen`,
     {
       resolve: "gatsby-source-allors",
       options: {
@@ -14,7 +12,10 @@ module.exports = {
         password: undefined
       },
     },
+    `gatsby-source-allors-media`,
     `gatsby-transformer-sharp`,
+    `gatsby-plugin-typescript`,
+    `gatsby-plugin-graphql-codegen`,
     `gatsby-plugin-sharp`,
   ],
 }

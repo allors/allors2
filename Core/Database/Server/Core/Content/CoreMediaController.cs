@@ -6,44 +6,31 @@
 namespace Allors.Server
 {
     using System;
-
+    using System.Linq;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
 
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Primitives;
+    using Microsoft.Net.Http.Headers;
+    using ISession = Allors.ISession;
 
     public abstract partial class CoreMediaController : Controller
     {
-        protected const int OneYearInSeconds = 60 * 60 * 24 * 356;
-
         protected CoreMediaController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         private ISession Session { get; }
 
         [AllowAnonymous]
-        public virtual IActionResult Download(string id)
+        [HttpGet("/media/{idString}/{*name}")]
+        public virtual IActionResult Get(string idString, string revision)
         {
-            if (Guid.TryParse(id, out var uniqueId))
+            if (Guid.TryParse(idString, out var id))
             {
-                var media = new Medias(this.Session).FindBy(M.Media.UniqueId, uniqueId);
-                if (media != null)
-                {
-                    return this.RedirectToAction("DownloadWithRevision", new { id, revision = media.Revision });
-                }
-            }
-
-            return this.NotFound("Media with unique id " + id + " not found.");
-        }
-
-        [AllowAnonymous]
-        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds, VaryByQueryKeys = new[] { "revision" })]
-        public virtual IActionResult DownloadWithRevision(string id, string revision)
-        {
-            if (Guid.TryParse(id, out var uniqueId))
-            {
-                var media = new Medias(this.Session).FindBy(M.Media.UniqueId, uniqueId);
+                var media = new Medias(this.Session).FindBy(M.Media.UniqueId, id);
                 if (media != null)
                 {
                     if (media.MediaContent?.Data == null)
@@ -51,11 +38,45 @@ namespace Allors.Server
                         return this.NoContent();
                     }
 
-                    return this.File(media.MediaContent.Data, media.MediaContent.Type, media.FileName);
+                    if (Guid.TryParse(revision, out var requestRevision))
+                    {
+                        // Use Caching
+                        if (media.Revision == requestRevision)
+                        {
+                            this.Response.Headers[HeaderNames.CacheControl] = "max-age=31536000";
+                        }
+                        else
+                        {
+                            return this.RedirectToAction("Get", new { idString, revision = media.Revision });
+                        }
+                    }
+                    else
+                    {
+                        // Use Etags
+                        this.Request.Headers.TryGetValue(HeaderNames.IfNoneMatch, out var requestEtagValues);
+                        if (requestEtagValues != StringValues.Empty)
+                        {
+                            var requestEtag = requestEtagValues.FirstOrDefault()?.Replace("\"", string.Empty);
+                            if (Guid.TryParse(requestEtag, out requestRevision))
+                            {
+                                if (media.Revision.Equals(requestRevision))
+                                {
+                                    this.Response.StatusCode = StatusCodes.Status304NotModified;
+                                    this.Response.ContentLength = 0L;
+                                    return this.Content(string.Empty);
+                                }
+                            }
+                        }
+
+                        this.Response.Headers[HeaderNames.ETag] = $"\"{media.Revision}\"";
+                    }
+
+                    var data = media.MediaContent.Data;
+                    return this.File(data, media.MediaContent.Type, media.FileName);
                 }
             }
 
-            return this.NotFound("Media with unique id " + id + " not found.");
+            return this.NotFound("Image with id " + id + " not found.");
         }
     }
 }

@@ -1,0 +1,18 @@
+{
+  "name": "gatsby-source-allors-media",
+  "version": "1.0.0",
+  "description": "Gatsby Source Allors Media",
+  "scripts": {
+    "build": "tsc",
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "gatsby": "^2.18.0",
+    "gatsby-source-filesystem": "^2.1.46"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "typescript": "latest",
+    "ts-node": "latest"
+  }
+}
