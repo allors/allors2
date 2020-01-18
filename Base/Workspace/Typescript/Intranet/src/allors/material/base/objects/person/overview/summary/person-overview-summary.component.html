@@ -5,7 +5,7 @@
       <mat-icon *ngIf="!person.Picture" style="font-size: 36px">person</mat-icon>
 
       <div *ngIf="person.Picture">
-          <img mat-card-image [src]="src">
+        <img mat-card-image [src]="src">
       </div>
     </div>
     <mat-card-title>{{person.displayName}}</mat-card-title>
@@ -21,19 +21,23 @@
     </mat-card-subtitle>
 
     <mat-card-subtitle>
-      <div>last modified: {{ person.LastModifiedDate | date:'d/M/yyyy, HH:mm'}} by {{ person.LastModifiedBy?.displayName}}</div>
+      <div>last modified: {{ person.LastModifiedDate | date:'d/M/yyyy, HH:mm'}} by
+        {{ person.LastModifiedBy?.displayName}}</div>
     </mat-card-subtitle>
 
   </mat-card-header>
 
   <mat-card-content>
 
-    <div *ngIf="organisation" (click)="navigation.overview(organisation)" style="cursor: pointer;">
+    <div *ngIf="organisationContactRelationships">
       <div style="color: grey">
         Organisation
       </div>
+    </div>
+    <div *ngFor="let organisationContactRelationship of organisationContactRelationships"
+      (click)="navigation.overview(organisationContactRelationship.Organisation)" style="cursor: pointer;">
       <div>
-        {{organisation?.displayName}}
+        {{organisationContactRelationship.Organisation.displayName}}
       </div>
     </div>
 
