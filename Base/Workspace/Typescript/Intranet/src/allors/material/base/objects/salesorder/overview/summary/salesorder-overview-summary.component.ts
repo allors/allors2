@@ -160,6 +160,16 @@ export class SalesOrderOverviewSummaryComponent {
       this.saveService.errorHandler);
   }
 
+  send() {
+
+    this.panel.manager.context.invoke(this.order.Send)
+      .subscribe(() => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully sent.', 'close', { duration: 5000 });
+      },
+      this.saveService.errorHandler);
+  }
+
   public cancel(): void {
 
     this.panel.manager.context.invoke(this.order.Cancel)
