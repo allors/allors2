@@ -4,9 +4,9 @@ namespace Allors.Services
     using Allors.Workspace.Domain;
     using Microsoft.AspNetCore.Components;
 
-    public partial class WeservMediaService : IMediaService
+    public partial class WeservImageService : IImageService
     {
-        public WeservMediaService(NavigationManager navigationManager) => this.NavigationManager = navigationManager;
+        public WeservImageService(NavigationManager navigationManager) => this.NavigationManager = navigationManager;
 
         public NavigationManager NavigationManager { get; }
 

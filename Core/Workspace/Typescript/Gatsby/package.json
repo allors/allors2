@@ -10,8 +10,11 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@mdx-js/mdx": "^1.0.0-rc.4",
+    "@mdx-js/react": "^1.0.0-rc.5",
     "gatsby": "^2.18.22",
     "gatsby-image": "^2.2.38",
+    "gatsby-mdx": "^1.0.0",
     "gatsby-plugin-graphql-codegen": "^2.1.1",
     "gatsby-plugin-sharp": "^2.3.13",
     "gatsby-plugin-typescript": "^2.1.26",

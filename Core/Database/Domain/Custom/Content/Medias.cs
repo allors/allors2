@@ -1,12 +1,39 @@
 namespace Allors.Domain
 {
+    using System;
     using System.IO;
     using System.Linq;
     using System.Reflection;
 
     public partial class Medias
     {
-        protected override void CustomSetup(Setup setup) => new MediaBuilder(this.Session).WithInData(this.GetResourceBytes("madeliefje.jpg")).WithFileName("madeliefje.jpg").Build();
+        public static readonly Guid MadeliefjeId = new Guid("AE0D2BAA-9E07-4DD2-8AAD-98E57010CE98");
+        public static readonly Guid AboutId = new Guid("F5922C1B-A0DA-4A77-98BD-21F037C0E3E6");
+
+        private UniquelyIdentifiableSticky<Media> cache;
+
+        public Sticky<Guid, Media> Cache => this.cache ??= new UniquelyIdentifiableSticky<Media>(this.Session);
+
+        public Media Madeliefje => this.Cache[MadeliefjeId];
+
+        public Media About => this.Cache[AboutId];
+
+        protected override void CustomSetup(Setup setup)
+        {
+            var merge = this.Cache.Merger().Action();
+
+            merge(MadeliefjeId, v =>
+            {
+                v.InData = this.GetResourceBytes("madeliefje.jpg");
+                v.FileName = "madeliefje.jpg";
+            });
+
+            merge(AboutId, v =>
+            {
+                v.InData = this.GetResourceBytes("about.md");
+                v.FileName = "about.md";
+            });
+        }
 
         private byte[] GetResourceBytes(string name)
         {
@@ -24,6 +51,5 @@ namespace Allors.Domain
 
             return null;
         }
-
     }
 }

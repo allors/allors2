@@ -10,14 +10,9 @@ export default class IndexPage extends React.Component<{ data: Query }> {
     const { siteName } = this.props.data.site.siteMetadata;
     const { allAllorsOrganisation } = this.props.data;
 
-    const { allFile } = this.props.data;
-    const image = allFile.edges[0].node.childImageSharp.fluid;
-
     return (
       <Layout>
         <h1>{siteName}</h1>
-
-        <Img fluid={image} />
 
         {allAllorsOrganisation.edges.map(v =>
           <ul>
@@ -42,19 +37,6 @@ export const pageQuery = graphql`
         node {
           name
           slug
-        }
-      }
-    },
-    allFile {
-      edges {
-        node {
-          name,
-          childImageSharp{
-            id,
-            fluid {
-              ...GatsbyImageSharpFluid
-            }
-          }
         }
       }
     }

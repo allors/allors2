@@ -39,6 +39,8 @@ describe('gatsby-node',
           var gatsby = new GatsbySourceAllors(args, extra);
           await gatsby.sourceNodes();
 
+          var medias = fakeNodes.nodes.filter(v=>v.internal.type === "AllorsMedia");
+
           assert.isNotEmpty(fakeNodes.nodes);
         });
       });
