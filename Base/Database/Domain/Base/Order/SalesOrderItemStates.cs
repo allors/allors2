@@ -11,6 +11,7 @@ namespace Allors.Domain
     public partial class SalesOrderItemStates
     {
         internal static readonly Guid CreatedId = new Guid("5B0993B5-5784-4e8d-B1AD-93AFFAC9A913");
+        internal static readonly Guid ReadyForPostingId = new Guid("217468B3-E088-4AF0-AA78-1B2FCDF69318");
         internal static readonly Guid CancelledId = new Guid("8B6FD903-B4A6-4360-A63C-9EBDFB7243AA");
         internal static readonly Guid CompletedId = new Guid("AC46B106-D266-46d7-BFD7-4196394A5AE0");
         internal static readonly Guid RejectedId = new Guid("F39F2F64-49A8-4a70-ACBC-B7F581F31EEF");
@@ -21,6 +22,8 @@ namespace Allors.Domain
         private UniquelyIdentifiableSticky<SalesOrderItemState> cache;
 
         public SalesOrderItemState Created => this.Cache[CreatedId];
+
+        public SalesOrderItemState ReadyForPosting => this.Cache[ReadyForPostingId];
 
         public SalesOrderItemState Cancelled => this.Cache[CancelledId];
 
@@ -82,6 +85,11 @@ namespace Allors.Domain
             merge(FinishedId, v =>
             {
                 v.Name = "Finished";
+            });
+
+            merge(ReadyForPostingId, v =>
+            {
+                v.Name = "Ready For Posting";
             });
         }
     }

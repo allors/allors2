@@ -106,6 +106,16 @@ export class ProductQuoteOverviewSummaryComponent {
     );
   }
 
+  send() {
+
+    this.panel.manager.context.invoke(this.productQuote.Send)
+      .subscribe(() => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully sent.', 'close', { duration: 5000 });
+      },
+      this.saveService.errorHandler);
+  }
+
   public reopen(): void {
 
     this.panel.manager.context.invoke(this.productQuote.Reopen)

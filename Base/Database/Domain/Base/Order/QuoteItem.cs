@@ -93,6 +93,18 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (!this.ExistUnitPrice || this.UnitPrice <= 0)
+            {
+                derivation.Validation.AddError(this, this.Meta.UnitPrice, ErrorMessages.UnitPriceRequired);
+            }
+        }
+
+        public void BaseSend(QuoteItemSend method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Cancelled;
+
         public void BaseCancel(QuoteItemCancel method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Cancelled;
 
         public void BaseReject(QuoteItemReject method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Rejected;

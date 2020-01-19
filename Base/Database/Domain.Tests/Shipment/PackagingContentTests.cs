@@ -51,6 +51,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
             var package = new ShipmentPackageBuilder(this.Session).Build();
@@ -99,6 +103,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 

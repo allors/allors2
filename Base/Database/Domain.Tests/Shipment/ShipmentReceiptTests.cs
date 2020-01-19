@@ -170,6 +170,10 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
+            order1.Send();
+
+            this.Session.Derive();
+
             var sessionInventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(inventoryItem);
             var sessionSalesItem = (SalesOrderItem)this.Session.Instantiate(salesItem);
 

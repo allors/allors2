@@ -626,6 +626,15 @@ namespace Allors.Repository
         public VatClause DerivedVatClause { get; set; }
 
         #region Allors
+
+        [Id("4B8004A4-4E4E-4E52-913E-AB25AE24D240")]
+
+        #endregion
+
+        [Workspace]
+        public void Send() { }
+
+        #region Allors
         [Id("E822B75C-3A37-480A-A469-B18A060EC560")]
         #endregion
         [Workspace]

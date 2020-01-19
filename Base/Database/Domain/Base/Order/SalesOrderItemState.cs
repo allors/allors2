@@ -9,6 +9,8 @@ namespace Allors.Domain
     {
         public bool Created => Equals(this.UniqueId, SalesOrderItemStates.CreatedId);
 
+        public bool ReadyForPosting => Equals(this.UniqueId, SalesOrderItemStates.ReadyForPostingId);
+
         public bool Cancelled => Equals(this.UniqueId, SalesOrderItemStates.CancelledId);
 
         public bool Completed => Equals(this.UniqueId, SalesOrderItemStates.CompletedId);

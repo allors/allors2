@@ -124,6 +124,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             Assert.Equal(10, inventoryItem.QuantityCommittedOut);
             Assert.Equal(0, inventoryItem.QuantityOnHand);
             Assert.Equal(0, inventoryItem.AvailableToPromise);

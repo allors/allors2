@@ -393,6 +393,12 @@ namespace Allors.Repository
         void Approve();
 
         #region Allors
+        [Id("506ED1BA-5F88-487E-B126-470FE1FD7791")]
+        #endregion
+        [Workspace]
+        void Send();
+
+        #region Allors
         [Id("39694549-7173-4904-8AE0-DA7390F595A5")]
         #endregion
         [Workspace]
