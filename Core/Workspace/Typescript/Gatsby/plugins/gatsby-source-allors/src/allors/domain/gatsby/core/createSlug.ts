@@ -1,4 +1,4 @@
-export default (str) => {
+export function createSlug(str) {
   str = String(str).toString();
   str = str.replace(/^\s+|\s+$/g, ""); // trim
   str = str.toLowerCase();
