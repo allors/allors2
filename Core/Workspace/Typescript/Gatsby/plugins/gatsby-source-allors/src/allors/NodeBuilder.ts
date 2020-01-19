@@ -13,7 +13,7 @@ export class NodeBuilder {
   metaPopulation: MetaPopulation;
   m: Meta;
   workspace: Workspace;
-  source: NodeMapper;
+  mapper: NodeMapper;
   login: string;
   user: string;
   password: string;
@@ -31,7 +31,7 @@ export class NodeBuilder {
     this.workspace = new Workspace(this.metaPopulation);
     domain.apply(this.workspace);
 
-    this.source = new NodeMapper(args, options);
+    this.mapper = new NodeMapper(args, options);
   }
 
   public async build() {
@@ -76,6 +76,6 @@ export class NodeBuilder {
       .load(new PullRequest({ pulls }));
 
     // Map to Nodes
-    this.source.map(loaded);
+    this.mapper.map(loaded);
   }
 }
