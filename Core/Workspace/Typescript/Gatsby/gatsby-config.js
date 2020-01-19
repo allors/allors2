@@ -12,7 +12,6 @@ module.exports = {
         password: undefined
       },
     },
-    `gatsby-source-allors-media`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-typescript`,
     `gatsby-plugin-graphql-codegen`,

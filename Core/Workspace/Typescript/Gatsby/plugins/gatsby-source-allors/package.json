@@ -11,8 +11,9 @@
     "az:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-trx-reporter ./src/**/*.spec.ts "
   },
   "dependencies": {
+    "axios": "latest",
     "gatsby": "^2.18.0",
-    "axios": "latest"
+    "gatsby-source-filesystem": "^2.1.46"
   },
   "devDependencies": {
     "@types/chai": "latest",
