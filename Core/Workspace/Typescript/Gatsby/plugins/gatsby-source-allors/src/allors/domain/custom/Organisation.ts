@@ -2,7 +2,7 @@ import { domain } from '../domain';
 import { Meta } from '../../meta';
 import { Organisation } from '../generated';
 
-import createSlug from '../gatsby/createSlug';
+import { createSlug } from '../../gatsby/utils/createSlug';
 
 declare module '../generated/Organisation.g' {
   interface Organisation {

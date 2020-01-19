@@ -1,15 +1,15 @@
-import { GatsbySourceAllors } from './allors/GatsbySourceAllors';
-import { CreateNodeArgs, PluginOptions } from 'gatsby';
-import { SourceMedia } from './allors/gatsby';
+import { NodeBuilder } from './allors/NodeBuilder';
+import { CreateNodeArgs, PluginOptions, SourceNodesArgs } from 'gatsby';
+import { MediaNodeBuilder } from './allors/gatsby/MediaNodeBuilder';
 
 export async function sourceNodes(args: SourceNodesArgs, options: PluginOptions) {
 
-  var gatsby = new GatsbySourceAllors(args, options);
-  await gatsby.sourceNodes();
+  var nodeBuilder = new NodeBuilder(args, options);
+  await nodeBuilder.build();
 }
 
 export async function onCreateNode(args: CreateNodeArgs, options: PluginOptions) {
 
-  var sourceMedia = new SourceMedia(args, options);
-  await sourceMedia.onCreateNode();
+  var mediaNodeBuilder = new MediaNodeBuilder(args, options);
+  await mediaNodeBuilder.build();
 }

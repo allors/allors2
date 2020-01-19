@@ -1,7 +1,7 @@
 
 import { assert } from 'chai';
 import 'mocha';
-import { GatsbySourceAllors } from '../GatsbySourceAllors';
+import { NodeBuilder } from '../NodeBuilder';
 
 class FakeNodes {
   public nodes = [];
@@ -36,8 +36,8 @@ describe('gatsby-node',
             password: undefined
           }
 
-          var gatsby = new GatsbySourceAllors(args, extra);
-          await gatsby.sourceNodes();
+          var gatsby = new NodeBuilder(args, extra);
+          await gatsby.build();
 
           var medias = fakeNodes.nodes.filter(v=>v.internal.type === "AllorsMedia");
 

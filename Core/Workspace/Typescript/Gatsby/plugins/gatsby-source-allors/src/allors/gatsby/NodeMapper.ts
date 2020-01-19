@@ -1,11 +1,11 @@
-import { Loaded } from "../../promise";
+import { Loaded } from "../promise";
 
 import { NodePluginArgs } from "gatsby"
-import { ISessionObject } from "../../framework";
+import { ISessionObject } from "../framework";
 
 const camel = (value: string) => value.replace(/^\w/, c => c.toLowerCase());
 
-export class Mapper {
+export class NodeMapper {
 
   constructor(private args: NodePluginArgs, private options) {
   }

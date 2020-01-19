@@ -3,18 +3,17 @@ import { Database, Context } from "./promise";
 import { AxiosHttp } from "./promise/core/http/AxiosHttp";
 import { data, Meta, PullFactory } from "./meta";
 import { domain } from './domain';
-import { Mapper } from "./domain/gatsby/Mapper";
+import { NodeMapper } from "./gatsby/NodeMapper";
 
 import { NodePluginArgs } from "gatsby"
 
-export class GatsbySourceAllors {
+export class NodeBuilder {
 
   http: AxiosHttp;
   metaPopulation: MetaPopulation;
   m: Meta;
   workspace: Workspace;
-  mapper: Mapper;
-
+  source: NodeMapper;
   login: string;
   user: string;
   password: string;
@@ -32,10 +31,10 @@ export class GatsbySourceAllors {
     this.workspace = new Workspace(this.metaPopulation);
     domain.apply(this.workspace);
 
-    this.mapper = new Mapper(args, options);
+    this.source = new NodeMapper(args, options);
   }
 
-  public async sourceNodes() {
+  public async build() {
 
     // Meta Gatsby
     this.m.Organisation.metaGatsby = {
@@ -77,6 +76,6 @@ export class GatsbySourceAllors {
       .load(new PullRequest({ pulls }));
 
     // Map to Nodes
-    this.mapper.map(loaded);
+    this.source.map(loaded);
   }
 }

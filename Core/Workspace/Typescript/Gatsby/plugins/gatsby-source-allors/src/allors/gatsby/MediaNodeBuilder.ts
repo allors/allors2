@@ -1,7 +1,7 @@
 import { CreateNodeArgs, PluginOptions } from "gatsby";
 import { createRemoteFileNode } from "gatsby-source-filesystem";
 
-export class SourceMedia {
+export class MediaNodeBuilder {
 
   url: string;
 
@@ -13,7 +13,7 @@ export class SourceMedia {
     this.url = (options["url"] as string) + "media/" + node.uniqueId + fileComponent;
   }
 
-  async onCreateNode() {
+  async build() {
 
     const { node, cache, store, createNodeId, reporter, actions: { createNode } } = this.args;
 
