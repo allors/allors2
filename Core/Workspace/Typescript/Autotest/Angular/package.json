@@ -1,7 +1,7 @@
 {
   "name": "autocomplete",
   "version": "2.0.0",
-  "description": "Allors Autocomplete",
+  "description": "Allors Autotest",
   "repository": "https://github.com/Allors/allors2",
   "private": true,
   "license": "LGPL-3.0",
@@ -16,10 +16,9 @@
     "autotest": "npm run build && node ./out-tsc/src/main && npx rimraf ./out-tsc"
   },
   "dependencies": {
-    "@angular/compiler": "~8.2.2",
-    "@angular/compiler-cli": "~8.2.2",
-    "@angular/core": "~8.2.2",
-    "ejs": "^2.6.2",
+    "@angular/compiler": "~8.2.14",
+    "@angular/compiler-cli": "~8.2.14",
+    "@angular/core": "~8.2.14",
     "moment": "^2.24.0",
     "ngast": "^0.3.0",
     "rxjs": "~6.4.0",

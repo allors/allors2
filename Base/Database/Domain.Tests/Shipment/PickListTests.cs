@@ -118,6 +118,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
             shipment.Pick();
@@ -224,6 +228,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+            this.Session.Derive();
+
+            order.Send();
+
             this.Session.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
@@ -358,6 +366,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
             shipment.Pick();
             this.Session.Derive();
@@ -454,6 +466,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order1.Send();
+
+            this.Session.Derive();
+
             var order2 = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
@@ -469,6 +485,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order2.Confirm();
+
+            this.Session.Derive();
+
+            order2.Send();
 
             this.Session.Derive();
 
@@ -537,6 +557,10 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
+            order1.Send();
+
+            this.Session.Derive();
+
             Assert.Single(customer.ShipmentsWhereShipToParty);
 
             var order2 = new SalesOrderBuilder(this.Session)
@@ -553,6 +577,10 @@ namespace Allors.Domain
             order2.Confirm();
 
             this.Session.Derive(true);
+
+            order2.Send();
+
+            this.Session.Derive();
 
             Assert.Single(customer.ShipmentsWhereShipToParty);
 
@@ -575,6 +603,10 @@ namespace Allors.Domain
             order3.Confirm();
 
             this.Session.Derive(true);
+
+            order3.Send();
+
+            this.Session.Derive();
 
             var store2Shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress.First(v => v.Store.Equals(store2));
 

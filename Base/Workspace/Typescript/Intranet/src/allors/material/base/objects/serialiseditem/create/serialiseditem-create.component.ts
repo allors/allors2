@@ -1,13 +1,11 @@
-import * as moment from 'moment';
-
 import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/core';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { SaveService, FiltersService, ObjectData } from '../../../../../material';
-import { ContextService, SearchFactory, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party } from '../../../../../domain';
+import { ContextService, SearchFactory, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope, SingletonId } from '../../../../../angular';
+import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, Singleton } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -31,7 +29,7 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
   owner: Party;
   part: Part;
   itemPart: Part;
-  parts: Part[];
+  selectedPart: Part;
 
   private subscription: Subscription;
 
@@ -62,17 +60,13 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
           const pulls = [
             this.fetcher.locales,
             pull.Party({ object: this.data.associationId }),
-            pull.Part({
-              name: 'forPart',
-              object: this.data.associationId
-            }),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.Part({
+              name: 'forPart',
+              object: this.data.associationId,
               include: {
-                InventoryItemKind: x,
                 SerialisedItems: x
-              },
-              sort: new Sort(m.Part.Name),
+              }
             }),
             pull.SerialisedItemState({
               predicate: new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true }),
@@ -88,8 +82,6 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
 
         this.allors.context.reset();
 
-        const now = moment.utc();
-
         this.owner = loaded.objects.Party as Party;
         this.part = loaded.objects.forPart as Part;
 
@@ -97,15 +89,12 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
         this.ownerships = loaded.collections.Ownerships as Ownership[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
-        this.parts = loaded.collections.Parts as Part[];
-        this.parts = this.parts.filter(v => v.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae');
-
         this.serialisedItem = this.allors.context.create('SerialisedItem') as SerialisedItem;
         this.serialisedItem.AvailableForSale = false;
         this.serialisedItem.OwnedBy = this.owner;
 
         if (this.part) {
-          this.serialisedItem.Name = this.part.Name;
+          this.partSelected(this.part);
         }
       });
   }
@@ -117,13 +106,38 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
   }
 
   public partSelected(part: Part): void {
+    if (part !== undefined) {
+      this.selectedPart = part;
+      this.serialisedItem.Name = part.Name;
 
-    this.serialisedItem.Name = part.Name;
+      const { pull, x } = this.metaService;
+
+      const pulls = [
+        pull.Part(
+          {
+            object: part,
+            include: {
+              SerialisedItems: x
+            }
+          }
+        ),
+      ];
+
+      this.allors.context
+        .load(new PullRequest({ pulls }))
+        .subscribe((loaded) => {
+          this.selectedPart = loaded.objects.Part as Part;
+          this.serialisedItem.Name = this.selectedPart.Name;
+        });
+
+    } else {
+      this.selectedPart = undefined;
+    }
   }
 
   public save(): void {
 
-    this.part.AddSerialisedItem(this.serialisedItem);
+    this.selectedPart.AddSerialisedItem(this.serialisedItem);
 
     this.allors.context
       .save()

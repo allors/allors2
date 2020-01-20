@@ -546,5 +546,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Continue() { }
+
+        #region Allors
+        [Id("C7995893-DEA8-4619-80DC-AF47A42872CE")]
+        #endregion
+        [Workspace]
+        public void Send() { }
     }
 }

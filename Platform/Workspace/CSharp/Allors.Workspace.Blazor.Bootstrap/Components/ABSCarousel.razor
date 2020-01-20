@@ -12,7 +12,9 @@
             <div class="carousel-inner">
                 @foreach (var item in Items)
                 {
-                    <BSCarouselItem src="@item.Source" alt="@item.Alt" CaptionText="@item.Caption" ActionLink="@item.ActionLink" ActionLinkTarget="@item.ActionLinkTarget" />
+                <BSCarouselItem src="@item.Source" alt="@item.Alt" loading="lazy" ActionLink="@item.ActionLink" ActionLinkTarget="@item.ActionLinkTarget">
+                    <BSCarouselCaption CaptionText="@item.Caption" HeaderText="@item.Header"/>
+                </BSCarouselItem>
                 }
             </div>
             <BSCarouselControl CarouselDirection="CarouselDirection.Previous" NumberOfItems="@Items.Count" />

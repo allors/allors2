@@ -31,6 +31,24 @@ namespace Allors.Repository
         [Workspace]
         public Settings Settings { get; set; }
 
+        #region Allors
+        [Id("076E1D78-8C6A-4A9D-A023-106D3EFB3B87")]
+        [AssociationId("7F5BC6FF-92F1-444A-865B-D74DE39E0581")]
+        [RoleId("93A2BD2B-A8BC-41C0-8241-0C81FB5EFF6D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public Template NonUnifiedPartBarcodePrintTemplate { get; set; }
+
+        #region Allors
+        [Id("CDB21C6E-CEE4-4E2B-839E-CA2F414B4EF9")]
+        [AssociationId("27A8200A-3688-4F3F-AB01-6A5029FAF2A2")]
+        [RoleId("32E58B93-F8E9-43DA-A081-29C87A48FCEF")]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToOne)]
+        public NonUnifiedPartBarcodePrint NonUnifiedPartBarcodePrint { get; set; }
+
         #region inherited methods
 
         #endregion

@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, RefreshService, Invoked, Action } from '../../../../../../angular';
-import { WorkTask, SalesInvoice } from '../../../../../../domain';
+import { WorkTask, SalesInvoice, SerialisedItem, FixedAsset } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrintService, SaveService } from '../../../../../../../allors/material';
@@ -21,6 +21,7 @@ export class WorkTaskOverviewSummaryComponent {
 
   print: Action;
   salesInvoices: Set<SalesInvoice>;
+  assets: FixedAsset[];
 
   constructor(
     @Self() public panel: PanelService,
@@ -40,6 +41,7 @@ export class WorkTaskOverviewSummaryComponent {
     const workTaskPullName = `${panel.name}_${this.m.WorkTask.name}`;
     const serviceEntryPullName = `${panel.name}_${this.m.ServiceEntry.name}`;
     const workEffortBillingPullName = `${panel.name}_${this.m.WorkEffortBilling.name}`;
+    const fixedAssetPullName = `${panel.name}_${this.m.FixedAsset.name}`;
     const parentPullName = `${panel.name}_${this.m.WorkTask.name}_parent`;
 
     panel.onPull = (pulls) => {
@@ -78,6 +80,15 @@ export class WorkTaskOverviewSummaryComponent {
             }
           }
         }),
+        pull.WorkEffort({
+          name: fixedAssetPullName,
+          object: id,
+          fetch: {
+            WorkEffortFixedAssetAssignmentsWhereAssignment: {
+              FixedAsset: x,
+            }
+          }
+        }),
         pull.TimeEntryBilling({
           name: serviceEntryPullName,
           predicate:
@@ -102,6 +113,9 @@ export class WorkTaskOverviewSummaryComponent {
     panel.onPulled = (loaded) => {
       this.workTask = loaded.objects[workTaskPullName] as WorkTask;
       this.parent = loaded.objects[parentPullName] as WorkTask;
+
+      this.assets = loaded.collections[fixedAssetPullName] as FixedAsset[];
+
       const salesInvoices1 = loaded.collections[workEffortBillingPullName] as SalesInvoice[];
       const salesInvoices2 = loaded.collections[serviceEntryPullName] as SalesInvoice[];
       this.salesInvoices = new Set([...salesInvoices1, ...salesInvoices2]);
@@ -115,7 +129,7 @@ export class WorkTaskOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public reopen(): void {
@@ -125,7 +139,7 @@ export class WorkTaskOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public complete(): void {
@@ -135,7 +149,7 @@ export class WorkTaskOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully completed.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 
   public invoice(): void {
@@ -145,6 +159,6 @@ export class WorkTaskOverviewSummaryComponent {
         this.refreshService.refresh();
         this.snackBar.open('Successfully invoiced.', 'close', { duration: 5000 });
       },
-      this.saveService.errorHandler);
+        this.saveService.errorHandler);
   }
 }

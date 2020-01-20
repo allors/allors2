@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("4a3efb9c-1556-4e57-bb59-f09d297e607e")]
     #endregion
-    public partial interface FixedAsset : Commentable, Object
+    public partial interface FixedAsset : Commentable, Searchable
     {
         #region Allors
         [Id("354107ce-4eb6-4b9a-83c8-5cfe5e3adb22")]
@@ -106,13 +106,43 @@ namespace Allors.Repository
         LocalisedText[] LocalisedKeywords { get; set; }
 
         #region Allors
-        [Id("A6B9848C-A306-4653-BE23-11ED7D0CB79C")]
-        [AssociationId("8DAEF9B4-153D-49C8-B4B7-0F2AF071C82C")]
-        [RoleId("8ABFFF90-0042-4EF9-8A52-C52BD8CA6D18")]
+        [Id("31c78290-83ff-469b-bbc5-8b9c2c7cbdf3")]
+        [AssociationId("272a8aa8-eef1-4471-b40a-52c1753afa81")]
+        [RoleId("4b359c7b-2252-45b9-a9d2-9d140dd44b75")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
+        [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         [Workspace]
-        Media[] ElectronicDocuments { get; set; }
+        Media[] PublicElectronicDocuments { get; set; }
+
+        #region Allors
+        [Id("681b22d3-5338-4971-89e1-7f812883b728")]
+        [AssociationId("a87cb9be-d7a9-4434-b00d-2474c37dd66e")]
+        [RoleId("abb8e44c-cc95-48b2-a1e3-4afe0ca2b06f")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        LocalisedMedia[] PublicLocalisedElectronicDocuments { get; set; }
+
+        #region Allors
+        [Id("6835b1ee-427b-4fb0-acc4-e5572be2a855")]
+        [AssociationId("c2b2f5e6-5cb3-48d5-b07e-2d89dd0547bf")]
+        [RoleId("45595510-9337-4d71-8616-5cf8d24ec4e6")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        Media[] PrivateElectronicDocuments { get; set; }
+
+        #region Allors
+        [Id("cfd10526-8ba6-4194-ad9d-12bbaedcc1ce")]
+        [AssociationId("a3f7ef2f-c7cd-4085-81c7-f630009345aa")]
+        [RoleId("8449b3ec-6f93-4c69-97d1-d2da667d4ade")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
     }
 }

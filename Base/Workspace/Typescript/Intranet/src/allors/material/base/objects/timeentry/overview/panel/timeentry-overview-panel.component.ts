@@ -56,7 +56,7 @@ export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit
   ngOnInit() {
 
     this.panel.name = 'timeentry';
-    this.panel.title = 'Time Entry';
+    this.panel.title = 'Time Entries';
     this.panel.icon = 'timer';
     this.panel.expandable = true;
 

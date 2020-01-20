@@ -18,13 +18,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
+            var part = new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            this.Session.Derive();
+
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new NonUnifiedPartBuilder(this.Session)
-                            .WithProductIdentification(new PartNumberBuilder(this.Session)
-                                .WithIdentification("1")
-                                .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
-                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                            .Build())
+                .WithPart(part)
                 .Build();
 
             this.Session.Derive();
@@ -53,13 +57,17 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
+            var part = new NonUnifiedPartBuilder(this.Session)
+                .WithProductIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            this.Session.Derive();
+
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new NonUnifiedPartBuilder(this.Session)
-                                .WithProductIdentification(new PartNumberBuilder(this.Session)
-                                    .WithIdentification("1")
-                                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
-                                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                                .Build())
+                .WithPart(part)
                 .Build();
 
             this.Session.Derive();
@@ -159,6 +167,10 @@ namespace Allors.Domain
             this.Session.Derive(true);
             this.Session.Commit();
 
+            order1.Send();
+
+            this.Session.Derive();
+
             Assert.Equal(0, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
             Assert.Equal(5, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
@@ -166,6 +178,10 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
             this.Session.Commit();
+
+            order2.Send();
+
+            this.Session.Derive();
 
             // Assert
             Assert.Equal(0, salesItem1.QuantityRequestsShipping);
@@ -295,6 +311,10 @@ namespace Allors.Domain
             order.Confirm();
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             // Assert
             Assert.Equal(5, salesItem.QuantityRequestsShipping);
             Assert.Equal(0, salesItem.QuantityPendingShipment);
@@ -336,6 +356,10 @@ namespace Allors.Domain
             order.Confirm();
 
             this.Session.Derive(true);
+
+            order.Send();
+
+            this.Session.Derive();
 
             Assert.Equal(0, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
             Assert.Equal(5, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);

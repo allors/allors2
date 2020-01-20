@@ -106,6 +106,18 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                     UnitOfMeasure: x
                   }
                 },
+                LocalisedNames: {
+                  Locale: x,
+                },
+                LocalisedDescriptions: {
+                  Locale: x,
+                },
+                LocalisedComments: {
+                  Locale: x,
+                },
+                LocalisedKeywords: {
+                  Locale: x,
+                },
                 Ownership: x,
                 OwnedBy: x,
                 RentedBy: x,
@@ -113,7 +125,10 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                 SecondaryPhotos: x,
                 AdditionalPhotos: x,
                 PrivatePhotos: x,
-                ElectronicDocuments: x,
+                PublicElectronicDocuments: x,
+                PrivateElectronicDocuments: x,
+                PublicLocalisedElectronicDocuments: x,
+                PrivateLocalisedElectronicDocuments: x,
                 PurchaseOrder: x,
                 SuppliedBy: x
               }

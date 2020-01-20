@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
 import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
 import { AllorsMaterialFooterModule } from '../../../../core/components/footer';
@@ -40,6 +41,7 @@ export { OrganisationContactRelationshipEditComponent } from './organisationcont
     OrganisationContactRelationshipEditComponent,
   ],
   imports: [
+    AllorsMaterialAutoCompleteModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialFooterModule,

@@ -1,0 +1,59 @@
+@inject NavigationManager NavigationManager
+@inject Allors.Services.IImageService ImageService
+
+@if (this.Object == null)
+{
+    <img src="/img/no-image.png" @attributes="@Attributes" loading="@Loading"/>
+}
+else
+{
+    <img src="@Source" srcset="@SourceSet" sizes="@Sizes" loading="@Loading" @attributes="@Attributes">
+}
+
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object> Attributes { get; set; }
+
+    [Parameter]
+    public Allors.Workspace.Domain.Media Object { get; set; }
+
+    [Parameter]
+    public int? Width { get; set; }
+
+    [Parameter]
+    public int[] Widths { get; set; }
+
+    [Parameter]
+    public int Columns { get; set; } = 1;
+
+    [Parameter]
+    public bool? Lazy { get; set; }
+
+    [Parameter]
+    public int? Quality { get; set; }
+
+    [Parameter]
+    public string Type { get; set; }
+
+    private string sizes;
+
+    public string Sizes
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(sizes) && this.Widths?.Length > 0)
+            {
+                return string.Join(", ", this.Widths.SkipLast(1).Select(v => $"(max-width: {v * this.Columns}px) {v}px")) + $", {this.Widths.Last()}px";
+            }
+
+            return sizes;
+        }
+        set => sizes = value;
+    }
+
+    string Source => this.ImageService.Source(this.Object, this.Width ?? this.Widths?[0], this.Quality, this.Type);
+
+    string SourceSet => this.Widths != null ? string.Join(", ", this.Widths.Select(v => $"{this.ImageService.Source(this.Object, v, this.Quality, this.Type)} {v}w")) : null;
+
+    string Loading => this.Lazy == null ? "auto" : this.Lazy.Value ? "lazy" : "eager";
+}

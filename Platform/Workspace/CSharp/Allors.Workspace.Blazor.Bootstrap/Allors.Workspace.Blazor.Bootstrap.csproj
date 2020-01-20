@@ -1,23 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <OutputType>Library</OutputType>
     <RazorLangVersion>3.0</RazorLangVersion>
     <RootNamespace>Allors.Workspace.Blazor.Bootstrap</RootNamespace>
     <AssemblyName>Allors.Workspace.Blazor.Bootstrap</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Forms\Roles\ABSRadio.razor.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="CarouselItem.cs" />
-    <Content Include="Forms\Roles\ABSRadioGroup.razor.cs" />
-  </ItemGroup>
-
+ 
   <ItemGroup>
     <PackageReference Include="BlazorStrap" Version="1.1.101" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.0" />
@@ -27,6 +18,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Allors.Workspace.Blazor\Allors.Workspace.Blazor.csproj" />
   </ItemGroup>
-
 
 </Project>

@@ -3,28 +3,37 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Allors;
-using Allors.Meta;
-using src.allors.material.@base.objects.customershipment.create;
-using src.allors.material.@base.objects.customershipment.overview;
-using src.allors.material.@base.objects.shipment.list;
-
 namespace Tests.CustomerShipmentTests
 {
     using System.Linq;
+    using Allors;
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
+    using Allors.Meta;
     using Components;
+    using src.allors.material.@base.objects.customershipment.overview;
+    using src.allors.material.@base.objects.shipment.list;
     using Xunit;
 
     [Collection("Test collection")]
     public class CustomerShipmentEditTest : Test
     {
         private readonly ShipmentListComponent shipmentListPage;
+        private Organisation internalOrganisation;
 
         public CustomerShipmentEditTest(TestFixture fixture)
             : base(fixture)
         {
+            this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+
+            for (int i = 0; i < 10; i++)
+            {
+                this.internalOrganisation.CreateB2BCustomer(this.Session.Faker());
+            }
+
+            this.Session.Derive();
+            this.Session.Commit();
+
             this.Login();
             this.shipmentListPage = this.Sidenav.NavigateToShipments();
         }
@@ -34,10 +43,21 @@ namespace Tests.CustomerShipmentTests
         {
             var before = new CustomerShipments(this.Session).Extent().ToArray();
 
-            var internalOrganisation = new Organisations(this.MemorySession).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new CustomerShipmentBuilder(this.MemorySession).WithDefaults(internalOrganisation).Build();
+            var expected = new CustomerShipmentBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
-            this.MemorySession.Derive();
+            this.Session.Derive();
+
+            var expectedShipToPartyPartyName = expected.ShipToParty.DisplayName();
+            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
+            var expectedShipToContactPersonPartyName = expected.ShipToContactPerson.DisplayName();
+            var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
+            var expectedShipFromFacilityName = expected.ShipFromFacility.Name;
+            var expectedShipmentMethodName = expected.ShipmentMethod.Name;
+            var expectedCarrierName = expected.Carrier.Name;
+            var expectedEstimatedShipDate = expected.EstimatedShipDate.Value.Date;
+            var expectedEstimatedArrivalDate = expected.EstimatedArrivalDate.Value.Date;
+            var expectedHandlingInstruction = expected.HandlingInstruction;
+            var expectedComment = expected.Comment;
 
             var shipment = before.First(v => ((Organisation)v.ShipFromParty).IsInternalOrganisation.Equals(true));
             var id = shipment.Id;
@@ -47,9 +67,9 @@ namespace Tests.CustomerShipmentTests
             var shipmentOverviewDetail = shipmentOverview.CustomershipmentOverviewDetail.Click();
 
             shipmentOverviewDetail
-                .ShipToParty.Select(expected.ShipToParty.PartyName)
+                .ShipToParty.Select(expected.ShipToParty.DisplayName())
                 .ShipToAddress.Set(expected.ShipToAddress?.DisplayName())
-                .ShipToContactPerson.Set(expected.ShipToContactPerson?.PartyName)
+                .ShipToContactPerson.Set(expected.ShipToContactPerson?.DisplayName())
                 .ShipFromAddress.Set(expected.ShipFromParty?.ShippingAddress.DisplayName())
                 .ShipmentMethod.Set(expected.ShipmentMethod.Name)
                 .ShipFromFacility.Set(((Organisation)expected.ShipFromParty).FacilitiesWhereOwner?.First.Name)
@@ -57,8 +77,10 @@ namespace Tests.CustomerShipmentTests
                 .EstimatedShipDate.Set(expected.EstimatedShipDate.Value.Date)
                 .EstimatedArrivalDate.Set(expected.EstimatedArrivalDate.Value.Date)
                 .HandlingInstruction.Set(expected.HandlingInstruction)
-                .Comment.Set(expected.Comment)
-                .SAVE.Click();
+                .Comment.Set(expected.Comment);
+
+            this.Session.Rollback();
+            shipmentOverviewDetail.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -68,17 +90,17 @@ namespace Tests.CustomerShipmentTests
 
             Assert.Equal(after.Length, before.Length);
 
-            Assert.Equal(expected.ShipToParty.PartyName, shipment.ShipToParty.PartyName);
-            Assert.Equal(expected.ShipToAddress.DisplayName(), shipment.ShipToAddress.DisplayName());
-            Assert.Equal(expected.ShipToContactPerson.PartyName, shipment.ShipToContactPerson.PartyName);
-            Assert.Equal(expected.ShipFromAddress.DisplayName(), shipment.ShipFromAddress.DisplayName());
-            Assert.Equal(expected.ShipFromFacility.Name, shipment.ShipFromFacility.Name);
-            Assert.Equal(expected.ShipmentMethod.Name, shipment.ShipmentMethod.Name);
-            Assert.Equal(expected.Carrier.Name, shipment.Carrier.Name);
-            Assert.Equal(expected.EstimatedShipDate.Value.Date, shipment.EstimatedShipDate);
-            Assert.Equal(expected.EstimatedArrivalDate.Value.Date, shipment.EstimatedArrivalDate);
-            Assert.Equal(expected.HandlingInstruction, shipment.HandlingInstruction);
-            Assert.Equal(expected.Comment, shipment.Comment);
+            Assert.Equal(expectedShipToPartyPartyName, shipment.ShipToParty.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, shipment.ShipToAddress.DisplayName());
+            Assert.Equal(expectedShipToContactPersonPartyName, shipment.ShipToContactPerson.DisplayName());
+            Assert.Equal(expectedShipFromAddressDisplayName, shipment.ShipFromAddress.DisplayName());
+            Assert.Equal(expectedShipFromFacilityName, shipment.ShipFromFacility.Name);
+            Assert.Equal(expectedShipmentMethodName, shipment.ShipmentMethod.Name);
+            Assert.Equal(expectedCarrierName, shipment.Carrier.Name);
+            Assert.Equal(expectedEstimatedShipDate, shipment.EstimatedShipDate);
+            Assert.Equal(expectedEstimatedArrivalDate, shipment.EstimatedArrivalDate);
+            Assert.Equal(expectedHandlingInstruction, shipment.HandlingInstruction);
+            Assert.Equal(expectedComment, shipment.Comment);
         }
     }
 }

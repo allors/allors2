@@ -15,13 +15,22 @@ namespace Allors.Domain
         [Fact]
         public void GivenEmailCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
+            var personalEmailAddress = new ContactMechanismPurposes(this.Session).PersonalEmailAddress;
+
             var originatorEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("originator@allors.com").Build();
+            var originatorContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPartyContactMechanism(originatorContact).Build();
+
             var addresseeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee@allors.com").Build();
+            var addresseeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
+            var addressee = new PersonBuilder(this.Session).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).Build();
 
             var communication = new EmailCommunicationBuilder(this.Session)
                 .WithOwner(this.Administrator)
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
+                .WithFromParty(originator)
+                .WithToParty(addressee)
                 .WithFromEmail(originatorEmail)
                 .WithToEmail(addresseeEmail)
                 .Build();
@@ -54,6 +63,8 @@ namespace Allors.Domain
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
                 .WithOwner(owner)
+                .WithFromParty(originator)
+                .WithToParty(addressee)
                 .WithFromEmail(originatorEmail)
                 .WithToEmail(addresseeEmail)
                 .Build();
@@ -85,6 +96,8 @@ namespace Allors.Domain
             var communication = new EmailCommunicationBuilder(this.Session)
                 .WithSubject("Hello")
                 .WithDescription("Hello world!")
+                .WithFromParty(originator)
+                .WithToParty(addressee)
                 .WithFromEmail(originatorEmail)
                 .WithToEmail(addresseeEmail)
                 .Build();

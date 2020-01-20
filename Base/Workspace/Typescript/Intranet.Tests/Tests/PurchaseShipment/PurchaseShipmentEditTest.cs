@@ -5,24 +5,32 @@
 
 namespace Tests.PurchaseShipmentTests
 {
-    using Allors;
-    using Allors.Meta;
-    using src.allors.material.@base.objects.purchaseshipment.overview;
-    using src.allors.material.@base.objects.shipment.list;
     using System.Linq;
+    using Allors;
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
+    using Allors.Meta;
     using Components;
+    using src.allors.material.@base.objects.purchaseshipment.overview;
+    using src.allors.material.@base.objects.shipment.list;
     using Xunit;
 
     [Collection("Test collection")]
     public class PurchaseShipmentEditTest : Test
     {
         private readonly ShipmentListComponent shipmentListPage;
+        private Organisation internalOrganisation;
 
         public PurchaseShipmentEditTest(TestFixture fixture)
             : base(fixture)
         {
+            this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+
+            for (int i = 0; i < 10; i++)
+            {
+                this.internalOrganisation.CreateSupplier(this.Session.Faker());
+            }
+
             this.Login();
             this.shipmentListPage = this.Sidenav.NavigateToShipments();
         }
@@ -32,10 +40,14 @@ namespace Tests.PurchaseShipmentTests
         {
             var before = new PurchaseShipments(this.Session).Extent().ToArray();
 
-            var internalOrganisation = new Organisations(this.MemorySession).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new PurchaseShipmentBuilder(this.MemorySession).WithDefaults(internalOrganisation).Build();
+            var expected = new PurchaseShipmentBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
-            this.MemorySession.Derive();
+            this.Session.Derive();
+
+            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
+            var expectedShipToContactPersonPartyName = expected.ShipToContactPerson.DisplayName();
+            var expectedShipFromPartyPartyName = expected.ShipFromParty.DisplayName();
+            var expectedShipFromContactPersonPartyName = expected.ShipFromContactPerson.DisplayName();
 
             var shipment = before.First(v => ((Organisation)v.ShipToParty).IsInternalOrganisation.Equals(true));
             var id = shipment.Id;
@@ -45,11 +57,13 @@ namespace Tests.PurchaseShipmentTests
             var shipmentOverviewDetail = shipmentOverview.PurchaseshipmentOverviewDetail.Click();
 
             shipmentOverviewDetail
-                .ShipFromParty.Select(expected.ShipFromParty.PartyName)
-                .ShipFromContactPerson.Set(expected.ShipFromContactPerson?.PartyName)
+                .ShipFromParty.Select(expected.ShipFromParty.DisplayName())
+                .ShipFromContactPerson.Set(expected.ShipFromContactPerson?.DisplayName())
                 .ShipToAddress.Set(expected.ShipToAddress?.DisplayName())
-                .ShipToContactPerson.Set(expected.ShipToContactPerson?.PartyName)
-                .SAVE.Click();
+                .ShipToContactPerson.Set(expected.ShipToContactPerson?.DisplayName());
+
+            this.Session.Rollback();
+            shipmentOverviewDetail.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -59,10 +73,10 @@ namespace Tests.PurchaseShipmentTests
 
             Assert.Equal(after.Length, before.Length);
 
-            Assert.Equal(expected.ShipFromParty.PartyName, shipment.ShipFromParty.PartyName);
-            Assert.Equal(expected.ShipFromContactPerson.PartyName, shipment.ShipFromContactPerson.PartyName);
-            Assert.Equal(expected.ShipToAddress.DisplayName(), shipment.ShipToAddress.DisplayName());
-            Assert.Equal(expected.ShipToContactPerson.PartyName, shipment.ShipToContactPerson.PartyName);
+            Assert.Equal(expectedShipFromPartyPartyName, shipment.ShipFromParty.DisplayName());
+            Assert.Equal(expectedShipFromContactPersonPartyName, shipment.ShipFromContactPerson.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, shipment.ShipToAddress.DisplayName());
+            Assert.Equal(expectedShipToContactPersonPartyName, shipment.ShipToContactPerson.DisplayName());
         }
     }
 }

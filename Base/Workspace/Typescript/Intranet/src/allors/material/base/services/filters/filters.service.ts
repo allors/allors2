@@ -2,11 +2,14 @@ import { Observable } from 'rxjs';
 import { SearchFactory } from '../../../../angular';
 
 export abstract class FiltersService {
-    goodsFilter: SearchFactory;
-    partsFilter: SearchFactory;
     customersFilter: SearchFactory;
-    suppliersFilter: SearchFactory;
     employeeFilter: SearchFactory;
+    goodsFilter: SearchFactory;
+    nonUnifiedPartsFilter: SearchFactory;
     organisationsFilter: SearchFactory;
     partiesFilter: SearchFactory;
+    partsFilter: SearchFactory;
+    peopleFilter: SearchFactory;
+    serialisedItemsFilter: SearchFactory;
+    suppliersFilter: SearchFactory;
 }

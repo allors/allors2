@@ -9,13 +9,13 @@ namespace src.allors.material.@base.objects.purchaseshipment.create
     {
         public static PurchaseShipmentCreateComponent Build(this PurchaseShipmentCreateComponent @this, PurchaseShipment shipment, bool minimal = false)
         {
-            @this.ShipFromParty.Select(shipment.ShipFromParty.PartyName);
+            @this.ShipFromParty.Select(shipment.ShipFromParty.DisplayName());
 
             if (!minimal)
             {
-                @this.ShipFromContactPerson.Set(shipment.ShipFromContactPerson?.PartyName);
+                @this.ShipFromContactPerson.Set(shipment.ShipFromContactPerson?.DisplayName());
                 @this.ShipToAddress.Set(shipment.ShipToAddress?.DisplayName());
-                @this.ShipToContactPerson.Set(shipment.ShipToContactPerson?.PartyName);
+                @this.ShipToContactPerson.Set(shipment.ShipToContactPerson?.DisplayName());
                 @this.ShipToAddress.Set(shipment.ShipToParty?.ShippingAddress.DisplayName());
             }
 

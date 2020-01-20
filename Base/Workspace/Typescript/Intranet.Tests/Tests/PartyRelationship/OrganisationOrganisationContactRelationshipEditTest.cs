@@ -8,6 +8,7 @@ namespace Tests.PartyRelationshipTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Components;
     using src.allors.material.@base.objects.organisation.list;
     using src.allors.material.@base.objects.organisation.overview;
@@ -56,7 +57,7 @@ namespace Tests.PartyRelationshipTests
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
                 .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
-                .Contact.Set(this.contact.PartyName)
+                .Contact.Select(this.contact.DisplayName())
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();

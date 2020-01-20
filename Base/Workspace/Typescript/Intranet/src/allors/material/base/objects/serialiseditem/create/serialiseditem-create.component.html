@@ -6,12 +6,9 @@
     <div class="container-fluid">
 
       <div class="row">
-        <mat-form-field class="col-md">
-          <mat-select [(ngModel)]="part" name="partName" placeholder="Part" multiple="false" (ngModelChange)="partSelected($event)">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let part of parts" [value]="part"> {{ part.Name }} </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <a-mat-static *ngIf="part" class="col-md" [object]="part" [roleType]="m.Part.Name" display="Name"></a-mat-static>
+        <a-mat-autocomplete *ngIf="!part" class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.PartWhereItem" [filter]="filtersService.partsFilter.create(allors.context)"
+        display="Name" label="Part" (changed)="partSelected($event)"></a-mat-autocomplete>
         <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Name"></a-mat-input>
       </div>
 
@@ -54,7 +51,7 @@
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
-    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges || !part">SAVE</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges || !selectedPart">SAVE</button>
   </div>
 
 </form>

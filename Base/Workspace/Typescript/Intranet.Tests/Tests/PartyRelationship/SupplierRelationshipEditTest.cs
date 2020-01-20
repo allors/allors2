@@ -8,6 +8,7 @@ namespace Tests.PartyRelationshipTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.organisation.list;
@@ -52,7 +53,7 @@ namespace Tests.PartyRelationshipTests
             var before = new PartyRelationships(this.Session).Extent().ToArray();
 
             var extent = new Organisations(this.Session).Extent();
-            var internalOrganisation = extent.First(v => v.PartyName.Equals("Allors BVBA"));
+            var internalOrganisation = extent.First(v => v.DisplayName().Equals("Allors BVBA"));
 
             this.organisations.Table.DefaultAction(internalOrganisation);
             var partyRelationshipEdit = new OrganisationOverviewComponent(this.organisations.Driver).PartyrelationshipOverviewPanel.Click().CreateCustomerRelationship();
@@ -81,7 +82,7 @@ namespace Tests.PartyRelationshipTests
             var before = new PartyRelationships(this.Session).Extent().ToArray();
 
             var extent = new Organisations(this.Session).Extent();
-            var internalOrganisation = extent.First(v => v.PartyName.Equals("Allors BVBA"));
+            var internalOrganisation = extent.First(v => v.DisplayName().Equals("Allors BVBA"));
 
             this.organisations.Table.DefaultAction(internalOrganisation);
             var organisationOverviewPage = new OrganisationOverviewComponent(this.organisations.Driver);

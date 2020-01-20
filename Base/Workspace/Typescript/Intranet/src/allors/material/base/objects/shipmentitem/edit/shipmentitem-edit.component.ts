@@ -6,9 +6,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
 import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SalesOrderItemShipmentState, SerialisedItemState, RequestItemState, RequestState, QuoteItemState, QuoteState, ShipmentItemState, ShipmentState, PurchaseOrderItem, PurchaseOrderState, NonUnifiedPart, SupplierOffering } from '../../../../../domain';
-import { PullRequest, IObject, Equals, Sort } from '../../../../../framework';
+import { PullRequest, IObject, Equals, Sort, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
@@ -25,7 +25,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   title: string;
   shipment: Shipment;
   shipmentItem: ShipmentItem;
-  goods: Product[];
   inventoryItems: InventoryItem[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
@@ -38,7 +37,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   selectedSalesOrderItem: SalesOrderItem;
   selectedPurchaseOrderItem: PurchaseOrderItem;
   purchaseOrderItems: PurchaseOrderItem[] = [];
-  parts: NonUnifiedPart[];
   supplierOfferings: SupplierOffering[];
 
   draftRequestItem: RequestItemState;
@@ -75,6 +73,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   private previousGood;
   private previousPart;
   private subscription: Subscription;
+  isSerialized: boolean;
+  supplierPartsFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
@@ -163,20 +163,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
                 }
               }
             }),
-            pull.Shipment({
-              object: this.data.associationId,
-              fetch: {
-                ShipFromParty: {
-                  SupplierOfferingsWhereSupplier: {
-                    include: {
-                      Part: x,
-                    }
-                  }
-                }
-              }
-            }),
             pull.SerialisedItemState(),
-            pull.Good({ sort: new Sort(m.Good.Name) }),
             pull.SerialisedInventoryItemState(
               {
                 predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
@@ -206,8 +193,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         this.allors.context.reset();
 
         const now = moment.utc();
-
-        this.goods = loaded.collections.Goods as Good[];
 
         this.shipmentItem = loaded.objects.ShipmentItem as ShipmentItem;
         this.shipment = loaded.objects.Shipment as Shipment || this.shipmentItem.SyncedShipment;
@@ -274,22 +259,25 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         }
 
         if (this.isPurchaseShipment) {
-          this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-
-          this.parts = this.supplierOfferings
-            .filter(v => v.Supplier === this.shipment.ShipFromParty && v.Supplier === this.shipment.ShipFromParty && moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)))
-            .map(v => v.Part)
-            .sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+          this.supplierPartsFilter = new SearchFactory({
+            objectType: this.m.Part,
+            roleTypes: [this.m.Part.Name, this.m.Part.SearchString],
+            post: (predicate: And) => {
+              predicate.operands.push(new ContainedIn({
+                propertyType: this.m.Part.SupplierOfferingsWherePart,
+                extent: new Filter({
+                  objectType: this.m.SupplierOffering,
+                  predicate: new Equals({ propertyType: m.SupplierOffering.Supplier, object: this.shipment.ShipFromParty }),
+                })
+              }));
+            },
+          });
         }
 
         if (isCreate) {
           this.title = 'Add Shipment Item';
           this.shipmentItem = this.allors.context.create('ShipmentItem') as ShipmentItem;
           this.shipment.AddShipmentItem(this.shipmentItem);
-
-          if (this.isCustomerShipment) {
-            this.orderShipment = this.allors.context.create('OrderShipment') as OrderShipment;
-          }
 
           if (this.isPurchaseShipment) {
             this.shipmentReceipt = this.allors.context.create('ShipmentReceipt') as ShipmentReceipt;
@@ -435,6 +423,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         fetch: {
           Part: {
             include: {
+              InventoryItemKind: x,
               SerialisedItems: {
                 RequestItemsWhereSerialisedItem: {
                   RequestItemState: x,
@@ -468,6 +457,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       pull.UnifiedGood({
         object: product.id,
         include: {
+          InventoryItemKind: x,
           SerialisedItems: {
             RequestItemsWhereSerialisedItem: {
               RequestItemState: x,
@@ -504,6 +494,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
         const part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
 
+        this.isSerialized = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
+
         if (this.isCustomerShipment) {
           this.serialisedItems = part.SerialisedItems.filter(v => v.AvailableForSale === true);
         }
@@ -515,7 +507,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       });
   }
 
-  private loadPart(part: NonUnifiedPart): void {
+  private loadPart(part: Part): void {
 
     const { pull, x } = this.metaService;
 
@@ -547,6 +539,11 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
   private onSave() {
     if (this.selectedSalesOrderItem) {
+
+      if (this.orderShipment === undefined) {
+        this.orderShipment = this.allors.context.create('OrderShipment') as OrderShipment;
+      }
+
       this.orderShipment.OrderItem = this.selectedSalesOrderItem;
       this.orderShipment.ShipmentItem = this.shipmentItem;
       this.orderShipment.Quantity = this.shipmentItem.Quantity;

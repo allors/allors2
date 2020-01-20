@@ -6,10 +6,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, RefreshService, TestScope, FetcherService } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, TestScope, FetcherService, SearchFactory } from '../../../../../angular';
 import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering, SerialisedItem, Organisation } from '../../../../../domain';
-import { PullRequest, IObject } from '../../../../../framework';
-import { ObjectData, SaveService } from '../../../../../material';
+import { PullRequest, IObject, Equals, And, LessThan, Or, Not, Exists, GreaterThan, Filter, ContainedIn } from '../../../../../framework';
+import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -32,10 +32,10 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   supplierOffering: SupplierOffering;
 
   private subscription: Subscription;
-  parts: Part[];
   serialisedItems: SerialisedItem[];
   serialised: boolean;
   internalOrganisation: Organisation;
+  partsFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
@@ -43,6 +43,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
     public dialogRef: MatDialogRef<PurchaseOrderItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
+    public filtersService: FiltersService,
     private saveService: SaveService,
     private snackBar: MatSnackBar,
     private fetcher: FetcherService
@@ -54,7 +55,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.metaService;
+    const { pull, x, m } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
@@ -75,22 +76,6 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
                 VatRate: x,
                 VatRegime: {
                   VatRate: x,
-                }
-              }
-            }),
-            pull.PurchaseOrderItem({
-              object: this.data.id,
-              fetch: {
-                PurchaseOrderWherePurchaseOrderItem: {
-                  TakenViaSupplier: {
-                    SupplierOfferingsWhereSupplier: {
-                      include: {
-                        Part: {
-                          InventoryItemKind: x
-                        }
-                      }
-                    }
-                  }
                 }
               }
             }),
@@ -138,8 +123,6 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        const now = moment.utc();
-
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
@@ -152,10 +135,26 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
         }
 
-        this.parts = this.supplierOfferings
-          .filter(v => v.Supplier === this.order.TakenViaSupplier && v.Supplier === this.order.TakenViaSupplier && moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)))
-          .map(v => v.Part)
-          .sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        this.partsFilter = new SearchFactory({
+          objectType: this.m.Part,
+          roleTypes: [this.m.Part.Name, this.m.Part.SearchString],
+          post: (predicate: And) => {
+            predicate.operands.push(new ContainedIn({
+              propertyType: this.m.Part.SupplierOfferingsWherePart,
+              extent: new Filter({
+                objectType: this.m.SupplierOffering,
+                predicate: new And([
+                  new Equals({ propertyType: m.SupplierOffering.Supplier, object: this.order.TakenViaSupplier }),
+                  new LessThan({ roleType: m.SupplierOffering.FromDate, value: this.order.OrderDate }),
+                  new Or([
+                    new Not({ operand: new Exists({ propertyType: m.SupplierOffering.ThroughDate }) }),
+                    new GreaterThan({ roleType: m.SupplierOffering.ThroughDate, value: this.order.OrderDate }),
+                  ])
+                ])
+              })
+            }));
+          },
+        });
 
         if (isCreate) {
           this.title = 'Add Order Item';
@@ -164,7 +163,10 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
         } else {
           this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
-          this.updateFromPart(this.orderItem.Part);
+
+          if (this.orderItem.Part) {
+            this.updateFromPart(this.orderItem.Part);
+          }
 
           if (this.orderItem.CanWriteAssignedUnitPrice) {
             this.title = 'Edit Purchase Order Item';

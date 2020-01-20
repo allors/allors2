@@ -211,6 +211,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
             shipment.Pick();
@@ -331,6 +335,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(75, shipment.ShipmentValue);
 
@@ -383,6 +391,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
@@ -424,6 +436,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -476,6 +492,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             Assert.Equal(new ShipmentStates(this.Session).OnHold, shipment.ShipmentState);
@@ -520,6 +540,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -597,6 +621,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             this.Session.Derive();
@@ -650,6 +678,10 @@ namespace Allors.Domain
 
             // var list = ((DerivationLog)derivation.DerivationLog).List;
             ////list.RemoveAll(v => !v.StartsWith("Dependency"));
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -715,6 +747,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -794,6 +830,10 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
+            order1.Send();
+
+            this.Session.Derive(true);
+
             Assert.Single(customer.ShipmentsWhereShipToParty);
 
             var order2 = new SalesOrderBuilder(this.Session)
@@ -811,6 +851,10 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
+            order2.Send();
+
+            this.Session.Derive(true);
+
             Assert.Single(customer.ShipmentsWhereShipToParty);
 
             var order3 = new SalesOrderBuilder(this.Session)
@@ -825,6 +869,10 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             order3.Confirm();
+
+            this.Session.Derive(true);
+
+            order3.Send();
 
             this.Session.Derive(true);
 
@@ -874,6 +922,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -1036,6 +1088,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            order.Send();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             shipment.Pick();
@@ -1107,6 +1163,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -1196,6 +1256,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 
@@ -1331,6 +1395,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            this.Session.Derive();
+
+            order.Send();
 
             this.Session.Derive();
 

@@ -28,7 +28,7 @@ namespace Allors.Domain
             if (this.ExistInData)
             {
                 this.MediaContent.Data = this.InData;
-                this.MediaContent.Type = this.InType ?? MediaContents.Sniff(this.InData);
+                this.MediaContent.Type = this.InType ?? MediaContents.Sniff(this.InData, this.FileName);
 
                 this.RemoveInType();
                 this.RemoveInData();

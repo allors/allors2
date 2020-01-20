@@ -13,6 +13,8 @@ namespace Allors.Domain
 
         public bool IsOrdered => Equals(this.UniqueId, QuoteStates.OrderedId);
 
+        public bool IsSent => Equals(this.UniqueId, QuoteStates.SentId);
+
         public bool IsCancelled => Equals(this.UniqueId, QuoteStates.CancelledId);
 
         public bool IsRejected => Equals(this.UniqueId, QuoteStates.RejectedId);

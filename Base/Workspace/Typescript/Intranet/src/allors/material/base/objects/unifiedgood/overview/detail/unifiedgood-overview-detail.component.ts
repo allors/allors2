@@ -125,7 +125,10 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
               include: {
                 PrimaryPhoto: x,
                 Photos: x,
-                LocalisedElectronicDocuments: x,
+                PublicElectronicDocuments: x,
+                PrivateElectronicDocuments: x,
+                PublicLocalisedElectronicDocuments: x,
+                PrivateLocalisedElectronicDocuments: x,
                 ManufacturedBy: x,
                 SuppliedBy: x,
                 DefaultFacility: x,

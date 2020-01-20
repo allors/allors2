@@ -53,7 +53,7 @@ namespace Allors.Workspace.Blazor
         {
             get => !string.IsNullOrWhiteSpace(this.name)
                     ? this.name
-                    : this.RoleType.Name + '_' + this.Object?.Id;
+                    : this.RoleType.Name + '_' + this.Object?.Id.ToString().Replace('-', '_');
             set => this.name = value;
         }
 

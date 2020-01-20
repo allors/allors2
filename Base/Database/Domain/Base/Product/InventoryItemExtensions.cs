@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System.Linq;
+    using System.Text;
 
     public static partial class InventoryItemExtensions
     {
@@ -62,6 +63,54 @@ namespace Allors.Domain
             {
                 @this.UnitOfMeasure = @this.Part?.UnitOfMeasure;
             }
+        }
+
+        public static void BaseOnPostDerive(this InventoryItem @this, ObjectOnPostDerive method)
+        {
+            var derivation = method.Derivation;
+            var part = @this.Part;
+
+            var builder = new StringBuilder();
+            if (part.ExistProductIdentifications)
+            {
+                builder.Append(string.Join(" ", part.ProductIdentifications.Select(v => v.Identification)));
+            }
+
+            if (part.ExistProductCategoriesWhereAllPart)
+            {
+                builder.Append(string.Join(" ", part.ProductCategoriesWhereAllPart.Select(v => v.Name)));
+            }
+
+            if (part.ExistSupplierOfferingsWherePart)
+            {
+                builder.Append(string.Join(" ", part.SupplierOfferingsWherePart.Select(v => v.Supplier.PartyName)));
+                builder.Append(string.Join(" ", part.SupplierOfferingsWherePart.Select(v => v.SupplierProductId)));
+                builder.Append(string.Join(" ", part.SupplierOfferingsWherePart.Select(v => v.SupplierProductName)));
+            }
+
+            if (part.ExistSerialisedItems)
+            {
+                builder.Append(string.Join(" ", part.SerialisedItems.Select(v => v.SerialNumber)));
+            }
+
+            if (part.ExistProductType)
+            {
+                builder.Append(string.Join(" ", part.ProductType.Name));
+            }
+
+            if (part.ExistBrand)
+            {
+                builder.Append(string.Join(" ", part.Brand.Name));
+            }
+
+            if (part.ExistModel)
+            {
+                builder.Append(string.Join(" ", part.Model.Name));
+            }
+
+            builder.Append(string.Join(" ", part.Keywords));
+
+            @this.SearchString = builder.ToString();
         }
     }
 }

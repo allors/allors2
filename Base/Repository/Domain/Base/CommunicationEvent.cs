@@ -62,6 +62,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Required]
         [Workspace]
         Party FromParty { get; set; }
 
@@ -72,6 +73,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Required]
         [Workspace]
         Party ToParty { get; set; }
 

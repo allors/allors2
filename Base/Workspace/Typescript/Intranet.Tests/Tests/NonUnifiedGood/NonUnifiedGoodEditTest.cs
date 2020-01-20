@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using Allors;
+
 namespace Tests.NonUnifiedGood
 {
     using System.Linq;
@@ -28,10 +30,16 @@ namespace Tests.NonUnifiedGood
         [Fact]
         public void Edit()
         {
-            var internalOrganisation = new OrganisationBuilder(this.MemorySession).WithInternalOrganisationDefaults().Build();
-
-            var newGood = new NonUnifiedGoodBuilder(this.MemorySession).WithNonSerialisedPartDefaults(internalOrganisation).Build();
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
+
+            var internalOrganisation = new OrganisationBuilder(this.Session).WithInternalOrganisationDefaults().Build();
+
+            var expected = new NonUnifiedGoodBuilder(this.Session).WithNonSerialisedPartDefaults(internalOrganisation).Build();
+
+            this.Session.Derive();
+
+            var expectedName = expected.Name;
+            var expectedDescription = expected.Description;
 
             var nonUnifiedGood = before.First();
             var id = nonUnifiedGood.Id;
@@ -41,9 +49,11 @@ namespace Tests.NonUnifiedGood
             var goodOverviewDetail = goodDetails.NonunifiedgoodOverviewDetail.Click();
 
             goodOverviewDetail
-                .Name.Set(newGood.Name)
-                .Description.Set(newGood.Description)
-                .SAVE.Click();
+                .Name.Set(expected.Name)
+                .Description.Set(expected.Description);
+
+            this.Session.Rollback();
+            goodOverviewDetail.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -53,8 +63,8 @@ namespace Tests.NonUnifiedGood
             var good = after.First(v => v.Id.Equals(id));
 
             Assert.Equal(after.Length, before.Length);
-            Assert.Equal(newGood.Name, good.Name);
-            Assert.Equal(newGood.Description, good.Description);
+            Assert.Equal(expectedName, good.Name);
+            Assert.Equal(expectedDescription, good.Description);
         }
     }
 }

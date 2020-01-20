@@ -8,6 +8,7 @@ namespace Tests.EmailCommunicationTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.emailcommunication.edit;
@@ -31,7 +32,7 @@ namespace Tests.EmailCommunicationTests
         public void Edit()
         {
             var people = new People(this.Session).Extent();
-            var person = people.First(v => v.PartyName.Equals("John Doe"));
+            var person = people.First(v => v.DisplayName().Equals("John Doe"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First();
@@ -42,6 +43,8 @@ namespace Tests.EmailCommunicationTests
             var editCommunicationEvent = new EmailCommunicationBuilder(this.Session)
                 .WithSubject("dummy")
                 .WithFromEmail(employeeEmailAddress)
+                .WithFromParty(employee)
+                .WithToParty(person)
                 .WithToEmail(personEmailAddress)
                 .WithEmailTemplate(new EmailTemplateBuilder(this.Session).Build())
                 .Build();
@@ -63,9 +66,9 @@ namespace Tests.EmailCommunicationTests
             emailCommunicationEdit
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
-                .FromParty.Set(person.PartyName)
+                .FromParty.Set(person.DisplayName())
                 .FromEmail.Set(personEmailAddress.ElectronicAddressString)
-                .ToParty.Set(employee.PartyName)
+                .ToParty.Set(employee.DisplayName())
                 .ToEmail.Set(employeeEmailAddress.ElectronicAddressString)
                 .SubjectTemplate.Set("new subject")
                 .BodyTemplate.Set("new body")

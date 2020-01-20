@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F8B4F2CE-D23F-44D9-894E-4F561109AAF1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Excel</RootNamespace>
+    <AssemblyName>Excel</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions.cs" />
+    <Compile Include="Allors\Core\Binding\RoleTypeBinding.cs" />
+    <Compile Include="Allors\Core\Client.cs" />
+    <Compile Include="Allors\Core\Services\IMessageService.cs" />
+    <Compile Include="Allors\Core\Services\IErrorService.cs" />
+    <Compile Include="Column.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sheets\PeopleSheet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\lib\excel\Dipu.Excel\Dipu.Excel.csproj">
+      <Project>{30132d11-2f56-4d32-af78-1ab957793eb4}</Project>
+      <Name>Dipu.Excel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Platform\Protocol\Allors.Protocol\Allors.Protocol.csproj">
+      <Project>{caa54ba6-a4f9-4ada-98b6-833df07b4824}</Project>
+      <Name>Allors.Protocol</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Adapters\Allors.Workspace.Adapters\Allors.Workspace.Adapters.csproj">
+      <Project>{589fee18-80a2-49d1-adfc-49d20891d0ba}</Project>
+      <Name>Allors.Workspace.Adapters</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Workspace\Allors.Workspace.csproj">
+      <Project>{81679fa6-2e9b-42e3-aae3-210e7d21e82e}</Project>
+      <Name>Allors.Workspace</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Domain\Workspace.Domain.csproj">
+      <Project>{94474285-cafb-4a71-aed2-d6a80564f543}</Project>
+      <Name>Workspace.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Meta\Workspace.Meta.csproj">
+      <Project>{ec4af4c3-ec56-491a-a5b3-2d54938d32b1}</Project>
+      <Name>Workspace.Meta</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>3.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

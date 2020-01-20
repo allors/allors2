@@ -3,6 +3,8 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using System.Text;
+
 namespace Allors.Domain
 {
     using System.Linq;
@@ -29,22 +31,6 @@ namespace Allors.Domain
             }
 
             this.DeriveName();
-        }
-
-        public void BaseOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            // if (derivation.ChangeSet.Associations.Contains(this.Id))
-            // {
-            //    if (this.ExistInventoryItemsWherePart)
-            //    {
-            //        foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
-            //        {
-            //            derivation.AddDependency(this, inventoryItem);
-            //        }
-            //    }
-            // }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)
@@ -91,6 +77,56 @@ namespace Allors.Domain
             this.DeriveAvailableToPromise();
             this.DeriveQuantityCommittedOut();
             this.DeriveQuantityExpectedIn();
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var builder = new StringBuilder();
+            if (this.ExistProductIdentifications)
+            {
+                builder.Append(string.Join(" ", this.ProductIdentifications.Select(v => v.Identification)));
+            }
+
+            if (this.ExistProductCategoriesWhereAllPart)
+            {
+                builder.Append(string.Join(" ", this.ProductCategoriesWhereAllPart.Select(v => v.Name)));
+            }
+
+            if (this.ExistSupplierOfferingsWherePart)
+            {
+                builder.Append(string.Join(" ", this.SupplierOfferingsWherePart.Select(v => v.Supplier.PartyName)));
+                builder.Append(string.Join(" ", this.SupplierOfferingsWherePart.Select(v => v.SupplierProductId)));
+                builder.Append(string.Join(" ", this.SupplierOfferingsWherePart.Select(v => v.SupplierProductName)));
+            }
+
+            if (this.ExistSerialisedItems)
+            {
+                builder.Append(string.Join(" ", this.SerialisedItems.Select(v => v.SerialNumber)));
+            }
+
+            if (this.ExistProductType)
+            {
+                builder.Append(string.Join(" ", this.ProductType.Name));
+            }
+
+            if (this.ExistBrand)
+            {
+                builder.Append(string.Join(" ", this.Brand.Name));
+            }
+
+            if (this.ExistModel)
+            {
+                builder.Append(string.Join(" ", this.Model.Name));
+            }
+
+            foreach (PartCategory partCategory in this.PartCategoriesWherePart)
+            {
+                builder.Append(string.Join(" ", partCategory.Name));
+            }
+
+            builder.Append(string.Join(" ", this.Keywords));
+
+            this.SearchString = builder.ToString();
         }
 
         private void DeriveName()

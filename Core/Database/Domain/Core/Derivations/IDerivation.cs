@@ -43,6 +43,8 @@ namespace Allors.Domain
         /// <param name="dependee">The dependee object.</param>
         void AddDependency(Object dependent, Object dependee);
 
+        void MarkAsModified(params Object[] derivables);
+
         /// <summary>
         /// Gets or sets a value indicating if this derivable object is modified.
         /// The object is considered modified if.
@@ -56,6 +58,8 @@ namespace Allors.Domain
         bool IsModified(Object derivable);
 
         bool IsModified(Object derivable, RelationKind kind);
+
+        bool IsMarkedAsModified(Object derivable);
 
         bool IsCreated(Object derivable);
 

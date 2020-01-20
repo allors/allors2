@@ -117,7 +117,10 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
                 PrimaryPhoto: x,
                 Photos: x,
                 Documents: x,
-                LocalisedElectronicDocuments: x,
+                PublicElectronicDocuments: x,
+                PrivateElectronicDocuments: x,
+                PublicLocalisedElectronicDocuments: x,
+                PrivateLocalisedElectronicDocuments: x,
                 ManufacturedBy: x,
                 SuppliedBy: x,
                 DefaultFacility: x,
@@ -189,7 +192,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         this.originalCategories = loaded.collections.OriginalCategories as PartCategory[];
         this.selectedCategories = this.originalCategories;
 
-        this.suppliers = this.part.SuppliedBy.map(w => w.PartyName).join(', ')
+        this.suppliers = this.part.SuppliedBy.map(w => w.PartyName).join(', ');
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.brands = loaded.collections.Brands as Brand[];

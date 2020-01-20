@@ -40,7 +40,6 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
 
   private previousProduct;
   private subscription: Subscription;
-  goods: Good[];
 
   draftRequestItem: RequestItemState;
   submittedRequestItem: RequestItemState;
@@ -132,11 +131,6 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
             }),
             pull.VatRate(),
             pull.VatRegime(),
-            pull.Good(
-              {
-                sort: new Sort(m.Good.Name),
-              }
-            ),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
@@ -181,7 +175,6 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
         this.quote = loaded.objects.ProductQuote as ProductQuote;
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
         this.requestItem = loaded.objects.RequestItem as RequestItem;
-        this.goods = loaded.collections.Goods as Good[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];

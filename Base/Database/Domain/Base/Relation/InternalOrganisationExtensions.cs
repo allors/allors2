@@ -16,34 +16,36 @@ namespace Allors.Domain
     {
         public static void BaseOnBuild(this InternalOrganisation @this, ObjectOnBuild method)
         {
+            var singleton = @this.Session().GetSingleton();
+
             if (!@this.ExistProductQuoteTemplate)
             {
-                @this.ProductQuoteTemplate = @this.CreateOpenDocumentTemplate<Print.ProductQuoteModel.Model>(@this.GetResourceBytes("Templates.ProductQuote.odt"));
+                @this.ProductQuoteTemplate = singleton.CreateOpenDocumentTemplate<Print.ProductQuoteModel.Model>(singleton.GetResourceBytes("Templates.ProductQuote.odt"));
             }
 
             if (!@this.ExistSalesOrderTemplate)
             {
-                @this.SalesOrderTemplate = @this.CreateOpenDocumentTemplate<Print.SalesOrderModel.Model>(@this.GetResourceBytes("Templates.SalesOrder.odt"));
+                @this.SalesOrderTemplate = singleton.CreateOpenDocumentTemplate<Print.SalesOrderModel.Model>(singleton.GetResourceBytes("Templates.SalesOrder.odt"));
             }
 
             if (!@this.ExistPurchaseOrderTemplate)
             {
-                @this.PurchaseOrderTemplate = @this.CreateOpenDocumentTemplate<Print.PurchaseOrderModel.Model>(@this.GetResourceBytes("Templates.PurchaseOrder.odt"));
+                @this.PurchaseOrderTemplate = singleton.CreateOpenDocumentTemplate<Print.PurchaseOrderModel.Model>(singleton.GetResourceBytes("Templates.PurchaseOrder.odt"));
             }
 
             if (!@this.ExistPurchaseInvoiceTemplate)
             {
-                @this.PurchaseInvoiceTemplate = @this.CreateOpenDocumentTemplate<Print.PurchaseInvoiceModel.Model>(@this.GetResourceBytes("Templates.PurchaseInvoice.odt"));
+                @this.PurchaseInvoiceTemplate = singleton.CreateOpenDocumentTemplate<Print.PurchaseInvoiceModel.Model>(singleton.GetResourceBytes("Templates.PurchaseInvoice.odt"));
             }
 
             if (!@this.ExistSalesInvoiceTemplate)
             {
-                @this.SalesInvoiceTemplate = @this.CreateOpenDocumentTemplate<Print.SalesInvoiceModel.Model>(@this.GetResourceBytes("Templates.SalesInvoice.odt"));
+                @this.SalesInvoiceTemplate = singleton.CreateOpenDocumentTemplate<Print.SalesInvoiceModel.Model>(singleton.GetResourceBytes("Templates.SalesInvoice.odt"));
             }
 
             if (!@this.ExistWorkTaskTemplate)
             {
-                @this.WorkTaskTemplate = @this.CreateOpenDocumentTemplate<Print.WorkTaskModel.Model>(@this.GetResourceBytes("Templates.WorkTask.odt"));
+                @this.WorkTaskTemplate = singleton.CreateOpenDocumentTemplate<Print.WorkTaskModel.Model>(singleton.GetResourceBytes("Templates.WorkTask.odt"));
             }
         }
 
@@ -246,31 +248,6 @@ namespace Allors.Domain
             }
 
             return int.Parse(candidate);
-        }
-
-        public static Template CreateOpenDocumentTemplate<T>(this InternalOrganisation @this, byte[] content)
-        {
-            var media = new MediaBuilder(@this.Strategy.Session).WithInData(content).Build();
-            var templateType = new TemplateTypes(@this.Strategy.Session).OpenDocumentType;
-            var template = new TemplateBuilder(@this.Strategy.Session).WithMedia(media).WithTemplateType(templateType).WithArguments<T>().Build();
-            return template;
-        }
-
-        public static byte[] GetResourceBytes(this InternalOrganisation @this, string name)
-        {
-            var assembly = @this.GetType().GetTypeInfo().Assembly;
-            var manifestResourceName = assembly.GetManifestResourceNames().First(v => v.Contains(name));
-            var resource = assembly.GetManifestResourceStream(manifestResourceName);
-            if (resource != null)
-            {
-                using (var ms = new MemoryStream())
-                {
-                    resource.CopyTo(ms);
-                    return ms.ToArray();
-                }
-            }
-
-            return null;
         }
     }
 }

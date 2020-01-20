@@ -10,7 +10,7 @@ namespace Allors.Repository
     #region Allors
     [Id("823D3C34-3441-40CF-8ED8-C44694933DC6")]
     #endregion
-    public partial interface UnifiedProduct : Commentable, UniquelyIdentifiable, Deletable, Object
+    public partial interface UnifiedProduct : Commentable, UniquelyIdentifiable, Deletable, Auditable, Searchable
     {
         #region Allors
         [Id("1A5619BE-43D0-47CF-B906-0A15277B86A6")]
@@ -85,10 +85,10 @@ namespace Allors.Repository
         [AssociationId("CB7DD964-E46C-4589-B04E-FB23FE8946F8")]
         [RoleId("57F654B9-C50E-4B09-B51A-D6977D5895B7")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
+        [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         [Workspace]
-        Media[] ElectronicDocuments { get; set; }
+        Media[] PublicElectronicDocuments { get; set; }
 
         #region Allors
         [Id("AFBF7196-1EDC-4F3A-845B-E583E6EFA6B8")]
@@ -98,7 +98,27 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         [Workspace]
-        LocalisedMedia[] LocalisedElectronicDocuments { get; set; }
+        LocalisedMedia[] PublicLocalisedElectronicDocuments { get; set; }
+
+        #region Allors
+        [Id("99151780-bcf5-4c39-9264-5ed1126ca1c2")]
+        [AssociationId("49e7f236-cffd-40ab-b3ae-1e4fe02d2949")]
+        [RoleId("c8c767ea-8d7d-44a3-9c80-d236d2f4d777")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        Media[] PrivateElectronicDocuments { get; set; }
+
+        #region Allors
+        [Id("b7075146-8c4d-418a-a6b7-b2a242f98f53")]
+        [AssociationId("1e7ff5ee-97ab-4e3f-bc67-74614748d70a")]
+        [RoleId("15241748-bb7f-4610-8b97-a12890462c91")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
 
         #region Allors
         [Id("9b66342e-48ac-4761-b375-b9b60d94b005")]

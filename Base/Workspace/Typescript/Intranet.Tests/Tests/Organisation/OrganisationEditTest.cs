@@ -8,6 +8,7 @@ namespace Tests.OrganisationTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.organisation.list;
@@ -38,7 +39,7 @@ namespace Tests.OrganisationTests
 
             var before = new Organisations(this.Session).Extent().ToArray();
 
-            var organisation = before.First(v => v.PartyName.Equals("Acme"));
+            var organisation = before.First(v => v.DisplayName().Equals("Acme"));
             var id = organisation.Id;
 
             this.organisationListPage.Table.DefaultAction(organisation);

@@ -4,7 +4,7 @@
     <div mat-card-avatar>
       <mat-icon style="font-size: 36px">business</mat-icon>
     </div>
-    <mat-card-title>{{workTask.Name}}</mat-card-title>
+    <mat-card-title>{{workTask.WorkEffortNumber}} {{workTask.Name}}</mat-card-title>
     <mat-card-subtitle>
        <div>
         {{workTask.WorkEffortState.Name}}
@@ -26,6 +26,15 @@
       </div>
       <div>
         {{workTask.Customer?.displayName}}
+      </div>
+    </div>
+
+    <div *ngFor="let asset of assets" (click)="navigation.overview(asset)" style="cursor: pointer;">
+      <div style="color: grey">
+        Equipment
+      </div>
+      <div>
+        {{asset.displayName}}
       </div>
     </div>
 

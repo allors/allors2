@@ -63,6 +63,7 @@ import { TelecommunicationsNumberCreateComponent, TelecommunicationsNumberCreate
 import { TelecommunicationsNumberEditComponent, TelecommunicationsNumberEditModule } from '../allors/material/base/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 import { TimeEntryEditComponent, TimeEntryEditModule } from '../allors/material/base/objects/timeentry/edit/timeentry-edit.module';
 import { UnifiedGoodCreateComponent, UnifiedGoodCreateModule } from '../allors/material/base/objects/unifiedgood/create/unifiedgood-create.module';
+import { UserProfileEditComponent, UserProfileEditModule } from '../allors/material/base/objects/userprofile/edit/userprofile-edit.module';
 import { WebAddressCreateComponent, WebAddressCreateModule } from '../allors/material/base/objects/webaddress/create/webaddress-create.module';
 import { WebAddressEditComponent, WebAddressEditModule } from '../allors/material/base/objects/webaddress/edit/webaddress-edit.module';
 import { WorkEffortAssignmentRateEditComponent, WorkEffortAssignmentRateEditModule } from '../allors/material/base/objects/workeffortassignmentrate/edit/workeffortassignmentrate-edit.module';
@@ -197,6 +198,7 @@ export const edit = {
   [ids.TimeEntry]: TimeEntryEditComponent,
   [ids.UpcaIdentification]: ProductIdentificationEditComponent,
   [ids.UpceIdentification]: ProductIdentificationEditComponent,
+  [ids.UserProfile]: UserProfileEditComponent,
   [ids.WebAddress]: WebAddressEditComponent,
   [ids.WorkEffortAssignmentRate]: WorkEffortAssignmentRateEditComponent,
   [ids.WorkEffortFixedAssetAssignment]: WorkEffortFixedAssetAssignmentEditComponent,
@@ -269,6 +271,7 @@ export const edit = {
     TelecommunicationsNumberEditModule,
     TimeEntryEditModule,
     UnifiedGoodCreateModule,
+    UserProfileEditModule,
     WebAddressCreateModule,
     WebAddressEditModule,
     WorkEffortAssignmentRateEditModule,
@@ -338,6 +341,7 @@ export const edit = {
     TelecommunicationsNumberEditComponent,
     TimeEntryEditComponent,
     UnifiedGoodCreateComponent,
+    UserProfileEditComponent,
     WebAddressCreateComponent,
     WebAddressEditComponent,
     WorkEffortAssignmentRateEditComponent,

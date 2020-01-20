@@ -8,6 +8,7 @@ namespace Tests.LetterCorrespondenceTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.lettercorrespondence.edit;
@@ -31,7 +32,7 @@ namespace Tests.LetterCorrespondenceTests
         public void Edit()
         {
             var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.PartyName.Equals("Acme"));
+            var organisation = organisations.First(v => v.DisplayName().Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First();
@@ -77,8 +78,8 @@ namespace Tests.LetterCorrespondenceTests
             var letterCorrespondenceEdit = new LetterCorrespondenceEditComponent(organisationOverviewPage.Driver);
             letterCorrespondenceEdit.CommunicationEventState.Set(new CommunicationEventStates(this.Session).InProgress.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
-                .FromParty.Set(organisation.PartyName)
-                .ToParty.Set(employee.PartyName)
+                .FromParty.Set(organisation.DisplayName())
+                .ToParty.Set(employee.DisplayName())
                 .FromPostalAddress.Set("Haverwerf 15 1111 city Belgium")
                 .Subject.Set("new subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))

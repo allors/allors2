@@ -10,7 +10,7 @@ namespace Allors.Repository
     #region Allors
     [Id("61af6d19-e8e4-4b5b-97e8-3610fbc82605")]
     #endregion
-    public partial interface InventoryItem : UniquelyIdentifiable, Transitional, Deletable, Versioned
+    public partial interface InventoryItem : UniquelyIdentifiable, Transitional, Deletable, Versioned, Searchable
     {
         /// <summary>
         /// Gets or sets the Part for which this InventoryItem tracks inventory information.

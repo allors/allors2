@@ -1,0 +1,22 @@
+{
+  "include": [
+    "./gatsby-config.js",
+    "./gatsby-node.js",
+    "./src/**/*",
+  ],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "lib": ["dom", "es2017"],
+    "allowJs": true,
+    "checkJs": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "preserveSymlinks": true,
+    "resolveJsonModule": true
+  }
+}

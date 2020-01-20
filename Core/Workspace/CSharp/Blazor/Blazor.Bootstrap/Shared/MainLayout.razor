@@ -1,0 +1,21 @@
+@inherits LayoutComponentBase
+@inject IBootstrapCSS BootstrapCSS
+@inject NavigationManager NavigationManager
+
+<header style="border-bottom: 1px solid #e5e5e5; box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);">
+    <NavMenu />
+</header>
+
+@Body
+
+@code {
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        try
+        {
+            await this.BootstrapCSS.SetBootstrapCSS("4.3.1");
+        }
+        catch { }
+    }
+}

@@ -300,6 +300,11 @@ namespace Allors.Domain
             this.order.Confirm();
 
             this.Session.Derive();
+
+            this.order.Send();
+
+            this.Session.Derive();
+
             this.Session.Commit();
         }
 

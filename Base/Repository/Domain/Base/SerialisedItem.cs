@@ -41,8 +41,18 @@ namespace Allors.Repository
         public DateTime NextServiceDate { get; set; }
 
         public string Keywords { get; set; }
+
+        public string SearchString { get; set; }
+
         public LocalisedText[] LocalisedKeywords { get; set; }
-        public Media[] ElectronicDocuments { get; set; }
+
+        public Media[] PublicElectronicDocuments { get; set; }
+
+        public LocalisedMedia[] PublicLocalisedElectronicDocuments { get; set; }
+
+        public Media[] PrivateElectronicDocuments { get; set; }
+
+        public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
 
         #endregion InheritedProperties
 
@@ -397,6 +407,16 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public DateTime ExpectedReturnDate { get; set; }
+
+        #region Allors
+        [Id("E927291E-21A1-4289-B5AF-4A2CA2996DA2")]
+        [AssociationId("2955FFAE-0058-432B-801B-3E440A9308B8")]
+        [RoleId("71F28692-AD46-4B35-9424-DB9C8269C82A")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Part PartWhereItem { get; set; }
 
         #region inherited methods
         public void OnBuild() { }

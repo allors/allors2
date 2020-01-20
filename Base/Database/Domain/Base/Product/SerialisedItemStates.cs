@@ -42,22 +42,63 @@ namespace Allors.Domain
 
         public SerialisedItemState Assigned => this.Cache[AssignedId];
 
-        private UniquelyIdentifiableSticky<SerialisedItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SerialisedItemState>(this.Session);
+        private UniquelyIdentifiableSticky<SerialisedItemState> Cache =>
+            this.cache ??= new UniquelyIdentifiableSticky<SerialisedItemState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {
             var merge = this.Cache.Merger().Action();
 
-            merge(NaId, v => v.Name = "N/A");
-            merge(SoldId, v => v.Name = "Sold");
-            merge(InRentId, v => v.Name = "InRent");
-            merge(GoodId, v => v.Name = "In good order");
-            merge(BeingRepairedId, v => v.Name = "Being Repaired");
-            merge(SlightlyDamagedId, v => v.Name = "Slightly Damaged");
-            merge(DefectiveId, v => v.Name = "Defective");
-            merge(ScrapId, v => v.Name = "Scrap");
-            merge(AvailableId, v => v.Name = "Available");
-            merge(AssignedId, v => v.Name = "Assigned");
+            merge(NaId, v =>
+            {
+                v.Name = "N/A";
+                v.IsActive = true;
+            });
+            merge(SoldId, v =>
+            {
+                v.Name = "Sold";
+                v.IsActive = true;
+            });
+            merge(InRentId, v =>
+            {
+                v.Name = "InRent";
+                v.IsActive = true;
+            });
+            merge(GoodId, v =>
+            {
+                v.Name = "In good order";
+                v.IsActive = true;
+            });
+            merge(BeingRepairedId, v =>
+            {
+                v.Name = "Being Repaired";
+                v.IsActive = true;
+            });
+            merge(SlightlyDamagedId, v =>
+            {
+                v.Name = "Slightly Damaged";
+                v.IsActive = true;
+            });
+            merge(DefectiveId, v =>
+            {
+                v.Name = "Defective";
+                v.IsActive = true;
+            });
+            merge(ScrapId, v =>
+            {
+                v.Name = "Scrap";
+                v.IsActive = true;
+            });
+            merge(AvailableId, v =>
+            {
+                v.Name = "Available";
+                v.IsActive = true;
+            });
+            merge(AssignedId, v =>
+            {
+                v.Name = "Assigned";
+                v.IsActive = true;
+            });
         }
     }
 }

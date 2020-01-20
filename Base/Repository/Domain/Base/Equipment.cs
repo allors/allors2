@@ -37,12 +37,22 @@ namespace Allors.Repository
         public DateTime NextServiceDate { get; set; }
 
         public string Keywords { get; set; }
+
         public LocalisedText[] LocalisedKeywords { get; set; }
-        public Media[] ElectronicDocuments { get; set; }
+
+        public string SearchString { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public Media[] PublicElectronicDocuments { get; set; }
+
+        public LocalisedMedia[] PublicLocalisedElectronicDocuments { get; set; }
+
+        public Media[] PrivateElectronicDocuments { get; set; }
+
+        public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
 
         #endregion
 

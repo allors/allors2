@@ -1,0 +1,35 @@
+{
+  "name": "allors-gatsby",
+  "version": "1.0.0",
+  "description": "Allors Gatsby",
+  "scripts": {
+    "clean": "gatsby clean",
+    "start": "gatsby develop",
+    "develop": "gatsby develop",
+    "build": "gatsby build",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mdx-js/mdx": "^1.0.0-rc.4",
+    "@mdx-js/react": "^1.0.0-rc.5",
+    "gatsby": "^2.18.22",
+    "gatsby-image": "^2.2.38",
+    "gatsby-mdx": "^1.0.0",
+    "gatsby-plugin-graphql-codegen": "^2.1.1",
+    "gatsby-plugin-sharp": "^2.3.13",
+    "gatsby-plugin-typescript": "^2.1.26",
+    "gatsby-source-filesystem": "^2.1.46",
+    "gatsby-transformer-sharp": "^2.3.12",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^13.1.7",
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "lnk": "1.1.0",
+    "typescript": "^3.7.4"
+  }
+}

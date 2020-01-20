@@ -23,7 +23,6 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   order: SalesOrder;
   orderItem: SalesOrderItem;
   quoteItem: QuoteItem;
-  goods: NonUnifiedGood[];
   vatRates: VatRate[];
   vatRegimes: VatRegime[];
   discount: number;
@@ -131,7 +130,6 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
             pull.VatRate(),
             pull.VatRegime(),
             pull.SerialisedItemState(),
-            pull.NonUnifiedGood({ sort: new Sort(m.NonUnifiedGood.Name) }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
@@ -175,7 +173,6 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
 
         this.order = loaded.objects.SalesOrder as SalesOrder;
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
-        this.goods = loaded.collections.NonUnifiedGoods as NonUnifiedGood[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];

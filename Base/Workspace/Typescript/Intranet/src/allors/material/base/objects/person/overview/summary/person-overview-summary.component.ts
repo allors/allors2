@@ -16,6 +16,7 @@ export class PersonOverviewSummaryComponent extends TestScope {
   person: Person;
   organisation: Organisation;
   contactKindsText: string;
+  organisationContactRelationships: OrganisationContactRelationship[];
 
   constructor(
     @Self() public panel: PanelService,
@@ -79,10 +80,10 @@ export class PersonOverviewSummaryComponent extends TestScope {
     panel.onPulled = (loaded) => {
       this.person = loaded.objects[personPullName] as Person;
 
-      const organisationContactRelationships = loaded.collections[organisationContactRelationshipsPullName] as OrganisationContactRelationship[];
+      this.organisationContactRelationships = loaded.collections[organisationContactRelationshipsPullName] as OrganisationContactRelationship[];
 
-      if (organisationContactRelationships.length > 0) {
-        const organisationContactRelationship = organisationContactRelationships[0];
+      if (this.organisationContactRelationships.length > 0) {
+        const organisationContactRelationship = this.organisationContactRelationships[0];
         this.organisation = organisationContactRelationship.Organisation as Organisation;
 
         if (organisationContactRelationship.ContactKinds.length > 0) {

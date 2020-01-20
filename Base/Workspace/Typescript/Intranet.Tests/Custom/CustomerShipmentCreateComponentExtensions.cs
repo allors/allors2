@@ -9,12 +9,12 @@ namespace src.allors.material.@base.objects.customershipment.create
     {
         public static CustomerShipmentCreateComponent Build(this CustomerShipmentCreateComponent @this, CustomerShipment shipment, bool minimal = false)
         {
-            @this.ShipToParty.Select(shipment.ShipToParty.PartyName);
+            @this.ShipToParty.Select(shipment.ShipToParty.DisplayName());
 
             if (!minimal)
             {
                 @this.ShipToAddress.Set(shipment.ShipToAddress?.DisplayName());
-                @this.ShipToContactPerson.Set(shipment.ShipToContactPerson?.PartyName);
+                @this.ShipToContactPerson.Set(shipment.ShipToContactPerson?.DisplayName());
                 @this.ShipFromAddress.Set(shipment.ShipFromParty?.ShippingAddress.DisplayName());
                 @this.ShipmentMethod.Set(shipment.ShipmentMethod.Name);
                 @this.ShipFromFacility.Set(((Organisation)shipment.ShipFromParty).FacilitiesWhereOwner?.First.Name);

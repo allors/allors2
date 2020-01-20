@@ -8,6 +8,7 @@ namespace Tests.PhoneCommunicationTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.organisation.list;
@@ -28,7 +29,7 @@ namespace Tests.PhoneCommunicationTests
             : base(fixture)
         {
             var people = new Organisations(this.Session).Extent();
-            var organisation = people.First(v => v.PartyName.Equals("Acme"));
+            var organisation = people.First(v => v.DisplayName().Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();
@@ -42,7 +43,11 @@ namespace Tests.PhoneCommunicationTests
                 .Build();
 
             this.organisationPhoneNumber = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithAreaCode("111").WithContactNumber("222").Build())
+                .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session)
+                    .WithCountryCode("+1")
+                    .WithAreaCode("111")
+                    .WithContactNumber("222")
+                    .Build())
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).SalesOffice)
                 .WithUseAsDefault(false)
                 .Build();
@@ -60,7 +65,7 @@ namespace Tests.PhoneCommunicationTests
         public void Edit()
         {
             var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.PartyName.Equals("Acme"));
+            var organisation = extent.First(v => v.DisplayName().Equals("Acme"));
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();
@@ -80,8 +85,8 @@ namespace Tests.PhoneCommunicationTests
                 .LeftVoiceMail.Set(false)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
-                .FromParty.Set(organisation.PartyName)
-                .ToParty.Set(firstEmployee.PartyName)
+                .FromParty.Set(organisation.DisplayName())
+                .ToParty.Set(firstEmployee.DisplayName())
                 .FromPhoneNumber.Set("+1 111 222")
                 .Subject.Set("new subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
@@ -89,7 +94,7 @@ namespace Tests.PhoneCommunicationTests
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 25))
                 .Comment.Set("new comment")
-                .SAVE.Click();
+            .SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
@@ -104,10 +109,6 @@ namespace Tests.PhoneCommunicationTests
             Assert.Equal(firstEmployee, this.editCommunicationEvent.ToParty);
             Assert.Equal(this.organisationPhoneNumber.ContactMechanism, this.editCommunicationEvent.PhoneNumber);
             Assert.Equal("new subject", this.editCommunicationEvent.Subject);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledStart);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ScheduledEnd.Value.Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualStart.Value.Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, communicationEvent.ActualEnd.Value.Date);
             Assert.Equal("new comment", this.editCommunicationEvent.Comment);
         }
     }

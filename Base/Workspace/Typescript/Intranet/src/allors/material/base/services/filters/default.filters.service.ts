@@ -4,6 +4,7 @@ import { And, ContainedIn, Equals, Filter } from '../../../../framework';
 import { Meta } from '../../../../meta';
 
 import { FiltersService } from './filters.service';
+import { Party } from '../../../../domain';
 
 @Injectable()
 export class DefaultFiltersService extends FiltersService {
@@ -22,15 +23,29 @@ export class DefaultFiltersService extends FiltersService {
   get goodsFilter() {
     return new SearchFactory({
       objectType: this.m.Good,
-      roleTypes: [this.m.Good.Name],
+      roleTypes: [this.m.Good.Name, this.m.Good.SearchString],
     })
   }
 
   get partsFilter() {
     return new SearchFactory({
       objectType: this.m.Part,
-      roleTypes: [this.m.Part.Name],
+      roleTypes: [this.m.Part.Name, this.m.Part.SearchString],
     });
+  }
+
+  get nonUnifiedPartsFilter() {
+    return new SearchFactory({
+      objectType: this.m.NonUnifiedPart,
+      roleTypes: [this.m.NonUnifiedPart.Name, this.m.NonUnifiedPart.SearchString],
+    });
+  }
+
+  get serialisedItemsFilter() {
+    return new SearchFactory({
+      objectType: this.m.SerialisedItem,
+      roleTypes: [this.m.SerialisedItem.Name, this.m.SerialisedItem.SearchString],
+    })
   }
 
   get customersFilter() {
@@ -68,7 +83,7 @@ export class DefaultFiltersService extends FiltersService {
   get employeeFilter() {
     return new SearchFactory({
       objectType: this.m.Person,
-      roleTypes: [this.m.Person.PartyName],
+      roleTypes: [this.m.Person.PartyName, this.m.Person.UserName],
       post: (predicate: And) => {
         predicate.operands.push(new ContainedIn({
           propertyType: this.m.Person.EmploymentsWhereEmployee,
@@ -85,6 +100,13 @@ export class DefaultFiltersService extends FiltersService {
     return new SearchFactory({
       objectType: this.m.Organisation,
       roleTypes: [this.m.Organisation.PartyName],
+    });
+  }
+
+  get peopleFilter() {
+    return new SearchFactory({
+      objectType: this.m.Person,
+      roleTypes: [this.m.Person.PartyName],
     });
   }
 

@@ -37,13 +37,10 @@ namespace Allors.Repository
 
         public Document[] Documents { get; set; }
 
-        public Media[] ElectronicDocuments { get; set; }
-
-        public LocalisedMedia[] LocalisedElectronicDocuments { get; set; }
-
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         public string Keywords { get; set; }
+
         public LocalisedText[] LocalisedKeywords { get; set; }
 
         public Media PrimaryPhoto { get; set; }
@@ -80,6 +77,23 @@ namespace Allors.Repository
 
         public Product[] ProductIncompatibilities { get; set; }
 
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
+        public string SearchString { get; set; }
+
+        public Media[] PublicElectronicDocuments { get; set; }
+
+        public LocalisedMedia[] PublicLocalisedElectronicDocuments { get; set; }
+
+        public Media[] PrivateElectronicDocuments { get; set; }
+
+        public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
         #endregion
 
         #region Allors

@@ -9,12 +9,13 @@ namespace Allors.Domain
 
     public partial class QuoteItemStates
     {
-        private static readonly Guid DraftId = new Guid("84AD17A3-10F7-4FDB-B76A-41BDB1EDB0E6");
-        private static readonly Guid SubmittedId = new Guid("E511EA2D-6EB9-428D-A982-B097938A8FF8");
-        private static readonly Guid ApprovedId = new Guid("3335810C-9E26-4604-B272-D18B831E79E0");
-        private static readonly Guid CancelledId = new Guid("6433F6F7-22D6-4142-8FC5-8941F4F0B6A8");
-        private static readonly Guid RejectedId = new Guid("CA8E48EC-5EF7-4082-8347-648B41585485");
-        private static readonly Guid OrderedId = new Guid("BF59B586-C35A-423B-9115-DEA1079D905F");
+        public static readonly Guid DraftId = new Guid("84AD17A3-10F7-4FDB-B76A-41BDB1EDB0E6");
+        public static readonly Guid SubmittedId = new Guid("E511EA2D-6EB9-428D-A982-B097938A8FF8");
+        public static readonly Guid ApprovedId = new Guid("3335810C-9E26-4604-B272-D18B831E79E0");
+        public static readonly Guid SentId = new Guid("44E4B56D-965C-4218-9AFC-27AD22041B25");
+        public static readonly Guid CancelledId = new Guid("6433F6F7-22D6-4142-8FC5-8941F4F0B6A8");
+        public static readonly Guid RejectedId = new Guid("CA8E48EC-5EF7-4082-8347-648B41585485");
+        public static readonly Guid OrderedId = new Guid("BF59B586-C35A-423B-9115-DEA1079D905F");
 
         private UniquelyIdentifiableSticky<QuoteItemState> cache;
 
@@ -23,6 +24,8 @@ namespace Allors.Domain
         public QuoteItemState Submitted => this.Cache[SubmittedId];
 
         public QuoteItemState Approved => this.Cache[ApprovedId];
+
+        public QuoteItemState Sent => this.Cache[SentId];
 
         public QuoteItemState Cancelled => this.Cache[CancelledId];
 
@@ -40,6 +43,7 @@ namespace Allors.Domain
 
             merge(SubmittedId, v => v.Name = "Submitted");
             merge(ApprovedId, v => v.Name = "Approved");
+            merge(SentId, v => v.Name = "Sent");
             merge(CancelledId, v => v.Name = "Cancelled");
             merge(RejectedId, v => v.Name = "Rejected");
             merge(OrderedId, v => v.Name = "Ordered");

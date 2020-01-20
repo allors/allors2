@@ -8,6 +8,7 @@ namespace Tests.PartyRelationshipTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using src.allors.material.@base.objects.employment.edit;
@@ -50,7 +51,7 @@ namespace Tests.PartyRelationshipTests
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .Employee.Set(employee.PartyName)
+                .Employee.Set(employee.DisplayName())
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();

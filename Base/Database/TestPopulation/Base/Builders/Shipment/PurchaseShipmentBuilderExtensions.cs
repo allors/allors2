@@ -17,8 +17,6 @@ namespace Allors.Domain.TestPopulation
 
             var supplier = faker.Random.ListItem(internalOrganisation.ActiveSuppliers);
 
-            @this.Session.Derive();
-
             @this.WithShipFromParty(supplier);
             @this.WithShipFromContactPerson(supplier.CurrentContacts.FirstOrDefault());
             @this.WithShipToParty(internalOrganisation);

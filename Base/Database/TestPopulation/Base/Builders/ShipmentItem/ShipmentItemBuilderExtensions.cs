@@ -6,35 +6,23 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
+using Allors.Meta;
 
 namespace Allors.Domain.TestPopulation
 {
     public static partial class ShipmentItemBuilderExtensions
     {
-        public static ShipmentItemBuilder WithDefaults(this ShipmentItemBuilder @this, CustomerShipment customerShipment)
+        public static ShipmentItemBuilder WithSerialisedUnifiedGoodDefaults(this ShipmentItemBuilder @this, Organisation internalOrganization)
         {
             var faker = @this.Session.Faker();
 
-            //@this.WithShipFromParty(customerShipment);
-            //@this.WithShipFromContactPerson(customerShipment.CurrentContacts.FirstOrDefault());
-            //@this.WithShipToParty(customer);
-            //@this.WithShipToContactPerson(customer.CurrentContacts.FirstOrDefault());
-            //@this.WithShipmentMethod(faker.Random.ListItem(@this.Session.Extent<ShipmentMethod>()));
-            //@this.WithCarrier(faker.Random.ListItem(@this.Session.Extent<Carrier>()));
-            //@this.WithEstimatedReadyDate(@this.Session.Now());
-            //@this.WithEstimatedShipDate(faker.Date.Between(start: @this.Session.Now(), end: @this.Session.Now().AddDays(5)));
-            //@this.WithLatestCancelDate(faker.Date.Between(start: @this.Session.Now(), end: @this.Session.Now().AddDays(2)));
-            //@this.WithEstimatedArrivalDate(faker.Date.Between(start: @this.Session.Now().AddDays(6), end: @this.Session.Now().AddDays(10)));
+            var goods = new UnifiedGoods(@this.Session).Extent();
+            goods.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).Serialised);
+            var serializedGood = goods.First;
 
-            //@this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
-            //@this.WithEstimatedShipCost(faker.Finance.Amount(100, 1000, 2));
-            //@this.WithHandlingInstruction(faker.Lorem.Paragraph());
-            //@this.WithComment(faker.Lorem.Sentence());
-
-            //foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
-            //{
-            //    @this.WithLocalisedComment(new LocalisedTextBuilder(@this.Session).WithText(faker.Lorem.Sentence()).WithLocale(additionalLocale).Build());
-            //}
+            @this.WithGood(serializedGood);
+            @this.WithQuantity(1);
+            @this.WithSerialisedItem(serializedGood.SerialisedItems.First);
 
             return @this;
         }

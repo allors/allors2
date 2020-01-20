@@ -15,24 +15,27 @@ namespace Allors.Domain
         {
             var created = new QuoteStates(this.Session).Created;
             var approved = new QuoteStates(this.Session).Approved;
+            var sent = new QuoteStates(this.Session).Sent;
             var ordered = new QuoteStates(this.Session).Ordered;
             var rejected = new QuoteStates(this.Session).Rejected;
             var cancelled = new QuoteStates(this.Session).Cancelled;
 
             var approve = this.Meta.Approve;
+            var send = this.Meta.Send;
             var reopen = this.Meta.Reopen;
             var reject = this.Meta.Reject;
             var order = this.Meta.Order;
             var cancel = this.Meta.Cancel;
 
-            config.Deny(this.ObjectType, created, order, reopen);
+            config.Deny(this.ObjectType, created, order, reopen, send);
             config.Deny(this.ObjectType, approved, approve);
-            config.Deny(this.ObjectType, ordered, approve, reject, order, cancel, reopen);
-            config.Deny(this.ObjectType, rejected, approve, reject, order);
-            config.Deny(this.ObjectType, cancelled, cancel, reject, order);
+            config.Deny(this.ObjectType, ordered, approve, reject, order, cancel, reopen, send);
+            config.Deny(this.ObjectType, rejected, approve, reject, order, send);
+            config.Deny(this.ObjectType, cancelled, cancel, reject, order, send);
 
             config.Deny(this.ObjectType, approved, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Write);
+            config.Deny(this.ObjectType, sent, Operations.Write);
             config.Deny(this.ObjectType, ordered, Operations.Write);
             config.Deny(this.ObjectType, cancelled, Operations.Write);
         }

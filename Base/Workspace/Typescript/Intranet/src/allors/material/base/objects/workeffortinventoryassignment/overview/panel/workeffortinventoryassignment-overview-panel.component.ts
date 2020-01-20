@@ -59,7 +59,8 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent extends TestSco
     this.edit = this.editService.edit();
 
     this.panel.name = 'workeffortinventoryassignment';
-    this.panel.title = 'Inventory Assignment';
+    // this.panel.title = 'Inventory Assignment';
+    this.panel.title = 'Parts Used';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 

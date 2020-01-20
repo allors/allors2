@@ -47,7 +47,7 @@ export class WorkTaskOverviewDetailComponent extends TestScope implements OnInit
     this.m = this.metaService.m;
 
     panel.name = 'detail';
-    panel.title = 'WorkTask Data';
+    panel.title = 'WorkTask Details';
     panel.icon = 'business';
     panel.expandable = true;
 
