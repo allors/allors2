@@ -12,9 +12,9 @@ class FakeNodes {
   public createContentDigest = (content) => content;
 }
 
-describe('gatsby-node',
+describe('NodeBuilder',
   () => {
-    describe('sourceNodes',
+    describe('build',
       () => {
         it('should return the source nodes', async () => {
 
