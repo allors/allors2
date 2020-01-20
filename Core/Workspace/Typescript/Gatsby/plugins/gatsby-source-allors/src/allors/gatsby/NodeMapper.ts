@@ -3,6 +3,22 @@ import { Loaded } from "../promise";
 import { NodePluginArgs } from "gatsby"
 import { ISessionObject } from "../framework";
 
+const reservedWords = new Set([
+  "id",
+  "children",
+  "parent",
+  "fields",
+  "internal"
+]);
+
+const escape = (value: string) => {
+  if(reservedWords.has(value)){
+    return `_${value}`;
+  }
+
+  return value;
+};
+
 const camel = (value: string) => value.replace(/^\w/, c => c.toLowerCase());
 
 export class NodeMapper {
@@ -61,7 +77,7 @@ export class NodeMapper {
       const roleTypes = metaGatsby.roleTypes || type.roleTypes;
       roleTypes.forEach((roleType => {
         const role = workspaceObject.roleByRoleTypeId.get(roleType.id);
-        let propertyName = camel(roleType.name);
+        let propertyName = escape(camel(roleType.name));
 
         if (!!role) {
           if (roleType.objectType.isUnit) {
@@ -87,7 +103,7 @@ export class NodeMapper {
       const associationTypes = metaGatsby.associationTypes || type.associationTypes;
       associationTypes.forEach((associationType => {
         const association = sessionObject.getAssociation(associationType);
-        const propertyName = `${camel(associationType.name)}___NODE`;
+        const propertyName = `${escape(camel(associationType.name))}___NODE`;
 
         if (associationType.isOne) {
           if (!!association) {
