@@ -12,7 +12,7 @@ const reservedWords = new Set([
 ]);
 
 const escape = (value: string) => {
-  if(reservedWords.has(value)){
+  if (reservedWords.has(value)) {
     return `_${value}`;
   }
 
@@ -95,6 +95,10 @@ export class NodeMapper {
                 node[propertyName] = roleIds.map((w) => createNodeId(`allors-${w}`));
               }
             }
+          }
+        } else {
+          if (metaGatsby.schema && metaGatsby.schema.indexOf(roleType) > -1) {
+            node[propertyName] = null;
           }
         }
       }))
