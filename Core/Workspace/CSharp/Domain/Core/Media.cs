@@ -5,10 +5,17 @@
 
 namespace Allors.Workspace.Domain
 {
-    using System.Globalization;
+    using System.Web;
 
     public partial class Media
     {
-        public string Source => "/Media/DownloadWithRevision/" + this.UniqueId + "?revision=" + this.Revision;
+        public string Source
+        {
+            get
+            {
+                var fileNamePart = !string.IsNullOrWhiteSpace(this.FileName) ? $"/{HttpUtility.UrlEncode(this.FileName)}" : null;
+                return $"/media/{this.UniqueId}{fileNamePart}";
+            }
+        }
     }
 }
