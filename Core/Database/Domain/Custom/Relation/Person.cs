@@ -39,6 +39,10 @@ namespace Allors.Domain
             }
         }
 
-        public void CustomOnDerive(ObjectOnDerive method) => this.FullName = this.FirstName + " " + this.LastName;
+        public void CustomOnDerive(ObjectOnDerive method)
+        {
+            this.FullName = this.FirstName + " " + this.LastName;
+            this.Address = this.MainAddress;
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { Person, Media, Organisation, C1 } from '../../src/allors/domain';
+import { Person, Media, Organisation, C1, User } from '../../src/allors/domain';
 import { PullRequest, Pull, Filter, TreeNode, Tree, Result, Fetch, Equals, And } from '../../src/allors/framework';
 
 import { assert } from 'chai';
@@ -128,6 +128,47 @@ describe('Extent',
             if (owner) {
             }
           });
+        });
+      });
+
+
+      describe('User with tree (and Person)',
+      () => {
+        it('should return all users', async () => {
+
+          const { m, ctx, tree } = fixture;
+
+          const pulls = [
+            new Pull({
+              extent: new Filter({
+                objectType: m.User,
+              }),
+              results: [
+                new Result({
+                  fetch: new Fetch({
+                    include: tree.User({
+                      Person_Address: {},
+                    })
+                  })
+                })
+              ]
+            }),
+          ];
+
+          ctx.session.reset();
+
+          const loaded = await ctx
+            .load(new PullRequest({ pulls }));
+
+          const users = loaded.collections['Users'] as User[];
+
+          assert.isArray(users);
+          assert.isNotEmpty(users);
+
+          const personWithAddress = users.find(v => (v as Person).Address) as Person;
+
+          assert.isDefined(personWithAddress);
+          assert.equal('Jane', personWithAddress.FirstName)
         });
       });
 

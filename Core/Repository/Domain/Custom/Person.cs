@@ -9,9 +9,11 @@ namespace Allors.Repository
 
     using Allors.Repository.Attributes;
 
-    public partial class Person : Deletable
+    public partial class Person : Addressable, Deletable
     {
         #region inherited properties
+        public Address Address { get; set; }
+
         #endregion
 
         #region Allors

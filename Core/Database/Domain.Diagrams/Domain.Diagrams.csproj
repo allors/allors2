@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Temp.cd" />
     <None Include="Security\Authentication.cd" />
     <None Include="Security\Authorization.cd" />
   </ItemGroup>
