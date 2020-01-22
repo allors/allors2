@@ -26,6 +26,8 @@ namespace Allors.Domain
 
                 this.DeniedPermissions = deniedPermissions;
             }
+
+            this.Address = this.MainAddress;
         }
 
         public void CustomJustDoIt(OrganisationJustDoIt method)

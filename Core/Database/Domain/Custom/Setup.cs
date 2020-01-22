@@ -23,9 +23,12 @@ namespace Allors
 
         private void CustomOnPostSetup()
         {
+            var place = new PlaceBuilder(this.session).WithPostalCode("X").WithCity("London").WithCountry(new Countries(this.session).CountryByIsoCode["GB"]).Build();
+            var address = new HomeAddressBuilder(this.session).WithStreet("Main Street").WithHouseNumber("1").WithPlace(place).Build();
+
             var genders = new Genders(this.session);
 
-            var jane = new PersonBuilder(this.session).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@example.com").WithGender(genders.Female).Build();
+            var jane = new PersonBuilder(this.session).WithMainAddress(address).WithFirstName("Jane").WithLastName("Doe").WithUserName("jane@example.com").WithGender(genders.Female).Build();
             var john = new PersonBuilder(this.session).WithFirstName("John").WithLastName("Doe").WithUserName("john@example.com").WithGender(genders.Male).Build();
             var jenny = new PersonBuilder(this.session).WithFirstName("Jenny").WithLastName("Doe").WithUserName("jenny@example.com").WithGender(genders.Other).Build();
 

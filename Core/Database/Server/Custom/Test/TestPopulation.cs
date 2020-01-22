@@ -30,7 +30,7 @@ namespace Allors.Server.Controllers
         private void Full()
         {
             new PersonBuilder(this.session).WithUserName("noacl").WithFirstName("no").WithLastName("acl").Build();
-
+            
             var noperm = new PersonBuilder(this.session).WithUserName("noperm").WithFirstName("no").WithLastName("perm").Build();
             var emptyRole = new RoleBuilder(this.session).WithName("Empty").Build();
             var defaultSecurityToken = new SecurityTokens(this.session).DefaultSecurityToken;

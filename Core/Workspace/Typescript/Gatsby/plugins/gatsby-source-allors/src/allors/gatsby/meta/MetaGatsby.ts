@@ -8,4 +8,7 @@ export interface MetaGatsby {
   associationTypes?: AssociationType[];
 
   properties?: string[];
+
+  // TODO: Move to separate schema generator
+  schema?: RoleType[];
 }

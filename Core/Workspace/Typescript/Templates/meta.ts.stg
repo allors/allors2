@@ -114,8 +114,8 @@ $composite.WorkspaceSubtypes:{type|$treeSubType(type)$}$
 
 treeSubType(type) ::= <<
 
-$type.WorkspaceExclusiveCompositeRoleTypes:{role|    $type.Name$_$role.Name$?: Tree$role.ObjectType.Name$;}; separator="\n"$
-$type.WorkspaceExclusiveAssociationTypes:{association|    $type.Name$_$association.PropertyName$?: Tree$association.ObjectType.Name$;}; separator="\n"$
+$type.WorkspaceCompositeRoleTypes:{role|    $type.Name$_$role.Name$?: Tree$role.ObjectType.Name$;}; separator="\n"$
+$type.WorkspaceAssociationTypes:{association|    $type.Name$_$association.PropertyName$?: Tree$association.ObjectType.Name$;}; separator="\n"$
 
 >>
 
