@@ -2,6 +2,7 @@
 import { assert } from 'chai';
 import 'mocha';
 import { NodeBuilder } from '../NodeBuilder';
+import metaPopulation from '../metaPopulation';
 
 class FakeNodes {
   public nodes = [];
@@ -14,6 +15,7 @@ class FakeNodes {
 
 describe('NodeBuilder',
   () => {
+
     describe('build',
       () => {
         it('should return the source nodes', async () => {
@@ -29,14 +31,14 @@ describe('NodeBuilder',
           } as any
 
           const extra = {
-            plugins: undefined,
+            plugins: [],
             url: "http://localhost:5000/",
             login: "TestAuthentication/Token",
             user: "administrator",
             password: undefined
           }
 
-          var gatsby = new NodeBuilder(args, extra);
+          var gatsby = new NodeBuilder(metaPopulation, args, extra);
           await gatsby.build();
 
           var medias = fakeNodes.nodes.filter(v=>v.internal.type === "AllorsMedia");

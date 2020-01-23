@@ -61,81 +61,77 @@ export class NodeMapper {
       const workspaceObject = workspace.get(id);
       const type = workspaceObject.objectType;
 
-      const metaGatsby = type.metaGatsby || {};
-
-      const node = {
-        id: createNodeId(`allors-${workspaceObject.id}`),
-        parent: null,
-        children: [],
-        internal: {
-          type: `Allors${type.name}`,
-          contentDigest: contentDigestById[id],
+      if (type._isGatsby && type.isClass) {
+        const node = {
+          id: createNodeId(`allors-${workspaceObject.id}`),
+          parent: null,
+          children: [],
+          internal: {
+            type: `Allors${type.name}`,
+            contentDigest: contentDigestById[id],
+          }
         }
-      }
 
-      // Roles
-      const roleTypes = metaGatsby.roleTypes || type.roleTypes;
-      roleTypes.forEach((roleType => {
-        const role = workspaceObject.roleByRoleTypeId.get(roleType.id);
-        let propertyName = escape(camel(roleType.name));
+        // Allors
+        node["allorsId"] = workspaceObject.id;
+        node["allorsVersion"] = workspaceObject.version;
+        node["allorsType"] = workspaceObject.objectType.name;
 
-        if (!!role) {
-          if (roleType.objectType.isUnit) {
-            node[propertyName] = role;
-          } else {
-            propertyName = `${propertyName}___NODE`;
+        // Roles
+        type._roleTypes.forEach((roleType => {
+          const role = workspaceObject.roleByRoleTypeId.get(roleType.id);
+          let propertyName = escape(camel(roleType.name));
 
-            if (roleType.isOne) {
-              if (ids.indexOf(role) > -1) {
-                node[propertyName] = createNodeId(`allors-${role}`);
-              }
+          if (!!role) {
+            if (roleType.objectType.isUnit) {
+              node[propertyName] = role;
             } else {
-              const roleIds = (role as string[]).filter(w => ids.indexOf(w) > -1);
-              if (roleIds.length > 0) {
-                node[propertyName] = roleIds.map((w) => createNodeId(`allors-${w}`));
+              if (roleType.isOne) {
+                if (ids.indexOf(role) > -1) {
+                  node[propertyName] = createNodeId(`allors-${role}`);
+                }
+              } else {
+                const roleIds = (role as string[]).filter(w => ids.indexOf(w) > -1);
+                if (roleIds.length > 0) {
+                  node[propertyName] = roleIds.map((w) => createNodeId(`allors-${w}`));
+                }
               }
             }
           }
-        } else {
-          if (metaGatsby.schema && metaGatsby.schema.indexOf(roleType) > -1) {
-            node[propertyName] = null;
-          }
-        }
-      }))
-
-      // Associations
-      const associationTypes = metaGatsby.associationTypes || type.associationTypes;
-      associationTypes.forEach((associationType => {
-        const association = sessionObject.getAssociation(associationType);
-        const propertyName = `${escape(camel(associationType.name))}___NODE`;
-
-        if (associationType.isOne) {
-          if (!!association) {
-            node[propertyName] = createNodeId(`allors-${association.id}`);
-          }
-        } else {
-          const associationArray = (association as ISessionObject[]);
-          if (associationArray.length > 0) {
-            const associationIds = associationArray.map(w => w.id);
-            node[propertyName] = associationIds.map((w) => createNodeId(`allors-${w}`));
-          }
-        }
-      }))
-
-      // Properties
-      if (metaGatsby.properties) {
-        metaGatsby.properties.forEach((property => {
-          const value = sessionObject[property];
-
-          if (!!value) {
-            node[property] = value;
-          }
-
         }))
+
+        // Associations
+        type._associationTypes.forEach((associationType => {
+          const association = sessionObject.getAssociation(associationType);
+          const propertyName = `${escape(camel(associationType.name))}`;
+
+          if (associationType.isOne) {
+            if (!!association) {
+              node[propertyName] = createNodeId(`allors-${association.id}`);
+            }
+          } else {
+            const associationArray = (association as ISessionObject[]);
+            if (associationArray.length > 0) {
+              const associationIds = associationArray.map(w => w.id);
+              node[propertyName] = associationIds.map((w) => createNodeId(`allors-${w}`));
+            }
+          }
+        }))
+
+        // Properties
+        if (type.gatsbyProperties) {
+          type.gatsbyProperties.forEach((property => {
+            const value = sessionObject[property.name];
+
+            if (!!value) {
+              node[property.name] = value;
+            }
+
+          }))
+        }
+
+        createNode(node);
       }
-
-      createNode(node);
-
     })
   }
 }

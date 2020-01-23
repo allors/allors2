@@ -5,12 +5,11 @@ import { data, Meta, PullFactory } from "./meta";
 import { domain } from './domain';
 import { NodeMapper } from "./gatsby/NodeMapper";
 
-import { NodePluginArgs } from "gatsby"
+import { NodePluginArgs, PluginOptions } from "gatsby"
 
 export class NodeBuilder {
 
   http: AxiosHttp;
-  metaPopulation: MetaPopulation;
   m: Meta;
   workspace: Workspace;
   mapper: NodeMapper;
@@ -18,14 +17,14 @@ export class NodeBuilder {
   user: string;
   password: string;
 
-  constructor(args: NodePluginArgs, { plugins, ...options }) {
-    const url = options["url"]
-    this.http = new AxiosHttp(url);
-    this.login = options["login"];
-    this.user = options["user"];
-    this.password = options["password"];
+  constructor(private metaPopulation: MetaPopulation, args: NodePluginArgs, { plugins, ...options }: PluginOptions) {
+    const url = options["url"] as string
+    this.login = options["login"] as string;
+    this.user = options["user"] as string;
+    this.password = options["password"] as string;
 
-    this.metaPopulation = new MetaPopulation(data);
+    this.http = new AxiosHttp(url);
+
     this.m = this.metaPopulation as Meta;
 
     this.workspace = new Workspace(this.metaPopulation);
@@ -35,23 +34,6 @@ export class NodeBuilder {
   }
 
   public async build() {
-
-    // Meta Gatsby
-    this.m.Organisation.metaGatsby = {
-      roleTypes: this.m.Organisation.roleTypes,
-      properties: ["slug"]
-    };
-
-    this.m.Person.metaGatsby = {
-      roleTypes: this.m.Person.roleTypes,
-      associationTypes: this.m.Person.associationTypes,
-      properties: ["slug"]
-    };
-
-    this.m.Media.metaGatsby = {
-      roleTypes: this.m.Media.roleTypes,
-    };
-
     // Fetch objects
     await this.http.login(this.login, this.user, this.password);
 
