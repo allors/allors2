@@ -24,7 +24,7 @@ namespace Tests
 
             var order = new OrderBuilder(this.Session).Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.False(order.ExistOrderState);
             Assert.False(order.ExistLastOrderState);
@@ -36,7 +36,7 @@ namespace Tests
 
             order.OrderState = initial;
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.Equal(initial, order.OrderState);
             Assert.Equal(initial, order.LastOrderState);
@@ -50,7 +50,7 @@ namespace Tests
 
             order.OrderState = confirmed;
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.Equal(confirmed, order.OrderState);
             Assert.Equal(confirmed, order.LastOrderState);
@@ -79,15 +79,15 @@ namespace Tests
 
             order.OrderState = initial;
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             order.OrderState = confirmed;
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             order.ShipmentState = notShipped;
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.Equal(notShipped, order.ShipmentState);
             Assert.Equal(notShipped, order.LastShipmentState);
@@ -104,7 +104,7 @@ namespace Tests
 
             order.ShipmentState = partiallyShipped;
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.Equal(2, order.ObjectStates.Count);
             Assert.Contains(confirmed, order.ObjectStates);

@@ -6,6 +6,7 @@
 namespace Allors.Meta
 {
     using System;
+    using System.Diagnostics;
 
     public partial class MethodInvocation
     {
@@ -13,6 +14,7 @@ namespace Allors.Meta
 
         public ConcreteMethodType ConcreteConcreteMethodType { get; private set; }
 
+        [DebuggerStepThrough]
         public void Execute(Method method)
         {
             if (method.Executed)

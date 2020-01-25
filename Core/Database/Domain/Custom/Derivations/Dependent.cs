@@ -20,6 +20,8 @@ namespace Allors.Domain
             }
         }
 
+        public void CustomOnPreDerive(ObjectOnPreDerive method) => method.Iteration.Mark(this);
+
         public void CustomOnDerive(ObjectOnDerive method)
         {
             if (this.ExistDependee)

@@ -15,7 +15,7 @@ namespace Tests
 
     using Xunit;
 
-    public class DerivationLogTests : DomainTest
+    public class ValidationTests : DomainTest
     {
         [Fact]
         public void AssertIsUniqueTest()

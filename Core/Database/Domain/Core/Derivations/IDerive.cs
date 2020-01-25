@@ -1,14 +1,14 @@
-﻿// <copyright file="DerivationConfig.cs" company="Allors bvba">
+// <copyright file="IValidation.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
 namespace Allors.Domain
 {
-    using System;
-
-    public class DerivationConfig
+    public interface IDerive
     {
-        public Func<Logging.IDerivationLog> DerivationLogFunc { get; set; }
+        IAccumulatedChangeSet ChangeSet { get; }
+
+        object this[string name] { get; set; }
     }
 }

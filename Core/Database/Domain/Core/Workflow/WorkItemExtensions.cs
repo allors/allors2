@@ -1,4 +1,4 @@
-﻿// <copyright file="WorkItemExtensions.cs" company="Allors bvba">
+// <copyright file="WorkItemExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,11 +11,12 @@ namespace Allors.Domain
     {
         public static void CoreOnPreDerive(this WorkItem @this, ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
             foreach (var task in @this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed))
             {
-                derivation.AddDependency(task, @this);
+                iteration.AddDependency(task, @this);
+                iteration.Mark(task);
             }
         }
     }

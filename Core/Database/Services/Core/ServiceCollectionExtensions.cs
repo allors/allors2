@@ -6,14 +6,14 @@
 
 namespace Allors.Services
 {
+    using Antlr.Runtime.Misc;
+    using Domain;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class ServiceCollectionExtension
     {
-        public static void AddAllors(this IServiceCollection services, ServiceConfig config = null)
+        public static void AddAllors(this IServiceCollection services, Func<IDerivation> factory = null)
         {
-            config = config ?? new ServiceConfig();
-
             services.AddSingleton<ITreeService, TreeService>();
             services.AddSingleton<ICacheService, CacheService>();
             services.AddSingleton<IDatabaseService, DatabaseService>();
@@ -25,7 +25,7 @@ namespace Allors.Services
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IExtentService, ExtentService>();
             services.AddSingleton<IFetchService, FetchService>();
-            services.AddSingleton<IDerivationService>(new DerivationService(config.DerivationConfig));
+            services.AddSingleton<IDerivationService>(new DerivationService { Factory = factory });
             services.AddSingleton<IBarcodeService, BarcodeService>();
 
             services.AddScoped<ISessionService, SessionService>();

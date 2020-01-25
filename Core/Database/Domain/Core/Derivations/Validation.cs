@@ -10,11 +10,11 @@ namespace Allors.Domain
     using Allors;
     using Allors.Meta;
 
-    public abstract partial class ValidationBase : IValidation
+    public partial class Validation : IValidation
     {
         private readonly List<IDerivationError> errors;
 
-        protected ValidationBase(IDerivation derivation)
+        internal Validation(IDerivation derivation)
         {
             this.Derivation = derivation;
             this.errors = new List<IDerivationError>();
@@ -29,7 +29,6 @@ namespace Allors.Domain
         public void AddError(IDerivationError derivationError)
         {
             this.errors.Add(derivationError);
-            this.OnAddedError(derivationError);
         }
 
         public void AddError(IObject association, RoleType roleType, string errorMessage, params object[] messageParam)
@@ -158,7 +157,5 @@ namespace Allors.Domain
                 this.AddError(new DerivationErrorRequired(this, role, associationType));
             }
         }
-
-        protected abstract void OnAddedError(IDerivationError derivationError);
     }
 }

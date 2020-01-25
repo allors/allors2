@@ -9,8 +9,6 @@ namespace Allors
     using System.IO;
     using System.Linq;
 
-    using Allors.Domain;
-
     public class Upgrade
     {
         private readonly ISession session;
@@ -29,10 +27,9 @@ namespace Allors
 
         private void Derive(Extent extent)
         {
-            var derivation = new Domain.NonLogging.Derivation(this.session, new DerivationConfig());
-            derivation.Add(extent.Cast<Domain.Object>());
+            var derivation = new Domain.NonLogging.Derivation(this.session);
 
-            var validation = derivation.Derive();
+            var validation = derivation.Derive(extent.Cast<Domain.Object>().ToArray());
             if (validation.HasErrors)
             {
                 foreach (var error in validation.Errors)

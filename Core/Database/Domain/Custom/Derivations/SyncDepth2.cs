@@ -9,11 +9,12 @@ namespace Allors.Domain
     {
         public void CustomOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (!derivation.IsCreated(this) && derivation.IsModified(this, RelationKind.Regular))
+            if (!changeSet.IsCreated(this) && changeSet.HasChangedRoles(this, RelationKind.Regular))
             {
-                derivation.AddDependency(this, this.SyncDepthI1WhereSyncDepth2);
+                iteration.AddDependency(this, this.SyncDepthI1WhereSyncDepth2);
+                iteration.Mark(this, this.SyncDepthI1WhereSyncDepth2);
             }
         }
     }

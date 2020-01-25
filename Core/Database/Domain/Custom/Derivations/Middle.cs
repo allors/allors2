@@ -9,10 +9,12 @@ namespace Allors.Domain
     {
         public void CustomOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            derivation.AddDependency(this.LeftWhereMiddle, this);
-            derivation.AddDependency(this, this.Right);
+            iteration.AddDependency(this.LeftWhereMiddle, this);
+            iteration.AddDependency(this, this.Right);
+
+            iteration.Mark(this, this.LeftWhereMiddle, this.Right);
         }
     }
 }

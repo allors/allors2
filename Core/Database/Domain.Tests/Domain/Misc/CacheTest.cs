@@ -16,7 +16,7 @@ namespace Tests
         {
             var existingOrganisation = new OrganisationBuilder(this.Session).WithName("existing organisation").Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             var sessions = new ISession[] { this.Session };

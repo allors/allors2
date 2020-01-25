@@ -27,10 +27,12 @@ namespace Allors.Domain
 
         public void CustomOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
+
             if (this.ExistDependentWhereDependee)
             {
-                derivation.AddDependency(this.DependentWhereDependee, this);
+                iteration.AddDependency(this.DependentWhereDependee, this);
+                iteration.Mark(this, this.DependentWhereDependee);
             }
         }
 

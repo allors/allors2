@@ -20,11 +20,13 @@ namespace Allors.Domain
 
         public static void CoreOnPreDerive(this Task @this, ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
+            // TODO: Review
             foreach (TaskAssignment taskAssignment in @this.TaskAssignmentsWhereTask)
             {
-                derivation.AddDependency(taskAssignment, @this);
+                iteration.AddDependency(taskAssignment, @this);
+                iteration.Mark(taskAssignment);
             }
         }
 

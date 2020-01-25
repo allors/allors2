@@ -21,7 +21,7 @@ namespace Tests
         {
             var first = new FirstBuilder(this.Session).Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.True(first.ExistIsDerived);
             Assert.True(first.Second.ExistIsDerived);
@@ -44,7 +44,7 @@ namespace Tests
 
             dependee.Counter = 10;
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.Equal(11, dependent.Counter);
             Assert.Equal(11, dependee.Counter);
@@ -64,7 +64,7 @@ namespace Tests
 
             subdependee.Subcounter = 10;
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.Equal(1, dependent.Counter);
             Assert.Equal(1, dependee.Counter);
@@ -86,20 +86,18 @@ namespace Tests
 
             dependee.DeleteDependent = true;
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.True(dependent.Strategy.IsDeleted);
             Assert.Equal(1, dependee.Counter);
         }
 
         [Fact]
-        public void Force()
+        public void Marked()
         {
             var first = new FirstBuilder(this.Session).Build();
 
             this.Session.Commit();
-
-            this.Session.Derive(true);
 
             var derivation = new Derivation(this.Session);
             derivation.Derive(first);

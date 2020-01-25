@@ -6,23 +6,12 @@
 namespace Allors.Services
 {
     using Allors.Domain;
+    using Antlr.Runtime.Misc;
 
     public class DerivationService : IDerivationService
     {
-        private readonly DerivationConfig config;
+        public Func<IDerivation> Factory { get; set; }
 
-        public DerivationService(DerivationConfig config) => this.config = config;
-
-        public IDerivation CreateDerivation(ISession session)
-        {
-            if (this.config?.DerivationLogFunc == null)
-            {
-                return new Domain.NonLogging.Derivation(session, this.config);
-            }
-            else
-            {
-                return new Domain.Logging.Derivation(session, this.config);
-            }
-        }
+        public IDerivation CreateDerivation(ISession session) => this.Factory != null ? this.Factory() : new Domain.NonLogging.Derivation(session);
     }
 }

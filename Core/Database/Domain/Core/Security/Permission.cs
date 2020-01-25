@@ -101,13 +101,14 @@ namespace Allors.Domain
 
         public void CoreOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (derivation.IsModified(this))
+            if (changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
                 foreach (Role role in this.RolesWherePermission)
                 {
-                    derivation.AddDependency(role, this);
+                    iteration.AddDependency(role, this);
+                    iteration.Mark(role);
                 }
 
                 this.Strategy.Session.ClearCache<PermissionCache>();

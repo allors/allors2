@@ -17,10 +17,21 @@ namespace Allors.Domain
 
         public static void CoreOnPreDerive(this Object @this, ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
-            if (derivation.IsModified(@this))
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (iteration.IsMarked(@this))
             {
-                derivation.Add(@this);
+                iteration.Schedule(@this);
+            }
+            else
+            {
+                if (!iteration.Cycle.Derivation.DerivedObjects.Contains(@this))
+                {
+                    if (changeSet.IsCreated(@this) || changeSet.HasChangedRoles(@this))
+                    {
+                        iteration.Schedule(@this);
+                    }
+                }
             }
         }
 

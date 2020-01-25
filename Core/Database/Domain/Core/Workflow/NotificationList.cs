@@ -19,7 +19,6 @@ namespace Allors.Domain
                 if (this.ExistUserWhereNotificationList)
                 {
                     var defaultSecurityToken = new SecurityTokens(this.Session()).DefaultSecurityToken;
-
                     this.SecurityTokens = new[] { this.UserWhereNotificationList.OwnerSecurityToken, defaultSecurityToken };
                 }
             }

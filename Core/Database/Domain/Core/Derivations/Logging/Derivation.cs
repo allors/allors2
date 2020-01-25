@@ -5,36 +5,30 @@
 
 namespace Allors.Domain.Logging
 {
+    using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using Object = Domain.Object;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
-    public sealed class Derivation : DerivationBase
+    public sealed class Derivation : IDerivation
     {
-        public Derivation(ISession session, DerivationConfig config)
-            : base(session, config)
+        public IAccumulatedChangeSet ChangeSet { get; }
+
+        public object this[string name]
         {
-            this.DerivationLog = config.DerivationLogFunc();
-            this.Validation = new Validation(this, this.DerivationLog);
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
-        public IDerivationLog DerivationLog { get; }
+        public Guid Id { get; }
+        public DateTime TimeStamp { get; }
+        public ISession Session { get; }
+        public IValidation Validation { get; }
+        public ICycle Cycle { get; }
+        public ISet<Object> DerivedObjects { get; }
+        public IValidation Derive(params Object[] marked) => throw new NotImplementedException();
 
-        protected override DerivationNodesBase CreateDerivationGraph(DerivationBase derivation) => new DerivationNodes(derivation, this.DerivationLog);
-
-        protected override void OnAddedDerivable(Object derivable) => this.DerivationLog.AddedDerivable(derivable);
-
-        protected override void OnAddedDependency(Object dependent, Object dependee) => this.DerivationLog.AddedDependency(dependent, dependee);
-
-        protected override void OnStartedGeneration(int generation) => this.DerivationLog.StartedGeneration(generation);
-
-        protected override void OnStartedPreparation(int preparationRun) => this.DerivationLog.StartedPreparation(preparationRun);
-
-        protected override void OnPreDeriving(Object derivable) => this.DerivationLog.PreDeriving(derivable);
-
-        protected override void OnPreDerived(Object derivable) => this.DerivationLog.PreDerived(derivable);
-
-        protected override void OnPostDeriving(Object derivable) => this.DerivationLog.PostDeriving(derivable);
-
-        protected override void OnPostDerived(Object derivable) => this.DerivationLog.PostDerived(derivable);
+        public void AddDependency(Object dependent, Object dependee) => throw new NotImplementedException();
     }
 }

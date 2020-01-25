@@ -34,7 +34,7 @@ namespace Tests
                     .WithC1C2One2Many(c2C)
                     .Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             var tree = new[] { new Node(M.C1.C1C2One2Manies) };
 
@@ -75,7 +75,7 @@ namespace Tests
             c2A.AddC2C2One2Many(c2C);
             c2A.AddC2C2One2Many(c2D);
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             this.Session.Commit();
 

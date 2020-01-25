@@ -17,7 +17,7 @@ namespace Tests
         [Fact]
         public void GivenAnAuthenticationPopulatonWhenCreatingAnAccessListForGuestThenPermissionIsDenied()
         {
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             var sessions = new ISession[] { this.Session };
@@ -48,7 +48,7 @@ namespace Tests
             var person = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
             new AccessControlBuilder(this.Session).WithSubject(person).WithRole(role).Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             var sessions = new ISession[] { this.Session };
@@ -64,7 +64,7 @@ namespace Tests
                 var accessControl = (AccessControl)session.Instantiate(role.AccessControlsWhereRole.First);
                 token.AddAccessControl(accessControl);
 
-                this.Session.Derive(true);
+                this.Session.Derive();
 
                 Assert.False(this.Session.Derive(false).HasErrors);
 
@@ -86,7 +86,7 @@ namespace Tests
 
             new AccessControlBuilder(this.Session).WithSubject(person).WithRole(role).Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             var sessions = new ISession[] { this.Session };
@@ -123,7 +123,7 @@ namespace Tests
             var person = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
             var anotherPerson = new PersonBuilder(this.Session).WithFirstName("Jane").WithLastName("Doe").Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             new AccessControlBuilder(this.Session).WithSubject(anotherPerson).WithRole(databaseRole).Build();
@@ -163,7 +163,7 @@ namespace Tests
             new UserGroupBuilder(this.Session).WithName("Group").WithMember(person).Build();
             var anotherUserGroup = new UserGroupBuilder(this.Session).WithName("AnotherGroup").Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             new AccessControlBuilder(this.Session).WithSubjectGroup(anotherUserGroup).WithRole(databaseRole).Build();
@@ -203,7 +203,7 @@ namespace Tests
             var person2 = new PersonBuilder(this.Session).WithFirstName("Jane").WithLastName("Doe").Build();
             new AccessControlBuilder(this.Session).WithSubject(person).WithRole(role).Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             var sessions = new ISession[] { this.Session };
@@ -219,14 +219,14 @@ namespace Tests
                 var accessControl = (AccessControl)session.Instantiate(role.AccessControlsWhereRole.First);
                 token.AddAccessControl(accessControl);
 
-                this.Session.Derive(true);
+                this.Session.Derive();
 
                 var acl = new AccessControlLists(person)[organisation];
 
                 accessControl.RemoveSubject(person);
                 accessControl.AddSubject(person2);
 
-                this.Session.Derive(true);
+                this.Session.Derive();
 
                 acl = new AccessControlLists(person)[organisation];
 
@@ -244,7 +244,7 @@ namespace Tests
             var person = new PersonBuilder(this.Session).WithFirstName("John").WithLastName("Doe").Build();
             new AccessControlBuilder(this.Session).WithRole(databaseRole).WithSubject(person).Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             var sessions = new ISession[] { this.Session };

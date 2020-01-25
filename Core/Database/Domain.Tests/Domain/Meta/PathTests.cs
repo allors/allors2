@@ -34,7 +34,7 @@ namespace Tests
                 .WithC1C2One2Many(c2C)
                 .Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             var path = new Fetch(M.C1.C1C2One2Manies, M.C2.C2AllorsString);
 
@@ -66,7 +66,7 @@ namespace Tests
                 .WithC1C2One2Many(c2C)
                 .Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             var path = new Fetch(MetaC1.Instance.C1C2One2Manies, MetaC2.Instance.C2AllorsString);
 
@@ -98,7 +98,7 @@ namespace Tests
                 .WithC1C2One2Many(c2C)
                 .Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Fetch.TryParse(M.C2.ObjectType, "C1WhereC1C2One2Many", out var fetch);
 

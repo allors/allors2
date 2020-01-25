@@ -9,12 +9,14 @@ namespace Allors.Domain
     {
         public void CoreOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
-            if (derivation.HasChangedRole(this, this.Meta.Members))
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (changeSet.HasChangedRole(this, this.Meta.Members))
             {
                 foreach (AccessControl accessControl in this.AccessControlsWhereSubjectGroup)
                 {
-                    derivation.AddDependency(accessControl, this);
+                    iteration.AddDependency(accessControl, this);
+                    iteration.Mark(accessControl);
                 }
             }
         }

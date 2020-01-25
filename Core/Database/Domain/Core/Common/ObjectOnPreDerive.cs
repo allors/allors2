@@ -5,14 +5,22 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     public abstract partial class ObjectOnPreDerive
     {
-        public IDerivation Derivation { get; set; }
+        public IIteration Iteration { get; set; }
 
-        public ObjectOnPreDerive WithDerivation(IDerivation derivation)
+        public ObjectOnPreDerive WithIteration(IIteration iteration)
         {
-            this.Derivation = derivation;
+            this.Iteration = iteration;
             return this;
+        }
+
+        public void Deconstruct(out IIteration iteration, out IAccumulatedChangeSet changeSet, out ISet<Object> derivedObjects)
+        {
+            changeSet = this.Iteration.ChangeSet;
+            iteration = this.Iteration;
+            derivedObjects = this.Iteration.Cycle.DerivedObjects;
         }
     }
 }

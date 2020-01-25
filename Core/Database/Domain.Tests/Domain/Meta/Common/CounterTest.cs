@@ -38,7 +38,7 @@ namespace Tests
             var id = Guid.NewGuid();
 
             new CounterBuilder(this.Session).WithUniqueId(id).Build();
-            this.Session.Derive(true);
+            this.Session.Derive();
             this.Session.Commit();
 
             Assert.Equal(1, Counters.NextValue(this.Session, id));

@@ -22,9 +22,13 @@ namespace Allors.Domain
 
         public void CoreOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            derivation.AddDependency(this.NotificationListWhereNotification, this);
+            if (changeSet.HasChangedRole(this, this.Meta.Confirmed))
+            {
+                iteration.AddDependency(this.NotificationListWhereNotification, this);
+                iteration.Mark(this.NotificationListWhereNotification);
+            }
         }
 
         public void BaseConfirm(NotificationConfirm method) => this.Confirmed = true;

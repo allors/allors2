@@ -13,11 +13,12 @@ namespace Allors.Domain
     {
         public void CustomOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
             foreach (Object dependency in this.Dependencies)
             {
-                derivation.AddDependency(this, dependency);
+                iteration.AddDependency(this, dependency);
+                iteration.Mark(dependency);
             }
         }
 

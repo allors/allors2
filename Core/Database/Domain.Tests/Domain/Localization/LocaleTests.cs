@@ -44,7 +44,7 @@ namespace Tests
                 .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
                 .Build();
 
-            this.Session.Derive(true);
+            this.Session.Derive();
 
             Assert.Equal("en-BE", locale.Name);
         }

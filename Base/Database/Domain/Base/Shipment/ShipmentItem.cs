@@ -50,15 +50,19 @@ namespace Allors.Domain
         {
             if (!this.ExistShipmentItemState)
             {
-                this.ShipmentItemState= new ShipmentItemStates(this.Strategy.Session).Created;
+                this.ShipmentItemState = new ShipmentItemStates(this.Strategy.Session).Created;
             }
         }
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            derivation.AddDependency(this.ShipmentWhereShipmentItem, this);
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
+            {
+                iteration.AddDependency(this.ShipmentWhereShipmentItem, this);
+                iteration.Mark(this.ShipmentWhereShipmentItem, this);
+            }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)

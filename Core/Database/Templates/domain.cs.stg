@@ -429,6 +429,7 @@ $endif$
 classMethodType_Method() ::= <<
 $\n$
 $methodType.XmlDocComment$
+		[System.Diagnostics.DebuggerStepThrough]
 		public $methodType.FullName$ $methodType.Name$()
 		{
 			var method = new $class.Name$$methodType.Name$(this);
@@ -436,6 +437,7 @@ $methodType.XmlDocComment$
             return method;
 		}
 
+		[System.Diagnostics.DebuggerStepThrough]
 		public $methodType.FullName$ $methodType.Name$(System.Action<$methodType.FullName$> action)
 		{
 			var method = new $class.Name$$methodType.Name$(this);
