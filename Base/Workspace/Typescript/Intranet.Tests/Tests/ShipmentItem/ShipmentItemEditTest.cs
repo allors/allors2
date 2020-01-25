@@ -35,7 +35,7 @@ namespace Tests.ShipmentItemTests
         }
 
         [Fact]
-        public void CreateCustomerShipmentItemForUnifiedGoodSerialisedItem()
+        public void CreateCustomerShipmentItemForSerialisedUnifiedGood()
         {
             var before = customerShipment.ShipmentItems.ToArray();
 
@@ -56,7 +56,7 @@ namespace Tests.ShipmentItemTests
             shipmentItemCreate
                 .Good.Select(serializedGood.Name)
                 .ShipmentItemSerialisedItem_1.Set(serializedGood.SerialisedItems.First.DisplayName())
-                .Quantity.Set("1")
+                .NewSerialisedItemState.Set(new SerialisedItemStates(this.Session).Sold.Name)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -73,35 +73,75 @@ namespace Tests.ShipmentItemTests
             Assert.Equal(1, actual.Quantity);
         }
 
-        //[Fact]
-        //public void CreateMinimal()
-        //{
-        //    var before = new PurchaseShipments(this.Session).Extent().ToArray();
+        [Fact]
+        public void CreateCustomerShipmentItemForNonSerialisedUnifiedGood()
+        {
+            var before = customerShipment.ShipmentItems.ToArray();
 
-        //    var internalOrganisation = new Organisations(this.MemorySession).FindBy(M.Organisation.Name, "Allors BVBA");
-        //    var expected = new PurchaseShipmentBuilder(this.MemorySession).WithDefaults(internalOrganisation).Build();
+            var goods = new UnifiedGoods(this.Session).Extent();
+            goods.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(this.Session).NonSerialised);
+            var nonSerializedGood = goods.First;
 
-        //    this.MemorySession.Derive();
+            this.shipmentListPage.Table.DefaultAction(customerShipment);
+            var shipmentOverview = new CustomerShipmentOverviewComponent(this.shipmentListPage.Driver);
+            var shipmentItemOverview = shipmentOverview.ShipmentitemOverviewPanel.Click();
 
-        //    var purchaseShipmentCreate = this.shipmentListPage
-        //        .CreatePurchaseShipment()
-        //        .Build(expected, true);
+            var shipmentItemCreate = shipmentItemOverview.CreateShipmentItem();
+            shipmentItemCreate
+                .Good.Select(nonSerializedGood.Name)
+                .Quantity.Set("5")
+                .SAVE.Click();
 
-        //    purchaseShipmentCreate.AssertFull(expected);
+            this.Driver.WaitForAngular();
+            this.Session.Rollback();
 
-        //    purchaseShipmentCreate.SAVE.Click();
+            var after = customerShipment.ShipmentItems.ToArray();
 
-        //    this.Driver.WaitForAngular();
-        //    this.Session.Rollback();
+            Assert.Equal(after.Length, before.Length + 1);
 
-        //    var after = new PurchaseShipments(this.Session).Extent().ToArray();
+            var actual = after.Except(before).First();
 
-        //    Assert.Equal(after.Length, before.Length + 1);
+            Assert.Equal(nonSerializedGood.Name, actual.Good.Name);
+            Assert.Equal(5, actual.Quantity);
+        }
 
-        //    var actual = after.Except(before).First();
+        [Fact]
+        public void EditCustomerShipmentItemForSerialisedUnifiedGood()
+        {
+            var before = customerShipment.ShipmentItems.ToArray();
 
-        //    Assert.Equal(expected.ShipFromParty.DisplayName(), actual.ShipFromParty.DisplayName());
-        //    Assert.Equal(expected.ShipToParty.DisplayName(), actual.ShipToParty.DisplayName());
-        //}
+            var goods = new UnifiedGoods(this.Session).Extent();
+            goods.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(this.Session).Serialised);
+            var serializedGood = goods.First;
+
+            serializedGood.SerialisedItems.First.AvailableForSale = true;
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.shipmentListPage.Table.DefaultAction(customerShipment);
+            var shipmentOverview = new CustomerShipmentOverviewComponent(this.shipmentListPage.Driver);
+            var shipmentItemOverview = shipmentOverview.ShipmentitemOverviewPanel.Click();
+
+            var shipmentItemCreate = shipmentItemOverview.CreateShipmentItem();
+            shipmentItemCreate
+                .Good.Select(serializedGood.Name)
+                .ShipmentItemSerialisedItem_1.Set(serializedGood.SerialisedItems.First.DisplayName())
+                .NewSerialisedItemState.Set(new SerialisedItemStates(this.Session).Sold.Name)
+                .SAVE.Click();
+
+            this.Driver.WaitForAngular();
+            this.Session.Rollback();
+
+            var after = customerShipment.ShipmentItems.ToArray();
+
+            Assert.Equal(after.Length, before.Length + 1);
+
+            var actual = after.Except(before).First();
+
+            Assert.Equal(serializedGood.Name, actual.Good.Name);
+            Assert.Equal(serializedGood.SerialisedItems.First.Name, actual.SerialisedItem.Name);
+            Assert.Equal(1, actual.Quantity);
+        }
     }
 }

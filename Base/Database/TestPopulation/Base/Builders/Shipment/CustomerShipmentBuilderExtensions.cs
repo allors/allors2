@@ -16,6 +16,7 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
+            var shipmentItem = new ShipmentItemBuilder(@this.Session).WithSerializedUnifiedGoodDefaults(internalOrganisation).Build();
 
             @this.WithShipFromParty(internalOrganisation);
             @this.WithShipFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
@@ -32,6 +33,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithEstimatedShipCost(faker.Finance.Amount(100, 1000, 2));
             @this.WithHandlingInstruction(faker.Lorem.Paragraph());
             @this.WithComment(faker.Lorem.Sentence());
+            @this.WithShipmentItem(shipmentItem);
 
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
             {

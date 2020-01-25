@@ -120,5 +120,23 @@ namespace Allors.Domain.TestPopulation
 
             return part;
         }
+
+        public static UnifiedGood CreateUnifiedWithGoodInventoryAvailableForSale(this Organisation @this, Faker faker)
+        {
+            var unifiedGood = new UnifiedGoodBuilder(@this.Session()).WithSerialisedDefaults(@this).Build();
+            var serialisedItem = new SerialisedItemBuilder(@this.Session()).WithForSaleDefaults(@this).Build();
+
+            unifiedGood.AddSerialisedItem(serialisedItem);
+
+            new InventoryItemTransactionBuilder(@this.Session())
+                .WithSerialisedItem(serialisedItem)
+                .WithFacility(@this.FacilitiesWhereOwner.First)
+                .WithQuantity(1)
+                .WithReason(new InventoryTransactionReasons(@this.Session()).IncomingShipment)
+                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(@this.Session()).Available)
+                .Build();
+
+            return unifiedGood;
+        }
     }
 }

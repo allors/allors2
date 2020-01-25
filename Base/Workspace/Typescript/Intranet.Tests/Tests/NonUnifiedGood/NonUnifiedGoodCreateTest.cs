@@ -34,19 +34,20 @@ namespace Tests.NonUnifiedGood
             var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var expected = new NonUnifiedGoodBuilder(this.Session).WithSerialisedPartDefaults(internalOrganisation).Build();
 
+            var expectedPart = new NonUnifiedParts(this.Session).Extent().First;
+
             this.Session.Derive();
 
             var expectedName = expected.Name;
             var expectedDescription = expected.Description;
-
-            var part = new NonUnifiedParts(this.Session).Extent().First;
+            var expectedPartName = expectedPart.Name;
 
             var nonUnifiedGoodCreate = this.goods.CreateNonUnifiedGood();
 
             nonUnifiedGoodCreate
                 .Name.Set(expected.Name)
                 .Description.Set(expected.Description)
-                .Part.Select(part.Name);
+                .Part.Select(expectedPart.Name);
 
             this.Session.Rollback();
             nonUnifiedGoodCreate.SAVE.Click();
@@ -62,7 +63,7 @@ namespace Tests.NonUnifiedGood
 
             Assert.Equal(expectedName, good.Name);
             Assert.Equal(expectedDescription, good.Description);
-            Assert.Equal(part.Name, good.Part.Name);
+            Assert.Equal(expectedPartName, good.Part.Name);
         }
     }
 }

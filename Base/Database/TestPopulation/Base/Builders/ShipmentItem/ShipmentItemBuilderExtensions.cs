@@ -12,17 +12,16 @@ namespace Allors.Domain.TestPopulation
 {
     public static partial class ShipmentItemBuilderExtensions
     {
-        public static ShipmentItemBuilder WithSerialisedUnifiedGoodDefaults(this ShipmentItemBuilder @this, Organisation internalOrganization)
+        public static ShipmentItemBuilder WithSerializedUnifiedGoodDefaults(this ShipmentItemBuilder @this, Organisation internalOrganization)
         {
             var faker = @this.Session.Faker();
 
-            var goods = new UnifiedGoods(@this.Session).Extent();
-            goods.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).Serialised);
-            var serializedGood = goods.First;
+            var good = internalOrganization.CreateUnifiedWithGoodInventoryAvailableForSale(faker);
+            var serializedItem = good.SerialisedItems.First(v => v.AvailableForSale.Equals(true));
 
-            @this.WithGood(serializedGood);
+            @this.WithGood(good);
+            @this.WithSerialisedItem(serializedItem);
             @this.WithQuantity(1);
-            @this.WithSerialisedItem(serializedGood.SerialisedItems.First);
 
             return @this;
         }
