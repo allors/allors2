@@ -9,17 +9,19 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (derivation.HasChangedRole(this, this.Meta.SerialisedItemCharacteristicTypes))
+            if (changeSet.HasChangedRoles(this, this.Meta.SerialisedItemCharacteristicTypes))
             {
                 foreach (Part part in this.PartsWhereProductType)
                 {
-                    derivation.AddDependency(part, this);
+                    iteration.AddDependency(part, this);
+                    iteration.Mark(part);
 
                     foreach (SerialisedItem serialisedItem in part.SerialisedItems)
                     {
-                        derivation.AddDependency(serialisedItem, this);
+                        iteration.AddDependency(serialisedItem, this);
+                        iteration.Mark(serialisedItem);
                     }
                 }
             }

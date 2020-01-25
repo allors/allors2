@@ -27,13 +27,14 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (derivation.HasChangedRole(this, this.Meta.OwnedBy) && this.ExistSerialisedInventoryItemsWhereSerialisedItem)
+            if (changeSet.HasChangedRole(this, this.Meta.OwnedBy) && this.ExistSerialisedInventoryItemsWhereSerialisedItem)
             {
                 foreach (InventoryItem inventoryItem in this.SerialisedInventoryItemsWhereSerialisedItem)
                 {
-                    derivation.AddDependency(inventoryItem, this);
+                    iteration.AddDependency(inventoryItem, this);
+                    iteration.Mark(inventoryItem);
                 }
             }
         }
@@ -51,7 +52,7 @@ namespace Allors.Domain
 
             this.DeriveProductCharacteristics(derivation);
 
-            if (derivation.IsCreated(this))
+            if (derivation.ChangeSet.IsCreated(this))
             {
                 this.Details = this.DeriveDetails();
             }

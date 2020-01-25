@@ -45,11 +45,6 @@ namespace Allors.Domain
 
         private bool IsDeletable => !this.ExistCurrentContacts;
 
-        public void BaseOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-        }
-
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

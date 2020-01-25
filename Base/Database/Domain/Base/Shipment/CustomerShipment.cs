@@ -111,24 +111,30 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, shipmentItem);
-
-                foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
+                foreach (ShipmentItem shipmentItem in this.ShipmentItems)
                 {
-                    if (orderShipment.ExistOrderItem && !orderShipment.Strategy.IsNewInSession)
+                    iteration.AddDependency(this, shipmentItem);
+                    iteration.Mark(shipmentItem);
+
+                    foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        derivation.AddDependency(this, orderShipment.OrderItem);
+                        if (orderShipment.ExistOrderItem && !orderShipment.Strategy.IsNewInSession)
+                        {
+                            iteration.AddDependency(this, orderShipment.OrderItem);
+                            iteration.Mark(orderShipment.OrderItem);
+                        }
                     }
                 }
-            }
 
-            foreach (ShipmentPackage shipmentPackage in this.ShipmentPackages)
-            {
-                derivation.AddDependency(this, shipmentPackage);
+                foreach (ShipmentPackage shipmentPackage in this.ShipmentPackages)
+                {
+                    iteration.AddDependency(this, shipmentPackage);
+                    iteration.Mark(shipmentPackage);
+                }
             }
         }
 

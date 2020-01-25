@@ -11,34 +11,37 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            if (iteration.ChangeSet.Associations.Contains(this.Id))
             {
                 if (this.ExistPriceableWhereSurchargeAdjustment)
                 {
                     if (this.PriceableWhereSurchargeAdjustment is SalesInvoiceItem salesInvoiceItem)
                     {
-                        derivation.AddDependency(this, salesInvoiceItem);
+                        iteration.AddDependency(this, salesInvoiceItem);
+                        iteration.Mark(salesInvoiceItem);
                     }
 
                     if (this.PriceableWhereSurchargeAdjustment is SalesOrderItem salesOrderItem)
                     {
-                        derivation.AddDependency(this, salesOrderItem);
+                        iteration.AddDependency(this, salesOrderItem);
+                        iteration.Mark(salesOrderItem);
                     }
                 }
 
                 if (this.ExistOrderWhereSurchargeAdjustment)
                 {
                     var salesOrder = (SalesOrder)this.OrderWhereSurchargeAdjustment;
-                    derivation.AddDependency(this, salesOrder);
+                    iteration.AddDependency(this, salesOrder);
+                    iteration.Mark(salesOrder);
                 }
 
                 if (this.ExistInvoiceWhereSurchargeAdjustment)
                 {
                     var salesInvoice = (SalesInvoice)this.InvoiceWhereSurchargeAdjustment;
-                    derivation.AddDependency(this, salesInvoice);
+                    iteration.AddDependency(this, salesInvoice);
+                    iteration.Mark(salesInvoice);
                 }
             }
         }

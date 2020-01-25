@@ -135,17 +135,16 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            // TODO:
-            // if (derivation.ChangeSet.Associations.Contains(this.Id))
-            // {
-            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this.PurchaseOrderWherePurchaseOrderItem, this);
+                if (this.ExistPurchaseOrderWherePurchaseOrderItem)
+                {
+                    iteration.AddDependency(this.PurchaseOrderWherePurchaseOrderItem, this);
+                    iteration.Mark(this.PurchaseOrderWherePurchaseOrderItem);
+                }
             }
-
-            // }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)

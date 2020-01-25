@@ -11,10 +11,15 @@ namespace Allors.Domain
     {
         public static void BaseOnPreDerive(this Product @this, ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
-            foreach (ProductCategory productCategory in @this.ProductCategoriesWhereProduct)
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (iteration.IsMarked(@this) || changeSet.IsCreated(@this) || changeSet.HasChangedRoles(@this))
             {
-                derivation.AddDependency(productCategory, @this);
+                foreach (ProductCategory productCategory in @this.ProductCategoriesWhereProduct)
+                {
+                    iteration.AddDependency(productCategory, @this);
+                    iteration.Mark(productCategory);
+                }
             }
         }
 

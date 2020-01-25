@@ -41,21 +41,22 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            // TODO:
-            if (derivation.ChangeSet.Associations.Contains(this.Id))
+            if (iteration.ChangeSet.Associations.Contains(this.Id))
             {
                 foreach (ShipmentItem shipmentItem in this.ShipmentItems)
                 {
                     if (shipmentItem.ShipmentReceiptWhereShipmentItem.ExistInventoryItem)
                     {
-                        derivation.AddDependency(shipmentItem.ShipmentReceiptWhereShipmentItem.InventoryItem, this);
+                        iteration.AddDependency(shipmentItem.ShipmentReceiptWhereShipmentItem.InventoryItem, this);
+                        iteration.Mark(shipmentItem.ShipmentReceiptWhereShipmentItem.InventoryItem);
                     }
 
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        derivation.AddDependency(orderShipment.OrderItem, this);
+                        iteration.AddDependency(orderShipment.OrderItem, this);
+                        iteration.Mark(orderShipment.OrderItem);
                     }
                 }
             }

@@ -127,16 +127,20 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (derivation.IsModified(this))
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this.BillToCustomer, this);
-                derivation.AddDependency(this.ShipToCustomer, this);
+                iteration.AddDependency(this.BillToCustomer, this);
+                iteration.Mark(this.BillToCustomer);
+
+                iteration.AddDependency(this.ShipToCustomer, this);
+                iteration.Mark(this.ShipToCustomer);
 
                 foreach (SalesOrderItem orderItem in this.SalesOrderItems)
                 {
-                    derivation.AddDependency(this, orderItem);
+                    iteration.AddDependency(this, orderItem);
+                    iteration.Mark(orderItem);
                 }
             }
         }
@@ -581,8 +585,6 @@ namespace Allors.Domain
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
-            var derivation = method.Derivation;
-
             var validOrderItems = this.SalesOrderItems.Where(v => v.IsValid).ToArray();
 
             // CanShip
@@ -646,7 +648,7 @@ namespace Allors.Domain
                 {
                     if (!salesOrderItem.ReservedFromNonSerialisedInventoryItem.Equals(salesOrderItem.PreviousReservedFromNonSerialisedInventoryItem))
                     {
-                        derivation.AddDependency(salesOrderItem.PreviousReservedFromNonSerialisedInventoryItem, this);
+                        method.Derivation.Cycle.Iteration.AddDependency(salesOrderItem.PreviousReservedFromNonSerialisedInventoryItem, this);
                     }
                 }
             }

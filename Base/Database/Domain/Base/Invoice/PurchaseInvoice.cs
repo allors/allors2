@@ -67,16 +67,17 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
             var internalOrganisation = this.Strategy.Session.GetSingleton();
 
-            // TODO:
-            if (derivation.HasChangedRoles(this))
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, internalOrganisation);
-            }
+                iteration.AddDependency(this, internalOrganisation);
+                iteration.Mark(internalOrganisation);
 
-            derivation.AddDependency(this, this.BilledFrom);
+                iteration.AddDependency(this, this.BilledFrom);
+                iteration.Mark(this.BilledFrom);
+            }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)

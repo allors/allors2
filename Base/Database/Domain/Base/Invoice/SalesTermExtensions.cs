@@ -9,16 +9,21 @@ namespace Allors.Domain
     {
         public static void BaseOnPreDerive(this SalesTerm @this, ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (@this.ExistInvoiceWhereSalesTerm)
+            if (iteration.IsMarked(@this) || changeSet.IsCreated(@this) || changeSet.HasChangedRoles(@this))
             {
-                derivation.AddDependency(@this.InvoiceWhereSalesTerm, @this);
-            }
+                if (@this.ExistInvoiceWhereSalesTerm)
+                {
+                    iteration.AddDependency(@this.InvoiceWhereSalesTerm, @this);
+                    iteration.Mark(@this.InvoiceWhereSalesTerm);
+                }
 
-            if (@this.ExistOrderWhereSalesTerm)
-            {
-                derivation.AddDependency(@this.OrderWhereSalesTerm, @this);
+                if (@this.ExistOrderWhereSalesTerm)
+                {
+                    iteration.AddDependency(@this.OrderWhereSalesTerm, @this);
+                    iteration.Mark(@this.OrderWhereSalesTerm);
+                }
             }
         }
     }

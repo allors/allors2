@@ -20,11 +20,15 @@ namespace Allors.Domain
 
         public static void BaseOnPreDerive(this Payment @this, ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            foreach (PaymentApplication paymentApplication in @this.PaymentApplications)
+            if (iteration.IsMarked(@this) || changeSet.IsCreated(@this) || changeSet.HasChangedRoles(@this))
             {
-                derivation.AddDependency(@this, paymentApplication);
+                foreach (PaymentApplication paymentApplication in @this.PaymentApplications)
+                {
+                    iteration.AddDependency(@this, paymentApplication);
+                    iteration.Mark(paymentApplication);
+                }
             }
         }
 

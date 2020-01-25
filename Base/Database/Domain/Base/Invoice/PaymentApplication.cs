@@ -13,26 +13,34 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
-
             var receipt = this.PaymentWherePaymentApplication;
-            if (receipt != null)
-            {
-                derivation.AddDependency(receipt, this);
-            }
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistInvoiceItem)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this.InvoiceItem, this);
-                foreach (OrderItemBilling orderItemBilling in this.InvoiceItem.OrderItemBillingsWhereInvoiceItem)
+                if (receipt != null)
                 {
-                    derivation.AddDependency(orderItemBilling.OrderItem, this);
+                    iteration.AddDependency(receipt, this);
+                    iteration.Mark(receipt);
                 }
-            }
 
-            if (this.ExistInvoice)
-            {
-                derivation.AddDependency(this.Invoice, this);
+                if (this.ExistInvoiceItem)
+                {
+                    iteration.AddDependency(this.InvoiceItem, this);
+                    iteration.Mark(this.InvoiceItem);
+
+                    foreach (OrderItemBilling orderItemBilling in this.InvoiceItem.OrderItemBillingsWhereInvoiceItem)
+                    {
+                        iteration.AddDependency(orderItemBilling.OrderItem, this);
+                        iteration.Mark(orderItemBilling.OrderItem);
+                    }
+                }
+
+                if (this.ExistInvoice)
+                {
+                    iteration.AddDependency(this.Invoice, this);
+                    iteration.Mark(this.Invoice);
+                }
             }
         }
 

@@ -54,30 +54,36 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            foreach (PickListItem pickListItem in this.PickListItems)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, pickListItem);
-
-                derivation.AddDependency(this, pickListItem.InventoryItem);
-            }
-
-            if (this.ExistShipToParty)
-            {
-                foreach (var customerShipment in this.ShipToParty.ShipmentsWhereShipToParty
-                    .OfType<CustomerShipment>()
-                    .Where(shipment =>
-                        shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Created)
-                        || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Picking)
-                        || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Picked)
-                        || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).OnHold)
-                        || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Packed)
-                    ))
+                foreach (PickListItem pickListItem in this.PickListItems)
                 {
-                    if (!derivation.IsCreated(customerShipment))
+                    iteration.AddDependency(this, pickListItem);
+                    iteration.Mark(pickListItem);
+
+                    iteration.AddDependency(this, pickListItem.InventoryItem);
+                    iteration.Mark(pickListItem.InventoryItem);
+                }
+
+                if (this.ExistShipToParty)
+                {
+                    foreach (var customerShipment in this.ShipToParty.ShipmentsWhereShipToParty
+                        .OfType<CustomerShipment>()
+                        .Where(shipment =>
+                            shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Created)
+                            || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Picking)
+                            || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Picked)
+                            || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).OnHold)
+                            || shipment.ShipmentState.Equals(new ShipmentStates(this.ShipToParty.Strategy.Session).Packed)
+                        ))
                     {
-                        derivation.AddDependency(customerShipment, this);
+                        if (!changeSet.IsCreated(customerShipment))
+                        {
+                            iteration.AddDependency(customerShipment, this);
+                            iteration.Mark(customerShipment);
+                        }
                     }
                 }
             }

@@ -11,16 +11,21 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistEmployee)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this.Employee, this);
-            }
+                if (this.ExistEmployee)
+                {
+                    iteration.AddDependency(this.Employee, this);
+                    iteration.Mark(this.Employee);
+                }
 
-            if (this.ExistEmployer)
-            {
-                derivation.AddDependency(this.Employer, this);
+                if (this.ExistEmployer)
+                {
+                    iteration.AddDependency(this.Employer, this);
+                    iteration.Mark(this.Employer);
+                }
             }
         }
 

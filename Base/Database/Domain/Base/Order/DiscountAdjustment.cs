@@ -11,33 +11,37 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (derivation.HasChangedRoles(this))
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
                 if (this.ExistPriceableWhereDiscountAdjustment)
                 {
                     if (this.PriceableWhereDiscountAdjustment is SalesInvoiceItem salesInvoiceItem)
                     {
-                        derivation.AddDependency(this, salesInvoiceItem);
+                        iteration.AddDependency(this, salesInvoiceItem);
+                        iteration.Mark(salesInvoiceItem);
                     }
 
                     if (this.PriceableWhereDiscountAdjustment is SalesOrderItem salesOrderItem)
                     {
-                        derivation.AddDependency(this, salesOrderItem);
+                        iteration.AddDependency(this, salesOrderItem);
+                        iteration.Mark(salesOrderItem);
                     }
                 }
 
                 if (this.ExistOrderWhereDiscountAdjustment)
                 {
                     var salesOrder = (SalesOrder)this.OrderWhereDiscountAdjustment;
-                    derivation.AddDependency(this, salesOrder);
+                    iteration.AddDependency(this, salesOrder);
+                    iteration.Mark(salesOrder);
                 }
 
                 if (this.ExistInvoiceWhereDiscountAdjustment)
                 {
                     var salesInvoice = (SalesInvoice)this.InvoiceWhereDiscountAdjustment;
-                    derivation.AddDependency(this, salesInvoice);
+                    iteration.AddDependency(this, salesInvoice);
+                    iteration.Mark(salesInvoice);
                 }
             }
         }

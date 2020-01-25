@@ -24,11 +24,15 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (derivation.IsModified(this) && this.ExistPartyWherePartyContactMechanism)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this.PartyWherePartyContactMechanism, this);
+                if (this.ExistPartyWherePartyContactMechanism)
+                {
+                    iteration.AddDependency(this.PartyWherePartyContactMechanism, this);
+                    iteration.Mark(this.PartyWherePartyContactMechanism);
+                }
             }
         }
 

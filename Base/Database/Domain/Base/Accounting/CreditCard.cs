@@ -9,13 +9,16 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistOwnCreditCardsWhereCreditCard)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                foreach (Object ownCreditCard in this.OwnCreditCardsWhereCreditCard)
+                if (this.ExistOwnCreditCardsWhereCreditCard)
                 {
-                    derivation.Add(ownCreditCard);
+                    foreach (Object ownCreditCard in this.OwnCreditCardsWhereCreditCard)
+                    {
+                        iteration.Mark(ownCreditCard);
+                    }
                 }
             }
         }

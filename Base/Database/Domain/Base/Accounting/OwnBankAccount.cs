@@ -19,11 +19,14 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistBankAccount && derivation.ChangeSet.GetRoleTypes(this.Id).Contains(this.Meta.BankAccount))
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRole(this, this.Meta.BankAccount))
             {
-                derivation.Add(this.BankAccount);
+                if (this.ExistBankAccount)
+                {
+                    iteration.Mark(this.BankAccount);
+                }
             }
         }
 

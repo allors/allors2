@@ -131,18 +131,29 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
+            var singleton = this.Strategy.Session.GetSingleton();
 
-            if (derivation.HasChangedRoles(this))
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, this.Strategy.Session.GetSingleton());
-                derivation.AddDependency(this, this.Strategy.Session.GetSingleton());
-                derivation.AddDependency(this, this.TakenViaSupplier);
-            }
 
-            foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
-            {
-                derivation.AddDependency(this, orderItem);
+                if (changeSet.HasChangedRoles(this))
+                {
+                    iteration.AddDependency(this, singleton);
+                    iteration.Mark(singleton);
+
+                    iteration.AddDependency(this, singleton);
+                    iteration.Mark(singleton);
+
+                    iteration.AddDependency(this, this.TakenViaSupplier);
+                    iteration.Mark(this.TakenViaSupplier);
+                }
+
+                foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
+                {
+                    iteration.AddDependency(this, orderItem);
+                    iteration.Mark(orderItem);
+                }
             }
         }
 

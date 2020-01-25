@@ -262,17 +262,7 @@ namespace Allors.Domain
             adjustedPicklistItem.QuantityPicked = 4;
 
             pickList.SetPicked();
-
-            var derivation = new Logging.Derivation(
-                this.Session,
-                new DerivationConfig
-                {
-                    DerivationLogFunc = () => new CustomListDerivationLog(),
-                });
-
-            derivation.Derive();
-
-            // this.Session.Derive();
+            this.Session.Derive();
 
             // When SalesOrder is derived 1 quantity is requested for shipping (because inventory is available and quantity ordered (5) is greater then quantity pending shipment (4)
             // A new shipment item is created with quantity 1 and QuantityPendingShipment remains 5

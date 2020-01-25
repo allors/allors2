@@ -9,24 +9,31 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistCatalogueWhereLocalisedDescription || this.ExistCatalogueWhereLocalisedName)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                var catalogue = (Catalogue)this.CatalogueWhereLocalisedName;
-                derivation.AddDependency(this, catalogue);
-            }
 
-            if (this.ExistProductCategoryWhereLocalisedDescription || this.ExistProductCategoryWhereLocalisedName)
-            {
-                var productCategory = (ProductCategory)this.ProductCategoryWhereLocalisedName;
-                derivation.AddDependency(this, productCategory);
-            }
+                if (this.ExistCatalogueWhereLocalisedDescription || this.ExistCatalogueWhereLocalisedName)
+                {
+                    var catalogue = (Catalogue)this.CatalogueWhereLocalisedName;
+                    iteration.AddDependency(this, catalogue);
+                    iteration.Mark(catalogue);
+                }
 
-            if (this.ExistUnifiedProductWhereLocalisedDescription || this.ExistUnifiedProductWhereLocalisedName)
-            {
-                var product = this.UnifiedProductWhereLocalisedName;
-                derivation.AddDependency(this, product);
+                if (this.ExistProductCategoryWhereLocalisedDescription || this.ExistProductCategoryWhereLocalisedName)
+                {
+                    var productCategory = (ProductCategory)this.ProductCategoryWhereLocalisedName;
+                    iteration.AddDependency(this, productCategory);
+                    iteration.Mark(productCategory);
+                }
+
+                if (this.ExistUnifiedProductWhereLocalisedDescription || this.ExistUnifiedProductWhereLocalisedName)
+                {
+                    var product = this.UnifiedProductWhereLocalisedName;
+                    iteration.AddDependency(this, product);
+                    iteration.Mark(product);
+                }
             }
         }
     }

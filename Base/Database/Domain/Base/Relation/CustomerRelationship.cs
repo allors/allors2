@@ -11,24 +11,30 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistCustomer)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this.Customer, this);
-
-                if (this.Customer is Organisation customer)
+                if (this.ExistCustomer)
                 {
-                    foreach (OrganisationContactRelationship contactRelationship in customer.OrganisationContactRelationshipsWhereOrganisation)
+                    iteration.AddDependency(this.Customer, this);
+                    iteration.Mark(this.Customer);
+
+                    if (this.Customer is Organisation customer)
                     {
-                        derivation.AddDependency(contactRelationship, this);
+                        foreach (OrganisationContactRelationship contactRelationship in customer.OrganisationContactRelationshipsWhereOrganisation)
+                        {
+                            iteration.AddDependency(contactRelationship, this);
+                            iteration.Mark(contactRelationship);
+                        }
                     }
                 }
-            }
 
-            if (this.ExistInternalOrganisation)
-            {
-                derivation.AddDependency(this.InternalOrganisation, this);
+                if (this.ExistInternalOrganisation)
+                {
+                    iteration.AddDependency(this.InternalOrganisation, this);
+                    iteration.Mark(this.InternalOrganisation);
+                }
             }
         }
 

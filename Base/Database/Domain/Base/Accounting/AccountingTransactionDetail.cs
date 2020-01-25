@@ -11,11 +11,12 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistOrganisationGlAccountBalance && this.OrganisationGlAccountBalance.ExistAccountingPeriod)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, this.OrganisationGlAccountBalance.AccountingPeriod);
+                iteration.AddDependency(this, this.OrganisationGlAccountBalance.AccountingPeriod);
+                iteration.Mark(this.OrganisationGlAccountBalance.AccountingPeriod);
             }
         }
     }

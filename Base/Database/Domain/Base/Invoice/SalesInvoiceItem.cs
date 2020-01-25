@@ -102,31 +102,39 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistSalesInvoiceWhereSalesInvoiceItem)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this.SalesInvoiceWhereSalesInvoiceItem, this);
-            }
 
-            if (this.ExistPaymentApplicationsWhereInvoiceItem)
-            {
-                foreach (PaymentApplication paymentApplication in this.PaymentApplicationsWhereInvoiceItem)
+                if (this.ExistSalesInvoiceWhereSalesInvoiceItem)
                 {
-                    derivation.AddDependency(this, paymentApplication);
+                    iteration.AddDependency(this.SalesInvoiceWhereSalesInvoiceItem, this);
+                    iteration.Mark(this.SalesInvoiceWhereSalesInvoiceItem);
                 }
-            }
 
-            foreach (OrderItemBilling orderItemBilling in this.OrderItemBillingsWhereInvoiceItem)
-            {
-                derivation.AddDependency(orderItemBilling.OrderItem, this);
-            }
-
-            foreach (ShipmentItemBilling shipmentItemBilling in this.ShipmentItemBillingsWhereInvoiceItem)
-            {
-                foreach (OrderShipment orderShipment in shipmentItemBilling.ShipmentItem.OrderShipmentsWhereShipmentItem)
+                if (this.ExistPaymentApplicationsWhereInvoiceItem)
                 {
-                    derivation.AddDependency(orderShipment.OrderItem, this);
+                    foreach (PaymentApplication paymentApplication in this.PaymentApplicationsWhereInvoiceItem)
+                    {
+                        iteration.AddDependency(this, paymentApplication);
+                        iteration.Mark(paymentApplication);
+                    }
+                }
+
+                foreach (OrderItemBilling orderItemBilling in this.OrderItemBillingsWhereInvoiceItem)
+                {
+                    iteration.AddDependency(orderItemBilling.OrderItem, this);
+                    iteration.Mark(orderItemBilling.OrderItem);
+                }
+
+                foreach (ShipmentItemBilling shipmentItemBilling in this.ShipmentItemBillingsWhereInvoiceItem)
+                {
+                    foreach (OrderShipment orderShipment in shipmentItemBilling.ShipmentItem.OrderShipmentsWhereShipmentItem)
+                    {
+                        iteration.AddDependency(orderShipment.OrderItem, this);
+                        iteration.Mark(orderShipment.OrderItem);
+                    }
                 }
             }
         }

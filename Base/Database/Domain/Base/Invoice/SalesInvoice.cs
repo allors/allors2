@@ -97,42 +97,50 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistBillToCustomer)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
 
-                foreach (CustomerRelationship customerRelationship in customerRelationships)
+                if (this.ExistBillToCustomer)
                 {
-                    if (customerRelationship.FromDate <= this.strategy.Session.Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.strategy.Session.Now()))
+                    var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
+
+                    foreach (CustomerRelationship customerRelationship in customerRelationships)
                     {
-                        derivation.AddDependency(this, customerRelationship);
+                        if (customerRelationship.FromDate <= this.strategy.Session.Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.strategy.Session.Now()))
+                        {
+                            iteration.AddDependency(this, customerRelationship);
+                            iteration.Mark(customerRelationship);
+                        }
                     }
                 }
-            }
 
-            if (this.ExistShipToCustomer)
-            {
-                var customerRelationships = this.ShipToCustomer.CustomerRelationshipsWhereCustomer;
-
-                foreach (CustomerRelationship customerRelationship in customerRelationships)
+                if (this.ExistShipToCustomer)
                 {
-                    if (customerRelationship.FromDate <= this.strategy.Session.Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.strategy.Session.Now()))
+                    var customerRelationships = this.ShipToCustomer.CustomerRelationshipsWhereCustomer;
+
+                    foreach (CustomerRelationship customerRelationship in customerRelationships)
                     {
-                        derivation.AddDependency(this, customerRelationship);
+                        if (customerRelationship.FromDate <= this.strategy.Session.Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.strategy.Session.Now()))
+                        {
+                            iteration.AddDependency(this, customerRelationship);
+                            iteration.Mark(customerRelationship);
+                        }
                     }
                 }
-            }
 
-            foreach (var invoiceItem in this.InvoiceItems.OfType<SalesInvoiceItem>())
-            {
-                derivation.AddDependency(this, invoiceItem);
-            }
+                foreach (var invoiceItem in this.InvoiceItems.OfType<SalesInvoiceItem>())
+                {
+                    iteration.AddDependency(this, invoiceItem);
+                    iteration.Mark(invoiceItem);
+                }
 
-            foreach (SalesOrder salesOrder in this.SalesOrders)
-            {
-                derivation.AddDependency(salesOrder, this);
+                foreach (SalesOrder salesOrder in this.SalesOrders)
+                {
+                    iteration.AddDependency(salesOrder, this);
+                    iteration.Mark(salesOrder);
+                }
             }
         }
 

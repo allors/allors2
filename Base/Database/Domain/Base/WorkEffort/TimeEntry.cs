@@ -46,11 +46,15 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (this.ExistWorkEffort)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this.WorkEffort, this);
+                if (this.ExistWorkEffort)
+                {
+                    iteration.AddDependency(this.WorkEffort, this);
+                    iteration.Mark(this.WorkEffort);
+                }
             }
         }
 

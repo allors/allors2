@@ -30,13 +30,14 @@ namespace Allors.Domain
 
         public static void BaseOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (derivation.ChangeSet.Associations.Contains(@this.Id))
+            if (iteration.ChangeSet.Associations.Contains(@this.Id))
             {
                 foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
                 {
-                    derivation.AddDependency(inventoryAssignment, @this);
+                    iteration.AddDependency(inventoryAssignment, @this);
+                    iteration.Mark(inventoryAssignment);
                 }
             }
         }

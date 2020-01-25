@@ -86,24 +86,32 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
-
+            var (iteration, changeSet, derivedObjects) = method;
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
-            derivation.AddDependency(salesOrder, this);
 
-            foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, featureItem);
-            }
 
-            if (this.ExistReservedFromNonSerialisedInventoryItem)
-            {
-                derivation.AddDependency(this.ReservedFromNonSerialisedInventoryItem, this);
-            }
+                iteration.AddDependency(salesOrder, this);
+                iteration.Mark(salesOrder);
 
-            if (this.ExistReservedFromSerialisedInventoryItem)
-            {
-                derivation.AddDependency(this.ReservedFromSerialisedInventoryItem, this);
+                foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
+                {
+                    iteration.AddDependency(this, featureItem);
+                    iteration.Mark(featureItem);
+                }
+
+                if (this.ExistReservedFromNonSerialisedInventoryItem)
+                {
+                    iteration.AddDependency(this.ReservedFromNonSerialisedInventoryItem, this);
+                    iteration.Mark(this.ReservedFromNonSerialisedInventoryItem);
+                }
+
+                if (this.ExistReservedFromSerialisedInventoryItem)
+                {
+                    iteration.AddDependency(this.ReservedFromSerialisedInventoryItem, this);
+                    iteration.Mark(this.ReservedFromSerialisedInventoryItem);
+                }
             }
         }
 
@@ -378,7 +386,7 @@ namespace Allors.Domain
                 }
 
                 // TODO: Move to Custom
-                if (derivation.IsCreated(this) && this.ExistSerialisedItem)
+                if (derivation.ChangeSet.IsCreated(this) && this.ExistSerialisedItem)
                 {
                     this.Description = this.SerialisedItem.Details;
                 }

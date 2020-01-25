@@ -56,7 +56,7 @@ namespace Allors.Domain
             var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
             var settings = this.Strategy.Session.GetSingleton().Settings;
 
-            if (derivation.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
+            if (derivation.ChangeSet.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
             {
                 this.SyncDefaultInventoryItem();
             }

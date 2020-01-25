@@ -21,8 +21,13 @@ namespace Allors.Domain
 
         public static void BaseOnPreDerive(this InventoryItem @this, ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
-            derivation.AddDependency(@this.Part, @this);
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (iteration.IsMarked(@this) || changeSet.IsCreated(@this) || changeSet.HasChangedRoles(@this))
+            {
+                iteration.AddDependency(@this.Part, @this);
+                iteration.Mark(@this.Part);
+            }
         }
 
         public static void BaseOnDerive(this InventoryItem @this, ObjectOnDerive method)

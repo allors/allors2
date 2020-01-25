@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             var setings = this.Strategy.Session.GetSingleton().Settings;
 
-            if (derivation.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
+            if (derivation.ChangeSet.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
             {
                 this.SyncDefaultInventoryItem();
             }

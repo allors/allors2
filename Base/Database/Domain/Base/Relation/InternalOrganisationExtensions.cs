@@ -6,10 +6,6 @@
 namespace Allors.Domain
 {
     using System;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-
     using Allors.Meta;
 
     public static partial class InternalOrganisationExtensions
@@ -105,18 +101,20 @@ namespace Allors.Domain
 
         public static void BaseOnPreDerive(this InternalOrganisation @this, ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (derivation.HasChangedRole(@this, M.InternalOrganisation.DoAccounting))
+            if (iteration.IsMarked(@this) || changeSet.IsCreated(@this) || changeSet.HasChangedRole(@this, M.InternalOrganisation.DoAccounting))
             {
                 foreach (PaymentMethod collectionMethod in @this.ActiveCollectionMethods)
                 {
-                    derivation.AddDependency(collectionMethod, @this);
+                    iteration.AddDependency(collectionMethod, @this);
+                    iteration.Mark(collectionMethod);
                 }
 
                 foreach (PaymentMethod paymentMethod in @this.PaymentMethods)
                 {
-                    derivation.AddDependency(paymentMethod, @this);
+                    iteration.AddDependency(paymentMethod, @this);
+                    iteration.Mark(paymentMethod);
                 }
             }
         }

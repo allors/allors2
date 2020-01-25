@@ -853,14 +853,7 @@ namespace Allors.Domain
 
             this.order.Confirm();
 
-            // this.Session.Derive();
-            var derivation = new Logging.Derivation(this.Session, new DerivationConfig
-            {
-                DerivationLogFunc = () => new CustomListDerivationLog(),
-            }
-            );
-
-            derivation.Derive();
+            this.Session.Derive();
 
             this.order.Send();
             this.Session.Derive();
@@ -931,19 +924,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             this.order.Confirm();
-            var derivation = new Logging.Derivation(this.Session, new DerivationConfig
-                {
-                    DerivationLogFunc = () => new CustomListDerivationLog(),
-                }
-            );
-
-            derivation.Derive();
-
-            this.order.Send();
-
             this.Session.Derive();
 
-            //this.Session.Derive();
+            this.order.Send();
+            this.Session.Derive();
 
             Assert.Equal(100, item.QuantityOrdered);
             Assert.Equal(0, item.QuantityShipped);

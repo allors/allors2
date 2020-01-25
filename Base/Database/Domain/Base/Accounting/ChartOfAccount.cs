@@ -9,11 +9,15 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            foreach (GeneralLedgerAccount generalLedgerAccount in this.GeneralLedgerAccounts)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(this, generalLedgerAccount);
+                foreach (GeneralLedgerAccount generalLedgerAccount in this.GeneralLedgerAccounts)
+                {
+                    iteration.AddDependency(this, generalLedgerAccount);
+                    iteration.Mark(generalLedgerAccount);
+                }
             }
         }
     }

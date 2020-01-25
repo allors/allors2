@@ -50,16 +50,13 @@ namespace Allors.Domain
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
-
+            var (iteration, changeSet, derivedObjects) = method;
             var invoice = this.PurchaseInvoiceWherePurchaseInvoiceItem;
-            if (invoice != null)
+
+            if (invoice != null || iteration.ChangeSet.Associations.Contains(this.Id))
             {
-                // TODO:
-                if (derivation.ChangeSet.Associations.Contains(this.Id))
-                {
-                    derivation.AddDependency(invoice, this);
-                }
+                iteration.AddDependency(invoice, this);
+                iteration.Mark(invoice);
             }
         }
 

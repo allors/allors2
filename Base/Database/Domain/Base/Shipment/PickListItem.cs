@@ -13,11 +13,15 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                derivation.AddDependency(itemIssuance, this);
+                foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
+                {
+                    iteration.AddDependency(itemIssuance, this);
+                    iteration.Mark(itemIssuance);
+                }
             }
         }
 

@@ -12,13 +12,14 @@ namespace Allors.Domain
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
-            var derivation = method.Derivation;
+            var (iteration, changeSet, derivedObjects) = method;
 
-            if (derivation.HasChangedRole(this, this.Meta.TimeEntries))
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRole(this, this.Meta.TimeEntries))
             {
                 foreach (TimeEntry timeEntry in this.TimeEntries)
                 {
-                    derivation.AddDependency(timeEntry, this);
+                    iteration.AddDependency(timeEntry, this);
+                    iteration.Mark(timeEntry);
                 }
             }
         }
