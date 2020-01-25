@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
+
     public abstract partial class ObjectOnPreDerive
     {
         public IIteration Iteration { get; set; }
@@ -20,7 +21,7 @@ namespace Allors.Domain
         {
             changeSet = this.Iteration.ChangeSet;
             iteration = this.Iteration;
-            derivedObjects = this.Iteration.Cycle.DerivedObjects;
+            derivedObjects = this.Iteration.Cycle.Derivation.DerivedObjects;
         }
     }
 }

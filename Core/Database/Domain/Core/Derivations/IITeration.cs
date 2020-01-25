@@ -7,8 +7,12 @@ namespace Allors.Domain
 {
     using System.Collections.Generic;
 
-    public interface IIteration : IDerive
+    public interface IIteration
     {
+        IAccumulatedChangeSet ChangeSet { get; }
+
+        object this[string name] { get; set; }
+
         ICycle Cycle { get; }
 
         IPreparation Preparation { get; }

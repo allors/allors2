@@ -10,8 +10,12 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using Allors;
 
-    public interface IDerivation : IDerive
+    public interface IDerivation
     {
+        IAccumulatedChangeSet ChangeSet { get; }
+
+        object this[string name] { get; set; }
+
         Guid Id { get; }
 
         DateTime TimeStamp { get; }

@@ -19,14 +19,11 @@ namespace Allors.Domain.NonLogging
             this.Derivation = derivation;
             this.Marked = marked;
             this.ChangeSet = new AccumulatedChangeSet();
-            this.DerivedObjects = new HashSet<Object>();
         }
 
-        IAccumulatedChangeSet IDerive.ChangeSet => this.ChangeSet;
+        IAccumulatedChangeSet ICycle.ChangeSet => this.ChangeSet;
 
         public AccumulatedChangeSet ChangeSet { get; }
-
-        public ISet<Object> DerivedObjects { get; set; }
 
         IIteration ICycle.Iteration => this.Iteration;
 
@@ -79,7 +76,7 @@ namespace Allors.Domain.NonLogging
             }
         }
 
-        internal void Execute()
+        internal List<Object> Execute()
         {
             try
             {
@@ -102,6 +99,8 @@ namespace Allors.Domain.NonLogging
                         derivable.OnPostDerive(x => x.WithDerivation(this.Derivation));
                     }
                 }
+
+                return postDeriveObjects;
             }
             finally
             {

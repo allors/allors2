@@ -30,7 +30,7 @@ namespace Allors.Domain.NonLogging
 
         public Preparation Preparation { get; set; }
 
-        IAccumulatedChangeSet IDerive.ChangeSet => this.ChangeSet;
+        IAccumulatedChangeSet IIteration.ChangeSet => this.ChangeSet;
 
         public AccumulatedChangeSet ChangeSet { get; }
 
@@ -120,7 +120,6 @@ namespace Allors.Domain.NonLogging
 
                 this.Nodes.Derive(postDeriveObjects);
 
-                this.Cycle.DerivedObjects.UnionWith(postDeriveObjects);
                 this.Cycle.Derivation.DerivedObjects.UnionWith(postDeriveObjects);
             }
             finally

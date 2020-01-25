@@ -42,7 +42,7 @@ namespace Allors.Domain.NonLogging
 
         ICycle IDerivation.Cycle => this.Cycle;
 
-        IAccumulatedChangeSet IDerive.ChangeSet => this.ChangeSet;
+        IAccumulatedChangeSet IDerivation.ChangeSet => this.ChangeSet;
 
         public object this[string name]
         {
@@ -103,12 +103,12 @@ namespace Allors.Domain.NonLogging
                 var markedSet = marked.Length > 0 ? new HashSet<Object>(marked) : null;
 
                 this.Cycle = new Cycle(this, markedSet);
-                this.Cycle.Execute();
+                var derivedObjects = this.Cycle.Execute();
 
-                while (this.Cycle.DerivedObjects.Any())
+                while (derivedObjects.Count > 0)
                 {
                     this.Cycle = new Cycle(this);
-                    this.Cycle.Execute();
+                    derivedObjects = this.Cycle.Execute();
                 }
 
                 return this.Validation;

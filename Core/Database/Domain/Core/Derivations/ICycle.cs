@@ -5,14 +5,14 @@
 
 namespace Allors.Domain
 {
-    using System.Collections.Generic;
-
-    public interface ICycle : IDerive
+    public interface ICycle
     {
+        IAccumulatedChangeSet ChangeSet { get; }
+
+        object this[string name] { get; set; }
+
         IDerivation Derivation { get; }
 
         IIteration Iteration { get; }
-
-        ISet<Object> DerivedObjects { get; }
     }
 }

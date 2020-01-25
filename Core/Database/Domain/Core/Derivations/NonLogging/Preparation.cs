@@ -40,7 +40,7 @@ namespace Allors.Domain.NonLogging
             changedObjectIds.UnionWith(changeSet.Created);
 
             this.Objects = new HashSet<Object>(derivation.Session.Instantiate(changedObjectIds).Cast<Object>());
-            this.Objects.ExceptWith(this.Iteration.Cycle.DerivedObjects);
+            this.Objects.ExceptWith(this.Iteration.Cycle.Derivation.DerivedObjects);
 
             if (marked != null)
             {
