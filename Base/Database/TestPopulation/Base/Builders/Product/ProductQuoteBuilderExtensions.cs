@@ -14,7 +14,7 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            var quoteItem = new QuoteItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
+            var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
 
             @this.WithContactPerson(customer.CurrentContacts.FirstOrDefault());

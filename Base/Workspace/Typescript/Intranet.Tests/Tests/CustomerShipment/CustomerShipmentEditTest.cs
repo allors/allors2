@@ -47,10 +47,10 @@ namespace Tests.CustomerShipmentTests
 
             this.Session.Derive();
 
-            var expectedShipToPartyPartyName = expected.ShipToParty.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
-            var expectedShipToContactPersonPartyName = expected.ShipToContactPerson.DisplayName();
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
+            var expectedShipToPartyPartyName = expected.ShipToParty?.DisplayName();
+            var expectedShipToAddressDisplayName = expected.ShipToAddress?.DisplayName();
+            var expectedShipToContactPersonPartyName = expected.ShipToContactPerson?.DisplayName();
+            var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
             var expectedShipFromFacilityName = expected.ShipFromFacility.Name;
             var expectedShipmentMethodName = expected.ShipmentMethod.Name;
             var expectedCarrierName = expected.Carrier.Name;
@@ -67,10 +67,10 @@ namespace Tests.CustomerShipmentTests
             var shipmentOverviewDetail = shipmentOverview.CustomershipmentOverviewDetail.Click();
 
             shipmentOverviewDetail
-                .ShipToParty.Select(expected.ShipToParty.DisplayName())
+                .ShipToParty.Select(expected.ShipToParty?.DisplayName())
                 .ShipToAddress.Set(expected.ShipToAddress?.DisplayName())
                 .ShipToContactPerson.Set(expected.ShipToContactPerson?.DisplayName())
-                .ShipFromAddress.Set(expected.ShipFromParty?.ShippingAddress.DisplayName())
+                .ShipFromAddress.Set(expected.ShipFromParty?.ShippingAddress?.DisplayName())
                 .ShipmentMethod.Set(expected.ShipmentMethod.Name)
                 .ShipFromFacility.Set(((Organisation)expected.ShipFromParty).FacilitiesWhereOwner?.First.Name)
                 .Carrier.Set(expected.Carrier.Name)
@@ -90,10 +90,10 @@ namespace Tests.CustomerShipmentTests
 
             Assert.Equal(after.Length, before.Length);
 
-            Assert.Equal(expectedShipToPartyPartyName, shipment.ShipToParty.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, shipment.ShipToAddress.DisplayName());
-            Assert.Equal(expectedShipToContactPersonPartyName, shipment.ShipToContactPerson.DisplayName());
-            Assert.Equal(expectedShipFromAddressDisplayName, shipment.ShipFromAddress.DisplayName());
+            Assert.Equal(expectedShipToPartyPartyName, shipment.ShipToParty?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, shipment.ShipToAddress?.DisplayName());
+            Assert.Equal(expectedShipToContactPersonPartyName, shipment.ShipToContactPerson?.DisplayName());
+            Assert.Equal(expectedShipFromAddressDisplayName, shipment.ShipFromAddress?.DisplayName());
             Assert.Equal(expectedShipFromFacilityName, shipment.ShipFromFacility.Name);
             Assert.Equal(expectedShipmentMethodName, shipment.ShipmentMethod.Name);
             Assert.Equal(expectedCarrierName, shipment.Carrier.Name);
