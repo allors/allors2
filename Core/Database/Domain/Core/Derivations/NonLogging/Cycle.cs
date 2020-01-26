@@ -6,18 +6,15 @@
 namespace Allors.Domain.NonLogging
 {
     using System.Collections.Generic;
-    using System.Linq;
-    using Database.Adapters;
     using Object = Domain.Object;
 
     public class Cycle : ICycle
     {
-        private Dictionary<string, object> properties;
+        private Properties properties;
 
-        internal Cycle(Derivation derivation, ISet<Object> marked = null)
+        internal Cycle(Derivation derivation)
         {
             this.Derivation = derivation;
-            this.Marked = marked;
             this.ChangeSet = new AccumulatedChangeSet();
         }
 
@@ -27,66 +24,37 @@ namespace Allors.Domain.NonLogging
 
         IIteration ICycle.Iteration => this.Iteration;
 
-        internal Iteration Iteration { get; set; }
-
         IDerivation ICycle.Derivation => this.Derivation;
+
+        internal Iteration Iteration { get; set; }
 
         internal Derivation Derivation { get; }
 
-        internal ISet<Object> Marked { get; }
-
         public object this[string name]
         {
-            get
-            {
-                var lowerName = name.ToLowerInvariant();
-
-                if (this.properties != null && this.properties.TryGetValue(lowerName, out var value))
-                {
-                    return value;
-                }
-
-                return null;
-            }
+            get => this.properties?.Get(name);
 
             set
             {
-                var lowerName = name.ToLowerInvariant();
-
-                if (value == null)
-                {
-                    if (this.properties != null)
-                    {
-                        this.properties.Remove(lowerName);
-                        if (this.properties.Count == 0)
-                        {
-                            this.properties = null;
-                        }
-                    }
-                }
-                else
-                {
-                    if (this.properties == null)
-                    {
-                        this.properties = new Dictionary<string, object>();
-                    }
-
-                    this.properties[lowerName] = value;
-                }
+                this.properties ??= new Properties();
+                this.properties.Set(name, value);
             }
         }
 
-        internal List<Object> Execute()
+        internal List<Object> Execute(Object[] marked = null)
         {
             try
             {
                 var postDeriveObjects = new List<Object>();
+                var previousCount = postDeriveObjects.Count;
 
-                this.Iteration = new Iteration(this, this.Marked);
-                this.Iteration.Execute(postDeriveObjects);
+                this.Iteration = new Iteration(this);
+                this.Iteration.Execute(postDeriveObjects, marked);
 
-                while (this.Iteration.Objects.Any())
+                while (postDeriveObjects.Count != previousCount)
                 {
+                    previousCount = postDeriveObjects.Count;
+
                     this.Iteration = new Iteration(this);
                     this.Iteration.Execute(postDeriveObjects);
                 }

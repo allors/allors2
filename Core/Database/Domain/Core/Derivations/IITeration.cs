@@ -17,8 +17,6 @@ namespace Allors.Domain
 
         IPreparation Preparation { get; }
 
-        ISet<Object> Objects { get; }
-
         void Schedule(Object @object);
 
         void Mark(Object @object);

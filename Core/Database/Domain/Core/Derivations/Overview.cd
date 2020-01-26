@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Allors.Domain.IDerivation">
-    <Position X="1.5" Y="3.25" Width="1.75" />
+    <Position X="0.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAACAACAAACAAQAAACAAAAgAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <HashCode>AAACAACAAACAAQAACCAAAAgAAAAAAAAAAAQABAAAAAA=</HashCode>
       <FileName>Core\Derivations\IDerivation.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -11,24 +11,17 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.IPreparation">
-    <Position X="10" Y="3.25" Width="1.5" />
+    <Position X="9" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
       <FileName>Core\Derivations\IPreparation.cs</FileName>
       <NewMemberFileName>Core\Derivations\IIteration.cs</NewMemberFileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.IDerive">
-    <Position X="4.5" Y="0.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>Core\Derivations\IDerive.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Allors.Domain.ICycle">
-    <Position X="4.5" Y="3.25" Width="1.5" />
+    <Position X="3.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAgAAAAAAQAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAgAAAAAAQACAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Core\Derivations\ICycle.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -36,12 +29,12 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.IIteration">
-    <Position X="7.25" Y="3.25" Width="1.5" />
+    <Position X="6.25" Y="0.5" Width="1.5" />
     <Members>
       <Property Name="Cycle" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAGAIAAAAAAAAAAAAEAAAAEAAACAAAAAAAI=</HashCode>
+      <HashCode>AAAAAAAAAAGAIAAACAAAAAAAAEAAAAEAAACABAAAAAI=</HashCode>
       <FileName>Core\Derivations\IITeration.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

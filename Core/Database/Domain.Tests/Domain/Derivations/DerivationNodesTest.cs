@@ -67,12 +67,12 @@ namespace Tests
             derivation.Derive();
 
             Assert.Equal(d, sequence[0]);
-            Assert.Equal(a, sequence[4]);
+            Assert.Equal(a, sequence[3]);
 
             Assert.Equal(1, a.DerivationCount);
             Assert.Equal(1, b.DerivationCount);
             Assert.Equal(1, c.DerivationCount);
-            Assert.Equal(2, d.DerivationCount);
+            Assert.Equal(1, d.DerivationCount);
         }
 
         [Fact]

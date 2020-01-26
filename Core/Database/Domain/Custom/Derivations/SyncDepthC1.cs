@@ -11,14 +11,10 @@ namespace Allors.Domain
         {
             var (iteration, changeSet, derivedObjects) = method;
 
-            if (!changeSet.IsCreated(this) && changeSet.HasChangedRoles(this, RelationKind.Regular))
+            if (iteration.IsMarked(this) || (!changeSet.IsCreated(this) && changeSet.HasChangedRoles(this, RelationKind.Regular)))
             {
                 iteration.AddDependency(this, this.SyncRootWhereSyncDepth1);
-            }
-
-            if (iteration.IsMarked(this))
-            {
-                iteration.Mark(this, this.SyncRootWhereSyncDepth1);
+                iteration.Mark(this.SyncRootWhereSyncDepth1);
             }
         }
 

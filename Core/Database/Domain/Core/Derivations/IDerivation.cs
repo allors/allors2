@@ -28,6 +28,8 @@ namespace Allors.Domain
 
         ISet<Object> DerivedObjects { get; }
 
+        IValidation Derive();
+
         IValidation Derive(params Object[] marked);
     }
 }

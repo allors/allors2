@@ -10,14 +10,13 @@ namespace Allors.Domain.NonLogging
 
     public class Iteration : IIteration
     {
-        private Dictionary<string, object> properties;
+        private Properties properties;
 
-        public Iteration(Cycle cycle, ISet<Object> marked = null)
+        public Iteration(Cycle cycle)
         {
             this.Cycle = cycle;
-            this.MarkedBacklog = marked ?? new HashSet<Object>();
             this.ChangeSet = new AccumulatedChangeSet();
-            this.Nodes = new DerivationNodes(this.Cycle.Derivation);
+            this.Graph = new Graph(this.Cycle.Derivation);
         }
 
         ICycle IIteration.Cycle => this.Cycle;
@@ -34,58 +33,26 @@ namespace Allors.Domain.NonLogging
 
         public AccumulatedChangeSet ChangeSet { get; }
 
-        public ISet<Object> Objects => this.Nodes.Scheduled;
-
-        public DerivationNodes Nodes { get; }
+        public Graph Graph { get; }
 
         public object this[string name]
         {
-            get
-            {
-                var lowerName = name.ToLowerInvariant();
-
-                if (this.properties != null && this.properties.TryGetValue(lowerName, out var value))
-                {
-                    return value;
-                }
-
-                return null;
-            }
+            get => this.properties?.Get(name);
 
             set
             {
-                var lowerName = name.ToLowerInvariant();
-
-                if (value == null)
-                {
-                    if (this.properties != null)
-                    {
-                        this.properties.Remove(lowerName);
-                        if (this.properties.Count == 0)
-                        {
-                            this.properties = null;
-                        }
-                    }
-                }
-                else
-                {
-                    if (this.properties == null)
-                    {
-                        this.properties = new Dictionary<string, object>();
-                    }
-
-                    this.properties[lowerName] = value;
-                }
+                this.properties ??= new Properties();
+                this.properties.Set(name, value);
             }
         }
 
-        public void Schedule(Object @object) => this.Nodes.Schedule(@object);
+        public void Schedule(Object @object) => this.Graph.Schedule(@object);
 
         public void Mark(Object @object)
         {
-            if (@object != null && !this.Nodes.Marked.Contains(@object))
+            if (@object != null && !this.Graph.IsMarked(@object))
             {
-                this.Nodes.Marked.Add(@object);
+                this.Graph.Mark(@object);
                 if (!this.Preparation.Objects.Contains(@object))
                 {
                     this.MarkedBacklog.Add(@object);
@@ -101,13 +68,18 @@ namespace Allors.Domain.NonLogging
             }
         }
 
-        public bool IsMarked(Object @object) => this.Nodes.Marked.Contains(@object);
+        public bool IsMarked(Object @object) => this.Graph.IsMarked(@object);
 
-        public void Execute(List<Object> postDeriveObjects)
+        public void Execute(List<Object> postDeriveObjects, Object[] marked = null)
         {
             try
             {
-                this.Preparation = new Preparation(this, this.MarkedBacklog);
+                if (marked != null)
+                {
+                    this.Graph.Mark(marked);
+                }
+
+                this.Preparation = new Preparation(this, marked);
                 this.MarkedBacklog = new HashSet<Object>();
                 this.Preparation.Execute();
 
@@ -118,7 +90,7 @@ namespace Allors.Domain.NonLogging
                     this.Preparation.Execute();
                 }
 
-                this.Nodes.Derive(postDeriveObjects);
+                this.Graph.Derive(postDeriveObjects);
 
                 this.Cycle.Derivation.DerivedObjects.UnionWith(postDeriveObjects);
             }
@@ -132,7 +104,7 @@ namespace Allors.Domain.NonLogging
         {
             if (dependent != null && dependee != null && !dependent.Equals(dependee))
             {
-                this.Nodes.AddDependency(dependent, dependee);
+                this.Graph.AddDependency(dependent, dependee);
             }
         }
     }

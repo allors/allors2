@@ -11,7 +11,7 @@ namespace Allors.Domain.NonLogging
 
     public class Preparation : IPreparation
     {
-        public Preparation(Iteration iteration, ISet<Object> marked)
+        public Preparation(Iteration iteration, IEnumerable<Object> marked)
         {
             this.Iteration = iteration;
             var cycle = this.Iteration.Cycle;
@@ -20,9 +20,9 @@ namespace Allors.Domain.NonLogging
 
             var changeSet = session.Checkpoint();
 
-            derivation.ChangeSet.Add(changeSet);
-            cycle.ChangeSet.Add(changeSet);
             iteration.ChangeSet.Add(changeSet);
+            cycle.ChangeSet.Add(changeSet);
+            derivation.ChangeSet.Add(changeSet);
 
             // Initialization
             if (changeSet.Created.Any())
@@ -45,12 +45,6 @@ namespace Allors.Domain.NonLogging
             if (marked != null)
             {
                 this.Objects.UnionWith(marked);
-                this.Iteration.Nodes.Marked.UnionWith(marked);
-            }
-
-            if (this.Objects.Contains(null))
-            {
-
             }
         }
 

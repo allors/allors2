@@ -27,8 +27,8 @@ namespace Allors.Domain.Logging
         public IValidation Validation { get; }
         public ICycle Cycle { get; }
         public ISet<Object> DerivedObjects { get; }
-        public IValidation Derive(params Object[] marked) => throw new NotImplementedException();
+        public IValidation Derive() => throw new NotImplementedException();
 
-        public void AddDependency(Object dependent, Object dependee) => throw new NotImplementedException();
+        public IValidation Derive(params Object[] marked) => throw new NotImplementedException();
     }
 }

@@ -16,7 +16,7 @@ namespace Allors.Domain.NonLogging
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public class Derivation : IDerivation
     {
-        private Dictionary<string, object> properties;
+        private Properties properties;
 
         public Derivation(ISession session)
         {
@@ -24,7 +24,6 @@ namespace Allors.Domain.NonLogging
 
             this.Id = Guid.NewGuid();
 
-            this.DerivedObjects = new HashSet<Object>();
             this.ChangeSet = new AccumulatedChangeSet();
             this.DerivedObjects = new HashSet<Object>();
             this.Validation = new Validation(this);
@@ -36,7 +35,7 @@ namespace Allors.Domain.NonLogging
 
         public DateTime TimeStamp { get; private set; }
 
-        public IValidation Validation { get; protected set; }
+        public IValidation Validation { get; private set; }
 
         public ISet<Object> DerivedObjects { get; }
 
@@ -46,48 +45,20 @@ namespace Allors.Domain.NonLogging
 
         public object this[string name]
         {
-            get
-            {
-                var lowerName = name.ToLowerInvariant();
-
-                if (this.properties != null && this.properties.TryGetValue(lowerName, out var value))
-                {
-                    return value;
-                }
-
-                return null;
-            }
+            get => this.properties?.Get(name);
 
             set
             {
-                var lowerName = name.ToLowerInvariant();
-
-                if (value == null)
-                {
-                    if (this.properties != null)
-                    {
-                        this.properties.Remove(lowerName);
-                        if (this.properties.Count == 0)
-                        {
-                            this.properties = null;
-                        }
-                    }
-                }
-                else
-                {
-                    if (this.properties == null)
-                    {
-                        this.properties = new Dictionary<string, object>();
-                    }
-
-                    this.properties[lowerName] = value;
-                }
+                this.properties ??= new Properties();
+                this.properties.Set(name, value);
             }
         }
 
         internal Cycle Cycle { get; set; }
 
         internal AccumulatedChangeSet ChangeSet { get; }
+
+        public IValidation Derive() => this.Derive(null);
 
         public IValidation Derive(params Object[] marked)
         {
@@ -100,10 +71,8 @@ namespace Allors.Domain.NonLogging
                     throw new Exception("Derive can only be called once. Create a new Derivation object.");
                 }
 
-                var markedSet = marked.Length > 0 ? new HashSet<Object>(marked) : null;
-
-                this.Cycle = new Cycle(this, markedSet);
-                var derivedObjects = this.Cycle.Execute();
+                this.Cycle = new Cycle(this);
+                var derivedObjects = this.Cycle.Execute(marked);
 
                 while (derivedObjects.Count > 0)
                 {
@@ -116,14 +85,6 @@ namespace Allors.Domain.NonLogging
             finally
             {
                 this.Cycle = null;
-            }
-        }
-
-        private void AssertGeneration()
-        {
-            if (this.Cycle == null)
-            {
-                throw new Exception("Add can only be called during a derivation. Use Derive(intial) instead.");
             }
         }
     }
