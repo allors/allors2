@@ -16,7 +16,7 @@ namespace Allors.Domain.NonLogging
         {
             this.Cycle = cycle;
             this.ChangeSet = new AccumulatedChangeSet();
-            this.Graph = new Graph(this.Cycle.Derivation);
+            this.Graph = new Graph(this.Cycle);
         }
 
         ICycle IIteration.Cycle => this.Cycle;

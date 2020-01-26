@@ -16,6 +16,8 @@ namespace Allors.Domain.NonLogging
 
         private bool visited;
         private Node currentRoot;
+
+        private Node dependency;
         private HashSet<Node> dependencies;
 
         public Node(Domain.Object derivable) => this.derivable = derivable;
@@ -28,12 +30,30 @@ namespace Allors.Domain.NonLogging
 
         public void AddDependency(Node node)
         {
-            if (this.dependencies == null)
+            if (this.dependencies != null)
             {
-                this.dependencies = new HashSet<Node>();
+                this.dependencies.Add(node);
             }
+            else
+            {
+                if (this.dependency == null)
+                {
+                    this.dependency = node;
+                }
+                else
+                {
+                    if (!this.dependency.Equals(node))
+                    {
+                        this.dependencies = new HashSet<Node>
+                        {
+                            this.dependency,
+                            node,
+                        };
 
-            this.dependencies.Add(node);
+                        this.dependency = null;
+                    }
+                }
+            }
         }
 
         public bool Equals(Node other) => other != null && this.derivable.Equals(other.derivable);
@@ -57,17 +77,18 @@ namespace Allors.Domain.NonLogging
             this.visited = true;
             this.currentRoot = root;
 
+            this.dependency?.TopologicalDerive(graph, postDeriveObjects, root);
             if (this.dependencies != null)
             {
-                foreach (var dependency in this.dependencies)
+                foreach (var dep in this.dependencies)
                 {
-                    dependency.TopologicalDerive(graph, postDeriveObjects, root);
+                    dep.TopologicalDerive(graph, postDeriveObjects, root);
                 }
             }
 
             if (!this.derivable.Strategy.IsDeleted && graph.IsScheduled(this.derivable))
             {
-                this.derivable.OnDerive(x => x.WithDerivation(graph.Derivation));
+                this.derivable.OnDerive(x => x.WithDerivation(graph.Cycle.Derivation));
                 postDeriveObjects.Add(this.derivable);
             }
 

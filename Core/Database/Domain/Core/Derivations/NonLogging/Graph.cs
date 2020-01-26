@@ -10,13 +10,13 @@ namespace Allors.Domain.NonLogging
 
     public class Graph
     {
-        public Graph(IDerivation derivation)
+        public Graph(Cycle cycle)
         {
-            this.Derivation = derivation;
+            this.Cycle = cycle;
             this.NodeByObject = new Dictionary<Object, Node>();
         }
 
-        public IDerivation Derivation { get; }
+        public Cycle Cycle { get; }
 
         public Dictionary<Object, Node> NodeByObject { get; }
 
