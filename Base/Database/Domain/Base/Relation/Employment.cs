@@ -50,14 +50,17 @@ namespace Allors.Domain
 
             if (this.ExistEmployee)
             {
+                // HACK: DerivedRoles
+                var employerDerivedRoles = (OrganisationDerivedRoles)this.Employer;
+
                 if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
                 {
-                    this.Employer.AddActiveEmployee(this.Employee);
+                    employerDerivedRoles.AddActiveEmployee(this.Employee);
                 }
 
                 if (this.FromDate > this.strategy.Session.Now() || (this.ExistThroughDate && this.ThroughDate < this.strategy.Session.Now()))
                 {
-                    this.Employer.RemoveActiveEmployee(this.Employee);
+                    employerDerivedRoles.RemoveActiveEmployee(this.Employee);
                 }
             }
 

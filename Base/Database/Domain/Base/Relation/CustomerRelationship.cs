@@ -70,14 +70,17 @@ namespace Allors.Domain
                     }
                 }
 
+                // HACK: DerivedRoles
+                var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)this.InternalOrganisation;
+
                 if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
                 {
-                    this.InternalOrganisation.AddActiveCustomer(this.Customer);
+                    internalOrganisationDerivedRoles.AddActiveCustomer(this.Customer);
                 }
 
                 if (this.FromDate > this.strategy.Session.Now() || (this.ExistThroughDate && this.ThroughDate < this.strategy.Session.Now()))
                 {
-                    this.InternalOrganisation.RemoveActiveCustomer(this.Customer);
+                    internalOrganisationDerivedRoles.RemoveActiveCustomer(this.Customer);
                 }
             }
 

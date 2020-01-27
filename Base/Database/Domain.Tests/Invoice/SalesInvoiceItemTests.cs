@@ -620,7 +620,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.billToCustomer.AddPartyClassification(classification);
+            ((OrganisationDerivedRoles)this.billToCustomer).AddPartyClassification(classification);
 
             this.invoice.ShipToCustomer = this.shipToCustomer;
 
@@ -656,7 +656,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.billToCustomer.AddPartyClassification(classification);
+            ((OrganisationDerivedRoles)this.billToCustomer).AddPartyClassification(classification);
 
             this.invoice.ShipToCustomer = this.shipToCustomer;
 
@@ -694,7 +694,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.billToCustomer.AddPartyClassification(classification);
+            ((OrganisationDerivedRoles)this.billToCustomer).AddPartyClassification(classification);
 
             this.invoice.ShipToCustomer = this.shipToCustomer;
 
@@ -730,7 +730,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            this.billToCustomer.AddPartyClassification(classification);
+            ((OrganisationDerivedRoles)this.billToCustomer).AddPartyClassification(classification);
 
             this.invoice.ShipToCustomer = this.shipToCustomer;
 

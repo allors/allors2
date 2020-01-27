@@ -151,20 +151,20 @@ namespace Allors.Domain
             var session = this.strategy.Session;
 
             // SalesOrder Derivations and Validations
-            this.BillToCustomer = this.BillToCustomer ?? this.ShipToCustomer;
-            this.ShipToCustomer = this.ShipToCustomer ?? this.BillToCustomer;
+            this.BillToCustomer ??= this.ShipToCustomer;
+            this.ShipToCustomer ??= this.BillToCustomer;
             this.Customers = new[] { this.BillToCustomer, this.ShipToCustomer, this.PlacingCustomer };
-            this.Locale = this.Locale ?? this.BillToCustomer?.Locale ?? this.Strategy.Session.GetSingleton().DefaultLocale;
-            this.VatRegime = this.VatRegime ?? this.BillToCustomer?.VatRegime;
-            this.Currency = this.Currency ?? this.BillToCustomer?.PreferredCurrency ?? this.BillToCustomer?.Locale?.Country?.Currency ?? this.TakenBy?.PreferredCurrency;
-            this.TakenByContactMechanism = this.TakenByContactMechanism ?? this.TakenBy?.OrderAddress ?? this.TakenBy?.BillingAddress ?? this.TakenBy?.GeneralCorrespondence;
-            this.BillToContactMechanism = this.BillToContactMechanism ?? this.BillToCustomer?.BillingAddress ?? this.BillToCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
-            this.BillToEndCustomerContactMechanism = this.BillToEndCustomerContactMechanism ?? this.BillToEndCustomer?.BillingAddress ?? this.BillToEndCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
-            this.ShipToEndCustomerAddress = this.ShipToEndCustomerAddress ?? this.ShipToEndCustomer?.ShippingAddress ?? this.ShipToCustomer?.GeneralCorrespondence as PostalAddress;
-            this.ShipFromAddress = this.ShipFromAddress ?? this.TakenBy?.ShippingAddress;
-            this.ShipToAddress = this.ShipToAddress ?? this.ShipToCustomer?.ShippingAddress;
-            this.ShipmentMethod = this.ShipmentMethod ?? this.ShipToCustomer?.DefaultShipmentMethod ?? this.Store.DefaultShipmentMethod;
-            this.PaymentMethod = this.PaymentMethod ?? this.ShipToCustomer?.PartyFinancialRelationshipsWhereParty?.FirstOrDefault(v => object.Equals(v.InternalOrganisation, this.TakenBy))?.DefaultPaymentMethod ?? this.Store.DefaultCollectionMethod;
+            this.Locale ??= this.BillToCustomer?.Locale ?? this.Strategy.Session.GetSingleton().DefaultLocale;
+            this.VatRegime ??= this.BillToCustomer?.VatRegime;
+            this.Currency ??= this.BillToCustomer?.PreferredCurrency ?? this.BillToCustomer?.Locale?.Country?.Currency ?? this.TakenBy?.PreferredCurrency;
+            this.TakenByContactMechanism ??= this.TakenBy?.OrderAddress ?? this.TakenBy?.BillingAddress ?? this.TakenBy?.GeneralCorrespondence;
+            this.BillToContactMechanism ??= this.BillToCustomer?.BillingAddress ?? this.BillToCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
+            this.BillToEndCustomerContactMechanism ??= this.BillToEndCustomer?.BillingAddress ?? this.BillToEndCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
+            this.ShipToEndCustomerAddress ??= this.ShipToEndCustomer?.ShippingAddress ?? this.ShipToCustomer?.GeneralCorrespondence as PostalAddress;
+            this.ShipFromAddress ??= this.TakenBy?.ShippingAddress;
+            this.ShipToAddress ??= this.ShipToCustomer?.ShippingAddress;
+            this.ShipmentMethod ??= this.ShipToCustomer?.DefaultShipmentMethod ?? this.Store.DefaultShipmentMethod;
+            this.PaymentMethod ??= this.ShipToCustomer?.PartyFinancialRelationshipsWhereParty?.FirstOrDefault(v => object.Equals(v.InternalOrganisation, this.TakenBy))?.DefaultPaymentMethod ?? this.Store.DefaultCollectionMethod;
 
             if (this.BillToCustomer?.BaseIsActiveCustomer(this.TakenBy, this.OrderDate) == false)
             {
@@ -185,15 +185,17 @@ namespace Allors.Domain
             // SalesOrderItem Derivations and Validations
             foreach (SalesOrderItem salesOrderItem in this.SalesOrderItems)
             {
-                salesOrderItem.ShipFromAddress = salesOrderItem.ShipFromAddress ?? this.ShipFromAddress;
-                salesOrderItem.ShipToAddress = salesOrderItem.AssignedShipToAddress ?? salesOrderItem.AssignedShipToParty?.ShippingAddress ?? this.ShipToAddress;
-                salesOrderItem.ShipToParty = salesOrderItem.AssignedShipToParty ?? this.ShipToCustomer;
-                salesOrderItem.DeliveryDate = salesOrderItem.AssignedDeliveryDate ?? this.DeliveryDate;
-                salesOrderItem.VatRegime = salesOrderItem.AssignedVatRegime ?? this.VatRegime;
-                salesOrderItem.VatRate = salesOrderItem.VatRegime?.VatRate ?? salesOrderItem.Product?.VatRate ?? salesOrderItem.ProductFeature?.VatRate;
+                var salesOrderItemDerivedRoles = (SalesOrderItemDerivedRoles)salesOrderItem;
 
-                salesOrderItem.SalesReps = salesOrderItem.Product?.ProductCategoriesWhereProduct.Select(v => SalesRepRelationships.SalesRep(salesOrderItem.ShipToParty, v, this.OrderDate)).ToArray();
-                salesOrderItem.AddSalesRep(SalesRepRelationships.SalesRep(salesOrderItem.ShipToParty, null, this.OrderDate));
+                salesOrderItem.ShipFromAddress ??= this.ShipFromAddress;
+                salesOrderItemDerivedRoles.ShipToAddress = salesOrderItem.AssignedShipToAddress ?? salesOrderItem.AssignedShipToParty?.ShippingAddress ?? this.ShipToAddress;
+                salesOrderItemDerivedRoles.ShipToParty = salesOrderItem.AssignedShipToParty ?? this.ShipToCustomer;
+                salesOrderItemDerivedRoles.DeliveryDate = salesOrderItem.AssignedDeliveryDate ?? this.DeliveryDate;
+                salesOrderItemDerivedRoles.VatRegime = salesOrderItem.AssignedVatRegime ?? this.VatRegime;
+                salesOrderItemDerivedRoles.VatRate = salesOrderItem.VatRegime?.VatRate ?? salesOrderItem.Product?.VatRate ?? salesOrderItem.ProductFeature?.VatRate;
+
+                salesOrderItemDerivedRoles.SalesReps = salesOrderItem.Product?.ProductCategoriesWhereProduct.Select(v => SalesRepRelationships.SalesRep(salesOrderItem.ShipToParty, v, this.OrderDate)).ToArray();
+                salesOrderItemDerivedRoles.AddSalesRep(SalesRepRelationships.SalesRep(salesOrderItem.ShipToParty, null, this.OrderDate));
 
                 // TODO: Use versioning
                 if (salesOrderItem.ExistPreviousProduct && !salesOrderItem.PreviousProduct.Equals(salesOrderItem.Product))
@@ -202,7 +204,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    salesOrderItem.PreviousProduct = salesOrderItem.Product;
+                    salesOrderItemDerivedRoles.PreviousProduct = salesOrderItem.Product;
                 }
 
                 if (salesOrderItem.ExistSalesOrderItemWhereOrderedWithFeature)
@@ -766,6 +768,8 @@ namespace Allors.Domain
 
                         foreach (SalesOrderItem orderItem in this.ValidOrderItems)
                         {
+                            var orderItemDerivedRoles = (SalesOrderItemDerivedRoles)orderItem;
+
                             if (orderItem.ExistProduct && orderItem.ShipToAddress.Equals(address.Key) && orderItem.QuantityRequestsShipping > 0)
                             {
                                 var good = orderItem.Product as Good;
@@ -832,7 +836,7 @@ namespace Allors.Domain
                                     .WithQuantity(orderItem.QuantityRequestsShipping)
                                     .Build();
 
-                                orderItem.QuantityRequestsShipping = 0;
+                                orderItemDerivedRoles.QuantityRequestsShipping = 0;
                             }
                         }
 
@@ -981,6 +985,8 @@ namespace Allors.Domain
             decimal quantityOrdered,
             decimal totalBasePrice)
         {
+            var salesOrderItemDerivedRoles = (SalesOrderItemDerivedRoles)salesOrderItem;
+
             var currentGenericOrProductOrFeaturePriceComponents = Array.Empty<PriceComponent>();
             if (salesOrderItem.ExistProduct)
             {
@@ -1008,10 +1014,10 @@ namespace Allors.Domain
             // Calculate Unit Price (with Discounts and Surcharges)
             if (salesOrderItem.AssignedUnitPrice.HasValue)
             {
-                salesOrderItem.UnitBasePrice = unitBasePrice ?? salesOrderItem.AssignedUnitPrice.Value;
-                salesOrderItem.UnitDiscount = 0;
-                salesOrderItem.UnitSurcharge = 0;
-                salesOrderItem.UnitPrice = salesOrderItem.AssignedUnitPrice.Value;
+                salesOrderItemDerivedRoles.UnitBasePrice = unitBasePrice ?? salesOrderItem.AssignedUnitPrice.Value;
+                salesOrderItemDerivedRoles.UnitDiscount = 0;
+                salesOrderItemDerivedRoles.UnitSurcharge = 0;
+                salesOrderItemDerivedRoles.UnitPrice = salesOrderItem.AssignedUnitPrice.Value;
             }
             else
             {
@@ -1021,67 +1027,67 @@ namespace Allors.Domain
                     return;
                 }
 
-                salesOrderItem.UnitBasePrice = unitBasePrice.Value;
+                salesOrderItemDerivedRoles.UnitBasePrice = unitBasePrice.Value;
 
-                salesOrderItem.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
+                salesOrderItemDerivedRoles.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
                     v => v.Percentage.HasValue
                              ? Math.Round(salesOrderItem.UnitBasePrice * v.Percentage.Value / 100, 2)
                              : v.Price ?? 0);
 
-                salesOrderItem.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
+                salesOrderItemDerivedRoles.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
                     v => v.Percentage.HasValue
                              ? Math.Round(salesOrderItem.UnitBasePrice * v.Percentage.Value / 100, 2)
                              : v.Price ?? 0);
 
-                salesOrderItem.UnitPrice = salesOrderItem.UnitBasePrice - salesOrderItem.UnitDiscount + salesOrderItem.UnitSurcharge;
+                salesOrderItemDerivedRoles.UnitPrice = salesOrderItem.UnitBasePrice - salesOrderItem.UnitDiscount + salesOrderItem.UnitSurcharge;
 
                 if (salesOrderItem.ExistDiscountAdjustment)
                 {
-                    salesOrderItem.UnitDiscount += salesOrderItem.DiscountAdjustment.Percentage.HasValue ?
+                    salesOrderItemDerivedRoles.UnitDiscount += salesOrderItem.DiscountAdjustment.Percentage.HasValue ?
                         Math.Round(salesOrderItem.UnitPrice * salesOrderItem.DiscountAdjustment.Percentage.Value / 100, 2) :
                         salesOrderItem.DiscountAdjustment.Amount ?? 0;
                 }
 
                 if (salesOrderItem.ExistSurchargeAdjustment)
                 {
-                    salesOrderItem.UnitSurcharge += salesOrderItem.SurchargeAdjustment.Percentage.HasValue ?
+                    salesOrderItemDerivedRoles.UnitSurcharge += salesOrderItem.SurchargeAdjustment.Percentage.HasValue ?
                         Math.Round(salesOrderItem.UnitPrice * salesOrderItem.SurchargeAdjustment.Percentage.Value / 100, 2) :
                         salesOrderItem.SurchargeAdjustment.Amount ?? 0;
                 }
 
-                salesOrderItem.UnitPrice = salesOrderItem.UnitBasePrice - salesOrderItem.UnitDiscount + salesOrderItem.UnitSurcharge;
+                salesOrderItemDerivedRoles.UnitPrice = salesOrderItem.UnitBasePrice - salesOrderItem.UnitDiscount + salesOrderItem.UnitSurcharge;
             }
 
             foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
             {
-                salesOrderItem.UnitBasePrice += featureItem.UnitBasePrice;
-                salesOrderItem.UnitPrice += featureItem.UnitPrice;
-                salesOrderItem.UnitDiscount += featureItem.UnitDiscount;
-                salesOrderItem.UnitSurcharge += featureItem.UnitSurcharge;
+                salesOrderItemDerivedRoles.UnitBasePrice += featureItem.UnitBasePrice;
+                salesOrderItemDerivedRoles.UnitPrice += featureItem.UnitPrice;
+                salesOrderItemDerivedRoles.UnitDiscount += featureItem.UnitDiscount;
+                salesOrderItemDerivedRoles.UnitSurcharge += featureItem.UnitSurcharge;
             }
 
-            salesOrderItem.UnitVat = salesOrderItem.ExistVatRate ? Math.Round(salesOrderItem.UnitPrice * salesOrderItem.VatRate.Rate / 100, 2) : 0;
+            salesOrderItemDerivedRoles.UnitVat = salesOrderItem.ExistVatRate ? Math.Round(salesOrderItem.UnitPrice * salesOrderItem.VatRate.Rate / 100, 2) : 0;
 
             // Calculate Totals
-            salesOrderItem.TotalBasePrice = salesOrderItem.UnitBasePrice * salesOrderItem.QuantityOrdered;
-            salesOrderItem.TotalDiscount = salesOrderItem.UnitDiscount * salesOrderItem.QuantityOrdered;
-            salesOrderItem.TotalSurcharge = salesOrderItem.UnitSurcharge * salesOrderItem.QuantityOrdered;
-            salesOrderItem.TotalOrderAdjustment = salesOrderItem.TotalSurcharge - salesOrderItem.TotalDiscount;
+            salesOrderItemDerivedRoles.TotalBasePrice = salesOrderItem.UnitBasePrice * salesOrderItem.QuantityOrdered;
+            salesOrderItemDerivedRoles.TotalDiscount = salesOrderItem.UnitDiscount * salesOrderItem.QuantityOrdered;
+            salesOrderItemDerivedRoles.TotalSurcharge = salesOrderItem.UnitSurcharge * salesOrderItem.QuantityOrdered;
+            salesOrderItemDerivedRoles.TotalOrderAdjustment = salesOrderItem.TotalSurcharge - salesOrderItem.TotalDiscount;
 
             if (salesOrderItem.TotalBasePrice > 0)
             {
-                salesOrderItem.TotalDiscountAsPercentage = Math.Round(salesOrderItem.TotalDiscount / salesOrderItem.TotalBasePrice * 100, 2);
-                salesOrderItem.TotalSurchargeAsPercentage = Math.Round(salesOrderItem.TotalSurcharge / salesOrderItem.TotalBasePrice * 100, 2);
+                salesOrderItemDerivedRoles.TotalDiscountAsPercentage = Math.Round(salesOrderItem.TotalDiscount / salesOrderItem.TotalBasePrice * 100, 2);
+                salesOrderItemDerivedRoles.TotalSurchargeAsPercentage = Math.Round(salesOrderItem.TotalSurcharge / salesOrderItem.TotalBasePrice * 100, 2);
             }
             else
             {
-                salesOrderItem.TotalDiscountAsPercentage = 0;
-                salesOrderItem.TotalSurchargeAsPercentage = 0;
+                salesOrderItemDerivedRoles.TotalDiscountAsPercentage = 0;
+                salesOrderItemDerivedRoles.TotalSurchargeAsPercentage = 0;
             }
 
-            salesOrderItem.TotalExVat = salesOrderItem.UnitPrice * salesOrderItem.QuantityOrdered;
-            salesOrderItem.TotalVat = salesOrderItem.UnitVat * salesOrderItem.QuantityOrdered;
-            salesOrderItem.TotalIncVat = salesOrderItem.TotalExVat + salesOrderItem.TotalVat;
+            salesOrderItemDerivedRoles.TotalExVat = salesOrderItem.UnitPrice * salesOrderItem.QuantityOrdered;
+            salesOrderItemDerivedRoles.TotalVat = salesOrderItem.UnitVat * salesOrderItem.QuantityOrdered;
+            salesOrderItemDerivedRoles.TotalIncVat = salesOrderItem.TotalExVat + salesOrderItem.TotalVat;
         }
 
         private void Sync(ISession session)

@@ -13,15 +13,19 @@ namespace Allors.Domain
 
             if (this.ExistCustomer && this.ExistSalesRepresentative)
             {
-                var tempQualifier = this.Customer;
-                tempQualifier.RemoveCurrentSalesReps();
+                var customer = this.Customer;
 
-                foreach (SalesRepRelationship salesRepRelationship in tempQualifier.SalesRepRelationshipsWhereCustomer)
+                // HACK: DerivedRoles
+                var customerDerivedRoles = (PartyDerivedRoles)customer;
+
+                customerDerivedRoles.RemoveCurrentSalesReps();
+
+                foreach (SalesRepRelationship salesRepRelationship in customer.SalesRepRelationshipsWhereCustomer)
                 {
                     if (salesRepRelationship.FromDate <= this.strategy.Session.Now() &&
                         (!salesRepRelationship.ExistThroughDate || salesRepRelationship.ThroughDate >= this.strategy.Session.Now()))
                     {
-                        tempQualifier.AddCurrentSalesRep(salesRepRelationship.SalesRepresentative);
+                        customerDerivedRoles.AddCurrentSalesRep(salesRepRelationship.SalesRepresentative);
                     }
                 }
 

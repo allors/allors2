@@ -259,6 +259,8 @@ namespace Allors.Domain
             decimal quantityOrdered,
             decimal totalBasePrice)
         {
+            var quoteItemDeriveRoles = (QuoteItemDerivedRoles)quoteItem;
+
             var currentGenericOrProductOrFeaturePriceComponents = Array.Empty<PriceComponent>();
             if (quoteItem.ExistProduct)
             {
@@ -289,74 +291,74 @@ namespace Allors.Domain
             // Calculate Unit Price (with Discounts and Surcharges)
             if (quoteItem.AssignedUnitPrice.HasValue)
             {
-                quoteItem.UnitBasePrice = unitBasePrice ?? quoteItem.AssignedUnitPrice.Value;
-                quoteItem.UnitDiscount = 0;
-                quoteItem.UnitSurcharge = 0;
-                quoteItem.UnitPrice = quoteItem.AssignedUnitPrice.Value;
+                quoteItemDeriveRoles.UnitBasePrice = unitBasePrice ?? quoteItem.AssignedUnitPrice.Value;
+                quoteItemDeriveRoles.UnitDiscount = 0;
+                quoteItemDeriveRoles.UnitSurcharge = 0;
+                quoteItemDeriveRoles.UnitPrice = quoteItem.AssignedUnitPrice.Value;
             }
             else
             {
-                quoteItem.UnitBasePrice = unitBasePrice.Value;
+                quoteItemDeriveRoles.UnitBasePrice = unitBasePrice.Value;
 
-                quoteItem.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
+                quoteItemDeriveRoles.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
                     v => v.Percentage.HasValue
                              ? Math.Round(quoteItem.UnitBasePrice * v.Percentage.Value / 100, 2)
                              : v.Price ?? 0);
 
-                quoteItem.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
+                quoteItemDeriveRoles.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
                     v => v.Percentage.HasValue
                              ? Math.Round(quoteItem.UnitBasePrice * v.Percentage.Value / 100, 2)
                              : v.Price ?? 0);
 
-                quoteItem.UnitPrice = quoteItem.UnitBasePrice - quoteItem.UnitDiscount + quoteItem.UnitSurcharge;
+                quoteItemDeriveRoles.UnitPrice = quoteItem.UnitBasePrice - quoteItem.UnitDiscount + quoteItem.UnitSurcharge;
 
                 if (quoteItem.ExistDiscountAdjustment)
                 {
-                    quoteItem.UnitDiscount += quoteItem.DiscountAdjustment.Percentage.HasValue ?
+                    quoteItemDeriveRoles.UnitDiscount += quoteItem.DiscountAdjustment.Percentage.HasValue ?
                         Math.Round(quoteItem.UnitPrice * quoteItem.DiscountAdjustment.Percentage.Value / 100, 2) :
                         quoteItem.DiscountAdjustment.Amount ?? 0;
                 }
 
                 if (quoteItem.ExistSurchargeAdjustment)
                 {
-                    quoteItem.UnitSurcharge += quoteItem.SurchargeAdjustment.Percentage.HasValue ?
+                    quoteItemDeriveRoles.UnitSurcharge += quoteItem.SurchargeAdjustment.Percentage.HasValue ?
                         Math.Round(quoteItem.UnitPrice * quoteItem.SurchargeAdjustment.Percentage.Value / 100, 2) :
                         quoteItem.SurchargeAdjustment.Amount ?? 0;
                 }
 
-                quoteItem.UnitPrice = quoteItem.UnitBasePrice - quoteItem.UnitDiscount + quoteItem.UnitSurcharge;
+                quoteItemDeriveRoles.UnitPrice = quoteItem.UnitBasePrice - quoteItem.UnitDiscount + quoteItem.UnitSurcharge;
             }
 
             foreach (QuoteItem featureItem in quoteItem.QuotedWithFeatures)
             {
-                quoteItem.UnitBasePrice += featureItem.UnitBasePrice;
-                quoteItem.UnitPrice += featureItem.UnitPrice;
-                quoteItem.UnitDiscount += featureItem.UnitDiscount;
-                quoteItem.UnitSurcharge += featureItem.UnitSurcharge;
+                quoteItemDeriveRoles.UnitBasePrice += featureItem.UnitBasePrice;
+                quoteItemDeriveRoles.UnitPrice += featureItem.UnitPrice;
+                quoteItemDeriveRoles.UnitDiscount += featureItem.UnitDiscount;
+                quoteItemDeriveRoles.UnitSurcharge += featureItem.UnitSurcharge;
             }
 
-            quoteItem.UnitVat = quoteItem.ExistVatRate ? Math.Round(quoteItem.UnitPrice * quoteItem.VatRate.Rate / 100, 2) : 0;
+            quoteItemDeriveRoles.UnitVat = quoteItem.ExistVatRate ? Math.Round(quoteItem.UnitPrice * quoteItem.VatRate.Rate / 100, 2) : 0;
 
             // Calculate Totals
-            quoteItem.TotalBasePrice = quoteItem.UnitBasePrice * quoteItem.Quantity;
-            quoteItem.TotalDiscount = quoteItem.UnitDiscount * quoteItem.Quantity;
-            quoteItem.TotalSurcharge = quoteItem.UnitSurcharge * quoteItem.Quantity;
-            quoteItem.TotalPriceAdjustment = quoteItem.TotalSurcharge - quoteItem.TotalDiscount;
+            quoteItemDeriveRoles.TotalBasePrice = quoteItem.UnitBasePrice * quoteItem.Quantity;
+            quoteItemDeriveRoles.TotalDiscount = quoteItem.UnitDiscount * quoteItem.Quantity;
+            quoteItemDeriveRoles.TotalSurcharge = quoteItem.UnitSurcharge * quoteItem.Quantity;
+            quoteItemDeriveRoles.TotalPriceAdjustment = quoteItem.TotalSurcharge - quoteItem.TotalDiscount;
 
             if (quoteItem.TotalBasePrice > 0)
             {
-                quoteItem.TotalDiscountAsPercentage = Math.Round(quoteItem.TotalDiscount / quoteItem.TotalBasePrice * 100, 2);
-                quoteItem.TotalSurchargeAsPercentage = Math.Round(quoteItem.TotalSurcharge / quoteItem.TotalBasePrice * 100, 2);
+                quoteItemDeriveRoles.TotalDiscountAsPercentage = Math.Round(quoteItem.TotalDiscount / quoteItem.TotalBasePrice * 100, 2);
+                quoteItemDeriveRoles.TotalSurchargeAsPercentage = Math.Round(quoteItem.TotalSurcharge / quoteItem.TotalBasePrice * 100, 2);
             }
             else
             {
-                quoteItem.TotalDiscountAsPercentage = 0;
-                quoteItem.TotalSurchargeAsPercentage = 0;
+                quoteItemDeriveRoles.TotalDiscountAsPercentage = 0;
+                quoteItemDeriveRoles.TotalSurchargeAsPercentage = 0;
             }
 
-            quoteItem.TotalExVat = quoteItem.UnitPrice * quoteItem.Quantity;
-            quoteItem.TotalVat = quoteItem.UnitVat * quoteItem.Quantity;
-            quoteItem.TotalIncVat = quoteItem.TotalExVat + quoteItem.TotalVat;
+            quoteItemDeriveRoles.TotalExVat = quoteItem.UnitPrice * quoteItem.Quantity;
+            quoteItemDeriveRoles.TotalVat = quoteItem.UnitVat * quoteItem.Quantity;
+            quoteItemDeriveRoles.TotalIncVat = quoteItem.TotalExVat + quoteItem.TotalVat;
         }
 
         private void Sync(ISession session)

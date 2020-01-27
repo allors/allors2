@@ -918,6 +918,8 @@ namespace Allors.Domain
             decimal quantityOrdered,
             decimal totalBasePrice)
         {
+            var salesInvoiceItemDerivedRoles = (SalesInvoiceItemDerivedRoles)salesInvoiceItem;
+
             var currentGenericOrProductOrFeaturePriceComponents = new List<PriceComponent>();
             if (salesInvoiceItem.ExistProduct)
             {
@@ -946,10 +948,10 @@ namespace Allors.Domain
             // Calculate Unit Price (with Discounts and Surcharges)
             if (salesInvoiceItem.AssignedUnitPrice.HasValue)
             {
-                salesInvoiceItem.UnitBasePrice = unitBasePrice ?? salesInvoiceItem.AssignedUnitPrice.Value;
-                salesInvoiceItem.UnitDiscount = 0;
-                salesInvoiceItem.UnitSurcharge = 0;
-                salesInvoiceItem.UnitPrice = salesInvoiceItem.AssignedUnitPrice.Value;
+                salesInvoiceItemDerivedRoles.UnitBasePrice = unitBasePrice ?? salesInvoiceItem.AssignedUnitPrice.Value;
+                salesInvoiceItemDerivedRoles.UnitDiscount = 0;
+                salesInvoiceItemDerivedRoles.UnitSurcharge = 0;
+                salesInvoiceItemDerivedRoles.UnitPrice = salesInvoiceItem.AssignedUnitPrice.Value;
             }
             else
             {
@@ -959,58 +961,58 @@ namespace Allors.Domain
                     return;
                 }
 
-                salesInvoiceItem.UnitBasePrice = unitBasePrice.Value;
+                salesInvoiceItemDerivedRoles.UnitBasePrice = unitBasePrice.Value;
 
-                salesInvoiceItem.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
+                salesInvoiceItemDerivedRoles.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
                     v => v.Percentage.HasValue
                              ? Math.Round(salesInvoiceItem.UnitBasePrice * v.Percentage.Value / 100, 2)
                              : v.Price ?? 0);
 
-                salesInvoiceItem.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
+                salesInvoiceItemDerivedRoles.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
                     v => v.Percentage.HasValue
                              ? Math.Round(salesInvoiceItem.UnitBasePrice * v.Percentage.Value / 100, 2)
                              : v.Price ?? 0);
 
-                salesInvoiceItem.UnitPrice = salesInvoiceItem.UnitBasePrice - salesInvoiceItem.UnitDiscount + salesInvoiceItem.UnitSurcharge;
+                salesInvoiceItemDerivedRoles.UnitPrice = salesInvoiceItem.UnitBasePrice - salesInvoiceItem.UnitDiscount + salesInvoiceItem.UnitSurcharge;
 
                 if (salesInvoiceItem.ExistDiscountAdjustment)
                 {
-                    salesInvoiceItem.UnitDiscount += salesInvoiceItem.DiscountAdjustment.Percentage.HasValue ?
+                    salesInvoiceItemDerivedRoles.UnitDiscount += salesInvoiceItem.DiscountAdjustment.Percentage.HasValue ?
                         Math.Round(salesInvoiceItem.UnitPrice * salesInvoiceItem.DiscountAdjustment.Percentage.Value / 100, 2) :
                         salesInvoiceItem.DiscountAdjustment.Amount ?? 0;
                 }
 
                 if (salesInvoiceItem.ExistSurchargeAdjustment)
                 {
-                    salesInvoiceItem.UnitSurcharge += salesInvoiceItem.SurchargeAdjustment.Percentage.HasValue ?
+                    salesInvoiceItemDerivedRoles.UnitSurcharge += salesInvoiceItem.SurchargeAdjustment.Percentage.HasValue ?
                         Math.Round(salesInvoiceItem.UnitPrice * salesInvoiceItem.SurchargeAdjustment.Percentage.Value / 100, 2) :
                         salesInvoiceItem.SurchargeAdjustment.Amount ?? 0;
                 }
 
-                salesInvoiceItem.UnitPrice = salesInvoiceItem.UnitBasePrice - salesInvoiceItem.UnitDiscount + salesInvoiceItem.UnitSurcharge;
+                salesInvoiceItemDerivedRoles.UnitPrice = salesInvoiceItem.UnitBasePrice - salesInvoiceItem.UnitDiscount + salesInvoiceItem.UnitSurcharge;
             }
 
-            salesInvoiceItem.UnitVat = salesInvoiceItem.ExistVatRate ? Math.Round(salesInvoiceItem.UnitPrice * salesInvoiceItem.VatRate.Rate / 100, 2) : 0;
+            salesInvoiceItemDerivedRoles.UnitVat = salesInvoiceItem.ExistVatRate ? Math.Round(salesInvoiceItem.UnitPrice * salesInvoiceItem.VatRate.Rate / 100, 2) : 0;
 
             // Calculate Totals
-            salesInvoiceItem.TotalBasePrice = salesInvoiceItem.UnitBasePrice * salesInvoiceItem.Quantity;
-            salesInvoiceItem.TotalDiscount = salesInvoiceItem.UnitDiscount * salesInvoiceItem.Quantity;
-            salesInvoiceItem.TotalSurcharge = salesInvoiceItem.UnitSurcharge * salesInvoiceItem.Quantity;
+            salesInvoiceItemDerivedRoles.TotalBasePrice = salesInvoiceItem.UnitBasePrice * salesInvoiceItem.Quantity;
+            salesInvoiceItemDerivedRoles.TotalDiscount = salesInvoiceItem.UnitDiscount * salesInvoiceItem.Quantity;
+            salesInvoiceItemDerivedRoles.TotalSurcharge = salesInvoiceItem.UnitSurcharge * salesInvoiceItem.Quantity;
 
             if (salesInvoiceItem.TotalBasePrice > 0)
             {
-                salesInvoiceItem.TotalDiscountAsPercentage = Math.Round(salesInvoiceItem.TotalDiscount / salesInvoiceItem.TotalBasePrice * 100, 2);
-                salesInvoiceItem.TotalSurchargeAsPercentage = Math.Round(salesInvoiceItem.TotalSurcharge / salesInvoiceItem.TotalBasePrice * 100, 2);
+                salesInvoiceItemDerivedRoles.TotalDiscountAsPercentage = Math.Round(salesInvoiceItem.TotalDiscount / salesInvoiceItem.TotalBasePrice * 100, 2);
+                salesInvoiceItemDerivedRoles.TotalSurchargeAsPercentage = Math.Round(salesInvoiceItem.TotalSurcharge / salesInvoiceItem.TotalBasePrice * 100, 2);
             }
             else
             {
-                salesInvoiceItem.TotalDiscountAsPercentage = 0;
-                salesInvoiceItem.TotalSurchargeAsPercentage = 0;
+                salesInvoiceItemDerivedRoles.TotalDiscountAsPercentage = 0;
+                salesInvoiceItemDerivedRoles.TotalSurchargeAsPercentage = 0;
             }
 
-            salesInvoiceItem.TotalExVat = salesInvoiceItem.UnitPrice * salesInvoiceItem.Quantity;
-            salesInvoiceItem.TotalVat = salesInvoiceItem.UnitVat * salesInvoiceItem.Quantity;
-            salesInvoiceItem.TotalIncVat = salesInvoiceItem.TotalExVat + salesInvoiceItem.TotalVat;
+            salesInvoiceItemDerivedRoles.TotalExVat = salesInvoiceItem.UnitPrice * salesInvoiceItem.Quantity;
+            salesInvoiceItemDerivedRoles.TotalVat = salesInvoiceItem.UnitVat * salesInvoiceItem.Quantity;
+            salesInvoiceItemDerivedRoles.TotalIncVat = salesInvoiceItem.TotalExVat + salesInvoiceItem.TotalVat;
         }
 
         private void Sync(ISession session)

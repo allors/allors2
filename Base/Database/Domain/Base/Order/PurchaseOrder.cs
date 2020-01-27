@@ -341,14 +341,11 @@ namespace Allors.Domain
 
         public void BaseCancel(OrderCancel method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Cancelled;
 
-        public void BaseConfirm(OrderConfirm method)
-        {
-            this.PurchaseOrderState = this.NeedsApprovalLevel1
+        public void BaseConfirm(OrderConfirm method) => this.PurchaseOrderState = this.NeedsApprovalLevel1
                 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel1
                 : this.PurchaseOrderState = this.NeedsApprovalLevel2
                     ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel2
                     : new PurchaseOrderStates(this.Strategy.Session).InProcess;
-        }
 
         public void BaseReject(OrderReject method)
         {
@@ -434,10 +431,13 @@ namespace Allors.Domain
                                 orderItem.Part.AddSerialisedItem(serialisedItem);
                             }
 
-                            serialisedItem.PurchaseOrder = this;
+                            // HACK: DerivedRoles
+                            var serialisedItemDeriveRoles = (SerialisedItemDerivedRoles)serialisedItem;
+                            serialisedItemDeriveRoles.PurchaseOrder = this;
+                            serialisedItemDeriveRoles.SuppliedBy = this.TakenViaSupplier;
+                            serialisedItemDeriveRoles.PurchasePrice = orderItem.UnitPrice;
+
                             serialisedItem.OwnedBy = this.OrderedBy;
-                            serialisedItem.SuppliedBy = this.TakenViaSupplier;
-                            serialisedItem.PurchasePrice = orderItem.UnitPrice;
 
                             new InventoryItemTransactionBuilder(this.strategy.Session)
                                 .WithSerialisedItem(serialisedItem)
@@ -462,7 +462,8 @@ namespace Allors.Domain
 
             foreach (PurchaseOrderItem orderItem in this.ValidOrderItems.Where(v => !((PurchaseOrderItem)v).ExistPart))
             {
-                orderItem.QuantityReceived = 1;
+                var orderItemDerivedRoles = (PurchaseOrderItemDerivedRoles)orderItem;
+                orderItemDerivedRoles.QuantityReceived = 1;
             }
         }
 

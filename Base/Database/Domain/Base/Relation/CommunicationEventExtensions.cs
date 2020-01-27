@@ -95,14 +95,20 @@ namespace Allors.Domain
 
         private static void DeriveInvolvedParties(this CommunicationEvent @this)
         {
+            var derivedRoles = (CommunicationEventDerivedRoles)@this;
+
             var partiesToRemove = @this.PartiesWhereCommunicationEvent.ToList();
 
-            @this.RemoveInvolvedParties();
+            derivedRoles.RemoveInvolvedParties();
 
             if (@this.ExistFromParty)
             {
-                @this.AddInvolvedParty(@this.FromParty);
-                @this.FromParty.AddCommunicationEvent(@this);
+                derivedRoles.AddInvolvedParty(@this.FromParty);
+
+                // HACK: DerivedRoles
+                var fromPartyDerivedRoles = (PartyDerivedRoles)@this.FromParty;
+
+                fromPartyDerivedRoles.AddCommunicationEvent(@this);
                 if (partiesToRemove.Contains(@this.FromParty))
                 {
                     partiesToRemove.Remove(@this.FromParty);
@@ -111,8 +117,12 @@ namespace Allors.Domain
 
             if (@this.ExistToParty)
             {
-                @this.AddInvolvedParty(@this.ToParty);
-                @this.ToParty.AddCommunicationEvent(@this);
+                derivedRoles.AddInvolvedParty(@this.ToParty);
+
+                // HACK: DerivedRoles
+                var toPartyDerivedRoles = (PartyDerivedRoles)@this.ToParty;
+
+                toPartyDerivedRoles.AddCommunicationEvent(@this);
                 if (partiesToRemove.Contains(@this.ToParty))
                 {
                     partiesToRemove.Remove(@this.ToParty);
@@ -121,8 +131,12 @@ namespace Allors.Domain
 
             if (@this.ExistOwner)
             {
-                @this.AddInvolvedParty(@this.Owner);
-                @this.Owner.AddCommunicationEvent(@this);
+                derivedRoles.AddInvolvedParty(@this.Owner);
+
+                // HACK: DerivedRoles
+                var ownerDerivedRoles = (PartyDerivedRoles)@this.Owner;
+
+                ownerDerivedRoles.AddCommunicationEvent(@this);
                 if (partiesToRemove.Contains(@this.Owner))
                 {
                     partiesToRemove.Remove(@this.Owner);
@@ -139,8 +153,13 @@ namespace Allors.Domain
                             (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= @this.Strategy.Session.Now()))
                         {
                             var organisation = organisationContactRelationship.Organisation;
-                            @this.AddInvolvedParty(organisation);
-                            organisation.AddCommunicationEvent(@this);
+
+                            derivedRoles.AddInvolvedParty(organisation);
+
+                            // HACK: DerivedRoles
+                            var organisationDerivedRoles = (OrganisationDerivedRoles)organisation;
+
+                            organisationDerivedRoles.AddCommunicationEvent(@this);
                             if (partiesToRemove.Contains(organisation))
                             {
                                 partiesToRemove.Remove(organisation);
@@ -152,7 +171,10 @@ namespace Allors.Domain
 
             foreach (var party in partiesToRemove)
             {
-                party.RemoveCommunicationEvent(@this);
+                // HACK: DerivedRoles
+                var partyDerivedRoles = (OrganisationDerivedRoles)party;
+
+                partyDerivedRoles.RemoveCommunicationEvent(@this);
             }
         }
     }

@@ -100,7 +100,7 @@ namespace Allors.Domain
             var organisation = new InternalOrganisations(this.Session).Extent().First;
             var contractorRelation = new SubContractorRelationshipBuilder(this.Session).WithContractor(contractor).Build();
 
-            contractorRelation.AddParty(organisation);
+            ((SubContractorRelationshipDerivedRoles)contractorRelation).AddParty(organisation);
 
             this.Session.Derive(true);
 
@@ -114,7 +114,7 @@ namespace Allors.Domain
             var organisation = new InternalOrganisations(this.Session).Extent().First;
             var contractorRelation = new SubContractorRelationshipBuilder(this.Session).WithSubContractor(subContractor).Build();
 
-            contractorRelation.AddParty(organisation);
+            ((SubContractorRelationshipDerivedRoles)contractorRelation).AddParty(organisation);
 
             this.Session.Derive(true);
 

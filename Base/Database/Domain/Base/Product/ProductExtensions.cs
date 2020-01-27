@@ -23,20 +23,18 @@ namespace Allors.Domain
             }
         }
 
-        public static void AddToBasePrice(this Product @this, BasePrice basePrice) => @this.AddBasePrice(basePrice);
-
-        public static void RemoveFromBasePrices(this Product @this, BasePrice basePrice) => @this.RemoveBasePrice(basePrice);
-
         public static void BaseOnDeriveVirtualProductPriceComponent(this Product @this)
         {
+            var derivedRoles = (ProductDerivedRoles)@this;
+
             if (!@this.ExistProductWhereVariant)
             {
-                @this.RemoveVirtualProductPriceComponents();
+                derivedRoles.RemoveVirtualProductPriceComponents();
             }
 
             if (@this.ExistVariants)
             {
-                @this.RemoveVirtualProductPriceComponents();
+                derivedRoles.RemoveVirtualProductPriceComponents();
 
                 var priceComponents = @this.PriceComponentsWhereProduct;
 
@@ -44,11 +42,11 @@ namespace Allors.Domain
                 {
                     foreach (PriceComponent priceComponent in priceComponents)
                     {
-                        product.AddVirtualProductPriceComponent(priceComponent);
+                        derivedRoles.AddVirtualProductPriceComponent(priceComponent);
 
                         if (priceComponent is BasePrice basePrice && !priceComponent.ExistProductFeature)
                         {
-                            product.AddToBasePrice(basePrice);
+                            derivedRoles.AddBasePrice(basePrice);
                         }
                     }
                 }

@@ -160,7 +160,6 @@ inheritance_implentedInterface(composite, implementedInterface) ::= <<          
 relations(composite) ::= <<$composite.WorkspaceExclusiveRoleTypes:{roleType|$relation(property=roleType.RelationType)$}; separator="\n"$>>
 relation(property) ::= <<
 	{
-		// TODO: Groups
 		var relationType = new RelationType(this.metaPopulation, new System.Guid("$property.Id$"), new System.Guid("$property.AssociationType.Id$"), new System.Guid("$property.RoleType.Id$"));
 		relationType.AssociationType.ObjectType = Meta$property.AssociationType.ObjectType.Name$.Instance.ObjectType;
 $if(property.Multiplicity)$		relationType.AssignedMultiplicity = Allors.Workspace.Multiplicity.$property.Multiplicity$;$endif$
@@ -197,7 +196,6 @@ definedMethod(method) ::= <<
 				var method = new MethodType(this.metaPopulation, new System.Guid("$method.Id$"));
 				method.ObjectType = Meta$method.ObjectType.SingularName$.Instance;
 				method.Name = "$method.Name$";
-				// TODO: Group and XmlDoc
 				Meta$composite.SingularName$.Instance.$method.Name$ = method;
 			}
 >>
@@ -295,7 +293,6 @@ $interface.AssociationTypes:{property|         public AssociationType $property.
 			{
 				SingularName = "$interface.SingularName$",
 				PluralName = "$interface.PluralName$"
-				// TODO: XmlDoc
 			};
         }
 	}

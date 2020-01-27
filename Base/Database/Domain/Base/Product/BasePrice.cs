@@ -12,7 +12,9 @@ namespace Allors.Domain
     {
         public void BaseDelete(DeletableDelete method)
         {
-            this.Product.RemoveFromBasePrices(this);
+            // HACK: DerivedRoles
+            ((ProductDerivedRoles)this.Product).RemoveBasePrice(this);
+
             this.ProductFeature.RemoveFromBasePrices(this);
         }
 
@@ -44,7 +46,8 @@ namespace Allors.Domain
 
             if (this.ExistProduct && !this.ExistProductFeature)
             {
-                this.Product.AddToBasePrice(this);
+                // HACK: DerivedRoles
+                ((ProductDerivedRoles)this.Product).AddBasePrice(this);
             }
 
             if (this.ExistProductFeature)

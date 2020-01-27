@@ -74,14 +74,18 @@ namespace Allors.Domain
         {
             if (this.ExistSupplier)
             {
+                // HACK: DerivedRoles
+                var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)this.InternalOrganisation;
+
+
                 if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
                 {
-                    this.InternalOrganisation.AddActiveSupplier(this.Supplier);
+                    internalOrganisationDerivedRoles.AddActiveSupplier(this.Supplier);
                 }
 
                 if (this.FromDate > this.strategy.Session.Now() || (this.ExistThroughDate && this.ThroughDate < this.strategy.Session.Now()))
                 {
-                    this.InternalOrganisation.RemoveActiveSupplier(this.Supplier);
+                    internalOrganisationDerivedRoles.RemoveActiveSupplier(this.Supplier);
                 }
             }
         }

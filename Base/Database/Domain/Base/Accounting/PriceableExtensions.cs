@@ -13,7 +13,7 @@ namespace Allors.Domain
     {
         public static decimal SetUnitSurcharge(this Priceable @this, PriceComponent priceComponent, decimal revenueBreakSurcharge)
         {
-            var thisExtension = (PriceableExtension)@this;
+            var derivedRoles = (PriceableDerivedRoles)@this;
 
             if (priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
             {
@@ -23,13 +23,13 @@ namespace Allors.Domain
                 if (surchargeComponent.Price.HasValue)
                 {
                     surcharge = surchargeComponent.Price.Value;
-                    thisExtension.UnitSurcharge += surcharge;
+                    derivedRoles.UnitSurcharge += surcharge;
                 }
                 else
                 {
                     var percentage = surchargeComponent.Percentage ?? 0;
                     surcharge = Math.Round(@this.UnitBasePrice * percentage / 100, 2);
-                    thisExtension.UnitSurcharge += surcharge;
+                    derivedRoles.UnitSurcharge += surcharge;
                 }
             }
 
@@ -38,7 +38,7 @@ namespace Allors.Domain
 
         internal static decimal SetUnitDiscount(this Priceable @this, PriceComponent priceComponent, decimal revenueBreakDiscount)
         {
-            var thisExtension = (PriceableExtension)@this;
+            var derivedRoles = (PriceableDerivedRoles)@this;
 
             if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType))
             {
@@ -48,13 +48,13 @@ namespace Allors.Domain
                 if (discountComponent.Price.HasValue)
                 {
                     discount = discountComponent.Price.Value;
-                    thisExtension.UnitDiscount += discount;
+                    derivedRoles.UnitDiscount += discount;
                 }
                 else
                 {
                     var percentage = discountComponent.Percentage ?? 0;
                     discount = Math.Round(@this.UnitBasePrice * percentage / 100, 2);
-                    thisExtension.UnitDiscount += discount;
+                    derivedRoles.UnitDiscount += discount;
                 }
             }
 

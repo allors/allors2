@@ -212,7 +212,11 @@ namespace Allors.Domain
                         }
 
                         extra -= diff;
-                        salesOrderItem.QuantityShortFalled -= diff;
+
+                        // HACK: DerivedRoles
+                        var salesOrderItemDerivedRoles = (SalesOrderItemDerivedRoles)salesOrderItem;
+
+                        salesOrderItemDerivedRoles.QuantityShortFalled -= diff;
 
                         // var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
                         // if (inventoryAssignment != null)

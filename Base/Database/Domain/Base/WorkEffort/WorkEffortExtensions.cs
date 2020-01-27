@@ -45,7 +45,7 @@ namespace Allors.Domain
         public static void BaseOnDerive(this WorkEffort @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var thisExtension = (WorkEffortExtension)@this;
+            var derivedRoles = (WorkEffortDerivedRoles)@this;
 
             var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
@@ -56,7 +56,7 @@ namespace Allors.Domain
 
             if (!@this.ExistWorkEffortNumber && @this.ExistTakenBy)
             {
-                thisExtension.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
+                derivedRoles.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
             }
 
             if (!@this.ExistExecutedBy && @this.ExistTakenBy)
@@ -160,32 +160,32 @@ namespace Allors.Domain
 
         private static void DeriveActualHoursAndDates(this WorkEffort @this)
         {
-            var thisExtension = (WorkEffortExtension)@this;
+            var derivedRoles = (WorkEffortDerivedRoles)@this;
 
-            thisExtension.ActualHours = 0M;
+            derivedRoles.ActualHours = 0M;
 
             foreach (ServiceEntry serviceEntry in @this.ServiceEntriesWhereWorkEffort)
             {
                 if (serviceEntry is TimeEntry timeEntry)
                 {
-                    thisExtension.ActualHours += timeEntry.ActualHours;
+                    derivedRoles.ActualHours += timeEntry.ActualHours;
 
                     if (!@this.ExistActualStart)
                     {
-                        thisExtension.ActualStart = timeEntry.FromDate;
+                        derivedRoles.ActualStart = timeEntry.FromDate;
                     }
                     else if (timeEntry.FromDate < @this.ActualStart)
                     {
-                        thisExtension.ActualStart = timeEntry.FromDate;
+                        derivedRoles.ActualStart = timeEntry.FromDate;
                     }
 
                     if (!@this.ExistActualCompletion)
                     {
-                        thisExtension.ActualCompletion = timeEntry.ThroughDate;
+                        derivedRoles.ActualCompletion = timeEntry.ThroughDate;
                     }
                     else if (timeEntry.ThroughDate > @this.ActualCompletion)
                     {
-                        thisExtension.ActualCompletion = timeEntry.ThroughDate;
+                        derivedRoles.ActualCompletion = timeEntry.ThroughDate;
                     }
                 }
             }
@@ -264,15 +264,15 @@ namespace Allors.Domain
 
         private static void DeriveCanInvoice(this WorkEffort @this)
         {
-            var thisExtension = (WorkEffortExtension)@this;
+            var derivedRoles = (WorkEffortDerivedRoles)@this;
 
             if (@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
             {
-                thisExtension.CanInvoice = true;
+                derivedRoles.CanInvoice = true;
 
                 if (@this.ExistWorkEffortWhereChild)
                 {
-                    thisExtension.CanInvoice = false;
+                    derivedRoles.CanInvoice = false;
                 }
 
                 if (@this.CanInvoice)
@@ -281,7 +281,7 @@ namespace Allors.Domain
                     {
                         if (!@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
                         {
-                            thisExtension.CanInvoice = false;
+                            derivedRoles.CanInvoice = false;
                             break;
                         }
                     }
@@ -293,7 +293,7 @@ namespace Allors.Domain
                     {
                         if (!timeEntry.ExistThroughDate)
                         {
-                            thisExtension.CanInvoice = false;
+                            derivedRoles.CanInvoice = false;
                             break;
                         }
                     }
@@ -301,12 +301,12 @@ namespace Allors.Domain
 
                 if (@this.ExistWorkEffortAssignmentRatesWhereWorkEffort && !@this.ExistWorkEffortAssignmentRatesWhereWorkEffort)
                 {
-                    thisExtension.CanInvoice = false;
+                    derivedRoles.CanInvoice = false;
                 }
             }
             else
             {
-                thisExtension.CanInvoice = false;
+                derivedRoles.CanInvoice = false;
             }
         }
     }

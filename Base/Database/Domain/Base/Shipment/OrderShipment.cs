@@ -39,7 +39,9 @@ namespace Allors.Domain
                 if (salesOrderItem.QuantityPendingShipment > quantityPendingShipment)
                 {
                     var diff = this.Quantity * -1;
-                    salesOrderItem.QuantityPendingShipment -= diff;
+
+                    // HACK: DerivedRoles
+                    ((SalesOrderItemDerivedRoles)salesOrderItem).QuantityPendingShipment -= diff;
                     customerShipment.BaseOnDeriveQuantityDecreased(this.ShipmentItem, salesOrderItem, diff);
                 }
 
@@ -50,7 +52,8 @@ namespace Allors.Domain
 
                     if (salesOrderItem.QuantityRequestsShipping > 0)
                     {
-                        salesOrderItem.QuantityRequestsShipping -= this.Quantity;
+                        // HACK: DerivedRoles
+                        ((SalesOrderItemDerivedRoles)salesOrderItem).QuantityRequestsShipping -= this.Quantity;
                     }
 
                     if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem && this.Quantity > salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityOnHand + quantityPicked)

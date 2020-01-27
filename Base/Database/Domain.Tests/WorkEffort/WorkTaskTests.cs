@@ -210,7 +210,7 @@ namespace Allors.Domain
             var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
 
             var salesOrderItem = salesOrder.SalesOrderItems.First;
-            salesOrder.AddValidOrderItem(salesOrderItem);
+            ((SalesOrderDerivedRoles)salesOrder).AddValidOrderItem(salesOrderItem);
 
             //// Work Effort Inventory Assignmets
             var part1 = this.CreatePart("P1");
@@ -282,7 +282,7 @@ namespace Allors.Domain
             var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
 
             var salesOrderItem = salesOrder.SalesOrderItems.First;
-            salesOrder.AddValidOrderItem(salesOrderItem);
+            ((SalesOrderDerivedRoles)salesOrder).AddValidOrderItem(salesOrderItem);
 
             //// Work Effort Inventory Assignmets
             var part1 = this.CreatePart("P1");

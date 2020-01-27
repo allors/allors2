@@ -180,11 +180,14 @@ namespace Allors.Domain
                 {
                     foreach (PriceComponent priceComponent in priceComponents)
                     {
-                        product.AddVirtualProductPriceComponent(priceComponent);
+                        // HACK: DerivedRoles
+                        var productDerivedRoles = (ProductDerivedRoles)product;
+
+                        productDerivedRoles.AddVirtualProductPriceComponent(priceComponent);
 
                         if (priceComponent is BasePrice basePrice && !priceComponent.ExistProductFeature)
                         {
-                            product.AddToBasePrice(basePrice);
+                            productDerivedRoles.AddBasePrice(basePrice);
                         }
                     }
                 }
