@@ -15,55 +15,23 @@ namespace Allors.Domain
 
             if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-                if (this.ExistEmployee)
-                {
-                    iteration.AddDependency(this.Employee, this);
-                    iteration.Mark(this.Employee);
-                }
-
-                if (this.ExistEmployer)
-                {
-                    iteration.AddDependency(this.Employer, this);
-                    iteration.Mark(this.Employer);
-                }
+                iteration.Mark(this.Employer);
             }
         }
 
-        public void BaseOnDerive(ObjectOnDerive method)
+        public void BaseOnInit(ObjectOnInit method)
         {
-            var derivation = method.Derivation;
-
+            // TODO: Don't extent for InternalOrganisations
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistEmployer && internalOrganisations.Count() == 1)
             {
                 this.Employer = internalOrganisations.First();
             }
+        }
 
-            if (this.ExistEmployee && this.Employee.ExistSalesRepRelationshipsWhereSalesRepresentative)
-            {
-                foreach (SalesRepRelationship salesRepRelationship in this.Employee.SalesRepRelationshipsWhereSalesRepresentative)
-                {
-                    salesRepRelationship.OnDerive(x => x.WithDerivation(derivation));
-                }
-            }
-
-            if (this.ExistEmployee)
-            {
-                // HACK: DerivedRoles
-                var employerDerivedRoles = (OrganisationDerivedRoles)this.Employer;
-
-                if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
-                {
-                    employerDerivedRoles.AddActiveEmployee(this.Employee);
-                }
-
-                if (this.FromDate > this.strategy.Session.Now() || (this.ExistThroughDate && this.ThroughDate < this.strategy.Session.Now()))
-                {
-                    employerDerivedRoles.RemoveActiveEmployee(this.Employee);
-                }
-            }
-
+        public void BaseOnDerive(ObjectOnDerive method)
+        {
             this.Parties = new Party[] { this.Employee, this.Employer };
         }
     }

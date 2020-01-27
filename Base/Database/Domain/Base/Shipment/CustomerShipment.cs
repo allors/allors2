@@ -60,7 +60,7 @@ namespace Allors.Domain
             {
                 var pickLists = this.ShipToParty.PickListsWhereShipToParty;
                 pickLists.Filter.AddEquals(M.PickList.Store, this.Store);
-                pickLists.Filter.AddNot().AddEquals(M.PickList.PickListState, new PickListStates(this.strategy.Session).Picked);
+                pickLists.Filter.AddNot().AddEquals(M.PickList.PickListState, new PickListStates(this.Session()).Picked);
 
                 return pickLists.FirstOrDefault();
             }
@@ -95,7 +95,7 @@ namespace Allors.Domain
 
             if (!this.ExistEstimatedShipDate)
             {
-                this.EstimatedShipDate = this.strategy.Session.Now().Date;
+                this.EstimatedShipDate = this.Session().Now().Date;
             }
 
             if (!this.ExistShipmentNumber && this.ExistStore)
@@ -176,7 +176,7 @@ namespace Allors.Domain
 
             this.BaseOnDeriveCurrentObjectState(derivation);
 
-            this.Sync(this.strategy.Session);
+            this.Sync(this.Session());
         }
 
         public void BaseCancel(CustomerShipmentCancel method) => this.ShipmentState = new ShipmentStates(this.Strategy.Session).Cancelled;
@@ -189,7 +189,7 @@ namespace Allors.Domain
 
                 foreach (ShipmentItem shipmentItem in this.ShipmentItems)
                 {
-                    shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Picking;
+                    shipmentItem.ShipmentItemState = new ShipmentItemStates(this.Session()).Picking;
                 }
 
                 this.ShipmentState = new ShipmentStates(this.Strategy.Session).Picking;
@@ -241,7 +241,7 @@ namespace Allors.Domain
 
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
-                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Picked;
+                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.Session()).Picked;
             }
         }
 
@@ -251,7 +251,7 @@ namespace Allors.Domain
 
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
-                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Packed;
+                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.Session()).Packed;
             }
         }
 
@@ -260,11 +260,11 @@ namespace Allors.Domain
             if (this.CanShip)
             {
                 this.ShipmentState = new ShipmentStates(this.Strategy.Session).Shipped;
-                this.EstimatedShipDate = this.strategy.Session.Now().Date;
+                this.EstimatedShipDate = this.Session().Now().Date;
 
                 foreach (ShipmentItem shipmentItem in this.ShipmentItems)
                 {
-                    shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Shipped;
+                    shipmentItem.ShipmentItemState = new ShipmentItemStates(this.Session()).Shipped;
 
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
@@ -319,7 +319,7 @@ namespace Allors.Domain
                             .WithShipToEndCustomer(salesOrder.ShipToEndCustomer)
                             .WithShipToEndCustomerAddress(salesOrder.ShipToEndCustomerAddress)
                             .WithShipToEndCustomerContactPerson(salesOrder.ShipToEndCustomerContactPerson)
-                            .WithInvoiceDate(this.strategy.Session.Now())
+                            .WithInvoiceDate(this.Session().Now())
                             .WithSalesChannel(salesOrder.SalesChannel)
                             .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                             .WithVatRegime(salesOrder.VatRegime)
@@ -615,8 +615,8 @@ namespace Allors.Domain
                 var pickList = new PickListBuilder(this.Strategy.Session).WithShipToParty(this.ShipToParty).WithStore(this.Store).Build();
 
                 foreach (var shipmentItem in this.ShipmentItems
-                    .Where(v => v.ShipmentItemState.Equals(new ShipmentItemStates(this.strategy.Session).Created)
-                                || v.ShipmentItemState.Equals(new ShipmentItemStates(this.strategy.Session).Picking)))
+                    .Where(v => v.ShipmentItemState.Equals(new ShipmentItemStates(this.Session()).Created)
+                                || v.ShipmentItemState.Equals(new ShipmentItemStates(this.Session()).Picking)))
                 {
                     var quantityIssued = 0M;
                     foreach (ItemIssuance itemIssuance in shipmentItem.ItemIssuancesWhereShipmentItem)
@@ -632,7 +632,7 @@ namespace Allors.Domain
 
                     var unifiedGood = shipmentItem.Good as UnifiedGood;
                     var nonUnifiedGood = shipmentItem.Good as NonUnifiedGood;
-                    var serialized = unifiedGood?.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised);
+                    var serialized = unifiedGood?.InventoryItemKind.Equals(new InventoryItemKinds(this.Session()).Serialised);
                     var part = unifiedGood ?? nonUnifiedGood?.Part;
 
                     var facilities = ((InternalOrganisation)this.ShipFromParty).FacilitiesWhereOwner;
@@ -727,7 +727,7 @@ namespace Allors.Domain
                         {
                             shipmentItem.SerialisedItem.SerialisedItemState = shipmentItem.NewSerialisedItemState;
 
-                            if (shipmentItem.NewSerialisedItemState.Equals(new SerialisedItemStates(this.strategy.Session).Sold))
+                            if (shipmentItem.NewSerialisedItemState.Equals(new SerialisedItemStates(this.Session()).Sold))
                             {
                                 shipmentItem.SerialisedItem.OwnedBy = this.ShipToParty;
                             }
@@ -745,8 +745,8 @@ namespace Allors.Domain
             {
                 foreach (ShippingAndHandlingComponent shippingAndHandlingComponent in new ShippingAndHandlingComponents(this.Strategy.Session).Extent())
                 {
-                    if (shippingAndHandlingComponent.FromDate <= this.strategy.Session.Now() &&
-                        (!shippingAndHandlingComponent.ExistThroughDate || shippingAndHandlingComponent.ThroughDate >= this.strategy.Session.Now()))
+                    if (shippingAndHandlingComponent.FromDate <= this.Session().Now() &&
+                        (!shippingAndHandlingComponent.ExistThroughDate || shippingAndHandlingComponent.ThroughDate >= this.Session().Now()))
                     {
                         if (ShippingAndHandlingComponents.BaseIsEligible(shippingAndHandlingComponent, this))
                         {

@@ -61,7 +61,7 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var session = this.strategy.Session;
+            var session = this.Session();
 
             // SalesOrderItem Derivations and Validations
             foreach (QuoteItem quoteItem in this.QuoteItems)
@@ -380,7 +380,7 @@ namespace Allors.Domain
             {
                 if (!openTasks.OfType<ProductQuoteApproval>().Any())
                 {
-                    new ProductQuoteApprovalBuilder(this.strategy.Session).WithProductQuote(this).Build();
+                    new ProductQuoteApprovalBuilder(this.Session()).WithProductQuote(this).Build();
                 }
             }
         }

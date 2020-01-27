@@ -93,8 +93,6 @@ namespace Allors.Repository
 
         public Agreement[] Agreements { get; set; }
 
-        public CommunicationEvent[] CommunicationEvents { get; set; }
-
         public PaymentMethod DefaultPaymentMethod { get; set; }
 
         public User CreatedBy { get; set; }

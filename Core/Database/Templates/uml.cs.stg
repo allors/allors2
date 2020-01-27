@@ -46,12 +46,12 @@ roleType(roleType) ::= <<
 $if(roleType.IsOne)$
 			$nullableName(roleType)$ $prefix(roleType)$$roleType.SingularPropertyName$ {set;}
 $else$
-			$nullableName(roleType)$ $prefix(roleType)$$roleType.PluralPropertyName$ {set;}
+			$nullableName(roleType)$[] $prefix(roleType)$$roleType.PluralPropertyName$ {set;}
 $endif$
 >>
 
 prefix(roleType) ::= <%
-$if(roleType.RelationType.IsDerived)$_$endif$
+$if(roleType.RelationType.IsDerived)$__$endif$
 %>
 
 nullableName(roleType) ::= <%

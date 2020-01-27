@@ -59,14 +59,14 @@ namespace Allors.Domain
 
             foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
             {
-                if (supplierOffering.FromDate <= this.strategy.Session.Now()
-                    && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.strategy.Session.Now()))
+                if (supplierOffering.FromDate <= this.Session().Now()
+                    && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.Session().Now()))
                 {
                     this.AddSuppliedBy(supplierOffering.Supplier);
                 }
 
-                if (supplierOffering.FromDate > this.strategy.Session.Now()
-                    || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < this.strategy.Session.Now()))
+                if (supplierOffering.FromDate > this.Session().Now()
+                    || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < this.Session().Now()))
                 {
                     this.RemoveSuppliedBy(supplierOffering.Supplier);
                 }

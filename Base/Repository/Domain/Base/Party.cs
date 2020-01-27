@@ -438,17 +438,6 @@ namespace Allors.Repository
         Agreement[] Agreements { get; set; }
 
         #region Allors
-        [Id("BA00C20D-E4A0-4678-A3D4-C24344213DEC")]
-        [AssociationId("B6C0F82C-CE97-4F72-9C3D-7CF220C4F9D5")]
-        [RoleId("CA30D198-DBD5-47CD-AB1F-72149A20097D")]
-        [Indexed]
-        #endregion
-        [Derived]
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToMany)]
-        CommunicationEvent[] CommunicationEvents { get; set; }
-
-        #region Allors
         [Id("29AAF778-37F7-4E29-9EED-16748C376D98")]
         [AssociationId("A7EED273-AD6A-4900-9DFD-D7524F640B54")]
         [RoleId("64713797-16F4-4040-81DC-018DBCAD5DAE")]

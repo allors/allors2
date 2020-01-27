@@ -98,7 +98,7 @@ namespace Allors.Domain
             foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereInventoryItem)
             {
                 if (shipmentReceipt.ExistShipmentItem
-                    && shipmentReceipt.ShipmentItem.ShipmentItemState.Equals(new ShipmentItemStates(this.strategy.Session).Received))
+                    && shipmentReceipt.ShipmentItem.ShipmentItemState.Equals(new ShipmentItemStates(this.Session()).Received))
                 {
                     var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
                     if (purchaseShipment.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Received))

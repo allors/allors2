@@ -35,7 +35,7 @@ namespace Allors.Domain
 
             if (!this.ExistEstimatedArrivalDate)
             {
-                this.EstimatedArrivalDate = this.strategy.Session.Now().Date;
+                this.EstimatedArrivalDate = this.Session().Now().Date;
             }
         }
 
@@ -98,17 +98,17 @@ namespace Allors.Domain
                 this.ShipmentState = new ShipmentStates(this.Strategy.Session).Received;
             }
 
-            this.Sync(this.strategy.Session);
+            this.Sync(this.Session());
         }
 
         public void BaseReceive(PurchaseShipmentReceive method)
         {
             this.ShipmentState = new ShipmentStates(this.Strategy.Session).Received;
-            this.EstimatedArrivalDate = this.strategy.Session.Now().Date;
+            this.EstimatedArrivalDate = this.Session().Now().Date;
 
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
-                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.strategy.Session).Received;
+                shipmentItem.ShipmentItemState = new ShipmentItemStates(this.Session()).Received;
             }
         }
 

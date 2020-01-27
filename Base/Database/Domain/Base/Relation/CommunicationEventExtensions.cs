@@ -5,28 +5,13 @@
 
 namespace Allors.Domain
 {
-    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Allors.Meta;
     using Resources;
 
     public static partial class CommunicationEventExtensions
     {
-        public static DateTime? BaseGetStart(this CommunicationEvent communicationEvent)
-        {
-            if (communicationEvent.ExistActualStart)
-            {
-                return communicationEvent.ActualStart;
-            }
-
-            if (communicationEvent.ExistScheduledStart)
-            {
-                return communicationEvent.ScheduledStart;
-            }
-
-            return null;
-        }
-
         public static void BaseOnDerive(this CommunicationEvent @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -95,87 +80,17 @@ namespace Allors.Domain
 
         private static void DeriveInvolvedParties(this CommunicationEvent @this)
         {
+            var now = @this.Strategy.Session.Now();
             var derivedRoles = (CommunicationEventDerivedRoles)@this;
 
-            var partiesToRemove = @this.PartiesWhereCommunicationEvent.ToList();
+            var parties = new[] { @this.FromParty, @this.ToParty, @this.Owner }.Distinct().ToArray();
 
-            derivedRoles.RemoveInvolvedParties();
+            var organisation = parties.OfType<Person>()
+                .SelectMany(v => v.OrganisationContactRelationshipsWhereContact)
+                .Where(v => v.FromDate <= now && (!v.ExistThroughDate || v.ThroughDate >= now))
+                .Select(v => v.Organisation);
 
-            if (@this.ExistFromParty)
-            {
-                derivedRoles.AddInvolvedParty(@this.FromParty);
-
-                // HACK: DerivedRoles
-                var fromPartyDerivedRoles = (PartyDerivedRoles)@this.FromParty;
-
-                fromPartyDerivedRoles.AddCommunicationEvent(@this);
-                if (partiesToRemove.Contains(@this.FromParty))
-                {
-                    partiesToRemove.Remove(@this.FromParty);
-                }
-            }
-
-            if (@this.ExistToParty)
-            {
-                derivedRoles.AddInvolvedParty(@this.ToParty);
-
-                // HACK: DerivedRoles
-                var toPartyDerivedRoles = (PartyDerivedRoles)@this.ToParty;
-
-                toPartyDerivedRoles.AddCommunicationEvent(@this);
-                if (partiesToRemove.Contains(@this.ToParty))
-                {
-                    partiesToRemove.Remove(@this.ToParty);
-                }
-            }
-
-            if (@this.ExistOwner)
-            {
-                derivedRoles.AddInvolvedParty(@this.Owner);
-
-                // HACK: DerivedRoles
-                var ownerDerivedRoles = (PartyDerivedRoles)@this.Owner;
-
-                ownerDerivedRoles.AddCommunicationEvent(@this);
-                if (partiesToRemove.Contains(@this.Owner))
-                {
-                    partiesToRemove.Remove(@this.Owner);
-                }
-            }
-
-            foreach (Party party in @this.InvolvedParties)
-            {
-                if (party is Person person)
-                {
-                    foreach (OrganisationContactRelationship organisationContactRelationship in person.OrganisationContactRelationshipsWhereContact)
-                    {
-                        if (organisationContactRelationship.FromDate <= @this.Strategy.Session.Now() &&
-                            (!organisationContactRelationship.ExistThroughDate || organisationContactRelationship.ThroughDate >= @this.Strategy.Session.Now()))
-                        {
-                            var organisation = organisationContactRelationship.Organisation;
-
-                            derivedRoles.AddInvolvedParty(organisation);
-
-                            // HACK: DerivedRoles
-                            var organisationDerivedRoles = (PartyDerivedRoles)organisation;
-
-                            organisationDerivedRoles.AddCommunicationEvent(@this);
-                            if (partiesToRemove.Contains(organisation))
-                            {
-                                partiesToRemove.Remove(organisation);
-                            }
-                        }
-                    }
-                }
-            }
-
-            foreach (var party in partiesToRemove)
-            {
-                // HACK: DerivedRoles
-                var partyDerivedRoles = (PartyDerivedRoles)party;
-
-                partyDerivedRoles.RemoveCommunicationEvent(@this);
-            }
+            derivedRoles.InvolvedParties = parties.Union(organisation).ToArray();
         }
     }
 }

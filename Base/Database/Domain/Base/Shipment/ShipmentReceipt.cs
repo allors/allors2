@@ -15,7 +15,7 @@ namespace Allors.Domain
         {
             if (!this.ExistReceivedDateTime)
             {
-                this.ReceivedDateTime = this.strategy.Session.Now();
+                this.ReceivedDateTime = this.Session().Now();
             }
         }
 

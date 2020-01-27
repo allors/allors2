@@ -45,6 +45,16 @@ namespace Allors.Domain
 
         private bool IsDeletable => !this.ExistCurrentContacts;
 
+        public void BaseOnPreDerive(ObjectOnPreDerive method)
+        {
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (!changeSet.IsCreated(this) && !changeSet.HasChangedRoles(this) && changeSet.HasChangedAssociation(this, this.Meta.EmploymentsWhereEmployer))
+            {
+                iteration.Mark(this);
+            }
+        }
+
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -103,8 +113,15 @@ namespace Allors.Domain
                 if (this.DoAccounting && !this.ExistFiscalYearStartDay)
                 {
                     this.FiscalYearStartDay = 1;
-                }   
+                }
             }
+
+            var now = this.Session().Now();
+
+            this.ActiveEmployees = this.EmploymentsWhereEmployer
+                .Where(v => v.FromDate <= now && (!v.ExistThroughDate || v.ThroughDate >= now))
+                .Select(v => v.Employee)
+                .ToArray();
 
             this.PartyName = this.Name;
 
@@ -129,7 +146,7 @@ namespace Allors.Domain
             var allContacts = allContactRelationships.Select(v => v.Contact);
 
             this.CurrentOrganisationContactRelationships = allContactRelationships
-                .Where(v => v.FromDate <= this.strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= this.strategy.Session.Now()))
+                .Where(v => v.FromDate <= this.Session().Now() && (!v.ExistThroughDate || v.ThroughDate >= this.Session().Now()))
                 .ToArray();
 
             this.InactiveOrganisationContactRelationships = allContactRelationships

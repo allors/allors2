@@ -13,7 +13,7 @@ namespace Allors.Domain
         {
             if (!this.ExistTransactionDate)
             {
-                this.TransactionDate = this.strategy.Session.Now();
+                this.TransactionDate = this.Session().Now();
             }
         }
 

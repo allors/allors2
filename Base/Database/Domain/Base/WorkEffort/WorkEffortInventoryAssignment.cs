@@ -103,7 +103,7 @@ namespace Allors.Domain
 
             if (adjustmentQuantity != 0)
             {
-                this.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.strategy.Session)
+                this.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session())
                     .WithPart(inventoryItem.Part)
                     .WithQuantity(adjustmentQuantity)
                     .WithReason(reason)

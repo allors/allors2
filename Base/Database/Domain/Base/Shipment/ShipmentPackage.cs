@@ -27,7 +27,7 @@ namespace Allors.Domain
         {
             if (!this.ExistCreationDate)
             {
-                this.CreationDate = this.strategy.Session.Now();
+                this.CreationDate = this.Session().Now();
             }
         }
 

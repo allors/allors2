@@ -81,12 +81,12 @@ namespace Allors.Domain
 
             if (!this.ExistOrderDate)
             {
-                this.OrderDate = this.strategy.Session.Now();
+                this.OrderDate = this.Session().Now();
             }
 
             if (!this.ExistEntryDate)
             {
-                this.EntryDate = this.strategy.Session.Now();
+                this.EntryDate = this.Session().Now();
             }
 
             if (!this.ExistPartiallyShip)
@@ -148,7 +148,7 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var session = this.strategy.Session;
+            var session = this.Session();
 
             // SalesOrder Derivations and Validations
             this.BillToCustomer ??= this.ShipToCustomer;
@@ -547,7 +547,7 @@ namespace Allors.Domain
         private void SetSalesOrderItemState()
         {
             var validOrderItems = this.SalesOrderItems.Where(v => v.IsValid).ToArray();
-            var salesOrderItemStates = new SalesOrderItemStates(this.strategy.Session);
+            var salesOrderItemStates = new SalesOrderItemStates(this.Session());
 
             // SalesOrderItem States
             foreach (var salesOrderItem in validOrderItems)
@@ -782,7 +782,7 @@ namespace Allors.Domain
                                     if (inventoryItemKind != null
                                         && inventoryItemKind.Equals(new InventoryItemKinds(this.Session()).NonSerialised)
                                         && item.Good.Equals(good)
-                                        && !item.ItemIssuancesWhereShipmentItem.Any(v => v.PickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked)))
+                                        && !item.ItemIssuancesWhereShipmentItem.Any(v => v.PickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Session()).Picked)))
                                     {
                                         shipmentItem = item;
                                         break;
@@ -869,7 +869,7 @@ namespace Allors.Domain
                     .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                     .WithDescription(this.Description)
                     .WithStore(this.Store)
-                    .WithInvoiceDate(this.strategy.Session.Now())
+                    .WithInvoiceDate(this.Session().Now())
                     .WithSalesChannel(this.SalesChannel)
                     .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                     .WithVatRegime(this.VatRegime)

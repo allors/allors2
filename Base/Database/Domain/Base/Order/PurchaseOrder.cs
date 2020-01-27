@@ -96,12 +96,12 @@ namespace Allors.Domain
 
             if (!this.ExistOrderDate)
             {
-                this.OrderDate = this.strategy.Session.Now();
+                this.OrderDate = this.Session().Now();
             }
 
             if (!this.ExistEntryDate)
             {
-                this.EntryDate = this.strategy.Session.Now();
+                this.EntryDate = this.Session().Now();
             }
 
             if (!this.ExistOrderedBy)
@@ -366,12 +366,12 @@ namespace Allors.Domain
 
             if (openTasks.OfType<PurchaseOrderApprovalLevel1>().Any())
             {
-                openTasks.First().DateClosed = this.strategy.Session.Now();
+                openTasks.First().DateClosed = this.Session().Now();
             }
 
             if (openTasks.OfType<PurchaseOrderApprovalLevel2>().Any())
             {
-                openTasks.First().DateClosed = this.strategy.Session.Now();
+                openTasks.First().DateClosed = this.Session().Now();
             }
         }
 
@@ -383,7 +383,7 @@ namespace Allors.Domain
 
         public void BaseQuickReceive(PurchaseOrderQuickReceive method)
         {
-            var session = this.strategy.Session;
+            var session = this.Session();
 
             if (this.ValidOrderItems.Any(v => ((PurchaseOrderItem)v).ExistPart))
             {
@@ -439,7 +439,7 @@ namespace Allors.Domain
 
                             serialisedItem.OwnedBy = this.OrderedBy;
 
-                            new InventoryItemTransactionBuilder(this.strategy.Session)
+                            new InventoryItemTransactionBuilder(this.Session())
                                 .WithSerialisedItem(serialisedItem)
                                 .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
                                 .WithFacility(this.Facility)
@@ -478,14 +478,14 @@ namespace Allors.Domain
                     .WithBilledTo(this.OrderedBy)
                     .WithBilledToContactPerson(this.BillToContactPerson)
                     .WithDescription(this.Description)
-                    .WithInvoiceDate(this.strategy.Session.Now())
+                    .WithInvoiceDate(this.Session().Now())
                     .WithVatRegime(this.VatRegime)
                     .WithDiscountAdjustment(this.DiscountAdjustment)
                     .WithSurchargeAdjustment(this.SurchargeAdjustment)
                     .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
                     .WithFee(this.Fee)
                     .WithCustomerReference(this.CustomerReference)
-                    .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.strategy.Session).PurchaseInvoice)
+                    .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session()).PurchaseInvoice)
                     .Build();
 
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
@@ -596,7 +596,7 @@ namespace Allors.Domain
             {
                 if (!openTasks.OfType<PurchaseOrderApprovalLevel1>().Any())
                 {
-                    new PurchaseOrderApprovalLevel1Builder(this.strategy.Session).WithPurchaseOrder(this).Build();
+                    new PurchaseOrderApprovalLevel1Builder(this.Session()).WithPurchaseOrder(this).Build();
                 }
             }
 
@@ -604,7 +604,7 @@ namespace Allors.Domain
             {
                 if (!openTasks.OfType<PurchaseOrderApprovalLevel2>().Any())
                 {
-                    new PurchaseOrderApprovalLevel2Builder(this.strategy.Session).WithPurchaseOrder(this).Build();
+                    new PurchaseOrderApprovalLevel2Builder(this.Session()).WithPurchaseOrder(this).Build();
                 }
             }
         }

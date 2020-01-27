@@ -68,7 +68,7 @@ namespace Allors.Domain
             derivation.Validation.AssertExistsAtMostOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable, M.QuoteItem.WorkEffort);
             derivation.Validation.AssertExistsAtMostOne(this, M.QuoteItem.SerialisedItem, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable, M.QuoteItem.WorkEffort);
 
-            if (this.Product is UnifiedGood unifiedGood && unifiedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised) && !this.ExistSerialisedItem)
+            if (this.Product is UnifiedGood unifiedGood && unifiedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.Session()).Serialised) && !this.ExistSerialisedItem)
             {
                 derivation.Validation.AssertExists(this, this.Meta.SerialisedItem);
             }

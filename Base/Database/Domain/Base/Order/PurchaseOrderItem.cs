@@ -74,7 +74,7 @@ namespace Allors.Domain
 
         public void BaseQuickReceive(PurchaseOrderItemQuickReceive method)
         {
-            var session = this.strategy.Session;
+            var session = this.Session();
 
             if (this.ExistPart)
             {

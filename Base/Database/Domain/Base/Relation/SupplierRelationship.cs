@@ -78,12 +78,12 @@ namespace Allors.Domain
                 var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)this.InternalOrganisation;
 
 
-                if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
+                if (this.FromDate <= this.Session().Now() && (!this.ExistThroughDate || this.ThroughDate >= this.Session().Now()))
                 {
                     internalOrganisationDerivedRoles.AddActiveSupplier(this.Supplier);
                 }
 
-                if (this.FromDate > this.strategy.Session.Now() || (this.ExistThroughDate && this.ThroughDate < this.strategy.Session.Now()))
+                if (this.FromDate > this.Session().Now() || (this.ExistThroughDate && this.ThroughDate < this.Session().Now()))
                 {
                     internalOrganisationDerivedRoles.RemoveActiveSupplier(this.Supplier);
                 }
@@ -98,8 +98,8 @@ namespace Allors.Domain
                 {
                     foreach (OrganisationContactRelationship contactRelationship in this.Supplier.OrganisationContactRelationshipsWhereOrganisation)
                     {
-                        if (contactRelationship.FromDate <= this.strategy.Session.Now() &&
-                            (!contactRelationship.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
+                        if (contactRelationship.FromDate <= this.Session().Now() &&
+                            (!contactRelationship.ExistThroughDate || this.ThroughDate >= this.Session().Now()))
                         {
                             if (!this.Supplier.ContactsUserGroup.Members.Contains(contactRelationship.Contact))
                             {

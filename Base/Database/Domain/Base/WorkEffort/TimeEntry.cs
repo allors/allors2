@@ -16,7 +16,7 @@ namespace Allors.Domain
             {
                 var frequencies = new TimeFrequencies(this.Strategy.Session);
 
-                var through = this.ExistThroughDate ? this.ThroughDate : this.strategy.Session.Now();
+                var through = this.ExistThroughDate ? this.ThroughDate : this.Session().Now();
                 var minutes = (decimal)(through - this.FromDate).Value.TotalMinutes;
                 var hours = (decimal)frequencies.Minute.ConvertToFrequency((decimal)minutes, frequencies.Hour);
 

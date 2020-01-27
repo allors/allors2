@@ -65,7 +65,7 @@ namespace Allors.Domain
                 productQuote.AddQuoteItem(
                     new QuoteItemBuilder(this.Strategy.Session)
                     .WithProduct(requestItem.Product)
-                    .WithInvoiceItemType(new InvoiceItemTypes(this.strategy.Session).ProductItem)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session()).ProductItem)
                     .WithSerialisedItem(requestItem.SerialisedItem)
                     .WithProductFeature(requestItem.ProductFeature)
                     .WithQuantity(requestItem.Quantity)

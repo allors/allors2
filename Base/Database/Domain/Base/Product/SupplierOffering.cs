@@ -29,7 +29,7 @@ namespace Allors.Domain
 
             if (!this.ExistCurrency)
             {
-                this.Currency = this.strategy.Session.GetSingleton().Settings.PreferredCurrency;
+                this.Currency = this.Session().GetSingleton().Settings.PreferredCurrency;
             }
 
             this.BaseOnDeriveInventoryItem(derivation);
@@ -41,7 +41,7 @@ namespace Allors.Domain
                 this.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
             {
                 var warehouses = this.Strategy.Session.Extent<Facility>();
-                warehouses.Filter.AddEquals(M.Facility.FacilityType, new FacilityTypes(this.strategy.Session).Warehouse);
+                warehouses.Filter.AddEquals(M.Facility.FacilityType, new FacilityTypes(this.Session()).Warehouse);
 
                 foreach (Facility facility in warehouses)
                 {

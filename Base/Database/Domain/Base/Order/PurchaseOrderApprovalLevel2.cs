@@ -29,7 +29,7 @@ namespace Allors.Domain
                                   $"<h3>Comment</h3>" +
                                   $"<p>{comment}</p>";
 
-                this.ApprovalNotification = new NotificationBuilder(this.strategy.Session)
+                this.ApprovalNotification = new NotificationBuilder(this.Session())
                     .WithTitle("PurchaseOrder approved")
                     .WithDescription(description)
                     .Build();
@@ -56,7 +56,7 @@ namespace Allors.Domain
                                   $"<h3>Comment</h3>" +
                                   $"<p>{comment}</p>";
 
-                this.RejectionNotification = new NotificationBuilder(this.strategy.Session)
+                this.RejectionNotification = new NotificationBuilder(this.Session())
                     .WithTitle("Approval Rejected")
                     .WithDescription(description)
                     .Build();
@@ -74,7 +74,7 @@ namespace Allors.Domain
             // Lifecycle
             if (!this.ExistDateClosed && !this.PurchaseOrder.PurchaseOrderState.IsAwaitingApprovalLevel2)
             {
-                this.DateClosed = this.strategy.Session.Now();
+                this.DateClosed = this.Session().Now();
             }
 
             if (this.Participants.Count == 0)

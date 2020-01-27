@@ -76,12 +76,12 @@ namespace Allors.Domain
 
             if (!this.ExistEntryDate)
             {
-                this.EntryDate = this.strategy.Session.Now();
+                this.EntryDate = this.Session().Now();
             }
 
             if (!this.ExistInvoiceDate)
             {
-                this.InvoiceDate = this.strategy.Session.Now();
+                this.InvoiceDate = this.Session().Now();
             }
 
             if (this.ExistBillToCustomer)
@@ -108,7 +108,7 @@ namespace Allors.Domain
 
                     foreach (CustomerRelationship customerRelationship in customerRelationships)
                     {
-                        if (customerRelationship.FromDate <= this.strategy.Session.Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.strategy.Session.Now()))
+                        if (customerRelationship.FromDate <= this.Session().Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.Session().Now()))
                         {
                             iteration.AddDependency(this, customerRelationship);
                             iteration.Mark(customerRelationship);
@@ -122,7 +122,7 @@ namespace Allors.Domain
 
                     foreach (CustomerRelationship customerRelationship in customerRelationships)
                     {
-                        if (customerRelationship.FromDate <= this.strategy.Session.Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.strategy.Session.Now()))
+                        if (customerRelationship.FromDate <= this.Session().Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.Session().Now()))
                         {
                             iteration.AddDependency(this, customerRelationship);
                             iteration.Mark(customerRelationship);
@@ -147,7 +147,7 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var session = this.strategy.Session;
+            var session = this.Session();
 
             var internalOrganisations = new Organisations(session).InternalOrganisations();
 
@@ -551,11 +551,11 @@ namespace Allors.Domain
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
             // this.BaseOnDeriveRevenues(derivation);
-            var singleton = this.strategy.Session.GetSingleton();
+            var singleton = this.Session().GetSingleton();
 
             this.AddSecurityToken(new SecurityTokens(this.Session()).DefaultSecurityToken);
 
-            this.Sync(this.strategy.Session);
+            this.Sync(this.Session());
 
             this.ResetPrintDocument();
         }
@@ -597,7 +597,7 @@ namespace Allors.Domain
                     .WithShipToEndCustomerAddress(this.ShipToEndCustomerAddress)
                     .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                     .WithDescription(this.Description)
-                    .WithInvoiceDate(this.strategy.Session.Now())
+                    .WithInvoiceDate(this.Session().Now())
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Strategy.Session).PurchaseInvoice)
                     .WithVatRegime(this.VatRegime)
                     .WithDiscountAdjustment(this.DiscountAdjustment)
@@ -667,7 +667,7 @@ namespace Allors.Domain
                 .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                 .WithDescription(this.Description)
                 .WithStore(this.Store)
-                .WithInvoiceDate(this.strategy.Session.Now())
+                .WithInvoiceDate(this.Session().Now())
                 .WithSalesChannel(this.SalesChannel)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                 .WithVatRegime(this.VatRegime)
@@ -787,7 +787,7 @@ namespace Allors.Domain
                 .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                 .WithDescription(this.Description)
                 .WithStore(this.Store)
-                .WithInvoiceDate(this.strategy.Session.Now())
+                .WithInvoiceDate(this.Session().Now())
                 .WithSalesChannel(this.SalesChannel)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).CreditNote)
                 .WithVatRegime(this.VatRegime)

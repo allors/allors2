@@ -11,14 +11,14 @@ namespace Allors.Domain
 
     public static class PartyExtensions
     {
-        public static int? PaymentNetDays(this Party party)
+        public static int? PaymentNetDays(this Party @this)
         {
             int? customerPaymentNetDays = null;
-            foreach (Agreement agreement in party.Agreements)
+            foreach (Agreement agreement in @this.Agreements)
             {
                 foreach (AgreementTerm term in agreement.AgreementTerms)
                 {
-                    if (term.TermType.Equals(new InvoiceTermTypes(party.Strategy.Session).PaymentNetDays))
+                    if (term.TermType.Equals(new InvoiceTermTypes(@this.Strategy.Session).PaymentNetDays))
                     {
                         if (int.TryParse(term.TermValue, out var netDays))
                         {
@@ -33,23 +33,23 @@ namespace Allors.Domain
             return null;
         }
 
-        public static bool BaseIsActiveCustomer(this Party party, InternalOrganisation internalOrganisation, DateTime? date)
+        public static bool BaseIsActiveCustomer(this Party @this, InternalOrganisation internalOrganisation, DateTime? date)
         {
             if (date == DateTime.MinValue || internalOrganisation == null)
             {
                 return false;
             }
 
-            var customerRelationships = party.CustomerRelationshipsWhereCustomer;
+            var customerRelationships = @this.CustomerRelationshipsWhereCustomer;
             customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, internalOrganisation);
 
             return customerRelationships.Any(relationship => relationship.FromDate.Date <= date
                                                              && (!relationship.ExistThroughDate || relationship.ThroughDate >= date));
         }
 
-        public static CustomerShipment BaseGetPendingCustomerShipmentForStore(this Party party, PostalAddress address, Store store, ShipmentMethod shipmentMethod)
+        public static CustomerShipment BaseGetPendingCustomerShipmentForStore(this Party @this, PostalAddress address, Store store, ShipmentMethod shipmentMethod)
         {
-            var shipments = party.ShipmentsWhereShipToParty;
+            var shipments = @this.ShipmentsWhereShipToParty;
             if (address != null)
             {
                 shipments.Filter.AddEquals(M.Shipment.ShipToAddress, address);
@@ -67,11 +67,11 @@ namespace Allors.Domain
 
             foreach (CustomerShipment shipment in shipments)
             {
-                if (shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Created) ||
-                    shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Picking) ||
-                    shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Picked) ||
-                    shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).OnHold) ||
-                    shipment.ShipmentState.Equals(new ShipmentStates(party.Strategy.Session).Packed))
+                if (shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Created) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Picking) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Picked) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).OnHold) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Packed))
                 {
                     return shipment;
                 }
@@ -80,14 +80,14 @@ namespace Allors.Domain
             return null;
         }
 
-        public static void BaseOnBuild(this Party party, ObjectOnBuild method)
+        public static void BaseOnBuild(this Party @this, ObjectOnBuild method)
         {
-            var session = party.Strategy.Session;
+            var session = @this.Strategy.Session;
 
-            if (!party.ExistPreferredCurrency)
+            if (!@this.ExistPreferredCurrency)
             {
                 var singleton = session.GetSingleton();
-                party.PreferredCurrency = singleton.Settings.PreferredCurrency;
+                @this.PreferredCurrency = singleton.Settings.PreferredCurrency;
             }
         }
 
@@ -358,23 +358,23 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseOnDeriveActiveCustomer(this Party party, IDerivation derivation)
+        public static void BaseOnDeriveActiveCustomer(this Party @this, IDerivation derivation)
         {
-            foreach (CustomerRelationship customerRelationship in party.CustomerRelationshipsWhereCustomer)
+            foreach (CustomerRelationship customerRelationship in @this.CustomerRelationshipsWhereCustomer)
             {
-                if (party.BaseIsActiveCustomer(customerRelationship.InternalOrganisation, party.Strategy.Session.Now()))
+                if (@this.BaseIsActiveCustomer(customerRelationship.InternalOrganisation, @this.Strategy.Session.Now()))
                 {
                     // HACK: DerivedRoles
                     var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)customerRelationship.InternalOrganisation;
 
-                    internalOrganisationDerivedRoles.AddActiveCustomer(party);
+                    internalOrganisationDerivedRoles.AddActiveCustomer(@this);
                 }
                 else
                 {
                     // HACK: DerivedRoles
                     var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)customerRelationship.InternalOrganisation;
                     
-                    internalOrganisationDerivedRoles.RemoveActiveCustomer(party);
+                    internalOrganisationDerivedRoles.RemoveActiveCustomer(@this);
                 }
             }
         }

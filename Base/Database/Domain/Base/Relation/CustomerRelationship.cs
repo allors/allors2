@@ -61,7 +61,7 @@ namespace Allors.Domain
                         customerOrganisation.ContactsUserGroup.RemoveMember(contact);
                     }
 
-                    if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
+                    if (this.FromDate <= this.Session().Now() && (!this.ExistThroughDate || this.ThroughDate >= this.Session().Now()))
                     {
                         foreach (Person currentContact in customerOrganisation.CurrentContacts)
                         {
@@ -73,12 +73,12 @@ namespace Allors.Domain
                 // HACK: DerivedRoles
                 var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)this.InternalOrganisation;
 
-                if (this.FromDate <= this.strategy.Session.Now() && (!this.ExistThroughDate || this.ThroughDate >= this.strategy.Session.Now()))
+                if (this.FromDate <= this.Session().Now() && (!this.ExistThroughDate || this.ThroughDate >= this.Session().Now()))
                 {
                     internalOrganisationDerivedRoles.AddActiveCustomer(this.Customer);
                 }
 
-                if (this.FromDate > this.strategy.Session.Now() || (this.ExistThroughDate && this.ThroughDate < this.strategy.Session.Now()))
+                if (this.FromDate > this.Session().Now() || (this.ExistThroughDate && this.ThroughDate < this.Session().Now()))
                 {
                     internalOrganisationDerivedRoles.RemoveActiveCustomer(this.Customer);
                 }

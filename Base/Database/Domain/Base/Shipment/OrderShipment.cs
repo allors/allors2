@@ -33,7 +33,7 @@ namespace Allors.Domain
             {
                 var quantityPendingShipment = this.OrderItem?.OrderShipmentsWhereOrderItem?
                     .Where(v => v.ExistShipmentItem
-                                && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.strategy.Session).Shipped))
+                                && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.Session()).Shipped))
                     .Sum(v => v.Quantity);
 
                 if (salesOrderItem.QuantityPendingShipment > quantityPendingShipment)

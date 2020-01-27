@@ -99,10 +99,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(3, communication.PartiesWhereCommunicationEvent.Count);
-            Assert.Contains(owner, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(participant1, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(participant2, communication.PartiesWhereCommunicationEvent);
+            Assert.Equal(3, communication.InvolvedParties.Count);
+            Assert.Contains(owner, communication.InvolvedParties);
+            Assert.Contains(participant1, communication.InvolvedParties);
+            Assert.Contains(participant2, communication.InvolvedParties);
         }
 
         [Fact]
@@ -124,11 +124,11 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(4, communication.PartiesWhereCommunicationEvent.Count);
-            Assert.Contains(owner, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(participant, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(contact, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(organisation, communication.PartiesWhereCommunicationEvent);
+            Assert.Equal(4, communication.InvolvedParties.Count);
+            Assert.Contains(owner, communication.InvolvedParties);
+            Assert.Contains(participant, communication.InvolvedParties);
+            Assert.Contains(contact, communication.InvolvedParties);
+            Assert.Contains(organisation, communication.InvolvedParties);
         }
 
         [Fact]
@@ -151,20 +151,20 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(4, communication.PartiesWhereCommunicationEvent.Count);
-            Assert.Contains(owner, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(participant1, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(contact, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(organisation, communication.PartiesWhereCommunicationEvent);
+            Assert.Equal(4, communication.InvolvedParties.Count);
+            Assert.Contains(owner, communication.InvolvedParties);
+            Assert.Contains(participant1, communication.InvolvedParties);
+            Assert.Contains(contact, communication.InvolvedParties);
+            Assert.Contains(organisation, communication.InvolvedParties);
 
             communication.ToParty = participant2;
 
             this.Session.Derive();
 
-            Assert.Equal(3, communication.PartiesWhereCommunicationEvent.Count);
-            Assert.Contains(owner, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(participant1, communication.PartiesWhereCommunicationEvent);
-            Assert.Contains(participant2, communication.PartiesWhereCommunicationEvent);
+            Assert.Equal(3, communication.InvolvedParties.Count);
+            Assert.Contains(owner, communication.InvolvedParties);
+            Assert.Contains(participant1, communication.InvolvedParties);
+            Assert.Contains(participant2, communication.InvolvedParties);
         }
     }
 }

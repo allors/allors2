@@ -22,8 +22,8 @@ namespace Allors.Domain
 
                 foreach (SalesRepRelationship salesRepRelationship in customer.SalesRepRelationshipsWhereCustomer)
                 {
-                    if (salesRepRelationship.FromDate <= this.strategy.Session.Now() &&
-                        (!salesRepRelationship.ExistThroughDate || salesRepRelationship.ThroughDate >= this.strategy.Session.Now()))
+                    if (salesRepRelationship.FromDate <= this.Session().Now() &&
+                        (!salesRepRelationship.ExistThroughDate || salesRepRelationship.ThroughDate >= this.Session().Now()))
                     {
                         customerDerivedRoles.AddCurrentSalesRep(salesRepRelationship.SalesRepresentative);
                     }

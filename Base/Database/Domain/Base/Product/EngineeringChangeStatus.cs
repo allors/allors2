@@ -11,7 +11,7 @@ namespace Allors.Domain
         {
             if (!this.ExistStartDateTime)
             {
-                this.StartDateTime = this.strategy.Session.Now();
+                this.StartDateTime = this.Session().Now();
             }
         }
     }

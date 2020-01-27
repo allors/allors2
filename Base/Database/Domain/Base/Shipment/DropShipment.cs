@@ -38,7 +38,7 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
 
-            this.Sync(this.strategy.Session);
+            this.Sync(this.Session());
         }
 
         private void Sync(ISession session)

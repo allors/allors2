@@ -56,12 +56,12 @@ namespace Allors.Domain
 
             if (!this.ExistInvoiceDate)
             {
-                this.InvoiceDate = this.strategy.Session.Now();
+                this.InvoiceDate = this.Session().Now();
             }
 
             if (!this.ExistEntryDate)
             {
-                this.EntryDate = this.strategy.Session.Now();
+                this.EntryDate = this.Session().Now();
             }
         }
 
@@ -193,11 +193,11 @@ namespace Allors.Domain
 
             this.DeriveWorkflow();
 
-            var singleton = this.strategy.Session.GetSingleton();
+            var singleton = this.Session().GetSingleton();
 
             this.AddSecurityToken(new SecurityTokens(this.Session()).DefaultSecurityToken);
 
-            this.Sync(this.strategy.Session);
+            this.Sync(this.Session());
 
             this.ResetPrintDocument();
         }
@@ -254,7 +254,7 @@ namespace Allors.Domain
                 .WithShipToAddress(this.ShipToEndCustomerAddress)
                 .WithShipToContactPerson(this.ShipToEndCustomerContactPerson)
                 .WithDescription(this.Description)
-                .WithInvoiceDate(this.strategy.Session.Now())
+                .WithInvoiceDate(this.Session().Now())
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                 .WithVatRegime(this.VatRegime)
                 .WithDiscountAdjustment(this.DiscountAdjustment)
@@ -351,7 +351,7 @@ namespace Allors.Domain
 
             if (openTasks.OfType<PurchaseInvoiceApproval>().Any())
             {
-                openTasks.First().DateClosed = this.strategy.Session.Now();
+                openTasks.First().DateClosed = this.Session().Now();
             }
 
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
@@ -359,20 +359,20 @@ namespace Allors.Domain
                 if (purchaseInvoiceItem.ExistPart)
                 {
                     var previousOffering = purchaseInvoiceItem.Part.SupplierOfferingsWherePart.Single(v =>
-                        v.Supplier.Equals(this.BilledFrom) && v.FromDate <= this.strategy.Session.Now() &&
-                        (!v.ExistThroughDate || v.ThroughDate >= this.strategy.Session.Now()));
+                        v.Supplier.Equals(this.BilledFrom) && v.FromDate <= this.Session().Now() &&
+                        (!v.ExistThroughDate || v.ThroughDate >= this.Session().Now()));
 
                     if (previousOffering != null)
                     {
                         if (purchaseInvoiceItem.UnitBasePrice != previousOffering.Price)
                         {
-                            previousOffering.ThroughDate = this.strategy.Session.Now();
+                            previousOffering.ThroughDate = this.Session().Now();
 
-                            var newOffering = new SupplierOfferingBuilder(this.strategy.Session)
+                            var newOffering = new SupplierOfferingBuilder(this.Session())
                                 .WithSupplier(this.BilledFrom)
                                 .WithPart(purchaseInvoiceItem.Part)
                                 .WithPrice(purchaseInvoiceItem.UnitBasePrice)
-                                .WithFromDate(this.strategy.Session.Now())
+                                .WithFromDate(this.Session().Now())
                                 .WithComment(previousOffering.Comment)
                                 .WithMinimalOrderQuantity(previousOffering.MinimalOrderQuantity)
                                 .WithPreference(previousOffering.Preference)
@@ -389,11 +389,11 @@ namespace Allors.Domain
                     }
                     else
                     {
-                        new SupplierOfferingBuilder(this.strategy.Session)
+                        new SupplierOfferingBuilder(this.Session())
                             .WithSupplier(this.BilledFrom)
                             .WithPart(purchaseInvoiceItem.Part)
                             .WithPrice(purchaseInvoiceItem.UnitBasePrice)
-                            .WithFromDate(this.strategy.Session.Now())
+                            .WithFromDate(this.Session().Now())
                             .Build();
                     }
                 }
@@ -425,7 +425,7 @@ namespace Allors.Domain
             {
                 if (!this.OpenTasks.OfType<PurchaseInvoiceApproval>().Any())
                 {
-                    var approval = new PurchaseInvoiceApprovalBuilder(this.strategy.Session).WithPurchaseInvoice(this).Build();
+                    var approval = new PurchaseInvoiceApprovalBuilder(this.Session()).WithPurchaseInvoice(this).Build();
                     approval.WorkItem = approval.PurchaseInvoice;
                 }
             }

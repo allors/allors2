@@ -20,7 +20,7 @@ namespace Allors.Domain
             // Lifecycle
             if (!this.ExistDateClosed && !this.ProductQuote.QuoteState.IsCreated)
             {
-                this.DateClosed = this.strategy.Session.Now();
+                this.DateClosed = this.Session().Now();
             }
 
             if (this.Participants.Count == 0)
@@ -51,7 +51,7 @@ namespace Allors.Domain
                                   $"<h3>Comment</h3>" +
                                   $"<p>{comment}</p>";
 
-                this.ApprovalNotification = new NotificationBuilder(this.strategy.Session)
+                this.ApprovalNotification = new NotificationBuilder(this.Session())
                     .WithTitle("ProductQuote approved")
                     .WithDescription(description)
                     .Build();
@@ -78,7 +78,7 @@ namespace Allors.Domain
                                   $"<h3>Comment</h3>" +
                                   $"<p>{comment}</p>";
 
-                this.RejectionNotification = new NotificationBuilder(this.strategy.Session)
+                this.RejectionNotification = new NotificationBuilder(this.Session())
                     .WithTitle("ProductQuote approval rejected")
                     .WithDescription(description)
                     .Build();

@@ -124,12 +124,12 @@ namespace Allors.Domain
 
             this.QuantityPendingShipment = this.OrderShipmentsWhereOrderItem
                 .Where(v => v.ExistShipmentItem
-                            && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.strategy.Session).Shipped))
+                            && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.Session()).Shipped))
                 .Sum(v => v.Quantity);
 
             this.QuantityShipped = this.OrderShipmentsWhereOrderItem
                 .Where(v => v.ExistShipmentItem
-                            && ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.strategy.Session).Shipped))
+                            && ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.Session()).Shipped))
                 .Sum(v => v.Quantity);
 
             if (this.ExistSerialisedItem && this.QuantityOrdered != 1)
@@ -329,7 +329,7 @@ namespace Allors.Domain
                             {
                                 if (inventoryAssignment == null)
                                 {
-                                    new SalesOrderItemInventoryAssignmentBuilder(this.strategy.Session)
+                                    new SalesOrderItemInventoryAssignmentBuilder(this.Session())
                                         .WithSalesOrderItem(this)
                                         .WithInventoryItem(this.ReservedFromNonSerialisedInventoryItem)
                                         .WithQuantity(wantToShip + availableFromInventory)
@@ -371,7 +371,7 @@ namespace Allors.Domain
                         var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault(v => v.InventoryItem.Equals(this.ReservedFromSerialisedInventoryItem));
                         if (inventoryAssignment == null)
                         {
-                            new SalesOrderItemInventoryAssignmentBuilder(this.strategy.Session)
+                            new SalesOrderItemInventoryAssignmentBuilder(this.Session())
                                 .WithSalesOrderItem(this)
                                 .WithInventoryItem(this.ReservedFromSerialisedInventoryItem)
                                 .WithQuantity(1)

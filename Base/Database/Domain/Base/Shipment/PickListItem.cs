@@ -34,14 +34,14 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.PickListItem.QuantityPicked, ErrorMessages.PickListItemQuantityMoreThanAllowed);
             }
 
-            if (this.QuantityPicked > 0 && this.ExistPickListWherePickListItem && this.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.strategy.Session).Picked))
+            if (this.QuantityPicked > 0 && this.ExistPickListWherePickListItem && this.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Session()).Picked))
             {
                 var quantityProcessed = this.ItemIssuancesWherePickListItem.SelectMany(v => v.ShipmentItem.OrderShipmentsWhereShipmentItem).Sum(v => v.Quantity);
                 var diff = quantityProcessed - this.QuantityPicked;
 
                 foreach (ItemIssuance itemIssuance in this.ItemIssuancesWherePickListItem)
                 {
-                    itemIssuance.IssuanceDateTime = this.strategy.Session.Now();
+                    itemIssuance.IssuanceDateTime = this.Session().Now();
                     foreach (OrderShipment orderShipment in itemIssuance.ShipmentItem.OrderShipmentsWhereShipmentItem)
                     {
                         if (orderShipment.OrderItem is SalesOrderItem salesOrderItem)

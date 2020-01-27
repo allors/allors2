@@ -68,12 +68,12 @@ namespace Allors.Domain
 
             this.PartyName = this.DerivePartyName();
 
-            this.VatRegime = new VatRegimes(this.strategy.Session).PrivatePerson;
+            this.VatRegime = new VatRegimes(this.Session()).PrivatePerson;
 
             var allOrganisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
 
             this.CurrentOrganisationContactRelationships = allOrganisationContactRelationships
-                .Where(v => v.FromDate <= this.strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= this.strategy.Session.Now()))
+                .Where(v => v.FromDate <= this.Session().Now() && (!v.ExistThroughDate || v.ThroughDate >= this.Session().Now()))
                 .ToArray();
 
             this.InactiveOrganisationContactRelationships = allOrganisationContactRelationships
@@ -153,8 +153,8 @@ namespace Allors.Domain
             {
                 this.RemoveCurrentOrganisationContactMechanism(partyContactMechanism.ContactMechanism);
 
-                if (partyContactMechanism.FromDate <= this.strategy.Session.Now() &&
-                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= this.strategy.Session.Now()))
+                if (partyContactMechanism.FromDate <= this.Session().Now() &&
+                    (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= this.Session().Now()))
                 {
                     this.AddCurrentOrganisationContactMechanism(partyContactMechanism.ContactMechanism);
                 }

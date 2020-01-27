@@ -99,8 +99,8 @@ namespace Allors.Domain
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
                     .WithBilledFrom(this.Supplier)
                     .WithBilledTo(this.InternalOrganisation)
-                    .WithInvoiceDate(this.strategy.Session.Now())
-                    .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.strategy.Session).PurchaseInvoice)
+                    .WithInvoiceDate(this.Session().Now())
+                    .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session()).PurchaseInvoice)
                     .Build();
 
                 foreach (var orderItem in orderItemsToBill)
