@@ -100,7 +100,7 @@ namespace Allors.Domain
 
             if (!this.ExistShipmentNumber && this.ExistStore)
             {
-                this.ShipmentNumber = this.Store.DeriveNextShipmentNumber();
+                this.ShipmentNumber = this.Store.NextShipmentNumber();
             }
 
             if (!this.ExistCarrier && this.ExistStore)

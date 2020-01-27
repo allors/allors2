@@ -11,7 +11,7 @@ namespace Allors.Domain
 
     public partial class Store
     {
-        public string DeriveNextInvoiceNumber(int year)
+        public string NextInvoiceNumber(int year)
         {
             int salesInvoiceNumber;
             if (this.InternalOrganisation.InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
@@ -27,9 +27,6 @@ namespace Allors.Domain
                 if (fiscalYearInvoiceNumber == null)
                 {
                     fiscalYearInvoiceNumber = new FiscalYearInvoiceNumberBuilder(this.Strategy.Session).WithFiscalYear(year).Build();
-
-                    // HACK: DerivedRoles
-                    ((FiscalYearInvoiceNumberDerivedRoles)fiscalYearInvoiceNumber).NextSalesInvoiceNumber = 1;
                     this.AddFiscalYearInvoiceNumber(fiscalYearInvoiceNumber);
                 }
 
@@ -39,31 +36,7 @@ namespace Allors.Domain
             return string.Concat(this.SalesInvoiceNumberPrefix, salesInvoiceNumber).Replace("{year}", year.ToString());
         }
 
-        public string DeriveNextTemporaryInvoiceNumber() => this.SalesInvoiceTemporaryCounter.NextValue().ToString();
-
-        // TODO: Cascading delete
-        // public override void RemovePaymentMethod(PaymentMethod value)
-        // {
-        // if (value.Equals(this.DefaultPaymentMethod))
-        // {
-        // this.RemoveDefaultPaymentMethod();
-        // }
-
-        // base.RemovePaymentMethod(value);
-        // }
-        public string DeriveNextShipmentNumber()
-        {
-            var shipmentNumber = this.OutgoingShipmentCounter.NextValue();
-            return string.Concat(this.OutgoingShipmentNumberPrefix, shipmentNumber);
-        }
-
-        public string DeriveNextSalesOrderNumber(int year)
-        {
-            var salesOrderNumber = this.SalesOrderCounter.NextValue();
-            return string.Concat(this.SalesOrderNumberPrefix, salesOrderNumber).Replace("{year}", year.ToString());
-        }
-
-        public string DeriveNextCreditNoteNumber(int year)
+        public string NextCreditNoteNumber(int year)
         {
             int creditNoteNumber;
             if (this.InternalOrganisation.InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
@@ -88,6 +61,12 @@ namespace Allors.Domain
             return string.Concat(this.CreditNoteNumberPrefix, creditNoteNumber).Replace("{year}", year.ToString());
         }
 
+        public string NextTemporaryInvoiceNumber() => this.SalesInvoiceTemporaryCounter.NextValue().ToString();
+
+        public string NextShipmentNumber() => string.Concat(this.OutgoingShipmentNumberPrefix, this.OutgoingShipmentCounter.NextValue());
+
+        public string NextSalesOrderNumber(int year) => string.Concat(this.SalesOrderNumberPrefix, this.SalesOrderCounter.NextValue()).Replace("{year}", year.ToString());
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistAutoGenerateCustomerShipment)
@@ -110,10 +89,6 @@ namespace Allors.Domain
                 this.OutgoingShipmentCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
-            // if (!this.ExistWorkEffortCounter)
-            // {
-            //    this.WorkEffortCounter = new CounterBuilder(this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            // }
             if (!this.ExistBillingProcess)
             {
                 this.BillingProcess = new BillingProcesses(this.Strategy.Session).BillingForShipmentItems;
@@ -136,7 +111,7 @@ namespace Allors.Domain
 
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
-            if (!this.ExistInternalOrganisation && internalOrganisations.Count() == 1)
+            if (!this.ExistInternalOrganisation && internalOrganisations.Length == 1)
             {
                 this.InternalOrganisation = internalOrganisations.First();
             }

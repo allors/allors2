@@ -5,24 +5,24 @@
 
 namespace Allors.Domain
 {
+    // TODO: Why not use Counters?
     public partial class FiscalYearInvoiceNumber
     {
-        public int DeriveNextSalesInvoiceNumber()
+        public void BaseOnInit(ObjectOnInit method)
         {
-            this.NextSalesInvoiceNumber = this.ExistNextSalesInvoiceNumber ? this.NextSalesInvoiceNumber : 1;
-            var salesInvoiceNumber = this.NextSalesInvoiceNumber;
-            this.NextSalesInvoiceNumber++;
+            if (!this.ExistNextSalesInvoiceNumber)
+            {
+                this.NextSalesInvoiceNumber = 1;
+            }
 
-            return salesInvoiceNumber;
+            if (!this.ExistNextCreditNoteNumber)
+            {
+                this.NextCreditNoteNumber = 1;
+            }
         }
 
-        public int DeriveNextCreditNoteNumber()
-        {
-            this.NextCreditNoteNumber = this.ExistNextCreditNoteNumber ? this.NextCreditNoteNumber : 1;
-            var creditNoteNumber = this.NextCreditNoteNumber;
-            this.NextCreditNoteNumber++;
+        public int DeriveNextSalesInvoiceNumber() => this.NextSalesInvoiceNumber++;
 
-            return creditNoteNumber;
-        }
+        public int DeriveNextCreditNoteNumber() => this.NextCreditNoteNumber++;
     }
 }

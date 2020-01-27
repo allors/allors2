@@ -133,8 +133,6 @@ namespace Allors.Domain
                 .Select(v => v.Customer)
                 .ToArray();
 
-            this.ContactsUserGroup.Members = this.CurrentContacts.Cast<User>().ToArray();
-
             // Contacts
             if (!this.ExistContactsUserGroup)
             {

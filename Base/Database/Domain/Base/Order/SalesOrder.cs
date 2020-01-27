@@ -121,7 +121,7 @@ namespace Allors.Domain
 
             if (!this.ExistOrderNumber && this.ExistStore)
             {
-                this.OrderNumber = this.Store.DeriveNextSalesOrderNumber(this.OrderDate.Year);
+                this.OrderNumber = this.Store.NextSalesOrderNumber(this.OrderDate.Year);
             }
         }
 

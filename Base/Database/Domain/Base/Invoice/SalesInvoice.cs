@@ -165,7 +165,7 @@ namespace Allors.Domain
 
             if (!this.ExistInvoiceNumber && this.ExistStore)
             {
-                this.InvoiceNumber = this.Store.DeriveNextTemporaryInvoiceNumber();
+                this.InvoiceNumber = this.Store.NextTemporaryInvoiceNumber();
             }
 
             if (!this.ExistBilledFromContactMechanism && this.ExistBilledFrom)
@@ -564,12 +564,12 @@ namespace Allors.Domain
         {
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice))
             {
-                this.InvoiceNumber = this.Store.DeriveNextInvoiceNumber(this.InvoiceDate.Year);
+                this.InvoiceNumber = this.Store.NextInvoiceNumber(this.InvoiceDate.Year);
             }
 
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).CreditNote))
             {
-                this.InvoiceNumber = this.Store.DeriveNextCreditNoteNumber(this.InvoiceDate.Year);
+                this.InvoiceNumber = this.Store.NextCreditNoteNumber(this.InvoiceDate.Year);
             }
 
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).NotPaid;
