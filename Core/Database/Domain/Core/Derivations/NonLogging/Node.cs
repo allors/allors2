@@ -15,30 +15,13 @@ namespace Allors.Domain.NonLogging
         private readonly Domain.Object derivable;
         private Node currentRoot;
 
-        private Flags flags;
+        private bool isVisited;
 
         internal Node(Domain.Object derivable) => this.derivable = derivable;
 
-        internal bool IsVisited
-        {
-            get => this.flags.HasFlag(Flags.IsVisited);
+        internal bool IsMarked { get; set; }
 
-            set => this.flags = value ? this.flags | Flags.IsVisited : this.flags & ~Flags.IsVisited;
-        }
-
-        internal bool IsMarked
-        {
-            get => this.flags.HasFlag(Flags.IsMarked);
-
-            set => this.flags = value ? this.flags | Flags.IsMarked : this.flags & ~Flags.IsMarked;
-        }
-
-        internal bool IsScheduled
-        {
-            get => this.flags.HasFlag(Flags.IsScheduled);
-
-            set => this.flags = value ? this.flags | Flags.IsScheduled : this.flags & ~Flags.IsScheduled;
-        }
+        internal bool IsScheduled { get; set; }
 
         internal Node[] Dependencies { get; set; }
 
@@ -52,7 +35,7 @@ namespace Allors.Domain.NonLogging
 
         private void TopologicalDerive(Graph graph, IList<Domain.Object> postDeriveBacklog, Node root)
         {
-            if (this.IsVisited)
+            if (this.isVisited)
             {
                 if (root.Equals(this.currentRoot))
                 {
@@ -62,7 +45,7 @@ namespace Allors.Domain.NonLogging
                 return;
             }
 
-            this.IsVisited = true;
+            this.isVisited = true;
             this.currentRoot = root;
 
             if (this.Dependencies != null)
