@@ -157,7 +157,7 @@ namespace Allors.Domain
                             derivedRoles.AddInvolvedParty(organisation);
 
                             // HACK: DerivedRoles
-                            var organisationDerivedRoles = (OrganisationDerivedRoles)organisation;
+                            var organisationDerivedRoles = (PartyDerivedRoles)organisation;
 
                             organisationDerivedRoles.AddCommunicationEvent(@this);
                             if (partiesToRemove.Contains(organisation))
@@ -172,7 +172,7 @@ namespace Allors.Domain
             foreach (var party in partiesToRemove)
             {
                 // HACK: DerivedRoles
-                var partyDerivedRoles = (OrganisationDerivedRoles)party;
+                var partyDerivedRoles = (PartyDerivedRoles)party;
 
                 partyDerivedRoles.RemoveCommunicationEvent(@this);
             }

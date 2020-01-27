@@ -5,7 +5,7 @@ TemplateName() ::= <<Allors C# Uml>>
 TemplateVersion() ::= <<1.0.23>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(meta) ::= <<
-$! 
+$!
 Copyright 2002-2013 Allors bvba.
 
 Dual Licensed under
@@ -23,7 +23,7 @@ GNU General Public License for more details.
 For more information visit http://www.allors.com/legal
 !$
 <generations>
-	<generation template="domain" output="domain.g.cs"/> 
+	<generation template="domain" output="domain.g.cs"/>
 </generations>
 >>
 
@@ -44,11 +44,15 @@ composite(meta,composite) ::= <<
 
 roleType(roleType) ::= <<
 $if(roleType.IsOne)$
-			$nullableName(roleType)$ $roleType.SingularPropertyName$ {set;}
+			$nullableName(roleType)$ $prefix(roleType)$$roleType.SingularPropertyName$ {set;}
 $else$
-			$nullableName(roleType)$ $roleType.PluralPropertyName$ {set;}
+			$nullableName(roleType)$ $prefix(roleType)$$roleType.PluralPropertyName$ {set;}
 $endif$
 >>
+
+prefix(roleType) ::= <%
+$if(roleType.RelationType.IsDerived)$_$endif$
+%>
 
 nullableName(roleType) ::= <%
 $if(roleType.ObjectType.IsUnit)$

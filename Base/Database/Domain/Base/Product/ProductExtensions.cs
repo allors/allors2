@@ -42,11 +42,13 @@ namespace Allors.Domain
                 {
                     foreach (PriceComponent priceComponent in priceComponents)
                     {
-                        derivedRoles.AddVirtualProductPriceComponent(priceComponent);
+                        // HACK: DerivedRoles
+                        var productDerivedRoles = (ProductDerivedRoles)product;
+                        productDerivedRoles.AddVirtualProductPriceComponent(priceComponent);
 
                         if (priceComponent is BasePrice basePrice && !priceComponent.ExistProductFeature)
                         {
-                            derivedRoles.AddBasePrice(basePrice);
+                            productDerivedRoles.AddBasePrice(basePrice);
                         }
                     }
                 }
