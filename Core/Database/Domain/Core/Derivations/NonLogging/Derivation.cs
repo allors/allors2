@@ -16,6 +16,7 @@ namespace Allors.Domain.NonLogging
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
     public class Derivation : IDerivation
     {
+        private bool guard;
         private Properties properties;
 
         public Derivation(ISession session)
@@ -23,10 +24,13 @@ namespace Allors.Domain.NonLogging
             this.Session = session;
 
             this.Id = Guid.NewGuid();
+            this.TimeStamp = this.Session.Now();
 
             this.ChangeSet = new AccumulatedChangeSet();
             this.DerivedObjects = new HashSet<Object>();
             this.Validation = new Validation(this);
+
+            this.guard = false;
         }
 
         public ISession Session { get; }
@@ -64,12 +68,7 @@ namespace Allors.Domain.NonLogging
         {
             try
             {
-                this.TimeStamp = this.Session.Now();
-
-                if (this.Cycle != null)
-                {
-                    throw new Exception("Derive can only be called once. Create a new Derivation object.");
-                }
+                this.Guard();
 
                 this.Cycle = new Cycle(this);
                 var derivedObjects = this.Cycle.Execute(marked);
@@ -86,6 +85,16 @@ namespace Allors.Domain.NonLogging
             {
                 this.Cycle = null;
             }
+        }
+
+        private void Guard()
+        {
+            if (this.guard)
+            {
+                throw new Exception("Derive can only be called once. Create a new Derivation object.");
+            }
+
+            this.guard = true;
         }
     }
 }

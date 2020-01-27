@@ -16,24 +16,24 @@ namespace Allors.Domain.NonLogging
         {
             this.Cycle = cycle;
             this.ChangeSet = new AccumulatedChangeSet();
-            this.Graph = new Graph(this.Cycle);
+            this.Graph = new Graph(this.Cycle.Derivation);
         }
 
         ICycle IIteration.Cycle => this.Cycle;
 
-        public Cycle Cycle { get; }
-
-        public ISet<Object> MarkedBacklog { get; private set; }
-
         IPreparation IIteration.Preparation => this.Preparation;
-
-        public Preparation Preparation { get; set; }
 
         IAccumulatedChangeSet IIteration.ChangeSet => this.ChangeSet;
 
-        public AccumulatedChangeSet ChangeSet { get; }
+        internal Cycle Cycle { get; }
 
-        public Graph Graph { get; }
+        internal ISet<Object> MarkedBacklog { get; private set; }
+
+        internal Preparation Preparation { get; set; }
+
+        internal AccumulatedChangeSet ChangeSet { get; }
+
+        internal Graph Graph { get; }
 
         public object this[string name]
         {
@@ -53,7 +53,7 @@ namespace Allors.Domain.NonLogging
             if (@object != null && !this.Graph.IsMarked(@object))
             {
                 this.Graph.Mark(@object);
-                if (!this.Preparation.Objects.Contains(@object))
+                if (!this.Preparation.Objects.Contains(@object) || this.Preparation.PreDerived.Contains(@object))
                 {
                     this.MarkedBacklog.Add(@object);
                 }
@@ -70,7 +70,7 @@ namespace Allors.Domain.NonLogging
 
         public bool IsMarked(Object @object) => this.Graph.IsMarked(@object);
 
-        public void Execute(List<Object> postDeriveObjects, Object[] marked = null)
+        public void Execute(List<Object> postDeriveBacklog, Object[] marked = null)
         {
             try
             {
@@ -90,9 +90,9 @@ namespace Allors.Domain.NonLogging
                     this.Preparation.Execute();
                 }
 
-                this.Graph.Derive(postDeriveObjects);
+                this.Graph.Derive(postDeriveBacklog);
 
-                this.Cycle.Derivation.DerivedObjects.UnionWith(postDeriveObjects);
+                this.Cycle.Derivation.DerivedObjects.UnionWith(postDeriveBacklog);
             }
             finally
             {
@@ -100,12 +100,6 @@ namespace Allors.Domain.NonLogging
             }
         }
 
-        public void AddDependency(Object dependent, Object dependee)
-        {
-            if (dependent != null && dependee != null && !dependent.Equals(dependee))
-            {
-                this.Graph.AddDependency(dependent, dependee);
-            }
-        }
+        public void AddDependency(Object dependent, params Object[] dependencies) => this.Graph.AddDependency(dependent, dependencies);
     }
 }

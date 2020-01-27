@@ -20,11 +20,11 @@ namespace Allors.Domain.NonLogging
 
         IAccumulatedChangeSet ICycle.ChangeSet => this.ChangeSet;
 
-        public AccumulatedChangeSet ChangeSet { get; }
-
         IIteration ICycle.Iteration => this.Iteration;
 
         IDerivation ICycle.Derivation => this.Derivation;
+
+        internal AccumulatedChangeSet ChangeSet { get; }
 
         internal Iteration Iteration { get; set; }
 
@@ -45,30 +45,33 @@ namespace Allors.Domain.NonLogging
         {
             try
             {
-                var postDeriveObjects = new List<Object>();
-                var previousCount = postDeriveObjects.Count;
+                var postDeriveBacklog = new List<Object>();
+                var previousCount = postDeriveBacklog.Count;
 
                 this.Iteration = new Iteration(this);
-                this.Iteration.Execute(postDeriveObjects, marked);
+                this.Iteration.Execute(postDeriveBacklog, marked);
 
-                while (postDeriveObjects.Count != previousCount)
+                while (postDeriveBacklog.Count != previousCount)
                 {
-                    previousCount = postDeriveObjects.Count;
+                    previousCount = postDeriveBacklog.Count;
 
                     this.Iteration = new Iteration(this);
-                    this.Iteration.Execute(postDeriveObjects);
+                    this.Iteration.Execute(postDeriveBacklog);
                 }
 
-                for (var i = postDeriveObjects.Count - 1; i >= 0; i--)
+                var postDerived = new HashSet<Object>();
+                for (var i = postDeriveBacklog.Count - 1; i >= 0; i--)
                 {
-                    var derivable = postDeriveObjects[i];
-                    if (!derivable.Strategy.IsDeleted)
+                    var @object = postDeriveBacklog[i];
+                    if (!postDerived.Contains(@object) && !@object.Strategy.IsDeleted)
                     {
-                        derivable.OnPostDerive(x => x.WithDerivation(this.Derivation));
+                        @object.OnPostDerive(x => x.WithDerivation(this.Derivation));
                     }
+
+                    postDerived.Add(@object);
                 }
 
-                return postDeriveObjects;
+                return postDeriveBacklog;
             }
             finally
             {

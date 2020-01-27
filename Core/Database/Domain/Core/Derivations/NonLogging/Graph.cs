@@ -1,4 +1,4 @@
-// <copyright file="DerivationNodes.cs" company="Allors bvba">
+// <copyright file="Graph.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -7,20 +7,22 @@
 namespace Allors.Domain.NonLogging
 {
     using System.Collections.Generic;
+    using System.Linq;
+    using Object = Domain.Object;
 
-    public class Graph
+    internal class Graph
     {
-        public Graph(Cycle cycle)
+        internal Graph(Derivation derivation)
         {
-            this.Cycle = cycle;
+            this.Derivation = derivation;
             this.NodeByObject = new Dictionary<Object, Node>();
         }
 
-        public Cycle Cycle { get; }
+        internal Derivation Derivation { get; }
 
-        public Dictionary<Object, Node> NodeByObject { get; }
+        internal Dictionary<Object, Node> NodeByObject { get; }
 
-        public bool IsMarked(Object @object)
+        internal bool IsMarked(Object @object)
         {
             if (this.NodeByObject.TryGetValue(@object, out var node))
             {
@@ -30,9 +32,9 @@ namespace Allors.Domain.NonLogging
             return false;
         }
 
-        public void Mark(Object @object) => this.GetOrAddDerivationNode(@object).IsMarked = true;
+        internal void Mark(Object @object) => this.GetOrAddDerivationNode(@object).IsMarked = true;
 
-        public void Mark(Object[] marked)
+        internal void Mark(Object[] marked)
         {
             foreach (var @object in marked)
             {
@@ -40,7 +42,7 @@ namespace Allors.Domain.NonLogging
             }
         }
 
-        public bool IsScheduled(Object @object)
+        internal bool IsScheduled(Object @object)
         {
             if (this.NodeByObject.TryGetValue(@object, out var node))
             {
@@ -50,9 +52,41 @@ namespace Allors.Domain.NonLogging
             return false;
         }
 
-        public void Schedule(Object @object) => this.GetOrAddDerivationNode(@object).IsScheduled = true;
+        internal void Schedule(Object @object) => this.GetOrAddDerivationNode(@object).IsScheduled = true;
 
-        public IEnumerable<Object> Derive(IList<Object> postDeriveObjects)
+        internal void AddDependency(Object dependent, Object[] dependencies)
+        {
+            if (dependent != null && dependencies.Length > 0)
+            {
+                var dependentNode = this.GetOrAddDerivationNode(dependent);
+                if (dependentNode.Dependencies == null)
+                {
+                    dependentNode.Dependencies = dependencies
+                        .Where(v => v != null)
+                        .Select(this.GetOrAddDerivationNode)
+                        .Distinct()
+                        .Where(v => !v.Equals(dependentNode))
+                        .ToArray();
+                }
+                else
+                {
+                    dependentNode.Dependencies = dependentNode.Dependencies
+                        .Union(dependencies
+                            .Where(v => v != null)
+                            .Select(this.GetOrAddDerivationNode))
+                        .Distinct()
+                        .Where(v => !v.Equals(dependentNode))
+                        .ToArray();
+                }
+
+                if (dependentNode.Dependencies.Length == 0)
+                {
+                    dependentNode.Dependencies = null;
+                }
+            }
+        }
+
+        internal IEnumerable<Object> Derive(IList<Object> postDeriveObjects)
         {
             foreach (var kvp in this.NodeByObject)
             {
@@ -61,13 +95,6 @@ namespace Allors.Domain.NonLogging
             }
 
             return postDeriveObjects;
-        }
-
-        public void AddDependency(Object dependent, Object dependee)
-        {
-            var dependentNode = this.GetOrAddDerivationNode(dependent);
-            var dependeeNode = this.GetOrAddDerivationNode(dependee);
-            dependentNode.AddDependency(dependeeNode);
         }
 
         private Node GetOrAddDerivationNode(Object @object)

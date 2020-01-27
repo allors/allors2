@@ -26,10 +26,10 @@ namespace Allors.Domain
         bool IsMarked(Object @object);
 
         /// <summary>
-        /// The dependee is derived before the dependent object.
+        /// The dependencies are derived before the dependent object.
         /// </summary>
         /// <param name="dependent">The dependent object.</param>
-        /// <param name="dependee">The dependee object.</param>
-        void AddDependency(Object dependent, Object dependee);
+        /// <param name="dependencies">The dependencies.</param>
+        void AddDependency(Object dependent, params Object[] dependencies);
     }
 }

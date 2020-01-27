@@ -7,7 +7,6 @@ namespace Allors.Domain.NonLogging
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Antlr.Runtime.Misc;
 
     public class Preparation : IPreparation
     {
@@ -46,11 +45,15 @@ namespace Allors.Domain.NonLogging
             {
                 this.Objects.UnionWith(marked);
             }
+
+            this.PreDerived = new HashSet<Object>();
         }
 
         public Iteration Iteration { get; }
 
         public ISet<Object> Objects { get; set; }
+
+        public ISet<Object> PreDerived { get; set; }
 
         public void Execute()
         {
@@ -59,6 +62,7 @@ namespace Allors.Domain.NonLogging
                 if (!@object.Strategy.IsDeleted)
                 {
                     @object.OnPreDerive(x => x.WithIteration(this.Iteration));
+                    this.PreDerived.Add(@object);
                 }
             }
         }

@@ -10,51 +10,37 @@ namespace Allors.Domain.NonLogging
     using System.Diagnostics.CodeAnalysis;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Reviewed. Suppression is OK here.")]
-    public class Node : IEquatable<Node>
+    internal class Node : IEquatable<Node>
     {
         private readonly Domain.Object derivable;
-
-        private bool visited;
         private Node currentRoot;
 
-        private Node dependency;
-        private HashSet<Node> dependencies;
+        private Flags flags;
 
-        public Node(Domain.Object derivable) => this.derivable = derivable;
+        internal Node(Domain.Object derivable) => this.derivable = derivable;
 
-        public bool IsMarked { get; set; }
-
-        public bool IsScheduled { get; set; }
-
-        public void TopologicalDerive(Graph graph, IList<Domain.Object> postDeriveObjects) => this.TopologicalDerive(graph, postDeriveObjects, this);
-
-        public void AddDependency(Node node)
+        internal bool IsVisited
         {
-            if (this.dependencies != null)
-            {
-                this.dependencies.Add(node);
-            }
-            else
-            {
-                if (this.dependency == null)
-                {
-                    this.dependency = node;
-                }
-                else
-                {
-                    if (!this.dependency.Equals(node))
-                    {
-                        this.dependencies = new HashSet<Node>
-                        {
-                            this.dependency,
-                            node,
-                        };
+            get => this.flags.HasFlag(Flags.IsVisited);
 
-                        this.dependency = null;
-                    }
-                }
-            }
+            set => this.flags = value ? this.flags | Flags.IsVisited : this.flags & ~Flags.IsVisited;
         }
+
+        internal bool IsMarked
+        {
+            get => this.flags.HasFlag(Flags.IsMarked);
+
+            set => this.flags = value ? this.flags | Flags.IsMarked : this.flags & ~Flags.IsMarked;
+        }
+
+        internal bool IsScheduled
+        {
+            get => this.flags.HasFlag(Flags.IsScheduled);
+
+            set => this.flags = value ? this.flags | Flags.IsScheduled : this.flags & ~Flags.IsScheduled;
+        }
+
+        internal Node[] Dependencies { get; set; }
 
         public bool Equals(Node other) => other != null && this.derivable.Equals(other.derivable);
 
@@ -62,9 +48,11 @@ namespace Allors.Domain.NonLogging
 
         public override int GetHashCode() => this.derivable.GetHashCode();
 
-        private void TopologicalDerive(Graph graph, IList<Domain.Object> postDeriveObjects, Node root)
+        internal void TopologicalDerive(Graph graph, IList<Domain.Object> postDeriveBacklog) => this.TopologicalDerive(graph, postDeriveBacklog, this);
+
+        private void TopologicalDerive(Graph graph, IList<Domain.Object> postDeriveBacklog, Node root)
         {
-            if (this.visited)
+            if (this.IsVisited)
             {
                 if (root.Equals(this.currentRoot))
                 {
@@ -74,22 +62,21 @@ namespace Allors.Domain.NonLogging
                 return;
             }
 
-            this.visited = true;
+            this.IsVisited = true;
             this.currentRoot = root;
 
-            this.dependency?.TopologicalDerive(graph, postDeriveObjects, root);
-            if (this.dependencies != null)
+            if (this.Dependencies != null)
             {
-                foreach (var dep in this.dependencies)
+                foreach (var dep in this.Dependencies)
                 {
-                    dep.TopologicalDerive(graph, postDeriveObjects, root);
+                    dep.TopologicalDerive(graph, postDeriveBacklog, root);
                 }
             }
 
             if (!this.derivable.Strategy.IsDeleted && graph.IsScheduled(this.derivable))
             {
-                this.derivable.OnDerive(x => x.WithDerivation(graph.Cycle.Derivation));
-                postDeriveObjects.Add(this.derivable);
+                this.derivable.OnDerive(x => x.WithDerivation(graph.Derivation));
+                postDeriveBacklog.Add(this.derivable);
             }
 
             this.currentRoot = null;
