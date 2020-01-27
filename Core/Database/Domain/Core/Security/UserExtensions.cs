@@ -39,6 +39,8 @@ namespace Allors.Domain
 
         public static void CoreOnPostBuild(this User @this, ObjectOnPostBuild method)
         {
+            var thisExtension = (UserExtension)@this;
+
             if (!@this.ExistNotificationList)
             {
                 @this.NotificationList = new NotificationListBuilder(@this.Strategy.Session).Build();
@@ -47,7 +49,7 @@ namespace Allors.Domain
             if (!@this.ExistOwnerAccessControl)
             {
                 var ownerRole = new Roles(@this.Strategy.Session).Owner;
-                @this.OwnerAccessControl = new AccessControlBuilder(@this.Strategy.Session)
+                thisExtension.OwnerAccessControl = new AccessControlBuilder(@this.Strategy.Session)
                     .WithRole(ownerRole)
                     .WithSubject(@this)
                     .Build();
@@ -55,7 +57,7 @@ namespace Allors.Domain
 
             if (!@this.ExistOwnerSecurityToken)
             {
-                @this.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
+                thisExtension.OwnerSecurityToken = new SecurityTokenBuilder(@this.Strategy.Session)
                     .WithAccessControl(@this.OwnerAccessControl)
                     .Build();
             }
@@ -68,8 +70,10 @@ namespace Allors.Domain
 
         public static void CoreOnDerive(this User @this, ObjectOnDerive method)
         {
-            @this.NormalizedUserName = Users.Normalize(@this.UserName);
-            @this.NormalizedUserEmail = Users.Normalize(@this.UserEmail);
+            var thisExtension = (UserExtension)@this;
+
+            thisExtension.NormalizedUserName = Users.Normalize(@this.UserName);
+            thisExtension.NormalizedUserEmail = Users.Normalize(@this.UserEmail);
 
             if (@this.ExistInUserPassword)
             {

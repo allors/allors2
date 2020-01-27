@@ -93,26 +93,26 @@ namespace Allors.Domain
 
         public static void BaseOnDerive(this Party @this, ObjectOnDerive method)
         {
-            var derivation = method.Derivation;
+            var thisExtension = (PartyExtension)@this;
 
-            @this.BillingAddress = null;
-            @this.BillingInquiriesFax = null;
-            @this.BillingInquiriesPhone = null;
-            @this.CellPhoneNumber = null;
-            @this.GeneralCorrespondence = null;
-            @this.GeneralFaxNumber = null;
-            @this.GeneralPhoneNumber = null;
-            @this.HeadQuarter = null;
-            @this.HomeAddress = null;
-            @this.InternetAddress = null;
-            @this.OrderAddress = null;
-            @this.OrderInquiriesFax = null;
-            @this.OrderInquiriesPhone = null;
-            @this.PersonalEmailAddress = null;
-            @this.SalesOffice = null;
-            @this.ShippingAddress = null;
-            @this.ShippingInquiriesFax = null;
-            @this.ShippingAddress = null;
+            thisExtension.BillingAddress = null;
+            thisExtension.BillingInquiriesFax = null;
+            thisExtension.BillingInquiriesPhone = null;
+            thisExtension.CellPhoneNumber = null;
+            thisExtension.GeneralCorrespondence = null;
+            thisExtension.GeneralFaxNumber = null;
+            thisExtension.GeneralPhoneNumber = null;
+            thisExtension.HeadQuarter = null;
+            thisExtension.HomeAddress = null;
+            thisExtension.InternetAddress = null;
+            thisExtension.OrderAddress = null;
+            thisExtension.OrderInquiriesFax = null;
+            thisExtension.OrderInquiriesPhone = null;
+            thisExtension.PersonalEmailAddress = null;
+            thisExtension.SalesOffice = null;
+            thisExtension.ShippingAddress = null;
+            thisExtension.ShippingInquiriesFax = null;
+            thisExtension.ShippingAddress = null;
 
             foreach (PartyContactMechanism partyContactMechanism in @this.PartyContactMechanisms)
             {
@@ -120,132 +120,132 @@ namespace Allors.Domain
                 {
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).BillingAddress))
                     {
-                        @this.BillingAddress = partyContactMechanism.ContactMechanism;
+                        thisExtension.BillingAddress = partyContactMechanism.ContactMechanism;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).BillingInquiriesFax))
                     {
-                        @this.BillingInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        thisExtension.BillingInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).BillingInquiriesPhone))
                     {
-                        @this.BillingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        thisExtension.BillingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).MobilePhoneNumber))
                     {
-                        @this.CellPhoneNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        thisExtension.CellPhoneNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralCorrespondence))
                     {
-                        @this.GeneralCorrespondence = partyContactMechanism.ContactMechanism;
+                        thisExtension.GeneralCorrespondence = partyContactMechanism.ContactMechanism;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralEmail))
                     {
-                        @this.GeneralEmail = partyContactMechanism.ContactMechanism as EmailAddress;
+                        thisExtension.GeneralEmail = partyContactMechanism.ContactMechanism as EmailAddress;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralFaxNumber))
                     {
-                        @this.GeneralFaxNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        thisExtension.GeneralFaxNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).GeneralPhoneNumber))
                     {
-                        @this.GeneralPhoneNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        thisExtension.GeneralPhoneNumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).HeadQuarters))
                     {
-                        @this.HeadQuarter = partyContactMechanism.ContactMechanism;
+                        thisExtension.HeadQuarter = partyContactMechanism.ContactMechanism;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).HomeAddress))
                     {
-                        @this.HomeAddress = partyContactMechanism.ContactMechanism;
+                        thisExtension.HomeAddress = partyContactMechanism.ContactMechanism;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).InternetAddress))
                     {
-                        @this.InternetAddress = partyContactMechanism.ContactMechanism as ElectronicAddress;
+                        thisExtension.InternetAddress = partyContactMechanism.ContactMechanism as ElectronicAddress;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).OrderAddress))
                     {
-                        @this.OrderAddress = partyContactMechanism.ContactMechanism;
+                        thisExtension.OrderAddress = partyContactMechanism.ContactMechanism;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).OrderInquiriesFax))
                     {
-                        @this.OrderInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        thisExtension.OrderInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).OrderInquiriesPhone))
                     {
-                        @this.OrderInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        thisExtension.OrderInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).PersonalEmailAddress))
                     {
-                        @this.PersonalEmailAddress = partyContactMechanism.ContactMechanism as EmailAddress;
+                        thisExtension.PersonalEmailAddress = partyContactMechanism.ContactMechanism as EmailAddress;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).SalesOffice))
                     {
-                        @this.SalesOffice = partyContactMechanism.ContactMechanism;
+                        thisExtension.SalesOffice = partyContactMechanism.ContactMechanism;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).ShippingAddress))
                     {
-                        @this.ShippingAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+                        thisExtension.ShippingAddress = partyContactMechanism.ContactMechanism as PostalAddress;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).ShippingInquiriesFax))
                     {
-                        @this.ShippingInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        thisExtension.ShippingInquiriesFax = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
 
                     if (partyContactMechanism.ContactPurposes.Contains(new ContactMechanismPurposes(@this.Strategy.Session).ShippingInquiriesPhone))
                     {
-                        @this.ShippingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
+                        thisExtension.ShippingInquiriesPhone = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
                     }
                 }
 
                 // Fallback
                 if (!@this.ExistBillingAddress && @this.ExistGeneralCorrespondence)
                 {
-                    @this.BillingAddress = @this.GeneralCorrespondence;
+                    thisExtension.BillingAddress = @this.GeneralCorrespondence;
                 }
 
                 // Fallback
                 if (!@this.ExistShippingAddress && @this.GeneralCorrespondence is PostalAddress postalAddress)
                 {
-                    @this.ShippingAddress = postalAddress;
+                    thisExtension.ShippingAddress = postalAddress;
                 }
             }
 
-            @this.CurrentPartyContactMechanisms = @this.PartyContactMechanisms
+            thisExtension.CurrentPartyContactMechanisms = @this.PartyContactMechanisms
                 .Where(v => v.FromDate <= @this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= @this.Strategy.Session.Now()))
                 .ToArray();
 
-            @this.InactivePartyContactMechanisms = @this.PartyContactMechanisms
+            thisExtension.InactivePartyContactMechanisms = @this.PartyContactMechanisms
                 .Except(@this.CurrentPartyContactMechanisms)
                 .ToArray();
 
             var allPartyRelationshipsWhereParty = @this.PartyRelationshipsWhereParty;
 
-            @this.CurrentPartyRelationships = allPartyRelationshipsWhereParty
+            thisExtension.CurrentPartyRelationships = allPartyRelationshipsWhereParty
                 .Where(v => v.FromDate <= @this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= @this.Strategy.Session.Now()))
                 .ToArray();
 
-            @this.InactivePartyRelationships = allPartyRelationshipsWhereParty
+            thisExtension.InactivePartyRelationships = allPartyRelationshipsWhereParty
                 .Except(@this.CurrentPartyRelationships)
                 .ToArray();
 
-            @this.CurrentSalesReps = @this.SalesRepRelationshipsWhereCustomer
+            thisExtension.CurrentSalesReps = @this.SalesRepRelationshipsWhereCustomer
                 .Where(v => v.FromDate <= @this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= @this.Strategy.Session.Now()))
                 .Select(v => v.SalesRepresentative)
                 .ToArray();

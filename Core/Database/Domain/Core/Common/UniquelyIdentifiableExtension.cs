@@ -9,7 +9,7 @@ namespace Allors.Domain
 
     using Allors.Meta;
 
-    public static partial class UniquelyIdentifiableExtension
+    public static partial class UniquelyIdentifiableExtensions
     {
         public static void CoreOnBuild(this UniquelyIdentifiable @this, ObjectOnBuild method)
         {

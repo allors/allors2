@@ -45,6 +45,7 @@ namespace Allors.Domain
         public static void BaseOnDerive(this WorkEffort @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var thisExtension = (WorkEffortExtension)@this;
 
             var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
@@ -55,7 +56,7 @@ namespace Allors.Domain
 
             if (!@this.ExistWorkEffortNumber && @this.ExistTakenBy)
             {
-                @this.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
+                thisExtension.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
             }
 
             if (!@this.ExistExecutedBy && @this.ExistTakenBy)
@@ -159,30 +160,32 @@ namespace Allors.Domain
 
         private static void DeriveActualHoursAndDates(this WorkEffort @this)
         {
-            @this.ActualHours = 0M;
+            var thisExtension = (WorkEffortExtension)@this;
+
+            thisExtension.ActualHours = 0M;
 
             foreach (ServiceEntry serviceEntry in @this.ServiceEntriesWhereWorkEffort)
             {
                 if (serviceEntry is TimeEntry timeEntry)
                 {
-                    @this.ActualHours += timeEntry.ActualHours;
+                    thisExtension.ActualHours += timeEntry.ActualHours;
 
                     if (!@this.ExistActualStart)
                     {
-                        @this.ActualStart = timeEntry.FromDate;
+                        thisExtension.ActualStart = timeEntry.FromDate;
                     }
                     else if (timeEntry.FromDate < @this.ActualStart)
                     {
-                        @this.ActualStart = timeEntry.FromDate;
+                        thisExtension.ActualStart = timeEntry.FromDate;
                     }
 
                     if (!@this.ExistActualCompletion)
                     {
-                        @this.ActualCompletion = timeEntry.ThroughDate;
+                        thisExtension.ActualCompletion = timeEntry.ThroughDate;
                     }
                     else if (timeEntry.ThroughDate > @this.ActualCompletion)
                     {
-                        @this.ActualCompletion = timeEntry.ThroughDate;
+                        thisExtension.ActualCompletion = timeEntry.ThroughDate;
                     }
                 }
             }
@@ -261,13 +264,15 @@ namespace Allors.Domain
 
         private static void DeriveCanInvoice(this WorkEffort @this)
         {
+            var thisExtension = (WorkEffortExtension)@this;
+
             if (@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
             {
-                @this.CanInvoice = true;
+                thisExtension.CanInvoice = true;
 
                 if (@this.ExistWorkEffortWhereChild)
                 {
-                    @this.CanInvoice = false;
+                    thisExtension.CanInvoice = false;
                 }
 
                 if (@this.CanInvoice)
@@ -276,7 +281,7 @@ namespace Allors.Domain
                     {
                         if (!@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
                         {
-                            @this.CanInvoice = false;
+                            thisExtension.CanInvoice = false;
                             break;
                         }
                     }
@@ -288,7 +293,7 @@ namespace Allors.Domain
                     {
                         if (!timeEntry.ExistThroughDate)
                         {
-                            @this.CanInvoice = false;
+                            thisExtension.CanInvoice = false;
                             break;
                         }
                     }
@@ -296,12 +301,12 @@ namespace Allors.Domain
 
                 if (@this.ExistWorkEffortAssignmentRatesWhereWorkEffort && !@this.ExistWorkEffortAssignmentRatesWhereWorkEffort)
                 {
-                    @this.CanInvoice = false;
+                    thisExtension.CanInvoice = false;
                 }
             }
             else
             {
-                @this.CanInvoice = false;
+                thisExtension.CanInvoice = false;
             }
         }
     }
