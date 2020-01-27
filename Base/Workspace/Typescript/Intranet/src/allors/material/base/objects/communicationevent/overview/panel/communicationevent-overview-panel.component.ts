@@ -96,7 +96,7 @@ export class CommunicationEventOverviewPanelComponent extends TestScope implemen
           name: pullName,
           object: id,
           fetch: {
-            CommunicationEvents: {
+            CommunicationEventsWhereInvolvedParty: {
               include: {
                 InvolvedParties: x,
                 CommunicationEventState: x,

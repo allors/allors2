@@ -1,53 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.Employment">
-    <Position X="0.5" Y="2.5" Width="2.5" />
-    <AssociationLine Name="__ActiveEmployer" Type="Allors.Domain.InternalOrganisation" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="1.812" Y="4.117" />
-        <Point X="1.812" Y="4.816" />
-        <Point X="7.438" Y="4.816" />
-        <Point X="7.438" Y="4.441" />
-      </Path>
-    </AssociationLine>
+  <Interface Name="Allors.Domain.CustomerRelationship">
+    <Position X="2.5" Y="2.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AACEAAAAAAAAAAAAAAAAABAACQAAAAAAAAIAAAAAAAA=</HashCode>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Employee" />
-      <Property Name="Employer" />
-      <Property Name="__ActiveEmployer" />
-    </ShowAsAssociation>
-  </Interface>
-  <Interface Name="Allors.Domain.PartyRelationship" Collapsed="true">
-    <Position X="1" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="__Parties" />
+      <Property Name="Customer" />
+      <Property Name="InternalOrganisation" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Party" Collapsed="true">
-    <Position X="5.25" Y="0.5" Width="1.5" />
+    <Position X="5.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIoOABAAAAAgIEQQBgBJBAACQgwABAgIQKFACJAiSA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
-    <Position X="6.5" Y="3.75" Width="1.75" />
+    <Position X="5.5" Y="4.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>2ASAAAGEWRYAAAKAUExQLhIIBgmMgoKACAGCAAgxSAA=</HashCode>
+      <HashCode>2ASAAAGEWRYAAAKAWExQLhIIBgmMgoKACAGCAAgxSAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="__ActiveCustomers" />
+    </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.Person" Collapsed="true">
-    <Position X="4.25" Y="2.25" Width="1.5" />
+  <Interface Name="Allors.Domain.PartyRelationship" Collapsed="true">
+    <Position X="2.75" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAggEgAJgAAAECKABAQAAYEECAAAEiAAAAiAACAEAo=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

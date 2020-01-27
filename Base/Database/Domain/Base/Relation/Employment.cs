@@ -24,7 +24,7 @@ namespace Allors.Domain
             // TODO: Don't extent for InternalOrganisations
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
-            if (!this.ExistEmployer && internalOrganisations.Count() == 1)
+            if (!this.ExistEmployer && internalOrganisations.Length == 1)
             {
                 this.Employer = internalOrganisations.First();
             }

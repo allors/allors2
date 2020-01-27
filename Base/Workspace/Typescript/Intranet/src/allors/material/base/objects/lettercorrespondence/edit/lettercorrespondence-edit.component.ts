@@ -149,7 +149,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
               pull.CommunicationEvent({
                 object: this.data.id,
                 fetch: {
-                  PartiesWhereCommunicationEvent: x,
+                  InvolvedParties: x,
                 }
               }),
             ];

@@ -136,7 +136,7 @@ export class FaceToFaceCommunicationEditComponent extends TestScope implements O
               pull.CommunicationEvent({
                 object: this.data.id,
                 fetch: {
-                  PartiesWhereCommunicationEvent: {
+                  InvolvedParties: {
                     include: {
                       CurrentContacts: x
                     }

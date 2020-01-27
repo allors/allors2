@@ -131,7 +131,7 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
               pull.CommunicationEvent({
                 object: this.data.id,
                 fetch: {
-                  PartiesWhereCommunicationEvent: x
+                  InvolvedParties: x
                 }
               }),
             ];

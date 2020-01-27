@@ -49,7 +49,10 @@ namespace Allors.Domain
         {
             var (iteration, changeSet, derivedObjects) = method;
 
-            if (!changeSet.IsCreated(this) && !changeSet.HasChangedRoles(this) && changeSet.HasChangedAssociation(this, this.Meta.EmploymentsWhereEmployer))
+            if (!changeSet.IsCreated(this) &&
+                !changeSet.HasChangedRoles(this) &&
+                changeSet.HasChangedAssociation(this, this.Meta.EmploymentsWhereEmployer) && // ActiveEmployees
+                changeSet.HasChangedAssociation(this, this.Meta.EmploymentsWhereEmployer)) // ActiveCustomers
             {
                 iteration.Mark(this);
             }
@@ -116,6 +119,8 @@ namespace Allors.Domain
                 }
             }
 
+            this.PartyName = this.Name;
+
             var now = this.Session().Now();
 
             this.ActiveEmployees = this.EmploymentsWhereEmployer
@@ -123,7 +128,12 @@ namespace Allors.Domain
                 .Select(v => v.Employee)
                 .ToArray();
 
-            this.PartyName = this.Name;
+            this.ActiveCustomers = this.CustomerRelationshipsWhereInternalOrganisation
+                .Where(v => v.FromDate <= now && (!v.ExistThroughDate || v.ThroughDate >= now))
+                .Select(v => v.Customer)
+                .ToArray();
+
+            this.ContactsUserGroup.Members = this.CurrentContacts.Cast<User>().ToArray();
 
             // Contacts
             if (!this.ExistContactsUserGroup)

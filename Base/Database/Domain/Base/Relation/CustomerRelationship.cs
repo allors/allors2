@@ -17,14 +17,12 @@ namespace Allors.Domain
             {
                 if (this.ExistCustomer)
                 {
-                    iteration.AddDependency(this.Customer, this);
                     iteration.Mark(this.Customer);
 
                     if (this.Customer is Organisation customer)
                     {
                         foreach (OrganisationContactRelationship contactRelationship in customer.OrganisationContactRelationshipsWhereOrganisation)
                         {
-                            iteration.AddDependency(contactRelationship, this);
                             iteration.Mark(contactRelationship);
                         }
                     }
@@ -32,59 +30,22 @@ namespace Allors.Domain
 
                 if (this.ExistInternalOrganisation)
                 {
-                    iteration.AddDependency(this.InternalOrganisation, this);
                     iteration.Mark(this.InternalOrganisation);
                 }
             }
         }
 
-        public void BaseOnDerive(ObjectOnDerive method)
+        public void BaseOnInit(ObjectOnInit method)
         {
-            var derivation = method.Derivation;
+            // TODO: Don't extent for InternalOrganisations
+            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
-            if (!this.ExistInternalOrganisation)
+            if (!this.ExistInternalOrganisation && internalOrganisations.Length == 1)
             {
-                var internalOrganisations = new Organisations(this.Strategy.Session).InternalOrganisations();
-
-                if (internalOrganisations.Count() == 1)
-                {
-                    this.InternalOrganisation = internalOrganisations.Single();
-                }
+                this.InternalOrganisation = internalOrganisations.First();
             }
-
-            if (this.ExistCustomer)
-            {
-                if (this.Customer is Organisation customerOrganisation && customerOrganisation.ExistContactsUserGroup)
-                {
-                    foreach (Person contact in customerOrganisation.ContactsUserGroup.Members)
-                    {
-                        customerOrganisation.ContactsUserGroup.RemoveMember(contact);
-                    }
-
-                    if (this.FromDate <= this.Session().Now() && (!this.ExistThroughDate || this.ThroughDate >= this.Session().Now()))
-                    {
-                        foreach (Person currentContact in customerOrganisation.CurrentContacts)
-                        {
-                            customerOrganisation.ContactsUserGroup.AddMember(currentContact);
-                        }
-                    }
-                }
-
-                // HACK: DerivedRoles
-                var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)this.InternalOrganisation;
-
-                if (this.FromDate <= this.Session().Now() && (!this.ExistThroughDate || this.ThroughDate >= this.Session().Now()))
-                {
-                    internalOrganisationDerivedRoles.AddActiveCustomer(this.Customer);
-                }
-
-                if (this.FromDate > this.Session().Now() || (this.ExistThroughDate && this.ThroughDate < this.Session().Now()))
-                {
-                    internalOrganisationDerivedRoles.RemoveActiveCustomer(this.Customer);
-                }
-            }
-
-            this.Parties = new Party[] { this.Customer, this.InternalOrganisation };
         }
+
+        public void BaseOnDerive(ObjectOnDerive method) => this.Parties = new Party[] { this.Customer, this.InternalOrganisation };
     }
 }
