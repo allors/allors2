@@ -8,7 +8,7 @@ namespace Allors.Domain
     // TODO: Why not use Counters?
     public partial class FiscalYearInvoiceNumber
     {
-        public void BaseOnInit(ObjectOnInit method)
+        public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistNextSalesInvoiceNumber)
             {

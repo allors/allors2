@@ -257,11 +257,11 @@ namespace Allors.Domain
                 
                 if (@this.BaseIsActiveCustomer(customerRelationship.InternalOrganisation, @this.Strategy.Session.Now()))
                 {
-                    internalOrganisationDerivedRoles.AddActiveCustomer(@this);
+                    internalOrganisationDerivedRoles?.AddActiveCustomer(@this);
                 }
                 else
                 {
-                    internalOrganisationDerivedRoles.RemoveActiveCustomer(@this);
+                    internalOrganisationDerivedRoles?.RemoveActiveCustomer(@this);
                 }
             }
 

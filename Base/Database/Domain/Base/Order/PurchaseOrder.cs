@@ -136,18 +136,11 @@ namespace Allors.Domain
 
             if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
+                iteration.AddDependency(this, singleton);
+                iteration.Mark(singleton);
 
-                if (changeSet.HasChangedRoles(this))
-                {
-                    iteration.AddDependency(this, singleton);
-                    iteration.Mark(singleton);
-
-                    iteration.AddDependency(this, singleton);
-                    iteration.Mark(singleton);
-
-                    iteration.AddDependency(this, this.TakenViaSupplier);
-                    iteration.Mark(this.TakenViaSupplier);
-                }
+                iteration.AddDependency(this, this.TakenViaSupplier);
+                iteration.Mark(this.TakenViaSupplier);
 
                 foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
                 {
