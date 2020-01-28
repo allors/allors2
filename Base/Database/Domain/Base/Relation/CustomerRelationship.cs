@@ -35,7 +35,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseOnInit(ObjectOnInit method)
+        public void BaseOnPostBuild(ObjectOnPostBuild method)
         {
             // TODO: Don't extent for InternalOrganisations
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();

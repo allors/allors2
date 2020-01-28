@@ -72,6 +72,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).Build();
 
+            this.Session.Derive();
             this.Session.Commit();
 
             var builder = new SalesInvoiceBuilder(this.Session);
