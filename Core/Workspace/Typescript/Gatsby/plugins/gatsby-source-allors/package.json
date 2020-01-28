@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "axios": "latest",
-    "gatsby": "^2.18.0",
+    "gatsby": "^2.19.7",
     "gatsby-source-filesystem": "^2.1.46"
   },
   "devDependencies": {

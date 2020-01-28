@@ -10,28 +10,30 @@ declare module '../../framework/meta/MetaPopulation' {
 
 MetaPopulation.prototype["gatsbyDerive"] = function (this: MetaPopulation) {
 
-  // sync
-  this.objectTypes.forEach((v => { v._isGatsby = false}))
+  this.classes.forEach((objectType) => {
+    objectType.gatsbyRoleTypes = objectType.gatsbyRoleTypes || [];
+    objectType.gatsbyAssociationTypes = objectType.gatsbyAssociationTypes || [];
+  });
 
-  this.classes.forEach((v) => {
-    v.roleTypes.forEach((w) => {
-      if (w.isGatsby) {
-        v._isGatsby = true;
-        w.objectType._isGatsby = true;
-        w.objectType.classes.forEach((x) => x._isGatsby = true)
+  this.classes.forEach((objectType) => {
+    objectType.roleTypes.forEach((roleType) => {
+      if (objectType.gatsbyRoleTypes.indexOf(roleType) > -1) {
+        objectType._isGatsby = true;
+        roleType.objectType._isGatsby = true;
+        roleType.objectType.classes.forEach((x) => x._isGatsby = true)
       }
     })
 
-    v.associationTypes.forEach((w) => {
-      if (w.isGatsby) {
-        v._isGatsby = true;
-        w.objectType._isGatsby = true;
-        w.objectType.classes.forEach((x) => x._isGatsby = true)
+    objectType.associationTypes.forEach((associationType) => {
+      if (objectType.gatsbyAssociationTypes.indexOf(associationType) > -1) {
+        objectType._isGatsby = true;
+        associationType.objectType._isGatsby = true;
+        associationType.objectType.classes.forEach((x) => x._isGatsby = true)
       }
     })
 
-    if(v.gatsbyProperties && v.gatsbyProperties.length > 0){
-      v._isGatsby = true;
+    if (objectType.gatsbyProperties && objectType.gatsbyProperties.length > 0) {
+      objectType._isGatsby = true;
     }
   })
 

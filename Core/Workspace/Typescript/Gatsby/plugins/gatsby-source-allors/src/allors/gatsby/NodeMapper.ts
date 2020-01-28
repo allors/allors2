@@ -78,7 +78,7 @@ export class NodeMapper {
         node["allorsType"] = workspaceObject.objectType.name;
 
         // Roles
-        type._roleTypes.forEach((roleType => {
+        type.gatsbyRoleTypes.forEach((roleType => {
           const role = workspaceObject.roleByRoleTypeId.get(roleType.id);
           let propertyName = escape(camel(roleType.name));
 
@@ -101,7 +101,7 @@ export class NodeMapper {
         }))
 
         // Associations
-        type._associationTypes.forEach((associationType => {
+        type.gatsbyAssociationTypes.forEach((associationType => {
           const association = sessionObject.getAssociation(associationType);
           const propertyName = `${escape(camel(associationType.name))}`;
 

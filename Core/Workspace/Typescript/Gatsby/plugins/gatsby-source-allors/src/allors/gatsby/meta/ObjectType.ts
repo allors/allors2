@@ -4,11 +4,14 @@ import { ids } from '../../meta/generated/ids.g';
 declare module '../../framework/meta/ObjectType' {
   interface ObjectType {
     gatsbyProperties: [{ name: string, type: "String" | "Data" | "Int" | "Float" | "Boolean" }];
+
+    gatsbyRoleTypes: RoleType[];
+
+    gatsbyAssociationTypes: AssociationType[];
+
     _isGatsby: boolean;
     _isUnion: boolean;
     _name: string;
-    _roleTypes: RoleType[];
-    _associationTypes: AssociationType[];
     gatsbyDerive(): void;
   }
 }
@@ -18,8 +21,6 @@ ObjectType.prototype["gatsbyDerive"] = function (this: ObjectType) {
   if (!this._isGatsby) {
     delete (this._isUnion);
     delete (this._name);
-    delete (this._roleTypes);
-    delete (this._associationTypes)
     return;
   }
 
@@ -53,9 +54,6 @@ ObjectType.prototype["gatsbyDerive"] = function (this: ObjectType) {
         throw new Error("unknown unit type " + this.name)
     }
   } else {
-    this._roleTypes = this.roleTypes.filter((v) => v.isGatsby);
-    this._associationTypes = this.associationTypes.filter((v) => v.isGatsby);
-
     this._isUnion = this.isInterface && this.classes.length > 1;
 
     if (!this.classes || this.classes.length == 0) {

@@ -10,26 +10,26 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^1.0.0-rc.4",
-    "@mdx-js/react": "^1.0.0-rc.5",
-    "gatsby": "^2.18.22",
-    "gatsby-image": "^2.2.38",
-    "gatsby-mdx": "^1.0.0",
+    "@mdx-js/mdx": "^1.5.5",
+    "@mdx-js/react": "^1.5.5",
+    "gatsby": "^2.19.7",
+    "gatsby-image": "^2.2.39",
+    "gatsby-plugin-mdx": "^1.0.67",
     "gatsby-plugin-graphql-codegen": "^2.1.1",
-    "gatsby-plugin-sharp": "^2.3.13",
+    "gatsby-plugin-sharp": "^2.4.3",
     "gatsby-plugin-typescript": "^2.1.26",
     "gatsby-source-filesystem": "^2.1.46",
-    "gatsby-transformer-sharp": "^2.3.12",
+    "gatsby-transformer-sharp": "^2.3.13",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
-    "@types/node": "^13.1.7",
-    "@types/react": "^16.9.17",
-    "@types/react-dom": "^16.9.4",
-    "@typescript-eslint/eslint-plugin": "^2.16.0",
-    "@typescript-eslint/parser": "^2.16.0",
+    "@types/node": "^13.5.0",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "@typescript-eslint/eslint-plugin": "^2.18.0",
+    "@typescript-eslint/parser": "^2.18.0",
     "lnk": "1.1.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   }
 }

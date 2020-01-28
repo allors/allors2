@@ -6,12 +6,9 @@ const metaPopulation = new MetaPopulation(data);
 const m = metaPopulation as Meta;
 
 // RoleTypes
-m.Organisation.Name.isGatsby = true;
-m.Organisation.Owner.isGatsby = true;
-m.Person.FirstName.isGatsby = true;
-m.Person.Photo.isGatsby = true;
-m.Media.UniqueId.isGatsby = true;
-m.Media.Revision.isGatsby = true;
+m.Organisation.gatsbyRoleTypes = [m.Organisation.Name, m.Organisation.Owner];
+m.Person.gatsbyRoleTypes = [m.Person.FirstName, m.Person.Photo];
+m.Media.gatsbyRoleTypes = [m.Media.UniqueId, m.Media.Revision, m.Media.FileName];
 
 // Properties
 m.Organisation.gatsbyProperties = [

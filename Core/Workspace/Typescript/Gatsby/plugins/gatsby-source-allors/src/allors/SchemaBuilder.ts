@@ -31,7 +31,7 @@ export class SchemaBuilder {
 
     this.metaPopulation.classes.forEach((v) => {
       if (v._isGatsby) {
-        if (v._roleTypes.length > 0 || v._associationTypes.length > 0) {
+        if (v.gatsbyRoleTypes.length > 0 || v.gatsbyAssociationTypes.length > 0) {
           const fields = this.fields(v);
           const typeDefs = `
           type Allors${v.name} implements Node & AllorsObject {
@@ -49,7 +49,7 @@ export class SchemaBuilder {
 
   private fields(objectType: ObjectType) {
     let properties = "";
-    objectType._roleTypes.forEach((roleType) => {
+    objectType.gatsbyRoleTypes.forEach((roleType) => {
       let typeName;
       if (roleType.objectType.isUnit) {
         typeName = `${roleType.objectType._name}`;
@@ -60,7 +60,7 @@ export class SchemaBuilder {
       properties += `${roleType.name}: ${typeName}\n`
     })
 
-    objectType._associationTypes.forEach((associationType) => {
+    objectType.gatsbyAssociationTypes.forEach((associationType) => {
       const typeName = `[${associationType.objectType._name}] @link`
       properties += `${associationType.name}: ${typeName}\n`
     })
