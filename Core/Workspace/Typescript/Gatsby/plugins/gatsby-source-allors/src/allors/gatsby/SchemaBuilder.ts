@@ -1,6 +1,7 @@
 import { CreateSchemaCustomizationArgs, PluginOptions } from "gatsby"
 import { MetaPopulation, ObjectType } from "../framework";
-import { Meta, ids } from "../meta";
+import { Meta } from "../meta";
+import createName from "./utils/createName";
 
 export class SchemaBuilder {
 
@@ -57,18 +58,18 @@ export class SchemaBuilder {
         typeName = `[${roleType.objectType._name}] @link`
       }
 
-      properties += `${roleType.name}: ${typeName}\n`
+      properties += `${createName(roleType.name)}: ${typeName}\n`
     })
 
     objectType.gatsbyAssociationTypes.forEach((associationType) => {
       const typeName = `[${associationType.objectType._name}] @link`
-      properties += `${associationType.name}: ${typeName}\n`
+      properties += `${createName(associationType.name)}: ${typeName}\n`
     })
 
     // Properties
     if (objectType.gatsbyProperties) {
       objectType.gatsbyProperties.forEach((property => {
-        properties += `${property.name}: ${property.type}\n`
+        properties += `${createName(property.name)}: ${property.type}\n`
       }))
     }
 

@@ -2,24 +2,7 @@ import { Loaded } from "../promise";
 
 import { NodePluginArgs } from "gatsby"
 import { ISessionObject } from "../framework";
-
-const reservedWords = new Set([
-  "id",
-  "children",
-  "parent",
-  "fields",
-  "internal"
-]);
-
-const escape = (value: string) => {
-  if (reservedWords.has(value)) {
-    return `_${value}`;
-  }
-
-  return value;
-};
-
-const camel = (value: string) => value.replace(/^\w/, c => c.toLowerCase());
+import createName from "./utils/createName";
 
 export class NodeMapper {
 
@@ -80,7 +63,7 @@ export class NodeMapper {
         // Roles
         type.gatsbyRoleTypes.forEach((roleType => {
           const role = workspaceObject.roleByRoleTypeId.get(roleType.id);
-          let propertyName = escape(camel(roleType.name));
+          let propertyName = createName(roleType.name);
 
           if (!!role) {
             if (roleType.objectType.isUnit) {
@@ -103,7 +86,7 @@ export class NodeMapper {
         // Associations
         type.gatsbyAssociationTypes.forEach((associationType => {
           const association = sessionObject.getAssociation(associationType);
-          const propertyName = `${escape(camel(associationType.name))}`;
+          const propertyName = `${createName(associationType.name)}`;
 
           if (associationType.isOne) {
             if (!!association) {
