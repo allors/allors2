@@ -3,14 +3,7 @@ import { createRemoteFileNode } from "gatsby-source-filesystem";
 
 export class MediaNodeBuilder {
 
-  url: string;
-
-  constructor(private args: CreateNodeArgs, options: PluginOptions) {
-    const { node  } = args;
-
-    const fileName = node.fileName as string
-    const fileComponent = fileName ? "/" + encodeURIComponent(fileName) : '';
-    this.url = (options["url"] as string) + "media/" + node.uniqueId + fileComponent;
+  constructor(private args: CreateNodeArgs, private options: PluginOptions) {
   }
 
   async build() {
@@ -18,9 +11,15 @@ export class MediaNodeBuilder {
     const { node, cache, store, createNodeId, reporter, actions: { createNode } } = this.args;
 
     if (node.internal.type === "AllorsMedia") {
+
+      const fileName = node.fileName as string
+      const fileComponent = fileName ? "/" + fileName : '';
+      const rawUrl = (this.options["url"] as string) + "media/" + node.uniqueId + fileComponent;
+      const url = encodeURI(rawUrl);
+
       try {
         const fileNode = await createRemoteFileNode({
-          url: this.url,
+          url: url,
           parentNodeId: node.id,
           store,
           cache,
@@ -31,7 +30,7 @@ export class MediaNodeBuilder {
 
         node.file___NODE = fileNode.id;
       } catch (e) {
-        reporter.panicOnBuild("Could not create remote file node for " + this.url, e);
+        reporter.panicOnBuild("Could not create remote file node for " + url, e);
       }
     }
   }
