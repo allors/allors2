@@ -55,14 +55,23 @@ export class SchemaBuilder {
       if (roleType.objectType.isUnit) {
         typeName = `${roleType.objectType._name}`;
       } else {
-        typeName = `[${roleType.objectType._name}] @link`
+        if (roleType.isOne) {
+          typeName = `${roleType.objectType._name} @link`
+        } else {
+          typeName = `[${roleType.objectType._name}] @link`
+        }
       }
 
       properties += `${createName(roleType.name)}: ${typeName}\n`
     })
 
     objectType.gatsbyAssociationTypes.forEach((associationType) => {
-      const typeName = `[${associationType.objectType._name}] @link`
+      let typeName;
+      if (associationType.isOne) {
+        typeName = `${associationType.objectType._name} @link`
+      } else {
+        typeName = `[${associationType.objectType._name}] @link`
+      }
       properties += `${createName(associationType.name)}: ${typeName}\n`
     })
 

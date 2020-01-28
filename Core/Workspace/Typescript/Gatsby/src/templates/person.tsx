@@ -4,13 +4,13 @@ import { graphql } from 'gatsby'
 import { Query } from "../../graphql-types"
 import Layout from "../components/layout"
 
-export default class OrganisationPage extends React.Component<{ data: Query }> {
+export default class PersonPage extends React.Component<{ data: Query }> {
   public render() {
 
-    const { name } = this.props.data.allorsOrganisation;
+    const { firstName } = this.props.data.allorsPerson;
 
     return (<Layout>
-      <h1>{name}</h1>
+      <h1>{firstName}</h1>
     </Layout>
     )
   }
@@ -18,9 +18,9 @@ export default class OrganisationPage extends React.Component<{ data: Query }> {
 
 export const query = graphql`
   query($slug: String!) {
-    allorsOrganisation(slug: { eq: $slug }) {
+    allorsPerson(slug: { eq: $slug }) {
       slug,
-      name
+      firstName
     },
   }
 `

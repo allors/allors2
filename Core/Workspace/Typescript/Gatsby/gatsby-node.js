@@ -1,6 +1,6 @@
 const path = require(`path`)
 
-const organisationTemplate = path.resolve(`./src/templates/organisation.tsx`)
+const personTemplate = path.resolve(`./src/templates/person.tsx`)
 
 /** @param {import("gatsby").CreatePagesArgs } args*/
 exports.createPages = async ({ graphql, actions }) => {
@@ -8,11 +8,10 @@ exports.createPages = async ({ graphql, actions }) => {
   const result = await graphql(
     `
         {
-            allAllorsOrganisation {
+            allAllorsPerson {
                 edges {
                     node {
                         slug,
-                        name,
                     }
                 }
             },
@@ -24,13 +23,13 @@ exports.createPages = async ({ graphql, actions }) => {
     throw result.errors
   }
 
-  /** @type {import("./graphql-types").AllorsOrganisationConnection } */
-  const allAllorsOrganisation = result.data.allAllorsOrganisation
-  allAllorsOrganisation.edges.forEach((edge) => {
+  /** @type {import("./graphql-types").AllorsPersonConnection } */
+  const allAllorsPerson = result.data.allAllorsPerson;
+  allAllorsPerson.edges.forEach((edge) => {
     const slug = edge.node.slug;
     createPage({
       path: slug,
-      component: organisationTemplate,
+      component: personTemplate,
       context: {
         slug: slug,
       }

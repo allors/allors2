@@ -10,12 +10,14 @@ declare module '../generated/Person.g' {
   }
 }
 
+export const Slug = 'slug';
+
 domain.extend((workspace) => {
 
   const m = workspace.metaPopulation as Meta;
   const organisation = workspace.constructorByObjectType.get(m.Person).prototype as any;
 
-  Object.defineProperty(organisation, 'slug', {
+  Object.defineProperty(organisation, Slug, {
     enumerable: true,
     get(this: Person): string {
       return createSlug(this.FullName);

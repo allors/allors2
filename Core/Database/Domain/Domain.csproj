@@ -5,10 +5,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\about.md" />
+    <None Remove="Resources\avatar.png" />
     <None Remove="Resources\madeliefje.jpg" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\about.md" />
+    <EmbeddedResource Include="Resources\avatar.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\madeliefje.jpg" />

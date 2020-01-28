@@ -7,12 +7,15 @@ namespace Allors.Domain
 
     public partial class Medias
     {
+        public static readonly Guid AvatarId = new Guid("E9B790FB-B35E-441C-A25F-904D0674B32C");
         public static readonly Guid MadeliefjeId = new Guid("AE0D2BAA-9E07-4DD2-8AAD-98E57010CE98");
         public static readonly Guid AboutId = new Guid("F5922C1B-A0DA-4A77-98BD-21F037C0E3E6");
 
         private UniquelyIdentifiableSticky<Media> cache;
 
         public Sticky<Guid, Media> Cache => this.cache ??= new UniquelyIdentifiableSticky<Media>(this.Session);
+
+        public Media Avatar => this.Cache[AvatarId];
 
         public Media Madeliefje => this.Cache[MadeliefjeId];
 
@@ -22,16 +25,22 @@ namespace Allors.Domain
         {
             var merge = this.Cache.Merger().Action();
 
-            merge(MadeliefjeId, v =>
+            merge(AvatarId, v =>
             {
-                v.InData = this.GetResourceBytes("madeliefje.jpg");
-                v.FileName = "madeliefje.jpg";
+                v.InData = this.GetResourceBytes("avatar.png");
+                v.FileName = "avatar.png";
             });
 
             merge(AboutId, v =>
             {
                 v.InData = this.GetResourceBytes("about.md");
                 v.FileName = "about.md";
+            });
+
+            merge(MadeliefjeId, v =>
+            {
+                v.InData = this.GetResourceBytes("madeliefje.jpg");
+                v.FileName = "madeliefje.jpg";
             });
         }
 

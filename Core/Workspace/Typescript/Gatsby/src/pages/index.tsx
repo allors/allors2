@@ -8,15 +8,15 @@ import Layout from "../components/layout"
 export default class IndexPage extends React.Component<{ data: Query }> {
   public render() {
     const { siteName } = this.props.data.site.siteMetadata;
-    const { allAllorsOrganisation } = this.props.data;
+    const { allAllorsPerson } = this.props.data;
 
     return (
       <Layout>
         <h1>{siteName}</h1>
 
-        {allAllorsOrganisation.edges.map(v =>
+        {allAllorsPerson.edges.map(v =>
           <ul>
-            <li><Link to={v.node.slug}>{v.node.name}</Link></li>
+            <li><Link to={v.node.slug}>{v.node.firstName}</Link></li>
           </ul>
         )
         }
@@ -32,11 +32,11 @@ export const pageQuery = graphql`
         siteName
       }
     },
-    allAllorsOrganisation {
+    allAllorsPerson {
       edges {
         node {
-          name
           slug
+          firstName
         }
       }
     }
