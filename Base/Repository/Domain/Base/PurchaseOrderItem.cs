@@ -47,8 +47,6 @@ namespace Allors.Repository
 
         public OrderItem[] Associations { get; set; }
 
-        public Order SyncedOrder { get; set; }
-
         public string Message { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
@@ -137,6 +135,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
+        [Derived]
         public PurchaseOrderItemState PurchaseOrderItemState { get; set; }
         #endregion
 

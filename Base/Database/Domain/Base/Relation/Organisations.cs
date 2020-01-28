@@ -263,10 +263,7 @@ namespace Allors.Domain
             return internalOrganisation;
         }
 
-        /// <summary>
-        /// Returns an array of Organisations.
-        /// </summary>
-        /// <returns></returns>
+        // TODO: Remove Extent
         public Organisation[] InternalOrganisations()
         {
             var internalOrganisations = this.Extent();

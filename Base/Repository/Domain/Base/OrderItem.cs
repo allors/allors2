@@ -142,16 +142,6 @@ namespace Allors.Repository
         OrderItem[] Associations { get; set; }
 
         #region Allors
-        [Id("C9890953-C626-4512-98DA-159C897BD55A")]
-        [AssociationId("0B8AB430-4E9D-449F-91D4-83EDE3DBFF17")]
-        [RoleId("DB3CE593-3698-461A-827C-0CFABFCB22F8")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Synced]
-        Order SyncedOrder { get; set; }
-
-        #region Allors
         [Id("feeed27a-c421-476c-b233-02d2fb9db76d")]
         [AssociationId("d1458a15-e035-4b07-a6b8-5a9af704a4ac")]
         [RoleId("34e046c2-881c-43e7-8c67-c14c595ac074")]

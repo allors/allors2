@@ -13,16 +13,19 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            var created = new PurchaseOrderItemStates(this.Session).Created;
-            var onHold = new PurchaseOrderItemStates(this.Session).OnHold;
-            var cancelled = new PurchaseOrderItemStates(this.Session).Cancelled;
-            var rejected = new PurchaseOrderItemStates(this.Session).Rejected;
-            var awaitingApproval = new PurchaseOrderItemStates(this.Session).AwaitingApproval;
-            var inProcess = new PurchaseOrderItemStates(this.Session).InProcess;
-            var partiallyReceived = new PurchaseOrderItemShipmentStates(this.Session).PartiallyReceived;
-            var received = new PurchaseOrderItemShipmentStates(this.Session).Received;
-            var completed = new PurchaseOrderItemStates(this.Session).Completed;
-            var finished = new PurchaseOrderItemStates(this.Session).Finished;
+            var itemStates = new PurchaseOrderItemStates(this.Session);
+            var created = itemStates.Created;
+            var onHold = itemStates.OnHold;
+            var cancelled = itemStates.Cancelled;
+            var rejected = itemStates.Rejected;
+            var awaitingApproval = itemStates.AwaitingApproval;
+            var inProcess = itemStates.InProcess;
+            var completed = itemStates.Completed;
+            var finished = itemStates.Finished;
+
+            var shipmentStates = new PurchaseOrderItemShipmentStates(this.Session);
+            var partiallyReceived = shipmentStates.PartiallyReceived;
+            var received = shipmentStates.Received;
 
             var part = this.Meta.Part;
             var cancel = this.Meta.Cancel;

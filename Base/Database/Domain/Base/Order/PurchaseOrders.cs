@@ -13,18 +13,21 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
-            var created = new PurchaseOrderStates(this.Session).Created;
-            var onHold = new PurchaseOrderStates(this.Session).OnHold;
-            var cancelled = new PurchaseOrderStates(this.Session).Cancelled;
-            var rejected = new PurchaseOrderStates(this.Session).Rejected;
-            var awaitingApprovalLevel1 = new PurchaseOrderStates(this.Session).AwaitingApprovalLevel1;
-            var awaitingApprovalLevel2 = new PurchaseOrderStates(this.Session).AwaitingApprovalLevel2;
-            var inProcess = new PurchaseOrderStates(this.Session).InProcess;
-            var sent = new PurchaseOrderStates(this.Session).Sent;
-            var completed = new PurchaseOrderStates(this.Session).Completed;
-            var finished = new PurchaseOrderStates(this.Session).Finished;
-            var partiallyReceived = new PurchaseOrderShipmentStates(this.Session).PartiallyReceived;
-            var received = new PurchaseOrderShipmentStates(this.Session).Received;
+            var states = new PurchaseOrderStates(this.Session);
+            var created = states.Created;
+            var onHold = states.OnHold;
+            var cancelled = states.Cancelled;
+            var rejected = states.Rejected;
+            var awaitingApprovalLevel1 = states.AwaitingApprovalLevel1;
+            var awaitingApprovalLevel2 = states.AwaitingApprovalLevel2;
+            var inProcess = states.InProcess;
+            var sent = states.Sent;
+            var completed = states.Completed;
+            var finished = states.Finished;
+
+            var shipmentStates = new PurchaseOrderShipmentStates(this.Session);
+            var partiallyReceived = shipmentStates.PartiallyReceived;
+            var received = shipmentStates.Received;
 
             var approve = this.Meta.Approve;
             var reject = this.Meta.Reject;

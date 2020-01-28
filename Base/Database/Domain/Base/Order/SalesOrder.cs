@@ -539,8 +539,6 @@ namespace Allors.Domain
 
             this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);
 
-            this.Sync(session);
-
             this.ResetPrintDocument();
         }
 
@@ -1088,15 +1086,6 @@ namespace Allors.Domain
             salesOrderItemDerivedRoles.TotalExVat = salesOrderItem.UnitPrice * salesOrderItem.QuantityOrdered;
             salesOrderItemDerivedRoles.TotalVat = salesOrderItem.UnitVat * salesOrderItem.QuantityOrdered;
             salesOrderItemDerivedRoles.TotalIncVat = salesOrderItem.TotalExVat + salesOrderItem.TotalVat;
-        }
-
-        private void Sync(ISession session)
-        {
-            // session.Prefetch(this.SyncPrefetch, this);
-            foreach (SalesOrderItem orderItem in this.SalesOrderItems)
-            {
-                orderItem.Sync(this);
-            }
         }
 
         private Dictionary<PostalAddress, Party> ShipToAddresses()

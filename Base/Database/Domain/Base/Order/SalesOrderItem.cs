@@ -47,12 +47,12 @@ namespace Allors.Domain
         {
             if (method.SecurityTokens == null)
             {
-                method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
+                method.SecurityTokens = this.SalesOrderWhereSalesOrderItem?.SecurityTokens.ToArray();
             }
 
             if (method.DeniedPermissions == null)
             {
-                method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
+                method.DeniedPermissions = this.SalesOrderWhereSalesOrderItem?.DeniedPermissions.ToArray();
             }
         }
 
@@ -425,8 +425,6 @@ namespace Allors.Domain
         public void BaseApprove(OrderItemApprove method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
 
         public void BaseContinue(SalesOrderItemContinue method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
-
-        public void Sync(Order order) => this.SyncedOrder = order;
 
         private void OnCancelOrReject()
         {
