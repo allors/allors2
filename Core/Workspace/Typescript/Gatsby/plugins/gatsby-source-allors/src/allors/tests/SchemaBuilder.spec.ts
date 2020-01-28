@@ -1,7 +1,7 @@
 
 import { assert } from 'chai';
 import 'mocha';
-import { SchemaBuilder } from '../SchemaBuilder';
+import { SchemaBuilder } from '../gatsby/SchemaBuilder';
 import { CreateSchemaCustomizationArgs } from 'gatsby';
 import metaPopulation from '../metaPopulation';
 

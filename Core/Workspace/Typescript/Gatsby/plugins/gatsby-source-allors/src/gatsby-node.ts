@@ -1,7 +1,7 @@
 import { CreateNodeArgs, PluginOptions, SourceNodesArgs, CreateSchemaCustomizationArgs } from 'gatsby';
 import { MediaNodeBuilder } from './allors/gatsby/MediaNodeBuilder';
 import { NodeBuilder } from './allors/NodeBuilder';
-import { SchemaBuilder } from './allors/SchemaBuilder';
+import { SchemaBuilder } from './allors/gatsby/SchemaBuilder';
 import metaPopulation from './allors/metaPopulation';
 
 export function createSchemaCustomization(args: CreateSchemaCustomizationArgs, options: PluginOptions){

@@ -1,6 +1,6 @@
 import { CreateSchemaCustomizationArgs, PluginOptions } from "gatsby"
-import { MetaPopulation, ObjectType } from "./framework";
-import { Meta, ids } from "./meta";
+import { MetaPopulation, ObjectType } from "../framework";
+import { Meta, ids } from "../meta";
 
 export class SchemaBuilder {
 
