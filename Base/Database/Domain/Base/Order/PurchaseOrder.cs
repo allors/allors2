@@ -413,7 +413,7 @@ namespace Allors.Domain
                                 orderItem.Part.AddSerialisedItem(serialisedItem);
                             }
 
-                            // HACK: DerivedRoles
+                            // HACK: DerivedRoles (WIP)
                             var serialisedItemDeriveRoles = (SerialisedItemDerivedRoles)serialisedItem;
                             serialisedItemDeriveRoles.PurchaseOrder = this;
                             serialisedItemDeriveRoles.SuppliedBy = this.TakenViaSupplier;

@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using Resources;
-
 namespace Allors.Domain
 {
+    using System;
+    using Resources;
     using System.Linq;
     using Allors.Meta;
 
@@ -40,19 +40,6 @@ namespace Allors.Domain
                 }
 
                 return null;
-            }
-        }
-
-        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
-        {
-            if (method.SecurityTokens == null)
-            {
-                method.SecurityTokens = this.SalesOrderWhereSalesOrderItem?.SecurityTokens.ToArray();
-            }
-
-            if (method.DeniedPermissions == null)
-            {
-                method.DeniedPermissions = this.SalesOrderWhereSalesOrderItem?.DeniedPermissions.ToArray();
             }
         }
 
@@ -91,7 +78,6 @@ namespace Allors.Domain
 
             if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-
                 iteration.AddDependency(salesOrder, this);
                 iteration.Mark(salesOrder);
 
@@ -121,15 +107,14 @@ namespace Allors.Domain
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
 
             var reasons = new InventoryTransactionReasons(this.Strategy.Session);
+            var shipmentStates = new ShipmentStates(this.Session());
 
             this.QuantityPendingShipment = this.OrderShipmentsWhereOrderItem
-                .Where(v => v.ExistShipmentItem
-                            && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.Session()).Shipped))
+                .Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(shipmentStates.Shipped))
                 .Sum(v => v.Quantity);
 
             this.QuantityShipped = this.OrderShipmentsWhereOrderItem
-                .Where(v => v.ExistShipmentItem
-                            && ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(new ShipmentStates(this.Session()).Shipped))
+                .Where(v => v.ExistShipmentItem && ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(shipmentStates.Shipped))
                 .Sum(v => v.Quantity);
 
             if (this.ExistSerialisedItem && this.QuantityOrdered != 1)
@@ -157,6 +142,40 @@ namespace Allors.Domain
             var salesOrderItemStates = new SalesOrderItemStates(derivation.Session);
 
             // SalesOrderItem States
+            if (this.IsValid)
+            {
+                if (salesOrder.SalesOrderState.readyForPosting &&
+                    (this.SalesOrderItemState.Created || this.SalesOrderItemState.OnHold))
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.ReadyForPosting;
+                }
+
+                if (salesOrder.SalesOrderState.InProcess && (this.SalesOrderItemState.ReadyForPosting || this.SalesOrderItemState.OnHold))
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.InProcess;
+                }
+
+                if (salesOrder.SalesOrderState.OnHold && this.SalesOrderItemState.InProcess)
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.OnHold;
+                }
+
+                if (salesOrder.SalesOrderState.Finished)
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.Finished;
+                }
+
+                if (salesOrder.SalesOrderState.Cancelled)
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.Cancelled;
+                }
+
+                if (salesOrder.SalesOrderState.Rejected)
+                {
+                    this.SalesOrderItemState = salesOrderItemStates.Rejected;
+                }
+            }
+
             if (this.IsValid)
             {
                 // ShipmentState
@@ -391,6 +410,8 @@ namespace Allors.Domain
                     this.Description = this.SerialisedItem.Details;
                 }
             }
+
+            this.DerivePrice(derivation);
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
@@ -405,6 +426,19 @@ namespace Allors.Domain
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.AssignedUnitPrice, Operations.Write));
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.InvoiceItemType, Operations.Write));
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Product, Operations.Write));
+            }
+        }
+
+        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.SalesOrderWhereSalesOrderItem?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.SalesOrderWhereSalesOrderItem?.DeniedPermissions.ToArray();
             }
         }
 
@@ -425,6 +459,228 @@ namespace Allors.Domain
         public void BaseApprove(OrderItemApprove method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
 
         public void BaseContinue(SalesOrderItemContinue method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
+
+        public void SyncPrices(
+           IDerivation derivation,
+           SalesOrder salesOrder,
+           PriceComponent[] currentPriceComponents,
+           decimal quantityOrdered,
+           decimal totalBasePrice)
+        {
+            var currentGenericOrProductOrFeaturePriceComponents = Array.Empty<PriceComponent>();
+            if (this.ExistProduct)
+            {
+                currentGenericOrProductOrFeaturePriceComponents = this.Product.GetPriceComponents(currentPriceComponents);
+            }
+            else if (this.ExistProductFeature)
+            {
+                currentGenericOrProductOrFeaturePriceComponents = this.ProductFeature.GetPriceComponents(this.SalesOrderItemWhereOrderedWithFeature.Product, currentPriceComponents);
+            }
+
+            var priceComponents = currentGenericOrProductOrFeaturePriceComponents.Where(
+                v => PriceComponents.BaseIsApplicable(
+                    new PriceComponents.IsApplicable
+                    {
+                        PriceComponent = v,
+                        Customer = salesOrder.BillToCustomer,
+                        Product = this.Product,
+                        SalesOrder = salesOrder,
+                        QuantityOrdered = quantityOrdered,
+                        ValueOrdered = totalBasePrice,
+                    })).ToArray();
+
+            var unitBasePrice = priceComponents.OfType<BasePrice>().Min(v => v.Price);
+
+            // Calculate Unit Price (with Discounts and Surcharges)
+            if (this.AssignedUnitPrice.HasValue)
+            {
+                this.UnitBasePrice = unitBasePrice ?? this.AssignedUnitPrice.Value;
+                this.UnitDiscount = 0;
+                this.UnitSurcharge = 0;
+                this.UnitPrice = this.AssignedUnitPrice.Value;
+            }
+            else
+            {
+                if (!unitBasePrice.HasValue)
+                {
+                    derivation.Validation.AddError(this, M.SalesOrderItem.UnitBasePrice, "No BasePrice with a Price");
+                    return;
+                }
+
+                this.UnitBasePrice = unitBasePrice.Value;
+
+                this.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
+                    v => v.Percentage.HasValue
+                             ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
+                             : v.Price ?? 0);
+
+                this.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
+                    v => v.Percentage.HasValue
+                             ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
+                             : v.Price ?? 0);
+
+                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.UnitDiscount += this.DiscountAdjustment.Percentage.HasValue ?
+                        Math.Round(this.UnitPrice * this.DiscountAdjustment.Percentage.Value / 100, 2) :
+                        this.DiscountAdjustment.Amount ?? 0;
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.UnitSurcharge += this.SurchargeAdjustment.Percentage.HasValue ?
+                        Math.Round(this.UnitPrice * this.SurchargeAdjustment.Percentage.Value / 100, 2) :
+                        this.SurchargeAdjustment.Amount ?? 0;
+                }
+
+                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+            }
+
+            foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
+            {
+                this.UnitBasePrice += featureItem.UnitBasePrice;
+                this.UnitPrice += featureItem.UnitPrice;
+                this.UnitDiscount += featureItem.UnitDiscount;
+                this.UnitSurcharge += featureItem.UnitSurcharge;
+            }
+
+            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
+
+            // Calculate Totals
+            this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
+            this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
+            this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;
+            this.TotalOrderAdjustment = this.TotalSurcharge - this.TotalDiscount;
+
+            if (this.TotalBasePrice > 0)
+            {
+                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
+                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
+            }
+            else
+            {
+                this.TotalDiscountAsPercentage = 0;
+                this.TotalSurchargeAsPercentage = 0;
+            }
+
+            this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
+            this.TotalVat = this.UnitVat * this.QuantityOrdered;
+            this.TotalIncVat = this.TotalExVat + this.TotalVat;
+        }
+
+        private void DerivePrice(IDerivation derivation)
+        {
+            var salesOrder = this.SalesOrderWhereSalesOrderItem;
+            var currentPriceComponents = new PriceComponents(this.Session()).CurrentPriceComponents(salesOrder.OrderDate);
+
+            var quantityOrdered = salesOrder.SalesOrderItems
+                .Where(v => v.IsValid && v.ExistProduct && v.Product.Equals(this.Product))
+                .Sum(w => w.QuantityOrdered);
+
+            var currentGenericOrProductOrFeaturePriceComponents = Array.Empty<PriceComponent>();
+            if (this.ExistProduct)
+            {
+                currentGenericOrProductOrFeaturePriceComponents = this.Product.GetPriceComponents(currentPriceComponents);
+            }
+            else if (this.ExistProductFeature)
+            {
+                currentGenericOrProductOrFeaturePriceComponents = this.ProductFeature.GetPriceComponents(this.SalesOrderItemWhereOrderedWithFeature.Product, currentPriceComponents);
+            }
+
+            var priceComponents = currentGenericOrProductOrFeaturePriceComponents.Where(
+                v => PriceComponents.BaseIsApplicable(
+                    new PriceComponents.IsApplicable
+                    {
+                        PriceComponent = v,
+                        Customer = salesOrder.BillToCustomer,
+                        Product = this.Product,
+                        SalesOrder = salesOrder,
+                        QuantityOrdered = quantityOrdered,
+                        ValueOrdered = 0,
+                    })).ToArray();
+
+            var unitBasePrice = priceComponents.OfType<BasePrice>().Min(v => v.Price);
+
+            // Calculate Unit Price (with Discounts and Surcharges)
+            if (this.AssignedUnitPrice.HasValue)
+            {
+                this.UnitBasePrice = unitBasePrice ?? this.AssignedUnitPrice.Value;
+                this.UnitDiscount = 0;
+                this.UnitSurcharge = 0;
+                this.UnitPrice = this.AssignedUnitPrice.Value;
+            }
+            else
+            {
+                if (!unitBasePrice.HasValue)
+                {
+                    derivation.Validation.AddError(this, M.SalesOrderItem.UnitBasePrice, "No BasePrice with a Price");
+                    return;
+                }
+
+                this.UnitBasePrice = unitBasePrice.Value;
+
+                this.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
+                    v => v.Percentage.HasValue
+                             ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
+                             : v.Price ?? 0);
+
+                this.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
+                    v => v.Percentage.HasValue
+                             ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
+                             : v.Price ?? 0);
+
+                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.UnitDiscount += this.DiscountAdjustment.Percentage.HasValue ?
+                        Math.Round(this.UnitPrice * this.DiscountAdjustment.Percentage.Value / 100, 2) :
+                        this.DiscountAdjustment.Amount ?? 0;
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.UnitSurcharge += this.SurchargeAdjustment.Percentage.HasValue ?
+                        Math.Round(this.UnitPrice * this.SurchargeAdjustment.Percentage.Value / 100, 2) :
+                        this.SurchargeAdjustment.Amount ?? 0;
+                }
+
+                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+            }
+
+            foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
+            {
+                this.UnitBasePrice += featureItem.UnitBasePrice;
+                this.UnitPrice += featureItem.UnitPrice;
+                this.UnitDiscount += featureItem.UnitDiscount;
+                this.UnitSurcharge += featureItem.UnitSurcharge;
+            }
+
+            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
+
+            // Calculate Totals
+            this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
+            this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
+            this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;
+            this.TotalOrderAdjustment = this.TotalSurcharge - this.TotalDiscount;
+
+            if (this.TotalBasePrice > 0)
+            {
+                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
+                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
+            }
+            else
+            {
+                this.TotalDiscountAsPercentage = 0;
+                this.TotalSurchargeAsPercentage = 0;
+            }
+
+            this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
+            this.TotalVat = this.UnitVat * this.QuantityOrdered;
+            this.TotalIncVat = this.TotalExVat + this.TotalVat;
+        }
 
         private void OnCancelOrReject()
         {
