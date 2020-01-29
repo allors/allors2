@@ -791,36 +791,15 @@ namespace Allors.Domain
 
         private void Sync(IDerivation derivation, SalesOrderItem[] validOrderItems)
         {
-            var currentPriceComponents = new PriceComponents(this.Session()).CurrentPriceComponents(this.OrderDate);
-
-            var quantityOrderedByProduct = validOrderItems
-                .Where(v => v.ExistProduct)
-                .GroupBy(v => v.Product)
-                .ToDictionary(v => v.Key, v => v.Sum(w => w.QuantityOrdered));
-
-            var totalBasePriceByProduct = validOrderItems
-                .Where(v => v.ExistProduct)
-                .GroupBy(v => v.Product)
-                .ToDictionary(v => v.Key, v => v.Sum(w => w.TotalBasePrice));
-
             // Second run to calculate price (because of order value break)
             foreach (var salesOrderItem in validOrderItems)
             {
-                decimal quantityOrdered = 0;
-                decimal totalBasePrice = 0;
-
-                if (salesOrderItem.ExistProduct)
-                {
-                    quantityOrderedByProduct.TryGetValue(salesOrderItem.Product, out quantityOrdered);
-                    totalBasePriceByProduct.TryGetValue(salesOrderItem.Product, out totalBasePrice);
-                }
-
                 foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
                 {
-                    featureItem.SyncPrices(derivation, this, currentPriceComponents, quantityOrdered, totalBasePrice);
+                    featureItem.SyncPrices(derivation, this);
                 }
 
-                salesOrderItem.SyncPrices(derivation, this, currentPriceComponents, quantityOrdered, totalBasePrice);
+                salesOrderItem.SyncPrices(derivation, this);
             }
 
             // Calculate Totals

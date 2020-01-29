@@ -411,7 +411,7 @@ namespace Allors.Domain
                 }
             }
 
-            this.DerivePrice(derivation);
+            this.CalculatePrice(derivation, salesOrder);
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
@@ -460,227 +460,7 @@ namespace Allors.Domain
 
         public void BaseContinue(SalesOrderItemContinue method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
 
-        public void SyncPrices(
-           IDerivation derivation,
-           SalesOrder salesOrder,
-           PriceComponent[] currentPriceComponents,
-           decimal quantityOrdered,
-           decimal totalBasePrice)
-        {
-            var currentGenericOrProductOrFeaturePriceComponents = Array.Empty<PriceComponent>();
-            if (this.ExistProduct)
-            {
-                currentGenericOrProductOrFeaturePriceComponents = this.Product.GetPriceComponents(currentPriceComponents);
-            }
-            else if (this.ExistProductFeature)
-            {
-                currentGenericOrProductOrFeaturePriceComponents = this.ProductFeature.GetPriceComponents(this.SalesOrderItemWhereOrderedWithFeature.Product, currentPriceComponents);
-            }
-
-            var priceComponents = currentGenericOrProductOrFeaturePriceComponents.Where(
-                v => PriceComponents.BaseIsApplicable(
-                    new PriceComponents.IsApplicable
-                    {
-                        PriceComponent = v,
-                        Customer = salesOrder.BillToCustomer,
-                        Product = this.Product,
-                        SalesOrder = salesOrder,
-                        QuantityOrdered = quantityOrdered,
-                        ValueOrdered = totalBasePrice,
-                    })).ToArray();
-
-            var unitBasePrice = priceComponents.OfType<BasePrice>().Min(v => v.Price);
-
-            // Calculate Unit Price (with Discounts and Surcharges)
-            if (this.AssignedUnitPrice.HasValue)
-            {
-                this.UnitBasePrice = unitBasePrice ?? this.AssignedUnitPrice.Value;
-                this.UnitDiscount = 0;
-                this.UnitSurcharge = 0;
-                this.UnitPrice = this.AssignedUnitPrice.Value;
-            }
-            else
-            {
-                if (!unitBasePrice.HasValue)
-                {
-                    derivation.Validation.AddError(this, M.SalesOrderItem.UnitBasePrice, "No BasePrice with a Price");
-                    return;
-                }
-
-                this.UnitBasePrice = unitBasePrice.Value;
-
-                this.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
-                    v => v.Percentage.HasValue
-                             ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
-                             : v.Price ?? 0);
-
-                this.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
-                    v => v.Percentage.HasValue
-                             ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
-                             : v.Price ?? 0);
-
-                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-
-                if (this.ExistDiscountAdjustment)
-                {
-                    this.UnitDiscount += this.DiscountAdjustment.Percentage.HasValue ?
-                        Math.Round(this.UnitPrice * this.DiscountAdjustment.Percentage.Value / 100, 2) :
-                        this.DiscountAdjustment.Amount ?? 0;
-                }
-
-                if (this.ExistSurchargeAdjustment)
-                {
-                    this.UnitSurcharge += this.SurchargeAdjustment.Percentage.HasValue ?
-                        Math.Round(this.UnitPrice * this.SurchargeAdjustment.Percentage.Value / 100, 2) :
-                        this.SurchargeAdjustment.Amount ?? 0;
-                }
-
-                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-            }
-
-            foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
-            {
-                this.UnitBasePrice += featureItem.UnitBasePrice;
-                this.UnitPrice += featureItem.UnitPrice;
-                this.UnitDiscount += featureItem.UnitDiscount;
-                this.UnitSurcharge += featureItem.UnitSurcharge;
-            }
-
-            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
-
-            // Calculate Totals
-            this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
-            this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
-            this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;
-            this.TotalOrderAdjustment = this.TotalSurcharge - this.TotalDiscount;
-
-            if (this.TotalBasePrice > 0)
-            {
-                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
-                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
-            }
-            else
-            {
-                this.TotalDiscountAsPercentage = 0;
-                this.TotalSurchargeAsPercentage = 0;
-            }
-
-            this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
-            this.TotalVat = this.UnitVat * this.QuantityOrdered;
-            this.TotalIncVat = this.TotalExVat + this.TotalVat;
-        }
-
-        private void DerivePrice(IDerivation derivation)
-        {
-            var salesOrder = this.SalesOrderWhereSalesOrderItem;
-            var currentPriceComponents = new PriceComponents(this.Session()).CurrentPriceComponents(salesOrder.OrderDate);
-
-            var quantityOrdered = salesOrder.SalesOrderItems
-                .Where(v => v.IsValid && v.ExistProduct && v.Product.Equals(this.Product))
-                .Sum(w => w.QuantityOrdered);
-
-            var currentGenericOrProductOrFeaturePriceComponents = Array.Empty<PriceComponent>();
-            if (this.ExistProduct)
-            {
-                currentGenericOrProductOrFeaturePriceComponents = this.Product.GetPriceComponents(currentPriceComponents);
-            }
-            else if (this.ExistProductFeature)
-            {
-                currentGenericOrProductOrFeaturePriceComponents = this.ProductFeature.GetPriceComponents(this.SalesOrderItemWhereOrderedWithFeature.Product, currentPriceComponents);
-            }
-
-            var priceComponents = currentGenericOrProductOrFeaturePriceComponents.Where(
-                v => PriceComponents.BaseIsApplicable(
-                    new PriceComponents.IsApplicable
-                    {
-                        PriceComponent = v,
-                        Customer = salesOrder.BillToCustomer,
-                        Product = this.Product,
-                        SalesOrder = salesOrder,
-                        QuantityOrdered = quantityOrdered,
-                        ValueOrdered = 0,
-                    })).ToArray();
-
-            var unitBasePrice = priceComponents.OfType<BasePrice>().Min(v => v.Price);
-
-            // Calculate Unit Price (with Discounts and Surcharges)
-            if (this.AssignedUnitPrice.HasValue)
-            {
-                this.UnitBasePrice = unitBasePrice ?? this.AssignedUnitPrice.Value;
-                this.UnitDiscount = 0;
-                this.UnitSurcharge = 0;
-                this.UnitPrice = this.AssignedUnitPrice.Value;
-            }
-            else
-            {
-                if (!unitBasePrice.HasValue)
-                {
-                    derivation.Validation.AddError(this, M.SalesOrderItem.UnitBasePrice, "No BasePrice with a Price");
-                    return;
-                }
-
-                this.UnitBasePrice = unitBasePrice.Value;
-
-                this.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
-                    v => v.Percentage.HasValue
-                             ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
-                             : v.Price ?? 0);
-
-                this.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
-                    v => v.Percentage.HasValue
-                             ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
-                             : v.Price ?? 0);
-
-                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-
-                if (this.ExistDiscountAdjustment)
-                {
-                    this.UnitDiscount += this.DiscountAdjustment.Percentage.HasValue ?
-                        Math.Round(this.UnitPrice * this.DiscountAdjustment.Percentage.Value / 100, 2) :
-                        this.DiscountAdjustment.Amount ?? 0;
-                }
-
-                if (this.ExistSurchargeAdjustment)
-                {
-                    this.UnitSurcharge += this.SurchargeAdjustment.Percentage.HasValue ?
-                        Math.Round(this.UnitPrice * this.SurchargeAdjustment.Percentage.Value / 100, 2) :
-                        this.SurchargeAdjustment.Amount ?? 0;
-                }
-
-                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-            }
-
-            foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
-            {
-                this.UnitBasePrice += featureItem.UnitBasePrice;
-                this.UnitPrice += featureItem.UnitPrice;
-                this.UnitDiscount += featureItem.UnitDiscount;
-                this.UnitSurcharge += featureItem.UnitSurcharge;
-            }
-
-            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
-
-            // Calculate Totals
-            this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
-            this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
-            this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;
-            this.TotalOrderAdjustment = this.TotalSurcharge - this.TotalDiscount;
-
-            if (this.TotalBasePrice > 0)
-            {
-                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
-                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
-            }
-            else
-            {
-                this.TotalDiscountAsPercentage = 0;
-                this.TotalSurchargeAsPercentage = 0;
-            }
-
-            this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
-            this.TotalVat = this.UnitVat * this.QuantityOrdered;
-            this.TotalIncVat = this.TotalExVat + this.TotalVat;
-        }
+        public void SyncPrices(IDerivation derivation, SalesOrder salesOrder) => this.CalculatePrice(derivation, salesOrder, true);
 
         private void OnCancelOrReject()
         {
@@ -697,6 +477,119 @@ namespace Allors.Domain
             {
                 this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Available;
             }
+        }
+
+        private void CalculatePrice(IDerivation derivation, SalesOrder salesOrder, bool useValueOrdered = false)
+        {
+            var sameProductItems = salesOrder.SalesOrderItems
+                .Where(v => v.IsValid && v.ExistProduct && v.Product.Equals(this.Product))
+                .ToArray();
+
+            var quantityOrdered = sameProductItems.Sum(w => w.QuantityOrdered);
+            var valueOrdered = useValueOrdered ? sameProductItems.Sum(w => w.TotalBasePrice) : 0;
+
+            var orderPriceComponents = new PriceComponents(this.Session()).CurrentPriceComponents(salesOrder.OrderDate);
+            var orderItemPriceComponents = Array.Empty<PriceComponent>();
+            if (this.ExistProduct)
+            {
+                orderItemPriceComponents = this.Product.GetPriceComponents(orderPriceComponents);
+            }
+            else if (this.ExistProductFeature)
+            {
+                orderItemPriceComponents = this.ProductFeature.GetPriceComponents(this.SalesOrderItemWhereOrderedWithFeature.Product, orderPriceComponents);
+            }
+
+            var priceComponents = orderItemPriceComponents.Where(
+                v => PriceComponents.BaseIsApplicable(
+                    new PriceComponents.IsApplicable
+                    {
+                        PriceComponent = v,
+                        Customer = salesOrder.BillToCustomer,
+                        Product = this.Product,
+                        SalesOrder = salesOrder,
+                        QuantityOrdered = quantityOrdered,
+                        ValueOrdered = valueOrdered,
+                    })).ToArray();
+
+            var unitBasePrice = priceComponents.OfType<BasePrice>().Min(v => v.Price);
+
+            // Calculate Unit Price (with Discounts and Surcharges)
+            if (this.AssignedUnitPrice.HasValue)
+            {
+                this.UnitBasePrice = unitBasePrice ?? this.AssignedUnitPrice.Value;
+                this.UnitDiscount = 0;
+                this.UnitSurcharge = 0;
+                this.UnitPrice = this.AssignedUnitPrice.Value;
+            }
+            else
+            {
+                if (!unitBasePrice.HasValue)
+                {
+                    derivation.Validation.AddError(this, M.SalesOrderItem.UnitBasePrice, "No BasePrice with a Price");
+                    return;
+                }
+
+                this.UnitBasePrice = unitBasePrice.Value;
+
+                this.UnitDiscount = priceComponents.OfType<DiscountComponent>().Sum(
+                    v => v.Percentage.HasValue
+                        ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
+                        : v.Price ?? 0);
+
+                this.UnitSurcharge = priceComponents.OfType<SurchargeComponent>().Sum(
+                    v => v.Percentage.HasValue
+                        ? Math.Round(this.UnitBasePrice * v.Percentage.Value / 100, 2)
+                        : v.Price ?? 0);
+
+                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.UnitDiscount += this.DiscountAdjustment.Percentage.HasValue
+                        ? Math.Round(this.UnitPrice * this.DiscountAdjustment.Percentage.Value / 100, 2)
+                        : this.DiscountAdjustment.Amount ?? 0;
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.UnitSurcharge += this.SurchargeAdjustment.Percentage.HasValue
+                        ? Math.Round(this.UnitPrice * this.SurchargeAdjustment.Percentage.Value / 100, 2)
+                        : this.SurchargeAdjustment.Amount ?? 0;
+                }
+
+                this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+            }
+
+            foreach (SalesOrderItem featureItem in this.OrderedWithFeatures)
+            {
+                this.UnitBasePrice += featureItem.UnitBasePrice;
+                this.UnitPrice += featureItem.UnitPrice;
+                this.UnitDiscount += featureItem.UnitDiscount;
+                this.UnitSurcharge += featureItem.UnitSurcharge;
+            }
+
+            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
+
+            // Calculate Totals
+            this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
+            this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
+            this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;
+            this.TotalOrderAdjustment = this.TotalSurcharge - this.TotalDiscount;
+
+            if (this.TotalBasePrice > 0)
+            {
+                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
+                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
+            }
+            else
+            {
+                this.TotalDiscountAsPercentage = 0;
+                this.TotalSurchargeAsPercentage = 0;
+            }
+
+            this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
+            this.TotalVat = this.UnitVat * this.QuantityOrdered;
+            this.TotalIncVat = this.TotalExVat + this.TotalVat;
         }
     }
 }
