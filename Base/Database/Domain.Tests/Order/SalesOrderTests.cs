@@ -399,13 +399,13 @@ namespace Allors.Domain
 
             order1.Confirm();
 
+            this.Session.Derive();
+
             order1.Send();
 
             this.Session.Derive();
 
-            this.Session.Derive();
-
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem.Single().ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
 
             shipment.Pick();
