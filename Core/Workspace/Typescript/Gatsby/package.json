@@ -7,7 +7,7 @@
     "start": "gatsby develop",
     "develop": "gatsby develop",
     "build": "gatsby build",
-    "type-check": "tsc --noEmit"
+    "type-check": "npx -p typescript tsc --noEmit"
   },
   "dependencies": {
     "@mdx-js/mdx": "^1.5.5",

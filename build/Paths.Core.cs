@@ -26,8 +26,8 @@ public partial class Paths
     public AbsolutePath CoreWorkspaceTypescriptMaterialTests => Core / "Workspace/Typescript/Material.Tests/Material.Tests.csproj";
     public AbsolutePath CoreWorkspaceTypescriptAutotestAngular => Core / "Workspace/Typescript/Autotest/Angular";
     public AbsolutePath CoreWorkspaceTypescriptAutotestGenerateGenerate => Core / "Workspace/Typescript/Autotest/Generate/Generate.csproj";
-    public AbsolutePath CoreWorkspaceTypescriptWebsite => Core / "Workspace/Typescript/Website";
-    public AbsolutePath CoreWorkspaceTypescriptWebsitePluginsAllors => CoreWorkspaceTypescriptWebsite / "plugins/gatsby-source-allors";
+    public AbsolutePath CoreWorkspaceTypescriptGatsby => Core / "Workspace/Typescript/Gatsby";
+    public AbsolutePath CoreWorkspaceTypescriptGatsbyPluginsAllors => this.CoreWorkspaceTypescriptGatsby / "plugins/gatsby-source-allors";
 
     public AbsolutePath[] CoreWorkspaceTypescript => new[]
     {
@@ -36,8 +36,8 @@ public partial class Paths
         CoreWorkspaceTypescriptAngular,
         CoreWorkspaceTypescriptMaterial,
         CoreWorkspaceTypescriptAutotestAngular,
-        CoreWorkspaceTypescriptWebsite,
-        CoreWorkspaceTypescriptWebsitePluginsAllors,
+        this.CoreWorkspaceTypescriptGatsby,
+        this.CoreWorkspaceTypescriptGatsbyPluginsAllors,
     };
 
     public AbsolutePath CoreWorkspaceCSharpDomainTests => Core / "Workspace/CSharp/Domain.Tests";

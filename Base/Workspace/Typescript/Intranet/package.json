@@ -13,7 +13,7 @@
     "tc:test": "ng test --watch=false",
     "build-stats": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod --stats-json",
     "stats": "webpack-bundle-analyzer dist/intranet/stats.json",
-    "autotest": "npx tsc --project ./autotest/tsconfig.autotest.json && node ./out-tsc/autotest/autotest/main && npx rimraf ./out-tsc"
+    "autotest": "npx -p typescript tsc --project ./autotest/tsconfig.autotest.json && node ./out-tsc/autotest/autotest/main && npx rimraf ./out-tsc"
   },
   "private": true,
   "dependencies": {
@@ -44,7 +44,7 @@
     "@angular/cli": "~8.3.21",
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
-    "@types/node": "~8.9.4",
+    "@types/node": "~13.5.1",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "codelyzer": "^5.0.0",

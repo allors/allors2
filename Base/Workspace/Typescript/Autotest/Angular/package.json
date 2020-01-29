@@ -8,7 +8,7 @@
   "scripts": {
     "postinstall": "node ./postinstall.js",
     "start": "npm run autotest",
-    "build": "npx tsc",
+    "build": "npx -p typescript tsc",
     "dev": "npx tsc --watch",
     "lint": "tslint --fix --project ./tsconfig.json",
     "lint-fix": "tslint --fix --project ./tsconfig.json",

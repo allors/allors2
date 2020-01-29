@@ -7,8 +7,8 @@
   "license": "LGPL-3.0",
   "scripts": {
     "start": "npm run autotest",
-    "build": "npx tsc",
-    "dev": "npx tsc --watch",
+    "build": "npx -p typescript tsc",
+    "dev": "npx -p typescript tsc --watch",
     "lint": "tslint --fix --project ./tsconfig.json",
     "lint-fix": "tslint --fix --project ./tsconfig.json",
     "test": "npm run build && mocha ./out-tsc/**/*.spec.js",

@@ -4,8 +4,8 @@
   "description": "Gatsby Source Allors",
   "scripts": {
     "postinstall": "node ./postinstall.js",
-    "build": "tsc",
-    "tsc": "tsc",
+    "build": "npx -p typescript tsc",
+    "tsc": "npx -p typescript tsc",
     "test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks ./src/**/*.spec.ts",
     "tc:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./src/**/*.spec.ts",
     "az:test": "mocha --timeout 30000 --require ts-node/register --preserve-symlinks --reporter mocha-trx-reporter ./src/**/*.spec.ts "
