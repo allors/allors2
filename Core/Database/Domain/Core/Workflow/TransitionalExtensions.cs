@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
 
     public static partial class TransitionalExtensions
@@ -44,5 +45,8 @@ namespace Allors.Domain
             // Update security
             @this.DeniedPermissions = @this.ObjectStates.SelectMany(v => v.DeniedPermissions).ToArray();
         }
+
+        public static bool HasChangedStates(this Transitional @this) =>
+            @this.LastObjectStates.Count != @this.ObjectStates.Count || @this.LastObjectStates.Except(@this.ObjectStates).Count() != 0;
     }
 }

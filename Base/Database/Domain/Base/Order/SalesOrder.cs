@@ -369,13 +369,6 @@ namespace Allors.Domain
 
             this.ResetPrintDocument();
 
-            this.Sync(derivation, validOrderItems);
-        }
-
-        public void BaseOnPostDerive(ObjectOnPostDerive method)
-        {
-            var validOrderItems = this.SalesOrderItems.Where(v => v.IsValid).ToArray();
-
             // CanShip
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
             {
@@ -431,22 +424,17 @@ namespace Allors.Domain
                 this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
 
-            foreach (SalesOrderItem salesOrderItem in this.ValidOrderItems)
-            {
-                if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
-                {
-                    if (!salesOrderItem.ReservedFromNonSerialisedInventoryItem.Equals(salesOrderItem.PreviousReservedFromNonSerialisedInventoryItem))
-                    {
-                        method.Derivation.Cycle.Iteration.AddDependency(salesOrderItem.PreviousReservedFromNonSerialisedInventoryItem, this);
-                    }
-                }
-            }
-
             if (this.CanShip && this.Store.AutoGenerateCustomerShipment)
             {
                 this.Ship();
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
             }
+
+            this.Sync(derivation, validOrderItems);
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var derivation = method.Derivation;
 
             if (!this.CanShip)
             {
@@ -456,6 +444,11 @@ namespace Allors.Domain
             if (!this.CanInvoice)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+
+            if (this.HasChangedStates())
+            {
+                derivation.Mark(this);
             }
         }
 
@@ -546,7 +539,7 @@ namespace Allors.Domain
 
                                 if (shipmentItem != null)
                                 {
-                                    shipmentItem.Quantity += orderItem.QuantityRequestsShipping;
+                                    shipmentItem.Quantity += shipmentItem.OrderShipmentsWhereShipmentItem.Sum(v => v.Quantity);
                                     shipmentItem.ContentsDescription = $"{shipmentItem.Quantity} * {good.Name}";
                                 }
                                 else

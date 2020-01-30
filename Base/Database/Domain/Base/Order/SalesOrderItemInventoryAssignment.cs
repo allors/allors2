@@ -25,7 +25,8 @@ namespace Allors.Domain
 
         public void BaseOnDerive(ObjectOnDerive method)
         {
-            var state = this.SalesOrderItemWhereSalesOrderItemInventoryAssignment.SalesOrderItemState;
+            var salesOrderItem = this.SalesOrderItemWhereSalesOrderItemInventoryAssignment;
+            var state = salesOrderItem.SalesOrderItemState;
             var inventoryItemChanged = this.ExistCurrentVersion && (!Equals(this.CurrentVersion.InventoryItem, this.InventoryItem));
 
             foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
@@ -43,7 +44,7 @@ namespace Allors.Domain
                 // CurrentVersion is Previous Version until PostDerive
                 var previousInventoryItem = this.CurrentVersion.InventoryItem;
                 var previousQuantity = this.CurrentVersion.Quantity;
-                state = this.CurrentVersion.SalesOrderItem.PreviousSalesOrderItemState ?? this.CurrentVersion.SalesOrderItem.SalesOrderItemState;
+                state = salesOrderItem.PreviousSalesOrderItemState ?? salesOrderItem.SalesOrderItemState;
 
                 foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
                 {

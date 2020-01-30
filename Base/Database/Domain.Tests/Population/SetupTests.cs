@@ -10,6 +10,7 @@ namespace Allors.Domain
     using Bogus;
     using Xunit;
 
+    [Trait("Category", "Security")]
     public class SetupTests : DomainTest
     {
         public SetupTests()

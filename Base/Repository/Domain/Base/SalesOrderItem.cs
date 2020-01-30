@@ -262,6 +262,17 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("C1F15DA3-9609-48C0-B319-C0A36418379B")]
+        [AssociationId("C0834C2E-02CC-4ADF-8A2B-B90F2A15BC0A")]
+        [RoleId("64205300-30DE-4401-A71A-AD775ABEF3F9")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Synced]
+        [Workspace]
+        public SalesOrderItemInventoryAssignment[] SalesOrderItemInventoryAssignments { get; set; }
+
+        #region Allors
         [Id("1ea02a2c-280a-4a48-9ffb-1517789c56f1")]
         [AssociationId("851f33e4-6c43-468d-ab0d-0f5f83bdb179")]
         [RoleId("213d2b36-dbfd-4e2d-a854-82ba271f0d94")]
