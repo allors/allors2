@@ -85,8 +85,8 @@ namespace Allors.Domain
         public void GivenSalesOrderItem_WhenAddedToOrder_ThenInventoryReservationCreated()
         {
             Assert.True(this.salesOrderItem.SalesOrderItemState.InProcess);
-            Assert.Single(this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem);
-            var transactions = this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.First.InventoryItemTransactions;
+            Assert.Single(this.salesOrderItem.SalesOrderItemInventoryAssignments);
+            var transactions = this.salesOrderItem.SalesOrderItemInventoryAssignments.First.InventoryItemTransactions;
 
             Assert.Single(transactions);
             var transaction = transactions[0];
@@ -127,7 +127,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.True(this.salesOrderItem.SalesOrderItemState.InProcess);
-            Assert.Equal(2, this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.Count);
+            Assert.Equal(2, this.salesOrderItem.SalesOrderItemInventoryAssignments.Count);
 
             var previousInventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.FirstOrDefault(v => v.Facility.Name.Equals("facility"));
             var currentInventoryItem = this.salesOrderItem.ReservedFromNonSerialisedInventoryItem;
@@ -153,7 +153,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var transaction = this.salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.First.InventoryItemTransactions.Last();
+            var transaction = this.salesOrderItem.SalesOrderItemInventoryAssignments.First.InventoryItemTransactions.Last();
             Assert.Equal(this.part, transaction.Part);
             Assert.Equal(3, transaction.Quantity);
             Assert.Equal(this.reasons.Reservation, transaction.Reason);

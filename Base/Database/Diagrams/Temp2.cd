@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.SalesOrderItemInventoryAssignment">
+    <Position X="7.5" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAACAAAAAAAgAAAAAgIAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="InventoryItem" />
+      <Property Name="___InventoryItemTransactions" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.SalesOrderItem">
+    <Position X="1.25" Y="0.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>CAAKJDkAEiAAAAAABAgAABAAAIABgCtAEACAATCAgAk=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="_s_SalesOrderItemInventoryAssignments" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.InventoryItem" Collapsed="true">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIIAAAIAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.InventoryItemTransaction">
+    <Position X="8.25" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIIAAAIAAIAAIAAACAgAAAAAgAAAAEAAAAkCAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

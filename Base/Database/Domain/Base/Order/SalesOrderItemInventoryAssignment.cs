@@ -18,14 +18,14 @@ namespace Allors.Domain
                 iteration.AddDependency(this.InventoryItem, this);
                 iteration.Mark(this.InventoryItem);
 
-                iteration.AddDependency(this.SalesOrderItem, this);
-                iteration.Mark(this.SalesOrderItem);
+                iteration.AddDependency(this.SalesOrderItemWhereSalesOrderItemInventoryAssignment, this);
+                iteration.Mark(this.SalesOrderItemWhereSalesOrderItemInventoryAssignment);
             }
         }
 
         public void BaseOnDerive(ObjectOnDerive method)
         {
-            var state = this.SalesOrderItem.SalesOrderItemState;
+            var state = this.SalesOrderItemWhereSalesOrderItemInventoryAssignment.SalesOrderItemState;
             var inventoryItemChanged = this.ExistCurrentVersion && (!Equals(this.CurrentVersion.InventoryItem, this.InventoryItem));
 
             foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)

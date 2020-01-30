@@ -256,7 +256,7 @@ namespace Allors.Domain
 
                     subtract -= diff;
 
-                    var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                    var inventoryAssignment = salesOrderItem.SalesOrderItemInventoryAssignments.FirstOrDefault();
                     if (inventoryAssignment != null)
                     {
                         inventoryAssignment.Quantity = diff;

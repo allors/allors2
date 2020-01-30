@@ -28,18 +28,7 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
 
         #endregion
-
-        #region Allors
-        [Id("BD8AB8B1-2913-413A-B7B1-CFEF5279330A")]
-        [AssociationId("D084D31F-C790-435B-9E55-A26077BD69F6")]
-        [RoleId("DF90990C-77C3-4E5D-949B-419824BB9FFF")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
-        [Workspace]
-        public SalesOrderItem SalesOrderItem { get; set; }
-
+        
         #region Allors
         [Id("BDE5FF54-505B-4241-88A8-334999E43C0B")]
         [AssociationId("8D8A2866-A248-4E1B-8DBD-F02B7BDB4B43")]

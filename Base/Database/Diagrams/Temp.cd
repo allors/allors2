@@ -1,40 +1,120 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.Product">
-    <Position X="2.25" Y="2.5" Width="2.25" />
+  <Interface Name="Allors.Domain.InventoryItemTransaction">
+    <Position X="4.75" Y="2.75" Width="2.75" />
+    <AssociationLine Name="___InventoryItem" Type="Allors.Domain.InventoryItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.5" Y="3.412" />
+        <Point X="7.875" Y="3.412" />
+        <Point X="7.875" Y="1.5" />
+        <Point X="11" Y="1.5" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAABEAAQAAAAAAABAAAAAAABAAAAAAAAQAICCAIgA=</HashCode>
+      <HashCode>AAAIIAAAIAAIAAIAAACAgAAAAAgAAAAEAAAAkCAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="___BasePrices" />
-      <Property Name="___VirtualProductPriceComponents" />
+      <Property Name="___InventoryItem" />
+      <Property Name="Part" />
+      <Property Name="SerialisedItem" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.BasePrice">
-    <Position X="7" Y="7.5" Width="2.25" />
+  <Interface Name="Allors.Domain.InventoryItem" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAIIAAAIAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.PriceComponent">
-    <Position X="7" Y="2.25" Width="2.25" />
+  <Interface Name="Allors.Domain.Part" Collapsed="true">
+    <Position X="9.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>wAQCAQAAIQAgAAABABAABAAAAKAAAAAAAAAgAAAAEAE=</HashCode>
+      <HashCode>AAEAEQAQAACAAAAQBAAAQAGAQAAAAgAAAAgBBCABAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SerialisedItems" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.SerialisedItem" Collapsed="true">
+    <Position X="9.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAGIACxAFQABAdAACAkAMAAAgAEAACgBAAQRSNACARA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.NonSerialisedInventoryItem" Collapsed="true">
+    <Position X="9.5" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAACAACAABAAAAAMAAAAAAogEAAAAAAACAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.SerialisedInventoryItem" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAkAAAAgAAAAAAAAgAAAAAIAAIgAAAAAACAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.SalesOrderItemInventoryAssignment">
+    <Position X="4.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAgAAAAAAAACAAAAAAAgAAAAAgIAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="___InventoryItemTransactions" />
+      <Property Name="InventoryItem" />
+      <Property Name="SalesOrderItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.SalesOrderItem" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <AssociationLine Name="SerialisedItem" Type="Allors.Domain.SerialisedItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.875" Y="1.32" />
+        <Point X="2.875" Y="5.771" />
+        <Point X="6.323" Y="5.771" Type="JumpStart" />
+        <Point X="6.49" Y="5.771" Type="JumpEnd" />
+        <Point X="9.125" Y="5.771" />
+        <Point X="9.125" Y="5.07" />
+        <Point X="9.5" Y="5.07" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>CAAKJDkAEiAAAAAABAgAABAAAIABgAtAEACAATCAgAk=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Product" />
-      <Property Name="ProductFeature" />
+      <Property Name="SerialisedItem" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.ProductFeature">
-    <Position X="11.25" Y="2.25" Width="1.5" />
+  <Interface Name="Allors.Domain.Product" Collapsed="true">
+    <Position X="3.75" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAAABAAAAAAAAAgAAAAAAAAIACBAAA=</HashCode>
+      <HashCode>AAAAABEAAQAAAAAAABAAAAAAABAAAAAAAAQAICCAIgA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Good" Collapsed="true">
+    <Position X="3.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAABAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.NonUnifiedGood" Collapsed="true">
+    <Position X="3.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Part" />
+    </ShowAsAssociation>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

@@ -268,7 +268,7 @@ namespace Allors.Domain
 
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                        var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignments.FirstOrDefault();
                         if (inventoryAssignment != null)
                         {
                             inventoryAssignment.Quantity -= orderShipment.Quantity;
@@ -530,7 +530,7 @@ namespace Allors.Domain
         {
             var remainingCorrection = correction;
 
-            var inventoryAssignment = orderItem.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+            var inventoryAssignment = orderItem.SalesOrderItemInventoryAssignments.FirstOrDefault();
             if (inventoryAssignment != null)
             {
                 inventoryAssignment.Quantity = orderItem.QuantityCommittedOut - correction;
