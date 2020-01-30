@@ -11,7 +11,62 @@ namespace Allors.Domain
     {
         public void BaseOnDerive(ObjectOnDerive method)
         {
-            var derivation = method.Derivation;
+            var party = this.Party;
+
+            this.AmountDue = 0;
+            this.AmountOverDue = 0;
+
+            // Open Order Amount
+            this.OpenOrderAmount = party.SalesOrdersWhereBillToCustomer
+                .Where(v =>
+                    Equals(v.TakenBy, this.InternalOrganisation) &&
+                    !v.SalesOrderState.Equals(new SalesOrderStates(party.Strategy.Session).Finished) &&
+                    !v.SalesOrderState.Equals(new SalesOrderStates(party.Strategy.Session).Cancelled))
+                .Sum(v => v.TotalIncVat);
+
+            // Amount Due
+            // Amount OverDue
+            foreach (var salesInvoice in party.SalesInvoicesWhereBillToCustomer.Where(v => Equals(v.BilledFrom, this.InternalOrganisation) &&
+                                                                                                    !v.SalesInvoiceState.Equals(new SalesInvoiceStates(party.Strategy.Session).Paid)))
+            {
+                if (salesInvoice.AmountPaid > 0)
+                {
+                    this.AmountDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
+                }
+                else
+                {
+                    foreach (SalesInvoiceItem invoiceItem in salesInvoice.InvoiceItems)
+                    {
+                        if (!invoiceItem.SalesInvoiceItemState.Equals(
+                            new SalesInvoiceItemStates(party.Strategy.Session).Paid))
+                        {
+                            if (invoiceItem.ExistTotalIncVat)
+                            {
+                                this.AmountDue += invoiceItem.TotalIncVat - invoiceItem.AmountPaid;
+                            }
+                        }
+                    }
+                }
+
+                var gracePeriod = salesInvoice.Store?.PaymentGracePeriod;
+
+                if (salesInvoice.DueDate.HasValue)
+                {
+                    var dueDate = salesInvoice.DueDate.Value;
+
+                    if (gracePeriod.HasValue)
+                    {
+                        dueDate = salesInvoice.DueDate.Value.AddDays(gracePeriod.Value);
+                    }
+
+                    if (party.Strategy.Session.Now() > dueDate)
+                    {
+                        this.AmountOverDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
+                    }
+                }
+            }
+
+
 
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 

@@ -13,6 +13,7 @@ namespace Allors.Domain
 
             if (!this.ExistContractor || !this.ExistSubContractor)
             {
+                // TODO: Move Delete
                 this.Delete();
             }
         }

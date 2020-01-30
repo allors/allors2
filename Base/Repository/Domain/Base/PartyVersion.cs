@@ -114,17 +114,6 @@ namespace Allors.Repository
         TelecommunicationsNumber OrderInquiriesFax { get; set; }
 
         #region Allors
-        [Id("060F4F6C-58B5-4958-9E30-FB91AFC9543E")]
-        [AssociationId("D7C1305C-DC9A-42E0-8040-3D05A99A4820")]
-        [RoleId("80F6272D-8ECC-49C4-8B51-9E422FE9DFA6")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Workspace]
-        Person[] CurrentSalesReps { get; set; }
-
-        #region Allors
         [Id("6AF7A276-4C4E-4492-A26B-3BFDF38A9BE7")]
         [AssociationId("0D4E5BBE-03A5-41B9-888E-EA49658B70FF")]
         [RoleId("6C29DFDF-439D-4417-9C86-399A90DB93E1")]

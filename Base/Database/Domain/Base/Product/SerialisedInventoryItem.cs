@@ -50,6 +50,7 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, this.Meta.Quantity, message);
             }
 
+            // TODO: Remove OnDerive
             this.Part.OnDerive(x => x.WithDerivation(derivation));
         }
 

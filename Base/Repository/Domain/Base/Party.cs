@@ -74,18 +74,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         TelecommunicationsNumber OrderInquiriesFax { get; set; }
-
-        #region Allors
-        [Id("420a7279-ba09-4660-bf5d-7242be07bfb1")]
-        [AssociationId("3bb65209-69d2-40e5-890b-c8a9e06da1ac")]
-        [RoleId("8f1be044-6b43-4861-b995-fdc080656670")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        Person[] CurrentSalesReps { get; set; }
-
+        
         #region Allors
         [Id("42ab0c4b-52b2-494e-b6a9-cacf55fb002e")]
         [AssociationId("32d52b42-f5cc-4fd0-959c-045ff0c02520")]

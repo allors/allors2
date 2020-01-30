@@ -134,16 +134,6 @@ namespace Allors.Repository
         [Workspace]
         public InvoiceItemType InvoiceItemType { get; set; }
 
-        #region Allors
-        [Id("5CCCCC43-D7E1-47B7-8E6B-826EFFB6E578")]
-        [AssociationId("A66F7125-2D42-49D6-9BB0-DC4A3A5A0065")]
-        [RoleId("FAE867DA-754F-46A3-8269-16578FBF7B1A")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        public Person[] SalesReps { get; set; }
-
         #region inherited methods
 
         public void OnBuild() { }

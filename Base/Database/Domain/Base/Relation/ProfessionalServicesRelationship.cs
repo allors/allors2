@@ -13,6 +13,7 @@ namespace Allors.Domain
 
             if (!this.ExistProfessional | !this.ExistProfessionalServicesProvider)
             {
+                // TODO: Move Delete
                 this.Delete();
             }
         }

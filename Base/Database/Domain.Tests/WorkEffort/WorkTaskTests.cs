@@ -203,7 +203,6 @@ namespace Allors.Domain
 
             //// Work Effort Data
             var salesPerson = new PersonBuilder(this.Session).WithFirstName("Sales").WithLastName("Person").Build();
-            var salesRepRelation = new SalesRepRelationshipBuilder(this.Session).WithCustomer(customer).WithSalesRepresentative(salesPerson).Build();
             var salesOrder = this.CreateSalesOrder(customer, organisation);
             var workOrder = this.CreateWorkEffort(organisation, customer, customerContact, salesOrder.SalesOrderItems.First);
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
@@ -275,7 +274,6 @@ namespace Allors.Domain
 
             //// Work Effort Data
             var salesPerson = new PersonBuilder(this.Session).WithFirstName("Sales").WithLastName("Person").Build();
-            var salesRepRelation = new SalesRepRelationshipBuilder(this.Session).WithCustomer(customer).WithSalesRepresentative(salesPerson).Build();
             var salesOrder = this.CreateSalesOrder(customer, organisation);
             var workOrder = this.CreateWorkEffort(organisation, customer, customerContact, salesOrder.SalesOrderItems.First);
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();

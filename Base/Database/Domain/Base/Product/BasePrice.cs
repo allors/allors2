@@ -55,11 +55,6 @@ namespace Allors.Domain
                 this.ProductFeature.AddToBasePrice(this);
             }
 
-            this.BaseOnDeriveVirtualProductPriceComponent();
-        }
-
-        public void BaseOnDeriveVirtualProductPriceComponent()
-        {
             if (this.ExistProduct)
             {
                 this.Product.BaseOnDeriveVirtualProductPriceComponent();

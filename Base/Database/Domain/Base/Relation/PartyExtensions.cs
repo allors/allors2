@@ -11,75 +11,6 @@ namespace Allors.Domain
 
     public static class PartyExtensions
     {
-        public static int? PaymentNetDays(this Party @this)
-        {
-            int? customerPaymentNetDays = null;
-            foreach (Agreement agreement in @this.Agreements)
-            {
-                foreach (AgreementTerm term in agreement.AgreementTerms)
-                {
-                    if (term.TermType.Equals(new InvoiceTermTypes(@this.Strategy.Session).PaymentNetDays))
-                    {
-                        if (int.TryParse(term.TermValue, out var netDays))
-                        {
-                            customerPaymentNetDays = netDays;
-                        }
-
-                        return customerPaymentNetDays;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public static bool BaseIsActiveCustomer(this Party @this, InternalOrganisation internalOrganisation, DateTime? date)
-        {
-            if (date == DateTime.MinValue || internalOrganisation == null)
-            {
-                return false;
-            }
-
-            var customerRelationships = @this.CustomerRelationshipsWhereCustomer;
-            customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, internalOrganisation);
-
-            return customerRelationships.Any(relationship => relationship.FromDate.Date <= date
-                                                             && (!relationship.ExistThroughDate || relationship.ThroughDate >= date));
-        }
-
-        public static CustomerShipment BaseGetPendingCustomerShipmentForStore(this Party @this, PostalAddress address, Store store, ShipmentMethod shipmentMethod)
-        {
-            var shipments = @this.ShipmentsWhereShipToParty;
-            if (address != null)
-            {
-                shipments.Filter.AddEquals(M.Shipment.ShipToAddress, address);
-            }
-
-            if (store != null)
-            {
-                shipments.Filter.AddEquals(M.Shipment.Store, store);
-            }
-
-            if (shipmentMethod != null)
-            {
-                shipments.Filter.AddEquals(M.Shipment.ShipmentMethod, shipmentMethod);
-            }
-
-            foreach (CustomerShipment shipment in shipments)
-            {
-                if (shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Created) ||
-                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Picking) ||
-                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Picked) ||
-                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).OnHold) ||
-                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Packed))
-                {
-                    return shipment;
-                }
-            }
-
-            return null;
-        }
-
         public static void BaseOnBuild(this Party @this, ObjectOnBuild method)
         {
             var session = @this.Strategy.Session;
@@ -88,6 +19,20 @@ namespace Allors.Domain
             {
                 var singleton = session.GetSingleton();
                 @this.PreferredCurrency = singleton.Settings.PreferredCurrency;
+            }
+        }
+
+        public static void BaseOnPreDerive(this Party @this, ObjectOnPreDerive method)
+        {
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (iteration.IsMarked(@this) || changeSet.IsCreated(@this) || changeSet.HasChangedRoles(@this))
+            {
+                foreach (PartyFinancialRelationship partyFinancialRelationship in @this.PartyFinancialRelationshipsWhereParty)
+                {
+                    iteration.AddDependency(partyFinancialRelationship, @this);
+                    iteration.Mark(partyFinancialRelationship);
+                }
             }
         }
 
@@ -245,16 +190,11 @@ namespace Allors.Domain
                 .Except(@this.CurrentPartyRelationships)
                 .ToArray();
 
-            derivedRoles.CurrentSalesReps = @this.SalesRepRelationshipsWhereCustomer
-                .Where(v => v.FromDate <= @this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= @this.Strategy.Session.Now()))
-                .Select(v => v.SalesRepresentative)
-                .ToArray();
-
             foreach (CustomerRelationship customerRelationship in @this.CustomerRelationshipsWhereCustomer)
             {
                 // HACK: DerivedRoles
                 var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)customerRelationship.InternalOrganisation;
-                
+
                 if (@this.BaseIsActiveCustomer(customerRelationship.InternalOrganisation, @this.Strategy.Session.Now()))
                 {
                     internalOrganisationDerivedRoles?.AddActiveCustomer(@this);
@@ -264,65 +204,6 @@ namespace Allors.Domain
                     internalOrganisationDerivedRoles?.RemoveActiveCustomer(@this);
                 }
             }
-
-            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancialRelationshipsWhereParty)
-            {
-                // HACK: DerivedRoles
-                var partyFinancialDerivedRoles = (PartyFinancialRelationshipDerivedRoles)partyFinancial;
-
-                partyFinancialDerivedRoles.AmountDue = 0;
-                partyFinancial.AmountOverDue = 0;
-
-                // Open Order Amount
-                partyFinancialDerivedRoles.OpenOrderAmount = @this.SalesOrdersWhereBillToCustomer
-                    .Where(v =>
-                        Equals(v.TakenBy, partyFinancial.InternalOrganisation) &&
-                        !v.SalesOrderState.Equals(new SalesOrderStates(@this.Strategy.Session).Finished) &&
-                        !v.SalesOrderState.Equals(new SalesOrderStates(@this.Strategy.Session).Cancelled))
-                    .Sum(v => v.TotalIncVat);
-
-                // Amount Due
-                // Amount OverDue
-                foreach (var salesInvoice in @this.SalesInvoicesWhereBillToCustomer.Where(v => Equals(v.BilledFrom, partyFinancial.InternalOrganisation) &&
-                                                                                                        !v.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid)))
-                {
-                    if (salesInvoice.AmountPaid > 0)
-                    {
-                        partyFinancialDerivedRoles.AmountDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
-                    }
-                    else
-                    {
-                        foreach (SalesInvoiceItem invoiceItem in salesInvoice.InvoiceItems)
-                        {
-                            if (!invoiceItem.SalesInvoiceItemState.Equals(
-                                new SalesInvoiceItemStates(@this.Strategy.Session).Paid))
-                            {
-                                if (invoiceItem.ExistTotalIncVat)
-                                {
-                                    partyFinancialDerivedRoles.AmountDue += invoiceItem.TotalIncVat - invoiceItem.AmountPaid;
-                                }
-                            }
-                        }
-                    }
-
-                    var gracePeriod = salesInvoice.Store?.PaymentGracePeriod;
-
-                    if (salesInvoice.DueDate.HasValue)
-                    {
-                        var dueDate = salesInvoice.DueDate.Value;
-
-                        if (gracePeriod.HasValue)
-                        {
-                            dueDate = salesInvoice.DueDate.Value.AddDays(gracePeriod.Value);
-                        }
-
-                        if (@this.Strategy.Session.Now() > dueDate)
-                        {
-                            partyFinancial.AmountOverDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
-                        }
-                    }
-                }
-            }
         }
 
         public static void BaseOnPostDerive(this Party @this, ObjectOnPostDerive method)
@@ -330,6 +211,75 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             @this.BaseOnDerivePartyFinancialRelationships(derivation);
+        }
+
+        public static int? PaymentNetDays(this Party @this)
+        {
+            int? customerPaymentNetDays = null;
+            foreach (Agreement agreement in @this.Agreements)
+            {
+                foreach (AgreementTerm term in agreement.AgreementTerms)
+                {
+                    if (term.TermType.Equals(new InvoiceTermTypes(@this.Strategy.Session).PaymentNetDays))
+                    {
+                        if (int.TryParse(term.TermValue, out var netDays))
+                        {
+                            customerPaymentNetDays = netDays;
+                        }
+
+                        return customerPaymentNetDays;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static bool BaseIsActiveCustomer(this Party @this, InternalOrganisation internalOrganisation, DateTime? date)
+        {
+            if (date == DateTime.MinValue || internalOrganisation == null)
+            {
+                return false;
+            }
+
+            var customerRelationships = @this.CustomerRelationshipsWhereCustomer;
+            customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, internalOrganisation);
+
+            return customerRelationships.Any(relationship => relationship.FromDate.Date <= date
+                                                             && (!relationship.ExistThroughDate || relationship.ThroughDate >= date));
+        }
+
+        public static CustomerShipment BaseGetPendingCustomerShipmentForStore(this Party @this, PostalAddress address, Store store, ShipmentMethod shipmentMethod)
+        {
+            var shipments = @this.ShipmentsWhereShipToParty;
+            if (address != null)
+            {
+                shipments.Filter.AddEquals(M.Shipment.ShipToAddress, address);
+            }
+
+            if (store != null)
+            {
+                shipments.Filter.AddEquals(M.Shipment.Store, store);
+            }
+
+            if (shipmentMethod != null)
+            {
+                shipments.Filter.AddEquals(M.Shipment.ShipmentMethod, shipmentMethod);
+            }
+
+            foreach (CustomerShipment shipment in shipments)
+            {
+                if (shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Created) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Picking) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Picked) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).OnHold) ||
+                    shipment.ShipmentState.Equals(new ShipmentStates(@this.Strategy.Session).Packed))
+                {
+                    return shipment;
+                }
+            }
+
+            return null;
         }
 
         public static void BaseOnDerivePartyFinancialRelationships(this Party @this, IDerivation derivation)
@@ -373,7 +323,7 @@ namespace Allors.Domain
                 {
                     // HACK: DerivedRoles
                     var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)customerRelationship.InternalOrganisation;
-                    
+
                     internalOrganisationDerivedRoles.RemoveActiveCustomer(@this);
                 }
             }

@@ -266,6 +266,7 @@ namespace Allors.Domain
                 {
                     if (!this.ExistPreviousQuantity || !this.QuantityOrdered.Equals(this.PreviousQuantity))
                     {
+                        // TODO: Remove OnDerive
                         inventoryItem?.OnDerive(x => x.WithDerivation(derivation));
                     }
                 }
@@ -273,6 +274,7 @@ namespace Allors.Domain
                 if (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Cancelled) ||
                     this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Rejected))
                 {
+                    // TODO: Remove OnDerive
                     inventoryItem?.OnDerive(x => x.WithDerivation(derivation));
                 }
             }

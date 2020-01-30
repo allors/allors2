@@ -15,59 +15,6 @@ namespace Allors.Domain
     public class PartyTests : DomainTest
     {
         [Fact]
-        public void GivenParty_WhenSalesRepRelationshipIsUpdated_ThenCurrentSalesRepsAreUpdated()
-        {
-            var salesRep1 = new PersonBuilder(this.Session).WithLastName("salesRep1").Build();
-            var salesRep2 = new PersonBuilder(this.Session).WithLastName("salesRep2").Build();
-            var salesRep3 = new PersonBuilder(this.Session).WithLastName("salesRep3").Build();
-            var organisation = new OrganisationBuilder(this.Session).WithName("customer").Build();
-
-            var salesRepRelationship1 = new SalesRepRelationshipBuilder(this.Session)
-                .WithCustomer(organisation)
-                .WithSalesRepresentative(salesRep1)
-                .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Single(organisation.CurrentSalesReps);
-            Assert.Contains(salesRep1, organisation.CurrentSalesReps);
-
-            new SalesRepRelationshipBuilder(this.Session)
-                .WithCustomer(organisation)
-                .WithSalesRepresentative(salesRep2)
-                .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Equal(2, organisation.CurrentSalesReps.Count);
-            Assert.Contains(salesRep1, organisation.CurrentSalesReps);
-            Assert.Contains(salesRep2, organisation.CurrentSalesReps);
-
-            salesRepRelationship1.ThroughDate = DateTimeFactory.CreateDate(2010, 12, 31);
-
-            this.Session.Derive();
-
-            Assert.Single(organisation.CurrentSalesReps);
-            Assert.Contains(salesRep2, organisation.CurrentSalesReps);
-
-            new SalesRepRelationshipBuilder(this.Session)
-                .WithCustomer(organisation)
-                .WithSalesRepresentative(salesRep3)
-                .WithProductCategory(new ProductCategoryBuilder(this.Session)
-                                        .WithName("category")
-                                        .Build())
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Equal(2, organisation.CurrentSalesReps.Count);
-            Assert.Contains(salesRep2, organisation.CurrentSalesReps);
-            Assert.Contains(salesRep3, organisation.CurrentSalesReps);
-        }
-
-        [Fact]
         public void GivenPartyWithOpenOrders_WhenDeriving_ThenOpenOrderAmountIsUpdated()
         {
             var store = this.Session.Extent<Store>().First;

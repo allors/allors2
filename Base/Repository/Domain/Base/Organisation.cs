@@ -98,8 +98,6 @@ namespace Allors.Repository
 
         public Organisation[] CurrentSuppliers { get; set; }
 
-        public Person[] SalesReps { get; set; }
-
         public GeneralLedgerAccount GlAccount { get; set; }
 
         public Party[] ActiveCustomers { get; set; }
@@ -123,8 +121,6 @@ namespace Allors.Repository
         public PartyContactMechanism[] InactivePartyContactMechanisms { get; set; }
 
         public TelecommunicationsNumber OrderInquiriesFax { get; set; }
-
-        public Person[] CurrentSalesReps { get; set; }
 
         public PartyContactMechanism[] PartyContactMechanisms { get; set; }
 

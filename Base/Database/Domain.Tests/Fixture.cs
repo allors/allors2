@@ -104,18 +104,15 @@ namespace Allors
                 var supplier = new OrganisationBuilder(session).WithName("supplier").WithLocale(singleton.DefaultLocale).Build();
 
                 var purchaser = new PersonBuilder(session).WithFirstName("The").WithLastName("purchaser").WithUserName("purchaser").Build();
-                var salesrep = new PersonBuilder(session).WithFirstName("The").WithLastName("salesRep").WithUserName("salesRep").Build();
                 var orderProcessor = new PersonBuilder(session).WithFirstName("The").WithLastName("orderProcessor").WithUserName("orderProcessor").Build();
 
                 // Adding newly created persons to EmployeeUserGroup as employees do not have any permission when created
                 var employeesUserGroup = new UserGroups(session).Employees;
                 employeesUserGroup.AddMember(purchaser);
-                employeesUserGroup.AddMember(salesrep);
                 employeesUserGroup.AddMember(orderProcessor);
                 employeesUserGroup.AddMember(administrator);
 
                 new UserGroups(session).Creators.AddMember(purchaser);
-                new UserGroups(session).Creators.AddMember(salesrep);
                 new UserGroups(session).Creators.AddMember(orderProcessor);
                 new UserGroups(session).Creators.AddMember(administrator);
 
@@ -125,11 +122,8 @@ namespace Allors
 
                 new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(purchaser).WithEmployer(internalOrganisation).Build();
 
-                new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(salesrep).WithEmployer(internalOrganisation).Build();
 
                 new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(orderProcessor).WithEmployer(internalOrganisation).Build();
-
-                new SalesRepRelationshipBuilder(session).WithFromDate(session.Now()).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
 
                 var vatRate21 = new VatRateBuilder(session).WithRate(21).Build();
 

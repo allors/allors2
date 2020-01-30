@@ -47,19 +47,7 @@ namespace Allors.Domain
                    && this.OrganisationContactRelationshipsWhereContact
                        .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
         }
-
-        public bool BaseIsActiveSalesRep(DateTime? date)
-        {
-            if (date == DateTime.MinValue)
-            {
-                return false;
-            }
-
-            return this.ExistSalesRepRelationshipsWhereSalesRepresentative
-                   && this.SalesRepRelationshipsWhereSalesRepresentative
-                       .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
-        }
-
+        
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

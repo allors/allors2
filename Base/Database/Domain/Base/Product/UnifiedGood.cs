@@ -159,7 +159,7 @@ namespace Allors.Domain
             }
 
             builder.Append(string.Join(" ", this.Keywords));
-            
+
             this.SearchString = builder.ToString();
         }
 

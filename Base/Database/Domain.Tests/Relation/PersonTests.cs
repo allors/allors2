@@ -26,13 +26,13 @@ namespace Allors.Domain
         public void GivenPerson_WhenEmployed_ThenIsEmployeeEqualsTrue()
         {
             var employment = new EmploymentBuilder(this.Session)
-                .WithEmployee(this.SalesRep)
+                .WithEmployee(this.Purchaser)
                 .WithFromDate(this.Session.Now())
                 .Build();
 
             this.Session.Derive();
 
-            Assert.True(this.SalesRep.BaseIsActiveEmployee(this.Session.Now()));
+            Assert.True(this.Purchaser.BaseIsActiveEmployee(this.Session.Now()));
         }
 
         [Fact]

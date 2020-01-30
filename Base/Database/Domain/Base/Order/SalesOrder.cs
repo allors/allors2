@@ -194,9 +194,6 @@ namespace Allors.Domain
                 salesOrderItemDerivedRoles.VatRegime = salesOrderItem.AssignedVatRegime ?? this.VatRegime;
                 salesOrderItemDerivedRoles.VatRate = salesOrderItem.VatRegime?.VatRate ?? salesOrderItem.Product?.VatRate ?? salesOrderItem.ProductFeature?.VatRate;
 
-                salesOrderItemDerivedRoles.SalesReps = salesOrderItem.Product?.ProductCategoriesWhereProduct.Select(v => SalesRepRelationships.SalesRep(salesOrderItem.ShipToParty, v, this.OrderDate)).ToArray();
-                salesOrderItemDerivedRoles.AddSalesRep(SalesRepRelationships.SalesRep(salesOrderItem.ShipToParty, null, this.OrderDate));
-
                 // TODO: Use versioning
                 if (salesOrderItem.ExistPreviousProduct && !salesOrderItem.PreviousProduct.Equals(salesOrderItem.Product))
                 {
@@ -246,11 +243,6 @@ namespace Allors.Domain
 
             var validOrderItems = this.SalesOrderItems.Where(v => v.IsValid).ToArray();
             this.ValidOrderItems = validOrderItems;
-
-            this.SalesReps = validOrderItems
-                .SelectMany(v => v.SalesReps)
-                .Distinct()
-                .ToArray();
 
             if (this.ExistVatRegime && this.VatRegime.ExistVatClause)
             {

@@ -58,6 +58,7 @@ namespace Allors.Domain.NonLogging
 
             if (!this.derivable.Strategy.IsDeleted && graph.IsScheduled(this.derivable))
             {
+                // TODO: Remove OnDerive
                 this.derivable.OnDerive(x => x.WithDerivation(graph.Derivation));
                 postDeriveBacklog.Add(this.derivable);
             }

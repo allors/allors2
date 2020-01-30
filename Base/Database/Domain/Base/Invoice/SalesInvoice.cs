@@ -211,9 +211,6 @@ namespace Allors.Domain
 
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
-                salesInvoiceItem.SalesReps = salesInvoiceItem.Product?.ProductCategoriesWhereProduct.Select(v => SalesRepRelationships.SalesRep(this.BillToCustomer, v, this.InvoiceDate)).ToArray();
-                salesInvoiceItem.AddSalesRep(SalesRepRelationships.SalesRep(this.BillToCustomer, null, this.InvoiceDate));
-
                 foreach (OrderItemBilling orderItemBilling in salesInvoiceItem.OrderItemBillingsWhereInvoiceItem)
                 {
                     if (orderItemBilling.OrderItem is SalesOrderItem salesOrderItem && !this.SalesOrders.Contains(salesOrderItem.SalesOrderWhereSalesOrderItem))
@@ -528,12 +525,6 @@ namespace Allors.Domain
             }
 
             this.DerivedVatClause = this.ExistAssignedVatClause ? this.AssignedVatClause : this.DerivedVatClause;
-
-            this.SalesReps = validInvoiceItems
-                .Cast<SalesInvoiceItem>()
-                .SelectMany(v => v.SalesReps)
-                .Distinct()
-                .ToArray();
 
             this.BaseOnDeriveCustomers(derivation);
 

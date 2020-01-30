@@ -566,16 +566,6 @@ namespace Allors.Repository
         Media LogoImage { get; set; }
 
         #region Allors
-        [Id("7E926007-DED3-4B53-B9C5-4B4D25EC9AF7")]
-        [AssociationId("56A50C32-AB99-40A1-9393-99CBFBD61B6E")]
-        [RoleId("18E2BEB9-343B-4C82-9D39-DB013749DB1F")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        Person[] SalesReps { get; set; }
-
-        #region Allors
         [Id("0C328E5C-E3A8-44B9-BD4D-0DDABBFC9728")]
         #endregion
         void StartNewFiscalYear();

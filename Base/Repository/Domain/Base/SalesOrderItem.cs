@@ -436,17 +436,6 @@ namespace Allors.Repository
         public decimal QuantityCommittedOut { get; set; }
 
         #region Allors
-        [Id("911abda0-2eb0-477e-80be-e9e7d358205e")]
-        [AssociationId("23af5657-ed05-43c2-aeed-d268204528d2")]
-        [RoleId("42a88fb9-84bc-4e35-83ff-6cb5c0cf3c96")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        [Derived]
-        [Indexed]
-        public Person[] SalesReps { get; set; }
-
-        #region Allors
         [Id("b2d2645e-0d3f-473e-b277-6f890b9b911e")]
         [AssociationId("68281397-74f8-4356-b9fc-014f792ab914")]
         [RoleId("1292e876-1c61-42cb-8f01-8b3eb6cf0fa0")]

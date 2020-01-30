@@ -38,9 +38,7 @@ namespace Allors
         protected Person Administrator => this.GetPersonByUserName("administrator");
 
         protected Person OrderProcessor => this.GetPersonByUserName("orderProcessor");
-
-        protected Person SalesRep => this.GetPersonByUserName("salesRep");
-
+        
         protected Person Purchaser => this.GetPersonByUserName("purchaser");
 
         protected ObjectFactory ObjectFactory => new ObjectFactory(MetaPopulation.Instance, typeof(User));

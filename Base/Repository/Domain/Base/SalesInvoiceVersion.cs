@@ -295,17 +295,6 @@ namespace Allors.Repository
         public PaymentMethod PaymentMethod { get; set; }
 
         #region Allors
-        [Id("F72F61C4-91CF-488F-8C3B-77A3D394E124")]
-        [AssociationId("175E92F2-6B98-4811-9346-08D81A78B7F2")]
-        [RoleId("573F3F93-4017-4BDA-ABD9-6676021E30FE")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public Person[] SalesReps { get; set; }
-
-        #region Allors
         [Id("3E595F3B-D845-4141-A4F8-E055B01AFDBE")]
         [AssociationId("0A113ECD-9E72-45FB-B642-5A0C124F0508")]
         [RoleId("946229B3-5952-4068-97B6-A6572FED9558")]

@@ -484,17 +484,6 @@ namespace Allors.Repository
         public ShipmentMethod ShipmentMethod { get; set; }
 
         #region Allors
-        [Id("4958ae32-6bc0-451d-bacc-8b7244a9dc56")]
-        [AssociationId("bf8525ec-1fdf-4bae-9fd9-85bb4aa54400")]
-        [RoleId("6281e7d9-d7b8-4611-83f4-e1bdb44cc5f9")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        [Derived]
-        [Indexed]
-        public Person[] SalesReps { get; set; }
-
-        #region Allors
         [Id("7c5206f5-391d-485d-a030-513450f4dd2f")]
         [AssociationId("1086a778-17dd-4984-b73b-a5629a9b8e7c")]
         [RoleId("1020ff0a-e353-418a-9111-c61a5216032d")]

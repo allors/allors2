@@ -41,6 +41,7 @@ namespace Allors.Domain
 
             this.BaseOnDeriveUnitOfMeasure(derivation);
 
+            // TODO: Remove OnDerive
             this.Part.OnDerive(x => x.WithDerivation(derivation));
         }
 

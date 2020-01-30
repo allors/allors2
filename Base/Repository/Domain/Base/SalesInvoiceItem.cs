@@ -205,16 +205,6 @@ namespace Allors.Repository
         public InvoiceItemType InvoiceItemType { get; set; }
 
         #region Allors
-        [Id("90866201-03a1-44b2-9318-5048639b58c8")]
-        [AssociationId("0618fddc-dee4-4cd4-9d4d-b7356be9dc65")]
-        [RoleId("d61277d3-b916-4783-9de0-48f9eb6808c4")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        public Person[] SalesReps { get; set; }
-
-        #region Allors
         [Id("BB115D9A-53F8-4A3C-95F0-403A883C84FE")]
         [AssociationId("563F27E6-37AD-486A-9F90-85751C6458EE")]
         [RoleId("DDB0F028-B9D6-4D8D-88D4-245ADA2B90EB")]
