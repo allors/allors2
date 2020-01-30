@@ -189,21 +189,6 @@ namespace Allors.Domain
             derivedRoles.InactivePartyRelationships = allPartyRelationshipsWhereParty
                 .Except(@this.CurrentPartyRelationships)
                 .ToArray();
-
-            foreach (CustomerRelationship customerRelationship in @this.CustomerRelationshipsWhereCustomer)
-            {
-                // HACK: DerivedRoles
-                var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)customerRelationship.InternalOrganisation;
-
-                if (@this.BaseIsActiveCustomer(customerRelationship.InternalOrganisation, @this.Strategy.Session.Now()))
-                {
-                    internalOrganisationDerivedRoles?.AddActiveCustomer(@this);
-                }
-                else
-                {
-                    internalOrganisationDerivedRoles?.RemoveActiveCustomer(@this);
-                }
-            }
         }
 
         public static void BaseOnPostDerive(this Party @this, ObjectOnPostDerive method)
@@ -304,27 +289,6 @@ namespace Allors.Domain
                     {
                         partyFinancial.SubAccountNumber = internalOrganisation.NextSubAccountNumber();
                     }
-                }
-            }
-        }
-
-        public static void BaseOnDeriveActiveCustomer(this Party @this, IDerivation derivation)
-        {
-            foreach (CustomerRelationship customerRelationship in @this.CustomerRelationshipsWhereCustomer)
-            {
-                if (@this.BaseIsActiveCustomer(customerRelationship.InternalOrganisation, @this.Strategy.Session.Now()))
-                {
-                    // HACK: DerivedRoles
-                    var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)customerRelationship.InternalOrganisation;
-
-                    internalOrganisationDerivedRoles.AddActiveCustomer(@this);
-                }
-                else
-                {
-                    // HACK: DerivedRoles
-                    var internalOrganisationDerivedRoles = (OrganisationDerivedRoles)customerRelationship.InternalOrganisation;
-
-                    internalOrganisationDerivedRoles.RemoveActiveCustomer(@this);
                 }
             }
         }
