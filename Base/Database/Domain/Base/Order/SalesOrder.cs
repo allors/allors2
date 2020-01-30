@@ -459,11 +459,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCancel(OrderCancel method)
-        {
-            this.OnCancelOrReject();
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Cancelled;
-        }
+        public void BaseCancel(OrderCancel method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Cancelled;
 
         public void BaseConfirm(OrderConfirm method)
         {
@@ -483,36 +479,17 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseReject(OrderReject method)
-        {
-            this.OnCancelOrReject();
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
-        }
+        public void BaseReject(OrderReject method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
 
-        public void BaseHold(OrderHold method)
-        {
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
-        }
+        public void BaseHold(OrderHold method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
 
-        public void BaseApprove(OrderApprove method)
-        {
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).ReadyForPosting;
-        }
+        public void BaseApprove(OrderApprove method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).ReadyForPosting;
 
-        public void BaseSend(SalesOrderSend method)
-        {
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
-        }
+        public void BaseSend(SalesOrderSend method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
 
-        public void BaseContinue(OrderContinue method)
-        {
-            this.SalesOrderState = this.PreviousSalesOrderState;
-        }
+        public void BaseContinue(OrderContinue method) => this.SalesOrderState = this.PreviousSalesOrderState;
 
-        public void BaseComplete(OrderComplete method)
-        {
-            this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
-        }
+        public void BaseComplete(OrderComplete method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
 
         public void BaseShip(SalesOrderShip method)
         {
@@ -771,14 +748,6 @@ namespace Allors.Domain
             }
 
             return addresses;
-        }
-
-        private void OnCancelOrReject()
-        {
-            foreach (SalesOrderItem salesOrderItem in this.ValidOrderItems)
-            {
-                salesOrderItem.Cancel();
-            }
         }
 
         private void Sync(IDerivation derivation, SalesOrderItem[] validOrderItems)
