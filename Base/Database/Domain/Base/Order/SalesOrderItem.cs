@@ -28,6 +28,8 @@ namespace Allors.Domain
 
         public bool IsValid => !(this.SalesOrderItemState.Cancelled || this.SalesOrderItemState.Rejected);
 
+        public bool WasValid => !(this.LastSalesOrderItemState.Cancelled || this.LastSalesOrderItemState.Rejected);
+
         public Part Part
         {
             get
@@ -105,16 +107,20 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
+            var reservation = new InventoryTransactionReasons(this.Strategy.Session).Reservation;
+            var shipped = new ShipmentStates(this.Session()).Shipped;
 
-            var reasons = new InventoryTransactionReasons(this.Strategy.Session);
-            var shipmentStates = new ShipmentStates(this.Session());
+            var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);
+            var salesOrderItemPaymentStates = new SalesOrderItemPaymentStates(derivation.Session);
+            var salesOrderItemInvoiceStates = new SalesOrderItemInvoiceStates(derivation.Session);
+            var salesOrderItemStates = new SalesOrderItemStates(derivation.Session);
 
             this.QuantityPendingShipment = this.OrderShipmentsWhereOrderItem
-                .Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(shipmentStates.Shipped))
+                .Where(v => v.ExistShipmentItem && !((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(shipped))
                 .Sum(v => v.Quantity);
 
             this.QuantityShipped = this.OrderShipmentsWhereOrderItem
-                .Where(v => v.ExistShipmentItem && ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(shipmentStates.Shipped))
+                .Where(v => v.ExistShipmentItem && ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(shipped))
                 .Sum(v => v.Quantity);
 
             if (this.ExistSerialisedItem && this.QuantityOrdered != 1)
@@ -129,28 +135,24 @@ namespace Allors.Domain
 
             if (this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault() != null)
             {
-                this.QuantityCommittedOut = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.SelectMany(v => v.InventoryItemTransactions).Where(t => t.Reason.Equals(reasons.Reservation)).Sum(v => v.Quantity);
+                this.QuantityCommittedOut = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.SelectMany(v => v.InventoryItemTransactions).Where(t => t.Reason.Equals(reservation)).Sum(v => v.Quantity);
             }
             else
             {
                 this.QuantityCommittedOut = 0;
             }
 
-            var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);
-            var salesOrderItemPaymentStates = new SalesOrderItemPaymentStates(derivation.Session);
-            var salesOrderItemInvoiceStates = new SalesOrderItemInvoiceStates(derivation.Session);
-            var salesOrderItemStates = new SalesOrderItemStates(derivation.Session);
-
             // SalesOrderItem States
             if (this.IsValid)
             {
-                if (salesOrder.SalesOrderState.readyForPosting &&
+                if (salesOrder.SalesOrderState.ReadyForPosting &&
                     (this.SalesOrderItemState.Created || this.SalesOrderItemState.OnHold))
                 {
                     this.SalesOrderItemState = salesOrderItemStates.ReadyForPosting;
                 }
 
-                if (salesOrder.SalesOrderState.InProcess && (this.SalesOrderItemState.ReadyForPosting || this.SalesOrderItemState.OnHold))
+                if (salesOrder.SalesOrderState.InProcess &&
+                    (this.SalesOrderItemState.ReadyForPosting || this.SalesOrderItemState.OnHold))
                 {
                     this.SalesOrderItemState = salesOrderItemStates.InProcess;
                 }
@@ -173,6 +175,23 @@ namespace Allors.Domain
                 if (salesOrder.SalesOrderState.Rejected)
                 {
                     this.SalesOrderItemState = salesOrderItemStates.Rejected;
+                }
+            }
+
+            if (!this.IsValid && this.WasValid)
+            {
+                if (this.ExistReservedFromNonSerialisedInventoryItem && this.ExistQuantityCommittedOut)
+                {
+                    var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                    if (inventoryAssignment != null)
+                    {
+                        inventoryAssignment.Quantity = 0 - this.QuantityCommittedOut;
+                    }
+                }
+
+                if (this.ExistReservedFromSerialisedInventoryItem)
+                {
+                    this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Available;
                 }
             }
 
@@ -442,42 +461,17 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseCancel(OrderItemCancel method)
-        {
-            this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Cancelled;
-            this.OnCancelOrReject();
-        }
+        public void BaseCancel(OrderItemCancel method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Cancelled;
 
         public void BaseConfirm(OrderItemConfirm method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
 
-        public void BaseReject(OrderItemReject method)
-        {
-            this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Rejected;
-            this.OnCancelOrReject();
-        }
+        public void BaseReject(OrderItemReject method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Rejected;
 
         public void BaseApprove(OrderItemApprove method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
 
         public void BaseContinue(SalesOrderItemContinue method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).InProcess;
 
         public void SyncPrices(IDerivation derivation, SalesOrder salesOrder) => this.CalculatePrice(derivation, salesOrder, true);
-
-        private void OnCancelOrReject()
-        {
-            if (this.ExistReservedFromNonSerialisedInventoryItem && this.ExistQuantityCommittedOut)
-            {
-                var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
-                if (inventoryAssignment != null)
-                {
-                    inventoryAssignment.Quantity = 0 - this.QuantityCommittedOut;
-                }
-            }
-
-            if (this.ExistReservedFromSerialisedInventoryItem)
-            {
-                this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Available;
-            }
-        }
 
         private void CalculatePrice(IDerivation derivation, SalesOrder salesOrder, bool useValueOrdered = false)
         {

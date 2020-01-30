@@ -6,7 +6,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService, TestScope, SingletonId } from '../../../../../angular';
-import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, SalesRepRelationship, Currency } from '../../../../../domain';
+import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, Currency } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';

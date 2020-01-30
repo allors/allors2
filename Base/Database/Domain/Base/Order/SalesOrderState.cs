@@ -11,7 +11,7 @@ namespace Allors.Domain
 
         public bool RequestsApproval => Equals(this.UniqueId, SalesOrderStates.RequestsApprovalId);
 
-        public bool readyForPosting => Equals(this.UniqueId, SalesOrderStates.ReadyForPostingId);
+        public bool ReadyForPosting => Equals(this.UniqueId, SalesOrderStates.ReadyForPostingId);
 
         public bool Cancelled => Equals(this.UniqueId, SalesOrderStates.CancelledId);
 
