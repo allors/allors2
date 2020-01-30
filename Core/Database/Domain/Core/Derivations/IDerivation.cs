@@ -30,6 +30,8 @@ namespace Allors.Domain
 
         IValidation Derive();
 
-        IValidation Derive(params Object[] marked);
+        void Mark(Object @object);
+
+        void Mark(params Object[] objects);
     }
 }

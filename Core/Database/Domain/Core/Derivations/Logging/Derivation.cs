@@ -29,6 +29,8 @@ namespace Allors.Domain.Logging
         public ISet<Object> DerivedObjects { get; }
         public IValidation Derive() => throw new NotImplementedException();
 
-        public IValidation Derive(params Object[] marked) => throw new NotImplementedException();
+        public void Mark(Object @object) => throw new NotImplementedException();
+
+        public void Mark(params Object[] objects) => throw new NotImplementedException();
     }
 }

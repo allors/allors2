@@ -133,10 +133,10 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining);
             }
 
-           if (this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault() != null)
+           if (this.SalesOrderItemInventoryAssignments.FirstOrDefault() != null)
             {
-                this.QuantityCommittedOut = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.SelectMany(v => v.InventoryItemTransactions).Where(t => t.Reason.Equals(reasons.Reservation)).Sum(v => v.Quantity);
-                this.QuantityCommittedOut = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.SelectMany(v => v.InventoryItemTransactions).Where(t => t.Reason.Equals(reservation)).Sum(v => v.Quantity);
+                this.QuantityCommittedOut = this.SalesOrderItemInventoryAssignments.SelectMany(v => v.InventoryItemTransactions).Where(t => t.Reason.Equals(new InventoryTransactionReasons(this.Session()).Reservation)).Sum(v => v.Quantity);
+                this.QuantityCommittedOut = this.SalesOrderItemInventoryAssignments.SelectMany(v => v.InventoryItemTransactions).Where(t => t.Reason.Equals(reservation)).Sum(v => v.Quantity);
             }
             else
             {
@@ -183,7 +183,7 @@ namespace Allors.Domain
             {
                 if (this.ExistReservedFromNonSerialisedInventoryItem && this.ExistQuantityCommittedOut)
                 {
-                    var inventoryAssignment = this.SalesOrderItemInventoryAssignmentsWhereSalesOrderItem.FirstOrDefault();
+                    var inventoryAssignment = this.SalesOrderItemInventoryAssignments.FirstOrDefault();
                     if (inventoryAssignment != null)
                     {
                         inventoryAssignment.Quantity = 0 - this.QuantityCommittedOut;

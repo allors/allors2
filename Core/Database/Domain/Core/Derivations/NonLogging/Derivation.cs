@@ -10,7 +10,6 @@ namespace Allors.Domain.NonLogging
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Allors;
-    using Database.Adapters;
     using Object = Allors.Domain.Object;
 
     [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1121:UseBuiltInTypeAlias", Justification = "Allors Object")]
@@ -29,6 +28,8 @@ namespace Allors.Domain.NonLogging
             this.ChangeSet = new AccumulatedChangeSet();
             this.DerivedObjects = new HashSet<Object>();
             this.Validation = new Validation(this);
+
+            this.MarkedBacklog = new HashSet<Object>();
 
             this.guard = false;
         }
@@ -62,21 +63,32 @@ namespace Allors.Domain.NonLogging
 
         internal AccumulatedChangeSet ChangeSet { get; }
 
-        public IValidation Derive() => this.Derive(null);
+        internal ISet<Object> MarkedBacklog { get; private set; }
 
-        public IValidation Derive(params Object[] marked)
+        public void Mark(Object @object) => this.MarkedBacklog.Add(@object);
+
+        public void Mark(params Object[] objects) => this.MarkedBacklog.UnionWith(objects);
+
+        public IValidation Derive()
         {
+            Object[] GetAndResetMarked()
+            {
+                var marked = this.MarkedBacklog.Where(v => v != null).ToArray();
+                this.MarkedBacklog = new HashSet<Object>();
+                return marked;
+            }
+
             try
             {
                 this.Guard();
 
                 this.Cycle = new Cycle(this);
-                var derivedObjects = this.Cycle.Execute(marked);
+                var derivedObjects = this.Cycle.Execute(GetAndResetMarked());
 
-                while (derivedObjects.Count > 0)
+                while (derivedObjects.Any() || this.MarkedBacklog.Any())
                 {
                     this.Cycle = new Cycle(this);
-                    derivedObjects = this.Cycle.Execute();
+                    derivedObjects = this.Cycle.Execute(GetAndResetMarked());
                 }
 
                 return this.Validation;

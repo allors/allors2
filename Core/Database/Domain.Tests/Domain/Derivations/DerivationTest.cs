@@ -100,7 +100,8 @@ namespace Tests
             this.Session.Commit();
 
             var derivation = new Derivation(this.Session);
-            derivation.Derive(first);
+            derivation.Mark(first);
+            derivation.Derive();
 
             Assert.True(first.ExistIsDerived);
             Assert.True(first.Second.ExistIsDerived);

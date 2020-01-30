@@ -28,8 +28,8 @@ namespace Allors
         private void Derive(Extent extent)
         {
             var derivation = new Domain.NonLogging.Derivation(this.session);
-
-            var validation = derivation.Derive(extent.Cast<Domain.Object>().ToArray());
+            derivation.Mark(extent.Cast<Domain.Object>().ToArray());
+            var validation = derivation.Derive();
             if (validation.HasErrors)
             {
                 foreach (var error in validation.Errors)
