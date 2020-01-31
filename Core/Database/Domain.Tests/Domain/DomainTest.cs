@@ -12,6 +12,7 @@ namespace Tests
     using Allors;
     using Allors.Database.Adapters.Memory;
     using Allors.Domain;
+    using Allors.Domain.NonLogging;
     using Allors.Meta;
     using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
@@ -60,7 +61,7 @@ namespace Tests
         protected void Setup(bool populate)
         {
             var services = new ServiceCollection();
-            services.AddAllors();
+            services.AddAllors((session) => new Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
             var serviceProvider = services.BuildServiceProvider();
 
             var database = new Database(

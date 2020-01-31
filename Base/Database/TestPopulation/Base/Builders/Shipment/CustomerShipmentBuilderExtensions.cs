@@ -29,7 +29,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithLatestCancelDate(faker.Date.Between(start: @this.Session.Now(), end: @this.Session.Now().AddDays(2)));
             @this.WithEstimatedArrivalDate(faker.Date.Between(start: @this.Session.Now().AddDays(6), end: @this.Session.Now().AddDays(10)));
 
-            @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithFileName("doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
+            @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithInFileName("doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
             @this.WithEstimatedShipCost(faker.Finance.Amount(100, 1000, 2));
             @this.WithHandlingInstruction(faker.Lorem.Paragraph());
             @this.WithComment(faker.Lorem.Sentence());

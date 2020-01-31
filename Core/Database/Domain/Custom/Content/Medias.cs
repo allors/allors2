@@ -28,19 +28,19 @@ namespace Allors.Domain
             merge(AvatarId, v =>
             {
                 v.InData = this.GetResourceBytes("avatar.png");
-                v.FileName = "avatar.png";
+                v.InFileName = "avatar.png";
             });
 
             merge(AboutId, v =>
             {
                 v.InData = this.GetResourceBytes("about.md");
-                v.FileName = "about.md";
+                v.InFileName = "about.md";
             });
 
             merge(MadeliefjeId, v =>
             {
                 v.InData = this.GetResourceBytes("madeliefje.jpg");
-                v.FileName = "madeliefje.jpg";
+                v.InFileName = "madeliefje.jpg";
             });
         }
 

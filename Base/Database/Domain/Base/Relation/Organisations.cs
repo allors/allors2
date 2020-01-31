@@ -201,9 +201,10 @@ namespace Allors.Domain
                     .Build());
             }
 
-            if (File.Exists(logo))
+            var logoFile = new FileInfo(logo);
+            if (logoFile.Exists)
             {
-                internalOrganisation.LogoImage = FileReader.CreateMedia(session, logo);
+                internalOrganisation.LogoImage = logoFile.CreateMedia(session, logo);
             }
 
             Facility facility = null;

@@ -5,8 +5,10 @@
 
 namespace Allors.Domain.NonLogging
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Object = Domain.Object;
 
     public class Iteration : IIteration
     {
@@ -74,6 +76,9 @@ namespace Allors.Domain.NonLogging
         {
             try
             {
+                var config = this.Cycle.Derivation.Config;
+                var count = 1;
+
                 if (marked != null)
                 {
                     this.Graph.Mark(marked);
@@ -85,6 +90,11 @@ namespace Allors.Domain.NonLogging
 
                 while (this.Preparation.Objects.Any() || this.MarkedBacklog.Count > 0)
                 {
+                    if (config.MaxPreparations != 0 && count++ > config.MaxPreparations)
+                    {
+                        throw new Exception("Maximum amount of preparations reached");
+                    }
+
                     this.Preparation = new Preparation(this, this.MarkedBacklog);
                     this.MarkedBacklog = new HashSet<Object>();
                     this.Preparation.Execute();

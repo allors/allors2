@@ -10,8 +10,8 @@ namespace Allors.Services
 
     public class DerivationService : IDerivationService
     {
-        public Func<IDerivation> Factory { get; set; }
+        public Func<ISession, IDerivation> Factory { get; set; }
 
-        public IDerivation CreateDerivation(ISession session) => this.Factory != null ? this.Factory() : new Domain.NonLogging.Derivation(session);
+        public IDerivation CreateDerivation(ISession session) => this.Factory != null ? this.Factory(session) : new Domain.NonLogging.Derivation(session);
     }
 }

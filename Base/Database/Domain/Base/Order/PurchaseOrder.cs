@@ -317,7 +317,7 @@ namespace Allors.Domain
                 var model = new Print.PurchaseOrderModel.Model(this);
                 this.RenderPrintDocument(this.OrderedBy?.PurchaseOrderTemplate, model, images);
 
-                this.PrintDocument.Media.FileName = $"{this.OrderNumber}.odt";
+                this.PrintDocument.Media.InFileName = $"{this.OrderNumber}.odt";
             }
         }
 

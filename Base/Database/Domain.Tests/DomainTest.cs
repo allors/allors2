@@ -13,6 +13,7 @@ namespace Allors
     using Allors.Meta;
     using Allors.Services;
     using Bogus;
+    using Domain.NonLogging;
     using Microsoft.Extensions.DependencyInjection;
     using Person = Domain.Person;
 
@@ -52,7 +53,7 @@ namespace Allors
         protected void Setup(bool populate)
         {
             var services = new ServiceCollection();
-            services.AddAllors();
+            services.AddAllors((session) => new Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
             services.AddSingleton<Faker>();
             var serviceProvider = services.BuildServiceProvider();
 

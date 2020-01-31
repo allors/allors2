@@ -12,7 +12,7 @@ namespace Allors.Services
 
     public static class ServiceCollectionExtension
     {
-        public static void AddAllors(this IServiceCollection services, Func<IDerivation> factory = null)
+        public static void AddAllors(this IServiceCollection services, Func<ISession, IDerivation> factory = null)
         {
             services.AddSingleton<ITreeService, TreeService>();
             services.AddSingleton<ICacheService, CacheService>();

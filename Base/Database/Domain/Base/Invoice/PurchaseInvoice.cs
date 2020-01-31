@@ -235,7 +235,7 @@ namespace Allors.Domain
                 var model = new Print.PurchaseInvoiceModel.Model(this);
                 this.RenderPrintDocument(this.BilledTo?.PurchaseInvoiceTemplate, model, images);
 
-                this.PrintDocument.Media.FileName = $"{this.InvoiceNumber}.odt";
+                this.PrintDocument.Media.InFileName = $"{this.InvoiceNumber}.odt";
             }
         }
 

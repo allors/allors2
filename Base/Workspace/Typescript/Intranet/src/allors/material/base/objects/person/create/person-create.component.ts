@@ -41,7 +41,6 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
 
   private customerRole: PersonRole;
   private employeeRole: PersonRole;
-  private salesRepRole: PersonRole;
 
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
@@ -135,7 +134,6 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
 
         this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId === 'b29444ef-0950-4d6f-ab3e-9c6dc44c050f');
         this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId === 'db06a3e1-6146-4c18-a60d-dd10e19f7243');
-        this.salesRepRole = this.roles.find((v: PersonRole) => v.UniqueId === '2d41946c-4a77-456f-918a-2e83e6c12d7f');
 
         this.person = this.allors.context.create('Person') as Person;
         this.person.CollectiveWorkEffortInvoice = false;
@@ -162,12 +160,6 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
       const employment = this.allors.context.create('Employment') as Employment;
       employment.Employee = this.person;
       employment.Employer = this.internalOrganisation;
-    }
-
-    if (this.selectedRoles.indexOf(this.salesRepRole) > -1) {
-      const salesRepRelationship = this.allors.context.create('SalesRepRelationship') as SalesRepRelationship;
-      salesRepRelationship.SalesRepresentative = this.person;
-      salesRepRelationship.Customer = this.internalOrganisation;
     }
 
     if (this.organisation !== undefined) {

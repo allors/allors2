@@ -54,7 +54,7 @@ namespace Allors.Domain
                 var printModel = new Print.ProductQuoteModel.Model(this, images);
                 this.RenderPrintDocument(this.Issuer?.ProductQuoteTemplate, printModel, images);
 
-                this.PrintDocument.Media.FileName = $"{this.QuoteNumber}.odt";
+                this.PrintDocument.Media.InFileName = $"{this.QuoteNumber}.odt";
             }
         }
 

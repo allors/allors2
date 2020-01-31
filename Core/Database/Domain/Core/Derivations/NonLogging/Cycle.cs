@@ -5,6 +5,7 @@
 
 namespace Allors.Domain.NonLogging
 {
+    using System;
     using System.Collections.Generic;
     using Object = Domain.Object;
 
@@ -45,6 +46,9 @@ namespace Allors.Domain.NonLogging
         {
             try
             {
+                var config = this.Derivation.Config;
+                var count = 1;
+
                 var postDeriveBacklog = new List<Object>();
                 var previousCount = postDeriveBacklog.Count;
 
@@ -53,6 +57,11 @@ namespace Allors.Domain.NonLogging
 
                 while (postDeriveBacklog.Count != previousCount)
                 {
+                    if (config.MaxIterations != 0 && count++ > config.MaxIterations)
+                    {
+                        throw new Exception("Maximum amount of iterations reached");
+                    }
+
                     previousCount = postDeriveBacklog.Count;
 
                     this.Iteration = new Iteration(this);

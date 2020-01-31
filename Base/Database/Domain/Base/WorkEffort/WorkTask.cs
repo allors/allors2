@@ -62,7 +62,7 @@ namespace Allors.Domain
                 var model = new Print.WorkTaskModel.Model(this);
                 this.RenderPrintDocument(this.TakenBy?.WorkTaskTemplate, model, images);
 
-                this.PrintDocument.Media.FileName = $"{this.WorkEffortNumber}.odt";
+                this.PrintDocument.Media.InFileName = $"{this.WorkEffortNumber}.odt";
             }
         }
 
