@@ -21,7 +21,7 @@ stages:
         core_database:
           target: 'CoreDatabaseTest'
         core_database_debugging:
-          ALLORS_DERIVATION_DEBUG: 'true'
+          ALLORS_DEBUG_DERIVATION: 'true'
           target: 'CoreDatabaseTest'
         core_workspace:
           target: 'CoreWorkspaceTest'
@@ -37,6 +37,9 @@ stages:
           target: 'BaseWorkspaceCSharpTest'
       maxParallel: 10
 
+    variables:
+      ALLORS_DERIVATION_DEBUG: $(ALLORS_DERIVATION_DEBUG)
+
     steps:
     - task: UseDotNet@2
       displayName: 'Use .NET Core 3.1 sdk'
@@ -45,8 +48,6 @@ stages:
         version: 3.1.100
         installationPath: $(Agent.ToolsDirectory)/dotnet
     - task: PowerShell@2
-      variables:
-        ALLORS_DERIVATION_DEBUG: $(ALLORS_DERIVATION_DEBUG)
       inputs:
         targetType: 'filePath'
         filePath: 'build.ps1'
