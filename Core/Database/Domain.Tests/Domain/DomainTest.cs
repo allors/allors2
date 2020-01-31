@@ -67,12 +67,15 @@ namespace Tests
             var derivationDebug = true;
             throw new Exception("ALLORS_DERIVATION_DEBUG");
 #else
-            bool.TryParse(Environment.GetEnvironmentVariable("ALLORS_DERIVATION_DEBUG"), out var derivationDebug);
+            var environmentVariable = Environment.GetEnvironmentVariable("ALLORS_DERIVATION");
+            var derivationDebug = environmentVariable?.ToLowerInvariant().Equals("debug") == true;
 #endif
 
             var services = new ServiceCollection();
             if (derivationDebug)
             {
+                throw new Exception("ALLORS_DERIVATION_DEBUG");
+
                 services.AddAllors((session) => new Allors.Domain.Derivations.Debug.Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
             }
             else

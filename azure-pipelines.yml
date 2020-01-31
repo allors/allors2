@@ -21,7 +21,7 @@ stages:
         core_database:
           target: 'CoreDatabaseTest'
         core_database_debugging:
-          ALLORS_DEBUG_DERIVATION: 'true'
+          ALLORS_DERIVATION: 'debug'
           target: 'CoreDatabaseTest'
         core_workspace:
           target: 'CoreWorkspaceTest'

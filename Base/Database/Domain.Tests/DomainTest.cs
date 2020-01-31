@@ -55,7 +55,8 @@ namespace Allors
 #if ALLORS_DERIVATION_DEBUG
             var derivationDebug = true;
 #else
-            bool.TryParse(Environment.GetEnvironmentVariable("ALLORS_DERIVATION_DEBUG"), out var derivationDebug);
+            var environmentVariable = Environment.GetEnvironmentVariable("ALLORS_DERIVATION");
+            var derivationDebug = environmentVariable?.ToLowerInvariant().Equals("debug") == true;
 #endif
 
             var services = new ServiceCollection();
