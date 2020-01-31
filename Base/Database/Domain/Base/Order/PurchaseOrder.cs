@@ -430,6 +430,16 @@ namespace Allors.Domain
                                 .WithQuantity(1)
                                 .Build();
                         }
+                        else
+                        {
+                            new InventoryItemTransactionBuilder(this.Session())
+                                .WithPart(orderItem.Part)
+                                .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
+                                .WithFacility(this.Facility)
+                                .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                                .WithQuantity(orderItem.QuantityOrdered)
+                                .Build();
+                        }
                     }
                 }
 

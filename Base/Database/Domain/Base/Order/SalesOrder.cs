@@ -539,14 +539,12 @@ namespace Allors.Domain
 
                                 if (shipmentItem != null)
                                 {
-                                    shipmentItem.Quantity += shipmentItem.OrderShipmentsWhereShipmentItem.Sum(v => v.Quantity);
                                     shipmentItem.ContentsDescription = $"{shipmentItem.Quantity} * {good.Name}";
                                 }
                                 else
                                 {
                                     shipmentItem = new ShipmentItemBuilder(this.Strategy.Session)
                                         .WithGood(good)
-                                        .WithQuantity(orderItem.QuantityRequestsShipping)
                                         .WithContentsDescription($"{orderItem.QuantityRequestsShipping} * {good}")
                                         .Build();
 
@@ -583,6 +581,8 @@ namespace Allors.Domain
                                     .WithShipmentItem(shipmentItem)
                                     .WithQuantity(orderItem.QuantityRequestsShipping)
                                     .Build();
+
+                                shipmentItem.Quantity = shipmentItem.OrderShipmentsWhereShipmentItem.Sum(v => v.Quantity);
 
                                 orderItemDerivedRoles.QuantityRequestsShipping = 0;
                             }

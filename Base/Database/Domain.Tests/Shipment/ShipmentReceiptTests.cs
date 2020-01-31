@@ -200,7 +200,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            Assert.Equal(30, sessionInventoryItem.QuantityOnHand);
+            Assert.Equal(30, sessionInventoryItem.Qoh);
 
             Assert.Equal(30, sessionSalesItem.QuantityPendingShipment);
             Assert.Equal(30, sessionSalesItem.QuantityReserved);

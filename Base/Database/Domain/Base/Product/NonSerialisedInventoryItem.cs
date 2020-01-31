@@ -17,6 +17,107 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public decimal Qoh
+        {
+            get
+            {
+                var settings = this.Strategy.Session.GetSingleton().Settings;
+
+                // TODO: Test for changes in these relations for performance reasons
+                var quantityOnHand = 0M;
+
+                if (!settings.InventoryStrategy.OnHandNonSerialisedStates.Contains(this.NonSerialisedInventoryItemState))
+                {
+                    return 0;
+                }
+
+                foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
+                {
+                    var reason = inventoryTransaction.Reason;
+
+                    if (reason.IncreasesQuantityOnHand == true)
+                    {
+                        quantityOnHand += inventoryTransaction.Quantity;
+                    }
+                    else if (reason.IncreasesQuantityOnHand == false)
+                    {
+                        quantityOnHand -= inventoryTransaction.Quantity;
+                    }
+                }
+
+                foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
+                {
+                    if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                    {
+                        quantityOnHand -= pickListItem.QuantityPicked;
+                    }
+                }
+
+                return quantityOnHand;
+            }
+        }
+
+        public decimal Qco
+        {
+            get
+            {
+                var quantityCommittedOut = 0M;
+
+                foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
+                {
+                    var reason = inventoryTransaction.Reason;
+
+                    if (reason.IncreasesQuantityCommittedOut == true)
+                    {
+                        quantityCommittedOut += inventoryTransaction.Quantity;
+                    }
+                    else if (reason.IncreasesQuantityCommittedOut == false)
+                    {
+                        quantityCommittedOut -= inventoryTransaction.Quantity;
+                    }
+                }
+
+                return quantityCommittedOut;
+            }
+        }
+
+        public decimal Atp
+        {
+            get
+            {
+                var availableToPromise = this.Qoh - this.Qco;
+
+                if (availableToPromise < 0)
+                {
+                    availableToPromise = 0;
+                }
+
+                return availableToPromise;
+            }
+        }
+
+        public decimal ExpectedIn
+        {
+            get
+            {
+                var quantityExpectedIn = 0M;
+
+                foreach (PurchaseOrderItem purchaseOrderItem in this.Part.PurchaseOrderItemsWherePart)
+                {
+                    var facility = purchaseOrderItem.PurchaseOrderWherePurchaseOrderItem.Facility;
+                    if ((purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess)
+                         || purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Sent))
+                        && this.Facility.Equals(facility))
+                    {
+                        quantityExpectedIn += purchaseOrderItem.QuantityOrdered;
+                        quantityExpectedIn -= purchaseOrderItem.QuantityReceived;
+                    }
+                }
+
+                return quantityExpectedIn;
+            }
+        }
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistNonSerialisedInventoryItemState)
@@ -93,19 +194,6 @@ namespace Allors.Domain
                 if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
                     quantityOnHand -= pickListItem.QuantityPicked;
-                }
-            }
-
-            foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereInventoryItem)
-            {
-                if (shipmentReceipt.ExistShipmentItem
-                    && shipmentReceipt.ShipmentItem.ShipmentItemState.Equals(new ShipmentItemStates(this.Session()).Received))
-                {
-                    var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
-                    if (purchaseShipment.ShipmentState.Equals(new ShipmentStates(this.Strategy.Session).Received))
-                    {
-                        quantityOnHand += shipmentReceipt.QuantityAccepted;
-                    }
                 }
             }
 

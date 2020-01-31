@@ -635,80 +635,80 @@ namespace Allors.Domain
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), item2.ReservedFromNonSerialisedInventoryItem.Facility);
         }
 
-        [Fact]
-        public void GivenConfirmedOrderItemForGood_WhenReservedFromNonSerialisedInventoryItemChangesValue_ThenQuantitiesAreMovedFromOldToNewInventoryItem()
-        {
-            this.InstantiateObjects(this.Session);
+        //[Fact]
+        //public void GivenConfirmedOrderItemForGood_WhenReservedFromNonSerialisedInventoryItemChangesValue_ThenQuantitiesAreMovedFromOldToNewInventoryItem()
+        //{
+        //    this.InstantiateObjects(this.Session);
 
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
+        //    new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
-            this.Session.Derive();
+        //    this.Session.Derive();
 
-            var secondWarehouse = new FacilityBuilder(this.Session)
-                .WithName("affiliate warehouse")
-                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
-                .WithOwner(this.InternalOrganisation)
-                .Build();
+        //    var secondWarehouse = new FacilityBuilder(this.Session)
+        //        .WithName("affiliate warehouse")
+        //        .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+        //        .WithOwner(this.InternalOrganisation)
+        //        .Build();
 
-            var order1 = new SalesOrderBuilder(this.Session)
-                .WithShipToCustomer(this.shipToCustomer)
-                .WithBillToCustomer(this.billToCustomer)
-                .WithPartiallyShip(false)
-                .Build();
+        //    var order1 = new SalesOrderBuilder(this.Session)
+        //        .WithShipToCustomer(this.shipToCustomer)
+        //        .WithBillToCustomer(this.billToCustomer)
+        //        .WithPartiallyShip(false)
+        //        .Build();
 
-            var salesOrderItem = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(this.good)
-                .WithQuantityOrdered(3)
-                .WithAssignedUnitPrice(5)
-                .Build();
+        //    var salesOrderItem = new SalesOrderItemBuilder(this.Session)
+        //        .WithProduct(this.good)
+        //        .WithQuantityOrdered(3)
+        //        .WithAssignedUnitPrice(5)
+        //        .Build();
 
-            order1.AddSalesOrderItem(salesOrderItem);
+        //    order1.AddSalesOrderItem(salesOrderItem);
 
-            this.Session.Derive();
+        //    this.Session.Derive();
 
-            order1.Confirm();
+        //    order1.Confirm();
 
-            this.Session.Derive();
+        //    this.Session.Derive();
 
-            order1.Send();
+        //    order1.Send();
 
-            this.Session.Derive(true);
+        //    this.Session.Derive(true);
 
-            Assert.Equal(3, salesOrderItem.QuantityOrdered);
-            Assert.Equal(0, salesOrderItem.QuantityShipped);
-            Assert.Equal(0, salesOrderItem.QuantityPendingShipment);
-            Assert.Equal(3, salesOrderItem.QuantityReserved);
-            Assert.Equal(2, salesOrderItem.QuantityShortFalled);
-            Assert.Equal(1, salesOrderItem.QuantityRequestsShipping);
-            Assert.Equal(1, salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, salesOrderItem.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
-            Assert.Equal(1, salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+        //    Assert.Equal(3, salesOrderItem.QuantityOrdered);
+        //    Assert.Equal(0, salesOrderItem.QuantityShipped);
+        //    Assert.Equal(0, salesOrderItem.QuantityPendingShipment);
+        //    Assert.Equal(3, salesOrderItem.QuantityReserved);
+        //    Assert.Equal(2, salesOrderItem.QuantityShortFalled);
+        //    Assert.Equal(1, salesOrderItem.QuantityRequestsShipping);
+        //    Assert.Equal(1, salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+        //    Assert.Equal(0, salesOrderItem.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+        //    Assert.Equal(1, salesOrderItem.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
-            var previous = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
+        //    var previous = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
 
-            var transaction = new InventoryItemTransactionBuilder(this.Session).WithFacility(secondWarehouse).WithPart(this.part).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
+        //    var transaction = new InventoryItemTransactionBuilder(this.Session).WithFacility(secondWarehouse).WithPart(this.part).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
 
-            this.Session.Derive();
+        //    this.Session.Derive();
 
-            var current = transaction.InventoryItem as NonSerialisedInventoryItem;
+        //    var current = transaction.InventoryItem as NonSerialisedInventoryItem;
 
-            salesOrderItem.ReservedFromNonSerialisedInventoryItem = current;
+        //    salesOrderItem.ReservedFromNonSerialisedInventoryItem = current;
 
-            this.Session.Derive();
+        //    this.Session.Derive();
 
-            Assert.Equal(3, salesOrderItem.QuantityOrdered);
-            Assert.Equal(0, salesOrderItem.QuantityShipped);
-            Assert.Equal(0, salesOrderItem.QuantityPendingShipment);
-            Assert.Equal(3, salesOrderItem.QuantityReserved);
-            Assert.Equal(2, salesOrderItem.QuantityShortFalled);
-            Assert.Equal(1, salesOrderItem.QuantityRequestsShipping);
-            Assert.Equal(0, previous.QuantityCommittedOut);
-            Assert.Equal(1, previous.AvailableToPromise);
-            Assert.Equal(1, previous.QuantityOnHand);
-            Assert.Equal(1, current.QuantityCommittedOut);
-            Assert.Equal(0, current.AvailableToPromise);
-            Assert.Equal(1, current.QuantityOnHand);
-        }
+        //    Assert.Equal(3, salesOrderItem.QuantityOrdered);
+        //    Assert.Equal(0, salesOrderItem.QuantityShipped);
+        //    Assert.Equal(0, salesOrderItem.QuantityPendingShipment);
+        //    Assert.Equal(3, salesOrderItem.QuantityReserved);
+        //    Assert.Equal(2, salesOrderItem.QuantityShortFalled);
+        //    Assert.Equal(1, salesOrderItem.QuantityRequestsShipping);
+        //    Assert.Equal(0, previous.QuantityCommittedOut);
+        //    Assert.Equal(1, previous.AvailableToPromise);
+        //    Assert.Equal(1, previous.QuantityOnHand);
+        //    Assert.Equal(1, current.QuantityCommittedOut);
+        //    Assert.Equal(0, current.AvailableToPromise);
+        //    Assert.Equal(1, current.QuantityOnHand);
+        //}
 
         [Fact]
         public void GivenConfirmedOrderItemForGood_WhenOrderItemIsCancelled_ThenNonSerialisedInventoryQuantitiesAreReleased()

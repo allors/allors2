@@ -123,6 +123,13 @@ namespace Allors.Domain
                 .Where(v => v.ExistShipmentItem && ((CustomerShipment)v.ShipmentItem.ShipmentWhereShipmentItem).ShipmentState.Equals(shipped))
                 .Sum(v => v.Quantity);
 
+            if (this.SalesOrderItemState.InProcess
+                && this.ExistPreviousReservedFromNonSerialisedInventoryItem
+                && this.ReservedFromNonSerialisedInventoryItem != this.PreviousReservedFromNonSerialisedInventoryItem)
+            {
+                derivation.Validation.AddError(this, this.Meta.ReservedFromNonSerialisedInventoryItem, ErrorMessages.ReservedFromNonSerialisedInventoryItem);
+            }
+
             if (this.ExistSerialisedItem && this.QuantityOrdered != 1)
             {
                 derivation.Validation.AddError(this, this.Meta.QuantityOrdered, ErrorMessages.SerializedItemQuantity);
@@ -356,39 +363,42 @@ namespace Allors.Domain
 
                             var qoh = this.ReservedFromNonSerialisedInventoryItem.QuantityOnHand;
 
-                            var atp = this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise - committedOutSameProductOtherItem > 0 ?
-                                this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise - committedOutSameProductOtherItem :
+                            var atp = this.ReservedFromNonSerialisedInventoryItem.Atp - committedOutSameProductOtherItem > 0 ?
+                                this.ReservedFromNonSerialisedInventoryItem.Atp - committedOutSameProductOtherItem :
                                 0;
 
-                            var wantToShip = this.QuantityCommittedOut - this.QuantityPendingShipment;
+                            var quantityCommittedOut = this.SalesOrderItemInventoryAssignments
+                                .SelectMany(v => v.InventoryItemTransactions)
+                                .Where(t => t.Reason.Equals(new InventoryTransactionReasons(this.Session()).Reservation))
+                                .Sum(v => v.Quantity);
+
+                            var wantToShip = quantityCommittedOut - this.QuantityPendingShipment;
 
                             var inventoryAssignment = this.SalesOrderItemInventoryAssignments.FirstOrDefault(v => v.InventoryItem.Equals(this.ReservedFromNonSerialisedInventoryItem));
-                            if (this.QuantityCommittedOut > qoh)
+                            if (quantityCommittedOut > qoh)
                             {
                                 wantToShip = qoh;
                             }
 
-                            if (this.ExistPreviousReservedFromNonSerialisedInventoryItem
-                                && !Equals(this.ReservedFromNonSerialisedInventoryItem, this.PreviousReservedFromNonSerialisedInventoryItem))
-                            {
-                                var previousInventoryAssignment = this.SalesOrderItemInventoryAssignments.FirstOrDefault(v => v.InventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem));
-                                previousInventoryAssignment.Quantity = 0;
+                            //if (this.ExistPreviousReservedFromNonSerialisedInventoryItem
+                            //    && !Equals(this.ReservedFromNonSerialisedInventoryItem, this.PreviousReservedFromNonSerialisedInventoryItem))
+                            //{
+                            //    var previousInventoryAssignment = this.SalesOrderItemInventoryAssignments.FirstOrDefault(v => v.InventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem));
+                            //    previousInventoryAssignment.Quantity = 0;
 
-                                foreach (OrderShipment orderShipment in this.OrderShipmentsWhereOrderItem)
-                                {
-                                    orderShipment.Delete();
-                                }
+                            //    foreach (OrderShipment orderShipment in this.OrderShipmentsWhereOrderItem)
+                            //    {
+                            //        orderShipment.Delete();
+                            //    }
 
-                                this.QuantityCommittedOut = 0;
-                                wantToShip = 0;
-                            }
+                            //    quantityCommittedOut = 0;
+                            //    wantToShip = 0;
+                            //}
 
-                            var neededFromInventory = this.QuantityOrdered - this.QuantityShipped - this.QuantityCommittedOut;
+                            var neededFromInventory = this.QuantityOrdered - this.QuantityShipped - quantityCommittedOut;
                             var availableFromInventory = neededFromInventory < atp ? neededFromInventory : atp;
 
-                            if (neededFromInventory != 0
-                                || this.QuantityShortFalled > 0
-                                || !Equals(this.ReservedFromNonSerialisedInventoryItem, this.PreviousReservedFromNonSerialisedInventoryItem))
+                            if (neededFromInventory != 0 || this.QuantityShortFalled > 0)
                             {
                                 if (inventoryAssignment == null)
                                 {
@@ -402,13 +412,13 @@ namespace Allors.Domain
                                 else
                                 {
                                     inventoryAssignment.InventoryItem = this.ReservedFromNonSerialisedInventoryItem;
-                                    if (this.QuantityCommittedOut > qoh)
+                                    if (quantityCommittedOut > qoh)
                                     {
                                         inventoryAssignment.Quantity = qoh;
                                     }
                                     else
                                     {
-                                        inventoryAssignment.Quantity = this.QuantityCommittedOut + availableFromInventory;
+                                        inventoryAssignment.Quantity = quantityCommittedOut + availableFromInventory;
                                     }
                                 }
 

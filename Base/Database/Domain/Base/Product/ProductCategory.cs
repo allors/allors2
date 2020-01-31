@@ -26,7 +26,6 @@ namespace Allors.Domain
 
             if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-
                 iteration.AddDependency(this.PrimaryParent, this);
                 iteration.Mark(this.PrimaryParent);
 
@@ -34,6 +33,16 @@ namespace Allors.Domain
                 {
                     iteration.AddDependency(parent, this);
                     iteration.Mark(parent);
+                }
+
+                if (this.ExistPreviousSecondaryParents && this.PreviousSecondaryParents.Count > this.SecondaryParents.Count)
+                {
+                    var removedSecondaryParents = this.PreviousSecondaryParents.Except(this.SecondaryParents);
+
+                    foreach (Object removedParent in removedSecondaryParents)
+                    {
+                        iteration.Mark(removedParent);
+                    }
                 }
             }
         }
@@ -128,6 +137,13 @@ namespace Allors.Domain
                     .OfType<NonSerialisedInventoryItem>()
                     .Where(w => w.NonSerialisedInventoryItemState.AvailableForSale))
                 .ToArray();
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var derivation = method.Derivation;
+
+            this.PreviousSecondaryParents = this.SecondaryParents;
         }
     }
 }

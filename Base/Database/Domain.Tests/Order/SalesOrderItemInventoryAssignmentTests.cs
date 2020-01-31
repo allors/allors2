@@ -104,47 +104,47 @@ namespace Allors.Domain
             Assert.Equal(11, this.part.QuantityOnHand);
         }
 
-        [Fact]
-        public void GivenSalesOrderItem_WhenChangingInventoryItem_ThenInventoryReservationsChange()
-        {
-            var facility2 = new FacilityBuilder(this.Session)
-                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
-                .WithName("facility 2")
-                .WithOwner(this.InternalOrganisation)
-                .Build();
+        //[Fact]
+        //public void GivenSalesOrderItem_WhenChangingInventoryItem_ThenInventoryReservationsChange()
+        //{
+        //    var facility2 = new FacilityBuilder(this.Session)
+        //        .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+        //        .WithName("facility 2")
+        //        .WithOwner(this.InternalOrganisation)
+        //        .Build();
 
-            new InventoryItemTransactionBuilder(this.Session)
-                .WithPart(this.part)
-                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
-                .WithFacility(facility2)
-                .WithQuantity(10)
-                .Build();
+        //    new InventoryItemTransactionBuilder(this.Session)
+        //        .WithPart(this.part)
+        //        .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
+        //        .WithFacility(facility2)
+        //        .WithQuantity(10)
+        //        .Build();
 
-            this.Session.Derive();
+        //    this.Session.Derive();
 
-            this.salesOrderItem.ReservedFromNonSerialisedInventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.Single(v => v.Facility.Equals(facility2));
+        //    this.salesOrderItem.ReservedFromNonSerialisedInventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.Single(v => v.Facility.Equals(facility2));
 
-            this.Session.Derive();
+        //    this.Session.Derive();
 
-            Assert.True(this.salesOrderItem.SalesOrderItemState.InProcess);
-            Assert.Equal(2, this.salesOrderItem.SalesOrderItemInventoryAssignments.Count);
+        //    Assert.True(this.salesOrderItem.SalesOrderItemState.InProcess);
+        //    Assert.Equal(2, this.salesOrderItem.SalesOrderItemInventoryAssignments.Count);
 
-            var previousInventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.FirstOrDefault(v => v.Facility.Name.Equals("facility"));
-            var currentInventoryItem = this.salesOrderItem.ReservedFromNonSerialisedInventoryItem;
+        //    var previousInventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.FirstOrDefault(v => v.Facility.Name.Equals("facility"));
+        //    var currentInventoryItem = this.salesOrderItem.ReservedFromNonSerialisedInventoryItem;
 
-            Assert.Equal(11, previousInventoryItem.QuantityOnHand);
-            Assert.Equal(0, previousInventoryItem.QuantityCommittedOut);
-            Assert.Equal(11, previousInventoryItem.AvailableToPromise);
+        //    Assert.Equal(11, previousInventoryItem.QuantityOnHand);
+        //    Assert.Equal(0, previousInventoryItem.QuantityCommittedOut);
+        //    Assert.Equal(11, previousInventoryItem.AvailableToPromise);
 
-            Assert.Equal(10, currentInventoryItem.QuantityOnHand);
-            Assert.Equal(3, currentInventoryItem.QuantityCommittedOut);
-            Assert.Equal(7, currentInventoryItem.AvailableToPromise);
+        //    Assert.Equal(10, currentInventoryItem.QuantityOnHand);
+        //    Assert.Equal(3, currentInventoryItem.QuantityCommittedOut);
+        //    Assert.Equal(7, currentInventoryItem.AvailableToPromise);
 
-            Assert.Equal(3, this.salesOrderItem.QuantityReserved);
+        //    Assert.Equal(3, this.salesOrderItem.QuantityReserved);
 
-            Assert.Equal(3, this.part.QuantityCommittedOut);
-            Assert.Equal(21, this.part.QuantityOnHand);
-        }
+        //    Assert.Equal(3, this.part.QuantityCommittedOut);
+        //    Assert.Equal(21, this.part.QuantityOnHand);
+        //}
 
         [Fact]
         public void GivenSalesOrderItem_WhenChangingQuantity_ThenInventoryReservationsChange()

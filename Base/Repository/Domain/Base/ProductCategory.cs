@@ -64,6 +64,16 @@ namespace Allors.Repository
         public ProductCategory[] PrimaryAncestors { get; set; }
 
         #region Allors
+        [Id("062A7D3C-74C9-46C8-9332-C239C13B4200")]
+        [AssociationId("7AE53081-3AF9-4801-810F-6103B1184E10")]
+        [RoleId("9F202905-CE44-44DF-88C5-524E955DF1FD")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        public ProductCategory[] PreviousSecondaryParents { get; set; }
+
+        #region Allors
         [Id("16F70B37-079A-47AE-B883-8F1E1A9E345F")]
         [AssociationId("B37765CA-61AC-4AC6-8524-EBC69B1E3333")]
         [RoleId("F743AED0-4939-4722-AF67-34166A20F05A")]
