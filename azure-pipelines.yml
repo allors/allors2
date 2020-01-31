@@ -37,9 +37,6 @@ stages:
           target: 'BaseWorkspaceCSharpTest'
       maxParallel: 10
 
-    variables:
-      ALLORS_DERIVATION_DEBUG: $(ALLORS_DERIVATION_DEBUG)
-
     steps:
     - task: UseDotNet@2
       displayName: 'Use .NET Core 3.1 sdk'
