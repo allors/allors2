@@ -13,7 +13,7 @@ namespace Allors.Server
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
-    using Services;
+    using Allors.Services;
     using Security;
 
     public class AuthenticationController : Controller

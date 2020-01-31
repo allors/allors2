@@ -7,7 +7,7 @@
 namespace Allors
 {
     using System;
-    using Allors.Domain;
+    using Domain.Derivations;
     using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
 

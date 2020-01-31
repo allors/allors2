@@ -20,6 +20,9 @@ stages:
           target: 'AdaptersTestNpgsql'
         core_database:
           target: 'CoreDatabaseTest'
+        core_database_debugging:
+          ALLORS_DERIVATION_DEBUG: 'true'
+          target: 'CoreDatabaseTest'
         core_workspace:
           target: 'CoreWorkspaceTest'
         base_database:
@@ -42,6 +45,8 @@ stages:
         version: 3.1.100
         installationPath: $(Agent.ToolsDirectory)/dotnet
     - task: PowerShell@2
+      variables:
+        ALLORS_DERIVATION_DEBUG: $(ALLORS_DERIVATION_DEBUG)
       inputs:
         targetType: 'filePath'
         filePath: 'build.ps1'

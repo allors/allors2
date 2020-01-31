@@ -3,10 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Domain.NonLogging
+namespace Allors.Domain.Derivations.Debug
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Object = Domain.Object;
 
     public class Cycle : ICycle
@@ -17,6 +18,8 @@ namespace Allors.Domain.NonLogging
         {
             this.Derivation = derivation;
             this.ChangeSet = new AccumulatedChangeSet();
+
+            this.Iterations = new Iteration[0];
         }
 
         IAccumulatedChangeSet ICycle.ChangeSet => this.ChangeSet;
@@ -26,6 +29,8 @@ namespace Allors.Domain.NonLogging
         IDerivation ICycle.Derivation => this.Derivation;
 
         internal AccumulatedChangeSet ChangeSet { get; }
+
+        internal Iteration[] Iterations { get; set; }
 
         internal Iteration Iteration { get; set; }
 
@@ -53,6 +58,7 @@ namespace Allors.Domain.NonLogging
                 var previousCount = postDeriveBacklog.Count;
 
                 this.Iteration = new Iteration(this);
+                this.Iterations = this.Iterations.Append(this.Iteration).ToArray();
                 this.Iteration.Execute(postDeriveBacklog, marked);
 
                 while (postDeriveBacklog.Count != previousCount)
@@ -65,6 +71,7 @@ namespace Allors.Domain.NonLogging
                     previousCount = postDeriveBacklog.Count;
 
                     this.Iteration = new Iteration(this);
+                    this.Iterations = this.Iterations.Append(this.Iteration).ToArray();
                     this.Iteration.Execute(postDeriveBacklog);
                 }
 

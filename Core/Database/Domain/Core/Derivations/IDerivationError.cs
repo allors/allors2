@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using Allors.Meta;
+    using Derivations;
 
     public interface IDerivationError
     {

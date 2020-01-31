@@ -3,11 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Domain
+namespace Allors.Domain.Derivations.Errors
 {
     using Allors;
     using Allors.Meta;
-
     using Resources;
 
     public class DerivationErrorUnique : DerivationError

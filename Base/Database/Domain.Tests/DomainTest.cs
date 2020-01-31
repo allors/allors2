@@ -13,7 +13,7 @@ namespace Allors
     using Allors.Meta;
     using Allors.Services;
     using Bogus;
-    using Domain.NonLogging;
+    using Domain.Derivations;
     using Microsoft.Extensions.DependencyInjection;
     using Person = Domain.Person;
 
@@ -52,8 +52,22 @@ namespace Allors
 
         protected void Setup(bool populate)
         {
+#if ALLORS_DERIVATION_DEBUG
+            var derivationDebug = true;
+#else
+            bool.TryParse(Environment.GetEnvironmentVariable("ALLORS_DERIVATION_DEBUG"), out var derivationDebug);
+#endif
+
             var services = new ServiceCollection();
-            services.AddAllors((session) => new Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
+            if (derivationDebug)
+            {
+                services.AddAllors((session) => new Allors.Domain.Derivations.Debug.Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
+            }
+            else
+            {
+                services.AddAllors((session) => new Allors.Domain.Derivations.Default.Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
+            }
+
             services.AddSingleton<Faker>();
             var serviceProvider = services.BuildServiceProvider();
 

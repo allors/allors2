@@ -13,7 +13,6 @@ namespace Tests
 
     using Allors;
     using Allors.Domain;
-    using Allors.Domain.NonLogging;
 
     using Xunit;
 
@@ -29,7 +28,7 @@ namespace Tests
             x.AddDependency(y);
             y.AddDependency(z);
 
-            var derivation = new Derivation(this.Session);
+            var derivation = this.DerivationService.CreateDerivation(this.Session);
 
             var sequence = new List<IObject>();
             derivation["sequence"] = sequence;
@@ -59,7 +58,7 @@ namespace Tests
             b.AddDependency(d);
             c.AddDependency(d);
 
-            var derivation = new Derivation(this.Session);
+            var derivation = this.DerivationService.CreateDerivation(this.Session);
 
             var sequence = new List<IObject>();
             derivation["sequence"] = sequence;
@@ -85,7 +84,7 @@ namespace Tests
             left.Middle = middle;
             middle.Right = right;
 
-            var derivation = new Derivation(this.Session);
+            var derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -97,7 +96,7 @@ namespace Tests
             middle.Counter += 1;
             right.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -109,7 +108,7 @@ namespace Tests
             left.Counter += 1;
             right.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -121,7 +120,7 @@ namespace Tests
             middle.Counter += 1;
             left.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -133,7 +132,7 @@ namespace Tests
             left.Counter += 1;
             middle.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -144,7 +143,7 @@ namespace Tests
             left.Counter += 1;
             middle.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -155,7 +154,7 @@ namespace Tests
             middle.Counter += 1;
             left.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -166,7 +165,7 @@ namespace Tests
             right.Counter += 1;
             middle.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -177,7 +176,7 @@ namespace Tests
             middle.Counter += 1;
             right.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -187,7 +186,7 @@ namespace Tests
 
             middle.Counter += 1;
 
-            derivation = new Derivation(this.Session);
+            derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Derive();
             this.Session.Commit();
 
@@ -216,7 +215,7 @@ namespace Tests
 
             var errorThrown = false;
 
-            var derivation = new Derivation(this.Session);
+            var derivation = this.DerivationService.CreateDerivation(this.Session);
             try
             {
                 derivation.Derive();
@@ -244,7 +243,7 @@ namespace Tests
 
             syncRoot.SyncDepth1.SyncDepth2.Value = 1;
 
-            var derivation = new Derivation(this.Session);
+            var derivation = this.DerivationService.CreateDerivation(this.Session);
             try
             {
                 derivation.Derive();

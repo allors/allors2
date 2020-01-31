@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Domain.Tests": {
+      "commandName": "Project"
+    }
+  }
+}

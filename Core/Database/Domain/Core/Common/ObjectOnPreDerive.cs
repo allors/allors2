@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
+    using Derivations;
 
     public abstract partial class ObjectOnPreDerive
     {

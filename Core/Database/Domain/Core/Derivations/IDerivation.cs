@@ -9,6 +9,7 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using Allors;
+    using Derivations;
 
     public interface IDerivation
     {
@@ -26,12 +27,12 @@ namespace Allors.Domain
 
         ICycle Cycle { get; }
 
-        ISet<Object> DerivedObjects { get; }
+        ISet<Domain.Object> DerivedObjects { get; }
 
         IValidation Derive();
 
-        void Mark(Object @object);
+        void Mark(Domain.Object @object);
 
-        void Mark(params Object[] objects);
+        void Mark(params Domain.Object[] objects);
     }
 }

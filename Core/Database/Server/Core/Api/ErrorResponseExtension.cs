@@ -10,6 +10,7 @@ namespace Allors.Server
 
     using Allors.Domain;
     using Allors.Protocol.Remote;
+    using Domain.Derivations;
 
     public static class ErrorResponseExtensions
     {

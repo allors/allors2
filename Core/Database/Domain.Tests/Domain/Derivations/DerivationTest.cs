@@ -10,7 +10,6 @@ namespace Tests
 {
     using Allors;
     using Allors.Domain;
-    using Allors.Domain.NonLogging;
 
     using Xunit;
 
@@ -99,7 +98,7 @@ namespace Tests
 
             this.Session.Commit();
 
-            var derivation = new Derivation(this.Session);
+            var derivation = this.DerivationService.CreateDerivation(this.Session);
             derivation.Mark(first);
             derivation.Derive();
 

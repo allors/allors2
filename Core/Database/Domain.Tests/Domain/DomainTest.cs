@@ -12,9 +12,10 @@ namespace Tests
     using Allors;
     using Allors.Database.Adapters.Memory;
     using Allors.Domain;
-    using Allors.Domain.NonLogging;
+    using Allors.Domain.Derivations;
     using Allors.Meta;
     using Allors.Services;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Configuration = Allors.Database.Adapters.Memory.Configuration;
@@ -29,6 +30,8 @@ namespace Tests
         public ISession Session { get; private set; }
 
         public ITimeService TimeService => this.Session.ServiceProvider.GetRequiredService<ITimeService>();
+
+        public IDerivationService DerivationService => this.Session.ServiceProvider.GetRequiredService<IDerivationService>();
 
         public TimeSpan? TimeShift
         {
@@ -60,8 +63,23 @@ namespace Tests
 
         protected void Setup(bool populate)
         {
+#if ALLORS_DERIVATION_DEBUG
+            var derivationDebug = true;
+            Console.WriteLine("ALLORS_DERIVATION_DEBUG ACTIVATED");
+#else
+            bool.TryParse(Environment.GetEnvironmentVariable("ALLORS_DERIVATION_DEBUG"), out var derivationDebug);
+#endif
+
             var services = new ServiceCollection();
-            services.AddAllors((session) => new Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
+            if (derivationDebug)
+            {
+                services.AddAllors((session) => new Allors.Domain.Derivations.Debug.Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
+            }
+            else
+            {
+                services.AddAllors((session) => new Allors.Domain.Derivations.Default.Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
+            }
+
             var serviceProvider = services.BuildServiceProvider();
 
             var database = new Database(

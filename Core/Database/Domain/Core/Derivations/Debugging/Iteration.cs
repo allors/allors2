@@ -3,7 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace Allors.Domain.NonLogging
+namespace Allors.Domain.Derivations.Debug
 {
     using System;
     using System.Collections.Generic;
@@ -19,6 +19,8 @@ namespace Allors.Domain.NonLogging
             this.Cycle = cycle;
             this.ChangeSet = new AccumulatedChangeSet();
             this.Graph = new Graph(this.Cycle.Derivation);
+
+            this.Preparations = new Preparation[0];
         }
 
         ICycle IIteration.Cycle => this.Cycle;
@@ -30,6 +32,8 @@ namespace Allors.Domain.NonLogging
         internal Cycle Cycle { get; }
 
         internal ISet<Object> MarkedBacklog { get; private set; }
+
+        internal Preparation[] Preparations { get; set; }
 
         internal Preparation Preparation { get; set; }
 
@@ -85,6 +89,7 @@ namespace Allors.Domain.NonLogging
                 }
 
                 this.Preparation = new Preparation(this, marked);
+                this.Preparations = this.Preparations.Append(this.Preparation).ToArray();
                 this.MarkedBacklog = new HashSet<Object>();
                 this.Preparation.Execute();
 
@@ -96,6 +101,7 @@ namespace Allors.Domain.NonLogging
                     }
 
                     this.Preparation = new Preparation(this, this.MarkedBacklog);
+                    this.Preparations = this.Preparations.Append(this.Preparation).ToArray();
                     this.MarkedBacklog = new HashSet<Object>();
                     this.Preparation.Execute();
                 }

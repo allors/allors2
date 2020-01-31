@@ -5,6 +5,8 @@
 
 namespace Allors.Domain
 {
+    using Derivations;
+
     public partial class SyncDepth2
     {
         public void CustomOnPreDerive(ObjectOnPreDerive method)

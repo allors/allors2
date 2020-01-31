@@ -4,7 +4,7 @@
 // </copyright>
 
 // ReSharper disable StyleCop.SA1121
-namespace Allors.Domain.NonLogging
+namespace Allors.Domain.Derivations.Debug
 {
     using System.Collections.Generic;
     using System.Linq;

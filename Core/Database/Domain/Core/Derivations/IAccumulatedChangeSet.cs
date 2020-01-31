@@ -4,7 +4,7 @@
 // </copyright>
 
 // ReSharper disable StyleCop.SA1121
-namespace Allors.Domain
+namespace Allors.Domain.Derivations
 {
     using Allors;
     using Allors.Meta;

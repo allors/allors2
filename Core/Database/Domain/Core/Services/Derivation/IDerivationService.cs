@@ -6,6 +6,7 @@
 namespace Allors.Services
 {
     using Allors.Domain;
+    using Domain.Derivations;
 
     public interface IDerivationService
     {

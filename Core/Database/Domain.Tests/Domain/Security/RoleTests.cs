@@ -7,6 +7,7 @@ namespace Tests
 {
     using Allors;
     using Allors.Domain;
+    using Allors.Domain.Derivations.Errors;
     using Allors.Meta;
     using Xunit;
 

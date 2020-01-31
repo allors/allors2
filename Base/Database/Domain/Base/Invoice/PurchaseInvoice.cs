@@ -7,7 +7,6 @@ namespace Allors.Domain
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Allors.Domain.NonLogging;
     using Allors.Meta;
     using Allors.Services;
     using Microsoft.Extensions.DependencyInjection;
@@ -241,8 +240,6 @@ namespace Allors.Domain
 
         public void BaseCreateSalesInvoice(PurchaseInvoiceCreateSalesInvoice method)
         {
-            var derivation = new Derivation(this.Strategy.Session);
-
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
                 .WithPurchaseInvoice(this)
                 .WithBilledFrom(this.BilledTo)

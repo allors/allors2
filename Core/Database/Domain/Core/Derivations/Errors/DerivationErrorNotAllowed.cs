@@ -6,11 +6,10 @@
 //
 // </summary>
 
-namespace Allors.Domain
+namespace Allors.Domain.Derivations.Errors
 {
     using Allors;
     using Allors.Meta;
-
     using Resources;
 
     public class DerivationErrorNotAllowed : DerivationError
