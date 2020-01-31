@@ -208,7 +208,7 @@
     <value>quantity less than already shipped</value>
   </data>
   <data name="SalesOrderItemProductChangeNotAllowed" xml:space="preserve">
-    <value>product change not allowed, user cancel orderitem instead</value>
+    <value>product change not allowed, use cancel orderitem instead</value>
   </data>
   <data name="SalesOrderItemQuantityToShipNowNotAvailable" xml:space="preserve">
     <value>The requested quantity to ship immediately is not available</value>
@@ -236,5 +236,11 @@
   </data>
   <data name="SerializedItemQuantity" xml:space="preserve">
     <value>Serialized item is unique. Quantity must be equal to 1</value>
+  </data>
+  <data name="UnitPriceRequired" xml:space="preserve">
+    <value>UnitPrice is required</value>
+  </data>
+  <data name="ReservedFromNonSerialisedInventoryItem" xml:space="preserve">
+    <value>Changing inventory item is not allowed, use cancel orderitem instead</value>
   </data>
 </root>

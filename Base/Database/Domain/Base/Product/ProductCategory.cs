@@ -26,7 +26,6 @@ namespace Allors.Domain
 
             if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-
                 iteration.AddDependency(this.PrimaryParent, this);
                 iteration.Mark(this.PrimaryParent);
 

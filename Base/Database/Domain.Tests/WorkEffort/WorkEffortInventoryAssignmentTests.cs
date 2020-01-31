@@ -128,29 +128,29 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(10, inventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, inventoryItem.QuantityOnHand);
-            Assert.Equal(0, inventoryItem.AvailableToPromise);
-            Assert.Equal(20, inventoryItem.QuantityExpectedIn);
+            Assert.Equal(10, inventoryItem.Qco);
+            Assert.Equal(0, inventoryItem.Qoh);
+            Assert.Equal(0, inventoryItem.Atp);
+            Assert.Equal(20, inventoryItem.ExpectedIn);
 
             order.OrderedBy.IsAutomaticallyReceived = true;
             order.QuickReceive();
 
             this.Session.Derive();
 
-            Assert.Equal(10, inventoryItem.QuantityCommittedOut);
-            Assert.Equal(20, inventoryItem.QuantityOnHand);
-            Assert.Equal(10, inventoryItem.AvailableToPromise);
-            Assert.Equal(0, inventoryItem.QuantityExpectedIn);
+            Assert.Equal(10, inventoryItem.Qco);
+            Assert.Equal(20, inventoryItem.Qoh);
+            Assert.Equal(10, inventoryItem.Atp);
+            Assert.Equal(0, inventoryItem.ExpectedIn);
 
             workEffort.Complete();
 
             this.Session.Derive(true);
 
-            Assert.Equal(0, inventoryItem.QuantityCommittedOut);
-            Assert.Equal(10, inventoryItem.QuantityOnHand);
-            Assert.Equal(10, inventoryItem.AvailableToPromise);
-            Assert.Equal(0, inventoryItem.QuantityExpectedIn);
+            Assert.Equal(0, inventoryItem.Qco);
+            Assert.Equal(10, inventoryItem.Qoh);
+            Assert.Equal(10, inventoryItem.Atp);
+            Assert.Equal(0, inventoryItem.ExpectedIn);
         }
 
         [Fact]

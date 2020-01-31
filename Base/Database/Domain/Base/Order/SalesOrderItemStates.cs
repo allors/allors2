@@ -50,7 +50,6 @@ namespace Allors.Domain
             merge(CreatedId, v =>
             {
                 v.Name = "Created";
-                v.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
             });
 
             merge(CancelledId, v =>
@@ -62,7 +61,6 @@ namespace Allors.Domain
             merge(CompletedId, v =>
             {
                 v.Name = "Completed";
-                v.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
             });
 
             merge(RejectedId, v =>
