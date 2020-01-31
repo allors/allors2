@@ -15,7 +15,6 @@ namespace Tests
     using Allors.Domain.Derivations;
     using Allors.Meta;
     using Allors.Services;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
     using Configuration = Allors.Database.Adapters.Memory.Configuration;
@@ -65,7 +64,6 @@ namespace Tests
         {
 #if ALLORS_DERIVATION_DEBUG
             var derivationDebug = true;
-            throw new Exception("ALLORS_DERIVATION_DEBUG");
 #else
             var environmentVariable = Environment.GetEnvironmentVariable("ALLORS_DERIVATION");
             var derivationDebug = environmentVariable?.ToLowerInvariant().Equals("debug") == true;
@@ -74,8 +72,6 @@ namespace Tests
             var services = new ServiceCollection();
             if (derivationDebug)
             {
-                throw new Exception("ALLORS_DERIVATION_DEBUG");
-
                 services.AddAllors((session) => new Allors.Domain.Derivations.Debug.Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
             }
             else

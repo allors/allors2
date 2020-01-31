@@ -20,7 +20,7 @@ stages:
           target: 'AdaptersTestNpgsql'
         core_database:
           target: 'CoreDatabaseTest'
-        core_database_debugging:
+        core_database_debug:
           allors.derivation: 'debug'
           target: 'CoreDatabaseTest'
         core_workspace:
