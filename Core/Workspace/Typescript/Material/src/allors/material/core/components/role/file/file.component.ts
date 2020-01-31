@@ -62,7 +62,7 @@ export class AllorsMaterialFileComponent extends RoleField {
 
     const reader: FileReader = new FileReader();
     const load: () => void = () => {
-      media.FileName = file.name;
+      media.InFileName = file.name;
       media.InDataUri = reader.result as string;
       this.media = media;
       this.changed.emit(this);

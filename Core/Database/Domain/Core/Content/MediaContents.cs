@@ -7,6 +7,7 @@ namespace Allors.Domain
 {
     using System.Collections.Generic;
     using System.IO;
+    using HeyRed.Mime;
 
     public partial class MediaContents
     {
@@ -48,20 +49,9 @@ namespace Allors.Domain
                 return "application/pdf";
             }
 
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                var extension = Path.GetExtension(fileName);
-                if (!string.IsNullOrWhiteSpace(extension))
-                {
-                    switch (extension.ToLowerInvariant())
-                    {
-                        case ".md":
-                            return "text/markdown";
-                    }
-                }
-            }
-
-            return "application/octet-stream";
+            return !string.IsNullOrEmpty(fileName) ?
+                MimeTypesMap.GetMimeType(fileName) :
+                "application/octet-stream";
         }
 
         private static bool Match(IReadOnlyList<byte> content, IReadOnlyList<byte> signature)

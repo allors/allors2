@@ -74,6 +74,15 @@ namespace Allors.Repository
         public string InDataUri { get; set; }
 
         #region Allors
+        [Id("E03239E9-2039-49DC-9615-36CEA3C971D3")]
+        [AssociationId("4998A2F3-F59D-4BCC-B16B-D1ABBA6669D6")]
+        [RoleId("851D7158-82CE-49D4-995F-4CA51AC36943")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string InFileName { get; set; }
+
+        #region Allors
         [Id("DDD6C005-0104-44CA-A19C-1150B8BEB4A3")]
         [AssociationId("4F43B520-404E-436D-A514-71E4AEC55EC8")]
         [RoleId("4C4EC21C-A3C0-4720-92E0-CF6532000265")]
@@ -81,7 +90,7 @@ namespace Allors.Repository
         [Indexed]
         [Size(256)]
         [Workspace]
-        public string FileName { get; set; }
+        public string Name { get; set; }
 
         #region Allors
         [Id("29541613-0B16-49AD-8F40-3309A7C7D7B8")]
@@ -94,6 +103,17 @@ namespace Allors.Repository
         [Derived]
         public string Type { get; set; }
 
+        #region Allors
+        [Id("AC462C32-3945-4C39-BAEF-9D228EEA80A6")]
+        [AssociationId("F81B77B1-C465-4E64-90AD-97F3FCDA5227")]
+        [RoleId("4035062A-CE33-4FE6-8D88-0E2A43981242")]
+        #endregion
+        [Indexed]
+        [Size(256)]
+        [Derived]
+        [Workspace]
+        public string FileName { get; set; }
+        
         #region inherited methods
         public void OnBuild() { }
 

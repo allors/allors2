@@ -6,13 +6,12 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Linq;
+    using System.IO;
     using System.Text.RegularExpressions;
+    using HeyRed.Mime;
 
     public partial class Media
     {
-        public string TypeExtension => this.Type?.Split('/').LastOrDefault();
-
         public void CoreOnDerive(ObjectOnDerive method)
         {
             this.Revision = Guid.NewGuid();
@@ -28,10 +27,16 @@ namespace Allors.Domain
             if (this.ExistInData)
             {
                 this.MediaContent.Data = this.InData;
-                this.MediaContent.Type = this.InType ?? MediaContents.Sniff(this.InData, this.FileName);
+                this.MediaContent.Type = this.InType ?? MediaContents.Sniff(this.InData, this.InFileName);
 
                 this.RemoveInType();
                 this.RemoveInData();
+            }
+
+            if (this.ExistInFileName)
+            {
+                this.Name = Path.GetFileNameWithoutExtension(this.InFileName);
+                this.RemoveInFileName();
             }
 
             if (this.ExistInDataUri)
@@ -41,7 +46,7 @@ namespace Allors.Domain
                 var match = regex.Match(this.InDataUri);
 
                 var mime = match.Groups["mime"].Value;
-                var encoding = match.Groups["encoding"].Value;
+                //var encoding = match.Groups["encoding"].Value;
                 var data = match.Groups["data"].Value;
 
                 var binaryData = Convert.FromBase64String(data);
@@ -51,9 +56,12 @@ namespace Allors.Domain
 
                 this.RemoveInDataUri();
             }
-        }
 
-        public void CoreOnPostDerive(ObjectOnPostDerive method) => this.Type = this.MediaContent?.Type;
+            this.Type = this.MediaContent?.Type;
+
+            var name = !string.IsNullOrWhiteSpace(this.Name) ? this.Name : this.UniqueId.ToString();
+            this.FileName = $"{name}.{MimeTypesMap.GetExtension(this.Type)}";
+        }
 
         public void CoreDelete(DeletableDelete method) => this.MediaContent?.Delete();
     }
