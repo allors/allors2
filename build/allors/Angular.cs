@@ -1,10 +1,10 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.Npm;
 using static Nuke.Common.Logger;
-using static Nuke.Common.IO.PathConstruction;
 
 partial class Angular : IDisposable
 {

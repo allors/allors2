@@ -1,4 +1,4 @@
-using static Nuke.Common.IO.PathConstruction;
+using Nuke.Common.IO;
 
 public partial class Paths
 {

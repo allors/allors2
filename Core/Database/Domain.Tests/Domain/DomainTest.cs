@@ -65,7 +65,7 @@ namespace Tests
         {
 #if ALLORS_DERIVATION_DEBUG
             var derivationDebug = true;
-            Console.WriteLine("ALLORS_DERIVATION_DEBUG ACTIVATED");
+            throw new Exception("ALLORS_DERIVATION_DEBUG");
 #else
             bool.TryParse(Environment.GetEnvironmentVariable("ALLORS_DERIVATION_DEBUG"), out var derivationDebug);
 #endif

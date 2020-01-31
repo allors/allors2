@@ -2,8 +2,8 @@ using System;
 using System.Dynamic;
 using MartinCostello.SqlLocalDb;
 using Microsoft.Data.SqlClient;
+using Nuke.Common.IO;
 using static Nuke.Common.Logger;
-using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 partial class SqlServer : IDisposable
