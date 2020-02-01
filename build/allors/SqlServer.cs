@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using Nuke.Common.IO;
 using static Nuke.Common.Logger;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using AbsolutePath = Nuke.Common.IO.PathConstruction.AbsolutePath;
 
 partial class SqlServer : IDisposable
 {

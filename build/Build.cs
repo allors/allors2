@@ -8,6 +8,7 @@ using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.GitVersion;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tooling.ProcessTasks;
+using AbsolutePath = Nuke.Common.IO.PathConstruction.AbsolutePath;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
