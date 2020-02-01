@@ -17,7 +17,7 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public decimal Qoh
+        public decimal QuantityOnHand
         {
             get
             {
@@ -63,7 +63,7 @@ namespace Allors.Domain
             }
         }
 
-        public decimal Qco
+        public decimal QuantityCommittedOut
         {
             get
             {
@@ -106,11 +106,11 @@ namespace Allors.Domain
             }
         }
 
-        public decimal Atp
+        public decimal AvailableToPromise
         {
             get
             {
-                var availableToPromise = this.Qoh - this.Qco;
+                var availableToPromise = this.QuantityOnHand - this.QuantityCommittedOut;
 
                 if (availableToPromise < 0)
                 {
@@ -121,7 +121,7 @@ namespace Allors.Domain
             }
         }
 
-        public decimal ExpectedIn
+        public decimal QuantityExpectedIn
         {
             get
             {
@@ -160,11 +160,6 @@ namespace Allors.Domain
                 this.Name = $"{this.Part?.Name} at {this.Facility?.Name} with state {this.NonSerialisedInventoryItemState?.Name}";
             }
 
-            this.BaseOnDeriveQuantityOnHand(derivation);
-            this.BaseOnDeriveQuantityCommittedOut(derivation);
-            this.BaseOnDeriveQuantityExpectedIn(derivation);
-            this.BaseOnDeriveQuantityAvailableToPromise(derivation);
-
             this.BaseOnDeriveUnitOfMeasure(derivation);
 
             // TODO: Remove OnDerive
@@ -186,117 +181,6 @@ namespace Allors.Domain
             }
 
             this.PreviousQuantityOnHand = this.QuantityOnHand;
-        }
-
-        public void BaseOnDeriveQuantityOnHand(IDerivation derivation)
-        {
-            var settings = this.Strategy.Session.GetSingleton().Settings;
-
-            // TODO: Test for changes in these relations for performance reasons
-            var quantityOnHand = 0M;
-
-            if (!settings.InventoryStrategy.OnHandNonSerialisedStates.Contains(this.NonSerialisedInventoryItemState))
-            {
-                return;  // This Inventorty Item's State is not counted for On-Hand inventory
-            }
-
-            foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
-            {
-                var reason = inventoryTransaction.Reason;
-
-                if (reason.IncreasesQuantityOnHand == true)
-                {
-                    quantityOnHand += inventoryTransaction.Quantity;
-                }
-                else if (reason.IncreasesQuantityOnHand == false)
-                {
-                    quantityOnHand -= inventoryTransaction.Quantity;
-                }
-            }
-
-            foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
-            {
-                if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
-                {
-                    foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
-                    {
-                        if (!itemIssuance.ShipmentItem.ShipmentItemState.Shipped)
-                        {
-                            quantityOnHand -= pickListItem.QuantityPicked;
-                        }
-                    }
-                }
-            }
-
-            this.QuantityOnHand = quantityOnHand;
-        }
-
-        public void BaseOnDeriveQuantityCommittedOut(IDerivation derivation)
-        {
-            // TODO: Test for changes in these relations for performance reasons
-            var quantityCommittedOut = 0M;
-
-            foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
-            {
-                var reason = inventoryTransaction.Reason;
-
-                if (reason.IncreasesQuantityCommittedOut == true)
-                {
-                    quantityCommittedOut += inventoryTransaction.Quantity;
-                }
-                else if (reason.IncreasesQuantityCommittedOut == false)
-                {
-                    quantityCommittedOut -= inventoryTransaction.Quantity;
-                }
-            }
-
-            foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
-            {
-                if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
-                {
-                    foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
-                    {
-                        if (!itemIssuance.ShipmentItem.ShipmentItemState.Shipped)
-                        {
-                            this.QuantityCommittedOut -= pickListItem.QuantityPicked;
-                        }
-                    }
-                }
-            }
-
-            this.QuantityCommittedOut = quantityCommittedOut;
-
-            if (this.QuantityCommittedOut < 0)
-            {
-                this.QuantityCommittedOut = 0;
-            }
-        }
-
-        public void BaseOnDeriveQuantityExpectedIn(IDerivation derivation)
-        {
-            // TODO: Test for changes in these relations for performance reasons
-            this.QuantityExpectedIn = 0M;
-
-            foreach (PurchaseOrderItem purchaseOrderItem in this.Part.PurchaseOrderItemsWherePart)
-            {
-                var facility = purchaseOrderItem.PurchaseOrderWherePurchaseOrderItem.Facility;
-                if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess)
-                    && this.Facility.Equals(facility))
-                {
-                    this.QuantityExpectedIn += purchaseOrderItem.QuantityOrdered;
-                    this.QuantityExpectedIn -= purchaseOrderItem.QuantityReceived;
-                }
-            }
-        }
-
-        public void BaseOnDeriveQuantityAvailableToPromise(IDerivation derivation)
-        {
-            this.AvailableToPromise = this.QuantityOnHand - this.QuantityCommittedOut;
-
-            if (this.AvailableToPromise < 0)
-            {
-                this.AvailableToPromise = 0;
-            }
         }
 
         public void BaseReplenishSalesOrders(IDerivation derivation)
