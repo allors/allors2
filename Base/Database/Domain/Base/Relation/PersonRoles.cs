@@ -10,15 +10,12 @@ namespace Allors.Domain
     public partial class PersonRoles
     {
         private static readonly Guid EmployeeId = new Guid("DB06A3E1-6146-4C18-A60D-DD10E19F7243");
-        private static readonly Guid SalesRepId = new Guid("2D41946C-4A77-456F-918A-2E83E6C12D7F");
         private static readonly Guid ContactId = new Guid("FA2DF11E-7795-4DF7-8B3F-4FD87D0C4D8E");
         private static readonly Guid CustomerId = new Guid("B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
 
         private UniquelyIdentifiableSticky<PersonRole> cache;
 
         public PersonRole Employee => this.Cache[EmployeeId];
-
-        public PersonRole SalesRep => this.Cache[SalesRepId];
 
         public PersonRole Contact => this.Cache[ContactId];
 
