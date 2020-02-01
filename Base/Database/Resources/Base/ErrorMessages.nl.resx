@@ -231,4 +231,10 @@
   <data name="String1" xml:space="preserve">
     <value>Serieel item is uniek.  Aantal moet gelijk zijn aan 1</value>
   </data>
+  <data name="UnitPriceRequired" xml:space="preserve">
+    <value>eenheidsprijs is verplicht</value>
+  </data>
+  <data name="ReservedFromNonSerialisedInventoryItem" xml:space="preserve">
+    <value>reserved from non serialised inventory item</value>
+  </data>
 </root>
