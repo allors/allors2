@@ -49,7 +49,13 @@ namespace Allors.Domain
                 {
                     if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                     {
-                        quantityOnHand -= pickListItem.QuantityPicked;
+                        foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
+                        {
+                            if (!itemIssuance.ShipmentItem.ShipmentItemState.Shipped)
+                            {
+                                quantityOnHand -= pickListItem.QuantityPicked;
+                            }
+                        }
                     }
                 }
 
@@ -75,6 +81,25 @@ namespace Allors.Domain
                     {
                         quantityCommittedOut -= inventoryTransaction.Quantity;
                     }
+                }
+
+                foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
+                {
+                    if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                    {
+                        foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
+                        {
+                            if (!itemIssuance.ShipmentItem.ShipmentItemState.Shipped)
+                            {
+                                quantityCommittedOut -= pickListItem.QuantityPicked;
+                            }
+                        }
+                    }
+                }
+
+                if (quantityCommittedOut < 0)
+                {
+                    quantityCommittedOut = 0;
                 }
 
                 return quantityCommittedOut;
@@ -193,7 +218,13 @@ namespace Allors.Domain
             {
                 if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
-                    quantityOnHand -= pickListItem.QuantityPicked;
+                    foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
+                    {
+                        if (!itemIssuance.ShipmentItem.ShipmentItemState.Shipped)
+                        {
+                            quantityOnHand -= pickListItem.QuantityPicked;
+                        }
+                    }
                 }
             }
 
@@ -204,19 +235,6 @@ namespace Allors.Domain
         {
             // TODO: Test for changes in these relations for performance reasons
             var quantityCommittedOut = 0M;
-
-            //foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
-            //{
-            //    foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
-            //    {
-            //        quantityCommittedOut += itemIssuance.Quantity;
-            //    }
-
-            //    if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
-            //    {
-            //        quantityCommittedOut -= pickListItem.QuantityPicked;
-            //    }
-            //}
 
             foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
             {
@@ -232,7 +250,26 @@ namespace Allors.Domain
                 }
             }
 
+            foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
+            {
+                if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                {
+                    foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
+                    {
+                        if (!itemIssuance.ShipmentItem.ShipmentItemState.Shipped)
+                        {
+                            this.QuantityCommittedOut -= pickListItem.QuantityPicked;
+                        }
+                    }
+                }
+            }
+
             this.QuantityCommittedOut = quantityCommittedOut;
+
+            if (this.QuantityCommittedOut < 0)
+            {
+                this.QuantityCommittedOut = 0;
+            }
         }
 
         public void BaseOnDeriveQuantityExpectedIn(IDerivation derivation)

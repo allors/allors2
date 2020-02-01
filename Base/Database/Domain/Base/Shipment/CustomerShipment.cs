@@ -267,10 +267,34 @@ namespace Allors.Domain
 
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        var inventoryAssignment = ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignments.FirstOrDefault();
-                        if (inventoryAssignment != null)
+                        foreach (SalesOrderItemInventoryAssignment salesOrderItemInventoryAssignment in ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignments)
                         {
-                            inventoryAssignment.Quantity -= orderShipment.Quantity;
+                            salesOrderItemInventoryAssignment.Quantity -= orderShipment.Quantity;
+                        }
+                    }
+
+                    foreach (InventoryItem inventoryItem in shipmentItem.ReservedFromInventoryItems)
+                    {
+                        if (inventoryItem.Part.InventoryItemKind.Serialised)
+                        {
+                            new InventoryItemTransactionBuilder(this.Session())
+                                .WithSerialisedItem(shipmentItem.SerialisedItem)
+                                .WithUnitOfMeasure(inventoryItem.Part.UnitOfMeasure)
+                                .WithFacility(inventoryItem.Facility)
+                                .WithReason(new InventoryTransactionReasons(this.Strategy.Session).OutgoingShipment)
+                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Available)
+                                .WithQuantity(1)
+                                .Build();
+                        }
+                        else
+                        {
+                            new InventoryItemTransactionBuilder(this.Session())
+                                .WithPart(inventoryItem.Part)
+                                .WithUnitOfMeasure(inventoryItem.Part.UnitOfMeasure)
+                                .WithFacility(inventoryItem.Facility)
+                                .WithReason(new InventoryTransactionReasons(this.Strategy.Session).OutgoingShipment)
+                                .WithQuantity(shipmentItem.Quantity)
+                                .Build();
                         }
                     }
                 }
@@ -703,6 +727,8 @@ namespace Allors.Domain
                                         .WithQuantity(pickListItem.Quantity)
                                         .WithPickListItem(pickListItem)
                                         .Build();
+
+                                    shipmentItem.AddReservedFromInventoryItem(inventoryItem);
 
                                     pickList.AddPickListItem(pickListItem);
                                     quantityLeftToIssue -= pickListItem.Quantity;

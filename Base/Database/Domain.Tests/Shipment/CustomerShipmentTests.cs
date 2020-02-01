@@ -1017,7 +1017,7 @@ namespace Allors.Domain
 
             Assert.Equal(90, good.QuantityOnHand);
             Assert.Equal(90, good.AvailableToPromise);
-            Assert.Equal(90, inventory.QuantityOnHand);
+            Assert.Equal(90, inventory.Qoh);
             Assert.Equal(10, shipmentItem.QuantityPicked);
             Assert.Equal(0, shipmentItem.QuantityShipped);
 
@@ -1029,7 +1029,7 @@ namespace Allors.Domain
 
             Assert.Equal(90, good.QuantityOnHand);
             Assert.Equal(90, good.AvailableToPromise);
-            Assert.Equal(90, inventory.QuantityOnHand);
+            Assert.Equal(90, inventory.Qoh);
             Assert.Equal(10, shipmentItem.QuantityPicked);
             Assert.Equal(0, shipmentItem.QuantityShipped);
 
@@ -1038,7 +1038,7 @@ namespace Allors.Domain
 
             Assert.Equal(90, good.QuantityOnHand);
             Assert.Equal(90, good.AvailableToPromise);
-            Assert.Equal(90, inventory.QuantityOnHand);
+            Assert.Equal(90, inventory.Qoh);
             Assert.Equal(10, shipmentItem.QuantityPicked);
             Assert.Equal(10, shipmentItem.QuantityShipped);
         }
@@ -1197,7 +1197,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenCustomerShipmentWithValueBelowThreshold_WhenShippingToBelgium_TheninvoiceIncludesCosts()
+        public void GivenCustomerShipmentWithValueBelowThreshold_WhenShippingToBelgium_ThenInvoiceIncludesCosts()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
