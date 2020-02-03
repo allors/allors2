@@ -88,7 +88,5 @@ namespace Allors.Domain.Print.WorkTaskModel
         public decimal TotalOther { get; }
 
         public decimal Total { get; }
-
-        public string SalesRep { get; }
     }
 }
