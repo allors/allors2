@@ -46,6 +46,11 @@ namespace Autotest.Testers
                     var objectType = metaPopulation.Composites.FirstOrDefault(v => string.Equals(v.Name, objectTypeName, StringComparison.OrdinalIgnoreCase));
                     var roleType = objectType?.RoleTypes.FirstOrDefault(v => string.Equals(v.PropertyName, roleTypeName, StringComparison.OrdinalIgnoreCase));
 
+                    if (roleType == null)
+                    {
+                        throw new Exception($"Could not find RoleType for {roleTypeAttributeValue}");
+                    }
+
                     return roleType;
                 }
 
