@@ -1,67 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Allors.Domain.Derivations.Default.Derivation">
-    <Position X="0.5" Y="3.75" Width="1.5" />
+  <Class Name="Allors.Domain.Derivations.Debug.Derivation">
+    <Position X="0.75" Y="3.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAICAACAAgiAARAACCCQAAgAAAAAAAAAAASABAAAAAA=</HashCode>
-      <FileName>Core\Derivations\Default\Derivation.cs</FileName>
+      <FileName>Core\Derivations\Debugging\Derivation.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Cycle" />
+      <Property Name="Cycles" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Allors.Domain.Derivations.Default.Cycle">
-    <Position X="4" Y="3.75" Width="1.5" />
+  <Class Name="Allors.Domain.Derivations.Debug.Cycle">
+    <Position X="4.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AApAAAAgAAAAAAQACAAAAABAAAAAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>Core\Derivations\Default\Cycle.cs</FileName>
+      <HashCode>AApAAAAgAAAAAAQACAAAAAJAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Core\Derivations\Debugging\Cycle.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Iteration" />
+      <Property Name="Iterations" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Allors.Domain.Derivations.Default.Iteration">
-    <Position X="7.5" Y="3.75" Width="1.5" />
+  <Class Name="Allors.Domain.Derivations.Debug.Iteration">
+    <Position X="7.75" Y="3.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>QAICAAAAAAGAIAQACACAAAAAAEAAAAgAAACABAAAACI=</HashCode>
-      <FileName>Core\Derivations\Default\Iteration.cs</FileName>
+      <FileName>Core\Derivations\Debugging\Iteration.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Preparation" />
+      <Property Name="Preparations" />
       <Property Name="Graph" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Allors.Domain.Derivations.Default.Preparation">
-    <Position X="11" Y="3.75" Width="1.5" />
+  <Class Name="Allors.Domain.Derivations.Debug.Preparation">
+    <Position X="11.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAQAAAAEAAAAAAAAAAAA=</HashCode>
-      <FileName>Core\Derivations\Default\Preparation.cs</FileName>
+      <FileName>Core\Derivations\Debugging\Preparation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Allors.Domain.Derivations.Default.Graph">
-    <Position X="11" Y="6.25" Width="1.5" />
+  <Class Name="Allors.Domain.Derivations.Debug.Graph">
+    <Position X="11.25" Y="6.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgAAGAIAAAAAAAAAAAAEAAAAIAAISAAAAAAAA=</HashCode>
-      <FileName>Core\Derivations\Default\Graph.cs</FileName>
+      <FileName>Core\Derivations\Debugging\Graph.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="NodeByObject" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Allors.Domain.Derivations.Default.Node">
-    <Position X="14.5" Y="6.25" Width="1.5" />
+  <Class Name="Allors.Domain.Derivations.Debug.Node">
+    <Position X="14.75" Y="6.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAGAAACAgEAAAAAAAAAAAIAAAIAQAAAAAAA=</HashCode>
-      <FileName>Core\Derivations\Default\Node.cs</FileName>
+      <FileName>Core\Derivations\Debugging\Node.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="Allors.Domain.IDerivation">
-    <Position X="0.5" Y="0.5" Width="1.75" />
+    <Position X="0.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAACAACAAACAAQAACCAAAAgAAAAAAAAAAASABAAAAAA=</HashCode>
       <FileName>Core\Derivations\IDerivation.cs</FileName>
@@ -81,7 +84,7 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Derivations.IIteration">
-    <Position X="7.75" Y="0.5" Width="1.5" />
+    <Position X="7.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAGAIAAACAAAAAAAAEAAAAAAAACABAAAAAI=</HashCode>
       <FileName>Core\Derivations\IITeration.cs</FileName>

@@ -21,14 +21,14 @@ stages:
         core_database:
           target: 'CoreDatabaseTest'
         core_database_debug:
-          allors.derivation: 'debug'
+          allors.derivation: 'persistent'
           target: 'CoreDatabaseTest'
         core_workspace:
           target: 'CoreWorkspaceTest'
         base_database:
           target: 'BaseDatabaseTest'
         base_database_debug:
-          allors.derivation: 'debug'
+          allors.derivation: 'persistent'
           target: 'BaseDatabaseTest'
         base_workspace_typescript:
           target: 'BaseWorkspaceTypescriptTest'
