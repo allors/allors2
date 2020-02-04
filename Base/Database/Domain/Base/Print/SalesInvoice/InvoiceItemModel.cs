@@ -14,8 +14,12 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.Reference = item.InvoiceItemType?.Name;
 
             this.Product = item.ExistProduct ? item.Product?.Name : item.Part?.Name;
-            this.Description = item.Description;
-            this.Description = Markdown.ToPlainText(this.Description);
+
+            if (item.ExistDescription)
+            {
+                this.Description = item.Description;
+                this.Description = Markdown.ToPlainText(this.Description);
+            }
 
             this.Quantity = item.Quantity;
             // TODO: Where does the currency come from?
