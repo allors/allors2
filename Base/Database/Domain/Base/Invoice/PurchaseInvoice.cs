@@ -401,6 +401,19 @@ namespace Allors.Domain
         {
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
             {
+                if (purchaseInvoiceItem.PurchaseInvoiceItemState.IsNotPaid && purchaseInvoiceItem.ExistSerialisedItem)
+                {
+                    var serialisedItem = purchaseInvoiceItem.SerialisedItem;
+                    var deriveRoles = (SerialisedItemDerivedRoles)purchaseInvoiceItem.SerialisedItem;
+
+                    serialisedItem.RemoveAssignedPurchasePrice();
+                    deriveRoles.PurchasePrice = purchaseInvoiceItem.TotalExVat;
+
+                    serialisedItem.OwnedBy = this.BilledTo;
+                    serialisedItem.ReportingUnit = this.BilledTo;
+
+                }
+
                 purchaseInvoiceItem.BaseOnDerivePrices();
             }
         }

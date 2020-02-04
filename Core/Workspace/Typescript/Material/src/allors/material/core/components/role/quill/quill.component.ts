@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewEncapsulation, Optional, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { RoleField } from 'src/allors/angular';
-import Quill, { QuillOptionsStatic } from 'quill';
+//import Quill, { QuillOptionsStatic } from 'quill';
 
 @Component({
   selector: 'a-mat-quill',

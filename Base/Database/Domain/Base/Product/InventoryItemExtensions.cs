@@ -43,7 +43,7 @@ namespace Allors.Domain
             Party owner = (Organisation)@this.Facility.Owner;
             if (@this is SerialisedInventoryItem item)
             {
-                owner = item.SerialisedItem?.OwnedBy;
+                owner = item.SerialisedItem?.ReportingUnit;
             }
 
             foreach (var inventoryOwnership in @this.InventoryOwnershipsWhereInventoryItem.Where(v => v.FromDate < now && (!v.ExistThroughDate || v.ThroughDate >= now)))

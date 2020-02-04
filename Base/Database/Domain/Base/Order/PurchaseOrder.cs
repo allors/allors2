@@ -417,9 +417,11 @@ namespace Allors.Domain
                             var serialisedItemDeriveRoles = (SerialisedItemDerivedRoles)serialisedItem;
                             serialisedItemDeriveRoles.PurchaseOrder = this;
                             serialisedItemDeriveRoles.SuppliedBy = this.TakenViaSupplier;
-                            serialisedItemDeriveRoles.PurchasePrice = orderItem.UnitPrice;
+                            serialisedItem.RemoveAssignedPurchasePrice();
+                            serialisedItemDeriveRoles.PurchasePrice = orderItem.TotalExVat;
 
                             serialisedItem.OwnedBy = this.OrderedBy;
+                            serialisedItem.ReportingUnit = this.OrderedBy;
 
                             new InventoryItemTransactionBuilder(this.Session())
                                 .WithSerialisedItem(serialisedItem)

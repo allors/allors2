@@ -55,6 +55,7 @@ namespace Allors.Domain.TestPopulation
             if (state.IsSold)
             {
                 @this.WithOwnedBy(new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false));
+                @this.WithReportingUnit(internalOrganisation);
             }
             else if (state.IsInRent)
             {
@@ -62,10 +63,12 @@ namespace Allors.Domain.TestPopulation
                 @this.WithRentalFromDate(faker.Date.Between(start: acquiredDate, end: acquiredDate.AddDays(10)));
                 @this.WithRentalThroughDate(faker.Date.Future(refDate: acquiredDate.AddYears(2)));
                 @this.WithExpectedReturnDate(faker.Date.Between(start: acquiredDate.AddYears(2).AddDays(1), end: acquiredDate.AddYears(2).AddDays(10)));
+                @this.WithReportingUnit(internalOrganisation);
             }
             else
             {
                 @this.WithOwnedBy(internalOrganisation);
+                @this.WithReportingUnit(internalOrganisation);
             }
 
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
