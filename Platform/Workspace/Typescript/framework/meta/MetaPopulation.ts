@@ -141,7 +141,7 @@ export class MetaPopulation {
       roleType.plural = dataRoleType.plural;
       roleType.isOne = dataRoleType.isOne;
       roleType.name = roleType.isOne ? roleType.singular : roleType.plural;
-
+      roleType.mediaType = dataRoleType.mediaType;
 
       if (relationTypeData.concreteRoleTypes) {
         relationTypeData.concreteRoleTypes.forEach((dataConcreteRoleType) => {
