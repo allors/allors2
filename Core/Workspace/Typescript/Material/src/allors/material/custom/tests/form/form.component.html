@@ -61,6 +61,10 @@
         </div>
 
         <div class="row">
+          <a-mat-quill class="col-md" [object]="data" [roleType]="m.Data.Html"></a-mat-quill>
+        </div>
+
+        <div class="row">
           <a-mat-association-select class="col-md" [object]="data" [associationType]="m.Data.OrganisationsWhereOneData" display="displayName"></a-mat-association-select>
         </div>
 
