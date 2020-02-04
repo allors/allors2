@@ -22,6 +22,8 @@ namespace Allors.Repository
 
         public Country EuListingState { get; set; }
 
+        public bool IsInternalOrganisation { get; set; }
+
         public PaymentMethod[] PaymentMethods { get; set; }
 
         public PaymentMethod DefaultCollectionMethod { get; set; }
@@ -263,16 +265,7 @@ namespace Allors.Repository
         [Workspace]
         public OrganisationVersion[] AllVersions { get; set; }
         #endregion
-
-        #region Allors
-        [Id("25E8BD32-807F-4484-8561-2AA34B425C6F")]
-        [AssociationId("F2F0A84E-0EBA-437F-9F2D-431CB7FA19B1")]
-        [RoleId("4C553A51-9B83-4D05-ACAF-4884796072B3")]
-        #endregion
-        [Required]
-        [Workspace]
-        public bool IsInternalOrganisation { get; set; }
-
+        
         #region Allors
         [Id("8FB7635C-6C06-43E8-9B6C-A760C7205804")]
         [AssociationId("A1D28C43-6C7B-4872-878C-75E91285AB9A")]

@@ -1,4 +1,4 @@
-﻿// <copyright file="SingletonExtensions.cs" company="Allors bvba">
+// <copyright file="SingletonExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -11,9 +11,9 @@ namespace Allors.Domain
 {
     public static partial class SingletonExtensions
     {
-        public static Template CreateOpenDocumentTemplate<T>(this Singleton @this, byte[] content)
+        public static Template CreateOpenDocumentTemplate<T>(this Singleton @this, string fileName, byte[] content)
         {
-            var media = new MediaBuilder(@this.Strategy.Session).WithInData(content).Build();
+            var media = new MediaBuilder(@this.Strategy.Session).WithInFileName(fileName).WithInData(content).Build();
             var templateType = new TemplateTypes(@this.Strategy.Session).OpenDocumentType;
             var template = new TemplateBuilder(@this.Strategy.Session).WithMedia(media).WithTemplateType(templateType).WithArguments<T>().Build();
             return template;

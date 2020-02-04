@@ -9,7 +9,7 @@ namespace Allors.Domain
 
     public static class FileInfoExtensions
     {
-        public static Media CreateMedia(this FileInfo fileInfo, ISession session, string fileName)
+        public static Media CreateMedia(this FileInfo fileInfo, ISession session)
         {
             fileInfo.Refresh();
             var content = File.ReadAllBytes(fileInfo.FullName);
