@@ -1,10 +1,19 @@
 import { AfterViewInit, Component, ElementRef, ViewEncapsulation, Optional, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { RoleField } from 'src/allors/angular';
+import { RoleField } from '../../../../../angular';
 
-import Quill, { QuillOptionsStatic } from 'quill';
 import TurndownService from 'turndown';
 import * as marked from 'marked';
+
+// Not Node compatible
+// import Quill, { QuillOptionsStatic } from 'quill';
+
+// Node compatible
+declare var require: any;
+let Quill;
+try {
+  Quill = require('quill');
+} catch { }
 
 @Component({
   selector: 'a-mat-quill',
@@ -25,9 +34,9 @@ export class AllorsMaterialQuillComponent extends RoleField implements AfterView
   @ViewChild('quill', { static: true })
   quillDiv: ElementRef;
 
-  quill: Quill;
+  quill: any;
 
-  options: QuillOptionsStatic;
+  options: any;
 
   private turndownService: TurndownService;
 
@@ -64,7 +73,6 @@ export class AllorsMaterialQuillComponent extends RoleField implements AfterView
       placeholder: 'Insert text here ...',
       readOnly: false,
       theme: 'snow',
-      scrollingContainer: document.body,
     };
 
     this.quill = new Quill(this.quillDiv.nativeElement, this.options);
