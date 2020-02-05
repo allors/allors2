@@ -134,8 +134,7 @@
               <mat-form-field class="col-md">
                 <input matInput [(ngModel)]="serialisedItem.age" name="age" placeholder="Age" readonly>
               </mat-form-field>
-              <a-mat-input class="col-md" [object]="part" [roleType]="m.UnifiedGood.LifeTime">
-              </a-mat-input>
+              <a-mat-static class="col-md" [object]="part" [roleType]="m.UnifiedGood.LifeTime"></a-mat-static>
             </div>
 
             <div class="row">
@@ -143,8 +142,7 @@
                 <input matInput [(ngModel)]="serialisedItem.yearsToGo" name="yearsToGo" placeholder="Years to go"
                   readonly>
               </mat-form-field>
-              <a-mat-input class="col-md" [object]="part" [roleType]="m.UnifiedGood.DepreciationYears">
-              </a-mat-input>
+              <a-mat-static class="col-md" [object]="part" [roleType]="m.UnifiedGood.DepreciationYears"></a-mat-static>
             </div>
 
             <div class="row" *ngFor="let productCharacteristicValue of serialisedItem.SerialisedItemCharacteristics">
@@ -199,8 +197,7 @@
             </div>
 
             <div class="row">
-              <a-mat-input class="col" [object]="part" [roleType]="m.UnifiedGood.ReplacementValue">
-              </a-mat-input>
+              <a-mat-static class="col" [object]="part" [roleType]="m.UnifiedGood.ReplacementValue"></a-mat-static>
               <mat-form-field class="col">
                 <input matInput [(ngModel)]="serialisedItem.goingConcern" name="goingConcern"
                   placeholder="Going Concern" readonly>

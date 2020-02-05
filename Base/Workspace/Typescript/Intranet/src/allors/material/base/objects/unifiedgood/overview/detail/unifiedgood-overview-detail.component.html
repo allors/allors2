@@ -120,6 +120,15 @@
             <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.UnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
           </div>
 
+          <div class="row">
+            <a-mat-input class="col-md" [object]="good" [roleType]="m.UnifiedGood.LifeTime"></a-mat-input>
+            <a-mat-input class="col-md" [object]="good" [roleType]="m.UnifiedGood.DepreciationYears"></a-mat-input>
+          </div>
+
+          <div class="row">
+            <a-mat-input class="col-md" [object]="good" [roleType]="m.UnifiedGood.ReplacementValue"></a-mat-input>
+          </div>
+
           <div class="row pb-1">
             <mat-expansion-panel class="col" *ngIf="locales">
               <mat-expansion-panel-header>
