@@ -72,6 +72,9 @@ namespace Allors.Repository
         public ProductIdentification[] ProductIdentifications { get; set; }
 
         public string BarCode { get; set; }
+        public decimal ReplacementValue { get; set; }
+        public int LifeTime { get; set; }
+        public int DepreciationYears { get; set; }
 
         public Product[] ProductSubstitutions { get; set; }
 

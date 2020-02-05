@@ -1,6 +1,7 @@
 import { domain } from '../domain';
 import { SerialisedItem } from '../generated/SerialisedItem.g';
 import { Meta } from '../../meta/generated/domain.g';
+import { UnifiedGood } from '..';
 
 declare module '../generated/SerialisedItem.g' {
   interface SerialisedItem {
@@ -42,7 +43,8 @@ domain.extend((workspace) => {
     configurable: true,
     get(this: SerialisedItem) {
       if (this.CanReadPurchasePrice && this.ManufacturingYear) {
-        return this.LifeTime - this.age < 0 ? 0 : this.LifeTime - this.age;
+        const good = this.PartWhereSerialisedItem as UnifiedGood;
+        return good.LifeTime - this.age < 0 ? 0 : good.LifeTime - this.age;
       } else {
         return 0;
       }
@@ -53,7 +55,8 @@ domain.extend((workspace) => {
     configurable: true,
     get(this: SerialisedItem) {
       if (this.CanReadPurchasePrice) {
-        return Math.round((parseFloat(this.ReplacementValue) * this.yearsToGo) / this.LifeTime);
+        const good = this.PartWhereSerialisedItem as UnifiedGood;
+        return Math.round((parseFloat(good.ReplacementValue) * this.yearsToGo) / good.LifeTime);
       } else {
         return 0;
       }
@@ -64,7 +67,8 @@ domain.extend((workspace) => {
     configurable: true,
     get(this: SerialisedItem) {
       if (this.CanReadPurchasePrice && this.ManufacturingYear) {
-        return Math.round(parseFloat(this.ReplacementValue) * Math.exp(-2.045 * this.age / this.LifeTime));
+        const good = this.PartWhereSerialisedItem as UnifiedGood;
+        return Math.round(parseFloat(good.ReplacementValue) * Math.exp(-2.045 * this.age / good.LifeTime));
       } else {
         return 0;
       }

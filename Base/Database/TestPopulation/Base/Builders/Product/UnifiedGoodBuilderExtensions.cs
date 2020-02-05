@@ -6,6 +6,7 @@
 
 namespace Allors.Domain.TestPopulation
 {
+    using System;
     using Allors.Meta;
 
     public static partial class UnifiedGoodBuilderExtensions
@@ -38,8 +39,14 @@ namespace Allors.Domain.TestPopulation
                     .Build();
             }
 
+            var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
+            var lifetime = faker.Random.Int(0, 20);
+
             @this.WithName(faker.Commerce.ProductMaterial());
             @this.WithDescription(faker.Lorem.Sentence());
+            @this.WithLifeTime(lifetime);
+            @this.WithDepreciationYears(faker.Random.Int(0, lifetime));
+            @this.WithReplacementValue(replacementValue);
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithInventoryItemKind(new InventoryItemKinds(@this.Session).NonSerialised);
@@ -98,9 +105,15 @@ namespace Allors.Domain.TestPopulation
                     .Build();
             }
 
+            var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
+            var lifetime = faker.Random.Int(0, 20);
+
             @this.WithName(faker.Commerce.ProductMaterial());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
+            @this.WithLifeTime(lifetime);
+            @this.WithDepreciationYears(faker.Random.Int(0, lifetime));
+            @this.WithReplacementValue(replacementValue);
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithInventoryItemKind(new InventoryItemKinds(@this.Session).Serialised);
             @this.WithKeywords(faker.Lorem.Sentence());
