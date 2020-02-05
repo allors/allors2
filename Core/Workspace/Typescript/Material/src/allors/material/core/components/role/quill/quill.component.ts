@@ -19,14 +19,10 @@ try {
   selector: 'a-mat-quill',
   template: `
 <h4>{{label}}</h4>
-<div>
+<div style="margin-bottom: 1rem">
   <div #quill></div>
 </div>
   `,
-  styles: [`
-.ql-container .ql-editor {
-}
-  `],
   encapsulation: ViewEncapsulation.None
 })
 export class AllorsMaterialQuillComponent extends RoleField implements AfterViewInit {
