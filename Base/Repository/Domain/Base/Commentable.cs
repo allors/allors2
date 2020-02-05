@@ -19,6 +19,7 @@ namespace Allors.Repository
         #endregion
         [Size(-1)]
         [Workspace]
+        [MediaType("text/markdown")]
         string Comment { get; set; }
 
         #region Allors

@@ -295,6 +295,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Size(-1)]
+        [MediaType("text/markdown")]
         public string InternalComment { get; set; }
 
         #region Allors

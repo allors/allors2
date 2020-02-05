@@ -60,6 +60,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Size(-1)]
+        [MediaType("text/markdown")]
         public string Description { get; set; }
 
         #region Allors

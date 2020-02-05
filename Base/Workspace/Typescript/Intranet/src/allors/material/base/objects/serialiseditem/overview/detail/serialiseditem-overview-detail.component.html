@@ -249,12 +249,9 @@
         <mat-tab label="Comments">
           <div class="container-fluid">
             <div class="row pt-3">
-              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Keywords">
-              </a-mat-textarea>
-              <a-mat-markdown class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.InternalComment">
-              </a-mat-markdown>
-              <a-mat-markdown class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Comment">
-              </a-mat-markdown>
+              <a-mat-textarea class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Keywords"></a-mat-textarea>
+              <a-mat-quill class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.InternalComment"></a-mat-quill>
+              <a-mat-quill class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.Comment"></a-mat-quill>
             </div>
 
             <div class="row pb-1">
