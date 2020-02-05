@@ -168,30 +168,6 @@ namespace Allors.Repository
         public int ManufacturingYear { get; set; }
 
         #region Allors
-        [Id("DDECD426-40C7-4D17-A225-2C46B47F0C89")]
-        [AssociationId("B2F5E3CA-E4BF-43B8-B812-D9479A74DF6E")]
-        [RoleId("3570A014-1A46-4C61-8D7F-14D07BF1F5AA")]
-        #endregion
-        [Workspace]
-        public decimal ReplacementValue { get; set; }
-
-        #region Allors
-        [Id("E25F1487-6F08-4DC5-9838-BAE4FF990ADA")]
-        [AssociationId("26F70AEA-7F70-48C4-BDCA-41DC58E3BDB3")]
-        [RoleId("F386A2DB-5DBE-4BD6-921B-024A9C80105C")]
-        #endregion
-        [Workspace]
-        public int LifeTime { get; set; }
-
-        #region Allors
-        [Id("D96B2474-B8AE-40F4-9D86-4CA09E2B6965")]
-        [AssociationId("AA3AA882-D022-42A1-8E1A-4C7901358EE8")]
-        [RoleId("19E428F3-9C68-4C59-BD19-68EA17688F04")]
-        #endregion
-        [Workspace]
-        public int DepreciationYears { get; set; }
-
-        #region Allors
         [Id("ECE5838C-6E0B-4889-91DA-4F9277760E9D")]
         [AssociationId("0CCF5035-5E6E-4F06-9921-35B8F922BFA2")]
         [RoleId("4519FC49-C403-4FE2-B85F-BB7F01B6B907")]

@@ -20,7 +20,6 @@ namespace Allors.Domain.TestPopulation
             var serviceDate = faker.Date.Past(refDate: @this.Session.Now());
             var acquiredDate = faker.Date.Past(refDate: serviceDate);
             var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
-            var lifetime = faker.Random.Int(0, 20);
             var expectedSalesPrice = Convert.ToDecimal(faker.Commerce.Price(replacementValue + 1000, replacementValue + 10000));
 
             @this.WithName(faker.Lorem.Word());
@@ -34,9 +33,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithSerialNumber(faker.Random.AlphaNumeric(12));
             @this.WithOwnership(faker.Random.ListItem(@this.Session.Extent<Ownership>()));
             @this.WithManufacturingYear(serviceDate.Year - 5);
-            @this.WithLifeTime(lifetime);
-            @this.WithDepreciationYears(faker.Random.Int(0, lifetime));
-            @this.WithReplacementValue(replacementValue);
             @this.WithAssignedPurchasePrice(Convert.ToDecimal(faker.Commerce.Price(replacementValue)));
             @this.WithExpectedSalesPrice(expectedSalesPrice);
             @this.WithRefurbishCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
@@ -88,7 +84,6 @@ namespace Allors.Domain.TestPopulation
             var serviceDate = faker.Date.Past(refDate: @this.Session.Now());
             var acquiredDate = faker.Date.Past(refDate: serviceDate);
             var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
-            var lifetime = faker.Random.Int(0, 20);
             var expectedSalesPrice = Convert.ToDecimal(faker.Commerce.Price(replacementValue + 1000, replacementValue + 10000));
 
             @this.WithName(faker.Lorem.Word());
@@ -102,9 +97,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithSerialNumber(faker.Random.AlphaNumeric(12));
             @this.WithOwnership(faker.Random.ListItem(@this.Session.Extent<Ownership>()));
             @this.WithManufacturingYear(serviceDate.Year - 5);
-            @this.WithLifeTime(lifetime);
-            @this.WithDepreciationYears(faker.Random.Int(0, lifetime));
-            @this.WithReplacementValue(replacementValue);
             @this.WithAssignedPurchasePrice(Convert.ToDecimal(faker.Commerce.Price(replacementValue)));
             @this.WithExpectedSalesPrice(expectedSalesPrice);
             @this.WithRefurbishCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
