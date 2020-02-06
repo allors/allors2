@@ -23,6 +23,8 @@
       <div class="row" *ngIf="invoiceItem.InvoiceItemType === productItemType">
         <a-mat-static class="col-md" *ngIf="!invoiceItem.isNew" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Product"
           display="Name"></a-mat-static>
+          <a-mat-static class="col-md" *ngIf="!invoiceItem.isNew" [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.SerialisedItem"
+          display="displayName"></a-mat-static>
       </div>
 
       <div class="row" *ngIf="invoiceItem.InvoiceItemType === partItemType">
