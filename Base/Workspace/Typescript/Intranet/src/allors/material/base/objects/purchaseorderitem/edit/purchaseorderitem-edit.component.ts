@@ -35,7 +35,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   serialisedItems: SerialisedItem[];
   serialised: boolean;
   internalOrganisation: Organisation;
-  partsFilter: SearchFactory;
+  sparePartsFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
@@ -135,7 +135,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
         }
 
-        this.partsFilter = new SearchFactory({
+        this.sparePartsFilter = new SearchFactory({
           objectType: this.m.Part,
           roleTypes: [this.m.Part.Name, this.m.Part.SearchString],
           post: (predicate: And) => {
@@ -166,6 +166,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
           if (this.orderItem.Part) {
             this.updateFromPart(this.orderItem.Part);
+            this.updateFromSparePart(this.orderItem.Part);
           }
 
           if (this.orderItem.CanWriteAssignedUnitPrice) {
@@ -180,6 +181,12 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   public partSelected(part: Part): void {
     if (part) {
       this.updateFromPart(part);
+    }
+  }
+
+  public sparePartSelected(part: Part): void {
+    if (part) {
+      this.updateFromSparePart(part);
     }
   }
 
@@ -217,7 +224,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       );
   }
 
-  private updateFromPart(part: Part) {
+  private updateFromSparePart(part: Part) {
 
     const { pull, x } = this.metaService;
 
@@ -226,10 +233,59 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         {
           object: part,
           fetch: {
-            SupplierOfferingsWherePart: x
+            SerialisedItems: {
+              include: {
+                OwnedBy: x
+              }
+            }
           }
         }
       ),
+      pull.Part(
+        {
+          object: part,
+          fetch: {
+            SupplierOfferingsWherePart: {
+              include: {
+                Supplier: x
+              }
+            }
+          }
+        }
+      ),
+      pull.Part(
+        {
+          object: part,
+          include: {
+            InventoryItemKind: x,
+          }
+        }
+      ),
+    ];
+
+    this.allors.context
+      .load(new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
+
+        const supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
+        this.supplierOffering = supplierOfferings.find(v => moment(v.FromDate).isBefore(moment())
+          && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment()))
+          && v.Supplier === this.order.TakenViaSupplier);
+
+        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
+
+        if (this.orderItem.SerialisedItem) {
+          this.serialisedItems.push(this.orderItem.SerialisedItem);
+        }
+      });
+  }
+
+  private updateFromPart(part: Part) {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
       pull.Part(
         {
           object: part,
@@ -257,13 +313,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       .subscribe((loaded) => {
         this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
-        const supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-        this.supplierOffering = supplierOfferings.find(v => moment(v.FromDate).isBefore(moment())
-          && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment()))
-          && v.Supplier === this.order.TakenViaSupplier);
-
-        const serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
-        this.serialisedItems = serialisedItems.filter(v => v.OwnedBy !== this.internalOrganisation);
+        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
 
         if (this.orderItem.SerialisedItem) {
           this.serialisedItems.push(this.orderItem.SerialisedItem);
