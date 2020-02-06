@@ -1,7 +1,7 @@
 <div *ngIf="table">
   <div *ngIf="table.autoFilter" class="container-fluid a-search">
     <div class="row m-3" style="border-bottom: 1px dotted lightgray">
-      <input #filterInput matInput class="col pl-3 pr-3 pb-3" placeholder="Filter" (keyup)="table.filter($event)">
+      <input #filterInput matInput style="border: none;" class="col pl-3 pr-3 pb-3" placeholder="Filter" (keyup)="table.filter($event)">
 
       <button *ngIf="table.dataSource.filter" style="margin-top: -10px" mat-button mat-icon-button aria-label="Clear Filters" (click)="table.filter($event); filterInput.value = null; $event.stopPropagation();">
           <mat-icon>close</mat-icon>
