@@ -67,7 +67,11 @@ export class NodeMapper {
 
           if (!!role) {
             if (roleType.objectType.isUnit) {
-              node[propertyName] = role;
+              if (roleType.mediaType === "text/markdown") {
+                node[propertyName] = createNodeId(`allors-${workspaceObject.id}-${roleType.id}`);;
+              } else {
+                node[propertyName] = role;
+              }
             } else {
               if (roleType.isOne) {
                 if (ids.indexOf(role) > -1) {
@@ -114,6 +118,31 @@ export class NodeMapper {
         }
 
         createNode(node);
+
+        // Child Roles
+        type.gatsbyRoleTypes.forEach((roleType => {
+          const role = workspaceObject.roleByRoleTypeId.get(roleType.id);
+          let propertyName = createName(roleType.name);
+
+          if (!!role) {
+            if (roleType.objectType.isUnit) {
+              if (roleType.mediaType) {
+                const gatsbyChildId = createNodeId(`allors-${workspaceObject.id}-${roleType.id}`);
+                createNode({
+                  id: gatsbyChildId,
+                  parent: createNodeId(`allors-${workspaceObject.id}`),
+                  internal: {
+                    type: `AllorsMarkdown`,
+                    mediaType: roleType.mediaType,
+                    content: role,
+                    contentDigest: createContentDigest(role),
+                  }
+                });
+                node[propertyName] = gatsbyChildId;
+              }
+            }
+          }
+        }))
       }
     })
   }
