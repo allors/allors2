@@ -270,6 +270,7 @@ namespace Allors.Domain
                     .WithInvoiceItemType(purchaseInvoiceItem.InvoiceItemType)
                     .WithAssignedUnitPrice(purchaseInvoiceItem.AssignedUnitPrice)
                     .WithProduct(purchaseInvoiceItem.Product)
+                    .WithSerialisedItem(purchaseInvoiceItem.SerialisedItem)
                     .WithQuantity(purchaseInvoiceItem.Quantity)
                     .WithComment(purchaseInvoiceItem.Comment)
                     .WithInternalComment(purchaseInvoiceItem.InternalComment)

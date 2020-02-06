@@ -9,9 +9,9 @@ namespace Allors.Domain.Print.SalesInvoiceModel
     {
         public BillToModel(SalesInvoice invoice)
         {
-            var customer = invoice.BillToEndCustomer ?? invoice.BillToCustomer;
-            var contactPerson = invoice.BillToEndCustomerContactPerson ?? invoice.BillToContactPerson;
-            var contactMechanisam = invoice.BillToEndCustomerContactMechanism ?? invoice.BillToContactMechanism;
+            var customer = invoice.BillToCustomer ?? invoice.BillToCustomer;
+            var contactPerson = invoice.BillToContactPerson ?? invoice.BillToContactPerson;
+            var contactMechanisam = invoice.BillToContactMechanism ?? invoice.BillToContactMechanism;
 
             var billTo = customer;
             var billToOrganisation = billTo as Organisation;
