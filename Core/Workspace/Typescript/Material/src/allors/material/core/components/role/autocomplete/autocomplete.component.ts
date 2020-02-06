@@ -20,7 +20,9 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
 
   @Input() options: ISessionObject[];
 
-  @Input() filter: ((search: string) => Observable<ISessionObject[]>);
+  @Input() filter: (search: string, parameters?: { [id: string]: string }) => Observable<ISessionObject[]>;
+
+  @Input() filterParameters: ({ [id: string]: string });
 
   @Output() changed: EventEmitter<ISessionObject> = new EventEmitter();
 
@@ -28,7 +30,7 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
 
   searchControl: FormControl = new FormControl();
 
-   @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
 
   private focused = false;
 
@@ -44,7 +46,11 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
           debounceTime(this.debounceTime),
           distinctUntilChanged(),
           switchMap((search: string) => {
-            return this.filter(search);
+            if (this.filterParameters) {
+              return this.filter(search, this.filterParameters);
+            } else {
+              return this.filter(search);
+            }
           }))
         ;
     } else {

@@ -9,8 +9,8 @@ import { SearchOptions } from './SearchOptions';
 export class SearchFactory {
   constructor(private options: SearchOptions) { }
 
-  public create(contextOrService: Context | ContextService): ((search: string) => Observable<ISessionObject[]>) {
-    return (search: string) => {
+  public create(contextOrService: Context | ContextService): ((search: string, parameters?: { [id: string]: string }) => Observable<ISessionObject[]>) {
+    return (search: string, parameters?: { [id: string]: string }) => {
       if (search === undefined || search === null || !search.trim) {
         return EMPTY;
       }
@@ -42,6 +42,7 @@ export class SearchFactory {
           name: 'results',
           predicate: and,
           sort: this.options.roleTypes.map((roleType: RoleType) => new Sort({ roleType })),
+          parameters
         }),
       ];
 
