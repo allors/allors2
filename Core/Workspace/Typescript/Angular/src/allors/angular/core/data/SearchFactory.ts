@@ -11,7 +11,7 @@ export class SearchFactory {
 
   public create(contextOrService: Context | ContextService): ((search: string) => Observable<ISessionObject[]>) {
     return (search: string) => {
-      if (!search.trim) {
+      if (search === undefined || search === null || !search.trim) {
         return EMPTY;
       }
 

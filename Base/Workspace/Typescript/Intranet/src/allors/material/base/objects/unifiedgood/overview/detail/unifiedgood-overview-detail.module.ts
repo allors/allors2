@@ -22,6 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AllorsMaterialFileModule } from '../../../../../core/components/role/file';
 import { AllorsMaterialHeaderModule } from '../../../../../core/components/header';
 import { AllorsMaterialInputModule } from '../../../../../core/components/role/input';
+import { AllorsMaterialQuillModule } from '../../../../../core/components/role/quill';
 import { AllorsMaterialSelectModule } from '../../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../core/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../../core/components/role/slidetoggle';
@@ -57,6 +58,7 @@ export { UnifiedGoodOverviewDetailComponent } from './unifiedgood-overview-detai
     AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
+    AllorsMaterialQuillModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,

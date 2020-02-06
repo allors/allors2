@@ -7,12 +7,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
-import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SalesOrderItemShipmentState, SerialisedItemState, RequestItemState, RequestState, QuoteItemState, QuoteState, ShipmentItemState, ShipmentState, PurchaseOrderItem, PurchaseOrderState, NonUnifiedPart, SupplierOffering } from '../../../../../domain';
+import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SalesOrderItemShipmentState, SerialisedItemState, RequestItemState, RequestState, QuoteItemState, QuoteState, ShipmentItemState, ShipmentState, PurchaseOrderItem, PurchaseOrderState, NonUnifiedPart, SupplierOffering, ShipmentReceipt } from '../../../../../domain';
 import { PullRequest, IObject, Equals, Sort, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
-import { ShipmentReceipt } from 'src/allors/domain/generated/ShipmentReceipt.g';
 
 @Component({
   templateUrl: './shipmentitem-edit.component.html',
