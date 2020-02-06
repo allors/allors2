@@ -29,12 +29,7 @@
             </div>
 
             <div class="row">
-              <mat-form-field class="col-md">
-                <mat-select [(ngModel)]="part" name="partName" placeholder="Part" multiple="false">
-                  <mat-option>None</mat-option>
-                  <mat-option *ngFor="let part of parts" [value]="part"> {{ part.Name }} </mat-option>
-                </mat-select>
-              </mat-form-field>
+              <a-mat-static *ngIf="part" class="col-md" [object]="part" [roleType]="m.UnifiedGood.Name" label="Part"></a-mat-static>
               <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Name"></a-mat-input>
             </div>
 
