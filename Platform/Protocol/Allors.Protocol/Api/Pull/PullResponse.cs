@@ -15,7 +15,7 @@ namespace Allors.Protocol.Remote.Pull
 
         public Dictionary<string, string> NamedObjects { get; set; }
 
-        public Dictionary<string, string> NamedValues { get; set; }
+        public Dictionary<string, object> NamedValues { get; set; }
 
         public string[][] Objects { get; set; }
     }

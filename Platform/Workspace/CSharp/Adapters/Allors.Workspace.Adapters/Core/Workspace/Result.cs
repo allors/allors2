@@ -32,7 +32,7 @@ namespace Allors.Workspace
 
         public IDictionary<string, ISessionObject[]> Collections { get; }
 
-        public IDictionary<string, string> Values { get; }
+        public IDictionary<string, object> Values { get; }
 
         private IWorkspace Workspace { get; }
 
@@ -56,6 +56,6 @@ namespace Allors.Workspace
         public T GetObject<T>(string key)
             where T : SessionObject => this.Objects.TryGetValue(key, out var @object) ? (T)@object : null;
 
-        public string GetValue(string key) => this.Values[key];
+        public object GetValue(string key) => this.Values[key];
     }
 }
