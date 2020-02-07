@@ -422,6 +422,21 @@ namespace Allors.Domain
 
                             serialisedItem.OwnedBy = this.OrderedBy;
                             serialisedItem.ReportingUnit = this.OrderedBy;
+                            serialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session()).Available;
+
+                            var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
+                                .FirstOrDefault(v => v.SerialisedItem.Equals(serialisedItem) && v.Facility.Equals(this.Facility));
+
+                            if (inventoryItem == null)
+                            {
+                                new SerialisedInventoryItemBuilder(this.Session())
+                                    .WithSerialisedItem(serialisedItem)
+                                    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Available)
+                                    .WithPart(orderItem.Part)
+                                    .WithUnitOfMeasure(new UnitsOfMeasure(this.Session()).Piece)
+                                    .WithFacility(this.Facility)
+                                    .Build();
+                            }
 
                             new InventoryItemTransactionBuilder(this.Session())
                                 .WithSerialisedItem(serialisedItem)
