@@ -16,6 +16,7 @@ namespace Allors.Domain
             if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
                 iteration.Mark(this.Employer);
+                iteration.Mark(this.Employee);
             }
         }
 
