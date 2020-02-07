@@ -21,7 +21,7 @@ export class Pull {
 
   public results: Result[];
 
-  public parameters: { [name: string]: UnitTypes; };
+  public parameters: { [name: string]: UnitTypes | CompositeTypes; };
 
   constructor(fields?: Partial<Pull> | ObjectType, flat?: FlatPull) {
     if (fields instanceof ObjectType) {

@@ -65,6 +65,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               include:
               {
                 PurchaseInvoiceItemState: x,
+                SerialisedItem: x,
                 VatRegime: {
                   VatRate: x,
                 }

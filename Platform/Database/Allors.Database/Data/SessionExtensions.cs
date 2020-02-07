@@ -32,6 +32,11 @@ namespace Allors.Data
 
         internal static IObject GetObject(this ISession @this, object value)
         {
+            if (value == null)
+            {
+                return null;
+            }
+
             switch (value)
             {
                 case IObject @object:
@@ -51,6 +56,12 @@ namespace Allors.Data
         internal static IObject[] GetObjects(this ISession @this, object value)
         {
             var emptyArray = Array.Empty<IObject>();
+
+            if (value == null)
+            {
+                return emptyArray;
+            }
+
             switch (value)
             {
                 case IObject[] objects:

@@ -1,11 +1,11 @@
-﻿import { ISessionObject } from '../workspace/SessionObject';
+﻿import { ISessionObject, SessionObject } from '../workspace/SessionObject';
 import { ids } from '../../meta/generated/ids.g';
 import { ObjectType } from '../meta/ObjectType';
 
 export type UnitTypes = string | Date | boolean | number;
 export type CompositeTypes = ISessionObject | string;
 
-export function serializeObject(roles: { [name: string]: UnitTypes; }): { [name: string]: string; } {
+export function serializeObject(roles: { [name: string]: UnitTypes | CompositeTypes; }): { [name: string]: string; } {
   if (roles) {
     return Object
       .keys(roles)
@@ -26,7 +26,7 @@ export function serializeArray(roles: UnitTypes[]): string[] {
   return [];
 }
 
-export function serialize(role: UnitTypes): string {
+export function serialize(role: UnitTypes | CompositeTypes): string {
 
   if (role === undefined || role === null) {
     return null;
@@ -38,6 +38,10 @@ export function serialize(role: UnitTypes): string {
 
   if (role instanceof Date) {
     return (role as Date).toISOString();
+  }
+
+  if (role instanceof SessionObject) {
+    return role.id;
   }
 
   return role.toString();
