@@ -14,7 +14,7 @@ export { NavigationService } from './navigation.service';
   ],
 })
 export class NavigationModule {
-  static forRoot(): ModuleWithProviders<NavigationModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: NavigationModule,
       providers: [

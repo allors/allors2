@@ -310,27 +310,27 @@ namespace Tests
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(acme)
                 .WithInternalOrganisation(allors)
-                .WithFromDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(acme)
                 .WithInternalOrganisation(allors)
-                .WithFromDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(acme)
                 .WithContact(contact1)
                 .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                .WithFromDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(acme)
                 .WithContact(contact2)
                 .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                .WithFromDate(DateTime.UtcNow.AddDays(-1))
+                .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             var administrator = (Person)new UserGroups(this.Session).Administrators.Members.First;
@@ -342,7 +342,7 @@ namespace Tests
                 .WithFromParty(contact1)
                 .WithToParty(contact2)
                 .WithOwner(administrator)
-                .WithActualStart(DateTime.UtcNow.AddDays(-1))
+                .WithActualStart(DateTime.UtcNow)
                 .Build();
 
             new EmailCommunicationBuilder(this.Session)
@@ -354,7 +354,7 @@ namespace Tests
                 .WithToEmail((EmailAddress)contact2Email.ContactMechanism)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                 .WithOwner(administrator)
-                .WithActualStart(DateTime.UtcNow.AddDays(-1))
+                .WithActualStart(DateTime.UtcNow)
                 .Build();
 
             new LetterCorrespondenceBuilder(this.Session)
@@ -364,7 +364,7 @@ namespace Tests
                 .WithToParty(contact1)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                 .WithOwner(administrator)
-                .WithActualStart(DateTime.UtcNow.AddDays(-1))
+                .WithActualStart(DateTime.UtcNow)
                 .Build();
 
             new PhoneCommunicationBuilder(this.Session)
@@ -374,7 +374,7 @@ namespace Tests
                 .WithToParty(contact1)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                 .WithOwner(administrator)
-                .WithActualStart(DateTime.UtcNow.AddDays(-1))
+                .WithActualStart(DateTime.UtcNow)
                 .Build();
 
             var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)

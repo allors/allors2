@@ -13,7 +13,7 @@ import { take } from 'rxjs/operators';
 @Test
 export class AllorsMaterialTextareaComponent extends RoleField {
 
-  @ViewChild('autosize') autosize: CdkTextareaAutosize;
+  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
   constructor(@Optional() parentForm: NgForm, private ngZone: NgZone) {
     super(parentForm);

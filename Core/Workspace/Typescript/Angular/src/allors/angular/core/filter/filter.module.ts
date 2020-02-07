@@ -15,7 +15,7 @@ export { AllorsFilterService } from './filter.service';
   ],
 })
 export class AllorsFilterModule {
-  static forRoot(): ModuleWithProviders<AllorsFilterModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: AllorsFilterModule,
       providers: [ AllorsFilterService ]

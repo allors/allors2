@@ -15,7 +15,7 @@ export { OverviewService } from './overview.service';
   ]
 })
 export class NavigateModule {
-  static forRoot(): ModuleWithProviders<NavigateModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: NavigateModule,
       providers: [ OverviewService ]

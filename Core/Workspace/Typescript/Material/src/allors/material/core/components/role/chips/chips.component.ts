@@ -29,9 +29,9 @@ export class AllorsMaterialChipsComponent extends RoleField implements OnInit, D
 
   searchControl: FormControl = new FormControl();
 
-  @ViewChild('searchInput') searchInput: ElementRef;
+  @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
 
-  @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
 
   private focused = false;
 

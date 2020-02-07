@@ -15,9 +15,9 @@ import { Test, RoleField } from '../../../../../angular';
 @Test
 export class AllorsMaterialMarkdownComponent extends RoleField {
 
-  @ViewChild('autosize') autosize: CdkTextareaAutosize;
+  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
-  @ViewChild('heightSource') heightSource: ElementRef;
+  @ViewChild('heightSource', { static: false }) heightSource: ElementRef;
 
   get height(): string {
     if (this.heightSource && this.heightSource.nativeElement) {

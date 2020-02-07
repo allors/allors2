@@ -16,7 +16,7 @@ export { RefreshService } from './refresh.service';
   ]
 })
 export class AllorsRefreshModule {
-  static forRoot(): ModuleWithProviders<AllorsRefreshModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: AllorsRefreshModule,
       providers: [ RefreshService ]

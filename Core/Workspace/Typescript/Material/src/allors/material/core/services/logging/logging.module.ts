@@ -23,7 +23,7 @@ import { LoggingConfig } from './logging.config';
   ]
 })
 export class LoggingModule {
-  static forRoot(config: LoggingConfig): ModuleWithProviders<LoggingModule> {
+  static forRoot(config: LoggingConfig): ModuleWithProviders {
     return {
       ngModule: LoggingModule,
       providers: [

@@ -12,7 +12,7 @@ import { DatabaseConfig } from './DatabaseConfig';
   ],
 })
 export class AllorsModule {
-  static forRoot(config: DatabaseConfig): ModuleWithProviders<AllorsModule> {
+  static forRoot(config: DatabaseConfig): ModuleWithProviders {
     return {
       ngModule: AllorsModule,
       providers: [

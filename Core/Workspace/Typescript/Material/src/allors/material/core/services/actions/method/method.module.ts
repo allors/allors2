@@ -19,7 +19,7 @@ export { MethodService } from './method.service';
   ]
 })
 export class MethodModule {
-  static forRoot(): ModuleWithProviders<MethodModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: MethodModule,
       providers: [ MethodService ]

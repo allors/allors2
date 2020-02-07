@@ -168,12 +168,37 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         this.eventStates = loaded.collections.CommunicationEventStates as CommunicationEventState[];
-        this.parties = loaded.collections.InvolvedParties as Party[];
+        this.parties = loaded.collections.Parties as Party[];
 
         const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
+
+        this.contacts = [];
+
+        if (internalOrganisation.ActiveEmployees !== undefined) {
+          this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+        }
+
+        if (!!this.organisation) {
+          this.contacts = this.contacts.concat(this.organisation);
+        }
+
+        if (!!this.organisation && this.organisation.CurrentContacts !== undefined) {
+          this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
+        }
+
+        if (!!this.person) {
+          this.contacts.push(this.person);
+        }
+
+        if (!!this.parties) {
+          this.contacts.push(...this.parties);
+          this.parties.forEach((party) => {
+            this.contacts.push(...party.CurrentContacts);
+          });
+        }
 
         if (isCreate) {
           this.title = 'Add Letter';
@@ -192,34 +217,6 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
             this.title = 'View Letter';
           }
         }
-
-        const contacts = new Set<Party>();
-
-        if (!!this.organisation) {
-          contacts.add(this.organisation);
-        } else {
-          contacts.add(this.communicationEvent.FromParty);
-          contacts.add(this.communicationEvent.ToParty);
-        }
-
-        if (internalOrganisation.ActiveEmployees !== undefined) {
-          internalOrganisation.ActiveEmployees.reduce((c, e) => c.add(e), contacts);
-        }
-
-        if (!!this.organisation && this.organisation.CurrentContacts !== undefined) {
-          this.organisation.CurrentContacts.reduce((c, e) => c.add(e), contacts);
-        }
-
-        if (!!this.person) {
-          contacts.add(this.person);
-        }
-
-        if (!!this.parties) {
-          this.parties.reduce((c, e) => c.add(e), contacts);
-        }
-
-        this.contacts.push(...contacts);
-        this.sortContacts();
       });
   }
 
@@ -257,18 +254,12 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
     this.addContactRelationship(fromParty);
     this.communicationEvent.FromParty = fromParty;
     this.contacts.push(fromParty);
-    this.sortContacts();
   }
 
   public toPartyAdded(toParty: Person): void {
     this.addContactRelationship(toParty);
     this.communicationEvent.ToParty = toParty;
     this.contacts.push(toParty);
-    this.sortContacts();
-  }
-
-  private sortContacts(): void {
-    this.contacts.sort((a, b) => (a.displayName > b.displayName) ? 1 : ((b.displayName > a.displayName) ? -1 : 0));
   }
 
   private addContactRelationship(party: Person): void {

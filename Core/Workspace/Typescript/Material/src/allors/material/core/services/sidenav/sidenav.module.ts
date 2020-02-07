@@ -15,7 +15,7 @@ export { AllorsMaterialSideNavService } from './sidenav.service';
   ]
 })
 export class SideNavModule {
-  static forRoot(): ModuleWithProviders<SideNavModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: SideNavModule,
       providers: [ AllorsMaterialSideNavService ]

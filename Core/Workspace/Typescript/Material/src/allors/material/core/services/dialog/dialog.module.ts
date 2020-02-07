@@ -19,7 +19,7 @@ export { AllorsMaterialDialogService } from './dialog.service';
   ]
 })
 export class DialogModule {
-  static forRoot(): ModuleWithProviders<DialogModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: DialogModule,
       providers: [ AllorsMaterialDialogService ]

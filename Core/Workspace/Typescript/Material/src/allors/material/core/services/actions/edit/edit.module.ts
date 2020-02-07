@@ -19,7 +19,7 @@ export { EditService } from './edit.service';
   ]
 })
 export class EditModule {
-  static forRoot(): ModuleWithProviders<EditModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: EditModule,
       providers: [ EditService ]

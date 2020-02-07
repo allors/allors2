@@ -84,10 +84,10 @@ namespace Tests.PhoneCommunicationTests
             phoneCommunicationEdit
                 .LeftVoiceMail.Set(false)
                 .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name);
-            phoneCommunicationEdit.FromParty.Set(organisation.DisplayName());
-            phoneCommunicationEdit.ToParty.Set(firstEmployee.DisplayName());
-            phoneCommunicationEdit.FromPhoneNumber.Set("+1 111 222")
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
+                .FromParty.Set(organisation.DisplayName())
+                .ToParty.Set(firstEmployee.DisplayName())
+                .FromPhoneNumber.Set("+1 111 222")
                 .Subject.Set("new subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))

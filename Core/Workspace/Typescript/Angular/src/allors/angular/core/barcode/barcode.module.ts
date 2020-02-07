@@ -21,7 +21,7 @@ export { AllorsBarcodeDirective } from './barcode.directive';
   ]
 })
 export class AllorsBarcodeModule {
-  static forRoot(): ModuleWithProviders<AllorsBarcodeModule> {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: AllorsBarcodeModule,
       providers: [ AllorsBarcodeService ]
