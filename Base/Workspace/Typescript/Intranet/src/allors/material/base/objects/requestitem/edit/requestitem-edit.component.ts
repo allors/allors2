@@ -8,7 +8,7 @@ import { Product, RequestItem, UnitOfMeasure, Request, Part, SerialisedItem, Goo
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: './requestitem-edit.component.html',

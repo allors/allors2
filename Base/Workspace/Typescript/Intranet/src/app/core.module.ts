@@ -17,7 +17,7 @@ import { ConfigService } from './app.config.service';
 import { ErrorModule } from './error/error.module';
 
 import { DefaultFiltersService } from '../allors/material/base/services/filters/default.filters.service';
-import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material';
+import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
