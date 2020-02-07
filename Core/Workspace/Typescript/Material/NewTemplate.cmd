@@ -5,8 +5,8 @@ cd \temp
 DEL /F/Q/S material > NUL
 RMDIR /Q/S material
 
-CALL ng new material --routing=true --style=scss
+CALL ng new material --routing=true --style=scss --strict
 cd material
-CALL ng add @angular/material --defaults=true
+CALL ng add @angular/material 
 
 pause

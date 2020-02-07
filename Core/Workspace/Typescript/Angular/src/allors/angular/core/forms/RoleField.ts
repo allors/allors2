@@ -1,12 +1,10 @@
 // tslint:disable: directive-selector
 // tslint:disable: directive-class-suffix
-import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren, Injectable } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren, Injectable, Directive } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { ISessionObject, RoleType } from '../../../framework';
 import { humanize } from '../humanize';
 import { Field } from './Field';
-
-@Injectable()
 
 export abstract class RoleField extends Field implements AfterViewInit, OnDestroy {
 
@@ -80,15 +78,11 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   }
 
   get canRead(): boolean {
-    if (this.ExistObject) {
-      return this.object.canRead(this.roleType);
-    }
+    return this.ExistObject ? this.object.canRead(this.roleType) : false;
   }
 
   get canWrite(): boolean {
-    if (this.ExistObject) {
-      return this.object.canWrite(this.roleType);
-    }
+    return this.ExistObject ? this.object.canWrite(this.roleType) : false;
   }
 
   get textType(): string {
@@ -110,7 +104,7 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   }
 
   get required(): boolean {
-    return this.assignedRequired ? this.assignedRequired : this.roleType.isRequired(this.object ? this.object.objectType : null);
+    return this.assignedRequired ? this.assignedRequired : (this.object.objectType ? this.roleType.isRequired(this.object.objectType) : false);
   }
 
   get disabled(): boolean {
@@ -145,12 +139,11 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
     }
   }
 
-  get dataAllorsId(): string {
+  get dataAllorsId(): string | null {
     return this.object ? this.object.id : null;
   }
 
-  get dataAllorsRoleType(): string {
+  get dataAllorsRoleType(): string | null {
     return this.roleType ? this.roleType.id : null;
   }
-
 }
