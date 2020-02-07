@@ -6,6 +6,7 @@ import { ISessionObject, RoleType } from '../../../framework';
 import { humanize } from '../humanize';
 import { Field } from './Field';
 
+@Directive()
 export abstract class RoleField extends Field implements AfterViewInit, OnDestroy {
 
   @Input()

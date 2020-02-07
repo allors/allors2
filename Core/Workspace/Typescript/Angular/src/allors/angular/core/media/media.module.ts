@@ -16,7 +16,7 @@ export { MediaService } from './media.service';
   ]
 })
 export class MediaModule {
-  static forRoot(config: MediaConfig): ModuleWithProviders {
+  static forRoot(config: MediaConfig): ModuleWithProviders<MediaModule> {
     return {
       ngModule: MediaModule,
       providers: [

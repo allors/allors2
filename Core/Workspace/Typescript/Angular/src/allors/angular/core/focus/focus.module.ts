@@ -21,7 +21,7 @@ export { AllorsFocusDirective } from './focus.directive';
   ]
 })
 export class AllorsFocusModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<AllorsFocusModule> {
     return {
       ngModule: AllorsFocusModule,
       providers: [ AllorsFocusService ]
