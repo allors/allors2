@@ -15,7 +15,7 @@ import { take } from 'rxjs/operators';
 })
 export class AllorsMaterialLocalisedMarkdownComponent extends RoleField {
 
-  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
 
   @Input()
   public locale: Locale;

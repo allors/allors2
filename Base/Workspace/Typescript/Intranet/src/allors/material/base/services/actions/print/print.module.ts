@@ -16,7 +16,7 @@ export { PrintService } from './print.service';
   ]
 })
 export class PrintModule {
-  static forRoot(config: PrintConfig): ModuleWithProviders {
+  static forRoot(config: PrintConfig): ModuleWithProviders<PrintModule> {
     return {
       ngModule: PrintModule,
       providers: [

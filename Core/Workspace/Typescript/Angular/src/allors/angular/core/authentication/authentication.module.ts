@@ -20,7 +20,7 @@ export { AuthenticationService } from './authentication.service';
   ]
 })
 export class AuthenticationModule {
-  static forRoot(config: AuthenticationConfig): ModuleWithProviders {
+  static forRoot(config: AuthenticationConfig): ModuleWithProviders<AuthenticationModule> {
     return {
       ngModule: AuthenticationModule,
       providers: [

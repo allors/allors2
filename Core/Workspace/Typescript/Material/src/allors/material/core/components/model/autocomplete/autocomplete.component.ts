@@ -28,9 +28,9 @@ export class AllorsMaterialModelAutocompleteComponent extends ModelField impleme
 
   searchControl: FormControl = new FormControl();
 
-  @ViewChild(MatAutocomplete, { static: false }) private autoComplete: MatAutocomplete;
+  @ViewChild(MatAutocomplete) private autoComplete: MatAutocomplete;
 
-  @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
 
   private focused = false;
 
