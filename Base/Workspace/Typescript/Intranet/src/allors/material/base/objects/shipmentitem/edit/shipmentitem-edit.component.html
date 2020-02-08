@@ -35,7 +35,7 @@
       <div class="row">
         <mat-form-field class="col-md" >
           <mat-select name="purchaseOrderItems" [(ngModel)]="selectedPurchaseOrderItem" placeholder="purchaseOrderItems" multiple="false" (ngModelChange)="purchaseOrderItemSelected($event)">
-            <mat-option *ngFor="let purchaseOrderItem of purchaseOrderItems" [value]="purchaseOrderItem">{{ purchaseOrderItem.Description }}</mat-option>
+            <mat-option *ngFor="let purchaseOrderItem of purchaseOrderItems" [value]="purchaseOrderItem">{{ purchaseOrderItem.displayName }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

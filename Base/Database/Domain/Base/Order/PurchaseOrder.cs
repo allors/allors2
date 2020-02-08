@@ -379,9 +379,10 @@ namespace Allors.Domain
 
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
                 {
+                    ShipmentItem shipmentItem = null;
                     if (orderItem.PurchaseOrderItemShipmentState.IsNotReceived && orderItem.ExistPart)
                     {
-                        var shipmentItem = new ShipmentItemBuilder(session)
+                        shipmentItem = new ShipmentItemBuilder(session)
                             .WithPart(orderItem.Part)
                             .WithQuantity(orderItem.QuantityOrdered)
                             .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
@@ -412,6 +413,8 @@ namespace Allors.Domain
 
                                 orderItem.Part.AddSerialisedItem(serialisedItem);
                             }
+
+                            shipmentItem.SerialisedItem = serialisedItem;
 
                             // HACK: DerivedRoles (WIP)
                             var serialisedItemDeriveRoles = (SerialisedItemDerivedRoles)serialisedItem;

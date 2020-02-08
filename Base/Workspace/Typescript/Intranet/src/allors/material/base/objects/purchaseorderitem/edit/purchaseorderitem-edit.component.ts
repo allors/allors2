@@ -190,12 +190,18 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
   public partSelected(part: Part): void {
     if (part) {
+      this.unifiedGood = this.orderItem.Part.objectType.name === this.m.UnifiedGood.name;
+      this.nonUnifiedPart = this.orderItem.Part.objectType.name === this.m.NonUnifiedPart.name;
+
       this.updateFromPart(part);
     }
   }
 
   public sparePartSelected(part: Part): void {
     if (part) {
+      this.unifiedGood = this.orderItem.Part.objectType.name === this.m.UnifiedGood.name;
+      this.nonUnifiedPart = this.orderItem.Part.objectType.name === this.m.NonUnifiedPart.name;
+
       this.updateFromSparePart(part);
     }
   }
