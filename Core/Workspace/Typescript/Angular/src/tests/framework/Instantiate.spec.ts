@@ -4,8 +4,6 @@ import { PullRequest, Pull, Filter, Result, Fetch, Tree, TreeNode } from '../../
 import { Person, Organisation } from '../../allors/domain';
 import { Fixture } from '../Fixture.spec';
 
-import 'jasmine-expect';
-
 let fixture: Fixture;
 
 let people: Person[] = [];
@@ -92,7 +90,7 @@ describe('Instantiate', () => {
 
         people = loaded.collections['People'] as Person[];
 
-        expect(people).not.toBeEmptyArray();
+        expect(people.length).not.toBe(0);
 
         people.forEach(() => {
         });

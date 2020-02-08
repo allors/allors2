@@ -11,17 +11,17 @@ import { Tree } from './Tree';
 
 export class Pull {
 
-  public extentRef: string;
+  public extentRef?: string;
 
-  public extent: Extent;
+  public extent?: Extent;
 
   public objectType: ObjectType;
 
-  public object: CompositeTypes;
+  public object?: CompositeTypes;
 
   public results: Result[];
 
-  public parameters: { [name: string]: UnitTypes | CompositeTypes; };
+  public parameters?: { [name: string]: UnitTypes | CompositeTypes; };
 
   constructor(fields?: Partial<Pull> | ObjectType, flat?: FlatPull) {
     if (fields instanceof ObjectType) {

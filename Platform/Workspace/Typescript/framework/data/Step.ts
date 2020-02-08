@@ -1,4 +1,4 @@
-import { AssociationType, RoleType, ObjectType } from '../meta';
+import { AssociationType, RoleType, ObjectType, PropertyType } from '../meta';
 import { Tree } from './Tree';
 
 const includeKey = 'include';
@@ -6,36 +6,41 @@ const includeKey = 'include';
 export class Step {
   public include: Tree;
 
-  public propertyType: AssociationType | RoleType;
+  public propertyType: PropertyType;
 
   public next: Step | Tree;
 
-  constructor(fields?: Partial<Step> | ObjectType, stepName?: string, literal?) {
+  constructor(fields?: Partial<Step> | ObjectType, stepName?: string, literal?: { [key: string]: any }) {
     if (fields instanceof ObjectType) {
       const objectType = fields as ObjectType;
 
-      this.propertyType = objectType.roleTypeByName.get(stepName);
-      if (!this.propertyType) {
-        this.propertyType = objectType.associationTypeByName.get(stepName);
-      }
+      let propertyType: PropertyType | undefined;
+      if (stepName) {
+        propertyType = objectType.roleTypeByName.get(stepName);
+        if (!propertyType) {
+          propertyType = objectType.associationTypeByName.get(stepName);
+        }
 
-      if (!this.propertyType) {
-        const metaPopulation = objectType.metaPopulation;
-        const [subTypeName, subStepName] = stepName.split('_');
+        if (!propertyType) {
+          const metaPopulation = objectType.metaPopulation;
+          const [subTypeName, subStepName] = stepName.split('_');
 
-        const subType = metaPopulation.objectTypeByName[subTypeName];
-        if (subType) {
-          this.propertyType = subType.xroleTypeByName[subStepName];
+          const subType = metaPopulation.objectTypeByName.get(subTypeName);
+          if (subType) {
+            propertyType = subType.roleTypeByName.get(subStepName);
 
-          if (!this.propertyType) {
-            this.propertyType = subType.xassociationTypeByName[subStepName];
+            if (!this.propertyType) {
+              propertyType = subType.associationTypeByName.get(subStepName);
+            }
           }
         }
       }
 
-      if (!this.propertyType) {
+      if (!propertyType) {
         throw new Error('Unknown role or association: ' + stepName);
       }
+
+      this.propertyType = propertyType;
 
       if (literal) {
         const keys = Object.keys(literal);

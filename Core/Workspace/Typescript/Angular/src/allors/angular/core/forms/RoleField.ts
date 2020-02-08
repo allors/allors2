@@ -1,12 +1,12 @@
 // tslint:disable: directive-selector
 // tslint:disable: directive-class-suffix
-import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren, Injectable } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren, Directive } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { ISessionObject, RoleType } from '../../../framework';
 import { humanize } from '../humanize';
 import { Field } from './Field';
 
-@Injectable()
+@Directive()
 
 export abstract class RoleField extends Field implements AfterViewInit, OnDestroy {
 
@@ -79,16 +79,12 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
     }
   }
 
-  get canRead(): boolean {
-    if (this.ExistObject) {
-      return this.object.canRead(this.roleType);
-    }
+  get canRead(): boolean | undefined {
+    return this.object?.canRead(this.roleType);
   }
 
-  get canWrite(): boolean {
-    if (this.ExistObject) {
-      return this.object.canWrite(this.roleType);
-    }
+  get canWrite(): boolean | undefined {
+    return this.object?.canWrite(this.roleType);
   }
 
   get textType(): string {
@@ -110,7 +106,15 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   }
 
   get required(): boolean {
-    return this.assignedRequired ? this.assignedRequired : this.roleType.isRequired(this.object ? this.object.objectType : null);
+    if (this.assignedRequired) {
+      return this.assignedRequired;
+    }
+
+    if (this.object) {
+      return this.roleType.isRequired(this.object.objectType);
+    }
+
+    return false;
   }
 
   get disabled(): boolean {
@@ -146,11 +150,10 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
   }
 
   get dataAllorsId(): string {
-    return this.object ? this.object.id : null;
+    return this.object.id;
   }
 
   get dataAllorsRoleType(): string {
-    return this.roleType ? this.roleType.id : null;
+    return this.roleType.id;
   }
-
 }

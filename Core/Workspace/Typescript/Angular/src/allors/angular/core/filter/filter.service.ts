@@ -72,11 +72,11 @@ export class AllorsFilterService {
     this.filterFieldsSubject.next(this.filterFields.filter((v) => v !== filterField));
   }
 
-  init(predicate: Predicate, options: { [parameter: string]: Partial<FilterOptions> } = null) {
+  init(predicate: Predicate, options?: { [parameter: string]: Partial<FilterOptions> }) {
     const predicates = getParameterizedPredicates(predicate);
     this.filterFieldDefinitions = predicates.map((v) => new FilterFieldDefinition({
       predicate: v,
-      options: new FilterOptions(options && options[v.parameter])
+      options: options ? new FilterOptions(options[v.parameter]) : undefined
     }));
   }
 
@@ -84,7 +84,6 @@ export class AllorsFilterService {
     return filterFields.reduce((acc, cur) => {
       acc[cur.definition.predicate.parameter] = cur.argument;
       return acc;
-    }, {});
+    }, {} as { [key: string]: any });
   }
-
 }

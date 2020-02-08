@@ -1,4 +1,4 @@
-import { MetaData } from './Data';
+import { MetaData, ObjectTypeData } from './Data';
 
 import { MetaObject } from './MetaObject';
 import { Kind, ObjectType } from './ObjectType';
@@ -42,8 +42,13 @@ export class MetaPopulation {
         return objectType;
       });
 
+    const dataInterfaces = data.interfaces ?? [];
+    const dataClasses = data.classes ?? [];
+    const dataMethodTypes = data.methodTypes ?? [];
+    const dataRelationTypes = data.relationTypes ?? [];
+
     // Interfaces
-    this.interfaces = data.interfaces.map((interfaceData) => {
+    this.interfaces = dataInterfaces.map((interfaceData) => {
       const objectType = new ObjectType(this);
       objectType.id = interfaceData.id;
       objectType.name = interfaceData.name;
@@ -54,10 +59,10 @@ export class MetaPopulation {
       this.objectTypeByName.set(objectType.name, objectType);
       this.metaObjectById.set(objectType.id, objectType);
       return objectType;
-    });
+    }) ?? [];
 
     // Classes
-    this.classes = data.classes.map((classData) => {
+    this.classes = dataClasses.map((classData) => {
       const objectType = new ObjectType(this);
       objectType.id = classData.id;
       objectType.name = classData.name;
@@ -68,9 +73,9 @@ export class MetaPopulation {
       this.objectTypeByName.set(objectType.name, objectType);
       this.metaObjectById.set(objectType.id, objectType);
       return objectType;
-    });
+    }) ?? [];
 
-    const dataObjectTypes = [].concat(data.interfaces).concat(data.classes);
+    const dataObjectTypes = ([] as ObjectTypeData[]).concat(dataInterfaces).concat(dataClasses);
 
     // Create Type Hierarchy
     dataObjectTypes.forEach((dataObjectType) => {
@@ -96,7 +101,7 @@ export class MetaPopulation {
       });
 
     // MethodTypes
-    this.methodTypes = data.methodTypes.map((methodTypeData) => {
+    this.methodTypes = dataMethodTypes.map((methodTypeData) => {
       const methodType = new MethodType(this);
       methodType.id = methodTypeData.id;
       methodType.objectType = this.metaObjectById.get(methodTypeData.objectTypeId) as ObjectType;
@@ -116,7 +121,7 @@ export class MetaPopulation {
     });
 
     // RelationTypes
-    this.relationTypes = data.relationTypes.map((relationTypeData) => {
+    this.relationTypes = dataRelationTypes.map((relationTypeData) => {
       const dataRoleType = relationTypeData.roleType;
       const dataAssociationType = relationTypeData.associationType;
 
@@ -195,19 +200,19 @@ export class MetaPopulation {
     // Assign Own Properties
     this.composites
       .forEach((objectType) => {
-        this[objectType.name] = objectType;
-        objectType.roleTypes.forEach((roleType) => objectType[roleType.name] = roleType);
-        objectType.associationTypes.forEach((associationType) => objectType[associationType.name] = associationType);
-        objectType.methodTypes.forEach((methodTypes) => objectType[methodTypes.name] = methodTypes);
+        (this as any)[objectType.name] = objectType;
+        objectType.roleTypes.forEach((roleType) => (objectType as any)[roleType.name] = roleType);
+        objectType.associationTypes.forEach((associationType) => (objectType as any)[associationType.name] = associationType);
+        objectType.methodTypes.forEach((methodTypes) => (objectType as any)[methodTypes.name] = methodTypes);
       });
 
     // Assign Properties from Interfaces
     this.composites
       .forEach((objectType) => {
         objectType.interfaces.forEach((v) => {
-          v.roleTypes.forEach((roleType) => objectType[roleType.name] = roleType);
-          v.associationTypes.forEach((associationType) => objectType[associationType.name] = associationType);
-          v.methodTypes.forEach((methodTypes) => objectType[methodTypes.name] = methodTypes);
+          v.roleTypes.forEach((roleType) => (objectType as any)[roleType.name] = roleType);
+          v.associationTypes.forEach((associationType) => (objectType as any)[associationType.name] = associationType);
+          v.methodTypes.forEach((methodTypes) => (objectType as any)[methodTypes.name] = methodTypes);
         });
       });
   }

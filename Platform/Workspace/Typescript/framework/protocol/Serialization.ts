@@ -5,20 +5,20 @@ import { ObjectType } from '../meta/ObjectType';
 export type UnitTypes = string | Date | boolean | number;
 export type CompositeTypes = ISessionObject | string;
 
-export function serializeObject(roles: { [name: string]: UnitTypes | CompositeTypes; }): { [name: string]: string; } {
+export function serializeObject(roles: { [name: string]: UnitTypes | CompositeTypes; } | undefined): { [name: string]: string; } {
   if (roles) {
     return Object
       .keys(roles)
       .reduce((obj, v) => {
         obj[v] = serialize(roles[v]);
         return obj;
-      }, {});
+      }, {} as { [key: string]: any });
   }
 
   return {};
 }
 
-export function serializeArray(roles: UnitTypes[]): string[] {
+export function serializeArray(roles: UnitTypes[]): (string | null)[] {
   if (roles) {
     return roles.map(v => serialize(v));
   }
@@ -26,7 +26,7 @@ export function serializeArray(roles: UnitTypes[]): string[] {
   return [];
 }
 
-export function serialize(role: UnitTypes | CompositeTypes): string {
+export function serialize(role: UnitTypes | CompositeTypes): string | null {
 
   if (role === undefined || role === null) {
     return null;

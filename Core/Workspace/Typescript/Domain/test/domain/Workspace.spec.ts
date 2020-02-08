@@ -24,14 +24,14 @@ describe('Workspace',
 
       const martien = workspace.get('3');
 
-      assert.equal(martien.id, '3');
-      assert.equal(martien.version, '1003');
-      assert.equal(martien.objectType.name, 'Person');
-      assert.equal(martien.roleByRoleTypeId.get(m.Person.FirstName.id), 'Martien');
-      assert.equal(martien.roleByRoleTypeId.get(m.Person.MiddleName.id), 'van');
-      assert.equal(martien.roleByRoleTypeId.get(m.Person.LastName.id), 'Knippenberg');
-      assert.isUndefined(martien.roleByRoleTypeId.get(m.Person.IsStudent.id));
-      assert.isUndefined(martien.roleByRoleTypeId.get(m.Person.BirthDate.id));
+      assert.equal(martien?.id, '3');
+      assert.equal(martien?.version, '1003');
+      assert.equal(martien?.objectType.name, 'Person');
+      assert.equal(martien?.roleByRoleTypeId.get(m.Person.FirstName.id), 'Martien');
+      assert.equal(martien?.roleByRoleTypeId.get(m.Person.MiddleName.id), 'van');
+      assert.equal(martien?.roleByRoleTypeId.get(m.Person.LastName.id), 'Knippenberg');
+      assert.isUndefined(martien?.roleByRoleTypeId.get(m.Person.IsStudent.id));
+      assert.isUndefined(martien?.roleByRoleTypeId.get(m.Person.BirthDate.id));
     });
 
     describe('synced with same access control',
@@ -100,8 +100,10 @@ describe('Workspace',
 
           const accessControl802 = workspace.accessControlById.get('802');
 
-          for (const permission of accessControl802.permissionIds) {
-            assert.include(accessControl801.permissionIds, permission);
+          if (accessControl802?.permissionIds) {
+            for (const permission of accessControl802.permissionIds) {
+              assert.include(accessControl801?.permissionIds ?? [], permission);
+            }
           }
 
         });

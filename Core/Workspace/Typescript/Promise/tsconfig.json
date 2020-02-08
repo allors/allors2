@@ -4,6 +4,11 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "dist/out-tsc",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": true,
     "sourceMap": true,
     "preserveSymlinks": true,
     "resolveJsonModule": true

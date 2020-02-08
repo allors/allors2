@@ -21,7 +21,7 @@ export class AxiosHttp implements Http {
         });
     }
 
-    public login(url: string, userName: string, password: string = null): Promise<boolean> {
+    public login(url: string, userName: string, password?: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const data = { Username: userName, Password: password };
             this.axios.post(url, data)

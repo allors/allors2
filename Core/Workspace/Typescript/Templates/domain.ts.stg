@@ -71,15 +71,15 @@ $if(!roleType.RelationType.IsDerived)$
 $endif$
 
 $if(roleType.ObjectType.IsUnit)$
-        $roleType.PropertyName$ : $objectType_Name(roleType.ObjectType)$;
+        $roleType.PropertyName$ : $objectType_Name(roleType.ObjectType)$ | null;
 $else$
 $if(roleType.IsOne)$
-        $roleType.PropertyName$ : $objectType_Name(roleType.ObjectType)$;
+        $roleType.PropertyName$ : $objectType_Name(roleType.ObjectType)$ | null;
 $else$
         $roleType.PropertyName$ : $objectType_Name(roleType.ObjectType)$[];
 $if(!roleType.RelationType.IsDerived)$
-        Add$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$);
-        Remove$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$);
+        Add$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$) : void;
+        Remove$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$) : void;
 $endif$
 $endif$
 $endif$
@@ -88,7 +88,7 @@ $endif$
 interfaceAssociationType() ::= <<
 
 $if(associationType.IsOne)$
-        $associationType.PropertyName$ : $objectType_Name(associationType.ObjectType)$;
+        $associationType.PropertyName$ : $objectType_Name(associationType.ObjectType)$ | null;
 $else$
         $associationType.PropertyName$ : $objectType_Name(associationType.ObjectType)$[];
 $endif$
@@ -127,19 +127,18 @@ $if(!roleType.RelationType.IsDerived)$
 $endif$
 
 $if(roleType.ObjectType.IsUnit)$
-    $if(roleType.RelationType.IsDerived)$readonly $endif$$roleType.PropertyName$: $objectType_Name(roleType.ObjectType)$;
+    $if(roleType.RelationType.IsDerived)$readonly $endif$$roleType.PropertyName$: $objectType_Name(roleType.ObjectType)$ | null;
 
 $else$
 $if(roleType.IsOne)$
-    $if(roleType.RelationType.IsDerived)$readonly $endif$$roleType.PropertyName$: $objectType_Name(roleType.ObjectType)$;
+    $if(roleType.RelationType.IsDerived)$readonly $endif$$roleType.PropertyName$: $objectType_Name(roleType.ObjectType)$ | null;
 
 $else$
     $if(roleType.RelationType.IsDerived)$readonly $endif$$roleType.PluralPropertyName$: $objectType_Name(roleType.ObjectType)$[];
 
 $if(!roleType.RelationType.IsDerived)$
-    Add$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$);
-
-    Remove$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$);
+    Add$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$) : void;
+    Remove$roleType.SingularPropertyName$(value: $objectType_Name(roleType.ObjectType)$) : void;
 $endif$
 $endif$
 $endif$
@@ -147,7 +146,7 @@ $endif$
 
 classAssociationType() ::= <<
 $if(associationType.IsOne)$
-    $if(associationType.RelationType.IsDerived)$readonly $endif$$associationType.PropertyName$: $objectType_Name(associationType.ObjectType)$;
+    $if(associationType.RelationType.IsDerived)$readonly $endif$$associationType.PropertyName$: $objectType_Name(associationType.ObjectType)$ | null;
 $else$
     $if(associationType.RelationType.IsDerived)$readonly $endif$$associationType.PluralPropertyName$: $objectType_Name(associationType.ObjectType)$[];
 $endif$

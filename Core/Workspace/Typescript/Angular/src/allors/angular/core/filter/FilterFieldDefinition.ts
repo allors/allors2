@@ -4,7 +4,7 @@ import { humanize } from '../humanize';
 
 export class FilterFieldDefinition {
   predicate: ParametrizedPredicate;
-  options: FilterOptions;
+  options?: FilterOptions;
 
   get isLike() {
     return this.predicate instanceof Like;

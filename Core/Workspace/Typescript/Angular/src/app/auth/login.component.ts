@@ -22,7 +22,7 @@ export class LoginComponent implements OnDestroy {
     public formBuilder: FormBuilder,
   ) {}
 
-  public login(event) {
+  public login() {
     const userName = this.loginForm.controls.userName.value;
     const password = this.loginForm.controls.password.value;
 

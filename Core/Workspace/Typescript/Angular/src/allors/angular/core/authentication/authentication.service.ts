@@ -15,12 +15,16 @@ export class AuthenticationService {
 
   private tokenName = 'ALLORS_JWT';
 
-  public get token(): string {
+  public get token(): string | null {
     return sessionStorage.getItem(this.tokenName);
   }
 
-  public set token(value: string) {
-    sessionStorage.setItem(this.tokenName, value);
+  public set token(value: string | null) {
+    if (value == null) {
+      sessionStorage.removeItem(this.tokenName);
+    } else {
+      sessionStorage.setItem(this.tokenName, value);
+    }
   }
 
   constructor(

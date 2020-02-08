@@ -4,16 +4,16 @@ import { Meta } from '../../meta';
 
 declare module '../generated/Person.g' {
     interface Person {
-        displayName;
+        displayName: string;
 
-        hello();
+        hello(): string;
     }
 }
 
 domain.extend((workspace) => {
 
     const m = workspace.metaPopulation as Meta;
-    const person = workspace.constructorByObjectType.get(m.Person).prototype as any;
+    const person = workspace.constructorByObjectType.get(m.Person)?.prototype as any;
 
     person.hello = function(this: Person) {
         return `Hello ${this.displayName}`;
@@ -26,7 +26,7 @@ domain.extend((workspace) => {
                     return this.FirstName + ' ' + this.LastName;
                 } else if (this.LastName) {
                     return this.LastName;
-                } else {
+                } else if (this.FirstName){
                     return this.FirstName;
                 }
             }

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { PullResponse, PushRequest, PushResponse, ResponseError, SecurityRequest, SecurityResponse } from '../../../framework';
+import { PullResponse, PushRequest, PushResponse, ResponseError, SecurityRequest, SecurityResponse, assert } from '../../../framework';
 import { ResponseType, SyncRequest, SyncResponse, PullRequest, Pull } from '../../../framework';
 import { InvokeRequest, InvokeResponse, InvokeOptions } from '../../../framework';
 import { Method } from '../../../framework';
@@ -102,6 +102,7 @@ export class Database {
 
     const invokeRequest: InvokeRequest = {
       i: methods.map(v => {
+        assert(v.object.version);
         return {
           i: v.object.id,
           v: v.object.version,

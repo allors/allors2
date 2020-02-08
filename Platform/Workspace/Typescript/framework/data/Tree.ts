@@ -7,7 +7,7 @@ export class Tree {
 
   public nodes: Node[] | any;
 
-  constructor(fields?: Partial<Tree> | ObjectType, literal?) {
+  constructor(fields?: Partial<Tree> | ObjectType, literal?: {}) {
     if (fields instanceof ObjectType) {
       const objectType = fields as ObjectType;
       this.objectType = objectType;
