@@ -22,7 +22,7 @@ export class AllorsMaterialModelAutocompleteComponent extends ModelField impleme
 
   @Input() filter: ((search: string) => Observable<ISessionObject[]>);
 
-  @Output() changed: EventEmitter<ISessionObject> = new EventEmitter();
+  @Output() changed: EventEmitter<ISessionObject | null> = new EventEmitter();
 
   filteredOptions: Observable<ISessionObject[]>;
 
@@ -42,7 +42,7 @@ export class AllorsMaterialModelAutocompleteComponent extends ModelField impleme
     if (this.filter) {
       this.filteredOptions = this.searchControl.valueChanges
         .pipe(
-          filter((v) => v !== null && v !== undefined && v.trim),
+          filter((v: any) => v != null && v.trim),
           debounceTime(this.debounceTime),
           distinctUntilChanged(),
           switchMap((search: string) => {
@@ -59,17 +59,16 @@ export class AllorsMaterialModelAutocompleteComponent extends ModelField impleme
             const lowerCaseSearch = search.trim().toLowerCase();
             return this.options
               .filter((v: ISessionObject) => {
-                const optionDisplay: string = v[this.display]
-                  ? v[this.display].toString().toLowerCase()
+                const optionDisplay: string = (v as any)[this.display]
+                  ? (v as any)[this.display].toString().toLowerCase()
                   : undefined;
-                if (optionDisplay) {
-                  return optionDisplay.indexOf(lowerCaseSearch) !== -1;
-                }
+
+                return optionDisplay ? optionDisplay.indexOf(lowerCaseSearch) !== -1 : false;
               })
               .sort(
                 (a: ISessionObject, b: ISessionObject) =>
-                  a[this.display] !== b[this.display]
-                    ? a[this.display] < b[this.display] ? -1 : 1
+                  (a as any)[this.display] !== (b as any)[this.display]
+                    ? (a as any)[this.display] < (b as any)[this.display] ? -1 : 1
                     : 0,
               );
           })
@@ -99,7 +98,7 @@ export class AllorsMaterialModelAutocompleteComponent extends ModelField impleme
   displayFn(): (val: ISessionObject) => string {
     return (val: ISessionObject) => {
       if (val) {
-        return val ? val[this.display] : '';
+        return val ? (val as any)[this.display] : '';
       }
     };
   }
@@ -111,7 +110,7 @@ export class AllorsMaterialModelAutocompleteComponent extends ModelField impleme
 
   clear(event: Event) {
     event.stopPropagation();
-    this.model = undefined;
+    this.model = null;
     this.trigger.closePanel();
     this.changed.emit(this.model);
   }

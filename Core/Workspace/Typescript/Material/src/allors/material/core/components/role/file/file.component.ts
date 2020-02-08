@@ -39,36 +39,43 @@ export class AllorsMaterialFileComponent extends RoleField {
     return this.media ? '1 file' : '';
   }
 
-  get src(): string {
+  get src(): string | null {
     if (this.media.InDataUri) {
       return this.media.InDataUri;
     } else if (this.media.UniqueId) {
       return this.mediaService.url(this.media);
     }
+
+    return null;
   }
 
   public delete(): void {
     this.model = undefined;
   }
 
-  public onFileInput(event) {
+  public onFileInput(event: Event) {
 
-    const files = event.srcElement.files;
-    const file = files[0];
+    const input = (event.target as HTMLInputElement);
+    const files = input.files;
+    if (files?.length && files.length > 0) {
+      const file = files.item(0);
 
-    const session: ISession = this.object.session;
-    const media = session.create('Media') as Media;
-    media.InType = file.type;
+      if (file != null) {
+        const session: ISession = this.object.session;
+        const media = session.create('Media') as Media;
+        media.InType = file.type;
 
-    const reader: FileReader = new FileReader();
-    const load: () => void = () => {
-      media.InFileName = file.name;
-      media.InDataUri = reader.result as string;
-      this.media = media;
-      this.changed.emit(this);
-    };
+        const reader: FileReader = new FileReader();
+        const load: () => void = () => {
+          media.InFileName = file.name;
+          media.InDataUri = reader.result as string;
+          this.media = media;
+          this.changed.emit(this);
+        };
 
-    reader.addEventListener('load', load, false);
-    reader.readAsDataURL(file);
+        reader.addEventListener('load', load, false);
+        reader.readAsDataURL(file);
+      }
+    }
   }
 }

@@ -10,7 +10,8 @@ import * as marked from 'marked';
 
 // Node compatible
 declare var require: any;
-let Quill;
+// TODO: use es6 imports
+let Quill: new (arg0: any, arg1: any) => any;
 try {
   Quill = require('quill');
 } catch { }
@@ -84,7 +85,7 @@ export class AllorsMaterialQuillComponent extends RoleField implements AfterView
     return this.roleType.mediaType === 'text/markdown';
   }
 
-  get html(): string {
+  get html(): string | null {
 
     if (this.isMarkdown) {
       return this.model ? marked.parser(marked.lexer(this.model)) : null;
@@ -93,13 +94,13 @@ export class AllorsMaterialQuillComponent extends RoleField implements AfterView
     return this.model;
   }
 
-  set html(value: string) {
+  set html(value: string | null) {
     if (value === '<p><br></p>') {
       value = null;
     }
 
     if (this.isMarkdown) {
-      if (value !== undefined || value !== null) {
+      if (value != null) {
         value = this.turndownService.turndown(value);
       }
     }

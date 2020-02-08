@@ -18,7 +18,6 @@ import {
   AllorsMaterialFileModule, AllorsMaterialFilesModule,
   AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSliderModule,
   AllorsMaterialSlideToggleModule, AllorsMaterialTextAreaModule, AllorsMaterialSideNavToggleModule,
-  AllorsMaterialMarkdownModule,
   AllorsMaterialQuillModule
 } from '../../../../material';
 
@@ -55,7 +54,6 @@ export { FormComponent } from './form.component';
     AllorsMaterialFilesModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
-    AllorsMaterialMarkdownModule,
     AllorsMaterialQuillModule,
     AllorsMaterialRadioGroupModule,
     AllorsMaterialSelectModule,

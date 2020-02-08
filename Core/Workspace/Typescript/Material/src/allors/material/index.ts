@@ -21,7 +21,6 @@ export * from './core/components/role/file/file.module';
 export * from './core/components/role/files/files.module';
 export * from './core/components/role/input/input.module';
 export * from './core/components/role/localisedtext/localisedtext.module';
-export * from './core/components/role/markdown/markdown.module';
 export * from './core/components/role/quill/quill.module';
 export * from './core/components/role/radiogroup/radiogroup.module';
 export * from './core/components/role/select/select.module';

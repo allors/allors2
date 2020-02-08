@@ -28,7 +28,7 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
 
   public peopleFilter: SearchFactory;
 
-  public data: Data;
+  public data: Data | null;
 
   public radioGroupOptions: RadioGroupOption[] = [
     { label: 'One', value: 'one' },
@@ -57,7 +57,7 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
 
     this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName, this.m.Person.UserName] });
 
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.refresh$ = new BehaviorSubject<Date>(new Date());
   }
 
   ngOnInit(): void {
@@ -125,15 +125,21 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
 
 
   newDate() {
-    this.data.Date = moment.utc().toISOString();
+    if (this.data) {
+      this.data.Date = moment.utc().toISOString();
+    }
   }
 
   newDateTime() {
-    this.data.DateTime = moment.utc().toISOString();
+    if (this.data) {
+      this.data.DateTime = moment.utc().toISOString();
+    }
   }
 
   newDateTime2() {
-    this.data.DateTime2 = moment.utc().toISOString();
+    if (this.data) {
+      this.data.DateTime2 = moment.utc().toISOString();
+    }
   }
 
   refresh(): void {
@@ -147,7 +153,7 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
     this.allors.context
       .save()
       .subscribe(() => {
-        this.data = undefined;
+        this.data = null;
         this.refresh();
       },
         this.saveService.errorHandler

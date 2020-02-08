@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 
 import { RoleField, humanize } from '../../../../../angular';
 import { Locale, LocalisedText } from '../../../../../domain';
+import { assert } from 'src/allors/framework';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -18,25 +19,28 @@ export class AllorsMaterialLocalisedTextComponent extends RoleField {
     super(parentForm);
   }
 
-  get localisedObject(): LocalisedText {
+  get localisedObject(): LocalisedText | null {
     const all: LocalisedText[] = this.model;
     if (all) {
       const filtered: LocalisedText[] = all.filter((v: LocalisedText) => (v.Locale === this.locale));
-      return filtered ? filtered[0] : undefined;
+      return filtered?.[0] ?? null;
     }
+
+    return null;
   }
 
-  get localisedText(): string {
-    return this.localisedObject ? this.localisedObject.Text : undefined;
+  get localisedText(): string | null {
+    return this.localisedObject?.Text ?? null;
   }
 
-  set localisedText(value: string) {
+  set localisedText(value: string | null) {
     if (!this.localisedObject) {
       const localisedText: LocalisedText = this.object.session.create('LocalisedText') as LocalisedText;
       localisedText.Locale = this.locale;
       this.object.add(this.roleType, localisedText);
     }
 
+    assert(this.localisedObject);
     this.localisedObject.Text = value;
   }
 
@@ -53,6 +57,6 @@ export class AllorsMaterialLocalisedTextComponent extends RoleField {
     }
 
     const label = this.assignedLabel ? this.assignedLabel : humanize(name);
-    return label + ' (' + this.locale.Language.Name + ')';
+    return label + ' (' + this.locale.Language?.Name + ')';
   }
 }

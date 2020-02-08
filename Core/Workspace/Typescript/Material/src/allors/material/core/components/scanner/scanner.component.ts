@@ -9,8 +9,8 @@ import { AllorsBarcodeService } from '../../../../angular';
 })
 export class AllorsMaterialScannerComponent {
 
-  showScanner: boolean;
-  barcode: string;
+  showScanner = false;
+  barcode: string | null;
 
   constructor(
     private barcodeService: AllorsBarcodeService,
@@ -19,10 +19,12 @@ export class AllorsMaterialScannerComponent {
 
   scan() {
     try {
-      this.barcodeService.scan(this.barcode);
+      if (this.barcode) {
+        this.barcodeService.scan(this.barcode);
+      }
     } finally {
       this.barcode = null;
-      this.showScanner = null;
+      this.showScanner = false;
     }
   }
 }

@@ -17,12 +17,12 @@ export class MethodAction implements Action {
     context: Context,
     saveService: SaveService,
     public methodType: MethodType,
-    public config: MethodConfig) {
+    public config?: MethodConfig) {
 
     this.execute = (target: ActionTarget) => {
 
       const objects = Array.isArray(target) ? target as ISessionObject[] : [target as ISessionObject];
-      const methods = objects.filter((v) => v.canExecute(methodType)).map((v) => v[methodType.name]);
+      const methods = objects.filter((v) => v.canExecute(methodType)).map((v) => (v as any)[methodType.name]);
 
       if (methods.length > 0) {
         context.invoke(methods)
@@ -44,9 +44,9 @@ export class MethodAction implements Action {
   description = () => (this.config && this.config.description) || this.methodType.name;
   disabled = (target: ActionTarget) => {
     if (Array.isArray(target)) {
-      return target.length > 0 ? target.find(v => v[`CanExecute${this.methodType.name}`]) === undefined : true;
+      return target.length > 0 ? target.find(v => (v as any)[`CanExecute${this.methodType.name}`]) === undefined : true;
     } else {
-      return !target[`CanExecute${this.methodType.name}`];
+      return !(target as any)[`CanExecute${this.methodType.name}`];
     }
   }
 }

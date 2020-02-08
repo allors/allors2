@@ -9,7 +9,7 @@ import { Field } from './Field';
 export abstract class ModelField extends Field implements AfterViewInit, OnDestroy {
 
   @Input()
-  public model: ISessionObject;
+  public model: ISessionObject | null;
 
   @Input()
   public name: string;
@@ -58,7 +58,7 @@ export abstract class ModelField extends Field implements AfterViewInit, OnDestr
     }
   }
 
-  get dataAllorsId(): string {
-    return this.model.id;
+  get dataAllorsId(): string | null {
+    return this.model?.id ?? null;
   }
 }

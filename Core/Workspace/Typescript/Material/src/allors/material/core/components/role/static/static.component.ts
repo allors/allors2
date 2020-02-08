@@ -12,7 +12,7 @@ export class AllorsMaterialStaticComponent extends RoleField {
   @Input()
   public display: string;
 
-  get static(): string {
+  get static(): string | null {
     if (this.ExistObject) {
       if (this.roleType.objectType.isUnit) {
         return this.model;
@@ -31,6 +31,8 @@ export class AllorsMaterialStaticComponent extends RoleField {
         }
       }
     }
+
+    return null;
   }
 
   constructor(@Optional() parentForm: NgForm) {

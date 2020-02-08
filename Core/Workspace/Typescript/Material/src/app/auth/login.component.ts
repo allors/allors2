@@ -31,7 +31,7 @@ export class LoginComponent extends TestScope implements OnDestroy {
     super();
   }
 
-  public login(event) {
+  public login() {
     const userName = this.loginForm.controls.userName.value;
     const password = this.loginForm.controls.password.value;
 

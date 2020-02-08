@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Locale, Organisation } from '../../../../../domain';
-import { PullRequest } from '../../../../../framework';
+import { PullRequest, assert } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 
 import { Loaded, ContextService, MetaService, TestScope } from '../../../../../angular';
@@ -47,8 +47,8 @@ export class OrganisationOverviewComponent extends TestScope implements OnInit, 
       .pipe(
         switchMap((url) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
-          const m: Meta = this.m;
+          const id = this.route.snapshot.paramMap.get('id');
+          assert(id);
 
           const pulls = [
             pull.Organisation({

@@ -1,6 +1,6 @@
 export interface SideMenuItem {
     icon?: string;
-    title: string;
+    title?: string;
     link?: string;
     children?: SideMenuItem[];
     open?: boolean;

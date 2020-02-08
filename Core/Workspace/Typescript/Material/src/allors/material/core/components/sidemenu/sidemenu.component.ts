@@ -16,6 +16,10 @@ export class AllorsMaterialSideMenuComponent {
   constructor(public router: Router) { }
 
   public hasChildren(item: SideMenuItem): boolean {
-    return item.children && item.children.length > 0;
+    if (item.children) {
+      return item.children.length > 0 ?? false;
+    }
+
+    return false;
   }
 }
