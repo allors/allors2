@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, FetcherService, SearchFactory } from '../../../../../angular';
-import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering, SerialisedItem, Organisation } from '../../../../../domain';
+import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering, SerialisedItem, Organisation, UnifiedGood, NonUnifiedPart } from '../../../../../domain';
 import { PullRequest, IObject, Equals, And, LessThan, Or, Not, Exists, GreaterThan, Filter, ContainedIn } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -36,6 +36,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   serialised: boolean;
   internalOrganisation: Organisation;
   sparePartsFilter: SearchFactory;
+  nonUnifiedPart: boolean;
+  unifiedGood: boolean;
 
   constructor(
     @Self() public allors: ContextService,
@@ -165,8 +167,16 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
 
           if (this.orderItem.Part) {
-            this.updateFromPart(this.orderItem.Part);
-            this.updateFromSparePart(this.orderItem.Part);
+            this.unifiedGood = this.orderItem.Part.objectType.name === m.UnifiedGood.name;
+            this.nonUnifiedPart = this.orderItem.Part.objectType.name === m.NonUnifiedPart.name;
+
+            if (this.unifiedGood) {
+              this.updateFromPart(this.orderItem.Part);
+            }
+
+            if (this.nonUnifiedPart) {
+              this.updateFromSparePart(this.orderItem.Part);
+            }
           }
 
           if (this.orderItem.CanWriteAssignedUnitPrice) {
@@ -180,12 +190,18 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
   public partSelected(part: Part): void {
     if (part) {
+      this.unifiedGood = this.orderItem.Part.objectType.name === this.m.UnifiedGood.name;
+      this.nonUnifiedPart = this.orderItem.Part.objectType.name === this.m.NonUnifiedPart.name;
+
       this.updateFromPart(part);
     }
   }
 
   public sparePartSelected(part: Part): void {
     if (part) {
+      this.unifiedGood = this.orderItem.Part.objectType.name === this.m.UnifiedGood.name;
+      this.nonUnifiedPart = this.orderItem.Part.objectType.name === this.m.NonUnifiedPart.name;
+
       this.updateFromSparePart(part);
     }
   }

@@ -18,20 +18,20 @@
     </div>
 
     <div class="row">
-      <a-mat-autocomplete class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Part" display="Name"
-        (changed)="partSelected($event)" [filter]="filtersService.partsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
+      <a-mat-autocomplete class="col-md" [disabled]="!!nonUnifiedPart" [object]="orderItem"
+        [roleType]="m.PurchaseOrderItem.Part" display="Name" (changed)="partSelected($event)"
+        [filter]="filtersService.partsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
+      <a-mat-autocomplete class="col-md" [disabled]="!!unifiedGood" [object]="orderItem"
+        [roleType]="m.PurchaseOrderItem.Part" display="Name" (changed)="sparePartSelected($event)"
+        [filter]="sparePartsFilter.create(allors.context)" label="Spare Part"></a-mat-autocomplete>
     </div>
 
     <div class="row">
-      <a-mat-select class="col-md" [disabled]="!serialised" [object]="orderItem"
-        (changed)="partSelected($event)" [roleType]="m.PurchaseOrderItem.SerialisedItem" [options]="serialisedItems" display="displayName"></a-mat-select>
-      <a-mat-input class="col-md" [disabled]="!serialised" [object]="orderItem"
+      <a-mat-select class="col-md" [disabled]="!serialised" [object]="orderItem" (changed)="partSelected($event)"
+        [roleType]="m.PurchaseOrderItem.SerialisedItem" [options]="serialisedItems" display="displayName">
+      </a-mat-select>
+      <a-mat-input class="col-md" [disabled]="!serialised || orderItem.SerialisedItem" [object]="orderItem"
         [roleType]="m.PurchaseOrderItem.SerialNumber"></a-mat-input>
-    </div>
-
-    <div class="row">
-      <a-mat-autocomplete class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Part" display="Name"
-        (changed)="sparePartSelected($event)" [filter]="sparePartsFilter.create(allors.context)" label="Spare Part"></a-mat-autocomplete>
     </div>
 
     <div class="row">

@@ -81,6 +81,9 @@ namespace Tests.PartyRelationshipTests
                 partyRelationship.Delete();
             }
 
+            this.Session.Derive();
+            this.Session.Commit();
+
             var editPartyRelationship = new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)
                 .WithEmployer(employer)

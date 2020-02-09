@@ -19,7 +19,7 @@ domain.extend((workspace) => {
     configurable: true,
     get(this: PurchaseOrderItem): string {
 
-      return (this.Description || this.Part?.Name) ?? '';
+      return this.PurchaseOrderWherePurchaseOrderItem.OrderNumber + ' ' + this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier.PartyName + ' ' + this.Part.Name;
     },
   });
 

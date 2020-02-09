@@ -51,6 +51,14 @@ namespace Allors.Domain
             }
 
             var purchaseOrderItem = this.PurchaseOrderItemsWhereSerialisedItem.OrderByDescending(v => v.PurchaseOrderWherePurchaseOrderItem.OrderDate).FirstOrDefault();
+
+            if (purchaseOrderItem == null)
+            {
+                purchaseOrderItem = this.Session().Extent<PurchaseOrderItem>()
+                    .OrderByDescending(v => v.PurchaseOrderWherePurchaseOrderItem.OrderDate)
+                    .FirstOrDefault(v => v.SerialNumber.Equals(this.SerialNumber));
+            }
+
             this.PurchasePrice = purchaseOrderItem?.TotalExVat ?? this.AssignedPurchasePrice;
             this.PurchaseOrder = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem;
             this.SuppliedBy = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier ?? this.AssignedSuppliedBy;
