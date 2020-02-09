@@ -2,6 +2,7 @@ import { domain } from '../domain';
 import { PurchaseOrderItem } from '../generated/PurchaseOrderItem.g';
 import { Meta } from '../../meta/generated/domain.g';
 import { assert } from '../../framework';
+import { inlineLists } from 'common-tags';
 
 declare module '../generated/PurchaseOrderItem.g' {
   interface PurchaseOrderItem {
@@ -18,8 +19,8 @@ domain.extend((workspace) => {
   Object.defineProperty(cls.prototype, 'displayName', {
     configurable: true,
     get(this: PurchaseOrderItem): string {
-
-      return this.PurchaseOrderWherePurchaseOrderItem.OrderNumber + ' ' + this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier.PartyName + ' ' + this.Part.Name;
+      const purchaseOrder = this.PurchaseOrderWherePurchaseOrderItem;
+      return inlineLists`${[purchaseOrder?.OrderNumber, purchaseOrder?.TakenViaSupplier?.PartyName, this.Part?.Name].filter(v => v)}`;
     },
   });
 

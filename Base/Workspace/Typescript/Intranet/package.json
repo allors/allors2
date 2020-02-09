@@ -28,7 +28,6 @@
     "@angular/platform-browser": "~9.0.0",
     "@angular/platform-browser-dynamic": "~9.0.0",
     "@angular/router": "~9.0.0",
-    "@types/common-tags": "^1.8.0",
     "angular-calendar": "^0.28.2",
     "bootstrap": "^4.4.1",
     "common-tags": "^1.8.0",
@@ -45,6 +44,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.900.1",
     "@angular/cli": "~9.0.1",
+    "@types/common-tags": "^1.8.0",
     "@angular/compiler-cli": "~9.0.0",
     "@angular/language-service": "~9.0.0",
     "@types/jasmine": "~3.3.8",
