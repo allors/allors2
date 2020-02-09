@@ -22,7 +22,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
-import { AllorsMaterialLocalisedMarkdownModule } from '../../../../core/components/role/localisedmarkdown';
 import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
 import { AllorsMaterialFilesModule } from '../../../..//core/components/role/files';
@@ -34,7 +33,6 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/s
 import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
-import { AllorsMaterialMarkdownModule } from '../../../../core/components/role/markdown';
 
 import { BrandEditComponent } from './brand-edit.component';
 export { BrandEditComponent } from './brand-edit.component';
@@ -59,8 +57,6 @@ export { BrandEditComponent } from './brand-edit.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-    AllorsMaterialMarkdownModule,
-    AllorsMaterialLocalisedMarkdownModule,
     CommonModule,
     FormsModule,
     MatAutocompleteModule,

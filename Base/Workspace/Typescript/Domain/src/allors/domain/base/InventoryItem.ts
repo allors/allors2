@@ -2,7 +2,7 @@ import { InventoryItem } from '../generated/InventoryItem.g';
 
 declare module '../generated/InventoryItem.g' {
     interface InventoryItem {
-        facilityName;
+        facilityName: string;
     }
 }
 

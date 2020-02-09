@@ -21,7 +21,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../core/components/role/localisedtext';
-import { AllorsMaterialMarkdownModule } from '../../../../core/components/role/markdown';
 import { AllorsMaterialQuillModule } from '../../../../core/components/role/quill';
 import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
@@ -43,7 +42,6 @@ export { CatalogueEditComponent } from './catalogue-edit.component';
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
-    AllorsMaterialMarkdownModule,
     AllorsMaterialQuillModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,

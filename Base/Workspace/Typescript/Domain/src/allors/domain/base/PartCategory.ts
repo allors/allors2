@@ -1,25 +1,27 @@
 import { domain } from '../domain';
 import { PartCategory } from '../generated/PartCategory.g';
 import { Meta } from '../../meta/generated/domain.g';
+import { assert } from '../../framework';
 
 declare module '../generated/PartCategory.g' {
   interface PartCategory {
-    displayName;
+    displayName: string;
   }
 }
 
 domain.extend((workspace) => {
 
   const m = workspace.metaPopulation as Meta;
-  const obj = workspace.constructorByObjectType.get(m.PartCategory).prototype as any;
+  const cls = workspace.constructorByObjectType.get(m.PartCategory);
+  assert(cls);
 
-  Object.defineProperty(obj, 'displayName', {
+  Object.defineProperty(cls.prototype, 'displayName', {
     configurable: true,
     get(this: PartCategory): string {
 
       const selfAndPrimaryAncestors = [this];
-      let ancestor = this;
-      while (ancestor && selfAndPrimaryAncestors.indexOf(ancestor) < 0) {
+      let ancestor: PartCategory | null = this;
+      while (ancestor != null && selfAndPrimaryAncestors.indexOf(ancestor) < 0) {
         selfAndPrimaryAncestors.push(ancestor);
         ancestor = ancestor.PrimaryParent;
       }

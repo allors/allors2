@@ -11,4 +11,6 @@ function link(src, dst){
     .catch((e) =>  e.errno && e.errno != -4075 ? console.log(e) : console.log('already linked'))
 }
 
+link ('../../../../Core/Workspace/Typescript/Domain/src/allors/domain/core', 'src/allors/domain');
+
 link ('../../../../Platform/Workspace/Typescript/framework', 'src/allors');

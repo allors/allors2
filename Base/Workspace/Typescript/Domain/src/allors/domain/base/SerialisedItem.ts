@@ -2,6 +2,7 @@ import { domain } from '../domain';
 import { SerialisedItem } from '../generated/SerialisedItem.g';
 import { Meta } from '../../meta/generated/domain.g';
 import { UnifiedGood } from '..';
+import { assert } from '../../framework';
 
 declare module '../generated/SerialisedItem.g' {
   interface SerialisedItem {
@@ -18,20 +19,21 @@ declare module '../generated/SerialisedItem.g' {
 domain.extend((workspace) => {
 
   const m = workspace.metaPopulation as Meta;
-  const obj = workspace.constructorByObjectType.get(m.SerialisedItem).prototype as any;
+  const cls = workspace.constructorByObjectType.get(m.SerialisedItem);
+  assert(cls);
 
-  Object.defineProperty(obj, 'displayName', {
+  Object.defineProperty(cls.prototype, 'displayName', {
     configurable: true,
-    get(this: SerialisedItem) {
+    get(this: SerialisedItem): string {
 
       return this.ItemNumber + ' ' + this.Name + ' SN: ' + this.SerialNumber;
     },
   });
 
-  Object.defineProperty(obj, 'age', {
+  Object.defineProperty(cls.prototype, 'age', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice && this.ManufacturingYear) {
+    get(this: SerialisedItem): number {
+      if (this.CanReadPurchasePrice && this.ManufacturingYear != null) {
         return new Date().getFullYear() - this.ManufacturingYear;
       } else {
         return 0;
@@ -39,11 +41,12 @@ domain.extend((workspace) => {
     },
   });
 
-  Object.defineProperty(obj, 'yearsToGo', {
+  Object.defineProperty(cls.prototype, 'yearsToGo', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice && this.ManufacturingYear) {
-        const good = this.PartWhereSerialisedItem as UnifiedGood;
+    get(this: SerialisedItem): number {
+      const good = this.PartWhereSerialisedItem as UnifiedGood | null;
+
+      if (this.CanReadPurchasePrice && this.ManufacturingYear != null && good?.LifeTime != null) {
         return good.LifeTime - this.age < 0 ? 0 : good.LifeTime - this.age;
       } else {
         return 0;
@@ -51,11 +54,12 @@ domain.extend((workspace) => {
     },
   });
 
-  Object.defineProperty(obj, 'goingConcern', {
+  Object.defineProperty(cls.prototype, 'goingConcern', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice) {
-        const good = this.PartWhereSerialisedItem as UnifiedGood;
+    get(this: SerialisedItem): number {
+      const good = this.PartWhereSerialisedItem as UnifiedGood | null;
+
+      if (this.CanReadPurchasePrice && good?.ReplacementValue != null && good.LifeTime != null) {
         return Math.round((parseFloat(good.ReplacementValue) * this.yearsToGo) / good.LifeTime);
       } else {
         return 0;
@@ -63,11 +67,12 @@ domain.extend((workspace) => {
     },
   });
 
-  Object.defineProperty(obj, 'marketValue', {
+  Object.defineProperty(cls.prototype, 'marketValue', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice && this.ManufacturingYear) {
-        const good = this.PartWhereSerialisedItem as UnifiedGood;
+    get(this: SerialisedItem): number {
+      const good = this.PartWhereSerialisedItem as UnifiedGood | null;
+
+      if (this.CanReadPurchasePrice && this.ManufacturingYear != null && good?.ReplacementValue != null && good.LifeTime != null) {
         return Math.round(parseFloat(good.ReplacementValue) * Math.exp(-2.045 * this.age / good.LifeTime));
       } else {
         return 0;
@@ -75,10 +80,10 @@ domain.extend((workspace) => {
     },
   });
 
-  Object.defineProperty(obj, 'grossBookValue', {
+  Object.defineProperty(cls.prototype, 'grossBookValue', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice) {
+    get(this: SerialisedItem): number {
+      if (this.CanReadPurchasePrice && this.PurchasePrice != null && this.RefurbishCost != null && this.TransportCost != null) {
         return Math.round(parseFloat(this.PurchasePrice) + parseFloat(this.RefurbishCost) + parseFloat(this.TransportCost));
       } else {
         return 0;
@@ -86,10 +91,10 @@ domain.extend((workspace) => {
     },
   });
 
-  Object.defineProperty(obj, 'expectedPosa', {
+  Object.defineProperty(cls.prototype, 'expectedPosa', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice) {
+    get(this: SerialisedItem): number {
+      if (this.CanReadPurchasePrice && this.ExpectedSalesPrice != null) {
         return parseFloat(this.ExpectedSalesPrice) - this.grossBookValue;
       } else {
         return 0;

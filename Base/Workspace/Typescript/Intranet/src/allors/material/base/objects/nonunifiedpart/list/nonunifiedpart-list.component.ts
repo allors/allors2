@@ -205,7 +205,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
             refresh,
             filterFields,
@@ -213,7 +213,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
         }, [, , , , ,]),
-        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             pull.NonUnifiedPart({

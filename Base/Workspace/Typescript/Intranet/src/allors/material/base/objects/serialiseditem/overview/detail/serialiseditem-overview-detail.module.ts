@@ -32,7 +32,6 @@ import { AllorsMaterialStaticModule } from '../../../../../core/components/role/
 import { AllorsMaterialTextAreaModule } from '../../../../../core/components/role/textarea';
 import { AllorsMaterialQuillModule } from '../../../../../core/components/role/quill';
 import { AllorsMaterialFooterModule } from '../../../../../core/components/footer';
-import { AllorsMaterialMarkdownModule } from '../../../../../core/components/role/markdown';
 
 import { SerialisedItemOverviewDetailComponent } from './serialiseditem-overview-detail.component';
 export { SerialisedItemOverviewDetailComponent } from './serialiseditem-overview-detail.component';
@@ -59,7 +58,6 @@ export { SerialisedItemOverviewDetailComponent } from './serialiseditem-overview
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     AllorsMaterialQuillModule,
-    AllorsMaterialMarkdownModule,
     CommonModule,
     FormsModule,
     MatButtonModule,

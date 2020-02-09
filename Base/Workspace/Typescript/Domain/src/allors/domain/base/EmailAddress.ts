@@ -1,26 +1,24 @@
 import { domain } from '../domain';
 import { EmailAddress } from '../generated/EmailAddress.g';
 import { Meta } from '../../meta/generated/domain.g';
+import { assert } from '../../framework';
 
 declare module '../generated/EmailAddress.g' {
   interface EmailAddress {
-    displayName;
+    displayName: string;
   }
 }
 
 domain.extend((workspace) => {
 
   const m = workspace.metaPopulation as Meta;
-  const obj = workspace.constructorByObjectType.get(m.EmailAddress).prototype as any;
+  const cls = workspace.constructorByObjectType.get(m.EmailAddress);
+  assert(cls);
 
-  Object.defineProperty(obj, 'displayName', {
+  Object.defineProperty(cls.prototype, 'displayName', {
     configurable: true,
     get(this: EmailAddress) {
-      if (this.ElectronicAddressString) {
-        return this.ElectronicAddressString;
-      }
-
-      return 'N/A';
+      return this.ElectronicAddressString ?? 'N/A';
     },
   });
 

@@ -12,9 +12,9 @@ interface Row extends TableRow {
   part: string;
   uom: string;
   state: string;
-  qoh: string;
-  atp: string;
-  committedOut: string;
+  qoh: number;
+  atp: number;
+  committedOut: number;
 }
 
 @Component({
@@ -139,8 +139,8 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
               object: v,
               facility: v.Facility.Name,
               part: v.Part.Name,
-              state: v.NonSerialisedInventoryItemState ? v.NonSerialisedInventoryItemState.Name : '',
               uom: v.UnitOfMeasure.Abbreviation || v.UnitOfMeasure.Name,
+              state: v.NonSerialisedInventoryItemState ? v.NonSerialisedInventoryItemState.Name : '',
               qoh: v.quantityOnHand,
               atp: v.availableToPromise,
               committedOut: v.quantityCommittedOut,

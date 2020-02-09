@@ -1,23 +1,25 @@
 import { domain } from '../domain';
 import { PurchaseOrderItem } from '../generated/PurchaseOrderItem.g';
 import { Meta } from '../../meta/generated/domain.g';
+import { assert } from '../../framework';
 
 declare module '../generated/PurchaseOrderItem.g' {
   interface PurchaseOrderItem {
-    displayName;
+    displayName: string;
   }
 }
 
 domain.extend((workspace) => {
 
   const m = workspace.metaPopulation as Meta;
-  const obj = workspace.constructorByObjectType.get(m.PurchaseOrderItem).prototype as any;
+  const cls = workspace.constructorByObjectType.get(m.PurchaseOrderItem);
+  assert(cls);
 
-  Object.defineProperty(obj, 'displayName', {
+  Object.defineProperty(cls.prototype, 'displayName', {
     configurable: true,
-    get(this: PurchaseOrderItem) {
+    get(this: PurchaseOrderItem): string {
 
-      return this.Description || this.Part.Name;
+      return (this.Description || this.Part?.Name) ?? '';
     },
   });
 
