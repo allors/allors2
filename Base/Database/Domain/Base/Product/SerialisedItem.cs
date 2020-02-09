@@ -56,7 +56,7 @@ namespace Allors.Domain
             {
                 purchaseOrderItem = this.Session().Extent<PurchaseOrderItem>()
                     .OrderByDescending(v => v.PurchaseOrderWherePurchaseOrderItem.OrderDate)
-                    .FirstOrDefault(v => v.SerialNumber.Equals(this.SerialNumber));
+                    .FirstOrDefault(v => Object.Equals(v.SerialNumber, this.SerialNumber));
             }
 
             this.PurchasePrice = purchaseOrderItem?.TotalExVat ?? this.AssignedPurchasePrice;
