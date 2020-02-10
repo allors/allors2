@@ -13,10 +13,13 @@ namespace Allors.Domain
         {
             var (iteration, changeSet, derivedObjects) = method;
 
-            foreach (var task in @this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed))
+            if (iteration.IsMarked(@this) || changeSet.IsCreated(@this) || changeSet.HasChangedRoles(@this))
             {
-                iteration.AddDependency(task, @this);
-                iteration.Mark(task);
+                foreach (var task in @this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed))
+                {
+                    iteration.AddDependency(task, @this);
+                    iteration.Mark(task);
+                }
             }
         }
     }
