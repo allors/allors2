@@ -45,11 +45,10 @@ export class PersonComponent extends TestScope implements OnInit, AfterViewInit,
         switchMap(() => {
           const x = {};
           const id = this.route.snapshot.paramMap.get('id');
-          assert(id);
 
           const pulls: Pull[] = [
             pull.Person({
-              object: id,
+              object: id ?? '',
               include: {
                 Photo: x,
                 Pictures: x,

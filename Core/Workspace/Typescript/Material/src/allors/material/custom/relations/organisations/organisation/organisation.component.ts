@@ -60,11 +60,10 @@ export class OrganisationComponent extends TestScope implements OnInit, AfterVie
         switchMap(([]: [UrlSegment[], Date]) => {
 
           const id = this.route.snapshot.paramMap.get('id');
-          assert(id);
 
           const pulls = [
             pull.Organisation({
-              object: id
+              object: id ?? ''
             }),
             pull.Person()
           ];
