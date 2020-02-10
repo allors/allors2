@@ -15,12 +15,12 @@
     "autotest": "npm run build && node ./out-tsc/main && npx rimraf ./out-tsc"
   },
   "dependencies": {
-    "@angular/compiler": "~8.2.14",
-    "@angular/compiler-cli": "~8.2.14",
-    "@angular/core": "~8.2.14",
+    "@angular/compiler": "~9.0.0",
+    "@angular/compiler-cli": "~9.0.0",
+    "@angular/core": "~9.0.0",
     "moment": "^2.24.0",
     "ngast": "^0.3.0",
-    "rxjs": "~6.4.0",
+    "rxjs": "~6.5.4",
     "tsutils": "^3.17.1"
   },
   "devDependencies": {
@@ -28,11 +28,11 @@
     "@types/mocha": "latest",
     "@types/node": "latest",
     "chai": "latest",
-    "lnk": "^1.1.0",
+    "lnk": "latest",
     "mocha": "latest",
     "rimraf": "latest",
     "ts-node": "latest",
     "tslint": "latest",
-    "typescript": "~3.5.3"
+    "typescript": "~3.7.5"
   }
 }

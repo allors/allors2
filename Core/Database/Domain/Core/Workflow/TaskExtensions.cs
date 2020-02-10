@@ -23,10 +23,13 @@ namespace Allors.Domain
             var (iteration, changeSet, derivedObjects) = method;
 
             // TODO: Review
-            foreach (TaskAssignment taskAssignment in @this.TaskAssignmentsWhereTask)
+            if (iteration.IsMarked(@this) || changeSet.HasChangedRoles(@this) || changeSet.IsCreated(@this))
             {
-                iteration.AddDependency(taskAssignment, @this);
-                iteration.Mark(taskAssignment);
+                foreach (TaskAssignment taskAssignment in @this.TaskAssignmentsWhereTask)
+                {
+                    iteration.AddDependency(taskAssignment, @this);
+                    iteration.Mark(taskAssignment);
+                }
             }
         }
 

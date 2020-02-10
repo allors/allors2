@@ -9,7 +9,7 @@ import { AllorsFilterService } from '../../../../angular/core/filter';
 import { FilterField } from '../../../../../allors/angular/core/filter/FilterField';
 import { FilterFieldDefinition } from '../../../../../allors/angular/core/filter/FilterFieldDefinition';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { assert } from 'src/allors/framework';
+import { assert } from '../../../../../allors/framework';
 
 @Component({
   templateUrl: 'filter-dialog.component.html',
