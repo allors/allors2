@@ -28,6 +28,7 @@ import { AllorsMaterialFilesModule } from '../../../..//core/components/role/fil
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../core/components/role/localisedtext';
 import { AllorsMaterialQuillModule } from '../../../../core/components/role/quill';
+import { AllorsMaterialLocalisedQuillModule } from '../../../../core/components/role/localisedquill';
 import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
@@ -52,6 +53,7 @@ export { BrandEditComponent } from './brand-edit.component';
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
     AllorsMaterialQuillModule,
+    AllorsMaterialLocalisedQuillModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
