@@ -15,19 +15,23 @@ namespace Components
         {
             const string Function =
                 @"
+if(window.getAngularTestability){
+    var testability = window.getAngularTestability(document.querySelector('app-root'));
+    if(testability){
+        return testability.isStable();
+    }
+}
 
-var done = arguments[0];
-window.getAngularTestability(document.querySelector('app-root'))
-    .whenStable(function(didWork) {
-        done(didWork);
-});
+return false;
 ";
+            var timeOut = DateTime.Now.AddMinutes(1);
 
             var javascriptExecutor = (IJavaScriptExecutor)@this;
-            var didWork = true;
-            while (didWork)
+            var isStable = false;
+            while (isStable == false && timeOut > DateTime.Now)
             {
-                didWork = (bool)javascriptExecutor.ExecuteAsyncScript(Function);
+                isStable = (bool)javascriptExecutor.ExecuteScript(Function);
+                Thread.Sleep(100);
             }
         }
 

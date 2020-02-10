@@ -12,10 +12,10 @@ declare module '../generated/Media.g' {
 domain.extend((workspace) => {
 
   const m = workspace.metaPopulation as Meta;
-  const mediaClass = workspace.constructorByObjectType.get(m.Media);
-  assert(mediaClass);
+  const  cls = workspace.constructorByObjectType.get(m.Media);
+  assert(cls);
 
-  Object.defineProperty(mediaClass.prototype, 'isImage', {
+  Object.defineProperty(cls.prototype, 'isImage', {
     get(this: Media): boolean {
       const type = this.Type || this.InType;
       return type?.indexOf('image') === 0;

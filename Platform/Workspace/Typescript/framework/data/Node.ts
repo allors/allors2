@@ -19,7 +19,7 @@ export class Node {
   public parse(json: any, objectType: ObjectType, propertyTypeName: string) {
     let propertyType = objectType.roleTypeByName.get(propertyTypeName) || objectType.associationTypeByName.get(propertyTypeName);
 
-    if (!this.propertyType) {
+    if (!propertyType) {
       const metaPopulation = objectType.metaPopulation;
       const [subTypeName, subStepName] = propertyTypeName.split('_');
 
