@@ -171,11 +171,11 @@ export class Workspace implements IWorkspace {
             const [id, version, sortedAccessControlIds, sortedDeniedPermissionIds] = syncRequestObject;
             const workspaceObject = this.workspaceObjectById.get(id);
 
-            return (workspaceObject === undefined) ||
-              (workspaceObject === null) ||
+            const sync = (workspaceObject == null) ||
               (workspaceObject.version !== version) ||
-              (workspaceObject.sortedAccessControlIds !== sortedAccessControlIds) ||
-              (workspaceObject.sortedDeniedPermissionIds !== sortedDeniedPermissionIds);
+              (workspaceObject.sortedAccessControlIds !== (sortedAccessControlIds ?? null)) ||
+              (workspaceObject.sortedDeniedPermissionIds !== (sortedDeniedPermissionIds ?? null));
+            return sync;
           })
           .map((syncRequestObject) => {
             return syncRequestObject[0];
