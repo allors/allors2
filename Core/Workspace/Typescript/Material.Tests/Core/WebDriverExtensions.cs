@@ -8,6 +8,7 @@ namespace Components
     using System;
     using System.Threading;
     using OpenQA.Selenium;
+    using Tests;
 
     public static partial class WebDriverExtensions
     {
@@ -28,10 +29,11 @@ return false;
 
             var javascriptExecutor = (IJavaScriptExecutor)@this;
             var isStable = false;
+            var factor = 1;
             while (isStable == false && timeOut > DateTime.Now)
             {
                 isStable = (bool)javascriptExecutor.ExecuteScript(Function);
-                Thread.Sleep(100);
+                Thread.Sleep(Math.Min(10 * factor++, 100));
             }
         }
 
