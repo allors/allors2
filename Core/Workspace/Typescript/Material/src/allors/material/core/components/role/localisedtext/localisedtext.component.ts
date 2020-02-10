@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 
 import { RoleField, humanize } from '../../../../../angular';
 import { Locale, LocalisedText } from '../../../../../domain';
-import { assert } from 'src/allors/framework';
+import { assert } from '../../../../../framework';
 
 @Component({
   // tslint:disable-next-line:component-selector
