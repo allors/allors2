@@ -23,7 +23,7 @@ domain.extend((workspace) => {
       return stripIndents`
       ${[this.Address1, this.Address2, this.Address3].filter(v => v).map(v => oneLine`${v}`)}
       ${inlineLists`${[this.PostalCode, this.Locality].filter(v => v)}`}
-      ${this.Country.Name}
+      ${this.Country?.Name ?? ''}
       `;
     },
   });
