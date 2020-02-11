@@ -40,6 +40,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithPlacingCustomerContactPerson(customer.CurrentContacts.FirstOrDefault()).Build();
             @this.WithOriginFacility(new FacilityBuilder(@this.Session).WithDefaults(internalOrganisation).Build()).Build();
             @this.WithPartiallyShip(faker.Random.Bool()).Build();
+            @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build()).Build();
+            @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build()).Build();
+            @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build()).Build();
 
             return @this;
         }
