@@ -37,7 +37,7 @@ namespace Tests.ElectronicAddressTests
             var emailAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateEmailAddress();
 
             emailAddressCreate
-                .ContactPurposes.Toggle("General Phone Number")
+                .ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
                 .ElectronicAddressString.Set("me@myself.com")
                 .Description.Set("description")
                 .SAVE.Click();

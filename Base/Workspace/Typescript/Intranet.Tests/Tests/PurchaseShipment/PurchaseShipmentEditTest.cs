@@ -58,9 +58,9 @@ namespace Tests.PurchaseShipmentTests
 
             shipmentOverviewDetail
                 .ShipFromParty.Select(expected.ShipFromParty.DisplayName())
-                .ShipFromContactPerson.Set(expected.ShipFromContactPerson?.DisplayName())
-                .ShipToAddress.Set(expected.ShipToAddress?.DisplayName())
-                .ShipToContactPerson.Set(expected.ShipToContactPerson?.DisplayName());
+                .ShipFromContactPerson.Select(expected.ShipFromContactPerson)
+                .ShipToAddress.Select(expected.ShipToAddress)
+                .ShipToContactPerson.Select(expected.ShipToContactPerson);
 
             this.Session.Rollback();
             shipmentOverviewDetail.SAVE.Click();

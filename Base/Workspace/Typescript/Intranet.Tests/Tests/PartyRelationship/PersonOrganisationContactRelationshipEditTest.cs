@@ -55,8 +55,8 @@ namespace Tests.PartyRelationshipTests
 
             organisationContactRelationshipEdit.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
-                .Organisation.Set(this.organisation.DisplayName())
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact)
+                .Organisation.Select(this.organisation)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -93,9 +93,9 @@ namespace Tests.PartyRelationshipTests
             var organisationContactRelationshipEditComponent = new OrganisationContactRelationshipEditComponent(this.Driver);
             organisationContactRelationshipEditComponent.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).GeneralContact.Description)
-                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
-                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SupplierContact.Description)
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).GeneralContact)
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact)
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SupplierContact)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();

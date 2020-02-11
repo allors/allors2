@@ -79,12 +79,12 @@ namespace Tests.PhoneCommunicationTests
             var phoneCommunicationEditComponent = new PhoneCommunicationEditComponent(this.Driver);
             phoneCommunicationEditComponent
                 .LeftVoiceMail.Set(false)
-                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
-                .FromPhoneNumber.Set("+1 111 222")
+                .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry)
+                .FromPhoneNumber.Select(this.anotherPhoneNumber)
                 .Subject.Set("new subject")
-                .FromParty.Set(firstEmployee.DisplayName())
-                .ToParty.Set(person.DisplayName())
+                .FromParty.Select(firstEmployee)
+                .ToParty.Select(person)
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))

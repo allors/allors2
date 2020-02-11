@@ -13,12 +13,12 @@ namespace src.allors.material.@base.objects.customershipment.create
 
             if (!minimal)
             {
-                @this.ShipToAddress.Set(shipment.ShipToAddress?.DisplayName());
-                @this.ShipToContactPerson.Set(shipment.ShipToContactPerson?.DisplayName());
-                @this.ShipFromAddress.Set(shipment.ShipFromParty?.ShippingAddress.DisplayName());
-                @this.ShipmentMethod.Set(shipment.ShipmentMethod.Name);
-                @this.ShipFromFacility.Set(((Organisation)shipment.ShipFromParty).FacilitiesWhereOwner?.First.Name);
-                @this.Carrier.Set(shipment.Carrier.Name);
+                @this.ShipToAddress.Select(shipment.ShipToAddress);
+                @this.ShipToContactPerson.Select(shipment.ShipToContactPerson);
+                @this.ShipFromAddress.Select(shipment.ShipFromParty?.ShippingAddress);
+                @this.ShipmentMethod.Select(shipment.ShipmentMethod);
+                @this.ShipFromFacility.Select(((Organisation)shipment.ShipFromParty)?.FacilitiesWhereOwner?.First);
+                @this.Carrier.Select(shipment.Carrier);
                 @this.EstimatedShipDate.Set(shipment.EstimatedShipDate.Value.Date);
                 @this.EstimatedArrivalDate.Set(shipment.EstimatedArrivalDate.Value.Date);
                 @this.HandlingInstruction.Set(shipment.HandlingInstruction);

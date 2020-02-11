@@ -37,7 +37,7 @@ namespace Tests.ElectronicAddressTests
             var webAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateWebAddress();
 
             webAddressCreate
-                .ContactPurposes.Toggle("General Email Address")
+                .ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).GeneralEmail)
                 .ElectronicAddressString.Set("wwww.allors.com")
                 .Description.Set("description")
                 .SAVE.Click();

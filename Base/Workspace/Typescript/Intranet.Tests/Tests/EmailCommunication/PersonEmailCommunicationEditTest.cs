@@ -64,12 +64,12 @@ namespace Tests.EmailCommunicationTests
 
             var emailCommunicationEdit = new EmailCommunicationEditComponent(this.Driver);
             emailCommunicationEdit
-                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
-                .FromParty.Set(person.DisplayName())
-                .FromEmail.Set(personEmailAddress.ElectronicAddressString)
-                .ToParty.Set(employee.DisplayName())
-                .ToEmail.Set(employeeEmailAddress.ElectronicAddressString)
+                .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry)
+                .FromParty.Select(person)
+                .FromEmail.Select(personEmailAddress)
+                .ToParty.Select(employee)
+                .ToEmail.Select(employeeEmailAddress)
                 .SubjectTemplate.Set("new subject")
                 .BodyTemplate.Set("new body")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))

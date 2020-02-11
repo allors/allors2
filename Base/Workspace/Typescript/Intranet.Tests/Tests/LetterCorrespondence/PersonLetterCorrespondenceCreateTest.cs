@@ -62,12 +62,12 @@ namespace Tests.LetterCorrespondenceTests
             this.personListPage.Table.DefaultAction(person);
             var letterCorrespondenceEdit = new PersonOverviewComponent(this.personListPage.Driver).CommunicationeventOverviewPanel.Click().CreateLetterCorrespondence();
 
-            letterCorrespondenceEdit.CommunicationEventState
-                .Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
-                .FromParty.Set(employee.DisplayName())
-                .ToParty.Set(person.DisplayName())
-                .FromPostalAddress.Set("home sweet home 0000 suncity Belgium")
+            letterCorrespondenceEdit
+                .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment)
+                .FromParty.Select(employee)
+                .ToParty.Select(person)
+                .FromPostalAddress.Select(employeeAddress)
                 .Subject.Set("subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))

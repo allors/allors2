@@ -73,12 +73,12 @@ namespace Tests.PhoneCommunicationTests
 
             phoneCommunication
                 .LeftVoiceMail.Set(true)
-                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry.Name)
+                .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry)
                 .Subject.Set("subject")
-                .FromParty.Set(contact.DisplayName())
-                .ToParty.Set(employee.DisplayName())
-                .FromPhoneNumber.Set("+1 123 456")
+                .FromParty.Select(contact)
+                .ToParty.Select(employee)
+                .FromPhoneNumber.Select(contact.GeneralPhoneNumber)
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
