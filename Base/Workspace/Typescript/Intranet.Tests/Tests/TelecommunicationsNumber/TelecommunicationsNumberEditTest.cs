@@ -65,7 +65,7 @@ namespace Tests.TelecommunicationsNumberTests
                 .CountryCode.Set("111")
                 .AreaCode.Set("222")
                 .ContactNumber.Set("333")
-                .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)
+                .ContactMechanismType.Select(new ContactMechanismTypes(this.Session).MobilePhone)
                 .Description.Set("description")
                 .SAVE.Click();
 

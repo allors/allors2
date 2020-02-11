@@ -6,6 +6,8 @@
 namespace Components
 {
     using System.Diagnostics.CodeAnalysis;
+    using Allors;
+    using Allors.Domain;
     using Allors.Meta;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
@@ -45,17 +47,30 @@ namespace Components
             }
         }
 
-        public void Toggle(params string[] values)
+        public void Select(IObject @object)
         {
             this.Driver.WaitForAngular();
             var arrow = this.Driver.FindElement(this.ArrowSelector);
             this.ScrollToElement(arrow);
             arrow.Click();
 
-            foreach (var value in values)
+            this.Driver.WaitForAngular();
+            var optionSelector = By.CssSelector($"mat-option[data-allors-option-id='{@object.Id}'] span");
+            var option = this.Driver.FindElement(optionSelector);
+            option.Click();
+        }
+
+        public void Toggle(params IObject[] objects)
+        {
+            this.Driver.WaitForAngular();
+            var arrow = this.Driver.FindElement(this.ArrowSelector);
+            this.ScrollToElement(arrow);
+            arrow.Click();
+
+            foreach (var @object in objects)
             {
                 this.Driver.WaitForAngular();
-                var optionSelector = By.CssSelector($"mat-option[data-allors-option-display='{value}'] span");
+                var optionSelector = By.CssSelector($"mat-option[data-allors-option-id='{@object.Id}'] span");
                 var option = this.Driver.FindElement(optionSelector);
                 option.Click();
             }
@@ -78,15 +93,15 @@ namespace Components
 
         public T Page { get; }
 
-        public new T Toggle(params string[] values)
+        public new T Toggle(params IObject[] objects)
         {
-            base.Toggle(values);
+            base.Toggle(objects);
             return this.Page;
         }
 
-        public new T Set(string value)
+        public new T Select(IObject @object)
         {
-            base.Value = value;
+            base.Select(@object);
             return this.Page;
         }
     }

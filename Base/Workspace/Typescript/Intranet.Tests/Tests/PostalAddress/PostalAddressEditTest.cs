@@ -70,7 +70,7 @@ namespace Tests.PostalAddressTests
                 .Address3.Set("addressline 3")
                 .Locality.Set("city")
                 .PostalCode.Set("postalcode")
-                .Country.Set(country.Name)
+                .Country.Select(country)
                 .Description.Set("description")
                 .SAVE.Click();
 

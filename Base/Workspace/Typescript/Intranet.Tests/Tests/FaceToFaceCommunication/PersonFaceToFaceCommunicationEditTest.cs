@@ -60,13 +60,13 @@ namespace Tests.FaceToFaceCommunicationTests
 
             var faceToFaceCommunicationEditComponent = new FaceToFaceCommunicationEditComponent(this.Driver);
             ;
-            faceToFaceCommunicationEditComponent.CommunicationEventState
-                .Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Conference.Name)
+            faceToFaceCommunicationEditComponent
+                .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Conference)
                 .Location.Set("new location")
                 .Subject.Set("new subject")
-                .FromParty.Set(secondEmployee.DisplayName())
-                .ToParty.Set(person.DisplayName())
+                .FromParty.Select(secondEmployee)
+                .ToParty.Select(person)
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))

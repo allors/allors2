@@ -41,12 +41,12 @@ namespace Tests.FaceToFaceCommunicationTests
             var faceToFaceCommunicationEdit = new PersonOverviewComponent(this.personListPage.Driver).CommunicationeventOverviewPanel.Click().CreateFaceToFaceCommunication();
 
             faceToFaceCommunicationEdit
-                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
+                .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment)
                 .Location.Set("location")
                 .Subject.Set("subject")
-                .FromParty.Set(employee.DisplayName())
-                .ToParty.Set(person.DisplayName())
+                .FromParty.Select(employee)
+                .ToParty.Select(person)
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))

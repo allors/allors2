@@ -12,17 +12,17 @@ namespace src.allors.material.@base.objects.organisation.create
             if (!minimal)
             {
                 @this.TaxNumber.Set(organisation.TaxNumber);
-                @this.LegalForm.Set(organisation.LegalForm?.Description);
-                @this.Locale.Set(organisation.Locale?.Name);
+                @this.LegalForm.Select(organisation.LegalForm);
+                @this.Locale.Select(organisation.Locale);
 
                 foreach (IndustryClassification industryClassification in organisation.IndustryClassifications)
                 {
-                    @this.IndustryClassifications.Toggle(industryClassification.Name);
+                    @this.IndustryClassifications.Toggle(industryClassification);
                 }
 
                 foreach (CustomOrganisationClassification customOrganisationClassification in organisation.CustomClassifications)
                 {
-                    @this.CustomClassifications.Toggle(customOrganisationClassification.Name);
+                    @this.CustomClassifications.Toggle(customOrganisationClassification);
                 }
 
                 @this.IsManufacturer.Set(organisation.IsManufacturer);

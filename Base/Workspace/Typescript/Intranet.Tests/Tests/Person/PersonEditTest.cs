@@ -37,13 +37,13 @@ namespace Tests.PersonTests
             var personOverview = new PersonOverviewComponent(this.people.Driver);
             var personOverviewDetail = personOverview.PersonOverviewDetail.Click();
 
-            personOverviewDetail.Salutation.Set(new Salutations(this.Session).Mr.Name)
+            personOverviewDetail.Salutation.Select(new Salutations(this.Session).Mr)
                 .FirstName.Set("Jos")
                 .MiddleName.Set("de")
                 .LastName.Set("Smos")
                 .Function.Set("CEO")
-                .Gender.Set(new GenderTypes(this.Session).Male.Name)
-                .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
+                .Gender.Select(new GenderTypes(this.Session).Male)
+                .Locale.Select(this.Session.GetSingleton().AdditionalLocales.First)
                 .Comment.Set("unpleasant person")
                 .SAVE.Click();
 

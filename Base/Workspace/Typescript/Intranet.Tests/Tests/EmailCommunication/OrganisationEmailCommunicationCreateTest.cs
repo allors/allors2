@@ -52,12 +52,12 @@ namespace Tests.EmailCommunicationTests
             var emailCommunicationEdit = communicationEventOverview.CreateEmailCommunication();
 
             emailCommunicationEdit
-                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
-                .FromParty.Set(employee.DisplayName())
-                .FromEmail.Set(employeeEmailAddress.ElectronicAddressString)
-                .ToParty.Set(contact.DisplayName())
-                .ToEmail.Set(personEmailAddress.ElectronicAddressString)
+                .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment)
+                .FromParty.Select(employee)
+                .FromEmail.Select(employeeEmailAddress)
+                .ToParty.Select(contact)
+                .ToEmail.Select(personEmailAddress)
                 .SubjectTemplate.Set("subject")
                 .BodyTemplate.Set("body")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))

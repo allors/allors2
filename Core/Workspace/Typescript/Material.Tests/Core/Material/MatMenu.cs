@@ -33,12 +33,6 @@ namespace Components
 
         public T Page { get; }
 
-        public new T Toggle(params string[] values)
-        {
-            base.Toggle(values);
-            return this.Page;
-        }
-
         public new T Set(string value)
         {
             base.Value = value;

@@ -3,8 +3,6 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-
-
 namespace Tests.CustomerShipmentTests
 {
     using System.Linq;

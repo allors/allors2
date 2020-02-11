@@ -57,11 +57,11 @@ namespace Tests.TelecommunicationsNumberTests
 
             var createComponent = new TelecommunicationsNumberCreateComponent(this.Driver);
             createComponent
-                .ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber.Name)
+                .ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
                 .CountryCode.Set("111")
                 .AreaCode.Set("222")
                 .ContactNumber.Set("333")
-                .ContactMechanismType.Set(new ContactMechanismTypes(this.Session).MobilePhone.Name)
+                .ContactMechanismType.Select(new ContactMechanismTypes(this.Session).MobilePhone)
                 .Description.Set("description")
                 .SAVE.Click();
 

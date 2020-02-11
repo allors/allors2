@@ -54,11 +54,11 @@ namespace Tests.LetterCorrespondenceTests
             var letterCorrespondenceEdit = new OrganisationOverviewComponent(this.organisationListPage.Driver).CommunicationeventOverviewPanel.Click().CreateLetterCorrespondence();
 
             letterCorrespondenceEdit
-                .CommunicationEventState.Set(new CommunicationEventStates(this.Session).Completed.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
-                .FromParty.Set(organisation.DisplayName())
-                .ToParty.Set(employee.DisplayName())
-                .FromPostalAddress.Set("Haverwerf 15 1111 city Belgium")
+                .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment)
+                .FromParty.Select(organisation)
+                .ToParty.Select(employee)
+                .FromPostalAddress.Select(organisationAddress)
                 .Subject.Set("subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
