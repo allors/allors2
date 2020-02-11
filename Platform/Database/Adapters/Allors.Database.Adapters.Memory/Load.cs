@@ -439,13 +439,11 @@ namespace Allors.Database.Adapters.Memory
                                         {
                                             if (relationType.RoleType.AssociationType.IsMany)
                                             {
-                                                association.SetCompositeRoleMany2One(relationType.RoleType,
-                                                    role.GetObject());
+                                                association.SetCompositeRoleMany2One(relationType.RoleType, role.GetObject());
                                             }
                                             else
                                             {
-                                                association.SetCompositeRoleOne2One(relationType.RoleType,
-                                                    role.GetObject());
+                                                association.SetCompositeRoleOne2One(relationType.RoleType, role.GetObject());
                                             }
                                         }
                                     }
