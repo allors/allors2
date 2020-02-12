@@ -5,13 +5,14 @@
 
 namespace Allors.Domain
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using HeyRed.Mime;
-    using Meta;
-
     public partial class MediaContent
     {
+        public void CoreOnPreDerive(ObjectOnPreDerive method)
+        {
+            var (iteration, changeSet, derivedObjects) = method;
+            iteration.AddDependency(this, this.MediaWhereMediaContent);
+        }
+
         public void CoreOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
