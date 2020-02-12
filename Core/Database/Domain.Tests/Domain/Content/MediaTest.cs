@@ -36,12 +36,20 @@ namespace Tests
         }
 
         [Fact]
+        public void BuilderWithEmptyData()
+        {
+            var binary = new byte[0];
+            var media = new MediaBuilder(this.Session).WithInData(binary).Build();
+
+            var derivationLog = this.Session.Derive(false);
+
+            Assert.True(derivationLog.HasErrors);
+        }
+
+        [Fact]
         public void BuilderWithData()
         {
             var binary = new byte[] { 0, 1, 2, 3 };
-
-            this.Session.Commit();
-
             var media = new MediaBuilder(this.Session).WithInData(binary).Build();
 
             this.Session.Derive();

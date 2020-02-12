@@ -25,6 +25,11 @@ namespace Allors.Database.Adapters
         /// </returns>
         public static object Normalize(this IRoleType roleType, object unit)
         {
+            if (unit == null)
+            {
+                return null;
+            }
+
             var unitType = (IUnit)roleType.ObjectType;
             var unitTypeTag = unitType.UnitTag;
 
