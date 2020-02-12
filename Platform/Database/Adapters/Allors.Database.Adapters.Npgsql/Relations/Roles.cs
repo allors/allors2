@@ -89,14 +89,19 @@ namespace Allors.Database.Adapters.Npgsql
 
         internal void SetUnitRole(IRoleType roleType, object role)
         {
-            this.Reference.Session.State.ChangeSet.OnChangingUnitRole(this.Reference.ObjectId, roleType);
+            var previousRole = this.GetUnitRole(roleType);
 
-            this.SetOriginal(roleType, role);
+            if (!Equals(previousRole, role))
+            {
+                this.Reference.Session.State.ChangeSet.OnChangingUnitRole(this.Reference.ObjectId, roleType);
 
-            this.ModifiedRoleByRoleType[roleType] = role;
-            this.RequireFlushRoles.Add(roleType);
+                this.SetOriginal(roleType, role);
 
-            this.Reference.Session.RequireFlush(this.Reference, this);
+                this.ModifiedRoleByRoleType[roleType] = role;
+                this.RequireFlushRoles.Add(roleType);
+
+                this.Reference.Session.RequireFlush(this.Reference, this);
+            }
         }
 
         internal bool TryGetCompositeRole(IRoleType roleType, out long? roleId)
@@ -255,10 +260,10 @@ namespace Allors.Database.Adapters.Npgsql
                 this.ModifiedRolesByRoleType[roleType] = compositesRole;
             }
 
-            this.Reference.Session.State.ChangeSet.OnChangingCompositesRole(this.Reference.ObjectId, roleType, role);
-
             if (!compositesRole.Contains(role.ObjectId))
             {
+                this.Reference.Session.State.ChangeSet.OnChangingCompositesRole(this.Reference.ObjectId, roleType, role);
+
                 compositesRole.Add(role.ObjectId);
 
                 if (roleType.AssociationType.IsOne)

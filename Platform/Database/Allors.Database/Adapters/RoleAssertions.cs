@@ -10,7 +10,7 @@ namespace Allors.Database.Adapters
 
     public static class RoleAssertions
     {
-        public static void UnitRoleChecks(IStrategy strategy, IRoleType roleType)
+        public static void UnitRoleChecks(this IRoleType roleType, IStrategy strategy)
         {
             if (!roleType.AssociationType.ObjectType.IsAssignableFrom(strategy.Class))
             {
@@ -23,36 +23,36 @@ namespace Allors.Database.Adapters
             }
         }
 
-        public static void CompositeRoleChecks(IStrategy strategy, IRoleType roleType) => CompositeSharedChecks(strategy, roleType, null);
+        public static void CompositeRoleChecks(this IRoleType roleType, IStrategy strategy) => CompositeSharedChecks(roleType, strategy, null);
 
-        public static void CompositeRoleChecks(IStrategy strategy, IRoleType roleType, IObject role)
+        public static void CompositeRoleChecks(this IRoleType roleType, IStrategy strategy, IObject role)
         {
-            CompositeSharedChecks(strategy, roleType, role);
+            CompositeSharedChecks(roleType, strategy, role);
             if (!roleType.IsOne)
             {
                 throw new ArgumentException("RelationType " + roleType + " has multiplicity many.");
             }
         }
 
-        public static void CompositeRolesChecks(IStrategy strategy, IRoleType roleType)
+        public static void CompositeRolesChecks(this IRoleType roleType, IStrategy strategy)
         {
-            CompositeSharedChecks(strategy, roleType, null);
+            CompositeSharedChecks(roleType, strategy, null);
             if (!roleType.IsMany)
             {
                 throw new ArgumentException("RelationType " + roleType + " has multiplicity one.");
             }
         }
 
-        public static void CompositeRolesChecks(IStrategy strategy, IRoleType roleType, IObject role)
+        public static void CompositeRolesChecks(this IRoleType roleType, IStrategy strategy, IObject role)
         {
-            CompositeSharedChecks(strategy, roleType, role);
+            CompositeSharedChecks(roleType, strategy, role);
             if (!roleType.IsMany)
             {
                 throw new ArgumentException("RelationType " + roleType + " has multiplicity one.");
             }
         }
 
-        private static void CompositeSharedChecks(IStrategy strategy, IRoleType roleType, IObject role)
+        private static void CompositeSharedChecks(this IRoleType roleType, IStrategy strategy, IObject role)
         {
             if (!roleType.AssociationType.ObjectType.IsAssignableFrom(strategy.Class))
             {
