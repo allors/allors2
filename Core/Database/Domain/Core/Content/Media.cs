@@ -8,6 +8,8 @@ namespace Allors.Domain
     using System;
     using System.IO;
     using System.Text.RegularExpressions;
+    using System.Web;
+    using DataUtils;
     using HeyRed.Mime;
 
     public partial class Media
@@ -41,18 +43,10 @@ namespace Allors.Domain
 
             if (this.ExistInDataUri)
             {
-                var regex = new Regex(@"data:(?<mime>[\w/\-\.]+);(?<encoding>\w+),(?<data>.*)", RegexOptions.Compiled);
-
-                var match = regex.Match(this.InDataUri);
-
-                var mime = match.Groups["mime"].Value;
-                //var encoding = match.Groups["encoding"].Value;
-                var data = match.Groups["data"].Value;
-
-                var binaryData = Convert.FromBase64String(data);
-
-                this.MediaContent.Data = binaryData;
-                this.MediaContent.Type = mime;
+                var dataUrl = new DataUrl(this.InDataUri);
+ 
+                this.MediaContent.Data = dataUrl.Content;
+                this.MediaContent.Type = dataUrl.ContentType;
 
                 this.RemoveInDataUri();
             }
