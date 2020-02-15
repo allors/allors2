@@ -81,7 +81,7 @@ namespace Tests.PhoneCommunicationTests
                 .LeftVoiceMail.Set(false)
                 .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry)
-                .FromPhoneNumber.Select(this.anotherPhoneNumber)
+                .FromPhoneNumber.Select(this.anotherPhoneNumber.ContactMechanism)
                 .Subject.Set("new subject")
                 .FromParty.Select(firstEmployee)
                 .ToParty.Select(person)
