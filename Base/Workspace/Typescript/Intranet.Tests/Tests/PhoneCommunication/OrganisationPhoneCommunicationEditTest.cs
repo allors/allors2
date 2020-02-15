@@ -87,7 +87,7 @@ namespace Tests.PhoneCommunicationTests
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Inquiry)
                 .FromParty.Select(organisation)
                 .ToParty.Select(firstEmployee)
-                .FromPhoneNumber.Select(this.organisationPhoneNumber)
+                .FromPhoneNumber.Select(this.organisationPhoneNumber.ContactMechanism)
                 .Subject.Set("new subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
