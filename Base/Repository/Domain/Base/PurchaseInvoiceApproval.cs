@@ -29,9 +29,9 @@ namespace Allors.Repository
 
         public DateTime DateClosed { get; set; }
 
-        public Person[] Participants { get; set; }
+        public User[] Participants { get; set; }
 
-        public Person Performer { get; set; }
+        public User Performer { get; set; }
 
         public string Comment { get; set; }
 

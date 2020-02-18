@@ -11,8 +11,9 @@ namespace Allors.Database.Adapters.Memory
     using System.Xml;
 
     using Allors.Meta;
-
+    using Allors.Serialization;
     using Microsoft.Extensions.DependencyInjection;
+    using IO;
 
     public class Session : ISession
     {
@@ -423,6 +424,36 @@ namespace Allors.Database.Adapters.Memory
 
             var save = new Save(this, writer, sortedNonDeletedStrategiesByObjectType);
             save.Execute();
+        }
+
+
+        internal IPopulationData Save()
+        {
+            var sortedNonDeletedStrategiesByObjectType = new Dictionary<IObjectType, List<Strategy>>();
+            foreach (var dictionaryEntry in this.strategyByObjectId)
+            {
+                var strategy = dictionaryEntry.Value;
+                if (!strategy.IsDeleted)
+                {
+                    var objectType = strategy.UncheckedObjectType;
+
+                    if (!sortedNonDeletedStrategiesByObjectType.TryGetValue(objectType, out var sortedNonDeletedStrategies))
+                    {
+                        sortedNonDeletedStrategies = new List<Strategy>();
+                        sortedNonDeletedStrategiesByObjectType[objectType] = sortedNonDeletedStrategies;
+                    }
+
+                    sortedNonDeletedStrategies.Add(strategy);
+                }
+            }
+
+            foreach (var dictionaryEntry in sortedNonDeletedStrategiesByObjectType)
+            {
+                var sortedNonDeletedStrategies = dictionaryEntry.Value;
+                sortedNonDeletedStrategies.Sort(new Strategy.ObjectIdComparer());
+            }
+
+            return new PopulationData(this, sortedNonDeletedStrategiesByObjectType);
         }
 
         private void Reset()
