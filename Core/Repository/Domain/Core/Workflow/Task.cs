@@ -63,7 +63,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Workspace]
-        Person[] Participants { get; set; }
+        User[] Participants { get; set; }
 
         #region Allors
         [Id("ea8abc59-b625-4d25-85bd-dd04bfe55086")]
@@ -73,6 +73,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Workspace]
-        Person Performer { get; set; }
+        User Performer { get; set; }
     }
 }

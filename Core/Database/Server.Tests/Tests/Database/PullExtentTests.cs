@@ -8,12 +8,11 @@ namespace Allors.Server.Tests
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Protocol.Data;
+    using Allors.Protocol.Remote;
     using Allors.Protocol.Remote.Pull;
-    using Protocol.Remote;
     using Xunit;
 
     [Collection("Api")]

@@ -504,9 +504,6 @@ namespace Allors.Database.Adapters.Memory
 
         internal void Commit()
         {
-            this.isDeletedOnRollback = this.IsDeleted;
-            this.IsNewInSession = false;
-
             if (!this.IsDeleted && !this.MemorySession.MemoryDatabase.IsLoading)
             {
                 if (this.rollbackUnitRoleByRoleType != null ||
@@ -514,7 +511,8 @@ namespace Allors.Database.Adapters.Memory
                     this.rollbackCompositeRoleByRoleType != null ||
                     this.rollbackCompositeRoleByRoleType != null ||
                     this.rollbackCompositeRoleByRoleType != null ||
-                    this.rollbackCompositeRoleByRoleType != null)
+                    this.rollbackCompositeRoleByRoleType != null ||
+                    this.IsNewInSession)
                 {
                     ++this.ObjectVersion;
                 }
@@ -525,13 +523,13 @@ namespace Allors.Database.Adapters.Memory
             this.rollbackCompositesRoleByRoleType = null;
             this.rollbackCompositeAssociationByAssociationType = null;
             this.rollbackCompositesAssociationByAssociationType = null;
+
+            this.isDeletedOnRollback = this.IsDeleted;
+            this.IsNewInSession = false;
         }
 
         internal void Rollback()
         {
-            this.IsDeleted = this.isDeletedOnRollback;
-            this.IsNewInSession = false;
-
             foreach (var dictionaryItem in this.RollbackUnitRoleByRoleType)
             {
                 var roleType = dictionaryItem.Key;
@@ -612,6 +610,9 @@ namespace Allors.Database.Adapters.Memory
             this.rollbackCompositesRoleByRoleType = null;
             this.rollbackCompositeAssociationByAssociationType = null;
             this.rollbackCompositesAssociationByAssociationType = null;
+
+            this.IsDeleted = this.isDeletedOnRollback;
+            this.IsNewInSession = false;
         }
 
         internal object GetInternalizedUnitRole(IRoleType roleType)
