@@ -167,5 +167,7 @@ namespace Allors.Repository
         public void Delete() { }
 
         #endregion
+
+        public string WorkItemDescription { get; set; }
     }
 }

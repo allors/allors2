@@ -437,7 +437,7 @@ namespace Allors.Domain
                 if (!this.OpenTasks.OfType<PurchaseInvoiceApproval>().Any())
                 {
                     var approval = new PurchaseInvoiceApprovalBuilder(this.Session()).WithPurchaseInvoice(this).Build();
-                    approval.WorkItem = approval.PurchaseInvoice;
+                    approval.DerivedRoles.WorkItem = approval.PurchaseInvoice;
                 }
             }
         }

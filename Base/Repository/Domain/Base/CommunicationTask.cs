@@ -1,4 +1,4 @@
-// <copyright file="PurchaseInvoiceApproval.cs" company="Allors bvba">
+// <copyright file="CommunicationTask.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -9,12 +9,11 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
-    [Id("38A75CAC-6669-4118-B72F-057C86693D95")]
+    [Id("14D5613A-412F-41A7-9F94-4E10DF9FFEF0")]
     #endregion
-    public partial class PurchaseInvoiceApproval : ApproveTask
+    public partial class CommunicationTask : Task, UniquelyIdentifiable
     {
         #region inherited properties
-
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -35,34 +34,23 @@ namespace Allors.Repository
 
         public User Performer { get; set; }
 
-        public string Comment { get; set; }
-
-        public Notification ApprovalNotification { get; set; }
-
-        public Notification RejectionNotification { get; set; }
-
         #endregion
 
         #region Allors
-        [Id("EEAB1D40-6E68-43B9-A236-AB5F84880E19")]
-        [AssociationId("A2EEB714-EC08-467C-928B-489080101030")]
-        [RoleId("C062AE16-F464-4659-B5AF-CAED48BC2558")]
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Id("D6495C2B-2396-4C90-A04D-E689E0BC20E7")]
+        [AssociationId("E92365CE-EEEC-4056-97A3-4B8D87AF59C7")]
+        [RoleId("6EFE45FE-AE45-4AF0-B170-9088721F36EB")]
         [Indexed]
         #endregion
-        [Workspace]
-        [Required]
-        public PurchaseInvoice PurchaseInvoice { get; set; }
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public CommunicationEvent CommunicationEvent { get; set; }
 
         #region inherited methods
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }
 
-        public void OnInit()
-        {
-        }
+        public void OnInit() { }
 
         public void OnPreDerive() { }
 
@@ -71,10 +59,6 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
-
-        public void Approve() { }
-
-        public void Reject() { }
 
         #endregion
     }

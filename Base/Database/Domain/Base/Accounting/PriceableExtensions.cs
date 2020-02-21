@@ -13,8 +13,6 @@ namespace Allors.Domain
     {
         public static decimal SetUnitSurcharge(this Priceable @this, PriceComponent priceComponent, decimal revenueBreakSurcharge)
         {
-            var derivedRoles = (PriceableDerivedRoles)@this;
-
             if (priceComponent.Strategy.Class.Equals(M.SurchargeComponent.ObjectType))
             {
                 var surchargeComponent = (SurchargeComponent)priceComponent;
@@ -23,13 +21,13 @@ namespace Allors.Domain
                 if (surchargeComponent.Price.HasValue)
                 {
                     surcharge = surchargeComponent.Price.Value;
-                    derivedRoles.UnitSurcharge += surcharge;
+                    @this.DerivedRoles.UnitSurcharge += surcharge;
                 }
                 else
                 {
                     var percentage = surchargeComponent.Percentage ?? 0;
                     surcharge = Math.Round(@this.UnitBasePrice * percentage / 100, 2);
-                    derivedRoles.UnitSurcharge += surcharge;
+                    @this.DerivedRoles.UnitSurcharge += surcharge;
                 }
             }
 
@@ -38,8 +36,6 @@ namespace Allors.Domain
 
         internal static decimal SetUnitDiscount(this Priceable @this, PriceComponent priceComponent, decimal revenueBreakDiscount)
         {
-            var derivedRoles = (PriceableDerivedRoles)@this;
-
             if (priceComponent.Strategy.Class.Equals(M.DiscountComponent.ObjectType))
             {
                 var discountComponent = (DiscountComponent)priceComponent;
@@ -48,13 +44,13 @@ namespace Allors.Domain
                 if (discountComponent.Price.HasValue)
                 {
                     discount = discountComponent.Price.Value;
-                    derivedRoles.UnitDiscount += discount;
+                    @this.DerivedRoles.UnitDiscount += discount;
                 }
                 else
                 {
                     var percentage = discountComponent.Percentage ?? 0;
                     discount = Math.Round(@this.UnitBasePrice * percentage / 100, 2);
-                    derivedRoles.UnitDiscount += discount;
+                    @this.DerivedRoles.UnitDiscount += discount;
                 }
             }
 

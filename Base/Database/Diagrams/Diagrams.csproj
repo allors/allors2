@@ -67,6 +67,7 @@
     <None Include="Workeffort\WorkEffort.cd" />
     <None Include="Workeffort\WorkEffort TimeEntry.cd" />
     <None Include="Workeffort\WorkEffort InventoryItem.cd" />
+    <None Include="Workflow\Communication.cd" />
     <None Include="Workflow\Workflow.cd" />
   </ItemGroup>
   <ItemGroup />
