@@ -213,31 +213,6 @@
                 [roleType]="m.SerialisedItem.AssignedSuppliedBy" [options]="currentSuppliers" display="Name"
                 label="Supplied By"></a-mat-select>
             </div>
-
-            <div class="row">
-              <mat-form-field class="col">
-                <input type="number" matInput [(ngModel)]="serialisedItem.grossBookValue" name="grossBookValue"
-                  placeholder="Gross Book Value" readonly>
-              </mat-form-field>
-              <mat-form-field class="col">
-                <input type="number" matInput [(ngModel)]="serialisedItem.expectedPosa" name="expectedPosa"
-                  placeholder="Expected Posa" readonly>
-              </mat-form-field>
-            </div>
-
-            <div class="row">
-              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.RefurbishCost">
-              </a-mat-input>
-              <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.TransportCost">
-              </a-mat-input>
-            </div>
-
-            <div class="row">
-              <a-mat-input class="col" [object]="serialisedItem"
-                [roleType]="m.SerialisedItem.ExpectedRentalPriceDryLease"></a-mat-input>
-              <a-mat-input class="col" [object]="serialisedItem"
-                [roleType]="m.SerialisedItem.ExpectedRentalPriceFullService"></a-mat-input>
-            </div>
           </div>
         </mat-tab>
 

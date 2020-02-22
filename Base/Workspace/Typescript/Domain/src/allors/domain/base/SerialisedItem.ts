@@ -83,8 +83,10 @@ domain.extend((workspace) => {
   Object.defineProperty(cls.prototype, 'grossBookValue', {
     configurable: true,
     get(this: SerialisedItem): number {
-      if (this.CanReadPurchasePrice && this.PurchasePrice != null && this.RefurbishCost != null && this.TransportCost != null) {
-        return Math.round(parseFloat(this.PurchasePrice) + parseFloat(this.RefurbishCost) + parseFloat(this.TransportCost));
+      const transportCost = this.EstimatedTransportCost;
+      const refurbishCost = this.EstimatedRefurbishCost;
+      if (this.CanReadPurchasePrice && this.PurchasePrice != null) {
+        return Math.round(parseFloat(this.PurchasePrice) + parseFloat(refurbishCost) + parseFloat(transportCost));
       } else {
         return 0;
       }
