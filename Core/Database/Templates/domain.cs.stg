@@ -98,6 +98,8 @@ $interface.XmlDocComment$
 $interface.exclusiveRoleTypes:{roleType|$interfaceExclusiveRoleType_Interface()$}$
 $interface.exclusiveAssociationTypes:{associationType|$interfaceExclusiveAssociationType_Interface()$}$
 $interface.exclusiveMethodTypes:{methodType|$interfaceExclusiveMethodType_Interface()$}$
+
+        new $interface.name$DerivedRoles DerivedRoles { get; }
 	}
 
 	public partial interface $interface.name$Builder : $interface.DirectSupertypes:{directSupertype|$directSupertype.Name$Builder ,}$ global::System.IDisposable
@@ -266,6 +268,11 @@ $class.XmlDocComment$
             [System.Diagnostics.DebuggerStepThrough]
             get { return this.strategy; }
         }
+
+
+$class.supertypes:{interface|        $interface.name$DerivedRoles $interface.name$.DerivedRoles => ($interface.name$DerivedRoles)this;}; separator="\n"$
+
+        public $class.name$DerivedRoles DerivedRoles => ($class.name$DerivedRoles)this;
 
 		public static $class.name$ Instantiate (Allors.ISession allorsSession, string allorsObjectId)
 		{

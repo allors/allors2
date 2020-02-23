@@ -28,6 +28,8 @@ namespace Allors.Repository
 
         public DateTime DateCreated { get; set; }
 
+        public DateTime DateDue { get; set; }
+
         public DateTime DateClosed { get; set; }
 
         public User[] Participants { get; set; }

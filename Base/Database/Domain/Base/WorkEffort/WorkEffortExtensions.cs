@@ -45,7 +45,6 @@ namespace Allors.Domain
         public static void BaseOnDerive(this WorkEffort @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-            var derivedRoles = (WorkEffortDerivedRoles)@this;
 
             var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
@@ -56,7 +55,7 @@ namespace Allors.Domain
 
             if (!@this.ExistWorkEffortNumber && @this.ExistTakenBy)
             {
-                derivedRoles.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
+                @this.DerivedRoles.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
             }
 
             if (!@this.ExistExecutedBy && @this.ExistTakenBy)
@@ -160,32 +159,30 @@ namespace Allors.Domain
 
         private static void DeriveActualHoursAndDates(this WorkEffort @this)
         {
-            var derivedRoles = (WorkEffortDerivedRoles)@this;
-
-            derivedRoles.ActualHours = 0M;
+            @this.DerivedRoles.ActualHours = 0M;
 
             foreach (ServiceEntry serviceEntry in @this.ServiceEntriesWhereWorkEffort)
             {
                 if (serviceEntry is TimeEntry timeEntry)
                 {
-                    derivedRoles.ActualHours += timeEntry.ActualHours;
+                    @this.DerivedRoles.ActualHours += timeEntry.ActualHours;
 
                     if (!@this.ExistActualStart)
                     {
-                        derivedRoles.ActualStart = timeEntry.FromDate;
+                        @this.DerivedRoles.ActualStart = timeEntry.FromDate;
                     }
                     else if (timeEntry.FromDate < @this.ActualStart)
                     {
-                        derivedRoles.ActualStart = timeEntry.FromDate;
+                        @this.DerivedRoles.ActualStart = timeEntry.FromDate;
                     }
 
                     if (!@this.ExistActualCompletion)
                     {
-                        derivedRoles.ActualCompletion = timeEntry.ThroughDate;
+                        @this.DerivedRoles.ActualCompletion = timeEntry.ThroughDate;
                     }
                     else if (timeEntry.ThroughDate > @this.ActualCompletion)
                     {
-                        derivedRoles.ActualCompletion = timeEntry.ThroughDate;
+                        @this.DerivedRoles.ActualCompletion = timeEntry.ThroughDate;
                     }
                 }
             }
@@ -264,15 +261,13 @@ namespace Allors.Domain
 
         private static void DeriveCanInvoice(this WorkEffort @this)
         {
-            var derivedRoles = (WorkEffortDerivedRoles)@this;
-
             if (@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
             {
-                derivedRoles.CanInvoice = true;
+                @this.DerivedRoles.CanInvoice = true;
 
                 if (@this.ExistWorkEffortWhereChild)
                 {
-                    derivedRoles.CanInvoice = false;
+                    @this.DerivedRoles.CanInvoice = false;
                 }
 
                 if (@this.CanInvoice)
@@ -281,7 +276,7 @@ namespace Allors.Domain
                     {
                         if (!@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
                         {
-                            derivedRoles.CanInvoice = false;
+                            @this.DerivedRoles.CanInvoice = false;
                             break;
                         }
                     }
@@ -293,7 +288,7 @@ namespace Allors.Domain
                     {
                         if (!timeEntry.ExistThroughDate)
                         {
-                            derivedRoles.CanInvoice = false;
+                            @this.DerivedRoles.CanInvoice = false;
                             break;
                         }
                     }
@@ -301,12 +296,12 @@ namespace Allors.Domain
 
                 if (@this.ExistWorkEffortAssignmentRatesWhereWorkEffort && !@this.ExistWorkEffortAssignmentRatesWhereWorkEffort)
                 {
-                    derivedRoles.CanInvoice = false;
+                    @this.DerivedRoles.CanInvoice = false;
                 }
             }
             else
             {
-                derivedRoles.CanInvoice = false;
+                @this.DerivedRoles.CanInvoice = false;
             }
         }
     }

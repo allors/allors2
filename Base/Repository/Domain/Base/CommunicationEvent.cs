@@ -11,7 +11,7 @@ namespace Allors.Repository
     #region Allors
     [Id("b05371ff-0c9e-4ee3-b31d-e2edeed8649e")]
     #endregion
-    public partial interface CommunicationEvent : Deletable, Commentable, UniquelyIdentifiable, Auditable, Transitional
+    public partial interface CommunicationEvent : Deletable, Commentable, UniquelyIdentifiable, Auditable, WorkItem, Transitional
     {
         #region ObjectStates
         #region EmailCommunicationState
