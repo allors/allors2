@@ -45,7 +45,7 @@ namespace Allors.Domain
             {
                 var dataUrl = new DataUrl(this.InDataUri);
  
-                this.MediaContent.Data = dataUrl.Content;
+                this.MediaContent.Data = Convert.FromBase64String(dataUrl.ReadAsBase64EncodedString());
                 this.MediaContent.Type = dataUrl.ContentType;
 
                 this.RemoveInDataUri();
