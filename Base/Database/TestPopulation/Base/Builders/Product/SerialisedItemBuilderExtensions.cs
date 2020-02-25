@@ -35,10 +35,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithManufacturingYear(serviceDate.Year - 5);
             @this.WithAssignedPurchasePrice(Convert.ToDecimal(faker.Commerce.Price(replacementValue)));
             @this.WithExpectedSalesPrice(expectedSalesPrice);
-            @this.WithEstimatedRefurbishCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
-            @this.WithEstimatedTransportCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
-            @this.WithExpectedRentalPriceFullService(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 10)));
-            @this.WithExpectedRentalPriceDryLease(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 20)));
             @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
@@ -99,10 +95,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithManufacturingYear(serviceDate.Year - 5);
             @this.WithAssignedPurchasePrice(Convert.ToDecimal(faker.Commerce.Price(replacementValue)));
             @this.WithExpectedSalesPrice(expectedSalesPrice);
-            @this.WithEstimatedRefurbishCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
-            @this.WithEstimatedTransportCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
-            @this.WithExpectedRentalPriceFullService(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 10)));
-            @this.WithExpectedRentalPriceDryLease(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 20)));
             @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
