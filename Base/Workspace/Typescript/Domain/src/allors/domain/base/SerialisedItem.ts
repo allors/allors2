@@ -11,7 +11,6 @@ declare module '../generated/SerialisedItem.g' {
     yearsToGo: number;
     goingConcern: number;
     marketValue: number;
-    expectedPosa: number;
   }
 }
 
@@ -79,15 +78,5 @@ domain.extend((workspace) => {
     },
   });
   
-  Object.defineProperty(cls.prototype, 'expectedPosa', {
-    configurable: true,
-    get(this: SerialisedItem): number {
-      if (this.CanReadPurchasePrice && this.ExpectedSalesPrice != null) {
-        return parseFloat(this.ExpectedSalesPrice) - this.grossBookValue;
-      } else {
-        return 0;
-      }
-    },
-  });
 
 });
