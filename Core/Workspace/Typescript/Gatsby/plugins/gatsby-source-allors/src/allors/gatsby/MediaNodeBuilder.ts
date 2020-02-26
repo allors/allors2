@@ -12,9 +12,7 @@ export class MediaNodeBuilder {
 
     if (node.internal.type === "AllorsMedia") {
 
-      const fileName = (node.fileName as string)?.replace(/\s/g, '');
-      const fileComponent = fileName ? "/" + fileName : '';
-      const rawUrl = (this.options["url"] as string) + "media/" + node.uniqueId + fileComponent;
+      const rawUrl = `${this.options["url"]}media/${node.uniqueId}/${node.fileName}`;
       const url = encodeURI(rawUrl);
 
       try {
