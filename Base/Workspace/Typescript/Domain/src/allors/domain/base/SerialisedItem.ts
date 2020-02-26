@@ -11,8 +11,6 @@ declare module '../generated/SerialisedItem.g' {
     yearsToGo: number;
     goingConcern: number;
     marketValue: number;
-    grossBookValue: number;
-    expectedPosa: number;
   }
 }
 
@@ -79,29 +77,6 @@ domain.extend((workspace) => {
       }
     },
   });
-
-  Object.defineProperty(cls.prototype, 'grossBookValue', {
-    configurable: true,
-    get(this: SerialisedItem): number {
-      const transportCost = this.EstimatedTransportCost;
-      const refurbishCost = this.EstimatedRefurbishCost;
-      if (this.CanReadPurchasePrice && this.PurchasePrice != null) {
-        return Math.round(parseFloat(this.PurchasePrice) + parseFloat(refurbishCost) + parseFloat(transportCost));
-      } else {
-        return 0;
-      }
-    },
-  });
-
-  Object.defineProperty(cls.prototype, 'expectedPosa', {
-    configurable: true,
-    get(this: SerialisedItem): number {
-      if (this.CanReadPurchasePrice && this.ExpectedSalesPrice != null) {
-        return parseFloat(this.ExpectedSalesPrice) - this.grossBookValue;
-      } else {
-        return 0;
-      }
-    },
-  });
+  
 
 });
