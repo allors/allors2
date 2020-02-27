@@ -115,7 +115,7 @@ namespace Allors.Server
             }
         }
 
-        public void AddValue(string name, string value)
+        public void AddValue(string name, object value)
         {
             if (value != null)
             {
