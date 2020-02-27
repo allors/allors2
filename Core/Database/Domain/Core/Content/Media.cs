@@ -7,13 +7,18 @@ namespace Allors.Domain
 {
     using System;
     using System.IO;
-    using System.Text.RegularExpressions;
-    using System.Web;
+    using System.Linq;
     using DataUtils;
     using HeyRed.Mime;
 
     public partial class Media
     {
+        static readonly char[] InvalidFileNameChars = Path.GetInvalidFileNameChars();
+        static string[] InvalidFileNames = new[]
+        {
+            "CON", "PRN", "AUX", "NUL", "COM", "LPT"
+        };
+
         public void CoreOnDerive(ObjectOnDerive method)
         {
             this.Revision = Guid.NewGuid();
@@ -44,7 +49,7 @@ namespace Allors.Domain
             if (this.ExistInDataUri)
             {
                 var dataUrl = new DataUrl(this.InDataUri);
- 
+
                 this.MediaContent.Data = Convert.FromBase64String(dataUrl.ReadAsBase64EncodedString());
                 this.MediaContent.Type = dataUrl.ContentType;
 
@@ -54,7 +59,20 @@ namespace Allors.Domain
             this.Type = this.MediaContent?.Type;
 
             var name = !string.IsNullOrWhiteSpace(this.Name) ? this.Name : this.UniqueId.ToString();
-            this.FileName = $"{name}.{MimeTypesMap.GetExtension(this.Type)}";
+            var fileName = $"{name}.{MimeTypesMap.GetExtension(this.Type)}";
+            var safeFileName = new string(fileName.Where(ch => !InvalidFileNameChars.Contains(ch)).ToArray());
+
+            var uppercaseSafeFileName = safeFileName.ToUpperInvariant();
+            foreach(var invalidFileName in InvalidFileNames)
+            {
+                if (uppercaseSafeFileName.StartsWith(invalidFileName))
+                {
+                    safeFileName += "_" + safeFileName;
+                    break;
+                }
+            }
+
+            this.FileName = safeFileName;
         }
 
         public void CoreDelete(DeletableDelete method) => this.MediaContent?.Delete();

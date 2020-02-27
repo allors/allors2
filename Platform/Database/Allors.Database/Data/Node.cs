@@ -15,7 +15,7 @@ namespace Allors.Data
         public Node(IPropertyType propertyType, Node[] nodes = null)
         {
             this.PropertyType = propertyType;
-            this.Composite = propertyType.ObjectType.IsComposite ? (IComposite)propertyType.ObjectType : null;
+            this.Composite = this.PropertyType.ObjectType.IsComposite ? (IComposite)propertyType.ObjectType : null;
 
             if (propertyType.ObjectType.IsComposite)
             {
@@ -104,20 +104,23 @@ namespace Allors.Data
 
         private void AssertAssignable(Node node)
         {
-            IComposite addedComposite = null;
+            if (this.Composite != null)
+            {
+                IComposite addedComposite = null;
 
-            if (node.PropertyType is IRoleType roleType)
-            {
-                addedComposite = roleType.AssociationType.ObjectType;
-            }
-            else if (node.PropertyType is IAssociationType associationType)
-            {
-                addedComposite = (IComposite)associationType.RoleType.ObjectType;
-            }
+                if (node.PropertyType is IRoleType roleType)
+                {
+                    addedComposite = roleType.AssociationType.ObjectType;
+                }
+                else if (node.PropertyType is IAssociationType associationType)
+                {
+                    addedComposite = (IComposite)associationType.RoleType.ObjectType;
+                }
 
-            if (addedComposite == null || !this.Composite.Classes.Intersect(addedComposite.Classes).Any())
-            {
-                throw new ArgumentException(node.PropertyType + " is not a valid tree node on " + this.Composite + ".");
+                if (addedComposite == null || !(this.Composite.Equals(addedComposite) || this.Composite.Classes.Intersect(addedComposite.Classes).Any()))
+                {
+                    throw new ArgumentException(node.PropertyType + " is not a valid tree node on " + this.Composite + ".");
+                }
             }
         }
     }
