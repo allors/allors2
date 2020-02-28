@@ -20,7 +20,6 @@ MetaPopulation.prototype["gatsbyDerive"] = function (this: MetaPopulation) {
       if (objectType.gatsbyRoleTypes.indexOf(roleType) > -1) {
         objectType._isGatsby = true;
         roleType.objectType._isGatsby = true;
-        roleType.objectType.classes.forEach((x) => x._isGatsby = true)
       }
     })
 
@@ -28,7 +27,6 @@ MetaPopulation.prototype["gatsbyDerive"] = function (this: MetaPopulation) {
       if (objectType.gatsbyAssociationTypes.indexOf(associationType) > -1) {
         objectType._isGatsby = true;
         associationType.objectType._isGatsby = true;
-        associationType.objectType.classes.forEach((x) => x._isGatsby = true)
       }
     })
 
