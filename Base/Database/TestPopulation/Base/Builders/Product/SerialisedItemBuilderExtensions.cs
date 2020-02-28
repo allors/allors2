@@ -8,6 +8,7 @@
 namespace Allors.Domain.TestPopulation
 {
     using System;
+    using System.Linq;
     using Allors.Meta;
 
     public static partial class SerialisedItemBuilderExtensions
@@ -36,8 +37,11 @@ namespace Allors.Domain.TestPopulation
             @this.WithAssignedPurchasePrice(Convert.ToDecimal(faker.Commerce.Price(replacementValue)));
             @this.WithExpectedSalesPrice(expectedSalesPrice);
             @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
-            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
-            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            if (@this.SecondaryPhotos != null)
+            {
+                @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+                @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            }
             @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
