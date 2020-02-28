@@ -10,7 +10,6 @@ declare module '../../framework/meta/ObjectType' {
     gatsbyAssociationTypes: AssociationType[];
 
     _isGatsby: boolean;
-    _isUnion: boolean;
     _name: string;
     gatsbyDerive(): void;
   }
@@ -19,7 +18,6 @@ declare module '../../framework/meta/ObjectType' {
 ObjectType.prototype["gatsbyDerive"] = function (this: ObjectType) {
 
   if (!this._isGatsby) {
-    delete (this._isUnion);
     delete (this._name);
     return;
   }
@@ -54,15 +52,6 @@ ObjectType.prototype["gatsbyDerive"] = function (this: ObjectType) {
         throw new Error("unknown unit type " + this.name)
     }
   } else {
-    this._isUnion = this.isInterface && this.classes.length > 1;
-
-    if (!this.classes || this.classes.length == 0) {
-      console.log(this);
-    }
-
-    this._name = (this.isClass || this._isUnion) ?
-      this._name = `Allors${this.name}` :
-      `Allors${this.classes[0].name}`;
-
+      this._name = `Allors${this.name}`;
   }
 }
