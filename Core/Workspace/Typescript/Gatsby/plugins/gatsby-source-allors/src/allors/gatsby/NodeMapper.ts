@@ -125,15 +125,29 @@ export class NodeMapper {
         const association = sessionObject.getAssociation(associationType);
         const propertyName = `${createName(associationType.name)}`;
 
-        if (associationType.isOne) {
-          if (!!association) {
-            classNode[propertyName] = createNodeId(`allors-${association.id}`);
+        if (associationType.objectType.isClass) {
+          if (associationType.isOne) {
+            if (!!association) {
+              classNode[propertyName] = createNodeId(`allors-${association.id}`);
+            }
+          } else {
+            const associationArray = (association as ISessionObject[]);
+            if (associationArray.length > 0) {
+              const associationIds = associationArray.map(w => w.id);
+              classNode[propertyName] = associationIds.map((w) => createNodeId(`allors-${w}`));
+            }
           }
-        } else {
-          const associationArray = (association as ISessionObject[]);
-          if (associationArray.length > 0) {
-            const associationIds = associationArray.map(w => w.id);
-            classNode[propertyName] = associationIds.map((w) => createNodeId(`allors-${w}`));
+        } else{
+          if (associationType.isOne) {
+            if (!!association) {
+              classNode[propertyName] = createNodeId(`allors-${associationType.objectType.name.toLowerCase()}-${association.id}`);
+            }
+          } else {
+            const associationArray = (association as ISessionObject[]);
+            if (associationArray.length > 0) {
+              const associationIds = associationArray.map(w => w.id);
+              classNode[propertyName] = associationIds.map((w) => createNodeId(`allors-${associationType.objectType.name.toLowerCase()}-${w}`));
+            }
           }
         }
       }))
