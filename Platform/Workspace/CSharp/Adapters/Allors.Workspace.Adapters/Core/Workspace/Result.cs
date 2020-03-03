@@ -22,7 +22,8 @@ namespace Allors.Workspace
                 pair => session.Get(long.Parse(pair.Value)));
             this.Collections = response.NamedCollections.ToDictionary(
                 pair => pair.Key,
-                pair => pair.Value.Select(v => session.Get(long.Parse(v))).ToArray());
+                pair => pair.Value.Select(v => session.Get(long.Parse(v))).ToArray(),
+                StringComparer.OrdinalIgnoreCase);
             this.Values = response.NamedValues.ToDictionary(
                 pair => pair.Key,
                 pair => pair.Value);
