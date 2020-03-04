@@ -60,8 +60,8 @@ namespace Allors.Excel
                 {
                     if (this.RelationType.ObjectType.ClrType == typeof(System.DateTime))
                     {
-                        var dt = (System.DateTime)relation.Get(this.RelationType);
-                        cell.Value = dt.ToOADate();
+                        var dt = (System.DateTime?)relation.Get(this.RelationType);
+                        cell.Value = dt?.ToOADate();
                     }
                     else
                     {
@@ -79,8 +79,8 @@ namespace Allors.Excel
                 {
                     if (this.RoleType.ObjectType.ClrType == typeof(System.DateTime))
                     {
-                        var dt = (System.DateTime)this.Object.Get(this.DisplayRoleType ?? this.RoleType);
-                        cell.Value = dt.ToOADate();
+                        var dt = (System.DateTime?)this.Object.Get(this.DisplayRoleType ?? this.RoleType);
+                        cell.Value = dt?.ToOADate();
                     }
                     else
                     {
