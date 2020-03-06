@@ -87,7 +87,7 @@ namespace Allors.Server
                     previousCountOutstandingRoles = countOutstandingRoles;
                     countOutstandingRoles = 0;
 
-                    foreach (var pushRequestNewObject in this.pushRequest.NewObjects)
+                    foreach (var pushRequestNewObject in this.pushRequest.NewObjects.OrderByDescending(v => int.Parse(v.NI)))
                     {
                         var obj = objectByNewId[pushRequestNewObject.NI];
                         var pushRequestRoles = pushRequestNewObject.Roles;
