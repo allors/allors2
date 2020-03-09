@@ -60,17 +60,24 @@ namespace Allors.Excel
                 {
                     if (this.RelationType.ObjectType.ClrType == typeof(System.DateTime))
                     {
-                        var dt = (System.DateTime?)relation.Get(this.RelationType);
+                        var dt = (System.DateTime?)relation?.Get(this.RelationType);
                         cell.Value = dt?.ToOADate();
                     }
                     else
                     {
-                        cell.Value = relation.Get(this.RelationType);
+                        cell.Value = relation?.Get(this.RelationType);
                     }
                 }
                 else
                 {
-                    cell.Value = this.Transform(relation);
+                    if(relation != null)
+                    {
+                        cell.Value = this.Transform(relation);
+                    }
+                    else
+                    {
+                        cell.Value = null;
+                    }
                 }
             }
             else
