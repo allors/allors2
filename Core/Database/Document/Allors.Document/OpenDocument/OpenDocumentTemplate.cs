@@ -10,7 +10,7 @@ namespace Allors.Document.OpenDocument
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
-
+    using Allors.Document.Xml;
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Misc;
 
@@ -53,6 +53,8 @@ namespace Allors.Document.OpenDocument
                                 zipStream.CopyTo(memoryStream);
                                 var file = memoryStream.ToArray();
 
+                                var xmlStringRenderer = new XmlStringRenderer();
+
                                 if (entry.FullName.Equals(ContentFileName))
                                 {
                                     var errorBuffer = new ErrorBuffer();
@@ -71,6 +73,8 @@ namespace Allors.Document.OpenDocument
                                     {
                                         throw new TemplateException(errorBuffer.Errors);
                                     }
+
+                                    this.ContentTemplateGroup.RegisterRenderer(typeof(string), xmlStringRenderer);
                                 }
                                 else if (entry.FullName.Equals(StylesFileName))
                                 {
@@ -90,6 +94,8 @@ namespace Allors.Document.OpenDocument
                                     {
                                         throw new TemplateException(errorBuffer.Errors);
                                     }
+
+                                    this.StylesTemplateGroup.RegisterRenderer(typeof(string), xmlStringRenderer);
                                 }
                                 else if (entry.FullName.Equals(MetaFileName))
                                 {

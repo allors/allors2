@@ -184,6 +184,7 @@ namespace Allors.Document.OpenDocument
             {
                 writer.Write(this.LeftDelimiter);
                 writer.Write(binding.Text);
+                writer.Write(@"; format=""xml-string""");
                 writer.Write(this.RightDelimiter);
                 return;
             }
