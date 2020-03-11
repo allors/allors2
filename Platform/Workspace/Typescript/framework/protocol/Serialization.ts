@@ -4,13 +4,19 @@ import { ObjectType } from '../meta/ObjectType';
 
 export type UnitTypes = string | Date | boolean | number;
 export type CompositeTypes = ISessionObject | string;
+export type ParameterTypes = UnitTypes | CompositeTypes | CompositeTypes[];
 
-export function serializeObject(roles: { [name: string]: UnitTypes | CompositeTypes; } | undefined): { [name: string]: string; } {
+export function serializeObject(roles: { [name: string]: ParameterTypes; } | undefined): { [name: string]: string; } {
   if (roles) {
     return Object
       .keys(roles)
       .reduce((obj, v) => {
-        obj[v] = serialize(roles[v]);
+        const role = roles[v];
+        if (Array.isArray(role)) {
+          obj[v] = role.map((w) => serialize(w)).join(',');
+        } else {
+          obj[v] = serialize(role);
+        }
         return obj;
       }, {} as { [key: string]: any });
   }

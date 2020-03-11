@@ -5,12 +5,12 @@ import { And, ISessionObject, Like, Or, PullRequest, Pull, RoleType, Sort } from
 import { Loaded, Context, ContextService } from '../framework';
 
 import { SearchOptions } from './SearchOptions';
-
+import { ParameterTypes } from '../../../../allors/framework/protocol/Serialization';
 export class SearchFactory {
   constructor(private options: SearchOptions) { }
 
-  public create(contextOrService: Context | ContextService): ((search: string, parameters?: { [id: string]: string }) => Observable<ISessionObject[]>) {
-    return (search: string, parameters?: { [id: string]: string }) => {
+  public create(contextOrService: Context | ContextService): ((search: string, parameters?: { [id: string]: ParameterTypes }) => Observable<ISessionObject[]>) {
+    return (search: string, parameters?: { [id: string]: ParameterTypes }) => {
       if (search === undefined || search === null || !search.trim) {
         return EMPTY;
       }
@@ -18,6 +18,10 @@ export class SearchFactory {
       const terms: string[] = search.trim().split(' ');
 
       const and: And = new And();
+
+      if (this.options.post) {
+        this.options.post(and);
+      }
 
       if (this.options.predicates) {
         this.options.predicates.forEach((predicate) => {
@@ -32,10 +36,6 @@ export class SearchFactory {
           or.operands.push(new Like({ roleType, value: '%' + term + '%' }));
         });
       });
-
-      if (this.options.post) {
-        this.options.post(and);
-      }
 
       const pulls = [
         new Pull(this.options.objectType, {

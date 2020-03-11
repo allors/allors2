@@ -5,6 +5,7 @@ import { Fetch } from './Fetch';
 import { Predicate } from './Predicate';
 import { Sort } from './Sort';
 import { Tree } from './Tree';
+import { ParameterTypes } from '../protocol/Serialization';
 
 export interface FlatPull {
 
@@ -26,7 +27,7 @@ export interface FlatPull {
 
     include?: Tree | any;
 
-    parameters?: { [id: string]: string };
+    parameters?: { [id: string]: ParameterTypes };
 
     name?: string;
 

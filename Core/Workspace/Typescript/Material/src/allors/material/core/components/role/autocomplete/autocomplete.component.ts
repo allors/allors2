@@ -5,6 +5,7 @@ import { debounceTime, distinctUntilChanged, switchMap, map, filter, tap, startW
 
 import { RoleField } from '../../../../../angular';
 import { ISessionObject } from '../../../../../framework';
+import { ParameterTypes } from '../../../../../framework/protocol/Serialization';
 
 import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 
@@ -20,7 +21,7 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
 
   @Input() options: ISessionObject[];
 
-  @Input() filter: (search: string, parameters?: { [id: string]: string }) => Observable<ISessionObject[]>;
+  @Input() filter: (search: string, parameters?: { [id: string]: ParameterTypes }) => Observable<ISessionObject[]>;
 
   @Input() filterParameters: ({ [id: string]: string });
 

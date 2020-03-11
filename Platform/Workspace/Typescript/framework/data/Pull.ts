@@ -1,4 +1,4 @@
-import { UnitTypes, CompositeTypes, serializeObject } from '../protocol/Serialization';
+import { UnitTypes, CompositeTypes, serializeObject, ParameterTypes } from '../protocol/Serialization';
 import { Extent } from './Extent';
 import { ISessionObject } from '../workspace';
 import { Result } from './Result';
@@ -21,7 +21,7 @@ export class Pull {
 
   public results: Result[];
 
-  public parameters?: { [name: string]: UnitTypes | CompositeTypes; };
+  public parameters?: { [name: string]: ParameterTypes; };
 
   constructor(fields?: Partial<Pull> | ObjectType, flat?: FlatPull) {
     if (fields instanceof ObjectType) {
