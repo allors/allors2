@@ -7,7 +7,6 @@ namespace Allors.Server
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -18,7 +17,6 @@ namespace Allors.Server
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Net.Http.Headers;
     using SkiaSharp;
     using ISession = Allors.ISession;
