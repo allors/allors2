@@ -40,7 +40,7 @@ namespace Allors.Server
         [AllowAnonymous]
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds)]
         [HttpGet("/image/{idString}/{revisionString}/{*name}")]
-        public virtual IActionResult Get(string idString, string revisionString, int? w, int? q, string t, string b)
+        public virtual IActionResult Get(string idString, string revisionString, string name, int? w, int? q, string t, string b)
         {
             this.Request.Headers.TryGetValue(HeaderNames.IfNoneMatch, out var requestEtagValues);
             var requestEtag = requestEtagValues.FirstOrDefault();
@@ -89,7 +89,7 @@ namespace Allors.Server
                         
                         this.Response.Headers[HeaderNames.ETag] = responseEtag;
                         
-                        return this.File(data, media.MediaContent.Type, media.FileName);
+                        return this.File(data, media.MediaContent.Type, name ?? media.FileName);
                     }
                 }
             }
