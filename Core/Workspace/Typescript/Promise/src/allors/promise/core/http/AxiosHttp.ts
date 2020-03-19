@@ -10,15 +10,8 @@ export class AxiosHttp implements Http {
     public axios: AxiosInstance;
     public token: string;
 
-    constructor(baseURL: string) {
-        this.axios = axios.create({
-            baseURL,
-            // httpAgent: new http.Agent({ keepAlive: true }),
-            // httpsAgent: new https.Agent({ keepAlive: true }),
-            maxContentLength: 50 * 1000 * 1000,
-            maxRedirects: 10,
-            timeout: 60000,
-        });
+    constructor(config: AxiosRequestConfig) {
+        this.axios = axios.create(config);
     }
 
     public login(url: string, userName: string, password: string = null): Promise<boolean> {
