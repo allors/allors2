@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { Loaded, ContextService, MetaService, TestScope } from '../../../../../angular';
 import { Locale, Person } from '../../../../../domain';
-import { PullRequest } from '../../../../../framework';
+import { PullRequest, assert } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 
 @Component({
@@ -44,7 +44,8 @@ export class PersonOverviewComponent extends TestScope implements OnInit, AfterV
       .pipe(
         switchMap((url: any) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const id = this.route.snapshot.paramMap.get('id');
+          assert(id)
 
           const pulls = [
             pull.Person({

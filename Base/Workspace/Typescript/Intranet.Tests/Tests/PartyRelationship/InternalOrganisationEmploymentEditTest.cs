@@ -51,7 +51,7 @@ namespace Tests.PartyRelationshipTests
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .Employee.Set(employee.DisplayName())
+                .Employee.Select(employee)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -80,6 +80,9 @@ namespace Tests.PartyRelationshipTests
             {
                 partyRelationship.Delete();
             }
+
+            this.Session.Derive();
+            this.Session.Commit();
 
             var editPartyRelationship = new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)

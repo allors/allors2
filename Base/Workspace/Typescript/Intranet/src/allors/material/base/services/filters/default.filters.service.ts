@@ -24,7 +24,7 @@ export class DefaultFiltersService extends FiltersService {
     return new SearchFactory({
       objectType: this.m.Good,
       roleTypes: [this.m.Good.Name, this.m.Good.SearchString],
-    })
+    });
   }
 
   get partsFilter() {
@@ -45,7 +45,7 @@ export class DefaultFiltersService extends FiltersService {
     return new SearchFactory({
       objectType: this.m.SerialisedItem,
       roleTypes: [this.m.SerialisedItem.Name, this.m.SerialisedItem.SearchString],
-    })
+    });
   }
 
   get customersFilter() {
@@ -100,6 +100,16 @@ export class DefaultFiltersService extends FiltersService {
     return new SearchFactory({
       objectType: this.m.Organisation,
       roleTypes: [this.m.Organisation.PartyName],
+    });
+  }
+
+  get internalOrganisationsFilter() {
+    return new SearchFactory({
+      objectType: this.m.Organisation,
+      roleTypes: [this.m.Organisation.PartyName],
+      post: (predicate: And) => {
+        predicate.operands.push(new Equals({ propertyType: this.m.Organisation.IsInternalOrganisation, value: true }));
+      },
     });
   }
 

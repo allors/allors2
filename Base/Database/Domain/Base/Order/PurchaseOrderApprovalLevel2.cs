@@ -21,7 +21,7 @@ namespace Allors.Domain
             {
                 var now = this.Strategy.Session.Now();
                 var workItemDescription = this.WorkItem.WorkItemDescription;
-                var performerName = this.Performer.LastName + " " + this.Performer.FirstName;
+                var performerName = this.Performer.UserName;
                 var comment = this.Comment ?? "N/A";
 
                 var description = $"<h2>Approved...</h2>" +
@@ -48,7 +48,7 @@ namespace Allors.Domain
             {
                 var now = this.Strategy.Session.Now();
                 var workItemDescription = this.WorkItem.WorkItemDescription;
-                var performerName = this.Performer.LastName + " " + this.Performer.FirstName;
+                var performerName = this.Performer.UserName;
                 var comment = this.Comment ?? "N/A";
 
                 var description = $"<h2>Approval Rejected...</h2>" +

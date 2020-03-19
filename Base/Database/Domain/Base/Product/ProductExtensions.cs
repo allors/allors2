@@ -25,16 +25,14 @@ namespace Allors.Domain
 
         public static void BaseOnDeriveVirtualProductPriceComponent(this Product @this)
         {
-            var derivedRoles = (ProductDerivedRoles)@this;
-
             if (!@this.ExistProductWhereVariant)
             {
-                derivedRoles.RemoveVirtualProductPriceComponents();
+                @this.DerivedRoles.RemoveVirtualProductPriceComponents();
             }
 
             if (@this.ExistVariants)
             {
-                derivedRoles.RemoveVirtualProductPriceComponents();
+                @this.DerivedRoles.RemoveVirtualProductPriceComponents();
 
                 var priceComponents = @this.PriceComponentsWhereProduct;
 

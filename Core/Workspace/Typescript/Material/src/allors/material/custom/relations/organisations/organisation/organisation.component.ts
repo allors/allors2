@@ -7,8 +7,9 @@ import { switchMap } from 'rxjs/operators';
 
 import { RoleField, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService, TestScope } from '../../../../../angular';
 import { Organisation, Person } from '../../../../../domain';
-import { PullRequest } from '../../../../../framework';
+import { PullRequest, assert } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
+import { getLocaleDateTimeFormat } from '@angular/common';
 
 @Component({
   templateUrl: './organisation.component.html',
@@ -45,12 +46,12 @@ export class OrganisationComponent extends TestScope implements OnInit, AfterVie
 
     this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.UserName] });
 
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.refresh$ = new BehaviorSubject<Date>(new Date());
   }
 
   public ngOnInit(): void {
     const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$: Observable<[UrlSegment[], Date]> = combineLatest(route$, this.refresh$);
+    const combined$: Observable<[UrlSegment[], Date]> = combineLatest([route$, this.refresh$]);
 
     const { pull } = this.metaService;
 
@@ -58,11 +59,11 @@ export class OrganisationComponent extends TestScope implements OnInit, AfterVie
       .pipe(
         switchMap(([]: [UrlSegment[], Date]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const id = this.route.snapshot.paramMap.get('id');
 
           const pulls = [
             pull.Organisation({
-              object: id
+              object: id ?? ''
             }),
             pull.Person()
           ];

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Locale, Person } from '../../../../../domain';
-import { PullRequest, Pull } from '../../../../../framework';
+import { PullRequest, Pull, assert } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { Loaded, ContextService, MetaService, TestScope } from '../../../../../angular';
 
@@ -44,10 +44,11 @@ export class PersonComponent extends TestScope implements OnInit, AfterViewInit,
       .pipe(
         switchMap(() => {
           const x = {};
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const id = this.route.snapshot.paramMap.get('id');
+
           const pulls: Pull[] = [
             pull.Person({
-              object: id,
+              object: id ?? '',
               include: {
                 Photo: x,
                 Pictures: x,

@@ -155,6 +155,16 @@ namespace Allors.Repository
         [MediaType("text/markdown")]
         public string Markdown { get; set; }
 
+        #region Allors
+        [Id("BF21BDD8-07D8-460B-B8BF-4B69E5B96725")]
+        [AssociationId("9C908B88-D4B6-401C-B39E-05CCF6F1BB76")]
+        [RoleId("9A93E93E-57D9-4002-AB5F-C54C8BBF88F4")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        [MediaType("text/html")]
+        public string Html { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

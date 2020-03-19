@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Autotest.Testers.Tester">
+    <Position X="3.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAACAECQgAAAQiAAAAAAAAAAEAgABAAAA=</HashCode>
+      <FileName>Core\Testers\Tester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Autotest.Testers.AnchorTester" Collapsed="true">
+    <Position X="3" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAABEAAAAAAAAAAAAAAAAAAIAAAAgAABAAAA=</HashCode>
+      <FileName>Core\Testers\Html\AnchorTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Autotest.Testers.ButtonTester" Collapsed="true">
+    <Position X="5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAIAAAAgAABAAAA=</HashCode>
+      <FileName>Core\Testers\Html\ButtonTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Autotest.Testers.InputTester" Collapsed="true">
+    <Position X="7" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAEAAIBAAAAAgAQAAAAAAAAAAAAAAAIgAABAAAA=</HashCode>
+      <FileName>Core\Testers\Html\InputTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Autotest.Testers.AllorsMaterialFactoryFabTester" Collapsed="true">
+    <Position X="9" Y="5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAEAAAAAAAAACAAAAAAIgAAABAAAA=</HashCode>
+      <FileName>Core\Testers\AllorsMaterialFactoryFabTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Autotest.Testers.AllorsMaterialTableTester" Collapsed="true">
+    <Position X="12" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Core\Testers\AllorsMaterialTableTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Autotest.Testers.ComponentElementTester" Collapsed="true">
+    <Position X="14.5" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAIAAAAAAgAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Core\Testers\ComponentElementTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Autotest.Testers.RoleFieldTester">
+    <Position X="0.5" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAFgAQAAAAAAAAAAAAACQAAAABAAAA=</HashCode>
+      <FileName>Core\Testers\RoleFieldTester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

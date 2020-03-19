@@ -21,11 +21,13 @@ export class AllorMediaPreviewComponent {
     this.media = data.media;
   }
 
-  get src(): string {
+  get src(): string | null {
     if (this.media.InDataUri) {
       return this.media.InDataUri;
     } else if (this.media.UniqueId) {
       return this.mediaService.url(this.media);
     }
+
+    return null;
   }
 }

@@ -74,7 +74,6 @@ import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditMo
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/base/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/core/services/object';
-import { CarrierListComponent } from 'src/allors/material/base/objects/carrier/list/carrier-list.module';
 
 export const create = {
   [ids.BasePrice]: BasepriceEditComponent,

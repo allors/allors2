@@ -48,10 +48,10 @@ namespace Tests.OrganisationTests
             organisationOverviewDetail
                 .Name.Set("new organisation")
                 .TaxNumber.Set("BE 123 456 789 01")
-                .LegalForm.Set(legalForm.Description)
-                .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
-                .IndustryClassifications.Toggle(industryClassification.Name)
-                .CustomClassifications.Toggle(customOrganisationClassification.Name)
+                .LegalForm.Select(legalForm)
+                .Locale.Select(this.Session.GetSingleton().AdditionalLocales.First)
+                .IndustryClassifications.Toggle(industryClassification)
+                .CustomClassifications.Toggle(customOrganisationClassification)
                 .IsManufacturer.Set(true)
                 .Comment.Set("comment")
                 .SAVE.Click();

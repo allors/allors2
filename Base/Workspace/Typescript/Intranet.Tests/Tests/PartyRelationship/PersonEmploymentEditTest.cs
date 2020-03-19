@@ -36,6 +36,9 @@ namespace Tests.PartyRelationshipTests
                 partyRelationship.Delete();
             }
 
+            this.Session.Derive();
+            this.Session.Commit();
+
             this.editPartyRelationship = new EmploymentBuilder(this.Session)
                 .WithEmployee(this.employee)
                 .WithEmployer(allors)
@@ -105,8 +108,8 @@ namespace Tests.PartyRelationshipTests
 
             Assert.Equal(after.Length, before.Length);
 
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, this.editPartyRelationship.FromDate.Date.ToUniversalTime().Date);
-            // Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1).Date, this.editPartyRelationship.ThroughDate.Value.Date.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).Date, this.editPartyRelationship.FromDate.Date.ToUniversalTime().Date);
+            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1).Date, this.editPartyRelationship.ThroughDate.Value.Date.ToUniversalTime().Date);
             Assert.Equal(employer, this.editPartyRelationship.Employer);
             Assert.Equal(this.employee, this.editPartyRelationship.Employee);
         }

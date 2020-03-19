@@ -5,6 +5,7 @@ using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.Npm;
 using static Nuke.Common.Logger;
+using AbsolutePath = Nuke.Common.IO.PathConstruction.AbsolutePath;
 
 partial class Angular : IDisposable
 {

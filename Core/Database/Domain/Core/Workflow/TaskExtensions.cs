@@ -14,7 +14,7 @@ namespace Allors.Domain
         {
             if (!@this.ExistDateCreated)
             {
-                @this.DateCreated = @this.Strategy.Session.Now();
+                @this.DerivedRoles.DateCreated = @this.Strategy.Session.Now();
             }
         }
 
@@ -23,10 +23,13 @@ namespace Allors.Domain
             var (iteration, changeSet, derivedObjects) = method;
 
             // TODO: Review
-            foreach (TaskAssignment taskAssignment in @this.TaskAssignmentsWhereTask)
+            if (iteration.IsMarked(@this) || changeSet.HasChangedRoles(@this) || changeSet.IsCreated(@this))
             {
-                iteration.AddDependency(taskAssignment, @this);
-                iteration.Mark(taskAssignment);
+                foreach (TaskAssignment taskAssignment in @this.TaskAssignmentsWhereTask)
+                {
+                    iteration.AddDependency(taskAssignment, @this);
+                    iteration.Mark(taskAssignment);
+                }
             }
         }
 
@@ -41,16 +44,16 @@ namespace Allors.Domain
         public static void AssignPerformer(this Task @this)
         {
             var currentUser = @this.Strategy.Session.GetUser() as Person;
-            @this.Performer = currentUser;
+            @this.DerivedRoles.Performer = currentUser;
         }
 
-        public static void AssignParticipants(this Task @this, IEnumerable<Person> participants)
+        public static void AssignParticipants(this Task @this, IEnumerable<User> participants)
         {
             var session = @this.Strategy.Session;
 
             var participantSet = new HashSet<User>(participants.Where(v => v != null).Distinct());
 
-            @this.Participants = participantSet.ToArray();
+            @this.DerivedRoles.Participants = participantSet.ToArray();
 
             // Manage Security
             var defaultSecurityToken = new SecurityTokens(session).DefaultSecurityToken;

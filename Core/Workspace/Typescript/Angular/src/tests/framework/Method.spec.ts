@@ -4,8 +4,6 @@ import { PullRequest, Pull, Filter, Result, Fetch, Tree, TreeNode } from '../../
 import { Person, Organisation } from '../../allors/domain';
 import { Fixture } from '../Fixture.spec';
 
-import 'jasmine-expect';
-
 let fixture: Fixture;
 
 let organisations: Organisation[] = [];

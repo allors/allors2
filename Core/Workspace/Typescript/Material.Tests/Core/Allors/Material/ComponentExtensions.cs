@@ -30,6 +30,8 @@ namespace Components
 
         public static MatLocalised<T> MatLocalised<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatLocalised<T>(@this, roleType, scopes);
 
+        public static MatMonthpicker<T> MatMonthpicker<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatMonthpicker<T>(@this, roleType, scopes);
+
         public static MatSelect<T> MatSelect<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatSelect<T>(@this, roleType, scopes);
 
         public static MatRadiogroup<T> MatRadiogroup<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatRadiogroup<T>(@this, roleType, scopes);
@@ -45,5 +47,7 @@ namespace Components
         public static MatTextarea<T> MatTextarea<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatTextarea<T>(@this, roleType, scopes);
 
         public static MatMarkdown<T> MatMarkdown<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatMarkdown<T>(@this, roleType, scopes);
+
+        public static MatQuill<T> MatQuill<T>(this T @this, RoleType roleType, params string[] scopes) where T : Component => new MatQuill<T>(@this, roleType, scopes);
     }
 }

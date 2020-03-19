@@ -1,4 +1,4 @@
-import 'hammerjs';
+
 import { JL } from 'jsnlog';
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';

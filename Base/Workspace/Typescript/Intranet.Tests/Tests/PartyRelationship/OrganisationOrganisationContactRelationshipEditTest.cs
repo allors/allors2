@@ -56,7 +56,7 @@ namespace Tests.PartyRelationshipTests
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact)
                 .Contact.Select(this.contact.DisplayName())
                 .SAVE.Click();
 
@@ -95,9 +95,9 @@ namespace Tests.PartyRelationshipTests
             partyRelationshipEdit
                 .FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))
                 .ThroughDate.Set(DateTimeFactory.CreateDate(2018, 12, 22).AddYears(1))
-                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).GeneralContact.Description)
-                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact.Description)
-                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SupplierContact.Description)
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).GeneralContact)
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SalesContact)
+                .ContactKinds.Toggle(new OrganisationContactKinds(this.Session).SupplierContact)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();

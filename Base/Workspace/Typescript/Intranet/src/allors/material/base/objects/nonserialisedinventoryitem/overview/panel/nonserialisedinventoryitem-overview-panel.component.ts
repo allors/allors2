@@ -12,10 +12,9 @@ interface Row extends TableRow {
   part: string;
   uom: string;
   state: string;
-  qoh: string;
-  atp: string;
-  committedOut: string;
-  expectedIn: string;
+  qoh: number;
+  atp: number;
+  committedOut: number;
 }
 
 @Component({
@@ -98,7 +97,6 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
         'qoh',
         'atp',
         'committedOut',
-        'expectedIn'
       ],
       defaultAction: this.changeInventory,
       autoSort: true,
@@ -117,6 +115,9 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
           fetch: {
             InventoryItemsWherePart: {
               include: {
+                InventoryItemTransactionsWhereInventoryItem: {
+                  Reason: x
+                },
                 NonSerialisedInventoryItem_NonSerialisedInventoryItemState: x,
                 Facility: x,
                 UnitOfMeasure: x
@@ -138,12 +139,11 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
               object: v,
               facility: v.Facility.Name,
               part: v.Part.Name,
-              state: v.NonSerialisedInventoryItemState ? v.NonSerialisedInventoryItemState.Name : '',
               uom: v.UnitOfMeasure.Abbreviation || v.UnitOfMeasure.Name,
-              qoh: v.QuantityOnHand,
-              atp: v.AvailableToPromise,
-              committedOut: v.QuantityCommittedOut,
-              expectedIn: v.QuantityExpectedIn,
+              state: v.NonSerialisedInventoryItemState ? v.NonSerialisedInventoryItemState.Name : '',
+              qoh: v.quantityOnHand,
+              atp: v.availableToPromise,
+              committedOut: v.quantityCommittedOut,
             } as Row;
           });
         }

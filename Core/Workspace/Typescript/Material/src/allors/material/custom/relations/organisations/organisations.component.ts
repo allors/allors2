@@ -9,11 +9,13 @@ import { ContextService, NavigationService, AllorsFilterService, RefreshService,
 import { Table, TableRow, Sorter } from '../../../../material';
 
 import { DeleteService, OverviewService } from '../../../../material';
+import { PageEvent } from '@angular/material/paginator';
+import { CdkCell } from '@angular/cdk/table';
 
 interface Row extends TableRow {
   object: Organisation;
-  name: string;
-  owner: string;
+  name: string | null;
+  owner: string | null;
 }
 
 @Component({
@@ -81,22 +83,19 @@ export class OrganisationsComponent extends TestScope implements OnInit, OnDestr
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$])
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
-          return [
-            refresh,
-            filterFields,
-            sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-          ];
-        }, [, , , ,]),
-        switchMap(([refresh, filterFields, sort, pageEvent]) => {
-
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => [
+          refresh,
+          filterFields,
+          sort,
+          (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent
+        ]),
+        switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.Organisation({
               predicate,
-              sort: sorter.create(sort),
+              sort: sort ? sorter.create(sort) : null,
               include: {
                 Owner: x,
                 Employees: x,
@@ -117,7 +116,7 @@ export class OrganisationsComponent extends TestScope implements OnInit, OnDestr
           return {
             object: v,
             name: v.Name,
-            owner: v.Owner && v.Owner.UserName
+            owner: v.Owner?.UserName ?? null
           };
         });
       });

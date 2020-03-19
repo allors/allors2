@@ -52,10 +52,6 @@ namespace Allors
         public const string REPORTPACKAGEREVENUE = "Package revenue";
         public const string REPORTPRODUCTCATEGORYREVENUE = "Productcategory revenue";
         public const string REPORTSALESCHANNELREVENUE = "SalesChannel revenue";
-        public const string REPORTSALESREPREVENUE = "SalesRep. revenue";
-        public const string REPORTSALESREPPARTYREPREVENUE = "SalesRep./party revenue";
-        public const string REPORTSALESREPPRODUCTCATEGORYREPREVENUE = "SalesRep./Productcategory revenue";
-        public const string REPORTSALESREPPARTYPRODUCTCATEGORYREPREVENUE = "SalesRep./Party/Productcategory revenue";
         public const string REPORTSALESINVOICE = "Sales invoices";
         public const string REPORTSALESORDER = "Sales orders";
 

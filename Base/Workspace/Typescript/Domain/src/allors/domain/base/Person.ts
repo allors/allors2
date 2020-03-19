@@ -2,85 +2,68 @@ import { domain } from '../domain';
 import { Person } from '../generated/Person.g';
 import { Meta } from '../../meta/generated/domain.g';
 import { EmailAddress, TelecommunicationsNumber } from '../generated';
+import { assert } from '../../framework';
+import { inlineLists } from 'common-tags';
 
 declare module '../generated/Person.g' {
-    interface Person {
-        displayName;
-        displayEmail;
-        displayPhone;
-    }
+  interface Person {
+    displayName: string;
+    displayEmail: string;
+    displayPhone: string;
+  }
 }
 
 domain.extend((workspace) => {
 
-    const m = workspace.metaPopulation as Meta;
-    const obj = workspace.constructorByObjectType.get(m.Person).prototype as any;
+  const m = workspace.metaPopulation as Meta;
+  const cls = workspace.constructorByObjectType.get(m.Person);
+  assert(cls);
 
-    Object.defineProperty(obj, 'displayName', {
-        configurable: true,
-        get(this: Person): string {
-            if (this.FirstName || this.LastName) {
-                let name = null;
-                if (this.FirstName) {
-                    name = this.FirstName;
-                }
+  Object.defineProperty(cls.prototype, 'displayName', {
+    configurable: true,
+    get(this: Person): string {
+      if (this.FirstName || this.LastName) {
+        return inlineLists`${[this.FirstName, this.MiddleName, this.LastName].filter(v => v)}`;
+      }
 
-                if (this.MiddleName) {
-                    if (name != null) {
-                        name += ' ' + this.MiddleName;
-                    } else {
-                        name = this.MiddleName;
-                    }
-                }
+      if (this.UserName) {
+        return this.UserName;
+      }
 
-                if (this.LastName) {
-                    if (name != null) {
-                        name += ' ' + this.LastName;
-                    } else {
-                        name = this.LastName;
-                    }
-                }
+      return 'N/A';
+    },
+  });
 
-                return name;
-            }
+  Object.defineProperty(cls.prototype, 'displayEmail', {
+    configurable: true,
+    get(this: Person): string {
+      const emailAddresses = this.PartyContactMechanisms
+        .filter((v) => v.ContactMechanism?.objectType === m.EmailAddress)
+        .map((v) => {
+          const emailAddress = v.ContactMechanism as EmailAddress;
+          return emailAddress.ElectronicAddressString;
+        })
+        .filter((v) => v) as string[];
 
-            if (this.UserName) {
-                return this.UserName;
-            }
+      return emailAddresses.join(", ");
+    },
+  });
 
-            return 'N/A';
-        },
-    });
+  Object.defineProperty(cls.prototype, 'displayPhone', {
+    configurable: true,
+    get(this: Person): string {
+      const telecommunicationsNumbers = this.PartyContactMechanisms.filter((v) => v.ContactMechanism?.objectType === m.TelecommunicationsNumber);
 
-    Object.defineProperty(obj, 'displayEmail', {
-        configurable: true,
-        get(this: Person): string {
-            const emailAddresses = this.PartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.EmailAddress);
+      if (telecommunicationsNumbers.length > 0) {
+        return telecommunicationsNumbers
+          .map((v) => {
+            const telecommunicationsNumber = v.ContactMechanism as TelecommunicationsNumber;
+            return telecommunicationsNumber.displayName;
+          })
+          .reduce((acc: string, cur: string) => acc + ', ' + cur);
+      }
 
-            if (emailAddresses.length > 0) {
-                return emailAddresses
-                .map((v) => {
-                    const emailAddress = v.ContactMechanism as EmailAddress;
-                    return emailAddress.ElectronicAddressString;
-                })
-                .reduce((acc: string, cur: string) => acc + ', ' + cur);
-            }
-        },
-    });
-
-    Object.defineProperty(obj, 'displayPhone', {
-        configurable: true,
-        get(this: Person): string {
-            const telecommunicationsNumbers = this.PartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber);
-
-            if (telecommunicationsNumbers.length > 0) {
-                return  telecommunicationsNumbers
-                .map((v) => {
-                    const telecommunicationsNumber = v.ContactMechanism as TelecommunicationsNumber;
-                    return telecommunicationsNumber.displayName;
-                })
-                .reduce((acc: string, cur: string) => acc + ', ' + cur);
-            }
-        },
-    });
+      return '';
+    },
+  });
 });

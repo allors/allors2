@@ -17,21 +17,23 @@ export class Node {
   }
 
   public parse(json: any, objectType: ObjectType, propertyTypeName: string) {
-    this.propertyType = objectType.roleTypeByName.get(propertyTypeName) || objectType.associationTypeByName.get(propertyTypeName);
+    let propertyType = objectType.roleTypeByName.get(propertyTypeName) || objectType.associationTypeByName.get(propertyTypeName);
 
-    if (!this.propertyType) {
+    if (!propertyType) {
       const metaPopulation = objectType.metaPopulation;
       const [subTypeName, subStepName] = propertyTypeName.split('_');
 
-      const subType = metaPopulation.objectTypeByName[subTypeName];
+      const subType = metaPopulation.objectTypeByName.get(subTypeName);
       if (subType) {
-        this.propertyType = subType.xroleTypeByName[subStepName] || subType.xassociationTypeByName[propertyTypeName];
+        propertyType = subType.roleTypeByName.get(subStepName) || subType.associationTypeByName.get(propertyTypeName);
       }
     }
 
-    if (!this.propertyType) {
-      throw new Error('Unknown Property: ' + propertyTypeName);
+    if (!propertyType) {
+      throw new Error(`No property ${propertyTypeName} found on ${objectType.name}`)
     }
+
+    this.propertyType = propertyType;
 
     const property = json[propertyTypeName];
     if (property.nodes) {

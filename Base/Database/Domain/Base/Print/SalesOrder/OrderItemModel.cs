@@ -15,7 +15,10 @@ namespace Allors.Domain.Print.SalesOrderModel
             this.Product = item.Product?.Name;
 
             this.Description = item.Description;
-            this.Description = Markdown.ToPlainText(this.Description);
+            if (item.Description != null)
+            {
+                this.Description = Markdown.ToPlainText(this.Description);
+            }
 
             this.Quantity = item.QuantityOrdered;
             // TODO: Where does the currency come from?

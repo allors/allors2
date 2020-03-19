@@ -168,30 +168,6 @@ namespace Allors.Repository
         public int ManufacturingYear { get; set; }
 
         #region Allors
-        [Id("DDECD426-40C7-4D17-A225-2C46B47F0C89")]
-        [AssociationId("B2F5E3CA-E4BF-43B8-B812-D9479A74DF6E")]
-        [RoleId("3570A014-1A46-4C61-8D7F-14D07BF1F5AA")]
-        #endregion
-        [Workspace]
-        public decimal ReplacementValue { get; set; }
-
-        #region Allors
-        [Id("E25F1487-6F08-4DC5-9838-BAE4FF990ADA")]
-        [AssociationId("26F70AEA-7F70-48C4-BDCA-41DC58E3BDB3")]
-        [RoleId("F386A2DB-5DBE-4BD6-921B-024A9C80105C")]
-        #endregion
-        [Workspace]
-        public int LifeTime { get; set; }
-
-        #region Allors
-        [Id("D96B2474-B8AE-40F4-9D86-4CA09E2B6965")]
-        [AssociationId("AA3AA882-D022-42A1-8E1A-4C7901358EE8")]
-        [RoleId("19E428F3-9C68-4C59-BD19-68EA17688F04")]
-        #endregion
-        [Workspace]
-        public int DepreciationYears { get; set; }
-
-        #region Allors
         [Id("ECE5838C-6E0B-4889-91DA-4F9277760E9D")]
         [AssociationId("0CCF5035-5E6E-4F06-9921-35B8F922BFA2")]
         [RoleId("4519FC49-C403-4FE2-B85F-BB7F01B6B907")]
@@ -215,38 +191,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public decimal ExpectedSalesPrice { get; set; }
-
-        #region Allors
-        [Id("6EBA501E-5EB8-4B9C-B0E7-2658562D8F44")]
-        [AssociationId("3F8D9AFD-B4ED-461B-A829-31745FE8DCB2")]
-        [RoleId("D0AD48FF-6D74-4D07-9F92-08A9AB1FB3B7")]
-        #endregion
-        [Workspace]
-        public decimal RefurbishCost { get; set; }
-
-        #region Allors
-        [Id("901E5D13-4B43-4FE4-9A79-8EFED2CAFE74")]
-        [AssociationId("C223E10B-6AFF-4B7B-A8ED-89B7C8A69FF9")]
-        [RoleId("D1B62377-F8F5-4713-BBC4-AF47C2A89AF1")]
-        #endregion
-        [Workspace]
-        public decimal TransportCost { get; set; }
-
-        #region Allors
-        [Id("1A2285C0-9DE8-4BC4-B5F8-225C357A149C")]
-        [AssociationId("94EF2F74-D2E2-42A0-B7C8-7BCD931C1567")]
-        [RoleId("D7300671-1F91-437E-A8A8-730609FD9A16")]
-        #endregion
-        [Workspace]
-        public decimal ExpectedRentalPriceFullService { get; set; }
-
-        #region Allors
-        [Id("FEC7C97D-1505-48F0-838D-9FFD8B9BB033")]
-        [AssociationId("CA75ECD2-F7E1-42CE-9E94-EC5176622AF3")]
-        [RoleId("D90F9123-FCD9-46D0-B9FE-CEAA1D7934C2")]
-        #endregion
-        [Workspace]
-        public decimal ExpectedRentalPriceDryLease { get; set; }
 
         #region Allors
         [Id("A616AE10-EA83-4878-BCBA-377396B4357A")]
@@ -295,6 +239,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Size(-1)]
+        [MediaType("text/markdown")]
         public string InternalComment { get; set; }
 
         #region Allors
@@ -417,6 +362,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public Part PartWhereItem { get; set; }
+
+        #region Allors
+        [Id("66CEB3A4-C1AD-4CAD-BBB9-F29FB12669DA")]
+        [AssociationId("B67B1EA5-1CC1-4958-B8A5-13D9C60B407D")]
+        [RoleId("AFC60632-E929-40E9-8139-CE1B4B2FFE1B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public InternalOrganisation ReportingUnit { get; set; }
 
         #region inherited methods
         public void OnBuild() { }

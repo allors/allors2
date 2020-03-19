@@ -15,7 +15,7 @@ export class AllorsMaterialFilesComponent extends RoleField {
 
   @Input() public accept = 'image/*';
 
-  public files: File[];
+  public files: File[] | null;
 
   constructor(@Optional() parentForm: NgForm, private mediaService: MediaService) {
     super(parentForm);
@@ -33,37 +33,40 @@ export class AllorsMaterialFilesComponent extends RoleField {
     return '';
   }
 
-  public src(media: Media): string {
+  public src(media: Media): string | null {
     if (media.InDataUri) {
       return media.InDataUri;
     } else if (media.UniqueId) {
       return this.mediaService.url(media);
     }
+
+    return null;
   }
 
   public deleteAll(): void {
-    this.model = undefined;
-    this.files = undefined;
+    this.model = null;
+    this.files = null;
   }
 
   public delete(media: Media): void {
     this.object.remove(this.roleType, media);
   }
 
-  public onFileInput(event) {
+  public onFileInput(event: Event) {
 
-    const fileList = event.srcElement.files;
-
-    if (fileList.length && fileList.item) {
-      for (let i = 0; i < fileList.length; i++) {
-        this.addFile(fileList.item(i));
+    const input = (event.target as HTMLInputElement);
+    const files = input.files;
+    if (files?.length && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files.item(i);
+        if (file != null) {
+          this.addFile(file);
+        }
       }
-    } else {
-      this.addFile(fileList);
     }
   }
 
-  // TODO: move to RxJS implementation
+  // TODO: move to RxJS implementation and share with file.component
   private addFile(file: File) {
     const reader: FileReader = new FileReader();
     const load: () => void = () => {

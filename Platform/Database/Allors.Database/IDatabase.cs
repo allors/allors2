@@ -6,9 +6,12 @@
 namespace Allors
 {
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Xml;
 
     using Allors.Meta;
+    using Serialization;
 
     /// <summary>
     /// A database is an online <see cref="IDatabase"/>.
@@ -18,11 +21,13 @@ namespace Allors
         /// <summary>
         /// Occurs when an object could not be loaded.
         /// </summary>
+        [Obsolete]
         event ObjectNotLoadedEventHandler ObjectNotLoaded;
 
         /// <summary>
         /// Occurs when a relation could not be loaded.
         /// </summary>
+        [Obsolete]
         event RelationNotLoadedEventHandler RelationNotLoaded;
 
         /// <summary>
@@ -47,22 +52,6 @@ namespace Allors
         /// </summary>
         /// <value>The object factory.</value>
         IObjectFactory ObjectFactory { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this population is a database.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this population is a database; otherwise, <c>false</c>.
-        /// </value>
-        bool IsDatabase { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this population is a workspace.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this population is a workspace; otherwise, <c>false</c>.
-        /// </value>
-        bool IsWorkspace { get; }
 
         /// <summary>
         /// Gets the meta domain of this population.
@@ -90,12 +79,18 @@ namespace Allors
         /// Loads the population from the <see cref="XmlReader"/>.
         /// </summary>
         /// <param name="reader">The reader.</param>
+        [Obsolete]
         void Load(XmlReader reader);
 
         /// <summary>
         /// Saves the population to the <see cref="XmlWriter"/>.
         /// </summary>
         /// <param name="writer">The writer.</param>
+        [Obsolete]
         void Save(XmlWriter writer);
+
+        void Load(IPopulationData data);
+
+        IPopulationData Save();
     }
 }

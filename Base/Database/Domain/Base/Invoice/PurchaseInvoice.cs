@@ -270,6 +270,7 @@ namespace Allors.Domain
                     .WithInvoiceItemType(purchaseInvoiceItem.InvoiceItemType)
                     .WithAssignedUnitPrice(purchaseInvoiceItem.AssignedUnitPrice)
                     .WithProduct(purchaseInvoiceItem.Product)
+                    .WithSerialisedItem(purchaseInvoiceItem.SerialisedItem)
                     .WithQuantity(purchaseInvoiceItem.Quantity)
                     .WithComment(purchaseInvoiceItem.Comment)
                     .WithInternalComment(purchaseInvoiceItem.InternalComment)
@@ -401,6 +402,19 @@ namespace Allors.Domain
         {
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
             {
+                if (purchaseInvoiceItem.PurchaseInvoiceItemState.IsNotPaid && purchaseInvoiceItem.ExistSerialisedItem)
+                {
+                    var serialisedItem = purchaseInvoiceItem.SerialisedItem;
+                    var deriveRoles = (SerialisedItemDerivedRoles)purchaseInvoiceItem.SerialisedItem;
+
+                    serialisedItem.RemoveAssignedPurchasePrice();
+                    deriveRoles.PurchasePrice = purchaseInvoiceItem.TotalExVat;
+
+                    serialisedItem.OwnedBy = this.BilledTo;
+                    serialisedItem.ReportingUnit = this.BilledTo;
+
+                }
+
                 purchaseInvoiceItem.BaseOnDerivePrices();
             }
         }
@@ -423,7 +437,7 @@ namespace Allors.Domain
                 if (!this.OpenTasks.OfType<PurchaseInvoiceApproval>().Any())
                 {
                     var approval = new PurchaseInvoiceApprovalBuilder(this.Session()).WithPurchaseInvoice(this).Build();
-                    approval.WorkItem = approval.PurchaseInvoice;
+                    approval.DerivedRoles.WorkItem = approval.PurchaseInvoice;
                 }
             }
         }

@@ -60,6 +60,26 @@ namespace Allors.Domain
                 @this.InitialScheduledEnd = @this.ScheduledEnd;
             }
 
+            var openCommunicationTasks = @this.TasksWhereWorkItem
+                .OfType<CommunicationTask>()
+                .Where(v => !v.ExistDateClosed)
+                .ToArray();
+
+            if (@this.ExistActualEnd)
+            {
+                if (openCommunicationTasks.Length > 0)
+                {
+                    openCommunicationTasks.First().DateClosed = @this.Strategy.Session.Now();
+                }
+            }
+            else
+            {
+                if (openCommunicationTasks.Length == 0)
+                {
+                    new CommunicationTaskBuilder(@this.Strategy.Session).WithCommunicationEvent(@this).Build();
+                }
+            }
+
             @this.DeriveInvolvedParties();
         }
 
@@ -70,7 +90,13 @@ namespace Allors.Domain
             @this.AddSecurityToken(@this.Owner?.OwnerSecurityToken);
         }
 
-        public static void BaseDelete(this CommunicationEvent @this, DeletableDelete method) => @this.RemoveWorkEfforts();
+        public static void BaseDelete(this CommunicationEvent @this, DeletableDelete method)
+        {
+            foreach (Task task in @this.TasksWhereWorkItem)
+            {
+                task.Delete();
+            }
+        }
 
         public static void BaseClose(this CommunicationEvent @this, CommunicationEventClose method) => @this.CommunicationEventState = new CommunicationEventStates(@this.Strategy.Session).Completed;
 
@@ -81,7 +107,6 @@ namespace Allors.Domain
         private static void DeriveInvolvedParties(this CommunicationEvent @this)
         {
             var now = @this.Strategy.Session.Now();
-            var derivedRoles = (CommunicationEventDerivedRoles)@this;
 
             var parties = new[] { @this.FromParty, @this.ToParty, @this.Owner }.Distinct().ToArray();
 
@@ -90,7 +115,7 @@ namespace Allors.Domain
                 .Where(v => v.FromDate <= now && (!v.ExistThroughDate || v.ThroughDate >= now))
                 .Select(v => v.Organisation);
 
-            derivedRoles.InvolvedParties = parties.Union(organisation).ToArray();
+            @this.DerivedRoles.InvolvedParties = parties.Union(organisation).ToArray();
         }
     }
 }

@@ -76,11 +76,12 @@ namespace Tests.LetterCorrespondenceTests
             cell.Click();
 
             var letterCorrespondenceEdit = new LetterCorrespondenceEditComponent(organisationOverviewPage.Driver);
-            letterCorrespondenceEdit.CommunicationEventState.Set(new CommunicationEventStates(this.Session).InProgress.Name)
-                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment.Name)
-                .FromParty.Set(organisation.DisplayName())
-                .ToParty.Set(employee.DisplayName())
-                .FromPostalAddress.Set("Haverwerf 15 1111 city Belgium")
+            letterCorrespondenceEdit
+                .CommunicationEventState.Select(new CommunicationEventStates(this.Session).InProgress)
+                .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Appointment)
+                .FromParty.Select(organisation)
+                .ToParty.Select(employee)
+                .FromPostalAddress.Select(organisationAddress)
                 .Subject.Set("new subject")
                 .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
                 .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))

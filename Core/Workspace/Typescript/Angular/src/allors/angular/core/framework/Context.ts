@@ -27,8 +27,8 @@ export class Context {
     this.session.reset();
   }
 
-  get(id: string): ISessionObject {
-    return this.session.get(id);
+  get(id: string): ISessionObject | null {
+    return this.session.get(id) ?? null;
   }
 
   create(objectType: ObjectType | string): ISessionObject {
@@ -79,7 +79,7 @@ export class Context {
 
           this.session.pushResponse(pushResponse);
           const syncRequest: SyncRequest = new SyncRequest();
-          syncRequest.objects = pushRequest.objects.map((v: PushRequestObject) => v.i);
+          syncRequest.objects = pushRequest.objects?.map((v: PushRequestObject) => v.i) ?? [];
           if (pushResponse.newObjects) {
             for (const newObject of pushResponse.newObjects) {
               syncRequest.objects.push(newObject.i);
@@ -112,7 +112,7 @@ export class Context {
   }
 
 
-  private security(request: SecurityRequest): Observable<SecurityRequest> {
+  private security(request: SecurityRequest): Observable<SecurityRequest | null> {
 
     return this.database
       .security(request)

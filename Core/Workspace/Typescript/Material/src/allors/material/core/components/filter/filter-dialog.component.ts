@@ -9,6 +9,7 @@ import { AllorsFilterService } from '../../../../angular/core/filter';
 import { FilterField } from '../../../../../allors/angular/core/filter/FilterField';
 import { FilterFieldDefinition } from '../../../../../allors/angular/core/filter/FilterFieldDefinition';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { assert } from '../../../../../allors/framework';
 
 @Component({
   templateUrl: 'filter-dialog.component.html',
@@ -21,7 +22,7 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
 
   formGroup: FormGroup;
 
-  filterFieldDefinition: FilterFieldDefinition;
+  filterFieldDefinition: FilterFieldDefinition | null;
 
   constructor(
     public dialogRef: MatDialogRef<AllorsMaterialFilterDialogComponent>,
@@ -31,28 +32,30 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
     this.filterService = data.filterService;
   }
 
-  get isBetween(): boolean {
-    return this.filterFieldDefinition && this.filterFieldDefinition.isBetween;
+  get isBetween() {
+    return this.filterFieldDefinition?.isBetween ?? false;
   }
 
-  get placeholder(): string {
+  get placeholder() {
     return this.isBetween ? 'From' : 'Value';
   }
 
   get useSearch(): boolean {
-    return this.filterFieldDefinition && !!this.filterFieldDefinition.options.search;
+    return !!this.filterFieldDefinition?.options?.search;
   }
 
   get useToggle(): boolean {
-    return this.filterFieldDefinition && !this.filterFieldDefinition.options.search && this.filterFieldDefinition.predicate.objectType.isBoolean;
+    return !this.filterFieldDefinition?.options?.search && (this.filterFieldDefinition?.predicate.objectType.isBoolean ?? false);
   }
 
   get useDatepicker(): boolean {
-    return this.filterFieldDefinition && !this.filterFieldDefinition.options.search && this.filterFieldDefinition.predicate.objectType.isDateTime;
+    return !this.filterFieldDefinition?.options?.search && (this.filterFieldDefinition?.predicate.objectType.isDateTime ?? false);
   }
 
   get useInput(): boolean {
-    return this.filterFieldDefinition && !this.filterFieldDefinition.options.search && !this.filterFieldDefinition.predicate.objectType.isBoolean && !this.filterFieldDefinition.predicate.objectType.isDateTime;
+    return !this.filterFieldDefinition?.options?.search &&
+      (!this.filterFieldDefinition?.predicate.objectType.isBoolean ?? false) &&
+      (!this.filterFieldDefinition?.predicate.objectType.isDateTime ?? false);
   }
 
   ngOnInit() {
@@ -65,21 +68,23 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
 
   stepperSelectionChange(event: StepperSelectionEvent) {
     if (event.selectedIndex === 0) {
-      this.filterFieldDefinition = undefined;
+      this.filterFieldDefinition = null;
     }
   }
 
   selected(filterFieldDefinition: FilterFieldDefinition) {
     this.filterFieldDefinition = filterFieldDefinition;
 
-    let initialValue = filterFieldDefinition.options.initialValue;
-    if (initialValue === undefined || initialValue === null) {
+    let initialValue = filterFieldDefinition.options?.initialValue;
+    if (initialValue != null) {
       if (filterFieldDefinition.predicate.objectType.isBoolean) {
         initialValue = true;
       }
     }
 
-    this.formGroup.get('value').setValue(initialValue);
+    const valueControl = this.formGroup.get('value');
+    assert(valueControl);
+    valueControl.setValue(initialValue);
 
     // give angular time to process the [completed] directive
     timer(1).subscribe((v) => this.stepper.next());
@@ -87,9 +92,11 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
 
   apply() {
 
-    const options = this.filterFieldDefinition && this.filterFieldDefinition.options;
-    let value = this.formGroup.get('value').value;
-    let value2 = this.formGroup.get('value2').value;
+    assert(this.filterFieldDefinition);
+
+    const options = this.filterFieldDefinition.options;
+    let value = this.formGroup.get('value')?.value;
+    let value2 = this.formGroup.get('value2')?.value;
 
     if (this.filterFieldDefinition.predicate.objectType.isDateTime) {
       value = value ? value.toISOString() : null;
@@ -100,7 +107,7 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
       this.filterService.addFilterField(new FilterField({
         definition: this.filterFieldDefinition,
         value: value.id ? value.id : value,
-        display: options.display ? options.display(value) : value,
+        display: options?.display(value) ?? value,
       }));
 
     } else {
@@ -108,13 +115,10 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
         definition: this.filterFieldDefinition,
         value,
         value2,
-        display: options.display ? `${options.display(value)} <-> ${options.display(value2)}` : `${value} <-> ${value2}`,
+        display: options?.display ? `${options.display(value)} <-> ${options.display(value2)}` : `${value} <-> ${value2}`,
       }));
     }
 
     this.dialogRef.close();
   }
-
 }
-
-

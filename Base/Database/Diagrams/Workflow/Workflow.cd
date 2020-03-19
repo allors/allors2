@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.ApproveTask">
+    <Position X="3.75" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAgAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Task" HideInheritanceLine="true">
+    <Position X="4" Y="5" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.UniquelyIdentifiable" IsHidden="true" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAYAAAAAAACAEAAAACAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="WorkItem" />
+      <Property Name="Participants" />
+      <Property Name="Performer" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.WorkItem">
+    <Position X="7.25" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.TaskAssignment">
+    <Position X="4" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+      <Property Name="Notification" />
+      <Property Name="Task" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.User" Collapsed="true" HideInheritanceLine="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.UniquelyIdentifiable" IsHidden="true" />
+    <TypeIdentifier>
+      <HashCode>AACBAAAgAACAAAAAAAQAABAAAAXgAAAAAQAQCBICCAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="NotificationList" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Notification">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAEAAAAAAACAAAAAAAAAAAAAgEAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Target" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.NotificationList">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAEAAAAAAAAQA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Notifications" />
+      <Property Name="_UnconfirmedNotifications" />
+      <Property Name="_ConfirmedNotifications" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.UniquelyIdentifiable" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

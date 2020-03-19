@@ -31,13 +31,13 @@ namespace Tests.PersonTests
             var personCreate = this.people.CreatePerson();
 
             personCreate
-                .Salutation.Set(new Salutations(this.Session).Mr.Name)
+                .Salutation.Select(new Salutations(this.Session).Mr)
                 .FirstName.Set("Jos")
                 .MiddleName.Set("de")
                 .LastName.Set("Smos")
                 .Function.Set("CEO")
-                .Gender.Set(new GenderTypes(this.Session).Male.Name)
-                .Locale.Set(this.Session.GetSingleton().AdditionalLocales.First.Name)
+                .Gender.Select(new GenderTypes(this.Session).Male)
+                .Locale.Select(this.Session.GetSingleton().AdditionalLocales.First)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();

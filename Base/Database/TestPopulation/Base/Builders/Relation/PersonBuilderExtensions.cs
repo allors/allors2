@@ -22,7 +22,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithGender(faker.Random.ListItem(@this.Session.Extent<GenderType>()));
             @this.WithTitle(faker.Random.ListItem(@this.Session.Extent<PersonalTitle>()));
             @this.WithLocale(@this.Session.GetSingleton().DefaultLocale);
-            @this.WithPicture(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl()).Build());
+            @this.WithPicture(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(200, 200)).Build());
             @this.WithComment(faker.Lorem.Paragraph());
             @this.WithUserName(email);
 

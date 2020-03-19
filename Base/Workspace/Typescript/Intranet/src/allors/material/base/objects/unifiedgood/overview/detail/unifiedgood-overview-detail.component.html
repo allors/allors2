@@ -29,7 +29,7 @@
           </div>
 
           <div class="row">
-            <a-mat-markdown class="col-md" [object]="good" [roleType]="m.UnifiedGood.Description"></a-mat-markdown>
+            <a-mat-quill class="col-md" [object]="good" [roleType]="m.UnifiedGood.Description"></a-mat-quill>
           </div>
 
           <div class="row">
@@ -118,6 +118,15 @@
           <div class="row">
             <a-mat-input class="col-md-6" [object]="good" [roleType]="m.UnifiedGood.HsCode"></a-mat-input>
             <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.UnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
+          </div>
+
+          <div class="row">
+            <a-mat-input class="col-md" [object]="good" [roleType]="m.UnifiedGood.LifeTime"></a-mat-input>
+            <a-mat-input class="col-md" [object]="good" [roleType]="m.UnifiedGood.DepreciationYears"></a-mat-input>
+          </div>
+
+          <div class="row">
+            <a-mat-input class="col-md" [object]="good" [roleType]="m.UnifiedGood.ReplacementValue"></a-mat-input>
           </div>
 
           <div class="row pb-1">

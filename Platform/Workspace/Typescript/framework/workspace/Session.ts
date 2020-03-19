@@ -5,9 +5,9 @@ import { PushResponse } from './../protocol/push/PushResponse';
 
 import { ISessionObject, SessionObject } from './SessionObject';
 import { IWorkspace, Workspace } from './Workspace';
-import { WorkspaceObject } from './WorkspaceObject';
+import { WorkspaceObject, IWorkspaceObject } from './WorkspaceObject';
 import { Operations } from '../protocol/Operations';
-import { Compressor } from '../protocol/Compressor';
+import { PushRequestObject } from '../protocol/push/PushRequestObject';
 
 export interface ISession {
 
@@ -15,7 +15,7 @@ export interface ISession {
 
   hasChanges: boolean;
 
-  get(id: string): ISessionObject;
+  get(id: string): ISessionObject | null;
 
   create(objectType: ObjectType | string): ISessionObject;
 
@@ -47,9 +47,9 @@ export class Session implements ISession {
     this.sessionObjectByIdByClass = new Map();
   }
 
-  public get(id: string): ISessionObject {
+  public get(id: string): ISessionObject | null {
     if (!id) {
-      return undefined;
+      return null;
     }
 
     let sessionObject = this.existingSessionObjectById.get(id);
@@ -57,60 +57,53 @@ export class Session implements ISession {
       sessionObject = this.newSessionObjectById.get(id);
 
       if (sessionObject === undefined) {
-        const workspaceObject: WorkspaceObject = this.workspace.get(id);
-
-        const constructor: typeof SessionObject = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
-        sessionObject = new constructor();
-        sessionObject.session = this;
-        sessionObject.workspaceObject = workspaceObject;
-        sessionObject.objectType = workspaceObject.objectType;
-
-        this.existingSessionObjectById.set(sessionObject.id, sessionObject);
-        this.addByObjectTypeId(sessionObject);
-      }
-    }
-
-    return sessionObject;
-  }
-
-  public getForAssociation(id: string): ISessionObject {
-    if (!id) {
-      return undefined;
-    }
-
-    let sessionObject = this.existingSessionObjectById.get(id);
-    if (sessionObject === undefined) {
-      sessionObject = this.newSessionObjectById.get(id);
-
-      if (sessionObject === undefined) {
-        const workspaceObject: WorkspaceObject = this.workspace.getForAssociation(id);
-
+        const workspaceObject = this.workspace.get(id);
         if (workspaceObject) {
-          const constructor = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
-          sessionObject = new constructor();
-          sessionObject.session = this;
-          sessionObject.workspaceObject = workspaceObject;
-          sessionObject.objectType = workspaceObject.objectType;
-
-          this.existingSessionObjectById.set(sessionObject.id, sessionObject);
-          this.addByObjectTypeId(sessionObject);
+          sessionObject = this.instantiate(workspaceObject);
         }
       }
     }
 
-    return sessionObject;
+    return sessionObject ?? null;
+  }
+
+  public getForAssociation(id: string): ISessionObject | null {
+    if (!id) {
+      return null;
+    }
+
+    let sessionObject = this.existingSessionObjectById.get(id);
+    if (!sessionObject) {
+      sessionObject = this.newSessionObjectById.get(id);
+
+      if (!sessionObject) {
+        const workspaceObject = this.workspace.getForAssociation(id);
+
+        if (workspaceObject) {
+          sessionObject = this.instantiate(workspaceObject);
+        }
+      }
+    }
+
+    return sessionObject ?? null;
   }
 
   public create(objectType: ObjectType | string): ISessionObject {
 
-    if (typeof objectType === 'string') {
-      objectType = this.workspace.metaPopulation.objectTypeByName.get(objectType);
+    const resolvedObjectType = (typeof objectType === 'string') ? this.workspace.metaPopulation.objectTypeByName.get(objectType) : objectType;
+
+    if (!resolvedObjectType) {
+      throw new Error(`Could not find class for ${objectType}`);
     }
 
-    const constructor = this.workspace.constructorByObjectType.get(objectType);
+    const constructor = this.workspace.constructorByObjectType.get(resolvedObjectType);
+    if (!constructor) {
+      throw new Error(`Could not get constructor for ${resolvedObjectType.name}`);
+    }
+
     const newSessionObject = new constructor();
     newSessionObject.session = this;
-    newSessionObject.objectType = objectType;
+    newSessionObject.objectType = resolvedObjectType;
     newSessionObject.newId = (--Session.idCounter).toString();
 
     this.newSessionObjectById.set(newSessionObject.newId, newSessionObject);
@@ -161,9 +154,12 @@ export class Session implements ISession {
   }
 
   public pushRequest(): PushRequest {
+    const newObjects = Array.from(this.newSessionObjectById.values()).map(v => v.saveNew());
+    const objects = Array.from(this.existingSessionObjectById.values()).map(v => v.save()).filter(v => v) as PushRequestObject[];
+
     return new PushRequest({
-      newObjects: Array.from(this.newSessionObjectById.values()).map(v => v.saveNew()).filter(v => v !== undefined),
-      objects: Array.from(this.existingSessionObjectById.values()).map(v => v.save()).filter(v => v !== undefined),
+      newObjects,
+      objects,
     });
   }
 
@@ -174,14 +170,16 @@ export class Session implements ISession {
         const id = pushResponseNewObject.i;
 
         const sessionObject = this.newSessionObjectById.get(newId);
-        delete sessionObject.newId;
-        sessionObject.workspaceObject = this.workspace.new(id, sessionObject.objectType);
+        if (sessionObject) {
+          delete sessionObject.newId;
+          sessionObject.workspaceObject = this.workspace.new(id, sessionObject.objectType);
 
-        this.newSessionObjectById.delete(newId);
-        this.existingSessionObjectById.set(id, sessionObject);
+          this.newSessionObjectById.delete(newId);
+          this.existingSessionObjectById.set(id, sessionObject);
 
-        this.removeByObjectTypeId(sessionObject.objectType, newId);
-        this.addByObjectTypeId(sessionObject);
+          this.removeByObjectTypeId(sessionObject.objectType, newId);
+          this.addByObjectTypeId(sessionObject);
+        }
       });
     }
 
@@ -227,21 +225,23 @@ export class Session implements ISession {
 
     associationClasses.forEach((associationClass) => {
       const workspaceObjects = this.workspace.workspaceObjectsByClass.get(associationClass);
-      for (const workspaceObject of workspaceObjects) {
-        if (!associationIds.has(workspaceObject.id)) {
-          const permission = this.workspace.permission(workspaceObject.objectType, roleType, Operations.Read);
-          if (workspaceObject.isPermitted(permission)) {
-            if (roleType.isOne) {
-              const role: string = workspaceObject.roleByRoleTypeId.get(roleType.id);
-              if (object.id === role) {
-                associations.push(this.get(workspaceObject.id) as SessionObject);
-                break;
-              }
-            } else {
-              const roles: string[] = workspaceObject.roleByRoleTypeId.get(roleType.id);
-              if (roles && roles.indexOf(workspaceObject.id) > -1) {
-                associationIds.add(workspaceObject.id);
-                associations.push(this.get(workspaceObject.id) as SessionObject);
+      if (workspaceObjects) {
+        for (const workspaceObject of workspaceObjects) {
+          if (!associationIds.has(workspaceObject.id)) {
+            const permission = this.workspace.permission(workspaceObject.objectType, roleType, Operations.Read);
+            if (permission && workspaceObject.isPermitted(permission)) {
+              if (roleType.isOne) {
+                const role: string = workspaceObject.roleByRoleTypeId.get(roleType.id);
+                if (object.id === role) {
+                  associations.push(this.get(workspaceObject.id) as SessionObject);
+                  break;
+                }
+              } else {
+                const roles: string[] = workspaceObject.roleByRoleTypeId.get(roleType.id);
+                if (roles && roles.indexOf(workspaceObject.id) > -1) {
+                  associationIds.add(workspaceObject.id);
+                  associations.push(this.get(workspaceObject.id) as SessionObject);
+                }
               }
             }
           }
@@ -252,10 +252,29 @@ export class Session implements ISession {
     return associations;
   }
 
+  private instantiate(workspaceObject: IWorkspaceObject): SessionObject {
+    const constructor: typeof SessionObject | undefined = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
+    if (!constructor) {
+      throw new Error(`Could not get constructor for ${workspaceObject.objectType.name}`);
+    }
+
+    const sessionObject = new constructor();
+    sessionObject.session = this;
+    sessionObject.workspaceObject = workspaceObject;
+    sessionObject.objectType = workspaceObject.objectType;
+
+    this.existingSessionObjectById.set(sessionObject.id, sessionObject);
+    this.addByObjectTypeId(sessionObject);
+
+    return sessionObject;
+  }
+
   private getAll(objectType: ObjectType): void {
     const workspaceObjects = this.workspace.workspaceObjectsByClass.get(objectType);
-    for (const workspaceObject of workspaceObjects) {
-      this.get(workspaceObject.id);
+    if (workspaceObjects) {
+      for (const workspaceObject of workspaceObjects) {
+        this.get(workspaceObject.id);
+      }
     }
   }
 

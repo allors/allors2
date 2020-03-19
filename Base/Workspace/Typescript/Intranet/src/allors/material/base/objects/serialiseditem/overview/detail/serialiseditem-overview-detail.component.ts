@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService, TestScope } from '../../../../../../angular';
+import { ContextService, NavigationService, PanelService, RefreshService, MetaService, Saved, FetcherService, TestScope, SearchFactory, InternalOrganisationId } from '../../../../../../angular';
 import { Enumeration, InternalOrganisation, Locale, Organisation, SerialisedItem, Part, SupplierRelationship, SerialisedInventoryItem, Facility, ProductCategory } from '../../../../../../domain';
 import { SaveService, FiltersService } from '../../../../../../material';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
@@ -27,7 +27,6 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
   locales: Locale[];
   serialisedItemStates: Enumeration[];
   ownerships: Enumeration[];
-  parts: Part[];
   part: Part;
   currentSuppliers: Organisation[];
   currentFacility: Facility;
@@ -44,6 +43,7 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
     private saveService: SaveService,
     private snackBar: MatSnackBar,
     private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId
   ) {
     super();
 
@@ -138,9 +138,7 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
             pull.SerialisedItem({
               object: id,
               fetch: {
-                PartWhereSerialisedItem: {
-                  include: { SerialisedItems: x }
-                }
+                PartWhereSerialisedItem: x
               }
             }),
             pull.SerialisedItem({
@@ -153,12 +151,10 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                 }
               }
             }),
-            pull.Part({
-              include: { SerialisedItems: x }
-            }),
-            pull.SupplierRelationship({
-              include: {
-                Supplier: x
+            pull.InternalOrganisation({
+              object: this.internalOrganisationId.value,
+              fetch: {
+                CurrentSuppliers: x
               }
             }),
             pull.SerialisedItemState({
@@ -178,18 +174,13 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
 
         this.allors.context.reset();
 
-        const now = moment.utc();
-
-        const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
-        this.currentSuppliers = Array.from(new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0))));
+        this.currentSuppliers = loaded.collections.CurrentSuppliers as Organisation[];
 
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as Enumeration[];
         this.ownerships = loaded.collections.Ownerships as Enumeration[];
         this.part = loaded.objects.Part as Part;
-        this.parts = loaded.collections.Parts as Part[];
 
         const serialisedInventoryItems = loaded.collections.SerialisedInventoryItems as SerialisedInventoryItem[];
         const inventoryItem = serialisedInventoryItems.find(v => v.Quantity === 1);
@@ -206,9 +197,15 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
     }
   }
 
+  public partSelected(part: Part): void {
+    if (part) {
+      this.part = part;
+    }
+  }
+
   public save(): void {
 
-    this.onSave();
+    // this.onSave();
 
     this.allors.context.save()
       .subscribe(() => {

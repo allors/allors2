@@ -1,5 +1,4 @@
-using Nuke.Common.IO;
-
+using AbsolutePath = Nuke.Common.IO.PathConstruction.AbsolutePath;
 public partial class Paths
 {
     public AbsolutePath Core => Root / "core";

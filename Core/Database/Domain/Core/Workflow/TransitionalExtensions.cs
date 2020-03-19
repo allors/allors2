@@ -12,8 +12,6 @@ namespace Allors.Domain
     {
         public static void CoreOnPostDerive(this Transitional @this, ObjectOnPostDerive method)
         {
-            var derivedRoles = (TransitionalDerivedRoles)@this;
-
             // Update PreviousObjectState and LastObjectState
             foreach (var transitionalConfiguration in @this.TransitionalConfigurations)
             {
@@ -29,17 +27,17 @@ namespace Allors.Domain
             }
 
             // Rollup ObjectStates, PreviousObjectState and LastObjectStates
-            derivedRoles.RemoveObjectStates();
-            derivedRoles.RemoveLastObjectStates();
-            derivedRoles.RemovePreviousObjectStates();
+            @this.DerivedRoles.RemoveObjectStates();
+            @this.DerivedRoles.RemoveLastObjectStates();
+            @this.DerivedRoles.RemovePreviousObjectStates();
             foreach (var transitionalConfiguration in @this.TransitionalConfigurations)
             {
                 var objectState = (ObjectState)@this.Strategy.GetCompositeRole(transitionalConfiguration.ObjectState);
                 var lastObjectState = (ObjectState)@this.Strategy.GetCompositeRole(transitionalConfiguration.LastObjectState);
                 var previousObjectState = (ObjectState)@this.Strategy.GetCompositeRole(transitionalConfiguration.PreviousObjectState);
-                derivedRoles.AddObjectState(objectState);
-                derivedRoles.AddLastObjectState(lastObjectState);
-                derivedRoles.AddPreviousObjectState(previousObjectState);
+                @this.DerivedRoles.AddObjectState(objectState);
+                @this.DerivedRoles.AddLastObjectState(lastObjectState);
+                @this.DerivedRoles.AddPreviousObjectState(previousObjectState);
             }
 
             // Update security

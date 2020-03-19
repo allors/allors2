@@ -22,6 +22,8 @@ namespace Allors.Domain
             {
                 this.Subject = this.EmailTemplate.SubjectTemplate;
             }
+
+            this.WorkItemDescription = $"Email to {this.ToEmail} about {this.Subject}";
         }
     }
 }

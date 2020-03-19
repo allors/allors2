@@ -12,17 +12,21 @@
     "tc:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts",
     "az:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-trx-reporter ./test/**/*.spec.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "common-tags": "^1.8.0"
+  },
   "devDependencies": {
     "@types/chai": "latest",
+    "@types/common-tags": "^1.8.0",
     "@types/mocha": "latest",
     "@types/node": "latest",
     "chai": "latest",
+    "lnk": "latest",
     "mocha": "latest",
     "mocha-teamcity-reporter": "latest",
     "mocha-trx-reporter": "latest",
     "ts-node": "latest",
-    "typescript": "latest",
-    "lnk": "latest"
+    "tslint": "latest",
+    "typescript": "latest"
   }
 }

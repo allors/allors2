@@ -363,8 +363,8 @@ namespace Allors.Domain
 
                             var qoh = this.ReservedFromNonSerialisedInventoryItem.QuantityOnHand;
 
-                            var atp = this.ReservedFromNonSerialisedInventoryItem.Atp - committedOutSameProductOtherItem > 0 ?
-                                this.ReservedFromNonSerialisedInventoryItem.Atp - committedOutSameProductOtherItem :
+                            var atp = this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise - committedOutSameProductOtherItem > 0 ?
+                                this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise - committedOutSameProductOtherItem :
                                 0;
 
                             var quantityCommittedOut = this.SalesOrderItemInventoryAssignments

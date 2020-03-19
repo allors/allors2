@@ -1,6 +1,7 @@
 import './AutomatedAgent';
 import './ContactMechanism';
 import './EmailAddress';
+import './FixedAsset';
 import './InventoryItem';
 import './NonSerialisedInventoryItem';
 import './Organisation';

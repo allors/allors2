@@ -9,15 +9,15 @@ import { PromptType } from '../../services/dialog/dialog.config';
 })
 export class AllorsMaterialDialogComponent {
 
-  public alert: boolean;
-  public confirmation: boolean;
-  public prompt: boolean;
+  public alert: boolean | undefined;
+  public confirmation: boolean | undefined;
+  public prompt: boolean | undefined;
   public promptType: PromptType;
 
-  public title: string;
-  public message: string;
-  public label: string;
-  public placeholder: string;
+  public title: string | undefined;
+  public message: string | undefined;
+  public label: string | undefined;
+  public placeholder: string | undefined;
   public value: string;
 
   constructor(public dialogRef: MatDialogRef<AllorsMaterialDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {

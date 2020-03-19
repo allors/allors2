@@ -5,8 +5,6 @@ import { Loaded } from '../../allors/angular';
 import { Person, Organisation } from '../../allors/domain';
 import { Fixture } from '../Fixture.spec';
 
-import 'jasmine-expect';
-
 let fixture: Fixture;
 
 describe('Extent', () => {
@@ -30,7 +28,7 @@ describe('Extent', () => {
         const loaded: Loaded = await fixture.allors.context.load(new PullRequest({ pulls })).toPromise();
         const people = loaded.collections.People as Person[];
 
-        expect(people).toBeArrayOfSize(6);
+        expect(people.length).toBe(6);
       });
     });
 
@@ -69,9 +67,10 @@ describe('Extent', () => {
 
         const people = loaded.collections['People'] as Person[];
 
-        expect(people).not.toBeEmptyArray();
+        expect(people.length).toBe(6);
 
-        people.forEach(() => {
+        people.forEach((person) => {
+          const photo = person.Photo;
         });
       });
     });
@@ -105,7 +104,7 @@ describe('Extent', () => {
 
         const organisations = loaded.collections['Organisations'] as Organisation[];
 
-        expect(organisations).not.toBeEmptyArray();
+        expect(organisations.length).not.toBe(0);
 
         organisations.forEach((organisation) => {
           const owner = organisation.Owner;
@@ -144,7 +143,7 @@ describe('Extent', () => {
 
         const owners = loaded.collections['Owners'] as Person[];
 
-        expect(owners).toBeArrayOfSize(2);
+        expect(owners.length).toBe(2);
       });
 
       it('should return all employees', async () => {
@@ -174,7 +173,7 @@ describe('Extent', () => {
 
         const employees = loaded.collections['Employees'] as Person[];
 
-        expect(employees).toBeArrayOfSize(3);
+        expect(employees.length).toBe(3);
       });
     });
 
@@ -205,7 +204,7 @@ describe('Extent', () => {
 
         const employees = loaded.collections['Employees'] as Person[];
 
-        expect(employees).toBeArrayOfSize(3);
+        expect(employees.length).toBe(3);
       });
     });
 
@@ -242,7 +241,7 @@ describe('Extent', () => {
 
         owners.forEach(v => v.Photo);
 
-        expect(owners).toBeArrayOfSize(2);
+        expect(owners.length).toBe(2);
       });
     });
 

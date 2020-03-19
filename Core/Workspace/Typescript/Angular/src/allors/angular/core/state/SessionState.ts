@@ -2,9 +2,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 export abstract class SessionState {
 
-  public observable$: Observable<string>;
+  public observable$: Observable<string | null>;
 
-  private subject: BehaviorSubject<string>;
+  private subject: BehaviorSubject<string | null>;
 
   constructor(private key: string) {
     const initialValue = sessionStorage.getItem(this.key);
@@ -12,12 +12,17 @@ export abstract class SessionState {
     this.observable$ = this.subject.asObservable();
   }
 
-  get value(): string {
+  get value(): string | null {
     return this.subject.getValue();
   }
 
-  set value(value: string) {
-    sessionStorage.setItem(this.key, value)
+  set value(value: string | null) {
+    if (value == null) {
+      sessionStorage.removeItem(this.key)
+    } else {
+      sessionStorage.setItem(this.key, value)
+    }
+
     this.subject.next(value);
   }
 }

@@ -151,9 +151,9 @@ namespace Allors.Domain
             Assert.Equal(5, item5.QuantityReserved);
             Assert.Equal(0, item5.QuantityRequestsShipping);
             Assert.Equal(97, good1Inventory.QuantityOnHand);
-            Assert.Equal(3, good1Inventory.QuantityCommittedOut);
+            Assert.Equal(0, good1Inventory.QuantityCommittedOut);
             Assert.Equal(96, good2Inventory.QuantityOnHand);
-            Assert.Equal(4, good2Inventory.QuantityCommittedOut);
+            Assert.Equal(0, good2Inventory.QuantityCommittedOut);
         }
 
         [Fact]

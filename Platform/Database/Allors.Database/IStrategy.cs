@@ -137,8 +137,8 @@ namespace Allors
         /// Sets the composite role.
         /// </summary>
         /// <param name="relationType">Type of the relation.</param>
-        /// <param name="role">The role.</param>
-        void SetCompositeRole(IRelationType relationType, IObject role);
+        /// <param name="newRole">The role.</param>
+        void SetCompositeRole(IRelationType relationType, IObject newRole);
 
         /// <summary>
         /// Removes the composite role.

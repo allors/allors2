@@ -42,11 +42,11 @@ describe('Association',
 
           const c2C = c2s.find((v) => v.Name === 'c2C');
 
-          const c1WhereC1C2One2Many = c2C.C1WhereC1C2One2Many;
+          const c1WhereC1C2One2Many = c2C?.C1WhereC1C2One2Many;
 
           // One to One
           assert.isNotNull(c1WhereC1C2One2Many);
-          assert.equal(c1WhereC1C2One2Many.Name, 'c1C');
+          assert.equal(c1WhereC1C2One2Many?.Name, 'c1C');
         });
 
         it('should access one2one association', async () => {
@@ -74,11 +74,11 @@ describe('Association',
 
           const c2C = c2s.find((v) => v.Name === 'c2C');
 
-          const c1WhereC1C2One2One = c2C.C1WhereC1C2One2One;
+          const c1WhereC1C2One2One = c2C?.C1WhereC1C2One2One;
 
           // One to One
           assert.isNotNull(c1WhereC1C2One2One);
-          assert.equal(c1WhereC1C2One2One.Name, 'c1C');
+          assert.equal(c1WhereC1C2One2One?.Name, 'c1C');
         });
       });
   });

@@ -196,6 +196,16 @@ namespace Allors.Repository
         [Workspace]
         public Product Product { get; set; }
 
+        #region Allors
+        [Id("B036079F-0B4A-4F7A-87A2-F3854A01F73A")]
+        [AssociationId("F160C06B-8ED6-44F1-A2C4-27CEDB2041E4")]
+        [RoleId("FCE3F19E-C4A3-4484-88EE-7CF3B7BE449F")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public SerialisedItem SerialisedItem { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

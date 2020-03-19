@@ -1,6 +1,8 @@
 import { domain } from '../domain';
 import { SerialisedItem } from '../generated/SerialisedItem.g';
 import { Meta } from '../../meta/generated/domain.g';
+import { UnifiedGood } from '..';
+import { assert } from '../../framework';
 
 declare module '../generated/SerialisedItem.g' {
   interface SerialisedItem {
@@ -9,28 +11,27 @@ declare module '../generated/SerialisedItem.g' {
     yearsToGo: number;
     goingConcern: number;
     marketValue: number;
-    grossBookValue: number;
-    expectedPosa: number;
   }
 }
 
 domain.extend((workspace) => {
 
   const m = workspace.metaPopulation as Meta;
-  const obj = workspace.constructorByObjectType.get(m.SerialisedItem).prototype as any;
+  const cls = workspace.constructorByObjectType.get(m.SerialisedItem);
+  assert(cls);
 
-  Object.defineProperty(obj, 'displayName', {
+  Object.defineProperty(cls.prototype, 'displayName', {
     configurable: true,
-    get(this: SerialisedItem) {
+    get(this: SerialisedItem): string {
 
       return this.ItemNumber + ' ' + this.Name + ' SN: ' + this.SerialNumber;
     },
   });
 
-  Object.defineProperty(obj, 'age', {
+  Object.defineProperty(cls.prototype, 'age', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice && this.ManufacturingYear) {
+    get(this: SerialisedItem): number {
+      if (this.CanReadPurchasePrice && this.ManufacturingYear != null) {
         return new Date().getFullYear() - this.ManufacturingYear;
       } else {
         return 0;
@@ -38,59 +39,44 @@ domain.extend((workspace) => {
     },
   });
 
-  Object.defineProperty(obj, 'yearsToGo', {
+  Object.defineProperty(cls.prototype, 'yearsToGo', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice && this.ManufacturingYear) {
-        return this.LifeTime - this.age < 0 ? 0 : this.LifeTime - this.age;
+    get(this: SerialisedItem): number {
+      const good = this.PartWhereSerialisedItem as UnifiedGood | null;
+
+      if (this.CanReadPurchasePrice && this.ManufacturingYear != null && good?.LifeTime != null) {
+        return good.LifeTime - this.age < 0 ? 0 : good.LifeTime - this.age;
       } else {
         return 0;
       }
     },
   });
 
-  Object.defineProperty(obj, 'goingConcern', {
+  Object.defineProperty(cls.prototype, 'goingConcern', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice) {
-        return Math.round((parseFloat(this.ReplacementValue) * this.yearsToGo) / this.LifeTime);
+    get(this: SerialisedItem): number {
+      const good = this.PartWhereSerialisedItem as UnifiedGood | null;
+
+      if (this.CanReadPurchasePrice && good?.ReplacementValue != null && good.LifeTime != null) {
+        return Math.round((parseFloat(good.ReplacementValue) * this.yearsToGo) / good.LifeTime);
       } else {
         return 0;
       }
     },
   });
 
-  Object.defineProperty(obj, 'marketValue', {
+  Object.defineProperty(cls.prototype, 'marketValue', {
     configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice && this.ManufacturingYear) {
-        return Math.round(parseFloat(this.ReplacementValue) * Math.exp(-2.045 * this.age / this.LifeTime));
-      } else {
-        return 0;
-      }
-    },
-  });
+    get(this: SerialisedItem): number {
+      const good = this.PartWhereSerialisedItem as UnifiedGood | null;
 
-  Object.defineProperty(obj, 'grossBookValue', {
-    configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice) {
-        return Math.round(parseFloat(this.PurchasePrice) + parseFloat(this.RefurbishCost) + parseFloat(this.TransportCost));
+      if (this.CanReadPurchasePrice && this.ManufacturingYear != null && good?.ReplacementValue != null && good.LifeTime != null) {
+        return Math.round(parseFloat(good.ReplacementValue) * Math.exp(-2.045 * this.age / good.LifeTime));
       } else {
         return 0;
       }
     },
   });
-
-  Object.defineProperty(obj, 'expectedPosa', {
-    configurable: true,
-    get(this: SerialisedItem) {
-      if (this.CanReadPurchasePrice) {
-        return parseFloat(this.ExpectedSalesPrice) - this.grossBookValue;
-      } else {
-        return 0;
-      }
-    },
-  });
+  
 
 });

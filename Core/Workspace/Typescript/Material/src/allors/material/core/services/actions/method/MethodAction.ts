@@ -1,7 +1,7 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject } from 'rxjs';
+import { Subject, config } from 'rxjs';
 
-import { Action, ActionTarget, Invoked, Context, RefreshService} from '../../../../../angular';
+import { Action, ActionTarget, Invoked, Context, RefreshService } from '../../../../../angular';
 import { MethodType, ISessionObject } from '../../../../../framework';
 
 import { MethodConfig } from './MethodConfig';
@@ -17,12 +17,12 @@ export class MethodAction implements Action {
     context: Context,
     saveService: SaveService,
     public methodType: MethodType,
-    public config: MethodConfig) {
+    public config?: MethodConfig) {
 
     this.execute = (target: ActionTarget) => {
 
-      const objects = Array.isArray(target) ? target as ISessionObject[] : [target as ISessionObject];
-      const methods = objects.filter((v) => v.canExecute(methodType)).map((v) => v[methodType.name]);
+      const objects = this.resolve(target);
+      const methods = objects.filter((v) => v.canExecute(methodType)).map((v) => (v as any)[methodType.name]);
 
       if (methods.length > 0) {
         context.invoke(methods)
@@ -31,7 +31,7 @@ export class MethodAction implements Action {
             refreshService.refresh();
             this.result.next(true);
           },
-          saveService.errorHandler);
+            saveService.errorHandler);
       }
     };
   }
@@ -43,10 +43,23 @@ export class MethodAction implements Action {
   displayName = () => (this.config && this.config.name) || this.methodType.name;
   description = () => (this.config && this.config.description) || this.methodType.name;
   disabled = (target: ActionTarget) => {
-    if (Array.isArray(target)) {
-      return target.length > 0 ? target.find(v => v[`CanExecute${this.methodType.name}`]) === undefined : true;
-    } else {
-      return !target[`CanExecute${this.methodType.name}`];
+    const objects = this.resolve(target);
+    return objects?.find(v => v.canExecute(this.methodType)) == null;
+  }
+
+  private resolve(target: ActionTarget): ISessionObject[] {
+    let objects = Array.isArray(target) ? target as ISessionObject[] : [target as ISessionObject];
+
+    if (this.config?.path) {
+      objects = objects.map(v => {
+        for (const roleType of this.config.path) {
+          v = v.get(roleType);
+        }
+
+        return v;
+      });
     }
+
+    return objects;
   }
 }

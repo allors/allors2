@@ -51,7 +51,7 @@ export class Context {
                         const loaded = new Loaded(this.session, pullResponse);
                         resolve(loaded);
                       }
-                                        })
+                    })
                     .catch((e) => {
                       reject(e);
                     });
@@ -66,6 +66,7 @@ export class Context {
           } else {
             const loaded = new Loaded(this.session, pullResponse);
             resolve(loaded);
+            return;
           }
         })
         .catch((e) => {
@@ -84,7 +85,7 @@ export class Context {
 
           this.session.pushResponse(pushResponse);
           const syncRequest: SyncRequest = new SyncRequest();
-          syncRequest.objects = pushRequest.objects.map((v: PushRequestObject) => v.i);
+          syncRequest.objects = pushRequest.objects?.map((v: PushRequestObject) => v.i) ?? [];
           if (pushResponse.newObjects) {
             for (const newObject of pushResponse.newObjects) {
               syncRequest.objects.push(newObject.i);

@@ -17,18 +17,18 @@ export interface BaseTable {
   dataSource: MatTableDataSource<TableRow>;
   selection: SelectionModel<TableRow>;
   actions: Action[];
-  defaultAction: Action;
-  pageSize: number;
-  pageSizeOptions: number[];
+  defaultAction?: Action;
+  pageSize?: number;
+  pageSizeOptions?: number[];
 
-  sort$: BehaviorSubject<Sort>;
+  sort$: BehaviorSubject<Sort | null>;
   pager$: BehaviorSubject<PageEvent>;
 
   total: number;
 
   autoFilter: boolean;
 
-  sortValue: Sort;
+  sortValue: Sort | null;
 
   hasActions: boolean;
 
@@ -40,9 +40,9 @@ export interface BaseTable {
 
   selected: ISessionObject[];
 
-  Init(matSort: any);
+  init(matSort: any): void;
 
-  masterToggle();
+  masterToggle(): void;
 
   page(event: PageEvent): void;
 

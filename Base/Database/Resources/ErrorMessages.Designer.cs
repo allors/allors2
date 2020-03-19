@@ -358,7 +358,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changing inventory item is not allowed, use cancel orderitem instead.
+        ///   Looks up a localized string similar to reserved from non serialised inventory item.
         /// </summary>
         public static string ReservedFromNonSerialisedInventoryItem {
             get {
@@ -376,7 +376,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to product change not allowed, use cancel orderitem instead.
+        ///   Looks up a localized string similar to product change not allowed, user cancel orderitem instead.
         /// </summary>
         public static string SalesOrderItemProductChangeNotAllowed {
             get {
@@ -421,7 +421,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UnitPrice is required.
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unit price is required.
         /// </summary>
         public static string UnitPriceRequired {
             get {

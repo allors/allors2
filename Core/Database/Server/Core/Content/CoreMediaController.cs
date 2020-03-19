@@ -26,7 +26,7 @@ namespace Allors.Server
 
         [AllowAnonymous]
         [HttpGet("/media/{idString}/{*name}")]
-        public virtual IActionResult Get(string idString, string revision)
+        public virtual IActionResult Get(string idString, string revision,string name)
         {
             if (Guid.TryParse(idString, out var id))
             {
@@ -72,7 +72,7 @@ namespace Allors.Server
                     }
 
                     var data = media.MediaContent.Data;
-                    return this.File(data, media.MediaContent.Type, media.FileName);
+                    return this.File(data, media.MediaContent.Type, name ?? media.FileName);
                 }
             }
 

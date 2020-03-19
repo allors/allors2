@@ -10,7 +10,7 @@ namespace Allors.Data
 
     using Allors.Meta;
 
-    public static class SessionExtensions
+    internal static class SessionExtensions
     {
         internal static IMetaObject GetMetaObject(this ISession @this, object value)
         {
@@ -32,6 +32,11 @@ namespace Allors.Data
 
         internal static IObject GetObject(this ISession @this, object value)
         {
+            if (value == null)
+            {
+                return null;
+            }
+
             switch (value)
             {
                 case IObject @object:
@@ -51,6 +56,17 @@ namespace Allors.Data
         internal static IObject[] GetObjects(this ISession @this, object value)
         {
             var emptyArray = Array.Empty<IObject>();
+
+            if (value == null)
+            {
+                return emptyArray;
+            }
+
+            if (value is string idAsString)
+            {
+                return @this.GetObjects(idAsString.Split(','));
+            }
+
             switch (value)
             {
                 case IObject[] objects:
@@ -68,10 +84,6 @@ namespace Allors.Data
                 case long idAsLong:
                     var objectFromLong = @this.Instantiate(idAsLong);
                     return objectFromLong != null ? new[] { objectFromLong } : emptyArray;
-
-                case string idAsString:
-                    var objectFromString = @this.Instantiate(idAsString);
-                    return objectFromString != null ? new[] { objectFromString } : emptyArray;
 
                 default:
                     throw new ArgumentException();

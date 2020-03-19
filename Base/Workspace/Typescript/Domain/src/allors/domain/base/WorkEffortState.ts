@@ -1,6 +1,7 @@
 import { domain } from '../domain';
 import { WorkEffortState } from '../generated/WorkEffortState.g';
 import { Meta } from '../../meta/generated/domain.g';
+import { assert } from '../../framework';
 
 declare module '../generated/WorkEffortState.g' {
   interface WorkEffortState {
@@ -21,37 +22,38 @@ const finishedId = '6a9716a1-8174-4b26-86eb-22a265b74e78';
 domain.extend((workspace) => {
 
   const m = workspace.metaPopulation as Meta;
-  const obj = workspace.constructorByObjectType.get(m.WorkEffortState).prototype as any;
+  const cls = workspace.constructorByObjectType.get(m.WorkEffortState);
+  assert(cls);
 
-  Object.defineProperty(obj, 'created', {
+  Object.defineProperty(cls.prototype, 'created', {
     configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === createdId;
     },
   });
 
-  Object.defineProperty(obj, 'inProgress', {
+  Object.defineProperty(cls.prototype, 'inProgress', {
     configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === inProgressId;
     },
   });
 
-  Object.defineProperty(obj, 'cancelled', {
+  Object.defineProperty(cls.prototype, 'cancelled', {
     configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === cancelledId;
     },
   });
 
-  Object.defineProperty(obj, 'completed', {
+  Object.defineProperty(cls.prototype, 'completed', {
     configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === completedId;
     },
   });
 
-  Object.defineProperty(obj, 'finished', {
+  Object.defineProperty(cls.prototype, 'finished', {
     configurable: true,
     get(this: WorkEffortState) {
       return this.UniqueId === finishedId;

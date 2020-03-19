@@ -15,7 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MartinCostello.SqlLocalDb" Version="3.0.0" />
-    <PackageReference Include="Nuke.Common" Version="0.24.0-alpha0249" />
+    <PackageReference Include="Nuke.Common" Version="0.23.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,10 +42,6 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.113" />
   </ItemGroup>
 
 </Project>

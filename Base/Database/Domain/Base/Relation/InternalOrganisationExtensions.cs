@@ -10,38 +10,53 @@ namespace Allors.Domain
 
     public static partial class InternalOrganisationExtensions
     {
-        public static void BaseOnBuild(this InternalOrganisation @this, ObjectOnBuild method)
+        public static void BaseOnPostBuild(this InternalOrganisation @this, ObjectOnPostBuild method)
         {
             var singleton = @this.Session().GetSingleton();
 
-            if (!@this.ExistProductQuoteTemplate)
+            if (@this.IsInternalOrganisation)
             {
-                @this.ProductQuoteTemplate = singleton.CreateOpenDocumentTemplate<Print.ProductQuoteModel.Model>(singleton.GetResourceBytes("Templates.ProductQuote.odt"));
-            }
+                if (!@this.ExistProductQuoteTemplate)
+                {
+                    @this.ProductQuoteTemplate =
+                        singleton.CreateOpenDocumentTemplate<Print.ProductQuoteModel.Model>("ProductQuote.odt",
+                            singleton.GetResourceBytes("Templates.ProductQuote.odt"));
+                }
 
-            if (!@this.ExistSalesOrderTemplate)
-            {
-                @this.SalesOrderTemplate = singleton.CreateOpenDocumentTemplate<Print.SalesOrderModel.Model>(singleton.GetResourceBytes("Templates.SalesOrder.odt"));
-            }
+                if (!@this.ExistSalesOrderTemplate)
+                {
+                    @this.SalesOrderTemplate =
+                        singleton.CreateOpenDocumentTemplate<Print.SalesOrderModel.Model>("SalesOrder.odt",
+                            singleton.GetResourceBytes("Templates.SalesOrder.odt"));
+                }
 
-            if (!@this.ExistPurchaseOrderTemplate)
-            {
-                @this.PurchaseOrderTemplate = singleton.CreateOpenDocumentTemplate<Print.PurchaseOrderModel.Model>(singleton.GetResourceBytes("Templates.PurchaseOrder.odt"));
-            }
+                if (!@this.ExistPurchaseOrderTemplate)
+                {
+                    @this.PurchaseOrderTemplate =
+                        singleton.CreateOpenDocumentTemplate<Print.PurchaseOrderModel.Model>("PurchaseOrder.odt",
+                            singleton.GetResourceBytes("Templates.PurchaseOrder.odt"));
+                }
 
-            if (!@this.ExistPurchaseInvoiceTemplate)
-            {
-                @this.PurchaseInvoiceTemplate = singleton.CreateOpenDocumentTemplate<Print.PurchaseInvoiceModel.Model>(singleton.GetResourceBytes("Templates.PurchaseInvoice.odt"));
-            }
+                if (!@this.ExistPurchaseInvoiceTemplate)
+                {
+                    @this.PurchaseInvoiceTemplate =
+                        singleton.CreateOpenDocumentTemplate<Print.PurchaseInvoiceModel.Model>("PurchaseInvoice.odt",
+                            singleton.GetResourceBytes("Templates.PurchaseInvoice.odt"));
+                }
 
-            if (!@this.ExistSalesInvoiceTemplate)
-            {
-                @this.SalesInvoiceTemplate = singleton.CreateOpenDocumentTemplate<Print.SalesInvoiceModel.Model>(singleton.GetResourceBytes("Templates.SalesInvoice.odt"));
-            }
+                if (!@this.ExistSalesInvoiceTemplate)
+                {
+                    @this.SalesInvoiceTemplate =
+                        singleton.CreateOpenDocumentTemplate<Print.SalesInvoiceModel.Model>("SalesInvoice.odt",
+                            singleton.GetResourceBytes("Templates.SalesInvoice.odt"));
+                }
 
-            if (!@this.ExistWorkTaskTemplate)
-            {
-                @this.WorkTaskTemplate = singleton.CreateOpenDocumentTemplate<Print.WorkTaskModel.Model>(singleton.GetResourceBytes("Templates.WorkTask.odt"));
+                if (!@this.ExistWorkTaskTemplate)
+                {
+                    @this.WorkTaskTemplate =
+                        singleton.CreateOpenDocumentTemplate<Print.WorkTaskModel.Model>("WorkTask.odt",
+                            singleton.GetResourceBytes("Templates.WorkTask.odt"));
+                }
             }
         }
 

@@ -21,12 +21,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../core/components/role/localisedtext';
+import { AllorsMaterialQuillModule } from '../../../../core/components/role/quill';
 import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
-import { AllorsMaterialMarkdownModule } from '../../../../core/components/role/markdown';
 
 import { ProductCategoryEditComponent } from './productcategory-edit.component';
 export { ProductCategoryEditComponent } from './productcategory-edit.component';
@@ -42,7 +42,7 @@ export { ProductCategoryEditComponent } from './productcategory-edit.component';
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
-    AllorsMaterialMarkdownModule,
+    AllorsMaterialQuillModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,

@@ -22,6 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AllorsMaterialFileModule } from '../../../../../core/components/role/file';
 import { AllorsMaterialHeaderModule } from '../../../../../core/components/header';
 import { AllorsMaterialInputModule } from '../../../../../core/components/role/input';
+import { AllorsMaterialQuillModule } from '../../../../../core/components/role/quill';
 import { AllorsMaterialSelectModule } from '../../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../core/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../../core/components/role/slidetoggle';
@@ -31,7 +32,6 @@ import { AllorsMaterialFooterModule } from '../../../../../core/components/foote
 import { AllorsMaterialLocalisedTextModule } from '../../../../../core/components/role/localisedtext';
 import { AllorsMaterialFilesModule } from '../../../../../core/components/role/files';
 import { AllorsMaterialDatepickerModule } from '../../../../../core/components/role/datepicker';
-import { AllorsMaterialMarkdownModule } from '../../../../../core/components/role/markdown';
 
 import { BrandInlineModule } from '../../../brand/inline/brand-inline.module';
 import { ModelInlineModule } from '../../../model/inline/model-inline.module';
@@ -57,11 +57,11 @@ export { UnifiedGoodOverviewDetailComponent } from './unifiedgood-overview-detai
     AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
+    AllorsMaterialQuillModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
-    AllorsMaterialMarkdownModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
     FormsModule,

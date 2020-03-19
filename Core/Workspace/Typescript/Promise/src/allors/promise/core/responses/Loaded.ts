@@ -1,18 +1,38 @@
-import { ISession, ISessionObject, PullResponse } from '../../../framework';
+import { ISession, ISessionObject, PullResponse, assert } from '../../../framework';
 
 export class Loaded {
 
-    public objects: { [name: string]: ISessionObject; } = {};
-    public collections: { [name: string]: ISessionObject[]; } = {};
-    public values: { [name: string]: any; } = {};
+  public objects: { [name: string]: ISessionObject; } = {};
+  public collections: { [name: string]: ISessionObject[]; } = {};
+  public values: { [name: string]: any; } = {};
 
-    constructor(public session: ISession, public response: PullResponse) {
-        const namedObjects: { [id: string]: string; } = response.namedObjects;
-        const namedCollections: { [id: string]: string[]; } = response.namedCollections;
-        const namedValues: { [id: string]: any; } = response.namedValues;
+  constructor(public session: ISession, public response: PullResponse) {
+    const namedObjects = response.namedObjects;
+    const namedCollections = response.namedCollections;
+    const namedValues = response.namedValues;
 
-        Object.keys(namedObjects).map((key: string) => this.objects[key] = session.get(namedObjects[key]));
-        Object.keys(namedCollections).map((key: string) => this.collections[key] = namedCollections[key].map((id: string) => session.get(id)));
-        Object.keys(namedValues).map((key: string) => this.values[key] = namedValues[key]);
+    if (namedObjects) {
+      Object.keys(namedObjects).map((key: string) => {
+        const object = session.get(namedObjects[key]);
+        assert(object);
+        this.objects[key] = object;
+      });
     }
+
+    if (namedCollections) {
+      Object.keys(namedCollections).map((key: string) => {
+        const collection = namedCollections[key].map((id: string) => {
+          const object = session.get(id);
+          assert(object);
+          return object;
+        });
+
+        this.collections[key] = collection;
+      });
+    }
+
+    if (namedValues) {
+      Object.keys(namedValues).map((key: string) => this.values[key] = namedValues[key]);
+    }
+  }
 }

@@ -1,7 +1,7 @@
 <mat-form-field class="d-flex flex-column align-items-stretch">
   <mat-select aFocus [aFocusTrigger]="roleType" [(ngModel)]="model" [name]="name" [placeholder]="label" [multiple]="roleType.isMany" [required]="required" [disabled]="disabled" (ngModelChange)="onModelChange($event)" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
-    <mat-option *ngIf="!required" [attr.data-allors-option-display]="'None'">None</mat-option>
-    <mat-option *ngFor="let option of options" [value]="option" [attr.data-allors-option-display]="option[display]">
+    <mat-option *ngIf="!required && roleType.isOne" [attr.data-allors-option-id]="0">None</mat-option>
+    <mat-option *ngFor="let option of options" [value]="option" [attr.data-allors-option-id]="option.id">
       {{option[display]}}
     </mat-option>
   </mat-select>

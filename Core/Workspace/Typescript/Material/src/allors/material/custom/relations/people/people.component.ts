@@ -37,7 +37,7 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
   public total: number;
   public dataSource = new MatTableDataSource<Row>();
 
-  private sort$: BehaviorSubject<Sort>;
+  private sort$: BehaviorSubject<Sort | null>;
   private refresh$: BehaviorSubject<Date>;
   private pager$: BehaviorSubject<PageEvent>;
 
@@ -59,8 +59,8 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
 
-    this.sort$ = new BehaviorSubject<Sort>(undefined);
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.sort$ = new BehaviorSubject<Sort | null>(null);
+    this.refresh$ = new BehaviorSubject<Date>(new Date());
     this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
   }
 
@@ -84,7 +84,7 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
+    this.subscription = combineLatest([this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -93,13 +93,13 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , ,]),
+        }),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             pull.Person({
               predicate,
-              sort: sorter.create(sort),
+              sort: sort ? sorter.create(sort) : null,
               include: {
                 Pictures: x
               },

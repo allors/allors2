@@ -15,5 +15,7 @@ namespace Allors.Domain
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
+
+        public void BaseOnDerive(ObjectOnDerive method) => this.WorkItemDescription = $"Fax to {this.ToParty.PartyName} about {this.Subject}";
     }
 }

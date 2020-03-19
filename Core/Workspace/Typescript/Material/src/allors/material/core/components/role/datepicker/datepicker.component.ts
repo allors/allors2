@@ -7,7 +7,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { RoleField } from '../../../../../angular';
 
-export function dateAdapterFactory(dateLocale) {
+export function dateAdapterFactory(dateLocale: string) {
   return new MomentDateAdapter(dateLocale, { useUtc: true });
 }
 
@@ -27,7 +27,7 @@ export class AllorsMaterialDatepickerComponent extends RoleField {
   @Output()
   public selected: EventEmitter<Date> = new EventEmitter();
 
-  private momentModel: moment.Moment;
+  private momentModel: moment.Moment | null = null;
 
   constructor(
     @Optional() parentForm: NgForm,
@@ -68,5 +68,4 @@ export class AllorsMaterialDatepickerComponent extends RoleField {
       }
     }
   }
-
 }

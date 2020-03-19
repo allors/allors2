@@ -1,4 +1,4 @@
-import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseType, SyncRequest, SyncResponse, PullRequest, Pull, SecurityRequest, SecurityResponse } from '../../framework';
+import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseType, SyncRequest, SyncResponse, PullRequest, Pull, SecurityRequest, SecurityResponse, assert } from '../../framework';
 import { Method } from '../../framework';
 import { services } from '../../framework/database';
 
@@ -103,6 +103,7 @@ export class Database {
         const methods = methodsOrMethodOrService as Method[];
         const invokeRequest: InvokeRequest = {
           i: methods.map((v) => {
+            assert(v.object.version);
             return {
               i: v.object.id,
               v: v.object.version,
@@ -127,6 +128,7 @@ export class Database {
           });
       } else if (methodsOrMethodOrService instanceof Method) {
         const method = methodsOrMethodOrService;
+        assert(method.object.version);
         const invokeRequest: InvokeRequest = {
           i: [{
             i: method.object.id,

@@ -36,7 +36,7 @@ namespace Allors.Domain
 
             if (!this.ExistLogoImage)
             {
-                this.LogoImage = new MediaBuilder(this.Strategy.Session).WithInData(this.GetResourceBytes("allors.png")).Build();
+                this.LogoImage = new MediaBuilder(this.Strategy.Session).WithInFileName("allors.png").WithInData(this.GetResourceBytes("allors.png")).Build();
             }
 
             this.Locales = this.AdditionalLocales;

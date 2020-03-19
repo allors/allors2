@@ -63,16 +63,16 @@ namespace Tests
         protected void Setup(bool populate)
         {
 #if ALLORS_DERIVATION_DEBUG
-            var derivationDebug = true;
+            var derivationPersistent = true;
 #else
             var environmentVariable = Environment.GetEnvironmentVariable("ALLORS_DERIVATION");
-            var derivationDebug = environmentVariable?.ToLowerInvariant().Equals("debug") == true;
+            var derivationPersistent = environmentVariable?.ToLowerInvariant().Equals("persistent") == true;
 #endif
 
             var services = new ServiceCollection();
-            if (derivationDebug)
+            if (derivationPersistent)
             {
-                services.AddAllors((session) => new Allors.Domain.Derivations.Debug.Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
+                services.AddAllors((session) => new Allors.Domain.Derivations.Persistent.Derivation(session, new DerivationConfig { MaxCycles = 10, MaxIterations = 10, MaxPreparations = 10 }));
             }
             else
             {

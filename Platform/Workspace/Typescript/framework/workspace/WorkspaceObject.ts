@@ -17,19 +17,19 @@ export interface IWorkspaceObject {
 }
 
 export class WorkspaceObject implements IWorkspaceObject {
-  workspace: Workspace;
+  workspace: Workspace & IWorkspace;
   objectType: ObjectType;
   id: string;
   version: string;
-  sortedAccessControlIds: string;
-  sortedDeniedPermissionIds: string;
+  sortedAccessControlIds: string | null;
+  sortedDeniedPermissionIds: string | null;
 
   roleByRoleTypeId: Map<string, any>;
 
-  private cachedSortedAccessControlIds: string;
-  private cachedSortedDeniedPermissionIds: string;
-  private cachedAccessControls: AccessControl[];
-  private cachedDeniedPermissions: Set<Permission>;
+  private cachedSortedAccessControlIds: string | null;
+  private cachedSortedDeniedPermissionIds: string | null;
+  private cachedAccessControls: (AccessControl | undefined)[] | null;
+  private cachedDeniedPermissions: Set<Permission | null> | null;
 
   constructor(workspace: Workspace) {
     this.workspace = workspace;
@@ -73,8 +73,8 @@ export class WorkspaceObject implements IWorkspaceObject {
       });
     }
 
-    this.sortedAccessControlIds = sortedAccessControlIdsDecompress(syncResponseObject.a);
-    this.sortedDeniedPermissionIds = sortedDeniedPermissionIdsDecompress(syncResponseObject.d);
+    this.sortedAccessControlIds = syncResponseObject?.a ? sortedAccessControlIdsDecompress(syncResponseObject.a) : null;
+    this.sortedDeniedPermissionIds = syncResponseObject?.d ? sortedDeniedPermissionIdsDecompress(syncResponseObject.d) : null;
   }
 
   isPermitted(permission: Permission): boolean {
@@ -99,6 +99,7 @@ export class WorkspaceObject implements IWorkspaceObject {
         this.cachedDeniedPermissions = new Set();
         this.sortedDeniedPermissionIds
           .split(Compressor.itemSeparator)
+          // @ts-ignore
           .forEach(v => this.cachedDeniedPermissions.add(this.workspace.permissionById.get(v)));
       } else {
         this.cachedDeniedPermissions = null;
@@ -111,7 +112,7 @@ export class WorkspaceObject implements IWorkspaceObject {
 
     if (this.cachedAccessControls) {
       for (const accessControl of this.cachedAccessControls) {
-        if (accessControl.permissionIds.has(permission.id)) {
+        if (accessControl?.permissionIds.has(permission.id)) {
           return true;
         }
       }

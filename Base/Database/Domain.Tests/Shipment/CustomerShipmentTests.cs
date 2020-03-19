@@ -1197,7 +1197,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenCustomerShipmentWithValueBelowThreshold_WhenShippingToBelgium_TheninvoiceIncludesCosts()
+        public void GivenCustomerShipmentWithValueBelowThreshold_WhenShippingToBelgium_ThenInvoiceIncludesCosts()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 

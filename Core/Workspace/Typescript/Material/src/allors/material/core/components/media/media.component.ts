@@ -27,12 +27,14 @@ export class AllorsMaterialMediaComponent {
   ) {
   }
 
-  get src(): string {
+  get src(): string | null {
     if (this.media.InDataUri) {
       return this.media.InDataUri;
     } else if (this.media.UniqueId) {
       return this.mediaService.url(this.media);
     }
+
+    return null;
   }
 
   get icon(): string {
@@ -59,7 +61,9 @@ export class AllorsMaterialMediaComponent {
 
     if (this.media.InDataUri) {
       const link = document.createElement('a');
-      link.download = this.media.FileName;
+      if (this.media.FileName) {
+        link.download = this.media.FileName;
+      }
       link.href = this.media.InDataUri;
 
       document.body.appendChild(link);

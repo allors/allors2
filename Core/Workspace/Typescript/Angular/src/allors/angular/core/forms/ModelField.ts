@@ -1,15 +1,15 @@
 // tslint:disable: directive-selector
 // tslint:disable: directive-class-suffix
-import { AfterViewInit, Input, OnDestroy, QueryList, ViewChildren, Injectable } from '@angular/core';
+import { AfterViewInit, Input, OnDestroy, QueryList, ViewChildren, Directive } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { ISessionObject, } from '../../../framework';
 import { Field } from './Field';
 
-@Injectable()
+@Directive()
 export abstract class ModelField extends Field implements AfterViewInit, OnDestroy {
 
   @Input()
-  public model: ISessionObject;
+  public model: ISessionObject | null;
 
   @Input()
   public name: string;
@@ -58,7 +58,7 @@ export abstract class ModelField extends Field implements AfterViewInit, OnDestr
     }
   }
 
-  get dataAllorsId(): string {
-    return this.model ? this.model.id : null;
+  get dataAllorsId(): string | null {
+    return this.model?.id ?? null;
   }
 }

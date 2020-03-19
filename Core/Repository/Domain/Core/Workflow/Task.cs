@@ -21,7 +21,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
+        [Derived]
         [Workspace]
         WorkItem WorkItem { get; set; }
 
@@ -42,9 +42,19 @@ namespace Allors.Repository
         [RoleId("ceba2888-2a6e-4822-881b-1101b48f80f3")]
         [Indexed]
         #endregion
-        [Required]
+        [Derived]
         [Workspace]
         DateTime DateCreated { get; set; }
+
+        #region Allors
+        [Id("54A7B60A-F855-4230-B340-5EC746DC5C7D")]
+        [AssociationId("B97E44FD-02B8-444B-99F3-DD484D8C7A72")]
+        [RoleId("FD6ED9B6-A8DD-45E4-951E-FA4214DBD09D")]
+        [Indexed]
+        #endregion
+        [Derived]
+        [Workspace]
+        DateTime DateDue { get; set; }
 
         #region Allors
         [Id("5ad0b9f5-669c-4b05-8c97-89b59a227da2")]
@@ -62,8 +72,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         #endregion
+        [Derived]
         [Workspace]
-        Person[] Participants { get; set; }
+        User[] Participants { get; set; }
 
         #region Allors
         [Id("ea8abc59-b625-4d25-85bd-dd04bfe55086")]
@@ -72,7 +83,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         #endregion
+        [Derived]
         [Workspace]
-        Person Performer { get; set; }
+        User Performer { get; set; }
     }
 }

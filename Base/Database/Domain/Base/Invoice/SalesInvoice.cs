@@ -607,6 +607,7 @@ namespace Allors.Domain
                         .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice)
                         .WithAssignedVatRegime(salesInvoiceItem.AssignedVatRegime)
                         .WithProduct(salesInvoiceItem.Product)
+                        .WithSerialisedItem(salesInvoiceItem.SerialisedItem)
                         .WithQuantity(salesInvoiceItem.Quantity)
                         .WithComment(salesInvoiceItem.Comment)
                         .WithInternalComment(salesInvoiceItem.InternalComment)

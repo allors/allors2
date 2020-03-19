@@ -5,6 +5,7 @@ import { debounceTime, distinctUntilChanged, switchMap, map, filter, tap, startW
 
 import { RoleField } from '../../../../../angular';
 import { ISessionObject } from '../../../../../framework';
+import { ParameterTypes } from '../../../../../framework/protocol/Serialization';
 
 import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 
@@ -20,7 +21,9 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
 
   @Input() options: ISessionObject[];
 
-  @Input() filter: ((search: string) => Observable<ISessionObject[]>);
+  @Input() filter: (search: string, parameters?: { [id: string]: ParameterTypes }) => Observable<ISessionObject[]>;
+
+  @Input() filterParameters: ({ [id: string]: string });
 
   @Output() changed: EventEmitter<ISessionObject> = new EventEmitter();
 
@@ -28,7 +31,7 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
 
   searchControl: FormControl = new FormControl();
 
-   @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
 
   private focused = false;
 
@@ -44,7 +47,11 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
           debounceTime(this.debounceTime),
           distinctUntilChanged(),
           switchMap((search: string) => {
-            return this.filter(search);
+            if (this.filterParameters) {
+              return this.filter(search, this.filterParameters);
+            } else {
+              return this.filter(search);
+            }
           }))
         ;
     } else {
@@ -57,17 +64,19 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
             const lowerCaseSearch = search.trim().toLowerCase();
             return this.options
               .filter((v: ISessionObject) => {
-                const optionDisplay: string = v[this.display]
-                  ? v[this.display].toString().toLowerCase()
+                const optionDisplay: string = (v as any)[this.display]
+                  ? (v as any)[this.display].toString().toLowerCase()
                   : undefined;
                 if (optionDisplay) {
                   return optionDisplay.indexOf(lowerCaseSearch) !== -1;
                 }
+
+                return false;
               })
               .sort(
                 (a: ISessionObject, b: ISessionObject) =>
-                  a[this.display] !== b[this.display]
-                    ? a[this.display] < b[this.display] ? -1 : 1
+                  (a as any)[this.display] !== (b as any)[this.display]
+                    ? (a as any)[this.display] < (b as any)[this.display] ? -1 : 1
                     : 0,
               );
           })
@@ -95,11 +104,7 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
   }
 
   displayFn(): (val: ISessionObject) => string {
-    return (val: ISessionObject) => {
-      if (val) {
-        return val ? val[this.display] : '';
-      }
-    };
+    return (val: ISessionObject) => val ? (val as any)[this.display] : '';
   }
 
   optionSelected(event: MatAutocompleteSelectedEvent): void {

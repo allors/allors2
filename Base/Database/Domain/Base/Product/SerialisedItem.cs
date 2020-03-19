@@ -50,6 +50,19 @@ namespace Allors.Domain
                 this.Name = this.PartWhereSerialisedItem.Name;
             }
 
+            var purchaseOrderItem = this.PurchaseOrderItemsWhereSerialisedItem.OrderByDescending(v => v.PurchaseOrderWherePurchaseOrderItem.OrderDate).FirstOrDefault();
+
+            if (purchaseOrderItem == null)
+            {
+                purchaseOrderItem = this.Session().Extent<PurchaseOrderItem>()
+                    .OrderByDescending(v => v.PurchaseOrderWherePurchaseOrderItem.OrderDate)
+                    .FirstOrDefault(v => Object.Equals(v.SerialNumber, this.SerialNumber));
+            }
+
+            this.PurchasePrice = purchaseOrderItem?.TotalExVat ?? this.AssignedPurchasePrice;
+            this.PurchaseOrder = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem;
+            this.SuppliedBy = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier ?? this.AssignedSuppliedBy;
+
             this.DeriveProductCharacteristics(derivation);
 
             if (derivation.ChangeSet.IsCreated(this))
@@ -69,6 +82,11 @@ namespace Allors.Domain
             if (this.ExistOwnedBy)
             {
                 builder.Append(string.Join(" ", this.OwnedBy.PartyName));
+            }
+
+            if (this.ExistReportingUnit)
+            {
+                builder.Append(string.Join(" ", this.ReportingUnit.PartyName));
             }
 
             if (this.ExistPartWhereSerialisedItem)

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵangular_packages_core_core_bj } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { IObject, ObjectType } from '../../../framework';
@@ -7,9 +7,17 @@ import { IObject, ObjectType } from '../../../framework';
 export class NavigationService {
   constructor(private router: Router) {}
 
+  hasList(obj: IObject): boolean {
+    return !!obj?.objectType?.list;
+  }
+
   list(objectType: ObjectType) {
     const url = objectType.list;
     this.router.navigate([url]);
+  }
+
+  hasOverview(obj: IObject): boolean {
+    return !!obj?.objectType?.overview;
   }
 
   overview(obj: IObject) {

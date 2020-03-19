@@ -237,4 +237,13 @@
   <data name="SerializedItemQuantity" xml:space="preserve">
     <value>Serialized item is unique. Quantity must be equal to 1</value>
   </data>
+  <data name="UnitPriceRequired" xml:space="preserve">
+    <value>unit price is required</value>
+  </data>
+  <data name="ReservedFromNonSerialisedInventoryItem" xml:space="preserve">
+    <value>reserved from non serialised inventory item</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>

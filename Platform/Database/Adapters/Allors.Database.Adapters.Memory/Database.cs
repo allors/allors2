@@ -10,6 +10,7 @@ namespace Allors.Database.Adapters.Memory
     using System.Xml;
 
     using Allors.Meta;
+    using Allors.Serialization;
 
     public class Database : IDatabase
     {
@@ -36,10 +37,6 @@ namespace Allors.Database.Adapters.Memory
         public event RelationNotLoadedEventHandler RelationNotLoaded;
 
         public string Id { get; }
-
-        public bool IsDatabase => true;
-
-        public bool IsWorkspace => false;
 
         public bool IsShared => false;
 
@@ -79,6 +76,10 @@ namespace Allors.Database.Adapters.Memory
         }
 
         public void Save(XmlWriter writer) => this.Session.Save(writer);
+
+        public void Load(IPopulationData data) => throw new NotImplementedException();
+
+        public IPopulationData Save() => this.Session.Save();
 
         public bool ContainsConcreteClass(IComposite objectType, IObjectType concreteClass)
         {

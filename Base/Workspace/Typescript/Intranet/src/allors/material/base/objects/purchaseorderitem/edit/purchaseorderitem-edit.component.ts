@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, FetcherService, SearchFactory } from '../../../../../angular';
-import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering, SerialisedItem, Organisation } from '../../../../../domain';
+import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering, SerialisedItem, Organisation, UnifiedGood, NonUnifiedPart } from '../../../../../domain';
 import { PullRequest, IObject, Equals, And, LessThan, Or, Not, Exists, GreaterThan, Filter, ContainedIn } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -35,7 +35,9 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   serialisedItems: SerialisedItem[];
   serialised: boolean;
   internalOrganisation: Organisation;
-  partsFilter: SearchFactory;
+  sparePartsFilter: SearchFactory;
+  nonUnifiedPart: boolean;
+  unifiedGood: boolean;
 
   constructor(
     @Self() public allors: ContextService,
@@ -135,7 +137,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
         }
 
-        this.partsFilter = new SearchFactory({
+        this.sparePartsFilter = new SearchFactory({
           objectType: this.m.Part,
           roleTypes: [this.m.Part.Name, this.m.Part.SearchString],
           post: (predicate: And) => {
@@ -165,7 +167,16 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
 
           if (this.orderItem.Part) {
-            this.updateFromPart(this.orderItem.Part);
+            this.unifiedGood = this.orderItem.Part.objectType.name === m.UnifiedGood.name;
+            this.nonUnifiedPart = this.orderItem.Part.objectType.name === m.NonUnifiedPart.name;
+
+            if (this.unifiedGood) {
+              this.updateFromPart(this.orderItem.Part);
+            }
+
+            if (this.nonUnifiedPart) {
+              this.updateFromSparePart(this.orderItem.Part);
+            }
           }
 
           if (this.orderItem.CanWriteAssignedUnitPrice) {
@@ -179,7 +190,19 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
   public partSelected(part: Part): void {
     if (part) {
+      this.unifiedGood = this.orderItem.Part.objectType.name === this.m.UnifiedGood.name;
+      this.nonUnifiedPart = this.orderItem.Part.objectType.name === this.m.NonUnifiedPart.name;
+
       this.updateFromPart(part);
+    }
+  }
+
+  public sparePartSelected(part: Part): void {
+    if (part) {
+      this.unifiedGood = this.orderItem.Part.objectType.name === this.m.UnifiedGood.name;
+      this.nonUnifiedPart = this.orderItem.Part.objectType.name === this.m.NonUnifiedPart.name;
+
+      this.updateFromSparePart(part);
     }
   }
 
@@ -217,7 +240,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       );
   }
 
-  private updateFromPart(part: Part) {
+  private updateFromSparePart(part: Part) {
 
     const { pull, x } = this.metaService;
 
@@ -226,10 +249,59 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         {
           object: part,
           fetch: {
-            SupplierOfferingsWherePart: x
+            SerialisedItems: {
+              include: {
+                OwnedBy: x
+              }
+            }
           }
         }
       ),
+      pull.Part(
+        {
+          object: part,
+          fetch: {
+            SupplierOfferingsWherePart: {
+              include: {
+                Supplier: x
+              }
+            }
+          }
+        }
+      ),
+      pull.Part(
+        {
+          object: part,
+          include: {
+            InventoryItemKind: x,
+          }
+        }
+      ),
+    ];
+
+    this.allors.context
+      .load(new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
+
+        const supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
+        this.supplierOffering = supplierOfferings.find(v => moment(v.FromDate).isBefore(moment())
+          && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment()))
+          && v.Supplier === this.order.TakenViaSupplier);
+
+        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
+
+        if (this.orderItem.SerialisedItem) {
+          this.serialisedItems.push(this.orderItem.SerialisedItem);
+        }
+      });
+  }
+
+  private updateFromPart(part: Part) {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
       pull.Part(
         {
           object: part,
@@ -257,13 +329,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       .subscribe((loaded) => {
         this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
-        const supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-        this.supplierOffering = supplierOfferings.find(v => moment(v.FromDate).isBefore(moment())
-          && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment()))
-          && v.Supplier === this.order.TakenViaSupplier);
-
-        const serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
-        this.serialisedItems = serialisedItems.filter(v => v.OwnedBy !== this.internalOrganisation);
+        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
 
         if (this.orderItem.SerialisedItem) {
           this.serialisedItems.push(this.orderItem.SerialisedItem);

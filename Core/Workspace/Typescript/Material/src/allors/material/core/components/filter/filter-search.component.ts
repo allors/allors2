@@ -1,54 +1,61 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, AbstractControl } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { filter, debounceTime, distinctUntilChanged, map, switchMap, scan, tap } from 'rxjs/operators';
+import { FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
-import { ISessionObject } from '../../../../../allors/framework';
+import { ISessionObject, assert } from '../../../../../allors/framework';
 import { ContextService } from '../../../../../allors/angular';
 import { FilterFieldDefinition } from '../../../../../allors/angular/core/filter/FilterFieldDefinition';
 
 @Component({
-    // tslint:disable-next-line:component-selector
-    selector: 'a-mat-filter-search',
-    templateUrl: './filter-search.component.html',
+  // tslint:disable-next-line:component-selector
+  selector: 'a-mat-filter-search',
+  templateUrl: './filter-search.component.html',
 })
 export class AllorsMaterialFilterSearchComponent implements OnInit {
 
-    @Input() debounceTime = 400;
+  @Input() debounceTime = 400;
 
-    @Input()
-    parent: FormGroup;
+  @Input()
+  parent: FormGroup;
 
-    @Input()
-    filterFieldDefinition: FilterFieldDefinition;
+  @Input()
+  filterFieldDefinition: FilterFieldDefinition;
 
-    @Output()
-    apply: EventEmitter<any> = new EventEmitter();
+  @Output()
+  apply: EventEmitter<any> = new EventEmitter();
 
-    filteredOptions: Observable<ISessionObject[]>;
+  filteredOptions: Observable<ISessionObject[]>;
 
-    display: (v: ISessionObject) => string;
+  display: ((v: ISessionObject) => string);
 
-    constructor(
-        public allors: ContextService,
-    ) { }
+  //TODO: Fix this
+  private nothingDisplay = () => '';
 
-    ngOnInit() {
-        this.display = this.filterFieldDefinition.options.display;
+  constructor(
+    public allors: ContextService,
+  ) { }
 
-        this.filteredOptions = this.parent.valueChanges
-            .pipe(
-                filter((v) => {
-                    const value = v['value'];
-                    return value && value.trim && value.toLowerCase;
-                }),
-                debounceTime(this.debounceTime),
-                distinctUntilChanged(),
-                switchMap((v) => {
+  ngOnInit() {
+    this.display = this.filterFieldDefinition.options?.display ?? this.nothingDisplay;
 
-                    const value = v['value'];
-                    return this.filterFieldDefinition.options.search.create(this.allors)(value);
-                })
-            );
-    }
+    this.filteredOptions = this.parent.valueChanges
+      .pipe(
+        filter((v) => {
+          const value = v.value;
+          return value && value.trim && value.toLowerCase;
+        }),
+        debounceTime(this.debounceTime),
+        distinctUntilChanged(),
+        switchMap((v) => {
+
+          const value = v.value;
+
+          // TODO: ?????
+          assert(this.filterFieldDefinition.options);
+
+          return this.filterFieldDefinition.options.search.create(this.allors)(value);
+        })
+      );
+  }
 }

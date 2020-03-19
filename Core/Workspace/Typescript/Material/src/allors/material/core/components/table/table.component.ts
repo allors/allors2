@@ -19,11 +19,11 @@ export class AllorsMaterialTableComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) matSort: MatSort;
 
   ngOnInit(): void {
-    this.table.Init(this.matSort);
+    this.table.init(this.matSort);
   }
 
-  cellStyle(row: TableRow, column: Column): string {
-    return this.action(row, column) ? 'pointer' : undefined;
+  cellStyle(row: TableRow, column: Column) {
+    return this.action(row, column) ? 'pointer' : null;
   }
 
   onCellClick(row: TableRow, column: Column) {
@@ -34,7 +34,7 @@ export class AllorsMaterialTableComponent implements OnInit {
     }
   }
 
-  get dataAllorsActions(): string {
+  get dataAllorsActions() {
       return (this.table && this.table.actions) ? this.table.actions.map(v => v.name).join() : '';
   }
 

@@ -7,7 +7,7 @@ export class Except {
 
   public sort: Sort[];
 
-  public get objectType(): ObjectType {
+  public get objectType(): ObjectType | undefined {
     return this.operands && this.operands.length > 0 ? this.operands[0].objectType : undefined;
   }
 

@@ -8,6 +8,7 @@
 namespace Allors.Domain.TestPopulation
 {
     using System;
+    using System.Linq;
     using Allors.Meta;
 
     public static partial class SerialisedItemBuilderExtensions
@@ -20,7 +21,6 @@ namespace Allors.Domain.TestPopulation
             var serviceDate = faker.Date.Past(refDate: @this.Session.Now());
             var acquiredDate = faker.Date.Past(refDate: serviceDate);
             var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
-            var lifetime = faker.Random.Int(0, 20);
             var expectedSalesPrice = Convert.ToDecimal(faker.Commerce.Price(replacementValue + 1000, replacementValue + 10000));
 
             @this.WithName(faker.Lorem.Word());
@@ -34,27 +34,24 @@ namespace Allors.Domain.TestPopulation
             @this.WithSerialNumber(faker.Random.AlphaNumeric(12));
             @this.WithOwnership(faker.Random.ListItem(@this.Session.Extent<Ownership>()));
             @this.WithManufacturingYear(serviceDate.Year - 5);
-            @this.WithLifeTime(lifetime);
-            @this.WithDepreciationYears(faker.Random.Int(0, lifetime));
-            @this.WithReplacementValue(replacementValue);
             @this.WithAssignedPurchasePrice(Convert.ToDecimal(faker.Commerce.Price(replacementValue)));
             @this.WithExpectedSalesPrice(expectedSalesPrice);
-            @this.WithRefurbishCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
-            @this.WithTransportCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
-            @this.WithExpectedRentalPriceFullService(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 10)));
-            @this.WithExpectedRentalPriceDryLease(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 20)));
-            @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
+            @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            if (@this.SecondaryPhotos != null)
+            {
+                @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+                @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            }
+            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            @this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithAvailableForSale(faker.Random.Bool());
 
             if (state.IsSold)
             {
                 @this.WithOwnedBy(new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false));
+                @this.WithReportingUnit(internalOrganisation);
             }
             else if (state.IsInRent)
             {
@@ -62,10 +59,12 @@ namespace Allors.Domain.TestPopulation
                 @this.WithRentalFromDate(faker.Date.Between(start: acquiredDate, end: acquiredDate.AddDays(10)));
                 @this.WithRentalThroughDate(faker.Date.Future(refDate: acquiredDate.AddYears(2)));
                 @this.WithExpectedReturnDate(faker.Date.Between(start: acquiredDate.AddYears(2).AddDays(1), end: acquiredDate.AddYears(2).AddDays(10)));
+                @this.WithReportingUnit(internalOrganisation);
             }
             else
             {
                 @this.WithOwnedBy(internalOrganisation);
+                @this.WithReportingUnit(internalOrganisation);
             }
 
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
@@ -85,7 +84,6 @@ namespace Allors.Domain.TestPopulation
             var serviceDate = faker.Date.Past(refDate: @this.Session.Now());
             var acquiredDate = faker.Date.Past(refDate: serviceDate);
             var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
-            var lifetime = faker.Random.Int(0, 20);
             var expectedSalesPrice = Convert.ToDecimal(faker.Commerce.Price(replacementValue + 1000, replacementValue + 10000));
 
             @this.WithName(faker.Lorem.Word());
@@ -99,22 +97,15 @@ namespace Allors.Domain.TestPopulation
             @this.WithSerialNumber(faker.Random.AlphaNumeric(12));
             @this.WithOwnership(faker.Random.ListItem(@this.Session.Extent<Ownership>()));
             @this.WithManufacturingYear(serviceDate.Year - 5);
-            @this.WithLifeTime(lifetime);
-            @this.WithDepreciationYears(faker.Random.Int(0, lifetime));
-            @this.WithReplacementValue(replacementValue);
             @this.WithAssignedPurchasePrice(Convert.ToDecimal(faker.Commerce.Price(replacementValue)));
             @this.WithExpectedSalesPrice(expectedSalesPrice);
-            @this.WithRefurbishCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
-            @this.WithTransportCost(Convert.ToDecimal(faker.Commerce.Price(0, 1000)));
-            @this.WithExpectedRentalPriceFullService(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 10)));
-            @this.WithExpectedRentalPriceDryLease(Convert.ToDecimal(faker.Commerce.Price(expectedSalesPrice / 25, expectedSalesPrice / 20)));
-            @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
-            @this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.PicsumUrl(width: 800, height: 600)).Build());
+            @this.WithPrimaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            @this.WithSecondaryPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            @this.WithAdditionalPhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
+            @this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithAvailableForSale(true);
             @this.WithOwnedBy(internalOrganisation);
 

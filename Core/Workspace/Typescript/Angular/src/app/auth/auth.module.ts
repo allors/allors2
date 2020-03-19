@@ -24,7 +24,7 @@ export { LoginComponent } from './login.component';
   ]
 })
 export class AuthModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<AuthModule> {
     return {
       ngModule: AuthModule,
       providers: [ AuthorizationService ]

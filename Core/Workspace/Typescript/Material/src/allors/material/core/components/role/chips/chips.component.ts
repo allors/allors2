@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, ElementRef, DoCheck, NgZone } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Optional, Output, ViewChild, ElementRef, DoCheck, NgZone } from '@angular/core';
 import { NgForm, FormControl } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { concat, debounceTime, distinctUntilChanged, switchMap, map, startWith, filter, take } from 'rxjs/operators';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, map, filter } from 'rxjs/operators';
 
-import { ISessionObject } from '../../../../../framework';
+import { ISessionObject, } from '../../../../../framework';
+import { ParameterTypes } from '../../../../..//framework/protocol/Serialization';
 
 import { RoleField } from '../../../../../angular';
 import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -21,7 +22,9 @@ export class AllorsMaterialChipsComponent extends RoleField implements OnInit, D
 
   @Input() options: ISessionObject[];
 
-  @Input() filter: ((search: string) => Observable<ISessionObject[]>);
+  @Input() filter: (search: string, parameters?: { [id: string]: ParameterTypes }) => Observable<ISessionObject[]>;
+
+  @Input() filterParameters: ({ [id: string]: ParameterTypes });
 
   @Output() changed: EventEmitter<ISessionObject> = new EventEmitter();
 
@@ -29,28 +32,34 @@ export class AllorsMaterialChipsComponent extends RoleField implements OnInit, D
 
   searchControl: FormControl = new FormControl();
 
-  @ViewChild('searchInput', { static: false }) searchInput: ElementRef;
+  @ViewChild('searchInput') searchInput: ElementRef;
 
-  @ViewChild(MatAutocompleteTrigger, { static: false }) private trigger: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
 
   private focused = false;
 
+  focus$: BehaviorSubject<Date>;
+
   constructor(
-    @Optional() parentForm: NgForm,
-    private ngZone: NgZone
-  ) {
+    @Optional() parentForm: NgForm  ) {
     super(parentForm);
+
+    this.focus$ = new BehaviorSubject<Date>(new Date());
   }
 
   public ngOnInit(): void {
     if (this.filter) {
-      this.filteredOptions = this.searchControl.valueChanges
+      this.filteredOptions = combineLatest([this.searchControl.valueChanges, this.focus$])
         .pipe(
-          filter((v) => v !== null && v !== undefined && v.trim),
+          filter(([search]) => search !== null && search !== undefined && search.trim),
           debounceTime(this.debounceTime),
           distinctUntilChanged(),
-          switchMap((search: string) => {
-            return this.filter(search);
+          switchMap(([search]) => {
+            if (this.filterParameters) {
+              return this.filter(search, this.filterParameters);
+            } else {
+              return this.filter(search);
+            }
           }))
         ;
     } else {
@@ -63,17 +72,19 @@ export class AllorsMaterialChipsComponent extends RoleField implements OnInit, D
             const lowerCaseSearch = search.trim().toLowerCase();
             return this.options
               .filter((v: ISessionObject) => {
-                const optionDisplay: string = v[this.display]
-                  ? v[this.display].toString().toLowerCase()
+                const optionDisplay: string = (v as any)[this.display]
+                  ? (v as any)[this.display].toString().toLowerCase()
                   : undefined;
                 if (optionDisplay) {
                   return optionDisplay.indexOf(lowerCaseSearch) !== -1;
                 }
+
+                return false;
               })
               .sort(
                 (a: ISessionObject, b: ISessionObject) =>
-                  a[this.display] !== b[this.display]
-                    ? a[this.display] < b[this.display] ? -1 : 1
+                  (a as any)[this.display] !== (b as any)[this.display]
+                    ? (a as any)[this.display] < (b as any)[this.display] ? -1 : 1
                     : 0,
               );
           })
@@ -96,12 +107,13 @@ export class AllorsMaterialChipsComponent extends RoleField implements OnInit, D
   inputFocus() {
     this.focused = true;
     this.trigger._onChange('');
+    this.focus$.next(new Date());
   }
 
   displayFn(): (val: ISessionObject) => string {
     return (val: ISessionObject) => {
       if (val) {
-        return val ? val[this.display] : '';
+        return val ? (val as any)[this.display] : '';
       }
     };
   }

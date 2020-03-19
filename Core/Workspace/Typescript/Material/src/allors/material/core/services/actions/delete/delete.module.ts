@@ -19,7 +19,7 @@ export { DeleteService } from './delete.service';
   ]
 })
 export class DeleteModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<DeleteModule> {
     return {
       ngModule: DeleteModule,
       providers: [ DeleteService ]

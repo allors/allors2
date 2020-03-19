@@ -7,7 +7,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 import { RoleField, ModelField } from '../../../../../angular';
 
-export function dateAdapterFactory(dateLocale) {
+export function dateAdapterFactory(dateLocale: string) {
   return new MomentDateAdapter(dateLocale, { useUtc: false })
 }
 
@@ -27,7 +27,7 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
   @Output()
   public selected: EventEmitter<Date> = new EventEmitter();
 
-  private momentModel: moment.Moment = null;
+  private momentModel: moment.Moment | null = null;
 
   private adapter: MomentDateAdapter;
 
@@ -69,25 +69,25 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
     }
   }
 
-  get hours(): number {
-    if (this.model) {
-      return this.model.hours();
-    }
+  get hours(): number | null {
+    return this.model?.hours() ?? null;
   }
 
-  set hours(value: number) {
+  set hours(value: number | null) {
     if (this.model && value !== null) {
       this.model = this.model.clone().hours(value);
     }
   }
 
-  get minutes(): number {
+  get minutes(): number | null {
     if (this.model) {
-      return this.model.minutes();
+      return this.model?.minutes();
     }
+
+    return null;
   }
 
-  set minutes(value: number) {
+  set minutes(value: number | null) {
     if (this.model && value !== null) {
       this.model = this.model.clone().minutes(value);
     }

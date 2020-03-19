@@ -379,9 +379,10 @@ namespace Allors.Domain
 
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
                 {
+                    ShipmentItem shipmentItem = null;
                     if (orderItem.PurchaseOrderItemShipmentState.IsNotReceived && orderItem.ExistPart)
                     {
-                        var shipmentItem = new ShipmentItemBuilder(session)
+                        shipmentItem = new ShipmentItemBuilder(session)
                             .WithPart(orderItem.Part)
                             .WithQuantity(orderItem.QuantityOrdered)
                             .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
@@ -413,13 +414,32 @@ namespace Allors.Domain
                                 orderItem.Part.AddSerialisedItem(serialisedItem);
                             }
 
+                            shipmentItem.SerialisedItem = serialisedItem;
+
                             // HACK: DerivedRoles (WIP)
                             var serialisedItemDeriveRoles = (SerialisedItemDerivedRoles)serialisedItem;
                             serialisedItemDeriveRoles.PurchaseOrder = this;
                             serialisedItemDeriveRoles.SuppliedBy = this.TakenViaSupplier;
-                            serialisedItemDeriveRoles.PurchasePrice = orderItem.UnitPrice;
+                            serialisedItem.RemoveAssignedPurchasePrice();
+                            serialisedItemDeriveRoles.PurchasePrice = orderItem.TotalExVat;
 
                             serialisedItem.OwnedBy = this.OrderedBy;
+                            serialisedItem.ReportingUnit = this.OrderedBy;
+                            serialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session()).Available;
+
+                            var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
+                                .FirstOrDefault(v => v.SerialisedItem.Equals(serialisedItem) && v.Facility.Equals(this.Facility));
+
+                            if (inventoryItem == null)
+                            {
+                                new SerialisedInventoryItemBuilder(this.Session())
+                                    .WithSerialisedItem(serialisedItem)
+                                    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Available)
+                                    .WithPart(orderItem.Part)
+                                    .WithUnitOfMeasure(new UnitsOfMeasure(this.Session()).Piece)
+                                    .WithFacility(this.Facility)
+                                    .Build();
+                            }
 
                             new InventoryItemTransactionBuilder(this.Session())
                                 .WithSerialisedItem(serialisedItem)

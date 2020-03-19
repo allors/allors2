@@ -18,11 +18,11 @@ export class Table<Row extends TableRow> implements BaseTable {
 
   columns: Column[];
   actions: Action[];
-  defaultAction: Action;
-  pageSize: number;
-  pageSizeOptions: number[];
+  defaultAction?: Action;
+  pageSize?: number;
+  pageSizeOptions?: number[];
 
-  sort$: BehaviorSubject<Sort>;
+  sort$: BehaviorSubject<Sort | null>;
   pager$: BehaviorSubject<PageEvent>;
 
   total: number;
@@ -33,12 +33,12 @@ export class Table<Row extends TableRow> implements BaseTable {
 
   constructor(config?: TableConfig) {
 
-    let sort: Sort = null;
+    let sort: Sort | null = null;
 
     if (config) {
 
       this.defaultAction = config.defaultAction;
-      this.columns = config.columns.map((v) => new Column(v));
+      this.columns = config.columns?.map((v) => new Column(v)) ?? [];
 
       if (config.selection) {
         this.selection = new SelectionModel<Row>(true, []);
@@ -50,7 +50,7 @@ export class Table<Row extends TableRow> implements BaseTable {
             active: config.initialSort,
             direction: 'asc'
           };
-        } else {
+        } else if (config.initialSort.active) {
           sort = {
             active: config.initialSort.active,
             direction: config.initialSort.direction || 'asc'
@@ -69,18 +69,18 @@ export class Table<Row extends TableRow> implements BaseTable {
         this.pageSizeOptions = [this.pageSize, this.pageSize * 2, this.pageSize * 5];
       }
 
-      this.autoSort = config.autoSort;
-      this.autoFilter = config.autoFilter;
+      this.autoSort = config.autoSort ?? false;
+      this.autoFilter = config.autoFilter ?? false;
     }
 
     this.dataSource = new MatTableDataSource();
     this.actions = (config && config.actions) || [];
     this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
 
-    this.sort$ = new BehaviorSubject<Sort>(sort);
+    this.sort$ = new BehaviorSubject<Sort | null>(sort);
   }
 
-  get sortValue(): Sort {
+  get sortValue(): Sort | null {
     return this.sort$.getValue();
   }
 
@@ -126,7 +126,7 @@ export class Table<Row extends TableRow> implements BaseTable {
   }
 
   sort(event: Sort): void {
-    this.sort$.next(event);
+    this.sort$?.next(event);
   }
 
   filter(event: any): void {
@@ -143,12 +143,12 @@ export class Table<Row extends TableRow> implements BaseTable {
       this.selection.clear();
     }
     this.dataSource.data = value;
-    if (this.pageSizeOptions && this.total > Math.max(...this.pageSizeOptions)) {
+    if (this.pageSize && this.pageSizeOptions && this.total > Math.max(...this.pageSizeOptions)) {
       this.pageSizeOptions = [this.pageSize, this.pageSize * 2, this.pageSize * 5, this.total * 1];
     }
   }
 
-  Init(sort: MatSort) {
+  init(sort: MatSort) {
     if (this.autoSort) {
       this.dataSource.sort = sort;
     }

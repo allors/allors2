@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 
 import { Loaded, ContextService, MetaService } from '../../allors/angular';
 import { Organisation } from '../../allors/domain';
-import { PullRequest } from '../../allors/framework';
+import { PullRequest, assert } from '../../allors/framework';
 
 @Component({
   templateUrl: './fetch.component.html',
@@ -38,6 +38,7 @@ export class FetchComponent implements OnInit, OnDestroy {
     const { pull, x } = this.metaService;
 
     const id = this.route.snapshot.paramMap.get('id');
+    assert(id);
 
     const pulls = [
       pull.Organisation({ object: id, include: { Owner: x } }),

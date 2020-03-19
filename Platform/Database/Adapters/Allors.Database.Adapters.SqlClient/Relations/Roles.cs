@@ -89,14 +89,18 @@ namespace Allors.Database.Adapters.SqlClient
 
         internal void SetUnitRole(IRoleType roleType, object role)
         {
-            this.Reference.Session.State.ChangeSet.OnChangingUnitRole(this.Reference.ObjectId, roleType);
+            var oldUnit = this.GetUnitRole(roleType);
+            if (!Equals(oldUnit, role))
+            {
+                this.Reference.Session.State.ChangeSet.OnChangingUnitRole(this.Reference.ObjectId, roleType);
 
-            this.SetOriginal(roleType, role);
+                this.SetOriginal(roleType, role);
 
-            this.ModifiedRoleByRoleType[roleType] = role;
-            this.RequireFlushRoles.Add(roleType);
+                this.ModifiedRoleByRoleType[roleType] = role;
+                this.RequireFlushRoles.Add(roleType);
 
-            this.Reference.Session.RequireFlush(this.Reference, this);
+                this.Reference.Session.RequireFlush(this.Reference, this);
+            }
         }
 
         internal bool TryGetCompositeRole(IRoleType roleType, out long? roleId)
@@ -255,10 +259,10 @@ namespace Allors.Database.Adapters.SqlClient
                 this.ModifiedRolesByRoleType[roleType] = compositesRole;
             }
 
-            this.Reference.Session.State.ChangeSet.OnChangingCompositesRole(this.Reference.ObjectId, roleType, role);
-
             if (!compositesRole.Contains(role.ObjectId))
             {
+                this.Reference.Session.State.ChangeSet.OnChangingCompositesRole(this.Reference.ObjectId, roleType, role);
+
                 compositesRole.Add(role.ObjectId);
 
                 if (roleType.AssociationType.IsOne)

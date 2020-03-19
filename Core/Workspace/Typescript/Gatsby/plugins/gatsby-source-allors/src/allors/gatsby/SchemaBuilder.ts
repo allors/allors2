@@ -14,7 +14,7 @@ export class SchemaBuilder {
 
   public build() {
 
-    const { actions: { createTypes } } = this.args;
+    const { actions: { createTypes }, schema } = this.args;
 
     createTypes(`interface AllorsObject {
       allorsId: String!,
@@ -22,10 +22,18 @@ export class SchemaBuilder {
       allorsType: String!,
     }`)
 
+    createTypes(`type AllorsMarkdown implements Node {
+      childMarkdownRemark: MarkdownRemark!,
+    }`)
+
     this.metaPopulation.interfaces.forEach((v) => {
-      if (v._isGatsby && v._isUnion) {
-        const union = v.classes.map((w) => `${w._name}`).join("| ");
-        const typeDefs = `union ${v._name} = ${union}\n`
+      if (v._isGatsby) {
+        const fields = v.classes.filter((w)=>w._isGatsby).map((w) => `${w.name}: Allors${w.name} @link\n`);
+        const typeDefs = `
+        type Allors${v.name} implements Node {
+          ${fields}
+        }
+      `
         createTypes(typeDefs)
       }
     });
@@ -33,7 +41,7 @@ export class SchemaBuilder {
     this.metaPopulation.classes.forEach((v) => {
       if (v._isGatsby) {
         if (v.gatsbyRoleTypes.length > 0 || v.gatsbyAssociationTypes.length > 0) {
-          const fields = this.fields(v);
+          const fields = this.classFields(v);
           const typeDefs = `
           type Allors${v.name} implements Node & AllorsObject {
             ${fields}
@@ -48,31 +56,40 @@ export class SchemaBuilder {
     });
   }
 
-  private fields(objectType: ObjectType) {
+  private classFields(objectType: ObjectType) {
     let properties = "";
     objectType.gatsbyRoleTypes.forEach((roleType) => {
-      let typeName;
-      if (roleType.objectType.isUnit) {
-        typeName = `${roleType.objectType._name}`;
-      } else {
-        if (roleType.isOne) {
-          typeName = `${roleType.objectType._name} @link`
-        } else {
-          typeName = `[${roleType.objectType._name}] @link`
+      if (roleType.objectType.isUnit && roleType.mediaType === "text/markdown") {
+        properties += `${createName(roleType.name)}: AllorsMarkdown @link\n`
+      }
+      else {
+        if (!!roleType.objectType._name) {
+          let typeName;
+          if (roleType.objectType.isUnit) {
+            typeName = `${roleType.objectType._name}`;
+          } else {
+            if (roleType.isOne) {
+              typeName = `${roleType.objectType._name} @link`
+            } else {
+              typeName = `[${roleType.objectType._name}] @link`
+            }
+          }
+
+          properties += `${createName(roleType.name)}: ${typeName}\n`
         }
       }
-
-      properties += `${createName(roleType.name)}: ${typeName}\n`
     })
 
     objectType.gatsbyAssociationTypes.forEach((associationType) => {
-      let typeName;
-      if (associationType.isOne) {
-        typeName = `${associationType.objectType._name} @link`
-      } else {
-        typeName = `[${associationType.objectType._name}] @link`
+      if (!!associationType.objectType._name) {
+        let typeName;
+        if (associationType.isOne) {
+          typeName = `${associationType.objectType._name} @link`
+        } else {
+          typeName = `[${associationType.objectType._name}] @link`
+        }
+        properties += `${createName(associationType.name)}: ${typeName}\n`
       }
-      properties += `${createName(associationType.name)}: ${typeName}\n`
     })
 
     // Properties

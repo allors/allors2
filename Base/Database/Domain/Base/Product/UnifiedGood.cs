@@ -136,6 +136,7 @@ namespace Allors.Domain
             if (this.ExistSerialisedItems)
             {
                 builder.Append(string.Join(" ", this.SerialisedItems.Select(v => v.SerialNumber)));
+                builder.Append(string.Join(" ", this.SerialisedItems.Select(v => v.ItemNumber)));
             }
 
             if (this.ExistProductType)

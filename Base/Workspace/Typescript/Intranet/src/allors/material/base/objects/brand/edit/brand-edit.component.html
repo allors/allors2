@@ -9,7 +9,7 @@
     </div>
 
     <div class="row">
-      <a-mat-markdown class="col-md" [object]="brand" [roleType]="m.Brand.Description"></a-mat-markdown>
+      <a-mat-quill class="col-md" [object]="brand" [roleType]="m.Brand.Description"></a-mat-quill>
     </div>
 
     <div class="row pt-3">
@@ -28,8 +28,7 @@
         <div *ngFor="let locale of locales; let i = index">
           <mat-divider *ngIf="i > 0"></mat-divider>
           <div class="row">
-            <a-mat-localised-markdown class="col-md-12" [object]="brand" [roleType]="m.Brand.LocalisedDescriptions"
-              [locale]="locale"></a-mat-localised-markdown>
+            <a-mat-localised-quill class="col-md-12" [object]="brand" [roleType]="m.Brand.LocalisedDescriptions" [locale]="locale"></a-mat-localised-quill>
           </div>
         </div>
       </mat-expansion-panel>

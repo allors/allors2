@@ -36,7 +36,8 @@ export interface RoleTypeData {
     isUnit: boolean;
     isOne: boolean;
     isRequired?: boolean;
-}
+    mediaType?: string;
+  }
 
 export interface ConcreteRoleTypeData {
     objectTypeId: string;

@@ -19,7 +19,6 @@
       <div class="row">
         <a-mat-static class="col-md" [object]="workEffortInventoryAssignment.InventoryItem?.Facility" [roleType]="m.Facility.Name"></a-mat-static>
         <a-mat-static class="col-md" [object]="state" [roleType]="m.ObjectState.Name" label="State"></a-mat-static>
-        <a-mat-static class="col-md" *ngIf="!serialised" [object]="workEffortInventoryAssignment.InventoryItem" [roleType]="m.NonSerialisedInventoryItem.AvailableToPromise"></a-mat-static>
       </div>
 
       <div class="row">

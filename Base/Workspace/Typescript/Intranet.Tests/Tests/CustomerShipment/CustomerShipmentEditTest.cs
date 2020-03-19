@@ -68,12 +68,12 @@ namespace Tests.CustomerShipmentTests
 
             shipmentOverviewDetail
                 .ShipToParty.Select(expected.ShipToParty?.DisplayName())
-                .ShipToAddress.Set(expected.ShipToAddress?.DisplayName())
-                .ShipToContactPerson.Set(expected.ShipToContactPerson?.DisplayName())
-                .ShipFromAddress.Set(expected.ShipFromParty?.ShippingAddress?.DisplayName())
-                .ShipmentMethod.Set(expected.ShipmentMethod.Name)
-                .ShipFromFacility.Set(((Organisation)expected.ShipFromParty).FacilitiesWhereOwner?.First.Name)
-                .Carrier.Set(expected.Carrier.Name)
+                .ShipToAddress.Select(expected.ShipToAddress)
+                .ShipToContactPerson.Select(expected.ShipToContactPerson)
+                .ShipFromAddress.Select(expected.ShipFromParty?.ShippingAddress)
+                .ShipmentMethod.Select(expected.ShipmentMethod)
+                .ShipFromFacility.Select(((Organisation)expected.ShipFromParty)?.FacilitiesWhereOwner?.First)
+                .Carrier.Select(expected.Carrier)
                 .EstimatedShipDate.Set(expected.EstimatedShipDate.Value.Date)
                 .EstimatedArrivalDate.Set(expected.EstimatedArrivalDate.Value.Date)
                 .HandlingInstruction.Set(expected.HandlingInstruction)

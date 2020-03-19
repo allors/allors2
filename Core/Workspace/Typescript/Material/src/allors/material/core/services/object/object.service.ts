@@ -24,7 +24,7 @@ export class ObjectService {
 
     const data: ObjectData = Object.assign({ objectType }, createData);
 
-    const component = this.createControlByObjectTypeId[data.objectType.id];
+    const component = this.createControlByObjectTypeId[objectType.id];
     if (component) {
       const dialogRef = this.dialog.open(component, { data, minWidth: '80vw', maxHeight: '90vh' });
 

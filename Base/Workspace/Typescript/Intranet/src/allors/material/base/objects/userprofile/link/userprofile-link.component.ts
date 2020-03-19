@@ -5,11 +5,10 @@ import { switchMap } from 'rxjs/operators';
 
 import { PullRequest } from '../../../../../framework';
 import { AllorsFilterService, ContextService, RefreshService, MetaService, UserId, Action } from '../../../../../angular';
-
+import { EditService } from '../../../../../material';
 import { Person, Organisation } from '../../../../../domain';
 
 import { ObjectService } from '../../../../core/services/object';
-import { EditService } from 'src/allors/material';
 
 @Component({
   // tslint:disable-next-line:component-selector

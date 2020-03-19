@@ -25,6 +25,10 @@ export class Fetch {
 
         if (keys.length > 0) {
           const stepName = keys.find(v => v !== includeKey);
+          if (!stepName) {
+            throw new Error(`Can not find step: ${stepName}`);
+          }
+
           const stepLiteral = literal[stepName];
           this.step = new Step(objectType, stepName, stepLiteral);
         }

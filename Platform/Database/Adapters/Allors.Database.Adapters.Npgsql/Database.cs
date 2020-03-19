@@ -14,6 +14,7 @@ namespace Allors.Database.Adapters.Npgsql
     using Allors.Meta;
     using Caching;
     using global::Npgsql;
+    using Allors.Serialization;
     using NpgsqlTypes;
 
     public class Database : IDatabase
@@ -119,10 +120,6 @@ namespace Allors.Database.Adapters.Npgsql
         public IObjectFactory ObjectFactory { get; }
 
         public IMetaPopulation MetaPopulation => this.ObjectFactory.MetaPopulation;
-
-        public bool IsDatabase => true;
-
-        public bool IsWorkspace => false;
 
         public bool IsShared => true;
 
@@ -255,6 +252,10 @@ namespace Allors.Database.Adapters.Npgsql
                 }
             }
         }
+
+        public void Load(IPopulationData data) => throw new NotImplementedException();
+
+        public IPopulationData Save() => throw new NotImplementedException();
 
         public override string ToString() => "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
 

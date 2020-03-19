@@ -201,10 +201,13 @@ namespace Allors.Domain
                     .Build());
             }
 
-            var logoFile = new FileInfo(logo);
-            if (logoFile.Exists)
+            if (!string.IsNullOrWhiteSpace(logo))
             {
-                internalOrganisation.LogoImage = logoFile.CreateMedia(session, logo);
+                var logoFile = new FileInfo(logo);
+                if (logoFile.Exists)
+                {
+                    internalOrganisation.LogoImage = logoFile.CreateMedia(session);
+                }
             }
 
             Facility facility = null;
@@ -268,7 +271,7 @@ namespace Allors.Domain
         public Organisation[] InternalOrganisations()
         {
             var internalOrganisations = this.Extent();
-            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
+            internalOrganisations.Filter.AddEquals(M.InternalOrganisation.IsInternalOrganisation, true);
 
             return internalOrganisations.ToArray();
         }

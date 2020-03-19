@@ -16,6 +16,7 @@ namespace Allors.Database.Adapters.SqlClient
     using Allors;
     using Allors.Meta;
     using Caching;
+    using Allors.Serialization;
     using Microsoft.SqlServer.Server;
 
     public class Database : IDatabase
@@ -121,10 +122,6 @@ namespace Allors.Database.Adapters.SqlClient
         public IObjectFactory ObjectFactory { get; }
 
         public IMetaPopulation MetaPopulation => this.ObjectFactory.MetaPopulation;
-
-        public bool IsDatabase => true;
-
-        public bool IsWorkspace => false;
 
         public bool IsShared => true;
 
@@ -268,6 +265,10 @@ namespace Allors.Database.Adapters.SqlClient
                 }
             }
         }
+
+        public void Load(IPopulationData data) => throw new NotImplementedException();
+
+        public IPopulationData Save() => throw new NotImplementedException();
 
         public override string ToString() => "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
 

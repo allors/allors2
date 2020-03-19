@@ -4,7 +4,7 @@ import { RelationType } from './RelationType';
 import { MetaPopulation } from './MetaPopulation';
 
 export class RoleTypeVirtual {
-  isRequired: boolean;
+  isRequired?: boolean;
 }
 
 export class RoleType implements PropertyType {
@@ -19,10 +19,11 @@ export class RoleType implements PropertyType {
   plural: string;
   isOne: boolean;
   isDerived: boolean;
+  mediaType?: string;
 
-  isRequired(objectType: ObjectType) {
+  isRequired(objectType: ObjectType): boolean {
     const override = objectType ? this.overridesByClass.get(objectType) : null;
-    return override ? override.isRequired : this.virtual.isRequired;
+    return override?.isRequired ?? this.virtual.isRequired ?? false;
   }
 
   constructor(public relationType: RelationType, private virtual: RoleTypeVirtual) {

@@ -22,18 +22,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
-import { AllorsMaterialLocalisedMarkdownModule } from '../../../../core/components/role/localisedmarkdown';
 import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
 import { AllorsMaterialFilesModule } from '../../../..//core/components/role/files';
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../core/components/role/localisedtext';
+import { AllorsMaterialQuillModule } from '../../../../core/components/role/quill';
+import { AllorsMaterialLocalisedQuillModule } from '../../../../core/components/role/localisedquill';
 import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
-import { AllorsMaterialMarkdownModule } from '../../../../core/components/role/markdown';
 
 import { BrandEditComponent } from './brand-edit.component';
 export { BrandEditComponent } from './brand-edit.component';
@@ -52,13 +52,13 @@ export { BrandEditComponent } from './brand-edit.component';
     AllorsMaterialFilesModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
+    AllorsMaterialQuillModule,
+    AllorsMaterialLocalisedQuillModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-    AllorsMaterialMarkdownModule,
-    AllorsMaterialLocalisedMarkdownModule,
     CommonModule,
     FormsModule,
     MatAutocompleteModule,

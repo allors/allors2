@@ -52,11 +52,11 @@ namespace Allors.Database.Adapters.Npgsql
 
         public bool IsNewInSession => this.Reference.IsNew;
 
-        internal Roles Roles => this.roles ?? (this.roles = this.Reference.Session.State.GetOrCreateRoles(this.Reference));
+        internal Roles Roles => this.roles ??= this.Reference.Session.State.GetOrCreateRoles(this.Reference);
 
         internal Reference Reference { get; }
 
-        public IObject GetObject() => this.allorsObject ?? (this.allorsObject = this.Reference.Session.Database.ObjectFactory.Create(this));
+        public IObject GetObject() => this.allorsObject ??= this.Reference.Session.Database.ObjectFactory.Create(this);
 
         public virtual void Delete()
         {
@@ -189,19 +189,9 @@ namespace Allors.Database.Adapters.Npgsql
         public virtual void SetUnitRole(IRelationType relationType, object role)
         {
             this.AssertExist();
-
-            RoleAssertions.UnitRoleChecks(this, relationType.RoleType);
-
-            if (role != null)
-            {
-                role = relationType.RoleType.Normalize(role);
-            }
-
-            var oldUnit = this.GetUnitRole(relationType);
-            if (!Equals(oldUnit, role))
-            {
-                this.Roles.SetUnitRole(relationType.RoleType, role);
-            }
+            relationType.RoleType.UnitRoleChecks(this);
+            role = relationType.RoleType.Normalize(role);
+            this.Roles.SetUnitRole(relationType.RoleType, role);
         }
 
         public virtual void RemoveUnitRole(IRelationType relationType) => this.SetUnitRole(relationType, null);
@@ -213,12 +203,12 @@ namespace Allors.Database.Adapters.Npgsql
             this.AssertExist();
 
             var role = this.Roles.GetCompositeRole(relationType.RoleType);
-            return (role == null) ? null : this.Session.State.GetOrCreateReferenceForExistingObject(role.Value, this.Session).Strategy.GetObject();
+            return role == null ? null : this.Session.State.GetOrCreateReferenceForExistingObject(role.Value, this.Session).Strategy.GetObject();
         }
 
-        public virtual void SetCompositeRole(IRelationType relationType, IObject newRoleObject)
+        public virtual void SetCompositeRole(IRelationType relationType, IObject newRole)
         {
-            if (newRoleObject == null)
+            if (newRole == null)
             {
                 this.RemoveCompositeRole(relationType);
                 return;
@@ -226,9 +216,9 @@ namespace Allors.Database.Adapters.Npgsql
 
             this.AssertExist();
 
-            RoleAssertions.CompositeRoleChecks(this, relationType.RoleType, newRoleObject);
+            relationType.RoleType.CompositeRoleChecks(this, newRole);
 
-            var newRoleObjectId = (Strategy)newRoleObject.Strategy;
+            var newRoleObjectId = (Strategy)newRole.Strategy;
             this.Roles.SetCompositeRole(relationType.RoleType, newRoleObjectId);
         }
 
@@ -236,7 +226,7 @@ namespace Allors.Database.Adapters.Npgsql
         {
             this.AssertExist();
 
-            RoleAssertions.CompositeRoleChecks(this, relationType.RoleType);
+            relationType.RoleType.CompositeRoleChecks(this);
 
             this.Roles.RemoveCompositeRole(relationType.RoleType);
         }
@@ -256,7 +246,7 @@ namespace Allors.Database.Adapters.Npgsql
 
             if (roleObject != null)
             {
-                RoleAssertions.CompositeRolesChecks(this, relationType.RoleType, roleObject);
+                relationType.RoleType.CompositeRolesChecks(this, roleObject);
 
                 var role = (Strategy)roleObject.Strategy;
                 this.Roles.AddCompositeRole(relationType.RoleType, role);
@@ -269,7 +259,7 @@ namespace Allors.Database.Adapters.Npgsql
 
             if (roleObject != null)
             {
-                RoleAssertions.CompositeRolesChecks(this, relationType.RoleType, roleObject);
+                relationType.RoleType.CompositeRolesChecks(this, roleObject);
 
                 var role = (Strategy)roleObject.Strategy;
                 this.Roles.RemoveCompositeRole(relationType.RoleType, role);
@@ -294,7 +284,7 @@ namespace Allors.Database.Adapters.Npgsql
                 {
                     if (roleObject != null)
                     {
-                        RoleAssertions.CompositeRolesChecks(this, relationType.RoleType, roleObject);
+                        relationType.RoleType.CompositeRolesChecks(this, roleObject);
                         var role = (Strategy)roleObject.Strategy;
 
                         if (!previousRoles.Contains(role.ObjectId))
@@ -319,8 +309,7 @@ namespace Allors.Database.Adapters.Npgsql
         public virtual void RemoveCompositeRoles(IRelationType relationType)
         {
             this.AssertExist();
-
-            RoleAssertions.CompositeRoleChecks(this, relationType.RoleType);
+            relationType.RoleType.CompositeRoleChecks(this);
 
             var previousRoles = this.Roles.GetCompositesRole(relationType.RoleType);
 

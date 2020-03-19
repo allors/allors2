@@ -26,14 +26,12 @@ import { AllorsMaterialDatepickerModule } from '../../../../core/components/role
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
 import { AllorsMaterialFilesModule } from '../../../../core/components/role/files';
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
-import { AllorsMaterialLocalisedMarkdownModule } from '../../../../core/components/role/localisedmarkdown';
 import { AllorsMaterialLocalisedTextModule } from '../../../../core/components/role/localisedtext';
 import { AllorsMaterialSelectModule } from '../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../core/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../core/components/role/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
-import { AllorsMaterialMarkdownModule } from '../../../../core/components/role/markdown';
 
 import { OrganisationInlineModule } from '../../organisation/inline/organisation-inline.module';
 import { PartyInlineModule } from '../../party/inline/party-inline.module';
@@ -58,9 +56,7 @@ export { CustomerShipmentCreateComponent } from './customershipment-create.compo
     AllorsMaterialFileModule,
     AllorsMaterialFilesModule,
     AllorsMaterialInputModule,
-    AllorsMaterialLocalisedMarkdownModule,
     AllorsMaterialLocalisedTextModule,
-    AllorsMaterialMarkdownModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSlideToggleModule,

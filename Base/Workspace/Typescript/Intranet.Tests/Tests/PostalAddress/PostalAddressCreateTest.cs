@@ -56,13 +56,13 @@ namespace Tests.PostalAddressTests
             var postalAddressEditComponent = new PersonOverviewComponent(this.people.Driver).ContactmechanismOverviewPanel.Click().CreatePostalAddress();
 
             postalAddressEditComponent
-                .ContactPurposes.Toggle("General correspondence address")
+                .ContactPurposes.Toggle(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
                 .Address1.Set("addressline 1")
                 .Address2.Set("addressline 2")
                 .Address3.Set("addressline 3")
                 .Locality.Set("city")
                 .PostalCode.Set("postalcode")
-                .Country.Set(country.Name)
+                .Country.Select(country)
                 .Description.Set("description")
                 .SAVE.Click();
 
