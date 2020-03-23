@@ -57,6 +57,7 @@ import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/
 import { SerialisedItemCharacteristicEditComponent, SerialisedItemCharacteristicEditModule } from '../allors/material/base/objects/serialiseditemcharacteristictype/edit/serialiseditemcharacteristic-edit.module';
 import { SerialisedItemCreateComponent, SerialisedItemCreateModule } from '../allors/material/base/objects/serialiseditem/create/serialiseditem-create.module';
 import { ShipmentItemEditComponent, ShipmentItemEditModule } from '../allors/material/base/objects/shipmentitem/edit/shipmentitem-edit.module';
+import { SubContractorRelationshipEditComponent, SubContractorRelationshipEditModule } from '../allors/material/base/objects/subcontractorrelationship/edit/subcontractorrelationship-edit.module';
 import { SupplierOfferingEditComponent, SupplierOfferingEditModule } from '../allors/material/base/objects/supplieroffering/edit/supplieroffering-edit.module';
 import { SupplierRelationshipEditComponent, SupplierRelationshipEditModule } from '../allors/material/base/objects/supplierrelationship/edit/supplierrelationship-edit.module';
 import { TelecommunicationsNumberCreateComponent, TelecommunicationsNumberCreateModule } from '../allors/material/base/objects/telecommunicationsnumber/create/telecommunicationsnumber-create.module';
@@ -130,6 +131,7 @@ export const create = {
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.ShipmentItem]: ShipmentItemEditComponent,
   [ids.SkuIdentification]: ProductIdentificationEditComponent,
+  [ids.SubContractorRelationship]: SubContractorRelationshipEditComponent,
   [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
   [ids.TelecommunicationsNumber]: TelecommunicationsNumberCreateComponent,
@@ -192,6 +194,7 @@ export const edit = {
   [ids.ShipmentItem]: ShipmentItemEditComponent,
   [ids.SkuIdentification]: ProductIdentificationEditComponent,
   [ids.SupplierOffering]: SupplierOfferingEditComponent,
+  [ids.SubContractorRelationship]: SubContractorRelationshipEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
   [ids.TelecommunicationsNumber]: TelecommunicationsNumberEditComponent,
   [ids.TimeEntry]: TimeEntryEditComponent,
@@ -264,6 +267,7 @@ export const edit = {
     SerialisedItemCreateModule,
     SerialisedItemCharacteristicEditModule,
     ShipmentItemEditModule,
+    SubContractorRelationshipEditModule,
     SupplierOfferingEditModule,
     SupplierRelationshipEditModule,
     TelecommunicationsNumberCreateModule,
@@ -334,6 +338,7 @@ export const edit = {
     SerialisedItemCreateComponent,
     SerialisedItemCharacteristicEditComponent,
     ShipmentItemEditComponent,
+    SubContractorRelationshipEditComponent,
     SupplierOfferingEditComponent,
     SupplierRelationshipEditComponent,
     TelecommunicationsNumberCreateComponent,

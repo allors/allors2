@@ -8,6 +8,8 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Xunit;
 
@@ -94,31 +96,17 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenPerson_WhenContractor_ThenTimeSheetSynced()
-        {
-            var contractor = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Contractor").Build();
-            var organisation = new InternalOrganisations(this.Session).Extent().First;
-            var contractorRelation = new SubContractorRelationshipBuilder(this.Session).WithContractor(contractor).Build();
-
-            ((SubContractorRelationshipDerivedRoles)contractorRelation).AddParty(organisation);
-
-            this.Session.Derive(true);
-
-            Assert.NotNull(contractor.TimeSheetWhereWorker);
-        }
-
-        [Fact]
         public void GivenPerson_WhenSubContractor_ThenTimeSheetSynced()
         {
-            var subContractor = new PersonBuilder(this.Session).WithFirstName("Sub").WithLastName("Contractor").Build();
-            var organisation = new InternalOrganisations(this.Session).Extent().First;
-            var contractorRelation = new SubContractorRelationshipBuilder(this.Session).WithSubContractor(subContractor).Build();
+            var subContractor = this.InternalOrganisation.CreateSubContractor(this.Session.Faker());
 
-            ((SubContractorRelationshipDerivedRoles)contractorRelation).AddParty(organisation);
+            this.Session.Derive();
+            this.Session.Commit();
 
-            this.Session.Derive(true);
+            var organisationContactRelationship = subContractor.OrganisationContactRelationshipsWhereOrganisation.First();
+            var contact = organisationContactRelationship.Contact;
 
-            Assert.NotNull(subContractor.TimeSheetWhereWorker);
+            Assert.NotNull(contact.TimeSheetWhereWorker);
         }
 
         [Fact]

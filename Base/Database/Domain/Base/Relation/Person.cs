@@ -17,8 +17,6 @@ namespace Allors.Domain
             .WithRule(M.Person.PartyContactMechanisms.RoleType)
             .WithRule(M.Person.TimeSheetWhereWorker)
             .WithRule(M.Person.EmploymentsWhereEmployee)
-            .WithRule(M.Person.SubContractorRelationshipsWhereContractor)
-            .WithRule(M.Person.SubContractorRelationshipsWhereSubContractor)
             .Build();
 
         private bool IsDeletable => !this.ExistEmploymentsWhereEmployee
@@ -47,10 +45,11 @@ namespace Allors.Domain
                    && this.OrganisationContactRelationshipsWhereContact
                        .Any(v => v.FromDate.Date <= date && (!v.ExistThroughDate || v.ThroughDate >= date));
         }
-        
+
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var now = this.Session().Now();
 
             this.Strategy.Session.Prefetch(this.PrefetchPolicy);
 
@@ -61,17 +60,14 @@ namespace Allors.Domain
             var allOrganisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
 
             this.CurrentOrganisationContactRelationships = allOrganisationContactRelationships
-                .Where(v => v.FromDate <= this.Session().Now() && (!v.ExistThroughDate || v.ThroughDate >= this.Session().Now()))
+                .Where(v => v.FromDate <= now && (!v.ExistThroughDate || v.ThroughDate >= now))
                 .ToArray();
 
             this.InactiveOrganisationContactRelationships = allOrganisationContactRelationships
                 .Except(this.CurrentOrganisationContactRelationships)
                 .ToArray();
 
-            if (!this.ExistTimeSheetWhereWorker
-                && (this.ExistEmploymentsWhereEmployee
-                    || this.ExistSubContractorRelationshipsWhereContractor
-                    || this.ExistSubContractorRelationshipsWhereSubContractor))
+            if (!this.ExistTimeSheetWhereWorker && (this.BaseIsActiveEmployee(now) || this.CurrentOrganisationContactRelationships.Count > 0))
             {
                 new TimeSheetBuilder(this.Strategy.Session).WithWorker(this).Build();
             }
