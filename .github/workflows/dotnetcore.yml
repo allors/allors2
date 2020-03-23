@@ -20,5 +20,7 @@ jobs:
     - name: Install Nuke.Build
       run: dotnet tool install Nuke.GlobalTool --global
     - name: Build with PowerShell & Nuke
-      run: ./build.sh
+      run: |
+            chmod +x build.sh
+            ./build.sh
       shell: bash
