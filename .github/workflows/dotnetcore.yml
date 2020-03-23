@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -20,5 +20,5 @@ jobs:
     - name: Install Nuke.Build
       run: dotnet tool install Nuke.GlobalTool --global
     - name: Build with PowerShell & Nuke
-      run: ./build.ps1
-      shell: pwsh
+      run: ./build.sh
+      shell: bash
