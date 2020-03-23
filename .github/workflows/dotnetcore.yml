@@ -18,4 +18,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install Nuke.Build
-      run: dotnet tool install Nuke.GlobalTool --global;
+      run: dotnet tool install Nuke.GlobalTool --global
+    - name: Build with PowerShell & Nuke
+      run: ./build.ps1
+      shell: pwsh
