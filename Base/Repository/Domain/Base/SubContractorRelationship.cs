@@ -37,7 +37,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public Party Contractor { get; set; }
+        public InternalOrganisation Contractor { get; set; }
 
         #region Allors
         [Id("d95ecb34-dfe4-42df-bc9f-1ad4af72abaa")]
@@ -48,7 +48,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public Party SubContractor { get; set; }
+        public Organisation SubContractor { get; set; }
 
         #region inherited methods
 

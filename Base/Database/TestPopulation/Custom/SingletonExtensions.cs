@@ -164,6 +164,9 @@ namespace Allors
             allors.CreateSupplier(faker);
             allors.CreateSupplier(faker);
 
+            allors.CreateSubContractor(faker);
+            allors.CreateSubContractor(faker);
+
             @this.Session().Derive();
 
             var nonSerialisedPart1 = allors.CreateNonSerialisedNonUnifiedPart(faker);

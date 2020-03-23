@@ -108,6 +108,8 @@ namespace Allors.Repository
 
         public Party[] ActiveSuppliers { get; set; }
 
+        public Party[] ActiveSubContractors { get; set; }
+
         public string PartyName { get; set; }
 
         public ContactMechanism GeneralCorrespondence { get; set; }

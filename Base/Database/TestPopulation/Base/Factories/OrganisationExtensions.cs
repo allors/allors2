@@ -80,6 +80,25 @@ namespace Allors.Domain.TestPopulation
             return supplier;
         }
 
+        public static Organisation CreateSubContractor(this Organisation @this, Faker faker)
+        {
+            var subContractor = new OrganisationBuilder(@this.Session()).WithDefaults().Build();
+
+            new SubContractorRelationshipBuilder(@this.Session())
+                .WithSubContractor(subContractor)
+                .WithContractor(@this)
+                .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
+                .Build();
+
+            new OrganisationContactRelationshipBuilder(@this.Session())
+                .WithContact(new PersonBuilder(@this.Session()).WithEmployeeOrCompanyContactDefaults().Build())
+                .WithOrganisation(subContractor)
+                .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
+                .Build();
+
+            return subContractor;
+        }
+
         public static Part CreateNonSerialisedNonUnifiedPart(this Organisation @this, Faker faker)
         {
             var part = new NonUnifiedPartBuilder(@this.Session()).WithNonSerialisedDefaults(@this).Build();
