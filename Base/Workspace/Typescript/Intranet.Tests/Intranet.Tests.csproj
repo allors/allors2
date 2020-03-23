@@ -39,7 +39,6 @@
     <Compile Remove="Tests\ProductQuote\**" />
     <Compile Remove="Tests\ProductType\**" />
     <Compile Remove="Tests\PurchaseInvoice\**" />
-    <Compile Remove="Tests\RequestForQuote\**" />
     <Compile Remove="Tests\SalesInvoice\**" />
     <Compile Remove="Tests\SalesOrder\**" />
     <Compile Remove="Tests\SerialisedItemCharacteristic\**" />
@@ -53,7 +52,6 @@
     <EmbeddedResource Remove="Tests\ProductQuote\**" />
     <EmbeddedResource Remove="Tests\ProductType\**" />
     <EmbeddedResource Remove="Tests\PurchaseInvoice\**" />
-    <EmbeddedResource Remove="Tests\RequestForQuote\**" />
     <EmbeddedResource Remove="Tests\SalesInvoice\**" />
     <EmbeddedResource Remove="Tests\SalesOrder\**" />
     <EmbeddedResource Remove="Tests\SerialisedItemCharacteristic\**" />
@@ -67,7 +65,6 @@
     <None Remove="Tests\ProductQuote\**" />
     <None Remove="Tests\ProductType\**" />
     <None Remove="Tests\PurchaseInvoice\**" />
-    <None Remove="Tests\RequestForQuote\**" />
     <None Remove="Tests\SalesInvoice\**" />
     <None Remove="Tests\SalesOrder\**" />
     <None Remove="Tests\SerialisedItemCharacteristic\**" />
@@ -88,5 +85,10 @@
     <None Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tests\RequestItem\" />
+    <Folder Include="Tests\RequestForQuote\" />
   </ItemGroup>
 </Project>
