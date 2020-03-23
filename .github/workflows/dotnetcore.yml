@@ -17,5 +17,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Build with dotnet
-      run: dotnet tool install Nuke.GlobalTool --global;
+    - name: Install Nuke.Build
+      run: dotnet tool install Nuke.GlobalTool --global
+    - name: Install GitVersion
+      run: choco install GitVersion.Portable
+    - name: Build with PowerShell & Nuke
+      run: ./build.ps1
+      shell: pwsh
