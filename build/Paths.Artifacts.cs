@@ -1,4 +1,4 @@
-using AbsolutePath = Nuke.Common.IO.PathConstruction.AbsolutePath;
+using Nuke.Common.IO;
 
 public partial class Paths
 {
