@@ -284,12 +284,24 @@ namespace Allors.Database.Adapters.SqlClient
 
                     this.Flush();
 
-                    if (this.State.ModifiedRolesByReference != null)
+                    if (this.State.ModifiedRolesByReference != null || this.State.ReferenceByObjectId.Any(v => v.Value.IsNew))
                     {
-                        this.Commands.UpdateVersion();
+                        IEnumerable<Reference> objectsToVersion;
 
-                        changed = this.State.ModifiedRolesByReference
-                            .Select(dictionaryEntry => dictionaryEntry.Key.ObjectId).ToArray();
+                        var newObjects = this.State.ReferenceByObjectId.Select(v => v.Value);
+                        if (this.State.ModifiedRolesByReference != null)
+                        {
+                            objectsToVersion = this.State.ModifiedRolesByReference.Keys.Union(newObjects);
+                        }
+                        else
+                        {
+                            objectsToVersion = newObjects;
+                        }
+
+                        this.Commands.UpdateVersion(newObjects);
+
+                        changed = this.State.ModifiedRolesByReference?
+                            .Select(dictionaryEntry => dictionaryEntry.Key.ObjectId).ToArray() ?? Array.Empty<long>();
                     }
 
                     this.Connection.Commit();

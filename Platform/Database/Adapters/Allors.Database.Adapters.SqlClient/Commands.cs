@@ -687,7 +687,7 @@ namespace Allors.Database.Adapters.SqlClient
             return versionByObjectId;
         }
 
-        internal void UpdateVersion()
+        internal void UpdateVersion(IEnumerable<Reference> references)
         {
             var command = this.updateVersions;
             if (command == null)
@@ -697,13 +697,13 @@ namespace Allors.Database.Adapters.SqlClient
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
                 // TODO: Remove dependency on State
-                command.AddObjectTableParameter(this.session.State.ModifiedRolesByReference.Keys);
+                command.AddObjectTableParameter(references);
                 this.updateVersions = command;
             }
             else
             {
                 // TODO: Remove dependency on State
-                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateObjectTable(this.session.State.ModifiedRolesByReference.Keys);
+                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateObjectTable(references);
             }
 
             command.ExecuteNonQuery();

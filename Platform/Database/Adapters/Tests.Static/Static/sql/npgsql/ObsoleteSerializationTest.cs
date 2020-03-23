@@ -14,7 +14,7 @@ namespace Allors.Database.Adapters.Npgsql
     {
         private readonly Profile profile;
 
-        public ObsoleteSerializationTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
+        public ObsoleteSerializationTest(Fixture fixture) => this.profile = new Profile(fixture.PgServer);
 
         protected override IProfile Profile => this.profile;
 

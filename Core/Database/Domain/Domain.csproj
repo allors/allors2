@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="DataUtils.DataUrl" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
     <PackageReference Include="MimeTypesMap" Version="1.0.8" />
   </ItemGroup>
 
@@ -26,5 +26,12 @@
     <ProjectReference Include="..\Document\Allors.Document\Allors.Document.csproj" />
     <ProjectReference Include="..\Meta\Meta.csproj" />
     <ProjectReference Include="..\Resources\Resources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

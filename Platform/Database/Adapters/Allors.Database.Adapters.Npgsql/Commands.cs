@@ -10,6 +10,7 @@ namespace Allors.Database.Adapters.Npgsql
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
+    using System.Linq;
     using System.Text;
 
     using Allors.Meta;
@@ -680,7 +681,7 @@ namespace Allors.Database.Adapters.Npgsql
             return versionByObjectId;
         }
 
-        internal void UpdateVersion()
+        internal void UpdateVersion(IEnumerable<Reference> references)
         {
             var command = this.updateVersions;
             if (command == null)
@@ -690,13 +691,13 @@ namespace Allors.Database.Adapters.Npgsql
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
                 // TODO: Remove dependency on State
-                command.AddObjectArrayParameter(this.session.State.ModifiedRolesByReference.Keys);
+                command.AddObjectArrayParameter(references);
                 this.updateVersions = command;
             }
             else
             {
                 // TODO: Remove dependency on State
-                command.SetObjectArrayParameter(this.session.State.ModifiedRolesByReference.Keys);
+                command.SetObjectArrayParameter(references);
             }
 
             command.ExecuteNonQuery();
