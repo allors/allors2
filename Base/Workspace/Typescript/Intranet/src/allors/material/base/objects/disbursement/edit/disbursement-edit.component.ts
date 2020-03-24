@@ -44,7 +44,7 @@ export class DisbursementEditComponent extends TestScope implements OnInit, OnDe
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$)
+    this.subscription = combineLatest([this.refreshService.refresh$])
       .pipe(
         switchMap(() => {
 

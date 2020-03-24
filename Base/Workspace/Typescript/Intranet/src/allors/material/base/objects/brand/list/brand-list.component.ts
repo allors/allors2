@@ -86,7 +86,7 @@ export class BrandsOverviewComponent extends TestScope implements OnInit, OnDest
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -95,7 +95,7 @@ export class BrandsOverviewComponent extends TestScope implements OnInit, OnDest
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , ,]),
+        }, [, , , , ]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [

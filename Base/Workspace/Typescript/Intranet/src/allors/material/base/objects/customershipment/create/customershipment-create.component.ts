@@ -67,7 +67,7 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
         switchMap(([, internalOrganisationId]) => {
 

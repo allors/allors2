@@ -52,7 +52,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.route.url, this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
