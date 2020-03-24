@@ -7,7 +7,7 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tooling.ProcessTasks;
-using AbsolutePath = Nuke.Common.IO.PathConstruction.AbsolutePath;
+
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]

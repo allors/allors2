@@ -15,7 +15,7 @@ namespace Allors.Database.Adapters.Npgsql
     {
         private readonly Profile profile;
 
-        public UnitTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
+        public UnitTest(Fixture fixture) => this.profile = new Profile(fixture.PgServer);
 
         protected override IProfile Profile => this.profile;
 

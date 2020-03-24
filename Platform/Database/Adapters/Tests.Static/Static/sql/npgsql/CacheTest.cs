@@ -13,7 +13,7 @@ namespace Allors.Database.Adapters.Npgsql
     {
         private readonly Profile profile;
 
-        public CacheTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
+        public CacheTest(Fixture fixture) => this.profile = new Profile(fixture.PgServer);
 
         public override void Dispose() => this.profile.Dispose();
 

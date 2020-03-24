@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="DataUtils.DataUrl" Version="1.0.2" />
-    <PackageReference Include="Markdig" Version="0.18.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="Markdig" Version="0.18.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
     <PackageReference Include="MimeTypesMap" Version="1.0.8" />
   </ItemGroup>
 

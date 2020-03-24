@@ -19,30 +19,39 @@ namespace Allors.Database.Adapters.Npgsql
     {
         public const string Collection = "Npgsql collection";
 
-        public PgServer Server { get; private set; }
+        public PgServer PgServer { get; private set; }
 
         public Fixture()
         {
-            var pgServerParams = new Dictionary<string, string>
+            var usePgServerEnvironmentVariable = Environment.GetEnvironmentVariable("ALLORS_NPGSQL_USE_PGSERVER");
+            if (!bool.TryParse(usePgServerEnvironmentVariable, out var usePgServer))
             {
-                {"timezone", "UTC"},
-                {"synchronous_commit", "off"},
-            };
+                usePgServer = true;
+            }
 
-            this.Server = new PgServer(
-                pgVersion: "10.7.1",
-                addLocalUserAccessPermission: true,
-                // clearWorkingDirOnStart: true,
-                pgServerParams: pgServerParams,
-                locale: "English_Belgium.1252");
+            if (usePgServer)
+            {
+                var pgServerParams = new Dictionary<string, string>
+                {
+                    { "timezone", "UTC" },
+                    { "synchronous_commit", "off" },
+                };
 
-            this.Server.Start();
+                this.PgServer = new PgServer(
+                    pgVersion: "10.7.1",
+                    addLocalUserAccessPermission: true,
+                    // clearWorkingDirOnStart: true,
+                    pgServerParams: pgServerParams,
+                    locale: "English_Belgium.1252");
+
+                this.PgServer.Start();
+            }
         }
 
         public void Dispose()
         {
-            this.Server?.Stop();
-            this.Server = null;
+            this.PgServer?.Stop();
+            this.PgServer = null;
         }
     }
 }

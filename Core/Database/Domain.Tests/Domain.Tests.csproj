@@ -37,4 +37,11 @@
     <EmbeddedResource Include="Resources\PdfAs.jpg" />
     <EmbeddedResource Include="Resources\EmbeddedTemplate.odt" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>

@@ -3,10 +3,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Buildalyzer.Workspaces" Version="2.5.0" />
+    <PackageReference Include="Buildalyzer.Workspaces" Version="2.5.1" />
     <PackageReference Include="Inflector.NetStandard" Version="1.2.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="NLog" Version="4.6.8" />
+    <PackageReference Include="NLog" Version="4.7.0" />
     <PackageReference Include="StringTemplate4" Version="4.0.8" />
   </ItemGroup>
   <ItemGroup>
@@ -14,5 +14,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Protocol\Allors.Protocol\Allors.Protocol.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

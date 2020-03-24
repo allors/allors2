@@ -1,5 +1,4 @@
 using Nuke.Common.IO;
-using AbsolutePath = Nuke.Common.IO.PathConstruction.AbsolutePath;
 
 public partial class Paths
 {
@@ -8,7 +7,7 @@ public partial class Paths
         Root = root;
     }
 
-    public PathConstruction.AbsolutePath Root { get; }
+    public AbsolutePath Root { get; }
 
-    public PathConstruction.AbsolutePath SignTool = (PathConstruction.AbsolutePath)@"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe";
+    public AbsolutePath SignTool = (AbsolutePath)@"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe";
 }
