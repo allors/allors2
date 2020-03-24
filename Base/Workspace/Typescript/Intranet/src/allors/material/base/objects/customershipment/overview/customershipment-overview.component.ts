@@ -44,7 +44,7 @@ export class CustomerShipmentOverviewComponent extends TestScope implements Afte
 
   public ngAfterViewInit(): void {
 
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
         switchMap(() => {
 

@@ -97,7 +97,7 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(this.refresh$, this.panel.manager.on$)
+    this.subscription = combineLatest([this.refresh$, this.panel.manager.on$])
       .pipe(
         filter(() => {
           return this.panel.isExpanded;

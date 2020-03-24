@@ -3987,45 +3987,32 @@ namespace Allors.Database.Adapters
 
                 using (var session2 = this.CreateSession())
                 {
-                    Assert.Equal(0, session2.Instantiate(obj).Strategy.ObjectVersion);
+                    Assert.Equal(1, session2.Instantiate(obj).Strategy.ObjectVersion);
                 }
 
-                Assert.Equal(0, obj.Strategy.ObjectVersion);
+                Assert.Equal(1, obj.Strategy.ObjectVersion);
 
                 obj.C1AllorsString = "Changed";
 
-                Assert.Equal(0, obj.Strategy.ObjectVersion);
+                Assert.Equal(1, obj.Strategy.ObjectVersion);
 
                 this.Session.Commit();
 
                 using (var session2 = this.CreateSession())
                 {
                     var session2Object = (C1)session2.Instantiate(obj);
-                    Assert.Equal(1, session2Object.Strategy.ObjectVersion);
+                    Assert.Equal(2, session2Object.Strategy.ObjectVersion);
                     session2Object.C1AllorsString = "Session 2 changed";
                     session2.Commit();
 
-                    Assert.Equal(2, session2Object.Strategy.ObjectVersion);
+                    Assert.Equal(3, session2Object.Strategy.ObjectVersion);
                 }
 
                 this.Session.Rollback();
 
-                Assert.Equal(2, obj.Strategy.ObjectVersion);
-
-                obj.C1AllorsString = "Changed again.";
-
-                Assert.Equal(2, obj.Strategy.ObjectVersion);
-
-                this.Session.Commit();
-
-                using (var session2 = this.CreateSession())
-                {
-                    Assert.Equal(3, session2.Instantiate(obj).Strategy.ObjectVersion);
-                }
-
                 Assert.Equal(3, obj.Strategy.ObjectVersion);
 
-                obj.RemoveC1AllorsString();
+                obj.C1AllorsString = "Changed again.";
 
                 Assert.Equal(3, obj.Strategy.ObjectVersion);
 
@@ -4037,6 +4024,19 @@ namespace Allors.Database.Adapters
                 }
 
                 Assert.Equal(4, obj.Strategy.ObjectVersion);
+
+                obj.RemoveC1AllorsString();
+
+                Assert.Equal(4, obj.Strategy.ObjectVersion);
+
+                this.Session.Commit();
+
+                using (var session2 = this.CreateSession())
+                {
+                    Assert.Equal(5, session2.Instantiate(obj).Strategy.ObjectVersion);
+                }
+
+                Assert.Equal(5, obj.Strategy.ObjectVersion);
             }
         }
 

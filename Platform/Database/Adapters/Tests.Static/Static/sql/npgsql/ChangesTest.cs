@@ -14,7 +14,7 @@ namespace Allors.Database.Adapters.Npgsql
     {
         private readonly Adapters.Profile profile;
 
-        public ChangesTest(Fixture fixture) => this.profile = new Profile(fixture.Server);
+        public ChangesTest(Fixture fixture) => this.profile = new Profile(fixture.PgServer);
 
         protected override IProfile Profile => this.profile;
 

@@ -474,6 +474,17 @@ namespace Allors.Repository
         Party[] ActiveSuppliers { get; set; }
 
         #region Allors
+        [Id("1caf947c-425e-43fa-bcdb-5961bedc0708")]
+        [AssociationId("709d6b0b-6be7-4d56-b60c-9cf555cd8d39")]
+        [RoleId("d765d863-5195-4707-b3aa-e65b0e3f2033")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        [Derived]
+        [Indexed]
+        Party[] ActiveSubContractors { get; set; }
+
+        #region Allors
         [Id("02076C50-183B-4657-BE2F-9CF4872E9989")]
         [AssociationId("1C6A6309-836E-4DD5-9F4A-B9EEFAC1D683")]
         [RoleId("808ABBA5-5635-428D-B4EA-C7140AA3717C")]

@@ -617,20 +617,11 @@ line2")
 
             this.Session.Derive();
 
-            var request = new RequestForQuoteBuilder(this.Session)
-                .WithRecipient(allors)
-                .WithEmailAddress("meknip@xs4all.nl")
-                .WithTelephoneCountryCode("+31")
-                .WithTelephoneNumber("0613568160")
-                .WithDescription("anonymous request")
-                .Build();
+            // Serialized RFQ with Serialized Unified-Good
+            var serializedRFQ = new RequestForQuoteBuilder(this.Session).WithSerializedDefaults(allors).Build();
 
-            var requestItem = new RequestItemBuilder(this.Session)
-                .WithProduct(new Goods(this.Session).Extent().First)
-                .WithQuantity(1)
-                .Build();
-
-            request.AddRequestItem(requestItem);
+            // Serialized RFQ with Serialized Unified-Good
+            var nonSerializedRFQ = new RequestForQuoteBuilder(this.Session).WithNonSerializedDefaults(allors).Build();
 
             var quote = new ProductQuoteBuilder(this.Session)
                 .WithIssuer(allors)
