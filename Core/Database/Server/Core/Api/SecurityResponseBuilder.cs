@@ -64,7 +64,9 @@ namespace Allors.Server
             if (this.securityRequest.Permissions.Length > 0)
             {
                 var permissionIds = this.securityRequest.Permissions;
-                var permissions = this.session.Instantiate(permissionIds).Cast<Permission>();
+                var permissions = this.session.Instantiate(permissionIds)
+                    .Cast<Permission>()
+                    .Where(v => v.OperandType.Workspace);
 
                 securityResponse.Permissions = permissions.Select(v =>
                     new[]

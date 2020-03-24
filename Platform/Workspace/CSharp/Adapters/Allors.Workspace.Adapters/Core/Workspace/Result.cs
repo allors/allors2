@@ -19,14 +19,16 @@ namespace Allors.Workspace
 
             this.Objects = response.NamedObjects.ToDictionary(
                 pair => pair.Key,
-                pair => session.Get(long.Parse(pair.Value)));
+                pair => session.Get(long.Parse(pair.Value)),
+                StringComparer.OrdinalIgnoreCase);
             this.Collections = response.NamedCollections.ToDictionary(
                 pair => pair.Key,
                 pair => pair.Value.Select(v => session.Get(long.Parse(v))).ToArray(),
                 StringComparer.OrdinalIgnoreCase);
             this.Values = response.NamedValues.ToDictionary(
                 pair => pair.Key,
-                pair => pair.Value);
+                pair => pair.Value,
+                StringComparer.OrdinalIgnoreCase);
         }
 
         public IDictionary<string, ISessionObject> Objects { get; }
