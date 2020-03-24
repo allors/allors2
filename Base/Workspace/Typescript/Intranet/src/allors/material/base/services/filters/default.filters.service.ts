@@ -80,6 +80,22 @@ export class DefaultFiltersService extends FiltersService {
     });
   }
 
+  get subContractorsFilter() {
+    return new SearchFactory({
+      objectType: this.m.Organisation,
+      roleTypes: [this.m.Organisation.PartyName],
+      post: (predicate: And) => {
+        predicate.operands.push(new ContainedIn({
+          propertyType: this.m.Organisation.SubContractorRelationshipsWhereSubContractor,
+          extent: new Filter({
+            objectType: this.m.SubContractorRelationship,
+            predicate: new Equals({ propertyType: this.m.SubContractorRelationship.Contractor, object: this.internalOrganisationId.value }),
+          })
+        }));
+      },
+    });
+  }
+
   get employeeFilter() {
     return new SearchFactory({
       objectType: this.m.Person,
