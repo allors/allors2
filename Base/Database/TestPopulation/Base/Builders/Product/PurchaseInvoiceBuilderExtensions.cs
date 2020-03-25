@@ -1,4 +1,4 @@
-// <copyright file="SalesInvoiceBuilderExtensions.cs" company="Allors bvba">
+// <copyright file="PurchaseInvoiceBuilderExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,7 +10,7 @@ namespace Allors.Domain.TestPopulation
 
     public static partial class SalesInvoiceBuilderExtensions
     {
-        public static SalesInvoiceBuilder WithDefaults(this SalesInvoiceBuilder @this, Organisation internalOrganisation)
+        public static PurchaseInvoiceBuilder WithDefaults(this PurchaseInvoiceBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
@@ -26,9 +26,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithDescription(faker.Lorem.Sentence()).Build();
             @this.WithComment(faker.Lorem.Sentence()).Build();
             @this.WithInternalComment(faker.Lorem.Sentence()).Build();
-            @this.WithBillToCustomer(customer.CurrentContacts.FirstOrDefault()).Build();
-            @this.WithBillToContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault()).Build();
-            @this.WithBillToContactPerson(customer.CurrentContacts.FirstOrDefault()).Build();
             @this.WithBillToEndCustomer(customer).Build();
             @this.WithBillToEndCustomerContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault()).Build();
             @this.WithBillToEndCustomerContactPerson(customer.CurrentContacts.FirstOrDefault()).Build();
@@ -36,19 +33,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipToEndCustomerAddress(postalAddress).Build();
             @this.WithShipToEndCustomerContactPerson(customer.CurrentContacts.FirstOrDefault()).Build();
             @this.WithShipToCustomer(customer).Build();
-            @this.WithPreviousShipToCustomer(customer).Build();
-            @this.WithShipToAddress(postalAddress).Build();
-            @this.WithShipToContactPerson(customer.CurrentContacts.FirstOrDefault()).Build();
-            @this.WithSalesInvoiceType(salesInvoiceType).Build();
-            @this.WithTotalListPrice(faker.Random.Decimal()).Build();
-            @this.WithPaymentMethod(paymentMethod).Build();
-            /*@this.WithPurchaseInvoice().Build();
-            @this.WithSalesInvoiceItems().Build();
-            @this.WithSalesChannel().Build();
-            @this.WithStore().Build();*/
-            @this.WithAdvancePayment(faker.Random.Decimal()).Build();
-            @this.WithPaymentDays(faker.Random.Int(7, 30)).Build();
-            @this.WithIsRepeatingInvoice(faker.Random.Bool()).Build();
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build()).Build();
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build()).Build();
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build()).Build();
