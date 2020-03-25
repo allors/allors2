@@ -45,7 +45,7 @@ stages:
       displayName: 'Use .NET Core 3.1 sdk'
       inputs:
         packageType: sdk
-        version: 3.1.x
+        version: 3.1.200
         installationPath: $(Agent.ToolsDirectory)/dotnet
     - task: PowerShell@2
       inputs:
