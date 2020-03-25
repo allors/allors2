@@ -2,6 +2,6 @@
   <input matInput placeholder="Enter Barcode" [(ngModel)]="barcode" (keyup.enter)="scan()">
 </mat-form-field>
 
-<button (click)="showScanner = true" type="button" mat-raised-button color="primary" title="Scanner">
+<button (click)="showScanner = true" type="button" mat-raised-button color="primary" title="Scanner" matTooltip="Scanner">
   <mat-icon>rss_feed</mat-icon>
 </button>

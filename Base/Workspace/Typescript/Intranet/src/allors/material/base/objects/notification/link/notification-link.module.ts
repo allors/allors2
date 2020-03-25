@@ -5,6 +5,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../..';
@@ -28,6 +29,7 @@ export { NotificationLinkComponent } from './notification-link.component';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
+    MatTooltipModule,
     AllorsMaterialFactoryFabModule,
     AllorsMaterialFilterModule,
     AllorsMaterialTableModule,
