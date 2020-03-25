@@ -46,8 +46,8 @@ namespace Commands
             NLog.LogManager.LoadConfiguration("nlog.config");
         }
 
-        [Option("-i", Description = "Isolation Level (Snapshot|Serializable)")]
-        public IsolationLevel IsolationLevel { get; set; } = IsolationLevel.Snapshot;
+        [Option("-i", Description = "Isolation Level (ReadCommitted|Serializable)")]
+        public IsolationLevel IsolationLevel { get; set; } = IsolationLevel.ReadCommitted;
 
         [Option("-t", Description = "Command Timeout in seconds")]
         public int CommandTimeout { get; set; } = 0;

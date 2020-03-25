@@ -28,7 +28,7 @@ namespace Allors.Database.Adapters.SqlClient
         {
             this.validation = new Validation(this.database);
 
-            this.AllowSnapshotIsolation();
+            this.AllowReadCommittedSnapsho();
 
             if (this.validation.IsValid)
             {
@@ -54,7 +54,7 @@ namespace Allors.Database.Adapters.SqlClient
             }
         }
 
-        private void AllowSnapshotIsolation()
+        private void AllowReadCommittedSnapsho()
         {
             using (var connection = new SqlConnection(this.database.ConnectionString))
             {
@@ -62,9 +62,9 @@ namespace Allors.Database.Adapters.SqlClient
                 try
                 {
                     var cmdText = @"
-IF ((SELECT SNAPSHOT_ISOLATION_STATE FROM SYS.DATABASES WHERE NAME = '" + connection.Database + @"') = 0)
+IF ((SELECT [is_read_committed_snapshot_on] FROM SYS.DATABASES WHERE NAME = '" + connection.Database + @"') = 0)
 alter Database " + connection.Database + @"
-set allow_snapshot_isolation on";
+SET READ_COMMITTED_SNAPSHOT ON";
                     using (var command = new SqlCommand(cmdText, connection))
                     {
                         command.ExecuteNonQuery();
