@@ -13,7 +13,7 @@ namespace Allors.Database.Adapters.Npgsql
         public Configuration()
         {
             this.CommandTimeout = 30;
-            this.IsolationLevel = IsolationLevel.Snapshot;
+            this.IsolationLevel = IsolationLevel.ReadCommitted;
         }
 
         public ICacheFactory CacheFactory { get; set; }
