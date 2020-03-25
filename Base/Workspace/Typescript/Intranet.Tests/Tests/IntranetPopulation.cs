@@ -620,7 +620,7 @@ line2")
             // Serialized RFQ with Serialized Unified-Good
             var serializedRFQ = new RequestForQuoteBuilder(this.Session).WithSerializedDefaults(allors).Build();
 
-            // Serialized RFQ with Serialized Unified-Good
+            // NonSerialized RFQ with NonSerialized Unified-Good
             var nonSerializedRFQ = new RequestForQuoteBuilder(this.Session).WithNonSerializedDefaults(allors).Build();
 
             var quote = new ProductQuoteBuilder(this.Session)
