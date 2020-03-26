@@ -26,14 +26,6 @@ namespace Tests.CustomerShipmentTests
         {
             this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
-            for (int i = 0; i < 10; i++)
-            {
-                this.internalOrganisation.CreateB2BCustomer(this.Session.Faker());
-            }
-
-            this.Session.Derive();
-            this.Session.Commit();
-
             this.Login();
             this.shipmentListPage = this.Sidenav.NavigateToShipments();
         }

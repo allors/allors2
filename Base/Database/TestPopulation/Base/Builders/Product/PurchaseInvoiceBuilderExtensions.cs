@@ -8,7 +8,7 @@ namespace Allors.Domain.TestPopulation
 {
     using System.Linq;
 
-    public static partial class SalesInvoiceBuilderExtensions
+    public static partial class PurchaseInvoiceBuilderExtensions
     {
         public static PurchaseInvoiceBuilder WithDefaults(this PurchaseInvoiceBuilder @this, Organisation internalOrganisation)
         {

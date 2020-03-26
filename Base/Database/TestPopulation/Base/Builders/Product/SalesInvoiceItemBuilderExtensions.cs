@@ -8,16 +8,13 @@ namespace Allors.Domain.TestPopulation
 {
     public static partial class SalesInvoiceItemBuilderExtensions
     {
+        // TODO: Investigate and Change
         public static SalesInvoiceItemBuilder WithSerializedProductDefaults(this SalesInvoiceItemBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
             var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
             var serializedItem = new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
-
-            var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
-            var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
-            var postalAddress = new PostalAddressBuilder(@this.Session).WithDefaults().Build();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
@@ -30,16 +27,13 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
+        // TODO: Investigate and Change
         public static SalesInvoiceItemBuilder WithSerializedNonProductDefaults(this SalesInvoiceItemBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
             var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
             var serializedItem = new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
-
-            var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
-            var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
-            var postalAddress = new PostalAddressBuilder(@this.Session).WithDefaults().Build();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());

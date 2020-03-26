@@ -9,7 +9,7 @@ namespace Allors.Domain.TestPopulation
 {
     public static partial class PersonBuilderExtensions
     {
-        public static PersonBuilder WithEmployeeOrCompanyContactDefaults(this PersonBuilder @this)
+        public static PersonBuilder WithDefaults(this PersonBuilder @this)
         {
             var faker = @this.Session.Faker();
 

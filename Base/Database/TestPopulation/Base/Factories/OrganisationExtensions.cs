@@ -13,7 +13,7 @@ namespace Allors.Domain.TestPopulation
     {
         public static Person CreateEmployee(this Organisation @this, string password, Faker faker)
         {
-            var person = new PersonBuilder(@this.Session()).WithEmployeeOrCompanyContactDefaults().Build();
+            var person = new PersonBuilder(@this.Session()).WithDefaults().Build();
 
             new EmploymentBuilder(@this.Session())
                 .WithEmployee(person)
@@ -53,8 +53,21 @@ namespace Allors.Domain.TestPopulation
                 .Build();
 
             new OrganisationContactRelationshipBuilder(@this.Session())
-                .WithContact(new PersonBuilder(@this.Session()).WithEmployeeOrCompanyContactDefaults().Build())
+                .WithContact(new PersonBuilder(@this.Session()).WithDefaults().Build())
                 .WithOrganisation(customer)
+                .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
+                .Build();
+
+            return customer;
+        }
+
+        public static Person CreateB2CCustomer(this Organisation @this, Faker faker)
+        {
+            var customer = new PersonBuilder(@this.Session()).WithDefaults().Build();
+
+            new CustomerRelationshipBuilder(@this.Session())
+                .WithCustomer(customer)
+                .WithInternalOrganisation(@this)
                 .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
                 .Build();
 
@@ -72,7 +85,7 @@ namespace Allors.Domain.TestPopulation
                 .Build();
 
             new OrganisationContactRelationshipBuilder(@this.Session())
-                .WithContact(new PersonBuilder(@this.Session()).WithEmployeeOrCompanyContactDefaults().Build())
+                .WithContact(new PersonBuilder(@this.Session()).WithDefaults().Build())
                 .WithOrganisation(supplier)
                 .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
                 .Build();
@@ -91,7 +104,7 @@ namespace Allors.Domain.TestPopulation
                 .Build();
 
             new OrganisationContactRelationshipBuilder(@this.Session())
-                .WithContact(new PersonBuilder(@this.Session()).WithEmployeeOrCompanyContactDefaults().Build())
+                .WithContact(new PersonBuilder(@this.Session()).WithDefaults().Build())
                 .WithOrganisation(subContractor)
                 .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
                 .Build();

@@ -159,6 +159,15 @@ namespace Tests
             dipu.CreateEmployee("letmein", faker);
             dipu.CreateAdministrator("letmein", faker);
 
+            // Create B2B & B2C Customers
+            for (var i = 0; i < 5; i++)
+            {
+                allors.CreateB2BCustomer(this.Session.Faker());
+                allors.CreateB2CCustomer(this.Session.Faker());
+                dipu.CreateB2BCustomer(this.Session.Faker());
+                dipu.CreateB2CCustomer(this.Session.Faker());
+            }
+
             this.Session.Derive();
 
             var facility = new FacilityBuilder(this.Session)
@@ -437,20 +446,11 @@ line2")
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                 .Build();
 
-            var salesInvoice = new SalesInvoiceBuilder(this.Session)
-                .WithBilledFrom(allors)
-                .WithInvoiceNumber("1")
-                .WithBillToCustomer(acme)
-                .WithBillToContactMechanism(acme.PartyContactMechanisms[0].ContactMechanism)
-                .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
-                .WithSalesInvoiceItem(salesInvoiceItem1)
-                .WithSalesInvoiceItem(salesInvoiceItem2)
-                .WithSalesInvoiceItem(salesInvoiceItem3)
-                .WithCustomerReference("a reference number")
-                .WithDescription("Sale of 1 used Aircraft Towbar")
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithVatRegime(new VatRegimes(this.Session).Assessable)
+            var salesInvoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors)
                 .Build();
+            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem1);
+            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem2);
+            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem3);
 
             var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
                 .WithDescription("first item")
@@ -602,18 +602,11 @@ line2")
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Surcharge)
                 .Build();
 
-            var invoice = new SalesInvoiceBuilder(this.Session)
-                .WithBilledFrom(allors)
-                .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceItem(item1)
-                .WithSalesInvoiceItem(item2)
-                .WithSalesInvoiceItem(item3)
-                .WithCustomerReference("a reference number")
-                .WithDescription("Sale of 1 used Aircraft Towbar")
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithVatRegime(new VatRegimes(this.Session).Assessable)
+            var invoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2CInvoiceDefaults(dipu)
                 .Build();
+            invoice.AddSalesInvoiceItem(item1);
+            invoice.AddSalesInvoiceItem(item2);
+            invoice.AddSalesInvoiceItem(item3);
 
             this.Session.Derive();
 
