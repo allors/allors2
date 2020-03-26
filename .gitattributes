@@ -1,4 +1,9 @@
-* text=auto
+*        text=auto
 
-*.cs diff=csharp
+*.cs    diff=csharp
 
+*.csproj text merge=union
+*.sln    text merge=union eol=crlf
+
+yarn.lock merge=ours
+package-lock.json merge=ours
