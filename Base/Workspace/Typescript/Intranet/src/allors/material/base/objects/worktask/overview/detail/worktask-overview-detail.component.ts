@@ -155,9 +155,7 @@ export class WorkTaskOverviewDetailComponent extends TestScope implements OnInit
     }
   }
 
-  public contactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public contactPersonAdded(contact: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.workTask.Customer as Organisation;

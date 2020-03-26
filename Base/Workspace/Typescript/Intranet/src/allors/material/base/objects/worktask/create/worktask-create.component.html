@@ -56,7 +56,7 @@
         </div>
         <div class="col-md-12" *ngIf="workTask.Customer && addContactPerson">
           <mat-card>
-            <mat-card-header>Add a new contact mechanism</mat-card-header>
+            <mat-card-header>Add a new person</mat-card-header>
             <mat-card-content>
               <person-inline (cancelled)="addContactPerson = false" (saved)="contactPersonAdded($event); addContactPerson = false">
               </person-inline>

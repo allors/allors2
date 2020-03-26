@@ -61,7 +61,7 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.route.url, this.refresh$, this.internalOrganisationId.observable$])
       .pipe(
         switchMap(() => {
 
@@ -131,9 +131,7 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
       });
   }
 
-  public contactPersonAdded(id: string): void {
-
-    const contact: Person = this.allors.context.get(id) as Person;
+  public contactPersonAdded(contact: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.workTask.Customer as Organisation;
