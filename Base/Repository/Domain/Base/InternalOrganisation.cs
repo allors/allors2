@@ -635,6 +635,26 @@ namespace Allors.Repository
         [Workspace]
         bool AutoGeneratePurchaseShipment { get; set; }
 
+        #region Allors
+        [Id("61eae325-e09d-4270-a6ba-d96eb70d01b1")]
+        [AssociationId("813d2dd3-92b8-47a3-818f-4640a3e74734")]
+        [RoleId("f25a9271-636a-4c6c-a34b-62166396d8aa")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        SerialisedItemAssignedOn SerialisedItemAssignedOn { get; set; }
+
+        #region Allors
+        [Id("0d2ebe14-389a-44e7-8bee-06e622c9590b")]
+        [AssociationId("04fcd869-4626-49c1-b06f-80b03c390ec1")]
+        [RoleId("45e58d93-fc82-4ee7-8031-65731b9e40e0")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        SerialisedItemSoldOn SerialisedItemSoldOn { get; set; }
+
         #region inherited methods
 
         #endregion

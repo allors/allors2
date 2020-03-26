@@ -1,4 +1,4 @@
-// <copyright file="Carrier.cs" company="Allors bvba">
+// <copyright file="SerialisedItemAssignedOn.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,9 +10,9 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
-    [Id("4f46f32a-04e6-4ccc-829b-68fb3336f870")]
+    [Id("d9a4d99d-0c06-4b7c-b69d-ab8b2833a017")]
     #endregion
-    public partial class Carrier : UniquelyIdentifiable, Object
+    public partial class SerialisedItemAssignedOn: UniquelyIdentifiable
     {
         #region inherited properties
         public Guid UniqueId { get; set; }
@@ -24,13 +24,13 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("8defc9c0-6cc8-4e8a-b892-dad6ff908b85")]
-        [AssociationId("9a0673e4-8c79-4677-a542-e17f4211d74d")]
-        [RoleId("cde2981f-9ba6-4c85-a0cc-b98bd3b7a8a2")]
+        [Id("dc6f2c40-25ab-4e06-906c-62cb1d118e7f")]
+        [AssociationId("4c41c694-11c0-4ead-a475-8a90b18c6a07")]
+        [RoleId("249e9c5f-98a3-445f-a52b-21a23691218e")]
         #endregion
-        [Required]
-        [Size(256)]
         [Workspace]
+        [Indexed]
+        [Size(256)]
         public string Name { get; set; }
 
         #region inherited methods
@@ -39,9 +39,7 @@ namespace Allors.Repository
 
         public void OnPostBuild() { }
 
-        public void OnInit()
-        {
-        }
+        public void OnInit() { }
 
         public void OnPreDerive() { }
 
