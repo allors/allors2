@@ -297,6 +297,7 @@ namespace Allors.Repository
         [RoleId("aa621b67-049a-44e8-9f70-07e2a0c696b8")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
         [Indexed]
         public Party PreviousShipToCustomer { get; set; }
 
