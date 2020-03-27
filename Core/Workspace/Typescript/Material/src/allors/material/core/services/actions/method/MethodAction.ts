@@ -50,9 +50,10 @@ export class MethodAction implements Action {
   private resolve(target: ActionTarget): ISessionObject[] {
     let objects = Array.isArray(target) ? target as ISessionObject[] : [target as ISessionObject];
 
-    if (this.config?.path) {
+    const path = this.config?.path;
+    if (path) {
       objects = objects.map(v => {
-        for (const roleType of this.config.path) {
+        for (const roleType of path) {
           v = v.get(roleType);
         }
 
