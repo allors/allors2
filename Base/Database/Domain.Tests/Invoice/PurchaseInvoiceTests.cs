@@ -29,7 +29,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithBilledFrom(new Organisations(this.Session).FindBy(M.Organisation.Name, "supplier"));
+            builder.WithBilledFrom(this.InternalOrganisation.ActiveSuppliers.First);
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

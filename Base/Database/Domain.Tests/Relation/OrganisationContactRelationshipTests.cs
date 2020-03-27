@@ -6,23 +6,21 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
     using Xunit;
 
     public class OrganisationContactRelationshipTests : DomainTest
     {
-        private Person contact;
         private OrganisationContactRelationship organisationContactRelationship;
+        private Organisation organisation;
+        private Person contact;
 
         public OrganisationContactRelationshipTests()
         {
-            this.contact = new PersonBuilder(this.Session).WithLastName("organisationContact").Build();
-
-            this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.Session)
-                .WithContact(this.contact)
-                .WithOrganisation(new Organisations(this.Session).FindBy(M.Organisation.Name, "customer"))
-                .WithFromDate(this.Session.Now().AddYears(-1))
-                .Build();
+            this.organisation = (Organisation)this.InternalOrganisation.ActiveCustomers.FirstOrDefault(v => v.GetType().Name == typeof(Organisation).Name);
+            this.organisationContactRelationship = this.organisation.OrganisationContactRelationshipsWhereOrganisation.FirstOrDefault();
+            this.contact = this.organisationContactRelationship.Contact;
 
             this.Session.Derive();
             this.Session.Commit();
@@ -77,7 +75,7 @@ namespace Allors.Domain
 
             var secondRelationship = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(new PersonBuilder(this.Session).WithLastName("contact 2").Build())
-                .WithOrganisation(new Organisations(this.Session).FindBy(M.Organisation.Name, "customer"))
+                .WithOrganisation(this.organisation)
                 .WithFromDate(this.Session.Now())
                 .Build();
 

@@ -92,6 +92,14 @@ namespace Allors.Domain
             {
                 this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
+
+            if (this.QuoteItemState.IsSent
+                && !this.LastQuoteItemState.IsSent
+                && this.QuoteWhereQuoteItem.Issuer.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend
+                && this.ExistSerialisedItem)
+            {
+                this.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Assigned;
+            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
@@ -104,7 +112,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseSend(QuoteItemSend method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Cancelled;
+        public void BaseSend(QuoteItemSend method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Sent;
 
         public void BaseCancel(QuoteItemCancel method) => this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Cancelled;
 

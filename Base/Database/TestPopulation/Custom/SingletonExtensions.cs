@@ -83,8 +83,8 @@ namespace Allors
                 purchaseOrderNeedsApproval: true,
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
-                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).SalesOrder,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipment);
+                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).SalesOrderConfirm,
+                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentSend);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: @this.Session(),
@@ -137,8 +137,8 @@ namespace Allors
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null,
-                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).SalesOrder,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipment);
+                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).SalesOrderConfirm,
+                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentSend);
 
             // Give Administrator access
             new EmploymentBuilder(@this.Session()).WithEmployee(administrator).WithEmployer(allors).Build();

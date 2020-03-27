@@ -18,8 +18,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithMaximumAllowedPrice(faker.Random.UInt());
             @this.WithQuantity(1);
-            @this.WithProduct(finishedGood).Build();
-            @this.WithRequiredByDate(@this.Session.Now().AddDays(7)).Build();
+            @this.WithProduct(finishedGood);
+            @this.WithRequiredByDate(@this.Session.Now().AddDays(7));
             @this.WithSerialisedItem(finishedGood.SerialisedItems.First);
 
             return @this;
@@ -35,8 +35,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithMaximumAllowedPrice(faker.Random.UInt());
             @this.WithQuantity(faker.Random.UShort());
-            @this.WithProduct(finishedGood).Build();
-            @this.WithRequiredByDate(@this.Session.Now().AddDays(7)).Build();
+            @this.WithProduct(finishedGood);
+            @this.WithRequiredByDate(@this.Session.Now().AddDays(7));
 
             return @this;
         }

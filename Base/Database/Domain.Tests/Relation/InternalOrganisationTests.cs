@@ -249,7 +249,7 @@ namespace Allors.Domain
         {
             var internalOrganisation = this.InternalOrganisation;
 
-            Assert.Single(this.InternalOrganisation.ActiveCustomers);
+            var activeCustomersBefore = this.InternalOrganisation.ActiveCustomers.Count;
 
             var acme = new OrganisationBuilder(this.Session).WithName("Acme").Build();
             var nike = new OrganisationBuilder(this.Session).WithName("Nike").Build();
@@ -268,14 +268,14 @@ namespace Allors.Domain
 
             Assert.True(this.InternalOrganisation.ExistCustomerRelationshipsWhereInternalOrganisation);
             Assert.True(this.InternalOrganisation.ExistActiveCustomers);
-            Assert.Equal(3, this.InternalOrganisation.ActiveCustomers.Count);
+            Assert.Equal(activeCustomersBefore + 2, this.InternalOrganisation.ActiveCustomers.Count);
 
             // Removing will not do anything.
             ((OrganisationDerivedRoles)this.InternalOrganisation).RemoveActiveCustomers();
 
             this.Session.Derive();
             Assert.True(this.InternalOrganisation.ExistActiveCustomers);
-            Assert.Equal(3, this.InternalOrganisation.ActiveCustomers.Count);
+            Assert.Equal(activeCustomersBefore + 2, this.InternalOrganisation.ActiveCustomers.Count);
 
             // Ending a RelationShip affects the ActiveCustomers
             acmeRelation.ThroughDate = this.Session.Now().AddDays(-1).Date;
@@ -284,7 +284,7 @@ namespace Allors.Domain
 
             Assert.True(this.InternalOrganisation.ExistCustomerRelationshipsWhereInternalOrganisation);
             Assert.True(this.InternalOrganisation.ExistActiveCustomers);
-            Assert.Equal(2, this.InternalOrganisation.ActiveCustomers.Count);
+            Assert.Equal(activeCustomersBefore + 1, this.InternalOrganisation.ActiveCustomers.Count);
         }
     }
 }

@@ -94,8 +94,8 @@ namespace Tests
                 purchaseOrderNeedsApproval: true,
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
-                serialisedItemAssignedOn: new SerialisedItemAssignedOns(this.Session).SalesOrder,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(this.Session).CustomerShipment);
+                serialisedItemAssignedOn: new SerialisedItemAssignedOns(this.Session).SalesOrderConfirm,
+                serialisedItemSoldOn: new SerialisedItemSoldOns(this.Session).CustomerShipmentSend);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: this.Session,
@@ -148,8 +148,8 @@ namespace Tests
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null,
-                serialisedItemAssignedOn: new SerialisedItemAssignedOns(this.Session).SalesOrder,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(this.Session).CustomerShipment);
+                serialisedItemAssignedOn: new SerialisedItemAssignedOns(this.Session).SalesOrderConfirm,
+                serialisedItemSoldOn: new SerialisedItemSoldOns(this.Session).CustomerShipmentSend);
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
             var faker = this.Session.Faker();
