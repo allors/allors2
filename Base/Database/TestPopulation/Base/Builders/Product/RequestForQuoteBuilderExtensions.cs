@@ -18,11 +18,11 @@ namespace Allors.Domain.TestPopulation
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithRecipient(internalOrganisation);
-            @this.WithRequestDate(@this.Session.Now().AddDays(-2)).Build();
-            @this.WithRequiredResponseDate(@this.Session.Now().AddDays(2)).Build();
-            @this.WithRequestItem(requestItem).Build();
-            @this.WithEmailAddress(faker.Internet.Email()).Build();
-            @this.WithTelephoneNumber(faker.Phone.PhoneNumber()).Build();
+            @this.WithRequestDate(@this.Session.Now().AddDays(-2));
+            @this.WithRequiredResponseDate(@this.Session.Now().AddDays(2));
+            @this.WithRequestItem(requestItem);
+            @this.WithEmailAddress(faker.Internet.Email());
+            @this.WithTelephoneNumber(faker.Phone.PhoneNumber());
 
             return @this;
         }
@@ -37,11 +37,11 @@ namespace Allors.Domain.TestPopulation
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithRecipient(internalOrganisation);
-            @this.WithRequestDate(@this.Session.Now().AddDays(-2)).Build();
-            @this.WithRequiredResponseDate(@this.Session.Now().AddDays(2)).Build();
-            @this.WithRequestItem(requestItem).Build();
-            @this.WithEmailAddress(faker.Internet.Email()).Build();
-            @this.WithTelephoneNumber(faker.Phone.PhoneNumber()).Build();
+            @this.WithRequestDate(@this.Session.Now().AddDays(-2));
+            @this.WithRequiredResponseDate(@this.Session.Now().AddDays(2));
+            @this.WithRequestItem(requestItem);
+            @this.WithEmailAddress(faker.Internet.Email());
+            @this.WithTelephoneNumber(faker.Phone.PhoneNumber());
 
             return @this;
         }

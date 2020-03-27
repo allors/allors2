@@ -6,6 +6,8 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
 
     using Xunit;
@@ -114,6 +116,31 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(1300, quote.TotalIncVat);
+        }
+
+        [Fact]
+        public void GivenProductQuoteForSerialisedItem_WhenSending_ThenSerialisedItemStateIsChanged()
+        {
+            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).ProductQuoteSend;
+
+            this.Session.Derive();
+
+            var quote = new ProductQuoteBuilder(this.Session).WithSerializedDefaults(this.InternalOrganisation).Build();
+
+            var serialisedItem = quote.QuoteItems.First().SerialisedItem;
+            serialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session).Good;
+
+            this.Session.Derive();
+
+            quote.Approve();
+            this.Session.Derive();
+
+            Assert.NotEqual(new SerialisedItemStates(this.Session).Assigned, serialisedItem.SerialisedItemState);
+
+            quote.Send();
+            this.Session.Derive();
+
+            Assert.Equal(new SerialisedItemStates(this.Session).Assigned, serialisedItem.SerialisedItemState);
         }
     }
 }

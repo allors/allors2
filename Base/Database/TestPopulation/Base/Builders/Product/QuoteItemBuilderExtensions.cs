@@ -13,17 +13,17 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
-            var serializedItem = new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
 
             @this.WithDetails(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
-            @this.WithEstimatedDeliveryDate(@this.Session.Now().AddDays(5)).Build();
-            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem).Build();
-            @this.WithProduct(serializedProduct).Build();
-            @this.WithSerialisedItem(serializedItem).Build();
-            @this.WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece).Build();
-            @this.WithQuantity(faker.Random.UShort()).Build();
+            @this.WithEstimatedDeliveryDate(@this.Session.Now().AddDays(5));
+            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem);
+            @this.WithProduct(serializedProduct);
+            @this.WithSerialisedItem(serializedProduct.SerialisedItems.First);
+            @this.WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece);
+            @this.WithAssignedUnitPrice(faker.Random.UInt());
+            @this.WithQuantity(1);
             return @this;
         }
     }

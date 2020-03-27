@@ -19,10 +19,10 @@ namespace Allors.Domain.TestPopulation
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
-            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem).Build();
-            @this.WithProduct(serializedProduct).Build();
-            @this.WithSerialisedItem(serializedItem).Build();
-            @this.WithMessage(faker.Lorem.Sentence()).Build();
+            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem);
+            @this.WithProduct(serializedProduct);
+            @this.WithSerialisedItem(serializedItem);
+            @this.WithMessage(faker.Lorem.Sentence());
 
             return @this;
         }
@@ -40,10 +40,10 @@ namespace Allors.Domain.TestPopulation
             @this.WithInternalComment(faker.Lorem.Sentence());
 
             // TODO: Select a random item except ProductItem
-            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem).Build();
-            @this.WithProduct(serializedProduct).Build();
-            @this.WithSerialisedItem(serializedItem).Build();
-            @this.WithMessage(faker.Lorem.Sentence()).Build();
+            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem);
+            @this.WithProduct(serializedProduct);
+            @this.WithSerialisedItem(serializedItem);
+            @this.WithMessage(faker.Lorem.Sentence());
 
             return @this;
         }

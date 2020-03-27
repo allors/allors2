@@ -8,6 +8,7 @@ namespace Allors
     using System;
     using System.Globalization;
     using Allors.Domain;
+    using Allors.Domain.TestPopulation;
 
     public class Fixture
     {
@@ -100,8 +101,10 @@ namespace Allors
 
                 new ProductCategoryBuilder(session).WithName("Primary Category").Build();
 
-                var customer = new OrganisationBuilder(session).WithName("customer").WithLocale(singleton.DefaultLocale).Build();
-                var supplier = new OrganisationBuilder(session).WithName("supplier").WithLocale(singleton.DefaultLocale).Build();
+                internalOrganisation.CreateB2BCustomer(session.Faker());
+                internalOrganisation.CreateB2CCustomer(session.Faker());
+                internalOrganisation.CreateSupplier(session.Faker());
+                internalOrganisation.CreateSubContractor(session.Faker());
 
                 var purchaser = new PersonBuilder(session).WithFirstName("The").WithLastName("purchaser").WithUserName("purchaser").Build();
                 var orderProcessor = new PersonBuilder(session).WithFirstName("The").WithLastName("orderProcessor").WithUserName("orderProcessor").Build();
@@ -116,12 +119,7 @@ namespace Allors
                 new UserGroups(session).Creators.AddMember(orderProcessor);
                 new UserGroups(session).Creators.AddMember(administrator);
 
-                new CustomerRelationshipBuilder(session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).WithFromDate(session.Now()).Build();
-
-                new SupplierRelationshipBuilder(session).WithSupplier(supplier).WithInternalOrganisation(internalOrganisation).WithFromDate(session.Now()).Build();
-
                 new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(purchaser).WithEmployer(internalOrganisation).Build();
-
 
                 new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(orderProcessor).WithEmployer(internalOrganisation).Build();
 

@@ -10,7 +10,7 @@ namespace Allors.Domain.TestPopulation
 
     public static partial class ProductQuoteBuilderExtensions
     {
-        public static ProductQuoteBuilder WithDefaults(this ProductQuoteBuilder @this, Organisation internalOrganisation)
+        public static ProductQuoteBuilder WithSerializedDefaults(this ProductQuoteBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
@@ -18,17 +18,17 @@ namespace Allors.Domain.TestPopulation
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
 
             @this.WithContactPerson(customer.CurrentContacts.FirstOrDefault());
-            @this.WithFullfillContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault()).Build();
+            @this.WithFullfillContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithIssuer(internalOrganisation);
-            @this.WithIssueDate(@this.Session.Now().AddDays(-2)).Build();
-            @this.WithValidFromDate(@this.Session.Now().AddDays(-2)).Build();
-            @this.WithValidThroughDate(@this.Session.Now().AddDays(2)).Build();
-            @this.WithRequiredResponseDate(@this.Session.Now().AddDays(2)).Build();
-            @this.WithReceiver(customer).Build();
-            @this.WithQuoteItem(quoteItem).Build();
+            @this.WithIssueDate(@this.Session.Now().AddDays(-2));
+            @this.WithValidFromDate(@this.Session.Now().AddDays(-2));
+            @this.WithValidThroughDate(@this.Session.Now().AddDays(2));
+            @this.WithRequiredResponseDate(@this.Session.Now().AddDays(2));
+            @this.WithReceiver(customer);
+            @this.WithQuoteItem(quoteItem);
 
             return @this;
         }
