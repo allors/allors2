@@ -28,7 +28,7 @@ namespace Allors.Database.Adapters.SqlClient
         {
             this.validation = new Validation(this.database);
 
-            this.AllowReadCommittedSnapsho();
+            this.AllowReadCommittedSnapshot();
 
             if (this.validation.IsValid)
             {
@@ -54,7 +54,7 @@ namespace Allors.Database.Adapters.SqlClient
             }
         }
 
-        private void AllowReadCommittedSnapsho()
+        private void AllowReadCommittedSnapshot()
         {
             using (var connection = new SqlConnection(this.database.ConnectionString))
             {
