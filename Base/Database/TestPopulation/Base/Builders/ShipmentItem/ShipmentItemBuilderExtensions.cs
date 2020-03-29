@@ -5,11 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-using Allors.Meta;
-
 namespace Allors.Domain.TestPopulation
 {
+    using System.Linq;
+
     public static partial class ShipmentItemBuilderExtensions
     {
         public static ShipmentItemBuilder WithSerializedUnifiedGoodDefaults(this ShipmentItemBuilder @this, Organisation internalOrganization)

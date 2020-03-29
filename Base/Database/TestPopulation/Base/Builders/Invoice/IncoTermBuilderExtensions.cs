@@ -12,9 +12,9 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            @this.WithTermValue(faker.Lorem.Sentence()).Build();
-            @this.WithTermType(faker.Random.ListItem(@this.Session.Extent<IncoTermType>())).Build();
-            @this.WithDescription(faker.Lorem.Sentence()).Build();
+            @this.WithTermValue(faker.Lorem.Sentence());
+            @this.WithTermType(faker.Random.ListItem(@this.Session.Extent<IncoTermType>()));
+            @this.WithDescription(faker.Lorem.Sentence());
 
             return @this;
         }
