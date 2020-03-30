@@ -43,6 +43,13 @@ namespace Allors.Domain.TestPopulation
                 .WithContactPurpose(new ContactMechanismPurposes(@this.Session).GeneralPhoneNumber)
                 .Build());
 
+            @this.WithPartyContactMechanism(new PartyContactMechanismBuilder(@this.Session)
+                .WithUseAsDefault(true)
+                .WithContactMechanism(new PostalAddressBuilder(@this.Session).WithDefaults().Build())
+                .WithContactPurpose(new ContactMechanismPurposes(@this.Session).GeneralCorrespondence)
+                .WithContactPurpose(new ContactMechanismPurposes(@this.Session).ShippingAddress)
+                .Build());
+
             return @this;
         }
     }
