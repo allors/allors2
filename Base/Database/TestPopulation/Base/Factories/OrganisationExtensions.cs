@@ -61,6 +61,19 @@ namespace Allors.Domain.TestPopulation
             return customer;
         }
 
+        public static Person CreateB2CCustomer(this Organisation @this, Faker faker)
+        {
+            var customer = new PersonBuilder(@this.Session()).WithDefaults().Build();
+
+            new CustomerRelationshipBuilder(@this.Session())
+                .WithCustomer(customer)
+                .WithInternalOrganisation(@this)
+                .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
+                .Build();
+
+            return customer;
+        }
+
         public static Organisation CreateSupplier(this Organisation @this, Faker faker)
         {
             var supplier = new OrganisationBuilder(@this.Session()).WithDefaults().Build();
