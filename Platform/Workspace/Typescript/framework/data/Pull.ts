@@ -1,4 +1,4 @@
-import { UnitTypes, CompositeTypes, serializeObject, ParameterTypes } from '../protocol/Serialization';
+import { CompositeTypes, ParameterTypes } from '../workspace/Types';
 import { Extent } from './Extent';
 import { ISessionObject } from '../workspace';
 import { Result } from './Result';
@@ -8,6 +8,7 @@ import { Filter } from './Filter';
 import { Fetch } from './Fetch';
 import { Sort } from './Sort';
 import { Tree } from './Tree';
+import { serializeObject } from '../workspace/SessionObject';
 
 export class Pull {
 

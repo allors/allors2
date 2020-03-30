@@ -8,7 +8,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { RoleField, ModelField } from '../../../../../angular';
 
 export function dateAdapterFactory(dateLocale: string) {
-  return new MomentDateAdapter(dateLocale, { useUtc: false })
+  return new MomentDateAdapter(dateLocale, { useUtc: false });
 }
 
 @Component({

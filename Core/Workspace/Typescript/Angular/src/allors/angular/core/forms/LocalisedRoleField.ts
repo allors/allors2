@@ -1,10 +1,11 @@
-import { Input, Directive } from '@angular/core';
+import { Input,  Directive } from '@angular/core';
 import { assert } from '../../../framework';
 import { Locale, LocalisedText } from '../../../domain';
 import { RoleField } from './RoleField';
 import { humanize } from '../humanize';
 
 @Directive()
+// tslint:disable-next-line: directive-class-suffix
 export abstract class LocalisedRoleField extends RoleField {
 
   @Input()

@@ -4,7 +4,7 @@ import { IWorkspace, Workspace } from './Workspace';
 import { Permission } from './Permission';
 import { AccessControl } from './AccessControl';
 import { Compressor } from '../protocol/Compressor';
-import { deserialize } from '../protocol/Serialization';
+import { deserialize } from './SessionObject';
 
 export interface IWorkspaceObject {
   workspace: IWorkspace;

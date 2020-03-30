@@ -5,7 +5,7 @@ import { Fetch } from './Fetch';
 import { Predicate } from './Predicate';
 import { Sort } from './Sort';
 import { Tree } from './Tree';
-import { ParameterTypes } from '../protocol/Serialization';
+import { ParameterTypes } from '../workspace/Types';
 
 export interface FlatPull {
 

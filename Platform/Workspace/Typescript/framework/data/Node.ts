@@ -30,7 +30,7 @@ export class Node {
     }
 
     if (!propertyType) {
-      throw new Error(`No property ${propertyTypeName} found on ${objectType.name}`)
+      throw new Error(`No property ${propertyTypeName} found on ${objectType.name}`);
     }
 
     this.propertyType = propertyType;

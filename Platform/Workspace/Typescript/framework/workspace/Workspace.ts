@@ -64,7 +64,7 @@ export class Workspace implements IWorkspace {
 
     this.metaPopulation.classes.forEach((objectType) => {
       const DynamicClass = (() => {
-        return function () {
+        return function() {
           // @ts-ignore
           const prototype1 = Object.getPrototypeOf(this);
           const prototype2 = Object.getPrototypeOf(prototype1);
@@ -111,11 +111,11 @@ export class Workspace implements IWorkspace {
 
             if (roleType.isMany) {
 
-              prototype['Add' + roleType.singular] = function (this: SessionObject, value: SessionObject) {
+              prototype['Add' + roleType.singular] = function(this: SessionObject, value: SessionObject) {
                 return this.add(roleType, value);
               };
 
-              prototype['Remove' + roleType.singular] = function (this: SessionObject, value: SessionObject) {
+              prototype['Remove' + roleType.singular] = function(this: SessionObject, value: SessionObject) {
                 return this.remove(roleType, value);
               };
             }

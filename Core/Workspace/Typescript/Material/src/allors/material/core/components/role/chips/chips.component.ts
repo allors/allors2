@@ -4,7 +4,7 @@ import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, map, filter } from 'rxjs/operators';
 
 import { ISessionObject, } from '../../../../../framework';
-import { ParameterTypes } from '../../../../..//framework/protocol/Serialization';
+import { ParameterTypes } from '../../../../..//framework/workspace/Types';
 
 import { RoleField } from '../../../../../angular';
 import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';

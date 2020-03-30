@@ -20,7 +20,7 @@ export class EditAction implements Action {
   }
 
   resolve(target: ActionTarget) {
-    let editObject = target as ISessionObject
+    let editObject = target as ISessionObject;
 
     if (this.roleType) {
       editObject = editObject.get(this.roleType);
@@ -30,12 +30,12 @@ export class EditAction implements Action {
   }
 
   disabled(target: ActionTarget) {
-    var editObject = this.resolve(target);
+    let editObject = this.resolve(target);
     return !this.objectService.hasEditControl(editObject);
   }
 
   execute(target: ActionTarget) {
-    var editObject = this.resolve(target);
+    let editObject = this.resolve(target);
     this.objectService.edit(editObject)
       .subscribe((v) => {
         this.refreshService.refresh();

@@ -5,7 +5,7 @@ import { debounceTime, distinctUntilChanged, switchMap, map, filter, tap, startW
 
 import { RoleField } from '../../../../../angular';
 import { ISessionObject } from '../../../../../framework';
-import { ParameterTypes } from '../../../../../framework/protocol/Serialization';
+import { ParameterTypes } from '../../../../../framework/workspace/Types';
 
 import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 

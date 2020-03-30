@@ -46,8 +46,8 @@ export class AllorsMaterialFilterComponent {
       autoFocus: true,
       backdropClass: 'blah',
       position: {
-        'top': `${top}px`,
-        'left': `${left}px`
+        top: `${top}px`,
+        left: `${left}px`
       },
       maxHeight: '90vh'
     });
