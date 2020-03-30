@@ -310,7 +310,7 @@ namespace Allors.Domain
             }
 
             if (this.SalesOrderItemState.InProcess
-                && !this.LastSalesOrderItemState.InProcess
+                && (!this.ExistLastSalesOrderItemState || !this.LastSalesOrderItemState.InProcess)
                 && this.SalesOrderWhereSalesOrderItem.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderConfirm
                 && this.ExistSerialisedItem)
             {

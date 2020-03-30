@@ -297,13 +297,14 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            this.order.Confirm();
-
+            this.order.SetReadyForPosting();
             this.Session.Derive();
 
-            this.order.Send();
-
+            this.order.Post();
             this.Session.Derive();
+
+            order.Accept();
+            this.Session.Derive(true);
 
             this.Session.Commit();
         }

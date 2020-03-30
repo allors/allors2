@@ -323,7 +323,7 @@ namespace Allors.Domain
 
         public void BaseCancel(OrderCancel method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Cancelled;
 
-        public void BaseConfirm(OrderConfirm method) => this.PurchaseOrderState = this.NeedsApprovalLevel1
+        public void BaseSetReadyForProcessing(PurchaseOrderSetReadyForProcessing  method) => this.PurchaseOrderState = this.NeedsApprovalLevel1
                 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel1
                 : this.PurchaseOrderState = this.NeedsApprovalLevel2
                     ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel2

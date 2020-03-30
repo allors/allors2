@@ -200,10 +200,13 @@ namespace Allors.Domain
 
             var salesOrder = quote.SalesOrderWhereQuote;
 
-            salesOrder.Confirm();
+            salesOrder.SetReadyForPosting();
             this.Session.Derive();
 
-            salesOrder.Send();
+            salesOrder.Post();
+            this.Session.Derive();
+
+            salesOrder.Accept();
             this.Session.Derive();
 
             Assert.Equal(new SerialisedItemStates(this.Session).Sold, serialisedItem.SerialisedItemState);

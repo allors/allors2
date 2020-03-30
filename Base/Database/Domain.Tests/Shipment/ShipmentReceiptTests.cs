@@ -82,12 +82,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForProcessing();
             this.Session.Derive();
 
             order.QuickReceive();
-
             this.Session.Derive();
 
             var receipt = item1.ShipmentReceiptsWhereOrderItem.Single();
@@ -112,12 +110,10 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            order.Confirm();
-
+            order.SetReadyForProcessing();
             this.Session.Derive();
 
             order.QuickReceive();
-
             this.Session.Derive();
 
             var receipt = item1.ShipmentReceiptsWhereOrderItem.Single();
@@ -165,13 +161,14 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            order1.Confirm();
+            order1.SetReadyForPosting();
 
             this.Session.Derive();
-            this.Session.Commit();
 
-            order1.Send();
+            order1.Post();
+            this.Session.Derive();
 
+            order1.Accept();
             this.Session.Derive();
 
             var sessionInventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(inventoryItem);
@@ -192,7 +189,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            order.Confirm();
+            order.SetReadyForProcessing();
 
             order.OrderedBy.IsAutomaticallyReceived = true;
             order.QuickReceive();
@@ -223,12 +220,10 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            order.Confirm();
-
+            order.SetReadyForProcessing();
             this.Session.Derive();
 
             order.QuickReceive();
-
             this.Session.Derive();
 
             Assert.Equal(10, item1.QuantityReceived);

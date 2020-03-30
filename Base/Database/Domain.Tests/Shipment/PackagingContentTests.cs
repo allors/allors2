@@ -47,12 +47,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
@@ -102,12 +103,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];

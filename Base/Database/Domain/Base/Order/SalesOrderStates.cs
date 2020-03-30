@@ -16,6 +16,7 @@ namespace Allors.Domain
         internal static readonly Guid CompletedId = new Guid("81F80082-040C-405a-8C01-778868D57C75");
         internal static readonly Guid RejectedId = new Guid("AE2AB1DC-0E5E-4061-924C-025AB84769C0");
         internal static readonly Guid OnHoldId = new Guid("f625fb7e-893e-4f68-ab7b-2bc29a644e5b");
+        internal static readonly Guid PostedId = new Guid("37d344e7-5962-425c-86a9-24bf1e098448");
         internal static readonly Guid InProcessId = new Guid("ddbb678e-9a66-4842-87fd-4e628cff0a75");
         internal static readonly Guid FinishedId = new Guid("DFE75006-81FD-424a-AF58-2528A657155D");
 
@@ -37,6 +38,8 @@ namespace Allors.Domain
 
         public SalesOrderState OnHold => this.Cache[OnHoldId];
 
+        public SalesOrderState Posted => this.Cache[PostedId];
+
         public SalesOrderState InProcess => this.Cache[InProcessId];
 
         private UniquelyIdentifiableSticky<SalesOrderState> Cache => this.cache ??= new UniquelyIdentifiableSticky<SalesOrderState>(this.Session);
@@ -52,6 +55,7 @@ namespace Allors.Domain
             merge(CompletedId, v => v.Name = "Completed");
             merge(RejectedId, v => v.Name = "Rejected");
             merge(OnHoldId, v => v.Name = "On Hold");
+            merge(PostedId, v => v.Name = "Posted");
             merge(InProcessId, v => v.Name = "In Process");
             merge(FinishedId, v => v.Name = "Finished");
         }

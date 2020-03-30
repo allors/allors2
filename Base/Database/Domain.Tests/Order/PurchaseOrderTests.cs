@@ -188,12 +188,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForProcessing();
             this.Session.Derive();
 
             item4.Cancel();
-
             this.Session.Derive();
 
             Assert.Equal(3, order.ValidOrderItems.Count);
@@ -232,8 +230,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForProcessing();
             this.Session.Derive();
 
             Assert.Equal(3, order.ValidOrderItems.Count);

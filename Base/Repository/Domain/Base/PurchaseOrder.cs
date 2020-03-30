@@ -356,8 +356,6 @@ namespace Allors.Repository
 
         public void Continue() { }
 
-        public void Confirm() { }
-
         public void Cancel() { }
 
         public void Complete() { }
@@ -368,6 +366,12 @@ namespace Allors.Repository
 
         public void Print() { }
         #endregion
+
+        #region Allors
+        [Id("c0d775b3-6a12-47ff-b404-0598b11acd50")]
+        #endregion
+        [Workspace]
+        public void SetReadyForProcessing() { }
 
         #region Allors
         [Id("2CED78A3-0A7D-475B-82EE-5374D6E65944")]
