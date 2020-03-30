@@ -2,7 +2,7 @@
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>Defines the MediaTests type.</summary>
+// <summary></summary>
 
 namespace Allors.Domain.TestPopulation
 {
@@ -20,13 +20,13 @@ namespace Allors.Domain.TestPopulation
             var otherInternalOrganization = internalOrganisations.Except(new List<Organisation> { internalOrganisation }).FirstOrDefault();
 
             var endCustomer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
-            var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session).WithSerializedProductDefaults(internalOrganisation).Build();
+            var salesInvoiceItem_NonGSE = new SalesInvoiceItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
+            var salesInvoiceItem_GSE = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
 
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper());
-            @this.WithDescription(faker.Random.Words(10));
             @this.WithBilledFrom(internalOrganisation);
             @this.WithBilledFromContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
@@ -48,10 +48,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-
-            // TODO: WIP
-            /*@this.WithSalesInvoiceItem(salesInvoiceItem).Build();
-            @this.WithSalesInvoiceItem(salesInvoiceItem).Build();*/
+            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE).Build();
+            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE).Build();
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());
@@ -67,13 +65,15 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var customer = internalOrganisation.ActiveCustomers.Where(v => v.GetType().Name == typeof(Organisation).Name).FirstOrDefault();
-            var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session).WithSerializedProductDefaults(internalOrganisation).Build();
+            var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
 
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
+            var salesInvoiceItem_NonGSE = new SalesInvoiceItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
+            var salesInvoiceItem_GSE = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
+
             @this.WithCustomerReference(faker.Random.String(16).ToUpper());
-            @this.WithDescription(faker.Random.Words(10));
             @this.WithBilledFrom(internalOrganisation);
             @this.WithBilledFromContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
@@ -89,10 +89,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-
-            // TODO: WIP
-            /*@this.WithSalesInvoiceItem(salesInvoiceItem).Build();
-            @this.WithSalesInvoiceItem(salesInvoiceItem).Build();*/
+            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE).Build();
+            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE).Build();
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());
@@ -108,13 +106,14 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var customer = internalOrganisation.ActiveCustomers.Where(v => v.GetType().Name == typeof(Person).Name).FirstOrDefault();
-            var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session).WithSerializedProductDefaults(internalOrganisation).Build();
+
+            var salesInvoiceItem_NonGSE = new SalesInvoiceItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
+            var salesInvoiceItem_GSE = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
 
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper());
-            @this.WithDescription(faker.Random.Words(10));
             @this.WithBilledFrom(internalOrganisation);
             @this.WithBilledFromContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
@@ -128,10 +127,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-
-            // TODO: WIP
-            /*@this.WithSalesInvoiceItem(salesInvoiceItem).Build();
-            @this.WithSalesInvoiceItem(salesInvoiceItem).Build();*/
+            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE).Build();
+            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE).Build();
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());
@@ -147,13 +144,14 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
-            var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session).WithSerializedProductDefaults(internalOrganisation).Build();
+
+            var salesInvoiceItem_NonGSE = new SalesInvoiceItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
+            var salesInvoiceItem_GSE = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
 
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper());
-            @this.WithDescription(faker.Random.Words(10));
             @this.WithBilledFrom(internalOrganisation);
             @this.WithBilledFromContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(customer.CurrentContacts.FirstOrDefault());
@@ -175,10 +173,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-
-            // TODO: WIP
-            /*@this.WithSalesInvoiceItem(salesInvoiceItem).Build();
-            @this.WithSalesInvoiceItem(salesInvoiceItem).Build();*/
+            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE).Build();
+            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE).Build();
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());

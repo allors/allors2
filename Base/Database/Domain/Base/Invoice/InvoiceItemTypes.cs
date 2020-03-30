@@ -9,20 +9,20 @@ namespace Allors.Domain
 
     public partial class InvoiceItemTypes
     {
-        internal static readonly Guid FeeId = new Guid("90E9010A-E040-484c-9644-735C750B5A7C");
-        internal static readonly Guid DiscountId = new Guid("29AF6097-A7ED-4916-94DC-686E7E55E31E");
-        internal static readonly Guid InterestChargeId = new Guid("9077D502-1823-4ac5-B8E9-A6F074186A3F");
-        internal static readonly Guid MiscChargeId = new Guid("2175B0D1-E2D3-4a83-8842-DDF02A7DF794");
-        internal static readonly Guid PromotionId = new Guid("2D2E81A5-E42F-497e-B446-3D448FF8FF75");
-        internal static readonly Guid ShippingAndHandlingId = new Guid("735349ED-14FF-4f57-8754-F053FD358B8A");
-        internal static readonly Guid SurchargeId = new Guid("7B5AD1AC-BC9F-46ea-8FD3-01A9624D7E13");
-        internal static readonly Guid WarrantyId = new Guid("5F5994E3-AF24-4cab-9F1E-5869556488E3");
-        internal static readonly Guid ProductFeatureItemId = new Guid("2C8742AA-B4CD-436b-9350-B4B7AD18E7AC");
-        internal static readonly Guid PartItemId = new Guid("FF2B943D-57C9-4311-9C56-9FF37959653B");
-        internal static readonly Guid ProductItemId = new Guid("0D07F778-2735-44cb-8354-FB887ADA42AD");
-        internal static readonly Guid TimeId = new Guid("DA178F93-234A-41ed-815C-819AF8CA4E6F");
-        internal static readonly Guid FreightChargeId = new Guid("199AEA42-FDC1-4C40-AF19-2255EBBD2729");
-        internal static readonly Guid WorkDoneId = new Guid("A4D2E6D0-C6C1-46EC-A1CF-3A64822E7A9E");
+        public static readonly Guid FeeId = new Guid("90E9010A-E040-484c-9644-735C750B5A7C");
+        public static readonly Guid DiscountId = new Guid("29AF6097-A7ED-4916-94DC-686E7E55E31E");
+        public static readonly Guid InterestChargeId = new Guid("9077D502-1823-4ac5-B8E9-A6F074186A3F");
+        public static readonly Guid MiscChargeId = new Guid("2175B0D1-E2D3-4a83-8842-DDF02A7DF794");
+        public static readonly Guid PromotionId = new Guid("2D2E81A5-E42F-497e-B446-3D448FF8FF75");
+        public static readonly Guid ShippingAndHandlingId = new Guid("735349ED-14FF-4f57-8754-F053FD358B8A");
+        public static readonly Guid SurchargeId = new Guid("7B5AD1AC-BC9F-46ea-8FD3-01A9624D7E13");
+        public static readonly Guid WarrantyId = new Guid("5F5994E3-AF24-4cab-9F1E-5869556488E3");
+        public static readonly Guid ProductFeatureItemId = new Guid("2C8742AA-B4CD-436b-9350-B4B7AD18E7AC");
+        public static readonly Guid PartItemId = new Guid("FF2B943D-57C9-4311-9C56-9FF37959653B");
+        public static readonly Guid ProductItemId = new Guid("0D07F778-2735-44cb-8354-FB887ADA42AD");
+        public static readonly Guid TimeId = new Guid("DA178F93-234A-41ed-815C-819AF8CA4E6F");
+        public static readonly Guid FreightChargeId = new Guid("199AEA42-FDC1-4C40-AF19-2255EBBD2729");
+        public static readonly Guid WorkDoneId = new Guid("A4D2E6D0-C6C1-46EC-A1CF-3A64822E7A9E");
 
         private UniquelyIdentifiableSticky<InvoiceItemType> cache;
 

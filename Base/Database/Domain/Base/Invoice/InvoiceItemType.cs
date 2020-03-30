@@ -7,28 +7,28 @@ namespace Allors.Domain
 {
     public partial class InvoiceItemType
     {
-        public bool Fee => this.UniqueId == InvoiceItemTypes.FeeId;
+        public bool IsFee => this.UniqueId == InvoiceItemTypes.FeeId;
 
-        public bool Discount => this.UniqueId == InvoiceItemTypes.DiscountId;
+        public bool IsDiscount => this.UniqueId == InvoiceItemTypes.DiscountId;
 
-        public bool InterestCharge => this.UniqueId == InvoiceItemTypes.InterestChargeId;
+        public bool IsInterestCharge => this.UniqueId == InvoiceItemTypes.InterestChargeId;
 
-        public bool MiscCharge => this.UniqueId == InvoiceItemTypes.MiscChargeId;
+        public bool IsMiscCharge => this.UniqueId == InvoiceItemTypes.MiscChargeId;
 
-        public bool Promotion => this.UniqueId == InvoiceItemTypes.PromotionId;
+        public bool IsPromotion => this.UniqueId == InvoiceItemTypes.PromotionId;
 
-        public bool ShippingAndHandling => this.UniqueId == InvoiceItemTypes.ShippingAndHandlingId;
+        public bool IsShippingAndHandling => this.UniqueId == InvoiceItemTypes.ShippingAndHandlingId;
 
-        public bool Surcharge => this.UniqueId == InvoiceItemTypes.SurchargeId;
+        public bool IsSurcharge => this.UniqueId == InvoiceItemTypes.SurchargeId;
 
-        public bool Warranty => this.UniqueId == InvoiceItemTypes.WarrantyId;
+        public bool IsWarranty => this.UniqueId == InvoiceItemTypes.WarrantyId;
 
-        public bool ProductFeatureItem => this.UniqueId == InvoiceItemTypes.ProductFeatureItemId;
+        public bool IsProductFeatureItem => this.UniqueId == InvoiceItemTypes.ProductFeatureItemId;
 
-        public bool PartItem => this.UniqueId == InvoiceItemTypes.PartItemId;
+        public bool IsPartItem => this.UniqueId == InvoiceItemTypes.PartItemId;
 
-        public bool ProductItem => this.UniqueId == InvoiceItemTypes.ProductItemId;
+        public bool IsProductItem => this.UniqueId == InvoiceItemTypes.ProductItemId;
 
-        public bool Time => this.UniqueId == InvoiceItemTypes.TimeId;
+        public bool IsTime => this.UniqueId == InvoiceItemTypes.TimeId;
     }
 }
