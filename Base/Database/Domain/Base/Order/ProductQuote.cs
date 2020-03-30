@@ -66,7 +66,7 @@ namespace Allors.Domain
             // SalesOrderItem Derivations and Validations
             foreach (QuoteItem quoteItem in this.QuoteItems)
             {
-                var isSubTotalItem = quoteItem.ExistInvoiceItemType && (quoteItem.InvoiceItemType.ProductItem || quoteItem.InvoiceItemType.PartItem);
+                var isSubTotalItem = quoteItem.ExistInvoiceItemType && (quoteItem.InvoiceItemType.IsProductItem || quoteItem.InvoiceItemType.IsPartItem);
                 if (isSubTotalItem)
                 {
                     if (quoteItem.Quantity == 0)
