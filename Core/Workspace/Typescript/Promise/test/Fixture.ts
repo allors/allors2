@@ -24,7 +24,7 @@ export class Fixture {
 
   async init(population?: string) {
 
-    this.http = new AxiosHttp('http://localhost:5000/');
+    this.http = new AxiosHttp({ baseURL: 'http://localhost:5000/' });
 
     this.metaPopulation = new MetaPopulation(data);
     this.m = this.metaPopulation as Meta;
