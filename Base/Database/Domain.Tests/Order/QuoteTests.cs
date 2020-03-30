@@ -7,6 +7,7 @@
 namespace Allors.Domain
 {
     using System.Linq;
+    using Allors.Domain.Derivations.Default;
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
 
@@ -119,7 +120,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenProductQuoteForSerialisedItem_WhenSending_ThenSerialisedItemStateIsChanged()
+        public void GivenSettingSerialisedItemAssignedOnProductQuoteSend_WhenSendingQuote_ThenSerialisedItemStateIsChanged()
         {
             this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).ProductQuoteSend;
 
@@ -141,6 +142,102 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(new SerialisedItemStates(this.Session).Assigned, serialisedItem.SerialisedItemState);
+        }
+
+        [Fact]
+        public void GivenSettingSerialisedItemAssignedOnSalesOrderConfirm_WhenSendingQuote_ThenSerialisedItemStateIsNotChanged()
+        {
+            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).SalesOrderConfirm;
+
+            this.Session.Derive();
+
+            var quote = new ProductQuoteBuilder(this.Session).WithSerializedDefaults(this.InternalOrganisation).Build();
+
+            var serialisedItem = quote.QuoteItems.First().SerialisedItem;
+            serialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session).Good;
+
+            this.Session.Derive();
+
+            quote.Approve();
+            this.Session.Derive();
+
+            Assert.NotEqual(new SerialisedItemStates(this.Session).Assigned, serialisedItem.SerialisedItemState);
+
+            quote.Send();
+            this.Session.Derive();
+
+            Assert.NotEqual(new SerialisedItemStates(this.Session).Assigned, serialisedItem.SerialisedItemState);
+        }
+
+        [Fact]
+        public void GivenSettingSerialisedItemAssignedOnProductQuoteSend_WhenSendingSalesOrder_ThenSerialisedItemStateIsNotChanged()
+        {
+            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).ProductQuoteSend;
+            this.InternalOrganisation.SerialisedItemSoldOn = new SerialisedItemSoldOns(this.Session).SalesOrderConfirm;
+
+            this.Session.Derive();
+
+            var quote = new ProductQuoteBuilder(this.Session).WithSerializedDefaults(this.InternalOrganisation).Build();
+
+            var serialisedItem = quote.QuoteItems.First().SerialisedItem;
+            serialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session).Good;
+
+            this.Session.Derive();
+
+            quote.Approve();
+            this.Session.Derive();
+
+            Assert.NotEqual(new SerialisedItemStates(this.Session).Assigned, serialisedItem.SerialisedItemState);
+
+            quote.Send();
+            this.Session.Derive();
+
+            Assert.Equal(new SerialisedItemStates(this.Session).Assigned, serialisedItem.SerialisedItemState);
+
+            quote.Order();
+
+            this.Session.Derive();
+
+            var salesOrder = quote.SalesOrderWhereQuote;
+
+            salesOrder.Confirm();
+            this.Session.Derive();
+
+            salesOrder.Send();
+            this.Session.Derive();
+
+            Assert.Equal(new SerialisedItemStates(this.Session).Sold, serialisedItem.SerialisedItemState);
+
+            var derivation = new Derivation(this.Session);
+            derivation.Mark(quote);
+            derivation.Derive();
+
+            Assert.Equal(new SerialisedItemStates(this.Session).Sold, serialisedItem.SerialisedItemState);
+        }
+
+        [Fact]
+        public void GivenSettingSerialisedItemAssignedOnSalesOrderConfirm_WhenSendingSalesOrder_ThenSerialisedItemStateIsChanged()
+        {
+            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).SalesOrderConfirm;
+
+            this.Session.Derive();
+
+            var quote = new ProductQuoteBuilder(this.Session).WithSerializedDefaults(this.InternalOrganisation).Build();
+
+            var serialisedItem = quote.QuoteItems.First().SerialisedItem;
+            serialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session).Good;
+
+            this.Session.Derive();
+
+            quote.Approve();
+            this.Session.Derive();
+
+            Assert.NotEqual(new SerialisedItemStates(this.Session).Assigned, serialisedItem.SerialisedItemState);
+
+            quote.Send();
+            this.Session.Derive();
+
+            Assert.NotEqual(new SerialisedItemStates(this.Session).Assigned, serialisedItem.SerialisedItemState);
         }
     }
 }

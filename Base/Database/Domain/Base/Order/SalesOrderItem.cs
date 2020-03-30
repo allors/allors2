@@ -309,6 +309,23 @@ namespace Allors.Domain
                 this.Description = this.SerialisedItem.Details;
             }
 
+            if (this.SalesOrderItemState.InProcess
+                && !this.LastSalesOrderItemState.InProcess
+                && this.SalesOrderWhereSalesOrderItem.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderConfirm
+                && this.ExistSerialisedItem)
+            {
+                if (this.ExistNewSerialisedItemState)
+                {
+                    this.SerialisedItem.SerialisedItemState = this.NewSerialisedItemState;
+                }
+                else
+                {
+                    this.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session()).Sold;
+                }
+
+                this.SerialisedItem.AvailableForSale = false;
+            }
+
             this.Sync();
         }
 
