@@ -426,32 +426,12 @@ line2")
                 .WithVatRegime(new VatRegimes(this.Session).Assessable)
                 .Build();
 
-            var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session)
-                .WithDescription("first item")
-                .WithProduct(good1)
-                .WithAssignedUnitPrice(3000)
-                .WithQuantity(1)
-                .WithMessage(@"line1
-line2")
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
+            var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
+            var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(allors).Build();
+            var salesInvoiceItem3 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
 
-            var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session)
-                .WithDescription("second item")
-                .WithAssignedUnitPrice(2000)
-                .WithQuantity(2)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
+            var salesInvoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors).Build();
 
-            var salesInvoiceItem3 = new SalesInvoiceItemBuilder(this.Session)
-                .WithDescription("Fee")
-                .WithAssignedUnitPrice(100)
-                .WithQuantity(1)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
-                .Build();
-
-            var salesInvoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors)
-                .Build();
             salesInvoice.AddSalesInvoiceItem(salesInvoiceItem1);
             salesInvoice.AddSalesInvoiceItem(salesInvoiceItem2);
             salesInvoice.AddSalesInvoiceItem(salesInvoiceItem3);
@@ -581,30 +561,12 @@ line2")
                 .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
                 .Build();
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session)
-                .WithDescription("first item")
-                .WithProduct(serialisedUnifiedGood)
-                .WithAssignedUnitPrice(3000)
-                .WithQuantity(1)
-                .WithMessage(@"line1
-                line2")
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+            var item1 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(dipu)
                 .Build();
 
-            var item2 = new SalesInvoiceItemBuilder(this.Session)
-                .WithDescription("second item")
-                .WithProduct(unifiedGood)
-                .WithAssignedUnitPrice(2000)
-                .WithQuantity(2)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
+            var item2 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(dipu).Build();
 
-            var item3 = new SalesInvoiceItemBuilder(this.Session)
-                .WithDescription("Fee")
-                .WithAssignedUnitPrice(100)
-                .WithQuantity(1)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Surcharge)
-                .Build();
+            var item3 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(dipu).Build();
 
             var invoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2CInvoiceDefaults(dipu)
                 .Build();
