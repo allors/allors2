@@ -26,9 +26,9 @@ namespace Application
 
         public IList<IWorksheet> Worksheets { get; } = new List<IWorksheet>();
 
-        public IWorkbook ActiveWorkbook => this.AddIn.Workbooks.FirstOrDefault(v => v.Active);
+        public IWorkbook ActiveWorkbook => this.AddIn.Workbooks.FirstOrDefault(v => v.IsActive);
 
-        public async Task OnHandle(string handle)
+        public async Task OnHandle(string handle, params object[] arguments)
         {
             switch (handle)
             {
@@ -36,6 +36,21 @@ namespace Application
                     await new PeopleSheet(this).Load();
                     break;
             }
+        }
+
+        public Task OnLogin()
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task OnLogout()
+        {
+            return Task.CompletedTask;
+        }
+
+        public bool IsEnabled(string controlId, string controlTag)
+        {
+            return true;
         }
 
         #region Application

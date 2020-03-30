@@ -16,7 +16,7 @@ namespace Application.Sheets
         public PeopleSheet(Program program)
         {
             this.Context = new Context(program.Client.Database, program.Client.Workspace);
-            this.Sheet = program.ActiveWorkbook.CreateSheet();
+            this.Sheet = program.ActiveWorkbook.AddWorksheet();
             this.Binder = new Binder(this.Sheet);
             this.Binder.ToDomained += this.BinderOnToDomained;
 
@@ -85,8 +85,8 @@ namespace Application.Sheets
                     this.Sheet[row, column.Index].NumberFormat = column.NumberFormat;
                 }
 
-                this.Binder.BindingByCell[this.Sheet[row, firstName.Index]] = new RoleTypeBinding(customer, M.Person.FirstName);
-                this.Binder.BindingByCell[this.Sheet[row, lastName.Index]] = new RoleTypeBinding(customer, M.Person.LastName);
+                this.Binder.Set(row, firstName.Index, new RoleTypeBinding(customer, M.Person.FirstName));
+                this.Binder.Set(row, lastName.Index, new RoleTypeBinding(customer, M.Person.LastName));
 
                 row++;
             }
