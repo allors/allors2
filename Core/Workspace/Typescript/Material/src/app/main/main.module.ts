@@ -18,7 +18,7 @@ import { RouterModule } from '@angular/router';
     AllorsMaterialSideMenuModule,
     MatSidenavModule,
     MatToolbarModule,
-    RouterModule 
+    RouterModule
   ],
 })
 export class MainModule {

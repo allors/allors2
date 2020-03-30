@@ -1,6 +1,7 @@
 import { RoleType, ObjectType } from '../meta';
-import { UnitTypes, serializeArray } from '../protocol/Serialization';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { UnitTypes } from '../workspace';
+import { serializeArray } from '../workspace/SessionObject';
 
 export class Between extends ParametrizedPredicate {
   public roleType: RoleType;

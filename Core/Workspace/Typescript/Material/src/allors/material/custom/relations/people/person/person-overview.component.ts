@@ -45,7 +45,7 @@ export class PersonOverviewComponent extends TestScope implements OnInit, AfterV
         switchMap((url: any) => {
 
           const id = this.route.snapshot.paramMap.get('id');
-          assert(id)
+          assert(id);
 
           const pulls = [
             pull.Person({

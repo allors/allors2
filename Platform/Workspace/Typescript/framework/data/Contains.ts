@@ -1,7 +1,7 @@
 import { PropertyType, ObjectType } from '../meta';
-import { CompositeTypes } from '../protocol/Serialization';
 import { ISessionObject } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { CompositeTypes } from '../workspace/Types';
 
 export class Contains extends ParametrizedPredicate {
   public propertyType: PropertyType;

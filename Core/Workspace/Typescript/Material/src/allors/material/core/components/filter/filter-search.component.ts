@@ -29,7 +29,7 @@ export class AllorsMaterialFilterSearchComponent implements OnInit {
 
   display: ((v: ISessionObject) => string);
 
-  //TODO: Fix this
+  // TODO: Fix this
   private nothingDisplay = () => '';
 
   constructor(

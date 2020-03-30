@@ -18,9 +18,9 @@ export abstract class SessionState {
 
   set value(value: string | null) {
     if (value == null) {
-      sessionStorage.removeItem(this.key)
+      sessionStorage.removeItem(this.key);
     } else {
-      sessionStorage.setItem(this.key, value)
+      sessionStorage.setItem(this.key, value);
     }
 
     this.subject.next(value);

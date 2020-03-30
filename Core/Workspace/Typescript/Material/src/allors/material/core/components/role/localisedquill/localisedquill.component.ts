@@ -17,6 +17,7 @@ try {
 } catch { }
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'a-mat-localised-quill',
   template: `
 <h4>{{label}}</h4>

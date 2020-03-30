@@ -1,6 +1,7 @@
 import { RoleType, ObjectType } from '../meta';
-import { UnitTypes, serialize } from '../protocol/Serialization';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { UnitTypes } from '../workspace/Types';
+import { serialize } from '../workspace/SessionObject';
 
 export class LessThan extends ParametrizedPredicate {
   public roleType: RoleType;

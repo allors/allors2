@@ -5,7 +5,8 @@ import { And, ISessionObject, Like, Or, PullRequest, Pull, RoleType, Sort } from
 import { Loaded, Context, ContextService } from '../framework';
 
 import { SearchOptions } from './SearchOptions';
-import { ParameterTypes } from '../../../../allors/framework/protocol/Serialization';
+import { ParameterTypes } from '../../../../allors/framework/workspace/Types';
+
 export class SearchFactory {
   constructor(private options: SearchOptions) { }
 

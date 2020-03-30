@@ -1,7 +1,7 @@
 import { PropertyType, ObjectType } from '../meta';
-import { UnitTypes, CompositeTypes, serialize } from '../protocol/Serialization';
-import { ISessionObject } from '../workspace/SessionObject';
+import { ISessionObject, serialize } from '../workspace/SessionObject';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { UnitTypes, CompositeTypes } from '../workspace/Types';
 
 export class Equals extends ParametrizedPredicate {
   public propertyType: PropertyType;

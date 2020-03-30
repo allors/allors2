@@ -1,3 +1,3 @@
-﻿export const Compressor = {
+export const Compressor = {
   itemSeparator: '|'
-}
+};
