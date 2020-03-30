@@ -5,10 +5,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Domain.TestPopulation
 {
+    using System.Linq;
+
     public static partial class PurchaseShipmentBuilderExtensions
     {
         public static PurchaseShipmentBuilder WithDefaults(this PurchaseShipmentBuilder @this, Organisation internalOrganisation)

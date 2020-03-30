@@ -47,8 +47,8 @@ namespace Commands
             CultureInfo.CurrentUICulture = new CultureInfo("en-GB");
         }
 
-        [Option("-i", Description = "Isolation Level (ReadCommitted|Serializable)")]
-        public IsolationLevel IsolationLevel { get; set; } = IsolationLevel.ReadCommitted;
+        [Option("-i", Description = "Isolation Level (Snapshot|RepeatableRead|Serializable)")]
+        public IsolationLevel IsolationLevel { get; set; } = IsolationLevel.Snapshot;
 
         [Option("-t", Description = "Command Timeout in seconds")]
         public int CommandTimeout { get; set; } = 0;

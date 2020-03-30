@@ -13,7 +13,7 @@ namespace Allors.Database.Adapters.SqlClient
         public Configuration()
         {
             this.CommandTimeout = 30;
-            this.IsolationLevel = IsolationLevel.ReadCommitted;
+            this.IsolationLevel = IsolationLevel.Snapshot;
         }
 
         public ICacheFactory CacheFactory { get; set; }

@@ -16,14 +16,15 @@ namespace Allors.Domain.TestPopulation
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
             var postalAddress = new PostalAddressBuilder(@this.Session).WithDefaults().Build();
 
-            @this.WithName(faker.Name.FullName()).Build();
-            @this.WithDescription(faker.Lorem.Sentence()).Build();
-            @this.WithLatitude(faker.Address.Latitude()).Build();
-            @this.WithLongitude(faker.Address.Longitude()).Build();
-            @this.WithOwner(internalOrganisation).Build();
-            @this.WithSquareFootage(faker.Random.Decimal(100, 10000)).Build();
-            @this.WithFacilityType(faker.Random.ListItem(@this.Session.Extent<FacilityType>())).Build();
-            @this.WithFacilityContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault()).Build();
+            @this.WithName(faker.Name.FullName());
+            @this.WithDescription(faker.Lorem.Sentence());
+            @this.WithLatitude(faker.Address.Latitude());
+            @this.WithLongitude(faker.Address.Longitude());
+            @this.WithOwner(internalOrganisation);
+            @this.WithSquareFootage(faker.Random.Decimal(100, 10000));
+            @this.WithFacilityType(faker.Random.ListItem(@this.Session.Extent<FacilityType>()));
+            @this.WithFacilityContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
+
             return @this;
         }
     }

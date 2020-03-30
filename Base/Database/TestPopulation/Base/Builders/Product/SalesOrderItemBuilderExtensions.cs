@@ -22,18 +22,18 @@ namespace Allors.Domain.TestPopulation
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
-            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem).Build();
-            @this.WithProduct(serializedProduct).Build();
-            @this.WithSerialisedItem(serializedItem).Build();
-            @this.WithQuantityOrdered(faker.Random.UInt(5, 15)).Build();
-            @this.WithQuoteItem(quoteItem).Build();
-            @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5)).Build();
-            @this.WithShippingInstruction(faker.Lorem.Sentences(3)).Build();
-            @this.WithMessage(faker.Lorem.Sentence()).Build();
-            @this.WithShipFromAddress(postalAddress).Build();
-            @this.WithAssignedShipToAddress(postalAddress).Build();
-            @this.WithQuantityReturned(faker.Random.Decimal()).Build();
-            @this.WithAssignedShipToParty(customer).Build();
+            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem);
+            @this.WithProduct(serializedProduct);
+            @this.WithSerialisedItem(serializedItem);
+            @this.WithQuantityOrdered(faker.Random.UInt(5, 15));
+            @this.WithQuoteItem(quoteItem);
+            @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5));
+            @this.WithShippingInstruction(faker.Lorem.Sentences(3));
+            @this.WithMessage(faker.Lorem.Sentence());
+            @this.WithShipFromAddress(postalAddress);
+            @this.WithAssignedShipToAddress(postalAddress);
+            @this.WithQuantityReturned(faker.Random.Decimal());
+            @this.WithAssignedShipToParty(customer);
 
             return @this;
         }
@@ -54,18 +54,18 @@ namespace Allors.Domain.TestPopulation
             @this.WithInternalComment(faker.Lorem.Sentence());
 
             // TODO: Select a random item except ProductItem
-            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem).Build();
-            @this.WithProduct(serializedProduct).Build();
-            @this.WithSerialisedItem(serializedItem).Build();
-            @this.WithQuantityOrdered(faker.Random.UInt(5, 15)).Build();
-            @this.WithQuoteItem(quoteItem).Build();
-            @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5)).Build();
-            @this.WithShippingInstruction(faker.Lorem.Sentences(3)).Build();
-            @this.WithMessage(faker.Lorem.Sentence()).Build();
-            @this.WithShipFromAddress(postalAddress).Build();
-            @this.WithAssignedShipToAddress(postalAddress).Build();
-            @this.WithQuantityReturned(faker.Random.Decimal()).Build();
-            @this.WithAssignedShipToParty(customer).Build();
+            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem);
+            @this.WithProduct(serializedProduct);
+            @this.WithSerialisedItem(serializedItem);
+            @this.WithQuantityOrdered(faker.Random.UInt(5, 15));
+            @this.WithQuoteItem(quoteItem);
+            @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5));
+            @this.WithShippingInstruction(faker.Lorem.Sentences(3));
+            @this.WithMessage(faker.Lorem.Sentence());
+            @this.WithShipFromAddress(postalAddress);
+            @this.WithAssignedShipToAddress(postalAddress);
+            @this.WithQuantityReturned(faker.Random.Decimal());
+            @this.WithAssignedShipToParty(customer);
 
             return @this;
         }
