@@ -616,12 +616,27 @@ namespace Allors.Repository
 
         #region Allors
 
+        [Id("393446ab-59ea-4f23-b1bc-f8fd4e3dfb1b")]
+
+        #endregion
+        [Workspace]
+        public void SetReadyForPosting() { }
+
+        #region Allors
+
         [Id("4B8004A4-4E4E-4E52-913E-AB25AE24D240")]
 
         #endregion
-
         [Workspace]
-        public void Send() { }
+        public void Post() { }
+
+        #region Allors
+
+        [Id("d7c82d6b-b1e0-4496-b1e7-28052f86e496")]
+
+        #endregion
+        [Workspace]
+        public void Accept() { }
 
         #region Allors
         [Id("E822B75C-3A37-480A-A469-B18A060EC560")]
@@ -653,8 +668,6 @@ namespace Allors.Repository
         public void Hold() { }
 
         public void Continue() { }
-
-        public void Confirm() { }
 
         public void Cancel() { }
 

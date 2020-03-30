@@ -207,12 +207,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
@@ -331,12 +332,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -387,12 +389,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -435,12 +438,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -488,12 +492,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -539,12 +544,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -617,12 +623,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -671,18 +678,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
-            // var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
-            // derivation.Derive();
-
-            // var list = ((DerivationLog)derivation.DerivationLog).List;
-            ////list.RemoveAll(v => !v.StartsWith("Dependency"));
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -746,12 +748,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -826,13 +829,14 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            order1.Confirm();
-
+            order1.SetReadyForPosting();
             this.Session.Derive(true);
 
-            order1.Send();
-
+            order1.Post();
             this.Session.Derive(true);
+
+            order1.Accept();
+            this.Session.Derive();
 
             Assert.Single(customer.ShipmentsWhereShipToParty);
 
@@ -847,13 +851,14 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            order2.Confirm();
-
+            order2.SetReadyForPosting();
             this.Session.Derive(true);
 
-            order2.Send();
-
+            order2.Post();
             this.Session.Derive(true);
+
+            order2.Accept();
+            this.Session.Derive();
 
             Assert.Single(customer.ShipmentsWhereShipToParty);
 
@@ -868,13 +873,14 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            order3.Confirm();
-
+            order3.SetReadyForPosting();
             this.Session.Derive(true);
 
-            order3.Send();
-
+            order3.Post();
             this.Session.Derive(true);
+
+            order3.Accept();
+            this.Session.Derive();
 
             Assert.Equal(2, customer.ShipmentsWhereShipToParty.Count);
         }
@@ -921,12 +927,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -1084,12 +1091,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -1162,12 +1170,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -1255,12 +1264,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
@@ -1394,12 +1404,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;

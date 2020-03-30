@@ -120,12 +120,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
-            this.Session.Derive();
-
-            order.Send();
-
+            order.SetReadyForProcessing();
             this.Session.Derive();
 
             Assert.Equal(10, inventoryItem.QuantityCommittedOut);

@@ -162,25 +162,26 @@ namespace Allors.Domain
             this.Session.Commit();
 
             // Act
-            order1.Confirm();
-
+            order1.SetReadyForPosting();
             this.Session.Derive(true);
-            this.Session.Commit();
 
-            order1.Send();
+            order1.Post();
+            this.Session.Derive();
 
+            order1.Accept();
             this.Session.Derive();
 
             Assert.Equal(0, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
             Assert.Equal(5, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
-            order2.Confirm();
+            order2.SetReadyForPosting();
 
             this.Session.Derive(true);
-            this.Session.Commit();
 
-            order2.Send();
+            order2.Post();
+            this.Session.Derive();
 
+            order2.Accept();
             this.Session.Derive();
 
             // Assert
@@ -308,11 +309,13 @@ namespace Allors.Domain
             order.AddSalesOrderItem(salesItem);
             this.Session.Derive();
 
-            order.Confirm();
+            order.SetReadyForPosting();
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             // Assert
@@ -353,12 +356,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
-
+            order.SetReadyForPosting();
             this.Session.Derive(true);
 
-            order.Send();
+            order.Post();
+            this.Session.Derive();
 
+            order.Accept();
             this.Session.Derive();
 
             Assert.Equal(0, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);

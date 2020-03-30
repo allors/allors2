@@ -94,7 +94,7 @@ namespace Allors.Domain
             }
 
             if (this.QuoteItemState.IsSent
-                && !this.LastQuoteItemState.IsSent
+                && (!this.ExistLastQuoteItemState || !this.LastQuoteItemState.IsSent)
                 && this.QuoteWhereQuoteItem.Issuer.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend
                 && this.ExistSerialisedItem)
             {

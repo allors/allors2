@@ -139,12 +139,12 @@ export class PurchaseOrderOverviewSummaryComponent {
         this.saveService.errorHandler);
   }
 
-  public confirm(): void {
+  public setReadyForProcessing(): void {
 
-    this.panel.manager.context.invoke(this.order.Confirm)
+    this.panel.manager.context.invoke(this.order.SetReadyForProcessing)
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
-        this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
+        this.snackBar.open('Successfully set ready for processing.', 'close', { duration: 5000 });
       },
         this.saveService.errorHandler);
   }

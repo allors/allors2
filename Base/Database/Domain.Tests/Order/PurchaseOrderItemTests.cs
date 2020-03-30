@@ -92,8 +92,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.order.Confirm();
-
+            this.order.SetReadyForProcessing();
             this.Session.Derive();
 
             Assert.Single(this.order.ValidOrderItems);
@@ -395,7 +394,7 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.order.Confirm();
+            this.order.SetReadyForProcessing();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -430,7 +429,7 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.order.Confirm();
+            this.order.SetReadyForProcessing();
 
             this.Session.Derive();
 
@@ -550,12 +549,10 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.order.Confirm();
-
+            this.order.SetReadyForProcessing();
             this.Session.Derive();
 
             this.order.QuickReceive();
-
             this.Session.Derive();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Completed, item.PurchaseOrderItemState);
@@ -588,12 +585,10 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.order.Confirm();
-
+            this.order.SetReadyForProcessing();
             this.Session.Derive();
 
             this.order.QuickReceive();
-
             this.Session.Derive();
 
             Assert.True(item.PurchaseOrderItemShipmentState.IsReceived);
@@ -663,8 +658,7 @@ namespace Allors.Domain
 
             this.order.AddPurchaseOrderItem(item);
 
-            this.order.Confirm();
-
+            this.order.SetReadyForProcessing();
             this.Session.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.order.TakenViaSupplier).Build();

@@ -70,12 +70,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            salesOrder.Confirm();
-
+            salesOrder.SetReadyForPosting();
             this.Session.Derive();
 
-            salesOrder.Send();
+            salesOrder.Post();
+            this.Session.Derive();
 
+            salesOrder.Accept();
             this.Session.Derive();
 
             this.Session.Commit();

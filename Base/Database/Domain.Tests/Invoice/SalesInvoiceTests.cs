@@ -1000,12 +1000,14 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            order.Confirm();
+            order.SetReadyForPosting();
 
             this.Session.Derive();
 
-            order.Send();
+            order.Post();
+            this.Session.Derive(true);
 
+            order.Accept();
             this.Session.Derive(true);
 
             order.Invoice();

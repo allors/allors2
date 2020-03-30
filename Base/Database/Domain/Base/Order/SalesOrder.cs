@@ -219,7 +219,7 @@ namespace Allors.Domain
                     derivation.Validation.AddError(salesOrderItem, M.SalesOrderItem.QuantityOrdered, ErrorMessages.SalesOrderItemLessThanAlreadeyShipped);
                 }
 
-                var isSubTotalItem = salesOrderItem.ExistInvoiceItemType && (salesOrderItem.InvoiceItemType.ProductItem || salesOrderItem.InvoiceItemType.PartItem);
+                var isSubTotalItem = salesOrderItem.ExistInvoiceItemType && (salesOrderItem.InvoiceItemType.IsProductItem || salesOrderItem.InvoiceItemType.IsPartItem);
                 if (isSubTotalItem)
                 {
                     if (salesOrderItem.QuantityOrdered == 0)
@@ -454,7 +454,7 @@ namespace Allors.Domain
 
         public void BaseCancel(OrderCancel method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Cancelled;
 
-        public void BaseConfirm(OrderConfirm method)
+        public void BaseSetReadyForPosting(SalesOrderSetReadyForPosting  method)
         {
             var orderThreshold = this.Store.OrderThreshold;
             var partyFinancial = this.BillToCustomer.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
@@ -478,7 +478,9 @@ namespace Allors.Domain
 
         public void BaseApprove(OrderApprove method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).ReadyForPosting;
 
-        public void BaseSend(SalesOrderSend method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+        public void BasePost(SalesOrderPost method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Posted;
+
+        public void BaseAccept(SalesOrderAccept method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
 
         public void BaseContinue(OrderContinue method) => this.SalesOrderState = this.PreviousSalesOrderState;
 

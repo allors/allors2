@@ -160,12 +160,32 @@ export class SalesOrderOverviewSummaryComponent {
       this.saveService.errorHandler);
   }
 
-  send() {
+  public setReadyForPosting() {
 
-    this.panel.manager.context.invoke(this.order.Send)
+    this.panel.manager.context.invoke(this.order.SetReadyForPosting)
       .subscribe(() => {
         this.refreshService.refresh();
-        this.snackBar.open('Successfully sent.', 'close', { duration: 5000 });
+        this.snackBar.open('Successfully set ready for posting.', 'close', { duration: 5000 });
+      },
+      this.saveService.errorHandler);
+  }
+
+  public post() {
+
+    this.panel.manager.context.invoke(this.order.Post)
+      .subscribe(() => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully posted.', 'close', { duration: 5000 });
+      },
+      this.saveService.errorHandler);
+  }
+
+  public accept() {
+
+    this.panel.manager.context.invoke(this.order.Accept)
+      .subscribe(() => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully accepted.', 'close', { duration: 5000 });
       },
       this.saveService.errorHandler);
   }
@@ -206,16 +226,6 @@ export class SalesOrderOverviewSummaryComponent {
       .subscribe((invoked: Invoked) => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
-      },
-      this.saveService.errorHandler);
-  }
-
-  public confirm(): void {
-
-    this.panel.manager.context.invoke(this.order.Confirm)
-      .subscribe((invoked: Invoked) => {
-        this.refreshService.refresh();
-        this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
       },
       this.saveService.errorHandler);
   }
