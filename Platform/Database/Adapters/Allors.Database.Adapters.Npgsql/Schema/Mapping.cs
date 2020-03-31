@@ -419,6 +419,7 @@ namespace Allors.Database.Adapters.Npgsql
 
         private void LoadObjects(IClass @class)
         {
+            var table = this.TableNameForObjectByClass[@class];
             var name = this.Database.SchemaName + "." + ProcedurePrefixForLoad + @class.Name.ToLowerInvariant();
             this.ProcedureNameForLoadObjectByClass.Add(@class, name);
 
@@ -431,7 +432,7 @@ CREATE FUNCTION {name}(
     RETURNS void
     LANGUAGE sql
 AS $$
-    INSERT INTO allors.c1 (c, o)
+    INSERT INTO  {table} ({ColumnNameForClass}, {ColumnNameForObject})
     SELECT p_c, o
     FROM unnest(p_arr_o) AS t(o)
 $$;";
