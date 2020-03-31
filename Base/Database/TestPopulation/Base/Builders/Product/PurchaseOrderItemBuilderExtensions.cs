@@ -2,7 +2,7 @@
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>Defines the MediaTests type.</summary>
+// <summary></summary>
 
 namespace Allors.Domain.TestPopulation
 {
@@ -17,7 +17,6 @@ namespace Allors.Domain.TestPopulation
 
             var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
-            var postalAddress = new PostalAddressBuilder(@this.Session).WithDefaults().Build();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
@@ -30,8 +29,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5));
             @this.WithShippingInstruction(faker.Lorem.Sentences(3));
             @this.WithMessage(faker.Lorem.Sentence());
-            @this.WithShipFromAddress(postalAddress);
-            @this.WithAssignedShipToAddress(postalAddress);
+            @this.WithShipFromAddress(customer.ShippingAddress);
+            @this.WithAssignedShipToAddress(customer.ShippingAddress);
             @this.WithQuantityReturned(faker.Random.Decimal());
             @this.WithAssignedShipToParty(customer);
 
@@ -47,7 +46,6 @@ namespace Allors.Domain.TestPopulation
 
             var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
-            var postalAddress = new PostalAddressBuilder(@this.Session).WithDefaults().Build();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
@@ -62,8 +60,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5));
             @this.WithShippingInstruction(faker.Lorem.Sentences(3));
             @this.WithMessage(faker.Lorem.Sentence());
-            @this.WithShipFromAddress(postalAddress);
-            @this.WithAssignedShipToAddress(postalAddress);
+            @this.WithShipFromAddress(customer.ShippingAddress);
+            @this.WithAssignedShipToAddress(customer.ShippingAddress);
             @this.WithQuantityReturned(faker.Random.Decimal());
             @this.WithAssignedShipToParty(customer);
 
