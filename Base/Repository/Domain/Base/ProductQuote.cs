@@ -30,6 +30,8 @@ namespace Allors.Repository
 
         public DateTime RequiredResponseDate { get; set; }
 
+        public QuoteItem[] ValidQuoteItems { get; set; }
+
         public DateTime ValidFromDate { get; set; }
 
         public QuoteTerm[] QuoteTerms { get; set; }

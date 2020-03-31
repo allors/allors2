@@ -49,7 +49,7 @@ namespace Allors.Domain
 
         public static void BaseSend(this Quote @this, QuoteSend method)
         {
-            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Sent;
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).AwaitingAcceptance;
             SetItemState(@this);
         }
 

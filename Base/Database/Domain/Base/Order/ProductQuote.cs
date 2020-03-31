@@ -83,15 +83,18 @@ namespace Allors.Domain
                 }
             }
 
+            var validQuoteItems = this.QuoteItems.Where(v => v.IsValid).ToArray();
+            this.ValidQuoteItems = validQuoteItems;
+
             var currentPriceComponents = new PriceComponents(session).CurrentPriceComponents(this.IssueDate);
 
-            var quantityOrderedByProduct = this.QuoteItems
+            var quantityOrderedByProduct = this.ValidQuoteItems
                 .Where(v => v.ExistProduct)
                 .GroupBy(v => v.Product)
                 .ToDictionary(v => v.Key, v => v.Sum(w => w.Quantity));
 
             // First run to calculate price
-            foreach (QuoteItem quoteItem in this.QuoteItems)
+            foreach (QuoteItem quoteItem in this.ValidQuoteItems)
             {
                 decimal quantityOrdered = 0;
 
@@ -115,7 +118,7 @@ namespace Allors.Domain
                 .ToDictionary(v => v.Key, v => v.Sum(w => w.TotalBasePrice));
 
             // Second run to calculate price (because of order value break)
-            foreach (QuoteItem quoteItem in this.QuoteItems)
+            foreach (QuoteItem quoteItem in this.ValidQuoteItems)
             {
                 decimal quantityOrdered = 0;
                 decimal totalBasePrice = 0;
@@ -147,7 +150,7 @@ namespace Allors.Domain
                 this.TotalIncVat = 0;
                 this.TotalListPrice = 0;
 
-                foreach (QuoteItem quoteItem in this.QuoteItems)
+                foreach (QuoteItem quoteItem in this.ValidQuoteItems)
                 {
                     if (!quoteItem.ExistQuoteItemWhereQuotedWithFeature)
                     {
@@ -235,13 +238,23 @@ namespace Allors.Domain
                 decimal totalUnitBasePrice = 0;
                 decimal totalListPrice = 0;
 
-                foreach (QuoteItem item1 in this.QuoteItems)
+                foreach (QuoteItem item1 in this.ValidQuoteItems)
                 {
                     if (item1.TotalExVat > 0)
                     {
                         totalUnitBasePrice += item1.UnitBasePrice;
                         totalListPrice += item1.UnitPrice;
                     }
+                }
+            }
+
+            if (this.QuoteState.IsSent
+                && (!this.ExistLastQuoteState || !this.LastQuoteState.IsSent)
+                && this.Issuer.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend)
+            {
+                foreach (QuoteItem item in this.ValidQuoteItems.Where(v => v.ExistSerialisedItem))
+                {
+                    item.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Assigned;
                 }
             }
 
@@ -396,7 +409,7 @@ namespace Allors.Domain
                 .WithQuote(this)
                 .Build();
 
-            var quoteItems = this.QuoteItems
+            var quoteItems = this.ValidQuoteItems
                 .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Sent))
                 .ToArray();
 

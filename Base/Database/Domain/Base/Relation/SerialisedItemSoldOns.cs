@@ -9,14 +9,14 @@ namespace Allors.Domain
 
     public partial class SerialisedItemSoldOns
     {
-        public static readonly Guid SalesOrderConfirmId = new Guid("b4f69621-7eb7-4763-928c-415cf3b4a4b5");
-        public static readonly Guid CustomerShipmentSendId = new Guid("9cb9b456-8e10-4bcc-813d-3aa508c060e1");
+        public static readonly Guid SalesOrderPostId = new Guid("b4f69621-7eb7-4763-928c-415cf3b4a4b5");
+        public static readonly Guid CustomerShipmentShipId = new Guid("9cb9b456-8e10-4bcc-813d-3aa508c060e1");
 
         private UniquelyIdentifiableSticky<SerialisedItemSoldOn> cache;
 
-        public SerialisedItemSoldOn SalesOrderConfirm => this.Cache[SalesOrderConfirmId];
+        public SerialisedItemSoldOn SalesOrderPost => this.Cache[SalesOrderPostId];
 
-        public SerialisedItemSoldOn CustomerShipmentSend => this.Cache[CustomerShipmentSendId];
+        public SerialisedItemSoldOn CustomerShipmentShip => this.Cache[CustomerShipmentShipId];
 
         private UniquelyIdentifiableSticky<SerialisedItemSoldOn> Cache => this.cache ??= new UniquelyIdentifiableSticky<SerialisedItemSoldOn>(this.Session);
 
@@ -24,8 +24,8 @@ namespace Allors.Domain
         {
             var merge = this.Cache.Merger().Action();
 
-            merge(SalesOrderConfirmId, v => v.Name = "SalesOrder Confirm");
-            merge(CustomerShipmentSendId, v => v.Name = "CustomerShipment Send");
+            merge(SalesOrderPostId, v => v.Name = "SalesOrder Post");
+            merge(CustomerShipmentShipId, v => v.Name = "CustomerShipment Ship");
         }
     }
 }

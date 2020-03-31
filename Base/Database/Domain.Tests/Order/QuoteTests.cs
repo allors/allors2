@@ -147,7 +147,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSettingSerialisedItemAssignedOnSalesOrderConfirm_WhenSendingQuote_ThenSerialisedItemStateIsNotChanged()
         {
-            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).SalesOrderConfirm;
+            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).SalesOrderPost;
 
             this.Session.Derive();
 
@@ -173,7 +173,7 @@ namespace Allors.Domain
         public void GivenSettingSerialisedItemAssignedOnProductQuoteSend_WhenSendingSalesOrder_ThenSerialisedItemStateIsNotChanged()
         {
             this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).ProductQuoteSend;
-            this.InternalOrganisation.SerialisedItemSoldOn = new SerialisedItemSoldOns(this.Session).SalesOrderConfirm;
+            this.InternalOrganisation.SerialisedItemSoldOn = new SerialisedItemSoldOns(this.Session).SalesOrderPost;
 
             this.Session.Derive();
 
@@ -221,7 +221,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSettingSerialisedItemAssignedOnSalesOrderConfirm_WhenSendingSalesOrder_ThenSerialisedItemStateIsChanged()
         {
-            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).SalesOrderConfirm;
+            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).SalesOrderPost;
 
             this.Session.Derive();
 

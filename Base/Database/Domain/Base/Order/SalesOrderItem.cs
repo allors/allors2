@@ -311,7 +311,7 @@ namespace Allors.Domain
 
             if (this.SalesOrderItemState.InProcess
                 && (!this.ExistLastSalesOrderItemState || !this.LastSalesOrderItemState.InProcess)
-                && this.SalesOrderWhereSalesOrderItem.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderConfirm
+                && this.SalesOrderWhereSalesOrderItem.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderPost
                 && this.ExistSerialisedItem)
             {
                 if (this.ExistNewSerialisedItemState)

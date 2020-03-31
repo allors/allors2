@@ -78,6 +78,17 @@ namespace Allors.Repository
         DateTime RequiredResponseDate { get; set; }
 
         #region Allors
+        [Id("b5ecffab-0f27-4311-9f66-197f0cdc147f")]
+        [AssociationId("37904354-0db4-43b2-8885-4e9e57b915f4")]
+        [RoleId("f57f743f-5c90-4348-b9a0-52dc6b2116ae")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        [Derived]
+        [Indexed]
+        QuoteItem[] ValidQuoteItems { get; set; }
+
+        #region Allors
         [Id("033df6dd-fdf7-44e4-84ca-5c7e100cb3f5")]
         [AssociationId("4b19f443-0d27-447d-8186-e5361a094460")]
         [RoleId("fa17ef86-c074-414e-b223-b62522d68280")]

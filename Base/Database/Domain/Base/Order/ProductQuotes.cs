@@ -15,7 +15,7 @@ namespace Allors.Domain
         {
             var created = new QuoteStates(this.Session).Created;
             var approved = new QuoteStates(this.Session).Approved;
-            var sent = new QuoteStates(this.Session).Sent;
+            var awaitingAcceptance = new QuoteStates(this.Session).AwaitingAcceptance;
             var ordered = new QuoteStates(this.Session).Ordered;
             var rejected = new QuoteStates(this.Session).Rejected;
             var cancelled = new QuoteStates(this.Session).Cancelled;
@@ -35,7 +35,7 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, approved, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Write);
-            config.Deny(this.ObjectType, sent, Operations.Write);
+            config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, ordered, Operations.Write);
             config.Deny(this.ObjectType, cancelled, Operations.Write);
         }

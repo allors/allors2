@@ -10,13 +10,13 @@ namespace Allors.Domain
     public partial class SerialisedItemAssignedOns
     {
         public static readonly Guid ProductQuoteSendId = new Guid("2db17a99-70ca-4fb3-b49b-dd5244217e22");
-        public static readonly Guid SalesOrderConfirmId = new Guid("38bd58eb-c130-46a2-aa87-deb27fe10685");
+        public static readonly Guid SalesOrderPostId = new Guid("38bd58eb-c130-46a2-aa87-deb27fe10685");
 
         private UniquelyIdentifiableSticky<SerialisedItemAssignedOn> cache;
 
         public SerialisedItemAssignedOn ProductQuoteSend => this.Cache[ProductQuoteSendId];
 
-        public SerialisedItemAssignedOn SalesOrderConfirm => this.Cache[SalesOrderConfirmId];
+        public SerialisedItemAssignedOn SalesOrderPost => this.Cache[SalesOrderPostId];
 
         private UniquelyIdentifiableSticky<SerialisedItemAssignedOn> Cache => this.cache ??= new UniquelyIdentifiableSticky<SerialisedItemAssignedOn>(this.Session);
 
@@ -25,7 +25,7 @@ namespace Allors.Domain
             var merge = this.Cache.Merger().Action();
 
             merge(ProductQuoteSendId, v => v.Name = "ProductQuote Send");
-            merge(SalesOrderConfirmId, v => v.Name = "SalesOrder Confirm");
+            merge(SalesOrderPostId, v => v.Name = "SalesOrder Post");
         }
     }
 }
