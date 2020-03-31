@@ -42,12 +42,12 @@ namespace Allors.Database.Adapters.Npgsql
             }
         }
 
-        //protected string ConnectionString => (this.pgServer != null) ?
-        //    $"Server=localhost; Port={this.pgServer.PgPort}; User Id=postgres; Password=test; Database=postgres; Pooling=false; Timeout=300; CommandTimeout=300" :
-        //    $"Server=localhost; User Id=allors; Password=allors; Database=adapters; Pooling=false; Timeout=300; CommandTimeout=300";
+        protected string ConnectionString => (this.pgServer != null) ?
+            $"Server=localhost; Port={this.pgServer.PgPort}; User Id=postgres; Password=test; Database=postgres; Pooling=false; Timeout=300; CommandTimeout=300" :
+            $"Server=localhost; User Id=allors; Password=allors; Database=adapters; Pooling=false; Timeout=300; CommandTimeout=300";
 
-        protected string ConnectionString =>
-            $"Server=localhost; User Id=allors; Password=allors; Database=adapters; Pooling=false";
+        //protected string ConnectionString =>
+        //    $"Server=localhost; User Id=allors; Password=allors; Database=adapters; Pooling=false";
 
         public IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
         {
