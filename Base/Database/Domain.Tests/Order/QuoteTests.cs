@@ -199,6 +199,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var salesOrder = quote.SalesOrderWhereQuote;
+            salesOrder.SalesOrderItems.First.NewSerialisedItemState = new SerialisedItemStates(this.Session).Sold;
 
             salesOrder.SetReadyForPosting();
             this.Session.Derive();

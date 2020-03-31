@@ -175,6 +175,26 @@ namespace Allors.Domain
 
             this.BaseOnDeriveCurrentObjectState(derivation);
 
+            if (this.ShipmentState.IsShipped
+                && (!this.ExistLastShipmentState || !this.LastShipmentState.IsShipped)
+                && ((InternalOrganisation)this.ShipFromParty).SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).CustomerShipmentShip)
+            {
+                foreach (ShipmentItem item in this.ShipmentItems.Where(v => v.ExistSerialisedItem))
+                {
+                    if (item.ExistNewSerialisedItemState)
+                    {
+                        item.SerialisedItem.SerialisedItemState = item.NewSerialisedItemState;
+
+                        if (item.NewSerialisedItemState.Equals(new SerialisedItemStates(this.Session()).Sold))
+                        {
+                            item.SerialisedItem.OwnedBy = this.ShipToParty;
+                        }
+                    }
+
+                    item.SerialisedItem.AvailableForSale = false;
+                }
+            }
+
             this.Sync(this.Session());
         }
 
@@ -733,21 +753,6 @@ namespace Allors.Domain
                                     pickList.AddPickListItem(pickListItem);
                                     quantityLeftToIssue -= pickListItem.Quantity;
                                 }
-                            }
-                        }
-                    }
-
-                    if (shipmentItem.ExistSerialisedItem && issuedFromSerializedInventoryItem != null)
-                    {
-                        shipmentItem.SerialisedItem.AvailableForSale = false;
-
-                        if (shipmentItem.ExistNewSerialisedItemState)
-                        {
-                            shipmentItem.SerialisedItem.SerialisedItemState = shipmentItem.NewSerialisedItemState;
-
-                            if (shipmentItem.NewSerialisedItemState.Equals(new SerialisedItemStates(this.Session()).Sold))
-                            {
-                                shipmentItem.SerialisedItem.OwnedBy = this.ShipToParty;
                             }
                         }
                     }

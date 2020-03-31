@@ -429,6 +429,37 @@ namespace Allors.Domain
                 this.Ship();
             }
 
+            if (this.SalesOrderState.InProcess
+                && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.InProcess)
+                && (this.TakenBy.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).SalesOrderPost
+                    || (!this.ExistQuote && this.TakenBy.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend)))
+            {
+                foreach (SalesOrderItem item in this.ValidOrderItems.Where(v => ((SalesOrderItem)v).ExistSerialisedItem))
+                {
+                    item.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Assigned;
+                }
+            }
+
+            if (this.SalesOrderState.InProcess
+                && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.InProcess)
+                && this.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderPost)
+            {
+                foreach (SalesOrderItem item in this.ValidOrderItems.Where(v => ((SalesOrderItem)v).ExistSerialisedItem))
+                {
+                    if (item.ExistNewSerialisedItemState)
+                    {
+                        item.SerialisedItem.SerialisedItemState = item.NewSerialisedItemState;
+
+                        if (item.NewSerialisedItemState.Equals(new SerialisedItemStates(this.Session()).Sold))
+                        {
+                            item.SerialisedItem.OwnedBy = this.ShipToCustomer;
+                        }
+                    }
+
+                    item.SerialisedItem.AvailableForSale = false;
+                }
+            }
+
             this.Sync(derivation, validOrderItems);
         }
 
