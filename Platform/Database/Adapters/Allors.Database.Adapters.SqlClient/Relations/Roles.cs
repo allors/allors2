@@ -459,7 +459,7 @@ namespace Allors.Database.Adapters.SqlClient
                 return role;
             }
 
-            return Database.EmptyObjectIds;
+            return Array.Empty<long>();
         }
 
         private void SetOriginal(IRoleType roleType, object role)

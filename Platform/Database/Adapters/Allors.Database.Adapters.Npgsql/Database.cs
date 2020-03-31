@@ -12,14 +12,14 @@ namespace Allors.Database.Adapters.Npgsql
     using System.Xml;
     using Allors;
     using Allors.Meta;
+    using Allors.Serialization;
     using Caching;
     using global::Npgsql;
-    using Allors.Serialization;
     using NpgsqlTypes;
 
     public class Database : IDatabase
     {
-        public static readonly long[] EmptyObjectIds = { };
+        public static readonly IsolationLevel DefaultIsolationLevel = System.Data.IsolationLevel.RepeatableRead;
 
         private readonly object lockObject = new object();
         private readonly Dictionary<IObjectType, HashSet<IObjectType>> concreteClassesByObjectType;
@@ -154,9 +154,9 @@ namespace Allors.Database.Adapters.Npgsql
 
         internal ICache Cache { get; }
 
-        internal int CommandTimeout { get; }
+        internal int? CommandTimeout { get; }
 
-        internal IsolationLevel IsolationLevel { get; }
+        internal IsolationLevel? IsolationLevel { get; }
 
         internal Mapping Mapping
         {

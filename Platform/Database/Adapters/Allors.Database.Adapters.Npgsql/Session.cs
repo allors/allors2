@@ -280,7 +280,7 @@ namespace Allors.Database.Adapters.Npgsql
                     this.busyCommittingOrRollingBack = true;
 
                     var accessed = new List<long>(this.State.ReferenceByObjectId.Keys);
-                    var changed = Database.EmptyObjectIds;
+                    var changed = Array.Empty<long>();
 
                     this.Flush();
 

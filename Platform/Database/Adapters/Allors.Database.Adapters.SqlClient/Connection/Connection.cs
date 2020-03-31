@@ -30,14 +30,18 @@ namespace Allors.Database.Adapters.SqlClient
                 this.OnOpenedSqlConnection();
 
                 this.OnCreatingSqlTransaction();
-                this.SqlTransaction = this.SqlConnection.BeginTransaction(this.Database.IsolationLevel);
+                this.SqlTransaction = this.SqlConnection.BeginTransaction(this.Database.IsolationLevel ?? Database.DefaultIsolationLevel);
                 this.OnCreatedSqlTransaction();
             }
 
             this.OnCreatingSqlCommand();
             var sqlCommand = this.SqlConnection.CreateCommand();
             sqlCommand.Transaction = this.SqlTransaction;
-            sqlCommand.CommandTimeout = this.Database.CommandTimeout;
+            if (this.Database.CommandTimeout.HasValue)
+            {
+                sqlCommand.CommandTimeout = this.Database.CommandTimeout.Value;
+            }
+
             this.OnCreatedSqlCommand();
 
             return this.CreateCommand(this.Database.Mapping, sqlCommand);

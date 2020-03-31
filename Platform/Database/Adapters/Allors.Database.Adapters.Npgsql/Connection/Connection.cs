@@ -30,14 +30,18 @@ namespace Allors.Database.Adapters.Npgsql
                 this.OnOpenedNpgsqlConnection();
 
                 this.OnCreatingNpgsqlTransaction();
-                this.NpgsqlTransaction = this.NpgsqlConnection.BeginTransaction(this.Database.IsolationLevel);
+                this.NpgsqlTransaction = this.NpgsqlConnection.BeginTransaction(this.Database.IsolationLevel ?? Database.DefaultIsolationLevel);
                 this.OnCreatedNpgsqlTransaction();
             }
 
             this.OnCreatingNpgsqlCommand();
             var sqlCommand = this.NpgsqlConnection.CreateCommand();
             sqlCommand.Transaction = this.NpgsqlTransaction;
-            sqlCommand.CommandTimeout = this.Database.CommandTimeout;
+            if (this.Database.CommandTimeout.HasValue)
+            {
+                sqlCommand.CommandTimeout = this.Database.CommandTimeout.Value;
+            }
+
             this.OnCreatedNpgsqlCommand();
 
             return this.CreateCommand(this.Database.Mapping, sqlCommand);

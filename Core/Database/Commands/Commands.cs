@@ -7,8 +7,8 @@ namespace Commands
 {
     using System;
     using System.Data;
-
-    using Allors.Database.Adapters.SqlClient;
+    using Allors;
+    using Allors.Database.Adapters;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
@@ -32,25 +32,17 @@ namespace Commands
     {
         public Commands(IServiceProvider serviceProvider, IConfiguration configuration, IDatabaseService databaseService, ILoggerFactory loggerFactory)
         {
-            var databaseConfiguration = new Configuration
-            {
-                ConnectionString = configuration["ConnectionStrings:DefaultConnection"],
-                ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User)),
-                IsolationLevel = this.IsolationLevel,
-                CommandTimeout = this.CommandTimeout,
-            };
-
-            databaseService.Database = new Database(serviceProvider, databaseConfiguration);
-
+            var databaseBuilder = new DatabaseBuilder(serviceProvider, configuration, new ObjectFactory(MetaPopulation.Instance, typeof(User)), this.IsolationLevel, this.CommandTimeout);
+            databaseService.Database = databaseBuilder.Build();
             loggerFactory.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
             NLog.LogManager.LoadConfiguration("nlog.config");
         }
 
         [Option("-i", Description = "Isolation Level (Snapshot|RepeatableRead|Serializable)")]
-        public IsolationLevel IsolationLevel { get; set; } = IsolationLevel.Snapshot;
+        public IsolationLevel? IsolationLevel { get; set; }
 
         [Option("-t", Description = "Command Timeout in seconds")]
-        public int CommandTimeout { get; set; } = 0;
+        public int? CommandTimeout { get; set; }
 
         public int OnExecute(CommandLineApplication app)
         {
