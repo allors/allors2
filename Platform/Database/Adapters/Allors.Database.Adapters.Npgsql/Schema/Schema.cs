@@ -109,9 +109,13 @@ WHERE routine_schema = @routineSchema";
                         {
                             while (reader.Read())
                             {
-                                var routineName = (string)reader["routine_name"];
-                                var routineDefinition = (string)reader["routine_definition"];
-                                var lowercaseRoutineName = routineName.Trim().ToLowerInvariant();
+                                var routineNameValue = reader["routine_name"];
+                                var routineDefinitionValue = reader["routine_definition"];
+
+                                var routineName = (string)routineNameValue;
+                                var routineDefinition = routineDefinitionValue != DBNull.Value ? (string)routineDefinitionValue : string.Empty;
+
+                                var lowercaseRoutineName = ((string)routineName).Trim().ToLowerInvariant();
                                 var fullyQualifiedName = database.SchemaName + "." + lowercaseRoutineName;
                                 this.ProcedureByName[fullyQualifiedName] = new SchemaProcedure(routineName, routineDefinition);
                             }
