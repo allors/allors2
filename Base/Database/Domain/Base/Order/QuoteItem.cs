@@ -96,14 +96,6 @@ namespace Allors.Domain
             {
                 this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
-
-            if (this.QuoteItemState.IsSent
-                && (!this.ExistLastQuoteItemState || !this.LastQuoteItemState.IsSent)
-                && this.QuoteWhereQuoteItem.Issuer.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend
-                && this.ExistSerialisedItem)
-            {
-                this.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Assigned;
-            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
