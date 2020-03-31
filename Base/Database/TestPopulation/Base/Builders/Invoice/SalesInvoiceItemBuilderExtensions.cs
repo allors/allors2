@@ -30,6 +30,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithSerialisedItem(serializedItem);
             @this.WithMessage(faker.Lorem.Sentence());
             @this.WithQuantity(1);
+            @this.WithAssignedUnitPrice(faker.Random.UInt());
 
             return @this;
         }
@@ -49,6 +50,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithSerialisedItem(serializedItem);
             @this.WithMessage(faker.Lorem.Sentence());
             @this.WithQuantity(1);
+            @this.WithAssignedUnitPrice(faker.Random.UInt());
 
             return @this;
         }

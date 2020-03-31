@@ -8,7 +8,7 @@ namespace Application
     using Dipu.Excel;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class Program : IProgram
+    public class Program :  IProgram
     {
         public Program(ServiceProvider serviceProvider, Client client)
         {
