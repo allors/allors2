@@ -2,14 +2,12 @@ using System.IO;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.Execution;
-using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tooling.ProcessTasks;
 
-
-[CheckBuildProjectConfigurations]
+[CheckBuildProjectConfigurations(TimeoutInMilliseconds = 5000)]
 [UnsetVisualStudioEnvironmentVariables]
 partial class Build : NukeBuild
 {
