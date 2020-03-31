@@ -284,12 +284,12 @@ namespace Allors.Database.Adapters.SqlClient
 
                     this.Flush();
 
-                    if (this.State.ModifiedRolesByReference != null || this.State.ReferenceByObjectId.Any(v => v.Value.IsNew))
+                    if (this.State.ModifiedRolesByReference?.Count > 0 || this.State.ReferenceByObjectId.Any(v => v.Value.IsNew))
                     {
                         IEnumerable<Reference> objectsToVersion;
 
-                        var newObjects = this.State.ReferenceByObjectId.Select(v => v.Value);
-                        if (this.State.ModifiedRolesByReference != null)
+                        var newObjects = this.State.ReferenceByObjectId.Where(v => v.Value.IsNew).Select(v => v.Value);
+                        if (this.State.ModifiedRolesByReference?.Count > 0)
                         {
                             objectsToVersion = this.State.ModifiedRolesByReference.Keys.Union(newObjects);
                         }
@@ -298,7 +298,7 @@ namespace Allors.Database.Adapters.SqlClient
                             objectsToVersion = newObjects;
                         }
 
-                        this.Commands.UpdateVersion(newObjects);
+                        this.Commands.UpdateVersion(objectsToVersion);
 
                         changed = this.State.ModifiedRolesByReference?
                             .Select(dictionaryEntry => dictionaryEntry.Key.ObjectId).ToArray() ?? Array.Empty<long>();
