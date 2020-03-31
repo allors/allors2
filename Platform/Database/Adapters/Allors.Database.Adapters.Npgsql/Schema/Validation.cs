@@ -249,7 +249,8 @@ namespace Allors.Database.Adapters.Npgsql
 
         private void ValidateColumn(SchemaTable table, string columnName, string sqlType)
         {
-            var objectColumn = table.GetColumn(columnName);
+            var normalizedColumnName = this.mapping.NormalizeName(columnName);
+            var objectColumn = table.GetColumn(normalizedColumnName);
 
             if (objectColumn == null || !objectColumn.SqlType.Equals(sqlType))
             {
