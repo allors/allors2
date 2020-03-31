@@ -12,16 +12,16 @@ namespace Allors.Database.Adapters.SqlClient
     using System.Linq;
     using System.Xml;
     using System.Xml.Serialization;
-    using Adapters.Schema;
     using Allors;
+    using Allors.Database.Adapters.Schema;
+    using Allors.Database.Adapters.SqlClient.Caching;
     using Allors.Meta;
-    using Caching;
     using Allors.Serialization;
     using Microsoft.SqlServer.Server;
 
     public class Database : IDatabase
     {
-        public static readonly long[] EmptyObjectIds = { };
+        public static readonly IsolationLevel DefaultIsolationLevel = System.Data.IsolationLevel.Snapshot;
 
         private readonly object lockObject = new object();
         private readonly Dictionary<IObjectType, HashSet<IObjectType>> concreteClassesByObjectType;
@@ -156,9 +156,9 @@ namespace Allors.Database.Adapters.SqlClient
 
         internal ICache Cache { get; }
 
-        internal int CommandTimeout { get; }
+        internal int? CommandTimeout { get; }
 
-        internal IsolationLevel IsolationLevel { get; }
+        internal IsolationLevel? IsolationLevel { get; }
 
         internal Mapping Mapping
         {

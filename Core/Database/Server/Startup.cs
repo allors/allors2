@@ -22,6 +22,7 @@ namespace Allors.Server
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
     using ObjectFactory = Allors.ObjectFactory;
+    using Allors.Database.Adapters;
 
     public class Startup
     {
@@ -76,14 +77,8 @@ namespace Allors.Server
         {
             // Allors
             var databaseService = app.ApplicationServices.GetRequiredService<IDatabaseService>();
-            databaseService.Database = new Database(
-                app.ApplicationServices,
-                new Configuration
-                {
-                    ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
-                    ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
-                    CommandTimeout = 600,
-                });
+            var databaseBuilder = new DatabaseBuilder(app.ApplicationServices, this.Configuration, new ObjectFactory(MetaPopulation.Instance, typeof(User)));
+            databaseService.Database = databaseBuilder.Build();
 
             if (env.IsDevelopment())
             {

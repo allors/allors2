@@ -10,12 +10,6 @@ namespace Allors.Database.Adapters.SqlClient
 
     public class Configuration : Adapters.Configuration
     {
-        public Configuration()
-        {
-            this.CommandTimeout = 30;
-            this.IsolationLevel = IsolationLevel.Snapshot;
-        }
-
         public ICacheFactory CacheFactory { get; set; }
 
         public IConnectionFactory ConnectionFactory { get; set; }
@@ -24,9 +18,9 @@ namespace Allors.Database.Adapters.SqlClient
 
         public string ConnectionString { get; set; }
 
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
 
-        public IsolationLevel IsolationLevel { get; set; }
+        public IsolationLevel? IsolationLevel { get; set; }
 
         public string SchemaName { get; set; }
     }

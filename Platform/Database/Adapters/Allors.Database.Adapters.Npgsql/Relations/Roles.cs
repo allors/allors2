@@ -460,7 +460,7 @@ namespace Allors.Database.Adapters.Npgsql
                 return role;
             }
 
-            return Database.EmptyObjectIds;
+            return Array.Empty<long>();
         }
 
         private void SetOriginal(IRoleType roleType, object role)

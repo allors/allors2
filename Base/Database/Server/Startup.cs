@@ -5,12 +5,12 @@
 
 namespace Allors.Server
 {
+    using System;
     using System.Text;
-    using Allors.Database.Adapters.SqlClient;
+    using Allors.Database.Adapters;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
-    using Security;
     using JSNLog;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
@@ -21,6 +21,7 @@ namespace Allors.Server
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
+    using Security;
     using ObjectFactory = Allors.ObjectFactory;
 
     public class Startup
@@ -77,16 +78,9 @@ namespace Allors.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            // Allors
             var databaseService = app.ApplicationServices.GetRequiredService<IDatabaseService>();
-            databaseService.Database = new Database(
-                app.ApplicationServices,
-                new Configuration
-                {
-                    ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
-                    ConnectionString = this.Configuration.GetConnectionString("DefaultConnection"),
-                    CommandTimeout = 600,
-                });
+            var databaseBuilder = new DatabaseBuilder(app.ApplicationServices, this.Configuration, new ObjectFactory(MetaPopulation.Instance, typeof(User)));
+            databaseService.Database = databaseBuilder.Build();
 
             if (env.IsDevelopment())
             {

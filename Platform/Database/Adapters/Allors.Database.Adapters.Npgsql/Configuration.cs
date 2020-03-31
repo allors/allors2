@@ -6,16 +6,10 @@
 namespace Allors.Database.Adapters.Npgsql
 {
     using System.Data;
-    using Caching;
+    using Allors.Database.Adapters.Npgsql.Caching;
 
     public class Configuration : Adapters.Configuration
     {
-        public Configuration()
-        {
-            this.CommandTimeout = 30;
-            this.IsolationLevel = IsolationLevel.RepeatableRead;
-        }
-
         public ICacheFactory CacheFactory { get; set; }
 
         public IConnectionFactory ConnectionFactory { get; set; }
@@ -24,9 +18,9 @@ namespace Allors.Database.Adapters.Npgsql
 
         public string ConnectionString { get; set; }
 
-        public int CommandTimeout { get; set; }
+        public int? CommandTimeout { get; set; }
 
-        public IsolationLevel IsolationLevel { get; set; }
+        public IsolationLevel? IsolationLevel { get; set; }
 
         public string SchemaName { get; set; }
     }
