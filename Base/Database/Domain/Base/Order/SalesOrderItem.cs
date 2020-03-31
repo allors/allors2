@@ -71,6 +71,11 @@ namespace Allors.Domain
             {
                 this.SalesOrderItemPaymentState = new SalesOrderItemPaymentStates(this.Strategy.Session).NotPaid;
             }
+
+            if (this.ExistSerialisedItem && !this.ExistNewSerialisedItemState)
+            {
+                this.NewSerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Sold;
+            }
         }
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
@@ -307,23 +312,6 @@ namespace Allors.Domain
             if (derivation.ChangeSet.IsCreated(this) && this.ExistSerialisedItem)
             {
                 this.Description = this.SerialisedItem.Details;
-            }
-
-            if (this.SalesOrderItemState.InProcess
-                && (!this.ExistLastSalesOrderItemState || !this.LastSalesOrderItemState.InProcess)
-                && this.SalesOrderWhereSalesOrderItem.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderPost
-                && this.ExistSerialisedItem)
-            {
-                if (this.ExistNewSerialisedItemState)
-                {
-                    this.SerialisedItem.SerialisedItemState = this.NewSerialisedItemState;
-                }
-                else
-                {
-                    this.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session()).Sold;
-                }
-
-                this.SerialisedItem.AvailableForSale = false;
             }
 
             this.Sync();
