@@ -17,7 +17,7 @@ namespace Allors.Domain
             var onHold = new SalesOrderStates(this.Session).OnHold;
             var requestsApproval = new SalesOrderStates(this.Session).RequestsApproval;
             var readyForPosting = new SalesOrderStates(this.Session).ReadyForPosting;
-            var posted = new SalesOrderStates(this.Session).Posted;
+            var posted = new SalesOrderStates(this.Session).AwaitingAcceptance;
             var inProcess = new SalesOrderStates(this.Session).InProcess;
             var cancelled = new SalesOrderStates(this.Session).Cancelled;
             var rejected = new SalesOrderStates(this.Session).Rejected;
