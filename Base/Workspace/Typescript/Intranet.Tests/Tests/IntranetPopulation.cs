@@ -155,22 +155,18 @@ namespace Tests
             var faker = this.Session.Faker();
 
             allors.CreateEmployee("letmein", faker);
-            allors.CreateEmployee("letmein", faker);
             allors.CreateAdministrator("letmein", faker);
-            allors.CreateAdministrator("letmein", faker);
+            allors.CreateB2BCustomer(this.Session.Faker());
+            allors.CreateB2CCustomer(this.Session.Faker());
+            allors.CreateSupplier(this.Session.Faker());
+            allors.CreateSubContractor(this.Session.Faker());
 
-            dipu.CreateEmployee("letmein", faker);
             dipu.CreateEmployee("letmein", faker);
             dipu.CreateAdministrator("letmein", faker);
-
-            // Create B2B & B2C Customers
-            for (var i = 0; i < 5; i++)
-            {
-                allors.CreateB2BCustomer(this.Session.Faker());
-                allors.CreateB2CCustomer(this.Session.Faker());
-                dipu.CreateB2BCustomer(this.Session.Faker());
-                dipu.CreateB2CCustomer(this.Session.Faker());
-            }
+            dipu.CreateB2BCustomer(this.Session.Faker());
+            dipu.CreateB2CCustomer(this.Session.Faker());
+            dipu.CreateSupplier(this.Session.Faker());
+            dipu.CreateSubContractor(this.Session.Faker());
 
             this.Session.Derive();
 
@@ -262,98 +258,14 @@ namespace Tests
 
             this.Session.Derive();
 
-            var acmePostalAddress = new PostalAddressBuilder(this.Session)
-                .WithDefaults()
-                .Build();
-
-            var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(acmePostalAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var acmeInquiries = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithContactNumber("111 222 333").Build())
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).OrderInquiriesPhone)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var acme = new OrganisationBuilder(this.Session)
-                .WithName($"Acme")
-                .WithLocale(new Locales(this.Session).EnglishUnitedStates)
-                .WithPartyContactMechanism(acmeBillingAddress)
-                .WithPartyContactMechanism(acmeInquiries)
-                .Build();
-
-            var contact1Email = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(new EmailAddressBuilder(this.Session).WithElectronicAddressString($"employee1@acme.com").Build())
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var contact2PhoneNumber = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithAreaCode("123").WithContactNumber("456").Build())
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var contact2Email = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(new EmailAddressBuilder(this.Session).WithElectronicAddressString($"contact2@acme.com").Build())
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var contact1 = new PersonBuilder(this.Session)
-                .WithFirstName($"John")
-                .WithLastName($"Doe")
-                .WithGender(new GenderTypes(this.Session).Male)
-                .WithLocale(new Locales(this.Session).EnglishUnitedStates)
-                .WithPartyContactMechanism(contact1Email)
-                .Build();
-
-            var contact2 = new PersonBuilder(this.Session)
-                .WithFirstName($"Jane")
-                .WithLastName($"Doe")
-                .WithGender(new GenderTypes(this.Session).Male)
-                .WithLocale(new Locales(this.Session).EnglishUnitedStates)
-                .WithPartyContactMechanism(contact2PhoneNumber)
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session)
-                .WithCustomer(acme)
-                .WithInternalOrganisation(allors)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            new SupplierRelationshipBuilder(this.Session)
-                .WithSupplier(acme)
-                .WithInternalOrganisation(allors)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            new OrganisationContactRelationshipBuilder(this.Session)
-                .WithOrganisation(acme)
-                .WithContact(contact1)
-                .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            new OrganisationContactRelationshipBuilder(this.Session)
-                .WithOrganisation(acme)
-                .WithContact(contact2)
-                .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
             var administrator = (Person)new UserGroups(this.Session).Administrators.Members.First;
 
             new FaceToFaceCommunicationBuilder(this.Session)
                 .WithDescription($"Meeting")
                 .WithSubject($"meeting")
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
-                .WithFromParty(contact1)
-                .WithToParty(contact2)
+                .WithFromParty(allors.ActiveEmployees.First)
+                .WithToParty(allors.ActiveCustomers.First)
                 .WithOwner(administrator)
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
@@ -361,10 +273,10 @@ namespace Tests
             new EmailCommunicationBuilder(this.Session)
                 .WithDescription($"Email")
                 .WithSubject($"email")
-                .WithFromParty(contact1)
-                .WithToParty(contact2)
-                .WithFromEmail((EmailAddress)contact1Email.ContactMechanism)
-                .WithToEmail((EmailAddress)contact2Email.ContactMechanism)
+                .WithFromParty(allors.ActiveEmployees.First)
+                .WithToParty(allors.ActiveCustomers.First)
+                .WithFromEmail(allors.ActiveEmployees.First.GeneralEmail)
+                .WithToEmail(allors.ActiveCustomers.First.GeneralEmail)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                 .WithOwner(administrator)
                 .WithActualStart(DateTime.UtcNow)
@@ -374,7 +286,7 @@ namespace Tests
                 .WithDescription($"Letter")
                 .WithSubject($"letter")
                 .WithFromParty(administrator)
-                .WithToParty(contact1)
+                .WithToParty(allors.ActiveCustomers.First)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                 .WithOwner(administrator)
                 .WithActualStart(DateTime.UtcNow)
@@ -384,7 +296,7 @@ namespace Tests
                 .WithDescription($"Phone")
                 .WithSubject($"phone")
                 .WithFromParty(administrator)
-                .WithToParty(contact1)
+                .WithToParty(allors.ActiveCustomers.First)
                 .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                 .WithOwner(administrator)
                 .WithActualStart(DateTime.UtcNow)
@@ -416,8 +328,8 @@ line2")
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(allors)
-                .WithBillToCustomer(acme)
-                .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
+                .WithBillToCustomer(allors.ActiveCustomers.First)
+                .WithBillToEndCustomerContactMechanism(allors.ActiveCustomers.First.BillingAddress)
                 .WithSalesOrderItem(salesOrderItem1)
                 .WithSalesOrderItem(salesOrderItem2)
                 .WithSalesOrderItem(salesOrderItem3)
@@ -435,6 +347,15 @@ line2")
             salesInvoice.AddSalesInvoiceItem(salesInvoiceItem1);
             salesInvoice.AddSalesInvoiceItem(salesInvoiceItem2);
             salesInvoice.AddSalesInvoiceItem(salesInvoiceItem3);
+
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(good1.Part)
+                .WithSupplier(allors.ActiveSuppliers.First)
+                .WithFromDate(this.Session.Now().AddMinutes(-1))
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(euro)
+                .Build();
 
             var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
                 .WithDescription("first item")
@@ -463,7 +384,7 @@ line2")
             var purchaseInvoice = new PurchaseInvoiceBuilder(this.Session)
                 .WithBilledTo(allors)
                 .WithInvoiceNumber("1")
-                .WithBilledFrom(acme)
+                .WithBilledFrom(allors.ActiveSuppliers.First)
                 .WithPurchaseInvoiceItem(purchaseInvoiceItem1)
                 .WithPurchaseInvoiceItem(purchaseInvoiceItem2)
                 .WithPurchaseInvoiceItem(purchaseInvoiceItem3)
@@ -481,7 +402,7 @@ line2")
 
             var purchaseOrder = new PurchaseOrderBuilder(this.Session)
                 .WithOrderedBy(allors)
-                .WithTakenViaSupplier(acme)
+                .WithTakenViaSupplier(allors.ActiveSuppliers.First)
                 .WithPurchaseOrderItem(purchaseOrderItem1)
                 .WithCustomerReference("reference 123")
                 .WithFacility(facility)
@@ -489,7 +410,7 @@ line2")
 
             var workTask = new WorkTaskBuilder(this.Session)
                 .WithTakenBy(allors)
-                .WithCustomer(acme)
+                .WithCustomer(allors.ActiveCustomers.First)
                 .WithName("maintenance")
                 .Build();
 
@@ -506,76 +427,6 @@ line2")
 
             this.Session.Derive();
 
-            var customerSalesAgreement = new SalesAgreementBuilder(this.Session)
-                .WithDescription("default payment terms")
-                .WithAgreementTerm(new InvoiceTermBuilder(this.Session).WithTermType(new InvoiceTermTypes(this.Session).PaymentNetDays).WithTermValue("30").Build())
-                .Build();
-
-            var customer = new OrganisationBuilder(this.Session)
-                .WithName("a customer")
-                .WithAgreement(customerSalesAgreement)
-                .WithTaxNumber("cust.tax number")
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(allors).WithFromDate(DateTime.Now.AddDays(-1)).Build();
-
-            var contactMechanism = new PostalAddressBuilder(this.Session)
-                .WithDefaults()
-                .Build();
-
-            var partyContactMechanism = new PartyContactMechanismBuilder(this.Session)
-                .WithUseAsDefault(true)
-                .WithContactMechanism(contactMechanism)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
-                .Build();
-            customer.AddPartyContactMechanism(partyContactMechanism);
-
-            var serialisedItem2 = new SerialisedItemBuilder(this.Session).WithSerialNumber("123").Build();
-
-            var serialisedUnifiedGood = new UnifiedGoodBuilder(this.Session)
-                .WithName("serialised good")
-                .WithDefaultFacility(facility)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
-                .WithVatRate(new VatRates(this.Session).Extent().First(v => v.Rate == 0))
-                .WithSerialisedItem(serialisedItem2)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Kilogram)
-                .Build();
-
-            var unifiedGood = new UnifiedGoodBuilder(this.Session)
-                .WithName("good")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).Extent().First(v => v.Rate == 0))
-                .Build();
-
-            new SerialisedInventoryItemBuilder(this.Session)
-                .WithSerialisedItem(serialisedItem2)
-                .WithPart(serialisedUnifiedGood)
-                .WithFacility(facility)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Kilogram)
-                .Build();
-
-            new InventoryItemTransactionBuilder(this.Session)
-                .WithSerialisedItem(serialisedItem2)
-                .WithPart(serialisedUnifiedGood)
-                .WithQuantity(1)
-                .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
-                .Build();
-
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(dipu)
-                .Build();
-
-            var item2 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(dipu).Build();
-
-            var item3 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(dipu).Build();
-
-            var invoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2CInvoiceDefaults(dipu)
-                .Build();
-            invoice.AddSalesInvoiceItem(item1);
-            invoice.AddSalesInvoiceItem(item2);
-            invoice.AddSalesInvoiceItem(item3);
-
-            this.Session.Derive();
-
             // Serialized RFQ with Serialized Unified-Good
             var serializedRFQ = new RequestForQuoteBuilder(this.Session).WithSerializedDefaults(allors).Build();
 
@@ -585,8 +436,8 @@ line2")
             var quote = new ProductQuoteBuilder(this.Session)
                 .WithIssuer(allors)
                 .WithDescription("quote")
-                .WithReceiver(customer)
-                .WithFullfillContactMechanism(customer.GeneralCorrespondence)
+                .WithReceiver(allors.ActiveCustomers.First)
+                .WithFullfillContactMechanism(allors.ActiveCustomers.First.GeneralCorrespondence)
                 .Build();
 
             var quoteItem = new QuoteItemBuilder(this.Session)
@@ -599,11 +450,11 @@ line2")
 
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(allors)
-                .WithShipToCustomer(customer)
+                .WithShipToCustomer(allors.ActiveCustomers.First)
                 .Build();
 
             var salesOrderItem = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(unifiedGood)
+                .WithProduct(good1)
                 .WithQuantityOrdered(1)
                 .WithAssignedUnitPrice(10)
                 .Build();

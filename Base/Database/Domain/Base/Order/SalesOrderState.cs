@@ -7,22 +7,24 @@ namespace Allors.Domain
 {
     public partial class SalesOrderState
     {
-        public bool Provisional => Equals(this.UniqueId, SalesOrderStates.ProvisionalId);
+        public bool IsProvisional => Equals(this.UniqueId, SalesOrderStates.ProvisionalId);
 
-        public bool RequestsApproval => Equals(this.UniqueId, SalesOrderStates.RequestsApprovalId);
+        public bool IsRequestsApproval => Equals(this.UniqueId, SalesOrderStates.RequestsApprovalId);
 
-        public bool ReadyForPosting => Equals(this.UniqueId, SalesOrderStates.ReadyForPostingId);
+        public bool IsReadyForPosting => Equals(this.UniqueId, SalesOrderStates.ReadyForPostingId);
 
-        public bool Cancelled => Equals(this.UniqueId, SalesOrderStates.CancelledId);
+        public bool IsCancelled => Equals(this.UniqueId, SalesOrderStates.CancelledId);
 
-        public bool Completed => Equals(this.UniqueId, SalesOrderStates.CompletedId);
+        public bool IsCompleted => Equals(this.UniqueId, SalesOrderStates.CompletedId);
 
-        public bool Rejected => Equals(this.UniqueId, SalesOrderStates.RejectedId);
+        public bool IsRejected => Equals(this.UniqueId, SalesOrderStates.RejectedId);
 
-        public bool Finished => Equals(this.UniqueId, SalesOrderStates.FinishedId);
+        public bool IsFinished => Equals(this.UniqueId, SalesOrderStates.FinishedId);
 
-        public bool OnHold => Equals(this.UniqueId, SalesOrderStates.OnHoldId);
+        public bool IsOnHold => Equals(this.UniqueId, SalesOrderStates.OnHoldId);
 
-        public bool InProcess => Equals(this.UniqueId, SalesOrderStates.InProcessId);
+        public bool IsInProcess => Equals(this.UniqueId, SalesOrderStates.InProcessId);
+
+        public bool IsAwaitingAcceptance => Equals(this.UniqueId, SalesOrderStates.AwaitingAcceptanceId);
     }
 }

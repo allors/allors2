@@ -2604,6 +2604,78 @@ namespace Allors.Domain
 
             Assert.Equal(new VatClauses(this.Session).BeArt39Par1Item2, order.DerivedVatClause);
         }
+
+        [Fact]
+        public void GivenSettingSerialisedItemSoldOnSalesOrderAccept_WhenAcceptingSalesOrder_ThenSerialisedItemStateIsChanged()
+        {
+            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).ProductQuoteSend;
+            this.InternalOrganisation.SerialisedItemSoldOn = new SerialisedItemSoldOns(this.Session).SalesOrderAccept;
+
+            this.Session.Derive();
+
+            var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
+
+            var good = new NonUnifiedGoodBuilder(this.Session)
+                .WithName("good1")
+                .WithProductIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(vatRate0)
+                .WithPart(new NonUnifiedPartBuilder(this.Session)
+                    .WithProductIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("1")
+                        .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                    .Build())
+                .Build();
+
+            var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").WithAvailableForSale(true).Build();
+            good.Part.AddSerialisedItem(serialisedItem);
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var shipToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+
+            var address = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
+            var salesOrder = new SalesOrderBuilder(this.Session)
+                .WithShipToCustomer(shipToCustomer)
+                .WithBillToCustomer(billToCustomer)
+                .WithBillToContactMechanism(address)
+                .WithShipToAddress(address)
+                .Build();
+
+            this.Session.Derive();
+
+            var orderItem = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(good)
+                .WithSerialisedItem(serialisedItem)
+                .WithQuantityOrdered(1)
+                .WithAssignedUnitPrice(1)
+                .Build();
+
+            salesOrder.AddSalesOrderItem(orderItem);
+
+            this.Session.Derive();
+
+            salesOrder.SetReadyForPosting();
+            this.Session.Derive();
+
+            Assert.NotEqual(new SerialisedItemStates(this.Session).Sold, serialisedItem.SerialisedItemState);
+
+            salesOrder.Post();
+            this.Session.Derive();
+
+            salesOrder.Accept();
+            this.Session.Derive();
+
+            Assert.Equal(new SerialisedItemStates(this.Session).Sold, serialisedItem.SerialisedItemState);
+        }
     }
 
     [Trait("Category", "Security")]

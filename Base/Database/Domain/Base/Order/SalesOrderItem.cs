@@ -160,34 +160,34 @@ namespace Allors.Domain
             // SalesOrderItem States
             if (this.IsValid)
             {
-                if (salesOrder.SalesOrderState.ReadyForPosting &&
+                if (salesOrder.SalesOrderState.IsReadyForPosting &&
                     (this.SalesOrderItemState.Created || this.SalesOrderItemState.OnHold))
                 {
                     this.SalesOrderItemState = salesOrderItemStates.ReadyForPosting;
                 }
 
-                if (salesOrder.SalesOrderState.InProcess &&
+                if (salesOrder.SalesOrderState.IsInProcess &&
                     (this.SalesOrderItemState.ReadyForPosting || this.SalesOrderItemState.OnHold))
                 {
                     this.SalesOrderItemState = salesOrderItemStates.InProcess;
                 }
 
-                if (salesOrder.SalesOrderState.OnHold && this.SalesOrderItemState.InProcess)
+                if (salesOrder.SalesOrderState.IsOnHold && this.SalesOrderItemState.InProcess)
                 {
                     this.SalesOrderItemState = salesOrderItemStates.OnHold;
                 }
 
-                if (salesOrder.SalesOrderState.Finished)
+                if (salesOrder.SalesOrderState.IsFinished)
                 {
                     this.SalesOrderItemState = salesOrderItemStates.Finished;
                 }
 
-                if (salesOrder.SalesOrderState.Cancelled)
+                if (salesOrder.SalesOrderState.IsCancelled)
                 {
                     this.SalesOrderItemState = salesOrderItemStates.Cancelled;
                 }
 
-                if (salesOrder.SalesOrderState.Rejected)
+                if (salesOrder.SalesOrderState.IsRejected)
                 {
                     this.SalesOrderItemState = salesOrderItemStates.Rejected;
                 }

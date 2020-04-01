@@ -65,7 +65,6 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var customer = internalOrganisation.ActiveCustomers.Where(v => v.GetType().Name == typeof(Organisation).Name).FirstOrDefault();
-            var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
 
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());

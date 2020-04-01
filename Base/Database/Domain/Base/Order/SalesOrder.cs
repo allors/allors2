@@ -176,7 +176,7 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.SalesOrder.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
             }
 
-            if (this.SalesOrderState.InProcess)
+            if (this.SalesOrderState.IsInProcess)
             {
                 derivation.Validation.AssertExists(this, this.Meta.ShipToAddress);
                 derivation.Validation.AssertExists(this, this.Meta.BillToContactMechanism);
@@ -353,7 +353,7 @@ namespace Allors.Domain
                     this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
                 }
 
-                if (this.SalesOrderState.Completed && this.SalesOrderPaymentState.Paid)
+                if (this.SalesOrderState.IsCompleted && this.SalesOrderPaymentState.Paid)
                 {
                     this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Finished;
                 }
@@ -397,7 +397,7 @@ namespace Allors.Domain
             }
 
             // CanInvoice
-            if (this.SalesOrderState.InProcess && object.Equals(this.Store.BillingProcess, new BillingProcesses(this.Strategy.Session).BillingForOrderItems))
+            if (this.SalesOrderState.IsInProcess && object.Equals(this.Store.BillingProcess, new BillingProcesses(this.Strategy.Session).BillingForOrderItems))
             {
                 this.CanInvoice = false;
 
@@ -429,8 +429,8 @@ namespace Allors.Domain
                 this.Ship();
             }
 
-            if (this.SalesOrderState.InProcess
-                && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.InProcess)
+            if (this.SalesOrderState.IsInProcess
+                && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.IsInProcess)
                 && (this.TakenBy.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).SalesOrderPost
                     || (!this.ExistQuote && this.TakenBy.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend)))
             {
@@ -440,9 +440,9 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.SalesOrderState.InProcess
-                && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.InProcess)
-                && this.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderPost)
+            if (this.SalesOrderState.IsInProcess
+                && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.IsInProcess)
+                && this.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderAccept)
             {
                 foreach (SalesOrderItem item in this.ValidOrderItems.Where(v => ((SalesOrderItem)v).ExistSerialisedItem))
                 {
@@ -509,7 +509,7 @@ namespace Allors.Domain
 
         public void BaseApprove(OrderApprove method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).ReadyForPosting;
 
-        public void BasePost(SalesOrderPost method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Posted;
+        public void BasePost(SalesOrderPost method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).AwaitingAcceptance;
 
         public void BaseAccept(SalesOrderAccept method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
 
