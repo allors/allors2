@@ -18,6 +18,8 @@ namespace Allors.Workspace
         private AccessControl[] accessControls;
 
         private Permission[] deniedPermissions;
+        private string sortedAccessControlIds;
+        private string sortedDeniedPermissionIds;
 
         internal WorkspaceObject(Workspace workspace, long objectId, IClass @class)
         {
@@ -44,9 +46,25 @@ namespace Allors.Workspace
 
         public IWorkspaceRole[] Roles { get; }
 
-        public string SortedAccessControlIds { get; set; }
+        public string SortedAccessControlIds
+        {
+            get => this.sortedAccessControlIds;
+            set
+            {
+                this.sortedAccessControlIds = value;
+                this.accessControls = null;
+            }
+        }
 
-        public string SortedDeniedPermissionIds { get; set; }
+        public string SortedDeniedPermissionIds
+        {
+            get => this.sortedDeniedPermissionIds;
+            set
+            {
+                this.sortedDeniedPermissionIds = value;
+                this.accessControls = null;
+            }
+        }
 
         public long Version { get; private set; }
 
