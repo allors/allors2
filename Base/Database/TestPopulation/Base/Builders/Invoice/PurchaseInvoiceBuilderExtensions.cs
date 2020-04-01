@@ -2,7 +2,7 @@
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// <summary>Defines the MediaTests type.</summary>
+// <summary></summary>
 
 namespace Allors.Domain.TestPopulation
 {
@@ -16,8 +16,7 @@ namespace Allors.Domain.TestPopulation
 
             var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
-            var postalAddress = new PostalAddressBuilder(@this.Session).WithDefaults().Build();
-            var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
+            var purchaseInvoiceType = faker.Random.ListItem(@this.Session.Extent<PurchaseInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             @this.WithBilledFrom(internalOrganisation);
@@ -30,7 +29,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithBillToEndCustomerContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBillToEndCustomerContactPerson(customer.CurrentContacts.FirstOrDefault());
             @this.WithShipToEndCustomer(customer);
-            @this.WithShipToEndCustomerAddress(postalAddress);
+            @this.WithShipToEndCustomerAddress(customer.ShippingAddress);
             @this.WithShipToEndCustomerContactPerson(customer.CurrentContacts.FirstOrDefault());
             @this.WithShipToCustomer(customer);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());

@@ -1,0 +1,58 @@
+// <copyright file="PurchaseInvoiceItemBuilderExtensions.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
+// </copyright>
+// <summary></summary>
+
+namespace Allors.Domain.TestPopulation
+{
+    using System.Collections.Generic;
+    using System.Linq;
+
+    public static partial class PurchaseInvoiceItemBuilderExtensions
+    {
+        public static PurchaseInvoiceItemBuilder WithDefaults(this PurchaseInvoiceItemBuilder @this, Organisation internalOrganisation)
+        {
+            var faker = @this.Session.Faker();
+            var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
+            var serializedItem = new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
+            var invoiceItemTypes = @this.Session.Extent<InvoiceItemType>().ToList();
+            var otherInvoiceItemTypes = invoiceItemTypes.Except(new List<InvoiceItemType>
+            {
+                invoiceItemTypes.Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId) || v.UniqueId.Equals(InvoiceItemTypes.PartItemId)).FirstOrDefault(),
+            }).ToList();
+
+            @this.WithDescription(faker.Lorem.Sentences(2));
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
+            @this.WithInvoiceItemType(faker.Random.ListItem(otherInvoiceItemTypes));
+            @this.WithProduct(serializedProduct);
+            @this.WithSerialisedItem(serializedItem);
+            @this.WithMessage(faker.Lorem.Sentence());
+            @this.WithQuantity(1);
+            @this.WithAssignedUnitPrice(faker.Random.UInt());
+
+            return @this;
+        }
+
+        public static PurchaseInvoiceItemBuilder WithGSEDefaults(this PurchaseInvoiceItemBuilder @this, Organisation internalOrganisation)
+        {
+            var faker = @this.Session.Faker();
+            var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
+            var serializedItem = new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
+            var invoiceItemType = @this.Session.Extent<InvoiceItemType>().Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId)).FirstOrDefault();
+
+            @this.WithDescription(faker.Lorem.Sentences(2));
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
+            @this.WithInvoiceItemType(invoiceItemType);
+            @this.WithProduct(serializedProduct);
+            @this.WithSerialisedItem(serializedItem);
+            @this.WithMessage(faker.Lorem.Sentence());
+            @this.WithQuantity(1);
+            @this.WithAssignedUnitPrice(faker.Random.UInt());
+
+            return @this;
+        }
+    }
+}
