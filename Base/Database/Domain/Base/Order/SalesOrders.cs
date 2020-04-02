@@ -41,7 +41,7 @@ namespace Allors.Domain
             var ship = this.Meta.Ship;
             var invoice = this.Meta.Invoice;
 
-            config.Deny(this.ObjectType, provisional, reject, approve, hold, @continue, ship, invoice, post, accept);
+            config.Deny(this.ObjectType, provisional, reject, approve, @continue, ship, invoice, post, accept);
             config.Deny(this.ObjectType, requestsApproval, setReadyForPosting, hold, @continue, ship, invoice, post, accept);
             config.Deny(this.ObjectType, readyForPosting, setReadyForPosting, approve, complete, @continue, ship, invoice, accept);
             config.Deny(this.ObjectType, posted, setReadyForPosting, post, approve, @continue, complete, ship, invoice);

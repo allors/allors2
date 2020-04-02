@@ -84,7 +84,7 @@ namespace Allors
                 purchaseOrderNeedsApproval: true,
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
-                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).SalesOrderPost,
+                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).ProductQuoteSend,
                 serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip);
 
             var dipu = Organisations.CreateInternalOrganisation(
