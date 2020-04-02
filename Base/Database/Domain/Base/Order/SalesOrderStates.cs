@@ -48,7 +48,7 @@ namespace Allors.Domain
         {
             var merge = this.Cache.Merger().Action();
 
-            merge(ProvisionalId, v => v.Name = "Created");
+            merge(ProvisionalId, v => v.Name = "Provisional");
             merge(RequestsApprovalId, v => v.Name = "Requests Approval");
             merge(ReadyForPostingId, v => v.Name = "Ready For Posting");
             merge(CancelledId, v => v.Name = "Cancelled");
