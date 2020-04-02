@@ -298,23 +298,7 @@ namespace Allors
 
                 requestForQuote.AddRequestItem(requestItem);
 
-                var productQuote = new ProductQuoteBuilder(@this.Session())
-                    .WithIssuer(allors)
-                    .WithReceiver(b2BCustomer)
-                    .WithContactPerson(b2BCustomer.CurrentContacts.First)
-                    .WithFullfillContactMechanism(b2BCustomer.GeneralEmail)
-                    .Build();
-
-                var quoteItem = new QuoteItemBuilder(@this.Session())
-                    .WithSerialisedItem(serialisedItem)
-                    .WithProduct(serialisedItem.PartWhereSerialisedItem.NonUnifiedGoodsWherePart.FirstOrDefault())
-                    .WithComment($"Comment {i}")
-                    .WithQuantity(1)
-                    .WithAssignedUnitPrice(100)
-                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).ProductItem)
-                    .Build();
-
-                productQuote.AddQuoteItem(quoteItem);
+                var quote = new ProductQuoteBuilder(@this.Session()).WithSerializedDefaults(allors).Build();
 
                 var salesOrderItem1 = new SalesOrderItemBuilder(@this.Session())
                     .WithDescription("first item")

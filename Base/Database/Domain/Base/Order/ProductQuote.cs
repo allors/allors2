@@ -248,8 +248,8 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.QuoteState.IsSent
-                && (!this.ExistLastQuoteState || !this.LastQuoteState.IsSent)
+            if (this.QuoteState.IsAwaitingAcceptance
+                && (!this.ExistLastQuoteState || !this.LastQuoteState.IsAwaitingAcceptance)
                 && this.Issuer.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend)
             {
                 foreach (QuoteItem item in this.ValidQuoteItems.Where(v => v.ExistSerialisedItem))
@@ -410,7 +410,7 @@ namespace Allors.Domain
                 .Build();
 
             var quoteItems = this.ValidQuoteItems
-                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Sent))
+                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).AwaitingAcceptance))
                 .ToArray();
 
             foreach (var quoteItem in quoteItems)
