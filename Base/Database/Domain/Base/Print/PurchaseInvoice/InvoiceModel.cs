@@ -5,6 +5,8 @@
 
 namespace Allors.Domain.Print.PurchaseInvoiceModel
 {
+    using System.Globalization;
+
     public class InvoiceModel
     {
         public InvoiceModel(PurchaseInvoice invoice)
@@ -15,12 +17,12 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
             this.CustomerReference = invoice.CustomerReference;
 
             // TODO: Where does the currency come from?
-            var currency = "€";
-            this.SubTotal = invoice.TotalBasePrice.ToString("0.00") + " " + currency;
-            this.TotalExVat = invoice.TotalExVat.ToString("0.00") + " " + currency;
+            var currency = "â‚¬";
+            this.SubTotal = invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalExVat = invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.VatCharge = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = invoice.TotalVat.ToString("0.00") + " " + currency;
-            this.TotalIncVat = invoice.TotalIncVat.ToString("0.00") + " " + currency;
+            this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalIncVat = invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
         }
 
         public string Description { get; }
