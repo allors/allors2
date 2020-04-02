@@ -3,10 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-using System.Linq;
-
 namespace Allors.Domain.Print.SalesInvoiceModel
 {
+    using System.Globalization;
+    using System.Linq;
+
     public class InvoiceModel
     {
         public InvoiceModel(SalesInvoice invoice)
@@ -22,12 +23,12 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
             // TODO: Where does the currency come from?
             var currency = "€";
-            this.SubTotal = invoice.TotalBasePrice.ToString("0.00") + " " + currency;
-            this.Deposit = invoice.AmountPaid.ToString("0.00") + " " + currency;
-            this.TotalExVat = invoice.TotalExVat.ToString("0.00") + " " + currency;
+            this.SubTotal = invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.Deposit = invoice.AmountPaid.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalExVat = invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.VatCharge = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = invoice.TotalVat.ToString("0.00") + " " + currency;
-            this.TotalIncVat = invoice.TotalIncVat.ToString("0.00") + " " + currency;
+            this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalIncVat = invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
 
             this.PaymentNetDays = invoice.PaymentNetDays;
 
