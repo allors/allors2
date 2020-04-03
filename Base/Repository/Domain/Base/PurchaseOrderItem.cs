@@ -299,8 +299,6 @@ namespace Allors.Repository
 
         public void Reject() { }
 
-        public void Confirm() { }
-
         public void Approve() { }
 
         public void Delete() { }

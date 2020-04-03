@@ -12,7 +12,7 @@ namespace Allors.Domain
         public static readonly Guid DraftId = new Guid("84AD17A3-10F7-4FDB-B76A-41BDB1EDB0E6");
         public static readonly Guid SubmittedId = new Guid("E511EA2D-6EB9-428D-A982-B097938A8FF8");
         public static readonly Guid ApprovedId = new Guid("3335810C-9E26-4604-B272-D18B831E79E0");
-        public static readonly Guid AwaitingAcceptanceId = new Guid("44E4B56D-965C-4218-9AFC-27AD22041B25");
+        public static readonly Guid AwaitingAcceptanceId = new Guid("e0982b61-deb1-47cb-851b-c182f03326a1");
         public static readonly Guid AcceptedId = new Guid("6e56c9f1-7bea-4ced-a724-67e4221a5993");
         public static readonly Guid CancelledId = new Guid("6433F6F7-22D6-4142-8FC5-8941F4F0B6A8");
         public static readonly Guid RejectedId = new Guid("CA8E48EC-5EF7-4082-8347-648B41585485");

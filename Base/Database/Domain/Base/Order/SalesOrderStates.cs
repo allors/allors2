@@ -10,15 +10,15 @@ namespace Allors.Domain
     public partial class SalesOrderStates
     {
         internal static readonly Guid ProvisionalId = new Guid("29abc67d-4be1-4af3-b993-64e9e36c3e6b");
+        internal static readonly Guid ReadyForPostingId = new Guid("e8e7c70b-e920-4f70-96d4-a689518f602c");
         internal static readonly Guid RequestsApprovalId = new Guid("6b6f6e25-4da1-455d-9c9f-21f2d4316d66");
-        internal static readonly Guid ReadyForPostingId = new Guid("279B6128-314E-4767-A605-F1C34931EA84");
-        internal static readonly Guid CancelledId = new Guid("8AE3813D-7866-4e1c-AB70-EE695154F8F7");
-        internal static readonly Guid CompletedId = new Guid("81F80082-040C-405a-8C01-778868D57C75");
-        internal static readonly Guid RejectedId = new Guid("AE2AB1DC-0E5E-4061-924C-025AB84769C0");
-        internal static readonly Guid OnHoldId = new Guid("f625fb7e-893e-4f68-ab7b-2bc29a644e5b");
         internal static readonly Guid AwaitingAcceptanceId = new Guid("37d344e7-5962-425c-86a9-24bf1e098448");
         internal static readonly Guid InProcessId = new Guid("ddbb678e-9a66-4842-87fd-4e628cff0a75");
+        internal static readonly Guid OnHoldId = new Guid("f625fb7e-893e-4f68-ab7b-2bc29a644e5b");
+        internal static readonly Guid CompletedId = new Guid("81F80082-040C-405a-8C01-778868D57C75");
         internal static readonly Guid FinishedId = new Guid("DFE75006-81FD-424a-AF58-2528A657155D");
+        internal static readonly Guid CancelledId = new Guid("8AE3813D-7866-4e1c-AB70-EE695154F8F7");
+        internal static readonly Guid RejectedId = new Guid("AE2AB1DC-0E5E-4061-924C-025AB84769C0");
 
         private UniquelyIdentifiableSticky<SalesOrderState> cache;
 

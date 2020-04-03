@@ -293,8 +293,6 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseConfirm(OrderItemConfirm method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
-
         public void BaseApprove(OrderItemApprove method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).InProcess;
 
         public void BaseQuickReceive(PurchaseOrderItemQuickReceive method)
