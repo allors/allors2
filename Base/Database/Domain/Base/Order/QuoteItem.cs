@@ -7,6 +7,7 @@ using Resources;
 
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
 
     public partial class QuoteItem
@@ -104,6 +105,53 @@ namespace Allors.Domain
             if (!this.ExistUnitOfMeasure)
             {
                 this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
+            }
+
+            var quoted = this.SerialisedItem?.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft
+                        || v.QuoteItemState.IsSubmitted || v.QuoteItemState.IsApproved
+                        || v.QuoteItemState.IsAwaitingAcceptance || v.QuoteItemState.IsAccepted);
+
+            var ordered = this.SerialisedItem?.SalesOrderItemsWhereSerialisedItem.Any(v => v.SalesOrderItemState.IsProvisional
+                        || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
+                        || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
+
+            if (quoted.HasValue && quoted.Value)
+            {
+                this.SerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote;
+            }
+            else if (ordered.HasValue && ordered.Value)
+            {
+                this.SerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnSalesOrder;
+            }
+            else if (this.ExistSerialisedItem)
+            {
+                this.SerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Available;
+            }
+
+            // CurrentVersion is Previous Version until PostDerive
+            var previousSerialisedItem = this.CurrentVersion?.SerialisedItem;
+            if (previousSerialisedItem != null && previousSerialisedItem != this.SerialisedItem)
+            {
+                var previousItemQuoted = previousSerialisedItem?.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft
+                            || v.QuoteItemState.IsSubmitted || v.QuoteItemState.IsApproved
+                            || v.QuoteItemState.IsAwaitingAcceptance || v.QuoteItemState.IsAccepted);
+
+                var previousItemOrdered = previousSerialisedItem?.SalesOrderItemsWhereSerialisedItem.Any(v => v.SalesOrderItemState.IsProvisional
+                            || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
+                            || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
+
+                if (previousItemQuoted.HasValue && previousItemQuoted.Value)
+                {
+                    previousSerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote;
+                }
+                else if (previousItemOrdered.HasValue && previousItemOrdered.Value)
+                {
+                    previousSerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnSalesOrder;
+                }
+                else
+                {
+                    previousSerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Available;
+                }
             }
         }
 

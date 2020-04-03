@@ -25,8 +25,7 @@ namespace Tests.TelecommunicationsNumberTests
         public TelecommunicationsNumberCreateTest(TestFixture fixture)
             : base(fixture)
         {
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             this.editContactMechanism = new TelecommunicationsNumberBuilder(this.Session)
                 .WithCountryCode("0032")
@@ -49,8 +48,7 @@ namespace Tests.TelecommunicationsNumberTests
         {
             var before = new TelecommunicationsNumbers(this.Session).Extent().ToArray();
 
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             this.people.Table.DefaultAction(person);
             new PersonOverviewComponent(this.people.Driver).ContactmechanismOverviewPanel.Click().CreateTelecommunicationsNumber();

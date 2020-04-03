@@ -476,7 +476,7 @@ namespace Allors.Domain
 
             var item = new SalesOrderItemBuilder(this.Session).Build();
 
-            Assert.Equal(new SalesOrderItemStates(this.Session).Created, item.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.Session).Provisional, item.SalesOrderItemState);
         }
 
         [Fact]
@@ -1579,7 +1579,7 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            Assert.Equal(new SalesOrderItemStates(this.Session).Created, item.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.Session).Provisional, item.SalesOrderItemState);
             var acl = new AccessControlLists(this.Session.GetUser())[item];
             Assert.True(acl.CanExecute(M.SalesOrderItem.Delete));
             Assert.True(acl.CanExecute(M.SalesOrderItem.Cancel));

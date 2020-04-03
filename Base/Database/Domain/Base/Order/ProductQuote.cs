@@ -247,16 +247,6 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.QuoteState.IsAwaitingAcceptance
-                && (!this.ExistLastQuoteState || !this.LastQuoteState.IsAwaitingAcceptance)
-                && this.Issuer.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend)
-            {
-                foreach (QuoteItem item in this.ValidQuoteItems.Where(v => v.ExistSerialisedItem))
-                {
-                    item.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Assigned;
-                }
-            }
-
             this.DeriveWorkflow();
 
             this.Sync(this.Strategy.Session);

@@ -28,8 +28,7 @@ namespace Tests.PhoneCommunicationTests
         public OrganisationPhoneCommunicationEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var people = new Organisations(this.Session).Extent();
-            var organisation = people.First(v => v.DisplayName().Equals("Acme"));
+            var organisation = new Organisations(this.Session).Extent().First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();
@@ -64,8 +63,7 @@ namespace Tests.PhoneCommunicationTests
         [Fact]
         public void Edit()
         {
-            var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.DisplayName().Equals("Acme"));
+            var organisation = new Organisations(this.Session).Extent().First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();

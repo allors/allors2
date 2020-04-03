@@ -597,12 +597,6 @@ namespace Allors.Domain
             order.Continue();
             this.Session.Derive();
 
-            order.Post();
-            this.Session.Derive();
-
-            order.Accept();
-            this.Session.Derive();
-
             Assert.Equal(new SalesOrderStates(this.Session).InProcess, order.SalesOrderState);
             Assert.Equal(10, item.QuantityPendingShipment);
             Assert.Equal(0, item.QuantityRequestsShipping);
@@ -808,7 +802,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSalesOrderForCustomerExceedingCreditLimit_WhenOrderIsConfirmed_ThenOrderRequestsApproval()
+        public void GivenSalesOrderForCustomerExceedingCreditLimit_WhenOrderIsSetReadyForPosting_ThenOrderRequestsApproval()
         {
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
@@ -882,7 +876,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.SetReadyForPosting();
-
             this.Session.Derive();
 
             Assert.Equal(new SalesOrderStates(this.Session).RequestsApproval, order.SalesOrderState);
@@ -1067,14 +1060,14 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item4);
 
             this.Session.Derive();
-            order.SetReadyForPosting();
 
+            order.SetReadyForPosting();
             this.Session.Derive();
+
             order.Post();
+            this.Session.Derive();
 
             order.Accept();
-            this.Session.Derive();
-
             this.Session.Derive();
 
             Assert.Equal(3, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
@@ -2608,7 +2601,6 @@ namespace Allors.Domain
         [Fact]
         public void GivenSettingSerialisedItemSoldOnSalesOrderAccept_WhenAcceptingSalesOrder_ThenSerialisedItemStateIsChanged()
         {
-            this.InternalOrganisation.SerialisedItemAssignedOn = new SerialisedItemAssignedOns(this.Session).ProductQuoteSend;
             this.InternalOrganisation.SerialisedItemSoldOn = new SerialisedItemSoldOns(this.Session).SalesOrderAccept;
 
             this.Session.Derive();
@@ -2666,7 +2658,7 @@ namespace Allors.Domain
             salesOrder.SetReadyForPosting();
             this.Session.Derive();
 
-            Assert.NotEqual(new SerialisedItemStates(this.Session).Sold, serialisedItem.SerialisedItemState);
+            Assert.NotEqual(new SerialisedItemAvailabilities(this.Session).Sold, serialisedItem.SerialisedItemAvailability);
 
             salesOrder.Post();
             this.Session.Derive();
@@ -2674,7 +2666,7 @@ namespace Allors.Domain
             salesOrder.Accept();
             this.Session.Derive();
 
-            Assert.Equal(new SerialisedItemStates(this.Session).Sold, serialisedItem.SerialisedItemState);
+            Assert.Equal(new SerialisedItemAvailabilities(this.Session).Sold, serialisedItem.SerialisedItemAvailability);
         }
     }
 
@@ -2713,7 +2705,7 @@ namespace Allors.Domain
             Assert.True(acl.CanExecute(M.SalesOrder.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrder.Approve));
             Assert.False(acl.CanExecute(M.SalesOrder.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrder.Hold));
+            Assert.True(acl.CanExecute(M.SalesOrder.Hold));
             Assert.False(acl.CanExecute(M.SalesOrder.Continue));
         }
 
