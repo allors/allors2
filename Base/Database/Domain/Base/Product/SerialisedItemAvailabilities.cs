@@ -14,6 +14,7 @@ namespace Allors.Domain
         private static readonly Guid AvailableId = new Guid("c60f5741-a93f-48cc-b416-445aeb3fb166");
         private static readonly Guid OnQuoteId = new Guid("0c4c2389-fe08-432e-bce9-6ee5d9e86cb2");
         private static readonly Guid OnSalesOrderId = new Guid("3bc11515-7828-4b4b-947c-3b4793123b8d");
+        private static readonly Guid NotAvailableId = new Guid("/*c60f5741-a93f-48cc-b416-445aeb3fb166*/");
 
         private UniquelyIdentifiableSticky<SerialisedItemAvailability> cache;
 
@@ -26,6 +27,8 @@ namespace Allors.Domain
         public SerialisedItemAvailability OnQuote => this.Cache[OnQuoteId];
 
         public SerialisedItemAvailability OnSalesOrder => this.Cache[OnSalesOrderId];
+
+        public SerialisedItemAvailability NotAvailable => this.Cache[NotAvailableId];
 
         private UniquelyIdentifiableSticky<SerialisedItemAvailability> Cache =>
             this.cache ??= new UniquelyIdentifiableSticky<SerialisedItemAvailability>(this.Session);
@@ -57,6 +60,11 @@ namespace Allors.Domain
             merge(OnSalesOrderId, v =>
             {
                 v.Name = "On SalesOrder";
+                v.IsActive = true;
+            });
+            merge(NotAvailableId, v =>
+            {
+                v.Name = "Not Available";
                 v.IsActive = true;
             });
         }
