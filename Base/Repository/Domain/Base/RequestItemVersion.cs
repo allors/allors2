@@ -34,7 +34,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        [Required]
         [Workspace]
         public RequestItemState RequestItemState { get; set; }
 
