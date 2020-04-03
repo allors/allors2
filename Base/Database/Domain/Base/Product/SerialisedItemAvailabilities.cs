@@ -14,7 +14,7 @@ namespace Allors.Domain
         private static readonly Guid AvailableId = new Guid("c60f5741-a93f-48cc-b416-445aeb3fb166");
         private static readonly Guid OnQuoteId = new Guid("0c4c2389-fe08-432e-bce9-6ee5d9e86cb2");
         private static readonly Guid OnSalesOrderId = new Guid("3bc11515-7828-4b4b-947c-3b4793123b8d");
-        private static readonly Guid NotAvailableId = new Guid("/*c60f5741-a93f-48cc-b416-445aeb3fb166*/");
+        private static readonly Guid NotAvailableId = new Guid("74499ac5-cac9-4276-8b9e-e47f977104fd");
 
         private UniquelyIdentifiableSticky<SerialisedItemAvailability> cache;
 
