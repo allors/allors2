@@ -681,7 +681,7 @@ namespace Allors.Database.Adapters.Npgsql
             return versionByObjectId;
         }
 
-        internal void UpdateVersion(IEnumerable<Reference> references)
+        internal void UpdateVersion(IEnumerable<long> changed)
         {
             var command = this.updateVersions;
             if (command == null)
@@ -691,13 +691,13 @@ namespace Allors.Database.Adapters.Npgsql
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
                 // TODO: Remove dependency on State
-                command.AddObjectArrayParameter(references);
+                command.AddObjectArrayParameter(changed);
                 this.updateVersions = command;
             }
             else
             {
                 // TODO: Remove dependency on State
-                command.SetObjectArrayParameter(references);
+                command.SetObjectArrayParameter(changed);
             }
 
             command.ExecuteNonQuery();

@@ -521,7 +521,7 @@ namespace Allors.Database.Adapters.SqlClient
 
         internal Reference CreateObject(IClass @class)
         {
-            this.createObjectByClass = this.createObjectByClass ?? new Dictionary<IClass, Command>();
+            this.createObjectByClass ??= new Dictionary<IClass, Command>();
 
             if (!this.createObjectByClass.TryGetValue(@class, out var command))
             {
@@ -687,7 +687,7 @@ namespace Allors.Database.Adapters.SqlClient
             return versionByObjectId;
         }
 
-        internal void UpdateVersion(IEnumerable<Reference> references)
+        internal void UpdateVersion(IEnumerable<long> changed)
         {
             var command = this.updateVersions;
             if (command == null)
@@ -697,13 +697,13 @@ namespace Allors.Database.Adapters.SqlClient
                 command.CommandText = sql;
                 command.CommandType = CommandType.StoredProcedure;
                 // TODO: Remove dependency on State
-                command.AddObjectTableParameter(references);
+                command.AddObjectTableParameter(changed);
                 this.updateVersions = command;
             }
             else
             {
                 // TODO: Remove dependency on State
-                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateObjectTable(references);
+                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateObjectTable(changed);
             }
 
             command.ExecuteNonQuery();
