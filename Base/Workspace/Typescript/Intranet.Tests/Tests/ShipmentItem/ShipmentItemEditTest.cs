@@ -56,7 +56,7 @@ namespace Tests.ShipmentItemTests
             shipmentItemCreate
                 .Good.Select(serializedGood.Name)
                 .ShipmentItemSerialisedItem_1.Select(serializedGood.SerialisedItems.First)
-                .NewSerialisedItemState.Select(new SerialisedItemStates(this.Session).Sold)
+                .NextSerialisedItemAvailability.Select(new SerialisedItemAvailabilities(this.Session).Sold)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -127,7 +127,7 @@ namespace Tests.ShipmentItemTests
             shipmentItemCreate
                 .Good.Select(serializedGood.Name)
                 .ShipmentItemSerialisedItem_1.Select(serializedGood.SerialisedItems.First)
-                .NewSerialisedItemState.Select(new SerialisedItemStates(this.Session).Sold)
+                .NextSerialisedItemAvailability.Select(new SerialisedItemAvailabilities(this.Session).Sold)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();

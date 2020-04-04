@@ -431,26 +431,15 @@ namespace Allors.Domain
 
             if (this.SalesOrderState.IsInProcess
                 && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.IsInProcess)
-                && (this.TakenBy.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).SalesOrderPost
-                    || (!this.ExistQuote && this.TakenBy.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend)))
-            {
-                foreach (SalesOrderItem item in this.ValidOrderItems.Where(v => ((SalesOrderItem)v).ExistSerialisedItem))
-                {
-                    item.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Assigned;
-                }
-            }
-
-            if (this.SalesOrderState.IsInProcess
-                && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.IsInProcess)
                 && this.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderAccept)
             {
                 foreach (SalesOrderItem item in this.ValidOrderItems.Where(v => ((SalesOrderItem)v).ExistSerialisedItem))
                 {
-                    if (item.ExistNewSerialisedItemState)
+                    if (item.ExistNextSerialisedItemAvailability)
                     {
-                        item.SerialisedItem.SerialisedItemState = item.NewSerialisedItemState;
+                        item.SerialisedItem.SerialisedItemAvailability = item.NextSerialisedItemAvailability;
 
-                        if (item.NewSerialisedItemState.Equals(new SerialisedItemStates(this.Session()).Sold))
+                        if (item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
                         {
                             item.SerialisedItem.OwnedBy = this.ShipToCustomer;
                         }
@@ -586,9 +575,9 @@ namespace Allors.Domain
                                         shipmentItem.SerialisedItem = orderItem.SerialisedItem;
                                     }
 
-                                    if (orderItem.ExistNewSerialisedItemState)
+                                    if (orderItem.ExistNextSerialisedItemAvailability)
                                     {
-                                        shipmentItem.NewSerialisedItemState = orderItem.NewSerialisedItemState;
+                                        shipmentItem.NextSerialisedItemAvailability = orderItem.NextSerialisedItemAvailability;
                                     }
 
                                     if (orderItem.ExistReservedFromNonSerialisedInventoryItem)

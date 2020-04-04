@@ -181,11 +181,11 @@ namespace Allors.Domain
             {
                 foreach (ShipmentItem item in this.ShipmentItems.Where(v => v.ExistSerialisedItem))
                 {
-                    if (item.ExistNewSerialisedItemState)
+                    if (item.ExistNextSerialisedItemAvailability)
                     {
-                        item.SerialisedItem.SerialisedItemState = item.NewSerialisedItemState;
+                        item.SerialisedItem.SerialisedItemAvailability = item.NextSerialisedItemAvailability;
 
-                        if (item.NewSerialisedItemState.Equals(new SerialisedItemStates(this.Session()).Sold))
+                        if (item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
                         {
                             item.SerialisedItem.OwnedBy = this.ShipToParty;
                         }

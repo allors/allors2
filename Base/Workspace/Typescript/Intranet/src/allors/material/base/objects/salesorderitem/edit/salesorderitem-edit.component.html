@@ -58,7 +58,7 @@
         <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedVatRegime" [options]="vatRegimes"
                       display="Name" label="Item VAT regime"></a-mat-select>
         <a-mat-static class="col-md" [object]="orderItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
-        <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.NewSerialisedItemState" [options]="serialisedItemStates" display="Name" label="Next Item State"></a-mat-select>
+        <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.NextSerialisedItemAvailability" [options]="serialisedItemAvailabilities" display="Name" label="Next Item State"></a-mat-select>
       </div>
 
       <div class="row" *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem">

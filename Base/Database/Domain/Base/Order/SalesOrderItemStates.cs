@@ -55,7 +55,7 @@ namespace Allors.Domain
 
             merge(ProvisionalId, v =>
             {
-                v.Name = "Created";
+                v.Name = "Provisional";
             });
 
             merge(CancelledId, v =>

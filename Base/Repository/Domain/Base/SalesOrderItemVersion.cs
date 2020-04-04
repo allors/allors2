@@ -156,6 +156,16 @@ namespace Allors.Repository
         public OrderItem[] OrderedWithFeatures { get; set; }
 
         #region Allors
+        [Id("f7afe0e0-2460-41cd-8c1e-4146243370fb")]
+        [AssociationId("df12b1bf-b75a-4085-9b98-3cbec355b48d")]
+        [RoleId("7a32be32-cc45-48d2-aacd-c39b46391135")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public SerialisedItem SerialisedItem { get; set; }
+
+        #region Allors
         [Id("A442312C-71F5-4C96-ABF7-7C303A6E17F4")]
         [AssociationId("C046A01B-2478-4242-AADD-C1B955BC42DE")]
         [RoleId("82F2571B-D270-4028-A3B7-B8841158F561")]
@@ -193,7 +203,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public SerialisedItemState NewSerialisedItemState { get; set; }
+        public SerialisedItemAvailability NextSerialisedItemAvailability { get; set; }
 
         #region Allors
         [Id("17BB3EF6-6368-436D-A7C4-5AD55889E2B7")]

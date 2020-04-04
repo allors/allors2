@@ -4,8 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState, SerialisedItem, Part, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState } from '../../../../../domain';
+import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
+import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, SerialisedItemAvailability } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -30,13 +30,13 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   inventoryItems: InventoryItem[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  serialisedItemStates: SerialisedItemState[];
-  soldState: SerialisedItemState;
+  sold: SerialisedItemAvailability;
   invoiceItemTypes: InvoiceItemType[];
   productItemType: InvoiceItemType;
   part: Part;
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
+  serialisedItemAvailabilities: SerialisedItemAvailability[];
 
   draftRequestItem: RequestItemState;
   submittedRequestItem: RequestItemState;
@@ -112,7 +112,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
                 SalesOrderItemPaymentState: x,
                 ReservedFromNonSerialisedInventoryItem: x,
                 ReservedFromSerialisedInventoryItem: x,
-                NewSerialisedItemState: x,
+                NextSerialisedItemAvailability: x,
                 Product: x,
                 SerialisedItem: x,
                 QuoteItem: x,
@@ -136,7 +136,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
             }),
             pull.VatRate(),
             pull.VatRegime(),
-            pull.SerialisedItemState(),
+            pull.SerialisedItemAvailability(),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
@@ -182,8 +182,8 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
-        this.soldState = this.serialisedItemStates.find((v: SerialisedItemState) => v.UniqueId === 'feccf869-98d7-4e9c-8979-5611a43918bc');
+        this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
+        this.sold = this.serialisedItemAvailabilities.find((v: SerialisedItemAvailability) => v.UniqueId === '9bdc0a55-4e3c-4604-b054-2441a551aa1c');
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
 
@@ -348,7 +348,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
     this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
     this.orderItem.AssignedUnitPrice = this.serialisedItem.ExpectedSalesPrice;
     this.orderItem.QuantityOrdered = '1';
-    this.orderItem.NewSerialisedItemState = this.soldState;
+    this.orderItem.NextSerialisedItemAvailability = this.sold;
   }
 
   public update(): void {

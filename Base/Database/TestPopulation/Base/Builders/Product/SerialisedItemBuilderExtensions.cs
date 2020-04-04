@@ -17,14 +17,15 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            var state = faker.Random.ListItem(@this.Session.Extent<SerialisedItemState>());
+            var availability = faker.Random.ListItem(@this.Session.Extent<SerialisedItemAvailability>());
             var serviceDate = faker.Date.Past(refDate: @this.Session.Now());
             var acquiredDate = faker.Date.Past(refDate: serviceDate);
             var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
             var expectedSalesPrice = Convert.ToDecimal(faker.Commerce.Price(replacementValue + 1000, replacementValue + 10000));
 
             @this.WithName(faker.Lorem.Word());
-            @this.WithSerialisedItemState(state);
+            @this.WithSerialisedItemAvailability(availability);
+            @this.WithSerialisedItemState(faker.Random.ListItem(@this.Session.Extent<SerialisedItemState>()));
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithKeywords(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
@@ -48,12 +49,12 @@ namespace Allors.Domain.TestPopulation
             @this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithAvailableForSale(faker.Random.Bool());
 
-            if (state.IsSold)
+            if (availability.IsSold)
             {
                 @this.WithOwnedBy(new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false));
                 @this.WithReportingUnit(internalOrganisation);
             }
-            else if (state.IsInRent)
+            else if (availability.IsInRent)
             {
                 @this.WithRentedBy(new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false));
                 @this.WithRentalFromDate(faker.Date.Between(start: acquiredDate, end: acquiredDate.AddDays(10)));
@@ -87,7 +88,8 @@ namespace Allors.Domain.TestPopulation
             var expectedSalesPrice = Convert.ToDecimal(faker.Commerce.Price(replacementValue + 1000, replacementValue + 10000));
 
             @this.WithName(faker.Lorem.Word());
-            @this.WithSerialisedItemState(new SerialisedItemStates(@this.Session).Available);
+            @this.WithSerialisedItemAvailability(new SerialisedItemAvailabilities(@this.Session).Available);
+            @this.WithSerialisedItemState(faker.Random.ListItem(@this.Session.Extent<SerialisedItemState>()));
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithKeywords(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());

@@ -316,7 +316,7 @@ namespace Allors.Domain
 
             var item = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
 
-            Assert.Equal(new SalesOrderItemStates(this.Session).Created, item.SalesOrderItemState);
+            Assert.Equal(new SalesOrderItemStates(this.Session).Provisional, item.SalesOrderItemState);
         }
 
         [Fact]

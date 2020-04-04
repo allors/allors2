@@ -12,19 +12,20 @@ namespace Allors.Repository
     #region Allors
     [Id("11ADC7EF-323A-49AF-8EF4-ACAC19A923D3")]
     #endregion
-    public partial class SerialisedItemState : ObjectState
+    public partial class SerialisedItemState : Enumeration
     {
         #region inherited properties
+        public LocalisedText[] LocalisedNames { get; set; }
+
+        public string Name { get; set; }
+
+        public bool IsActive { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public Permission[] ObjectDeniedPermissions { get; set; }
-
-        public string Name { get; set; }
-
         public Guid UniqueId { get; set; }
-
         #endregion
 
         #region inherited methods
@@ -44,14 +45,5 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         #endregion
-
-        #region Allors
-        [Id("94381867-DF7D-4B84-8A69-2C0EF8F4401F")]
-        [AssociationId("634471AA-D309-4770-9948-9795EFC59549")]
-        [RoleId("AED799D5-857A-496C-AF91-EE37DCB15846")]
-        #endregion
-        [Indexed]
-        [Workspace]
-        public bool IsActive { get; set; }
     }
 }

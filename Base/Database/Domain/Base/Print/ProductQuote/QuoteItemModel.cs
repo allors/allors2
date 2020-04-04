@@ -56,7 +56,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
                 this.BrandName = unifiedGood.Brand?.Name;
                 this.ModelName = unifiedGood.Model?.Name;
             }
-            else
+            else if (nonUnifiedGood != null)
             {
                 this.BrandName = nonUnifiedGood?.Part?.Brand?.Name;
                 this.ModelName = nonUnifiedGood?.Part?.Model?.Name;

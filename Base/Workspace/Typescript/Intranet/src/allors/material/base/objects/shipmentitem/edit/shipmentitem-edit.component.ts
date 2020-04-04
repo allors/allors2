@@ -7,8 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
-import { NonUnifiedGood, InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SalesOrderItemShipmentState, SerialisedItemState, RequestItemState, RequestState, QuoteItemState, QuoteState, ShipmentItemState, ShipmentState, PurchaseOrderItem, PurchaseOrderState, NonUnifiedPart, SupplierOffering, ShipmentReceipt } from '../../../../../domain';
-import { PullRequest, IObject, Equals, Sort, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan } from '../../../../../framework';
+import { InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SerialisedItemState, RequestItemState, RequestState, QuoteItemState, QuoteState, ShipmentItemState, ShipmentState, PurchaseOrderItem, PurchaseOrderState, SupplierOffering, ShipmentReceipt, SerialisedItemAvailability } from '../../../../../domain';
+import { PullRequest, IObject, Equals, Sort, And, ContainedIn, Filter } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
@@ -28,8 +28,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   serialisedItems: SerialisedItem[] = [];
-  serialisedItemStates: SerialisedItemState[];
-  soldState: SerialisedItemState;
+  sold: SerialisedItemAvailability;
   orderShipment: OrderShipment;
   shipmentReceipt: ShipmentReceipt;
   salesOrderItems: SalesOrderItem[] = [];
@@ -37,6 +36,11 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   selectedPurchaseOrderItem: PurchaseOrderItem;
   purchaseOrderItems: PurchaseOrderItem[] = [];
   supplierOfferings: SupplierOffering[];
+  isCustomerShipment: boolean;
+  isPurchaseShipment: boolean;
+  isSerialized: boolean;
+  supplierPartsFilter: SearchFactory;
+  serialisedItemAvailabilities: SerialisedItemAvailability[];
 
   draftRequestItem: RequestItemState;
   submittedRequestItem: RequestItemState;
@@ -73,14 +77,10 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   pickedShipment: ShipmentState;
   packedShipment: ShipmentState;
   onholdShipment: ShipmentState;
-  isCustomerShipment: boolean;
-  isPurchaseShipment: boolean;
 
   private previousGood;
   private previousPart;
   private subscription: Subscription;
-  isSerialized: boolean;
-  supplierPartsFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
@@ -169,7 +169,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
                 }
               }
             }),
-            pull.SerialisedItemState(),
+            pull.SerialisedItemAvailability(),
             pull.SerialisedInventoryItemState(
               {
                 predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
@@ -198,15 +198,14 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        const now = moment.utc();
 
         this.shipmentItem = loaded.objects.ShipmentItem as ShipmentItem;
         this.shipment = loaded.objects.Shipment as Shipment || this.shipmentItem.SyncedShipment;
         this.isCustomerShipment = this.shipment.objectType === this.metaService.m.CustomerShipment;
         this.isPurchaseShipment = this.shipment.objectType === this.metaService.m.PurchaseShipment;
 
-        this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
-        this.soldState = this.serialisedItemStates.find((v: SerialisedItemState) => v.UniqueId === 'feccf869-98d7-4e9c-8979-5611a43918bc');
+        this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
+        this.sold = this.serialisedItemAvailabilities.find((v: SerialisedItemAvailability) => v.UniqueId === '9bdc0a55-4e3c-4604-b054-2441a551aa1c');
 
         const salesOrderStates = loaded.collections.SalesOrderStates as SalesOrderState[];
         const inProcess = salesOrderStates.find((v) => v.UniqueId === 'ddbb678e-9a66-4842-87fd-4e628cff0a75');
