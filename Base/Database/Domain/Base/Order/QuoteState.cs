@@ -11,9 +11,11 @@ namespace Allors.Domain
 
         public bool IsApproved => Equals(this.UniqueId, QuoteStates.ApprovedId);
 
-        public bool IsOrdered => Equals(this.UniqueId, QuoteStates.OrderedId);
+        public bool IsAwaitingAcceptance => Equals(this.UniqueId, QuoteStates.AwaitingAcceptanceId);
 
-        public bool IsSent => Equals(this.UniqueId, QuoteStates.AwaitingAcceptanceId);
+        public bool IsAccepted => Equals(this.UniqueId, QuoteStates.AcceptedId);
+
+        public bool IsOrdered => Equals(this.UniqueId, QuoteStates.OrderedId);
 
         public bool IsCancelled => Equals(this.UniqueId, QuoteStates.CancelledId);
 

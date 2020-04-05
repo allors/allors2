@@ -7,17 +7,19 @@ namespace Allors.Domain
 {
     public partial class QuoteItemState
     {
-        public bool IsApproved => Equals(this.UniqueId, QuoteItemStates.ApprovedId);
-
         public bool IsCancelled => Equals(this.UniqueId, QuoteItemStates.CancelledId);
 
         public bool IsDraft => Equals(this.UniqueId, QuoteItemStates.DraftId);
 
+        public bool IsApproved => Equals(this.UniqueId, QuoteItemStates.ApprovedId);
+
+        public bool IsAwaitingAcceptance => Equals(this.UniqueId, QuoteItemStates.AwaitingAcceptanceId);
+
+        public bool IsAccepted => Equals(this.UniqueId, QuoteItemStates.AcceptedId);
+
         public bool IsOrdered => Equals(this.UniqueId, QuoteItemStates.OrderedId);
 
         public bool IsRejected => Equals(this.UniqueId, QuoteItemStates.RejectedId);
-
-        public bool IsSent => Equals(this.UniqueId, QuoteItemStates.SentId);
 
         public bool IsSubmitted => Equals(this.UniqueId, QuoteItemStates.SubmittedId);
     }

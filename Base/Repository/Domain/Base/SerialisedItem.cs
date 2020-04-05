@@ -56,38 +56,6 @@ namespace Allors.Repository
 
         #endregion InheritedProperties
 
-        #region SerialisedItemState
-        #region Allors
-        [Id("B611C1C0-6AB4-4082-B464-0494F3DE2051")]
-        [AssociationId("C6DBB08B-9547-4235-9649-55411E6D0196")]
-        [RoleId("2829D2FE-1A27-490C-9F0B-5BA476C21FDC")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        public SerialisedItemState PreviousSerialisedItemState { get; set; }
-
-        #region Allors
-        [Id("424D5D46-A253-4E32-BFED-8160D20E3BBE")]
-        [AssociationId("F35DABA1-8726-4E25-BA1D-95D775B1E3F4")]
-        [RoleId("903C3573-8176-4C8F-83FE-4456DF42928D")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        public SerialisedItemState LastSerialisedItemState { get; set; }
-
-        #region Allors
-        [Id("9C9A7694-4E41-46D7-B33C-14A703370A5B")]
-        [AssociationId("FBF63B46-AD14-43EA-AD29-31652901BE89")]
-        [RoleId("106E5048-AC33-427C-8B9E-462A9A998879")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        public SerialisedItemState SerialisedItemState { get; set; }
-        #endregion
-
         #region Versioning
         #region Allors
         [Id("414BDA46-B49A-4AB4-A9E2-02842414D572")]
@@ -109,6 +77,26 @@ namespace Allors.Repository
         [Workspace]
         public SerialisedItemVersion[] AllVersions { get; set; }
         #endregion
+
+        #region Allors
+        [Id("9C9A7694-4E41-46D7-B33C-14A703370A5B")]
+        [AssociationId("FBF63B46-AD14-43EA-AD29-31652901BE89")]
+        [RoleId("106E5048-AC33-427C-8B9E-462A9A998879")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItemState SerialisedItemState { get; set; }
+
+        #region Allors
+        [Id("330381e1-f1de-4f44-9c08-0417c2df3c0d")]
+        [AssociationId("ce2cab1a-e89c-4a00-8647-1dcf74ed22e8")]
+        [RoleId("c543b283-aac2-4d50-b604-89bbc491fbaa")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItemAvailability SerialisedItemAvailability { get; set; }
 
         #region Allors
         [Id("B6DD4F80-EE97-446E-9779-610FF07F13B2")]

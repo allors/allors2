@@ -6,6 +6,7 @@
 namespace Allors.Domain.Print.PurchaseInvoiceModel
 {
     using System.Linq;
+    using System.Globalization;
 
     public class InvoiceItemModel
     {
@@ -15,9 +16,9 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
             this.Description = item.ExistPart ? item.Description : string.Empty;
             this.Quantity = item.Quantity;
             // TODO: Where does the currency come from?
-            var currency = "€";
-            this.Price = item.UnitPrice.ToString("0.00") + " " + currency;
-            this.Amount = item.TotalExVat.ToString("0.00") + " " + currency;
+            var currency = "â‚¬";
+            this.Price = item.UnitPrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.Amount = item.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.Comment = item.Comment;
             this.SupplierProductId = item.Part?.SupplierOfferingsWherePart?.FirstOrDefault(v => v.Supplier.Equals(item.PurchaseInvoiceWherePurchaseInvoiceItem.BilledFrom))?.SupplierProductId;
         }

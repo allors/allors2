@@ -321,7 +321,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public SerialisedItemState NewSerialisedItemState { get; set; }
+        public SerialisedItemAvailability NextSerialisedItemAvailability { get; set; }
 
         #region Allors
         [Id("B9E742C3-F497-4663-9874-EB49DCB45BC0")]
@@ -529,8 +529,6 @@ namespace Allors.Repository
 
         public void Reject() { }
 
-        public void Confirm() { }
-
         public void Approve() { }
 
         public void Delete() { }
@@ -538,17 +536,5 @@ namespace Allors.Repository
         public void DelegateAccess() { }
 
         #endregion
-
-        #region Allors
-        [Id("323F3F47-9577-47C6-A77F-DC11CBAEA91C")]
-        #endregion
-        [Workspace]
-        public void Continue() { }
-
-        #region Allors
-        [Id("C7995893-DEA8-4619-80DC-AF47A42872CE")]
-        #endregion
-        [Workspace]
-        public void Send() { }
     }
 }

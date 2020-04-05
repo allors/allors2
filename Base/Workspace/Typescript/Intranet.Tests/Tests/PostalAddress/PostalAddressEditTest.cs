@@ -26,8 +26,7 @@ namespace Tests.PostalAddressTests
         public PostalAddressEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             this.editContactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -51,8 +50,7 @@ namespace Tests.PostalAddressTests
         {
             var country = new Countries(this.Session).FindBy(M.Country.IsoCode, "NL");
 
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             var before = new PostalAddresses(this.Session).Extent().ToArray();
 

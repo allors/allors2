@@ -53,6 +53,12 @@ namespace Allors.Domain
             SetItemState(@this);
         }
 
+        public static void BaseAccept(this Quote @this, QuoteAccept method)
+        {
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Accepted;
+            SetItemState(@this);
+        }
+
         public static void BaseReopen(this Quote @this, QuoteReopen method)
         {
             @this.QuoteState = new QuoteStates(@this.Strategy.Session).Created;
@@ -102,11 +108,19 @@ namespace Allors.Domain
                     }
                 }
 
-                if (@this.QuoteState.IsSent)
+                if (@this.QuoteState.IsAwaitingAcceptance)
                 {
                     if (Equals(quoteItem.QuoteItemState, quoteItemStates.Approved))
                     {
-                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Sent;
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).AwaitingAcceptance;
+                    }
+                }
+
+                if (@this.QuoteState.IsAccepted)
+                {
+                    if (Equals(quoteItem.QuoteItemState, quoteItemStates.AwaitingAcceptance))
+                    {
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Accepted;
                     }
                 }
             }

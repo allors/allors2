@@ -63,28 +63,7 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var session = this.Session();
 
-            // SalesOrderItem Derivations and Validations
-            foreach (QuoteItem quoteItem in this.QuoteItems)
-            {
-                var isSubTotalItem = quoteItem.ExistInvoiceItemType && (quoteItem.InvoiceItemType.IsProductItem || quoteItem.InvoiceItemType.IsPartItem);
-                if (isSubTotalItem)
-                {
-                    if (quoteItem.Quantity == 0)
-                    {
-                        derivation.Validation.AddError(quoteItem, M.QuoteItem.Quantity, "Quantity is Required");
-                    }
-                }
-                else
-                {
-                    if (quoteItem.UnitPrice == 0)
-                    {
-                        derivation.Validation.AddError(quoteItem, M.QuoteItem.UnitPrice, "Price is Required");
-                    }
-                }
-            }
-
-            var validQuoteItems = this.QuoteItems.Where(v => v.IsValid).ToArray();
-            this.ValidQuoteItems = validQuoteItems;
+            this.ValidQuoteItems = this.QuoteItems.Where(v => v.IsValid).ToArray();
 
             var currentPriceComponents = new PriceComponents(session).CurrentPriceComponents(this.IssueDate);
 
@@ -135,6 +114,26 @@ namespace Allors.Domain
                 }
 
                 this.CalculatePrices(derivation, quoteItem, currentPriceComponents, quantityOrdered, totalBasePrice);
+            }
+
+            // SalesOrderItem Derivations and Validations
+            foreach (QuoteItem quoteItem in this.ValidQuoteItems)
+            {
+                var isSubTotalItem = quoteItem.ExistInvoiceItemType && (quoteItem.InvoiceItemType.IsProductItem || quoteItem.InvoiceItemType.IsPartItem);
+                if (isSubTotalItem)
+                {
+                    if (quoteItem.Quantity == 0)
+                    {
+                        derivation.Validation.AddError(quoteItem, M.QuoteItem.Quantity, "Quantity is Required");
+                    }
+                }
+                else
+                {
+                    if (quoteItem.UnitPrice == 0)
+                    {
+                        derivation.Validation.AddError(quoteItem, M.QuoteItem.UnitPrice, "Price is Required");
+                    }
+                }
             }
 
             // Calculate Totals
@@ -245,16 +244,6 @@ namespace Allors.Domain
                         totalUnitBasePrice += item1.UnitBasePrice;
                         totalListPrice += item1.UnitPrice;
                     }
-                }
-            }
-
-            if (this.QuoteState.IsSent
-                && (!this.ExistLastQuoteState || !this.LastQuoteState.IsSent)
-                && this.Issuer.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend)
-            {
-                foreach (QuoteItem item in this.ValidQuoteItems.Where(v => v.ExistSerialisedItem))
-                {
-                    item.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Assigned;
                 }
             }
 
@@ -410,7 +399,7 @@ namespace Allors.Domain
                 .Build();
 
             var quoteItems = this.ValidQuoteItems
-                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Sent))
+                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).AwaitingAcceptance))
                 .ToArray();
 
             foreach (var quoteItem in quoteItems)

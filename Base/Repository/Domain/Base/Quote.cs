@@ -410,6 +410,12 @@ namespace Allors.Repository
         void Send();
 
         #region Allors
+        [Id("90c9c005-3842-44f5-877c-f601523a888f")]
+        #endregion
+        [Workspace]
+        void Accept();
+
+        #region Allors
         [Id("39694549-7173-4904-8AE0-DA7390F595A5")]
         #endregion
         [Workspace]

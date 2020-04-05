@@ -425,7 +425,7 @@ namespace Allors.Domain
 
                             serialisedItem.OwnedBy = this.OrderedBy;
                             serialisedItem.ReportingUnit = this.OrderedBy;
-                            serialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session()).Available;
+                            serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session()).Available;
 
                             var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
                                 .FirstOrDefault(v => v.SerialisedItem.Equals(serialisedItem) && v.Facility.Equals(this.Facility));

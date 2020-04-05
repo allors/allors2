@@ -166,6 +166,8 @@ namespace Allors.Repository
 
         public void Send() { }
 
+        public void Accept() { }
+
         public void Reject() { }
 
         public void Cancel() { }

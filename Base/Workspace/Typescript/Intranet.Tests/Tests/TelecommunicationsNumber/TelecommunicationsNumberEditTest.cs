@@ -25,8 +25,7 @@ namespace Tests.TelecommunicationsNumberTests
         public TelecommunicationsNumberEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             this.editContactMechanism = new TelecommunicationsNumberBuilder(this.Session)
                 .WithCountryCode("0032")
@@ -47,8 +46,7 @@ namespace Tests.TelecommunicationsNumberTests
         [Fact]
         public void Edit()
         {
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             var before = new TelecommunicationsNumbers(this.Session).Extent().ToArray();
 

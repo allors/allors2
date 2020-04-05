@@ -11,9 +11,12 @@ import { ObjectData, ObjectService } from '../../../../../../material/core/servi
 
 interface Row extends TableRow {
   object: QuoteItem;
+  itemType: string;
   item: string;
   state: string;
   quantity: string;
+  price: string;
+  totalAmount: string;
   lastModifiedDate: string;
 }
 
@@ -81,9 +84,12 @@ export class QuoteItemOverviewPanelComponent extends TestScope {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'item', sort },
-        { name: 'state', sort },
-        { name: 'quantity', sort },
+        { name: 'itemType' },
+        { name: 'item' },
+        { name: 'state' },
+        { name: 'quantity'},
+        { name: 'price'},
+        { name: 'totalAmount'},
         { name: 'lastModifiedDate', sort },
       ],
       actions: [
@@ -115,6 +121,7 @@ export class QuoteItemOverviewPanelComponent extends TestScope {
               include: {
                 Product: x,
                 SerialisedItem: x,
+                InvoiceItemType: x,
               }
             }
           }
@@ -134,9 +141,12 @@ export class QuoteItemOverviewPanelComponent extends TestScope {
       this.table.data = this.quoteItems.map((v) => {
         return {
           object: v,
+          itemType: v.InvoiceItemType.Name,
           item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
           state: `${v.QuoteItemState && v.QuoteItemState.Name}`,
           quantity: v.Quantity,
+          price: v.UnitPrice,
+          totalAmount: v.TotalExVat,
           lastModifiedDate: moment(v.LastModifiedDate).fromNow()
         } as Row;
       });

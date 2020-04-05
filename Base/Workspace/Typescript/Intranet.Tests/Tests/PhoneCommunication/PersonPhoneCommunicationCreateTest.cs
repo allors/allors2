@@ -28,8 +28,7 @@ namespace Tests.PhoneCommunicationTests
         public PersonPhoneCommunicationCreateTest(TestFixture fixture)
             : base(fixture)
         {
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.DisplayName().Equals("Jane Doe"));
+            var person = new People(this.Session).Extent().First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();
@@ -65,8 +64,7 @@ namespace Tests.PhoneCommunicationTests
 
             var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.DisplayName().Equals("Jane Doe"));
+            var person = new People(this.Session).Extent().First;
 
             this.people.Table.DefaultAction(person);
             var communicationEventOverview = new PersonOverviewComponent(this.people.Driver).CommunicationeventOverviewPanel.Click();

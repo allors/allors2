@@ -11,7 +11,8 @@ namespace Allors.Domain
     {
         public static readonly Guid CreatedId = new Guid("B1565CD4-D01A-4623-BF19-8C816DF96AA6");
         public static readonly Guid ApprovedId = new Guid("675D6899-1EBB-4FDB-9DC9-B8AEF0A135D2");
-        public static readonly Guid AwaitingAcceptanceId = new Guid("DB2C5513-CC37-40DB-8B8F-64D9FC9D7C7D");
+        public static readonly Guid AwaitingAcceptanceId = new Guid("324beb70-937f-4c4d-a7e9-2e3063c88a62");
+        public static readonly Guid AcceptedId = new Guid("3943f87c-f098-49c8-89ba-12047c826777");
         public static readonly Guid OrderedId = new Guid("FE9A6F81-9935-466F-9F71-A537AF046019");
         public static readonly Guid CancelledId = new Guid("ED013479-08AF-4D02-96A7-3FC8B7BE37EF");
         public static readonly Guid RejectedId = new Guid("C897C8E8-2C01-438B-B4C9-B71AD8CCB7C4");
@@ -23,6 +24,8 @@ namespace Allors.Domain
         public QuoteState Approved => this.Cache[ApprovedId];
 
         public QuoteState AwaitingAcceptance => this.Cache[AwaitingAcceptanceId];
+
+        public QuoteState Accepted => this.Cache[AcceptedId];
 
         public QuoteState Ordered => this.Cache[OrderedId];
 
@@ -39,6 +42,7 @@ namespace Allors.Domain
             merge(CreatedId, v => v.Name = "Created");
             merge(ApprovedId, v => v.Name = "Approved");
             merge(AwaitingAcceptanceId, v => v.Name = "Awaiting customer acceptance");
+            merge(AcceptedId, v => v.Name = "Accepted");
             merge(OrderedId, v => v.Name = "Ordered");
             merge(CancelledId, v => v.Name = "Cancelled");
             merge(RejectedId, v => v.Name = "Rejected");

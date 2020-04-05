@@ -84,7 +84,6 @@ namespace Allors
                 purchaseOrderNeedsApproval: true,
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
-                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).SalesOrderPost,
                 serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip);
 
             var dipu = Organisations.CreateInternalOrganisation(
@@ -138,7 +137,6 @@ namespace Allors
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null,
-                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).SalesOrderPost,
                 serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip);
 
             // Give Administrator access
@@ -298,23 +296,7 @@ namespace Allors
 
                 requestForQuote.AddRequestItem(requestItem);
 
-                var productQuote = new ProductQuoteBuilder(@this.Session())
-                    .WithIssuer(allors)
-                    .WithReceiver(b2BCustomer)
-                    .WithContactPerson(b2BCustomer.CurrentContacts.First)
-                    .WithFullfillContactMechanism(b2BCustomer.GeneralEmail)
-                    .Build();
-
-                var quoteItem = new QuoteItemBuilder(@this.Session())
-                    .WithSerialisedItem(serialisedItem)
-                    .WithProduct(serialisedItem.PartWhereSerialisedItem.NonUnifiedGoodsWherePart.FirstOrDefault())
-                    .WithComment($"Comment {i}")
-                    .WithQuantity(1)
-                    .WithAssignedUnitPrice(100)
-                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).ProductItem)
-                    .Build();
-
-                productQuote.AddQuoteItem(quoteItem);
+                var quote = new ProductQuoteBuilder(@this.Session()).WithSerializedDefaults(allors).Build();
 
                 var salesOrderItem1 = new SalesOrderItemBuilder(@this.Session())
                     .WithDescription("first item")
@@ -468,7 +450,7 @@ line2")
 
             var item = new SerialisedItemBuilder(@this.Session())
                 .WithSerialNumber("112")
-                .WithSerialisedItemState(new SerialisedItemStates(@this.Session()).Sold)
+                .WithSerialisedItemAvailability(new SerialisedItemAvailabilities(@this.Session()).Sold)
                 .WithAvailableForSale(false)
                 .WithOwnedBy(anOrganisation)
                 .Build();

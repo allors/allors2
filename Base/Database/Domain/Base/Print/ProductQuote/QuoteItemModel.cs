@@ -42,7 +42,11 @@ namespace Allors.Domain.Print.ProductQuoteModel
             this.TotalAmount = item.TotalExVat.ToString("0.00") + " " + currency;
 
             this.Comment = item.Comment;
-            this.ProductCategory = string.Join(", ", product.ProductCategoriesWhereProduct.Select(v => v.Name));
+
+            if (product != null)
+            {
+                this.ProductCategory = string.Join(", ", product.ProductCategoriesWhereProduct.Select(v => v.Name));
+            }
 
             var unifiedGood = product as UnifiedGood;
             var nonUnifiedGood = product as NonUnifiedGood;
@@ -52,35 +56,13 @@ namespace Allors.Domain.Print.ProductQuoteModel
                 this.BrandName = unifiedGood.Brand?.Name;
                 this.ModelName = unifiedGood.Model?.Name;
             }
-            else
+            else if (nonUnifiedGood != null)
             {
-                this.BrandName = nonUnifiedGood.Part?.Brand?.Name;
-                this.ModelName = nonUnifiedGood.Part?.Model?.Name;
+                this.BrandName = nonUnifiedGood?.Part?.Brand?.Name;
+                this.ModelName = nonUnifiedGood?.Part?.Model?.Name;
             }
 
-            if (serialisedItem == null)
-            {
-                this.IdentificationNumber = product.ProductIdentifications.FirstOrDefault(v => v.ProductIdentificationType.Equals(new ProductIdentificationTypes(session).Good)).Identification;
-
-                if (product.ExistPrimaryPhoto)
-                {
-                    this.PrimaryPhotoName = $"{item.Id}_primaryPhoto";
-                    imageByImageName.Add(this.PrimaryPhotoName, product.PrimaryPhoto.MediaContent.Data);
-                }
-
-                if (product.Photos.Count > 0)
-                {
-                    this.SecondaryPhotoName1 = $"{item.Id}_secondaryPhoto1";
-                    imageByImageName.Add(this.SecondaryPhotoName1, product.Photos[0].MediaContent.Data);
-                }
-
-                if (product.Photos.Count > 1)
-                {
-                    this.SecondaryPhotoName2 = $"{item.Id}_secondaryPhoto2";
-                    imageByImageName.Add(this.SecondaryPhotoName2, product.Photos[0].MediaContent.Data);
-                }
-            }
-            else
+            if (serialisedItem != null)
             {
                 this.IdentificationNumber = serialisedItem.ItemNumber;
                 this.Year = serialisedItem.ManufacturingYear.ToString();
@@ -108,6 +90,28 @@ namespace Allors.Domain.Print.ProductQuoteModel
                 {
                     this.SecondaryPhotoName2 = $"{item.Id}_secondaryPhoto2";
                     imageByImageName.Add(this.SecondaryPhotoName2, serialisedItem.AdditionalPhotos[1].MediaContent.Data);
+                }
+            }
+            else if (product != null)
+            {
+                this.IdentificationNumber = product.ProductIdentifications.FirstOrDefault(v => v.ProductIdentificationType.Equals(new ProductIdentificationTypes(session).Good)).Identification;
+
+                if (product.ExistPrimaryPhoto)
+                {
+                    this.PrimaryPhotoName = $"{item.Id}_primaryPhoto";
+                    imageByImageName.Add(this.PrimaryPhotoName, product.PrimaryPhoto.MediaContent.Data);
+                }
+
+                if (product.Photos.Count > 0)
+                {
+                    this.SecondaryPhotoName1 = $"{item.Id}_secondaryPhoto1";
+                    imageByImageName.Add(this.SecondaryPhotoName1, product.Photos[0].MediaContent.Data);
+                }
+
+                if (product.Photos.Count > 1)
+                {
+                    this.SecondaryPhotoName2 = $"{item.Id}_secondaryPhoto2";
+                    imageByImageName.Add(this.SecondaryPhotoName2, product.Photos[0].MediaContent.Data);
                 }
             }
         }

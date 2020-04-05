@@ -13,6 +13,8 @@ namespace Allors.Domain
             var cancelled = new QuoteItemStates(this.Session).Cancelled;
             var submitted = new QuoteItemStates(this.Session).Submitted;
             var approved = new QuoteItemStates(this.Session).Approved;
+            var awaitingAcceptance = new QuoteItemStates(this.Session).AwaitingAcceptance;
+            var accepted = new QuoteItemStates(this.Session).Accepted;
             var ordered = new QuoteItemStates(this.Session).Ordered;
             var rejected = new QuoteItemStates(this.Session).Rejected;
 
@@ -21,11 +23,15 @@ namespace Allors.Domain
             var delete = this.Meta.Delete;
 
             config.Deny(this.ObjectType, submitted, submit);
+            config.Deny(this.ObjectType, awaitingAcceptance, submit, delete);
+            config.Deny(this.ObjectType, accepted, cancel, submit, delete);
             config.Deny(this.ObjectType, cancelled, cancel, submit);
             config.Deny(this.ObjectType, rejected, cancel, submit);
             config.Deny(this.ObjectType, ordered, cancel, submit, delete);
 
             config.Deny(this.ObjectType, cancelled, Operations.Write);
+            config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
+            config.Deny(this.ObjectType, accepted, Operations.Write);
             config.Deny(this.ObjectType, ordered, Operations.Write);
             config.Deny(this.ObjectType, approved, Operations.Write);
         }

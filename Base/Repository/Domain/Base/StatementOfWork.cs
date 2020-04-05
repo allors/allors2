@@ -156,6 +156,8 @@ namespace Allors.Repository
 
         public void Send() { }
 
+        public void Accept() { }
+
         public void Reopen() { }
 
         public void Approve() { }

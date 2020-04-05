@@ -10,20 +10,26 @@ namespace Allors.Domain
 
     public partial class SalesOrderItemStates
     {
-        internal static readonly Guid CreatedId = new Guid("5B0993B5-5784-4e8d-B1AD-93AFFAC9A913");
-        internal static readonly Guid ReadyForPostingId = new Guid("217468B3-E088-4AF0-AA78-1B2FCDF69318");
+        internal static readonly Guid ProvisionalId = new Guid("5B0993B5-5784-4e8d-B1AD-93AFFAC9A913");
+        internal static readonly Guid ReadyForPostingId = new Guid("6e4f9535-a7ce-483f-9fbd-c9fd331d355e");
+        internal static readonly Guid RequestsApprovalId = new Guid("8d3a4a0a-ed27-4478-baff-ece591068712");
+        internal static readonly Guid AwaitingAcceptanceId = new Guid("d3965e9b-764d-4787-87b4-82cb2acb0878");
+        internal static readonly Guid OnHoldId = new Guid("3b185d51-af4a-441e-be0d-f91cfcbdb5d8");
+        internal static readonly Guid InProcessId = new Guid("e08401f7-1deb-4b27-b0c5-8f034bffedb5");
         internal static readonly Guid CancelledId = new Guid("8B6FD903-B4A6-4360-A63C-9EBDFB7243AA");
         internal static readonly Guid CompletedId = new Guid("AC46B106-D266-46d7-BFD7-4196394A5AE0");
         internal static readonly Guid RejectedId = new Guid("F39F2F64-49A8-4a70-ACBC-B7F581F31EEF");
-        internal static readonly Guid OnHoldId = new Guid("3B185D51-AF4A-441e-BE0D-F91CFCBDB5C8");
-        internal static readonly Guid InProcessId = new Guid("E08401F7-1DEB-4b27-B0C5-8F034BFFEBD5");
         internal static readonly Guid FinishedId = new Guid("33C0ED0C-FDFE-45ff-A008-7A638094A94A");
 
         private UniquelyIdentifiableSticky<SalesOrderItemState> cache;
 
-        public SalesOrderItemState Created => this.Cache[CreatedId];
+        public SalesOrderItemState Provisional => this.Cache[ProvisionalId];
 
         public SalesOrderItemState ReadyForPosting => this.Cache[ReadyForPostingId];
+
+        public SalesOrderItemState RequestsApproval => this.Cache[RequestsApprovalId];
+
+        public SalesOrderItemState AwaitingAcceptance => this.Cache[AwaitingAcceptanceId];
 
         public SalesOrderItemState Cancelled => this.Cache[CancelledId];
 
@@ -47,9 +53,9 @@ namespace Allors.Domain
 
             var merge = this.Cache.Merger().Action();
 
-            merge(CreatedId, v =>
+            merge(ProvisionalId, v =>
             {
-                v.Name = "Created";
+                v.Name = "Provisional";
             });
 
             merge(CancelledId, v =>
@@ -88,6 +94,16 @@ namespace Allors.Domain
             merge(ReadyForPostingId, v =>
             {
                 v.Name = "Ready For Posting";
+            });
+
+            merge(RequestsApprovalId, v =>
+            {
+                v.Name = "Requests Approval";
+            });
+
+            merge(AwaitingAcceptanceId, v =>
+            {
+                v.Name = "Awaiting customer acceptance";
             });
         }
     }
