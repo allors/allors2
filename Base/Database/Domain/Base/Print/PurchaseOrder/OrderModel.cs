@@ -5,6 +5,8 @@
 
 namespace Allors.Domain.Print.PurchaseOrderModel
 {
+    using System.Globalization;
+
     public class OrderModel
     {
         public OrderModel(PurchaseOrder order)
@@ -15,12 +17,12 @@ namespace Allors.Domain.Print.PurchaseOrderModel
             this.CustomerReference = order.CustomerReference;
 
             // TODO: Where does the currency come from?
-            var currency = "€";
-            this.SubTotal = order.TotalBasePrice.ToString("0.00") + " " + currency;
-            this.TotalExVat = order.TotalExVat.ToString("0.00") + " " + currency;
+            var currency = "â‚¬";
+            this.SubTotal = order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalExVat = order.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.VatCharge = order.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = order.TotalVat.ToString("0.00") + " " + currency;
-            this.TotalIncVat = order.TotalIncVat.ToString("0.00") + " " + currency;
+            this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalIncVat = order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
         }
 
         public string Description { get; }
