@@ -30,8 +30,7 @@ namespace Tests.ElectronicAddressTests
         {
             var before = new EmailAddresses(this.Session).Extent().ToArray();
 
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             this.personListPage.Table.DefaultAction(person);
             var emailAddressCreate = new PersonOverviewComponent(this.personListPage.Driver).ContactmechanismOverviewPanel.Click().CreateEmailAddress();

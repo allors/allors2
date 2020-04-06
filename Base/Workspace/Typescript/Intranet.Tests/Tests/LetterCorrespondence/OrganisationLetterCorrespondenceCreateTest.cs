@@ -30,11 +30,10 @@ namespace Tests.LetterCorrespondenceTests
         [Fact]
         public void Create()
         {
-            var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.DisplayName().Equals("Acme"));
-
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First();
+
+            var organisation = allors.ActiveCustomers.First(v => v.GetType().Name == typeof(Organisation).Name);
 
             var organisationAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")

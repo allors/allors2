@@ -31,8 +31,7 @@ namespace Tests.FaceToFaceCommunicationTests
         [Fact]
         public void Edit()
         {
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();

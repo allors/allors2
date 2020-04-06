@@ -31,13 +31,14 @@ namespace Tests.FaceToFaceCommunicationTests
         [Fact]
         public void Edit()
         {
-            var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.DisplayName().Equals("Acme"));
-            var contact = organisation.CurrentContacts.First;
-
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var firstEmployee = allors.ActiveEmployees.First();
-            var secondEmployee = allors.ActiveEmployees.Last();
+
+            var secondEmployee = allors.CreateEmployee("letmein", this.Session.Faker()); //second employee
+            this.Session.Derive();
+
+            var organisation = allors.ActiveCustomers.First(v => v.GetType().Name == typeof(Organisation).Name);
+            var contact = organisation.CurrentContacts.First;
 
             var editCommunicationEvent = new FaceToFaceCommunicationBuilder(this.Session)
                 .WithSubject("dummy")

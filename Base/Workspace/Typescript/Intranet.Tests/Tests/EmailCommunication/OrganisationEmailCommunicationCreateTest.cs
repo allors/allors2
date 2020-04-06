@@ -31,12 +31,11 @@ namespace Tests.EmailCommunicationTests
         [Fact]
         public void Create()
         {
-            var organisations = new Organisations(this.Session).Extent();
-            var organisation = organisations.First(v => v.DisplayName().Equals("Acme"));
-            var contact = organisation.CurrentContacts.First;
-
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
             var employee = allors.ActiveEmployees.First();
+
+            var organisation = allors.ActiveCustomers.First(v => v.GetType().Name == typeof(Organisation).Name);
+            var contact = organisation.CurrentContacts.First;
 
             var employeeEmailAddress = employee.PersonalEmailAddress;
             var personEmailAddress = organisation.CurrentContacts.First.PersonalEmailAddress;
