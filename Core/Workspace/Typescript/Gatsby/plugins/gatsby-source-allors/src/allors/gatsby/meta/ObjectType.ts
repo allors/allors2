@@ -3,7 +3,7 @@ import { ids } from '../../meta/generated/ids.g';
 
 declare module '../../framework/meta/ObjectType' {
   interface ObjectType {
-    gatsbyProperties: [{ name: string, type: "String" | "Data" | "Int" | "Float" | "Boolean" }];
+    gatsbyProperties: { name: string, type: "String" | "Data" | "Int" | "Float" | "Boolean" }[];
 
     gatsbyRoleTypes: RoleType[];
 
