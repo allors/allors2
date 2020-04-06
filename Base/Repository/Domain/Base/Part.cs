@@ -12,6 +12,14 @@ namespace Allors.Repository
     #endregion
     public partial interface Part : UnifiedProduct
     {
+        #region Allors
+        [Id("bc2b9253-868b-45a2-97d7-50f671b3d857")]
+        [AssociationId("8b70b340-3cec-44bf-8f1a-c15a86a3d0c4")]
+        [RoleId("1cedc2a3-737b-4877-b3fe-95c1539e9d89")]
+        #endregion
+        [Workspace]
+        string DisplayName { get; set; }
+
         /// <summary>
         /// Gets or sets the Default Facility where this Part is stored.
         /// </summary>
@@ -189,5 +197,13 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal QuantityExpectedIn { get; set; }
+
+        #region Allors
+
+        [Id("d18b7185-0a7c-42a1-b135-0a8f7d459347")]
+        #endregion
+        public void SetDisplayName()
+        {
+        }
     }
 }

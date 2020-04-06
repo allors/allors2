@@ -27,6 +27,8 @@ namespace Allors.Repository
 
         public string Name { get; set; }
 
+        public string DisplayName { get; set; }
+
         public LocalisedText[] LocalisedNames { get; set; }
 
         public string Description { get; set; }
@@ -121,6 +123,8 @@ namespace Allors.Repository
         }
 
         public void OnPreDerive() { }
+
+        public void SetDisplayName() { }
         #endregion inheritedMethods
     }
 }

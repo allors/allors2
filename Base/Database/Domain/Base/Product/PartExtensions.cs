@@ -6,9 +6,17 @@
 namespace Allors.Domain
 {
     using System.Linq;
+    using System.Text;
 
     public static class PartExtensions
     {
+        public static void BaseOnDerive(this Part @this, ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+
+            @this.SetDisplayName();
+        }
+
         public static string PartIdentification(this Part @this)
         {
             if (@this.ProductIdentifications.Count == 0)
@@ -38,6 +46,30 @@ namespace Allors.Domain
             }
 
             return genericPriceComponents;
+        }
+
+        public static void BaseSetDisplayName(this Part @this, PartSetDisplayName method)
+        {
+            if (!method.Result.HasValue)
+            {
+                var builder = new StringBuilder();
+
+                builder.Append(@this.Name);
+
+                foreach (SupplierOffering supplierOffering in @this.SupplierOfferingsWherePart)
+                {
+                    builder.Append(", " + supplierOffering.Supplier.PartyName);
+
+                    if (supplierOffering.ExistSupplierProductId)
+                    {
+                        builder.Append(" (" + supplierOffering.SupplierProductId + ")");
+                    }
+                }
+
+                @this.DisplayName = builder.ToString();
+
+                method.Result = true;
+            }
         }
     }
 }

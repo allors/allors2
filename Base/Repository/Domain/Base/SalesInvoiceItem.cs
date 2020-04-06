@@ -219,7 +219,6 @@ namespace Allors.Repository
         [Id("5EFBB240-3B6B-47C4-8696-C7063ACBE074")]
 
         #endregion
-
         public void IsSubTotalItem()
         {
         }
