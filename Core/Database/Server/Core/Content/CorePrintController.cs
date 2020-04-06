@@ -1,4 +1,4 @@
-﻿// <copyright file="CorePrintController.cs" company="Allors bvba">
+// <copyright file="CorePrintController.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -48,7 +48,7 @@ namespace Allors.Server
         }
 
         [AllowAnonymous]
-        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds, VaryByQueryKeys = new[] { "revision" })]
+        //[ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds, VaryByQueryKeys = new[] { "revision" })]
         public virtual ActionResult DownloadWithRevision(string id, string revision)
         {
             var printable = this.Session.Instantiate(id) as Printable;
