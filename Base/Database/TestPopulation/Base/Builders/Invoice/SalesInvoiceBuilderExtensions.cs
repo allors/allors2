@@ -7,6 +7,7 @@
 namespace Allors.Domain.TestPopulation
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     public static partial class SalesInvoiceBuilderExtensions
@@ -26,7 +27,7 @@ namespace Allors.Domain.TestPopulation
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
-            @this.WithCustomerReference(faker.Random.String(16).ToUpper());
+            @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
             @this.WithBilledFrom(internalOrganisation);
             @this.WithBilledFromContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
@@ -72,7 +73,7 @@ namespace Allors.Domain.TestPopulation
             var salesInvoiceItem_NonGSE = new SalesInvoiceItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
             var salesInvoiceItem_GSE = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
 
-            @this.WithCustomerReference(faker.Random.String(16).ToUpper());
+            @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
             @this.WithBilledFrom(internalOrganisation);
             @this.WithBilledFromContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
@@ -112,7 +113,7 @@ namespace Allors.Domain.TestPopulation
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
-            @this.WithCustomerReference(faker.Random.String(16).ToUpper());
+            @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
             @this.WithBilledFrom(internalOrganisation);
             @this.WithBilledFromContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
@@ -150,7 +151,7 @@ namespace Allors.Domain.TestPopulation
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
-            @this.WithCustomerReference(faker.Random.String(16).ToUpper());
+            @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
             @this.WithBilledFrom(internalOrganisation);
             @this.WithBilledFromContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(customer.CurrentContacts.FirstOrDefault());

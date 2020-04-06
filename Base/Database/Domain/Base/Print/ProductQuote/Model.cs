@@ -14,10 +14,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Domain.Print.ProductQuoteModel
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     public class Model
