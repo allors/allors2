@@ -32,6 +32,7 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
   currentFacility: Facility;
 
   private subscription: Subscription;
+  serialisedItemAvailabilities: Enumeration[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -161,6 +162,10 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
               predicate: new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true }),
               sort: new Sort(m.SerialisedItemState.Name),
             }),
+            pull.SerialisedItemAvailability({
+              predicate: new Equals({ propertyType: m.SerialisedItemAvailability.IsActive, value: true }),
+              sort: new Sort(m.SerialisedItemAvailability.Name),
+            }),
             pull.Ownership({
               predicate: new Equals({ propertyType: m.Ownership.IsActive, value: true }),
               sort: new Sort(m.Ownership.Name),
@@ -179,6 +184,7 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as Enumeration[];
+        this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as Enumeration[];
         this.ownerships = loaded.collections.Ownerships as Enumeration[];
         this.part = loaded.objects.Part as Part;
 

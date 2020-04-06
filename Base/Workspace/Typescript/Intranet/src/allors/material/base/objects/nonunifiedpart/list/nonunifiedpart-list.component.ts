@@ -17,7 +17,6 @@ interface Row extends TableRow {
   object: Part;
   name: string;
   partNo: string;
-  type: string;
   categories: string;
   qoh: string;
   brand: string;
@@ -42,7 +41,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   goodIdentificationTypes: ProductIdentificationType[];
-  parts: Part[];
+  parts: NonUnifiedPart[];
   nonUnifiedPartBarcodePrint: NonUnifiedPartBarcodePrint;
 
   constructor(
@@ -288,7 +287,6 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             name: v.Name,
             partNo: partNumberByPart[v.id][0],
             qoh: v.QuantityOnHand,
-            type: v.ProductType ? v.ProductType.Name : '',
             categories: partCategories.filter(w => w.Parts.includes(v)).map((w) => w.displayName).join(', '),
             brand: v.Brand ? v.Brand.Name : '',
             model: v.Model ? v.Model.Name : '',

@@ -9,11 +9,14 @@ namespace Allors.Domain
 
     public partial class RateTypes
     {
+        private static readonly Guid InternalRateId = new Guid("4fb41198-766d-4645-8c6b-cb1c95448460");
         private static readonly Guid StandardRateId = new Guid("FE2C3012-7FBC-4c10-B76E-F0DA4754020A");
         private static readonly Guid OvertimeRateId = new Guid("DE4D0A4C-EDDC-460c-BF78-A45A9B881F48");
         private static readonly Guid WeekendRateId = new Guid("2AA92139-E634-444e-9997-89B5F598812F");
 
         private UniquelyIdentifiableSticky<RateType> cache;
+
+        public RateType InternalRate => this.Cache[InternalRateId];
 
         public RateType StandardRate => this.Cache[StandardRateId];
 
@@ -29,6 +32,13 @@ namespace Allors.Domain
 
             var merge = this.Cache.Merger().Action();
             var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
+
+            merge(InternalRateId, v =>
+            {
+                v.Name = "Internal Rate";
+                localisedName.Set(v, dutchLocale, "Internal tarief");
+                v.IsActive = true;
+            });
 
             merge(StandardRateId, v =>
             {

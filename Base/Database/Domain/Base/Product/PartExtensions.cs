@@ -8,7 +8,7 @@ namespace Allors.Domain
     using System.Linq;
     using System.Text;
 
-    public static class PartExtensions
+    public static partial class PartExtensions
     {
         public static void BaseOnDerive(this Part @this, ObjectOnDerive method)
         {
@@ -58,11 +58,14 @@ namespace Allors.Domain
 
                 foreach (SupplierOffering supplierOffering in @this.SupplierOfferingsWherePart)
                 {
-                    builder.Append(", " + supplierOffering.Supplier.PartyName);
-
-                    if (supplierOffering.ExistSupplierProductId)
+                    if (supplierOffering.Supplier is Organisation supplier)
                     {
-                        builder.Append(" (" + supplierOffering.SupplierProductId + ")");
+                        builder.Append(", " + supplier.Name);
+
+                        if (supplierOffering.ExistSupplierProductId)
+                        {
+                            builder.Append(" (" + supplierOffering.SupplierProductId + ")");
+                        }
                     }
                 }
 

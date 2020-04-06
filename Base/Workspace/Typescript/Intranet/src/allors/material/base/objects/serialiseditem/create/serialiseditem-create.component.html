@@ -23,6 +23,11 @@
       </div>
 
       <div class="row">
+        <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialisedItemAvailability"
+          [options]="serialisedItemAvailabilities" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
         <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Ownership" [options]="ownerships"
           display="Name"></a-mat-select>
         <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.OwnedBy" [filter]="filtersService.partiesFilter.create(allors.context)"

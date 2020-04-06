@@ -10,7 +10,7 @@
       </div>
 
       <div class="row">
-        <a-mat-autocomplete class="col-md" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="filtersService.customersFilter.create(allors)"
+        <a-mat-autocomplete class="col-md" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="filtersService.organisationsFilter.create(allors)"
           (changed)="customerSelected($event)" display="displayName"></a-mat-autocomplete>
       </div>
 

@@ -35,6 +35,8 @@ namespace Allors.Domain
             var session = @this.Strategy.Session;
             var now = session.Now();
 
+            ((InventoryItemDerivedRoles)@this).PartDisplayName = @this.Part?.DisplayName;
+
             if (!@this.ExistFacility && @this.ExistPart && @this.Part.ExistDefaultFacility)
             {
                 @this.Facility = @this.Part.DefaultFacility;

@@ -3,6 +3,7 @@ import { NonSerialisedInventoryItem } from '../generated/NonSerialisedInventoryI
 import { Meta } from '../../meta/generated/domain.g';
 import { InventoryItemTransaction } from '..';
 import { assert } from '../../framework';
+import { NonUnifiedPart } from '../generated';
 
 declare module '../generated/NonSerialisedInventoryItem.g' {
   interface NonSerialisedInventoryItem {

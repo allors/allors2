@@ -37,6 +37,7 @@ export class FetcherService {
         ActiveCustomers: x,
         ActiveEmployees: x,
         ActiveSuppliers: x,
+        FacilitiesWhereOwner: x,
       }
     });
   }

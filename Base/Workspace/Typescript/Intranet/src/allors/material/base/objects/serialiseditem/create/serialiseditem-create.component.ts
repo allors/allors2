@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { SaveService, FiltersService, ObjectData } from '../../../../../material';
 import { ContextService, SearchFactory, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope, SingletonId } from '../../../../../angular';
-import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, Singleton } from '../../../../../domain';
+import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, Singleton, Enumeration } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -32,6 +32,7 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
   selectedPart: Part;
 
   private subscription: Subscription;
+  serialisedItemAvailabilities: Enumeration[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -72,6 +73,10 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
               predicate: new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true }),
               sort: new Sort(m.SerialisedInventoryItemState.Name),
             }),
+            pull.SerialisedItemAvailability({
+              predicate: new Equals({ propertyType: m.SerialisedItemAvailability.IsActive, value: true }),
+              sort: new Sort(m.SerialisedItemAvailability.Name),
+            }),
           ];
 
           return this.allors.context
@@ -86,6 +91,7 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
         this.part = loaded.objects.forPart as Part;
 
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
+        this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as Enumeration[];
         this.ownerships = loaded.collections.Ownerships as Ownership[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 

@@ -32,6 +32,8 @@ namespace Allors.Repository
 
         public string Name { get; set; }
 
+        public string PartDisplayName { get; set; }
+
         public Lot Lot { get; set; }
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
