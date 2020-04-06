@@ -30,8 +30,7 @@ namespace Tests.LetterCorrespondenceTests
         [Fact]
         public void Create()
         {
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             var address = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")

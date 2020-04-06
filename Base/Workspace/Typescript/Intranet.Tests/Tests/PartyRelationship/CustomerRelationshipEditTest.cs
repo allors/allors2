@@ -33,8 +33,7 @@ namespace Tests.PartyRelationshipTests
         {
             var before = new PartyRelationships(this.Session).Extent().ToArray();
 
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             this.personListPage.Table.DefaultAction(person);
             var customerRelationshipEdit = new PersonOverviewComponent(this.personListPage.Driver).PartyrelationshipOverviewPanel.Click().CreateCustomerRelationship();
@@ -62,8 +61,7 @@ namespace Tests.PartyRelationshipTests
         {
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             var editPartyRelationship = new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(person)

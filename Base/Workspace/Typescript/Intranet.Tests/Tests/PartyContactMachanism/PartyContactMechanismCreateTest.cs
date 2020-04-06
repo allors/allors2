@@ -23,8 +23,7 @@ namespace Tests.PartyContactMachanismTests
         public PartyContactMechanismCreateTest(TestFixture fixture)
             : base(fixture)
         {
-            var people = new People(this.Session).Extent();
-            var person = people.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             var postalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
