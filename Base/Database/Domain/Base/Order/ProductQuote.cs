@@ -26,6 +26,16 @@ namespace Allors.Domain
         public void BaseOrder(ProductQuoteOrder method)
         {
             this.QuoteState = new QuoteStates(this.Strategy.Session).Ordered;
+
+            var quoteItemStates = new QuoteItemStates(this.Session());
+            foreach (QuoteItem quoteItem in this.QuoteItems)
+            {
+                if (Equals(quoteItem.QuoteItemState, quoteItemStates.Accepted))
+                {
+                    quoteItem.QuoteItemState = quoteItemStates.Ordered;
+                }
+            }
+
             this.OrderThis();
         }
 
@@ -399,7 +409,7 @@ namespace Allors.Domain
                 .Build();
 
             var quoteItems = this.ValidQuoteItems
-                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).AwaitingAcceptance))
+                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Ordered))
                 .ToArray();
 
             foreach (var quoteItem in quoteItems)

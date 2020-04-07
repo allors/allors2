@@ -123,6 +123,14 @@ namespace Allors.Domain
                         quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Accepted;
                     }
                 }
+
+                if (@this.QuoteState.IsOrdered)
+                {
+                    if (Equals(quoteItem.QuoteItemState, quoteItemStates.Accepted))
+                    {
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Ordered;
+                    }
+                }
             }
         }
     }
