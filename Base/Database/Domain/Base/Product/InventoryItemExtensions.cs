@@ -1,3 +1,4 @@
+
 // <copyright file="InventoryItemExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -78,44 +79,8 @@ namespace Allors.Domain
             var part = @this.Part;
 
             var builder = new StringBuilder();
-            if (part.ExistProductIdentifications)
-            {
-                builder.Append(string.Join(" ", part.ProductIdentifications.Select(v => v.Identification)));
-            }
 
-            if (part.ExistProductCategoriesWhereAllPart)
-            {
-                builder.Append(string.Join(" ", part.ProductCategoriesWhereAllPart.Select(v => v.Name)));
-            }
-
-            if (part.ExistSupplierOfferingsWherePart)
-            {
-                builder.Append(string.Join(" ", part.SupplierOfferingsWherePart.Select(v => v.Supplier.PartyName)));
-                builder.Append(string.Join(" ", part.SupplierOfferingsWherePart.Select(v => v.SupplierProductId)));
-                builder.Append(string.Join(" ", part.SupplierOfferingsWherePart.Select(v => v.SupplierProductName)));
-            }
-
-            if (part.ExistSerialisedItems)
-            {
-                builder.Append(string.Join(" ", part.SerialisedItems.Select(v => v.SerialNumber)));
-            }
-
-            if (part.ExistProductType)
-            {
-                builder.Append(string.Join(" ", part.ProductType.Name));
-            }
-
-            if (part.ExistBrand)
-            {
-                builder.Append(string.Join(" ", part.Brand.Name));
-            }
-
-            if (part.ExistModel)
-            {
-                builder.Append(string.Join(" ", part.Model.Name));
-            }
-
-            builder.Append(string.Join(" ", part.Keywords));
+            builder.Append(part.SearchString);
 
             @this.SearchString = builder.ToString();
         }

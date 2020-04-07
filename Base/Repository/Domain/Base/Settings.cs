@@ -157,13 +157,22 @@ namespace Allors.Repository
         public bool UseGlobalProductNumber { get; set; }
 
         #region Allors
+        [Id("066c3053-b002-40c7-ab55-5cbe0a2a1cc5")]
+        [AssociationId("fe1d1209-7fc7-49a4-88a1-8c8ad14b3a3e")]
+        [RoleId("a8b613e0-327b-43b9-ac1f-5e7f6e936b15")]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal InternalLabourSurchargePercentage { get; set; }
+
+        #region Allors
         [Id("8EA90F9A-A0D6-4FAB-ABCC-80AF7234F95E")]
         [AssociationId("C323174E-BBEE-4D90-B498-FC282345B90D")]
         [RoleId("3E431BED-B733-4136-9990-BA35C4ED145E")]
         #endregion
         [Required]
         [Workspace]
-        public decimal InternalSurchargePercentage { get; set; }
+        public decimal InternalPartSurchargePercentage { get; set; }
 
         #region Allors
         [Id("1B38C6A4-532D-4494-A621-69F3126801D3")]
@@ -173,6 +182,15 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public decimal PartSurchargePercentage { get; set; }
+
+        #region Allors
+        [Id("ac0e5602-b102-4bd9-bf60-fd7da0a02dab")]
+        [AssociationId("3bee48d0-33a5-4768-b28d-fe147165c731")]
+        [RoleId("777de189-19ac-40f9-8eb1-b083bde7649d")]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal InternalSubletSurchargePercentage { get; set; }
 
         #region Allors
         [Id("846B4409-D586-4AAA-9755-763D8726A739")]

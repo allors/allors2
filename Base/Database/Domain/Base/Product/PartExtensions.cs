@@ -17,6 +17,64 @@ namespace Allors.Domain
             @this.SetDisplayName();
         }
 
+        public static void BaseOnPostDerive(this Part @this, ObjectOnPostDerive method)
+        {
+            var builder = new StringBuilder();
+
+            builder.Append(@this.Name);
+
+            foreach (LocalisedText localisedText in @this.LocalisedNames)
+            {
+                builder.Append(string.Join(", ", localisedText.Text));
+            }
+
+            if (@this.ExistProductIdentifications)
+            {
+                builder.Append(string.Join(", ", @this.ProductIdentifications.Select(v => v.Identification)));
+            }
+
+            if (@this.ExistProductCategoriesWhereAllPart)
+            {
+                builder.Append(string.Join(", ", @this.ProductCategoriesWhereAllPart.Select(v => v.Name)));
+            }
+
+            if (@this.ExistSupplierOfferingsWherePart)
+            {
+                builder.Append(string.Join(", ", @this.SupplierOfferingsWherePart.Select(v => v.Supplier.PartyName)));
+                builder.Append(string.Join(", ", @this.SupplierOfferingsWherePart.Select(v => v.SupplierProductId)));
+                builder.Append(string.Join(", ", @this.SupplierOfferingsWherePart.Select(v => v.SupplierProductName)));
+            }
+
+            if (@this.ExistSerialisedItems)
+            {
+                builder.Append(string.Join(", ", @this.SerialisedItems.Select(v => v.SerialNumber)));
+            }
+
+            if (@this.ExistProductType)
+            {
+                builder.Append(string.Join(", ", @this.ProductType.Name));
+            }
+
+            if (@this.ExistBrand)
+            {
+                builder.Append(string.Join(", ", @this.Brand.Name));
+            }
+
+            if (@this.ExistModel)
+            {
+                builder.Append(string.Join(", ", @this.Model.Name));
+            }
+
+            foreach (PartCategory partCategory in @this.PartCategoriesWherePart)
+            {
+                builder.Append(string.Join(", ", partCategory.Name));
+            }
+
+            builder.Append(string.Join(", ", @this.Keywords));
+
+            @this.SearchString = builder.ToString();
+        }
+
         public static string PartIdentification(this Part @this)
         {
             if (@this.ProductIdentifications.Count == 0)

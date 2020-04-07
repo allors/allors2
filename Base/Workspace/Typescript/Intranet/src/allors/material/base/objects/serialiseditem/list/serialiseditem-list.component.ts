@@ -9,7 +9,7 @@ import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../..
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
-import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model } from '../../../../../domain';
+import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model, SerialisedItemAvailability } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -17,7 +17,7 @@ interface Row extends TableRow {
   object: SerialisedItem;
   id: string;
   name: string;
-  state: string;
+  availability: string;
   ownership: string;
   suppliedBy: string;
   ownedBy: string;
@@ -64,7 +64,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       columns: [
         { name: 'id', sort: true },
         { name: 'name', sort: true },
-        { name: 'state' },
+        { name: 'availability' },
         { name: 'ownership' },
         { name: 'suppliedBy' },
         { name: 'ownedBy' },
@@ -88,6 +88,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       new Like({ roleType: m.SerialisedItem.ItemNumber, parameter: 'id' }),
       new Like({ roleType: m.SerialisedItem.Name, parameter: 'name' }),
       new Like({ roleType: m.SerialisedItem.Keywords, parameter: 'keyword' }),
+      new Equals({ propertyType: m.SerialisedItem.SerialisedItemAvailability, parameter: 'availability' }),
       new Equals({ propertyType: m.SerialisedItem.SerialisedItemState, parameter: 'state' }),
       new Equals({ propertyType: m.SerialisedItem.Ownership, parameter: 'ownership' }),
       new Equals({ propertyType: m.SerialisedItem.SuppliedBy, parameter: 'suppliedby' }),
@@ -121,6 +122,12 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       predicates: [new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true })]
     });
 
+    const availabilitySearch = new SearchFactory({
+      objectType: m.SerialisedItemAvailability,
+      roleTypes: [m.SerialisedItemAvailability.Name],
+      predicates: [new Equals({ propertyType: m.SerialisedItemAvailability.IsActive, value: true })]
+    });
+
     const ownershipSearch = new SearchFactory({
       objectType: m.Ownership,
       roleTypes: [m.Ownership.Name],
@@ -150,6 +157,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
     this.filterService.init(predicate, {
       active: { initialValue: true },
       state: { search: stateSearch, display: (v: SerialisedItemState) => v && v.Name },
+      availability: { search: availabilitySearch, display: (v: SerialisedItemAvailability) => v && v.Name },
       ownership: { search: ownershipSearch, display: (v: Ownership) => v && v.Name },
       suppliedby: { search: supplierSearch, display: (v: Organisation) => v && v.Name },
       ownedby: { search: partySearch, display: (v: Party) => v && v.displayName },
@@ -183,6 +191,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
               sort: sorter.create(sort),
               include: {
                 SerialisedItemState: x,
+                SerialisedItemAvailability: x,
                 Ownership: x,
                 SuppliedBy: x,
                 OwnedBy: x,
@@ -205,7 +214,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
             object: v,
             id: v.ItemNumber,
             name: v.Name,
-            state: `${v.SerialisedItemState && v.SerialisedItemState.Name}`,
+            availability: `${v.SerialisedItemAvailability && v.SerialisedItemAvailability.Name}`,
             ownership: `${v.Ownership && v.Ownership.Name}`,
             suppliedBy: v.SuppliedBy ? v.SuppliedBy.displayName : '',
             ownedBy: v.OwnedBy ? v.OwnedBy.displayName : '',

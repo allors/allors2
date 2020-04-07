@@ -65,6 +65,9 @@ namespace Allors.Domain
             derivation.Validation.AssertExists(this, this.Meta.TimeSheetWhereTimeEntry);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.WorkEffort, this.Meta.EngagementItem);
 
+            var useInternalRate = this.WorkEffort.Customer is Organisation organisation && organisation.IsInternalOrganisation;
+            var rateType = useInternalRate ? new RateTypes(this.Session()).InternalRate : this.RateType;
+
             if (this.ExistTimeSheetWhereTimeEntry)
             {
                 this.Worker = this.TimeSheetWhereTimeEntry.Worker;
@@ -88,7 +91,7 @@ namespace Allors.Domain
 
                 if (billingRate == 0 && this.ExistWorkEffort && this.WorkEffort.ExistCustomer)
                 {
-                    var partyRate = this.WorkEffort.Customer.PartyRates.FirstOrDefault(v => v.RateType.Equals(this.RateType)
+                    var partyRate = this.WorkEffort.Customer.PartyRates.FirstOrDefault(v => v.RateType.Equals(rateType)
                                                                                && v.Frequency.Equals(this.BillingFrequency)
                                                                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
                     if (partyRate != null)
@@ -99,7 +102,7 @@ namespace Allors.Domain
 
                 if (billingRate == 0 && this.ExistWorker && this.ExistRateType)
                 {
-                    var partyRate = this.Worker.PartyRates.FirstOrDefault(v => v.RateType.Equals(this.RateType)
+                    var partyRate = this.Worker.PartyRates.FirstOrDefault(v => v.RateType.Equals(rateType)
                                                                                && v.Frequency.Equals(this.BillingFrequency)
                                                                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
                     if (partyRate != null)
@@ -110,7 +113,7 @@ namespace Allors.Domain
 
                 if (billingRate == 0 && this.ExistWorkEffort && this.WorkEffort.ExistExecutedBy)
                 {
-                    var partyRate = this.WorkEffort.ExecutedBy.PartyRates.FirstOrDefault(v => v.RateType.Equals(this.RateType)
+                    var partyRate = this.WorkEffort.ExecutedBy.PartyRates.FirstOrDefault(v => v.RateType.Equals(rateType)
                                                                                && v.Frequency.Equals(this.BillingFrequency)
                                                                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
                     if (partyRate != null)
@@ -190,7 +193,16 @@ namespace Allors.Domain
                 }
 
                 var billableTimeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(billableMinutes, this.BillingFrequency), 2);
-                this.BillingAmount = Math.Round((decimal)(this.BillingRate * billableTimeInTimeEntryRateFrequency), 2);
+
+                if (useInternalRate && this.WorkEffort.Customer != this.WorkEffort.ExecutedBy)
+                {
+                    var upliftedRate = Math.Round(this.BillingRate.Value * (1 + this.strategy.Session.GetSingleton().Settings.InternalLabourSurchargePercentage / 100), 2);
+                    this.BillingAmount = Math.Round((decimal)(upliftedRate * billableTimeInTimeEntryRateFrequency), 2);
+                }
+                else
+                {
+                    this.BillingAmount = Math.Round((decimal)(this.BillingRate * billableTimeInTimeEntryRateFrequency), 2);
+                }
             }
         }
 
