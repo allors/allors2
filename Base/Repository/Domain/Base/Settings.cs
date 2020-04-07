@@ -184,6 +184,15 @@ namespace Allors.Repository
         public decimal PartSurchargePercentage { get; set; }
 
         #region Allors
+        [Id("ac0e5602-b102-4bd9-bf60-fd7da0a02dab")]
+        [AssociationId("3bee48d0-33a5-4768-b28d-fe147165c731")]
+        [RoleId("777de189-19ac-40f9-8eb1-b083bde7649d")]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal InternalSubletSurchargePercentage { get; set; }
+
+        #region Allors
         [Id("846B4409-D586-4AAA-9755-763D8726A739")]
         [AssociationId("79C1D786-9A6B-4EF9-B9F6-F6499C66A39D")]
         [RoleId("BD45A80B-9F61-47E2-8595-3856AA75C56E")]
