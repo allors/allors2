@@ -105,6 +105,12 @@ namespace Allors.Domain
                     iteration.AddDependency(this.ReservedFromSerialisedInventoryItem, this);
                     iteration.Mark(this.ReservedFromSerialisedInventoryItem);
                 }
+
+                if (this.ExistSerialisedItem)
+                {
+                    iteration.AddDependency(this.SerialisedItem, this);
+                    iteration.Mark(this.SerialisedItem);
+                }
             }
         }
 
@@ -326,53 +332,6 @@ namespace Allors.Domain
                 this.Description = this.SerialisedItem.Details;
             }
 
-            var quoted = this.SerialisedItem?.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft
-                        || v.QuoteItemState.IsSubmitted || v.QuoteItemState.IsApproved
-                        || v.QuoteItemState.IsAwaitingAcceptance || v.QuoteItemState.IsAccepted);
-
-            var ordered = this.SerialisedItem?.SalesOrderItemsWhereSerialisedItem.Any(v => v.SalesOrderItemState.IsProvisional
-                        || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
-                        || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
-
-            if (quoted.HasValue && quoted.Value)
-            {
-                this.SerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote;
-            }
-            else if (ordered.HasValue && ordered.Value)
-            {
-                this.SerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnSalesOrder;
-            }
-            else if (this.ExistSerialisedItem)
-            {
-                this.SerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Available;
-            }
-
-            // CurrentVersion is Previous Version until PostDerive
-            var previousSerialisedItem = this.CurrentVersion?.SerialisedItem;
-            if (previousSerialisedItem != null && previousSerialisedItem != this.SerialisedItem)
-            {
-                var previousItemQuoted = previousSerialisedItem?.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft
-                            || v.QuoteItemState.IsSubmitted || v.QuoteItemState.IsApproved
-                            || v.QuoteItemState.IsAwaitingAcceptance || v.QuoteItemState.IsAccepted);
-
-                var previousItemOrdered = previousSerialisedItem?.SalesOrderItemsWhereSerialisedItem.Any(v => v.SalesOrderItemState.IsProvisional
-                            || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
-                            || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
-
-                if (previousItemQuoted.HasValue && previousItemQuoted.Value)
-                {
-                    previousSerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote;
-                }
-                else if (previousItemOrdered.HasValue && previousItemOrdered.Value)
-                {
-                    previousSerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnSalesOrder;
-                }
-                else
-                {
-                    previousSerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Available;
-                }
-            }
-
             this.Sync();
         }
 
@@ -561,6 +520,14 @@ namespace Allors.Domain
             if (method.DeniedPermissions == null)
             {
                 method.DeniedPermissions = this.SalesOrderWhereSalesOrderItem?.DeniedPermissions.ToArray();
+            }
+        }
+
+        public void BaseDelete(SalesOrderItemDelete method)
+        {
+            if (this.ExistSerialisedItem)
+            {
+                this.SerialisedItem.DerivationTrigger = Guid.NewGuid();
             }
         }
 

@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
     using System.Text;
 
@@ -22,6 +23,11 @@ namespace Allors.Domain
             if (!this.ExistItemNumber)
             {
                 this.ItemNumber = this.Strategy.Session.GetSingleton().Settings.NextSerialisedItemNumber();
+            }
+
+            if (!this.ExistDerivationTrigger)
+            {
+                this.DerivationTrigger = Guid.NewGuid();
             }
         }
 

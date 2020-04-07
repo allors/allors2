@@ -67,7 +67,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         [Derived]
-        [Indexed]
         Currency Currency { get; set; }
 
         #region Allors
@@ -86,7 +85,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         Fee Fee { get; set; }
 
         #region Allors
@@ -95,8 +93,6 @@ namespace Allors.Repository
         [RoleId("2BAA62A0-B829-4072-BD24-3368915F9B95")]
         #endregion
         [Workspace]
-        [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         decimal TotalExVat { get; set; }
@@ -108,7 +104,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
         SalesTerm[] SalesTerms { get; set; }
 
         #region Allors
@@ -118,7 +113,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         decimal TotalVat { get; set; }
@@ -130,7 +124,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         decimal TotalSurcharge { get; set; }
@@ -143,7 +136,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         [Derived]
-        [Indexed]
         OrderItem[] ValidOrderItems { get; set; }
 
         #region Allors
@@ -153,7 +145,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         [Size(256)]
         string OrderNumber { get; set; }
 
@@ -164,7 +155,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         decimal TotalDiscount { get; set; }
@@ -185,7 +175,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         DateTime EntryDate { get; set; }
 
         #region Allors
@@ -195,7 +184,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        [Indexed]
         DiscountAdjustment DiscountAdjustment { get; set; }
 
         #region Allors
@@ -205,7 +193,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        [Indexed]
         OrderKind OrderKind { get; set; }
 
         #region Allors
@@ -215,7 +202,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         decimal TotalIncVat { get; set; }
@@ -237,7 +223,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         decimal TotalShippingAndHandling { get; set; }
@@ -249,7 +234,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        [Indexed]
         ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
 
         #region Allors
@@ -258,7 +242,6 @@ namespace Allors.Repository
         [RoleId("CBCADF37-5C40-47C2-9568-820BB0653CB8")]
         #endregion
         [Workspace]
-        [Required]
         DateTime OrderDate { get; set; }
 
         #region Allors
@@ -276,7 +259,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         decimal TotalBasePrice { get; set; }
@@ -288,7 +270,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         decimal TotalFee { get; set; }

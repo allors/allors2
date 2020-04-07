@@ -89,7 +89,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         public PurchaseOrderState PurchaseOrderState { get; set; }
 
         #region Allors
@@ -98,8 +97,6 @@ namespace Allors.Repository
         [RoleId("FEC45864-A3A4-41CD-B8BB-F603AE6F3732")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
         public PurchaseOrderShipmentState PurchaseOrderShipmentState { get; set; }
 
         #region Allors
@@ -108,8 +105,6 @@ namespace Allors.Repository
         [RoleId("9EE86C5B-43E5-45E1-9453-BF3FD548771C")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
         public PurchaseOrderPaymentState PurchaseOrderPaymentState { get; set; }
 
         #region Allors
@@ -118,7 +113,6 @@ namespace Allors.Repository
         [RoleId("5E33CAE0-4522-4A44-8085-3353E0BABB21")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
         public PurchaseOrderItem[] PurchaseOrderItems { get; set; }
 
         #region Allors
@@ -127,19 +121,15 @@ namespace Allors.Repository
         [RoleId("6E35415E-33B4-4914-A14A-AF16E641412E")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
         public Party TakenViaSupplier { get; set; }
 
         #region Allors
-        [Id("86664C8E-E336-42F3-A65A-4D7B22EF92F7")]
-        [AssociationId("3D87A511-4BA6-4969-B27F-87C7E1E1BAF4")]
-        [RoleId("31C09E4D-7922-47EC-A3E9-7C2E9DF59DB0")]
+        [Id("34274ec5-7e51-431c-bbe5-91a5131fe85c")]
+        [AssociationId("294a45f0-4a4b-4c7d-b206-99128999dc08")]
+        [RoleId("96dd8ebf-66e4-4bd9-b52c-d9224fc9e9ff")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        public Party PreviousTakenViaSupplier { get; set; }
+        public Party TakenViaSubcontractor { get; set; }
 
         #region Allors
         [Id("8AC728F2-F766-47C4-93B7-15B5D5DC2FF6")]
@@ -156,7 +146,6 @@ namespace Allors.Repository
         [RoleId("B55B7BCC-386E-47A2-B328-17B6F6A3EF21")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         public Person TakenViaContactPerson { get; set; }
 
         #region Allors
@@ -165,8 +154,6 @@ namespace Allors.Repository
         [RoleId("90426B16-51F2-4D93-AEF2-4A109348831A")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
         public ContactMechanism BillToContactMechanism { get; set; }
 
         #region Allors
@@ -175,7 +162,6 @@ namespace Allors.Repository
         [RoleId("D431167C-CA76-42BF-A11F-6D8E79EEFDDC")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         public Person BillToContactPerson { get; set; }
 
         #region Allors
@@ -184,7 +170,6 @@ namespace Allors.Repository
         [RoleId("D2C6D6DB-F38B-49E4-9AC5-187CD41D3863")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         public Facility Facility { get; set; }
 
         #region Allors
@@ -193,7 +178,6 @@ namespace Allors.Repository
         [RoleId("41AAB6C9-FFA9-4AA3-8867-27101B8D3D08")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         public PostalAddress ShipToAddress { get; set; }
 
         #region Allors
@@ -202,7 +186,6 @@ namespace Allors.Repository
         [RoleId("3862640B-4ADE-4C52-9FF4-E108FC889736")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         public Person ShipToContactPerson { get; set; }
 
         #region inherited methods

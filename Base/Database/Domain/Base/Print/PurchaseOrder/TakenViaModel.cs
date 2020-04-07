@@ -9,11 +9,11 @@ namespace Allors.Domain.Print.PurchaseOrderModel
     {
         public TakenViaModel(PurchaseOrder order)
         {
-            var supplier = order.TakenViaSupplier;
-            var contactPerson = order.BillToContactPerson;
-            var contactMechanisam = order.BillToContactMechanism;
+            var takenVia = order.TakenViaSupplier ?? order.TakenViaSubcontractor;
+            var contactPerson = order.TakenViaContactPerson;
+            var contactMechanisam = order.TakenViaContactMechanism;
 
-            var billTo = supplier;
+            var billTo = takenVia;
             var billToOrganisation = billTo as Organisation;
             if (billTo != null)
             {

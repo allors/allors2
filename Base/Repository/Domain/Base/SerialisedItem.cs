@@ -361,6 +361,14 @@ namespace Allors.Repository
         [Workspace]
         public InternalOrganisation ReportingUnit { get; set; }
 
+        #region Allors
+        [Id("2b8a24f3-ce26-4b53-94b2-d7d0cef3f6b1")]
+        [AssociationId("357c0a38-9888-40f8-b22c-7236f69ef646")]
+        [RoleId("0dd73bc0-5030-4c2e-b4b5-57d227f56d76")]
+        #endregion
+        [Required]
+        public Guid DerivationTrigger { get; set; }
+
         #region inherited methods
         public void OnBuild() { }
 

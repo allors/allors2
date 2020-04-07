@@ -11,7 +11,6 @@ namespace Allors.Domain
     {
         private static readonly Guid NaId = new Guid("E5AD6F2D-2EDF-4563-8AD4-59EF1211273F");
         private static readonly Guid GoodId = new Guid("81C04143-6336-479B-B48E-40FE1925F29B");
-        private static readonly Guid BeingRepairedId = new Guid("FC0ACDBC-A89F-45AD-AC86-8199C18471DA");
         private static readonly Guid SlightlyDamagedId = new Guid("BD2741E8-9EDB-47DF-AEFB-ED258AB4F7B9");
         private static readonly Guid DefectiveId = new Guid("41067E72-5833-461C-8087-308F91C205E4");
         private static readonly Guid ScrapId = new Guid("8FD0680D-28E4-4F85-8BC9-E935B6B64FAE");
@@ -21,8 +20,6 @@ namespace Allors.Domain
         public SerialisedItemState NA => this.Cache[NaId];
 
         public SerialisedItemState Good => this.Cache[GoodId];
-
-        public SerialisedItemState BeingRepaired => this.Cache[BeingRepairedId];
 
         public SerialisedItemState SlightlyDamaged => this.Cache[SlightlyDamagedId];
 
@@ -45,11 +42,6 @@ namespace Allors.Domain
             merge(GoodId, v =>
             {
                 v.Name = "In good order";
-                v.IsActive = true;
-            });
-            merge(BeingRepairedId, v =>
-            {
-                v.Name = "Being Repaired";
                 v.IsActive = true;
             });
             merge(SlightlyDamagedId, v =>

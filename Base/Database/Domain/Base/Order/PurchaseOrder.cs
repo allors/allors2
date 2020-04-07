@@ -125,8 +125,17 @@ namespace Allors.Domain
                 iteration.AddDependency(this, singleton);
                 iteration.Mark(singleton);
 
-                iteration.AddDependency(this, this.TakenViaSupplier);
-                iteration.Mark(this.TakenViaSupplier);
+                if (this.ExistTakenViaSupplier)
+                {
+                    iteration.AddDependency(this, this.TakenViaSupplier);
+                    iteration.Mark(this.TakenViaSupplier);
+                }
+
+                if (this.ExistTakenViaSubcontractor)
+                {
+                    iteration.AddDependency(this, this.TakenViaSubcontractor);
+                    iteration.Mark(this.TakenViaSubcontractor);
+                }
 
                 foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
                 {
@@ -147,6 +156,17 @@ namespace Allors.Domain
                     derivation.Validation.AddError(this, this.Meta.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
                 }
             }
+
+            if (this.TakenViaSubcontractor is Organisation subcontractor)
+            {
+                if (!this.OrderedBy.ActiveSubContractors.Contains(subcontractor))
+                {
+                    derivation.Validation.AddError(this, this.Meta.TakenViaSubcontractor, ErrorMessages.PartyIsNotASubcontractor);
+                }
+            }
+
+            derivation.Validation.AssertExistsAtMostOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
+            derivation.Validation.AssertAtLeastOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
 
             if (!this.ExistShipToAddress)
             {

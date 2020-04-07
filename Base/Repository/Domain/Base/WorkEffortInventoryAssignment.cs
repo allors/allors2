@@ -166,5 +166,13 @@ namespace Allors.Repository
         public void Delete() { }
 
         #endregion
+
+        #region Allors
+
+        [Id("8f817fcb-1655-4d54-9a68-844d8a7f5017")]
+        #endregion
+        public void CalculateSellingPrice()
+        {
+        }
     }
 }
