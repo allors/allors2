@@ -81,7 +81,7 @@ namespace Allors.Domain
                 v.IsManualEntryAllowed = false;
                 v.IncreasesQuantityCommittedOut = false; // Decreases Quantity
                 v.IncreasesQuantityExpectedIn = null; // Does not affect Quantity
-                v.IncreasesQuantityOnHand = false; // Decreases Quantity
+                v.IncreasesQuantityOnHand = null; // Decreases Quantity
                 v.DefaultSerialisedInventoryItemState = serialisedStates.Good;
                 v.DefaultNonSerialisedInventoryItemState = nonSerialisedStates.Good;
             });
