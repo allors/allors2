@@ -1,7 +1,8 @@
 import { Loaded } from "../promise";
+import { ISessionObject } from "../framework";
 
 import { NodePluginArgs } from "gatsby"
-import { ISessionObject } from "../framework";
+import { ContentDigests } from "./ContentDigests";
 import createName from "./utils/createName";
 
 export class NodeMapper {
@@ -9,35 +10,11 @@ export class NodeMapper {
   constructor(private args: NodePluginArgs, private options) {
   }
 
-  public map(loaded: Loaded) {
+  public map(objects: ISessionObject[], contentDigests: ContentDigests) {
+
+    const ids = objects.map((v) => v.id);
 
     const { actions: { createNode }, createNodeId, createContentDigest } = this.args;
-
-    const session = loaded.session;
-    const ids = loaded.response.objects.map(v => v[0]);
-
-    const contentDigestById = loaded.response.objects
-      .reduce((acc, value) => {
-        const id = value[0];
-        const version = value[1];
-        const accessControls = value.length > 2 ? value[2] : undefined;
-        const deniedPermissions = value.length > 3 ? value[3] : undefined;
-
-        let contentDigest = `allors-${id}-${version}`;
-        if (accessControls) {
-          contentDigest += `${accessControls}`
-        }
-
-        if (deniedPermissions) {
-          contentDigest += `${deniedPermissions}`
-        }
-
-        acc[id] = createContentDigest(contentDigest);
-
-        return acc;
-      }, {});
-
-    const objects = ids.map((v) => session.get(v)).filter((v) => v.objectType._isGatsby);
     const objectById = objects.reduce((map, value) => { map[value.id] = value; return map; }, {})
 
     objects.forEach((v) => {
@@ -54,7 +31,7 @@ export class NodeMapper {
           children: [],
           internal: {
             type: w._name,
-            contentDigest: contentDigestById[sessionObject.id],
+            contentDigest: contentDigests.byId[sessionObject.id],
           }
         }
 
@@ -71,7 +48,7 @@ export class NodeMapper {
         children: [],
         internal: {
           type: type._name,
-          contentDigest: contentDigestById[sessionObject.id],
+          contentDigest: contentDigests.byId[sessionObject.id],
         }
       }
 
@@ -137,7 +114,7 @@ export class NodeMapper {
               classNode[propertyName] = associationIds.map((w) => createNodeId(`allors-${w}`));
             }
           }
-        } else{
+        } else {
           if (associationType.isOne) {
             if (!!association) {
               classNode[propertyName] = createNodeId(`allors-${associationType.objectType.name.toLowerCase()}-${association.id}`);

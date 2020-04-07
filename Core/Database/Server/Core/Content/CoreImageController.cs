@@ -69,14 +69,19 @@ namespace Allors.Server
 
                         var data = media.MediaContent.Data;
 
-                        if (w != null)
+                        var mediaType = media.Type.ToLowerInvariant();
+                        if ("image/jpeg".Equals(mediaType) || "image/png".Equals(mediaType))
                         {
-                            data = this.Resize(data, w.Value);
-                        }
+                            var width = w;
+                            var type = t;
+                            var quality = q;
+                            var background = b;
 
-                        var type = t;
-                        var quality = q;
-                        var background = b;
+                            if (width != null)
+                            {
+                                data = this.Resize(data, w.Value);
+                            }
+                        }
 
                         var responseEtag = this.Etag(data);
 
@@ -84,9 +89,9 @@ namespace Allors.Server
                         {
                             return this.NotModified();
                         }
-                        
+
                         this.Response.Headers[HeaderNames.ETag] = responseEtag;
-                        
+
                         return this.File(data, media.MediaContent.Type, name ?? media.FileName);
                     }
                 }
@@ -104,19 +109,26 @@ namespace Allors.Server
 
         private byte[] Resize(byte[] src, int width, SKFilterQuality quality = SKFilterQuality.High)
         {
-            using var ms = new MemoryStream(src);
-            using var sourceBitmap = SKBitmap.Decode(ms);
+            try
+            {
+                using var ms = new MemoryStream(src);
+                using var sourceBitmap = SKBitmap.Decode(ms);
 
-            var aspectRatio = (float)sourceBitmap.Height / sourceBitmap.Width;
-            var height = (int)Math.Round(width * aspectRatio);
+                var aspectRatio = (float)sourceBitmap.Height / sourceBitmap.Width;
+                var height = (int)Math.Round(width * aspectRatio);
 
-            using var scaledBitmap = sourceBitmap.Resize(new SKImageInfo(width, height), quality);
-            using var scaledImage = SKImage.FromBitmap(scaledBitmap);
-            using var data = scaledImage.Encode();
+                using var scaledBitmap = sourceBitmap.Resize(new SKImageInfo(width, height), quality);
+                using var scaledImage = SKImage.FromBitmap(scaledBitmap);
+                using var data = scaledImage.Encode();
 
-            return data.ToArray();
+                return data.ToArray();
+            }
+            catch
+            {
+                return src;
+            }
         }
-        
+
         public string Etag(byte[] binary)
         {
             using var sha1 = new SHA1Managed();
