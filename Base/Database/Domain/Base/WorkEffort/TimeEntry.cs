@@ -52,6 +52,21 @@ namespace Allors.Domain
             {
                 this.RateType = useInternalRate ? new RateTypes(this.Session()).InternalRate : new RateTypes(this.Session()).StandardRate;
             }
+
+            if (!this.ExistBillingFrequency)
+            {
+                this.BillingFrequency = new TimeFrequencies(this.Strategy.Session).Hour;
+            }
+
+            if (!this.ExistTimeFrequency)
+            {
+                this.TimeFrequency = new TimeFrequencies(this.Strategy.Session).Hour;
+            }
+
+            if (!this.ExistIsBillable)
+            {
+                this.IsBillable = true;
+            }
         }
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
