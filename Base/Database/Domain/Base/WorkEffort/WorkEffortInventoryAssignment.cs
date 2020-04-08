@@ -47,12 +47,9 @@ namespace Allors.Domain
                 }
             }
 
-            var date = this.Assignment.ScheduledStart;
-
             try
             {
-                this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart
-                    .Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date)).Max(v => v.Price);
+                this.CalculatePurchasePrice();
             }
             catch (Exception e)
             {
@@ -64,6 +61,19 @@ namespace Allors.Domain
             if (this.ExistAssignment)
             {
                 this.Assignment.ResetPrintDocument();
+            }
+        }
+
+        public void BaseCalculatePurchasePrice(WorkEffortInventoryAssignmentCalculatePurchasePrice method)
+        {
+            if (!method.Result.HasValue)
+            {
+                var date = this.Assignment.ScheduledStart;
+
+                this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart
+                    .Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date)).Max(v => v.Price);
+
+                method.Result = true;
             }
         }
 

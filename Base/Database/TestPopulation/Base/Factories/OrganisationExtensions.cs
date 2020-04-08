@@ -165,7 +165,7 @@ namespace Allors.Domain.TestPopulation
                 .WithFacility(@this.FacilitiesWhereOwner.First)
                 .WithQuantity(1)
                 .WithReason(new InventoryTransactionReasons(@this.Session()).IncomingShipment)
-                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(@this.Session()).Available)
+                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(@this.Session()).Good)
                 .Build();
 
             return unifiedGood;

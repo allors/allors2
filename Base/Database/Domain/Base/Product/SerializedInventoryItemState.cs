@@ -9,16 +9,10 @@ namespace Allors.Domain
     {
         public bool IsGood => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Good);
 
-        public bool IsBeingRepaired => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).BeingRepaired);
-
         public bool IsSlightlyDamaged => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).SlightlyDamaged);
 
         public bool IsDefective => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Defective);
 
         public bool IsScrap => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Scrap);
-
-        public bool IsAvailable => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Available);
-
-        public bool IsAssigned => this.Equals(new SerialisedInventoryItemStates(this.Strategy.Session).Assigned);
     }
 }

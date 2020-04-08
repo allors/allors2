@@ -16,5 +16,7 @@ namespace Allors.Domain
         public bool IsOnQuote => this.Equals(new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote);
 
         public bool IsOnSalesOrder => this.Equals(new SerialisedItemAvailabilities(this.Strategy.Session).OnSalesOrder);
+
+        public bool IsInworkshop => this.Equals(new SerialisedItemAvailabilities(this.Strategy.Session).Workshop);
     }
 }

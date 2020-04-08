@@ -454,7 +454,7 @@ namespace Allors.Domain
                             {
                                 new SerialisedInventoryItemBuilder(this.Session())
                                     .WithSerialisedItem(serialisedItem)
-                                    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Available)
+                                    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Good)
                                     .WithPart(orderItem.Part)
                                     .WithUnitOfMeasure(new UnitsOfMeasure(this.Session()).Piece)
                                     .WithFacility(this.Facility)
@@ -466,7 +466,7 @@ namespace Allors.Domain
                                 .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
                                 .WithFacility(this.Facility)
                                 .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
-                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(session).Available)
+                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(session).Good)
                                 .WithQuantity(1)
                                 .Build();
                         }

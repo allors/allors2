@@ -302,7 +302,7 @@ namespace Allors.Domain
                                 .WithUnitOfMeasure(inventoryItem.Part.UnitOfMeasure)
                                 .WithFacility(inventoryItem.Facility)
                                 .WithReason(new InventoryTransactionReasons(this.Strategy.Session).OutgoingShipment)
-                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Available)
+                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Good)
                                 .WithQuantity(1)
                                 .Build();
                         }

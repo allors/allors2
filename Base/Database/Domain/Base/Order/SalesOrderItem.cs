@@ -319,11 +319,6 @@ namespace Allors.Domain
                         inventoryAssignment.Quantity = 0 - this.QuantityCommittedOut;
                     }
                 }
-
-                if (this.ExistReservedFromSerialisedInventoryItem)
-                {
-                    this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Available;
-                }
             }
 
             // TODO: Move to Custom
@@ -478,7 +473,6 @@ namespace Allors.Domain
                             this.QuantityRequestsShipping = 1;
                         }
 
-                        this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Assigned;
                         this.QuantityReserved = 1;
                     }
                 }

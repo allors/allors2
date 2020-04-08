@@ -118,10 +118,18 @@ namespace Allors.Domain
                         || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
                         || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
 
+            var inWorkshop = this.WorkEffortFixedAssetAssignmentsWhereFixedAsset.Any(v => v.Assignment.WorkEffortState.IsCreated
+                        || v.Assignment.WorkEffortState.IsInProgress);
+
             if (this.ExistSerialisedItemAvailability
-                && (this.SerialisedItemAvailability.IsAvailable || this.SerialisedItemAvailability.IsOnQuote || this.SerialisedItemAvailability.IsOnSalesOrder))
+                && (this.SerialisedItemAvailability.IsAvailable || this.SerialisedItemAvailability.IsOnQuote
+                    || this.SerialisedItemAvailability.IsOnSalesOrder || this.SerialisedItemAvailability.IsInworkshop))
             {
-                if (quoted)
+                if (inWorkshop)
+                {
+                    this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Workshop;
+                }
+                else if (quoted)
                 {
                     this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote;
                 }

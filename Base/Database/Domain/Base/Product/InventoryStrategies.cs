@@ -38,23 +38,18 @@ namespace Allors.Domain
                 v.AddAvailableToPromiseNonSerialisedState(nonSerialisedStates.Good);
 
                 v.AddOnHandNonSerialisedState(nonSerialisedStates.Good);
-                v.AddOnHandNonSerialisedState(nonSerialisedStates.BeingRepaired);
                 v.AddOnHandNonSerialisedState(nonSerialisedStates.SlightlyDamaged);
                 v.AddOnHandNonSerialisedState(nonSerialisedStates.Defective);
                 v.AddOnHandNonSerialisedState(nonSerialisedStates.Scrap);
 
                 v.AddAvailableToPromiseSerialisedState(serialisedStates.Good);
-                v.AddAvailableToPromiseSerialisedState(serialisedStates.Available);
 
                 // Exclude serialisedStates.Sold
                 // Exclude serialisedStates.InRent
                 v.AddOnHandSerialisedState(serialisedStates.Good);
-                v.AddOnHandSerialisedState(serialisedStates.BeingRepaired);
                 v.AddOnHandSerialisedState(serialisedStates.SlightlyDamaged);
                 v.AddOnHandSerialisedState(serialisedStates.Defective);
                 v.AddOnHandSerialisedState(serialisedStates.Scrap);
-                v.AddOnHandSerialisedState(serialisedStates.Available);
-                v.AddOnHandSerialisedState(serialisedStates.Assigned);
             });
         }
     }

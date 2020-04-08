@@ -14,7 +14,6 @@ namespace Allors.Domain
         private static readonly Guid SlightlyDamagedId = new Guid("BD2741E8-9EDB-47DF-AEFB-ED258AB4F7B9");
         private static readonly Guid DefectiveId = new Guid("41067E72-5833-461C-8087-308F91C205E4");
         private static readonly Guid ScrapId = new Guid("8FD0680D-28E4-4F85-8BC9-E935B6B64FAE");
-        private static readonly Guid BeingRepairedId = new Guid("FC0ACDBC-A89F-45AD-AC86-8199C18471DA");
 
         private UniquelyIdentifiableSticky<SerialisedItemState> cache;
 
@@ -27,7 +26,6 @@ namespace Allors.Domain
         public SerialisedItemState Defective => this.Cache[DefectiveId];
 
         public SerialisedItemState Scrap => this.Cache[ScrapId];
-        public SerialisedItemState BeingRepaired => this.Cache[BeingRepairedId];
 
         private UniquelyIdentifiableSticky<SerialisedItemState> Cache =>
             this.cache ??= new UniquelyIdentifiableSticky<SerialisedItemState>(this.Session);
@@ -59,11 +57,6 @@ namespace Allors.Domain
             merge(ScrapId, v =>
             {
                 v.Name = "Scrap";
-                v.IsActive = true;
-            });
-            merge(BeingRepairedId, v =>
-            {
-                v.Name = "Being Repaired";
                 v.IsActive = true;
             });
         }
