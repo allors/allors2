@@ -44,6 +44,16 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnInit(ObjectOnInit method)
+        {
+            var useInternalRate = this.WorkEffort?.Customer is Organisation organisation && organisation.IsInternalOrganisation;
+
+            if (!this.ExistRateType && useInternalRate)
+            {
+                this.RateType = new RateTypes(this.Session()).InternalRate;
+            }
+        }
+
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var (iteration, changeSet, derivedObjects) = method;
@@ -65,7 +75,7 @@ namespace Allors.Domain
             derivation.Validation.AssertExists(this, this.Meta.TimeSheetWhereTimeEntry);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.WorkEffort, this.Meta.EngagementItem);
 
-            var useInternalRate = this.WorkEffort.Customer is Organisation organisation && organisation.IsInternalOrganisation;
+            var useInternalRate = this.WorkEffort?.Customer is Organisation organisation && organisation.IsInternalOrganisation;
             var rateType = useInternalRate ? new RateTypes(this.Session()).InternalRate : this.RateType;
 
             if (this.ExistTimeSheetWhereTimeEntry)
