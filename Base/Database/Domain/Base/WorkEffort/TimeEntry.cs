@@ -48,9 +48,9 @@ namespace Allors.Domain
         {
             var useInternalRate = this.WorkEffort?.Customer is Organisation organisation && organisation.IsInternalOrganisation;
 
-            if (!this.ExistRateType && useInternalRate)
+            if (!this.ExistRateType)
             {
-                this.RateType = new RateTypes(this.Session()).InternalRate;
+                this.RateType = useInternalRate ? new RateTypes(this.Session()).InternalRate : new RateTypes(this.Session()).StandardRate;
             }
         }
 
