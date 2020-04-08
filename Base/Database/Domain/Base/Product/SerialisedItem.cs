@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
     using System.Text;
 
@@ -22,6 +23,11 @@ namespace Allors.Domain
             if (!this.ExistItemNumber)
             {
                 this.ItemNumber = this.Strategy.Session.GetSingleton().Settings.NextSerialisedItemNumber();
+            }
+
+            if (!this.ExistDerivationTrigger)
+            {
+                this.DerivationTrigger = Guid.NewGuid();
             }
         }
 
@@ -112,17 +118,21 @@ namespace Allors.Domain
                         || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
                         || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
 
-            if (quoted)
+            if (this.ExistSerialisedItemAvailability
+                && (this.SerialisedItemAvailability.IsAvailable || this.SerialisedItemAvailability.IsOnQuote || this.SerialisedItemAvailability.IsOnSalesOrder))
             {
-                this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote;
-            }
-            else if (ordered)
-            {
-                this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnSalesOrder;
-            }
-            else
-            {
-                this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Available;
+                if (quoted)
+                {
+                    this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote;
+                }
+                else if (ordered)
+                {
+                    this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnSalesOrder;
+                }
+                else
+                {
+                    this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Available;
+                }
             }
         }
 

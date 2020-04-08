@@ -7,6 +7,7 @@ using Resources;
 
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
     using Allors.Meta;
 
@@ -113,37 +114,11 @@ namespace Allors.Domain
                 this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
 
-            this.SetAvailability(this.SerialisedItem);
-
             // CurrentVersion is Previous Version until PostDerive
             var previousSerialisedItem = this.CurrentVersion?.SerialisedItem;
             if (previousSerialisedItem != null && previousSerialisedItem != this.SerialisedItem)
             {
-                this.SetAvailability(previousSerialisedItem);
-            }
-        }
-
-        private void SetAvailability(SerialisedItem serialisedItem)
-        {
-            var quoted = serialisedItem?.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft
-                        || v.QuoteItemState.IsSubmitted || v.QuoteItemState.IsApproved
-                        || v.QuoteItemState.IsAwaitingAcceptance || v.QuoteItemState.IsAccepted);
-
-            var ordered = serialisedItem?.SalesOrderItemsWhereSerialisedItem.Any(v => v.SalesOrderItemState.IsProvisional
-                        || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
-                        || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
-
-            if (quoted.HasValue && quoted.Value)
-            {
-                serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote;
-            }
-            else if (ordered.HasValue && ordered.Value)
-            {
-                serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnSalesOrder;
-            }
-            else if (this.ExistSerialisedItem)
-            {
-                serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Available;
+                previousSerialisedItem.DerivationTrigger = Guid.NewGuid();
             }
         }
 
@@ -154,6 +129,14 @@ namespace Allors.Domain
             if (!this.ExistUnitPrice)
             {
                 derivation.Validation.AddError(this, this.Meta.UnitPrice, ErrorMessages.UnitPriceRequired);
+            }
+        }
+
+        public void BaseDelete(QuoteItemDelete method)
+        {
+            if (this.ExistSerialisedItem)
+            {
+                this.SerialisedItem.DerivationTrigger = Guid.NewGuid();
             }
         }
 

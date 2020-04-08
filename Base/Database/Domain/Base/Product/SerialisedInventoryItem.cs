@@ -76,7 +76,13 @@ namespace Allors.Domain
             {
                 if (pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
                 {
-                    this.Quantity -= (int)pickListItem.QuantityPicked;
+                    foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
+                    {
+                        if (!itemIssuance.ShipmentItem.ShipmentItemState.Shipped)
+                        {
+                            this.Quantity -= (int)pickListItem.QuantityPicked;
+                        }
+                    }
                 }
             }
 

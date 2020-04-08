@@ -59,11 +59,7 @@ namespace Allors.Domain
                 this.UnitPurchasePrice = 0M;
             }
 
-            if (this.UnitSellingPrice == 0)
-            {
-                var unitSellingPrice = this.BaseCalculateSellingPrice() ?? 0M;
-                this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
-            }
+            this.CalculateSellingPrice();
 
             if (this.ExistAssignment)
             {
@@ -71,13 +67,26 @@ namespace Allors.Domain
             }
         }
 
-        public decimal? BaseCalculateSellingPrice()
+        public void BaseCalculateSellingPrice(WorkEffortInventoryAssignmentCalculateSellingPrice method)
         {
-            var part = this.InventoryItem.Part;
-            var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
-            var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
+            if (!method.Result.HasValue)
+            {
+                if (this.AssignedUnitSellingPrice.HasValue)
+                {
+                    this.UnitSellingPrice = this.AssignedUnitSellingPrice.Value;
+                }
+                else
+                {
+                    var part = this.InventoryItem.Part;
+                    var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
+                    var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
 
-            return currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
+                    var price = currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
+                    this.UnitSellingPrice = price ?? 0M;
+                }
+
+                method.Result = true;
+            }
         }
 
         private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)

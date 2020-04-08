@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { ObjectData } from '../../../../../material/core/services/object';
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseOrder, VatRate, VatRegime, SupplierRelationship, Facility } from '../../../../../domain';
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseOrder, VatRate, VatRegime, SupplierRelationship, Facility, SubContractorRelationship } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { SaveService, FiltersService } from '../../../../../material';
@@ -34,6 +34,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   internalOrganisation: Organisation;
 
   addSupplier = false;
+  addSubcontractor = false;
 
   addTakenViaContactMechanism = false;
   addTakenViaContactPerson = false;
@@ -44,8 +45,10 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   addShipToAddress = false;
   addShipToContactPerson = false;
 
-  private subscription: Subscription;
   facilities: Facility[];
+  private takenVia: Party;
+
+  private subscription: Subscription;
 
   constructor(
     @Self() public allors: ContextService,
@@ -105,7 +108,13 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         }
 
         if (this.order.TakenViaSupplier) {
-          this.updateSupplier(this.order.TakenViaSupplier);
+          this.takenVia = this.order.TakenViaSupplier;
+          this.updateSupplier(this.takenVia);
+        }
+
+        if (this.order.TakenViaSubcontractor) {
+          this.takenVia = this.order.TakenViaSubcontractor;
+          this.updateSubcontractor(this.takenVia);
         }
 
         if (this.order.OrderedBy) {
@@ -144,12 +153,23 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
     supplierRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.order.TakenViaSupplier = organisation;
+    this.takenVia = organisation;
+  }
+
+  public subcontractorAdded(organisation: Organisation): void {
+
+    const subcontractorRelationship = this.allors.context.create('SubContractorRelationship') as SubContractorRelationship;
+    subcontractorRelationship.SubContractor = organisation;
+    subcontractorRelationship.Contractor = this.internalOrganisation;
+
+    this.order.TakenViaSubcontractor = organisation;
+    this.takenVia = organisation;
   }
 
   public takenViaContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.order.TakenViaSupplier as Organisation;
+    organisationContactRelationship.Organisation = this.takenVia as Organisation;
     organisationContactRelationship.Contact = person;
 
     this.takenViaContacts.push(person);
@@ -159,7 +179,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   public takenViaContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.takenViaContactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.order.TakenViaSupplier.AddPartyContactMechanism(partyContactMechanism);
+    this.takenVia.AddPartyContactMechanism(partyContactMechanism);
     this.order.TakenViaContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
@@ -222,6 +242,47 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
       ),
       pull.Party({
         object: supplier,
+        fetch: {
+          CurrentContacts: x,
+        }
+      }),
+    ];
+
+    this.allors.context
+      .load(new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+        this.takenViaContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.takenViaContacts = loaded.collections.CurrentContacts as Person[];
+      });
+  }
+
+  public subcontractorSelected(subContractor: Party) {
+    this.updateSubcontractor(subContractor);
+  }
+
+  private updateSubcontractor(subContractor: Party): void {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
+      pull.Party(
+        {
+          object: subContractor,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_Country: x
+                }
+              }
+            }
+          }
+        }
+      ),
+      pull.Party({
+        object: subContractor,
         fetch: {
           CurrentContacts: x,
         }

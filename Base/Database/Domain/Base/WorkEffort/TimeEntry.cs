@@ -44,6 +44,31 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnInit(ObjectOnInit method)
+        {
+            var useInternalRate = this.WorkEffort?.Customer is Organisation organisation && organisation.IsInternalOrganisation;
+
+            if (!this.ExistRateType)
+            {
+                this.RateType = useInternalRate ? new RateTypes(this.Session()).InternalRate : new RateTypes(this.Session()).StandardRate;
+            }
+
+            if (!this.ExistBillingFrequency)
+            {
+                this.BillingFrequency = new TimeFrequencies(this.Strategy.Session).Hour;
+            }
+
+            if (!this.ExistTimeFrequency)
+            {
+                this.TimeFrequency = new TimeFrequencies(this.Strategy.Session).Hour;
+            }
+
+            if (!this.ExistIsBillable)
+            {
+                this.IsBillable = true;
+            }
+        }
+
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var (iteration, changeSet, derivedObjects) = method;
@@ -65,7 +90,7 @@ namespace Allors.Domain
             derivation.Validation.AssertExists(this, this.Meta.TimeSheetWhereTimeEntry);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.WorkEffort, this.Meta.EngagementItem);
 
-            var useInternalRate = this.WorkEffort.Customer is Organisation organisation && organisation.IsInternalOrganisation;
+            var useInternalRate = this.WorkEffort?.Customer is Organisation organisation && organisation.IsInternalOrganisation;
             var rateType = useInternalRate ? new RateTypes(this.Session()).InternalRate : this.RateType;
 
             if (this.ExistTimeSheetWhereTimeEntry)
@@ -121,6 +146,11 @@ namespace Allors.Domain
                         billingRate = partyRate.Rate;
                     }
                 }
+            }
+
+            if (useInternalRate && this.WorkEffort.Customer != this.WorkEffort.ExecutedBy)
+            {
+                billingRate = Math.Round(billingRate * (1 + this.strategy.Session.GetSingleton().Settings.InternalLabourSurchargePercentage / 100), 2);
             }
 
             this.BillingRate = billingRate;
@@ -193,6 +223,7 @@ namespace Allors.Domain
                 }
 
                 var billableTimeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(billableMinutes, this.BillingFrequency), 2);
+
                 this.BillingAmount = Math.Round((decimal)(this.BillingRate * billableTimeInTimeEntryRateFrequency), 2);
             }
         }

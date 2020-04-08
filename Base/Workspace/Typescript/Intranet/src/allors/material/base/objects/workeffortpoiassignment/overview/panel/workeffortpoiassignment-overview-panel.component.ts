@@ -98,7 +98,8 @@ export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent extends
             WorkEffortPurchaseOrderItemAssignmentsWhereAssignment: {
               include: {
                 PurchaseOrder: {
-                  TakenViaSupplier: x
+                  TakenViaSupplier: x,
+                  TakenViaSubcontractor: x,
                 },
                 PurchaseOrderItem: x
               }
@@ -116,8 +117,8 @@ export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent extends
         this.table.data = this.objects.map((v) => {
           return {
             object: v,
-            supplier: v.PurchaseOrder.TakenViaSupplier.displayName,
-            description: v.PurchaseOrderItem.displayName,
+            supplier: (v.PurchaseOrder.TakenViaSupplier && v.PurchaseOrder.TakenViaSupplier.displayName) || (v.PurchaseOrder.TakenViaSubcontractor && v.PurchaseOrder.TakenViaSubcontractor.displayName),
+            description: v.PurchaseOrderItem.Description,
             orderNumber: v.PurchaseOrder.OrderNumber,
             quantity: v.Quantity,
           } as Row;
