@@ -12,7 +12,6 @@ namespace Allors.Domain.TestPopulation
 
     public static partial class PurchaseInvoiceBuilderExtensions
     {
-        // TODO: Replace erroneous properties
         public static PurchaseInvoiceBuilder WithSalesInternalInvoiceDefaults(this PurchaseInvoiceBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
@@ -56,7 +55,6 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        // TODO: Replace erroneous properties
         public static PurchaseInvoiceBuilder WithSalesExternalB2BInvoiceDefaults(this PurchaseInvoiceBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
@@ -79,16 +77,12 @@ namespace Allors.Domain.TestPopulation
             @this.WithBilledTo(internalOrganisation);
             @this.WithBilledToContactPerson(customer.CurrentContacts.FirstOrDefault());
             @this.WithShipToCustomer(customer);
-            /*@this.WithShipToAddress(customer.ShippingAddress);
-            @this.WithShipToContactPerson(customer.CurrentContacts.FirstOrDefault());
-            @this.WithSalesInvoiceType(salesInvoiceType);
-            @this.WithTotalListPrice(faker.Random.Decimal());
-            @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE).Build();
-            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE).Build();
-            @this.WithAdvancePayment(faker.Random.Decimal());
-            @this.WithPaymentDays(faker.Random.Int(7, 30));
-            @this.WithIsRepeatingInvoice(faker.Random.Bool());*/
+            @this.WithShipToCustomerAddress(customer.ShippingAddress);
+            @this.WithShipToCustomerContactPerson(customer.CurrentContacts.FirstOrDefault());
+            @this.WithBillToCustomerPaymentMethod(paymentMethod);
+            @this.WithPurchaseInvoiceType(purchaseInvoiceType);
+            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_NonGSE).Build();
+            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_GSE).Build();
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());

@@ -30,7 +30,7 @@ namespace Tests.PersonTests
         {
             var before = new People(this.Session).Extent().ToArray();
 
-            var person = before.First(v => v.DisplayName().Equals("John Doe"));
+            var person = before.First();
             var id = person.Id;
 
             this.people.Table.DefaultAction(person);
