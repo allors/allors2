@@ -69,9 +69,18 @@ namespace Allors.Domain
             this.PurchaseOrder = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem;
             this.SuppliedBy = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier ?? this.AssignedSuppliedBy;
 
-            this.DeriveProductCharacteristics(derivation);
+            this.OnQuote = this.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft
+                        || v.QuoteItemState.IsSubmitted || v.QuoteItemState.IsApproved
+                        || v.QuoteItemState.IsAwaitingAcceptance || v.QuoteItemState.IsAccepted);
 
-            this.SetAvailability();
+            this.OnSalesOrder = this.SalesOrderItemsWhereSerialisedItem.Any(v => v.SalesOrderItemState.IsProvisional
+                        || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
+                        || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
+
+            this.OnWorkEffort = this.WorkEffortFixedAssetAssignmentsWhereFixedAsset.Any(v => v.Assignment.WorkEffortState.IsCreated
+                        || v.Assignment.WorkEffortState.IsInProgress);
+
+            this.DeriveProductCharacteristics(derivation);
 
             if (derivation.ChangeSet.IsCreated(this))
             {
@@ -106,42 +115,6 @@ namespace Allors.Domain
             builder.Append(string.Join(" ", this.Keywords));
 
             this.SearchString = builder.ToString();
-        }
-
-        private void SetAvailability()
-        {
-            var quoted = this.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft
-                        || v.QuoteItemState.IsSubmitted || v.QuoteItemState.IsApproved
-                        || v.QuoteItemState.IsAwaitingAcceptance || v.QuoteItemState.IsAccepted);
-
-            var ordered = this.SalesOrderItemsWhereSerialisedItem.Any(v => v.SalesOrderItemState.IsProvisional
-                        || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
-                        || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
-
-            var inWorkshop = this.WorkEffortFixedAssetAssignmentsWhereFixedAsset.Any(v => v.Assignment.WorkEffortState.IsCreated
-                        || v.Assignment.WorkEffortState.IsInProgress);
-
-            if (this.ExistSerialisedItemAvailability
-                && (this.SerialisedItemAvailability.IsAvailable || this.SerialisedItemAvailability.IsOnQuote
-                    || this.SerialisedItemAvailability.IsOnSalesOrder || this.SerialisedItemAvailability.IsInworkshop))
-            {
-                if (inWorkshop)
-                {
-                    this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Workshop;
-                }
-                else if (quoted)
-                {
-                    this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnQuote;
-                }
-                else if (ordered)
-                {
-                    this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).OnSalesOrder;
-                }
-                else
-                {
-                    this.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Available;
-                }
-            }
         }
 
         public void BaseDelete(DeletableDelete method)

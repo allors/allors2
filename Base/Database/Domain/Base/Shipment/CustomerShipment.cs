@@ -188,6 +188,7 @@ namespace Allors.Domain
                         if (item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
                         {
                             item.SerialisedItem.OwnedBy = this.ShipToParty;
+                            item.SerialisedItem.Ownership = new Ownerships(this.Session()).RepairAndmaintenance;
                         }
                     }
 

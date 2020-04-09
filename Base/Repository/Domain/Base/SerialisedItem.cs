@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("5E594A00-15A4-4871-84E9-B8010A78FD21")]
     #endregion
-    public partial class SerialisedItem : Deletable, FixedAsset
+    public partial class SerialisedItem : Deletable, FixedAsset, Versioned
     {
         #region InheritedProperties
 
@@ -53,6 +53,14 @@ namespace Allors.Repository
         public Media[] PrivateElectronicDocuments { get; set; }
 
         public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
 
         #endregion InheritedProperties
 
@@ -368,6 +376,36 @@ namespace Allors.Repository
         #endregion
         [Required]
         public Guid DerivationTrigger { get; set; }
+
+        #region Allors
+        [Id("80c6e34f-aadd-4ef6-b8cf-da532833ac03")]
+        [AssociationId("d668026d-14b7-4071-84bf-f8e28c7dfbc9")]
+        [RoleId("63799217-89c0-41f7-bf35-3ec9f962ecf2")]
+        #endregion
+        [Required]
+        [Derived]
+        [Workspace]
+        public bool OnQuote { get; set; }
+
+        #region Allors
+        [Id("85daec66-1768-40ce-a91b-f987256ee0ed")]
+        [AssociationId("0abfa6f0-3a5a-46eb-9070-10110d9ee25d")]
+        [RoleId("9ff0c909-630c-4b04-b58e-77d9479d9871")]
+        #endregion
+        [Required]
+        [Derived]
+        [Workspace]
+        public bool OnSalesOrder { get; set; }
+
+        #region Allors
+        [Id("7885e0a2-514d-4eb9-b654-f047eda00574")]
+        [AssociationId("2fad91dd-f819-409a-adcd-de341ba8568b")]
+        [RoleId("d65d7c59-abfc-4a76-944f-3e5b734501d0")]
+        #endregion
+        [Required]
+        [Derived]
+        [Workspace]
+        public bool OnWorkEffort { get; set; }
 
         #region inherited methods
         public void OnBuild() { }

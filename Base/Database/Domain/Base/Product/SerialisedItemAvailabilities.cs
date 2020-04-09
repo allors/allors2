@@ -12,10 +12,7 @@ namespace Allors.Domain
         private static readonly Guid SoldId = new Guid("9bdc0a55-4e3c-4604-b054-2441a551aa1c");
         private static readonly Guid InRentId = new Guid("ec87f723-2284-4f5c-ba57-fcf328a0b738");
         private static readonly Guid AvailableId = new Guid("c60f5741-a93f-48cc-b416-445aeb3fb166");
-        private static readonly Guid OnQuoteId = new Guid("0c4c2389-fe08-432e-bce9-6ee5d9e86cb2");
-        private static readonly Guid OnSalesOrderId = new Guid("3bc11515-7828-4b4b-947c-3b4793123b8d");
         private static readonly Guid NotAvailableId = new Guid("74499ac5-cac9-4276-8b9e-e47f977104fd");
-        private static readonly Guid WorkshopId = new Guid("A3230C23-2AA9-4B00-98EE-8B66A918B163");
 
         private UniquelyIdentifiableSticky<SerialisedItemAvailability> cache;
 
@@ -24,14 +21,7 @@ namespace Allors.Domain
         public SerialisedItemAvailability InRent => this.Cache[InRentId];
 
         public SerialisedItemAvailability Available => this.Cache[AvailableId];
-
-        public SerialisedItemAvailability OnQuote => this.Cache[OnQuoteId];
-
-        public SerialisedItemAvailability OnSalesOrder => this.Cache[OnSalesOrderId];
-
         public SerialisedItemAvailability NotAvailable => this.Cache[NotAvailableId];
-
-        public SerialisedItemAvailability Workshop => this.Cache[WorkshopId];
 
         private UniquelyIdentifiableSticky<SerialisedItemAvailability> Cache =>
             this.cache ??= new UniquelyIdentifiableSticky<SerialisedItemAvailability>(this.Session);
@@ -55,24 +45,9 @@ namespace Allors.Domain
                 v.Name = "Available";
                 v.IsActive = true;
             });
-            merge(OnQuoteId, v =>
-            {
-                v.Name = "On Quote";
-                v.IsActive = true;
-            });
-            merge(OnSalesOrderId, v =>
-            {
-                v.Name = "On SalesOrder";
-                v.IsActive = true;
-            });
             merge(NotAvailableId, v =>
             {
                 v.Name = "Not Available";
-                v.IsActive = true;
-            });
-            merge(WorkshopId, v =>
-            {
-                v.Name = "In Workshop";
                 v.IsActive = true;
             });
         }

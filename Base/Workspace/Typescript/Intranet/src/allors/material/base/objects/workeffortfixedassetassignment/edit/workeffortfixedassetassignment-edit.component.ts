@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { WorkEffort, WorkEffortFixedAssetAssignment, Enumeration, SerialisedItem } from '../../../../../domain';
+import { WorkEffort, WorkEffortFixedAssetAssignment, Enumeration, SerialisedItem, Organisation, Party } from '../../../../../domain';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
@@ -28,6 +28,8 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
   title: string;
 
   private subscription: Subscription;
+  serialisedItems: SerialisedItem[];
+  externalCustomer: boolean;
 
   constructor(
     @Self() public allors: ContextService,
@@ -65,7 +67,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
               }
             }),
             pull.WorkEffort({
-              object: this.data.associationId
+              object: this.data.associationId,
             }),
             pull.SerialisedItem({
               object: this.data.associationId,
@@ -95,6 +97,13 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
         this.workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         this.assetAssignmentStatuses = loaded.collections.AssetAssignmentStatuses as Enumeration[];
+
+        const b2bCustomer = this.workEffort.Customer as Organisation;
+        this.externalCustomer = b2bCustomer === null || !b2bCustomer.IsInternalOrganisation;
+
+        if (this.externalCustomer) {
+          this.updateSerialisedItems(this.workEffort.Customer);
+        }
 
         if (isCreate) {
           this.title = 'Add Asset Assignment';
@@ -141,5 +150,28 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
       },
         this.saveService.errorHandler
       );
+  }
+
+  private updateSerialisedItems(customer: Party) {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
+      pull.Party(
+        {
+          object: customer,
+          fetch: {
+            SerialisedItemsWhereOwnedBy: x,
+          },
+        }
+      ),
+    ];
+
+    this.allors.context
+      .load(new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
+      });
   }
 }
