@@ -9,14 +9,17 @@ namespace Allors.Domain
 
     public partial class Ownerships
     {
-        private static readonly Guid OwnId = new Guid("74AA16DE-5719-4AE1-9547-0570E1111EDC");
-        private static readonly Guid TradingId = new Guid("1E1BABFA-2F4F-45EF-BFC0-848E0199F4DF");
+        private static readonly Guid OwnId = new Guid("1cefe3e7-3f9a-43a1-b12c-93e8032d3880");
+        private static readonly Guid TradingId = new Guid("3ec25bbf-511c-44f1-a599-4a0330f28c3e");
+        private static readonly Guid RepairAndmaintenanceId = new Guid("6b613409-bdf4-4a86-815f-6920d2fec8d3");
 
         private UniquelyIdentifiableSticky<Ownership> cache;
 
         public Ownership Own => this.Cache[OwnId];
 
         public Ownership Trading => this.Cache[TradingId];
+
+        public Ownership RepairAndmaintenance => this.Cache[RepairAndmaintenanceId];
 
         private UniquelyIdentifiableSticky<Ownership> Cache => this.cache ??= new UniquelyIdentifiableSticky<Ownership>(this.Session);
 
@@ -38,6 +41,13 @@ namespace Allors.Domain
             {
                 v.Name = "Trading";
                 localisedName.Set(v, dutchLocale, "Handel");
+                v.IsActive = true;
+            });
+
+            merge(RepairAndmaintenanceId, v =>
+            {
+                v.Name = "R&M";
+                localisedName.Set(v, dutchLocale, "R&M");
                 v.IsActive = true;
             });
         }

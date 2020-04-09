@@ -88,6 +88,9 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       new Like({ roleType: m.SerialisedItem.ItemNumber, parameter: 'id' }),
       new Like({ roleType: m.SerialisedItem.Name, parameter: 'name' }),
       new Like({ roleType: m.SerialisedItem.Keywords, parameter: 'keyword' }),
+      new Equals({ propertyType: m.SerialisedItem.OnQuote, parameter: 'onQuote' }),
+      new Equals({ propertyType: m.SerialisedItem.OnSalesOrder, parameter: 'onSalesOrder' }),
+      new Equals({ propertyType: m.SerialisedItem.OnWorkEffort, parameter: 'onWorkEffort' }),
       new Equals({ propertyType: m.SerialisedItem.SerialisedItemAvailability, parameter: 'availability' }),
       new Equals({ propertyType: m.SerialisedItem.SerialisedItemState, parameter: 'state' }),
       new Equals({ propertyType: m.SerialisedItem.Ownership, parameter: 'ownership' }),
@@ -156,6 +159,9 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
 
     this.filterService.init(predicate, {
       active: { initialValue: true },
+      onQuote: { initialValue: true },
+      onSalesOrder: { initialValue: true },
+      onWorkEffort: { initialValue: true },
       state: { search: stateSearch, display: (v: SerialisedItemState) => v && v.Name },
       availability: { search: availabilitySearch, display: (v: SerialisedItemAvailability) => v && v.Name },
       ownership: { search: ownershipSearch, display: (v: Ownership) => v && v.Name },

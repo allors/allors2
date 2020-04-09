@@ -21,6 +21,13 @@
 
         <mat-tab label="General">
           <div class="container-fluid">
+
+            <div class="row pt-3">
+              <a-mat-checkbox class="col-md" [disabled]="true" [object]="serialisedItem" [roleType]="m.SerialisedItem.OnQuote"></a-mat-checkbox>
+              <a-mat-checkbox class="col-md" [disabled]="true" [object]="serialisedItem" [roleType]="m.SerialisedItem.OnSalesOrder"></a-mat-checkbox>
+              <a-mat-checkbox class="col-md" [disabled]="true" [object]="serialisedItem" [roleType]="m.SerialisedItem.OnWorkEffort"></a-mat-checkbox>
+            </div>
+
             <div class="row pt-3">
               <a-mat-static class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.ItemNumber">
               </a-mat-static>

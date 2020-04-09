@@ -19,6 +19,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../../core/components/role/autocomplete';
+import { AllorsMaterialCheckboxModule } from '../../../../../core/components/role/checkbox';
 import { AllorsMaterialDatepickerModule } from '../../../../../core/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../../core/components/role/file';
 import { AllorsMaterialFilesModule } from '../../../../../core/components/role/files';
@@ -45,6 +46,7 @@ export { SerialisedItemOverviewDetailComponent } from './serialiseditem-overview
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
+    AllorsMaterialCheckboxModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialFilesModule,
