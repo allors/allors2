@@ -89,11 +89,6 @@ namespace Allors.Domain
                 this.Quantity = 1;
             }
 
-            if (this.Product is UnifiedGood unifiedGood && unifiedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.Session()).Serialised) && !this.ExistSerialisedItem)
-            {
-                derivation.Validation.AssertExists(this, this.Meta.SerialisedItem);
-            }
-
             if (this.ExistSerialisedItem && this.Quantity != 1)
             {
                 derivation.Validation.AddError(this, this.Meta.Quantity, ErrorMessages.SerializedItemQuantity);

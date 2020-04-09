@@ -189,7 +189,7 @@ namespace Allors
                 .WithFacility(allors.FacilitiesWhereOwner.First)
                 .WithQuantity(1)
                 .WithReason(new InventoryTransactionReasons(@this.Session()).IncomingShipment)
-                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(@this.Session()).Available)
+                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(@this.Session()).Good)
                 .Build();
 
             var good3 = new NonUnifiedGoodBuilder(@this.Session()).WithNonSerialisedPartDefaults(allors).Build();
