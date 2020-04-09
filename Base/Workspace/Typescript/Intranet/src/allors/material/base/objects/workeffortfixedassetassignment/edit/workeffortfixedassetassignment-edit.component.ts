@@ -98,11 +98,13 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
         this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         this.assetAssignmentStatuses = loaded.collections.AssetAssignmentStatuses as Enumeration[];
 
-        const b2bCustomer = this.workEffort.Customer as Organisation;
-        this.externalCustomer = b2bCustomer === null || !b2bCustomer.IsInternalOrganisation;
-
-        if (this.externalCustomer) {
-          this.updateSerialisedItems(this.workEffort.Customer);
+        if (this.serialisedItem === undefined) {
+          const b2bCustomer = this.workEffort.Customer as Organisation;
+          this.externalCustomer = b2bCustomer === null || !b2bCustomer.IsInternalOrganisation;
+  
+          if (this.externalCustomer) {
+            this.updateSerialisedItems(this.workEffort.Customer);
+          }
         }
 
         if (isCreate) {

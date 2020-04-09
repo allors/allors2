@@ -25,7 +25,9 @@
     </div>
   </div>
 
-  <a-mat-factory-fab [objectType]="metaService.m.WorkEffort" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
+  <div *ngIf="serialisedItem === undefined">
+    <a-mat-factory-fab [objectType]="metaService.m.WorkEffort" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
+  </div>
 
   <a-mat-table [table]="table"></a-mat-table>
 </div>

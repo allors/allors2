@@ -142,4 +142,11 @@ export class DefaultFiltersService extends FiltersService {
       roleTypes: [this.m.Party.PartyName],
     });
   }
+
+  get workEffortsFilter() {
+    return new SearchFactory({
+      objectType: this.m.WorkEffort,
+      roleTypes: [this.m.WorkEffort.Name],
+    });
+  }
 }

@@ -1,6 +1,6 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, MetaService, TestScope } from '../../../../../../angular';
-import { WorkEffort } from '../../../../../../domain';
+import { WorkEffort, SerialisedItem } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, OverviewService, ObjectData } from '../../../../..';
 import * as moment from 'moment';
@@ -21,6 +21,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit {
+  serialisedItem: SerialisedItem;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -129,11 +130,15 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
             }
           }
         }),
+        pull.SerialisedItem({
+          object: id,
+        }),
       );
     };
 
     this.panel.onPulled = (loaded) => {
 
+      this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
       const fromCustomer = loaded.collections[customerPullName] as WorkEffort[];
       const fromContact = loaded.collections[contactPullName] as WorkEffort[];
       const fromAsset = loaded.collections[assetPullName] as WorkEffort[];
