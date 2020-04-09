@@ -24,7 +24,7 @@ namespace Allors.Domain
 
             var serialisedItem = quote.QuoteItems.First().SerialisedItem;
 
-            Assert.Equal(new SerialisedItemAvailabilities(this.Session).OnQuote, serialisedItem.SerialisedItemAvailability);
+            Assert.True(serialisedItem.OnQuote);
         }
     }
 }
