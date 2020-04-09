@@ -40,7 +40,6 @@
     <Compile Remove="Tests\ProductType\**" />
     <Compile Remove="Tests\PurchaseInvoice\**" />
     <Compile Remove="Tests\SalesInvoice\**" />
-    <Compile Remove="Tests\SalesOrder\**" />
     <Compile Remove="Tests\SerialisedItemCharacteristic\**" />
     <Compile Remove="Tests\SerialisedItem\**" />
     <Compile Remove="Tests\WorkEffort\**" />
@@ -53,7 +52,6 @@
     <EmbeddedResource Remove="Tests\ProductType\**" />
     <EmbeddedResource Remove="Tests\PurchaseInvoice\**" />
     <EmbeddedResource Remove="Tests\SalesInvoice\**" />
-    <EmbeddedResource Remove="Tests\SalesOrder\**" />
     <EmbeddedResource Remove="Tests\SerialisedItemCharacteristic\**" />
     <EmbeddedResource Remove="Tests\SerialisedItem\**" />
     <EmbeddedResource Remove="Tests\WorkEffort\**" />
@@ -66,7 +64,6 @@
     <None Remove="Tests\ProductType\**" />
     <None Remove="Tests\PurchaseInvoice\**" />
     <None Remove="Tests\SalesInvoice\**" />
-    <None Remove="Tests\SalesOrder\**" />
     <None Remove="Tests\SerialisedItemCharacteristic\**" />
     <None Remove="Tests\SerialisedItem\**" />
     <None Remove="Tests\WorkEffort\**" />
