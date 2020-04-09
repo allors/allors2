@@ -243,7 +243,7 @@
   <data name="ReservedFromNonSerialisedInventoryItem" xml:space="preserve">
     <value>reserved from non serialised inventory item</value>
   </data>
-  <data name="PartyIsNotASubcontractor" xml:space="preserve">
-    <value>Party choosen is not a subcontractor for this internal organisation</value>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>

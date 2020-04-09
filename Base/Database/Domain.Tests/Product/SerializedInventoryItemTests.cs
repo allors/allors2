@@ -54,7 +54,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             // Arrange
-            var available = new SerialisedInventoryItemStates(this.Session).Available;
+            var goodOrder = new SerialisedInventoryItemStates(this.Session).Good;
             var warehouse = new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse);
             var kinds = new InventoryItemKinds(this.Session);
 
@@ -70,7 +70,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            Assert.Equal(available, serialInventoryItem.SerialisedInventoryItemState);
+            Assert.Equal(goodOrder, serialInventoryItem.SerialisedInventoryItemState);
             Assert.Equal(warehouse, serialInventoryItem.Facility);
         }
 
@@ -78,7 +78,7 @@ namespace Allors.Domain
         public void GivenFinishedGoodWithSerializedInventory_WhenDeriving_ThenQuantityOnHandUpdated()
         {
             // Arrange
-            var available = new SerialisedInventoryItemStates(this.Session).Available;
+            var goodOrder = new SerialisedInventoryItemStates(this.Session).Good;
             var warehouse = new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse);
 
             var kinds = new InventoryItemKinds(this.Session);
