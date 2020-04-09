@@ -9,6 +9,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Linq;
+    using System.Text;
     using Allors.Meta;
 
     public partial class QuoteItem
@@ -97,6 +98,54 @@ namespace Allors.Domain
             if (!this.ExistDetails && this.ExistSerialisedItem)
             {
                 this.Details = this.SerialisedItem.Details;
+            }
+
+            if (!this.ExistDetails && this.ExistProduct && this.Product is UnifiedGood unifiedGood)
+            {
+                var builder = new StringBuilder();
+
+                if (unifiedGood != null && unifiedGood.ExistManufacturedBy)
+                {
+                    builder.Append($", Manufacturer: {unifiedGood.ManufacturedBy.PartyName}");
+                }
+
+                if (unifiedGood != null && unifiedGood.ExistBrand)
+                {
+                    builder.Append($", Brand: {unifiedGood.Brand.Name}");
+                }
+
+                if (unifiedGood != null && unifiedGood.ExistModel)
+                {
+                    builder.Append($", Model: {unifiedGood.Model.Name}");
+                }
+
+                foreach (SerialisedItemCharacteristic characteristic in unifiedGood.SerialisedItemCharacteristics)
+                {
+                    if (characteristic.ExistValue)
+                    {
+                        var characteristicType = characteristic.SerialisedItemCharacteristicType;
+                        if (characteristicType.ExistUnitOfMeasure)
+                        {
+                            var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
+                                            ? characteristicType.UnitOfMeasure.Abbreviation
+                                            : characteristicType.UnitOfMeasure.Name;
+                            builder.Append($", {characteristicType.Name}: {characteristic.Value} {uom}");
+                        }
+                        else
+                        {
+                            builder.Append($", {characteristicType.Name}: {characteristic.Value}");
+                        }
+                    }
+                }
+
+                var details = builder.ToString();
+
+                if (details.StartsWith(","))
+                {
+                    details = details.Substring(2);
+                }
+
+                this.Details = details;
             }
 
             if (this.ExistRequestItem)

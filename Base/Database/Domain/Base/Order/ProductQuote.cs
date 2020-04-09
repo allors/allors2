@@ -424,6 +424,7 @@ namespace Allors.Domain
                         .WithAssignedUnitPrice(quoteItem.UnitPrice)
                         .WithProduct(quoteItem.Product)
                         .WithSerialisedItem(quoteItem.SerialisedItem)
+                        .WithDescription(quoteItem.Details)
                         .WithProductFeature(quoteItem.ProductFeature)
                         .WithQuantityOrdered(quoteItem.Quantity).Build());
             }

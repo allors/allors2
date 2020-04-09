@@ -83,6 +83,11 @@ namespace Allors.Domain
 
             foreach (QuoteItem quoteItem in @this.QuoteItems)
             {
+                if (@this.QuoteState.IsCreated)
+                {
+                    quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Draft;
+                }
+
                 if (@this.QuoteState.IsCancelled)
                 {
                     if (!Equals(quoteItem.QuoteItemState, quoteItemStates.Rejected))
