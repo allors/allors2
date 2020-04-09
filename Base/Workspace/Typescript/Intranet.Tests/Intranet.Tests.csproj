@@ -38,8 +38,6 @@
     <Compile Remove="Tests\ProductCategory\**" />
     <Compile Remove="Tests\ProductQuote\**" />
     <Compile Remove="Tests\ProductType\**" />
-    <Compile Remove="Tests\PurchaseInvoice\**" />
-    <Compile Remove="Tests\SalesInvoice\**" />
     <Compile Remove="Tests\SerialisedItemCharacteristic\**" />
     <Compile Remove="Tests\SerialisedItem\**" />
     <Compile Remove="Tests\WorkEffort\**" />
@@ -50,8 +48,6 @@
     <EmbeddedResource Remove="Tests\ProductCategory\**" />
     <EmbeddedResource Remove="Tests\ProductQuote\**" />
     <EmbeddedResource Remove="Tests\ProductType\**" />
-    <EmbeddedResource Remove="Tests\PurchaseInvoice\**" />
-    <EmbeddedResource Remove="Tests\SalesInvoice\**" />
     <EmbeddedResource Remove="Tests\SerialisedItemCharacteristic\**" />
     <EmbeddedResource Remove="Tests\SerialisedItem\**" />
     <EmbeddedResource Remove="Tests\WorkEffort\**" />
@@ -62,8 +58,6 @@
     <None Remove="Tests\ProductCategory\**" />
     <None Remove="Tests\ProductQuote\**" />
     <None Remove="Tests\ProductType\**" />
-    <None Remove="Tests\PurchaseInvoice\**" />
-    <None Remove="Tests\SalesInvoice\**" />
     <None Remove="Tests\SerialisedItemCharacteristic\**" />
     <None Remove="Tests\SerialisedItem\**" />
     <None Remove="Tests\WorkEffort\**" />
@@ -85,6 +79,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Tests\SalesOrderItem\" />
+    <Folder Include="Tests\PurchaseInvoiceItem\" />
+    <Folder Include="Tests\PurchaseOrderItem\" />
+    <Folder Include="Tests\PurchaseOrder\" />
+    <Folder Include="Tests\PurchaseInvoice\" />
+    <Folder Include="Tests\SalesInvoiceItem\" />
+    <Folder Include="Tests\SalesInvoice\" />
     <Folder Include="Tests\RequestItem\" />
     <Folder Include="Tests\RequestForQuote\" />
   </ItemGroup>

@@ -19,7 +19,7 @@ namespace Tests.SalesOrderTests
     public class SalesOrderEditTest : Test
     {
         private readonly SalesOrderListComponent salesOrderListPage;
-        private Organisation internalOrganisation;
+        private readonly Organisation internalOrganisation;
 
         public SalesOrderEditTest(TestFixture fixture)
             : base(fixture)
@@ -33,13 +33,13 @@ namespace Tests.SalesOrderTests
         [Fact]
         public void Edit()
         {
-            /*var before = new CustomerShipments(this.Session).Extent().ToArray();
+            var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new CustomerShipmentBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
+            var expected = new SalesOrderBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 
-            var expectedShipToPartyPartyName = expected.ShipToParty?.DisplayName();
+            /*var expectedShipToPartyPartyName = expected.ShipToParty?.DisplayName();
             var expectedShipToAddressDisplayName = expected.ShipToAddress?.DisplayName();
             var expectedShipToContactPersonPartyName = expected.ShipToContactPerson?.DisplayName();
             var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
@@ -54,7 +54,7 @@ namespace Tests.SalesOrderTests
             var shipment = before.First(v => ((Organisation)v.ShipFromParty).IsInternalOrganisation.Equals(true));
             var id = shipment.Id;
 
-            this.shipmentListPage.Table.DefaultAction(shipment);
+            this.salesOrderListPage.Table.DefaultAction(shipment);
             var shipmentOverview = new CustomerShipmentOverviewComponent(this.shipmentListPage.Driver);
             var shipmentOverviewDetail = shipmentOverview.CustomershipmentOverviewDetail.Click();
 
@@ -78,7 +78,7 @@ namespace Tests.SalesOrderTests
             this.Session.Rollback();
 
             var after = new CustomerShipments(this.Session).Extent().ToArray();
-            shipment = (CustomerShipment) this.Session.Instantiate(id);
+            shipment = (CustomerShipment)this.Session.Instantiate(id);
 
             Assert.Equal(after.Length, before.Length);
 

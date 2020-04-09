@@ -12,39 +12,38 @@ namespace Allors.Domain.TestPopulation
 
     public static partial class SalesOrderBuilderExtensions
     {
-        public static SalesOrderBuilder WithDefaults(this SalesOrderBuilder @this, Organisation internalOrganisation)
+        public static SalesOrderBuilder WithDefaults(this SalesOrderBuilder @this, Organisation sellerOrganisation)
         {
             var faker = @this.Session.Faker();
 
-            var internalOrganisations = @this.Session.Extent<Organisation>();
+            var billToCustomer = faker.Random.ListItem(sellerOrganisation.ActiveCustomers);
+            var shipToCustomer = faker.Random.ListItem(sellerOrganisation.ActiveCustomers);
+            var endCustomer = faker.Random.ListItem(sellerOrganisation.ActiveCustomers);
 
-            var otherInternalOrganization = internalOrganisations.Except(new List<Organisation> { internalOrganisation }).FirstOrDefault();
-
-            var endCustomer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
-            var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
-            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
+            var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults(sellerOrganisation).Build();
+            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithGSEDefaults(sellerOrganisation).Build();
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
-            @this.WithTakenBy(internalOrganisation);
-            @this.WithTakenByContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
-            @this.WithTakenByContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
+            @this.WithTakenBy(sellerOrganisation);
+            @this.WithTakenByContactMechanism(sellerOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
+            @this.WithTakenByContactPerson(sellerOrganisation.CurrentContacts.FirstOrDefault());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
-            @this.WithBillToCustomer(otherInternalOrganization.CurrentContacts.FirstOrDefault());
-            @this.WithBillToContactMechanism(otherInternalOrganization.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
-            @this.WithBillToContactPerson(otherInternalOrganization.CurrentContacts.FirstOrDefault());
+            @this.WithBillToCustomer(billToCustomer);
+            @this.WithBillToContactMechanism(billToCustomer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
+            @this.WithBillToContactPerson(billToCustomer.CurrentContacts.FirstOrDefault());
             @this.WithBillToEndCustomer(endCustomer);
             @this.WithBillToEndCustomerContactMechanism(endCustomer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBillToEndCustomerContactPerson(endCustomer.CurrentContacts.FirstOrDefault());
             @this.WithShipToEndCustomer(endCustomer);
             @this.WithShipToEndCustomerAddress(endCustomer.ShippingAddress);
             @this.WithShipToEndCustomerContactPerson(endCustomer.CurrentContacts.FirstOrDefault());
-            @this.WithShipToCustomer(otherInternalOrganization);
-            @this.WithShipToAddress(otherInternalOrganization.ShippingAddress);
-            @this.WithShipToContactPerson(otherInternalOrganization.CurrentContacts.FirstOrDefault());
+            @this.WithShipToCustomer(shipToCustomer);
+            @this.WithShipToAddress(shipToCustomer.ShippingAddress);
+            @this.WithShipToContactPerson(shipToCustomer.CurrentContacts.FirstOrDefault());
             @this.WithPaymentMethod(paymentMethod);
             @this.WithSalesOrderItem(salesOrderItem_NonGSE).Build();
             @this.WithSalesOrderItem(salesOrderItem_GSE).Build();

@@ -13,6 +13,7 @@ namespace Tests.SalesOrderTests
     using Components;
     using src.allors.material.@base.objects.salesorder.create;
     using src.allors.material.@base.objects.salesorder.list;
+    using src.allors.material.@base.objects.salesorder.overview;
     using Xunit;
 
     [Collection("Test collection")]
@@ -33,30 +34,27 @@ namespace Tests.SalesOrderTests
         [Fact]
         public void CreateMinimal()
         {
-            /*var before = new SalesOrders(this.Session).Extent().ToArray();
+            var before = new SalesOrders(this.Session).Extent().ToArray();
 
             var expected = new SalesOrderBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 
-            var expectedShipToPartyPartyName = expected.ShipToParty?.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress?.DisplayName();
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
-            var expectedShipFromFacilityName = expected.ShipFromFacility.Name;
+            var salesOrderCreateComponent = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver).SalestermOverviewPanel.Click();
 
-            var customerShipmentCreate = this.salesOrderListPage
+            /*var salesOrderCreate = this.salesOrderListPage
                 .CreateSalesOrder()
                 .Build(expected, true);
 
-            customerShipmentCreate.AssertFull(expected);
+            salesOrderCreate.AssertFull(expected);
 
             this.Session.Rollback();
-            customerShipmentCreate.SAVE.Click();
+            salesOrderCreate.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
 
-            var after = new CustomerShipments(this.Session).Extent().ToArray();
+            var after = new SalesOrders(this.Session).Extent().ToArray();
 
             Assert.Equal(after.Length, before.Length + 1);
 
