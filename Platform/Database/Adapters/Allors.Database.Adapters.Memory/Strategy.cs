@@ -511,8 +511,7 @@ namespace Allors.Database.Adapters.Memory
                     this.rollbackCompositeRoleByRoleType != null ||
                     this.rollbackCompositeRoleByRoleType != null ||
                     this.rollbackCompositeRoleByRoleType != null ||
-                    this.rollbackCompositeRoleByRoleType != null ||
-                    this.IsNewInSession)
+                    this.rollbackCompositeRoleByRoleType != null)
                 {
                     ++this.ObjectVersion;
                 }
