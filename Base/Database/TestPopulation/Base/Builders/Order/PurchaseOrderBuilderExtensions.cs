@@ -10,7 +10,7 @@ namespace Allors.Domain.TestPopulation
 
     public static partial class PurchaseOrderBuilderExtensions
     {
-        public static SalesOrderBuilder WithDefaults(this SalesOrderBuilder @this, Organisation internalOrganisation)
+        public static PurchaseOrderBuilder WithDefaults(this PurchaseOrderBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
@@ -18,7 +18,7 @@ namespace Allors.Domain.TestPopulation
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
             var postalAddress = new PostalAddressBuilder(@this.Session).WithDefaults().Build();
 
-            @this.WithTakenBy(internalOrganisation);
+            /*@this.WithTakenBy(internalOrganisation);
             @this.WithTakenByContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithTakenByContactPerson(customer.CurrentContacts.FirstOrDefault());
             @this.WithDescription(faker.Lorem.Sentence());
@@ -42,7 +42,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithPartiallyShip(faker.Random.Bool());
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
-            @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
+            @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());*/
 
             return @this;
         }

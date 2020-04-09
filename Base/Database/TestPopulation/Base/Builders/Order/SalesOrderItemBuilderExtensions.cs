@@ -20,10 +20,15 @@ namespace Allors.Domain.TestPopulation
                 invoiceItemTypes.Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId) || v.UniqueId.Equals(InvoiceItemTypes.PartItemId)).FirstOrDefault(),
             }).ToList();
 
+            var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
+
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithInvoiceItemType(faker.Random.ListItem(otherInvoiceItemTypes));
+            @this.WithProduct(serializedProduct);
+            @this.WithSerialisedItem(serializedProduct.SerialisedItems.First);
+            @this.WithQuantityOrdered(1);
             @this.WithMessage(faker.Lorem.Sentence());
             @this.WithAssignedUnitPrice(faker.Random.UInt());
 
@@ -42,6 +47,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithInvoiceItemType(invoiceItemType);
             @this.WithProduct(serializedProduct);
             @this.WithSerialisedItem(serializedProduct.SerialisedItems.First);
+            @this.WithQuantityOrdered(1);
             @this.WithMessage(faker.Lorem.Sentence());
             @this.WithAssignedUnitPrice(faker.Random.UInt());
 

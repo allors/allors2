@@ -8,7 +8,7 @@ namespace Allors.Domain.TestPopulation
 {
     public static partial class PurchaseOrderItemBuilderExtensions
     {
-        public static SalesOrderItemBuilder WithSerializedProductDefaults(this SalesOrderItemBuilder @this, Organisation internalOrganisation)
+        public static PurchaseOrderItemBuilder WithSerializedProductDefaults(this PurchaseOrderItemBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
@@ -18,7 +18,7 @@ namespace Allors.Domain.TestPopulation
             var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
 
-            @this.WithDescription(faker.Lorem.Sentences(2));
+            /*@this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem);
@@ -32,14 +32,14 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipFromAddress(customer.ShippingAddress);
             @this.WithAssignedShipToAddress(customer.ShippingAddress);
             @this.WithQuantityReturned(faker.Random.Decimal());
-            @this.WithAssignedShipToParty(customer);
+            @this.WithAssignedShipToParty(customer);*/
 
             return @this;
         }
 
-        public static SalesOrderItemBuilder WithSerializedNonProductDefaults(this SalesOrderItemBuilder @this, Organisation internalOrganisation)
+        public static PurchaseOrderItemBuilder WithSerializedNonProductDefaults(this PurchaseOrderItemBuilder @this, Organisation internalOrganisation)
         {
-            var faker = @this.Session.Faker();
+            /*var faker = @this.Session.Faker();
 
             var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
             var serializedItem = new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
@@ -63,7 +63,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipFromAddress(customer.ShippingAddress);
             @this.WithAssignedShipToAddress(customer.ShippingAddress);
             @this.WithQuantityReturned(faker.Random.Decimal());
-            @this.WithAssignedShipToParty(customer);
+            @this.WithAssignedShipToParty(customer);*/
 
             return @this;
         }
