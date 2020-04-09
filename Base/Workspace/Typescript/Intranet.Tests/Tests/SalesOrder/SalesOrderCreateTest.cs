@@ -40,11 +40,25 @@ namespace Tests.SalesOrderTests
 
             this.Session.Derive();
 
-            var salesOrderCreateComponent = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver).SalestermOverviewPanel.Click();
+            var expectedBillToCustomer = expected.BillToCustomer.DisplayName();
+            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToEndCustomerContactMechanism = expected.BillToEndCustomerContactMechanism;
+            var expectedBillToContactPerson = expected.BillToContactPerson;
+            var expectedBillToEndCustomer = expected.BillToEndCustomer.DisplayName();
+            var expectedShipToEndCustomer = expected.ShipToEndCustomer.DisplayName();
+            var expectedShipToEndCustomerAddress = expected.ShipToEndCustomerAddress;
+            var expectedShipToEndCustomerContactPerson = expected.ShipToEndCustomerContactPerson;
+            var expectedShipToCustomer = expected.ShipToCustomer.DisplayName();
+            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
+            var expectedShipToContactPerson = expected.ShipToContactPerson;
+            var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
+            var expectedCustomerReference = expected.CustomerReference;
+            var expectedDescription = expected.Description;
+            var expectedInternalComment = expected.InternalComment;
 
-            /*var salesOrderCreate = this.salesOrderListPage
+            var salesOrderCreate = this.salesOrderListPage
                 .CreateSalesOrder()
-                .Build(expected, true);
+                .Build(expected);
 
             salesOrderCreate.AssertFull(expected);
 
@@ -60,10 +74,21 @@ namespace Tests.SalesOrderTests
 
             var actual = after.Except(before).First();
 
-            Assert.Equal(expectedShipToPartyPartyName, actual.ShipToParty?.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
-            Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
-            Assert.Equal(expectedShipFromFacilityName, actual.ShipFromFacility.Name);*/
+            Assert.Equal(expectedBillToCustomer, actual.BillToCustomer?.DisplayName());
+            Assert.Equal(expectedBillToEndCustomerContactMechanism, actual.BillToEndCustomerContactMechanism);
+            Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
+            Assert.Equal(expectedBillToEndCustomer, actual.BillToEndCustomer?.DisplayName());
+            Assert.Equal(expectedShipToEndCustomer, actual.ShipToEndCustomer?.DisplayName());
+            Assert.Equal(expectedShipToEndCustomerAddress, actual.ShipToEndCustomerAddress);
+            Assert.Equal(expectedShipToEndCustomerContactPerson, actual.ShipToEndCustomerContactPerson);
+            Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress.DisplayName());
+            Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
+            Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress.DisplayName());
+            Assert.Equal(expectedCustomerReference, actual.CustomerReference);
+            Assert.Equal(expectedDescription, actual.Description);
+            Assert.Equal(expectedInternalComment, actual.InternalComment);
         }
     }
 }

@@ -20,6 +20,9 @@ namespace Allors.Domain.TestPopulation
             var shipToCustomer = faker.Random.ListItem(sellerOrganisation.ActiveCustomers);
             var endCustomer = faker.Random.ListItem(sellerOrganisation.ActiveCustomers);
 
+            var endContact = endCustomer is Person endContactPerson ? endContactPerson : endCustomer.CurrentContacts.FirstOrDefault();
+            var shipToContact = shipToCustomer is Person shipToContactPerson ? shipToContactPerson : shipToCustomer.CurrentContacts.FirstOrDefault();
+
             var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults(sellerOrganisation).Build();
             var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithGSEDefaults(sellerOrganisation).Build();
 
@@ -37,13 +40,14 @@ namespace Allors.Domain.TestPopulation
             @this.WithBillToContactPerson(billToCustomer.CurrentContacts.FirstOrDefault());
             @this.WithBillToEndCustomer(endCustomer);
             @this.WithBillToEndCustomerContactMechanism(endCustomer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
-            @this.WithBillToEndCustomerContactPerson(endCustomer.CurrentContacts.FirstOrDefault());
+            @this.WithBillToEndCustomerContactPerson(endContact);
             @this.WithShipToEndCustomer(endCustomer);
             @this.WithShipToEndCustomerAddress(endCustomer.ShippingAddress);
-            @this.WithShipToEndCustomerContactPerson(endCustomer.CurrentContacts.FirstOrDefault());
+            @this.WithShipToEndCustomerContactPerson(endContact);
             @this.WithShipToCustomer(shipToCustomer);
             @this.WithShipToAddress(shipToCustomer.ShippingAddress);
-            @this.WithShipToContactPerson(shipToCustomer.CurrentContacts.FirstOrDefault());
+            @this.WithShipFromAddress(sellerOrganisation.ShippingAddress);
+            @this.WithShipToContactPerson(shipToContact);
             @this.WithPaymentMethod(paymentMethod);
             @this.WithSalesOrderItem(salesOrderItem_NonGSE).Build();
             @this.WithSalesOrderItem(salesOrderItem_GSE).Build();
