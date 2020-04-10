@@ -14,7 +14,6 @@ namespace src.allors.material.@base.objects.customershipment.create
             if (!minimal)
             {
                 @this.ShipToAddress.Select(shipment.ShipToAddress);
-                @this.ShipToContactPerson.Select(shipment.ShipToContactPerson);
                 @this.ShipFromAddress.Select(shipment.ShipFromParty?.ShippingAddress);
                 @this.ShipmentMethod.Select(shipment.ShipmentMethod);
                 @this.ShipFromFacility.Select(((Organisation)shipment.ShipFromParty)?.FacilitiesWhereOwner?.First);
@@ -23,6 +22,11 @@ namespace src.allors.material.@base.objects.customershipment.create
                 @this.EstimatedArrivalDate.Set(shipment.EstimatedArrivalDate.Value.Date);
                 @this.HandlingInstruction.Set(shipment.HandlingInstruction);
                 @this.Comment.Set(shipment.Comment);
+
+                if (shipment.ExistShipToContactPerson)
+                {
+                    @this.ShipToContactPerson.Select(shipment.ShipToContactPerson);
+                }
             }
 
             return @this;

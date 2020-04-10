@@ -26,7 +26,7 @@
           display="Name" label="WorkOrder"></a-mat-autocomplete>
           <a-mat-autocomplete *ngIf="!serialisedItem && !externalCustomer" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FixedAsset" [filter]="filtersService.serialisedItemsFilter.create(allors.context)"
           display="displayName" label="Asset"></a-mat-autocomplete>
-          <a-mat-autocomplete *ngIf="!serialisedItem && externalCustomer" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FixedAsset" [filter]="serialisedItems"
+          <a-mat-autocomplete *ngIf="!serialisedItem && externalCustomer" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FixedAsset" [options]="serialisedItems"
           display="displayName" label="Asset"></a-mat-autocomplete>
       </div>
 

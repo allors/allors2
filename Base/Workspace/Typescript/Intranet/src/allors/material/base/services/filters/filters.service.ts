@@ -5,6 +5,7 @@ export abstract class FiltersService {
     customersFilter: SearchFactory;
     employeeFilter: SearchFactory;
     goodsFilter: SearchFactory;
+    serialisedgoodsFilter: SearchFactory;
     internalOrganisationsFilter: SearchFactory;
     nonUnifiedPartsFilter: SearchFactory;
     organisationsFilter: SearchFactory;

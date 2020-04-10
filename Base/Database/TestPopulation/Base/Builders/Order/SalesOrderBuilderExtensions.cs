@@ -28,7 +28,7 @@ namespace Allors.Domain.TestPopulation
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
-            @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
+            @this.WithCustomerReference(faker.Random.String(16));
             @this.WithTakenBy(sellerOrganisation);
             @this.WithTakenByContactMechanism(sellerOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithTakenByContactPerson(sellerOrganisation.CurrentContacts.FirstOrDefault());
