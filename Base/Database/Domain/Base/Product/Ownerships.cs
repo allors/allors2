@@ -11,7 +11,7 @@ namespace Allors.Domain
     {
         private static readonly Guid OwnId = new Guid("1cefe3e7-3f9a-43a1-b12c-93e8032d3880");
         private static readonly Guid TradingId = new Guid("3ec25bbf-511c-44f1-a599-4a0330f28c3e");
-        private static readonly Guid RepairAndmaintenanceId = new Guid("6b613409-bdf4-4a86-815f-6920d2fec8d3");
+        private static readonly Guid ThirdPartyId = new Guid("6b613409-bdf4-4a86-815f-6920d2fec8d3");
 
         private UniquelyIdentifiableSticky<Ownership> cache;
 
@@ -19,7 +19,7 @@ namespace Allors.Domain
 
         public Ownership Trading => this.Cache[TradingId];
 
-        public Ownership RepairAndmaintenance => this.Cache[RepairAndmaintenanceId];
+        public Ownership ThirdParty => this.Cache[ThirdPartyId];
 
         private UniquelyIdentifiableSticky<Ownership> Cache => this.cache ??= new UniquelyIdentifiableSticky<Ownership>(this.Session);
 
@@ -44,10 +44,10 @@ namespace Allors.Domain
                 v.IsActive = true;
             });
 
-            merge(RepairAndmaintenanceId, v =>
+            merge(ThirdPartyId, v =>
             {
-                v.Name = "R&M";
-                localisedName.Set(v, dutchLocale, "R&M");
+                v.Name = "Third party";
+                localisedName.Set(v, dutchLocale, "Derde partij");
                 v.IsActive = true;
             });
         }
