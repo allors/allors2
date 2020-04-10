@@ -14,4 +14,5 @@ export abstract class FiltersService {
     serialisedItemsFilter: SearchFactory;
     subContractorsFilter: SearchFactory;
     suppliersFilter: SearchFactory;
+    workEffortsFilter: SearchFactory;
 }
