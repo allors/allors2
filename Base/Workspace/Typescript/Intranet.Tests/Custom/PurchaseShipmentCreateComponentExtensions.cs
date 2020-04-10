@@ -23,7 +23,7 @@ namespace src.allors.material.@base.objects.purchaseshipment.create
 
                 if (shipment.ExistShipToContactPerson)
                 {
-                    @this.ShipFromContactPerson.Select(shipment.ShipToContactPerson);
+                    @this.ShipToContactPerson.Select(shipment.ShipToContactPerson);
                 }
             }
 
