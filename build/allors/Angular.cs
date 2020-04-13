@@ -65,7 +65,7 @@ partial class Angular : IDisposable
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 Warn($"Angular: Exception (run {++run})");
             }

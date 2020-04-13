@@ -1,60 +1,59 @@
 using System;
-using System.Dynamic;
 using MartinCostello.SqlLocalDb;
 using Microsoft.Data.SqlClient;
-using Nuke.Common.IO;
 using static Nuke.Common.Logger;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
-
 
 partial class SqlServer : IDisposable
 {
-    SqlLocalDbApi sqlLocalDbApi;
-    ISqlLocalDbInstanceInfo dbInstance;
-    ISqlLocalDbInstanceManager manager;
+    private SqlLocalDbApi sqlLocalDbApi;
+    private ISqlLocalDbInstanceInfo dbInstance;
+    private ISqlLocalDbInstanceManager manager;
 
     public SqlServer()
     {
-        sqlLocalDbApi = new SqlLocalDbApi();
-        dbInstance = sqlLocalDbApi.GetDefaultInstance();
-        manager = dbInstance.Manage();
+        this.sqlLocalDbApi = new SqlLocalDbApi();
+        this.dbInstance = this.sqlLocalDbApi.GetDefaultInstance();
+        this.manager = this.dbInstance.Manage();
 
-        if (!dbInstance.IsRunning)
+        if (!this.dbInstance.IsRunning)
         {
             Normal("SqlServer: Start");
-            manager.Start();
+            this.manager.Start();
         }
     }
 
     public void Restart()
     {
-        if (dbInstance.IsRunning)
+        if (this.dbInstance.IsRunning)
         {
             Normal("SqlServer: Stop");
-            manager.Stop();
+            try
+            {
+                this.manager.Stop();
+            }
+            catch { }
         }
 
-        if (!dbInstance.IsRunning)
+        if (!this.dbInstance.IsRunning)
         {
             Normal("SqlServer: Start");
-            manager.Start();
+            this.manager.Start();
         }
     }
 
     public void Populate(AbsolutePath commandsPath) => DotNet("Commands.dll Populate", commandsPath);
-
-
+    
     public void Drop(string database) => this.ExecuteCommand($"DROP DATABASE [{database}]");
 
     public void Create(string database) => this.ExecuteCommand($"CREATE DATABASE [{database}]");
 
     public void Dispose()
     {
-        sqlLocalDbApi?.Dispose();
+        this.sqlLocalDbApi?.Dispose();
 
-        sqlLocalDbApi = null;
-        dbInstance = null;
-        manager = null;
+        this.sqlLocalDbApi = null;
+        this.dbInstance = null;
+        this.manager = null;
     }
 
     private void ExecuteCommand(string commandText)

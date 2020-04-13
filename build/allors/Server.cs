@@ -66,7 +66,7 @@ partial class Server : IDisposable
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
                 Warn($"Server: Exception (run {++run})");
             }
