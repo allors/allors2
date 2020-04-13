@@ -8,7 +8,7 @@ import * as moment from 'moment';
 
 import { AllorsFilterService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope, Invoked, ActionTarget, UserId, FetcherService } from '../../../../../angular';
 import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem, SalesInvoiceType, PaymentApplication, Disbursement, Receipt, User, Organisation, Person, UserGroup } from '../../../../../domain';
-import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter } from '../../../../../framework';
+import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter, Exists } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, AllorsMaterialDialogService } from '../../../../../material';
 import { MethodService } from '../../../../../material/core/services/actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -196,6 +196,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       new Equals({ propertyType: m.SalesInvoice.BillToCustomer, parameter: 'billTo' }),
       new Equals({ propertyType: m.SalesInvoice.ShipToEndCustomer, parameter: 'shipToEndCustomer' }),
       new Equals({ propertyType: m.SalesInvoice.BillToEndCustomer, parameter: 'billToEndCustomer' }),
+      new Equals({ propertyType: m.SalesInvoice.IsRepeating, parameter: 'repeating' }),
       new ContainedIn({
         propertyType: m.SalesInvoice.SalesInvoiceItems,
         extent: new Filter({
@@ -244,6 +245,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
     });
 
     this.filterService.init(predicate, {
+      repeating: { initialValue: true },
       active: { initialValue: true },
       type: { search: typeSearch, display: (v: SalesInvoiceType) => v && v.Name },
       state: { search: stateSearch, display: (v: SalesInvoiceState) => v && v.Name },
@@ -294,7 +296,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
                 },
                 BillToCustomer: x,
                 SalesInvoiceState: x,
-                SalesInvoiceType: x
+                SalesInvoiceType: x,
               },
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,

@@ -208,6 +208,7 @@ namespace Allors.Domain
             }
 
             this.VatRegime = this.VatRegime ?? this.BillToCustomer?.VatRegime;
+            this.IsRepeating = this.ExistRepeatingSalesInvoiceWhereSource;
 
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
