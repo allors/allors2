@@ -44,8 +44,8 @@ partial class SqlServer : IDisposable
     }
 
     public void Populate(AbsolutePath commandsPath) => DotNet("Commands.dll Populate", commandsPath);
-    
-    public void Drop(string database) => this.ExecuteCommand($"DROP DATABASE [{database}]");
+
+    public void Drop(string database) => this.ExecuteCommand($"DROP DATABASE IF EXISTS [{database}]");
 
     public void Create(string database) => this.ExecuteCommand($"CREATE DATABASE [{database}]");
 
@@ -58,22 +58,11 @@ partial class SqlServer : IDisposable
         this.manager = null;
     }
 
-    private void ExecuteCommand(string commandText)
+    private int ExecuteCommand(string commandText)
     {
         using var connection = this.manager.CreateConnection();
-        try
-        {
-            connection.Open();
-            using var command = new SqlCommand(commandText, connection);
-            try
-            {
-                command.ExecuteNonQuery();
-            }
-            catch { }
-        }
-        finally
-        {
-            connection.Close();
-        }
+        connection.Open();
+        using var command = new SqlCommand(commandText, connection);
+        return command.ExecuteNonQuery();
     }
 }
