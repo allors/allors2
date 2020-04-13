@@ -36,6 +36,8 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
 
   private subscription: Subscription;
   partsFilter: SearchFactory;
+  transportItemType: InvoiceItemType;
+  refurbishItemType: InvoiceItemType;
 
   constructor(
     @Self() public allors: ContextService,
@@ -119,6 +121,8 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
+        this.transportItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '96c1c0ff-b0f1-480f-91a7-4658bebe6674');
+        this.refurbishItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '8e883e4f-3e4f-454d-941b-4746130774a6');
 
         this.partsFilter = new SearchFactory({
           objectType: this.m.Part,
@@ -212,7 +216,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       .subscribe((loaded) => {
 
         this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
-        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+        this.serialisedItems = this.part.SerialisedItems;
       });
   }
 
