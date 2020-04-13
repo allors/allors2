@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
-import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part } from '../../../../../domain';
+import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -30,6 +30,9 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
   invoiceItemTypes: InvoiceItemType[];
   partItemType: InvoiceItemType;
   productItemType: InvoiceItemType;
+  part: Part;
+  serialisedItems: SerialisedItem[];
+  serialisedItem: SerialisedItem;
 
   private subscription: Subscription;
   partsFilter: SearchFactory;
@@ -152,6 +155,18 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
     }
   }
 
+  public goodSelected(product: Product): void {
+    if (product) {
+      this.refreshSerialisedItems(product);
+    }
+  }
+
+  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
+
+    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
+    this.invoiceItem.Quantity = '1';
+  }
+
   public save(): void {
 
     this.onSave();
@@ -167,6 +182,38 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       },
         this.saveService.errorHandler
       );
+  }
+
+  private refreshSerialisedItems(product: Product): void {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
+      pull.NonUnifiedGood({
+        object: product.id,
+        fetch: {
+          Part: {
+            include: {
+              SerialisedItems: x,
+            }
+          }
+        }
+      }),
+      pull.UnifiedGood({
+        object: product.id,
+        include: {
+          SerialisedItems: x,
+        }
+      })
+    ];
+
+    this.allors.context
+      .load(new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
+        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+      });
   }
 
   private onSave() {
