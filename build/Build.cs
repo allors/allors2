@@ -11,45 +11,6 @@ using static Nuke.Common.Tooling.ProcessTasks;
 [UnsetVisualStudioEnvironmentVariables]
 partial class Build : NukeBuild
 {
-    public static int Main() => Execute<Build>(x => x.Default);
-
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
-
-    [Solution] readonly Solution Solution;
-
-    public readonly Paths Paths = new Paths(RootDirectory);
-
-    static void TaskKill()
-    {
-        void TaskKill(string imageName)
-        {
-            try
-            {
-                StartProcess("taskkill", $"/IM {imageName} /F /T /FI \"PID ge 0\"").WaitForExit();
-            }
-            catch
-            {
-            }
-        }
-
-        TaskKill("node.exe");
-        TaskKill("chrome.exe");
-        TaskKill("chromedriver.exe");
-    }
-
-    protected override void OnBuildInitialized()
-    {
-        base.OnBuildInitialized();
-        TaskKill();
-    }
-
-    protected override void OnBuildFinished()
-    {
-        base.OnBuildFinished();
-        TaskKill();
-    }
-
     Target ResetDatabase => _ => _
         .DependsOn(AdaptersResetDatabase)
         .DependsOn(CoreResetDatabase)
@@ -89,13 +50,7 @@ partial class Build : NukeBuild
 
             DeleteDirectory(Paths.Artifacts);
         });
-
-    Target EnsureDirectories => _ => _
-        .Executes(() =>
-        {
-            EnsureExistingDirectory(Paths.ArtifactsTests);
-        });
-
+       
     Target Default => _ => _
         .DependsOn(AdaptersGenerate)
         .DependsOn(CoreWorkspaceAutotest)
