@@ -63,7 +63,8 @@ namespace Allors.Domain
             bool purchaseOrderNeedsApproval,
             decimal? purchaseOrderApprovalThresholdLevel1,
             decimal? purchaseOrderApprovalThresholdLevel2,
-            SerialisedItemSoldOn serialisedItemSoldOn)
+            SerialisedItemSoldOn serialisedItemSoldOn,
+            bool collectiveWorkEffortInvoice)
         {
             var postalAddress1 = new PostalAddressBuilder(session)
                     .WithAddress1(address)
@@ -108,6 +109,7 @@ namespace Allors.Domain
                 .WithAutoGeneratePurchaseShipment(autoGeneratePurchaseShipment)
                 .WithIsAutomaticallyReceived(isAutomaticallyReceived)
                 .WithSerialisedItemSoldOn(serialisedItemSoldOn)
+                .WithCollectiveWorkEffortInvoice(collectiveWorkEffortInvoice)
                 .Build();
 
             if (purchaseOrderCounterValue != null)
