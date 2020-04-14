@@ -13,7 +13,6 @@ namespace Tests.SalesOrderTests
     using Components;
     using src.allors.material.@base.objects.salesorder.create;
     using src.allors.material.@base.objects.salesorder.list;
-    using src.allors.material.@base.objects.salesorder.overview;
     using Xunit;
 
     [Collection("Test collection")]

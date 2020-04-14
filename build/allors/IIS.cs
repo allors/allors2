@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Nuke.Common.Tooling;
 
 partial class IIS : IDisposable
@@ -9,19 +10,25 @@ partial class IIS : IDisposable
 
     public IIS(params string[] appPoolNames)
     {
-        this.appPoolNames = appPoolNames;
-
-        foreach (var appPoolName in this.appPoolNames)
+        if (File.Exists(Appcmd))
         {
-            ProcessTasks.StartProcess(Appcmd, @$"STOP APPPOOL ""{appPoolName}""").WaitForExit();
+            this.appPoolNames = appPoolNames;
+
+            foreach (var appPoolName in this.appPoolNames)
+            {
+                ProcessTasks.StartProcess(Appcmd, @$"STOP APPPOOL ""{appPoolName}""").WaitForExit();
+            }
         }
     }
 
     public void Dispose()
     {
-        foreach (var appPoolName in this.appPoolNames)
+        if (File.Exists(Appcmd))
         {
-            ProcessTasks.StartProcess(Appcmd, @$"START APPPOOL ""{appPoolName}""").WaitForExit();
+            foreach (var appPoolName in this.appPoolNames)
+            {
+                ProcessTasks.StartProcess(Appcmd, @$"START APPPOOL ""{appPoolName}""").WaitForExit();
+            }
         }
     }
 }
