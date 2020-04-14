@@ -46,35 +46,13 @@
             </mat-card>
           </div>
         </div>
-
-        <div class="row">
-          <div class="col-md">
-            <div class="row">
-              <a-mat-autocomplete class="col-md" [object]="order" [roleType]="m.PurchaseOrder.TakenViaSubcontractor" [filter]="filtersService.subContractorsFilter.create(allors.context)"
-                display="displayName" (changed)="subcontractorSelected($event)" label="Subcontractor"></a-mat-autocomplete>
-              <button mat-mini-fab color="accent" [disabled]="!order.CanWriteTakenViaSubcontractor" type="button" (click)="addSubcontractor = !addSubcontractor">
-                <mat-icon *ngIf="!addSubcontractor">add</mat-icon>
-                <mat-icon *ngIf="addSubcontractor">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <mat-card *ngIf="addSubcontractor">
-              <mat-card-header>Add a new subcontractor</mat-card-header>
-              <mat-card-content>
-                <organisation-inline (saved)="subcontractorAdded($event); addSubcontractor = false" (cancelled)="addSubcontractor = false">
-                </organisation-inline>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
   
         <div class="row">
           <div class="col-md">
             <div class="row">
               <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.TakenViaContactMechanism" [options]="takenViaContactMechanisms" display="displayName"
                  label="Supplier contact mechanism"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="(!order.TakenViaSupplier && !order.TakenViaSubcontractor) || !order.CanWriteTakenViaContactMechanism"
+              <button mat-mini-fab color="accent" [disabled]="!order.TakenViaSupplier || !order.CanWriteTakenViaContactMechanism"
                 type="button" (click)="addTakenViaContactMechanism = !addTakenViaContactMechanism">
                 <mat-icon *ngIf="!addTakenViaContactMechanism">add</mat-icon>
                 <mat-icon *ngIf="addTakenViaContactMechanism">close</mat-icon>
@@ -95,7 +73,7 @@
             <div class="row">
               <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.TakenViaContactPerson" [options]="takenViaContacts"
                 display="displayName" label="Supplier contact person"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="(!order.TakenViaSupplier && !order.TakenViaSubcontractor) || !order.CanWriteTakenViaContactPerson"
+              <button mat-mini-fab color="accent" [disabled]="!order.TakenViaSupplier || !order.CanWriteTakenViaContactPerson"
                 type="button" (click)="addTakenViaContactPerson = !addTakenViaContactPerson">
                 <mat-icon *ngIf="!addTakenViaContactPerson">add</mat-icon>
                 <mat-icon *ngIf="addTakenViaContactPerson">close</mat-icon>
