@@ -442,7 +442,7 @@ namespace Allors.Domain
                         if (item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
                         {
                             item.SerialisedItem.OwnedBy = this.ShipToCustomer;
-                            item.SerialisedItem.Ownership = new Ownerships(this.Session()).RepairAndmaintenance;
+                            item.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
                         }
                     }
 

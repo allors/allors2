@@ -225,18 +225,19 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
   }
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    const onOtherRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
+    if (serialisedItem !== undefined) {
+      const onOtherRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
       .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
         && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));
 
-    const onQuoteItem = serialisedItem.QuoteItemsWhereSerialisedItem
+      const onQuoteItem = serialisedItem.QuoteItemsWhereSerialisedItem
     .find(v =>
       (v.QuoteItemState === this.draftQuoteItem || v.QuoteItemState === this.submittedQuoteItem || v.QuoteItemState === this.approvedQuoteItem
           || v.QuoteItemState === this.awaitingAcceptanceQuoteItem || v.QuoteItemState === this.acceptedQuoteItem)
       && (v.QuoteWhereQuoteItem.QuoteState === this.createdQuote || v.QuoteWhereQuoteItem.QuoteState === this.approvedQuote
           || v.QuoteWhereQuoteItem.QuoteState === this.awaitingAcceptanceQuote || v.QuoteWhereQuoteItem.QuoteState === this.acceptedQuote));
 
-    const onOrderItem = serialisedItem.SalesOrderItemsWhereSerialisedItem
+      const onOrderItem = serialisedItem.SalesOrderItemsWhereSerialisedItem
       .find(v =>
         (v.SalesOrderItemState === this.provisionalOrderItem || v.SalesOrderItemState === this.readyForPostingOrderItem
           || v.SalesOrderItemState === this.requestsApprovalOrderItem || v.SalesOrderItemState === this.awaitingAcceptanceOrderItem
@@ -245,29 +246,30 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
             || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.requestsApprovalOrder || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.awaitingAcceptanceOrder
             || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.onHoldOrder || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.inProcessOrder));
 
-    const onShipmentItem = serialisedItem.ShipmentItemsWhereSerialisedItem
+      const onShipmentItem = serialisedItem.ShipmentItemsWhereSerialisedItem
       .find(v => (v.ShipmentItemState === this.createdShipmentItem || v.ShipmentItemState === this.pickingShipmentItem || v.ShipmentItemState === this.pickedShipmentItem || v.ShipmentItemState === this.packedShipmentItem)
         && (v.ShipmentWhereShipmentItem.ShipmentState === this.createdShipment || v.ShipmentWhereShipmentItem.ShipmentState === this.pickingShipment
             || v.ShipmentWhereShipmentItem.ShipmentState === this.pickingShipment || v.ShipmentWhereShipmentItem.ShipmentState === this.packedShipment
             || v.ShipmentWhereShipmentItem.ShipmentState === this.onholdShipment));
 
-    if (onOtherRequestItem) {
+      if (onOtherRequestItem) {
       this.snackBar.open(`Item already requested with ${onOtherRequestItem.RequestWhereRequestItem.RequestNumber}`, 'close');
     }
 
-    if (onQuoteItem) {
+      if (onQuoteItem) {
       this.snackBar.open(`Item already quoted with ${onQuoteItem.QuoteWhereQuoteItem.QuoteNumber}`, 'close');
     }
 
-    if (onOrderItem) {
+      if (onOrderItem) {
       this.snackBar.open(`Item already ordered with ${onOrderItem.SalesOrderWhereSalesOrderItem.OrderNumber}`, 'close');
     }
 
-    if (onShipmentItem) {
+      if (onShipmentItem) {
       this.snackBar.open(`Item already shipped with ${onShipmentItem.ShipmentWhereShipmentItem.ShipmentNumber}`, 'close');
     }
 
-    this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
+      this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
+    }
   }
 
   public save(): void {

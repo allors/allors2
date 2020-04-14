@@ -38,7 +38,7 @@ namespace Allors.Domain.TestPopulation
                     .Build();
             }
 
-            @this.WithName(faker.Commerce.ProductMaterial());
+            @this.WithName(faker.Commerce.ProductName());
             @this.WithPart(new NonUnifiedPartBuilder(@this.Session).WithNonSerialisedDefaults(internalOrganisation).Build());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
@@ -98,7 +98,7 @@ namespace Allors.Domain.TestPopulation
                     .Build();
             }
 
-            @this.WithName(faker.Commerce.ProductMaterial());
+            @this.WithName(faker.Commerce.ProductName());
             @this.WithPart(new NonUnifiedPartBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation, faker).Build());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());

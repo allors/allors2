@@ -81,11 +81,6 @@ namespace Allors.Domain
                         || v.Assignment.WorkEffortState.IsInProgress);
 
             this.DeriveProductCharacteristics(derivation);
-
-            if (derivation.ChangeSet.IsCreated(this))
-            {
-                this.Details = this.DeriveDetails();
-            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
@@ -124,63 +119,6 @@ namespace Allors.Domain
             {
                 version.Delete();
             }
-        }
-
-        public string DeriveDetails()
-        {
-            var builder = new StringBuilder();
-            var part = this.PartWhereSerialisedItem;
-
-            if (part != null && part.ExistManufacturedBy)
-            {
-                builder.Append($", Manufacturer: {part.ManufacturedBy.PartyName}");
-            }
-
-            if (part != null && part.ExistBrand)
-            {
-                builder.Append($", Brand: {part.Brand.Name}");
-            }
-
-            if (part != null && part.ExistModel)
-            {
-                builder.Append($", Model: {part.Model.Name}");
-            }
-
-            builder.Append($", SN: {this.SerialNumber}");
-
-            if (this.ExistManufacturingYear)
-            {
-                builder.Append($", YOM: {this.ManufacturingYear}");
-            }
-
-            foreach (SerialisedItemCharacteristic characteristic in this.SerialisedItemCharacteristics)
-            {
-                if (characteristic.ExistValue)
-                {
-                    var characteristicType = characteristic.SerialisedItemCharacteristicType;
-                    if (characteristicType.ExistUnitOfMeasure)
-                    {
-                        var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
-                                        ? characteristicType.UnitOfMeasure.Abbreviation
-                                        : characteristicType.UnitOfMeasure.Name;
-                        builder.Append(
-                            $", {characteristicType.Name}: {characteristic.Value} {uom}");
-                    }
-                    else
-                    {
-                        builder.Append($", {characteristicType.Name}: {characteristic.Value}");
-                    }
-                }
-            }
-
-            var details = builder.ToString();
-
-            if (details.StartsWith(","))
-            {
-                details = details.Substring(2);
-            }
-
-            return details;
         }
 
         private void DeriveProductCharacteristics(IDerivation derivation)

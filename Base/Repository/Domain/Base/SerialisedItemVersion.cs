@@ -118,15 +118,6 @@ namespace Allors.Repository
         public string InternalComment { get; set; }
 
         #region Allors
-        [Id("15F649C2-B482-43B1-B9D5-168CEE7BED4D")]
-        [AssociationId("57B07164-788A-4354-B88A-0B3CB1ACF172")]
-        [RoleId("31DB637E-F166-449A-B81D-18F71A93D3C5")]
-        #endregion
-        [Size(-1)]
-        [Workspace]
-        public string Details { get; set; }
-
-        #region Allors
         [Id("34F61A40-3794-4195-A269-749C68CBC8A4")]
         [AssociationId("747929AE-9654-45F5-A450-97ADFF3813F8")]
         [RoleId("248B523D-D654-480F-BA7F-DB446E7D5CEB")]

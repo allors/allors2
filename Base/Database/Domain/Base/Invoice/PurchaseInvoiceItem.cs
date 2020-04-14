@@ -53,7 +53,7 @@ namespace Allors.Domain
             var (iteration, changeSet, derivedObjects) = method;
             var invoice = this.PurchaseInvoiceWherePurchaseInvoiceItem;
 
-            if (invoice != null || iteration.ChangeSet.Associations.Contains(this.Id))
+            if (invoice != null && iteration.ChangeSet.Associations.Contains(this.Id))
             {
                 iteration.AddDependency(invoice, this);
                 iteration.Mark(invoice);

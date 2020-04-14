@@ -9,6 +9,7 @@ namespace Allors.Domain
     using Resources;
     using System.Linq;
     using Allors.Meta;
+    using System.Text;
 
     public partial class SalesOrderItem
     {
@@ -322,9 +323,112 @@ namespace Allors.Domain
             }
 
             // TODO: Move to Custom
-            if (derivation.ChangeSet.IsCreated(this) && this.ExistSerialisedItem)
+            if (derivation.ChangeSet.IsCreated(this) && !this.ExistDescription)
             {
-                this.Description = this.SerialisedItem.Details;
+                if (this.ExistSerialisedItem)
+                {
+                    var builder = new StringBuilder();
+                    var part = this.SerialisedItem.PartWhereSerialisedItem;
+
+                    if (part != null && part.ExistManufacturedBy)
+                    {
+                        builder.Append($", Manufacturer: {part.ManufacturedBy.PartyName}");
+                    }
+
+                    if (part != null && part.ExistBrand)
+                    {
+                        builder.Append($", Brand: {part.Brand.Name}");
+                    }
+
+                    if (part != null && part.ExistModel)
+                    {
+                        builder.Append($", Model: {part.Model.Name}");
+                    }
+
+                    builder.Append($", SN: {this.SerialisedItem.SerialNumber}");
+
+                    if (this.SerialisedItem.ExistManufacturingYear)
+                    {
+                        builder.Append($", YOM: {this.SerialisedItem.ManufacturingYear}");
+                    }
+
+                    foreach (SerialisedItemCharacteristic characteristic in this.SerialisedItem.SerialisedItemCharacteristics)
+                    {
+                        if (characteristic.ExistValue)
+                        {
+                            var characteristicType = characteristic.SerialisedItemCharacteristicType;
+                            if (characteristicType.ExistUnitOfMeasure)
+                            {
+                                var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
+                                                ? characteristicType.UnitOfMeasure.Abbreviation
+                                                : characteristicType.UnitOfMeasure.Name;
+                                builder.Append(
+                                    $", {characteristicType.Name}: {characteristic.Value} {uom}");
+                            }
+                            else
+                            {
+                                builder.Append($", {characteristicType.Name}: {characteristic.Value}");
+                            }
+                        }
+                    }
+
+                    var details = builder.ToString();
+
+                    if (details.StartsWith(","))
+                    {
+                        details = details.Substring(2);
+                    }
+
+                    this.Description = details;
+
+                }
+                else if (this.ExistProduct && this.Product is UnifiedGood unifiedGood)
+                {
+                    var builder = new StringBuilder();
+
+                    if (unifiedGood != null && unifiedGood.ExistManufacturedBy)
+                    {
+                        builder.Append($", Manufacturer: {unifiedGood.ManufacturedBy.PartyName}");
+                    }
+
+                    if (unifiedGood != null && unifiedGood.ExistBrand)
+                    {
+                        builder.Append($", Brand: {unifiedGood.Brand.Name}");
+                    }
+
+                    if (unifiedGood != null && unifiedGood.ExistModel)
+                    {
+                        builder.Append($", Model: {unifiedGood.Model.Name}");
+                    }
+
+                    foreach (SerialisedItemCharacteristic characteristic in unifiedGood.SerialisedItemCharacteristics)
+                    {
+                        if (characteristic.ExistValue)
+                        {
+                            var characteristicType = characteristic.SerialisedItemCharacteristicType;
+                            if (characteristicType.ExistUnitOfMeasure)
+                            {
+                                var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
+                                                ? characteristicType.UnitOfMeasure.Abbreviation
+                                                : characteristicType.UnitOfMeasure.Name;
+                                builder.Append($", {characteristicType.Name}: {characteristic.Value} {uom}");
+                            }
+                            else
+                            {
+                                builder.Append($", {characteristicType.Name}: {characteristic.Value}");
+                            }
+                        }
+                    }
+
+                    var details = builder.ToString();
+
+                    if (details.StartsWith(","))
+                    {
+                        details = details.Substring(2);
+                    }
+
+                    this.Description = details;
+                }
             }
 
             this.Sync();

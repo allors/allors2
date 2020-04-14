@@ -42,7 +42,7 @@ namespace Allors.Domain.TestPopulation
             var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
             var lifetime = faker.Random.Int(0, 20);
 
-            @this.WithName(faker.Commerce.ProductMaterial());
+            @this.WithName(faker.Commerce.ProductName());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithLifeTime(lifetime);
             @this.WithDepreciationYears(faker.Random.Int(0, lifetime));
@@ -108,7 +108,7 @@ namespace Allors.Domain.TestPopulation
             var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
             var lifetime = faker.Random.Int(0, 20);
 
-            @this.WithName(faker.Commerce.ProductMaterial());
+            @this.WithName(faker.Commerce.ProductName());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithLifeTime(lifetime);
