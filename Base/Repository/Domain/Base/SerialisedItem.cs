@@ -351,16 +351,6 @@ namespace Allors.Repository
         public Part PartWhereItem { get; set; }
 
         #region Allors
-        [Id("66CEB3A4-C1AD-4CAD-BBB9-F29FB12669DA")]
-        [AssociationId("B67B1EA5-1CC1-4958-B8A5-13D9C60B407D")]
-        [RoleId("AFC60632-E929-40E9-8139-CE1B4B2FFE1B")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        public InternalOrganisation ReportingUnit { get; set; }
-
-        #region Allors
         [Id("2b8a24f3-ce26-4b53-94b2-d7d0cef3f6b1")]
         [AssociationId("357c0a38-9888-40f8-b22c-7236f69ef646")]
         [RoleId("0dd73bc0-5030-4c2e-b4b5-57d227f56d76")]
