@@ -27,6 +27,12 @@ namespace Allors.Domain
 
         public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsRejected);
 
+        internal bool IsDeletable =>
+            !this.ExistOrderItemBillingsWhereOrderItem &&
+            !this.ExistOrderShipmentsWhereOrderItem &&
+            !this.ExistOrderRequirementCommitmentsWhereOrderItem &&
+            !this.ExistWorkEffortsWhereOrderItemFulfillment;
+
         public string SupplierReference
         {
             get
@@ -290,6 +296,14 @@ namespace Allors.Domain
             if (method.DeniedPermissions == null)
             {
                 method.DeniedPermissions = this.PurchaseOrderWherePurchaseOrderItem?.DeniedPermissions.ToArray();
+            }
+        }
+
+        public void BaseDelete(PurchaseOrderItemDelete method)
+        {
+            if (this.ExistSerialisedItem)
+            {
+                this.SerialisedItem.DerivationTrigger = Guid.NewGuid();
             }
         }
 
