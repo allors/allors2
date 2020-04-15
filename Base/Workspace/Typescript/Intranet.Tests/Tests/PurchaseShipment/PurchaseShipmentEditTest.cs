@@ -26,7 +26,7 @@ namespace Tests.PurchaseShipmentTests
         {
             this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 this.internalOrganisation.CreateSupplier(this.Session.Faker());
             }
@@ -69,7 +69,7 @@ namespace Tests.PurchaseShipmentTests
             this.Session.Rollback();
 
             var after = new PurchaseShipments(this.Session).Extent().ToArray();
-            shipment = (PurchaseShipment) this.Session.Instantiate(id);
+            shipment = (PurchaseShipment)this.Session.Instantiate(id);
 
             Assert.Equal(after.Length, before.Length);
 

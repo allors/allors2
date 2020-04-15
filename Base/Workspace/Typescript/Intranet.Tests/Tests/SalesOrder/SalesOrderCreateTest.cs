@@ -82,9 +82,9 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedShipToEndCustomerAddress, actual.ShipToEndCustomerAddress);
             Assert.Equal(expectedShipToEndCustomerContactPerson, actual.ShipToEndCustomerContactPerson);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
             Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
-            Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress.DisplayName());
+            Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);
             Assert.Equal(expectedDescription, actual.Description);
             Assert.Equal(expectedInternalComment, actual.InternalComment);
