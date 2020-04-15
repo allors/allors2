@@ -31,6 +31,12 @@ namespace Allors.Domain
 
         public bool WasValid => this.ExistLastObjectStates && !(this.LastSalesOrderItemState.IsCancelled || this.LastSalesOrderItemState.IsRejected);
 
+        internal bool IsDeletable =>
+            !this.ExistOrderItemBillingsWhereOrderItem &&
+            !this.ExistOrderShipmentsWhereOrderItem &&
+            !this.ExistOrderRequirementCommitmentsWhereOrderItem &&
+            !this.ExistWorkEffortsWhereOrderItemFulfillment;
+
         public Part Part
         {
             get
@@ -623,6 +629,11 @@ namespace Allors.Domain
 
         public void BaseDelete(SalesOrderItemDelete method)
         {
+            foreach (SalesTerm salesTerm in this.SalesTerms)
+            {
+                salesTerm.Delete();
+            }
+
             if (this.ExistSerialisedItem)
             {
                 this.SerialisedItem.DerivationTrigger = Guid.NewGuid();

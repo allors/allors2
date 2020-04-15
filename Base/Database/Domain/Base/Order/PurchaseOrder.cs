@@ -80,6 +80,12 @@ namespace Allors.Domain
             }
         }
 
+        private bool IsDeletable =>
+            (this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Created)
+                || this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Cancelled)
+                || this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Rejected))
+            && this.PurchaseOrderItems.All(v => v.IsDeletable);
+
         public void BaseOnInit(ObjectOnInit method)
         {
             this.OrderDate = this.Session().Now();
@@ -312,6 +318,37 @@ namespace Allors.Domain
             if (!this.CanInvoice)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+        }
+
+        public void BaseDelete(PurchaseOrderDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                if (this.ExistShippingAndHandlingCharge)
+                {
+                    this.ShippingAndHandlingCharge.Delete();
+                }
+
+                if (this.ExistFee)
+                {
+                    this.Fee.Delete();
+                }
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.DiscountAdjustment.Delete();
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.SurchargeAdjustment.Delete();
+                }
+
+                foreach (PurchaseOrderItem item in this.PurchaseOrderItems)
+                {
+                    item.Delete();
+                }
             }
         }
 

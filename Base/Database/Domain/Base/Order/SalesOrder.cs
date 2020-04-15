@@ -57,6 +57,13 @@ namespace Allors.Domain
             }
         }
 
+        private bool IsDeletable =>
+            (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Provisional)
+                || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).ReadyForPosting)
+                || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Cancelled)
+                || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Rejected))
+            && this.SalesOrderItems.All(v => v.IsDeletable);
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSalesOrderState)
@@ -470,6 +477,42 @@ namespace Allors.Domain
             if (this.HasChangedStates())
             {
                 derivation.Mark(this);
+            }
+        }
+
+        public void BaseDelete(SalesOrderDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                if (this.ExistShippingAndHandlingCharge)
+                {
+                    this.ShippingAndHandlingCharge.Delete();
+                }
+
+                if (this.ExistFee)
+                {
+                    this.Fee.Delete();
+                }
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.DiscountAdjustment.Delete();
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.SurchargeAdjustment.Delete();
+                }
+
+                foreach (SalesOrderItem item in this.SalesOrderItems)
+                {
+                    item.Delete();
+                }
+
+                foreach (SalesTerm salesTerm in this.SalesTerms)
+                {
+                    salesTerm.Delete();
+                }
             }
         }
 
