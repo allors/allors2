@@ -103,13 +103,13 @@ namespace Allors.Domain
 
                 if (this.ExistReservedFromNonSerialisedInventoryItem)
                 {
-                    iteration.AddDependency(this.ReservedFromNonSerialisedInventoryItem, this);
+                    iteration.AddDependency(this, this.ReservedFromNonSerialisedInventoryItem);
                     iteration.Mark(this.ReservedFromNonSerialisedInventoryItem);
                 }
 
                 if (this.ExistReservedFromSerialisedInventoryItem)
                 {
-                    iteration.AddDependency(this.ReservedFromSerialisedInventoryItem, this);
+                    iteration.AddDependency(this, this.ReservedFromSerialisedInventoryItem);
                     iteration.Mark(this.ReservedFromSerialisedInventoryItem);
                 }
 

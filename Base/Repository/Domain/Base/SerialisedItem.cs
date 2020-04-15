@@ -260,6 +260,16 @@ namespace Allors.Repository
         public Party AssignedSuppliedBy { get; set; }
 
         #region Allors
+        [Id("66CEB3A4-C1AD-4CAD-BBB9-F29FB12669DA")]
+        [AssociationId("B67B1EA5-1CC1-4958-B8A5-13D9C60B407D")]
+        [RoleId("AFC60632-E929-40E9-8139-CE1B4B2FFE1B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public InternalOrganisation ReportingUnit { get; set; }
+
+        #region Allors
         [Id("E9ACD0EE-693C-4459-9F40-D478F538659F")]
         [AssociationId("0BA8139B-6910-441D-82B5-5318D074AC21")]
         [RoleId("DA88A4DD-CB8D-48DC-BFFA-772CA75A1379")]
