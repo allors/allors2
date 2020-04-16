@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Dipu.Excel.Embedded;
+using Allors.Excel.Embedded;
 using Nito.AsyncEx;
 using Office = Microsoft.Office.Core;
 
