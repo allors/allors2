@@ -176,6 +176,8 @@ namespace Allors.Repository
 
         public void Print() { }
 
+        public void Delete() { }
+
         #endregion
     }
 }

@@ -167,6 +167,8 @@ namespace Allors.Repository
         public void Cancel() { }
 
         public void Print() { }
+
+        public void Delete() { }
         #endregion
     }
 }

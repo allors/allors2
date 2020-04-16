@@ -124,6 +124,8 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
+        public void Delete() { }
+
         public void Print() { }
 
         public void CreateQuote() { }
