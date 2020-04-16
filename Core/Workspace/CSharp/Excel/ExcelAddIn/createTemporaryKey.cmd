@@ -1,4 +1,4 @@
-set PATH=C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x64
+set PATH=C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64
 
 makecert.exe ^
 -n "CN=Allors Test Certificate" ^

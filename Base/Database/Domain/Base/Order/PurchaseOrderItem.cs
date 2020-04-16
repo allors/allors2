@@ -101,12 +101,11 @@ namespace Allors.Domain
             var states = new PurchaseOrderItemStates(this.Session());
 
             var purchaseOrderState = this.PurchaseOrderWherePurchaseOrderItem.PurchaseOrderState;
-            if (purchaseOrderState.IsCreated)
+            if (purchaseOrderState.IsCreated
+                && !this.PurchaseOrderItemState.IsCancelled
+                && !this.PurchaseOrderItemState.IsRejected)
             {
-                if (!this.PurchaseOrderItemState.IsCancelled && !this.PurchaseOrderItemState.IsRejected)
-                {
-                    this.PurchaseOrderItemState = states.Created;
-                }
+                this.PurchaseOrderItemState = states.Created;
             }
 
             if (purchaseOrderState.IsInProcess &&

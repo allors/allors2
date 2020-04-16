@@ -416,6 +416,12 @@ namespace Allors.Repository
         void Accept();
 
         #region Allors
+        [Id("6b5e540d-96a8-48cf-a888-7e7f6b844d28")]
+        #endregion
+        [Workspace]
+        void Revise();
+
+        #region Allors
         [Id("39694549-7173-4904-8AE0-DA7390F595A5")]
         #endregion
         [Workspace]

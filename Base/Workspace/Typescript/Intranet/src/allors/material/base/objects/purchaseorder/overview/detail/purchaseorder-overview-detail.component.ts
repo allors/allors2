@@ -108,6 +108,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
           const id = this.panel.manager.id;
 
           const pulls = [
+            this.fetcher.ownWarehouses,
             pull.PurchaseOrder({
               object: id,
               include: {
@@ -127,10 +128,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
                   PostalAddress_Country: x
                 },
               }
-            }),
-            pull.Facility({
-              predicate: new Equals({ propertyType: m.Facility.Owner, object: this.internalOrganisation }),
-              sort: new Sort(m.Facility.Name)
             }),
             pull.VatRate(),
             pull.VatRegime(),

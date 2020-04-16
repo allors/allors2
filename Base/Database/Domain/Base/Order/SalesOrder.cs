@@ -546,6 +546,8 @@ namespace Allors.Domain
 
         public void BaseAccept(SalesOrderAccept method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
 
+        public void BaseRevise(OrderRevise method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Provisional;
+
         public void BaseContinue(OrderContinue method) => this.SalesOrderState = this.PreviousSalesOrderState;
 
         public void BaseComplete(OrderComplete method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;

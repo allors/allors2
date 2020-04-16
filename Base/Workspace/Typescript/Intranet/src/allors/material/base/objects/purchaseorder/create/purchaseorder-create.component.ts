@@ -74,10 +74,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.Facility({
-              predicate: new Equals({ propertyType: m.Facility.Owner, object: internalOrganisationId }),
-              sort: new Sort(m.Facility.Name)
-            }),
+            this.fetcher.ownWarehouses,
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
