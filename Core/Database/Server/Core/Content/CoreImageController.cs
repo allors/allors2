@@ -38,7 +38,7 @@ namespace Allors.Server
         [AllowAnonymous]
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds)]
         [HttpGet("/image/{idString}/{revisionString}/{*name}")]
-        public virtual IActionResult Get(string idString, string revisionString, string name, int? w, int? q, string t, string b)
+        public virtual IActionResult Get(string idString, string revisionString, string name, int? w, int? q, string t, string b, string o)
         {
             this.Request.Headers.TryGetValue(HeaderNames.IfNoneMatch, out var requestEtagValues);
             var requestEtag = requestEtagValues.FirstOrDefault();
@@ -76,10 +76,11 @@ namespace Allors.Server
                             var type = t;
                             var quality = q;
                             var background = b;
+                            var overlay = o;
 
-                            if (width != null)
+                            if (width != null || !string.IsNullOrWhiteSpace(overlay))
                             {
-                                data = this.Resize(data, w.Value);
+                                data = this.Process(data, w.Value, overlay);
                             }
                         }
 
@@ -107,7 +108,7 @@ namespace Allors.Server
             return this.Content(string.Empty);
         }
 
-        private byte[] Resize(byte[] src, int width, SKFilterQuality quality = SKFilterQuality.High)
+        private byte[] Process(byte[] src, int width, string overlay, SKFilterQuality quality = SKFilterQuality.High)
         {
             try
             {
@@ -118,6 +119,22 @@ namespace Allors.Server
                 var height = (int)Math.Round(width * aspectRatio);
 
                 using var scaledBitmap = sourceBitmap.Resize(new SKImageInfo(width, height), quality);
+
+                if (!string.IsNullOrWhiteSpace(overlay))
+                {
+                    var canvas = new SKCanvas(scaledBitmap);
+                    var font = SKTypeface.FromFamilyName("Arial");
+                    var brush = new SKPaint
+                    {
+                        Typeface = font,
+                        TextSize = 64.0f,
+                        IsAntialias = true,
+                        Color = new SKColor(255, 255, 255, 255)
+                    };
+                    canvas.DrawText(overlay, 0, scaledBitmap.Height, brush);
+                    canvas.Flush();
+                }
+
                 using var scaledImage = SKImage.FromBitmap(scaledBitmap);
                 using var data = scaledImage.Encode();
 
