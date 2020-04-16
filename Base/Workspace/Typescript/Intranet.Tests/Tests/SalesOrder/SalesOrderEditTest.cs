@@ -30,6 +30,7 @@ namespace Tests.SalesOrderTests
             this.salesOrderListPage = this.Sidenav.NavigateToSalesOrders();
         }
 
+        // MinimalWithOrganisation
         [Fact]
         public void Edit()
         {
@@ -62,15 +63,27 @@ namespace Tests.SalesOrderTests
             var salesOrderOverview = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver);
             var salesOrderOverviewDetail = salesOrderOverview.SalesorderOverviewDetail.Click();
 
-            salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
+            salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
+            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
+
+            if (salesOrder.ExistBillToCustomer)
+            {
+                salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
+            }
+
             salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
-            salesOrderOverviewDetail.BillToEndCustomerContactMechanism.Select(expected.BillToEndCustomerContactMechanism);
-            salesOrderOverviewDetail.BillToEndCustomer.Select(expected.BillToEndCustomer?.DisplayName());
+
             salesOrderOverviewDetail.ShipToEndCustomer.Select(expected.ShipToEndCustomer?.DisplayName());
             salesOrderOverviewDetail.ShipToEndCustomerAddress.Select(expected.ShipToEndCustomerAddress);
+
+            salesOrderOverviewDetail.BillToEndCustomer.Select(expected.BillToEndCustomer?.DisplayName());
+
+            if (salesOrder.ExistBillToEndCustomerContactMechanism)
+            {
+                salesOrderOverviewDetail.BillToEndCustomerContactMechanism.Select(expected.BillToEndCustomerContactMechanism);
+            }
+
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
-            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
-            salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
             salesOrderOverviewDetail.Description.Set(expected.Description);
             salesOrderOverviewDetail.InternalComment.Set(expected.InternalComment);
@@ -108,7 +121,7 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedBillToEndCustomer, salesOrder.BillToEndCustomer?.DisplayName());
             Assert.Equal(expectedShipToEndCustomer, salesOrder.ShipToEndCustomer?.DisplayName());
             Assert.Equal(expectedShipToEndCustomerAddress, salesOrder.ShipToEndCustomerAddress);
-            Assert.Equal(expectedShipToEndCustomerContactPerson, salesOrder.ShipToEndCustomerContactPerson);
+            Assert.Equal(expectedShipToEndCustomerContactPerson, salesOrder.ShipToEndCustomerContactPerson); // salesOrder.ShipToEndCustomerContactPerson is Null
             Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
             Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress?.DisplayName());
             Assert.Equal(expectedShipToContactPerson, salesOrder.ShipToContactPerson);
