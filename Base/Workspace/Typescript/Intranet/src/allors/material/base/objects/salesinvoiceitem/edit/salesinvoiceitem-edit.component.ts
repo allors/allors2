@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { Subscription, combineLatest } from 'rxjs';
 
-import { SearchFactory, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
+import { SearchFactory, ContextService, MetaService, RefreshService, TestScope, FetcherService } from '../../../../../angular';
 import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, NonUnifiedPart, SupplierOffering } from '../../../../../domain';
 import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/core/services/object';
@@ -52,6 +52,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
     public dialogRef: MatDialogRef<SalesInvoiceItemEditComponent>,
     public refreshService: RefreshService,
     public metaService: MetaService,
+    private fetcher: FetcherService,
     private saveService: SaveService,
   ) {
     super();
@@ -76,6 +77,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
           const { id } = this.data;
 
           const pulls = [
+            this.fetcher.warehouses,
             pull.SalesInvoiceItem({
               object: id,
               include:
@@ -105,14 +107,6 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
             }),
             pull.VatRate(),
             pull.VatRegime(),
-            pull.Facility({
-              include: {
-                Owner: x
-              },
-              sort: [
-                new Sort(m.Facility.Name),
-              ],
-            })
           ];
 
           if (this.data.associationId) {
