@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
+import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
-import { Person, Country } from '../../../../../domain';
+import { Person, Country, Organisation } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -18,6 +18,7 @@ interface Row extends TableRow {
   name: string;
   email: string;
   phone: string;
+  isCustomer: string;
   lastModifiedDate: string;
 }
 
@@ -62,6 +63,7 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
         { name: 'name', sort: true },
         { name: 'email' },
         { name: 'phone' },
+        'isCustomer',
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
@@ -112,7 +114,17 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
             })
           })
         })
-      })
+      }),
+      new ContainedIn({
+        propertyType: m.Party.CustomerRelationshipsWhereCustomer,
+        extent: new Filter({
+          objectType: m.CustomerRelationship,
+          predicate: new Equals({
+            propertyType: m.CustomerRelationship.InternalOrganisation,
+            parameter: 'customerAt'
+          })
+        })
+      }),
     ]);
 
     const countrySearch = new SearchFactory({
@@ -120,7 +132,21 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       roleTypes: [m.Country.Name],
     });
 
-    this.filterService.init(predicate, { country: { search: countrySearch, display: (v: Country) => v && v.Name } });
+    const internalOrganisationSearch = new SearchFactory({
+      objectType: m.Organisation,
+      roleTypes: [m.Organisation.Name],
+      post: (predicate: And) => {
+        predicate.operands.push(new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }));
+      },
+    });
+
+    this.filterService.init(predicate, { 
+      customerAt: {
+        search: internalOrganisationSearch,
+        display: (v: Organisation) => v && v.Name
+      },
+      country: { search: countrySearch, display: (v: Country) => v && v.Name },
+    });
 
     const sorter = new Sorter(
       {
@@ -172,6 +198,7 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
             name: v.displayName,
             email: v.displayEmail,
             phone: v.displayPhone,
+            isCustomer: v.CustomerRelationshipsWhereCustomer.length > 0 ? 'Yes' : 'No',
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });

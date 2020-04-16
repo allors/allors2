@@ -163,10 +163,22 @@ namespace Tests
 
             dipu.CreateEmployee("letmein", faker);
             dipu.CreateAdministrator("letmein", faker);
-            dipu.CreateB2BCustomer(this.Session.Faker());
-            dipu.CreateB2CCustomer(this.Session.Faker());
+            var dipuB2BCustomer = dipu.CreateB2BCustomer(this.Session.Faker());
+            var dipuB2CCustomer = dipu.CreateB2CCustomer(this.Session.Faker());
             dipu.CreateSupplier(this.Session.Faker());
             dipu.CreateSubContractor(this.Session.Faker());
+
+            new CustomerRelationshipBuilder(this.Session)
+                .WithCustomer(dipuB2BCustomer)
+                .WithInternalOrganisation(allors)
+                .WithFromDate(this.Session.Now())
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session)
+                .WithCustomer(dipuB2CCustomer)
+                .WithInternalOrganisation(allors)
+                .WithFromDate(this.Session.Now())
+                .Build();
 
             this.Session.Derive();
 

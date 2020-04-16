@@ -77,7 +77,7 @@ export class NonUnifiedPartCreateComponent extends TestScope implements OnInit, 
           const pulls = [
             this.fetcher.locales,
             this.fetcher.Settings,
-            pull.Facility(),
+            this.fetcher.warehouses,
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
             pull.ProductIdentificationType(),

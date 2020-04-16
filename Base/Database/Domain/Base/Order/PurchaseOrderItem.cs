@@ -27,6 +27,12 @@ namespace Allors.Domain
 
         public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsRejected);
 
+        internal bool IsDeletable =>
+            !this.ExistOrderItemBillingsWhereOrderItem &&
+            !this.ExistOrderShipmentsWhereOrderItem &&
+            !this.ExistOrderRequirementCommitmentsWhereOrderItem &&
+            !this.ExistWorkEffortsWhereOrderItemFulfillment;
+
         public string SupplierReference
         {
             get
@@ -95,12 +101,11 @@ namespace Allors.Domain
             var states = new PurchaseOrderItemStates(this.Session());
 
             var purchaseOrderState = this.PurchaseOrderWherePurchaseOrderItem.PurchaseOrderState;
-            if (purchaseOrderState.IsCreated)
+            if (purchaseOrderState.IsCreated
+                && !this.PurchaseOrderItemState.IsCancelled
+                && !this.PurchaseOrderItemState.IsRejected)
             {
-                if (!this.PurchaseOrderItemState.IsCancelled && !this.PurchaseOrderItemState.IsRejected)
-                {
-                    this.PurchaseOrderItemState = states.Created;
-                }
+                this.PurchaseOrderItemState = states.Created;
             }
 
             if (purchaseOrderState.IsInProcess &&
@@ -290,6 +295,14 @@ namespace Allors.Domain
             if (method.DeniedPermissions == null)
             {
                 method.DeniedPermissions = this.PurchaseOrderWherePurchaseOrderItem?.DeniedPermissions.ToArray();
+            }
+        }
+
+        public void BaseDelete(PurchaseOrderItemDelete method)
+        {
+            if (this.ExistSerialisedItem)
+            {
+                this.SerialisedItem.DerivationTrigger = Guid.NewGuid();
             }
         }
 

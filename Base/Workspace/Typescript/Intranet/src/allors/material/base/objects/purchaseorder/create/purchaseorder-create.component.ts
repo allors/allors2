@@ -34,7 +34,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   internalOrganisation: Organisation;
 
   addSupplier = false;
-  addSubcontractor = false;
 
   addTakenViaContactMechanism = false;
   addTakenViaContactPerson = false;
@@ -75,10 +74,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.Facility({
-              predicate: new Equals({ propertyType: m.Facility.Owner, object: internalOrganisationId }),
-              sort: new Sort(m.Facility.Name)
-            }),
+            this.fetcher.ownWarehouses,
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
@@ -110,11 +106,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         if (this.order.TakenViaSupplier) {
           this.takenVia = this.order.TakenViaSupplier;
           this.updateSupplier(this.takenVia);
-        }
-
-        if (this.order.TakenViaSubcontractor) {
-          this.takenVia = this.order.TakenViaSubcontractor;
-          this.updateSubcontractor(this.takenVia);
         }
 
         if (this.order.OrderedBy) {
@@ -153,16 +144,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
     supplierRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.order.TakenViaSupplier = organisation;
-    this.takenVia = organisation;
-  }
-
-  public subcontractorAdded(organisation: Organisation): void {
-
-    const subcontractorRelationship = this.allors.context.create('SubContractorRelationship') as SubContractorRelationship;
-    subcontractorRelationship.SubContractor = organisation;
-    subcontractorRelationship.Contractor = this.internalOrganisation;
-
-    this.order.TakenViaSubcontractor = organisation;
     this.takenVia = organisation;
   }
 
@@ -242,47 +223,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
       ),
       pull.Party({
         object: supplier,
-        fetch: {
-          CurrentContacts: x,
-        }
-      }),
-    ];
-
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.takenViaContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.takenViaContacts = loaded.collections.CurrentContacts as Person[];
-      });
-  }
-
-  public subcontractorSelected(subContractor: Party) {
-    this.updateSubcontractor(subContractor);
-  }
-
-  private updateSubcontractor(subContractor: Party): void {
-
-    const { pull, x } = this.metaService;
-
-    const pulls = [
-      pull.Party(
-        {
-          object: subContractor,
-          fetch: {
-            CurrentPartyContactMechanisms: {
-              include: {
-                ContactMechanism: {
-                  PostalAddress_Country: x
-                }
-              }
-            }
-          }
-        }
-      ),
-      pull.Party({
-        object: subContractor,
         fetch: {
           CurrentContacts: x,
         }

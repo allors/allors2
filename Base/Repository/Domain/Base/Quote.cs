@@ -11,7 +11,7 @@ namespace Allors.Repository
     #region Allors
     [Id("066bf242-2710-4a68-8ff6-ce4d7d88a04a")]
     #endregion
-    public partial interface Quote : Transitional, WorkItem, Printable, Auditable, Commentable
+    public partial interface Quote : Transitional, WorkItem, Printable, Auditable, Commentable, Deletable
     {
         #region ObjectStates
         #region QuoteState
@@ -414,6 +414,12 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Accept();
+
+        #region Allors
+        [Id("6b5e540d-96a8-48cf-a888-7e7f6b844d28")]
+        #endregion
+        [Workspace]
+        void Revise();
 
         #region Allors
         [Id("39694549-7173-4904-8AE0-DA7390F595A5")]

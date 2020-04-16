@@ -17,6 +17,11 @@ namespace Allors.Domain
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
+        internal bool IsDeletable =>
+            (this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Draft)
+                || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Submitted)
+                || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Cancelled))
+            && !this.ExistQuoteItemsWhereRequestItem;
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {

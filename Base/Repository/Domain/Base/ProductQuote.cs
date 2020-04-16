@@ -168,11 +168,15 @@ namespace Allors.Repository
 
         public void Accept() { }
 
+        public void Revise() { }
+
         public void Reject() { }
 
         public void Cancel() { }
 
         public void Print() { }
+
+        public void Delete() { }
 
         #endregion
     }

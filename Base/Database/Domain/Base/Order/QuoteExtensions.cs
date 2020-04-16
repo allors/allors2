@@ -59,6 +59,12 @@ namespace Allors.Domain
             SetItemState(@this);
         }
 
+        public static void BaseRevise(this Quote @this, QuoteRevise method)
+        {
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Created;
+            SetItemState(@this);
+        }
+
         public static void BaseReopen(this Quote @this, QuoteReopen method)
         {
             @this.QuoteState = new QuoteStates(@this.Strategy.Session).Created;

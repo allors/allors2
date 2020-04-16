@@ -57,6 +57,13 @@ namespace Allors.Domain
             }
         }
 
+        private bool IsDeletable =>
+            (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Provisional)
+                || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).ReadyForPosting)
+                || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Cancelled)
+                || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Rejected))
+            && this.SalesOrderItems.All(v => v.IsDeletable);
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSalesOrderState)
@@ -473,6 +480,42 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseDelete(SalesOrderDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                if (this.ExistShippingAndHandlingCharge)
+                {
+                    this.ShippingAndHandlingCharge.Delete();
+                }
+
+                if (this.ExistFee)
+                {
+                    this.Fee.Delete();
+                }
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.DiscountAdjustment.Delete();
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.SurchargeAdjustment.Delete();
+                }
+
+                foreach (SalesOrderItem item in this.SalesOrderItems)
+                {
+                    item.Delete();
+                }
+
+                foreach (SalesTerm salesTerm in this.SalesTerms)
+                {
+                    salesTerm.Delete();
+                }
+            }
+        }
+
         public void BaseCancel(OrderCancel method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Cancelled;
 
         public void BaseSetReadyForPosting(SalesOrderSetReadyForPosting  method)
@@ -502,6 +545,8 @@ namespace Allors.Domain
         public void BaseApprove(OrderApprove method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).ReadyForPosting;
 
         public void BaseAccept(SalesOrderAccept method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+
+        public void BaseRevise(OrderRevise method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Provisional;
 
         public void BaseContinue(OrderContinue method) => this.SalesOrderState = this.PreviousSalesOrderState;
 

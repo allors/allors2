@@ -30,9 +30,10 @@ namespace Allors.Domain
                 if (this.ExistTakenViaSupplier && this.ExistOrderedBy)
                 {
                     var supplierRelationship = ((Organisation)this.TakenViaSupplier).SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
-                    if (supplierRelationship != null &&
-                        supplierRelationship.NeedsApproval &&
-                        supplierRelationship.ExistApprovalThresholdLevel1 && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel1)
+                    if (supplierRelationship != null
+                        && supplierRelationship.NeedsApproval
+                        && supplierRelationship.ApprovalThresholdLevel1.HasValue
+                        && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel1.Value)
                     {
                         return true;
                     }
@@ -49,8 +50,10 @@ namespace Allors.Domain
                 if (this.ExistTakenViaSupplier && this.ExistOrderedBy)
                 {
                     var supplierRelationship = ((Organisation)this.TakenViaSupplier).SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
-                    if (supplierRelationship != null &&
-                        supplierRelationship.NeedsApproval && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel2)
+                    if (supplierRelationship != null
+                        && supplierRelationship.NeedsApproval
+                        && supplierRelationship.ApprovalThresholdLevel2.HasValue
+                        && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel2.Value)
                     {
                         return true;
                     }
@@ -76,6 +79,12 @@ namespace Allors.Domain
                 return false;
             }
         }
+
+        private bool IsDeletable =>
+            (this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Created)
+                || this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Cancelled)
+                || this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Rejected))
+            && this.PurchaseOrderItems.All(v => v.IsDeletable);
 
         public void BaseOnInit(ObjectOnInit method)
         {
@@ -312,6 +321,37 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseDelete(PurchaseOrderDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                if (this.ExistShippingAndHandlingCharge)
+                {
+                    this.ShippingAndHandlingCharge.Delete();
+                }
+
+                if (this.ExistFee)
+                {
+                    this.Fee.Delete();
+                }
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.DiscountAdjustment.Delete();
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.SurchargeAdjustment.Delete();
+                }
+
+                foreach (PurchaseOrderItem item in this.PurchaseOrderItems)
+                {
+                    item.Delete();
+                }
+            }
+        }
+
         public void BasePrint(PrintablePrint method)
         {
             if (!method.IsPrinted)
@@ -376,6 +416,8 @@ namespace Allors.Domain
                 openTasks.First().DateClosed = this.Session().Now();
             }
         }
+
+        public void BaseRevise(PurchaseOrderRevise method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
 
         public void BaseReopen(OrderReopen method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
 

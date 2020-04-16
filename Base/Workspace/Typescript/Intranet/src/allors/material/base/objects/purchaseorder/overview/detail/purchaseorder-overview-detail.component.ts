@@ -32,7 +32,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
   internalOrganisation: Organisation;
 
   addSupplier = false;
-  addSubcontractor = false;
   addTakenViaContactMechanism = false;
   addTakenViaContactPerson = false;
 
@@ -43,7 +42,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
   addShipToContactPerson = false;
 
   private previousSupplier: Party;
-  private previousSubContractor: Party;
 
   facilities: Facility[];
   private takenVia: Party;
@@ -110,12 +108,12 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
           const id = this.panel.manager.id;
 
           const pulls = [
+            this.fetcher.ownWarehouses,
             pull.PurchaseOrder({
               object: id,
               include: {
                 OrderedBy: x,
                 TakenViaSupplier: x,
-                TakenViaSubcontractor: x,
                 TakenViaContactMechanism: x,
                 TakenViaContactPerson: x,
                 BillToContactPerson: x,
@@ -130,10 +128,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
                   PostalAddress_Country: x
                 },
               }
-            }),
-            pull.Facility({
-              predicate: new Equals({ propertyType: m.Facility.Owner, object: this.internalOrganisation }),
-              sort: new Sort(m.Facility.Name)
             }),
             pull.VatRate(),
             pull.VatRegime(),
@@ -157,17 +151,11 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
           this.updateSupplier(this.takenVia);
         }
 
-        if (this.order.TakenViaSubcontractor) {
-          this.takenVia = this.order.TakenViaSubcontractor;
-          this.updateSubcontractor(this.takenVia);
-        }
-
         if (this.order.OrderedBy) {
           this.updateOrderedBy(this.order.OrderedBy);
         }
 
         this.previousSupplier = this.order.TakenViaSupplier;
-        this.previousSubContractor = this.order.TakenViaSubcontractor;
 
       });
   }
@@ -196,16 +184,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
     supplierRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.order.TakenViaSupplier = organisation;
-    this.takenVia = organisation;
-  }
-
-  public subcontractorAdded(organisation: Organisation): void {
-
-    const subcontractorRelationship = this.allors.context.create('SubContractorRelationship') as SubContractorRelationship;
-    subcontractorRelationship.SubContractor = organisation;
-    subcontractorRelationship.Contractor = this.internalOrganisation;
-
-    this.order.TakenViaSubcontractor = organisation;
     this.takenVia = organisation;
   }
 
@@ -299,53 +277,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
           this.order.TakenViaContactMechanism = null;
           this.order.TakenViaContactPerson = null;
           this.previousSupplier = this.order.TakenViaSupplier;
-        }
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.takenViaContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.takenViaContacts = loaded.collections.CurrentContacts as Person[];
-      });
-  }
-
-  public subcontractorSelected(subContractor: Party) {
-    this.updateSubcontractor(subContractor);
-  }
-
-  private updateSubcontractor(subContractor: Party): void {
-
-    const { pull, x } = this.metaService;
-
-    const pulls = [
-      pull.Party(
-        {
-          object: subContractor,
-          fetch: {
-            CurrentPartyContactMechanisms: {
-              include: {
-                ContactMechanism: {
-                  PostalAddress_Country: x
-                }
-              }
-            }
-          }
-        }
-      ),
-      pull.Party({
-        object: subContractor,
-        fetch: {
-          CurrentContacts: x,
-        }
-      }),
-    ];
-
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-
-        if (this.order.TakenViaSubcontractor !== this.previousSubContractor) {
-          this.order.TakenViaContactMechanism = null;
-          this.order.TakenViaContactPerson = null;
-          this.previousSubContractor = this.order.TakenViaSubcontractor;
         }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];

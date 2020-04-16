@@ -7,7 +7,7 @@ namespace Allors.Excel
 {
     using Allors.Workspace;
     using Allors.Workspace.Meta;
-    using Dipu.Excel;
+    using Allors.Excel;
 
     public class RoleTypeBinding : IBinding
     {

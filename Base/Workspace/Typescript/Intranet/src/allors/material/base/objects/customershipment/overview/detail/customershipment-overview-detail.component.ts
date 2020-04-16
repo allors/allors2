@@ -112,12 +112,9 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
           const pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
+            this.fetcher.ownWarehouses,
             pull.ShipmentMethod({ sort: new Sort(m.ShipmentMethod.Name) }),
             pull.Carrier({ sort: new Sort(m.Carrier.Name) }),
-            pull.Facility({
-              predicate: new Equals({ propertyType: m.Facility.Owner, object: this.internalOrganisation }),
-              sort: new Sort(m.Facility.Name)
-            }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: new Sort(m.Organisation.PartyName),

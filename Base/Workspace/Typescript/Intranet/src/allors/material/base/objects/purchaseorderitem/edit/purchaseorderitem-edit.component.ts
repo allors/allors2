@@ -138,11 +138,11 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         }
 
         this.sparePartsFilter = new SearchFactory({
-          objectType: this.m.Part,
-          roleTypes: [this.m.Part.Name, this.m.Part.SearchString],
+          objectType: this.m.NonUnifiedPart,
+          roleTypes: [this.m.NonUnifiedPart.Name, this.m.NonUnifiedPart.SearchString],
           post: (predicate: And) => {
             predicate.operands.push(new ContainedIn({
-              propertyType: this.m.Part.SupplierOfferingsWherePart,
+              propertyType: this.m.NonUnifiedPart.SupplierOfferingsWherePart,
               extent: new Filter({
                 objectType: this.m.SupplierOffering,
                 predicate: new And([

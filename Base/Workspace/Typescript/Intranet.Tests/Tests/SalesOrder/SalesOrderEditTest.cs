@@ -30,6 +30,7 @@ namespace Tests.SalesOrderTests
             this.salesOrderListPage = this.Sidenav.NavigateToSalesOrders();
         }
 
+        // MinimalWithOrganisation
         [Fact]
         public void Edit()
         {
@@ -39,60 +40,95 @@ namespace Tests.SalesOrderTests
 
             this.Session.Derive();
 
-            /*var expectedShipToPartyPartyName = expected.ShipToParty?.DisplayName();
+            var expectedBillToCustomer = expected.BillToCustomer?.DisplayName();
+            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToEndCustomerContactMechanism = expected.BillToEndCustomerContactMechanism;
+            var expectedBillToContactPerson = expected.BillToContactPerson;
+            var expectedBillToEndCustomer = expected.BillToEndCustomer?.DisplayName();
+            var expectedShipToEndCustomer = expected.ShipToEndCustomer?.DisplayName();
+            var expectedShipToEndCustomerAddress = expected.ShipToEndCustomerAddress;
+            var expectedShipToEndCustomerContactPerson = expected.ShipToEndCustomerContactPerson;
+            var expectedShipToCustomer = expected.ShipToCustomer?.DisplayName();
             var expectedShipToAddressDisplayName = expected.ShipToAddress?.DisplayName();
-            var expectedShipToContactPersonPartyName = expected.ShipToContactPerson?.DisplayName();
+            var expectedShipToContactPerson = expected.ShipToContactPerson;
             var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
-            var expectedShipFromFacilityName = expected.ShipFromFacility.Name;
-            var expectedShipmentMethodName = expected.ShipmentMethod.Name;
-            var expectedCarrierName = expected.Carrier.Name;
-            var expectedEstimatedShipDate = expected.EstimatedShipDate.Value.Date;
-            var expectedEstimatedArrivalDate = expected.EstimatedArrivalDate.Value.Date;
-            var expectedHandlingInstruction = expected.HandlingInstruction;
-            var expectedComment = expected.Comment;
+            var expectedCustomerReference = expected.CustomerReference;
+            var expectedDescription = expected.Description;
+            var expectedInternalComment = expected.InternalComment;
 
-            var shipment = before.First(v => ((Organisation)v.ShipFromParty).IsInternalOrganisation.Equals(true));
-            var id = shipment.Id;
+            var salesOrder = before.First();
+            var id = salesOrder.Id;
 
-            this.salesOrderListPage.Table.DefaultAction(shipment);
-            var shipmentOverview = new CustomerShipmentOverviewComponent(this.shipmentListPage.Driver);
-            var shipmentOverviewDetail = shipmentOverview.CustomershipmentOverviewDetail.Click();
+            this.salesOrderListPage.Table.DefaultAction(salesOrder);
+            var salesOrderOverview = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver);
+            var salesOrderOverviewDetail = salesOrderOverview.SalesorderOverviewDetail.Click();
 
-            shipmentOverviewDetail
-                .ShipToParty.Select(expected.ShipToParty?.DisplayName())
-                .ShipToAddress.Select(expected.ShipToAddress)
-                .ShipToContactPerson.Select(expected.ShipToContactPerson)
-                .ShipFromAddress.Select(expected.ShipFromParty?.ShippingAddress)
-                .ShipmentMethod.Select(expected.ShipmentMethod)
-                .ShipFromFacility.Select(((Organisation)expected.ShipFromParty)?.FacilitiesWhereOwner?.First)
-                .Carrier.Select(expected.Carrier)
-                .EstimatedShipDate.Set(expected.EstimatedShipDate.Value.Date)
-                .EstimatedArrivalDate.Set(expected.EstimatedArrivalDate.Value.Date)
-                .HandlingInstruction.Set(expected.HandlingInstruction)
-                .Comment.Set(expected.Comment);
+            salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
+            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
+
+            if (salesOrder.ExistBillToCustomer)
+            {
+                salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
+            }
+
+            salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
+
+            salesOrderOverviewDetail.ShipToEndCustomer.Select(expected.ShipToEndCustomer?.DisplayName());
+            salesOrderOverviewDetail.ShipToEndCustomerAddress.Select(expected.ShipToEndCustomerAddress);
+
+            salesOrderOverviewDetail.BillToEndCustomer.Select(expected.BillToEndCustomer?.DisplayName());
+
+            if (salesOrder.ExistBillToEndCustomerContactMechanism)
+            {
+                salesOrderOverviewDetail.BillToEndCustomerContactMechanism.Select(expected.BillToEndCustomerContactMechanism);
+            }
+
+            salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
+            salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
+            salesOrderOverviewDetail.Description.Set(expected.Description);
+            salesOrderOverviewDetail.InternalComment.Set(expected.InternalComment);
+
+            if (salesOrder.ExistBillToContactPerson)
+            {
+                salesOrderOverviewDetail.BillToContactPerson.Select(salesOrder.BillToContactPerson);
+            }
+
+            if (salesOrder.ExistShipToEndCustomerContactPerson)
+            {
+                salesOrderOverviewDetail.ShipToEndCustomerContactPerson.Select(salesOrder.ShipToEndCustomerContactPerson);
+            }
+
+            if (salesOrder.ExistShipToContactPerson)
+            {
+                salesOrderOverviewDetail.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
+            }
 
             this.Session.Rollback();
-            shipmentOverviewDetail.SAVE.Click();
+            salesOrderOverviewDetail.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
 
-            var after = new CustomerShipments(this.Session).Extent().ToArray();
-            shipment = (CustomerShipment)this.Session.Instantiate(id);
+            var after = new SalesOrders(this.Session).Extent().ToArray();
+            salesOrder = (SalesOrder)this.Session.Instantiate(id);
 
             Assert.Equal(after.Length, before.Length);
 
-            Assert.Equal(expectedShipToPartyPartyName, shipment.ShipToParty?.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, shipment.ShipToAddress?.DisplayName());
-            Assert.Equal(expectedShipToContactPersonPartyName, shipment.ShipToContactPerson?.DisplayName());
-            Assert.Equal(expectedShipFromAddressDisplayName, shipment.ShipFromAddress?.DisplayName());
-            Assert.Equal(expectedShipFromFacilityName, shipment.ShipFromFacility.Name);
-            Assert.Equal(expectedShipmentMethodName, shipment.ShipmentMethod.Name);
-            Assert.Equal(expectedCarrierName, shipment.Carrier.Name);
-            Assert.Equal(expectedEstimatedShipDate, shipment.EstimatedShipDate);
-            Assert.Equal(expectedEstimatedArrivalDate, shipment.EstimatedArrivalDate);
-            Assert.Equal(expectedHandlingInstruction, shipment.HandlingInstruction);
-            Assert.Equal(expectedComment, shipment.Comment);*/
+            Assert.Equal(expectedBillToCustomer, salesOrder.BillToCustomer?.DisplayName());
+            Assert.Equal(expectedBillToContactMechanism, salesOrder.BillToContactMechanism);
+            Assert.Equal(expectedBillToEndCustomerContactMechanism, salesOrder.BillToEndCustomerContactMechanism);
+            Assert.Equal(expectedBillToContactPerson, salesOrder.BillToContactPerson);
+            Assert.Equal(expectedBillToEndCustomer, salesOrder.BillToEndCustomer?.DisplayName());
+            Assert.Equal(expectedShipToEndCustomer, salesOrder.ShipToEndCustomer?.DisplayName());
+            Assert.Equal(expectedShipToEndCustomerAddress, salesOrder.ShipToEndCustomerAddress);
+            Assert.Equal(expectedShipToEndCustomerContactPerson, salesOrder.ShipToEndCustomerContactPerson); // salesOrder.ShipToEndCustomerContactPerson is Null
+            Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress?.DisplayName());
+            Assert.Equal(expectedShipToContactPerson, salesOrder.ShipToContactPerson);
+            Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.ShipFromAddress?.DisplayName());
+            Assert.Equal(expectedCustomerReference, salesOrder.CustomerReference);
+            Assert.Equal(expectedDescription, salesOrder.Description);
+            Assert.Equal(expectedInternalComment, salesOrder.InternalComment);
         }
     }
 }

@@ -68,7 +68,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.Facility(),
+            this.fetcher.warehouses,
             pull.Part(),
             pull.InventoryTransactionReason(),
             pull.NonSerialisedInventoryItemState(),

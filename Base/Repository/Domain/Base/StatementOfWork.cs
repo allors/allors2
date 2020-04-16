@@ -158,6 +158,8 @@ namespace Allors.Repository
 
         public void Accept() { }
 
+        public void Revise() { }
+
         public void Reopen() { }
 
         public void Approve() { }
@@ -167,6 +169,8 @@ namespace Allors.Repository
         public void Cancel() { }
 
         public void Print() { }
+
+        public void Delete() { }
 
         #endregion
     }

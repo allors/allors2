@@ -59,6 +59,7 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
         switchMap(() => {
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             this.fetcher.locales,
             pull.Party({ object: this.data.associationId }),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
@@ -87,7 +88,10 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
 
         this.allors.context.reset();
 
-        this.owner = loaded.objects.Party as Party;
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+        const externalOwner = loaded.objects.Party as Organisation;
+        this.owner = externalOwner || internalOrganisation;
+
         this.part = loaded.objects.forPart as Part;
 
         this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
