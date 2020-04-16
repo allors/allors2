@@ -62,19 +62,18 @@ namespace Tests.SalesOrderTests
             var salesOrderOverview = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver);
             var salesOrderOverviewDetail = salesOrderOverview.SalesorderOverviewDetail.Click();
 
-            salesOrderOverviewDetail
-                .BillToCustomer.Select(expected.BillToCustomer?.DisplayName())
-                .BillToContactMechanism.Select(expected.BillToContactMechanism)
-                .BillToEndCustomerContactMechanism.Select(expected.BillToEndCustomerContactMechanism)
-                .BillToEndCustomer.Select(expected.BillToEndCustomer?.DisplayName())
-                .ShipToEndCustomer.Select(expected.ShipToEndCustomer?.DisplayName())
-                .ShipToEndCustomerAddress.Select(expected.ShipToEndCustomerAddress)
-                .ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName())
-                .ShipToAddress.Select(expected.ShipToAddress)
-                .ShipFromAddress.Select(expected.ShipFromAddress)
-                .CustomerReference.Set(expected.CustomerReference)
-                .Description.Set(expected.Description)
-                .InternalComment.Set(expected.InternalComment);
+            salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
+            salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
+            salesOrderOverviewDetail.BillToEndCustomerContactMechanism.Select(expected.BillToEndCustomerContactMechanism);
+            salesOrderOverviewDetail.BillToEndCustomer.Select(expected.BillToEndCustomer?.DisplayName());
+            salesOrderOverviewDetail.ShipToEndCustomer.Select(expected.ShipToEndCustomer?.DisplayName());
+            salesOrderOverviewDetail.ShipToEndCustomerAddress.Select(expected.ShipToEndCustomerAddress);
+            salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
+            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
+            salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
+            salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
+            salesOrderOverviewDetail.Description.Set(expected.Description);
+            salesOrderOverviewDetail.InternalComment.Set(expected.InternalComment);
 
             if (salesOrder.ExistBillToContactPerson)
             {
