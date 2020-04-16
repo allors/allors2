@@ -371,6 +371,8 @@ namespace Allors.Repository
 
         public void Approve() { }
 
+        public void Revise() { }
+
         public void Reject() { }
 
         public void Hold() { }

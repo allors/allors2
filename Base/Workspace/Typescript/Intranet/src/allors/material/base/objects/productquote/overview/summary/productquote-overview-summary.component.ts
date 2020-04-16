@@ -136,6 +136,17 @@ export class ProductQuoteOverviewSummaryComponent {
       this.saveService.errorHandler
     );
   }
+  
+  public revise(): void {
+
+    this.panel.manager.context.invoke(this.productQuote.Revise)
+      .subscribe(() => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully revised.', 'close', { duration: 5000 });
+      },
+      this.saveService.errorHandler
+    );
+  }
 
   public order(): void {
 

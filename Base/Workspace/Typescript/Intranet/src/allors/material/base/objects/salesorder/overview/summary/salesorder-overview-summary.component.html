@@ -93,6 +93,7 @@
     <button *ngIf="order.CanExecuteHold" mat-button (click)="hold()">Hold</button>
     <button *ngIf="order.CanExecuteContinue" mat-button (click)="continue()">Continue</button>
     <button *ngIf="order.CanExecuteAccept" mat-button (click)="accept()">Accept</button>
+    <button *ngIf="order.CanExecuteRevise" mat-button (click)="revise()">Revise</button>
     <button *ngIf="order.CanExecuteShip" mat-button (click)="ship()">Ship</button>
     <button mat-button type="button" (click)="print.execute(order)">Print</button>
     <button *ngIf="order.CanExecuteInvoice && order.ValidOrderItems.length > 0" mat-button (click)="invoice()">Create

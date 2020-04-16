@@ -18,6 +18,7 @@ interface Row extends TableRow {
   number: string;
   supplier: string;
   state: string;
+  shipmentState: string;
   customerReference: string;
   lastModifiedDate: string;
 }
@@ -79,6 +80,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
         { name: 'number', sort: true },
         { name: 'supplier' },
         { name: 'state' },
+        { name: 'shipmentState' },
         { name: 'customerReference', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
@@ -201,6 +203,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
                 },
                 TakenViaSupplier: x,
                 PurchaseOrderState: x,
+                PurchaseOrderShipmentState: x,
               },
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -226,6 +229,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
             number: `${v.OrderNumber}`,
             supplier: v.TakenViaSupplier && v.TakenViaSupplier.displayName,
             state: `${v.PurchaseOrderState && v.PurchaseOrderState.Name}`,
+            shipmentState: `${v.PurchaseOrderShipmentState && v.PurchaseOrderShipmentState.Name}`,
             customerReference: `${v.Description || ''}`,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;

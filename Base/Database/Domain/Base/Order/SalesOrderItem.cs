@@ -173,6 +173,13 @@ namespace Allors.Domain
             // SalesOrderItem States
             if (this.IsValid)
             {
+                if (salesOrder.SalesOrderState.IsProvisional
+                    && !this.SalesOrderItemState.IsCancelled
+                    && !this.SalesOrderItemState.IsRejected)
+                {
+                        this.SalesOrderItemState = salesOrderItemStates.Provisional;
+                }
+
                 if (salesOrder.SalesOrderState.IsReadyForPosting &&
                     (this.SalesOrderItemState.IsProvisional || this.SalesOrderItemState.IsRequestsApproval || this.SalesOrderItemState.IsOnHold))
                 {
