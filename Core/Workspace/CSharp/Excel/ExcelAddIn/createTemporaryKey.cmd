@@ -7,13 +7,13 @@ makecert.exe ^
 -a sha512 ^
 -len 4096 ^
 -cy authority ^
--sv ExcelAddIn.Interop_TemporaryKey.pvk ^
-ExcelAddIn.Interop_TemporaryKey.cer
+-sv ExcelAddIn_TemporaryKey.pvk ^
+ExcelAddIn_TemporaryKey.cer
  
 pvk2pfx.exe ^
--pvk ExcelAddIn.Interop_TemporaryKey.pvk ^
--spc ExcelAddIn.Interop_TemporaryKey.cer ^
--pfx ExcelAddIn.Interop_TemporaryKey.pfx
+-pvk ExcelAddIn_TemporaryKey.pvk ^
+-spc ExcelAddIn_TemporaryKey.cer ^
+-pfx ExcelAddIn_TemporaryKey.pfx
 
-del ExcelAddIn.Interop_TemporaryKey.pvk
-del ExcelAddIn.Interop_TemporaryKey.cer
+del ExcelAddIn_TemporaryKey.pvk
+del ExcelAddIn_TemporaryKey.cer
