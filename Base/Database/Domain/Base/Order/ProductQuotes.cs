@@ -29,12 +29,13 @@ namespace Allors.Domain
             var reject = this.Meta.Reject;
             var order = this.Meta.Order;
             var cancel = this.Meta.Cancel;
+            var delete = this.Meta.Delete;
 
             config.Deny(this.ObjectType, created, order, reopen, send, accept, revise);
-            config.Deny(this.ObjectType, approved, approve, accept, order, reopen);
-            config.Deny(this.ObjectType, awaitingAcceptance, approve, order, send, reopen, reject);
-            config.Deny(this.ObjectType, accepted, approve, send, accept, reject, reopen);
-            config.Deny(this.ObjectType, ordered, approve, reject, order, cancel, reopen, send, accept, revise);
+            config.Deny(this.ObjectType, approved, approve, accept, order, reopen, delete);
+            config.Deny(this.ObjectType, awaitingAcceptance, approve, order, send, reopen, reject, delete);
+            config.Deny(this.ObjectType, accepted, approve, send, accept, reject, reopen, delete);
+            config.Deny(this.ObjectType, ordered, approve, reject, order, cancel, reopen, send, accept, revise, delete);
             config.Deny(this.ObjectType, rejected, approve, reject, order, send, accept, cancel, revise);
             config.Deny(this.ObjectType, cancelled, cancel, reject, order, send, accept, approve, revise);
 

@@ -9,6 +9,12 @@ namespace Allors.Domain
 
     public static partial class QuoteExtensions
     {
+        private static bool IsDeletable(this Quote @this) =>
+           (@this.QuoteState.Equals(new QuoteStates(@this.Strategy.Session).Created)
+               || @this.QuoteState.Equals(new QuoteStates(@this.Strategy.Session).Cancelled)
+               || @this.QuoteState.Equals(new QuoteStates(@this.Strategy.Session).Rejected))
+           && @this.QuoteItems.All(v => v.IsDeletable);
+
         public static void BaseOnBuild(this Quote @this, ObjectOnBuild method)
         {
             if (!@this.ExistQuoteState)
