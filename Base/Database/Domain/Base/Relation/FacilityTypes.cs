@@ -9,8 +9,8 @@ namespace Allors.Domain
 
     public partial class FacilityTypes
     {
-        private static readonly Guid WarehouseId = new Guid("56AD0A65-1FC0-40EA-BDA8-DADDFA6CBE63");
-        private static readonly Guid StorageLocationId = new Guid("FF66C1AD-3048-48FD-A7D9-FBF97A090EDD");
+        private static readonly Guid WarehouseId = new Guid("d4a70252-58d0-425b-8f54-7f55ae01a7b3");
+        private static readonly Guid StorageLocationId = new Guid("921f33b2-5978-409f-b09e-f28708fe770b");
 
         private UniquelyIdentifiableSticky<FacilityType> cache;
 

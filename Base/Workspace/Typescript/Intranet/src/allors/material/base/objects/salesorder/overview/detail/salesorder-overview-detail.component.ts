@@ -229,6 +229,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
           const id = this.panel.manager.id;
 
           const pulls = [
+            this.fetcher.warehouses,
             pull.SalesOrder({
               object: id,
               include: {
@@ -253,7 +254,6 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
                 }
               }
             }),
-            pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.VatRate(),
             pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.VatClause({ sort: new Sort(m.VatClause.Name) }),
