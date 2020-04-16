@@ -9,6 +9,13 @@ namespace Allors.Domain
 
     public static partial class RequestExtensions
     {
+        private static bool IsDeletable(this Request @this) =>
+            (@this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Anonymous)
+                || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Submitted)
+                || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Cancelled)
+                || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Rejected))
+            && @this.RequestItems.All(v => v.IsDeletable);
+
         public static void BaseOnBuild(this Request @this, ObjectOnBuild method)
         {
             if (!@this.ExistRequestState && !@this.ExistOriginator)
