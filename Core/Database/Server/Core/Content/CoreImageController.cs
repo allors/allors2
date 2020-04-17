@@ -35,9 +35,11 @@ namespace Allors.Server
 
         private ConcurrentDictionary<string, string> ETagByPath { get; }
 
+        // TODO: everything except the name should be base64 encoded,
+        //       e.g. "/image/{base64}/{*name}"
         [AllowAnonymous]
-        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds)]
         [HttpGet("/image/{idString}/{revisionString}/{*name}")]
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = OneYearInSeconds)]
         public virtual IActionResult Get(string idString, string revisionString, string name, int? w, int? q, string t, string b, string o)
         {
             this.Request.Headers.TryGetValue(HeaderNames.IfNoneMatch, out var requestEtagValues);
