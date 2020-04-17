@@ -27,8 +27,37 @@ namespace Allors.Server
 
         [Authorize]
         [AllowAnonymous]
-        [HttpGet("/media/{idString}/{*name}")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        [HttpGet("/print/{idString}/{*name}")]
+        public virtual ActionResult Download(string idString, string name)
+        {
+            if (this.Session.Instantiate(idString) is Printable printable)
+            {
+                if (printable.PrintDocument?.ExistMedia == false)
+                {
+                    printable.Print();
+                    this.Session.Derive();
+                    this.Session.Commit();
+                }
+
+                var media = printable.PrintDocument?.Media;
+
+                if (media == null)
+                {
+                    return this.NoContent();
+                }
+
+
+                return this.RedirectToAction(nameof(Get), new { idString = media.Id.ToString("N"), revision = media.Revision?.ToString("N"), name });
+            }
+
+            return this.NotFound("Printable with id " + idString + " not found.");
+        }
+
+        [Authorize]
+        [AllowAnonymous]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        [HttpGet("/media/{idString}/{*name}")]
         public virtual IActionResult RedirectOrNotFound(string idString, string name)
         {
             if (Guid.TryParse(idString, out var id))
@@ -45,8 +74,8 @@ namespace Allors.Server
 
         [Authorize]
         [AllowAnonymous]
-        [HttpGet("/media/{idString}/{revisionString}/{*name}")]
         [ResponseCache(Location = ResponseCacheLocation.Any, Duration = OneYearInSeconds)]
+        [HttpGet("/media/{idString}/{revisionString}/{*name}")]
         public virtual IActionResult Get(string idString, string revisionString, string name)
         {
             if (Guid.TryParse(idString, out var id))
