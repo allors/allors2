@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("003433eb-a0c6-454d-8517-0c03e9be3e96")]
     #endregion
-    public partial class ProductFeatureApplicability : Period, Object
+    public partial class ProductFeatureApplicability : Period, Deletable
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -73,6 +73,8 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
+        public void Delete() { }
 
         #endregion
     }

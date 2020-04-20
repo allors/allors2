@@ -7,6 +7,8 @@ namespace Allors.Domain
 {
     using System;
     using System.Linq;
+    using Allors.Meta;
+    using Resources;
 
     public partial class WorkEffortInventoryAssignment
     {
@@ -20,12 +22,12 @@ namespace Allors.Domain
 
             foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
             {
-                this.SyncInventoryTransactions(this.InventoryItem, this.Quantity, createReason, false);
+                this.SyncInventoryTransactions(derivation, this.InventoryItem, this.Quantity, createReason, false);
             }
 
             foreach (InventoryTransactionReason cancelReason in state.InventoryTransactionReasonsToCancel)
             {
-                this.SyncInventoryTransactions(this.InventoryItem, this.Quantity, cancelReason, true);
+                this.SyncInventoryTransactions(derivation, this.InventoryItem, this.Quantity, cancelReason, true);
             }
 
             if (inventoryItemChanged)
@@ -38,12 +40,12 @@ namespace Allors.Domain
 
                 foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
                 {
-                    this.SyncInventoryTransactions(previousInventoryItem, previousQuantity, createReason, true);
+                    this.SyncInventoryTransactions(derivation, previousInventoryItem, previousQuantity, createReason, true);
                 }
 
                 foreach (InventoryTransactionReason cancelReason in state.InventoryTransactionReasonsToCancel)
                 {
-                    this.SyncInventoryTransactions(previousInventoryItem, previousQuantity, cancelReason, true);
+                    this.SyncInventoryTransactions(derivation, previousInventoryItem, previousQuantity, cancelReason, true);
                 }
             }
 
@@ -99,7 +101,7 @@ namespace Allors.Domain
             }
         }
 
-        private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)
+        private void SyncInventoryTransactions(IDerivation derivation, InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)
         {
             var adjustmentQuantity = 0M;
             var existingQuantity = 0M;
@@ -118,12 +120,18 @@ namespace Allors.Domain
             else
             {
                 adjustmentQuantity = initialQuantity - existingQuantity;
+
+                if (inventoryItem is NonSerialisedInventoryItem nonserialisedInventoryItem && nonserialisedInventoryItem.QuantityOnHand < adjustmentQuantity)
+                {
+                    derivation.Validation.AddError(this, M.NonSerialisedInventoryItem.QuantityOnHand, ErrorMessages.InsufficientStock);
+                }
             }
 
             if (adjustmentQuantity != 0)
             {
                 this.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session())
                     .WithPart(inventoryItem.Part)
+                    .WithFacility(inventoryItem.Facility)
                     .WithQuantity(adjustmentQuantity)
                     .WithReason(reason)
                     .Build());

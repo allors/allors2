@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("0ae3caca-9b4b-407f-bd98-46db03b72a43")]
     #endregion
-    public partial class SupplierOffering : Commentable, Period, Object
+    public partial class SupplierOffering : Commentable, Period, Deletable
     {
         #region inherited properties
         public string Comment { get; set; }
@@ -162,6 +162,8 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
+        public void Delete() { }
 
         #endregion
     }

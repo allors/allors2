@@ -110,7 +110,6 @@ namespace Allors.Domain
                 .WithIsAutomaticallyReceived(isAutomaticallyReceived)
                 .WithSerialisedItemSoldOn(serialisedItemSoldOn)
                 .WithCollectiveWorkEffortInvoice(collectiveWorkEffortInvoice)
-                .WithExternalPrimaryKey($"{name}{taxNumber}")
                 .Build();
 
             if (purchaseOrderCounterValue != null)
