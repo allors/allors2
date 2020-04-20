@@ -35,7 +35,6 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
   table: Table<Row>;
 
   delete: Action;
-  delete2: Action;
 
   private subscription: Subscription;
   internalOrganisation: Organisation;
@@ -65,7 +64,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
 
     const { m } = this.metaService;
 
-    this.delete2 = methodService.create(allors.context, m.Organisation.Delete, { name: 'Delete (Method)' });
+    // this.delete2 = methodService.create(allors.context, m.Organisation.Delete, { name: 'Delete (Method)' });
 
     this.table = new Table({
       selection: true,
@@ -82,7 +81,6 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       actions: [
         overviewService.overview(),
         this.delete,
-        this.delete2,
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,

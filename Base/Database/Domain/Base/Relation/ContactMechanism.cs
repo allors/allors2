@@ -25,13 +25,5 @@ namespace Allors.Domain
                 }
             }
         }
-
-        public static void BaseDelete(this ContactMechanism @this, DeletableDelete method)
-        {
-            foreach (PartyContactMechanism partyContactMechanism in @this.PartyContactMechanismsWhereContactMechanism)
-            {
-                partyContactMechanism.Delete();
-            }
-        }
     }
 }

@@ -13,6 +13,13 @@ namespace Allors.Domain
 
     public partial class NonUnifiedPart
     {
+        private bool IsDeletable =>
+                               !this.ExistWorkEffortInventoryProducedsWherePart &&
+                               !this.ExistWorkEffortPartStandardsWherePart &&
+                               !this.ExistPartBillOfMaterialsWherePart &&
+                               !this.ExistPartBillOfMaterialsWhereComponentPart &&
+                               !this.ExistInventoryItemTransactionsWherePart;
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistInventoryItemKind)
@@ -77,6 +84,60 @@ namespace Allors.Domain
             this.DeriveAvailableToPromise();
             this.DeriveQuantityCommittedOut();
             this.DeriveQuantityExpectedIn();
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+        }
+
+        public void BaseDelete(DeletableDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                foreach (ProductIdentification productIdentification in this.ProductIdentifications)
+                {
+                    productIdentification.Delete();
+                }
+
+                foreach (LocalisedText localisedText in this.LocalisedNames)
+                {
+                    localisedText.Delete();
+                }
+
+                foreach (LocalisedText localisedText in this.LocalisedDescriptions)
+                {
+                    localisedText.Delete();
+                }
+
+                foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
+                {
+                    inventoryItem.Delete();
+                }
+
+                foreach (PartSubstitute partSubstitute in this.PartSubstitutesWherePart)
+                {
+                    partSubstitute.Delete();
+                }
+
+                foreach (PartSubstitute partSubstitute in this.PartSubstitutesWhereSubstitutionPart)
+                {
+                    partSubstitute.Delete();
+                }
+
+                foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
+                {
+                    supplierOffering.Delete();
+                }
+            }
         }
 
         private void DeriveName()

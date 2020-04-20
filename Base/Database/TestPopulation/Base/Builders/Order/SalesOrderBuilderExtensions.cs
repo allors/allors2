@@ -15,7 +15,7 @@ namespace Allors.Domain.TestPopulation
         /**
          *
          * All invloved parties (Buyer and Seller) must be an Organisation to use
-         * WithOrganisationDefaults method
+         * WithOrganisationExternalDefaults method
          *
          **/
         public static SalesOrderBuilder WithOrganisationExternalDefaults(this SalesOrderBuilder @this, Organisation sellerOrganisation)
@@ -56,6 +56,12 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
+        /**
+         *
+         * All invloved parties (Buyer and Seller) must be an Organisation to use
+         * WithOrganisationInternalDefaults method
+         *
+         **/
         public static SalesOrderBuilder WithOrganisationInternalDefaults(this SalesOrderBuilder @this, Organisation sellerOrganisation)
         {
             var faker = @this.Session.Faker();
@@ -106,6 +112,12 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
+        /**
+         *
+         * All invloved parties (Buyer and Seller) must be an Individual to use
+         * WithPersonExternalDefaults method
+         *
+         **/
         public static SalesOrderBuilder WithPersonExternalDefaults(this SalesOrderBuilder @this, Organisation sellerOrganisation)
         {
             var faker = @this.Session.Faker();
@@ -140,6 +152,12 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
+        /**
+         *
+         * All invloved parties (Buyer and Seller) must be an Individual to use
+         * WithPersonExternalDefaults method
+         *
+         **/
         public static SalesOrderBuilder WithPersonInternalDefaults(this SalesOrderBuilder @this, Organisation sellerOrganisation)
         {
             var faker = @this.Session.Faker();

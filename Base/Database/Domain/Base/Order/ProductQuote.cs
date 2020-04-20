@@ -264,6 +264,19 @@ namespace Allors.Domain
             this.ResetPrintDocument();
         }
 
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable())
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+        }
+
         public void CalculatePrices(
             IDerivation derivation,
             QuoteItem quoteItem,
