@@ -35,7 +35,7 @@ namespace Tests.SalesOrderTests
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
+            var expected = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 
