@@ -20,12 +20,6 @@ namespace Allors.Domain
                     iteration.AddDependency(this.FixedAsset, this);
                     iteration.Mark(this.FixedAsset);
                 }
-
-                if (this.ExistAssignment)
-                {
-                    iteration.AddDependency(this.Assignment, this);
-                    iteration.Mark(this.Assignment);
-                }
             }
         }
     }
