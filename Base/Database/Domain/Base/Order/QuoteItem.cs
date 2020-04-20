@@ -235,6 +235,16 @@ namespace Allors.Domain
             {
                 derivation.Validation.AddError(this, this.Meta.UnitPrice, ErrorMessages.UnitPriceRequired);
             }
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
         }
 
         public void BaseDelete(QuoteItemDelete method)

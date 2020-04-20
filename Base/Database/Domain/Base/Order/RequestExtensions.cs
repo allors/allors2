@@ -9,7 +9,7 @@ namespace Allors.Domain
 
     public static partial class RequestExtensions
     {
-        private static bool IsDeletable(this Request @this) =>
+        public static bool IsDeletable(this Request @this) =>
             (@this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Anonymous)
                 || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Submitted)
                 || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Cancelled)

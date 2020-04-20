@@ -315,9 +315,23 @@ namespace Allors.Domain
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
-            if (!this.CanInvoice)
+            if (this.CanInvoice)
+            {
+                this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+            else
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
             }
         }
 

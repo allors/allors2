@@ -619,6 +619,16 @@ namespace Allors.Domain
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.InvoiceItemType, Operations.Write));
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Product, Operations.Write));
             }
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
         }
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)

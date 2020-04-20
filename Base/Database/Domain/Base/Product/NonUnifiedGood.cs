@@ -87,6 +87,16 @@ namespace Allors.Domain
             builder.Append(string.Join(" ", this.Keywords));
 
             this.SearchString = builder.ToString();
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
         }
 
         public void DeriveVirtualProductPriceComponent()

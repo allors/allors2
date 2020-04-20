@@ -88,9 +88,14 @@ namespace Allors.Domain
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
-            if (!this.IsDeletable)
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
             {
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Delete, Operations.Execute));
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
             }
         }
 
