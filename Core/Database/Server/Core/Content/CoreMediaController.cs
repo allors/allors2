@@ -29,7 +29,7 @@ namespace Allors.Server
         [AllowAnonymous]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         [HttpGet("/print/{idString}/{*name}")]
-        public virtual ActionResult Download(string idString, string name)
+        public virtual ActionResult Print(string idString, string name)
         {
             if (this.Session.Instantiate(idString) is Printable printable)
             {
@@ -48,7 +48,7 @@ namespace Allors.Server
                 }
 
 
-                return this.RedirectToAction(nameof(Get), new { idString = media.Id.ToString("N"), revision = media.Revision?.ToString("N"), name });
+                return this.RedirectToAction(nameof(Get), new { idString = media.UniqueId.ToString("N"), revisionString = media.Revision?.ToString("N"), name });
             }
 
             return this.NotFound("Printable with id " + idString + " not found.");
@@ -65,7 +65,7 @@ namespace Allors.Server
                 var media = new Medias(this.Session).FindBy(M.Media.UniqueId, id);
                 if (media != null)
                 {
-                    return this.RedirectToAction(nameof(Get), new { idString = media.Id.ToString("N"), revision = media.Revision?.ToString("N") });
+                    return this.RedirectToAction(nameof(Get), new { idString = media.UniqueId.ToString("N"), revisionString = media.Revision?.ToString("N") });
                 }
             }
 

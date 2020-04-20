@@ -6,7 +6,6 @@ export abstract class FiltersService {
     employeeFilter: SearchFactory;
     goodsFilter: SearchFactory;
     serialisedgoodsFilter: SearchFactory;
-    iataFilter: SearchFactory;
     internalOrganisationsFilter: SearchFactory;
     nonUnifiedPartsFilter: SearchFactory;
     organisationsFilter: SearchFactory;

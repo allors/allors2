@@ -232,6 +232,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insufficient stock.
+        /// </summary>
+        public static string InsufficientStock {
+            get {
+                return ResourceManager.GetString("InsufficientStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account is not a cost center account.
         /// </summary>
         public static string NotACostCenterAccount {
