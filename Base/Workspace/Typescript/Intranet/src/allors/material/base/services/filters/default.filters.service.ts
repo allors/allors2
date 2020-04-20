@@ -27,6 +27,13 @@ export class DefaultFiltersService extends FiltersService {
     });
   }
 
+  get iataFilter() {
+    return new SearchFactory({
+      objectType: this.m.IataGseCode,
+      roleTypes: [this.m.IataGseCode.Name],
+    });
+  }
+
   get serialisedgoodsFilter() {
     return new SearchFactory({
       objectType: this.m.UnifiedGood,
