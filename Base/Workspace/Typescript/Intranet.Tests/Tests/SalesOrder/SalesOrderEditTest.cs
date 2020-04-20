@@ -32,11 +32,11 @@ namespace Tests.SalesOrderTests
 
         // MinimalWithOrganisation
         [Fact]
-        public void Edit()
+        public void EditWithExternalOrganisation()
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
+            var expected = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.internalOrganisation).Build();
 
             this.Session.Derive();
 
@@ -121,7 +121,7 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedBillToEndCustomer, salesOrder.BillToEndCustomer?.DisplayName());
             Assert.Equal(expectedShipToEndCustomer, salesOrder.ShipToEndCustomer?.DisplayName());
             Assert.Equal(expectedShipToEndCustomerAddress, salesOrder.ShipToEndCustomerAddress);
-            Assert.Equal(expectedShipToEndCustomerContactPerson, salesOrder.ShipToEndCustomerContactPerson); // salesOrder.ShipToEndCustomerContactPerson is Null
+            Assert.Equal(expectedShipToEndCustomerContactPerson, salesOrder.ShipToEndCustomerContactPerson);
             Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
             Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress?.DisplayName());
             Assert.Equal(expectedShipToContactPerson, salesOrder.ShipToContactPerson);
