@@ -49,23 +49,15 @@ namespace Allors.Domain.TestPopulation
             @this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithAvailableForSale(faker.Random.Bool());
 
-            if (availability.IsSold)
-            {
-                @this.WithOwnedBy(new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false));
-                @this.WithReportingUnit(internalOrganisation);
-            }
-            else if (availability.IsInRent)
+            @this.WithReportingUnit(internalOrganisation);
+            @this.OwnedBy = (availability.IsSold ? new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false) : internalOrganisation) ?? internalOrganisation;
+
+            if (availability.IsInRent)
             {
                 @this.WithRentedBy(new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false));
                 @this.WithRentalFromDate(faker.Date.Between(start: acquiredDate, end: acquiredDate.AddDays(10)));
                 @this.WithRentalThroughDate(faker.Date.Future(refDate: acquiredDate.AddYears(2)));
                 @this.WithExpectedReturnDate(faker.Date.Between(start: acquiredDate.AddYears(2).AddDays(1), end: acquiredDate.AddYears(2).AddDays(10)));
-                @this.WithReportingUnit(internalOrganisation);
-            }
-            else
-            {
-                @this.WithOwnedBy(internalOrganisation);
-                @this.WithReportingUnit(internalOrganisation);
             }
 
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
