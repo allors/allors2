@@ -30,7 +30,9 @@ namespace Tests.SalesOrderTests
             this.salesOrderListPage = this.Sidenav.NavigateToSalesOrders();
         }
 
-        // MinimalWithOrganisation
+        /**
+         * MinimalWithExternalOrganisation
+         **/
         [Fact]
         public void EditWithExternalOrganisation()
         {
