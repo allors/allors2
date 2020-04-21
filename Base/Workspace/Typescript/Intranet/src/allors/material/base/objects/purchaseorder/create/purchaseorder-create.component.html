@@ -160,12 +160,6 @@
       </div>
 
       <div class="row">
-        <a-mat-select class="col-md" [object]="order" [roleType]="m.PurchaseOrder.VatRegime" [options]="vatRegimes"
-          display="Name"></a-mat-select>
-        <a-mat-static class="col-md" [object]="order.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
-      </div>
-
-      <div class="row">
         <a-mat-select class="col-md" [object]="order" [roleType]="m.PurchaseOrder.Facility" [options]="facilities" display="Name"></a-mat-select>
         <a-mat-input class="col-md" [object]="order" [roleType]="m.PurchaseOrder.CustomerReference"></a-mat-input>
       </div>
