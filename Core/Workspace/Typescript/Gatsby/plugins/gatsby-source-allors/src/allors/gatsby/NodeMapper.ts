@@ -1,4 +1,3 @@
-import { Loaded } from "../promise";
 import { ISessionObject } from "../framework";
 
 import { NodePluginArgs } from "gatsby"

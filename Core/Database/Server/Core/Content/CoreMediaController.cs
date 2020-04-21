@@ -23,7 +23,7 @@ namespace Allors.Server
 
         protected CoreMediaController(ISessionService sessionService) => this.Session = sessionService.Session;
 
-        private ISession Session { get; }
+        protected ISession Session { get; }
 
         [Authorize]
         [AllowAnonymous]
