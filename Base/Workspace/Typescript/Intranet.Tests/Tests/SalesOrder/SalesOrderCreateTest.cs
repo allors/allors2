@@ -31,7 +31,7 @@ namespace Tests.SalesOrderTests
         }
 
         [Fact]
-        public void CreateMinimal()
+        public void CreateWithExternalOrganisation()
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
@@ -41,12 +41,7 @@ namespace Tests.SalesOrderTests
 
             var expectedBillToCustomer = expected.BillToCustomer.DisplayName();
             var expectedBillToContactMechanism = expected.BillToContactMechanism;
-            var expectedBillToEndCustomerContactMechanism = expected.BillToEndCustomerContactMechanism;
             var expectedBillToContactPerson = expected.BillToContactPerson;
-            var expectedBillToEndCustomer = expected.BillToEndCustomer.DisplayName();
-            var expectedShipToEndCustomer = expected.ShipToEndCustomer.DisplayName();
-            var expectedShipToEndCustomerAddress = expected.ShipToEndCustomerAddress;
-            var expectedShipToEndCustomerContactPerson = expected.ShipToEndCustomerContactPerson;
             var expectedShipToCustomer = expected.ShipToCustomer.DisplayName();
             var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
             var expectedShipToContactPerson = expected.ShipToContactPerson;
@@ -74,13 +69,8 @@ namespace Tests.SalesOrderTests
             var actual = after.Except(before).First();
 
             Assert.Equal(expectedBillToCustomer, actual.BillToCustomer?.DisplayName());
-            Assert.Equal(expectedBillToEndCustomerContactMechanism, actual.BillToEndCustomerContactMechanism);
             Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
-            Assert.Equal(expectedBillToEndCustomer, actual.BillToEndCustomer?.DisplayName());
-            Assert.Equal(expectedShipToEndCustomer, actual.ShipToEndCustomer?.DisplayName());
-            Assert.Equal(expectedShipToEndCustomerAddress, actual.ShipToEndCustomerAddress);
-            Assert.Equal(expectedShipToEndCustomerContactPerson, actual.ShipToEndCustomerContactPerson);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
             Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
             Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);

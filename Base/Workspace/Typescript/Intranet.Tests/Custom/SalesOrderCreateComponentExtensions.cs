@@ -6,38 +6,18 @@ namespace src.allors.material.@base.objects.salesorder.create
 
     public static partial class SalesOrderCreateComponentExtensions
     {
-        public static SalesOrderCreateComponent Build(this SalesOrderCreateComponent @this, SalesOrder salesOrder, bool minimal = false)
+        public static SalesOrderCreateComponent Build(this SalesOrderCreateComponent @this, SalesOrder salesOrder)
         {
-            if (!minimal)
-            {
-                @this.ShipFromAddress.Select(salesOrder.ShipFromAddress);
-                @this.ShipToCustomer.Select(salesOrder.ShipToCustomer.DisplayName());
-                @this.ShipToAddress.Select(salesOrder.ShipToAddress);
-                @this.BillToCustomer.Select(salesOrder.BillToCustomer.DisplayName());
-                @this.BillToContactMechanism.Select(salesOrder.BillToContactMechanism);
-                @this.ShipToEndCustomer.Select(salesOrder.ShipToEndCustomer.DisplayName());
-                @this.ShipToEndCustomerAddress.Select(salesOrder.ShipToEndCustomerAddress);
-                @this.BillToEndCustomer.Select(salesOrder.BillToEndCustomer.DisplayName());
-                @this.BillToEndCustomerContactMechanism.Select(salesOrder.BillToEndCustomerContactMechanism);
-                @this.CustomerReference.Set(salesOrder.CustomerReference);
-                @this.Description.Set(salesOrder.Description);
-                @this.InternalComment.Set(salesOrder.InternalComment);
-
-                if (salesOrder.ExistBillToContactPerson)
-                {
-                    @this.BillToContactPerson.Select(salesOrder.BillToContactPerson);
-                }
-
-                if (salesOrder.ExistShipToEndCustomerContactPerson)
-                {
-                    @this.ShipToEndCustomerContactPerson.Select(salesOrder.ShipToEndCustomerContactPerson);
-                }
-
-                if (salesOrder.ExistShipToContactPerson)
-                {
-                    @this.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
-                }
-            }
+            @this.BillToCustomer.Select(salesOrder.BillToCustomer.DisplayName());
+            @this.BillToContactPerson.Select(salesOrder.BillToContactPerson);
+            @this.BillToContactMechanism.Select(salesOrder.BillToContactMechanism);
+            @this.ShipFromAddress.Select(salesOrder.ShipFromAddress);
+            @this.ShipToAddress.Select(salesOrder.ShipToAddress);
+            @this.ShipToCustomer.Select(salesOrder.ShipToCustomer.DisplayName());
+            @this.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
+            @this.CustomerReference.Set(salesOrder.CustomerReference);
+            @this.Description.Set(salesOrder.Description);
+            @this.InternalComment.Set(salesOrder.InternalComment);
 
             return @this;
         }

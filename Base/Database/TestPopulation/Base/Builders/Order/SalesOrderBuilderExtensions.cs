@@ -7,7 +7,6 @@
 namespace Allors.Domain.TestPopulation
 {
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
 
     public static partial class SalesOrderBuilderExtensions
@@ -32,7 +31,7 @@ namespace Allors.Domain.TestPopulation
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
-            @this.WithCustomerReference(faker.Random.String(16));
+            @this.WithCustomerReference(faker.Random.Words(10));
             @this.WithTakenBy(sellerOrganisation);
             @this.WithTakenByContactMechanism(sellerOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithTakenByContactPerson(sellerOrganisation.CurrentContacts.FirstOrDefault());
