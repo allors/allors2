@@ -1697,7 +1697,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
+        public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejected()
         {
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
@@ -1729,11 +1729,44 @@ namespace Allors.Domain
             var acl = new AccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Delete));
         }
 
         [Fact]
-        public void GivenOrderItem_WhenObjectStateIsRejected_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
+        public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemCanBeDeleted()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            User user = this.Administrator;
+            this.Session.SetUser(user);
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            item.Cancel();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderItemStates(this.Session).Cancelled, item.SalesOrderItemState);
+            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            Assert.True(acl.CanExecute(M.SalesOrderItem.Delete));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsRejected_ThenItemMayNotBeCancelledOrRejected()
         {
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
@@ -1765,6 +1798,40 @@ namespace Allors.Domain
             var acl = new AccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
             Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
+        }
+
+        [Fact]
+        public void GivenOrderItem_WhenObjectStateIsRejected_ThenCanBeDeleted()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            User user = this.Administrator;
+            this.Session.SetUser(user);
+
+            var item = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddSalesOrderItem(item);
+
+            this.Session.Derive();
+
+            item.Reject();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderItemStates(this.Session).Rejected, item.SalesOrderItemState);
+            var acl = new AccessControlLists(this.Session.GetUser())[item];
+            Assert.True(acl.CanExecute(M.SalesOrderItem.Delete));
         }
 
         [Fact]

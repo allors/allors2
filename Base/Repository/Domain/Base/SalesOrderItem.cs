@@ -376,6 +376,18 @@ namespace Allors.Repository
         public PostalAddress AssignedShipToAddress { get; set; }
 
         #region Allors
+        [Id("28104b69-ef65-47f7-96fe-e800c8803384")]
+        [AssociationId("3df7e05c-e1ad-494e-ae7c-ac825bb17ff0")]
+        [RoleId("75ae96d9-3c2b-4cfe-85ca-81d497d2b124")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal CostOfGoodsSold { get; set; }
+
+        #region Allors
         [Id("545eb094-63d8-4d25-a069-7c3e91f26eb7")]
         [AssociationId("686d5956-c2dc-46d5-b812-52020d392f0f")]
         [RoleId("3a8adaf6-82e6-45a6-bd5f-61860125d77b")]

@@ -40,12 +40,14 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, shipmentInProgress, delete, cancel, reject);
             config.Deny(this.ObjectType, partiallyShipped, delete, cancel, reject);
             config.Deny(this.ObjectType, shipped, delete, cancel, reject);
+            config.Deny(this.ObjectType, cancelled, cancel, reject);
+            config.Deny(this.ObjectType, rejected, cancel, reject);
 
             config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, inProcess, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operations.Write);
             config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }

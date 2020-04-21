@@ -18,6 +18,8 @@ namespace Allors.Domain.TestPopulation
                 .WithQuantity(quantity)
                 .Build();
 
+            @this.Session().Derive();
+
             return new WorkEffortInventoryAssignmentBuilder(@this.Session())
                 .WithAssignment(@this)
                 .WithInventoryItem(part.InventoryItemsWherePart.First)

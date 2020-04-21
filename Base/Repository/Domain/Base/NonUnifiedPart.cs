@@ -103,6 +103,8 @@ namespace Allors.Repository
 
         public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
 
+        public PartWeightedAverage PartWeightedAverage { get; set; }
+
         #endregion inheritedProperties
 
         #region inheritedMethods

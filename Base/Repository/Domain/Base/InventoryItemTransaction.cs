@@ -71,6 +71,16 @@ namespace Allors.Repository
         [Workspace]
         public decimal Quantity { get; set; }
 
+        #region Allors
+        [Id("364853b7-13eb-4952-ac71-36541518b48a")]
+        [AssociationId("310a9842-aab8-4b87-9db0-f0ea0fbfd4eb")]
+        [RoleId("a496e4c4-fe45-45ad-b57f-cb554502dbef")]
+        #endregion
+        [Required]
+        [Derived]
+        [Workspace]
+        public decimal Cost { get; set; }
+
         /// <summary>
         /// The TransactionDate and Time when this InventoryItemTransaction occurred.
         /// </summary>

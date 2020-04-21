@@ -37,9 +37,9 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, received, part);
 
             config.Deny(this.ObjectType, created, cancel, reject);
-            config.Deny(this.ObjectType, onHold, quickReceive);
-            config.Deny(this.ObjectType, awaitingApproval, cancel, quickReceive);
-            config.Deny(this.ObjectType, inProcess, delete, quickReceive);
+            config.Deny(this.ObjectType, onHold, quickReceive, delete);
+            config.Deny(this.ObjectType, awaitingApproval, cancel, quickReceive, delete);
+            config.Deny(this.ObjectType, inProcess, delete, quickReceive, delete);
             config.Deny(this.ObjectType, completed, delete);
             config.Deny(this.ObjectType, partiallyReceived, delete, cancel, reject, quickReceive);
             config.Deny(this.ObjectType, received, delete, cancel, reject, quickReceive);
@@ -48,7 +48,7 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, finished, Operations.Execute);
+            config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }
     }
 }

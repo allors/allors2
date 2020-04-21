@@ -32,10 +32,14 @@ namespace Allors.Domain
         public bool WasValid => this.ExistLastObjectStates && !(this.LastSalesOrderItemState.IsCancelled || this.LastSalesOrderItemState.IsRejected);
 
         internal bool IsDeletable =>
-            !this.ExistOrderItemBillingsWhereOrderItem &&
-            !this.ExistOrderShipmentsWhereOrderItem &&
-            !this.ExistOrderRequirementCommitmentsWhereOrderItem &&
-            !this.ExistWorkEffortsWhereOrderItemFulfillment;
+            (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Provisional)
+                || this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).ReadyForPosting)
+                || this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Cancelled)
+                || this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Rejected))
+            && !this.ExistOrderItemBillingsWhereOrderItem
+            && !this.ExistOrderShipmentsWhereOrderItem
+            && !this.ExistOrderRequirementCommitmentsWhereOrderItem
+            && !this.ExistWorkEffortsWhereOrderItemFulfillment;
 
         public Part Part
         {

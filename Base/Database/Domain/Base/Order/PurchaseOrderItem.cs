@@ -28,10 +28,13 @@ namespace Allors.Domain
         public bool IsValid => !(this.PurchaseOrderItemState.IsCancelled || this.PurchaseOrderItemState.IsRejected);
 
         internal bool IsDeletable =>
-            !this.ExistOrderItemBillingsWhereOrderItem &&
-            !this.ExistOrderShipmentsWhereOrderItem &&
-            !this.ExistOrderRequirementCommitmentsWhereOrderItem &&
-            !this.ExistWorkEffortsWhereOrderItemFulfillment;
+            (this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Created)
+                || this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Cancelled)
+                || this.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Rejected))
+            && !this.ExistOrderItemBillingsWhereOrderItem
+            && !this.ExistOrderShipmentsWhereOrderItem
+            && !this.ExistOrderRequirementCommitmentsWhereOrderItem
+            && !this.ExistWorkEffortsWhereOrderItemFulfillment;
 
         public string SupplierReference
         {

@@ -194,6 +194,12 @@ namespace Allors.Domain
                 .WithNonSerialisedDefaults(internalOrganisation)
                 .Build();
 
+            this.Session.Derive();
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment).WithPart(finishedGood).Build();
+
+            this.Session.Derive();
+
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var piece = new UnitsOfMeasure(this.Session).Piece;
 

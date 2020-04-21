@@ -151,6 +151,16 @@ namespace Allors.Repository
         SerialisedItemCharacteristic[] SerialisedItemCharacteristics { get; set; }
 
         #region Allors
+        [Id("d55ec9da-f499-47e1-9582-094e73bef11a")]
+        [AssociationId("5baee0e5-946c-48e1-9b52-3944fadebe7d")]
+        [RoleId("a7e424c4-b947-4742-9f9a-ae81112bd1eb")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        PartWeightedAverage PartWeightedAverage { get; set; }
+
+        #region Allors
         [Id("30C81CF6-6295-44C4-ACDD-2A408DA3DC6D")]
         [AssociationId("9D3328E6-EE12-4A59-B664-967EB5DC6612")]
         [RoleId("E6010C20-764F-4FD6-BB0B-A5B57B59C840")]
