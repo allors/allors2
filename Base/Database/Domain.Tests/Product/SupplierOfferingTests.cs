@@ -269,7 +269,6 @@ namespace Allors.Domain
             /*Purchase price times InternalSurchargePercentage
             var sellingPrice = Math.Round(135 * (1 + (this.Session.GetSingleton().Settings.PartSurchargePercentage / 100)), 2);*/
 
-            Assert.Equal(99, workEffortInventoryAssignement.UnitPurchasePrice);
             Assert.Equal(100, workEffortInventoryAssignement.UnitSellingPrice);
         }
     }

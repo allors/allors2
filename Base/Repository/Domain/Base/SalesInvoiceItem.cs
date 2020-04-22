@@ -215,6 +215,15 @@ namespace Allors.Repository
         public Facility Facility { get; set; }
 
         #region Allors
+        [Id("5e268182-f7f2-44aa-bb7c-7da8702bf5d2")]
+        [AssociationId("d2fb57e2-0d2d-4bdc-bea1-7ddc78b2d4da")]
+        [RoleId("577af065-dc14-4c1c-8ba5-32f795b72589")]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal CostOfGoodsSold { get; set; }
+
+        #region Allors
 
         [Id("5EFBB240-3B6B-47C4-8696-C7063ACBE074")]
 

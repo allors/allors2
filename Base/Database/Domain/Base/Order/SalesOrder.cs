@@ -1,3 +1,4 @@
+
 // <copyright file="SalesOrder.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -608,7 +609,9 @@ namespace Allors.Domain
                             {
                                 var good = orderItem.Product as Good;
                                 var nonUnifiedGood = orderItem.Product as NonUnifiedGood;
-                                var inventoryItemKind = orderItem.Product is UnifiedGood unifiedGood ? unifiedGood.InventoryItemKind : nonUnifiedGood?.Part.InventoryItemKind;
+                                var unifiedGood = orderItem.Product as UnifiedGood;
+                                var inventoryItemKind = unifiedGood?.InventoryItemKind ?? nonUnifiedGood?.Part.InventoryItemKind;
+                                var part = unifiedGood ?? nonUnifiedGood?.Part;
 
                                 ShipmentItem shipmentItem = null;
                                 foreach (ShipmentItem item in pendingShipment.ShipmentItems)
@@ -671,6 +674,8 @@ namespace Allors.Domain
                                 shipmentItem.Quantity = shipmentItem.OrderShipmentsWhereShipmentItem.Sum(v => v.Quantity);
 
                                 orderItemDerivedRoles.QuantityRequestsShipping = 0;
+
+                                orderItemDerivedRoles.CostOfGoodsSold = orderItem.QuantityOrdered * part.PartWeightedAverage.AverageCost;
                             }
                         }
 
@@ -728,7 +733,8 @@ namespace Allors.Domain
                             .WithInvoiceItemType(orderItem.InvoiceItemType)
                             .WithAssignedUnitPrice(orderItem.UnitPrice)
                             .WithProduct(orderItem.Product)
-                            .WithQuantity(orderItem.QuantityOrdered)
+                            .WithQuantity(orderItem.CostOfGoodsSold)
+                            .WithCostOfGoodsSold(orderItem.QuantityOrdered)
                             .WithAssignedVatRegime(orderItem.AssignedVatRegime)
                             .WithDescription(orderItem.Description)
                             .WithInternalComment(orderItem.InternalComment)

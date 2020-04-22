@@ -10,6 +10,14 @@ namespace Allors.Domain
 
     public static partial class PartExtensions
     {
+        public static void BaseOnBuild(this Part @this, ObjectOnBuild method)
+        {
+            if (!@this.ExistPartWeightedAverage)
+            {
+                @this.PartWeightedAverage = new PartWeightedAverageBuilder(@this.Session()).Build();
+            }
+        }
+
         public static void BaseOnDerive(this Part @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;

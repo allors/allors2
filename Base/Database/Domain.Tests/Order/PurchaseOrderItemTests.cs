@@ -372,7 +372,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOrderItem_WhenObjectStateIsSetReadyForProcessing_ThenItemMayBeCancelledOrRejectedOrDeleted()
+        public void GivenOrderItem_WhenObjectStateIsSetReadyForProcessing_ThenItemMayBeCancelledOrRejected()
         {
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
@@ -403,7 +403,6 @@ namespace Allors.Domain
             var acl = new AccessControlLists(this.Session.GetUser())[item];
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Cancel));
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Reject));
-            Assert.True(acl.CanExecute(M.PurchaseOrderItem.Delete));
         }
 
         [Fact]

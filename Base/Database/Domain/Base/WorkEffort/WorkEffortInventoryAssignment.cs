@@ -49,14 +49,7 @@ namespace Allors.Domain
                 }
             }
 
-            try
-            {
-                this.CalculatePurchasePrice();
-            }
-            catch (Exception e)
-            {
-                this.UnitPurchasePrice = 0M;
-            }
+            this.CostOfGoodsSold = this.Quantity * this.InventoryItem.Part.PartWeightedAverage.AverageCost;
 
             this.CalculateSellingPrice();
 
@@ -65,18 +58,11 @@ namespace Allors.Domain
                 this.Assignment.ResetPrintDocument();
             }
         }
-
-        public void BaseCalculatePurchasePrice(WorkEffortInventoryAssignmentCalculatePurchasePrice method)
+        public void BaseDelete(DeletableDelete method)
         {
-            if (!method.Result.HasValue)
-            {
-                var date = this.Assignment.ScheduledStart;
-
-                this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart
-                    .Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date)).Max(v => v.Price);
-
-                method.Result = true;
-            }
+            var session = this.strategy.Session;
+            var derivation = new Derivations.Default.Derivation(session);
+            this.SyncInventoryTransactions(derivation, this.InventoryItem, this.Quantity, new InventoryTransactionReasons(session).Consumption, true);
         }
 
         public void BaseCalculateSellingPrice(WorkEffortInventoryAssignmentCalculateSellingPrice method)
@@ -133,6 +119,7 @@ namespace Allors.Domain
                     .WithPart(inventoryItem.Part)
                     .WithFacility(inventoryItem.Facility)
                     .WithQuantity(adjustmentQuantity)
+                    .WithCost(inventoryItem.Part.PartWeightedAverage.AverageCost)
                     .WithReason(reason)
                     .Build());
             }

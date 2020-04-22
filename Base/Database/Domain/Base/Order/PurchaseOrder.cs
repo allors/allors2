@@ -461,6 +461,7 @@ namespace Allors.Domain
                         shipmentItem = new ShipmentItemBuilder(session)
                             .WithPart(orderItem.Part)
                             .WithQuantity(orderItem.QuantityOrdered)
+                            .WithUnitPurchasePrice(orderItem.UnitPrice)
                             .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
                             .Build();
 
@@ -517,25 +518,27 @@ namespace Allors.Domain
                                     .Build();
                             }
 
-                            new InventoryItemTransactionBuilder(this.Session())
-                                .WithSerialisedItem(serialisedItem)
-                                .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
-                                .WithFacility(this.Facility)
-                                .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
-                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(session).Good)
-                                .WithQuantity(1)
-                                .Build();
+                            //new InventoryItemTransactionBuilder(this.Session())
+                            //    .WithSerialisedItem(serialisedItem)
+                            //    .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
+                            //    .WithFacility(this.Facility)
+                            //    .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                            //    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(session).Good)
+                            //    .WithQuantity(1)
+                            //    .WithCost(orderItem.UnitPrice)
+                            //    .Build();
                         }
-                        else
-                        {
-                            new InventoryItemTransactionBuilder(this.Session())
-                                .WithPart(orderItem.Part)
-                                .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
-                                .WithFacility(this.Facility)
-                                .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
-                                .WithQuantity(orderItem.QuantityOrdered)
-                                .Build();
-                        }
+                        //else
+                        //{
+                        //    new InventoryItemTransactionBuilder(this.Session())
+                        //        .WithPart(orderItem.Part)
+                        //        .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
+                        //        .WithFacility(this.Facility)
+                        //        .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                        //        .WithQuantity(orderItem.QuantityOrdered)
+                        //        .WithCost(orderItem.UnitPrice)
+                        //        .Build();
+                        //}
                     }
                 }
 

@@ -290,6 +290,7 @@ namespace Allors.Domain
                     {
                         foreach (SalesOrderItemInventoryAssignment salesOrderItemInventoryAssignment in ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignments)
                         {
+                            // Quantity is used to calculate QuantityReserved (via inventoryItemTransactions)
                             salesOrderItemInventoryAssignment.Quantity -= orderShipment.Quantity;
                         }
                     }
@@ -315,6 +316,7 @@ namespace Allors.Domain
                                 .WithFacility(inventoryItem.Facility)
                                 .WithReason(new InventoryTransactionReasons(this.Strategy.Session).OutgoingShipment)
                                 .WithQuantity(shipmentItem.Quantity)
+                                .WithCost(inventoryItem.Part.PartWeightedAverage.AverageCost)
                                 .Build();
                         }
                     }

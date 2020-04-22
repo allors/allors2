@@ -327,19 +327,21 @@ namespace Allors.Domain
         public void BaseQuickReceive(PurchaseOrderItemQuickReceive method)
         {
             var session = this.Session();
+            var order = this.PurchaseOrderWherePurchaseOrderItem;
 
             if (this.ExistPart)
             {
                 var shipment = new PurchaseShipmentBuilder(session)
                     .WithShipmentMethod(new ShipmentMethods(session).Ground)
-                    .WithShipToParty(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy)
-                    .WithShipFromParty(this.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier)
-                    .WithShipToFacility(this.PurchaseOrderWherePurchaseOrderItem.Facility)
+                    .WithShipToParty(order.OrderedBy)
+                    .WithShipFromParty(order.TakenViaSupplier)
+                    .WithShipToFacility(order.Facility)
                     .Build();
 
                 var shipmentItem = new ShipmentItemBuilder(session)
                     .WithPart(this.Part)
                     .WithQuantity(this.QuantityOrdered)
+                    .WithUnitPurchasePrice(this.UnitPrice)
                     .WithContentsDescription($"{this.QuantityOrdered} * {this.Part.Name}")
                     .Build();
 
@@ -356,6 +358,75 @@ namespace Allors.Domain
                     .WithShipmentItem(shipmentItem)
                     .WithOrderItem(this)
                     .Build();
+
+                if (this.Part.InventoryItemKind.Serialised)
+                {
+                    var serialisedItem = this.SerialisedItem;
+                    if (!this.ExistSerialisedItem)
+                    {
+                        serialisedItem = new SerialisedItemBuilder(session)
+                            .WithSerialNumber(this.SerialNumber)
+                            .Build();
+
+                        this.Part.AddSerialisedItem(serialisedItem);
+                    }
+
+                    shipmentItem.SerialisedItem = serialisedItem;
+
+                    // HACK: DerivedRoles (WIP)
+                    var serialisedItemDeriveRoles = (SerialisedItemDerivedRoles)serialisedItem;
+                    serialisedItemDeriveRoles.PurchaseOrder = order;
+                    serialisedItemDeriveRoles.SuppliedBy = order.TakenViaSupplier;
+                    serialisedItem.RemoveAssignedPurchasePrice();
+                    serialisedItemDeriveRoles.PurchasePrice = this.TotalExVat;
+
+                    serialisedItem.OwnedBy = order.OrderedBy;
+                    serialisedItem.ReportingUnit = order.OrderedBy;
+                    serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session()).Available;
+
+                    var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
+                        .FirstOrDefault(v => v.SerialisedItem.Equals(serialisedItem) && v.Facility.Equals(order.Facility));
+
+                    if (inventoryItem == null)
+                    {
+                        new SerialisedInventoryItemBuilder(this.Session())
+                            .WithSerialisedItem(serialisedItem)
+                            .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Good)
+                            .WithPart(this.Part)
+                            .WithUnitOfMeasure(new UnitsOfMeasure(this.Session()).Piece)
+                            .WithFacility(order.Facility)
+                            .Build();
+                    }
+
+                    //new InventoryItemTransactionBuilder(this.Session())
+                    //    .WithSerialisedItem(serialisedItem)
+                    //    .WithUnitOfMeasure(this.Part.UnitOfMeasure)
+                    //    .WithFacility(order.Facility)
+                    //    .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                    //    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(session).Good)
+                    //    .WithQuantity(1)
+                    //    .WithCost(this.UnitPrice)
+                    //    .Build();
+                }
+                //else
+                //{
+                //    new InventoryItemTransactionBuilder(this.Session())
+                //        .WithPart(this.Part)
+                //        .WithUnitOfMeasure(this.Part.UnitOfMeasure)
+                //        .WithFacility(order.Facility)
+                //        .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                //        .WithQuantity(this.QuantityOrdered)
+                //        .WithCost(this.UnitPrice)
+                //        .Build();
+                //}
+
+                if (shipment.ShipToParty is InternalOrganisation internalOrganisation)
+                {
+                    if (internalOrganisation.IsAutomaticallyReceived)
+                    {
+                        shipment.Receive();
+                    }
+                }
             }
             else
             {

@@ -192,6 +192,21 @@ namespace Allors.Repository
         [Workspace]
         public Shipment SyncedShipment { get; set; }
 
+        /// <summary>
+        /// Gets or Sets the Purchase price in case PurchaseShipment is not coming from PurchaseOrder.
+        /// We need a price for calculating the weighted average cost for inventory.
+        /// </summary>
+        #region Allors
+        [Id("d6778107-7d74-4217-b7b3-a1cd78c1e764")]
+        [AssociationId("f3787589-5b6a-476f-a629-cf6c42ad9038")]
+        [RoleId("65357b47-cb61-45b5-a064-69c65a7a2e97")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal UnitPurchasePrice { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

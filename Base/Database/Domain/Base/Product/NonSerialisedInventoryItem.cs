@@ -1,3 +1,4 @@
+
 // <copyright file="NonSerialisedInventoryItem.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -39,6 +40,7 @@ namespace Allors.Domain
 
             // QuantityOnHand
             var quantityOnHand = 0M;
+            var totalCost = 0M;
 
             if (!settings.InventoryStrategy.OnHandNonSerialisedStates.Contains(this.NonSerialisedInventoryItemState))
             {
@@ -52,10 +54,18 @@ namespace Allors.Domain
                 if (reason.IncreasesQuantityOnHand == true)
                 {
                     quantityOnHand += inventoryTransaction.Quantity;
+
+                    var transactionCost = inventoryTransaction.Quantity * inventoryTransaction.Cost;
+                    totalCost += transactionCost;
+
+                    var averageCost = quantityOnHand > 0 ? totalCost / quantityOnHand : 0M;
+                    ((PartWeightedAverageDerivedRoles)this.Part.PartWeightedAverage).AverageCost = decimal.Round(averageCost, 2);
                 }
                 else if (reason.IncreasesQuantityOnHand == false)
                 {
                     quantityOnHand -= inventoryTransaction.Quantity;
+
+                    totalCost = quantityOnHand * this.Part.PartWeightedAverage.AverageCost;
                 }
             }
 

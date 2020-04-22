@@ -77,7 +77,6 @@ namespace Allors.Repository
         [RoleId("a496e4c4-fe45-45ad-b57f-cb554502dbef")]
         #endregion
         [Required]
-        [Derived]
         [Workspace]
         public decimal Cost { get; set; }
 
