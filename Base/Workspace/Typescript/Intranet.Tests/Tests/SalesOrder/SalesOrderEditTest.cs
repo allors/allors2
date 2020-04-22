@@ -46,7 +46,7 @@ namespace Tests.SalesOrderTests
             var expectedBillToContactMechanism = expected.BillToContactMechanism;
             var expectedBillToContactPerson = expected.BillToContactPerson;
             var expectedShipToCustomer = expected.ShipToCustomer?.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress?.DisplayName();
+            var expectedShipToAddressDisplayName = expected.ShipToAddress;
             var expectedShipToContactPerson = expected.ShipToContactPerson;
             var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
@@ -62,11 +62,11 @@ namespace Tests.SalesOrderTests
 
             salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
             salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
-            salesOrderOverviewDetail.BillToContactPerson.Select(salesOrder.BillToContactPerson);
+            salesOrderOverviewDetail.BillToContactPerson.Select(expected.BillToContactPerson);
             salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
             salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
-            salesOrderOverviewDetail.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
+            salesOrderOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
             salesOrderOverviewDetail.Description.Set(expected.Description);
             salesOrderOverviewDetail.InternalComment.Set(expected.InternalComment);
@@ -85,7 +85,7 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedBillToCustomer, salesOrder.BillToCustomer?.DisplayName());
             Assert.Equal(expectedBillToContactMechanism, salesOrder.BillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, salesOrder.BillToContactPerson);
-            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress);
             Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.ShipFromAddress?.DisplayName());
             Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
             Assert.Equal(expectedShipToContactPerson, salesOrder.ShipToContactPerson);
