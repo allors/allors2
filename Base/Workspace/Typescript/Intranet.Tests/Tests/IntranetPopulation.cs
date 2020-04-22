@@ -314,7 +314,7 @@ namespace Tests
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
+            /*var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
                 .WithDescription("first item")
                 .WithProduct(good1)
                 .WithAssignedUnitPrice(3000)
@@ -336,9 +336,9 @@ line2")
                 .WithAssignedUnitPrice(100)
                 .WithQuantityOrdered(1)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
-                .Build();
+                .Build();*/
 
-            var order = new SalesOrderBuilder(this.Session)
+            /*var order = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(allors)
                 .WithBillToCustomer(allors.ActiveCustomers.First)
                 .WithBillToEndCustomerContactMechanism(allors.ActiveCustomers.First.BillingAddress)
@@ -348,7 +348,9 @@ line2")
                 .WithCustomerReference("a reference number")
                 .WithDescription("Sale of 1 used Aircraft Towbar")
                 .WithVatRegime(new VatRegimes(this.Session).Assessable)
-                .Build();
+                .Build();*/
+
+            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
 
             var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
             var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(allors).Build();

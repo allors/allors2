@@ -44,14 +44,9 @@ namespace Tests.SalesOrderTests
 
             var expectedBillToCustomer = expected.BillToCustomer?.DisplayName();
             var expectedBillToContactMechanism = expected.BillToContactMechanism;
-            var expectedBillToEndCustomerContactMechanism = expected.BillToEndCustomerContactMechanism;
             var expectedBillToContactPerson = expected.BillToContactPerson;
-            var expectedBillToEndCustomer = expected.BillToEndCustomer?.DisplayName();
-            var expectedShipToEndCustomer = expected.ShipToEndCustomer?.DisplayName();
-            var expectedShipToEndCustomerAddress = expected.ShipToEndCustomerAddress;
-            var expectedShipToEndCustomerContactPerson = expected.ShipToEndCustomerContactPerson;
             var expectedShipToCustomer = expected.ShipToCustomer?.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress?.DisplayName();
+            var expectedShipToAddressDisplayName = expected.ShipToAddress;
             var expectedShipToContactPerson = expected.ShipToContactPerson;
             var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
@@ -65,45 +60,16 @@ namespace Tests.SalesOrderTests
             var salesOrderOverview = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver);
             var salesOrderOverviewDetail = salesOrderOverview.SalesorderOverviewDetail.Click();
 
+            salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
+            salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
+            salesOrderOverviewDetail.BillToContactPerson.Select(expected.BillToContactPerson);
             salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
             salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
-
-            if (salesOrder.ExistBillToCustomer)
-            {
-                salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
-            }
-
-            salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
-
-            salesOrderOverviewDetail.ShipToEndCustomer.Select(expected.ShipToEndCustomer?.DisplayName());
-            salesOrderOverviewDetail.ShipToEndCustomerAddress.Select(expected.ShipToEndCustomerAddress);
-
-            salesOrderOverviewDetail.BillToEndCustomer.Select(expected.BillToEndCustomer?.DisplayName());
-
-            if (salesOrder.ExistBillToEndCustomerContactMechanism)
-            {
-                salesOrderOverviewDetail.BillToEndCustomerContactMechanism.Select(expected.BillToEndCustomerContactMechanism);
-            }
-
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
+            salesOrderOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
             salesOrderOverviewDetail.Description.Set(expected.Description);
             salesOrderOverviewDetail.InternalComment.Set(expected.InternalComment);
-
-            if (salesOrder.ExistBillToContactPerson)
-            {
-                salesOrderOverviewDetail.BillToContactPerson.Select(salesOrder.BillToContactPerson);
-            }
-
-            if (salesOrder.ExistShipToEndCustomerContactPerson)
-            {
-                salesOrderOverviewDetail.ShipToEndCustomerContactPerson.Select(salesOrder.ShipToEndCustomerContactPerson);
-            }
-
-            if (salesOrder.ExistShipToContactPerson)
-            {
-                salesOrderOverviewDetail.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
-            }
 
             this.Session.Rollback();
             salesOrderOverviewDetail.SAVE.Click();
@@ -118,16 +84,11 @@ namespace Tests.SalesOrderTests
 
             Assert.Equal(expectedBillToCustomer, salesOrder.BillToCustomer?.DisplayName());
             Assert.Equal(expectedBillToContactMechanism, salesOrder.BillToContactMechanism);
-            Assert.Equal(expectedBillToEndCustomerContactMechanism, salesOrder.BillToEndCustomerContactMechanism);
             Assert.Equal(expectedBillToContactPerson, salesOrder.BillToContactPerson);
-            Assert.Equal(expectedBillToEndCustomer, salesOrder.BillToEndCustomer?.DisplayName());
-            Assert.Equal(expectedShipToEndCustomer, salesOrder.ShipToEndCustomer?.DisplayName());
-            Assert.Equal(expectedShipToEndCustomerAddress, salesOrder.ShipToEndCustomerAddress);
-            Assert.Equal(expectedShipToEndCustomerContactPerson, salesOrder.ShipToEndCustomerContactPerson);
-            Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress?.DisplayName());
-            Assert.Equal(expectedShipToContactPerson, salesOrder.ShipToContactPerson);
+            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress);
             Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.ShipFromAddress?.DisplayName());
+            Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
+            Assert.Equal(expectedShipToContactPerson, salesOrder.ShipToContactPerson);
             Assert.Equal(expectedCustomerReference, salesOrder.CustomerReference);
             Assert.Equal(expectedDescription, salesOrder.Description);
             Assert.Equal(expectedInternalComment, salesOrder.InternalComment);

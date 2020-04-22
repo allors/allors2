@@ -70,7 +70,7 @@ namespace Allors.Repository
         [RoleId("175b37b3-94a5-41a0-9cc1-f3a9d18d9f39")]
         #endregion
         [Derived]
-        [Size(256)]
+        [Size(-1)]
         [Workspace]
         string PartDisplayName { get; set; }
 
