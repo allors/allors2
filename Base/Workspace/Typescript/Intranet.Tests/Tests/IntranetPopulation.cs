@@ -212,51 +212,51 @@ namespace Tests
 
             var brand = new BrandBuilder(this.Session).WithDefaults().Build();
 
-            var good1 = new NonUnifiedGoodBuilder(this.Session).WithNonSerialisedPartDefaults(allors).Build();
+            var good_1 = new NonUnifiedGoodBuilder(this.Session).WithNonSerialisedPartDefaults(allors).Build();
 
             new InventoryItemTransactionBuilder(this.Session)
-                .WithPart(good1.Part)
+                .WithPart(good_1.Part)
                 .WithQuantity(100)
                 .WithReason(new InventoryTransactionReasons(this.Session).Unknown)
                 .Build();
 
-            var good2 = new NonUnifiedGoodBuilder(this.Session)
+            var good_2 = new NonUnifiedGoodBuilder(this.Session)
                 .WithSerialisedPartDefaults(allors)
                 .Build();
 
             var serialisedItem1 = new SerialisedItemBuilder(this.Session).WithDefaults(allors).Build();
 
-            good2.Part.AddSerialisedItem(serialisedItem1);
+            good_2.Part.AddSerialisedItem(serialisedItem1);
 
             new SerialisedInventoryItemBuilder(this.Session)
-                .WithPart(good2.Part)
+                .WithPart(good_2.Part)
                 .WithSerialisedItem(serialisedItem1)
                 .WithFacility(allors.StoresWhereInternalOrganisation.First.DefaultFacility)
                 .Build();
 
-            var good3 = new NonUnifiedGoodBuilder(this.Session)
+            var good_3 = new NonUnifiedGoodBuilder(this.Session)
                 .WithNonSerialisedPartDefaults(allors)
                 .Build();
 
-            var productCategory1 = new ProductCategoryBuilder(this.Session)
+            var productCategory_1 = new ProductCategoryBuilder(this.Session)
                 .WithInternalOrganisation(allors)
                 .WithName("Best selling gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Meest verkochte gizmo's").WithLocale(dutchLocale).Build())
                 .Build();
 
-            var productCategory2 = new ProductCategoryBuilder(this.Session)
+            var productCategory_2 = new ProductCategoryBuilder(this.Session)
                 .WithInternalOrganisation(allors)
                 .WithName("Big Gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Grote Gizmo's").WithLocale(dutchLocale).Build())
                 .Build();
 
-            var productCategory3 = new ProductCategoryBuilder(this.Session)
+            var productCategory_3 = new ProductCategoryBuilder(this.Session)
                 .WithInternalOrganisation(allors)
                 .WithName("Small gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kleine gizmo's").WithLocale(dutchLocale).Build())
-                .WithProduct(good1)
-                .WithProduct(good2)
-                .WithProduct(good3)
+                .WithProduct(good_1)
+                .WithProduct(good_2)
+                .WithProduct(good_3)
                 .Build();
 
             new CatalogueBuilder(this.Session)
@@ -265,7 +265,7 @@ namespace Tests
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Nieuwe gizmo's").WithLocale(dutchLocale).Build())
                 .WithDescription("Latest in the world of Gizmo's")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Laatste in de wereld van Gizmo's").WithLocale(dutchLocale).Build())
-                .WithProductCategory(productCategory1)
+                .WithProductCategory(productCategory_1)
                 .Build();
 
             this.Session.Derive();
@@ -314,56 +314,23 @@ namespace Tests
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            /*var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
-                .WithDescription("first item")
-                .WithProduct(good1)
-                .WithAssignedUnitPrice(3000)
-                .WithQuantityOrdered(1)
-                .WithMessage(@"line1
-line2")
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
+            var salesOrder_1 = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
+            var salesOrder_2 = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(allors).Build();
+            var salesOrder_3 = new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(allors).Build();
+            var salesOrder_4 = new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(allors).Build();
 
-            var salesOrderItem2 = new SalesOrderItemBuilder(this.Session)
-                .WithDescription("second item")
-                .WithAssignedUnitPrice(2000)
-                .WithQuantityOrdered(2)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
-
-            var salesOrderItem3 = new SalesOrderItemBuilder(this.Session)
-                .WithDescription("Fee")
-                .WithAssignedUnitPrice(100)
-                .WithQuantityOrdered(1)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
-                .Build();*/
-
-            /*var order = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(allors)
-                .WithBillToCustomer(allors.ActiveCustomers.First)
-                .WithBillToEndCustomerContactMechanism(allors.ActiveCustomers.First.BillingAddress)
-                .WithSalesOrderItem(salesOrderItem1)
-                .WithSalesOrderItem(salesOrderItem2)
-                .WithSalesOrderItem(salesOrderItem3)
-                .WithCustomerReference("a reference number")
-                .WithDescription("Sale of 1 used Aircraft Towbar")
-                .WithVatRegime(new VatRegimes(this.Session).Assessable)
-                .Build();*/
-
-            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
-
-            var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
-            var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(allors).Build();
-            var salesInvoiceItem3 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
+            var salesInvoiceItem_1 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
+            var salesInvoiceItem_2 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(allors).Build();
+            var salesInvoiceItem_3 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
 
             var salesInvoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors).Build();
 
-            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem1);
-            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem2);
-            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem3);
+            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem_1);
+            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem_2);
+            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem_3);
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(good1.Part)
+                .WithPart(good_1.Part)
                 .WithSupplier(allors.ActiveSuppliers.First)
                 .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -371,9 +338,9 @@ line2")
                 .WithCurrency(euro)
                 .Build();
 
-            var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
+            var purchaseInvoiceItem_1 = new PurchaseInvoiceItemBuilder(this.Session)
                 .WithDescription("first item")
-                .WithProduct(good1)
+                .WithProduct(good_1)
                 .WithAssignedUnitPrice(3000)
                 .WithQuantity(1)
                 .WithMessage(@"line1
@@ -381,14 +348,14 @@ line2")
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .Build();
 
-            var purchaseInvoiceItem2 = new PurchaseInvoiceItemBuilder(this.Session)
+            var purchaseInvoiceItem_2 = new PurchaseInvoiceItemBuilder(this.Session)
                 .WithDescription("second item")
                 .WithAssignedUnitPrice(2000)
                 .WithQuantity(2)
                 .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .Build();
 
-            var purchaseInvoiceItem3 = new PurchaseInvoiceItemBuilder(this.Session)
+            var purchaseInvoiceItem_3 = new PurchaseInvoiceItemBuilder(this.Session)
                 .WithDescription("Fee")
                 .WithAssignedUnitPrice(100)
                 .WithQuantity(1)
@@ -399,25 +366,25 @@ line2")
                 .WithBilledTo(allors)
                 .WithInvoiceNumber("1")
                 .WithBilledFrom(allors.ActiveSuppliers.First)
-                .WithPurchaseInvoiceItem(purchaseInvoiceItem1)
-                .WithPurchaseInvoiceItem(purchaseInvoiceItem2)
-                .WithPurchaseInvoiceItem(purchaseInvoiceItem3)
+                .WithPurchaseInvoiceItem(purchaseInvoiceItem_1)
+                .WithPurchaseInvoiceItem(purchaseInvoiceItem_2)
+                .WithPurchaseInvoiceItem(purchaseInvoiceItem_3)
                 .WithCustomerReference("a reference number")
                 .WithDescription("Purchase of 1 used Aircraft Towbar")
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
                 .WithVatRegime(new VatRegimes(this.Session).Assessable)
                 .Build();
 
-            var purchaseOrderItem1 = new PurchaseOrderItemBuilder(this.Session)
+            var purchaseOrderItem_1 = new PurchaseOrderItemBuilder(this.Session)
                 .WithDescription("first purchase order item")
-                .WithPart(good1.Part)
+                .WithPart(good_1.Part)
                 .WithQuantityOrdered(1)
                 .Build();
 
             var purchaseOrder = new PurchaseOrderBuilder(this.Session)
                 .WithOrderedBy(allors)
                 .WithTakenViaSupplier(allors.ActiveSuppliers.First)
-                .WithPurchaseOrderItem(purchaseOrderItem1)
+                .WithPurchaseOrderItem(purchaseOrderItem_1)
                 .WithCustomerReference("reference 123")
                 .WithFacility(facility)
                 .Build();
@@ -468,7 +435,7 @@ line2")
                 .Build();
 
             var salesOrderItem = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good1)
+                .WithProduct(good_1)
                 .WithQuantityOrdered(1)
                 .WithAssignedUnitPrice(10)
                 .Build();
