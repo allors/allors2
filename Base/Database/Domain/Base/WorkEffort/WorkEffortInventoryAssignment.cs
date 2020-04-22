@@ -49,8 +49,7 @@ namespace Allors.Domain
                 }
             }
 
-            this.CostOfGoodsSold = this.Quantity * this.InventoryItem.Part.PartWeightedAverage.AverageCost;
-
+            this.CalculatePurchasePrice();
             this.CalculateSellingPrice();
 
             if (this.ExistAssignment)
@@ -63,6 +62,16 @@ namespace Allors.Domain
             var session = this.strategy.Session;
             var derivation = new Derivations.Default.Derivation(session);
             this.SyncInventoryTransactions(derivation, this.InventoryItem, this.Quantity, new InventoryTransactionReasons(session).Consumption, true);
+        }
+
+        public void BaseCalculatePurchasePrice(WorkEffortInventoryAssignmentCalculatePurchasePrice method)
+        {
+            if (!method.Result.HasValue)
+            {
+                this.CostOfGoodsSold = this.Quantity * this.InventoryItem.Part.PartWeightedAverage.AverageCost;
+
+                method.Result = true;
+            }
         }
 
         public void BaseCalculateSellingPrice(WorkEffortInventoryAssignmentCalculateSellingPrice method)

@@ -397,28 +397,7 @@ namespace Allors.Domain
                             .WithFacility(order.Facility)
                             .Build();
                     }
-
-                    //new InventoryItemTransactionBuilder(this.Session())
-                    //    .WithSerialisedItem(serialisedItem)
-                    //    .WithUnitOfMeasure(this.Part.UnitOfMeasure)
-                    //    .WithFacility(order.Facility)
-                    //    .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
-                    //    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(session).Good)
-                    //    .WithQuantity(1)
-                    //    .WithCost(this.UnitPrice)
-                    //    .Build();
                 }
-                //else
-                //{
-                //    new InventoryItemTransactionBuilder(this.Session())
-                //        .WithPart(this.Part)
-                //        .WithUnitOfMeasure(this.Part.UnitOfMeasure)
-                //        .WithFacility(order.Facility)
-                //        .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
-                //        .WithQuantity(this.QuantityOrdered)
-                //        .WithCost(this.UnitPrice)
-                //        .Build();
-                //}
 
                 if (shipment.ShipToParty is InternalOrganisation internalOrganisation)
                 {

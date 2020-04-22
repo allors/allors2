@@ -166,6 +166,14 @@ namespace Allors.Repository
 
         #region Allors
 
+        [Id("0f837793-fa7c-47de-893a-b24bfdb869a9")]
+        #endregion
+        public void CalculatePurchasePrice()
+        {
+        }
+
+        #region Allors
+
         [Id("8f817fcb-1655-4d54-9a68-844d8a7f5017")]
         #endregion
         public void CalculateSellingPrice()
