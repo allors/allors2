@@ -31,13 +31,14 @@ namespace Tests.SalesOrderTests
         }
 
         [Fact]
-        public void CreateWithExternalOrganisation()
+        public void CreateWithInternalOrganisation()
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.internalOrganisation).Build();
+            var expected = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
 
-            Assert.True(expected.ExistBillToCustomer);
+            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistComment);
             Assert.True(expected.ExistBillToCustomer);
             Assert.True(expected.ExistBillToContactMechanism);
             Assert.True(expected.ExistBillToContactPerson);
@@ -92,11 +93,23 @@ namespace Tests.SalesOrderTests
         }
 
         [Fact]
-        public void CreateWithInternalOrganisation()
+        public void CreateWithExternalOrganisation()
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
+            var expected = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.internalOrganisation).Build();
+
+            Assert.True(expected.ExistBillToCustomer);
+            Assert.True(expected.ExistBillToCustomer);
+            Assert.True(expected.ExistBillToContactMechanism);
+            Assert.True(expected.ExistBillToContactPerson);
+            Assert.True(expected.ExistShipToCustomer);
+            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistShipToContactPerson);
+            Assert.True(expected.ExistShipFromAddress);
+            Assert.True(expected.ExistCustomerReference);
+            Assert.True(expected.ExistDescription);
+            Assert.True(expected.ExistInternalComment);
 
             this.Session.Derive();
 
@@ -115,8 +128,6 @@ namespace Tests.SalesOrderTests
                 .CreateSalesOrder()
                 .BuildForOrganisationInternalDefaults(expected);
 
-            Assert.True(expected.ExistShipToAddress);
-            Assert.True(expected.ExistComment);
 
             this.Session.Rollback();
             salesOrderCreate.SAVE.Click();
