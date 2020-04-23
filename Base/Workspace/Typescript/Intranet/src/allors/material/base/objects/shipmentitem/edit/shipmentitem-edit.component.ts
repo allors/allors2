@@ -389,7 +389,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   }
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    if (serialisedItem !== undefined) {
+    if (serialisedItem) {
       const onRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
       .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
         && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));

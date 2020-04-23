@@ -201,7 +201,13 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
             pull.UnifiedGood({
               name: 'OriginalCategories',
               object: id,
-              fetch: { ProductCategoriesWhereProduct: x }
+              fetch: {
+                ProductCategoriesWhereProduct: {
+                  include: {
+                    Products: x,
+                  }
+                }
+              }
             }),
           ];
 

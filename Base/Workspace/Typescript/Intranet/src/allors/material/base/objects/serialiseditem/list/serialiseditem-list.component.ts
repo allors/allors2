@@ -9,7 +9,7 @@ import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../..
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
-import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model, SerialisedItemAvailability } from '../../../../../domain';
+import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model, SerialisedItemAvailability, ProductCategory, ProductType } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -116,6 +116,26 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
             parameter: 'model'
           })
         })
+      }),
+      new ContainedIn({
+        propertyType: m.SerialisedItem.PartWhereSerialisedItem,
+        extent: new Filter({
+          objectType: m.UnifiedGood,
+          predicate: new ContainedIn({
+            propertyType: m.UnifiedGood.ProductCategoriesWhereProduct,
+            parameter: 'category'
+          })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.SerialisedItem.PartWhereSerialisedItem,
+        extent: new Filter({
+          objectType: m.UnifiedGood,
+          predicate: new ContainedIn({
+            propertyType: m.UnifiedGood.ProductType,
+            parameter: 'productType'
+          })
+        })
       })
     ]);
 
@@ -157,6 +177,16 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       roleTypes: [m.Model.Name],
     });
 
+    const categorySearch = new SearchFactory({
+      objectType: m.ProductCategory,
+      roleTypes: [m.ProductCategory.DisplayName],
+    });
+
+    const productTypeSearch = new SearchFactory({
+      objectType: m.ProductType,
+      roleTypes: [m.ProductType.Name],
+    });
+
     this.filterService.init(predicate, {
       active: { initialValue: true },
       onQuote: { initialValue: true },
@@ -170,6 +200,8 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       rentedby: { search: partySearch, display: (v: Party) => v && v.displayName },
       brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
       model: { search: modelSearch, display: (v: Model) => v && v.Name },
+      category: { search: categorySearch, display: (v: ProductCategory) => v && v.DisplayName },
+      productType: { search: productTypeSearch, display: (v: ProductType) => v && v.Name },
     });
 
     const sorter = new Sorter(
