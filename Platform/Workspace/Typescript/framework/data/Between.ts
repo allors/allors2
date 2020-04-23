@@ -4,30 +4,30 @@ import { UnitTypes } from '../workspace';
 import { serializeArray } from '../workspace/SessionObject';
 
 export class Between extends ParametrizedPredicate {
-  public roleType: RoleType;
-  public parameter: string;
-  public values: UnitTypes[];
+    public roleType: RoleType;
+    public parameter: string;
+    public values: UnitTypes[];
 
-  constructor(fields?: Partial<Between>| RoleType) {
-    super();
+    constructor(fields?: Partial<Between> | RoleType) {
+        super();
 
-    if ((fields as RoleType).objectType) {
-      this.roleType = fields as RoleType;
-    } else {
-      Object.assign(this, fields);
+        if ((fields as RoleType).objectType) {
+            this.roleType = fields as RoleType;
+        } else {
+            Object.assign(this, fields);
+        }
     }
-  }
 
-  get objectType(): ObjectType {
-    return this.roleType.objectType;
-  }
+    get objectType(): ObjectType {
+        return this.roleType.objectType;
+    }
 
-  public toJSON(): any {
-    return {
-      kind: 'Between',
-      roleType: this.roleType.id,
-      parameter: this.parameter,
-      values: serializeArray(this.values),
-    };
-  }
+    public toJSON(): any {
+        return {
+            kind: 'Between',
+            roleType: this.roleType.id,
+            parameter: this.parameter,
+            values: serializeArray(this.values),
+        };
+    }
 }

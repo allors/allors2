@@ -1,4 +1,3 @@
 import { OperandType } from './OperandType';
 
-export interface PropertyType extends OperandType {
-}
+export interface PropertyType extends OperandType {}

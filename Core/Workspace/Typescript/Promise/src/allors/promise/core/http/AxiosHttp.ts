@@ -17,9 +17,9 @@ export class AxiosHttp implements Http {
     public login(url: string, userName: string, password?: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const data = { Username: userName, Password: password };
-            this.axios.post(url, data)
+            this.axios
+                .post(url, data)
                 .then((v) => {
-
                     const result: AuthenticationResponse = v.data;
                     if (result.authenticated) {
                         this.token = result.token;
@@ -34,15 +34,14 @@ export class AxiosHttp implements Http {
     }
 
     public get(url: string, params?: any): Promise<HttpResponse> {
-
         return new Promise((resolve, reject) => {
-
             const config: AxiosRequestConfig = {
                 headers: { Authorization: `Bearer ${this.token}` },
-                params
+                params,
             };
 
-            this.axios.get(url, config)
+            this.axios
+                .get(url, config)
                 .then((v) => {
                     const httpResponse = { data: v.data };
                     resolve(httpResponse);
@@ -54,14 +53,13 @@ export class AxiosHttp implements Http {
     }
 
     public post(url: string, data: any): Promise<HttpResponse> {
-
         return new Promise((resolve, reject) => {
-
             const config: AxiosRequestConfig = {
                 headers: { Authorization: `Bearer ${this.token}` },
             };
 
-            this.axios.post(url, data, config)
+            this.axios
+                .post(url, data, config)
                 .then((v) => {
                     const httpResponse = { data: v.data };
                     resolve(httpResponse);

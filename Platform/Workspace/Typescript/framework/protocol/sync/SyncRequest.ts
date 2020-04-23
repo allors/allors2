@@ -2,6 +2,6 @@
     public objects: string[];
 
     constructor(fields?: Partial<SyncRequest>) {
-      Object.assign(this, fields);
+        Object.assign(this, fields);
     }
 }

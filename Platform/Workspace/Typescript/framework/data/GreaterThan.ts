@@ -4,29 +4,29 @@ import { UnitTypes } from '../workspace/Types';
 import { serialize } from '../workspace/SessionObject';
 
 export class GreaterThan extends ParametrizedPredicate {
-  public roleType: RoleType;
-  public value: UnitTypes;
+    public roleType: RoleType;
+    public value: UnitTypes;
 
-  constructor(fields?: Partial<GreaterThan> | RoleType) {
-    super();
+    constructor(fields?: Partial<GreaterThan> | RoleType) {
+        super();
 
-    if ((fields as RoleType).objectType) {
-      this.roleType = fields as RoleType;
-    } else {
-      Object.assign(this, fields);
+        if ((fields as RoleType).objectType) {
+            this.roleType = fields as RoleType;
+        } else {
+            Object.assign(this, fields);
+        }
     }
-  }
 
-  get objectType(): ObjectType {
-    return this.roleType.objectType;
-  }
+    get objectType(): ObjectType {
+        return this.roleType.objectType;
+    }
 
-  public toJSON(): any {
-    return {
-      kind: 'GreaterThan',
-      roleType: this.roleType.id,
-      parameter: this.parameter,
-      value: serialize(this.value),
-    };
-  }
+    public toJSON(): any {
+        return {
+            kind: 'GreaterThan',
+            roleType: this.roleType.id,
+            parameter: this.parameter,
+            value: serialize(this.value),
+        };
+    }
 }

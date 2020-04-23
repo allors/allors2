@@ -5,4 +5,3 @@ export abstract class ParametrizedPredicate {
 
     abstract get objectType(): ObjectType;
 }
-

@@ -2,27 +2,27 @@ import { PropertyType, ObjectType } from '../meta';
 import { ParametrizedPredicate } from './ParametrizedPredicate';
 
 export class Exists extends ParametrizedPredicate {
-  propertyType: PropertyType;
+    propertyType: PropertyType;
 
-  constructor(fields?: Partial<Exists> | PropertyType) {
-    super();
+    constructor(fields?: Partial<Exists> | PropertyType) {
+        super();
 
-    if ((fields as PropertyType).objectType) {
-      this.propertyType = fields as PropertyType;
-    } else {
-      Object.assign(this, fields);
+        if ((fields as PropertyType).objectType) {
+            this.propertyType = fields as PropertyType;
+        } else {
+            Object.assign(this, fields);
+        }
     }
-  }
 
-  get objectType(): ObjectType {
-    return this.propertyType.objectType;
-  }
+    get objectType(): ObjectType {
+        return this.propertyType.objectType;
+    }
 
-  public toJSON(): any {
-    return {
-      kind: 'Exists',
-      propertytype: this.propertyType.id,
-      parameter: this.parameter,
-    };
-  }
+    public toJSON(): any {
+        return {
+            kind: 'Exists',
+            propertytype: this.propertyType.id,
+            parameter: this.parameter,
+        };
+    }
 }

@@ -7,6 +7,5 @@ export class MethodType implements OperandType {
     objectType: ObjectType;
     name: string;
 
-    constructor(public metaPopulation: MetaPopulation) {
-    }
+    constructor(public metaPopulation: MetaPopulation) {}
 }
