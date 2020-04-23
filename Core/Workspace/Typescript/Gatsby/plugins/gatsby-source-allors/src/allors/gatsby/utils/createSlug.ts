@@ -1,10 +1,10 @@
-export function createSlug(str) {
+export function createSlug(str: string): string {
     str = String(str).toString();
     str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
 
     // remove accents, swap ñ for n, etc
-    const swaps = {
+    const swaps: { [key: string]: string[] } = {
         '0': ['°', '₀', '۰', '０'],
         '1': ['¹', '₁', '۱', '１'],
         '2': ['²', '₂', '۲', '２'],

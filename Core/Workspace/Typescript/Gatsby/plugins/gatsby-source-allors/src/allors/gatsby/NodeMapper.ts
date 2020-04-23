@@ -1,13 +1,13 @@
 import { ISessionObject } from '../framework';
 
-import { NodePluginArgs } from 'gatsby';
+import { NodePluginArgs, NodeInput } from 'gatsby';
 import { ContentDigests } from './ContentDigests';
 import createName from './utils/createName';
 
 export class NodeMapper {
-    constructor(private args: NodePluginArgs, private options) {}
+    constructor(private args: NodePluginArgs) {}
 
-    public map(objects: ISessionObject[], contentDigests: ContentDigests) {
+    public map(objects: ISessionObject[], contentDigests: ContentDigests): void {
         const ids = objects.map((v) => v.id);
 
         const {
@@ -18,7 +18,7 @@ export class NodeMapper {
         const objectById = objects.reduce((map, value) => {
             map[value.id] = value;
             return map;
-        }, {});
+        }, {} as { [key: string]: ISessionObject });
 
         objects.forEach((v) => {
             const sessionObject = v;
@@ -28,7 +28,7 @@ export class NodeMapper {
             type.interfaces
                 .filter((w) => w._isGatsby)
                 .forEach((w) => {
-                    const interfaceNode = {
+                    const interfaceNode: NodeInput = {
                         id: createNodeId(`allors-${w.name.toLowerCase()}-${workspaceObject.id}`),
                         parent: null,
                         children: [],
@@ -47,7 +47,7 @@ export class NodeMapper {
                     createNode(interfaceNode);
                 });
 
-            const classNode = {
+            const classNode: NodeInput = {
                 id: createNodeId(`allors-${workspaceObject.id}`),
                 parent: null,
                 children: [],
@@ -65,7 +65,7 @@ export class NodeMapper {
             // Roles
             type.gatsbyRoleTypes.forEach((roleType) => {
                 const role = workspaceObject.roleByRoleTypeId.get(roleType.id);
-                let propertyName = createName(roleType.name);
+                const propertyName = createName(roleType.name);
 
                 if (!!role) {
                     if (roleType.objectType.isUnit) {
@@ -137,7 +137,7 @@ export class NodeMapper {
             // Properties
             if (type.gatsbyProperties) {
                 type.gatsbyProperties.forEach((property) => {
-                    const value = sessionObject[property.name];
+                    const value = (sessionObject as any)[property.name];
 
                     if (!!value) {
                         classNode[property.name] = value;
@@ -150,7 +150,7 @@ export class NodeMapper {
             // Markdown Roles
             type.gatsbyRoleTypes.forEach((roleType) => {
                 const role = workspaceObject.roleByRoleTypeId.get(roleType.id);
-                let propertyName = createName(roleType.name);
+                const propertyName = createName(roleType.name);
 
                 if (!!role) {
                     if (roleType.objectType.isUnit) {
