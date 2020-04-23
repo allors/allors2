@@ -37,7 +37,7 @@ export interface RoleTypeData {
     isOne: boolean;
     isRequired?: boolean;
     mediaType?: string;
-  }
+}
 
 export interface ConcreteRoleTypeData {
     objectTypeId: string;

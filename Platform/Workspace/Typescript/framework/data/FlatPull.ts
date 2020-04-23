@@ -8,7 +8,6 @@ import { Tree } from './Tree';
 import { ParameterTypes } from '../workspace/Types';
 
 export interface FlatPull {
-
     extentRef?: string;
 
     extent?: Extent;

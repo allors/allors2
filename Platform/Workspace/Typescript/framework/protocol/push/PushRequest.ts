@@ -6,6 +6,6 @@ export class PushRequest {
     public objects?: PushRequestObject[];
 
     constructor(fields?: Partial<PushRequest>) {
-      Object.assign(this, fields);
+        Object.assign(this, fields);
     }
 }

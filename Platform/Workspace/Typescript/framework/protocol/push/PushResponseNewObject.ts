@@ -1,4 +1,4 @@
-﻿export interface PushResponseNewObject  {
+﻿export interface PushResponseNewObject {
     i: string;
     ni: string;
 }
