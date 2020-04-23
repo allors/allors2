@@ -145,6 +145,7 @@ namespace Allors.Domain
                     .WithName("pack")
                     .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("pakket").WithLocale(dutchLocale).Build())
                     .WithUniqueId(PackId)
+                    .WithAbbreviation("pack")
                     .WithIsActive(true)
                     .Build();
             }
@@ -155,6 +156,7 @@ namespace Allors.Domain
                     .WithName("pair")
                     .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("paar").WithLocale(dutchLocale).Build())
                     .WithUniqueId(PairId)
+                    .WithAbbreviation("pair")
                     .WithIsActive(true)
                     .Build();
             }
@@ -166,6 +168,7 @@ namespace Allors.Domain
                     .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("stuk").WithLocale(dutchLocale).Build())
                     .WithUniqueId(PieceId)
                     .WithIsActive(true)
+                    .WithAbbreviation("piece")
                     .Build();
             }
 
@@ -175,6 +178,7 @@ namespace Allors.Domain
                     .WithName("people")
                     .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("personen").WithLocale(dutchLocale).Build())
                     .WithUniqueId(PeopleId)
+                    .WithAbbreviation("people")
                     .WithIsActive(true)
                     .Build();
             }
