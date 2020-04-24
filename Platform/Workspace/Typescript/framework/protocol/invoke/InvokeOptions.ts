@@ -1,7 +1,7 @@
 ﻿export interface InvokeOptions {
-    // Isolated
-    i?: boolean;
+  // Isolated
+  i?: boolean;
 
-    // ContinueOnError
-    c?: boolean;
+  // ContinueOnError
+  c?: boolean;
 }

@@ -1,7 +1,7 @@
 ﻿export class SyncRequest {
-    public objects: string[];
+  public objects: string[];
 
-    constructor(fields?: Partial<SyncRequest>) {
-        Object.assign(this, fields);
-    }
+  constructor(fields?: Partial<SyncRequest>) {
+    Object.assign(this, fields);
+  }
 }

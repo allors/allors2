@@ -1,17 +1,17 @@
 import { Fetch } from './Fetch';
 
 export class Result {
-    public fetchRef: string;
+  public fetchRef: string;
 
-    public fetch: Fetch;
+  public fetch: Fetch;
 
-    public name: string;
+  public name: string;
 
-    public skip: number;
+  public skip: number;
 
-    public take: number;
+  public take: number;
 
-    constructor(fields?: Partial<Result>) {
-        Object.assign(this, fields);
-    }
+  constructor(fields?: Partial<Result>) {
+    Object.assign(this, fields);
+  }
 }

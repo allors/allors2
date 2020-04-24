@@ -1,5 +1,5 @@
 ﻿export interface Invocation {
-    i: string;
-    v: string;
-    m: string;
+  i: string;
+  v: string;
+  m: string;
 }

@@ -1,4 +1,4 @@
 ﻿export interface PushResponseNewObject {
-    i: string;
-    ni: string;
+  i: string;
+  ni: string;
 }

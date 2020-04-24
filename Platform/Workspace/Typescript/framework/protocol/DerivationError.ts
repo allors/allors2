@@ -1,6 +1,6 @@
 ﻿import { Response } from './Response';
 
 export interface DerivationError {
-    m: string;
-    r: string[][];
+  m: string;
+  r: string[][];
 }

@@ -8,29 +8,29 @@ import { Tree } from './Tree';
 import { ParameterTypes } from '../workspace/Types';
 
 export interface FlatPull {
-    extentRef?: string;
+  extentRef?: string;
 
-    extent?: Extent;
+  extent?: Extent;
 
-    predicate?: Predicate;
+  predicate?: Predicate;
 
-    sort?: Sort | Sort[];
+  sort?: Sort | Sort[];
 
-    object?: ISessionObject | string;
+  object?: ISessionObject | string;
 
-    results?: Result[];
+  results?: Result[];
 
-    fetchRef?: string;
+  fetchRef?: string;
 
-    fetch?: Fetch | any;
+  fetch?: Fetch | any;
 
-    include?: Tree | any;
+  include?: Tree | any;
 
-    parameters?: { [id: string]: ParameterTypes };
+  parameters?: { [id: string]: ParameterTypes };
 
-    name?: string;
+  name?: string;
 
-    skip?: number;
+  skip?: number;
 
-    take?: number;
+  take?: number;
 }
