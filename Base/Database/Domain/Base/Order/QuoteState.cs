@@ -9,7 +9,9 @@ namespace Allors.Domain
     {
         public bool IsCreated => Equals(this.UniqueId, QuoteStates.CreatedId);
 
-        public bool IsApproved => Equals(this.UniqueId, QuoteStates.ApprovedId);
+        public bool IsAwaitingApproval => Equals(this.UniqueId, QuoteStates.AwaitingApprovalId);
+
+        public bool IsApproved => Equals(this.UniqueId, QuoteStates.InProcessId);
 
         public bool IsAwaitingAcceptance => Equals(this.UniqueId, QuoteStates.AwaitingAcceptanceId);
 

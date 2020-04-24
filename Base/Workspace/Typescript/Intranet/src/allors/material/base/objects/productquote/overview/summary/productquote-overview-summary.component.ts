@@ -95,6 +95,16 @@ export class ProductQuoteOverviewSummaryComponent {
     };
   }
 
+  public setReadyForProcessing(): void {
+
+    this.panel.manager.context.invoke(this.productQuote.SetReadyForProcessing)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully set ready for processing.', 'close', { duration: 5000 });
+      },
+        this.saveService.errorHandler);
+  }
+
   public approve(): void {
 
     this.panel.manager.context.invoke(this.productQuote.Approve)
