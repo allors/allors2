@@ -14,13 +14,15 @@ namespace Allors.Domain
         protected override void BaseSecure(Security config)
         {
             var created = new QuoteStates(this.Session).Created;
-            var approved = new QuoteStates(this.Session).Approved;
+            var awaitingApproval = new QuoteStates(this.Session).AwaitingApproval;
+            var inProcess = new QuoteStates(this.Session).InProcess;
             var awaitingAcceptance = new QuoteStates(this.Session).AwaitingAcceptance;
             var accepted = new QuoteStates(this.Session).Accepted;
             var ordered = new QuoteStates(this.Session).Ordered;
             var rejected = new QuoteStates(this.Session).Rejected;
             var cancelled = new QuoteStates(this.Session).Cancelled;
 
+            var setReadyForProcessing = this.Meta.SetReadyForProcessing;
             var approve = this.Meta.Approve;
             var send = this.Meta.Send;
             var accept = this.Meta.Accept;
@@ -31,15 +33,16 @@ namespace Allors.Domain
             var cancel = this.Meta.Cancel;
             var delete = this.Meta.Delete;
 
-            config.Deny(this.ObjectType, created, order, reopen, send, accept, revise);
-            config.Deny(this.ObjectType, approved, approve, accept, order, reopen, delete);
-            config.Deny(this.ObjectType, awaitingAcceptance, approve, order, send, reopen, reject, delete);
-            config.Deny(this.ObjectType, accepted, approve, send, accept, reject, reopen, delete);
-            config.Deny(this.ObjectType, ordered, approve, reject, order, cancel, reopen, send, accept, revise, delete);
-            config.Deny(this.ObjectType, rejected, approve, reject, order, send, accept, cancel, revise);
-            config.Deny(this.ObjectType, cancelled, cancel, reject, order, send, accept, approve, revise);
+            config.Deny(this.ObjectType, created, approve, order, reopen, send, accept, revise);
+            config.Deny(this.ObjectType, awaitingApproval, setReadyForProcessing, send, accept, reopen, order, cancel, revise);
+            config.Deny(this.ObjectType, inProcess, setReadyForProcessing, approve, accept, order, reopen, delete);
+            config.Deny(this.ObjectType, awaitingAcceptance, setReadyForProcessing, approve, order, send, reopen, reject, delete);
+            config.Deny(this.ObjectType, accepted, setReadyForProcessing, approve, send, accept, reject, reopen, delete);
+            config.Deny(this.ObjectType, ordered, setReadyForProcessing, approve, reject, order, cancel, reopen, send, accept, revise, delete);
+            config.Deny(this.ObjectType, rejected, setReadyForProcessing, approve, reject, order, send, accept, cancel, revise);
+            config.Deny(this.ObjectType, cancelled, setReadyForProcessing, cancel, reject, order, send, accept, approve, revise);
 
-            config.Deny(this.ObjectType, approved, Operations.Write);
+            config.Deny(this.ObjectType, inProcess, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Write);
             config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, accepted, Operations.Write);

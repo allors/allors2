@@ -390,6 +390,12 @@ namespace Allors.Repository
         void Create();
 
         #region Allors
+        [Id("3df1ddb1-cb93-4da7-a5d1-fa22a164c2e2")]
+        #endregion
+        [Workspace]
+        public void SetReadyForProcessing() { }
+
+        #region Allors
 
         [Id("70F1138B-1383-4AA1-A08E-6C99F71F3F07")]
 

@@ -160,6 +160,8 @@ namespace Allors.Repository
 
         public void Create() { }
 
+        public void SetReadyForProcessing() { }
+
         public void Reopen() { }
 
         public void Approve() { }

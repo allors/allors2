@@ -23,6 +23,19 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        private bool BaseNeedsApproval => false;
+
+        public void BaseSetReadyForProcessing(ProductQuoteSetReadyForProcessing method)
+        {
+            if (!method.Result.HasValue)
+            {
+                this.QuoteState = this.BaseNeedsApproval
+                    ? new QuoteStates(this.Strategy.Session).AwaitingApproval : new QuoteStates(this.Strategy.Session).InProcess;
+
+                method.Result = true;
+            }
+        }
+
         public void BaseOrder(ProductQuoteOrder method)
         {
             this.QuoteState = new QuoteStates(this.Strategy.Session).Ordered;
@@ -266,6 +279,20 @@ namespace Allors.Domain
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
+            var SetReadyPermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.SetReadyForProcessing, Operations.Execute);
+
+            if (this.QuoteState.IsCreated)
+            {
+                if (this.ExistValidQuoteItems)
+                {
+                    this.RemoveDeniedPermission(SetReadyPermission);
+                }
+                else
+                {
+                    this.AddDeniedPermission(SetReadyPermission);
+                }
+            }
+
             var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable())
             {
@@ -401,7 +428,7 @@ namespace Allors.Domain
 
             var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
 
-            if (this.QuoteState.IsCreated)
+            if (this.QuoteState.IsAwaitingApproval)
             {
                 if (!openTasks.OfType<ProductQuoteApproval>().Any())
                 {

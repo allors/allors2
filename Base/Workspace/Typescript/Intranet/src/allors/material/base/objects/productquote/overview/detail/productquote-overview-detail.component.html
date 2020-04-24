@@ -101,6 +101,11 @@
         </div>
 
         <div class="row">
+          <a-mat-select class="col-md" [object]="productQuote" [roleType]="m.ProductQuote.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
+          <a-mat-static class="col-md" [object]="productQuote.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
+        </div>
+
+        <div class="row">
           <a-mat-select class="col-md-6" [object]="productQuote" [roleType]="m.ProductQuote.Currency" [options]="currencies" display="Name"></a-mat-select>
         </div>
   

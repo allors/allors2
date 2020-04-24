@@ -154,6 +154,8 @@ namespace Allors.Repository
 
         public void Create() { }
 
+        public void SetReadyForProcessing() { }
+        
         public void Send() { }
 
         public void Accept() { }
