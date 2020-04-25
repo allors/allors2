@@ -17,5 +17,7 @@ export class AssociationType implements PropertyType {
     this.metaPopulation = relationType.metaPopulation;
   }
 
-  get isMany(): boolean { return !this.isOne; }
+  get isMany(): boolean {
+    return !this.isOne;
+  }
 }

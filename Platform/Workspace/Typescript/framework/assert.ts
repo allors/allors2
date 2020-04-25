@@ -1,6 +1,6 @@
 export class AssertionError implements Error {
   name = 'AssertionError';
-  constructor(public message: string) { }
+  constructor(public message: string) {}
 }
 
 export function assert(condition: any, msg?: string): asserts condition {

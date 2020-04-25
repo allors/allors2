@@ -58,7 +58,7 @@
     <button *ngIf="order.CanExecuteReject" mat-button (click)="reject()">Reject</button>
     <button *ngIf="order.CanExecuteHold" mat-button (click)="hold()">Hold</button>
     <button *ngIf="order.CanExecuteContinue" mat-button (click)="continue()">Continue</button>
-    <button *ngIf="order.CanExecuteSetReadyForProcessing" mat-button (click)="setReadyForProcessing()">Confirm</button>
+    <button *ngIf="order.CanExecuteSetReadyForProcessing" mat-button (click)="setReadyForProcessing()">Ready for processing</button>
     <button *ngIf="order.CanExecuteReopen" mat-button (click)="reopen()">Reopen</button>
     <button *ngIf="order.CanExecuteRevise" mat-button (click)="revise()">Revise</button>
     <button mat-button type="button" (click)="print.execute(order)">Print</button>

@@ -1,7 +1,6 @@
 import { RoleType } from '../meta';
 
 export class Sort {
-
   public roleType: RoleType;
   public descending = false;
 

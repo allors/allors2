@@ -45,7 +45,7 @@ export class Step {
       if (literal) {
         const keys = Object.keys(literal);
 
-        if (keys.find(v => v === includeKey)) {
+        if (keys.find((v) => v === includeKey)) {
           const treeLiteral = literal[includeKey];
           if (treeLiteral instanceof Tree) {
             this.include = treeLiteral;
@@ -54,20 +54,18 @@ export class Step {
           }
         }
 
-        const nextStepName = keys.find(v => v !== includeKey);
+        const nextStepName = keys.find((v) => v !== includeKey);
         if (nextStepName) {
           const nextStepLiteral = literal[nextStepName];
           this.next = new Step(this.propertyType.objectType, nextStepName, nextStepLiteral);
         }
       }
-
     } else {
       Object.assign(this, fields);
     }
   }
 
   public toJSON(): any {
-
     return {
       include: this.include,
       propertytype: this.propertyType.id,

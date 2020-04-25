@@ -9,7 +9,6 @@ export class Contains extends ParametrizedPredicate {
   public object: CompositeTypes;
 
   constructor(fields?: Partial<Contains> | PropertyType) {
-
     super();
 
     if ((fields as PropertyType).objectType) {
@@ -28,7 +27,7 @@ export class Contains extends ParametrizedPredicate {
       kind: 'Contains',
       propertyType: this.propertyType.id,
       parameter: this.parameter,
-      object: this.object ? (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object : undefined,
+      object: this.object ? ((this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object) : undefined,
     };
   }
 }

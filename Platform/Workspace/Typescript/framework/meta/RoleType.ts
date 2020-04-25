@@ -32,5 +32,7 @@ export class RoleType implements PropertyType {
     this.overridesByClass = new Map();
   }
 
-  get isMany(): boolean { return !this.isOne; }
+  get isMany(): boolean {
+    return !this.isOne;
+  }
 }

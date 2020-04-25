@@ -3,7 +3,6 @@ import { Predicate } from './Predicate';
 import { Sort } from './Sort';
 
 export class Filter {
-
   public objectType: ObjectType;
 
   public predicate: Predicate;
@@ -19,7 +18,6 @@ export class Filter {
   }
 
   public toJSON(): any {
-
     return {
       kind: 'Filter',
       objecttype: this.objectType.id,

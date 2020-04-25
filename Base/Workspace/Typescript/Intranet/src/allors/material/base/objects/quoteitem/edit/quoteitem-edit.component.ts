@@ -39,6 +39,7 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
   vatRegimes: VatRegime[];
 
   private previousProduct;
+  private previousSerialisedItem: SerialisedItem;
   private subscription: Subscription;
 
   draftRequestItem: RequestItemState;
@@ -249,6 +250,7 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
 
           if (this.quoteItem.Product) {
             this.previousProduct = this.quoteItem.Product;
+            this.previousSerialisedItem = this.quoteItem.SerialisedItem;
             this.refreshSerialisedItems(this.quoteItem.Product);
           } else {
             this.serialisedItems.push(this.quoteItem.SerialisedItem);
@@ -277,7 +279,7 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
 
-    if (serialisedItem !== undefined) {
+    if (serialisedItem) {
       const onRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
         .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
           && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));
@@ -286,8 +288,8 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
         .find(v => v.QuoteWhereQuoteItem !== this.quoteItem.QuoteWhereQuoteItem
           && (v.QuoteItemState === this.draftQuoteItem || v.QuoteItemState === this.submittedQuoteItem || v.QuoteItemState === this.approvedQuoteItem
               || v.QuoteItemState === this.awaitingAcceptanceQuoteItem || v.QuoteItemState === this.acceptedQuoteItem)
-          && (v.QuoteWhereQuoteItem.QuoteState === this.createdQuote || v.QuoteWhereQuoteItem.QuoteState === this.approvedQuote
-              || v.QuoteWhereQuoteItem.QuoteState === this.awaitingAcceptanceQuote || v.QuoteWhereQuoteItem.QuoteState === this.acceptedQuote));
+          && (v.QuoteWhereQuoteItem?.QuoteState === this.createdQuote || v.QuoteWhereQuoteItem?.QuoteState === this.approvedQuote
+              || v.QuoteWhereQuoteItem?.QuoteState === this.awaitingAcceptanceQuote || v.QuoteWhereQuoteItem?.QuoteState === this.acceptedQuote));
 
       const onOrderItem = serialisedItem.SalesOrderItemsWhereSerialisedItem
       .find(v =>
@@ -321,8 +323,12 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
         this.snackBar.open(`Item already shipped with ${onShipmentItem.ShipmentWhereShipmentItem.ShipmentNumber}`, 'close');
       }
 
+      if (this.quoteItem.SerialisedItem !== this.previousSerialisedItem) {
+        this.quoteItem.AssignedUnitPrice = serialisedItem.ExpectedSalesPrice;
+        this.previousSerialisedItem = serialisedItem;
+      }
+
       this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
-      this.quoteItem.AssignedUnitPrice = this.serialisedItem.ExpectedSalesPrice;
       this.quoteItem.Quantity = '1';
     }
   }

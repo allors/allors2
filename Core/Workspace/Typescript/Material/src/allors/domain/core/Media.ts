@@ -14,9 +14,8 @@ declare module '../generated/Media.g' {
 }
 
 domain.extend((workspace) => {
-
   const m = workspace.metaPopulation as Meta;
-  const  cls = workspace.constructorByObjectType.get(m.Media);
+  const cls = workspace.constructorByObjectType.get(m.Media);
   assert(cls);
 
   Object.defineProperty(cls.prototype, IsImage, {

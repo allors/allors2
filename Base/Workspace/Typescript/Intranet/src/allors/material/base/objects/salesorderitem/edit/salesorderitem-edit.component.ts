@@ -303,7 +303,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   }
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    if (serialisedItem !== undefined) {
+    if (serialisedItem) {
       const onRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
       .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
         && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));
@@ -320,9 +320,9 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
       (v.SalesOrderItemState === this.provisionalOrderItem || v.SalesOrderItemState === this.readyForPostingOrderItem
         || v.SalesOrderItemState === this.requestsApprovalOrderItem || v.SalesOrderItemState === this.awaitingAcceptanceOrderItem
         || v.SalesOrderItemState === this.onHoldOrderItem || v.SalesOrderItemState === this.inProcessOrderItem)
-      && (v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.provisionalOrder || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.readyForPostingOrder
-          || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.requestsApprovalOrder || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.awaitingAcceptanceOrder
-          || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.onHoldOrder || v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.inProcessOrder));
+      && (v.SalesOrderWhereSalesOrderItem?.SalesOrderState === this.provisionalOrder || v.SalesOrderWhereSalesOrderItem?.SalesOrderState === this.readyForPostingOrder
+          || v.SalesOrderWhereSalesOrderItem?.SalesOrderState === this.requestsApprovalOrder || v.SalesOrderWhereSalesOrderItem?.SalesOrderState === this.awaitingAcceptanceOrder
+          || v.SalesOrderWhereSalesOrderItem?.SalesOrderState === this.onHoldOrder || v.SalesOrderWhereSalesOrderItem?.SalesOrderState === this.inProcessOrder));
 
       const onShipmentItem = serialisedItem.ShipmentItemsWhereSerialisedItem
       .find(v => (v.ShipmentItemState === this.createdShipmentItem || v.ShipmentItemState === this.pickingShipmentItem || v.ShipmentItemState === this.pickedShipmentItem || v.ShipmentItemState === this.packedShipmentItem)

@@ -225,10 +225,10 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
   }
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    if (serialisedItem !== undefined) {
+    if (serialisedItem) {
       const onOtherRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
       .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
-        && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));
+        && (v.RequestWhereRequestItem?.RequestState === this.anonymousRequest || v.RequestWhereRequestItem?.RequestState === this.submittedRequest || v.RequestWhereRequestItem?.RequestState === this.pendingCustomerRequest));
 
       const onQuoteItem = serialisedItem.QuoteItemsWhereSerialisedItem
     .find(v =>

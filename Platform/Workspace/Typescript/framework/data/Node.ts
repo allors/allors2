@@ -1,7 +1,6 @@
 import { ObjectType, PropertyType } from '../meta';
 
 export class Node {
-
   public propertyType: PropertyType;
   public nodes: Node[];
 
@@ -39,12 +38,11 @@ export class Node {
     if (property.nodes) {
       this.nodes = property.nodes;
     } else if (property) {
-      const nodes = Object.keys(property)
-        .map((childPropertyName) => {
-          const childTreeNode = new Node();
-          childTreeNode.parse(property, this.propertyType.objectType, childPropertyName);
-          return childTreeNode;
-        });
+      const nodes = Object.keys(property).map((childPropertyName) => {
+        const childTreeNode = new Node();
+        childTreeNode.parse(property, this.propertyType.objectType, childPropertyName);
+        return childTreeNode;
+      });
 
       if (nodes && nodes.length) {
         this.nodes = nodes;

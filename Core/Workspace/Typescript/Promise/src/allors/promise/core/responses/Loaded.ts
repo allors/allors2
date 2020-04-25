@@ -1,10 +1,9 @@
 import { ISession, ISessionObject, PullResponse, assert } from '../../../framework';
 
 export class Loaded {
-
-  public objects: { [name: string]: ISessionObject; } = {};
-  public collections: { [name: string]: ISessionObject[]; } = {};
-  public values: { [name: string]: any; } = {};
+  public objects: { [name: string]: ISessionObject } = {};
+  public collections: { [name: string]: ISessionObject[] } = {};
+  public values: { [name: string]: any } = {};
 
   constructor(public session: ISession, public response: PullResponse) {
     const namedObjects = response.namedObjects;
@@ -32,7 +31,7 @@ export class Loaded {
     }
 
     if (namedValues) {
-      Object.keys(namedValues).map((key: string) => this.values[key] = namedValues[key]);
+      Object.keys(namedValues).map((key: string) => (this.values[key] = namedValues[key]));
     }
   }
 }

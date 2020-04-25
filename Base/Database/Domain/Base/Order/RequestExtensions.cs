@@ -83,6 +83,17 @@ namespace Allors.Domain
             }
         }
 
+        public static void BaseDelete(this Request @this, DeletableDelete method)
+        {
+            if (@this.IsDeletable())
+            {
+                foreach (RequestItem item in @this.RequestItems)
+                {
+                    item.Delete();
+                }
+            }
+        }
+
         public static void BaseCancel(this Request @this, RequestCancel method) => @this.RequestState = new RequestStates(@this.Strategy.Session).Cancelled;
 
         public static void BaseReject(this Request @this, RequestReject method) => @this.RequestState = new RequestStates(@this.Strategy.Session).Rejected;

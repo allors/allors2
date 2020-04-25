@@ -10,7 +10,6 @@ import { Operations } from '../protocol/Operations';
 import { PushRequestObject } from '../protocol/push/PushRequestObject';
 
 export interface ISession {
-
   workspace: IWorkspace;
 
   hasChanges: boolean;
@@ -89,8 +88,7 @@ export class Session implements ISession {
   }
 
   public create(objectType: ObjectType | string): ISessionObject {
-
-    const resolvedObjectType = (typeof objectType === 'string') ? this.workspace.metaPopulation.objectTypeByName.get(objectType) : objectType;
+    const resolvedObjectType = typeof objectType === 'string' ? this.workspace.metaPopulation.objectTypeByName.get(objectType) : objectType;
 
     if (!resolvedObjectType) {
       throw new Error(`Could not find class for ${objectType}`);
@@ -123,7 +121,6 @@ export class Session implements ISession {
     const newId = newSessionObject.newId;
 
     if (this.newSessionObjectById.has(newId)) {
-
       for (const sessionObject of this.newSessionObjectById.values()) {
         sessionObject.onDelete(newSessionObject);
       }
@@ -141,7 +138,6 @@ export class Session implements ISession {
   }
 
   public reset(): void {
-
     for (const sessionObject of this.newSessionObjectById.values()) {
       sessionObject.reset();
     }
@@ -154,8 +150,10 @@ export class Session implements ISession {
   }
 
   public pushRequest(): PushRequest {
-    const newObjects = Array.from(this.newSessionObjectById.values()).map(v => v.saveNew());
-    const objects = Array.from(this.existingSessionObjectById.values()).map(v => v.save()).filter(v => v) as PushRequestObject[];
+    const newObjects = Array.from(this.newSessionObjectById.values()).map((v) => v.saveNew());
+    const objects = Array.from(this.existingSessionObjectById.values())
+      .map((v) => v.save())
+      .filter((v) => v) as PushRequestObject[];
 
     return new PushRequest({
       newObjects,
@@ -209,7 +207,7 @@ export class Session implements ISession {
               }
             } else {
               const roles: SessionObject[] = association.getForAssociation(roleType);
-              if (roles && roles.find(v => v === object)) {
+              if (roles && roles.find((v) => v === object)) {
                 associationIds.add(association.id);
                 associations.push(association);
               }

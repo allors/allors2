@@ -1,10 +1,4 @@
-const reservedWords = new Set([
-  "id",
-  "children",
-  "parent",
-  "fields",
-  "internal"
-]);
+const reservedWords = new Set(['id', 'children', 'parent', 'fields', 'internal']);
 
 function escape(value: string) {
   if (reservedWords.has(value)) {
@@ -12,15 +6,12 @@ function escape(value: string) {
   }
 
   return value;
-};
+}
 
 function camel(value: string) {
-  return value.replace(/^\w/, c => c.toLowerCase());
+  return value.replace(/^\w/, (c) => c.toLowerCase());
 }
 
-export default function createName(name: string){
+export default function createName(name: string) {
   return escape(camel(name));
 }
-
-
-

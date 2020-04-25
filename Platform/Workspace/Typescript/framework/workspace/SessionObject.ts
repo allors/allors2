@@ -47,7 +47,6 @@ export interface ISessionObject extends IObject {
 }
 
 export class SessionObject implements ISessionObject {
-
   public session: Session & ISession;
   public workspaceObject?: IWorkspaceObject;
   public objectType: ObjectType;
@@ -130,9 +129,11 @@ export class SessionObject implements ISessionObject {
               value = role ? this.session.get(role) : null;
             } else {
               const roles: string[] = this.workspaceObject?.roleByRoleTypeId.get(roleType.id);
-              value = roles ? roles.map((role) => {
-                return this.session.get(role);
-              }) : [];
+              value = roles
+                ? roles.map((role) => {
+                    return this.session.get(role);
+                  })
+                : [];
             }
           } catch (e) {
             let stringValue = 'N/A';
@@ -142,7 +143,9 @@ export class SessionObject implements ISessionObject {
               throw new Error(`Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}]`);
             }
 
-            throw new Error(`Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`);
+            throw new Error(
+              `Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`,
+            );
           }
         }
       } else {
@@ -178,9 +181,11 @@ export class SessionObject implements ISessionObject {
             value = role ? this.session.getForAssociation(role) : null;
           } else {
             const roles: string[] = this.workspaceObject?.roleByRoleTypeId.get(roleType.id);
-            value = roles ? roles.map((role) => {
-              return this.session.getForAssociation(role);
-            }) : [];
+            value = roles
+              ? roles.map((role) => {
+                  return this.session.getForAssociation(role);
+                })
+              : [];
           }
         }
       } else {
@@ -313,7 +318,6 @@ export class SessionObject implements ISessionObject {
 
   public onDelete(deleted: SessionObject) {
     if (this.changedRoleByRoleType !== undefined) {
-
       for (const [roleType, value] of this.changedRoleByRoleType) {
         if (!roleType.objectType.isUnit) {
           if (roleType.isOne) {
@@ -338,7 +342,7 @@ export class SessionObject implements ISessionObject {
 
   private assertExists() {
     if (this.roleByRoleType === undefined) {
-      throw new Error('Object doesn\'t exist anymore.');
+      throw new Error("Object doesn't exist anymore.");
     }
   }
 
@@ -346,7 +350,6 @@ export class SessionObject implements ISessionObject {
     const saveRoles = new Array<PushRequestRole>();
 
     if (this.changedRoleByRoleType) {
-
       for (const [roleType, value] of this.changedRoleByRoleType) {
         const saveRole = new PushRequestRole();
         saveRole.t = roleType.id;
@@ -382,19 +385,17 @@ export class SessionObject implements ISessionObject {
   }
 }
 
-export function serializeObject(roles: { [name: string]: ParameterTypes; } | undefined): { [name: string]: string; } {
+export function serializeObject(roles: { [name: string]: ParameterTypes } | undefined): { [name: string]: string } {
   if (roles) {
-    return Object
-      .keys(roles)
-      .reduce((obj, v) => {
-        const role = roles[v];
-        if (Array.isArray(role)) {
-          obj[v] = role.map((w) => serialize(w)).join(',');
-        } else {
-          obj[v] = serialize(role);
-        }
-        return obj;
-      }, {} as { [key: string]: any });
+    return Object.keys(roles).reduce((obj, v) => {
+      const role = roles[v];
+      if (Array.isArray(role)) {
+        obj[v] = role.map((w) => serialize(w)).join(',');
+      } else {
+        obj[v] = serialize(role);
+      }
+      return obj;
+    }, {} as { [key: string]: any });
   }
 
   return {};
@@ -402,14 +403,13 @@ export function serializeObject(roles: { [name: string]: ParameterTypes; } | und
 
 export function serializeArray(roles: UnitTypes[]): (string | null)[] {
   if (roles) {
-    return roles.map(v => serialize(v));
+    return roles.map((v) => serialize(v));
   }
 
   return [];
 }
 
 export function serialize(role: UnitTypes | CompositeTypes): string | null {
-
   if (role === undefined || role === null) {
     return null;
   }
@@ -441,4 +441,3 @@ export function deserialize(value: string, objectType: ObjectType): UnitTypes {
 
   return value;
 }
-

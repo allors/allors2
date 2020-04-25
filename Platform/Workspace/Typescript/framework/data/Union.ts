@@ -3,7 +3,6 @@ import { Extent } from './Extent';
 import { ObjectType } from '../meta';
 
 export class Union {
-
   public operands: Extent[];
 
   public sort: Sort[];

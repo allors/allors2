@@ -389,7 +389,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   }
 
   public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    if (serialisedItem !== undefined) {
+    if (serialisedItem) {
       const onRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
       .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
         && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));
@@ -412,9 +412,9 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
       const onOtherShipmentItem = serialisedItem.ShipmentItemsWhereSerialisedItem
       .find(v => (v.ShipmentItemState === this.createdShipmentItem || v.ShipmentItemState === this.pickingShipmentItem || v.ShipmentItemState === this.pickedShipmentItem || v.ShipmentItemState === this.packedShipmentItem)
-        && (v.ShipmentWhereShipmentItem.ShipmentState === this.createdShipment || v.ShipmentWhereShipmentItem.ShipmentState === this.pickingShipment
-        || v.ShipmentWhereShipmentItem.ShipmentState === this.pickingShipment || v.ShipmentWhereShipmentItem.ShipmentState === this.packedShipment
-        || v.ShipmentWhereShipmentItem.ShipmentState === this.onholdShipment));
+        && (v.ShipmentWhereShipmentItem?.ShipmentState === this.createdShipment || v.ShipmentWhereShipmentItem?.ShipmentState === this.pickingShipment
+        || v.ShipmentWhereShipmentItem?.ShipmentState === this.pickingShipment || v.ShipmentWhereShipmentItem?.ShipmentState === this.packedShipment
+        || v.ShipmentWhereShipmentItem?.ShipmentState === this.onholdShipment));
 
       if (onRequestItem) {
       this.snackBar.open(`Item already requested with ${onRequestItem.RequestWhereRequestItem.RequestNumber}`, 'close');

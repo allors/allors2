@@ -23,6 +23,6 @@ export { SecurityResponse } from './security/SecurityResponse';
 export { SecurityResponseAccessControl } from './security/SecurityResponseAccessControl';
 
 export { SyncRequest } from './sync/SyncRequest';
-export { SyncResponse} from './sync/SyncResponse';
+export { SyncResponse } from './sync/SyncResponse';
 export { SyncResponseObject } from './sync/SyncResponseObject';
 export { SyncResponseRole } from './sync/SyncResponseRole';

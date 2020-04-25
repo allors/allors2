@@ -23,13 +23,12 @@ export class Equals extends ParametrizedPredicate {
   }
 
   public toJSON(): any {
-
     return {
       kind: 'Equals',
       propertytype: this.propertyType.id,
       parameter: this.parameter,
       value: serialize(this.value),
-      object: this.object && (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object
+      object: this.object && (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object,
     };
   }
 }

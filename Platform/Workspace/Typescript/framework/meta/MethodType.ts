@@ -3,10 +3,9 @@ import { MetaPopulation } from './MetaPopulation';
 import { ObjectType } from './ObjectType';
 
 export class MethodType implements OperandType {
-    id: string;
-    objectType: ObjectType;
-    name: string;
+  id: string;
+  objectType: ObjectType;
+  name: string;
 
-    constructor(public metaPopulation: MetaPopulation) {
-    }
+  constructor(public metaPopulation: MetaPopulation) {}
 }

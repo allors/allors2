@@ -1,6 +1,6 @@
 import { MetaPopulation, ObjectType, OperandType } from '../meta';
 
-import { PullResponse, } from './../protocol/pull/PullResponse';
+import { PullResponse } from './../protocol/pull/PullResponse';
 import { SyncRequest } from './../protocol/sync/SyncRequest';
 import { SyncResponse } from './../protocol/sync/SyncResponse';
 import { SecurityRequest } from '../protocol/security/SecurityRequest';
@@ -26,7 +26,6 @@ export interface IWorkspace {
 }
 
 export class Workspace implements IWorkspace {
-
   constructorByObjectType: Map<ObjectType, typeof SessionObject>;
 
   workspaceObjectById: Map<string, WorkspaceObject>;
@@ -40,7 +39,6 @@ export class Workspace implements IWorkspace {
   private executePermissionByOperandTypeByClass: Map<ObjectType, Map<OperandType, Permission>>;
 
   constructor(public metaPopulation: MetaPopulation) {
-
     this.constructorByObjectType = new Map();
 
     this.workspaceObjectById = new Map();
@@ -56,7 +54,7 @@ export class Workspace implements IWorkspace {
     this.writePermissionByOperandTypeByClass = new Map();
     this.executePermissionByOperandTypeByClass = new Map();
 
-    metaPopulation.classes.forEach(v => {
+    metaPopulation.classes.forEach((v) => {
       this.readPermissionByOperandTypeByClass.set(v, new Map());
       this.writePermissionByOperandTypeByClass.set(v, new Map());
       this.executePermissionByOperandTypeByClass.set(v, new Map());
@@ -64,7 +62,7 @@ export class Workspace implements IWorkspace {
 
     this.metaPopulation.classes.forEach((objectType) => {
       const DynamicClass = (() => {
-        return function() {
+        return function () {
           // @ts-ignore
           const prototype1 = Object.getPrototypeOf(this);
           const prototype2 = Object.getPrototypeOf(prototype1);
@@ -78,73 +76,69 @@ export class Workspace implements IWorkspace {
       this.constructorByObjectType.set(objectType, DynamicClass as any);
 
       const prototype = DynamicClass.prototype;
-      objectType.roleTypes
-        .forEach((roleType) => {
-          Object.defineProperty(prototype, 'CanRead' + roleType.name, {
+      objectType.roleTypes.forEach((roleType) => {
+        Object.defineProperty(prototype, 'CanRead' + roleType.name, {
+          get(this: SessionObject) {
+            return this.canRead(roleType);
+          },
+        });
+
+        if (roleType.isDerived) {
+          Object.defineProperty(prototype, roleType.name, {
             get(this: SessionObject) {
-              return this.canRead(roleType);
+              return this.get(roleType);
+            },
+          });
+        } else {
+          Object.defineProperty(prototype, 'CanWrite' + roleType.name, {
+            get(this: SessionObject) {
+              return this.canWrite(roleType);
             },
           });
 
-          if (roleType.isDerived) {
-            Object.defineProperty(prototype, roleType.name, {
-              get(this: SessionObject) {
-                return this.get(roleType);
-              },
-            });
-          } else {
-            Object.defineProperty(prototype, 'CanWrite' + roleType.name, {
-              get(this: SessionObject) {
-                return this.canWrite(roleType);
-              },
-            });
+          Object.defineProperty(prototype, roleType.name, {
+            get(this: SessionObject) {
+              return this.get(roleType);
+            },
 
-            Object.defineProperty(prototype, roleType.name, {
-              get(this: SessionObject) {
-                return this.get(roleType);
-              },
+            set(this: SessionObject, value) {
+              this.set(roleType, value);
+            },
+          });
 
-              set(this: SessionObject, value) {
-                this.set(roleType, value);
-              },
-            });
+          if (roleType.isMany) {
+            prototype['Add' + roleType.singular] = function (this: SessionObject, value: SessionObject) {
+              return this.add(roleType, value);
+            };
 
-            if (roleType.isMany) {
-
-              prototype['Add' + roleType.singular] = function(this: SessionObject, value: SessionObject) {
-                return this.add(roleType, value);
-              };
-
-              prototype['Remove' + roleType.singular] = function(this: SessionObject, value: SessionObject) {
-                return this.remove(roleType, value);
-              };
-            }
+            prototype['Remove' + roleType.singular] = function (this: SessionObject, value: SessionObject) {
+              return this.remove(roleType, value);
+            };
           }
+        }
+      });
+
+      objectType.associationTypes.forEach((associationType) => {
+        Object.defineProperty(prototype, associationType.name, {
+          get(this: SessionObject) {
+            return this.getAssociation(associationType);
+          },
+        });
+      });
+
+      objectType.methodTypes.forEach((methodType) => {
+        Object.defineProperty(prototype, 'CanExecute' + methodType.name, {
+          get(this: SessionObject) {
+            return this.canExecute(methodType);
+          },
         });
 
-      objectType.associationTypes
-        .forEach((associationType) => {
-          Object.defineProperty(prototype, associationType.name, {
-            get(this: SessionObject) {
-              return this.getAssociation(associationType);
-            },
-          });
+        Object.defineProperty(prototype, methodType.name, {
+          get(this: SessionObject) {
+            return this.method(methodType);
+          },
         });
-
-      objectType.methodTypes
-        .forEach((methodType) => {
-          Object.defineProperty(prototype, 'CanExecute' + methodType.name, {
-            get(this: SessionObject) {
-              return this.canExecute(methodType);
-            },
-          });
-
-          Object.defineProperty(prototype, methodType.name, {
-            get(this: SessionObject) {
-              return this.method(methodType);
-            },
-          });
-        });
+      });
     });
   }
 
@@ -163,25 +157,23 @@ export class Workspace implements IWorkspace {
   }
 
   diff(response: PullResponse): SyncRequest {
+    return new SyncRequest({
+      objects: (response.objects ?? [])
+        .filter((syncRequestObject) => {
+          const [id, version, sortedAccessControlIds, sortedDeniedPermissionIds] = syncRequestObject;
+          const workspaceObject = this.workspaceObjectById.get(id);
 
-    return new SyncRequest(
-      {
-        objects: (response.objects ?? [])
-          .filter((syncRequestObject) => {
-            const [id, version, sortedAccessControlIds, sortedDeniedPermissionIds] = syncRequestObject;
-            const workspaceObject = this.workspaceObjectById.get(id);
-
-            const sync = (workspaceObject == null) ||
-              (workspaceObject.version !== version) ||
-              (workspaceObject.sortedAccessControlIds !== (sortedAccessControlIds ?? null)) ||
-              (workspaceObject.sortedDeniedPermissionIds !== (sortedDeniedPermissionIds ?? null));
-            return sync;
-          })
-          .map((syncRequestObject) => {
-            return syncRequestObject[0];
-          })
-      }
-    );
+          const sync =
+            workspaceObject == null ||
+            workspaceObject.version !== version ||
+            workspaceObject.sortedAccessControlIds !== (sortedAccessControlIds ?? null) ||
+            workspaceObject.sortedDeniedPermissionIds !== (sortedDeniedPermissionIds ?? null);
+          return sync;
+        })
+        .map((syncRequestObject) => {
+          return syncRequestObject[0];
+        }),
+    });
   }
 
   sync(syncResponse: SyncResponse): SecurityRequest | null {
@@ -190,13 +182,11 @@ export class Workspace implements IWorkspace {
 
     const sortedAccessControlIdsDecompress = (compressed: string): string => {
       if (compressed) {
-        compressed
-          .split(Compressor.itemSeparator)
-          .forEach(v => {
-            if (!this.accessControlById.has(v)) {
-              missingAccessControlIds.add(v);
-            }
-          });
+        compressed.split(Compressor.itemSeparator).forEach((v) => {
+          if (!this.accessControlById.has(v)) {
+            missingAccessControlIds.add(v);
+          }
+        });
       }
 
       return compressed;
@@ -204,25 +194,22 @@ export class Workspace implements IWorkspace {
 
     const sortedDeniedPermissionIdsDecompress = (compressed: string): string => {
       if (compressed) {
-        compressed
-          .split(Compressor.itemSeparator)
-          .forEach(v => {
-            if (!this.permissionById.has(v)) {
-              missingPermissionIds.add(v);
-            }
-          });
+        compressed.split(Compressor.itemSeparator).forEach((v) => {
+          if (!this.permissionById.has(v)) {
+            missingPermissionIds.add(v);
+          }
+        });
       }
 
       return compressed;
     };
 
     if (syncResponse.objects) {
-      syncResponse.objects
-        .forEach((v) => {
-          const workspaceObject = new WorkspaceObject(this);
-          workspaceObject.sync(v, sortedAccessControlIdsDecompress, sortedDeniedPermissionIdsDecompress, this.metaPopulation);
-          this.add(workspaceObject);
-        });
+      syncResponse.objects.forEach((v) => {
+        const workspaceObject = new WorkspaceObject(this);
+        workspaceObject.sync(v, sortedAccessControlIdsDecompress, sortedDeniedPermissionIdsDecompress, this.metaPopulation);
+        this.add(workspaceObject);
+      });
     }
 
     if (missingAccessControlIds.size > 0 || missingPermissionIds.size > 0) {
@@ -246,9 +233,8 @@ export class Workspace implements IWorkspace {
   }
 
   security(securityResponse: SecurityResponse): SecurityRequest | null {
-
     if (securityResponse.permissions) {
-      securityResponse.permissions.forEach(v => {
+      securityResponse.permissions.forEach((v) => {
         const id = v[0];
         const objectType = this.metaPopulation.metaObjectById.get(v[1]) as ObjectType;
         const operandType = this.metaPopulation.metaObjectById.get(v[2]) as OperandType;
@@ -279,11 +265,11 @@ export class Workspace implements IWorkspace {
     if (securityResponse.accessControls) {
       let missingPermissionIds: Set<string> = new Set();
 
-      securityResponse.accessControls.forEach(v => {
+      securityResponse.accessControls.forEach((v) => {
         const id = v.i;
         const version = v.v;
         const permissionIds = new Set<string>();
-        v.p.forEach(w => {
+        v.p.forEach((w) => {
           if (!this.permissionById.has(w)) {
             if (missingPermissionIds === undefined) {
               missingPermissionIds = new Set();
