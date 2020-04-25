@@ -9,7 +9,7 @@ import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../..
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
-import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model, SerialisedItemAvailability, ProductCategory, ProductType } from '../../../../../domain';
+import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model, SerialisedItemAvailability, ProductCategory, ProductType, UnifiedGood } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -17,6 +17,7 @@ interface Row extends TableRow {
   object: SerialisedItem;
   id: string;
   name: string;
+  categories: string;
   availability: string;
   ownership: string;
   suppliedBy: string;
@@ -64,6 +65,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       columns: [
         { name: 'id', sort: true },
         { name: 'name', sort: true },
+        { name: 'categories' },
         { name: 'availability' },
         { name: 'ownership' },
         { name: 'suppliedBy' },
@@ -238,20 +240,24 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
-            })];
+            }),
+          ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
+
         const objects = loaded.collections.SerialisedItems as SerialisedItem[];
+
         this.table.total = loaded.values.SerialisedItems_total;
         this.table.data = objects.map((v) => {
           return {
             object: v,
             id: v.ItemNumber,
             name: v.Name,
+            categories: v.DisplayProductCategories,
             availability: `${v.SerialisedItemAvailability && v.SerialisedItemAvailability.Name}`,
             ownership: `${v.Ownership && v.Ownership.Name}`,
             suppliedBy: v.SuppliedBy ? v.SuppliedBy.displayName : '',

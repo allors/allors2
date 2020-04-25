@@ -369,6 +369,14 @@ namespace Allors.Repository
         public Guid DerivationTrigger { get; set; }
 
         #region Allors
+        [Id("50db0036-a15c-418d-b354-ad3b5b1c4bd6")]
+        [AssociationId("1eb73e6c-e4b6-474f-b338-51bd8dc6ce8c")]
+        [RoleId("e0ca04f1-1a86-40c0-82ba-12d8197d4f8e")]
+        #endregion
+        [Workspace]
+        public string DisplayProductCategories{ get; set; }
+
+        #region Allors
         [Id("80c6e34f-aadd-4ef6-b8cf-da532833ac03")]
         [AssociationId("d668026d-14b7-4071-84bf-f8e28c7dfbc9")]
         [RoleId("63799217-89c0-41f7-bf35-3ec9f962ecf2")]

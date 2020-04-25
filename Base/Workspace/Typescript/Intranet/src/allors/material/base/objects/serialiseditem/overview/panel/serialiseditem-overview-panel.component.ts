@@ -10,8 +10,10 @@ interface Row extends TableRow {
   object: SerialisedItem;
   number: string;
   name: string;
-  state: string;
+  availability: string;
+  onWebsite: string;
   ownership: string;
+  ownedBy: string;
 }
 
 @Component({
@@ -67,10 +69,12 @@ export class SerialisedItemOverviewPanelComponent extends TestScope implements O
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'number', sort },
-        { name: 'name', sort },
-        { name: 'state', sort },
-        { name: 'ownership', sort },
+        { name: 'number' },
+        { name: 'name' },
+        { name: 'availability' },
+        { name: 'onWebsite' },
+        { name: 'ownership' },
+        { name: 'ownedBy' },
       ],
       actions: [
         {
@@ -111,8 +115,10 @@ export class SerialisedItemOverviewPanelComponent extends TestScope implements O
           fetch: {
             SerialisedItems: {
               include: {
+                OwnedBy: x,
+                Ownership: x,
+                SerialisedItemAvailability: x,
                 SerialisedItemState: x,
-                Ownership: x
               }
             }
           }
@@ -123,8 +129,10 @@ export class SerialisedItemOverviewPanelComponent extends TestScope implements O
           fetch: {
             SerialisedItemsWhereOwnedBy: {
               include: {
+                OwnedBy: x,
+                Ownership: x,
+                SerialisedItemAvailability: x,
                 SerialisedItemState: x,
-                Ownership: x
               }
             }
           }
@@ -135,8 +143,10 @@ export class SerialisedItemOverviewPanelComponent extends TestScope implements O
           fetch: {
             SerialisedItemsWhereRentedBy: {
               include: {
+                OwnedBy: x,
+                Ownership: x,
+                SerialisedItemAvailability: x,
                 SerialisedItemState: x,
-                Ownership: x
               }
             }
           }
@@ -169,8 +179,10 @@ export class SerialisedItemOverviewPanelComponent extends TestScope implements O
               object: v,
               number: v.ItemNumber,
               name: v.displayName,
-              state: v.SerialisedItemState ? v.SerialisedItemState.Name : '',
+              availability: v.SerialisedItemAvailability ? v.SerialisedItemAvailability.Name : '',
+              onWebsite: v.AvailableForSale ? 'Yes' : 'No',
               ownership: v.Ownership ? v.Ownership.Name : '',
+              ownedBy: v.OwnedBy ? v.OwnedBy.displayName : '',
             } as Row;
           });
         }

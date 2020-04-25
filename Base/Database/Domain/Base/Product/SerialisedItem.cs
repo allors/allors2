@@ -13,6 +13,16 @@ namespace Allors.Domain
 
     public partial class SerialisedItem
     {
+        private bool IsDeletable =>
+            !this.ExistInventoryItemTransactionsWhereSerialisedItem
+            && !this.ExistPurchaseInvoiceItemsWhereSerialisedItem
+            && !this.ExistPurchaseOrderItemsWhereSerialisedItem
+            && !this.ExistQuoteItemsWhereSerialisedItem
+            && !this.ExistSalesInvoiceItemsWhereSerialisedItem
+            && !this.ExistSalesOrderItemsWhereSerialisedItem
+            && !this.ExistSerialisedInventoryItemsWhereSerialisedItem
+            && !this.ExistShipmentItemsWhereSerialisedItem;
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSerialisedItemState)
@@ -81,10 +91,27 @@ namespace Allors.Domain
                         || v.Assignment.WorkEffortState.IsInProgress);
 
             this.DeriveProductCharacteristics(derivation);
+
+
+            if (this.ExistPartWhereSerialisedItem && this.PartWhereSerialisedItem.GetType().Name == typeof(UnifiedGood).Name)
+            {
+                var unifiedGood = this.PartWhereSerialisedItem as UnifiedGood;
+                this.DisplayProductCategories = string.Join(", ", unifiedGood.ProductCategoriesWhereProduct.Select(v => v.DisplayName));
+            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+
             var builder = new StringBuilder();
 
             builder.Append(this.ItemNumber);
@@ -114,10 +141,57 @@ namespace Allors.Domain
 
         public void BaseDelete(DeletableDelete method)
         {
-            // TODO: Restrit Delete?
-            foreach (SerialisedItemVersion version in this.AllVersions)
+            if (this.IsDeletable)
             {
-                version.Delete();
+                foreach (LocalisedText deletable in this.LocalisedComments)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (LocalisedText deletable in this.LocalisedNames)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (LocalisedText deletable in this.LocalisedDescriptions)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (LocalisedText deletable in this.LocalisedKeywords)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (Media deletable in this.PublicElectronicDocuments)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (Media deletable in this.PublicLocalisedElectronicDocuments)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (Media deletable in this.PrivateElectronicDocuments)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (Media deletable in this.PrivateLocalisedElectronicDocuments)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (SerialisedItemCharacteristic deletable in this.SerialisedItemCharacteristics)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (SerialisedItemVersion version in this.AllVersions)
+                {
+                    version.Delete();
+                }
             }
         }
 
