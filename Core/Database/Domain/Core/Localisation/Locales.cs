@@ -13,6 +13,7 @@ namespace Allors.Domain
         public const string EnglishUnitedStatesName = "en-US";
         public const string DutchNetherlandsName = "nl-NL";
         public const string DutchBelgiumName = "nl-BE";
+        public const string SpanishName = "es-ES";
 
         private Sticky<string, Locale> localeByIdentifier;
 
@@ -25,6 +26,8 @@ namespace Allors.Domain
         public Locale DutchNetherlands => this.FindBy(this.Meta.Name, DutchNetherlandsName);
 
         public Locale DutchBelgium => this.FindBy(this.Meta.Name, DutchBelgiumName);
+
+        public Locale Spanish => this.FindBy(this.Meta.Name, SpanishName);
 
         protected override void CorePrepare(Setup setup)
         {
@@ -61,6 +64,12 @@ namespace Allors.Domain
             {
                 v.Country = countries.CountryByIsoCode["BE"];
                 v.Language = languages.LanguageByCode["nl"];
+            });
+
+            merge(SpanishName, v =>
+            {
+                v.Country = countries.CountryByIsoCode["ES"];
+                v.Language = languages.LanguageByCode["es"];
             });
         }
     }
