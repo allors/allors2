@@ -23,7 +23,8 @@ namespace Allors.Domain.TestPopulation
 
             var internalOrganisations = @this.Session.Extent<Organisation>();
 
-            var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).FirstOrDefault();
+            // Organisation with atleast one ActiveCustomer of type Organisation
+            var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).Where(v => v.ActiveCustomers.Count > 0).ToList().FirstOrDefault();
 
             var billToCustomer = shipToCustomer;
 
@@ -123,7 +124,7 @@ namespace Allors.Domain.TestPopulation
 
             var internalOrganisations = @this.Session.Extent<Organisation>();
 
-            var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).FirstOrDefault();
+            var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).Where(v => v.ActiveCustomers.Count > 0).ToList().FirstOrDefault();
 
             var billToCustomer = shipToCustomer;
 

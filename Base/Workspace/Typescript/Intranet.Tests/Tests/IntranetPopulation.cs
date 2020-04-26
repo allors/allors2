@@ -314,10 +314,10 @@ namespace Tests
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            var salesOrder_1 = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
             var salesOrder_2 = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(allors).Build();
-            var salesOrder_3 = new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(allors).Build();
+            var salesOrder_1 = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
             var salesOrder_4 = new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(allors).Build();
+            var salesOrder_3 = new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(allors).Build();
 
             var salesInvoiceItem_1 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
             var salesInvoiceItem_2 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(allors).Build();
