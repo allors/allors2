@@ -9,7 +9,6 @@ interface Row extends TableRow {
   object: WorkEffortInventoryAssignment;
   part: string;
   facility: string;
-  state: string;
   quantity: string;
   uom: string;
 }
@@ -70,7 +69,6 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent extends TestSco
       columns: [
         { name: 'part' },
         { name: 'facility' },
-        { name: 'state' },
         { name: 'quantity' },
         { name: 'uom' },
       ],
@@ -120,7 +118,6 @@ export class WorkEffortInventoryAssignmentOverviewPanelComponent extends TestSco
             object: v,
             part: v.InventoryItem.Part.Name,
             facility: v.InventoryItem.Facility.Name,
-            state: (v.InventoryItem as NonSerialisedInventoryItem).NonSerialisedInventoryItemState.Name || (v.InventoryItem as SerialisedInventoryItem).SerialisedInventoryItemState.Name,
             quantity: v.Quantity,
             uom: v.InventoryItem.UnitOfMeasure.Name,
           } as Row;

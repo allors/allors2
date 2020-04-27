@@ -20,5 +20,6 @@ import './UnifiedGood';
 import './UnifiedProduct';
 import './User';
 import './WebAddress';
+import './WorkEffortInventoryAssignment';
 import './WorkEffortPartyAssignment';
 import './WorkEffortState';

@@ -125,6 +125,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
                 ManufacturedBy: x,
                 SuppliedBy: x,
                 DefaultFacility: x,
+                PartWeightedAverage: x,
                 SerialisedItemCharacteristics: {
                   LocalisedValues: x,
                   SerialisedItemCharacteristicType: {

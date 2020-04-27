@@ -82,11 +82,6 @@
           </div>
 
           <div class="row">
-            <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind"
-              [options]="inventoryItemKinds" display="Name"></a-mat-select>
-          </div>
-
-          <div class="row">
             <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.DefaultFacility" [options]="facilities"
               display="Name"></a-mat-select>
             <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.UnitOfMeasure" [options]="unitsOfMeasure"
@@ -110,6 +105,12 @@
               </mat-select>
             </mat-form-field>
             <a-mat-input class="col-md-6" [object]="part" [roleType]="m.Part.HsCode"></a-mat-input>
+          </div>
+
+          <div class="row">
+            <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind"
+              [options]="inventoryItemKinds" display="Name"></a-mat-select>
+            <a-mat-static class="col-md" [object]="part.PartWeightedAverage" [roleType]="m.PartWeightedAverage.AverageCost" label="Weighted average cost"></a-mat-static>
           </div>
 
           <div class="row pb-1">

@@ -26,6 +26,14 @@
         <a-mat-input class="col-md" [object]="workEffortInventoryAssignment" [roleType]="m.WorkEffortInventoryAssignment.AssignedUnitSellingPrice"></a-mat-input>
       </div>
 
+      <div class="row">
+        <mat-form-field class="col">
+          <input type="number" matInput [(ngModel)]="workEffortInventoryAssignment.totalSellingPrice" name="totalSellingPrice"
+            placeholder="Total selling price" readonly>
+        </mat-form-field>
+        <a-mat-static class="col-md" [object]="workEffortInventoryAssignment" [roleType]="m.WorkEffortInventoryAssignment.CostOfGoodsSold"></a-mat-static>
+      </div>
+
     </div>
   </mat-dialog-content>
 

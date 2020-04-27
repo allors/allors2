@@ -10,8 +10,9 @@ namespace Allors.Domain
     public static partial class RequestExtensions
     {
         public static bool IsDeletable(this Request @this) =>
-            (@this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Anonymous)
-                || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Submitted)
+            // EmailAddress is used whith anonymous request form website
+            !@this.ExistEmailAddress 
+            && (@this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Submitted)
                 || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Cancelled)
                 || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Rejected))
             && @this.RequestItems.All(v => v.IsDeletable);
