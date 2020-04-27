@@ -8,6 +8,7 @@ namespace Allors.Domain.TestPopulation
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Allors.Meta;
 
     public static partial class SalesOrderBuilderExtensions
     {
@@ -22,9 +23,10 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var internalOrganisations = @this.Session.Extent<Organisation>();
+            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation.RoleType, true);
 
             // Organisation with atleast one ActiveCustomer of type Organisation
-            var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).Where(v => v.ActiveCustomers.Count > 0).ToList().FirstOrDefault();
+            var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).FirstOrDefault();
 
             var billToCustomer = shipToCustomer;
 
@@ -123,8 +125,9 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var internalOrganisations = @this.Session.Extent<Organisation>();
+            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation.RoleType, true);
 
-            var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).Where(v => v.ActiveCustomers.Count > 0).ToList().FirstOrDefault();
+            var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).FirstOrDefault();
 
             var billToCustomer = shipToCustomer;
 

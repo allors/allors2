@@ -156,10 +156,28 @@ namespace Tests
 
             allors.CreateEmployee("letmein", faker);
             allors.CreateAdministrator("letmein", faker);
-            allors.CreateB2BCustomer(this.Session.Faker());
-            allors.CreateB2CCustomer(this.Session.Faker());
+            var allorsB2BCustomer = allors.CreateB2BCustomer(this.Session.Faker());
+            var allorsB2CCustomer = allors.CreateB2CCustomer(this.Session.Faker());
             allors.CreateSupplier(this.Session.Faker());
             allors.CreateSubContractor(this.Session.Faker());
+
+            new CustomerRelationshipBuilder(this.Session)
+                .WithCustomer(allorsB2BCustomer)
+                .WithInternalOrganisation(dipu)
+                .WithFromDate(this.Session.Now())
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session)
+                .WithCustomer(allorsB2CCustomer)
+                .WithInternalOrganisation(dipu)
+                .WithFromDate(this.Session.Now())
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session)
+                .WithCustomer(dipu)
+                .WithInternalOrganisation(allors)
+                .WithFromDate(this.Session.Now())
+                .Build();
 
             dipu.CreateEmployee("letmein", faker);
             dipu.CreateAdministrator("letmein", faker);
@@ -177,6 +195,12 @@ namespace Tests
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(dipuB2CCustomer)
                 .WithInternalOrganisation(allors)
+                .WithFromDate(this.Session.Now())
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session)
+                .WithCustomer(allors)
+                .WithInternalOrganisation(dipu)
                 .WithFromDate(this.Session.Now())
                 .Build();
 
