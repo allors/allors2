@@ -31,11 +31,24 @@ namespace Tests.SalesOrderTests
         }
 
         [Fact]
-        public void CreateWithExternalOrganisation()
+        public void CreateWithInternalOrganisation()
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.internalOrganisation).Build();
+            var expected = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
+
+            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistComment);
+            Assert.True(expected.ExistBillToCustomer);
+            Assert.True(expected.ExistBillToContactMechanism);
+            Assert.True(expected.ExistBillToContactPerson);
+            Assert.True(expected.ExistShipToCustomer);
+            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistShipToContactPerson);
+            Assert.True(expected.ExistShipFromAddress);
+            Assert.True(expected.ExistCustomerReference);
+            Assert.True(expected.ExistDescription);
+            Assert.True(expected.ExistInternalComment);
 
             this.Session.Derive();
 
@@ -52,9 +65,69 @@ namespace Tests.SalesOrderTests
 
             var salesOrderCreate = this.salesOrderListPage
                 .CreateSalesOrder()
-                .Build(expected);
+                .BuildForOrganisationInternalDefaults(expected);
 
-            salesOrderCreate.AssertFull(expected);
+
+            this.Session.Rollback();
+            salesOrderCreate.SAVE.Click();
+
+            this.Driver.WaitForAngular();
+            this.Session.Rollback();
+
+            var after = new SalesOrders(this.Session).Extent().ToArray();
+
+            Assert.Equal(after.Length, before.Length + 1);
+
+            var actual = after.Except(before).First();
+
+            Assert.Equal(expectedBillToCustomer, actual.BillToCustomer?.DisplayName());
+            Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
+            Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
+            Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
+            Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
+            Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
+            Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
+            Assert.Equal(expectedCustomerReference, actual.CustomerReference);
+            Assert.Equal(expectedDescription, actual.Description);
+            Assert.Equal(expectedInternalComment, actual.InternalComment);
+        }
+
+        [Fact]
+        public void CreateWithExternalOrganisation()
+        {
+            var before = new SalesOrders(this.Session).Extent().ToArray();
+
+            var expected = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.internalOrganisation).Build();
+
+            Assert.True(expected.ExistBillToCustomer);
+            Assert.True(expected.ExistBillToCustomer);
+            Assert.True(expected.ExistBillToContactMechanism);
+            Assert.True(expected.ExistBillToContactPerson);
+            Assert.True(expected.ExistShipToCustomer);
+            Assert.True(expected.ExistShipToAddress);
+            Assert.True(expected.ExistShipToContactPerson);
+            Assert.True(expected.ExistShipFromAddress);
+            Assert.True(expected.ExistCustomerReference);
+            Assert.True(expected.ExistDescription);
+            Assert.True(expected.ExistInternalComment);
+
+            this.Session.Derive();
+
+            var expectedBillToCustomer = expected.BillToCustomer.DisplayName();
+            var expectedBillToContactMechanism = expected.BillToContactMechanism;
+            var expectedBillToContactPerson = expected.BillToContactPerson;
+            var expectedShipToCustomer = expected.ShipToCustomer.DisplayName();
+            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
+            var expectedShipToContactPerson = expected.ShipToContactPerson;
+            var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
+            var expectedCustomerReference = expected.CustomerReference;
+            var expectedDescription = expected.Description;
+            var expectedInternalComment = expected.InternalComment;
+
+            var salesOrderCreate = this.salesOrderListPage
+                .CreateSalesOrder()
+                .BuildForOrganisationInternalDefaults(expected);
+
 
             this.Session.Rollback();
             salesOrderCreate.SAVE.Click();
