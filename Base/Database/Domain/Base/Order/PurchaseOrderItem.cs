@@ -187,16 +187,6 @@ namespace Allors.Domain
                 derivation.Validation.AssertExistsAtMostOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
             }
 
-            if ((this.IsValid && !this.ExistOrderItemBillingsWhereOrderItem &&
-                this.PurchaseOrderItemShipmentState.IsReceived) || this.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!this.ExistPart && this.QuantityReceived == 1))
-            {
-                this.CanInvoice = true;
-            }
-            else
-            {
-                this.CanInvoice = false;
-            }
-
             var purchaseOrderItemShipmentStates = new PurchaseOrderItemShipmentStates(derivation.Session);
             var purchaseOrderItemPaymentStates = new PurchaseOrderItemPaymentStates(derivation.Session);
             var purchaseOrderItemStates = new PurchaseOrderItemStates(derivation.Session);
@@ -285,6 +275,16 @@ namespace Allors.Domain
                     // TODO: Remove OnDerive
                     inventoryItem?.OnDerive(x => x.WithDerivation(derivation));
                 }
+            }
+
+            if ((this.IsValid && !this.ExistOrderItemBillingsWhereOrderItem &&
+                this.PurchaseOrderItemShipmentState.IsReceived) || this.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!this.ExistPart && this.QuantityReceived == 1))
+            {
+                this.CanInvoice = true;
+            }
+            else
+            {
+                this.CanInvoice = false;
             }
         }
 

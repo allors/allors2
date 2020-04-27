@@ -81,7 +81,8 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
                 UnitOfMeasure: x,
                 Lot: x,
                 Part: {
-                  InventoryItemKind: x
+                  InventoryItemKind: x,
+                  PartWeightedAverage: x,
                 }
               }
             }),
@@ -134,6 +135,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
         this.inventoryItemTransaction = this.allors.context.create('InventoryItemTransaction') as InventoryItemTransaction;
         this.inventoryItemTransaction.TransactionDate = moment.utc().toISOString();
         this.inventoryItemTransaction.Part = this.part;
+        this.inventoryItemTransaction.Cost = this.part.PartWeightedAverage?.AverageCost;
 
         if (this.inventoryItem) {
           this.inventoryItemTransaction.Facility = this.inventoryItem.Facility;

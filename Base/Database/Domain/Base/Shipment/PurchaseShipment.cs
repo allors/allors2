@@ -95,8 +95,9 @@ namespace Allors.Domain
             }
 
             if (this.ShipmentItems.Any()
-                && (this.ShipmentItems.All(v => v.ExistShipmentReceiptWhereShipmentItem &&  v.ShipmentReceiptWhereShipmentItem.QuantityAccepted.Equals(v.ShipmentReceiptWhereShipmentItem.OrderItem?.QuantityOrdered))
-                    || this.ShipmentItems.All(v => v.ShipmentItemState.Equals(new ShipmentItemStates(this.strategy.Session).Received))))
+                && this.ShipmentItems.All(v => v.ExistShipmentReceiptWhereShipmentItem
+                &&  v.ShipmentReceiptWhereShipmentItem.QuantityAccepted.Equals(v.ShipmentReceiptWhereShipmentItem.OrderItem?.QuantityOrdered))
+                && this.ShipmentItems.All(v => v.ShipmentItemState.Equals(new ShipmentItemStates(this.strategy.Session).Received)))
             {
                 this.ShipmentState = new ShipmentStates(this.Strategy.Session).Received;
             }
@@ -120,6 +121,7 @@ namespace Allors.Domain
                         .WithUnitOfMeasure(shipmentItem.Part.UnitOfMeasure)
                         .WithFacility(shipmentItem.ShipmentWhereShipmentItem.ShipToFacility)
                         .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                        .WithShipmentItem(shipmentItem)
                         .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Good)
                         .WithQuantity(1)
                         .Build();
@@ -131,6 +133,7 @@ namespace Allors.Domain
                         .WithUnitOfMeasure(shipmentItem.Part.UnitOfMeasure)
                         .WithFacility(shipmentItem.ShipmentWhereShipmentItem.ShipToFacility)
                         .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                        .WithShipmentItem(shipmentItem)
                         .WithQuantity(shipmentItem.Quantity)
                         .WithCost(shipmentItem.UnitPurchasePrice)
                         .Build();

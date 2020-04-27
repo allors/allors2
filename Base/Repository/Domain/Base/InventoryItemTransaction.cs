@@ -104,6 +104,20 @@ namespace Allors.Repository
         [Workspace]
         public InventoryItem InventoryItem { get; set; }
 
+        /// <summary>
+        /// Gets or Sets the ShipmentItem where this InventoryItemTransaction applies.
+        /// Used in updating transaction cost when invoice is approved.
+        /// </summary>
+        #region Allors
+        [Id("474d6ddc-6f07-4e74-948a-ec3ffa4640cb")]
+        [AssociationId("467f37cb-5cfb-4830-9d8a-280590505883")]
+        [RoleId("b58dc74b-97f5-473f-ae55-ea6120199e68")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Workspace]
+        public ShipmentItem ShipmentItem { get; set; }
+
         #region Allors
         [Id("58ead8d2-c9c3-4092-b5d1-79af4811f43c")]
         [AssociationId("82f2636f-738d-45b8-bdc0-5136ad8d8382")]
