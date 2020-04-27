@@ -26,6 +26,17 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnPreDerive(ObjectOnPreDerive method)
+        {
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
+            {
+                iteration.AddDependency(this.Part, this);
+                iteration.Mark(this.Part);
+            }
+        }
+
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -40,7 +51,6 @@ namespace Allors.Domain
 
             // QuantityOnHand
             var quantityOnHand = 0M;
-            var totalCost = 0M;
 
             if (!settings.InventoryStrategy.OnHandNonSerialisedStates.Contains(this.NonSerialisedInventoryItemState))
             {
@@ -54,18 +64,10 @@ namespace Allors.Domain
                 if (reason.IncreasesQuantityOnHand == true)
                 {
                     quantityOnHand += inventoryTransaction.Quantity;
-
-                    var transactionCost = inventoryTransaction.Quantity * inventoryTransaction.Cost;
-                    totalCost += transactionCost;
-
-                    var averageCost = quantityOnHand > 0 ? totalCost / quantityOnHand : 0M;
-                    ((PartWeightedAverageDerivedRoles)this.Part.PartWeightedAverage).AverageCost = decimal.Round(averageCost, 2);
                 }
                 else if (reason.IncreasesQuantityOnHand == false)
                 {
                     quantityOnHand -= inventoryTransaction.Quantity;
-
-                    totalCost = quantityOnHand * this.Part.PartWeightedAverage.AverageCost;
                 }
             }
 

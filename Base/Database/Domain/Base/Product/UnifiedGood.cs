@@ -111,6 +111,31 @@ namespace Allors.Domain
             this.DeriveAvailableToPromise();
             this.DeriveQuantityCommittedOut();
             this.DeriveQuantityExpectedIn();
+
+            var quantityOnHand = 0M;
+            var totalCost = 0M;
+
+            foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWherePart)
+            {
+                var reason = inventoryTransaction.Reason;
+
+                if (reason.IncreasesQuantityOnHand == true)
+                {
+                    quantityOnHand += inventoryTransaction.Quantity;
+
+                    var transactionCost = inventoryTransaction.Quantity * inventoryTransaction.Cost;
+                    totalCost += transactionCost;
+
+                    var averageCost = quantityOnHand > 0 ? totalCost / quantityOnHand : 0M;
+                    ((PartWeightedAverageDerivedRoles)this.PartWeightedAverage).AverageCost = decimal.Round(averageCost, 2);
+                }
+                else if (reason.IncreasesQuantityOnHand == false)
+                {
+                    quantityOnHand -= inventoryTransaction.Quantity;
+
+                    totalCost = quantityOnHand * this.PartWeightedAverage.AverageCost;
+                }
+            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)

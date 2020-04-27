@@ -65,9 +65,21 @@ namespace Allors.Domain
                 {
                     if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(purchaseOrderItem.Part))
                     {
-                        var inventoryItems = purchaseOrderItem.Part.InventoryItemsWherePart;
+                        var part = purchaseOrderItem.Part;
+                        var inventoryItems = part.InventoryItemsWherePart;
                         inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
-                        this.InventoryItem = inventoryItems.First as InventoryItem;
+                        var inventoryItem = inventoryItems.First;
+
+                        if (inventoryItem == null)
+                        {
+                            inventoryItem = new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
+                                                .WithFacility(facility)
+                                                .WithUnitOfMeasure(part.UnitOfMeasure)
+                                                .WithPart(part)
+                                                .Build();
+                        }
+
+                        this.InventoryItem = inventoryItem;
                     }
                 }
             }

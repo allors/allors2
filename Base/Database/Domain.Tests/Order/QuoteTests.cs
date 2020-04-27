@@ -116,7 +116,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1300, quote.TotalIncVat);
+            Assert.Equal(1300, quote.TotalExVat);
         }
     }
 }
