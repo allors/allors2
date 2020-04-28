@@ -178,6 +178,16 @@ namespace Allors.Repository
         [Workspace]
         public NonSerialisedInventoryItemState InventoryItemState { get; set; }
 
+        #region Allors
+        [Id("9865c082-839f-406b-8973-8bc57ca6da5f")]
+        [AssociationId("c2cc3d1f-c054-4401-b57b-8e1278407e67")]
+        [RoleId("dc26b816-71d6-416f-8e46-b5c2eefea3e8")]
+        [Indexed]
+        [Size(256)]
+        #endregion
+        [Workspace]
+        public string PartLocation { get; set; }
+
         #region inherited methods
         public void OnBuild() { }
 

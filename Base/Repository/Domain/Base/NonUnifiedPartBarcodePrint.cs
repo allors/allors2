@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Allors.Repository
 {
@@ -28,6 +28,26 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public NonUnifiedPart[] Parts{ get; set; }
+
+        #region Allors
+        [Id("0cb73f54-31c8-4f9c-af50-492a90c7e94a")]
+        [AssociationId("c33fbef7-389b-4a53-8eba-c798f902a50d")]
+        [RoleId("d6ec9aa5-3782-4e80-83fc-b9924322861b")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Locale Locale{ get; set; }
+
+        #region Allors
+        [Id("ed177d0e-c542-404a-979d-4c70731d2860")]
+        [AssociationId("dc53aec4-e23a-4ad4-919b-6fcd17d538ec")]
+        [RoleId("9e93b1ca-241d-4a74-a1d1-2eb6531c1be1")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Facility Facility { get; set; }
 
         #region inherited methods
 

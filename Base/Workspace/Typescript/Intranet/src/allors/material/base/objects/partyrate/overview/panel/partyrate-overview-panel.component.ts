@@ -122,7 +122,7 @@ export class PartyRateOverviewPanelComponent extends TestScope implements OnInit
   }
 
   public refreshTable() {
-    this.table.data = this.partyRates.map((v) => {
+    this.table.data = this.partyRates?.map((v) => {
       return {
         object: v,
         rateType: v.RateType.Name,

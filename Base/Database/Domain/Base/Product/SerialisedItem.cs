@@ -92,7 +92,6 @@ namespace Allors.Domain
 
             this.DeriveProductCharacteristics(derivation);
 
-
             if (this.ExistPartWhereSerialisedItem && this.PartWhereSerialisedItem.GetType().Name == typeof(UnifiedGood).Name)
             {
                 var unifiedGood = this.PartWhereSerialisedItem as UnifiedGood;

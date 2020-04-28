@@ -11,7 +11,7 @@ interface Row extends TableRow {
   facility: string;
   part: string;
   uom: string;
-  state: string;
+  location: string;
   qoh: string;
   atp: string;
   committedOut: string;
@@ -54,7 +54,7 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
     public navigationService: NavigationService,
     public overviewService: OverviewService,
     public deleteService: DeleteService,
-    public editService: EditService
+    public editService: EditService,
   ) {
     super();
 
@@ -66,7 +66,7 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
     const { pull, x, m } = this.metaService;
 
     this.panel.name = 'nonserialised Inventory item';
-    this.panel.title = 'Non Serialised Inventory items';
+    this.panel.title = 'Nonserialised Inventory items';
     this.panel.icon = 'link';
     this.panel.expandable = true;
 
@@ -84,7 +84,7 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
           });
         }
       },
-      result: null
+      result: null,
     };
 
     this.table = new Table({
@@ -93,12 +93,16 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
         { name: 'facility' },
         { name: 'part' },
         { name: 'uom' },
-        { name: 'state' },
+        { name: 'location' },
         'qoh',
         'atp',
         'committedOut',
       ],
-      defaultAction: this.changeInventory,
+      actions: [
+        this.edit,
+        this.changeInventory,
+      ],
+      defaultAction: this.edit,
       autoSort: true,
       autoFilter: true,
     });
@@ -140,7 +144,7 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
               facility: v.Facility.Name,
               part: v.Part.Name,
               uom: v.UnitOfMeasure.Abbreviation || v.UnitOfMeasure.Name,
-              state: v.NonSerialisedInventoryItemState ? v.NonSerialisedInventoryItemState.Name : '',
+              location: v.PartLocation,
               qoh: v.QuantityOnHand,
               atp: v.AvailableToPromise,
               committedOut: v.QuantityCommittedOut,

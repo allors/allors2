@@ -6,10 +6,10 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or, Sort, GreaterThan } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, SingletonId } from '../../../../../angular';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, SingletonId, UserId, InternalOrganisationId, FetcherService } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService, PrintService, SaveService } from '../../../..';
 
-import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory, NonUnifiedPartBarcodePrint, Singleton, NonSerialisedInventoryItem } from '../../../../../domain';
+import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory, NonUnifiedPartBarcodePrint, Singleton, NonSerialisedInventoryItem, Person } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -45,6 +45,8 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
   parts: NonUnifiedPart[];
   nonUnifiedPartBarcodePrint: NonUnifiedPartBarcodePrint;
   facilities: Facility[];
+  user: Person;
+  internalOrganisation: Organisation;
 
   constructor(
     @Self() public allors: ContextService,
@@ -60,6 +62,9 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     private filtersService: FiltersService,
     private saveService: SaveService,
     private singletonId: SingletonId,
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId,
+    private userId: UserId,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -216,19 +221,21 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
             refresh,
             filterFields,
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            internalOrganisationId,
           ];
         }, [, , , , ,]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             pull.NonUnifiedPart({
               predicate,
               sort: sorter.create(sort),
@@ -275,6 +282,10 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             }),
             pull.ProductIdentificationType(),
             pull.BasePrice(),
+            pull.Person({
+              object: this.userId.value,
+              include: { Locale: x }
+            }),
           ];
 
           return this.allors.context
@@ -284,6 +295,8 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
+        this.user = loaded.objects.Person as Person;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.facilities = loaded.collections.Facilities as Facility[];
         this.nonUnifiedPartBarcodePrint = loaded.objects.NonUnifiedPartBarcodePrint as NonUnifiedPartBarcodePrint;
 
@@ -348,6 +361,8 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     const { context } = this.allors;
 
     this.nonUnifiedPartBarcodePrint.Parts = parts;
+    this.nonUnifiedPartBarcodePrint.Facility = this.internalOrganisation.FacilitiesWhereOwner[0];
+    this.nonUnifiedPartBarcodePrint.Locale = this.user.Locale;
 
     context
       .save()
@@ -362,7 +377,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
               NonUnifiedPartBarcodePrint: {
                 include: {
                   PrintDocument: {
-                    Media: x
+                    Media: x,
                   }
                 }
               }
