@@ -7,8 +7,7 @@ namespace Allors.Excel
 {
     using Allors.Workspace;
     using Allors.Workspace.Meta;
-    using Dipu.Excel;
-
+   
     public class RoleTypeBinding : IBinding
     {
         public RoleTypeBinding(ISessionObject @object, RoleType roleType, RoleType relationType = null, bool oneWayBinding = false)
