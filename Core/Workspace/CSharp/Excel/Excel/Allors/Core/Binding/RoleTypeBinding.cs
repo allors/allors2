@@ -7,12 +7,8 @@ namespace Allors.Excel
 {
     using Allors.Workspace;
     using Allors.Workspace.Meta;
-<<<<<<< HEAD
-   
-=======
     using Allors.Excel;
 
->>>>>>> 0172117ce9cbc1c8fb02964a2bd7aa7c1c2200c1
     public class RoleTypeBinding : IBinding
     {
         public RoleTypeBinding(ISessionObject @object, RoleType roleType, RoleType relationType = null, bool oneWayBinding = false)
