@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SearchFactory, WorkspaceService, InternalOrganisationId } from '../../../../angular';
-import { And, ContainedIn, Equals, Filter } from '../../../../framework';
+import { And, ContainedIn, Equals, Filter, Contains } from '../../../../framework';
 import { Meta } from '../../../../meta';
 
 import { FiltersService } from './filters.service';
@@ -24,6 +24,22 @@ export class DefaultFiltersService extends FiltersService {
     return new SearchFactory({
       objectType: this.m.Good,
       roleTypes: [this.m.Good.Name, this.m.Good.SearchString],
+    });
+  }
+
+  get serialisedgoodsFilter() {
+    return new SearchFactory({
+      objectType: this.m.UnifiedGood,
+      roleTypes: [this.m.UnifiedGood.Name, this.m.UnifiedGood.SearchString],
+      post: (predicate: And) => {
+        predicate.operands.push(new ContainedIn({
+          propertyType: this.m.UnifiedGood.InventoryItemKind,
+          extent: new Filter({
+            objectType: this.m.InventoryItemKind,
+            predicate: new Equals({ propertyType: this.m.InventoryItemKind.UniqueId, value: '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae' }),
+          })
+        }));
+      },
     });
   }
 
@@ -140,6 +156,13 @@ export class DefaultFiltersService extends FiltersService {
     return new SearchFactory({
       objectType: this.m.Party,
       roleTypes: [this.m.Party.PartyName],
+    });
+  }
+
+  get workEffortsFilter() {
+    return new SearchFactory({
+      objectType: this.m.WorkEffort,
+      roleTypes: [this.m.WorkEffort.Name],
     });
   }
 }

@@ -30,8 +30,7 @@ namespace Tests.ElectronicAddressTests
         [Fact]
         public void Edit()
         {
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             var electronicAddress = new EmailAddressBuilder(this.Session)
                 .WithElectronicAddressString("info@acme.com")

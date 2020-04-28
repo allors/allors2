@@ -41,7 +41,7 @@ namespace Allors.Domain.TestPopulation
             }
 
             @this.WithInventoryItemKind(new InventoryItemKinds(@this.Session).NonSerialised);
-            @this.WithName(faker.Commerce.ProductMaterial());
+            @this.WithName(faker.Commerce.ProductName());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
@@ -107,7 +107,7 @@ namespace Allors.Domain.TestPopulation
             }
 
             @this.WithInventoryItemKind(new InventoryItemKinds(@this.Session).Serialised);
-            @this.WithName(faker.Commerce.ProductMaterial());
+            @this.WithName(faker.Commerce.ProductName());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());

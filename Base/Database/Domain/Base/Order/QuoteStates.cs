@@ -10,8 +10,9 @@ namespace Allors.Domain
     public partial class QuoteStates
     {
         public static readonly Guid CreatedId = new Guid("B1565CD4-D01A-4623-BF19-8C816DF96AA6");
-        public static readonly Guid ApprovedId = new Guid("675D6899-1EBB-4FDB-9DC9-B8AEF0A135D2");
-        public static readonly Guid AwaitingAcceptanceId = new Guid("DB2C5513-CC37-40DB-8B8F-64D9FC9D7C7D");
+        public static readonly Guid AwaitingApprovalId = new Guid("3e315c74-f8e7-4538-977e-9446e220d2b1");
+        public static readonly Guid InProcessId = new Guid("675D6899-1EBB-4FDB-9DC9-B8AEF0A135D2");
+        public static readonly Guid AwaitingAcceptanceId = new Guid("324beb70-937f-4c4d-a7e9-2e3063c88a62");
         public static readonly Guid AcceptedId = new Guid("3943f87c-f098-49c8-89ba-12047c826777");
         public static readonly Guid OrderedId = new Guid("FE9A6F81-9935-466F-9F71-A537AF046019");
         public static readonly Guid CancelledId = new Guid("ED013479-08AF-4D02-96A7-3FC8B7BE37EF");
@@ -21,7 +22,9 @@ namespace Allors.Domain
 
         public QuoteState Created => this.Cache[CreatedId];
 
-        public QuoteState Approved => this.Cache[ApprovedId];
+        public QuoteState AwaitingApproval => this.Cache[AwaitingApprovalId];
+
+        public QuoteState InProcess => this.Cache[InProcessId];
 
         public QuoteState AwaitingAcceptance => this.Cache[AwaitingAcceptanceId];
 
@@ -40,7 +43,8 @@ namespace Allors.Domain
             var merge = this.Cache.Merger().Action();
 
             merge(CreatedId, v => v.Name = "Created");
-            merge(ApprovedId, v => v.Name = "Approved");
+            merge(AwaitingApprovalId, v => v.Name = "Awaiting Approval");
+            merge(InProcessId, v => v.Name = "In process");
             merge(AwaitingAcceptanceId, v => v.Name = "Awaiting customer acceptance");
             merge(AcceptedId, v => v.Name = "Accepted");
             merge(OrderedId, v => v.Name = "Ordered");

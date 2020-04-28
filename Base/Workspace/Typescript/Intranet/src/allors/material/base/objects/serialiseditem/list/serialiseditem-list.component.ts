@@ -9,7 +9,7 @@ import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../..
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
-import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model } from '../../../../../domain';
+import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model, SerialisedItemAvailability, ProductCategory, ProductType, UnifiedGood } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -17,7 +17,8 @@ interface Row extends TableRow {
   object: SerialisedItem;
   id: string;
   name: string;
-  state: string;
+  categories: string;
+  availability: string;
   ownership: string;
   suppliedBy: string;
   ownedBy: string;
@@ -64,7 +65,8 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       columns: [
         { name: 'id', sort: true },
         { name: 'name', sort: true },
-        { name: 'state' },
+        { name: 'categories' },
+        { name: 'availability' },
         { name: 'ownership' },
         { name: 'suppliedBy' },
         { name: 'ownedBy' },
@@ -88,6 +90,10 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       new Like({ roleType: m.SerialisedItem.ItemNumber, parameter: 'id' }),
       new Like({ roleType: m.SerialisedItem.Name, parameter: 'name' }),
       new Like({ roleType: m.SerialisedItem.Keywords, parameter: 'keyword' }),
+      new Equals({ propertyType: m.SerialisedItem.OnQuote, parameter: 'onQuote' }),
+      new Equals({ propertyType: m.SerialisedItem.OnSalesOrder, parameter: 'onSalesOrder' }),
+      new Equals({ propertyType: m.SerialisedItem.OnWorkEffort, parameter: 'onWorkEffort' }),
+      new Equals({ propertyType: m.SerialisedItem.SerialisedItemAvailability, parameter: 'availability' }),
       new Equals({ propertyType: m.SerialisedItem.SerialisedItemState, parameter: 'state' }),
       new Equals({ propertyType: m.SerialisedItem.Ownership, parameter: 'ownership' }),
       new Equals({ propertyType: m.SerialisedItem.SuppliedBy, parameter: 'suppliedby' }),
@@ -112,6 +118,26 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
             parameter: 'model'
           })
         })
+      }),
+      new ContainedIn({
+        propertyType: m.SerialisedItem.PartWhereSerialisedItem,
+        extent: new Filter({
+          objectType: m.UnifiedGood,
+          predicate: new ContainedIn({
+            propertyType: m.UnifiedGood.ProductCategoriesWhereProduct,
+            parameter: 'category'
+          })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.SerialisedItem.PartWhereSerialisedItem,
+        extent: new Filter({
+          objectType: m.UnifiedGood,
+          predicate: new ContainedIn({
+            propertyType: m.UnifiedGood.ProductType,
+            parameter: 'productType'
+          })
+        })
       })
     ]);
 
@@ -119,6 +145,12 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       objectType: m.SerialisedItemState,
       roleTypes: [m.SerialisedItemState.Name],
       predicates: [new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true })]
+    });
+
+    const availabilitySearch = new SearchFactory({
+      objectType: m.SerialisedItemAvailability,
+      roleTypes: [m.SerialisedItemAvailability.Name],
+      predicates: [new Equals({ propertyType: m.SerialisedItemAvailability.IsActive, value: true })]
     });
 
     const ownershipSearch = new SearchFactory({
@@ -147,15 +179,31 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       roleTypes: [m.Model.Name],
     });
 
+    const categorySearch = new SearchFactory({
+      objectType: m.ProductCategory,
+      roleTypes: [m.ProductCategory.DisplayName],
+    });
+
+    const productTypeSearch = new SearchFactory({
+      objectType: m.ProductType,
+      roleTypes: [m.ProductType.Name],
+    });
+
     this.filterService.init(predicate, {
       active: { initialValue: true },
+      onQuote: { initialValue: true },
+      onSalesOrder: { initialValue: true },
+      onWorkEffort: { initialValue: true },
       state: { search: stateSearch, display: (v: SerialisedItemState) => v && v.Name },
+      availability: { search: availabilitySearch, display: (v: SerialisedItemAvailability) => v && v.Name },
       ownership: { search: ownershipSearch, display: (v: Ownership) => v && v.Name },
       suppliedby: { search: supplierSearch, display: (v: Organisation) => v && v.Name },
       ownedby: { search: partySearch, display: (v: Party) => v && v.displayName },
       rentedby: { search: partySearch, display: (v: Party) => v && v.displayName },
       brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
       model: { search: modelSearch, display: (v: Model) => v && v.Name },
+      category: { search: categorySearch, display: (v: ProductCategory) => v && v.DisplayName },
+      productType: { search: productTypeSearch, display: (v: ProductType) => v && v.Name },
     });
 
     const sorter = new Sorter(
@@ -183,6 +231,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
               sort: sorter.create(sort),
               include: {
                 SerialisedItemState: x,
+                SerialisedItemAvailability: x,
                 Ownership: x,
                 SuppliedBy: x,
                 OwnedBy: x,
@@ -191,21 +240,25 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
-            })];
+            }),
+          ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
+
         const objects = loaded.collections.SerialisedItems as SerialisedItem[];
+
         this.table.total = loaded.values.SerialisedItems_total;
         this.table.data = objects.map((v) => {
           return {
             object: v,
             id: v.ItemNumber,
             name: v.Name,
-            state: `${v.SerialisedItemState && v.SerialisedItemState.Name}`,
+            categories: v.DisplayProductCategories,
+            availability: `${v.SerialisedItemAvailability && v.SerialisedItemAvailability.Name}`,
             ownership: `${v.Ownership && v.Ownership.Name}`,
             suppliedBy: v.SuppliedBy ? v.SuppliedBy.displayName : '',
             ownedBy: v.OwnedBy ? v.OwnedBy.displayName : '',

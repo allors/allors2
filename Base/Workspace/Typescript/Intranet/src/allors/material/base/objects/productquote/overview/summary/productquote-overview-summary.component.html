@@ -58,9 +58,11 @@
 
 
   <mat-card-actions>
+    <button *ngIf="productQuote.CanExecuteSetReadyForProcessing" mat-button (click)="setReadyForProcessing()">Ready for processing</button>
     <button *ngIf="productQuote.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
     <button *ngIf="productQuote.CanExecuteSend" mat-button (click)="send()">Send</button>
     <button *ngIf="productQuote.CanExecuteAccept" mat-button (click)="accept()">Accept</button>
+    <button *ngIf="productQuote.CanExecuteRevise" mat-button type="button" (click)="revise()">Revise</button>
     <button *ngIf="productQuote.CanExecuteReopen" mat-button type="button" (click)="reopen()">Reopen</button>
     <button *ngIf="productQuote.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
     <button *ngIf="productQuote.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>

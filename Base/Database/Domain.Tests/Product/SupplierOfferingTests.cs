@@ -194,6 +194,12 @@ namespace Allors.Domain
                 .WithNonSerialisedDefaults(internalOrganisation)
                 .Build();
 
+            this.Session.Derive();
+
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment).WithPart(finishedGood).Build();
+
+            this.Session.Derive();
+
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var piece = new UnitsOfMeasure(this.Session).Piece;
 
@@ -263,7 +269,6 @@ namespace Allors.Domain
             /*Purchase price times InternalSurchargePercentage
             var sellingPrice = Math.Round(135 * (1 + (this.Session.GetSingleton().Settings.PartSurchargePercentage / 100)), 2);*/
 
-            Assert.Equal(99, workEffortInventoryAssignement.UnitPurchasePrice);
             Assert.Equal(100, workEffortInventoryAssignement.UnitSellingPrice);
         }
     }

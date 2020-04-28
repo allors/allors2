@@ -19,8 +19,7 @@ namespace Allors.Domain
                 this.UnitPurchasePrice = this.PurchaseOrderItem.UnitPrice;
             }
 
-            var unitSellingPrice = this.BaseCalculateSellingPrice() ?? 0M;
-            this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
+            this.CalculateSellingPrice();
 
             if (this.ExistAssignment)
             {
@@ -41,13 +40,26 @@ namespace Allors.Domain
             }
         }
 
-        public decimal? BaseCalculateSellingPrice()
+        public void BaseCalculateSellingPrice(WorkEffortPurchaseOrderItemAssignmentCalculateSellingPrice method)
         {
-            var part = this.PurchaseOrderItem.Part;
-            var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
-            var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
+            if (!method.Result.HasValue)
+            {
+                if (this.AssignedUnitSellingPrice.HasValue)
+                {
+                    this.UnitSellingPrice = this.AssignedUnitSellingPrice.Value;
+                }
+                else
+                {
+                    var part = this.PurchaseOrderItem.Part;
+                    var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
+                    var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
 
-            return currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
+                    var price = currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
+                    this.UnitSellingPrice = price ?? 0M;
+                }
+
+                method.Result = true;
+            }
         }
     }
 }

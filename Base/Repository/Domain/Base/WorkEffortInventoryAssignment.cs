@@ -70,6 +70,15 @@ namespace Allors.Repository
         public decimal Quantity { get; set; }
 
         #region Allors
+        [Id("495645bf-0ef7-49be-9d4d-59125221ca06")]
+        [AssociationId("efdb1b11-640c-4d4a-9ac2-6897f102baba")]
+        [RoleId("9300e163-872d-4369-ac1e-ff3b1bebd2a7")]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal CostOfGoodsSold { get; set; }
+
+        #region Allors
         [Id("E13BAD88-7B44-4B92-89D0-86D182404880")]
         [AssociationId("2A428B1E-E913-4E7D-ABBE-8D68A0BF8396")]
         [RoleId("729A391C-60D6-47A2-A66D-9E21B90285A8")]
@@ -100,18 +109,6 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal AssignedUnitSellingPrice { get; set; }
-
-        #region Allors
-        [Id("7A7D176E-A18D-44BC-8E05-9FA592A3A911")]
-        [AssociationId("FE28EC08-2568-41D3-9755-6F756D1C4E49")]
-        [RoleId("DBAAB5D5-185E-4BD2-9DB7-18ACE998B1FF")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal UnitPurchasePrice { get; set; }
 
         #region Allors
         [Id("48C27B12-EAE9-48F6-B803-DC6C568D3816")]
@@ -166,5 +163,21 @@ namespace Allors.Repository
         public void Delete() { }
 
         #endregion
+
+        #region Allors
+
+        [Id("0f837793-fa7c-47de-893a-b24bfdb869a9")]
+        #endregion
+        public void CalculatePurchasePrice()
+        {
+        }
+
+        #region Allors
+
+        [Id("8f817fcb-1655-4d54-9a68-844d8a7f5017")]
+        #endregion
+        public void CalculateSellingPrice()
+        {
+        }
     }
 }

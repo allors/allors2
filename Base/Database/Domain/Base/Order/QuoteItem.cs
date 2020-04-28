@@ -7,6 +7,9 @@ using Resources;
 
 namespace Allors.Domain
 {
+    using System;
+    using System.Linq;
+    using System.Text;
     using Allors.Meta;
 
     public partial class QuoteItem
@@ -23,6 +26,12 @@ namespace Allors.Domain
         public bool IsValid => !(this.QuoteItemState.IsCancelled || this.QuoteItemState.IsRejected);
 
         public bool WasValid => this.ExistLastObjectStates && !(this.LastQuoteItemState.IsCancelled || this.LastQuoteItemState.IsRejected);
+
+        internal bool IsDeletable =>
+            (this.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Draft)
+                || this.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted)
+                || this.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Cancelled))
+            && !this.ExistOrderItemsWhereQuoteItem;
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
@@ -61,6 +70,12 @@ namespace Allors.Domain
                     iteration.AddDependency(this.QuoteWhereQuoteItem, this);
                     iteration.Mark(this.QuoteWhereQuoteItem);
                 }
+
+                if (this.ExistSerialisedItem)
+                {
+                    iteration.AddDependency(this.SerialisedItem, this);
+                    iteration.Mark(this.SerialisedItem);
+                }
             }
         }
 
@@ -81,19 +96,117 @@ namespace Allors.Domain
                 this.Quantity = 1;
             }
 
-            if (this.Product is UnifiedGood unifiedGood && unifiedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.Session()).Serialised) && !this.ExistSerialisedItem)
-            {
-                derivation.Validation.AssertExists(this, this.Meta.SerialisedItem);
-            }
-
             if (this.ExistSerialisedItem && this.Quantity != 1)
             {
                 derivation.Validation.AddError(this, this.Meta.Quantity, ErrorMessages.SerializedItemQuantity);
             }
 
-            if (!this.ExistDetails && this.ExistSerialisedItem)
+            if (derivation.ChangeSet.IsCreated(this) && !this.ExistDetails)
             {
-                this.Details = this.SerialisedItem.Details;
+                if (this.ExistSerialisedItem)
+                {
+                    var builder = new StringBuilder();
+                    var part = this.SerialisedItem.PartWhereSerialisedItem;
+
+                    if (part != null && part.ExistManufacturedBy)
+                    {
+                        builder.Append($", Manufacturer: {part.ManufacturedBy.PartyName}");
+                    }
+
+                    if (part != null && part.ExistBrand)
+                    {
+                        builder.Append($", Brand: {part.Brand.Name}");
+                    }
+
+                    if (part != null && part.ExistModel)
+                    {
+                        builder.Append($", Model: {part.Model.Name}");
+                    }
+
+                    builder.Append($", SN: {this.SerialisedItem.SerialNumber}");
+
+                    if (this.SerialisedItem.ExistManufacturingYear)
+                    {
+                        builder.Append($", YOM: {this.SerialisedItem.ManufacturingYear}");
+                    }
+
+                    foreach (SerialisedItemCharacteristic characteristic in this.SerialisedItem.SerialisedItemCharacteristics)
+                    {
+                        if (characteristic.ExistValue)
+                        {
+                            var characteristicType = characteristic.SerialisedItemCharacteristicType;
+                            if (characteristicType.ExistUnitOfMeasure)
+                            {
+                                var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
+                                                ? characteristicType.UnitOfMeasure.Abbreviation
+                                                : characteristicType.UnitOfMeasure.Name;
+                                builder.Append(
+                                    $", {characteristicType.Name}: {characteristic.Value} {uom}");
+                            }
+                            else
+                            {
+                                builder.Append($", {characteristicType.Name}: {characteristic.Value}");
+                            }
+                        }
+                    }
+
+                    var details = builder.ToString();
+
+                    if (details.StartsWith(","))
+                    {
+                        details = details.Substring(2);
+                    }
+
+                    this.Details = details;
+
+                }
+                else if (this.ExistProduct && this.Product is UnifiedGood unifiedGood)
+                {
+                    var builder = new StringBuilder();
+
+                    if (unifiedGood != null && unifiedGood.ExistManufacturedBy)
+                    {
+                        builder.Append($", Manufacturer: {unifiedGood.ManufacturedBy.PartyName}");
+                    }
+
+                    if (unifiedGood != null && unifiedGood.ExistBrand)
+                    {
+                        builder.Append($", Brand: {unifiedGood.Brand.Name}");
+                    }
+
+                    if (unifiedGood != null && unifiedGood.ExistModel)
+                    {
+                        builder.Append($", Model: {unifiedGood.Model.Name}");
+                    }
+
+                    foreach (SerialisedItemCharacteristic characteristic in unifiedGood.SerialisedItemCharacteristics)
+                    {
+                        if (characteristic.ExistValue)
+                        {
+                            var characteristicType = characteristic.SerialisedItemCharacteristicType;
+                            if (characteristicType.ExistUnitOfMeasure)
+                            {
+                                var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
+                                                ? characteristicType.UnitOfMeasure.Abbreviation
+                                                : characteristicType.UnitOfMeasure.Name;
+                                builder.Append($", {characteristicType.Name}: {characteristic.Value} {uom}");
+                            }
+                            else
+                            {
+                                builder.Append($", {characteristicType.Name}: {characteristic.Value}");
+                            }
+                        }
+                    }
+
+                    var details = builder.ToString();
+
+                    if (details.StartsWith(","))
+                    {
+                        details = details.Substring(2);
+                    }
+
+                    this.Details = details;
+                }
             }
 
             if (this.ExistRequestItem)
@@ -105,6 +218,35 @@ namespace Allors.Domain
             {
                 this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
+
+            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
+
+            // Calculate Totals
+            this.TotalBasePrice = this.UnitBasePrice * this.Quantity;
+            this.TotalDiscount = this.UnitDiscount * this.Quantity;
+            this.TotalSurcharge = this.UnitSurcharge * this.Quantity;
+
+            if (this.TotalBasePrice > 0)
+            {
+                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
+                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
+            }
+            else
+            {
+                this.TotalDiscountAsPercentage = 0;
+                this.TotalSurchargeAsPercentage = 0;
+            }
+
+            this.TotalExVat = this.UnitPrice * this.Quantity;
+            this.TotalVat = this.UnitVat * this.Quantity;
+            this.TotalIncVat = this.TotalExVat + this.TotalVat;
+
+            // CurrentVersion is Previous Version until PostDerive
+            var previousSerialisedItem = this.CurrentVersion?.SerialisedItem;
+            if (previousSerialisedItem != null && previousSerialisedItem != this.SerialisedItem)
+            {
+                previousSerialisedItem.DerivationTrigger = Guid.NewGuid();
+            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
@@ -114,6 +256,24 @@ namespace Allors.Domain
             if (!this.ExistUnitPrice)
             {
                 derivation.Validation.AddError(this, this.Meta.UnitPrice, ErrorMessages.UnitPriceRequired);
+            }
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+        }
+
+        public void BaseDelete(QuoteItemDelete method)
+        {
+            if (this.ExistSerialisedItem)
+            {
+                this.SerialisedItem.DerivationTrigger = Guid.NewGuid();
             }
         }
 

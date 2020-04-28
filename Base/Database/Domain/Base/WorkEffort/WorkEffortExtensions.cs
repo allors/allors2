@@ -248,6 +248,7 @@ namespace Allors.Domain
                     .WithPart(part)
                     .WithAssignedUnitPrice(workEffortInventoryAssignment.UnitSellingPrice)
                     .WithQuantity(workEffortInventoryAssignment.BillableQuantity ?? workEffortInventoryAssignment.Quantity)
+                    .WithCostOfGoodsSold(workEffortInventoryAssignment.CostOfGoodsSold)
                     .Build();
 
                 salesInvoice.AddSalesInvoiceItem(invoiceItem);

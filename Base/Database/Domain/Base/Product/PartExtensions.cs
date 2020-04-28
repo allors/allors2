@@ -6,9 +6,83 @@
 namespace Allors.Domain
 {
     using System.Linq;
+    using System.Text;
 
-    public static class PartExtensions
+    public static partial class PartExtensions
     {
+        public static void BaseOnBuild(this Part @this, ObjectOnBuild method)
+        {
+            if (!@this.ExistPartWeightedAverage)
+            {
+                @this.PartWeightedAverage = new PartWeightedAverageBuilder(@this.Session()).Build();
+            }
+        }
+
+        public static void BaseOnDerive(this Part @this, ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+
+            @this.SetDisplayName();
+        }
+
+        public static void BaseOnPostDerive(this Part @this, ObjectOnPostDerive method)
+        {
+            var builder = new StringBuilder();
+
+            builder.Append(@this.Name);
+
+            foreach (LocalisedText localisedText in @this.LocalisedNames)
+            {
+                builder.Append(string.Join(", ", localisedText.Text));
+            }
+
+            if (@this.ExistProductIdentifications)
+            {
+                builder.Append(string.Join(", ", @this.ProductIdentifications.Select(v => v.Identification)));
+            }
+
+            if (@this.ExistProductCategoriesWhereAllPart)
+            {
+                builder.Append(string.Join(", ", @this.ProductCategoriesWhereAllPart.Select(v => v.Name)));
+            }
+
+            if (@this.ExistSupplierOfferingsWherePart)
+            {
+                builder.Append(string.Join(", ", @this.SupplierOfferingsWherePart.Select(v => v.Supplier.PartyName)));
+                builder.Append(string.Join(", ", @this.SupplierOfferingsWherePart.Select(v => v.SupplierProductId)));
+                builder.Append(string.Join(", ", @this.SupplierOfferingsWherePart.Select(v => v.SupplierProductName)));
+            }
+
+            if (@this.ExistSerialisedItems)
+            {
+                builder.Append(string.Join(", ", @this.SerialisedItems.Select(v => v.SerialNumber)));
+            }
+
+            if (@this.ExistProductType)
+            {
+                builder.Append(string.Join(", ", @this.ProductType.Name));
+            }
+
+            if (@this.ExistBrand)
+            {
+                builder.Append(string.Join(", ", @this.Brand.Name));
+            }
+
+            if (@this.ExistModel)
+            {
+                builder.Append(string.Join(", ", @this.Model.Name));
+            }
+
+            foreach (PartCategory partCategory in @this.PartCategoriesWherePart)
+            {
+                builder.Append(string.Join(", ", partCategory.Name));
+            }
+
+            builder.Append(string.Join(", ", @this.Keywords));
+
+            @this.SearchString = builder.ToString();
+        }
+
         public static string PartIdentification(this Part @this)
         {
             if (@this.ProductIdentifications.Count == 0)
@@ -38,6 +112,33 @@ namespace Allors.Domain
             }
 
             return genericPriceComponents;
+        }
+
+        public static void BaseSetDisplayName(this Part @this, PartSetDisplayName method)
+        {
+            if (!method.Result.HasValue)
+            {
+                var builder = new StringBuilder();
+
+                builder.Append(@this.Name);
+
+                foreach (SupplierOffering supplierOffering in @this.SupplierOfferingsWherePart)
+                {
+                    if (supplierOffering.Supplier is Organisation supplier)
+                    {
+                        builder.Append(", " + supplier.Name);
+
+                        if (supplierOffering.ExistSupplierProductId)
+                        {
+                            builder.Append(" (" + supplierOffering.SupplierProductId + ")");
+                        }
+                    }
+                }
+
+                @this.DisplayName = builder.ToString();
+
+                method.Result = true;
+            }
         }
     }
 }

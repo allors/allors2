@@ -52,7 +52,7 @@
     </div>
 
     <div class="row">
-      <a-mat-select class="col-md" *ngIf="isSerialized" [object]="shipmentItem" [roleType]="m.ShipmentItem.NewSerialisedItemState" [options]="serialisedItemStates" display="Name" label="Next Item State"></a-mat-select>
+      <a-mat-select class="col-md" *ngIf="isSerialized" [object]="shipmentItem" [roleType]="m.ShipmentItem.NextSerialisedItemAvailability" [options]="serialisedItemAvailabilities" display="Name" label="Next Item State"></a-mat-select>
     </div>
 
     <div class="row">

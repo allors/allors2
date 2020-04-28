@@ -4,8 +4,8 @@ import { combineLatest, Subscription } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory, TestScope } from '../../../../../angular';
+import { PullRequest, And, Like, ContainedIn, Filter, GreaterThan, Equals } from '../../../../../framework';
+import { AllorsFilterService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory, TestScope, FetcherService } from '../../../../../angular';
 import { TableRow, OverviewService, DeleteService, Table, Sorter, MethodService } from '../../../..';
 
 import { Organisation, Country } from '../../../../../domain';
@@ -19,6 +19,8 @@ interface Row extends TableRow {
   locality: string;
   country: string;
   phone: string;
+  isCustomer: string;
+  isSupplier: string;
   lastModifiedDate: string;
 }
 
@@ -33,9 +35,9 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
   table: Table<Row>;
 
   delete: Action;
-  delete2: Action;
 
   private subscription: Subscription;
+  internalOrganisation: Organisation;
 
   constructor(
     @Self() public allors: ContextService,
@@ -48,6 +50,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
     public methodService: MethodService,
     public navigation: NavigationService,
     public mediaService: MediaService,
+    private fetcher: FetcherService,
     titleService: Title
   ) {
     super();
@@ -61,7 +64,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
 
     const { m } = this.metaService;
 
-    this.delete2 = methodService.create(allors.context, m.Organisation.Delete, { name: 'Delete (Method)' });
+    // this.delete2 = methodService.create(allors.context, m.Organisation.Delete, { name: 'Delete (Method)' });
 
     this.table = new Table({
       selection: true,
@@ -71,12 +74,13 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
         'locality',
         'country',
         'phone',
+        'isCustomer',
+        'isSupplier',
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
         this.delete,
-        this.delete2,
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
@@ -89,6 +93,26 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
 
     const predicate = new And([
       new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
+      new ContainedIn({
+        propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
+        extent: new Filter({
+          objectType: m.SupplierRelationship,
+          predicate: new Equals({
+            propertyType: m.SupplierRelationship.InternalOrganisation,
+            parameter: 'supplierFor'
+          })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.Party.CustomerRelationshipsWhereCustomer,
+        extent: new Filter({
+          objectType: m.CustomerRelationship,
+          predicate: new Equals({
+            propertyType: m.CustomerRelationship.InternalOrganisation,
+            parameter: 'customerAt'
+          })
+        })
+      }),
       new ContainedIn({
         propertyType: m.Party.PartyContactMechanisms,
         extent: new Filter({
@@ -120,7 +144,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
             })
           })
         })
-      })
+      }),
     ]);
 
     const countrySearch = new SearchFactory({
@@ -128,7 +152,25 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       roleTypes: [m.Country.Name],
     });
 
+    const internalOrganisationSearch = new SearchFactory({
+      objectType: m.Organisation,
+      roleTypes: [m.Organisation.Name],
+      post: (predicate: And) => {
+        predicate.operands.push(new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }));
+      },
+    });
+
     this.filterService.init(predicate, {
+      customerAt: {
+        search: internalOrganisationSearch,
+        initialValue: this.internalOrganisation,
+        display: (v: Organisation) => v && v.Name
+      },
+      supplierFor: {
+        search: internalOrganisationSearch,
+        initialValue: this.internalOrganisation,
+        display: (v: Organisation) => v && v.Name
+      },
       country: {
         search: countrySearch,
         display: (v: Country) => v && v.Name
@@ -155,10 +197,13 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             pull.Organisation({
               predicate,
               sort: sorter.create(sort),
               include: {
+                CustomerRelationshipsWhereCustomer: x,
+                SupplierRelationshipsWhereSupplier: x,
                 PartyContactMechanisms: {
                   ContactMechanism: {
                     PostalAddress_Country: x
@@ -175,7 +220,10 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
+
+        this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         const organisations = loaded.collections.Organisations as Organisation[];
+
         this.table.total = loaded.values.Organisations_total;
         this.table.data = organisations.map((v) => {
           return {
@@ -185,6 +233,8 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
             locality: v.displayAddress2,
             country: v.displayAddress3,
             phone: v.displayPhone,
+            isCustomer: v.CustomerRelationshipsWhereCustomer.length > 0 ? 'Yes' : 'No',
+            isSupplier: v.SupplierRelationshipsWhereSupplier.length > 0 ? 'Yes' : 'No',
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });

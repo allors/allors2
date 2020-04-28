@@ -23,9 +23,32 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        private bool BaseNeedsApproval => false;
+
+        public void BaseSetReadyForProcessing(ProductQuoteSetReadyForProcessing method)
+        {
+            if (!method.Result.HasValue)
+            {
+                this.QuoteState = this.BaseNeedsApproval
+                    ? new QuoteStates(this.Strategy.Session).AwaitingApproval : new QuoteStates(this.Strategy.Session).InProcess;
+
+                method.Result = true;
+            }
+        }
+
         public void BaseOrder(ProductQuoteOrder method)
         {
             this.QuoteState = new QuoteStates(this.Strategy.Session).Ordered;
+
+            var quoteItemStates = new QuoteItemStates(this.Session());
+            foreach (QuoteItem quoteItem in this.QuoteItems)
+            {
+                if (Equals(quoteItem.QuoteItemState, quoteItemStates.Accepted))
+                {
+                    quoteItem.QuoteItemState = quoteItemStates.Ordered;
+                }
+            }
+
             this.OrderThis();
         }
 
@@ -247,21 +270,38 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.QuoteState.IsAwaitingAcceptance
-                && (!this.ExistLastQuoteState || !this.LastQuoteState.IsAwaitingAcceptance)
-                && this.Issuer.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend)
-            {
-                foreach (QuoteItem item in this.ValidQuoteItems.Where(v => v.ExistSerialisedItem))
-                {
-                    item.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Assigned;
-                }
-            }
-
             this.DeriveWorkflow();
 
             this.Sync(this.Strategy.Session);
 
             this.ResetPrintDocument();
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var SetReadyPermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.SetReadyForProcessing, Operations.Execute);
+
+            if (this.QuoteState.IsCreated)
+            {
+                if (this.ExistValidQuoteItems)
+                {
+                    this.RemoveDeniedPermission(SetReadyPermission);
+                }
+                else
+                {
+                    this.AddDeniedPermission(SetReadyPermission);
+                }
+            }
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable())
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
         }
 
         public void CalculatePrices(
@@ -388,7 +428,7 @@ namespace Allors.Domain
 
             var openTasks = this.TasksWhereWorkItem.Where(v => !v.ExistDateClosed).ToArray();
 
-            if (this.QuoteState.IsCreated)
+            if (this.QuoteState.IsAwaitingApproval)
             {
                 if (!openTasks.OfType<ProductQuoteApproval>().Any())
                 {
@@ -409,7 +449,7 @@ namespace Allors.Domain
                 .Build();
 
             var quoteItems = this.ValidQuoteItems
-                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).AwaitingAcceptance))
+                .Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Ordered))
                 .ToArray();
 
             foreach (var quoteItem in quoteItems)
@@ -424,6 +464,7 @@ namespace Allors.Domain
                         .WithAssignedUnitPrice(quoteItem.UnitPrice)
                         .WithProduct(quoteItem.Product)
                         .WithSerialisedItem(quoteItem.SerialisedItem)
+                        .WithDescription(quoteItem.Details)
                         .WithProductFeature(quoteItem.ProductFeature)
                         .WithQuantityOrdered(quoteItem.Quantity).Build());
             }

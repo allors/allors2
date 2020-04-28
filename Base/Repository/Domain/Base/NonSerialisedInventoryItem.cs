@@ -32,6 +32,8 @@ namespace Allors.Repository
 
         public string Name { get; set; }
 
+        public string PartDisplayName { get; set; }
+
         public Lot Lot { get; set; }
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
@@ -105,6 +107,54 @@ namespace Allors.Repository
         [Workspace]
         public NonSerialisedInventoryItemVersion[] AllVersions { get; set; }
         #endregion
+
+        #region Allors
+        [Id("4a0dc5cb-8d4a-479a-8413-4df6d9e884fe")]
+        [AssociationId("bffcf16e-02e3-4fc2-b940-f9e1a7f1250d")]
+        [RoleId("50ae435b-260a-4a63-921d-cdce462c7c3c")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityOnHand { get; set; }
+
+        #region Allors
+        [Id("c02a2b4a-5ae4-4050-a975-4e675fa56589")]
+        [AssociationId("26e01b4a-f933-452b-8686-e0eb2382217c")]
+        [RoleId("0050e269-108d-4a9f-ba84-9360d6cd42e2")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal AvailableToPromise { get; set; }
+
+        #region Allors
+        [Id("2d25feaf-3468-41d5-8107-ce46b78a82b4")]
+        [AssociationId("270a9e95-0bf5-4a61-b48b-984a2dd8f7ac")]
+        [RoleId("dbdf2ecd-4b04-4253-8914-7295a13b32db")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityCommittedOut { get; set; }
+
+        #region Allors
+        [Id("7d402c70-da15-4f28-917b-e75e3fd22560")]
+        [AssociationId("7f61067b-af9c-4f42-8555-df490b9b064d")]
+        [RoleId("079ce710-e2f5-45b3-92ad-a363c762540a")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityExpectedIn { get; set; }
 
         #region Allors
         [Id("ba5e2476-abdd-4d61-8a14-5d99a36c4544")]

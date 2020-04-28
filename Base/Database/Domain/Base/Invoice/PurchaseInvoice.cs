@@ -394,6 +394,14 @@ namespace Allors.Domain
                             .WithFromDate(this.Session().Now())
                             .Build();
                     }
+
+                    foreach(OrderItemBilling orderItemBilling in purchaseInvoiceItem.OrderItemBillingsWhereInvoiceItem)
+                    {
+                        foreach (ShipmentReceipt receipt in orderItemBilling.OrderItem.ShipmentReceiptsWhereOrderItem)
+                        {
+                            receipt.ShipmentItem.InventoryItemTransactionWhereShipmentItem.Cost = purchaseInvoiceItem.UnitBasePrice;
+                        }
+                    }
                 }
             }
         }

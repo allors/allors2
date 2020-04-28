@@ -13,7 +13,8 @@ namespace Allors.Domain
 
     public partial class NonUnifiedGood
     {
-        private bool IsDeletable => !this.ExistDeploymentsWhereProductOffering &&
+        private bool IsDeletable => !this.ExistPart &&
+                                    !this.ExistDeploymentsWhereProductOffering &&
                                     !this.ExistEngagementItemsWhereProduct &&
                                     !this.ExistGeneralLedgerAccountsWhereCostUnitsAllowed &&
                                     !this.ExistGeneralLedgerAccountsWhereDefaultCostUnit &&
@@ -28,9 +29,7 @@ namespace Allors.Domain
                                     !this.ExistRequestItemsWhereProduct &&
                                     !this.ExistSalesInvoiceItemsWhereProduct &&
                                     !this.ExistSalesOrderItemsWhereProduct &&
-                                    !this.ExistWorkEffortTypesWhereProductToProduce &&
-                                    !this.ExistEngagementItemsWhereProduct &&
-                                    !this.ExistProductWhereVariant;
+                                    !this.ExistWorkEffortTypesWhereProductToProduce;
 
         public void BaseOnDerive(ObjectOnDerive method)
         {
@@ -88,6 +87,16 @@ namespace Allors.Domain
             builder.Append(string.Join(" ", this.Keywords));
 
             this.SearchString = builder.ToString();
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
         }
 
         public void DeriveVirtualProductPriceComponent()
@@ -125,6 +134,11 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
+                foreach (ProductIdentification productIdentification in this.ProductIdentifications)
+                {
+                    productIdentification.Delete();
+                }
+
                 foreach (LocalisedText localisedText in this.LocalisedNames)
                 {
                     localisedText.Delete();

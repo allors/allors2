@@ -321,7 +321,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public SerialisedItemState NewSerialisedItemState { get; set; }
+        public SerialisedItemAvailability NextSerialisedItemAvailability { get; set; }
 
         #region Allors
         [Id("B9E742C3-F497-4663-9874-EB49DCB45BC0")]
@@ -374,6 +374,18 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public PostalAddress AssignedShipToAddress { get; set; }
+
+        #region Allors
+        [Id("28104b69-ef65-47f7-96fe-e800c8803384")]
+        [AssociationId("3df7e05c-e1ad-494e-ae7c-ac825bb17ff0")]
+        [RoleId("75ae96d9-3c2b-4cfe-85ca-81d497d2b124")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal CostOfGoodsSold { get; set; }
 
         #region Allors
         [Id("545eb094-63d8-4d25-a069-7c3e91f26eb7")]
@@ -529,8 +541,6 @@ namespace Allors.Repository
 
         public void Reject() { }
 
-        public void Confirm() { }
-
         public void Approve() { }
 
         public void Delete() { }
@@ -538,17 +548,5 @@ namespace Allors.Repository
         public void DelegateAccess() { }
 
         #endregion
-
-        #region Allors
-        [Id("323F3F47-9577-47C6-A77F-DC11CBAEA91C")]
-        #endregion
-        [Workspace]
-        public void Continue() { }
-
-        #region Allors
-        [Id("C7995893-DEA8-4619-80DC-AF47A42872CE")]
-        #endregion
-        [Workspace]
-        public void Send() { }
     }
 }

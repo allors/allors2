@@ -20,11 +20,12 @@ namespace Tests.ShipmentItemTests
     {
         private readonly ShipmentListComponent shipmentListPage;
         private CustomerShipment customerShipment;
+        private Organisation internalOrganisation;
 
         public ShipmentItemEditTest(TestFixture fixture)
             : base(fixture)
         {
-            var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+            this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
 
             var customerShipments = new CustomerShipments(this.Session).Extent();
             customerShipments.Filter.AddEquals(M.CustomerShipment.ShipFromParty.RoleType, internalOrganisation);
@@ -43,7 +44,8 @@ namespace Tests.ShipmentItemTests
             goods.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(this.Session).Serialised);
             var serializedGood = goods.First;
 
-            serializedGood.SerialisedItems.First.AvailableForSale = true;
+            var serialisedItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.internalOrganisation).Build();
+            serializedGood.AddSerialisedItem(serialisedItem);
 
             this.Session.Derive();
             this.Session.Commit();
@@ -55,8 +57,8 @@ namespace Tests.ShipmentItemTests
             var shipmentItemCreate = shipmentItemOverview.CreateShipmentItem();
             shipmentItemCreate
                 .Good.Select(serializedGood.Name)
-                .ShipmentItemSerialisedItem_1.Select(serializedGood.SerialisedItems.First)
-                .NewSerialisedItemState.Select(new SerialisedItemStates(this.Session).Sold)
+                .ShipmentItemSerialisedItem_1.Select(serialisedItem)
+                .NextSerialisedItemAvailability.Select(new SerialisedItemAvailabilities(this.Session).Sold)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -69,7 +71,7 @@ namespace Tests.ShipmentItemTests
             var actual = after.Except(before).First();
 
             Assert.Equal(serializedGood.Name, actual.Good.Name);
-            Assert.Equal(serializedGood.SerialisedItems.First.Name, actual.SerialisedItem.Name);
+            Assert.Equal(serialisedItem.Name, actual.SerialisedItem.Name);
             Assert.Equal(1, actual.Quantity);
         }
 
@@ -114,7 +116,8 @@ namespace Tests.ShipmentItemTests
             goods.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(this.Session).Serialised);
             var serializedGood = goods.First;
 
-            serializedGood.SerialisedItems.First.AvailableForSale = true;
+            var serialisedItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.internalOrganisation).Build();
+            serializedGood.AddSerialisedItem(serialisedItem);
 
             this.Session.Derive();
             this.Session.Commit();
@@ -126,8 +129,8 @@ namespace Tests.ShipmentItemTests
             var shipmentItemCreate = shipmentItemOverview.CreateShipmentItem();
             shipmentItemCreate
                 .Good.Select(serializedGood.Name)
-                .ShipmentItemSerialisedItem_1.Select(serializedGood.SerialisedItems.First)
-                .NewSerialisedItemState.Select(new SerialisedItemStates(this.Session).Sold)
+                .ShipmentItemSerialisedItem_1.Select(serialisedItem)
+                .NextSerialisedItemAvailability.Select(new SerialisedItemAvailabilities(this.Session).Sold)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -140,7 +143,7 @@ namespace Tests.ShipmentItemTests
             var actual = after.Except(before).First();
 
             Assert.Equal(serializedGood.Name, actual.Good.Name);
-            Assert.Equal(serializedGood.SerialisedItems.First.Name, actual.SerialisedItem.Name);
+            Assert.Equal(serialisedItem.Name, actual.SerialisedItem.Name);
             Assert.Equal(1, actual.Quantity);
         }
     }

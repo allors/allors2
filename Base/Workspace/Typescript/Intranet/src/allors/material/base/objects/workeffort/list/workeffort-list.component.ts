@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
-import { WorkEffort, Person, FixedAsset } from '../../../../../domain';
+import { WorkEffort, Person, FixedAsset, WorkEffortState, Party } from '../../../../../domain';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId, TestScope, SearchFactory } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService, ObjectService } from '../../../../../material';
 
@@ -90,6 +90,9 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
     const internalOrganisationPredicate = new Equals({ propertyType: m.WorkEffort.TakenBy });
     const predicate = new And([
       internalOrganisationPredicate,
+      new Equals({ propertyType: m.WorkEffort.WorkEffortState, parameter: 'state' }),
+      new Equals({ propertyType: m.WorkEffort.Customer, parameter: 'customer' }),
+      new Equals({ propertyType: m.WorkEffort.ExecutedBy, parameter: 'ExecutedBy' }),
       new Like({ roleType: m.WorkEffort.WorkEffortNumber, parameter: 'Number' }),
       new Like({ roleType: m.WorkEffort.Name, parameter: 'Name' }),
       new Like({ roleType: m.WorkEffort.Description, parameter: 'Description' }),
@@ -109,6 +112,16 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
       }),
     ]);
 
+    const stateSearch = new SearchFactory({
+      objectType: m.WorkEffortState,
+      roleTypes: [m.WorkEffortState.Name],
+    });
+
+    const partySearch = new SearchFactory({
+      objectType: m.Party,
+      roleTypes: [m.Party.PartyName],
+    });
+
     const personSearch = new SearchFactory({
       objectType: m.Person,
       roleTypes: [m.Person.PartyName, m.Person.UserName],
@@ -121,6 +134,9 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
 
     this.filterService.init(predicate,
     {
+      state: { search: stateSearch, display: (v: WorkEffortState) => v && v.Name },
+      customer: { search: partySearch, display: (v: Party) => v && v.PartyName },
+      ExecutedBy: { search: partySearch, display: (v: Party) => v && v.PartyName },
       worker: { search: personSearch, display: (v: Person) => v && v.displayName },
       equipment: { search: equipmentSearch, display: (v: FixedAsset) => v && v.displayName },
     });

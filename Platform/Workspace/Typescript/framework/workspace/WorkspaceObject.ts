@@ -48,8 +48,8 @@ export class WorkspaceObject implements IWorkspaceObject {
     syncResponseObject: SyncResponseObject,
     sortedAccessControlIdsDecompress: (compressed: string) => string,
     sortedDeniedPermissionIdsDecompress: (compressed: string) => string,
-    metaPopulation: MetaPopulation) {
-
+    metaPopulation: MetaPopulation,
+  ) {
     this.id = syncResponseObject.i;
     this.version = syncResponseObject.v;
     this.objectType = metaPopulation.metaObjectById.get(syncResponseObject.t) as ObjectType;
@@ -87,7 +87,7 @@ export class WorkspaceObject implements IWorkspaceObject {
       if (this.sortedAccessControlIds) {
         this.cachedAccessControls = this.sortedAccessControlIds
           .split(Compressor.itemSeparator)
-          .map(v => this.workspace.accessControlById.get(v));
+          .map((v) => this.workspace.accessControlById.get(v));
       } else {
         this.sortedAccessControlIds = null;
       }
@@ -100,7 +100,7 @@ export class WorkspaceObject implements IWorkspaceObject {
         this.sortedDeniedPermissionIds
           .split(Compressor.itemSeparator)
           // @ts-ignore
-          .forEach(v => this.cachedDeniedPermissions.add(this.workspace.permissionById.get(v)));
+          .forEach((v) => this.cachedDeniedPermissions.add(this.workspace.permissionById.get(v)));
       } else {
         this.cachedDeniedPermissions = null;
       }
@@ -124,5 +124,4 @@ export class WorkspaceObject implements IWorkspaceObject {
   invalidate() {
     this.version = '';
   }
-
 }

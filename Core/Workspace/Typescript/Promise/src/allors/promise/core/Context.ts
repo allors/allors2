@@ -1,7 +1,18 @@
 import {
-  InvokeResponse, ISession, ISessionObject, Method, PullResponse,
-  PushRequest, PushRequestObject, PushResponse, Session, SyncRequest,
-  SyncResponse, Workspace, Pull, PullRequest,
+  InvokeResponse,
+  ISession,
+  ISessionObject,
+  Method,
+  PullResponse,
+  PushRequest,
+  PushRequestObject,
+  PushResponse,
+  Session,
+  SyncRequest,
+  SyncResponse,
+  Workspace,
+  Pull,
+  PullRequest,
 } from '../../framework';
 
 import { Database } from './Database';
@@ -20,7 +31,6 @@ export class Context {
   public load(pull: Pull | PullRequest): Promise<Loaded>;
   public load(customService: string, customArgs?: any): Promise<Loaded>;
   public load(requestOrCustomService: PullRequest | Pull | string, customArgs?: any): Promise<Loaded> {
-
     return new Promise((resolve, reject) => {
       this.database
         .pull(requestOrCustomService, customArgs)
@@ -34,12 +44,12 @@ export class Context {
                 if (securityRequest) {
                   this.database
                     .security(securityRequest)
-                    .then(v => {
+                    .then((v) => {
                       const securityRequest2 = this.workspace.security(v);
                       if (securityRequest2) {
                         this.database
                           .security(securityRequest2)
-                          .then(v => {
+                          .then((v) => {
                             this.workspace.security(v);
                             const loaded = new Loaded(this.session, pullResponse);
                             resolve(loaded);
@@ -76,13 +86,11 @@ export class Context {
   }
 
   public save(): Promise<Saved> {
-
     return new Promise((resolve, reject) => {
       const pushRequest: PushRequest = this.session.pushRequest();
       return this.database
         .push(pushRequest)
         .then((pushResponse: PushResponse) => {
-
           this.session.pushResponse(pushResponse);
           const syncRequest: SyncRequest = new SyncRequest();
           syncRequest.objects = pushRequest.objects?.map((v: PushRequestObject) => v.i) ?? [];
@@ -112,7 +120,6 @@ export class Context {
   public invoke(method: Method): Promise<Invoked>;
   public invoke(service: string, args?: any): Promise<Invoked>;
   public invoke(methodOrService: Method | string, args?: any): Promise<Invoked> {
-
     return this.database
       .invoke(methodOrService as any, args)
       .then((invokeResponse: InvokeResponse) => new Invoked(this.session, invokeResponse));

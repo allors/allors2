@@ -1,5 +1,5 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
-import { NavigationService, Action, PanelService, RefreshService, MetaService, TestScope } from '../../../../../../angular';
+import { NavigationService, Action, PanelService, RefreshService, MetaService, TestScope, ContextService } from '../../../../../../angular';
 import { WorkEffortPartyAssignment, OrganisationContactRelationship, Party } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, ObjectData } from '../../../../..';
@@ -19,7 +19,7 @@ interface Row extends TableRow {
   // tslint:disable-next-line:component-selector
   selector: 'workeffortpartyassignment-overview-panel',
   templateUrl: './workeffortpartyassignment-overview-panel.component.html',
-  providers: [PanelService]
+  providers: [PanelService, ContextService]
 })
 export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope implements OnInit {
 
@@ -43,6 +43,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope i
   }
 
   constructor(
+    @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -54,6 +55,11 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope i
     super();
 
     this.m = this.metaService.m;
+
+    this.delete = deleteService.delete(allors.context);
+    this.delete.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
   }
 
   ngOnInit() {

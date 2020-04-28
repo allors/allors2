@@ -280,28 +280,12 @@ namespace Allors.Database.Adapters.SqlClient
                     this.busyCommittingOrRollingBack = true;
 
                     var accessed = new List<long>(this.State.ReferenceByObjectId.Keys);
-                    var changed = Array.Empty<long>();
-
                     this.Flush();
 
-                    if (this.State.ModifiedRolesByReference?.Count > 0 || this.State.ReferenceByObjectId.Any(v => v.Value.IsNew))
+                    var changed = this.State.ModifiedRolesByReference?.Select(dictionaryEntry => dictionaryEntry.Key.ObjectId).ToArray() ?? Array.Empty<long>();
+                    if (changed.Length > 0)
                     {
-                        IEnumerable<Reference> objectsToVersion;
-
-                        var newObjects = this.State.ReferenceByObjectId.Where(v => v.Value.IsNew).Select(v => v.Value);
-                        if (this.State.ModifiedRolesByReference?.Count > 0)
-                        {
-                            objectsToVersion = this.State.ModifiedRolesByReference.Keys.Union(newObjects);
-                        }
-                        else
-                        {
-                            objectsToVersion = newObjects;
-                        }
-
-                        this.Commands.UpdateVersion(objectsToVersion);
-
-                        changed = this.State.ModifiedRolesByReference?
-                            .Select(dictionaryEntry => dictionaryEntry.Key.ObjectId).ToArray() ?? Array.Empty<long>();
+                        this.Commands.UpdateVersion(changed);
                     }
 
                     this.Connection.Commit();

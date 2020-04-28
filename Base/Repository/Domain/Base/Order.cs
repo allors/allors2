@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7dde949a-6f54-4ece-92b3-d269f50ef9d9")]
     #endregion
-    public partial interface Order : Printable, Commentable, Localised, Auditable, Transitional
+    public partial interface Order : Printable, Commentable, Localised, Auditable, Transitional, Deletable
     {
         #region Allors
         [Id("962215D2-4461-4BD3-9A98-F1A085B2343F")]
@@ -288,6 +288,12 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Approve();
+
+        #region Allors
+        [Id("8e77c337-e0ef-4524-b657-f904baaa8762")]
+        #endregion
+        [Workspace]
+        void Revise();
 
         #region Allors
         [Id("F735D397-B989-41E8-A042-5C9EAEB41C32")]

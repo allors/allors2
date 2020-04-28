@@ -3,7 +3,7 @@ import { ids } from '../../meta/generated/ids.g';
 
 declare module '../../framework/meta/ObjectType' {
   interface ObjectType {
-    gatsbyProperties: [{ name: string, type: "String" | "Data" | "Int" | "Float" | "Boolean" }];
+    gatsbyProperties: { name: string; type: 'String' | 'Data' | 'Int' | 'Float' | 'Boolean' }[];
 
     gatsbyRoleTypes: RoleType[];
 
@@ -15,43 +15,41 @@ declare module '../../framework/meta/ObjectType' {
   }
 }
 
-ObjectType.prototype["gatsbyDerive"] = function (this: ObjectType) {
-
+ObjectType.prototype['gatsbyDerive'] = function (this: ObjectType) {
   if (!this._isGatsby) {
-    delete (this._name);
+    delete this._name;
     return;
   }
 
   if (this.isUnit) {
     switch (this.id) {
-
       case ids.Binary:
       case ids.Decimal:
       case ids.String:
       case ids.Unique:
-        this._name = "String";
+        this._name = 'String';
         break;
 
       case ids.Boolean:
-        this._name = "Boolean";
+        this._name = 'Boolean';
         break;
 
       case ids.DateTime:
-        this._name = "Date";
+        this._name = 'Date';
         break;
 
       case ids.Float:
-        this._name = "Float";
+        this._name = 'Float';
         break;
 
       case ids.Integer:
-        this._name = "Int";
+        this._name = 'Int';
         break;
 
       default:
-        throw new Error("unknown unit type " + this.name)
+        throw new Error('unknown unit type ' + this.name);
     }
   } else {
-      this._name = `Allors${this.name}`;
+    this._name = `Allors${this.name}`;
   }
-}
+};

@@ -179,7 +179,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public SerialisedItemState NewSerialisedItemState { get; set; }
+        public SerialisedItemAvailability NextSerialisedItemAvailability { get; set; }
 
         #region Allors
         [Id("312FC32F-3EB9-492A-AC69-AEC608A48AF4")]
@@ -191,6 +191,21 @@ namespace Allors.Repository
         [Synced]
         [Workspace]
         public Shipment SyncedShipment { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the Purchase price in case PurchaseShipment is not coming from PurchaseOrder.
+        /// We need a price for calculating the weighted average cost for inventory.
+        /// </summary>
+        #region Allors
+        [Id("d6778107-7d74-4217-b7b3-a1cd78c1e764")]
+        [AssociationId("f3787589-5b6a-476f-a629-cf6c42ad9038")]
+        [RoleId("65357b47-cb61-45b5-a064-69c65a7a2e97")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal UnitPurchasePrice { get; set; }
 
         #region inherited methods
 

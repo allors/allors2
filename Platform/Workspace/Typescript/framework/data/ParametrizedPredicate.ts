@@ -1,8 +1,7 @@
 import { ObjectType } from '../meta';
 
 export abstract class ParametrizedPredicate {
-    parameter: string;
+  parameter: string;
 
-    abstract get objectType(): ObjectType;
+  abstract get objectType(): ObjectType;
 }
-

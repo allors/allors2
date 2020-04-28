@@ -181,13 +181,14 @@ namespace Allors.Domain
             {
                 foreach (ShipmentItem item in this.ShipmentItems.Where(v => v.ExistSerialisedItem))
                 {
-                    if (item.ExistNewSerialisedItemState)
+                    if (item.ExistNextSerialisedItemAvailability)
                     {
-                        item.SerialisedItem.SerialisedItemState = item.NewSerialisedItemState;
+                        item.SerialisedItem.SerialisedItemAvailability = item.NextSerialisedItemAvailability;
 
-                        if (item.NewSerialisedItemState.Equals(new SerialisedItemStates(this.Session()).Sold))
+                        if (item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
                         {
                             item.SerialisedItem.OwnedBy = this.ShipToParty;
+                            item.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
                         }
                     }
 
@@ -289,6 +290,7 @@ namespace Allors.Domain
                     {
                         foreach (SalesOrderItemInventoryAssignment salesOrderItemInventoryAssignment in ((SalesOrderItem)orderShipment.OrderItem).SalesOrderItemInventoryAssignments)
                         {
+                            // Quantity is used to calculate QuantityReserved (via inventoryItemTransactions)
                             salesOrderItemInventoryAssignment.Quantity -= orderShipment.Quantity;
                         }
                     }
@@ -302,7 +304,7 @@ namespace Allors.Domain
                                 .WithUnitOfMeasure(inventoryItem.Part.UnitOfMeasure)
                                 .WithFacility(inventoryItem.Facility)
                                 .WithReason(new InventoryTransactionReasons(this.Strategy.Session).OutgoingShipment)
-                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Available)
+                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Good)
                                 .WithQuantity(1)
                                 .Build();
                         }
@@ -314,6 +316,7 @@ namespace Allors.Domain
                                 .WithFacility(inventoryItem.Facility)
                                 .WithReason(new InventoryTransactionReasons(this.Strategy.Session).OutgoingShipment)
                                 .WithQuantity(shipmentItem.Quantity)
+                                .WithCost(inventoryItem.Part.PartWeightedAverage.AverageCost)
                                 .Build();
                         }
                     }

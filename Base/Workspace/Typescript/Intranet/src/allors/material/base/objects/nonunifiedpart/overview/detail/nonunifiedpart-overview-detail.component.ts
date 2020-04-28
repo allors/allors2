@@ -111,6 +111,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
           const pulls = [
             this.fetcher.locales,
             this.fetcher.Settings,
+            this.fetcher.warehouses,
             pull.Part({
               object: id,
               include: {
@@ -124,6 +125,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
                 ManufacturedBy: x,
                 SuppliedBy: x,
                 DefaultFacility: x,
+                PartWeightedAverage: x,
                 SerialisedItemCharacteristics: {
                   LocalisedValues: x,
                   SerialisedItemCharacteristicType: {
@@ -159,7 +161,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
             pull.ProductIdentificationType(),
-            pull.Facility(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
             pull.PartCategory({ sort: new Sort(m.PartCategory.Name) }),

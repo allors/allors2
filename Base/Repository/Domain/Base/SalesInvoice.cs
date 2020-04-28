@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6173fc23-115f-4356-a0ce-867872c151ac")]
     #endregion
-    public partial class SalesInvoice : Invoice, Versioned, Localised, Deletable
+    public partial class SalesInvoice : Invoice, Versioned, Localised
     {
         #region inherited properties
 
@@ -485,12 +485,19 @@ namespace Allors.Repository
         public VatClause DerivedVatClause { get; set; }
 
         #region Allors
+        [Id("c9bcb2a1-25e2-450c-b7e8-adbd530aa68c")]
+        [AssociationId("de3d0ed9-5e67-4b96-8879-e6a8d3fa3f15")]
+        [RoleId("d524f396-562b-4914-9a3d-02bd4a25d1b5")]
+        #endregion
+        [Derived]
+        [Workspace]
+        public bool IsRepeating{ get; set; }
+
+        #region Allors
         [Id("55A60B80-2052-47E6-BD41-2AF414ABB885")]
         #endregion
         [Workspace]
         public void Send() { }
-
-        public void Create() { }
 
         #region Allors
         [Id("96AF8F69-F1A4-420A-8D9D-AF61EB061620")]
@@ -515,12 +522,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Credit() { }
-
-        #region Allors
-        [Id("6C9A6C2B-193A-48A8-9AAB-A6FFE2D64FC0")]
-        #endregion
-        [Workspace]
-        public void Delete() { }
 
         #region Allors
         [Id("033FF876-BBC5-47B3-B2C9-CEDE9869C231")]
@@ -550,6 +551,11 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Print() { }
+
+        public void Delete() { }
+
+        public void Create() { }
+
         #endregion
     }
 }

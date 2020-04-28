@@ -152,9 +152,13 @@ namespace Allors.Repository
 
         public void Create() { }
 
+        public void SetReadyForProcessing() { }
+
         public void Send() { }
 
         public void Accept() { }
+
+        public void Revise() { }
 
         public void Reopen() { }
 
@@ -165,6 +169,8 @@ namespace Allors.Repository
         public void Cancel() { }
 
         public void Print() { }
+
+        public void Delete() { }
         #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("7d7e4b6d-eebd-460c-b771-a93cd8d64bce")]
     #endregion
-    public partial class PurchaseInvoice : Invoice, Versioned, WorkItem, Deletable
+    public partial class PurchaseInvoice : Invoice, Versioned, WorkItem
     {
         #region inherited properties
 

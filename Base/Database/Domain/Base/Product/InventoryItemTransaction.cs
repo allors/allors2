@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System.Linq;
+    using Allors.Meta;
 
     public partial class InventoryItemTransaction
     {
@@ -58,6 +59,11 @@ namespace Allors.Domain
                 {
                     this.NonSerialisedInventoryItemState = this.Reason.DefaultNonSerialisedInventoryItemState;
                 }
+            }
+
+            if (!this.ExistInventoryItem)
+            {
+                this.SyncInventoryItem();
             }
 
             // Match on required properties
@@ -181,15 +187,11 @@ namespace Allors.Domain
                     derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
                 }
             }
-
-            if (!this.ExistInventoryItem)
-            {
-                this.SyncInventoryItem(derivation);
-            }
         }
 
-        private void SyncInventoryItem(IDerivation derivation)
+        private void SyncInventoryItem()
         {
+            var derivation = new Derivations.Default.Derivation(this.Strategy.Session);
             var facility = this.Facility ?? this.Part.DefaultFacility;
             var unitOfMeasure = this.UnitOfMeasure ?? this.Part.UnitOfMeasure;
 
@@ -217,18 +219,25 @@ namespace Allors.Domain
             }
             else if (this.Part.InventoryItemKind.NonSerialised)
             {
-                var builder = new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
-                    .WithFacility(facility)
-                    .WithUnitOfMeasure(unitOfMeasure)
-                    .WithPart(this.Part)
-                    .WithNonSerialisedInventoryItemState(this.NonSerialisedInventoryItemState);
+                var inventoryItems = this.Part.InventoryItemsWherePart;
+                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
+                var inventoryItem = inventoryItems.First;
 
-                if (this.ExistLot)
+                if (inventoryItem == null)
                 {
-                    builder.WithLot(this.Lot);
-                }
+                    var builder = new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
+                        .WithFacility(facility)
+                        .WithUnitOfMeasure(unitOfMeasure)
+                        .WithPart(this.Part)
+                        .WithNonSerialisedInventoryItemState(this.NonSerialisedInventoryItemState);
 
-                this.InventoryItem = builder.Build();
+                    if (this.ExistLot)
+                    {
+                        builder.WithLot(this.Lot);
+                    }
+
+                    this.InventoryItem = builder.Build();
+                }
             }
         }
     }

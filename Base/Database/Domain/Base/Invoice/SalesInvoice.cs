@@ -208,6 +208,7 @@ namespace Allors.Domain
             }
 
             this.VatRegime = this.VatRegime ?? this.BillToCustomer?.VatRegime;
+            this.IsRepeating = this.ExistRepeatingSalesInvoiceWhereSource;
 
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
@@ -549,6 +550,19 @@ namespace Allors.Domain
             this.Sync(this.Session());
 
             this.ResetPrintDocument();
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
         }
 
         public void BaseSend(SalesInvoiceSend method)

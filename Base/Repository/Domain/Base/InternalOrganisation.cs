@@ -604,7 +604,6 @@ namespace Allors.Repository
         [AssociationId("A411F97A-56FE-4C8B-9CB7-216484C7C5EA")]
         [RoleId("8683265F-33D4-4D03-99EC-4F356F73FE98")]
         #endregion
-        [Required]
         [Workspace]
         decimal PurchaseOrderApprovalThresholdLevel1 { get; set; }
 
@@ -613,7 +612,6 @@ namespace Allors.Repository
         [AssociationId("20F750C3-3973-499A-BC67-69CC8C02E16C")]
         [RoleId("A158C47E-62E2-4B56-A12B-1B837071F08E")]
         #endregion
-        [Required]
         [Workspace]
         decimal PurchaseOrderApprovalThresholdLevel2 { get; set; }
 
@@ -634,16 +632,6 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         bool AutoGeneratePurchaseShipment { get; set; }
-
-        #region Allors
-        [Id("61eae325-e09d-4270-a6ba-d96eb70d01b1")]
-        [AssociationId("813d2dd3-92b8-47a3-818f-4640a3e74734")]
-        [RoleId("f25a9271-636a-4c6c-a34b-62166396d8aa")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        SerialisedItemAssignedOn SerialisedItemAssignedOn { get; set; }
 
         #region Allors
         [Id("0d2ebe14-389a-44e7-8bee-06e622c9590b")]

@@ -85,7 +85,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderItem_WhenAddedToOrder_ThenInventoryReservationCreated()
         {
-            Assert.True(this.salesOrderItem.SalesOrderItemState.InProcess);
+            Assert.True(this.salesOrderItem.SalesOrderItemState.IsInProcess);
             Assert.Single(this.salesOrderItem.SalesOrderItemInventoryAssignments);
             var transactions = this.salesOrderItem.SalesOrderItemInventoryAssignments.First.InventoryItemTransactions;
 

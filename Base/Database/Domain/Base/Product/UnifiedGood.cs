@@ -29,8 +29,11 @@ namespace Allors.Domain
                                     !this.ExistSalesInvoiceItemsWhereProduct &&
                                     !this.ExistSalesOrderItemsWhereProduct &&
                                     !this.ExistWorkEffortTypesWhereProductToProduce &&
-                                    !this.ExistEngagementItemsWhereProduct &&
-                                    !this.ExistProductWhereVariant;
+                                    !this.ExistWorkEffortInventoryProducedsWherePart &&
+                                    !this.ExistWorkEffortPartStandardsWherePart &&
+                                    !this.ExistPartBillOfMaterialsWherePart &&
+                                    !this.ExistPartBillOfMaterialsWhereComponentPart &&
+                                    !this.ExistInventoryItemTransactionsWherePart;
 
         public void BaseOnBuild(ObjectOnBuild method)
         {
@@ -108,10 +111,45 @@ namespace Allors.Domain
             this.DeriveAvailableToPromise();
             this.DeriveQuantityCommittedOut();
             this.DeriveQuantityExpectedIn();
+
+            var quantityOnHand = 0M;
+            var totalCost = 0M;
+
+            foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWherePart)
+            {
+                var reason = inventoryTransaction.Reason;
+
+                if (reason.IncreasesQuantityOnHand == true)
+                {
+                    quantityOnHand += inventoryTransaction.Quantity;
+
+                    var transactionCost = inventoryTransaction.Quantity * inventoryTransaction.Cost;
+                    totalCost += transactionCost;
+
+                    var averageCost = quantityOnHand > 0 ? totalCost / quantityOnHand : 0M;
+                    ((PartWeightedAverageDerivedRoles)this.PartWeightedAverage).AverageCost = decimal.Round(averageCost, 2);
+                }
+                else if (reason.IncreasesQuantityOnHand == false)
+                {
+                    quantityOnHand -= inventoryTransaction.Quantity;
+
+                    totalCost = quantityOnHand * this.PartWeightedAverage.AverageCost;
+                }
+            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+
             var builder = new StringBuilder();
             if (this.ExistProductIdentifications)
             {
@@ -199,6 +237,11 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
+                foreach (ProductIdentification productIdentification in this.ProductIdentifications)
+                {
+                    productIdentification.Delete();
+                }
+
                 foreach (LocalisedText localisedText in this.LocalisedNames)
                 {
                     localisedText.Delete();
@@ -217,6 +260,31 @@ namespace Allors.Domain
                 foreach (EstimatedProductCost estimatedProductCosts in this.EstimatedProductCosts)
                 {
                     estimatedProductCosts.Delete();
+                }
+
+                foreach (ProductFeatureApplicability productFeatureApplicability in this.ProductFeatureApplicabilitiesWhereAvailableFor)
+                {
+                    productFeatureApplicability.Delete();
+                }
+
+                foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
+                {
+                    inventoryItem.Delete();
+                }
+
+                foreach (PartSubstitute partSubstitute in this.PartSubstitutesWherePart)
+                {
+                    partSubstitute.Delete();
+                }
+
+                foreach (PartSubstitute partSubstitute in this.PartSubstitutesWhereSubstitutionPart)
+                {
+                    partSubstitute.Delete();
+                }
+
+                foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
+                {
+                    supplierOffering.Delete();
                 }
             }
         }

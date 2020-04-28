@@ -64,6 +64,16 @@ namespace Allors.Repository
         [Workspace]
         string Name { get; set; }
 
+        #region Allors
+        [Id("2678441b-342c-4b94-a5c7-d8c9e07de6b4")]
+        [AssociationId("31b14e4c-c3bf-4e50-83ca-3bcb190ffda1")]
+        [RoleId("175b37b3-94a5-41a0-9cc1-f3a9d18d9f39")]
+        #endregion
+        [Derived]
+        [Size(-1)]
+        [Workspace]
+        string PartDisplayName { get; set; }
+
         /// <summary>
         /// Gets or sets the (optional) Lot in which this InventoryItem tracks inventory information.
         /// </summary>

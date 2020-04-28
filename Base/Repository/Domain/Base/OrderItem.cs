@@ -163,12 +163,6 @@ namespace Allors.Repository
         void Reject();
 
         #region Allors
-        [Id("9C496948-13BA-41C6-B8CB-60323AF3B3E9")]
-        #endregion
-        [Workspace]
-        void Confirm();
-
-        #region Allors
         [Id("DA334EDA-0CD3-4AB4-89C5-41C69D596C7C")]
         #endregion
         [Workspace]

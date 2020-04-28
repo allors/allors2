@@ -30,9 +30,10 @@ namespace Allors.Domain
                 if (this.ExistTakenViaSupplier && this.ExistOrderedBy)
                 {
                     var supplierRelationship = ((Organisation)this.TakenViaSupplier).SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
-                    if (supplierRelationship != null &&
-                        supplierRelationship.NeedsApproval &&
-                        supplierRelationship.ExistApprovalThresholdLevel1 && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel1)
+                    if (supplierRelationship != null
+                        && supplierRelationship.NeedsApproval
+                        && supplierRelationship.ApprovalThresholdLevel1.HasValue
+                        && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel1.Value)
                     {
                         return true;
                     }
@@ -49,8 +50,10 @@ namespace Allors.Domain
                 if (this.ExistTakenViaSupplier && this.ExistOrderedBy)
                 {
                     var supplierRelationship = ((Organisation)this.TakenViaSupplier).SupplierRelationshipsWhereSupplier.FirstOrDefault(v => v.InternalOrganisation.Equals(this.OrderedBy));
-                    if (supplierRelationship != null &&
-                        supplierRelationship.NeedsApproval && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel2)
+                    if (supplierRelationship != null
+                        && supplierRelationship.NeedsApproval
+                        && supplierRelationship.ApprovalThresholdLevel2.HasValue
+                        && this.TotalExVat >= supplierRelationship.ApprovalThresholdLevel2.Value)
                     {
                         return true;
                     }
@@ -76,6 +79,12 @@ namespace Allors.Domain
                 return false;
             }
         }
+
+        private bool IsDeletable =>
+            (this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Created)
+                || this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Cancelled)
+                || this.PurchaseOrderState.Equals(new PurchaseOrderStates(this.Strategy.Session).Rejected))
+            && this.PurchaseOrderItems.All(v => v.IsDeletable);
 
         public void BaseOnInit(ObjectOnInit method)
         {
@@ -125,8 +134,17 @@ namespace Allors.Domain
                 iteration.AddDependency(this, singleton);
                 iteration.Mark(singleton);
 
-                iteration.AddDependency(this, this.TakenViaSupplier);
-                iteration.Mark(this.TakenViaSupplier);
+                if (this.ExistTakenViaSupplier)
+                {
+                    iteration.AddDependency(this, this.TakenViaSupplier);
+                    iteration.Mark(this.TakenViaSupplier);
+                }
+
+                if (this.ExistTakenViaSubcontractor)
+                {
+                    iteration.AddDependency(this, this.TakenViaSubcontractor);
+                    iteration.Mark(this.TakenViaSubcontractor);
+                }
 
                 foreach (PurchaseOrderItem orderItem in this.PurchaseOrderItems)
                 {
@@ -147,6 +165,17 @@ namespace Allors.Domain
                     derivation.Validation.AddError(this, this.Meta.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
                 }
             }
+
+            if (this.TakenViaSubcontractor is Organisation subcontractor)
+            {
+                if (!this.OrderedBy.ActiveSubContractors.Contains(subcontractor))
+                {
+                    derivation.Validation.AddError(this, this.Meta.TakenViaSubcontractor, ErrorMessages.PartyIsNotASubcontractor);
+                }
+            }
+
+            derivation.Validation.AssertExistsAtMostOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
+            derivation.Validation.AssertAtLeastOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
 
             if (!this.ExistShipToAddress)
             {
@@ -286,9 +315,54 @@ namespace Allors.Domain
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
-            if (!this.CanInvoice)
+            if (this.CanInvoice)
+            {
+                this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+            else
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+        }
+
+        public void BaseDelete(PurchaseOrderDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                if (this.ExistShippingAndHandlingCharge)
+                {
+                    this.ShippingAndHandlingCharge.Delete();
+                }
+
+                if (this.ExistFee)
+                {
+                    this.Fee.Delete();
+                }
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.DiscountAdjustment.Delete();
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.SurchargeAdjustment.Delete();
+                }
+
+                foreach (PurchaseOrderItem item in this.PurchaseOrderItems)
+                {
+                    item.Delete();
+                }
             }
         }
 
@@ -357,6 +431,8 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseRevise(PurchaseOrderRevise method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
+
         public void BaseReopen(OrderReopen method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
 
         public void BaseContinue(OrderContinue method) => this.PurchaseOrderState = this.PreviousPurchaseOrderState;
@@ -385,6 +461,7 @@ namespace Allors.Domain
                         shipmentItem = new ShipmentItemBuilder(session)
                             .WithPart(orderItem.Part)
                             .WithQuantity(orderItem.QuantityOrdered)
+                            .WithUnitPurchasePrice(orderItem.UnitPrice)
                             .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
                             .Build();
 
@@ -425,7 +502,7 @@ namespace Allors.Domain
 
                             serialisedItem.OwnedBy = this.OrderedBy;
                             serialisedItem.ReportingUnit = this.OrderedBy;
-                            serialisedItem.SerialisedItemState = new SerialisedItemStates(this.Session()).Available;
+                            serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session()).Available;
 
                             var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
                                 .FirstOrDefault(v => v.SerialisedItem.Equals(serialisedItem) && v.Facility.Equals(this.Facility));
@@ -434,31 +511,12 @@ namespace Allors.Domain
                             {
                                 new SerialisedInventoryItemBuilder(this.Session())
                                     .WithSerialisedItem(serialisedItem)
-                                    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Available)
+                                    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Good)
                                     .WithPart(orderItem.Part)
                                     .WithUnitOfMeasure(new UnitsOfMeasure(this.Session()).Piece)
                                     .WithFacility(this.Facility)
                                     .Build();
                             }
-
-                            new InventoryItemTransactionBuilder(this.Session())
-                                .WithSerialisedItem(serialisedItem)
-                                .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
-                                .WithFacility(this.Facility)
-                                .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
-                                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(session).Available)
-                                .WithQuantity(1)
-                                .Build();
-                        }
-                        else
-                        {
-                            new InventoryItemTransactionBuilder(this.Session())
-                                .WithPart(orderItem.Part)
-                                .WithUnitOfMeasure(orderItem.Part.UnitOfMeasure)
-                                .WithFacility(this.Facility)
-                                .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
-                                .WithQuantity(orderItem.QuantityOrdered)
-                                .Build();
                         }
                     }
                 }

@@ -34,8 +34,7 @@ namespace Tests.FaceToFaceCommunicationTests
 
             var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
 
-            var extent = new People(this.Session).Extent();
-            var person = extent.First(v => v.DisplayName().Equals("John Doe"));
+            var person = new People(this.Session).Extent().First;
 
             this.personListPage.Table.DefaultAction(person);
             var faceToFaceCommunicationEdit = new PersonOverviewComponent(this.personListPage.Driver).CommunicationeventOverviewPanel.Click().CreateFaceToFaceCommunication();

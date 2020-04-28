@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("5E594A00-15A4-4871-84E9-B8010A78FD21")]
     #endregion
-    public partial class SerialisedItem : Deletable, FixedAsset
+    public partial class SerialisedItem : Deletable, FixedAsset, Versioned
     {
         #region InheritedProperties
 
@@ -54,39 +54,15 @@ namespace Allors.Repository
 
         public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
 
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
         #endregion InheritedProperties
-
-        #region SerialisedItemState
-        #region Allors
-        [Id("B611C1C0-6AB4-4082-B464-0494F3DE2051")]
-        [AssociationId("C6DBB08B-9547-4235-9649-55411E6D0196")]
-        [RoleId("2829D2FE-1A27-490C-9F0B-5BA476C21FDC")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        public SerialisedItemState PreviousSerialisedItemState { get; set; }
-
-        #region Allors
-        [Id("424D5D46-A253-4E32-BFED-8160D20E3BBE")]
-        [AssociationId("F35DABA1-8726-4E25-BA1D-95D775B1E3F4")]
-        [RoleId("903C3573-8176-4C8F-83FE-4456DF42928D")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        public SerialisedItemState LastSerialisedItemState { get; set; }
-
-        #region Allors
-        [Id("9C9A7694-4E41-46D7-B33C-14A703370A5B")]
-        [AssociationId("FBF63B46-AD14-43EA-AD29-31652901BE89")]
-        [RoleId("106E5048-AC33-427C-8B9E-462A9A998879")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        public SerialisedItemState SerialisedItemState { get; set; }
-        #endregion
 
         #region Versioning
         #region Allors
@@ -109,6 +85,26 @@ namespace Allors.Repository
         [Workspace]
         public SerialisedItemVersion[] AllVersions { get; set; }
         #endregion
+
+        #region Allors
+        [Id("9C9A7694-4E41-46D7-B33C-14A703370A5B")]
+        [AssociationId("FBF63B46-AD14-43EA-AD29-31652901BE89")]
+        [RoleId("106E5048-AC33-427C-8B9E-462A9A998879")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItemState SerialisedItemState { get; set; }
+
+        #region Allors
+        [Id("330381e1-f1de-4f44-9c08-0417c2df3c0d")]
+        [AssociationId("ce2cab1a-e89c-4a00-8647-1dcf74ed22e8")]
+        [RoleId("c543b283-aac2-4d50-b604-89bbc491fbaa")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItemAvailability SerialisedItemAvailability { get; set; }
 
         #region Allors
         [Id("B6DD4F80-EE97-446E-9779-610FF07F13B2")]
@@ -243,15 +239,6 @@ namespace Allors.Repository
         public string InternalComment { get; set; }
 
         #region Allors
-        [Id("B5D9E50B-3004-47C0-9C8D-62935DB15ECC")]
-        [AssociationId("609D27BC-96C9-48EF-9516-6B45AECBEC20")]
-        [RoleId("DAEF2150-D69C-4255-B78E-70ACFA63EA06")]
-        #endregion
-        [Size(-1)]
-        [Workspace]
-        public string Details { get; set; }
-
-        #region Allors
         [Id("7A2A878B-1428-4C75-9A52-8725606FAA41")]
         [AssociationId("98B173A0-51DA-48A6-9556-4B8F2CFDC72B")]
         [RoleId("D86152FD-1D45-463E-B5FC-481F6E0D4CAE")]
@@ -271,6 +258,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public Party AssignedSuppliedBy { get; set; }
+
+        #region Allors
+        [Id("66CEB3A4-C1AD-4CAD-BBB9-F29FB12669DA")]
+        [AssociationId("B67B1EA5-1CC1-4958-B8A5-13D9C60B407D")]
+        [RoleId("AFC60632-E929-40E9-8139-CE1B4B2FFE1B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public InternalOrganisation ReportingUnit { get; set; }
 
         #region Allors
         [Id("E9ACD0EE-693C-4459-9F40-D478F538659F")]
@@ -364,14 +361,50 @@ namespace Allors.Repository
         public Part PartWhereItem { get; set; }
 
         #region Allors
-        [Id("66CEB3A4-C1AD-4CAD-BBB9-F29FB12669DA")]
-        [AssociationId("B67B1EA5-1CC1-4958-B8A5-13D9C60B407D")]
-        [RoleId("AFC60632-E929-40E9-8139-CE1B4B2FFE1B")]
-        [Indexed]
+        [Id("2b8a24f3-ce26-4b53-94b2-d7d0cef3f6b1")]
+        [AssociationId("357c0a38-9888-40f8-b22c-7236f69ef646")]
+        [RoleId("0dd73bc0-5030-4c2e-b4b5-57d227f56d76")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        public Guid DerivationTrigger { get; set; }
+
+        #region Allors
+        [Id("50db0036-a15c-418d-b354-ad3b5b1c4bd6")]
+        [AssociationId("1eb73e6c-e4b6-474f-b338-51bd8dc6ce8c")]
+        [RoleId("e0ca04f1-1a86-40c0-82ba-12d8197d4f8e")]
+        #endregion
         [Workspace]
-        public InternalOrganisation ReportingUnit { get; set; }
+        public string DisplayProductCategories{ get; set; }
+
+        #region Allors
+        [Id("80c6e34f-aadd-4ef6-b8cf-da532833ac03")]
+        [AssociationId("d668026d-14b7-4071-84bf-f8e28c7dfbc9")]
+        [RoleId("63799217-89c0-41f7-bf35-3ec9f962ecf2")]
+        #endregion
+        [Required]
+        [Derived]
+        [Workspace]
+        public bool OnQuote { get; set; }
+
+        #region Allors
+        [Id("85daec66-1768-40ce-a91b-f987256ee0ed")]
+        [AssociationId("0abfa6f0-3a5a-46eb-9070-10110d9ee25d")]
+        [RoleId("9ff0c909-630c-4b04-b58e-77d9479d9871")]
+        #endregion
+        [Required]
+        [Derived]
+        [Workspace]
+        public bool OnSalesOrder { get; set; }
+
+        #region Allors
+        [Id("7885e0a2-514d-4eb9-b654-f047eda00574")]
+        [AssociationId("2fad91dd-f819-409a-adcd-de341ba8568b")]
+        [RoleId("d65d7c59-abfc-4a76-944f-3e5b734501d0")]
+        #endregion
+        [Required]
+        [Derived]
+        [Workspace]
+        public bool OnWorkEffort { get; set; }
 
         #region inherited methods
         public void OnBuild() { }

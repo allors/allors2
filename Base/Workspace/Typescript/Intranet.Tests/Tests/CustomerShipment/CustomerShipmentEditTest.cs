@@ -61,7 +61,6 @@ namespace Tests.CustomerShipmentTests
             shipmentOverviewDetail
                 .ShipToParty.Select(expected.ShipToParty?.DisplayName())
                 .ShipToAddress.Select(expected.ShipToAddress)
-                .ShipToContactPerson.Select(expected.ShipToContactPerson)
                 .ShipFromAddress.Select(expected.ShipFromParty?.ShippingAddress)
                 .ShipmentMethod.Select(expected.ShipmentMethod)
                 .ShipFromFacility.Select(((Organisation)expected.ShipFromParty)?.FacilitiesWhereOwner?.First)
@@ -70,6 +69,11 @@ namespace Tests.CustomerShipmentTests
                 .EstimatedArrivalDate.Set(expected.EstimatedArrivalDate.Value.Date)
                 .HandlingInstruction.Set(expected.HandlingInstruction)
                 .Comment.Set(expected.Comment);
+
+            if (expected.ExistShipFromContactPerson)
+            {
+                shipmentOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
+            }
 
             this.Session.Rollback();
             shipmentOverviewDetail.SAVE.Click();

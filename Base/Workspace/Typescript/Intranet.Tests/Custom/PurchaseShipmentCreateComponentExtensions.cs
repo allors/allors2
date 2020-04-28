@@ -13,10 +13,18 @@ namespace src.allors.material.@base.objects.purchaseshipment.create
 
             if (!minimal)
             {
-                @this.ShipFromContactPerson.Select(shipment.ShipFromContactPerson);
                 @this.ShipToAddress.Select(shipment.ShipToAddress);
-                @this.ShipToContactPerson.Select(shipment.ShipToContactPerson);
                 @this.ShipToAddress.Select(shipment.ShipToParty?.ShippingAddress);
+
+                if (shipment.ExistShipFromContactPerson)
+                {
+                    @this.ShipFromContactPerson.Select(shipment.ShipFromContactPerson);
+                }
+
+                if (shipment.ExistShipToContactPerson)
+                {
+                    @this.ShipToContactPerson.Select(shipment.ShipToContactPerson);
+                }
             }
 
             return @this;

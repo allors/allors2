@@ -35,10 +35,12 @@ namespace Allors.Server
 
         private ConcurrentDictionary<string, string> ETagByPath { get; }
 
+        // TODO: everything except the name should be base64 encoded,
+        //       e.g. "/image/{base64}/{*name}"
         [AllowAnonymous]
-        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = OneYearInSeconds)]
         [HttpGet("/image/{idString}/{revisionString}/{*name}")]
-        public virtual IActionResult Get(string idString, string revisionString, string name, int? w, int? q, string t, string b)
+        [ResponseCache(Location = ResponseCacheLocation.Any, Duration = OneYearInSeconds)]
+        public virtual IActionResult Get(string idString, string revisionString, string name, int? w, int? q, string t, string b, string o)
         {
             this.Request.Headers.TryGetValue(HeaderNames.IfNoneMatch, out var requestEtagValues);
             var requestEtag = requestEtagValues.FirstOrDefault();
@@ -69,14 +71,20 @@ namespace Allors.Server
 
                         var data = media.MediaContent.Data;
 
-                        if (w != null)
+                        var mediaType = media.Type.ToLowerInvariant();
+                        if ("image/jpeg".Equals(mediaType) || "image/png".Equals(mediaType))
                         {
-                            data = this.Resize(data, w.Value);
-                        }
+                            var width = w;
+                            var type = t;
+                            var quality = q;
+                            var background = b;
+                            var overlay = o;
 
-                        var type = t;
-                        var quality = q;
-                        var background = b;
+                            if (width != null || !string.IsNullOrWhiteSpace(overlay))
+                            {
+                                data = this.Process(data, w.Value, overlay);
+                            }
+                        }
 
                         var responseEtag = this.Etag(data);
 
@@ -84,9 +92,9 @@ namespace Allors.Server
                         {
                             return this.NotModified();
                         }
-                        
+
                         this.Response.Headers[HeaderNames.ETag] = responseEtag;
-                        
+
                         return this.File(data, media.MediaContent.Type, name ?? media.FileName);
                     }
                 }
@@ -102,21 +110,44 @@ namespace Allors.Server
             return this.Content(string.Empty);
         }
 
-        private byte[] Resize(byte[] src, int width, SKFilterQuality quality = SKFilterQuality.High)
+        private byte[] Process(byte[] src, int width, string overlay, SKFilterQuality quality = SKFilterQuality.High)
         {
-            using var ms = new MemoryStream(src);
-            using var sourceBitmap = SKBitmap.Decode(ms);
+            try
+            {
+                using var ms = new MemoryStream(src);
+                using var sourceBitmap = SKBitmap.Decode(ms);
 
-            var aspectRatio = (float)sourceBitmap.Height / sourceBitmap.Width;
-            var height = (int)Math.Round(width * aspectRatio);
+                var aspectRatio = (float)sourceBitmap.Height / sourceBitmap.Width;
+                var height = (int)Math.Round(width * aspectRatio);
 
-            using var scaledBitmap = sourceBitmap.Resize(new SKImageInfo(width, height), quality);
-            using var scaledImage = SKImage.FromBitmap(scaledBitmap);
-            using var data = scaledImage.Encode();
+                using var scaledBitmap = sourceBitmap.Resize(new SKImageInfo(width, height), quality);
 
-            return data.ToArray();
+                if (!string.IsNullOrWhiteSpace(overlay))
+                {
+                    var canvas = new SKCanvas(scaledBitmap);
+                    var font = SKTypeface.FromFamilyName("Arial");
+                    var brush = new SKPaint
+                    {
+                        Typeface = font,
+                        TextSize = 64.0f,
+                        IsAntialias = true,
+                        Color = new SKColor(255, 255, 255, 255)
+                    };
+                    canvas.DrawText(overlay, 0, scaledBitmap.Height, brush);
+                    canvas.Flush();
+                }
+
+                using var scaledImage = SKImage.FromBitmap(scaledBitmap);
+                using var data = scaledImage.Encode();
+
+                return data.ToArray();
+            }
+            catch
+            {
+                return src;
+            }
         }
-        
+
         public string Etag(byte[] binary)
         {
             using var sha1 = new SHA1Managed();

@@ -25,11 +25,12 @@ namespace Allors.Domain
             var submit = this.Meta.Submit;
             var reject = this.Meta.Reject;
             var createQuote = this.Meta.CreateQuote;
+            var delete = this.Meta.Delete;
 
-            config.Deny(this.ObjectType, quoted, cancel, hold, submit, reject, createQuote);
+            config.Deny(this.ObjectType, quoted, cancel, hold, submit, reject, createQuote, delete);
             config.Deny(this.ObjectType, submitted, submit);
             config.Deny(this.ObjectType, anonymous, hold, createQuote);
-            config.Deny(this.ObjectType, pendingCustomer, hold, createQuote);
+            config.Deny(this.ObjectType, pendingCustomer, hold, createQuote, delete);
             config.Deny(this.ObjectType, rejected, reject, cancel, submit, hold, createQuote);
             config.Deny(this.ObjectType, cancelled, reject, cancel, submit, hold, createQuote);
 

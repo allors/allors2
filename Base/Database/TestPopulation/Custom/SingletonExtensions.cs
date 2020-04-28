@@ -84,8 +84,8 @@ namespace Allors
                 purchaseOrderNeedsApproval: true,
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
-                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).ProductQuoteSend,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip);
+                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip,
+                collectiveWorkEffortInvoice: true);
 
             var dipu = Organisations.CreateInternalOrganisation(
                 session: @this.Session(),
@@ -138,8 +138,8 @@ namespace Allors
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null,
-                serialisedItemAssignedOn: new SerialisedItemAssignedOns(@this.Session()).SalesOrderPost,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip);
+                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip,
+                collectiveWorkEffortInvoice: true);
 
             // Give Administrator access
             new EmploymentBuilder(@this.Session()).WithEmployee(administrator).WithEmployer(allors).Build();
@@ -191,7 +191,7 @@ namespace Allors
                 .WithFacility(allors.FacilitiesWhereOwner.First)
                 .WithQuantity(1)
                 .WithReason(new InventoryTransactionReasons(@this.Session()).IncomingShipment)
-                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(@this.Session()).Available)
+                .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(@this.Session()).Good)
                 .Build();
 
             var good3 = new NonUnifiedGoodBuilder(@this.Session()).WithNonSerialisedPartDefaults(allors).Build();
@@ -452,7 +452,7 @@ line2")
 
             var item = new SerialisedItemBuilder(@this.Session())
                 .WithSerialNumber("112")
-                .WithSerialisedItemState(new SerialisedItemStates(@this.Session()).Sold)
+                .WithSerialisedItemAvailability(new SerialisedItemAvailabilities(@this.Session()).Sold)
                 .WithAvailableForSale(false)
                 .WithOwnedBy(anOrganisation)
                 .Build();

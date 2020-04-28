@@ -46,18 +46,19 @@ namespace Allors.Domain
 
 
             // The created state is the initial and re-opened state (Cancel Consumption for Re-Open)
-            this.Created.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
-            this.Created.AddInventoryTransactionReasonsToCancel(reasons.Consumption);
+            //this.Created.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            //this.Created.AddInventoryTransactionReasonsToCancel(reasons.Consumption);
+            this.Created.AddInventoryTransactionReasonsToCreate(reasons.Consumption);
 
             // The inprogress state is the initial and re-opened state (Cancel Consumption for Re-Open)
-            this.InProgress.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.InProgress.AddInventoryTransactionReasonsToCreate(reasons.Consumption);
 
             // The Delivered state should create a Consumption (which Decreases the Reservation)
-            this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            //this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
             this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Consumption);
 
             // The Cancelled state should cancel any existing Consumption and Reservation
-            this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
+            //this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
             this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Consumption);
         }
     }

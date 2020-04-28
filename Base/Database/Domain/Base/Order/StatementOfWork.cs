@@ -18,6 +18,19 @@ namespace Allors.Domain
 
         public void BaseOnDerive(ObjectOnDerive method) => this.Sync(this.Strategy.Session);
 
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable())
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+        }
+
         private void Sync(ISession session)
         {
             // session.Prefetch(this.SyncPrefetch, this);

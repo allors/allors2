@@ -18,6 +18,12 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        internal bool IsDeletable =>
+            (this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Draft)
+                || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Submitted)
+                || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Cancelled))
+            && !this.ExistQuoteItemsWhereRequestItem;
+
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
             if (method.SecurityTokens == null)
@@ -60,6 +66,19 @@ namespace Allors.Domain
             if (this.ExistSerialisedItem && this.Quantity != 1)
             {
                 derivation.Validation.AddError(this, this.Meta.Quantity, ErrorMessages.SerializedItemQuantity);
+            }
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
             }
         }
 

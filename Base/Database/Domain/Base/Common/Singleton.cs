@@ -21,7 +21,7 @@ namespace Allors.Domain
         {
             var (iteration, changeSet, derivedObjects) = method;
 
-            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRole(this, this.Meta.AdditionalLocales))
+            if (changeSet.IsCreated(this) || changeSet.HasChangedRole(this, this.Meta.AdditionalLocales))
             {
                 foreach (Good product in new Goods(this.Strategy.Session).Extent())
                 {

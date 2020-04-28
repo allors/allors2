@@ -18,15 +18,15 @@
     </div>
 
     <div class="row">
-      <a-mat-autocomplete class="col-md" [disabled]="!!nonUnifiedPart" [object]="orderItem"
+      <a-mat-autocomplete class="col-md" *ngIf="!nonUnifiedPart" [object]="orderItem"
         [roleType]="m.PurchaseOrderItem.Part" display="Name" (changed)="partSelected($event)"
-        [filter]="filtersService.partsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
-      <a-mat-autocomplete class="col-md" [disabled]="!!unifiedGood" [object]="orderItem"
-        [roleType]="m.PurchaseOrderItem.Part" display="Name" (changed)="sparePartSelected($event)"
+        [filter]="filtersService.goodsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
+      <a-mat-autocomplete *ngIf="!unifiedGood" class="col-md"  [object]="orderItem"
+        [roleType]="m.PurchaseOrderItem.Part" display="DisplayName" (changed)="sparePartSelected($event)"
         [filter]="sparePartsFilter.create(allors.context)" label="Spare Part"></a-mat-autocomplete>
     </div>
 
-    <div class="row">
+    <div *ngIf="unifiedGood" class="row">
       <a-mat-select class="col-md" [disabled]="!serialised" [object]="orderItem" (changed)="partSelected($event)"
         [roleType]="m.PurchaseOrderItem.SerialisedItem" [options]="serialisedItems" display="displayName">
       </a-mat-select>
@@ -40,20 +40,6 @@
         [roleType]="m.SupplierOffering.Price" label="Supplier Price"></a-mat-static>
       <a-mat-input class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.AssignedUnitPrice"
         label="Agreed on Price"></a-mat-input>
-    </div>
-
-    <div class="row">
-      <a-mat-static *ngIf="order" class="col-md" [object]="order.VatRegime?.VatRate" [roleType]="m.VatRate.Rate"
-        display="Rate" label="VAT % from order"></a-mat-static>
-      <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.AssignedVatRegime"
-        [options]="vatRegimes" display="Name" label="Item VAT regime"></a-mat-select>
-      <a-mat-static class="col-md" [object]="orderItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate"
-        display="Rate"></a-mat-static>
-    </div>
-
-    <div class="row">
-      <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.UnitVat"></a-mat-static>
-      <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.PurchaseOrderItem.TotalIncVat"></a-mat-static>
     </div>
 
     <div class="row">

@@ -12,6 +12,15 @@ namespace Allors.Repository
     #endregion
     public partial interface Part : UnifiedProduct
     {
+        #region Allors
+        [Id("bc2b9253-868b-45a2-97d7-50f671b3d857")]
+        [AssociationId("8b70b340-3cec-44bf-8f1a-c15a86a3d0c4")]
+        [RoleId("1cedc2a3-737b-4877-b3fe-95c1539e9d89")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        string DisplayName { get; set; }
+
         /// <summary>
         /// Gets or sets the Default Facility where this Part is stored.
         /// </summary>
@@ -143,6 +152,16 @@ namespace Allors.Repository
         SerialisedItemCharacteristic[] SerialisedItemCharacteristics { get; set; }
 
         #region Allors
+        [Id("d55ec9da-f499-47e1-9582-094e73bef11a")]
+        [AssociationId("5baee0e5-946c-48e1-9b52-3944fadebe7d")]
+        [RoleId("a7e424c4-b947-4742-9f9a-ae81112bd1eb")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        PartWeightedAverage PartWeightedAverage { get; set; }
+
+        #region Allors
         [Id("30C81CF6-6295-44C4-ACDD-2A408DA3DC6D")]
         [AssociationId("9D3328E6-EE12-4A59-B664-967EB5DC6612")]
         [RoleId("E6010C20-764F-4FD6-BB0B-A5B57B59C840")]
@@ -189,5 +208,13 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal QuantityExpectedIn { get; set; }
+
+        #region Allors
+
+        [Id("d18b7185-0a7c-42a1-b135-0a8f7d459347")]
+        #endregion
+        public void SetDisplayName()
+        {
+        }
     }
 }

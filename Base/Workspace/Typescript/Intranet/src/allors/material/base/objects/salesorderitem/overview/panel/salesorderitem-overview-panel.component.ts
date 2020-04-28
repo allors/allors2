@@ -44,9 +44,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
   edit: Action;
   cancel: Action;
   reject: Action;
-  confirm: Action;
   approve: Action;
-  continue: Action;
 
   get createData(): ObjectData {
     return {
@@ -81,9 +79,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
     this.edit = editService.edit();
     this.cancel = methodService.create(allors.context, this.m.SalesOrderItem.Cancel, { name: 'Cancel' });
     this.reject = methodService.create(allors.context, this.m.SalesOrderItem.Reject, { name: 'Reject' });
-    this.confirm = methodService.create(allors.context, this.m.SalesOrderItem.Confirm, { name: 'Confirm' });
     this.approve = methodService.create(allors.context, this.m.SalesOrderItem.Approve, { name: 'Approve' });
-    this.continue = methodService.create(allors.context, this.m.SalesOrderItem.Continue, { name: 'Continue' });
 
     const sort = true;
     this.table = new Table({
@@ -104,9 +100,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
         this.delete,
         this.cancel,
         this.reject,
-        this.confirm,
         this.approve,
-        this.continue,
       ],
       defaultAction: this.edit,
       autoSort: true,

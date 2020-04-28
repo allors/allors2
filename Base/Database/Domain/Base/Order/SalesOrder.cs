@@ -1,3 +1,4 @@
+
 // <copyright file="SalesOrder.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -56,6 +57,13 @@ namespace Allors.Domain
                 return 0;
             }
         }
+
+        private bool IsDeletable =>
+            (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Provisional)
+                || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).ReadyForPosting)
+                || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Cancelled)
+                || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Rejected))
+            && this.SalesOrderItems.All(v => v.IsDeletable);
 
         public void BaseOnBuild(ObjectOnBuild method)
         {
@@ -431,28 +439,18 @@ namespace Allors.Domain
 
             if (this.SalesOrderState.IsInProcess
                 && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.IsInProcess)
-                && (this.TakenBy.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).SalesOrderPost
-                    || (!this.ExistQuote && this.TakenBy.SerialisedItemAssignedOn == new SerialisedItemAssignedOns(this.Session()).ProductQuoteSend)))
-            {
-                foreach (SalesOrderItem item in this.ValidOrderItems.Where(v => ((SalesOrderItem)v).ExistSerialisedItem))
-                {
-                    item.SerialisedItem.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).Assigned;
-                }
-            }
-
-            if (this.SalesOrderState.IsInProcess
-                && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.IsInProcess)
                 && this.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderAccept)
             {
                 foreach (SalesOrderItem item in this.ValidOrderItems.Where(v => ((SalesOrderItem)v).ExistSerialisedItem))
                 {
-                    if (item.ExistNewSerialisedItemState)
+                    if (item.ExistNextSerialisedItemAvailability)
                     {
-                        item.SerialisedItem.SerialisedItemState = item.NewSerialisedItemState;
+                        item.SerialisedItem.SerialisedItemAvailability = item.NextSerialisedItemAvailability;
 
-                        if (item.NewSerialisedItemState.Equals(new SerialisedItemStates(this.Session()).Sold))
+                        if (item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
                         {
                             item.SerialisedItem.OwnedBy = this.ShipToCustomer;
+                            item.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
                         }
                     }
 
@@ -467,19 +465,73 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!this.CanShip)
+            if (this.CanShip)
+            {
+                this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
+            }
+            else
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Ship, Operations.Execute));
             }
 
-            if (!this.CanInvoice)
+            if (this.CanInvoice)
+            {
+                this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+            else
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
             }
 
             if (this.HasChangedStates())
             {
                 derivation.Mark(this);
+            }
+        }
+
+        public void BaseDelete(SalesOrderDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                if (this.ExistShippingAndHandlingCharge)
+                {
+                    this.ShippingAndHandlingCharge.Delete();
+                }
+
+                if (this.ExistFee)
+                {
+                    this.Fee.Delete();
+                }
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.DiscountAdjustment.Delete();
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.SurchargeAdjustment.Delete();
+                }
+
+                foreach (SalesOrderItem item in this.SalesOrderItems)
+                {
+                    item.Delete();
+                }
+
+                foreach (SalesTerm salesTerm in this.SalesTerms)
+                {
+                    salesTerm.Delete();
+                }
             }
         }
 
@@ -503,15 +555,17 @@ namespace Allors.Domain
             }
         }
 
+        public void BasePost(SalesOrderPost method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).AwaitingAcceptance;
+
         public void BaseReject(OrderReject method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
 
         public void BaseHold(OrderHold method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
 
         public void BaseApprove(OrderApprove method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).ReadyForPosting;
 
-        public void BasePost(SalesOrderPost method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).AwaitingAcceptance;
-
         public void BaseAccept(SalesOrderAccept method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).InProcess;
+
+        public void BaseRevise(OrderRevise method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Provisional;
 
         public void BaseContinue(OrderContinue method) => this.SalesOrderState = this.PreviousSalesOrderState;
 
@@ -555,7 +609,9 @@ namespace Allors.Domain
                             {
                                 var good = orderItem.Product as Good;
                                 var nonUnifiedGood = orderItem.Product as NonUnifiedGood;
-                                var inventoryItemKind = orderItem.Product is UnifiedGood unifiedGood ? unifiedGood.InventoryItemKind : nonUnifiedGood?.Part.InventoryItemKind;
+                                var unifiedGood = orderItem.Product as UnifiedGood;
+                                var inventoryItemKind = unifiedGood?.InventoryItemKind ?? nonUnifiedGood?.Part.InventoryItemKind;
+                                var part = unifiedGood ?? nonUnifiedGood?.Part;
 
                                 ShipmentItem shipmentItem = null;
                                 foreach (ShipmentItem item in pendingShipment.ShipmentItems)
@@ -586,9 +642,9 @@ namespace Allors.Domain
                                         shipmentItem.SerialisedItem = orderItem.SerialisedItem;
                                     }
 
-                                    if (orderItem.ExistNewSerialisedItemState)
+                                    if (orderItem.ExistNextSerialisedItemAvailability)
                                     {
-                                        shipmentItem.NewSerialisedItemState = orderItem.NewSerialisedItemState;
+                                        shipmentItem.NextSerialisedItemAvailability = orderItem.NextSerialisedItemAvailability;
                                     }
 
                                     if (orderItem.ExistReservedFromNonSerialisedInventoryItem)
@@ -618,6 +674,8 @@ namespace Allors.Domain
                                 shipmentItem.Quantity = shipmentItem.OrderShipmentsWhereShipmentItem.Sum(v => v.Quantity);
 
                                 orderItemDerivedRoles.QuantityRequestsShipping = 0;
+
+                                orderItemDerivedRoles.CostOfGoodsSold = orderItem.QuantityOrdered * part.PartWeightedAverage.AverageCost;
                             }
                         }
 
@@ -675,7 +733,8 @@ namespace Allors.Domain
                             .WithInvoiceItemType(orderItem.InvoiceItemType)
                             .WithAssignedUnitPrice(orderItem.UnitPrice)
                             .WithProduct(orderItem.Product)
-                            .WithQuantity(orderItem.QuantityOrdered)
+                            .WithQuantity(orderItem.CostOfGoodsSold)
+                            .WithCostOfGoodsSold(orderItem.QuantityOrdered)
                             .WithAssignedVatRegime(orderItem.AssignedVatRegime)
                             .WithDescription(orderItem.Description)
                             .WithInternalComment(orderItem.InternalComment)

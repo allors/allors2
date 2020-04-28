@@ -29,6 +29,8 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
 
   public title = 'Requests';
 
+  delete: Action;
+
   table: Table<Row>;
 
   user: Person;
@@ -55,6 +57,11 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
 
     titleService.setTitle(this.title);
 
+    this.delete = deleteService.delete(allors.context);
+    this.delete.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
+
     this.table = new Table({
       selection: true,
       columns: [
@@ -67,6 +74,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
       ],
       actions: [
         overviewService.overview(),
+        this.delete
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,

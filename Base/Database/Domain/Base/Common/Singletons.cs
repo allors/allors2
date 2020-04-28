@@ -11,7 +11,6 @@ namespace Allors.Domain
     {
         protected override void BasePrepare(Setup setup)
         {
-            setup.AddDependency(this.ObjectType, M.SerialisedItemAssignedOn.ObjectType);
             setup.AddDependency(this.ObjectType, M.SerialisedItemSoldOn.ObjectType);
         }
     }

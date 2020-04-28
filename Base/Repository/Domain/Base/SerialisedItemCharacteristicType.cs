@@ -47,7 +47,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Required]
-        public bool Public { get; set; }
+        public bool IsPublic { get; set; }
 
         #region inherited methods
 

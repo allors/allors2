@@ -11,6 +11,24 @@
         {{serialisedItem.SerialisedItemState.Name}}
       </div>
 
+      <div *ngIf="serialisedItem.OnQuote">
+        <div style="color: grey">
+          On Quote
+        </div>
+      </div>
+
+      <div *ngIf="serialisedItem.OnSalesOrder">
+        <div style="color: grey">
+          On SalesOrder
+        </div>
+      </div>
+
+      <div *ngIf="serialisedItem.OnWorkEffort">
+        <div style="color: grey">
+          In Workshop
+        </div>
+      </div>
+
     </mat-card-subtitle>
 
     <mat-card-subtitle>

@@ -5,10 +5,17 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
 
     public static partial class QuoteExtensions
     {
+        public static bool IsDeletable(this Quote @this) =>
+           (@this.QuoteState.Equals(new QuoteStates(@this.Strategy.Session).Created)
+               || @this.QuoteState.Equals(new QuoteStates(@this.Strategy.Session).Cancelled)
+               || @this.QuoteState.Equals(new QuoteStates(@this.Strategy.Session).Rejected))
+           && @this.QuoteItems.All(v => v.IsDeletable);
+
         public static void BaseOnBuild(this Quote @this, ObjectOnBuild method)
         {
             if (!@this.ExistQuoteState)
@@ -20,6 +27,7 @@ namespace Allors.Domain
         public static void BaseOnDerive(this Quote @this, ObjectOnDerive method)
         {
             var session = @this.Strategy.Session;
+            var derivation = method.Derivation;
 
             if (!@this.ExistIssuer)
             {
@@ -38,12 +46,53 @@ namespace Allors.Domain
 
             @this.Currency ??= @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
 
+            foreach (QuoteItem quoteItem in @this.QuoteItems)
+            {
+                var quoteItemDerivedRoles = (QuoteItemDerivedRoles)quoteItem;
+
+                quoteItemDerivedRoles.VatRegime = quoteItem.AssignedVatRegime ?? @this.VatRegime;
+                quoteItemDerivedRoles.VatRate = quoteItem.VatRegime?.VatRate ?? quoteItem.Product?.VatRate;
+            }
+
             @this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);
+
+            @this.Sync(derivation);
+        }
+
+        public static void BaseDelete(this Quote @this, DeletableDelete method)
+        {
+            if (@this.IsDeletable())
+            {
+                if (@this.ExistShippingAndHandlingCharge)
+                {
+                    @this.ShippingAndHandlingCharge.Delete();
+                }
+
+                if (@this.ExistFee)
+                {
+                    @this.Fee.Delete();
+                }
+
+                if (@this.ExistDiscountAdjustment)
+                {
+                    @this.DiscountAdjustment.Delete();
+                }
+
+                if (@this.ExistSurchargeAdjustment)
+                {
+                    @this.SurchargeAdjustment.Delete();
+                }
+
+                foreach (QuoteItem item in @this.QuoteItems)
+                {
+                    item.Delete();
+                }
+            }
         }
 
         public static void BaseApprove(this Quote @this, QuoteApprove method)
         {
-            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Approved;
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).InProcess;
             SetItemState(@this);
         }
 
@@ -56,6 +105,12 @@ namespace Allors.Domain
         public static void BaseAccept(this Quote @this, QuoteAccept method)
         {
             @this.QuoteState = new QuoteStates(@this.Strategy.Session).Accepted;
+            SetItemState(@this);
+        }
+
+        public static void BaseRevise(this Quote @this, QuoteRevise method)
+        {
+            @this.QuoteState = new QuoteStates(@this.Strategy.Session).Created;
             SetItemState(@this);
         }
 
@@ -83,6 +138,11 @@ namespace Allors.Domain
 
             foreach (QuoteItem quoteItem in @this.QuoteItems)
             {
+                if (@this.QuoteState.IsCreated)
+                {
+                    quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Draft;
+                }
+
                 if (@this.QuoteState.IsCancelled)
                 {
                     if (!Equals(quoteItem.QuoteItemState, quoteItemStates.Rejected))
@@ -122,6 +182,77 @@ namespace Allors.Domain
                     {
                         quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Accepted;
                     }
+                }
+
+                if (@this.QuoteState.IsOrdered)
+                {
+                    if (Equals(quoteItem.QuoteItemState, quoteItemStates.Accepted))
+                    {
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Ordered;
+                    }
+                }
+            }
+        }
+
+        private static void Sync(this Quote @this, IDerivation derivation)
+        {
+            var QuoteDerivedRoles = (QuoteDerivedRoles)@this;
+            // Calculate Totals
+            QuoteDerivedRoles.TotalBasePrice = 0;
+            QuoteDerivedRoles.TotalDiscount = 0;
+            QuoteDerivedRoles.TotalSurcharge = 0;
+            QuoteDerivedRoles.TotalExVat = 0;
+            QuoteDerivedRoles.TotalFee = 0;
+            QuoteDerivedRoles.TotalShippingAndHandling = 0;
+            QuoteDerivedRoles.TotalVat = 0;
+            QuoteDerivedRoles.TotalIncVat = 0;
+            QuoteDerivedRoles.TotalListPrice = 0;
+
+            if (@this.ExistFee)
+            {
+                var fee = @this.Fee.Percentage.HasValue ?
+                                    Math.Round(@this.TotalExVat * @this.Fee.Percentage.Value / 100, 2) :
+                                    @this.Fee.Amount ?? 0;
+
+                QuoteDerivedRoles.TotalFee += fee;
+                QuoteDerivedRoles.TotalExVat += fee;
+
+                if (@this.Fee.ExistVatRate)
+                {
+                    var vat1 = Math.Round(fee * @this.Fee.VatRate.Rate / 100, 2);
+                    QuoteDerivedRoles.TotalVat += vat1;
+                    QuoteDerivedRoles.TotalIncVat += fee + vat1;
+                }
+            }
+
+            if (@this.ExistShippingAndHandlingCharge)
+            {
+                var shipping = @this.ShippingAndHandlingCharge.Percentage.HasValue ?
+                                        Math.Round(@this.TotalExVat * @this.ShippingAndHandlingCharge.Percentage.Value / 100, 2) :
+                                        @this.ShippingAndHandlingCharge.Amount ?? 0;
+
+                QuoteDerivedRoles.TotalShippingAndHandling += shipping;
+                QuoteDerivedRoles.TotalExVat += shipping;
+
+                if (@this.ShippingAndHandlingCharge.ExistVatRate)
+                {
+                    var vat2 = Math.Round(shipping * @this.ShippingAndHandlingCharge.VatRate.Rate / 100, 2);
+                    QuoteDerivedRoles.TotalVat += vat2;
+                    QuoteDerivedRoles.TotalIncVat += shipping + vat2;
+                }
+            }
+
+            //// Only take into account items for which there is data at the item level.
+            //// Skip negative sales.
+            decimal totalUnitBasePrice = 0;
+            decimal totalListPrice = 0;
+
+            foreach (QuoteItem item1 in @this.ValidQuoteItems)
+            {
+                if (item1.TotalExVat > 0)
+                {
+                    totalUnitBasePrice += item1.UnitBasePrice;
+                    totalListPrice += item1.UnitPrice;
                 }
             }
         }

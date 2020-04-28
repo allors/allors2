@@ -21,7 +21,6 @@ export class MetaPopulation {
   readonly methodTypes: MethodType[];
 
   constructor(data: MetaData) {
-
     this.metaObjectById = new Map();
     this.objectTypeByName = new Map();
 
@@ -29,18 +28,17 @@ export class MetaPopulation {
     this.objectTypes = [];
 
     // Units
-    this.units = ['Binary', 'Boolean', 'DateTime', 'Decimal', 'Float', 'Integer', 'String', 'Unique']
-      .map((unitName) => {
-        const objectType = new ObjectType(this);
-        objectType.id = unitIdByTypeName[unitName];
-        objectType.name = unitName;
-        objectType.plural = unitName === 'Binary' ? 'Binaries' : unitName + 's';
-        objectType.kind = Kind.unit;
-        this.objectTypes.push(objectType);
-        this.objectTypeByName.set(objectType.name, objectType);
-        this.metaObjectById.set(objectType.id, objectType);
-        return objectType;
-      });
+    this.units = ['Binary', 'Boolean', 'DateTime', 'Decimal', 'Float', 'Integer', 'String', 'Unique'].map((unitName) => {
+      const objectType = new ObjectType(this);
+      objectType.id = unitIdByTypeName[unitName];
+      objectType.name = unitName;
+      objectType.plural = unitName === 'Binary' ? 'Binaries' : unitName + 's';
+      objectType.kind = Kind.unit;
+      this.objectTypes.push(objectType);
+      this.objectTypeByName.set(objectType.name, objectType);
+      this.metaObjectById.set(objectType.id, objectType);
+      return objectType;
+    });
 
     const dataInterfaces = data.interfaces ?? [];
     const dataClasses = data.classes ?? [];
@@ -48,57 +46,59 @@ export class MetaPopulation {
     const dataRelationTypes = data.relationTypes ?? [];
 
     // Interfaces
-    this.interfaces = dataInterfaces.map((interfaceData) => {
-      const objectType = new ObjectType(this);
-      objectType.id = interfaceData.id;
-      objectType.name = interfaceData.name;
-      objectType.plural = interfaceData.plural;
-      objectType.kind = Kind.interface;
-      this.composites.push(objectType);
-      this.objectTypes.push(objectType);
-      this.objectTypeByName.set(objectType.name, objectType);
-      this.metaObjectById.set(objectType.id, objectType);
-      return objectType;
-    }) ?? [];
+    this.interfaces =
+      dataInterfaces.map((interfaceData) => {
+        const objectType = new ObjectType(this);
+        objectType.id = interfaceData.id;
+        objectType.name = interfaceData.name;
+        objectType.plural = interfaceData.plural;
+        objectType.kind = Kind.interface;
+        this.composites.push(objectType);
+        this.objectTypes.push(objectType);
+        this.objectTypeByName.set(objectType.name, objectType);
+        this.metaObjectById.set(objectType.id, objectType);
+        return objectType;
+      }) ?? [];
 
     // Classes
-    this.classes = dataClasses.map((classData) => {
-      const objectType = new ObjectType(this);
-      objectType.id = classData.id;
-      objectType.name = classData.name;
-      objectType.plural = classData.plural;
-      objectType.kind = Kind.class;
-      this.composites.push(objectType);
-      this.objectTypes.push(objectType);
-      this.objectTypeByName.set(objectType.name, objectType);
-      this.metaObjectById.set(objectType.id, objectType);
-      return objectType;
-    }) ?? [];
+    this.classes =
+      dataClasses.map((classData) => {
+        const objectType = new ObjectType(this);
+        objectType.id = classData.id;
+        objectType.name = classData.name;
+        objectType.plural = classData.plural;
+        objectType.kind = Kind.class;
+        this.composites.push(objectType);
+        this.objectTypes.push(objectType);
+        this.objectTypeByName.set(objectType.name, objectType);
+        this.metaObjectById.set(objectType.id, objectType);
+        return objectType;
+      }) ?? [];
 
     const dataObjectTypes = ([] as ObjectTypeData[]).concat(dataInterfaces).concat(dataClasses);
 
     // Create Type Hierarchy
     dataObjectTypes.forEach((dataObjectType) => {
       const objectType = this.metaObjectById.get(dataObjectType.id) as ObjectType;
-      objectType.interfaces = dataObjectType.interfaceIds ? dataObjectType.interfaceIds.map((v) => this.metaObjectById.get(v) as ObjectType) : [];
+      objectType.interfaces = dataObjectType.interfaceIds
+        ? dataObjectType.interfaceIds.map((v) => this.metaObjectById.get(v) as ObjectType)
+        : [];
     });
 
     // Derive subtypes
-    this.composites
-      .forEach((composite) => {
-        composite.interfaces.forEach((compositeInterface) => {
-          compositeInterface.subtypes.push(composite);
-        });
+    this.composites.forEach((composite) => {
+      composite.interfaces.forEach((compositeInterface) => {
+        compositeInterface.subtypes.push(composite);
       });
+    });
 
     // Derive classes
-    this.classes
-      .forEach((objectType) => {
-        objectType.classes.push(objectType);
-        objectType.interfaces.forEach((v) => {
-          v.classes.push(objectType);
-        });
+    this.classes.forEach((objectType) => {
+      objectType.classes.push(objectType);
+      objectType.interfaces.forEach((v) => {
+        v.classes.push(objectType);
       });
+    });
 
     // MethodTypes
     this.methodTypes = dataMethodTypes.map((methodTypeData) => {
@@ -111,9 +111,7 @@ export class MetaPopulation {
 
       methodType.objectType.methodTypes.push(methodType);
       if (methodType.objectType.isInterface) {
-        this.composites
-          .filter(v => v.interfaces.indexOf(methodType.objectType) > -1)
-          .forEach(v => v.methodTypes.push(methodType));
+        this.composites.filter((v) => v.interfaces.indexOf(methodType.objectType) > -1).forEach((v) => v.methodTypes.push(methodType));
       }
 
       this.metaObjectById.set(methodType.id, methodType);
@@ -164,11 +162,11 @@ export class MetaPopulation {
       roleType.objectType.associationTypes.push(associationType);
 
       if (associationType.objectType.isInterface) {
-        associationType.objectType.subtypes.forEach(subtype => subtype.roleTypes.push(roleType));
+        associationType.objectType.subtypes.forEach((subtype) => subtype.roleTypes.push(roleType));
       }
 
       if (roleType.objectType.isInterface) {
-        roleType.objectType.subtypes.forEach(subtype => subtype.associationTypes.push(associationType));
+        roleType.objectType.subtypes.forEach((subtype) => subtype.associationTypes.push(associationType));
       }
 
       this.metaObjectById.set(relationType.id, relationType);
@@ -179,41 +177,37 @@ export class MetaPopulation {
     });
 
     // Derive RoleType and AssociationType By Name
-    this.composites
-      .forEach((objectType) => {
-        objectType.roleTypes.forEach(v => objectType.roleTypeByName.set(v.name, v));
-        objectType.associationTypes.forEach(v => objectType.associationTypeByName.set(v.name, v));
-        objectType.methodTypes.forEach(v => objectType.methodTypeByName.set(v.name, v));
+    this.composites.forEach((objectType) => {
+      objectType.roleTypes.forEach((v) => objectType.roleTypeByName.set(v.name, v));
+      objectType.associationTypes.forEach((v) => objectType.associationTypeByName.set(v.name, v));
+      objectType.methodTypes.forEach((v) => objectType.methodTypeByName.set(v.name, v));
 
-        objectType.subtypes.forEach(subtype => {
-          subtype.roleTypes
-            .filter(subtypeRoleType => !objectType.roleTypes.find(v => v.id === subtypeRoleType.id))
-            .forEach(v => objectType.roleTypeByName.set(`${subtype.name}_${v.name}`, v));
+      objectType.subtypes.forEach((subtype) => {
+        subtype.roleTypes
+          .filter((subtypeRoleType) => !objectType.roleTypes.find((v) => v.id === subtypeRoleType.id))
+          .forEach((v) => objectType.roleTypeByName.set(`${subtype.name}_${v.name}`, v));
 
-          subtype.associationTypes
-            .filter(subtypeAssociationType => !objectType.exclusiveAssociationTypes.find(v => v === subtypeAssociationType))
-            .forEach(v => objectType.associationTypeByName.set(`${subtype.name}_${v.name}`, v));
-        });
-
+        subtype.associationTypes
+          .filter((subtypeAssociationType) => !objectType.exclusiveAssociationTypes.find((v) => v === subtypeAssociationType))
+          .forEach((v) => objectType.associationTypeByName.set(`${subtype.name}_${v.name}`, v));
       });
+    });
 
     // Assign Own Properties
-    this.composites
-      .forEach((objectType) => {
-        (this as any)[objectType.name] = objectType;
-        objectType.roleTypes.forEach((roleType) => (objectType as any)[roleType.name] = roleType);
-        objectType.associationTypes.forEach((associationType) => (objectType as any)[associationType.name] = associationType);
-        objectType.methodTypes.forEach((methodTypes) => (objectType as any)[methodTypes.name] = methodTypes);
-      });
+    this.composites.forEach((objectType) => {
+      (this as any)[objectType.name] = objectType;
+      objectType.roleTypes.forEach((roleType) => ((objectType as any)[roleType.name] = roleType));
+      objectType.associationTypes.forEach((associationType) => ((objectType as any)[associationType.name] = associationType));
+      objectType.methodTypes.forEach((methodTypes) => ((objectType as any)[methodTypes.name] = methodTypes));
+    });
 
     // Assign Properties from Interfaces
-    this.composites
-      .forEach((objectType) => {
-        objectType.interfaces.forEach((v) => {
-          v.roleTypes.forEach((roleType) => (objectType as any)[roleType.name] = roleType);
-          v.associationTypes.forEach((associationType) => (objectType as any)[associationType.name] = associationType);
-          v.methodTypes.forEach((methodTypes) => (objectType as any)[methodTypes.name] = methodTypes);
-        });
+    this.composites.forEach((objectType) => {
+      objectType.interfaces.forEach((v) => {
+        v.roleTypes.forEach((roleType) => ((objectType as any)[roleType.name] = roleType));
+        v.associationTypes.forEach((associationType) => ((objectType as any)[associationType.name] = associationType));
+        v.methodTypes.forEach((methodTypes) => ((objectType as any)[methodTypes.name] = methodTypes));
       });
+    });
   }
 }

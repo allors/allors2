@@ -47,7 +47,8 @@ namespace Allors.Domain
             {
                 foreach (ShipmentItem shipmentItem in this.ShipmentItems)
                 {
-                    if (shipmentItem.ShipmentReceiptWhereShipmentItem.ExistInventoryItem)
+                    if (shipmentItem.ExistShipmentReceiptWhereShipmentItem
+                        && shipmentItem.ShipmentReceiptWhereShipmentItem.ExistInventoryItem)
                     {
                         iteration.AddDependency(shipmentItem.ShipmentReceiptWhereShipmentItem.InventoryItem, this);
                         iteration.Mark(shipmentItem.ShipmentReceiptWhereShipmentItem.InventoryItem);
@@ -93,7 +94,10 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
 
-            if (this.ShipmentItems.Any() && this.ShipmentItems.All(v => v.ShipmentReceiptWhereShipmentItem.QuantityAccepted.Equals(v.ShipmentReceiptWhereShipmentItem.OrderItem?.QuantityOrdered)))
+            if (this.ShipmentItems.Any()
+                && this.ShipmentItems.All(v => v.ExistShipmentReceiptWhereShipmentItem
+                &&  v.ShipmentReceiptWhereShipmentItem.QuantityAccepted.Equals(v.ShipmentReceiptWhereShipmentItem.OrderItem?.QuantityOrdered))
+                && this.ShipmentItems.All(v => v.ShipmentItemState.Equals(new ShipmentItemStates(this.strategy.Session).Received)))
             {
                 this.ShipmentState = new ShipmentStates(this.Strategy.Session).Received;
             }
@@ -109,6 +113,31 @@ namespace Allors.Domain
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
                 shipmentItem.ShipmentItemState = new ShipmentItemStates(this.Session()).Received;
+
+                if (shipmentItem.Part.InventoryItemKind.Serialised)
+                {
+                    new InventoryItemTransactionBuilder(this.Session())
+                        .WithSerialisedItem(shipmentItem.SerialisedItem)
+                        .WithUnitOfMeasure(shipmentItem.Part.UnitOfMeasure)
+                        .WithFacility(shipmentItem.ShipmentWhereShipmentItem.ShipToFacility)
+                        .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                        .WithShipmentItem(shipmentItem)
+                        .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Good)
+                        .WithQuantity(1)
+                        .Build();
+                }
+                else
+                {
+                    new InventoryItemTransactionBuilder(this.Session())
+                        .WithPart(shipmentItem.Part)
+                        .WithUnitOfMeasure(shipmentItem.Part.UnitOfMeasure)
+                        .WithFacility(shipmentItem.ShipmentWhereShipmentItem.ShipToFacility)
+                        .WithReason(new InventoryTransactionReasons(this.Strategy.Session).IncomingShipment)
+                        .WithShipmentItem(shipmentItem)
+                        .WithQuantity(shipmentItem.Quantity)
+                        .WithCost(shipmentItem.UnitPurchasePrice)
+                        .Build();
+                }
             }
         }
 

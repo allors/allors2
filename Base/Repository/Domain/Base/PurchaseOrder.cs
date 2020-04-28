@@ -254,9 +254,28 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public Party TakenViaSupplier { get; set; }
+
+        #region Allors
+        [Id("6ef15b20-da12-47ed-aa2a-fdf06b17fdac")]
+        [AssociationId("696ead0d-5aa4-4077-af89-1a44318eb109")]
+        [RoleId("765e6a88-f1c2-452a-ad27-37770dee52d4")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        public Party PreviousTakenViaSubcontractor { get; set; }
+
+        #region Allors
+        [Id("483f1661-9c50-4eb2-82b3-8c060920a90e")]
+        [AssociationId("aa069573-c214-41c1-90f5-2428902a6434")]
+        [RoleId("1d1162b4-6b68-4503-99a4-3edbb878558a")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Party TakenViaSubcontractor { get; set; }
 
         #region Allors
         [Id("4830cfc5-0375-4996-8cd8-27e36c102b65")]
@@ -346,9 +365,13 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
+        public void Delete() { }
+
         public void Create() { }
 
         public void Approve() { }
+
+        public void Revise() { }
 
         public void Reject() { }
 

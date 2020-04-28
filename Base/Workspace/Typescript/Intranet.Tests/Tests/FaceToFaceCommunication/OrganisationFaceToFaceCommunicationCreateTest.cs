@@ -34,8 +34,7 @@ namespace Tests.FaceToFaceCommunicationTests
 
             var before = new FaceToFaceCommunications(this.Session).Extent().ToArray();
 
-            var extent = new Organisations(this.Session).Extent();
-            var organisation = extent.First(v => v.DisplayName().Equals("Acme"));
+            var organisation = allors.ActiveCustomers.First(v => v.GetType().Name == typeof(Organisation).Name);
             var contact = organisation.CurrentContacts.First;
 
             this.organisationListPage.Table.DefaultAction(organisation);

@@ -4,14 +4,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="29.0.1" />
+    <PackageReference Include="Bogus" Version="29.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.2" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="80.0.3987.10600" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="81.0.4044.6900" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
@@ -38,9 +38,6 @@
     <Compile Remove="Tests\ProductCategory\**" />
     <Compile Remove="Tests\ProductQuote\**" />
     <Compile Remove="Tests\ProductType\**" />
-    <Compile Remove="Tests\PurchaseInvoice\**" />
-    <Compile Remove="Tests\SalesInvoice\**" />
-    <Compile Remove="Tests\SalesOrder\**" />
     <Compile Remove="Tests\SerialisedItemCharacteristic\**" />
     <Compile Remove="Tests\SerialisedItem\**" />
     <Compile Remove="Tests\WorkEffort\**" />
@@ -51,9 +48,6 @@
     <EmbeddedResource Remove="Tests\ProductCategory\**" />
     <EmbeddedResource Remove="Tests\ProductQuote\**" />
     <EmbeddedResource Remove="Tests\ProductType\**" />
-    <EmbeddedResource Remove="Tests\PurchaseInvoice\**" />
-    <EmbeddedResource Remove="Tests\SalesInvoice\**" />
-    <EmbeddedResource Remove="Tests\SalesOrder\**" />
     <EmbeddedResource Remove="Tests\SerialisedItemCharacteristic\**" />
     <EmbeddedResource Remove="Tests\SerialisedItem\**" />
     <EmbeddedResource Remove="Tests\WorkEffort\**" />
@@ -64,9 +58,6 @@
     <None Remove="Tests\ProductCategory\**" />
     <None Remove="Tests\ProductQuote\**" />
     <None Remove="Tests\ProductType\**" />
-    <None Remove="Tests\PurchaseInvoice\**" />
-    <None Remove="Tests\SalesInvoice\**" />
-    <None Remove="Tests\SalesOrder\**" />
     <None Remove="Tests\SerialisedItemCharacteristic\**" />
     <None Remove="Tests\SerialisedItem\**" />
     <None Remove="Tests\WorkEffort\**" />
@@ -88,6 +79,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Tests\SalesOrderItem\" />
+    <Folder Include="Tests\PurchaseInvoiceItem\" />
+    <Folder Include="Tests\PurchaseOrderItem\" />
+    <Folder Include="Tests\PurchaseOrder\" />
+    <Folder Include="Tests\PurchaseInvoice\" />
+    <Folder Include="Tests\SalesInvoiceItem\" />
+    <Folder Include="Tests\SalesInvoice\" />
     <Folder Include="Tests\RequestItem\" />
     <Folder Include="Tests\RequestForQuote\" />
   </ItemGroup>

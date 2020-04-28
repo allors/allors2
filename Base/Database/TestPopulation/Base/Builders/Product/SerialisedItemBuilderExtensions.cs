@@ -17,14 +17,15 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            var state = faker.Random.ListItem(@this.Session.Extent<SerialisedItemState>());
+            var availability = faker.Random.ListItem(@this.Session.Extent<SerialisedItemAvailability>());
             var serviceDate = faker.Date.Past(refDate: @this.Session.Now());
             var acquiredDate = faker.Date.Past(refDate: serviceDate);
             var replacementValue = Convert.ToDecimal(faker.Commerce.Price());
             var expectedSalesPrice = Convert.ToDecimal(faker.Commerce.Price(replacementValue + 1000, replacementValue + 10000));
 
             @this.WithName(faker.Lorem.Word());
-            @this.WithSerialisedItemState(state);
+            @this.WithSerialisedItemAvailability(availability);
+            @this.WithSerialisedItemState(faker.Random.ListItem(@this.Session.Extent<SerialisedItemState>()));
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithKeywords(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
@@ -48,23 +49,15 @@ namespace Allors.Domain.TestPopulation
             @this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithAvailableForSale(faker.Random.Bool());
 
-            if (state.IsSold)
-            {
-                @this.WithOwnedBy(new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false));
-                @this.WithReportingUnit(internalOrganisation);
-            }
-            else if (state.IsInRent)
+            @this.WithReportingUnit(internalOrganisation);
+            @this.OwnedBy = (availability.IsSold ? new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false) : internalOrganisation) ?? internalOrganisation;
+
+            if (availability.IsInRent)
             {
                 @this.WithRentedBy(new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false));
                 @this.WithRentalFromDate(faker.Date.Between(start: acquiredDate, end: acquiredDate.AddDays(10)));
                 @this.WithRentalThroughDate(faker.Date.Future(refDate: acquiredDate.AddYears(2)));
                 @this.WithExpectedReturnDate(faker.Date.Between(start: acquiredDate.AddYears(2).AddDays(1), end: acquiredDate.AddYears(2).AddDays(10)));
-                @this.WithReportingUnit(internalOrganisation);
-            }
-            else
-            {
-                @this.WithOwnedBy(internalOrganisation);
-                @this.WithReportingUnit(internalOrganisation);
             }
 
             foreach (Locale additionalLocale in @this.Session.GetSingleton().AdditionalLocales)
@@ -87,7 +80,8 @@ namespace Allors.Domain.TestPopulation
             var expectedSalesPrice = Convert.ToDecimal(faker.Commerce.Price(replacementValue + 1000, replacementValue + 10000));
 
             @this.WithName(faker.Lorem.Word());
-            @this.WithSerialisedItemState(new SerialisedItemStates(@this.Session).Available);
+            @this.WithSerialisedItemAvailability(new SerialisedItemAvailabilities(@this.Session).Available);
+            @this.WithSerialisedItemState(faker.Random.ListItem(@this.Session.Extent<SerialisedItemState>()));
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithKeywords(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());

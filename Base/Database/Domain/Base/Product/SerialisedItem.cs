@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
     using System.Text;
 
@@ -12,6 +13,16 @@ namespace Allors.Domain
 
     public partial class SerialisedItem
     {
+        private bool IsDeletable =>
+            !this.ExistInventoryItemTransactionsWhereSerialisedItem
+            && !this.ExistPurchaseInvoiceItemsWhereSerialisedItem
+            && !this.ExistPurchaseOrderItemsWhereSerialisedItem
+            && !this.ExistQuoteItemsWhereSerialisedItem
+            && !this.ExistSalesInvoiceItemsWhereSerialisedItem
+            && !this.ExistSalesOrderItemsWhereSerialisedItem
+            && !this.ExistSerialisedInventoryItemsWhereSerialisedItem
+            && !this.ExistShipmentItemsWhereSerialisedItem;
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSerialisedItemState)
@@ -22,6 +33,11 @@ namespace Allors.Domain
             if (!this.ExistItemNumber)
             {
                 this.ItemNumber = this.Strategy.Session.GetSingleton().Settings.NextSerialisedItemNumber();
+            }
+
+            if (!this.ExistDerivationTrigger)
+            {
+                this.DerivationTrigger = Guid.NewGuid();
             }
         }
 
@@ -63,16 +79,39 @@ namespace Allors.Domain
             this.PurchaseOrder = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem;
             this.SuppliedBy = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier ?? this.AssignedSuppliedBy;
 
+            this.OnQuote = this.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft
+                        || v.QuoteItemState.IsSubmitted || v.QuoteItemState.IsApproved
+                        || v.QuoteItemState.IsAwaitingAcceptance || v.QuoteItemState.IsAccepted);
+
+            this.OnSalesOrder = this.SalesOrderItemsWhereSerialisedItem.Any(v => v.SalesOrderItemState.IsProvisional
+                        || v.SalesOrderItemState.IsReadyForPosting || v.SalesOrderItemState.IsRequestsApproval
+                        || v.SalesOrderItemState.IsAwaitingAcceptance || v.SalesOrderItemState.IsOnHold || v.SalesOrderItemState.IsInProcess);
+
+            this.OnWorkEffort = this.WorkEffortFixedAssetAssignmentsWhereFixedAsset.Any(v => v.Assignment.WorkEffortState.IsCreated
+                        || v.Assignment.WorkEffortState.IsInProgress);
+
             this.DeriveProductCharacteristics(derivation);
 
-            if (derivation.ChangeSet.IsCreated(this))
+
+            if (this.ExistPartWhereSerialisedItem && this.PartWhereSerialisedItem.GetType().Name == typeof(UnifiedGood).Name)
             {
-                this.Details = this.DeriveDetails();
+                var unifiedGood = this.PartWhereSerialisedItem as UnifiedGood;
+                this.DisplayProductCategories = string.Join(", ", unifiedGood.ProductCategoriesWhereProduct.Select(v => v.DisplayName));
             }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+
             var builder = new StringBuilder();
 
             builder.Append(this.ItemNumber);
@@ -102,68 +141,58 @@ namespace Allors.Domain
 
         public void BaseDelete(DeletableDelete method)
         {
-            // TODO: Restrit Delete?
-            foreach (SerialisedItemVersion version in this.AllVersions)
+            if (this.IsDeletable)
             {
-                version.Delete();
-            }
-        }
-
-        public string DeriveDetails()
-        {
-            var builder = new StringBuilder();
-            var part = this.PartWhereSerialisedItem;
-
-            if (part != null && part.ExistManufacturedBy)
-            {
-                builder.Append($", Manufacturer: {part.ManufacturedBy.PartyName}");
-            }
-
-            if (part != null && part.ExistBrand)
-            {
-                builder.Append($", Brand: {part.Brand.Name}");
-            }
-
-            if (part != null && part.ExistModel)
-            {
-                builder.Append($", Model: {part.Model.Name}");
-            }
-
-            builder.Append($", SN: {this.SerialNumber}");
-
-            if (this.ExistManufacturingYear)
-            {
-                builder.Append($", YOM: {this.ManufacturingYear}");
-            }
-
-            foreach (SerialisedItemCharacteristic characteristic in this.SerialisedItemCharacteristics)
-            {
-                if (characteristic.ExistValue)
+                foreach (LocalisedText deletable in this.LocalisedComments)
                 {
-                    var characteristicType = characteristic.SerialisedItemCharacteristicType;
-                    if (characteristicType.ExistUnitOfMeasure)
-                    {
-                        var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
-                                        ? characteristicType.UnitOfMeasure.Abbreviation
-                                        : characteristicType.UnitOfMeasure.Name;
-                        builder.Append(
-                            $", {characteristicType.Name}: {characteristic.Value} {uom}");
-                    }
-                    else
-                    {
-                        builder.Append($", {characteristicType.Name}: {characteristic.Value}");
-                    }
+                    deletable.Delete();
+                }
+
+                foreach (LocalisedText deletable in this.LocalisedNames)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (LocalisedText deletable in this.LocalisedDescriptions)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (LocalisedText deletable in this.LocalisedKeywords)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (Media deletable in this.PublicElectronicDocuments)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (Media deletable in this.PublicLocalisedElectronicDocuments)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (Media deletable in this.PrivateElectronicDocuments)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (Media deletable in this.PrivateLocalisedElectronicDocuments)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (SerialisedItemCharacteristic deletable in this.SerialisedItemCharacteristics)
+                {
+                    deletable.Delete();
+                }
+
+                foreach (SerialisedItemVersion version in this.AllVersions)
+                {
+                    version.Delete();
                 }
             }
-
-            var details = builder.ToString();
-
-            if (details.StartsWith(","))
-            {
-                details = details.Substring(2);
-            }
-
-            return details;
         }
 
         private void DeriveProductCharacteristics(IDerivation derivation)

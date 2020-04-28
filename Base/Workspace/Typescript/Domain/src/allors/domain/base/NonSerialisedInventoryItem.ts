@@ -3,13 +3,14 @@ import { NonSerialisedInventoryItem } from '../generated/NonSerialisedInventoryI
 import { Meta } from '../../meta/generated/domain.g';
 import { InventoryItemTransaction } from '..';
 import { assert } from '../../framework';
+import { NonUnifiedPart } from '../generated';
 
 declare module '../generated/NonSerialisedInventoryItem.g' {
   interface NonSerialisedInventoryItem {
-    facilityName: string;
-    quantityOnHand: number;
-    availableToPromise: number;
-    quantityCommittedOut: number;
+    // facilityName: string;
+    // quantityOnHand: number;
+    // availableToPromise: number;
+    // quantityCommittedOut: number;
   }
 }
 
@@ -26,61 +27,61 @@ domain.extend((workspace) => {
     },
   });
 
-  Object.defineProperty(cls.prototype, 'quantityOnHand', {
-    configurable: true,
-    get(this: NonSerialisedInventoryItem) {
-      let quantity = 0;
+  // Object.defineProperty(cls.prototype, 'quantityOnHand', {
+  //   configurable: true,
+  //   get(this: NonSerialisedInventoryItem) {
+  //     let quantity = 0;
 
-      this.InventoryItemTransactionsWhereInventoryItem.forEach((inventoryTransaction: InventoryItemTransaction) => {
-        const reason = inventoryTransaction.Reason;
+  //     this.InventoryItemTransactionsWhereInventoryItem.forEach((inventoryTransaction: InventoryItemTransaction) => {
+  //       const reason = inventoryTransaction.Reason;
 
-        if (reason?.IncreasesQuantityOnHand && inventoryTransaction.Quantity) {
-          if (reason.IncreasesQuantityOnHand) {
-            quantity += parseFloat(inventoryTransaction.Quantity);
-          } else {
-            quantity -= parseFloat(inventoryTransaction.Quantity);
-          }
-        }
+  //       if (reason?.IncreasesQuantityOnHand && inventoryTransaction.Quantity) {
+  //         if (reason.IncreasesQuantityOnHand) {
+  //           quantity += parseFloat(inventoryTransaction.Quantity);
+  //         } else {
+  //           quantity -= parseFloat(inventoryTransaction.Quantity);
+  //         }
+  //       }
 
-      });
+  //     });
 
-      return quantity;
-    },
-  });
+  //     return quantity;
+  //   },
+  // });
 
-  Object.defineProperty(cls.prototype, 'quantityCommittedOut', {
-    configurable: true,
-    get(this: NonSerialisedInventoryItem) {
-      let quantity = 0;
+  // Object.defineProperty(cls.prototype, 'quantityCommittedOut', {
+  //   configurable: true,
+  //   get(this: NonSerialisedInventoryItem) {
+  //     let quantity = 0;
 
-      this.InventoryItemTransactionsWhereInventoryItem.forEach((inventoryTransaction: InventoryItemTransaction) => {
-        const reason = inventoryTransaction.Reason;
+  //     this.InventoryItemTransactionsWhereInventoryItem.forEach((inventoryTransaction: InventoryItemTransaction) => {
+  //       const reason = inventoryTransaction.Reason;
 
-        if (reason?.IncreasesQuantityCommittedOut && inventoryTransaction.Quantity) {
-          if (reason.IncreasesQuantityCommittedOut) {
-            quantity += parseFloat(inventoryTransaction.Quantity);
-          } else {
-            quantity -= parseFloat(inventoryTransaction.Quantity);
-          }
-        }
-      });
+  //       if (reason?.IncreasesQuantityCommittedOut && inventoryTransaction.Quantity) {
+  //         if (reason.IncreasesQuantityCommittedOut) {
+  //           quantity += parseFloat(inventoryTransaction.Quantity);
+  //         } else {
+  //           quantity -= parseFloat(inventoryTransaction.Quantity);
+  //         }
+  //       }
+  //     });
 
-      return quantity;
-    },
-  });
+  //     return quantity;
+  //   },
+  // });
 
-  Object.defineProperty(cls.prototype, 'availableToPromise', {
-    configurable: true,
-    get(this: NonSerialisedInventoryItem) {
+  // Object.defineProperty(cls.prototype, 'availableToPromise', {
+  //   configurable: true,
+  //   get(this: NonSerialisedInventoryItem) {
 
-      let quantity = this.quantityOnHand - this.quantityCommittedOut;
+  //     let quantity = this.quantityOnHand - this.quantityCommittedOut;
 
-      if (quantity < 0) {
-        quantity = 0;
-      }
+  //     if (quantity < 0) {
+  //       quantity = 0;
+  //     }
 
-      return quantity;
-    },
-  });
+  //     return quantity;
+  //   },
+  // });
 
 });

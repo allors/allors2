@@ -71,7 +71,10 @@ namespace Allors.Domain
             {
                 new TimeSheetBuilder(this.Strategy.Session).WithWorker(this).Build();
             }
+        }
 
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
             var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
@@ -90,29 +93,36 @@ namespace Allors.Domain
                 return;
             }
 
-            foreach (OrganisationContactRelationship organisationContactRelationship in this.OrganisationContactRelationshipsWhereContact)
+            foreach (OrganisationContactRelationship deletable in this.OrganisationContactRelationshipsWhereContact)
             {
-                organisationContactRelationship.Delete();
+                deletable.Delete();
             }
 
-            foreach (PartyFinancialRelationship partyFinancialRelationship in this.PartyFinancialRelationshipsWhereParty)
+            foreach (PartyFinancialRelationship deletable in this.PartyFinancialRelationshipsWhereParty)
             {
-                partyFinancialRelationship.Delete();
+                deletable.Delete();
             }
 
-            foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
+            foreach (PartyContactMechanism deletable in this.PartyContactMechanisms)
             {
-                partyContactMechanism.ContactMechanism.Delete();
+                var contactmechanism = deletable.ContactMechanism;
+
+                deletable.Delete();
+
+                if (!contactmechanism.ExistPartyContactMechanismsWhereContactMechanism)
+                {
+                    contactmechanism.Delete();
+                }
             }
 
-            foreach (CommunicationEvent communicationEvent in this.CommunicationEventsWhereInvolvedParty)
+            foreach (CommunicationEvent deletable in this.CommunicationEventsWhereInvolvedParty)
             {
-                communicationEvent.Delete();
+                deletable.Delete();
             }
 
-            foreach (OrganisationContactRelationship contactRelationship in this.OrganisationContactRelationshipsWhereContact)
+            foreach (OrganisationContactRelationship deletable in this.OrganisationContactRelationshipsWhereContact)
             {
-                contactRelationship.Delete();
+                deletable.Delete();
             }
 
             if (this.ExistTimeSheetWhereWorker)

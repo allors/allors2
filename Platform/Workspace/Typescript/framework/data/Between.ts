@@ -8,7 +8,7 @@ export class Between extends ParametrizedPredicate {
   public parameter: string;
   public values: UnitTypes[];
 
-  constructor(fields?: Partial<Between>| RoleType) {
+  constructor(fields?: Partial<Between> | RoleType) {
     super();
 
     if ((fields as RoleType).objectType) {

@@ -11,7 +11,6 @@ import { Tree } from './Tree';
 import { serializeObject } from '../workspace/SessionObject';
 
 export class Pull {
-
   public extentRef?: string;
 
   public extent?: Extent;
@@ -22,7 +21,7 @@ export class Pull {
 
   public results: Result[];
 
-  public parameters?: { [name: string]: ParameterTypes; };
+  public parameters?: { [name: string]: ParameterTypes };
 
   constructor(fields?: Partial<Pull> | ObjectType, flat?: FlatPull) {
     if (fields instanceof ObjectType) {
@@ -53,10 +52,10 @@ export class Pull {
         if (flat.fetchRef || flat.fetch || flat.include || flat.name || flat.skip || flat.take) {
           const result = new Result({
             fetchRef: flat.fetchRef,
-            fetch: flat.fetch ? flat.fetch instanceof Fetch ? flat.fetch : new Fetch(this.objectType, flat.fetch) : undefined,
+            fetch: flat.fetch ? (flat.fetch instanceof Fetch ? flat.fetch : new Fetch(this.objectType, flat.fetch)) : undefined,
             name: flat.name,
             skip: flat.skip,
-            take: flat.take
+            take: flat.take,
           });
 
           if (flat.include) {
@@ -83,7 +82,6 @@ export class Pull {
   }
 
   public toJSON(): any {
-
     const sessionObject = this.object as ISessionObject;
 
     return {

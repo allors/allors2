@@ -5,11 +5,11 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or } from '../../../../../framework';
+import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or, Sort, GreaterThan } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, SingletonId } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService, PrintService, SaveService } from '../../../..';
 
-import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory, NonUnifiedPartBarcodePrint, Singleton } from '../../../../../domain';
+import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory, NonUnifiedPartBarcodePrint, Singleton, NonSerialisedInventoryItem } from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -17,9 +17,9 @@ interface Row extends TableRow {
   object: Part;
   name: string;
   partNo: string;
-  type: string;
   categories: string;
   qoh: string;
+  localQoh: string;
   brand: string;
   model: string;
   kind: string;
@@ -42,8 +42,9 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   goodIdentificationTypes: ProductIdentificationType[];
-  parts: Part[];
+  parts: NonUnifiedPart[];
   nonUnifiedPartBarcodePrint: NonUnifiedPartBarcodePrint;
+  facilities: Facility[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -78,6 +79,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         { name: 'type' },
         { name: 'categories' },
         { name: 'qoh' },
+        { name: 'localQoh' },
         { name: 'brand' },
         { name: 'model' },
         { name: 'kind' },
@@ -132,12 +134,22 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       new ContainedIn({
         propertyType: m.Part.InventoryItemsWherePart,
         extent: new Filter({
-          objectType: m.InventoryItem,
+          objectType: m.NonSerialisedInventoryItem,
           predicate: new Equals({
             propertyType: m.InventoryItem.Facility,
-            parameter: 'facility'
-          })
-        })
+            parameter: 'inStock',
+          }),
+        }),
+      }),
+      new ContainedIn({
+        propertyType: m.Part.InventoryItemsWherePart,
+        extent: new Filter({
+          objectType: m.NonSerialisedInventoryItem,
+          predicate: new Equals({
+            propertyType: m.InventoryItem.Facility,
+            parameter: 'outOfStock',
+          }),
+        }),
       }),
     ]);
 
@@ -193,7 +205,8 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         type: { search: typeSearch, display: (v: ProductType) => v && v.Name },
         category: { search: categorySearch, display: (v: PartCategory) => v && v.Name },
         identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
-        facility: { search: facilitySearch, display: (v: Facility) => v && v.Name },
+        inStock: { search: facilitySearch, display: (v: Facility) => v && v.Name },
+        outOfStock: { search: facilitySearch, display: (v: Facility) => v && v.Name },
       });
 
     const sorter = new Sorter(
@@ -225,8 +238,11 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
                 ProductType: x,
                 PrimaryPhoto: x,
                 InventoryItemKind: x,
+                InventoryItemsWherePart: {
+                  Facility: x,
+                },
                 ProductIdentifications: {
-                  ProductIdentificationType: x
+                  ProductIdentificationType: x,
                 },
               },
               parameters: this.filterService.parameters(filterFields),
@@ -268,9 +284,32 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.context.reset();
 
+        this.facilities = loaded.collections.Facilities as Facility[];
         this.nonUnifiedPartBarcodePrint = loaded.objects.NonUnifiedPartBarcodePrint as NonUnifiedPartBarcodePrint;
 
         this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
+
+        const inStockSearch = this.filterService.filterFields.find(v => v.definition.fieldName === 'In Stock');
+        let facilitySearchId = inStockSearch?.value;
+        if (inStockSearch !== undefined)
+        {
+          this.parts = this.parts.filter(v => {
+            return v.InventoryItemsWherePart.filter((i: NonSerialisedInventoryItem) => i.Facility.id === inStockSearch.value && Number(i.QuantityOnHand) > 0).length > 0;
+          });
+        }
+
+        const outOStockSearch = this.filterService.filterFields.find(v => v.definition.fieldName === 'Out Of Stock');
+        if (facilitySearchId === undefined) {
+          facilitySearchId = outOStockSearch?.value;
+        }
+
+        if (outOStockSearch !== undefined)
+        {
+          this.parts = this.parts.filter(v => {
+            return v.InventoryItemsWherePart.filter((i: NonSerialisedInventoryItem) => i.Facility.id === outOStockSearch.value && Number(i.QuantityOnHand) === 0).length > 0;
+          });
+        }
+
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         const partCategories = loaded.collections.PartCategories as PartCategory[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
@@ -288,7 +327,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
             name: v.Name,
             partNo: partNumberByPart[v.id][0],
             qoh: v.QuantityOnHand,
-            type: v.ProductType ? v.ProductType.Name : '',
+            localQoh: facilitySearchId && (v.InventoryItemsWherePart as NonSerialisedInventoryItem[]).find(i => i.Facility.id === facilitySearchId).QuantityOnHand,
             categories: partCategories.filter(w => w.Parts.includes(v)).map((w) => w.displayName).join(', '),
             brand: v.Brand ? v.Brand.Name : '',
             model: v.Model ? v.Model.Name : '',

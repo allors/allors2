@@ -7,6 +7,8 @@ namespace Allors.Domain
 {
     using System;
     using System.Linq;
+    using Allors.Meta;
+    using Resources;
 
     public partial class WorkEffortInventoryAssignment
     {
@@ -20,12 +22,12 @@ namespace Allors.Domain
 
             foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
             {
-                this.SyncInventoryTransactions(this.InventoryItem, this.Quantity, createReason, false);
+                this.SyncInventoryTransactions(derivation, this.InventoryItem, this.Quantity, createReason, false);
             }
 
             foreach (InventoryTransactionReason cancelReason in state.InventoryTransactionReasonsToCancel)
             {
-                this.SyncInventoryTransactions(this.InventoryItem, this.Quantity, cancelReason, true);
+                this.SyncInventoryTransactions(derivation, this.InventoryItem, this.Quantity, cancelReason, true);
             }
 
             if (inventoryItemChanged)
@@ -38,49 +40,63 @@ namespace Allors.Domain
 
                 foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
                 {
-                    this.SyncInventoryTransactions(previousInventoryItem, previousQuantity, createReason, true);
+                    this.SyncInventoryTransactions(derivation, previousInventoryItem, previousQuantity, createReason, true);
                 }
 
                 foreach (InventoryTransactionReason cancelReason in state.InventoryTransactionReasonsToCancel)
                 {
-                    this.SyncInventoryTransactions(previousInventoryItem, previousQuantity, cancelReason, true);
+                    this.SyncInventoryTransactions(derivation, previousInventoryItem, previousQuantity, cancelReason, true);
                 }
             }
 
-            var date = this.Assignment.ScheduledStart;
-
-            try
-            {
-                this.UnitPurchasePrice = this.InventoryItem.Part.SupplierOfferingsWherePart
-                    .Where(v => v.FromDate <= date && (!v.ExistThroughDate || v.ThroughDate >= date)).Max(v => v.Price);
-            }
-            catch (Exception e)
-            {
-                this.UnitPurchasePrice = 0M;
-            }
-
-            if (this.UnitSellingPrice == 0)
-            {
-                var unitSellingPrice = this.BaseCalculateSellingPrice() ?? 0M;
-                this.UnitSellingPrice = this.AssignedUnitSellingPrice ?? unitSellingPrice;
-            }
+            this.CalculatePurchasePrice();
+            this.CalculateSellingPrice();
 
             if (this.ExistAssignment)
             {
                 this.Assignment.ResetPrintDocument();
             }
         }
-
-        public decimal? BaseCalculateSellingPrice()
+        public void BaseDelete(DeletableDelete method)
         {
-            var part = this.InventoryItem.Part;
-            var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
-            var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
-
-            return currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
+            var session = this.strategy.Session;
+            var derivation = new Derivations.Default.Derivation(session);
+            this.SyncInventoryTransactions(derivation, this.InventoryItem, this.Quantity, new InventoryTransactionReasons(session).Consumption, true);
         }
 
-        private void SyncInventoryTransactions(InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)
+        public void BaseCalculatePurchasePrice(WorkEffortInventoryAssignmentCalculatePurchasePrice method)
+        {
+            if (!method.Result.HasValue)
+            {
+                this.CostOfGoodsSold = this.Quantity * this.InventoryItem.Part.PartWeightedAverage.AverageCost;
+
+                method.Result = true;
+            }
+        }
+
+        public void BaseCalculateSellingPrice(WorkEffortInventoryAssignmentCalculateSellingPrice method)
+        {
+            if (!method.Result.HasValue)
+            {
+                if (this.AssignedUnitSellingPrice.HasValue)
+                {
+                    this.UnitSellingPrice = this.AssignedUnitSellingPrice.Value;
+                }
+                else
+                {
+                    var part = this.InventoryItem.Part;
+                    var currentPriceComponents = new PriceComponents(this.Strategy.Session).CurrentPriceComponents(this.Assignment.ScheduledStart);
+                    var currentPartPriceComponents = part.GetPriceComponents(currentPriceComponents);
+
+                    var price = currentPartPriceComponents.OfType<BasePrice>().Max(v => v.Price);
+                    this.UnitSellingPrice = price ?? 0M;
+                }
+
+                method.Result = true;
+            }
+        }
+
+        private void SyncInventoryTransactions(IDerivation derivation, InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)
         {
             var adjustmentQuantity = 0M;
             var existingQuantity = 0M;
@@ -99,13 +115,20 @@ namespace Allors.Domain
             else
             {
                 adjustmentQuantity = initialQuantity - existingQuantity;
+
+                if (inventoryItem is NonSerialisedInventoryItem nonserialisedInventoryItem && nonserialisedInventoryItem.QuantityOnHand < adjustmentQuantity)
+                {
+                    derivation.Validation.AddError(this, M.NonSerialisedInventoryItem.QuantityOnHand, ErrorMessages.InsufficientStock);
+                }
             }
 
             if (adjustmentQuantity != 0)
             {
                 this.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session())
                     .WithPart(inventoryItem.Part)
+                    .WithFacility(inventoryItem.Facility)
                     .WithQuantity(adjustmentQuantity)
+                    .WithCost(inventoryItem.Part.PartWeightedAverage.AverageCost)
                     .WithReason(reason)
                     .Build());
             }

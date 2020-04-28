@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem } from '../../../../../domain';
+import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem, Organisation } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -79,6 +79,13 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
                 NonSerialisedInventoryItem_NonSerialisedInventoryItemState: x
               }
             }),
+            pull.Organisation({
+              object: this.internalOrganisationId.value,
+              name: 'InternalOrganisation',
+              include: {
+                FacilitiesWhereOwner: x,
+              }
+            }),
           ];
 
           if (isCreate) {
@@ -101,7 +108,10 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
 
         this.allors.context.reset();
 
-        this.inventoryItems = loaded.collections.InventoryItems as InventoryItem[];
+        const internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
+
+        const inventoryItems = loaded.collections.InventoryItems as InventoryItem[];
+        this.inventoryItems = inventoryItems.filter(v => internalOrganisation.FacilitiesWhereOwner.includes(v.Facility));
 
         if (isCreate) {
           this.workEffort = loaded.objects.WorkEffort as WorkEffort;

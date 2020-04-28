@@ -15,7 +15,6 @@ export class Instanceof implements Predicate {
   }
 
   public toJSON(): any {
-
     return {
       kind: 'Instanceof',
       propertytype: this.propertyType.id,

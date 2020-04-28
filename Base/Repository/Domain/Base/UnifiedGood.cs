@@ -27,6 +27,8 @@ namespace Allors.Repository
 
         public string Name { get; set; }
 
+        public string DisplayName { get; set; }
+
         public LocalisedText[] LocalisedNames { get; set; }
 
         public string Description { get; set; }
@@ -131,6 +133,8 @@ namespace Allors.Repository
         public Media[] PrivateElectronicDocuments { get; set; }
 
         public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
+
+        public PartWeightedAverage PartWeightedAverage { get; set; }
         #endregion
 
         #region inherited methods
@@ -150,6 +154,9 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
+
+        public void SetDisplayName() { }
+
         #endregion
     }
 }

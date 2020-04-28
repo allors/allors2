@@ -565,11 +565,15 @@ namespace Allors.Domain
 
             var part1 = this.CreatePart("P1");
 
+            this.Session.Derive(true);
+
             new InventoryItemTransactionBuilder(this.Session)
                 .WithPart(part1)
                 .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
                 .WithQuantity(11)
                 .Build();
+
+            this.Session.Derive(true);
 
             var part1BasePriceYesterday = new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice part1")

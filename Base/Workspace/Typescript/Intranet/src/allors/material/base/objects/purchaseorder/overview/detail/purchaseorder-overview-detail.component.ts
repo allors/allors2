@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Saved, ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
-import { Organisation, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Party, VatRate, VatRegime, PostalAddress, CustomerRelationship, Facility, PurchaseOrder, SupplierRelationship } from '../../../../../../domain';
+import { Organisation, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Party, VatRate, VatRegime, PostalAddress, CustomerRelationship, Facility, PurchaseOrder, SupplierRelationship, SubContractorRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
@@ -32,7 +32,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
   internalOrganisation: Organisation;
 
   addSupplier = false;
-
   addTakenViaContactMechanism = false;
   addTakenViaContactPerson = false;
 
@@ -44,8 +43,10 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
   private previousSupplier: Party;
 
-  private subscription: Subscription;
   facilities: Facility[];
+  private takenVia: Party;
+
+  private subscription: Subscription;
 
   constructor(
     @Self() public allors: ContextService,
@@ -107,6 +108,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
           const id = this.panel.manager.id;
 
           const pulls = [
+            this.fetcher.ownWarehouses,
             pull.PurchaseOrder({
               object: id,
               include: {
@@ -127,10 +129,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
                 },
               }
             }),
-            pull.Facility({
-              predicate: new Equals({ propertyType: m.Facility.Owner, object: this.internalOrganisation }),
-              sort: new Sort(m.Facility.Name)
-            }),
             pull.VatRate(),
             pull.VatRegime(),
           ];
@@ -149,7 +147,8 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
 
         if (this.order.TakenViaSupplier) {
-          this.updateSupplier(this.order.TakenViaSupplier);
+          this.takenVia = this.order.TakenViaSupplier;
+          this.updateSupplier(this.takenVia);
         }
 
         if (this.order.OrderedBy) {
@@ -185,12 +184,13 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
     supplierRelationship.InternalOrganisation = this.internalOrganisation;
 
     this.order.TakenViaSupplier = organisation;
+    this.takenVia = organisation;
   }
 
   public takenViaContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.order.TakenViaSupplier as Organisation;
+    organisationContactRelationship.Organisation = this.takenVia as Organisation;
     organisationContactRelationship.Contact = person;
 
     this.takenViaContacts.push(person);
@@ -200,7 +200,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
   public takenViaContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.takenViaContactMechanisms.push(partyContactMechanism.ContactMechanism);
-    this.order.TakenViaSupplier.AddPartyContactMechanism(partyContactMechanism);
+    this.takenVia.AddPartyContactMechanism(partyContactMechanism);
     this.order.TakenViaContactMechanism = partyContactMechanism.ContactMechanism;
   }
 

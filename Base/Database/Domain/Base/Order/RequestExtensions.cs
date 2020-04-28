@@ -9,6 +9,14 @@ namespace Allors.Domain
 
     public static partial class RequestExtensions
     {
+        public static bool IsDeletable(this Request @this) =>
+            // EmailAddress is used whith anonymous request form website
+            !@this.ExistEmailAddress 
+            && (@this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Submitted)
+                || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Cancelled)
+                || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Rejected))
+            && @this.RequestItems.All(v => v.IsDeletable);
+
         public static void BaseOnBuild(this Request @this, ObjectOnBuild method)
         {
             if (!@this.ExistRequestState && !@this.ExistOriginator)
@@ -72,6 +80,17 @@ namespace Allors.Domain
                             .WithContactMechanism(new TelecommunicationsNumberBuilder(session).WithContactNumber(@this.TelephoneNumber).WithCountryCode(@this.TelephoneCountryCode).Build())
                             .WithContactPurpose(new ContactMechanismPurposes(session).GeneralPhoneNumber)
                             .Build());
+                }
+            }
+        }
+
+        public static void BaseDelete(this Request @this, DeletableDelete method)
+        {
+            if (@this.IsDeletable())
+            {
+                foreach (RequestItem item in @this.RequestItems)
+                {
+                    item.Delete();
                 }
             }
         }

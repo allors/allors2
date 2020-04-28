@@ -1,7 +1,6 @@
 import { Pull } from '../../data';
 
 export class PullRequest {
-
   public pulls: Pull[];
 
   constructor(fields?: Partial<PullRequest>) {

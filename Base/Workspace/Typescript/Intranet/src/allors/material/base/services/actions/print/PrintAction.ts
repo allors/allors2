@@ -19,11 +19,7 @@ export class PrintAction implements Action {
         printable = printable.get(roleType);
       }
 
-      const revision = printable.PrintDocument && printable.PrintDocument.Media ? printable.PrintDocument.Media.Revision : undefined;
-
-      const url = revision ?
-        `${config.url}Print/DownloadWithRevision/${printable.id}?revision=${revision}` :
-        `${config.url}Print/Download/${printable.id}`;
+      const url = `${config.url}print/${printable.id}`;
       window.open(url);
     };
   }

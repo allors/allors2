@@ -9,8 +9,6 @@ declare module '../generated/SerialisedItem.g' {
     displayName: string;
     age: number;
     yearsToGo: number;
-    goingConcern: number;
-    marketValue: number;
   }
 }
 
@@ -51,32 +49,4 @@ domain.extend((workspace) => {
       }
     },
   });
-
-  Object.defineProperty(cls.prototype, 'goingConcern', {
-    configurable: true,
-    get(this: SerialisedItem): number {
-      const good = this.PartWhereSerialisedItem as UnifiedGood | null;
-
-      if (this.CanReadPurchasePrice && good?.ReplacementValue != null && good.LifeTime != null) {
-        return Math.round((parseFloat(good.ReplacementValue) * this.yearsToGo) / good.LifeTime);
-      } else {
-        return 0;
-      }
-    },
-  });
-
-  Object.defineProperty(cls.prototype, 'marketValue', {
-    configurable: true,
-    get(this: SerialisedItem): number {
-      const good = this.PartWhereSerialisedItem as UnifiedGood | null;
-
-      if (this.CanReadPurchasePrice && this.ManufacturingYear != null && good?.ReplacementValue != null && good.LifeTime != null) {
-        return Math.round(parseFloat(good.ReplacementValue) * Math.exp(-2.045 * this.age / good.LifeTime));
-      } else {
-        return 0;
-      }
-    },
-  });
-  
-
 });

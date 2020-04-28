@@ -9,6 +9,11 @@ export class MediaService {
   }
 
   public url(media: Media): string {
-    return `${this.config.url}media/${media.UniqueId}/${media.FileName}?revision=${media.Revision}`;
+    if (media.FileName) {
+      const fileName = encodeURI(media.FileName);
+      return `${this.config.url}media/${media.UniqueId}/${media.Revision}/${fileName}`;
+    } else {
+      return `${this.config.url}media/${media.UniqueId}/${media.Revision}`;
+    }
   }
 }
