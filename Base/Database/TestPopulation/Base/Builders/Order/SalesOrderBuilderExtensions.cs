@@ -23,9 +23,10 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var internalOrganisations = @this.Session.Extent<Organisation>();
+            // Organisation of type Internal Organisation
             internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation.RoleType, true);
 
-            // Organisation with atleast one ActiveCustomer of type Organisation
+            // Filter out the sellerOrganisation
             var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).FirstOrDefault();
 
             var billToCustomer = shipToCustomer;
@@ -125,8 +126,9 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var internalOrganisations = @this.Session.Extent<Organisation>();
+            // Organisation of type Internal Organisation
             internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation.RoleType, true);
-
+            // Filter out the sellerOrganisation
             var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).FirstOrDefault();
 
             var billToCustomer = shipToCustomer;

@@ -59,7 +59,7 @@ namespace src.allors.material.@base.objects.salesorder.create
             return @this;
         }
 
-        public static SalesOrderCreateComponent BuildForPeronExternalDefaults(this SalesOrderCreateComponent @this, SalesOrder salesOrder)
+        public static SalesOrderCreateComponent BuildForPersonExternalDefaults(this SalesOrderCreateComponent @this, SalesOrder salesOrder)
         {
             @this.BillToCustomer.Select(salesOrder.BillToCustomer.DisplayName());
             @this.BillToContactPerson.Select(salesOrder.BillToContactPerson);
