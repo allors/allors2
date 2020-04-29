@@ -423,5 +423,11 @@ namespace Allors.Repository
 
         public void Delete() { }
         #endregion
+
+        #region Allors
+        [Id("3a008524-c74c-48e7-8aa8-a8f9743bd32f")]
+        #endregion
+        [Workspace]
+        public void DeriveDisplayProductCategories() { }
     }
 }

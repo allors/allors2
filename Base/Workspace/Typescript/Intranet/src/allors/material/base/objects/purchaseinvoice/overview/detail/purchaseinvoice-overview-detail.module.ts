@@ -16,12 +16,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialDatepickerModule } from '../../../../../core/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../../core/components/role/file';
+import { AllorsMaterialFilesModule } from '../../../../../core/components/role/files';
 import { AllorsMaterialInputModule } from '../../../../../core/components/role/input';
 import { AllorsMaterialSelectModule } from '../../../../../core/components/role/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../core/components/sidenavtoggle';
@@ -66,6 +68,7 @@ export { PurchaseInvoiceOverviewDetailComponent } from './purchaseinvoice-overvi
     AllorsMaterialAutoCompleteModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
+    AllorsMaterialFilesModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
@@ -87,6 +90,7 @@ export { PurchaseInvoiceOverviewDetailComponent } from './purchaseinvoice-overvi
     MatMenuModule,
     MatRadioModule,
     MatSelectModule,
+    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,

@@ -116,6 +116,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
             BillToEndCustomerContactPerson: x,
             ShipToEndCustomer: x,
             ShipToEndCustomerContactPerson: x,
+            ElectronicDocuments: x,
             PurchaseInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,

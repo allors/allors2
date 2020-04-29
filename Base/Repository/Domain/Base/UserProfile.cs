@@ -28,6 +28,15 @@ namespace Allors.Repository
         [Workspace]
         public InternalOrganisation DefaultInternalOrganization { get; set; }
 
+        #region Allors
+        [Id("18788ff9-2806-488f-a83d-60feefb40ca3")]
+        [AssociationId("72f26bef-dba1-46af-bdaa-3d82f8d9b9c8")]
+        [RoleId("457f1264-fe52-4cc6-8078-e1f4114cbbaa")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Locale DefaulLocale { get; set; }
+
         #region inherited methods
         public void OnBuild() { }
 

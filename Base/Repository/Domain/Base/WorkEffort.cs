@@ -325,6 +325,16 @@ namespace Allors.Repository
         bool CanInvoice { get; set; }
 
         #region Allors
+        [Id("f013bc49-c622-48ed-a6d0-1cf677405498")]
+        [AssociationId("964fb348-85e7-4c5d-a213-219a0c628581")]
+        [RoleId("f235c729-f76c-494d-a301-d3225d04ca56")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public Media[] ElectronicDocuments { get; set; }
+
+        #region Allors
         [Id("D9234724-215F-4F6C-B3E8-9743CB22A245")]
         #endregion
         [Workspace]

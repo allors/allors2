@@ -105,6 +105,8 @@ namespace Allors.Repository
 
         public LocalisedText[] LocalisedComments { get; set; }
 
+        public Media[] ElectronicDocuments { get; set; }
+
         #endregion
 
         #region Allors

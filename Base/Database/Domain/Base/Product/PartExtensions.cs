@@ -118,24 +118,7 @@ namespace Allors.Domain
         {
             if (!method.Result.HasValue)
             {
-                var builder = new StringBuilder();
-
-                builder.Append(@this.Name);
-
-                foreach (SupplierOffering supplierOffering in @this.SupplierOfferingsWherePart)
-                {
-                    if (supplierOffering.Supplier is Organisation supplier)
-                    {
-                        builder.Append(", " + supplier.Name);
-
-                        if (supplierOffering.ExistSupplierProductId)
-                        {
-                            builder.Append(" (" + supplierOffering.SupplierProductId + ")");
-                        }
-                    }
-                }
-
-                @this.DisplayName = builder.ToString();
+                @this.DisplayName = @this.Name;
 
                 method.Result = true;
             }
