@@ -202,18 +202,6 @@
             </div>
 
             <div class="row">
-              <a-mat-static class="col" [object]="part" [roleType]="m.UnifiedGood.ReplacementValue"></a-mat-static>
-              <mat-form-field class="col">
-                <input matInput [(ngModel)]="serialisedItem.goingConcern" name="goingConcern"
-                  placeholder="Going Concern" readonly>
-              </mat-form-field>
-            </div>
-
-            <div class="row">
-              <mat-form-field class="col">
-                <input matInput [(ngModel)]="serialisedItem.marketValue" name="marketValue" placeholder="Market Value"
-                  readonly>
-              </mat-form-field>
               <a-mat-static class="col-md" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem"
                 [roleType]="m.SerialisedItem.SuppliedBy" display="Name"></a-mat-static>
               <a-mat-select class="col-md" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem"
