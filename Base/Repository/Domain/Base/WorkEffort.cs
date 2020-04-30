@@ -242,6 +242,7 @@ namespace Allors.Repository
         [RoleId("eb49972a-e939-476d-bc1d-be3eb7a9c7ef")]
         #endregion
         [Derived]
+        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -253,6 +254,7 @@ namespace Allors.Repository
         [RoleId("334cc51a-9b1c-43f8-b569-9736c3ecee51")]
         #endregion
         [Derived]
+        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -264,10 +266,23 @@ namespace Allors.Repository
         [RoleId("c86eaa44-032b-4202-a3fa-b97dcabbf005")]
         #endregion
         [Derived]
+        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
         decimal TotalSubContractedCost { get; set; }
+
+        #region Allors
+        [Id("1cf26872-3f96-430c-a4b8-cfde33cf628c")]
+        [AssociationId("2819b06a-19b1-4050-a4e3-7af269478580")]
+        [RoleId("5d019410-f620-435c-b41e-5e73b2e62898")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalCost { get; set; }
 
         #region Allors
         [Id("092a296d-6f15-4fdd-aed6-25185e6e10b1")]

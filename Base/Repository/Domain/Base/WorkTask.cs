@@ -57,6 +57,8 @@ namespace Allors.Repository
 
         public decimal TotalSubContractedCost { get; set; }
 
+        public decimal TotalCost { get; set; }
+
         public WorkEffort[] Precendencies { get; set; }
 
         public Facility Facility { get; set; }
