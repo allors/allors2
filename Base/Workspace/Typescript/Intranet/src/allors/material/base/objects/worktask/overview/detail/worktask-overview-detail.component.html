@@ -19,9 +19,13 @@
     </mat-card-header>
 
     <mat-card-content>
+      <mat-tab-group>
+
+        <mat-tab label="General">
+
       <div class="container-fluid">
 
-        <div class="row">
+        <div class="row pt-3">
           <a-mat-select class="col-md" [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates"
             display="Name" label="Status"></a-mat-select>
           <a-mat-input class="col-md" [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
@@ -117,7 +121,18 @@
         </div>
 
       </div>
-    </mat-card-content>
+    </mat-tab>
+
+    <mat-tab label="Documents">
+      <div class="container-fluid">
+        <div class="row pt-3">
+          <a-mat-files class="col-md-12" [object]="workTask" [roleType]="m.WorkTask.ElectronicDocuments" accept="image/*"></a-mat-files>
+        </div>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</mat-card-content>
 
     <mat-card-actions>
       <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE</button>

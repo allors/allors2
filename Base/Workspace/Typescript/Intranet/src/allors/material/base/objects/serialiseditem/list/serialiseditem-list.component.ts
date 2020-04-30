@@ -99,6 +99,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       new Equals({ propertyType: m.SerialisedItem.SuppliedBy, parameter: 'suppliedby' }),
       new Equals({ propertyType: m.SerialisedItem.RentedBy, parameter: 'rentedby' }),
       new Equals({ propertyType: m.SerialisedItem.OwnedBy, parameter: 'ownedby' }),
+      new Like({ roleType: m.SerialisedItem.DisplayProductCategories, parameter: 'category' }),
       new ContainedIn({
         propertyType: m.SerialisedItem.PartWhereSerialisedItem,
         extent: new Filter({
@@ -116,16 +117,6 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
           predicate: new Equals({
             propertyType: m.Part.Model,
             parameter: 'model'
-          })
-        })
-      }),
-      new ContainedIn({
-        propertyType: m.SerialisedItem.PartWhereSerialisedItem,
-        extent: new Filter({
-          objectType: m.UnifiedGood,
-          predicate: new ContainedIn({
-            propertyType: m.UnifiedGood.ProductCategoriesWhereProduct,
-            parameter: 'category'
           })
         })
       }),
@@ -179,11 +170,6 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       roleTypes: [m.Model.Name],
     });
 
-    const categorySearch = new SearchFactory({
-      objectType: m.ProductCategory,
-      roleTypes: [m.ProductCategory.DisplayName],
-    });
-
     const productTypeSearch = new SearchFactory({
       objectType: m.ProductType,
       roleTypes: [m.ProductType.Name],
@@ -202,7 +188,6 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       rentedby: { search: partySearch, display: (v: Party) => v && v.displayName },
       brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
       model: { search: modelSearch, display: (v: Model) => v && v.Name },
-      category: { search: categorySearch, display: (v: ProductCategory) => v && v.DisplayName },
       productType: { search: productTypeSearch, display: (v: ProductType) => v && v.Name },
     });
 

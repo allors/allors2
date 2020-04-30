@@ -91,11 +91,20 @@ namespace Allors.Domain
                         || v.Assignment.WorkEffortState.IsInProgress);
 
             this.DeriveProductCharacteristics(derivation);
+            this.DeriveDisplayProductCategories();
+        }
 
-            if (this.ExistPartWhereSerialisedItem && this.PartWhereSerialisedItem.GetType().Name == typeof(UnifiedGood).Name)
+        public void BaseDeriveDisplayProductCategories(SerialisedItemDeriveDisplayProductCategories method)
+        {
+            if (!method.Result.HasValue)
             {
-                var unifiedGood = this.PartWhereSerialisedItem as UnifiedGood;
-                this.DisplayProductCategories = string.Join(", ", unifiedGood.ProductCategoriesWhereProduct.Select(v => v.DisplayName));
+                if (this.ExistPartWhereSerialisedItem && this.PartWhereSerialisedItem.GetType().Name == typeof(UnifiedGood).Name)
+                {
+                    var unifiedGood = this.PartWhereSerialisedItem as UnifiedGood;
+                    this.DisplayProductCategories = string.Join(", ", unifiedGood.ProductCategoriesWhereProduct.Select(v => v.DisplayName));
+                }
+
+                method.Result = true;
             }
         }
 

@@ -538,6 +538,15 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         Template WorkTaskTemplate { get; set; }
 
+        #region Allors
+        [Id("fa9e9c4d-c210-4afd-89b3-4416be8c39a0")]
+        [AssociationId("036cec3b-a7b0-4a49-9b37-e21efd672537")]
+        [RoleId("eadaf367-edf5-409a-842d-5df68d61b466")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        Template WorkTaskWorkerTemplate { get; set; }
+
         /// <summary>
         /// Gets or sets the WorkEffortCounter to be used to populate the WorkEfforNumber for WorkEffort objects.
         /// </summary>

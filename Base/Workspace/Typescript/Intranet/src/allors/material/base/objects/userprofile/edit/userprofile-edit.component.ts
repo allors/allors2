@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { UserProfile, Organisation } from '../../../../../domain';
+import { Saved, ContextService, MetaService, RefreshService, TestScope, SingletonId } from '../../../../../angular';
+import { UserProfile, Organisation, Singleton, Locale } from '../../../../../domain';
 import { PullRequest, Sort, IObject, Equals } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -24,6 +24,7 @@ export class UserProfileEditComponent extends TestScope implements OnInit, OnDes
 
   private subscription: Subscription;
   internalOrganizations: Organisation[];
+  supportedLocales: Locale[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -32,6 +33,7 @@ export class UserProfileEditComponent extends TestScope implements OnInit, OnDes
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
+    private singletonId: SingletonId,
   ) {
 
     super();
@@ -48,10 +50,17 @@ export class UserProfileEditComponent extends TestScope implements OnInit, OnDes
         switchMap(() => {
 
           const pulls = [
+            pull.Singleton({
+              object: this.singletonId.value,
+              include: {
+                Locales: x,
+              }
+            }),
             pull.UserProfile({
               object: this.data.id,
               include: {
                 DefaultInternalOrganization: x,
+                DefaulLocale: x,
               }
             }),
             pull.Organisation(
@@ -75,6 +84,9 @@ export class UserProfileEditComponent extends TestScope implements OnInit, OnDes
 
         this.userProfile = loaded.objects.UserProfile as UserProfile;
         this.internalOrganizations = loaded.collections.Organisations as Organisation[];
+
+        const singleton = loaded.objects.Singleton as Singleton;
+        this.supportedLocales = singleton.Locales;
 
         this.title = 'Edit User Profile';
       });

@@ -13,12 +13,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../../core/components/role/autocomplete';
 import { AllorsMaterialDatetimepickerModule } from '../../../../../core/components/role/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../../core/components/role/file';
+import { AllorsMaterialFilesModule } from '../../../../../core/components/role/files';
 import { AllorsMaterialHeaderModule } from '../../../../../core/components/header';
 import { AllorsMaterialInputModule } from '../../../../../core/components/role/input';
 import { AllorsMaterialSelectModule } from '../../../../../core/components/role/select';
@@ -45,6 +47,7 @@ export { WorkTaskOverviewDetailComponent } from './worktask-overview-detail.comp
     AllorsMaterialAutoCompleteModule,
     AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
+    AllorsMaterialFilesModule,
     AllorsMaterialHeaderModule,
     AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
@@ -69,6 +72,7 @@ export { WorkTaskOverviewDetailComponent } from './worktask-overview-detail.comp
     MatMenuModule,
     MatRadioModule,
     MatSelectModule,
+    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
