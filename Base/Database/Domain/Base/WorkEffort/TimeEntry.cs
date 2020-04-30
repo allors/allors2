@@ -148,6 +148,9 @@ namespace Allors.Domain
                 }
             }
 
+            // rate before uplift
+            var costRate = billingRate;
+
             if (useInternalRate && this.WorkEffort.Customer != this.WorkEffort.ExecutedBy)
             {
                 billingRate = Math.Round(billingRate * (1 + this.strategy.Session.GetSingleton().Settings.InternalLabourSurchargePercentage / 100), 2);
@@ -225,6 +228,9 @@ namespace Allors.Domain
                 var billableTimeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(billableMinutes, this.BillingFrequency), 2);
 
                 this.BillingAmount = Math.Round((decimal)(this.BillingRate * billableTimeInTimeEntryRateFrequency), 2);
+
+                var timeSpendInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(minutes, this.BillingFrequency), 2);
+                this.Cost = Math.Round((decimal)(costRate * timeSpendInTimeEntryRateFrequency), 2);
             }
         }
 
