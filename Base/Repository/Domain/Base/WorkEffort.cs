@@ -237,6 +237,39 @@ namespace Allors.Repository
         decimal EstimatedHours { get; set; }
 
         #region Allors
+        [Id("f5580447-3ac9-4bef-82db-f3e98652fae7")]
+        [AssociationId("4498abb8-d330-4332-8ad6-0f82e7469666")]
+        [RoleId("eb49972a-e939-476d-bc1d-be3eb7a9c7ef")]
+        #endregion
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalLabourCost { get; set; }
+
+        #region Allors
+        [Id("55ed26a9-c025-4232-87d5-99d8f5cfd108")]
+        [AssociationId("af876fc4-b63a-4ce8-8755-11233d955020")]
+        [RoleId("334cc51a-9b1c-43f8-b569-9736c3ecee51")]
+        #endregion
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalMaterialCost{ get; set; }
+
+        #region Allors
+        [Id("5fdb39db-0777-447b-9eb2-239a5aec0383")]
+        [AssociationId("944efec8-111a-496c-a4e1-e13b99a2af62")]
+        [RoleId("c86eaa44-032b-4202-a3fa-b97dcabbf005")]
+        #endregion
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalSubContractedCost { get; set; }
+
+        #region Allors
         [Id("092a296d-6f15-4fdd-aed6-25185e6e10b1")]
         [AssociationId("95a67913-5914-4705-b76d-6eed73704fab")]
         [RoleId("ff1fade9-aa0b-4058-b8e0-8d993eb841cb")]
