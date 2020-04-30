@@ -57,6 +57,13 @@ namespace Allors.Domain
                         singleton.CreateOpenDocumentTemplate<Print.WorkTaskModel.Model>("WorkTask.odt",
                             singleton.GetResourceBytes("Templates.WorkTask.odt"));
                 }
+
+                if (!@this.ExistWorkTaskWorkerTemplate)
+                {
+                    @this.WorkTaskWorkerTemplate =
+                        singleton.CreateOpenDocumentTemplate<Print.WorkTaskModel.Model>("WorkTaskWorker.odt",
+                            singleton.GetResourceBytes("Templates.WorkTaskWorker.odt"));
+                }
             }
         }
 

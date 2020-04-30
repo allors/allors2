@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, MetaService, RefreshService, Invoked, Action } from '../../../../../../angular';
-import { WorkTask, SalesInvoice, SerialisedItem, FixedAsset } from '../../../../../../domain';
+import { PanelService, NavigationService, MetaService, RefreshService, Invoked, Action, ActionTarget } from '../../../../../../angular';
+import { WorkTask, SalesInvoice, SerialisedItem, FixedAsset, Printable } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrintService, SaveService } from '../../../../../../../allors/material';
@@ -10,7 +10,7 @@ import { Equals, And, ContainedIn, Filter } from '../../../../../../../allors/fr
   // tslint:disable-next-line:component-selector
   selector: 'worktask-overview-summary',
   templateUrl: './worktask-overview-summary.component.html',
-  providers: [PanelService]
+  providers: [PanelService, PrintService]
 })
 export class WorkTaskOverviewSummaryComponent {
 
@@ -20,6 +20,7 @@ export class WorkTaskOverviewSummaryComponent {
   parent: WorkTask;
 
   print: Action;
+  printForWorker: Action;
   salesInvoices: Set<SalesInvoice>;
   assets: FixedAsset[];
 
@@ -35,6 +36,20 @@ export class WorkTaskOverviewSummaryComponent {
     this.m = this.metaService.m;
 
     this.print = printService.print();
+    this.printForWorker = {
+      name: 'printforworker',
+      displayName: () => 'printforworker',
+      description: () => 'printforworker',
+      disabled: () => false,
+      execute: (target: ActionTarget) => {
+
+        const printable = target as Printable;
+
+        const url = `${this.printService.config.url}printforworker/${printable.id}`;
+        window.open(url);
+      },
+      result: null,
+    };
 
     panel.name = 'summary';
 
