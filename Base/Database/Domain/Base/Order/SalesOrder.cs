@@ -63,6 +63,7 @@ namespace Allors.Domain
                 || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).ReadyForPosting)
                 || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Cancelled)
                 || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Rejected))
+            && !this.ExistSalesInvoicesWhereSalesOrder
             && this.SalesOrderItems.All(v => v.IsDeletable);
 
         public void BaseOnBuild(ObjectOnBuild method)

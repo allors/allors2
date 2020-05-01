@@ -16,6 +16,13 @@ namespace Allors.Domain
 
     public partial class ProductQuote
     {
+        public bool IsDeletable =>
+              (this.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Created)
+                  || this.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Cancelled)
+                  || this.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Rejected))
+              && !this.ExistSalesOrderWhereQuote
+              && this.QuoteItems.All(v => v.IsDeletable);
+
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
                 new TransitionalConfiguration(M.ProductQuote, M.ProductQuote.QuoteState),
@@ -294,7 +301,7 @@ namespace Allors.Domain
             }
 
             var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
-            if (this.IsDeletable())
+            if (this.IsDeletable)
             {
                 this.RemoveDeniedPermission(deletePermission);
             }

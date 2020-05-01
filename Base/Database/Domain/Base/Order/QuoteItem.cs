@@ -31,6 +31,7 @@ namespace Allors.Domain
             (this.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Draft)
                 || this.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted)
                 || this.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Cancelled))
+            && !this.ExistEngagementItemsWhereQuoteItem
             && !this.ExistOrderItemsWhereQuoteItem;
 
         public void BaseOnBuild(ObjectOnBuild method)

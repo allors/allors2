@@ -19,6 +19,13 @@ namespace Allors.Domain
                 new TransitionalConfiguration(M.PurchaseInvoice, M.PurchaseInvoice.PurchaseInvoiceState),
             };
 
+        private bool IsDeletable =>
+            (this.PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Strategy.Session).Created)
+                || this.PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Strategy.Session).Cancelled)
+                || this.PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Strategy.Session).Rejected))
+            && this.ExistSalesInvoiceWherePurchaseInvoice
+            && this.PurchaseInvoiceItems.All(v => v.IsDeletable);
+
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public InvoiceItem[] InvoiceItems => this.PurchaseInvoiceItems;
@@ -203,6 +210,16 @@ namespace Allors.Domain
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+
             if (this.ExistSalesInvoiceWherePurchaseInvoice)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.CreateSalesInvoice, Operations.Execute));
@@ -402,6 +419,42 @@ namespace Allors.Domain
                             receipt.ShipmentItem.InventoryItemTransactionWhereShipmentItem.Cost = purchaseInvoiceItem.UnitBasePrice;
                         }
                     }
+                }
+            }
+        }
+
+        public void BaseDelete(DeletableDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                if (this.ExistShippingAndHandlingCharge)
+                {
+                    this.ShippingAndHandlingCharge.Delete();
+                }
+
+                if (this.ExistFee)
+                {
+                    this.Fee.Delete();
+                }
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.DiscountAdjustment.Delete();
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.SurchargeAdjustment.Delete();
+                }
+
+                foreach (PurchaseInvoiceItem invoiceItem in this.PurchaseInvoiceItems)
+                {
+                    invoiceItem.Delete();
+                }
+
+                foreach (SalesTerm salesTerm in this.SalesTerms)
+                {
+                    salesTerm.Delete();
                 }
             }
         }

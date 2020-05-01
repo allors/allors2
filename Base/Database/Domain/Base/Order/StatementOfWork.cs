@@ -5,10 +5,17 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
 
     public partial class StatementOfWork
     {
+        public bool IsDeletable =>
+            (this.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Created)
+                || this.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Cancelled)
+                || this.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Rejected))
+            && this.QuoteItems.All(v => v.IsDeletable);
+
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
                 new TransitionalConfiguration(M.StatementOfWork, M.StatementOfWork.QuoteState),
@@ -21,7 +28,7 @@ namespace Allors.Domain
         public void BaseOnPostDerive(ObjectOnPostDerive method)
         {
             var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
-            if (this.IsDeletable())
+            if (this.IsDeletable)
             {
                 this.RemoveDeniedPermission(deletePermission);
             }
