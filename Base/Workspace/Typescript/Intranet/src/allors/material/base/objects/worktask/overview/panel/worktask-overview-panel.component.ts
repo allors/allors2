@@ -9,8 +9,9 @@ interface Row extends TableRow {
   object: WorkEffort;
   number: string;
   name: string;
-  status: string;
+  state: string;
   customer: string;
+  cost: string;
   lastModifiedDate: string;
 }
 
@@ -47,7 +48,7 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
     public refreshService: RefreshService,
     public navigation: NavigationService,
     public overviewService: OverviewService,
-    public deleteService: DeleteService
+    public deleteService: DeleteService,
   ) {
     super();
 
@@ -71,6 +72,7 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
         { name: 'name', sort },
         { name: 'state', sort },
         { name: 'customer', sort },
+        { name: 'cost', sort },
         { name: 'lastModifiedDate', sort },
       ],
       actions: [
@@ -163,7 +165,8 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
             number: v.WorkEffortNumber,
             name: v.Name,
             customer: v.Customer.displayName,
-            status: v.WorkEffortState ? v.WorkEffortState.Name : '',
+            state: v.WorkEffortState ? v.WorkEffortState.Name : '',
+            cost: v.TotalCost,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });

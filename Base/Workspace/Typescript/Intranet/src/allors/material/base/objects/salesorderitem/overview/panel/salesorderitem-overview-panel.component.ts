@@ -132,7 +132,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
         }),
         pull.SalesOrder({
           name: orderPullName,
-          object: id
+          object: id,
         }),
       );
     };

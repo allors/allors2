@@ -412,6 +412,8 @@ namespace Allors.Repository
 
         public void Create() { }
 
+        public void Revise() { }
+
         #endregion
     }
 }

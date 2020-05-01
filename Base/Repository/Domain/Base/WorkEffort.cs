@@ -405,5 +405,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Invoice();
+
+        #region Allors
+        [Id("ea3b83de-aeac-406d-aaf3-0fcfd57bcaef")]
+        #endregion
+        [Workspace]
+        void Revise();
     }
 }

@@ -101,6 +101,18 @@ namespace Allors.Domain
             }
         }
 
+        public static void BaseRevise(this WorkEffort @this, WorkEffortRevise method)
+        {
+            if (@this.ExistActualStart)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
+            }
+            else
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Created;
+            }
+        }
+
         public static void BaseInvoice(this WorkEffort @this, WorkEffortInvoice method)
         {
             if (!method.Result.HasValue)
