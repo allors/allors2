@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("01fc58a0-89b8-4dc0-97f9-5f628b9c9577")]
     #endregion
-    public partial class QuoteItem : Priceable, Commentable, DelegatedAccessControlledObject, Transitional, Versioned, Deletable
+    public partial class QuoteItem : Priceable, Versioned, Deletable
     {
         #region inherited properties
 
@@ -340,8 +340,6 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void Delete() { }
-
-        public void DelegateAccess() { }
 
         #endregion
 

@@ -124,7 +124,7 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
                 },
                 NonSerialisedInventoryItem_NonSerialisedInventoryItemState: x,
                 Facility: x,
-                UnitOfMeasure: x
+                UnitOfMeasure: x,
               }
             }
           },

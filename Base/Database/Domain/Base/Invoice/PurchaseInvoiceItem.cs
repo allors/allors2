@@ -20,6 +20,12 @@ namespace Allors.Domain
 
         public bool IsValid => !(this.PurchaseInvoiceItemState.IsCancelled || this.PurchaseInvoiceItemState.IsCancelledByInvoice || this.PurchaseInvoiceItemState.IsRejected);
 
+        internal bool IsDeletable =>
+            !this.ExistOrderItemBillingsWhereInvoiceItem &&
+            !this.ExistShipmentItemBillingsWhereInvoiceItem &&
+            !this.ExistWorkEffortBillingsWhereInvoiceItem &&
+            !this.ExistServiceEntryBillingsWhereInvoiceItem;
+
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
@@ -57,6 +63,19 @@ namespace Allors.Domain
             {
                 iteration.AddDependency(invoice, this);
                 iteration.Mark(invoice);
+            }
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
             }
         }
 

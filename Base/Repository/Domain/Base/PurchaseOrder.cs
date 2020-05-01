@@ -349,6 +349,15 @@ namespace Allors.Repository
         [Workspace]
         public Person ShipToContactPerson { get; set; }
 
+        #region Allors
+        [Id("fdab0bcc-518d-419c-a446-499381158c2d")]
+        [AssociationId("a64b9555-bda4-4924-acba-478133263db0")]
+        [RoleId("44356ffb-5ff3-4721-a3c7-13423821c0a1")]
+        #endregion
+        [Required]
+        [Derived]
+        public bool OverDue { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

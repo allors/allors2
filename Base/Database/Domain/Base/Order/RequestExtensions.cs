@@ -15,6 +15,7 @@ namespace Allors.Domain
             && (@this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Submitted)
                 || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Cancelled)
                 || @this.RequestState.Equals(new RequestStates(@this.Strategy.Session).Rejected))
+            && !@this.ExistQuoteWhereRequest
             && @this.RequestItems.All(v => v.IsDeletable);
 
         public static void BaseOnBuild(this Request @this, ObjectOnBuild method)

@@ -51,6 +51,14 @@ namespace Allors.Repository
 
         public decimal EstimatedHours { get; set; }
 
+        public decimal TotalLabourCost { get; set; }
+
+        public decimal TotalMaterialCost { get; set; }
+
+        public decimal TotalSubContractedCost { get; set; }
+
+        public decimal TotalCost { get; set; }
+
         public WorkEffort[] Precendencies { get; set; }
 
         public Facility Facility { get; set; }
@@ -188,6 +196,8 @@ namespace Allors.Repository
         public void Delete() { }
 
         public void Print() { }
+
+        public void Revise() { }
 
         #endregion
     }

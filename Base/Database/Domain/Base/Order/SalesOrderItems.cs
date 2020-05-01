@@ -33,17 +33,18 @@ namespace Allors.Domain
             var cancel = this.Meta.Cancel;
             var reject = this.Meta.Reject;
             var delete = this.Meta.Delete;
+            var reopen = this.Meta.Reopen;
+            var approve = this.Meta.Approve;
 
-            config.Deny(this.ObjectType, inProcess, delete);
-            config.Deny(this.ObjectType, completed, delete, cancel, reject);
+            config.Deny(this.ObjectType, inProcess, delete, reopen, approve);
+            config.Deny(this.ObjectType, completed, delete, cancel, reject, reopen, approve);
 
-            config.Deny(this.ObjectType, shipmentInProgress, delete, cancel, reject);
-            config.Deny(this.ObjectType, partiallyShipped, delete, cancel, reject);
-            config.Deny(this.ObjectType, shipped, delete, cancel, reject);
-            config.Deny(this.ObjectType, cancelled, cancel, reject);
-            config.Deny(this.ObjectType, rejected, cancel, reject);
+            config.Deny(this.ObjectType, shipmentInProgress, delete, cancel, reject, reopen, approve);
+            config.Deny(this.ObjectType, partiallyShipped, delete, cancel, reject, reopen, approve);
+            config.Deny(this.ObjectType, shipped, delete, cancel, reject, reopen, approve);
+            config.Deny(this.ObjectType, cancelled, cancel, reject, approve);
+            config.Deny(this.ObjectType, rejected, cancel, reject, approve);
 
-            config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, inProcess, Operations.Write);
             config.Deny(this.ObjectType, cancelled, Operations.Write);

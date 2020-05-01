@@ -66,6 +66,7 @@ namespace Allors.Repository
         [RoleId("90872970-372a-4f8d-9c53-c753aca9f99f")]
         #endregion
         [Required]
+        [Derived]
         [Precision(19)]
         [Scale(2)]
         [Workspace]

@@ -10,12 +10,6 @@ namespace Allors.Domain
 
     public static partial class QuoteExtensions
     {
-        public static bool IsDeletable(this Quote @this) =>
-           (@this.QuoteState.Equals(new QuoteStates(@this.Strategy.Session).Created)
-               || @this.QuoteState.Equals(new QuoteStates(@this.Strategy.Session).Cancelled)
-               || @this.QuoteState.Equals(new QuoteStates(@this.Strategy.Session).Rejected))
-           && @this.QuoteItems.All(v => v.IsDeletable);
-
         public static void BaseOnBuild(this Quote @this, ObjectOnBuild method)
         {
             if (!@this.ExistQuoteState)
@@ -61,7 +55,13 @@ namespace Allors.Domain
 
         public static void BaseDelete(this Quote @this, DeletableDelete method)
         {
-            if (@this.IsDeletable())
+            var productQuote = @this as ProductQuote;
+            var propasal = @this as Proposal;
+            var statementOfWork = @this as StatementOfWork;
+
+            if ((productQuote != null && productQuote.IsDeletable)
+                || (propasal != null && propasal.IsDeletable)
+                || (statementOfWork != null && statementOfWork.IsDeletable))
             {
                 if (@this.ExistShippingAndHandlingCharge)
                 {
@@ -132,7 +132,7 @@ namespace Allors.Domain
             SetItemState(@this);
         }
 
-        private static void SetItemState(this Quote @this)
+        public static void SetItemState(this Quote @this)
         {
             var quoteItemStates = new QuoteItemStates(@this.Strategy.Session);
 
@@ -159,18 +159,26 @@ namespace Allors.Domain
                     }
                 }
 
-                if (@this.QuoteState.IsApproved)
+                if (@this.QuoteState.IsAwaitingApproval)
+                {
+                    if (Equals(quoteItem.QuoteItemState, quoteItemStates.Draft))
+                    {
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).AwaitingApproval;
+                    }
+                }
+
+                if (@this.QuoteState.IsInProcess)
                 {
                     if (!Equals(quoteItem.QuoteItemState, quoteItemStates.Cancelled)
                         && !Equals(quoteItem.QuoteItemState, quoteItemStates.Rejected))
                     {
-                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Approved;
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).InProcess;
                     }
                 }
 
                 if (@this.QuoteState.IsAwaitingAcceptance)
                 {
-                    if (Equals(quoteItem.QuoteItemState, quoteItemStates.Approved))
+                    if (Equals(quoteItem.QuoteItemState, quoteItemStates.InProcess))
                     {
                         quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).AwaitingAcceptance;
                     }
