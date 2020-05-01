@@ -132,7 +132,7 @@ namespace Allors.Domain
             SetItemState(@this);
         }
 
-        private static void SetItemState(this Quote @this)
+        public static void SetItemState(this Quote @this)
         {
             var quoteItemStates = new QuoteItemStates(@this.Strategy.Session);
 
@@ -159,18 +159,26 @@ namespace Allors.Domain
                     }
                 }
 
-                if (@this.QuoteState.IsApproved)
+                if (@this.QuoteState.IsAwaitingApproval)
+                {
+                    if (Equals(quoteItem.QuoteItemState, quoteItemStates.Draft))
+                    {
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).AwaitingApproval;
+                    }
+                }
+
+                if (@this.QuoteState.IsInProcess)
                 {
                     if (!Equals(quoteItem.QuoteItemState, quoteItemStates.Cancelled)
                         && !Equals(quoteItem.QuoteItemState, quoteItemStates.Rejected))
                     {
-                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).Approved;
+                        quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).InProcess;
                     }
                 }
 
                 if (@this.QuoteState.IsAwaitingAcceptance)
                 {
-                    if (Equals(quoteItem.QuoteItemState, quoteItemStates.Approved))
+                    if (Equals(quoteItem.QuoteItemState, quoteItemStates.InProcess))
                     {
                         quoteItem.QuoteItemState = new QuoteItemStates(@this.Strategy.Session).AwaitingAcceptance;
                     }

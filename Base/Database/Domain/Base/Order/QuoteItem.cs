@@ -33,24 +33,11 @@ namespace Allors.Domain
                 || this.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Cancelled))
             && !this.ExistOrderItemsWhereQuoteItem;
 
-        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
-        {
-            if (method.SecurityTokens == null)
-            {
-                method.SecurityTokens = this.SyncedQuote?.SecurityTokens.ToArray();
-            }
-
-            if (method.DeniedPermissions == null)
-            {
-                method.DeniedPermissions = this.SyncedQuote?.DeniedPermissions.ToArray();
-            }
-        }
-
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistQuoteItemState)
             {
-                this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Submitted;
+                this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Draft;
             }
 
             if (this.ExistProduct && !this.ExistInvoiceItemType)
