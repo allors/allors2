@@ -1,6 +1,6 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, Action, MetaService, TestScope } from '../../../../../../angular';
-import { TimeEntry } from '../../../../../../domain';
+import { TimeEntry, WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, ObjectData, EditService } from '../../../../..';
 import * as moment from 'moment';
@@ -20,6 +20,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit {
+  workEffort: WorkEffort;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -99,11 +100,15 @@ export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit
               }
             }
           }
-        })
+        }),
+        pull.WorkEffort({
+          object: id,
+        }),
       );
     };
 
     this.panel.onPulled = (loaded) => {
+      this.workEffort = loaded.objects.WorkEffort as WorkEffort;
       this.objects = loaded.collections[pullName] as TimeEntry[];
 
       if (this.objects) {

@@ -88,6 +88,9 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
             }),
             pull.Part({
               object: this.data.associationId,
+              include: {
+                PartWeightedAverage: x,
+              }
             }),
             pull.SerialisedItem({
               object: this.data.associationId,
@@ -95,7 +98,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
             pull.SerialisedItem({
               object: this.data.associationId,
               fetch: {
-                PartWhereSerialisedItem: x
+                PartWhereSerialisedItem: x,
               }
             })
           ];

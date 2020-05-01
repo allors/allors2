@@ -26,7 +26,7 @@ namespace Allors.Domain
         private bool IsDeletable =>
                     this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).ReadyForPosting) &&
             this.SalesInvoiceItems.All(v => v.IsDeletable) &&
-            this.SalesOrders.Count == 0 &&
+            !this.ExistSalesOrders &&
             !this.ExistPurchaseInvoice &&
             !this.ExistRepeatingSalesInvoiceWhereSource &&
             !this.IsRepeatingInvoice;

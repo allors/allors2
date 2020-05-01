@@ -11,7 +11,7 @@ import { PrintConfig } from './print.config';
 })
 export class PrintService {
 
-  constructor(private config: PrintConfig) {
+  constructor(public config: PrintConfig) {
    }
 
   print(roleType?: RoleType): Action {

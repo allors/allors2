@@ -11,7 +11,7 @@ namespace Allors.Domain
 
         public bool IsDraft => Equals(this.UniqueId, QuoteItemStates.DraftId);
 
-        public bool IsApproved => Equals(this.UniqueId, QuoteItemStates.ApprovedId);
+        public bool IsApproved => Equals(this.UniqueId, QuoteItemStates.InProcessId);
 
         public bool IsAwaitingAcceptance => Equals(this.UniqueId, QuoteItemStates.AwaitingAcceptanceId);
 

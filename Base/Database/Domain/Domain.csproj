@@ -29,6 +29,7 @@
     <None Remove="Templates\SalesInvoice.odt" />
     <None Remove="Templates\SalesOrder.odt" />
     <None Remove="Templates\WorkTask.odt" />
+    <None Remove="Templates\WorkTaskWorker.odt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +37,7 @@
     <EmbeddedResource Include="Templates\PurchaseInvoice.odt" />
     <EmbeddedResource Include="Templates\PurchaseOrder.odt" />
     <EmbeddedResource Include="Templates\WorkTask.odt" />
+    <EmbeddedResource Include="Templates\WorkTaskWorker.odt" />
     <EmbeddedResource Include="Templates\SalesInvoice.odt" />
     <EmbeddedResource Include="Templates\SalesOrder.odt" />
     <EmbeddedResource Include="Templates\ProductQuote.odt" />

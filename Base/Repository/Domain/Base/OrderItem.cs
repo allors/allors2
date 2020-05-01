@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("f3ef0124-e867-4da2-9323-80fbe1f214c2")]
     #endregion
-    public partial interface OrderItem : DelegatedAccessControlledObject, Commentable, Transitional, Priceable, Deletable
+    public partial interface OrderItem : Transitional, Priceable, Deletable
     {
         #region Allors
         [Id("7D6B04D2-062C-45B8-96AB-DC41A3DECAF8")]
@@ -167,5 +167,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Approve();
+
+        #region Allors
+        [Id("540e9b1b-db95-44c2-961f-0faeef176b2d")]
+        #endregion
+        [Workspace]
+        void Reopen();
     }
 }

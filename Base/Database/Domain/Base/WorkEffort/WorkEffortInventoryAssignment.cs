@@ -96,6 +96,19 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.Assignment?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.Assignment?.DeniedPermissions.ToArray();
+            }
+        }
+
         private void SyncInventoryTransactions(IDerivation derivation, InventoryItem inventoryItem, decimal initialQuantity, InventoryTransactionReason reason, bool isCancellation)
         {
             var adjustmentQuantity = 0M;

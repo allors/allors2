@@ -19,8 +19,9 @@ domain.extend((workspace) => {
     configurable: true,
     get(this: WorkEffortInventoryAssignment): string {
       if (this.CanReadUnitSellingPrice) {
-        const quantity = this.BillableQuantity ? this.BillableQuantity : this.Quantity;
-        return (parseFloat(quantity) * parseFloat(this.UnitSellingPrice)).toFixed(2);
+        const quantity = this.BillableQuantity ? this.BillableQuantity : this.Quantity ? this.Quantity : '0';
+        const unitSellingPrice = this.UnitSellingPrice ? this.UnitSellingPrice : '0';
+        return (parseFloat(quantity) * parseFloat(unitSellingPrice)).toFixed(2);
       } else {
         return '0';
       }

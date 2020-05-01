@@ -1,6 +1,6 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, MetaService, TestScope, ContextService } from '../../../../../../angular';
-import { WorkEffortPartyAssignment, OrganisationContactRelationship, Party } from '../../../../../../domain';
+import { WorkEffortPartyAssignment, OrganisationContactRelationship, Party, WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, ObjectData } from '../../../../..';
 import * as moment from 'moment';
@@ -22,6 +22,7 @@ interface Row extends TableRow {
   providers: [PanelService, ContextService]
 })
 export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope implements OnInit {
+  workEffort: WorkEffort;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -132,10 +133,14 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope i
             }
           }
         }),
+        pull.WorkEffort({
+          object: id,
+        }),
       );
     };
 
     this.panel.onPulled = (loaded) => {
+      this.workEffort = loaded.objects.WorkEffort as WorkEffort;
       const fromParty = loaded.collections[partypullName] as WorkEffortPartyAssignment[];
       const fromWorkEffort = loaded.collections[workeffortpullName] as WorkEffortPartyAssignment[];
 
