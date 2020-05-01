@@ -63,6 +63,7 @@ namespace Allors.Domain
                 || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).ReadyForPosting)
                 || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Cancelled)
                 || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Rejected))
+            && !this.ExistQuote
             && !this.ExistSalesInvoicesWhereSalesOrder
             && this.SalesOrderItems.All(v => v.IsDeletable);
 
@@ -559,6 +560,8 @@ namespace Allors.Domain
         public void BasePost(SalesOrderPost method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).AwaitingAcceptance;
 
         public void BaseReject(OrderReject method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
+
+        public void BaseReopen(OrderReopen method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Provisional;
 
         public void BaseHold(OrderHold method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
 

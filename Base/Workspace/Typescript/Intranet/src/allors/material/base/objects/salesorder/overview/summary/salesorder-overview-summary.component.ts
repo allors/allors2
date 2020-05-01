@@ -170,6 +170,16 @@ export class SalesOrderOverviewSummaryComponent {
       this.saveService.errorHandler);
   }
 
+  public reopen() {
+
+    this.panel.manager.context.invoke(this.order.Reopen)
+      .subscribe(() => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+      },
+      this.saveService.errorHandler);
+  }
+
   public post() {
 
     this.panel.manager.context.invoke(this.order.Post)

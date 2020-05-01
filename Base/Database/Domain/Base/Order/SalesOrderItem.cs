@@ -177,11 +177,9 @@ namespace Allors.Domain
             // SalesOrderItem States
             if (this.IsValid)
             {
-                if (salesOrder.SalesOrderState.IsProvisional
-                    && !this.SalesOrderItemState.IsCancelled
-                    && !this.SalesOrderItemState.IsRejected)
+                if (salesOrder.SalesOrderState.IsProvisional)
                 {
-                        this.SalesOrderItemState = salesOrderItemStates.Provisional;
+                    this.SalesOrderItemState = salesOrderItemStates.Provisional;
                 }
 
                 if (salesOrder.SalesOrderState.IsReadyForPosting &&
@@ -635,19 +633,6 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
-        {
-            if (method.SecurityTokens == null)
-            {
-                method.SecurityTokens = this.SalesOrderWhereSalesOrderItem?.SecurityTokens.ToArray();
-            }
-
-            if (method.DeniedPermissions == null)
-            {
-                method.DeniedPermissions = this.SalesOrderWhereSalesOrderItem?.DeniedPermissions.ToArray();
-            }
-        }
-
         public void BaseDelete(SalesOrderItemDelete method)
         {
             foreach (SalesTerm salesTerm in this.SalesTerms)
@@ -666,6 +651,8 @@ namespace Allors.Domain
         public void BaseReject(OrderItemReject method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Rejected;
 
         public void BaseApprove(OrderItemApprove method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).ReadyForPosting;
+
+        public void BaseReopen(OrderItemReopen method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Provisional;
 
         public void SyncPrices(IDerivation derivation, SalesOrder salesOrder) => this.CalculatePrice(derivation, salesOrder, true);
 

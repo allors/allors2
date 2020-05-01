@@ -20,6 +20,7 @@ namespace Allors.Domain
               (this.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Created)
                   || this.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Cancelled)
                   || this.QuoteState.Equals(new QuoteStates(this.Strategy.Session).Rejected))
+              && !this.ExistRequest
               && !this.ExistSalesOrderWhereQuote
               && this.QuoteItems.All(v => v.IsDeletable);
 

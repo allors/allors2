@@ -303,7 +303,8 @@ namespace Allors.Repository
 
         public void Delete() { }
 
-        public void DelegateAccess() { }
+        public void Reopen() { }
+
         #endregion
 
         #region Allors

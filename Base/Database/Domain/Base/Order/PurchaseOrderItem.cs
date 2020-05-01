@@ -301,19 +301,6 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
-        {
-            if (method.SecurityTokens == null)
-            {
-                method.SecurityTokens = this.PurchaseOrderWherePurchaseOrderItem?.SecurityTokens.ToArray();
-            }
-
-            if (method.DeniedPermissions == null)
-            {
-                method.DeniedPermissions = this.PurchaseOrderWherePurchaseOrderItem?.DeniedPermissions.ToArray();
-            }
-        }
-
         public void BaseDelete(PurchaseOrderItemDelete method)
         {
             if (this.ExistSerialisedItem)
