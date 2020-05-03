@@ -100,7 +100,6 @@ namespace Tests.SalesOrderTests
             var expected = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.internalOrganisation).Build();
 
             Assert.True(expected.ExistBillToCustomer);
-            Assert.True(expected.ExistBillToCustomer);
             Assert.True(expected.ExistBillToContactMechanism);
             Assert.True(expected.ExistBillToContactPerson);
             Assert.True(expected.ExistShipToCustomer);
@@ -160,7 +159,6 @@ namespace Tests.SalesOrderTests
 
             var expected = new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(this.internalOrganisation).Build();
 
-            Assert.True(expected.ExistBillToCustomer);
             Assert.True(expected.ExistBillToCustomer);
             Assert.True(expected.ExistBillToContactMechanism);
             Assert.True(expected.ExistBillToContactPerson);
@@ -222,12 +220,9 @@ namespace Tests.SalesOrderTests
             var expected = new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(this.internalOrganisation).Build();
 
             Assert.True(expected.ExistBillToCustomer);
-            Assert.True(expected.ExistBillToCustomer);
             Assert.True(expected.ExistBillToContactMechanism);
-            Assert.True(expected.ExistBillToContactPerson);
             Assert.True(expected.ExistShipToCustomer);
             Assert.True(expected.ExistShipToAddress);
-            Assert.True(expected.ExistShipToContactPerson);
             Assert.True(expected.ExistShipFromAddress);
             Assert.True(expected.ExistCustomerReference);
             Assert.True(expected.ExistDescription);
@@ -237,10 +232,8 @@ namespace Tests.SalesOrderTests
 
             var expectedBillToCustomer = expected.BillToCustomer.DisplayName();
             var expectedBillToContactMechanism = expected.BillToContactMechanism;
-            var expectedBillToContactPerson = expected.BillToContactPerson;
             var expectedShipToCustomer = expected.ShipToCustomer.DisplayName();
             var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
-            var expectedShipToContactPerson = expected.ShipToContactPerson;
             var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
             var expectedDescription = expected.Description;
@@ -265,10 +258,8 @@ namespace Tests.SalesOrderTests
 
             Assert.Equal(expectedBillToCustomer, actual.BillToCustomer?.DisplayName());
             Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
-            Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
             Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
-            Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
             Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);
             Assert.Equal(expectedDescription, actual.Description);
