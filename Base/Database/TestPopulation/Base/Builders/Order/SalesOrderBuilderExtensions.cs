@@ -23,9 +23,10 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var internalOrganisations = @this.Session.Extent<Organisation>();
+            // Organisation of type Internal Organisation
             internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation.RoleType, true);
 
-            // Organisation with atleast one ActiveCustomer of type Organisation
+            // Filter out the sellerOrganisation
             var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).FirstOrDefault();
 
             var billToCustomer = shipToCustomer;
@@ -125,8 +126,9 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             var internalOrganisations = @this.Session.Extent<Organisation>();
+            // Organisation of type Internal Organisation
             internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation.RoleType, true);
-
+            // Filter out the sellerOrganisation
             var shipToCustomer = internalOrganisations.Except(new List<Organisation> { sellerOrganisation }).FirstOrDefault();
 
             var billToCustomer = shipToCustomer;
@@ -140,7 +142,7 @@ namespace Allors.Domain.TestPopulation
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
-            @this.WithCustomerReference(faker.Random.String(16));
+            @this.WithCustomerReference(faker.Random.Words(10));
             @this.WithTakenBy(sellerOrganisation);
             @this.WithTakenByContactMechanism(sellerOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithTakenByContactPerson(sellerOrganisation.CurrentContacts.FirstOrDefault());
@@ -186,7 +188,7 @@ namespace Allors.Domain.TestPopulation
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
-            @this.WithCustomerReference(faker.Random.String(16));
+            @this.WithCustomerReference(faker.Random.Words(16));
             @this.WithTakenBy(sellerOrganisation);
             @this.WithTakenByContactMechanism(sellerOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithTakenByContactPerson(sellerOrganisation.CurrentContacts.FirstOrDefault());
