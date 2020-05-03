@@ -1,5 +1,4 @@
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import * as moment from 'moment/moment';import { Moment } from 'moment';
 
 import { Component, Optional, Output, EventEmitter, Self, Inject, Input, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';

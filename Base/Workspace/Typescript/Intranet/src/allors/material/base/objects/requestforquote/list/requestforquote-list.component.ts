@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { PullRequest, And, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FetcherService, UserId } from '../../../../../angular';

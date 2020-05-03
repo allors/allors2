@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { Meta } from '../../../../../meta';
 import { combineLatest, Subscription } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory, ActionTarget, FetcherService, UserId } from '../../../../../angular';
 import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt, Organisation, Person, UserGroup } from '../../../../../domain';

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';

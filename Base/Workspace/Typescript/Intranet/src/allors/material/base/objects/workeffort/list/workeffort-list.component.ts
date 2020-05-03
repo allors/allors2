@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
 import { WorkEffort, Person, FixedAsset, WorkEffortState, Party } from '../../../../../domain';
