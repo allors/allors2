@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "lint-fix": "tslint --fix --project ./src/tsconfig.app.json",
     "build-stats": "ng build --aot --optimization --stats-json",
-    "stats": "webpack-bundle-analyzer dist/material/stats-es2015.json",
+    "stats": "webpack-bundle-analyzer dist/intranet/stats-es2015.json",
     "autotest": "npx -p typescript tsc --project ./autotest/tsconfig.autotest.json && node ./out-tsc/autotest/autotest/main  && npx rimraf ./out-tsc"
   },
   "private": true,
