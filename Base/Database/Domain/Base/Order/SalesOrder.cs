@@ -561,7 +561,11 @@ namespace Allors.Domain
 
         public void BaseReject(OrderReject method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
 
-        public void BaseReopen(OrderReopen method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Provisional;
+        public void BaseReopen(OrderReopen method)
+        {
+            this.SalesOrderState = this.PreviousSalesOrderState;
+            //this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Provisional;
+        }
 
         public void BaseHold(OrderHold method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
 

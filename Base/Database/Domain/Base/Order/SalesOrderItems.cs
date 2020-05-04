@@ -14,6 +14,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
+            var provisional = new SalesOrderItemStates(this.Session).Provisional;
             var readyForPosting = new SalesOrderItemStates(this.Session).ReadyForPosting;
             var awaitingAcceptance = new SalesOrderItemStates(this.Session).AwaitingAcceptance;
             var inProcess = new SalesOrderItemStates(this.Session).InProcess;
@@ -36,6 +37,9 @@ namespace Allors.Domain
             var reopen = this.Meta.Reopen;
             var approve = this.Meta.Approve;
 
+            config.Deny(this.ObjectType, provisional, reopen, approve);
+            config.Deny(this.ObjectType, awaitingAcceptance, reopen, approve);
+            config.Deny(this.ObjectType, readyForPosting, reopen, approve);
             config.Deny(this.ObjectType, inProcess, delete, reopen, approve);
             config.Deny(this.ObjectType, completed, delete, cancel, reject, reopen, approve);
 

@@ -44,7 +44,6 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
   edit: Action;
   cancel: Action;
   reject: Action;
-  approve: Action;
   reopen: Action;
 
   get createData(): ObjectData {
@@ -80,7 +79,6 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
     this.edit = editService.edit();
     this.cancel = methodService.create(allors.context, this.m.SalesOrderItem.Cancel, { name: 'Cancel' });
     this.reject = methodService.create(allors.context, this.m.SalesOrderItem.Reject, { name: 'Reject' });
-    this.approve = methodService.create(allors.context, this.m.SalesOrderItem.Approve, { name: 'Approve' });
     this.reopen = methodService.create(allors.context, this.m.SalesOrderItem.Reopen, { name: 'Reopen' });
 
     const sort = true;
@@ -102,7 +100,6 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
         this.delete,
         this.cancel,
         this.reject,
-        this.approve,
         this.reopen,
       ],
       defaultAction: this.edit,
