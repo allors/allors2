@@ -27,6 +27,7 @@ namespace Allors.Domain
             var partiallyShipped = new SalesOrderShipmentStates(this.Session).PartiallyShipped;
             var inProgress = new SalesOrderShipmentStates(this.Session).InProgress;
             var shipped = new SalesOrderShipmentStates(this.Session).Shipped;
+            var invoiced = new SalesOrderInvoiceStates(this.Session).Invoiced;
 
             var setReadyForPosting = this.Meta.SetReadyForPosting;
             var post = this.Meta.Post;
@@ -54,7 +55,8 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, inProgress, cancel, reject, accept);
             config.Deny(this.ObjectType, partiallyShipped, cancel, reject, accept);
-            config.Deny(this.ObjectType, shipped, cancel, reject, accept);
+            config.Deny(this.ObjectType, shipped, cancel, reject, accept, hold, revise, ship);
+            config.Deny(this.ObjectType, invoiced, cancel, reject, accept, hold, revise, invoice);
 
             config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, inProcess, Operations.Write);
@@ -62,6 +64,8 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, rejected, Operations.Write);
             config.Deny(this.ObjectType, completed,Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, shipped, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, invoiced, Operations.Execute, Operations.Write);
         }
     }
 }

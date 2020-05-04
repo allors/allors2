@@ -83,6 +83,23 @@ namespace Allors.Domain
             {
                 @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Invoice, Operations.Execute));
             }
+
+            var completePermission = new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Complete, Operations.Execute);
+            var cancelPermission = new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Cancel, Operations.Execute);
+            if (@this.ServiceEntriesWhereWorkEffort.Any(v => !v.ExistThroughDate))
+            {
+                @this.AddDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Complete, Operations.Execute));
+                @this.AddDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Cancel, Operations.Execute));
+            }
+            else
+            {
+                @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Cancel, Operations.Execute));
+
+                if (@this.WorkEffortState.IsInProgress)
+                {
+                    @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Complete, Operations.Execute));
+                }
+            }
         }
 
         public static void BaseComplete(this WorkEffort @this, WorkEffortComplete method) => @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;

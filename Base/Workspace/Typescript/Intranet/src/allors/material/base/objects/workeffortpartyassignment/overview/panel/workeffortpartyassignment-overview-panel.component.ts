@@ -23,6 +23,8 @@ interface Row extends TableRow {
 })
 export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope implements OnInit {
   workEffort: WorkEffort;
+  fromParty: WorkEffortPartyAssignment[];
+  fromWorkEffort: WorkEffortPartyAssignment[];
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -141,18 +143,18 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope i
 
     this.panel.onPulled = (loaded) => {
       this.workEffort = loaded.objects.WorkEffort as WorkEffort;
-      const fromParty = loaded.collections[partypullName] as WorkEffortPartyAssignment[];
-      const fromWorkEffort = loaded.collections[workeffortpullName] as WorkEffortPartyAssignment[];
+      this.fromParty = loaded.collections[partypullName] as WorkEffortPartyAssignment[];
+      this.fromWorkEffort = loaded.collections[workeffortpullName] as WorkEffortPartyAssignment[];
 
-      if (fromParty !== undefined && fromParty.length > 0) {
-        this.objects = fromParty;
+      if (this.fromParty !== undefined && this.fromParty.length > 0) {
+        this.objects = this.fromParty;
       }
 
-      if (fromWorkEffort !== undefined && fromWorkEffort.length > 0) {
-        this.objects = fromWorkEffort;
+      if (this.fromWorkEffort !== undefined && this.fromWorkEffort.length > 0) {
+        this.objects = this.fromWorkEffort;
       }
 
-      this.objects = fromParty || fromWorkEffort;
+      this.objects = this.fromParty || this.fromWorkEffort;
 
       if (this.objects) {
         this.table.total = this.objects.length;

@@ -652,7 +652,7 @@ namespace Allors.Domain
 
         public void BaseApprove(OrderItemApprove method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).ReadyForPosting;
 
-        public void BaseReopen(OrderItemReopen method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Provisional;
+        public void BaseReopen(OrderItemReopen method) => this.SalesOrderItemState = this.PreviousSalesOrderItemState;
 
         public void SyncPrices(IDerivation derivation, SalesOrder salesOrder) => this.CalculatePrice(derivation, salesOrder, true);
 

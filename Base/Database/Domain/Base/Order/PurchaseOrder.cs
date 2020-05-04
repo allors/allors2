@@ -436,7 +436,7 @@ namespace Allors.Domain
 
         public void BaseRevise(PurchaseOrderRevise method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
 
-        public void BaseReopen(OrderReopen method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Created;
+        public void BaseReopen(OrderReopen method) => this.PurchaseOrderState = this.PreviousPurchaseOrderState;
 
         public void BaseContinue(OrderContinue method) => this.PurchaseOrderState = this.PreviousPurchaseOrderState;
 

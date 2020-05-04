@@ -112,7 +112,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
-
+      
       const id = this.panel.manager.id;
 
       pulls.push(
