@@ -28,11 +28,11 @@ namespace Allors.Domain
             var setPaid = this.Meta.SetPaid;
             var delete = this.Meta.Delete;
 
-            config.Deny(this.ObjectType, readyForPosting, reopen, credit, setPaid);
+            config.Deny(this.ObjectType, readyForPosting, reopen, credit, setPaid, writeOff);
             config.Deny(this.ObjectType, notPaid, send, cancelInvoice, reopen, delete);
             config.Deny(this.ObjectType, partiallyPaid, send, cancelInvoice, reopen, delete);
             config.Deny(this.ObjectType, paid, send, writeOff, cancelInvoice, reopen, setPaid, delete);
-            config.Deny(this.ObjectType, writtenOff, send, cancelInvoice, writeOff, credit, setPaid, delete);
+            config.Deny(this.ObjectType, writtenOff, send, cancelInvoice, writeOff, credit, setPaid, delete, reopen);
             config.Deny(this.ObjectType, cancelled, send, cancelInvoice, writeOff, credit, setPaid, delete);
 
             config.Deny(this.ObjectType, notPaid, Operations.Write);

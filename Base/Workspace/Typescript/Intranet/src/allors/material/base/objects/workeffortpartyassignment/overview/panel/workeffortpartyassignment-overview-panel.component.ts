@@ -71,8 +71,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope i
     this.edit = this.editService.edit();
 
     this.panel.name = 'workeffortpartyassignment';
-//    this.panel.title = 'Party Assignment';
-    this.panel.title = 'Workers';
+    this.panel.title = 'Party Assignment';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 

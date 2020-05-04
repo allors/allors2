@@ -494,7 +494,7 @@ namespace Allors.Domain
 
                 foreach (var invoiceItem in validInvoiceItems)
                 {
-                    if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.Cancelled) &&
+                    if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.CancelledByInvoice) &&
                         !invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.WrittenOff))
                     {
                         if (this.AmountPaid >= this.TotalIncVat)
@@ -581,7 +581,6 @@ namespace Allors.Domain
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
                 salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid;
-                ;
             }
 
             if (this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation)
@@ -635,10 +634,6 @@ namespace Allors.Domain
         public void BaseWriteOff(SalesInvoiceWriteOff method)
         {
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).WrittenOff;
-            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
-            {
-                salesInvoiceItem.BaseWriteOff();
-            }
         }
 
         public void BaseReopen(SalesInvoiceReopen method) => this.SalesInvoiceState = this.PreviousSalesInvoiceState;
@@ -646,10 +641,6 @@ namespace Allors.Domain
         public void BaseCancelInvoice(SalesInvoiceCancelInvoice method)
         {
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Cancelled;
-            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
-            {
-                salesInvoiceItem.CancelFromInvoice();
-            }
         }
 
         public SalesInvoice BaseCopy(SalesInvoiceCopy method)
