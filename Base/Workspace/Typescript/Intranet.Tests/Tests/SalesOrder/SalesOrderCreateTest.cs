@@ -30,6 +30,9 @@ namespace Tests.SalesOrderTests
             this.salesOrderListPage = this.Sidenav.NavigateToSalesOrders();
         }
 
+        /**
+         * MinimalWithInternalOrganisation
+         **/
         [Fact]
         public void CreateWithInternalOrganisation()
         {
@@ -92,6 +95,9 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedInternalComment, actual.InternalComment);
         }
 
+        /**
+         * MinimalWithExternalOrganisation
+         **/
         [Fact]
         public void CreateWithExternalOrganisation()
         {
@@ -152,6 +158,9 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedInternalComment, actual.InternalComment);
         }
 
+        /**
+         * MinimalWithInternalPerson
+         **/
         [Fact]
         public void CreateWithInternalPerson()
         {
@@ -212,6 +221,9 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedInternalComment, actual.InternalComment);
         }
 
+        /**
+        * MinimalWithInternalPerson
+        **/
         [Fact]
         public void CreateWithExternalPerson()
         {
