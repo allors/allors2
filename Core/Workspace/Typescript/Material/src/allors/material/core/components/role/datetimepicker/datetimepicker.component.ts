@@ -1,5 +1,4 @@
-import * as moment from 'moment';
-
+import * as moment from 'moment/moment';
 import { Component, Optional, Output, EventEmitter, Self, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';

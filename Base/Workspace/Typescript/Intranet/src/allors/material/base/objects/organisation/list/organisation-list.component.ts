@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { combineLatest, Subscription } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter, GreaterThan, Equals } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory, TestScope, FetcherService } from '../../../../../angular';

@@ -1,5 +1,4 @@
-import * as moment from 'moment';
-
+import * as moment from 'moment/moment';
 import { AfterViewInit, Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';

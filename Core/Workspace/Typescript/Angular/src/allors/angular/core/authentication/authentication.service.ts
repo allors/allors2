@@ -9,10 +9,10 @@ import { AuthenticationTokenResponse } from './AuthenticationTokenResponse';
 import { throwError, Observable } from 'rxjs';
 
 import { UserId } from '../state/UserId';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthenticationService {
-
   private tokenName = 'ALLORS_JWT';
 
   public get token(): string | null {
@@ -31,9 +31,10 @@ export class AuthenticationService {
     private http: HttpClient,
     private authenticationConfig: AuthenticationConfig,
     private userIdState: UserId,
+    private router: Router,
   ) { }
 
-  public login$(userName: string, password: string): Observable<AuthenticationTokenResponse> {
+  login$(userName: string, password: string): Observable<AuthenticationTokenResponse> {
     const url = this.authenticationConfig.url;
     const request: AuthenticationTokenRequest = { userName, password };
 
@@ -57,5 +58,10 @@ export class AuthenticationService {
           return throwError(errMsg);
         })
       );
+  }
+
+  logout() {
+    this.token = null;
+    this.router.navigate(['/login']);
   }
 }

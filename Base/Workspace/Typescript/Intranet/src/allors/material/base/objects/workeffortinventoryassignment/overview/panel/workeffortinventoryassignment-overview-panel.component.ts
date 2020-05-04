@@ -3,7 +3,7 @@ import { NavigationService, Action, PanelService, RefreshService, MetaService, T
 import { WorkEffortInventoryAssignment, NonSerialisedInventoryItem, SerialisedInventoryItem, WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, ObjectData } from '../../../../..';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 interface Row extends TableRow {
   object: WorkEffortInventoryAssignment;

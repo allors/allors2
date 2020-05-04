@@ -1,5 +1,5 @@
 
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, Action, MetaService, TestScope } from '../../../../../../angular';
 import { PartyRelationship } from '../../../../../../domain';
