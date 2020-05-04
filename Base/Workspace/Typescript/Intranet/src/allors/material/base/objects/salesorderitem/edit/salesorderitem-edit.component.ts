@@ -77,6 +77,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
 
   private previousProduct;
   private subscription: Subscription;
+  inRent: SerialisedItemAvailability;
 
   constructor(
     @Self() public allors: ContextService,
@@ -183,8 +184,11 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+
         this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
         this.sold = this.serialisedItemAvailabilities.find((v: SerialisedItemAvailability) => v.UniqueId === '9bdc0a55-4e3c-4604-b054-2441a551aa1c');
+        this.inRent = this.serialisedItemAvailabilities.find((v: SerialisedItemAvailability) => v.UniqueId === 'ec87f723-2284-4f5c-ba57-fcf328a0b738');
+
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
 
@@ -386,6 +390,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
           Part: {
             include: {
               SerialisedItems: {
+                SerialisedItemAvailability: x,
                 RequestItemsWhereSerialisedItem: {
                   RequestItemState: x,
                   RequestWhereRequestItem: {
@@ -419,6 +424,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
         object: product.id,
         include: {
           SerialisedItems: {
+            SerialisedItemAvailability: x,
             RequestItemsWhereSerialisedItem: {
               RequestItemState: x,
               RequestWhereRequestItem: {
@@ -453,7 +459,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
       .subscribe((loaded) => {
 
         this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
-        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true || v.SerialisedItemAvailability === this.inRent);
 
         if (this.orderItem.Product !== this.previousProduct) {
           this.orderItem.SerialisedItem = null;

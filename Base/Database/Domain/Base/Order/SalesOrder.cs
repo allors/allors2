@@ -498,6 +498,21 @@ namespace Allors.Domain
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Complete, Operations.Execute));
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Reject, Operations.Execute));
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Cancel, Operations.Execute));
+
+                var deniablePermissionByOperandTypeId = new Dictionary<Guid, Permission>();
+
+                foreach (Permission permission in this.Session().Extent<Permission>())
+                {
+                    if (permission.ConcreteClassPointer == this.strategy.Class.Id && permission.Operation == Operations.Write)
+                    {
+                        deniablePermissionByOperandTypeId.Add(permission.OperandTypePointer, permission);
+                    }
+                }
+
+                foreach (var keyValuePair in deniablePermissionByOperandTypeId)
+                {
+                    this.AddDeniedPermission(keyValuePair.Value);
+                }
             }
 
             var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
