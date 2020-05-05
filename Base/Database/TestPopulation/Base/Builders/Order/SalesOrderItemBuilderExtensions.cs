@@ -29,7 +29,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithProduct(serializedProduct);
             @this.WithSerialisedItem(serializedProduct.SerialisedItems.First);
             @this.WithQuantityOrdered(1);
-            @this.WithMessage(faker.Lorem.Sentence());
             @this.WithAssignedUnitPrice(faker.Random.UInt());
 
             return @this;
@@ -48,7 +47,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithProduct(serializedProduct);
             @this.WithSerialisedItem(serializedProduct.SerialisedItems.First);
             @this.WithQuantityOrdered(1);
-            @this.WithMessage(faker.Lorem.Sentence());
             @this.WithAssignedUnitPrice(faker.Random.UInt());
 
             return @this;

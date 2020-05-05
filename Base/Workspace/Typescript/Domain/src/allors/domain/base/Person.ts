@@ -45,7 +45,7 @@ domain.extend((workspace) => {
         })
         .filter((v) => v) as string[];
 
-      return emailAddresses.join(", ");
+      return emailAddresses.join(', ');
     },
   });
 

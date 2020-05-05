@@ -79,7 +79,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\SalesOrderItem\" />
     <Folder Include="Tests\PurchaseInvoiceItem\" />
     <Folder Include="Tests\PurchaseOrderItem\" />
     <Folder Include="Tests\PurchaseOrder\" />

@@ -33,6 +33,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   sold: SerialisedItemAvailability;
   invoiceItemTypes: InvoiceItemType[];
   productItemType: InvoiceItemType;
+  partItemType: InvoiceItemType;
   part: Part;
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
@@ -191,6 +192,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
 
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
+        this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
 
         const requestItemStates = loaded.collections.RequestItemStates as RequestItemState[];
         this.draftRequestItem = requestItemStates.find((v: RequestItemState) => v.UniqueId === 'b173dfbe-9421-4697-8ffb-e46afc724490');
@@ -374,7 +376,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
 
   private onSave() {
 
-    if (this.orderItem.InvoiceItemType !== this.productItemType) {
+    if (this.orderItem.InvoiceItemType !== this.productItemType || this.orderItem.InvoiceItemType !== this.partItemType) {
       this.orderItem.QuantityOrdered = '1';
     }
   }
