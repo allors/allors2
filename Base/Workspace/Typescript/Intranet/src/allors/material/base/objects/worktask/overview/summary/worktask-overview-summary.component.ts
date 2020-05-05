@@ -157,6 +157,16 @@ export class WorkTaskOverviewSummaryComponent {
         this.saveService.errorHandler);
   }
 
+  public revise(): void {
+
+    this.panel.manager.context.invoke(this.workTask.Revise)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Revise successfully executed.', 'close', { duration: 5000 });
+      },
+        this.saveService.errorHandler);
+  }
+
   public complete(): void {
 
     this.panel.manager.context.invoke(this.workTask.Complete)

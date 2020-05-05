@@ -1,9 +1,9 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, MetaService, TestScope } from '../../../../../../angular';
-import { WorkEffortFixedAssetAssignment } from '../../../../../../domain';
+import { WorkEffortFixedAssetAssignment, WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, ObjectData } from '../../../../..';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 interface Row extends TableRow {
   object: WorkEffortFixedAssetAssignment;
@@ -22,6 +22,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class WorkEffortFixedAssetAssignmentOverviewPanelComponent extends TestScope implements OnInit {
+  workEffort: WorkEffort;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -87,7 +88,6 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent extends TestSc
       autoFilter: true,
     });
 
-    const serialisedItempullName = `${this.panel.name}_${this.m.WorkEffortFixedAssetAssignment.name}_serialisedItem`;
     const workeffortpullName = `${this.panel.name}_${this.m.WorkEffortFixedAssetAssignment.name}_workeffort`;
 
     this.panel.onPull = (pulls) => {
@@ -96,21 +96,6 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent extends TestSc
       const id = this.panel.manager.id;
 
       pulls.push(
-        pull.SerialisedItem({
-          name: serialisedItempullName,
-          object: id,
-          fetch: {
-            WorkEffortFixedAssetAssignmentsWhereFixedAsset: {
-              include: {
-                FixedAsset: x,
-                Assignment: {
-                  WorkEffortState: x,
-                  Priority: x,
-                }
-              }
-            }
-          }
-        }),
         pull.WorkEffort({
           name: workeffortpullName,
           object: id,
@@ -126,20 +111,15 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent extends TestSc
             }
           }
         }),
+        pull.WorkEffort({
+          object: id,
+        }),
       );
     };
 
     this.panel.onPulled = (loaded) => {
-      const fromSerialiseditem = loaded.collections[serialisedItempullName] as WorkEffortFixedAssetAssignment[];
-      const fromWorkEffort = loaded.collections[workeffortpullName] as WorkEffortFixedAssetAssignment[];
-
-      if (fromSerialiseditem !== undefined && fromSerialiseditem.length > 0) {
-        this.objects = fromSerialiseditem;
-      }
-
-      if (fromWorkEffort !== undefined && fromWorkEffort.length > 0) {
-        this.objects = fromWorkEffort;
-      }
+      this.workEffort = loaded.objects.WorkEffort as WorkEffort;
+      this.objects = loaded.collections[workeffortpullName] as WorkEffortFixedAssetAssignment[];
 
       if (this.objects) {
         this.table.total = this.objects.length;

@@ -24,10 +24,6 @@ namespace Allors.Domain
             var completed = new SalesOrderStates(this.Session).Completed;
             var finished = new SalesOrderStates(this.Session).Finished;
 
-            var partiallyShipped = new SalesOrderShipmentStates(this.Session).PartiallyShipped;
-            var inProgress = new SalesOrderShipmentStates(this.Session).InProgress;
-            var shipped = new SalesOrderShipmentStates(this.Session).Shipped;
-
             var setReadyForPosting = this.Meta.SetReadyForPosting;
             var post = this.Meta.Post;
             var reopen = this.Meta.Reopen;
@@ -48,19 +44,15 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, awaitingAcceptance, setReadyForPosting, post, approve, hold, @continue, complete, ship, invoice, reopen);
             config.Deny(this.ObjectType, inProcess, setReadyForPosting, post, accept, reject, approve, @continue, reopen);
             config.Deny(this.ObjectType, onHold, setReadyForPosting, reject, approve, hold, ship, invoice, post, accept, revise);
-            config.Deny(this.ObjectType, rejected, reject, ship, invoice, post, accept, hold, @continue, revise);
-            config.Deny(this.ObjectType, cancelled, cancel, ship, invoice, post, accept, hold, @continue, revise);
+            config.Deny(this.ObjectType, rejected, reject, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, cancel);
+            config.Deny(this.ObjectType, cancelled, cancel, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, reject);
             config.Deny(this.ObjectType, completed, complete, reject, cancel, approve, hold, @continue, setReadyForPosting, invoice, post, accept, reopen, revise);
-
-            config.Deny(this.ObjectType, inProgress, cancel, reject, accept);
-            config.Deny(this.ObjectType, partiallyShipped, cancel, reject, accept);
-            config.Deny(this.ObjectType, shipped, cancel, reject, accept);
 
             config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, inProcess, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operations.Write);
+            config.Deny(this.ObjectType, completed,Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }
     }

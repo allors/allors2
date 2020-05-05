@@ -3,7 +3,7 @@ import { PanelService, NavigationService, RefreshService, Action, MetaService, C
 import { PurchaseOrderItem, PurchaseOrder } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 

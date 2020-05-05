@@ -197,6 +197,8 @@ namespace Allors.Repository
 
         public void Print() { }
 
+        public void Revise() { }
+
         #endregion
     }
 }

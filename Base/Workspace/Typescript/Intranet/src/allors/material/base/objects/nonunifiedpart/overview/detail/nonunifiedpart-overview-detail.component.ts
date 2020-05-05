@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';

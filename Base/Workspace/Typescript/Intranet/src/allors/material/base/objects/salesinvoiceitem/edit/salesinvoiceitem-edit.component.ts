@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { SearchFactory, ContextService, MetaService, RefreshService, TestScope, FetcherService } from '../../../../../angular';
-import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, NonUnifiedPart, SupplierOffering } from '../../../../../domain';
+import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, NonUnifiedPart, SupplierOffering, SerialisedItemAvailability } from '../../../../../domain';
 import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
@@ -44,6 +44,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
   parts: NonUnifiedPart[];
   partItemType: InvoiceItemType;
   supplierOffering: SupplierOffering;
+  inRent: SerialisedItemAvailability;
 
   constructor(
     @Self() public allors: ContextService,
@@ -107,6 +108,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
             }),
             pull.VatRate(),
             pull.VatRegime(),
+            pull.SerialisedItemAvailability(),
           ];
 
           if (this.data.associationId) {
@@ -139,6 +141,9 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
         this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
+
+        const serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
+        this.inRent = serialisedItemAvailabilities.find((v: SerialisedItemAvailability) => v.UniqueId === 'ec87f723-2284-4f5c-ba57-fcf328a0b738');
 
         if (isCreate) {
           this.title = 'Add sales invoice Item';
@@ -205,7 +210,11 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         object: good.id,
         fetch: {
           Part: {
-            SerialisedItems: x
+            SerialisedItems: {
+              include: {
+                SerialisedItemAvailability: x,
+              }
+            }
           }
         }
       }),
@@ -213,7 +222,11 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         name: unifiedGoodPullName,
         object: good.id,
         fetch: {
-          SerialisedItems: x
+          SerialisedItems: {
+            include: {
+              SerialisedItemAvailability: x,
+            }
+          }
         }
       })
     ];
@@ -225,7 +238,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         const serialisedItems2 = loaded.collections[nonUnifiedGoodPullName] as SerialisedItem[];
         const items = serialisedItems1 || serialisedItems2;
 
-        this.serialisedItems = items.filter(v => v.AvailableForSale === true);
+        this.serialisedItems = items.filter(v => v.AvailableForSale === true || v.SerialisedItemAvailability === this.inRent);
 
         if (this.invoiceItem.Product !== this.previousProduct) {
           this.invoiceItem.SerialisedItem = null;

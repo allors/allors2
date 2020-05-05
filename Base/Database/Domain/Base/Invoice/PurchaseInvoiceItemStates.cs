@@ -16,7 +16,6 @@ namespace Allors.Domain
         public static readonly Guid NotPaidId = new Guid("50AB37E3-A74C-44F9-92C2-6AFF42C2BB99");
         public static readonly Guid PaidId = new Guid("EC0FD4B0-C766-453e-98C4-36FEFEC38A69");
         public static readonly Guid RejectedId = new Guid("4F92EA82-7683-4417-945B-5B0434E390A2");
-        public static readonly Guid CancelledId = new Guid("B983C7C4-4D18-4b53-966C-371D20DC4B2A");
         public static readonly Guid CancelledByInvoiceId = new Guid("06189E75-4026-41A2-90FD-A5F6A6711992");
 
         private UniquelyIdentifiableSticky<PurchaseInvoiceItemState> cache;
@@ -35,8 +34,6 @@ namespace Allors.Domain
 
         public PurchaseInvoiceItemState Rejected => this.Cache[RejectedId];
 
-        public PurchaseInvoiceItemState Cancelled => this.Cache[CancelledId];
-
         public PurchaseInvoiceItemState CancelledByinvoice => this.Cache[CancelledByInvoiceId];
 
         private UniquelyIdentifiableSticky<PurchaseInvoiceItemState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PurchaseInvoiceItemState>(this.Session);
@@ -52,7 +49,6 @@ namespace Allors.Domain
             merge(NotPaidId, v => v.Name = "Not Paid");
             merge(PaidId, v => v.Name = "Paid");
             merge(RejectedId, v => v.Name = "Rejected");
-            merge(CancelledId, v => v.Name = "Cancelled");
             merge(CancelledByInvoiceId, v => v.Name = "Cancelled By Invoice");
         }
     }

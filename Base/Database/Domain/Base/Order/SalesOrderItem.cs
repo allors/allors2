@@ -10,6 +10,7 @@ namespace Allors.Domain
     using System.Linq;
     using Allors.Meta;
     using System.Text;
+    using System.Collections.Generic;
 
     public partial class SalesOrderItem
     {
@@ -177,11 +178,9 @@ namespace Allors.Domain
             // SalesOrderItem States
             if (this.IsValid)
             {
-                if (salesOrder.SalesOrderState.IsProvisional
-                    && !this.SalesOrderItemState.IsCancelled
-                    && !this.SalesOrderItemState.IsRejected)
+                if (salesOrder.SalesOrderState.IsProvisional)
                 {
-                        this.SalesOrderItemState = salesOrderItemStates.Provisional;
+                    this.SalesOrderItemState = salesOrderItemStates.Provisional;
                 }
 
                 if (salesOrder.SalesOrderState.IsReadyForPosting &&
@@ -252,11 +251,11 @@ namespace Allors.Domain
 
                 if (orderBilling.Any())
                 {
-                    if (orderBilling.All(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                    if (orderBilling.All(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.IsPaid))
                     {
                         this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.Paid;
                     }
-                    else if (orderBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                    else if (orderBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.IsPaid))
                     {
                         this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.NotPaid;
                     }
@@ -270,11 +269,11 @@ namespace Allors.Domain
                     var shipmentBilling = this.OrderShipmentsWhereOrderItem.SelectMany(v => v.ShipmentItem.ShipmentItemBillingsWhereShipmentItem).Select(v => v.InvoiceItem).OfType<SalesInvoiceItem>().ToArray();
                     if (shipmentBilling.Any())
                     {
-                        if (shipmentBilling.All(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                        if (shipmentBilling.All(v => v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.IsPaid))
                         {
                             this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.Paid;
                         }
-                        else if (shipmentBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Paid))
+                        else if (shipmentBilling.All(v => !v.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.IsPaid))
                         {
                             this.SalesOrderItemPaymentState = salesOrderItemPaymentStates.NotPaid;
                         }
@@ -616,12 +615,24 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.ExistSalesOrderItemInvoiceState && this.SalesOrderItemInvoiceState.Equals(new SalesOrderItemInvoiceStates(this.Strategy.Session).Invoiced))
+
+            if (!this.SalesOrderItemInvoiceState.NotInvoiced || !this.SalesOrderItemShipmentState.NotShipped)
             {
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.QuantityOrdered, Operations.Write));
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.AssignedUnitPrice, Operations.Write));
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.InvoiceItemType, Operations.Write));
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Product, Operations.Write));
+                var deniablePermissionByOperandTypeId = new Dictionary<Guid, Permission>();
+
+                foreach (Permission permission in this.Session().Extent<Permission>())
+                {
+                    if (permission.ConcreteClassPointer == this.strategy.Class.Id
+                        && (permission.Operation == Operations.Write || permission.Operation == Operations.Execute))
+                    {
+                        deniablePermissionByOperandTypeId.Add(permission.OperandTypePointer, permission);
+                    }
+                }
+
+                foreach (var keyValuePair in deniablePermissionByOperandTypeId)
+                {
+                    this.AddDeniedPermission(keyValuePair.Value);
+                }
             }
 
             var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
@@ -632,19 +643,6 @@ namespace Allors.Domain
             else
             {
                 this.AddDeniedPermission(deletePermission);
-            }
-        }
-
-        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
-        {
-            if (method.SecurityTokens == null)
-            {
-                method.SecurityTokens = this.SalesOrderWhereSalesOrderItem?.SecurityTokens.ToArray();
-            }
-
-            if (method.DeniedPermissions == null)
-            {
-                method.DeniedPermissions = this.SalesOrderWhereSalesOrderItem?.DeniedPermissions.ToArray();
             }
         }
 
@@ -666,6 +664,8 @@ namespace Allors.Domain
         public void BaseReject(OrderItemReject method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Rejected;
 
         public void BaseApprove(OrderItemApprove method) => this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).ReadyForPosting;
+
+        public void BaseReopen(OrderItemReopen method) => this.SalesOrderItemState = this.PreviousSalesOrderItemState;
 
         public void SyncPrices(IDerivation derivation, SalesOrder salesOrder) => this.CalculatePrice(derivation, salesOrder, true);
 

@@ -14,6 +14,7 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
+            var provisional = new SalesOrderItemStates(this.Session).Provisional;
             var readyForPosting = new SalesOrderItemStates(this.Session).ReadyForPosting;
             var awaitingAcceptance = new SalesOrderItemStates(this.Session).AwaitingAcceptance;
             var inProcess = new SalesOrderItemStates(this.Session).InProcess;
@@ -22,28 +23,20 @@ namespace Allors.Domain
             var completed = new SalesOrderItemStates(this.Session).Completed;
             var finished = new SalesOrderItemStates(this.Session).Finished;
 
-            var partiallyShipped = new SalesOrderItemShipmentStates(this.Session).PartiallyShipped;
-            var shipmentInProgress = new SalesOrderItemShipmentStates(this.Session).InProgress;
-            var shipped = new SalesOrderItemShipmentStates(this.Session).Shipped;
-
-            var product = this.Meta.Product;
-            config.Deny(this.ObjectType, shipped, product);
-            config.Deny(this.ObjectType, partiallyShipped, product);
-
             var cancel = this.Meta.Cancel;
             var reject = this.Meta.Reject;
             var delete = this.Meta.Delete;
+            var reopen = this.Meta.Reopen;
+            var approve = this.Meta.Approve;
 
-            config.Deny(this.ObjectType, inProcess, delete);
-            config.Deny(this.ObjectType, completed, delete, cancel, reject);
+            config.Deny(this.ObjectType, provisional, reopen, approve);
+            config.Deny(this.ObjectType, awaitingAcceptance, reopen, approve);
+            config.Deny(this.ObjectType, readyForPosting, reopen, approve);
+            config.Deny(this.ObjectType, inProcess, delete, reopen, approve);
+            config.Deny(this.ObjectType, completed, delete, cancel, reject, reopen, approve);
+            config.Deny(this.ObjectType, cancelled, cancel, reject, approve);
+            config.Deny(this.ObjectType, rejected, cancel, reject, approve);
 
-            config.Deny(this.ObjectType, shipmentInProgress, delete, cancel, reject);
-            config.Deny(this.ObjectType, partiallyShipped, delete, cancel, reject);
-            config.Deny(this.ObjectType, shipped, delete, cancel, reject);
-            config.Deny(this.ObjectType, cancelled, cancel, reject);
-            config.Deny(this.ObjectType, rejected, cancel, reject);
-
-            config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, inProcess, Operations.Write);
             config.Deny(this.ObjectType, cancelled, Operations.Write);

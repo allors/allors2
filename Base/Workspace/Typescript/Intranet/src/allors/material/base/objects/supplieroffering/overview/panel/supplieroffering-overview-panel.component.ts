@@ -3,7 +3,7 @@ import { PanelService, NavigationService, RefreshService, Action, MetaService, T
 import { SupplierOffering } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, ObjectData, EditService } from '../../../../..';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 interface Row extends TableRow {
   object: SupplierOffering;

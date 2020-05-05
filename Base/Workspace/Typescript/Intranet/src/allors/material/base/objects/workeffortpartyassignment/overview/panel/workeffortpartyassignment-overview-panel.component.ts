@@ -1,9 +1,9 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, MetaService, TestScope, ContextService } from '../../../../../../angular';
-import { WorkEffortPartyAssignment, OrganisationContactRelationship, Party } from '../../../../../../domain';
+import { WorkEffortPartyAssignment, OrganisationContactRelationship, Party, WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, ObjectData } from '../../../../..';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 interface Row extends TableRow {
   object: WorkEffortPartyAssignment;
@@ -22,6 +22,9 @@ interface Row extends TableRow {
   providers: [PanelService, ContextService]
 })
 export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope implements OnInit {
+  workEffort: WorkEffort;
+  fromParty: WorkEffortPartyAssignment[];
+  fromWorkEffort: WorkEffortPartyAssignment[];
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -68,8 +71,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope i
     this.edit = this.editService.edit();
 
     this.panel.name = 'workeffortpartyassignment';
-//    this.panel.title = 'Party Assignment';
-    this.panel.title = 'Workers';
+    this.panel.title = 'Party Assignment';
     this.panel.icon = 'work';
     this.panel.expandable = true;
 
@@ -132,22 +134,26 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope i
             }
           }
         }),
+        pull.WorkEffort({
+          object: id,
+        }),
       );
     };
 
     this.panel.onPulled = (loaded) => {
-      const fromParty = loaded.collections[partypullName] as WorkEffortPartyAssignment[];
-      const fromWorkEffort = loaded.collections[workeffortpullName] as WorkEffortPartyAssignment[];
+      this.workEffort = loaded.objects.WorkEffort as WorkEffort;
+      this.fromParty = loaded.collections[partypullName] as WorkEffortPartyAssignment[];
+      this.fromWorkEffort = loaded.collections[workeffortpullName] as WorkEffortPartyAssignment[];
 
-      if (fromParty !== undefined && fromParty.length > 0) {
-        this.objects = fromParty;
+      if (this.fromParty !== undefined && this.fromParty.length > 0) {
+        this.objects = this.fromParty;
       }
 
-      if (fromWorkEffort !== undefined && fromWorkEffort.length > 0) {
-        this.objects = fromWorkEffort;
+      if (this.fromWorkEffort !== undefined && this.fromWorkEffort.length > 0) {
+        this.objects = this.fromWorkEffort;
       }
 
-      this.objects = fromParty || fromWorkEffort;
+      this.objects = this.fromParty || this.fromWorkEffort;
 
       if (this.objects) {
         this.table.total = this.objects.length;

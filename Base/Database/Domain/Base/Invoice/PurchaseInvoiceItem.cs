@@ -18,7 +18,13 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public bool IsValid => !(this.PurchaseInvoiceItemState.IsCancelled || this.PurchaseInvoiceItemState.IsCancelledByInvoice || this.PurchaseInvoiceItemState.IsRejected);
+        public bool IsValid => !(this.PurchaseInvoiceItemState.IsCancelledByInvoice || this.PurchaseInvoiceItemState.IsRejected);
+
+        internal bool IsDeletable =>
+            !this.ExistOrderItemBillingsWhereInvoiceItem &&
+            !this.ExistShipmentItemBillingsWhereInvoiceItem &&
+            !this.ExistWorkEffortBillingsWhereInvoiceItem &&
+            !this.ExistServiceEntryBillingsWhereInvoiceItem;
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
@@ -57,6 +63,19 @@ namespace Allors.Domain
             {
                 iteration.AddDependency(invoice, this);
                 iteration.Mark(invoice);
+            }
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
             }
         }
 
@@ -138,8 +157,6 @@ namespace Allors.Domain
                 }
             }
         }
-
-        public void BaseCancel(PurchaseInvoiceItemCancel method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Cancelled;
 
         public void BaseReject(PurchaseInvoiceItemReject method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Rejected;
 

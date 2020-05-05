@@ -18,7 +18,7 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public bool IsValid => !(this.SalesInvoiceItemState.IsCancelled || this.SalesInvoiceItemState.IsCancelledByInvoice || this.SalesInvoiceItemState.IsWrittenOff);
+        public bool IsValid => !(this.SalesInvoiceItemState.IsCancelledByInvoice || this.SalesInvoiceItemState.IsWrittenOff);
 
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
@@ -47,10 +47,11 @@ namespace Allors.Domain
         }
 
         internal bool IsDeletable =>
-            !this.ExistOrderItemBillingsWhereInvoiceItem &&
-            !this.ExistShipmentItemBillingsWhereInvoiceItem &&
-            !this.ExistWorkEffortBillingsWhereInvoiceItem &&
-            !this.ExistServiceEntryBillingsWhereInvoiceItem;
+            this.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).ReadyForPosting)
+            && !this.ExistOrderItemBillingsWhereInvoiceItem
+            && !this.ExistShipmentItemBillingsWhereInvoiceItem
+            && !this.ExistWorkEffortBillingsWhereInvoiceItem
+            && !this.ExistServiceEntryBillingsWhereInvoiceItem;
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
@@ -142,6 +143,8 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var salesInvoice = this.SalesInvoiceWhereSalesInvoiceItem;
+            var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);
 
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
@@ -168,6 +171,25 @@ namespace Allors.Domain
             foreach (PaymentApplication paymentApplication in this.PaymentApplicationsWhereInvoiceItem)
             {
                 this.AmountPaid += paymentApplication.AmountApplied;
+            }
+
+            if (salesInvoice.SalesInvoiceState.IsReadyForPosting && this.SalesInvoiceItemState.IsCancelledByInvoice)
+            {
+                this.SalesInvoiceItemState = salesInvoiceItemStates.ReadyForPosting;
+            }
+
+            // SalesInvoiceItem States
+            if (this.IsValid)
+            {
+                if (salesInvoice.SalesInvoiceState.IsWrittenOff)
+                {
+                    this.SalesInvoiceItemState = salesInvoiceItemStates.WrittenOff;
+                }
+
+                if (salesInvoice.SalesInvoiceState.IsCancelled)
+                {
+                    this.SalesInvoiceItemState = salesInvoiceItemStates.CancelledByInvoice;
+                }
             }
 
             // TODO: Move to Custom
@@ -278,7 +300,6 @@ namespace Allors.Domain
                     this.Description = details;
                 }
             }
-
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
@@ -297,8 +318,6 @@ namespace Allors.Domain
         public void BaseWriteOff() => this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).WrittenOff;
 
         public void CancelFromInvoice() => this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).CancelledByInvoice;
-
-        public void BaseCancel() => this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Cancelled;
 
         public void BaseDelete(DeletableDelete method)
         {

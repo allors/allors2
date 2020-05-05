@@ -7,14 +7,14 @@ namespace Allors.Domain
 {
     public partial class SalesInvoiceState
     {
-        public bool Paid => this.UniqueId == SalesInvoiceStates.PaidId;
+        public bool IsPaid => this.UniqueId == SalesInvoiceStates.PaidId;
 
-        public bool PartiallyPaid => this.UniqueId == SalesInvoiceStates.PartiallyPaidId;
+        public bool IsPartiallyPaid => this.UniqueId == SalesInvoiceStates.PartiallyPaidId;
 
-        public bool ReadyForPosting => this.UniqueId == SalesInvoiceStates.ReadyForPostingId;
+        public bool IsReadyForPosting => this.UniqueId == SalesInvoiceStates.ReadyForPostingId;
 
-        public bool WrittenOff => this.UniqueId == SalesInvoiceStates.WrittenOffId;
+        public bool IsWrittenOff => this.UniqueId == SalesInvoiceStates.WrittenOffId;
 
-        public bool Cancelled => this.UniqueId == SalesInvoiceStates.CancelledId;
+        public bool IsCancelled => this.UniqueId == SalesInvoiceStates.CancelledId;
     }
 }

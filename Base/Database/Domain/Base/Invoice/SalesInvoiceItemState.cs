@@ -17,8 +17,6 @@ namespace Allors.Domain
 
         public bool IsWrittenOff => this.UniqueId == SalesInvoiceItemStates.WrittenOffId;
 
-        public bool IsCancelled => this.UniqueId == SalesInvoiceItemStates.CancelledId;
-
         public bool IsCancelledByInvoice => this.UniqueId == SalesInvoiceItemStates.CancelledByInvoiceId;
     }
 }

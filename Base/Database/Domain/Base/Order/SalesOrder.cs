@@ -63,6 +63,8 @@ namespace Allors.Domain
                 || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).ReadyForPosting)
                 || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Cancelled)
                 || this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Rejected))
+            && !this.ExistQuote
+            && !this.ExistSalesInvoicesWhereSalesOrder
             && this.SalesOrderItems.All(v => v.IsDeletable);
 
         public void BaseOnBuild(ObjectOnBuild method)
@@ -483,6 +485,36 @@ namespace Allors.Domain
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
 
+            if (!this.SalesOrderInvoiceState.NotInvoiced || !this.SalesOrderShipmentState.NotShipped)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.SetReadyForPosting, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Post, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Reopen, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Approve, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Hold, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Continue, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Accept, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Revise, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Complete, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Reject, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Cancel, Operations.Execute));
+
+                var deniablePermissionByOperandTypeId = new Dictionary<Guid, Permission>();
+
+                foreach (Permission permission in this.Session().Extent<Permission>())
+                {
+                    if (permission.ConcreteClassPointer == this.strategy.Class.Id && permission.Operation == Operations.Write)
+                    {
+                        deniablePermissionByOperandTypeId.Add(permission.OperandTypePointer, permission);
+                    }
+                }
+
+                foreach (var keyValuePair in deniablePermissionByOperandTypeId)
+                {
+                    this.AddDeniedPermission(keyValuePair.Value);
+                }
+            }
+
             var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
@@ -558,6 +590,8 @@ namespace Allors.Domain
         public void BasePost(SalesOrderPost method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).AwaitingAcceptance;
 
         public void BaseReject(OrderReject method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Rejected;
+
+        public void BaseReopen(OrderReopen method) => this.SalesOrderState = this.PreviousSalesOrderState;
 
         public void BaseHold(OrderHold method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).OnHold;
 

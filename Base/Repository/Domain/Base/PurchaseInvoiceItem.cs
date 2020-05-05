@@ -228,12 +228,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("D6636177-770D-4C2B-9EF6-96B753D264BE")]
-        #endregion
-        [Workspace]
-        public void Cancel() { }
-
-        #region Allors
         [Id("EE82F184-2FFD-4B9C-A0C5-556A76737591")]
         #endregion
         [Workspace]

@@ -46,6 +46,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   draftQuoteItem: QuoteItemState;
   submittedQuoteItem: QuoteItemState;
   approvedQuoteItem: QuoteItemState;
+  awaitingApprovalQuoteItem: QuoteItemState;
   awaitingAcceptanceQuoteItem: QuoteItemState;
   acceptedQuoteItem: QuoteItemState;
   createdQuote: QuoteState;
@@ -76,6 +77,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
 
   private previousProduct;
   private subscription: Subscription;
+  inRent: SerialisedItemAvailability;
 
   constructor(
     @Self() public allors: ContextService,
@@ -182,8 +184,11 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+
         this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
         this.sold = this.serialisedItemAvailabilities.find((v: SerialisedItemAvailability) => v.UniqueId === '9bdc0a55-4e3c-4604-b054-2441a551aa1c');
+        this.inRent = this.serialisedItemAvailabilities.find((v: SerialisedItemAvailability) => v.UniqueId === 'ec87f723-2284-4f5c-ba57-fcf328a0b738');
+
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
 
@@ -200,6 +205,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
         this.draftQuoteItem = quoteItemStates.find((v: QuoteItemState) => v.UniqueId === '84ad17a3-10f7-4fdb-b76a-41bdb1edb0e6');
         this.submittedQuoteItem = quoteItemStates.find((v: QuoteItemState) => v.UniqueId === 'e511ea2d-6eb9-428d-a982-b097938a8ff8');
         this.approvedQuoteItem = quoteItemStates.find((v: QuoteItemState) => v.UniqueId === '3335810c-9e26-4604-b272-d18b831e79e0');
+        this.awaitingApprovalQuoteItem = quoteItemStates.find((v: QuoteItemState) => v.UniqueId === '76155bb7-53a3-4175-b026-74274a337820');
         this.awaitingAcceptanceQuoteItem = quoteItemStates.find((v: QuoteItemState) => v.UniqueId === 'e0982b61-deb1-47cb-851b-c182f03326a1');
         this.acceptedQuoteItem = quoteItemStates.find((v: QuoteItemState) => v.UniqueId === '6e56c9f1-7bea-4ced-a724-67e4221a5993');
 
@@ -311,7 +317,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
       const onQuoteItem = serialisedItem.QuoteItemsWhereSerialisedItem
     .find(v => 
       (v.QuoteItemState === this.draftQuoteItem || v.QuoteItemState === this.submittedQuoteItem || v.QuoteItemState === this.approvedQuoteItem
-          || v.QuoteItemState === this.awaitingAcceptanceQuoteItem || v.QuoteItemState === this.acceptedQuoteItem)
+        || v.QuoteItemState === this.awaitingApprovalQuoteItem || v.QuoteItemState === this.awaitingAcceptanceQuoteItem || v.QuoteItemState === this.acceptedQuoteItem)
       && (v.QuoteWhereQuoteItem.QuoteState === this.createdQuote || v.QuoteWhereQuoteItem.QuoteState === this.approvedQuote
           || v.QuoteWhereQuoteItem.QuoteState === this.awaitingAcceptanceQuote || v.QuoteWhereQuoteItem.QuoteState === this.acceptedQuote));
 
@@ -384,6 +390,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
           Part: {
             include: {
               SerialisedItems: {
+                SerialisedItemAvailability: x,
                 RequestItemsWhereSerialisedItem: {
                   RequestItemState: x,
                   RequestWhereRequestItem: {
@@ -417,6 +424,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
         object: product.id,
         include: {
           SerialisedItems: {
+            SerialisedItemAvailability: x,
             RequestItemsWhereSerialisedItem: {
               RequestItemState: x,
               RequestWhereRequestItem: {
@@ -451,7 +459,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
       .subscribe((loaded) => {
 
         this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
-        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true);
+        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true || v.SerialisedItemAvailability === this.inRent);
 
         if (this.orderItem.Product !== this.previousProduct) {
           this.orderItem.SerialisedItem = null;

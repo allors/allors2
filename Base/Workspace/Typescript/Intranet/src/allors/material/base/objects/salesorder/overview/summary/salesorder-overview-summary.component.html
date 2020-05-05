@@ -88,6 +88,7 @@
     <button *ngIf="order.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
     <button *ngIf="order.CanExecuteApprove" mat-button (click)="approve()">Approve</button>
     <button *ngIf="order.CanExecuteSetReadyForPosting" mat-button (click)="setReadyForPosting()">Ready for posting</button>
+    <button *ngIf="order.CanExecuteReopen" mat-button (click)="reopen()">ReOpen</button>
     <button *ngIf="order.CanExecutePost" mat-button (click)="post()">Send</button>
     <button *ngIf="order.CanExecuteReject" mat-button (click)="reject()">Reject</button>
     <button *ngIf="order.CanExecuteHold" mat-button (click)="hold()">Hold</button>

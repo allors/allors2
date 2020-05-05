@@ -14,15 +14,16 @@ namespace Allors.Domain
 
         protected override void BaseSecure(Security config)
         {
+            var readyForPosting = new SalesInvoiceItemStates(this.Session).ReadyForPosting;
+            var notPaid = new SalesInvoiceItemStates(this.Session).NotPaid;
             var paid = new SalesInvoiceItemStates(this.Session).Paid;
             var writtenOff = new SalesInvoiceItemStates(this.Session).WrittenOff;
-            var cancelled = new SalesInvoiceItemStates(this.Session).Cancelled;
-            var cancelledByOrder = new SalesInvoiceItemStates(this.Session).CancelledByInvoice;
+            var cancelledByInvoice = new SalesInvoiceItemStates(this.Session).CancelledByInvoice;
 
+            config.Deny(this.ObjectType, notPaid, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, writtenOff, Operations.Write, Operations.Execute);
-            config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);
-            config.Deny(this.ObjectType, cancelledByOrder, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, cancelledByInvoice, Operations.Write);
         }
     }
 }

@@ -3,7 +3,7 @@ import { PanelService, NavigationService, RefreshService, Action, MetaService, C
 import { SalesOrderItem, SalesOrder } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -44,7 +44,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
   edit: Action;
   cancel: Action;
   reject: Action;
-  approve: Action;
+  reopen: Action;
 
   get createData(): ObjectData {
     return {
@@ -79,7 +79,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
     this.edit = editService.edit();
     this.cancel = methodService.create(allors.context, this.m.SalesOrderItem.Cancel, { name: 'Cancel' });
     this.reject = methodService.create(allors.context, this.m.SalesOrderItem.Reject, { name: 'Reject' });
-    this.approve = methodService.create(allors.context, this.m.SalesOrderItem.Approve, { name: 'Approve' });
+    this.reopen = methodService.create(allors.context, this.m.SalesOrderItem.Reopen, { name: 'Reopen' });
 
     const sort = true;
     this.table = new Table({
@@ -100,7 +100,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
         this.delete,
         this.cancel,
         this.reject,
-        this.approve,
+        this.reopen,
       ],
       defaultAction: this.edit,
       autoSort: true,
@@ -112,7 +112,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;
-
+      
       const id = this.panel.manager.id;
 
       pulls.push(
@@ -132,7 +132,7 @@ export class SalesOrderItemOverviewPanelComponent extends TestScope {
         }),
         pull.SalesOrder({
           name: orderPullName,
-          object: id
+          object: id,
         }),
       );
     };

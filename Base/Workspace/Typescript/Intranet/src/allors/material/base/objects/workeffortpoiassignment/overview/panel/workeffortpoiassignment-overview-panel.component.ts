@@ -1,9 +1,9 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { NavigationService, Action, PanelService, RefreshService, MetaService, TestScope } from '../../../../../../angular';
-import { WorkEffortPurchaseOrderItemAssignment } from '../../../../../../domain';
+import { WorkEffortPurchaseOrderItemAssignment, WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, EditService, Table, OverviewService, ObjectData } from '../../../../..';
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 interface Row extends TableRow {
   object: WorkEffortPurchaseOrderItemAssignment;
@@ -20,6 +20,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent extends TestScope implements OnInit {
+  workEffort: WorkEffort;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -106,10 +107,14 @@ export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent extends
             }
           }
         }),
+        pull.WorkEffort({
+          object: id,
+        }),
       );
     };
 
     this.panel.onPulled = (loaded) => {
+      this.workEffort = loaded.objects.WorkEffort as WorkEffort;
       this.objects = loaded.collections[pullName] as WorkEffortPurchaseOrderItemAssignment[];
 
       if (this.objects) {
