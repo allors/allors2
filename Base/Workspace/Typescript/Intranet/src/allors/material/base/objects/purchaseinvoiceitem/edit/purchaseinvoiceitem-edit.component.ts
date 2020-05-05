@@ -1,10 +1,12 @@
+import * as moment from 'moment/moment';
+
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
-import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem } from '../../../../../domain';
+import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem, SupplierOffering } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -33,11 +35,15 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
   part: Part;
   serialisedItems: SerialisedItem[];
   serialisedItem: SerialisedItem;
+  serialised: boolean;
+  nonUnifiedPart: boolean;
+  unifiedGood: boolean;
 
   private subscription: Subscription;
   partsFilter: SearchFactory;
   transportItemType: InvoiceItemType;
   refurbishItemType: InvoiceItemType;
+  supplierOffering: SupplierOffering;
 
   constructor(
     @Self() public allors: ContextService,
@@ -144,6 +150,19 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
           this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
         } else {
 
+          if (this.invoiceItem.Part) {
+            this.unifiedGood = this.invoiceItem.Part.objectType.name === m.UnifiedGood.name;
+            this.nonUnifiedPart = this.invoiceItem.Part.objectType.name === m.NonUnifiedPart.name;
+
+            if (this.unifiedGood) {
+              this.updateFromPart(this.invoiceItem.Part);
+            }
+
+            if (this.nonUnifiedPart) {
+              this.updateFromSparePart(this.invoiceItem.Part);
+            }
+          }
+
           if (this.invoiceItem.CanWriteQuantity) {
             this.title = 'Edit purchase invoice Item';
           } else {
@@ -169,6 +188,24 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
 
     this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
     this.invoiceItem.Quantity = '1';
+  }
+
+  public partSelected(part: Part): void {
+    if (part) {
+      this.unifiedGood = this.invoiceItem.Part.objectType.name === this.m.UnifiedGood.name;
+      this.nonUnifiedPart = this.invoiceItem.Part.objectType.name === this.m.NonUnifiedPart.name;
+
+      this.updateFromPart(part);
+    }
+  }
+
+  public sparePartSelected(part: Part): void {
+    if (part) {
+      this.unifiedGood = this.invoiceItem.Part.objectType.name === this.m.UnifiedGood.name;
+      this.nonUnifiedPart = this.invoiceItem.Part.objectType.name === this.m.NonUnifiedPart.name;
+
+      this.updateFromSparePart(part);
+    }
   }
 
   public save(): void {
@@ -220,11 +257,108 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       });
   }
 
+  private updateFromSparePart(part: Part) {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
+      pull.Part(
+        {
+          object: part,
+          fetch: {
+            SerialisedItems: {
+              include: {
+                OwnedBy: x
+              }
+            }
+          }
+        }
+      ),
+      pull.Part(
+        {
+          object: part,
+          fetch: {
+            SupplierOfferingsWherePart: {
+              include: {
+                Supplier: x
+              }
+            }
+          }
+        }
+      ),
+      pull.Part(
+        {
+          object: part,
+          include: {
+            InventoryItemKind: x,
+          }
+        }
+      ),
+    ];
+
+    this.allors.context
+      .load(new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
+
+        const supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
+        this.supplierOffering = supplierOfferings.find(v => moment(v.FromDate).isBefore(moment())
+          && (!v.ThroughDate || moment(v.ThroughDate).isAfter(moment()))
+          && v.Supplier === this.invoice.BilledFrom);
+
+        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
+
+        if (this.invoiceItem.SerialisedItem) {
+          this.serialisedItems.push(this.invoiceItem.SerialisedItem);
+        }
+      });
+  }
+
   private onSave() {
 
     if (this.invoiceItem.InvoiceItemType !== this.partItemType &&
       this.invoiceItem.InvoiceItemType !== this.partItemType) {
       this.invoiceItem.Quantity = '1';
     }
+  }
+
+  private updateFromPart(part: Part) {
+
+    const { pull, x } = this.metaService;
+
+    const pulls = [
+      pull.Part(
+        {
+          object: part,
+          fetch: {
+            SerialisedItems: {
+              include: {
+                OwnedBy: x
+              }
+            }
+          }
+        }
+      ),
+      pull.Part(
+        {
+          object: part,
+          include: {
+            InventoryItemKind: x,
+          }
+        }
+      ),
+    ];
+
+    this.allors.context
+      .load(new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
+
+        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
+
+        if (this.invoiceItem.SerialisedItem) {
+          this.serialisedItems.push(this.invoiceItem.SerialisedItem);
+        }
+      });
   }
 }

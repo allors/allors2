@@ -30,7 +30,7 @@ namespace Allors.Domain
             var approve = this.Meta.Approve;
 
             config.Deny(this.ObjectType, provisional, reopen, approve);
-            config.Deny(this.ObjectType, awaitingAcceptance, reopen, approve);
+            config.Deny(this.ObjectType, awaitingAcceptance, reopen, approve, delete);
             config.Deny(this.ObjectType, readyForPosting, reopen, approve);
             config.Deny(this.ObjectType, inProcess, delete, reopen, approve);
             config.Deny(this.ObjectType, completed, delete, cancel, reject, reopen, approve);

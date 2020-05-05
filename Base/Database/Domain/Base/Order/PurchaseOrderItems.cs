@@ -22,31 +22,25 @@ namespace Allors.Domain
             var inProcess = itemStates.InProcess;
             var completed = itemStates.Completed;
             var finished = itemStates.Finished;
+            var sent = itemStates.Sent;
 
-            var shipmentStates = new PurchaseOrderItemShipmentStates(this.Session);
-            var partiallyReceived = shipmentStates.PartiallyReceived;
-            var received = shipmentStates.Received;
-
-            var part = this.Meta.Part;
             var cancel = this.Meta.Cancel;
             var reject = this.Meta.Reject;
             var quickReceive = this.Meta.QuickReceive;
+            var reopen = this.Meta.Reopen;
             var delete = this.Meta.Delete;
 
-            config.Deny(this.ObjectType, partiallyReceived, part);
-            config.Deny(this.ObjectType, received, part);
-
-            config.Deny(this.ObjectType, created, cancel, reject);
-            config.Deny(this.ObjectType, onHold, quickReceive, delete);
-            config.Deny(this.ObjectType, awaitingApproval, cancel, quickReceive, delete);
-            config.Deny(this.ObjectType, inProcess, delete, quickReceive, delete);
-            config.Deny(this.ObjectType, completed, delete);
-            config.Deny(this.ObjectType, partiallyReceived, delete, cancel, reject, quickReceive);
-            config.Deny(this.ObjectType, received, delete, cancel, reject, quickReceive);
+            config.Deny(this.ObjectType, created, reopen);
+            config.Deny(this.ObjectType, onHold, quickReceive, delete, reopen);
+            config.Deny(this.ObjectType, awaitingApproval, cancel, reject, quickReceive, delete, reopen);
+            config.Deny(this.ObjectType, inProcess, cancel, reject, delete, quickReceive, delete, reopen);
+            config.Deny(this.ObjectType, completed, cancel, reject, delete);
+            config.Deny(this.ObjectType, cancelled, cancel, reject);
+            config.Deny(this.ObjectType, rejected, cancel, reject);
 
             config.Deny(this.ObjectType, inProcess, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, cancelled, Operations.Write);
+            config.Deny(this.ObjectType, rejected, Operations.Write);
             config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }

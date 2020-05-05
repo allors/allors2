@@ -6,6 +6,7 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Meta;
@@ -168,6 +169,9 @@ namespace Allors.Domain
                     this.UnitBasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Part);
                 }
 
+                this.VatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
+                this.VatRate = this.VatRegime?.VatRate;
+
                 this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
                 this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
                 this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
@@ -177,9 +181,6 @@ namespace Allors.Domain
                 this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
                 this.TotalIncVat = this.TotalExVat + this.TotalVat;
             }
-
-            this.VatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
-            this.VatRate = this.VatRegime?.VatRate;
 
             if (this.ExistPart && this.Part.InventoryItemKind.Serialised)
             {
@@ -286,6 +287,15 @@ namespace Allors.Domain
             {
                 this.CanInvoice = false;
             }
+
+            this.AddSecurityToken(new SecurityTokens(this.Session()).DefaultSecurityToken);
+
+            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
+            {
+                this.AddSecurityToken(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy.LocalAdministratorSecurityToken);
+                this.AddSecurityToken(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy.PurchaseOrderApproverLevel1SecurityToken);
+                this.AddSecurityToken(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy.PurchaseOrderApproverLevel2SecurityToken);
+            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
@@ -298,6 +308,25 @@ namespace Allors.Domain
             else
             {
                 this.AddDeniedPermission(deletePermission);
+            }
+
+            if (!this.PurchaseOrderItemShipmentState.IsNotReceived)
+            {
+                var deniablePermissionByOperandTypeId = new Dictionary<Guid, Permission>();
+
+                foreach (Permission permission in this.Session().Extent<Permission>())
+                {
+                    if (permission.ConcreteClassPointer == this.strategy.Class.Id
+                        && (permission.Operation == Operations.Write || permission.Operation == Operations.Execute))
+                    {
+                        deniablePermissionByOperandTypeId.Add(permission.OperandTypePointer, permission);
+                    }
+                }
+
+                foreach (var keyValuePair in deniablePermissionByOperandTypeId)
+                {
+                    this.AddDeniedPermission(keyValuePair.Value);
+                }
             }
         }
 
@@ -403,5 +432,8 @@ namespace Allors.Domain
         public void BaseCancel(OrderItemCancel method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Cancelled;
 
         public void BaseReject(OrderItemReject method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Rejected;
+
+        public void BaseReopen(OrderItemReopen method) => this.PurchaseOrderItemState = this.PreviousPurchaseOrderItemState;
+
     }
 }

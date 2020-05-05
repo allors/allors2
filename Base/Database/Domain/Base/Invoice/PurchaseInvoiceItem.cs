@@ -85,11 +85,22 @@ namespace Allors.Domain
             this.UnitDiscount = 0;
             this.UnitSurcharge = 0;
 
-            if (this.ExistAssignedUnitPrice)
+            if (this.AssignedUnitPrice.HasValue)
             {
-                this.UnitBasePrice = this.AssignedUnitPrice ?? 0;
-                this.UnitPrice = this.AssignedUnitPrice ?? 0;
+                this.UnitBasePrice = this.AssignedUnitPrice.Value;
+                this.UnitPrice = this.AssignedUnitPrice.Value;
+            }
+            else
+            {
+                var invoice = this.PurchaseInvoiceWherePurchaseInvoiceItem;
+                if (this.ExistPart)
+                {
+                    this.UnitBasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(invoice.BilledFrom, invoice.InvoiceDate, this.Part);
+                }
+            }
 
+            if (this.ExistUnitBasePrice)
+            {
                 var discountAdjustment = this.GetDiscountAdjustment();
 
                 if (discountAdjustment != null)
@@ -124,16 +135,10 @@ namespace Allors.Domain
                     }
                 }
 
-                decimal vat = 0;
+                this.VatRegime = this.AssignedVatRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.VatRegime;
+                this.VatRate = this.VatRegime?.VatRate;
 
-                if (this.ExistVatRate)
-                {
-                    var vatRate = this.VatRate.Rate;
-                    var vatBase = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
-                    vat = Math.Round(vatBase * vatRate / 100, 2);
-                }
-
-                this.UnitVat = vat;
+                this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
                 this.TotalBasePrice = this.UnitBasePrice * this.Quantity;
                 this.TotalDiscount = this.UnitDiscount * this.Quantity;
                 this.TotalSurcharge = this.UnitSurcharge * this.Quantity;

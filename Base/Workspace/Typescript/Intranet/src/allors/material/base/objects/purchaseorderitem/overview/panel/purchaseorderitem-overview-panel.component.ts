@@ -40,7 +40,7 @@ export class PurchaseOrderItemOverviewPanelComponent extends TestScope {
   edit: Action;
   cancel: Action;
   reject: Action;
-  continue: Action;
+  reopen: Action;
   quickReceive: Action;
 
   get createData(): ObjectData {
@@ -77,6 +77,7 @@ export class PurchaseOrderItemOverviewPanelComponent extends TestScope {
     this.edit = editService.edit();
     this.cancel = methodService.create(allors.context, this.m.PurchaseOrderItem.Cancel, { name: 'Cancel' });
     this.reject = methodService.create(allors.context, this.m.PurchaseOrderItem.Reject, { name: 'Reject' });
+    this.reopen = methodService.create(allors.context, this.m.PurchaseOrderItem.Reopen, { name: 'Reopen' });
     this.quickReceive = methodService.create(allors.context, this.m.PurchaseOrderItem.QuickReceive, { name: 'QuickReceive' });
 
     const sort = true;
@@ -94,6 +95,7 @@ export class PurchaseOrderItemOverviewPanelComponent extends TestScope {
         this.delete,
         this.cancel,
         this.reject,
+        this.reopen,
         this.quickReceive
       ],
       defaultAction: this.edit,

@@ -23,6 +23,7 @@ interface Row extends TableRow {
   reference: string;
   dueDate: string;
   totalExVat: string;
+  totalIncVat: string;
   lastModifiedDate: string;
 }
 @Component({
@@ -163,6 +164,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
         { name: 'reference', sort: true },
         { name: 'dueDate', sort: true },
         { name: 'totalExVat', sort: true },
+        { name: 'totalIncVat', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
@@ -210,6 +212,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
         reference: m.PurchaseInvoice.CustomerReference,
         dueDate: m.PurchaseInvoice.DueDate,
         totalExVat: m.PurchaseInvoice.TotalExVat,
+        totalIncVat: m.PurchaseInvoice.TotalIncVat,
         lastModifiedDate: m.PurchaseInvoice.LastModifiedDate,
       }
     );
@@ -274,6 +277,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
             reference: v.PurchaseInvoiceState.Name && `${v.CustomerReference} - ${v.PurchaseInvoiceState.Name}`,
             dueDate: v.DueDate && moment(v.DueDate).format('MMM Do YY'),
             totalExVat: v.TotalExVat,
+            totalIncVat: v.TotalIncVat,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
