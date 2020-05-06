@@ -12,6 +12,8 @@ namespace Allors.Domain.Print.SalesInvoiceModel
     {
         public InvoiceItemModel(SalesInvoiceItem item)
         {
+            var currencyIsoCode = item.SalesInvoiceWhereSalesInvoiceItem.Currency.IsoCode;
+
             this.Reference = item.InvoiceItemType?.Name;
 
             this.Product = item.ExistProduct ? item.Product?.Name : item.Part?.Name;
@@ -25,8 +27,8 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.Quantity = item.Quantity;
             // TODO: Where does the currency come from?
             var currency = "€";
-            this.Price = item.UnitPrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.Amount = item.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.Price = currencyIsoCode + " " + item.UnitPrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.Amount = currencyIsoCode + " " + item.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.Comment = item.Comment;
         }
 

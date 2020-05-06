@@ -13,22 +13,23 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public InvoiceModel(SalesInvoice invoice)
         {
             var session = invoice.Strategy.Session;
+            var currencyIsoCode = invoice.Currency.IsoCode;
 
             this.Title = invoice.SalesInvoiceType.Equals(new SalesInvoiceTypes(session).CreditNote) ? "CREDIT NOTE" : "INVOICE";
             this.Description = invoice.Description;
+            this.Currency = invoice.Currency.IsoCode;
             this.Number = invoice.InvoiceNumber;
             this.Date = invoice.InvoiceDate.ToString("yyyy-MM-dd");
             this.DueDate = invoice.DueDate?.ToString("yyyy-MM-dd");
             this.CustomerReference = invoice.CustomerReference;
 
             // TODO: Where does the currency come from?
-            var currency = "€";
-            this.SubTotal = invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.Deposit = invoice.AmountPaid.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.TotalExVat = invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.SubTotal = currencyIsoCode + " " + invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.Deposit = currencyIsoCode + " " + invoice.AmountPaid.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalExVat = currencyIsoCode + " " + invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.VatCharge = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.TotalIncVat = invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalVat = currencyIsoCode + " " + invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalIncVat = currencyIsoCode + " " + invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
 
             this.PaymentNetDays = invoice.PaymentNetDays;
 
@@ -77,5 +78,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public int PaymentNetDays { get; }
 
         public string VatClause { get; set; }
+
+        public string Currency { get; set; }
     }
 }

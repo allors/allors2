@@ -187,7 +187,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
           }),
           pull.Currency({
             predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
-            sort: new Sort(m.Currency.Name),
+            sort: new Sort(m.Currency.IsoCode),
           }),
           pull.SerialisedInventoryItemState({
             name: serialisedInventoryItemStatePullName,

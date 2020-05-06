@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, CustomerRelationship } from '../../../../../domain';
+import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, CustomerRelationship, Currency } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { ObjectData } from '../../../../../material/core/services/object';
@@ -33,6 +33,7 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
   shipToEndCustomerContacts: Person[] = [];
   stores: Store[];
   internalOrganisation: Organisation;
+  currencies: Currency[];
 
   addShipFromAddress = false;
 
@@ -100,6 +101,10 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
 
           const pulls = [
             this.fetcher.internalOrganisation,
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.IsoCode)
+            }),
             pull.Store({
               predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: internalOrganisationId }),
               include: { BillingProcess: x },
@@ -129,6 +134,7 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.stores = loaded.collections.Stores as Store[];
+        this.currencies = loaded.collections.Currencies as Currency[];
         this.order = this.allors.context.create('SalesOrder') as SalesOrder;
         this.order.TakenBy = this.internalOrganisation;
 

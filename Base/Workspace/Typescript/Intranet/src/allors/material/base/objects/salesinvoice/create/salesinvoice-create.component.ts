@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, TestScope } from '../../../../../angular';
-import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, CustomerRelationship, SalesInvoiceType } from '../../../../../domain';
+import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, CustomerRelationship, SalesInvoiceType, Currency } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { InternalOrganisationId } from '../../../../../angular/base/state';
@@ -31,6 +31,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
   shipToEndCustomerAddresses: ContactMechanism[] = [];
   shipToEndCustomerContacts: Person[] = [];
   internalOrganisation: Organisation;
+  currencies: Currency[];
 
   addShipToCustomer = false;
   addShipToAddress = false;
@@ -97,6 +98,10 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
           const pulls = [
             this.fetcher.internalOrganisation,
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.IsoCode)
+            }),
             pull.SalesInvoiceType({
               predicate: new Equals({ propertyType: m.SalesInvoiceType.IsActive, value: true }),
               sort: new Sort(m.SalesInvoiceType.Name),
@@ -111,6 +116,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.salesInvoiceTypes = loaded.collections.SalesInvoiceTypes as SalesInvoiceType[];
+        this.currencies = loaded.collections.Currencies as Currency[];
 
         this.invoice = this.allors.context.create('SalesInvoice') as SalesInvoice;
         this.invoice.BilledFrom = this.internalOrganisation;

@@ -12,7 +12,10 @@ namespace Allors.Domain.Print.SalesOrderModel
     {
         public OrderModel(SalesOrder order)
         {
+            var currencyIsoCode = order.Currency.IsoCode;
+
             this.Description = order.Description;
+            this.Currency = currencyIsoCode;
             this.Number = order.OrderNumber;
             this.Date = order.OrderDate.ToString("yyyy-MM-dd");
             DateTime? ret;
@@ -29,12 +32,11 @@ namespace Allors.Domain.Print.SalesOrderModel
             this.CustomerReference = order.CustomerReference;
 
             // TODO: Where does the currency come from?
-            var currency = "€";
-            this.SubTotal = order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.TotalExVat = order.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.SubTotal = currencyIsoCode + " " + order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalExVat = currencyIsoCode + " " + order.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.VatCharge = order.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.TotalIncVat = order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalVat = currencyIsoCode + " " + order.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalIncVat = currencyIsoCode + " " + order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
 
             this.PaymentNetDays = order.PaymentNetDays;
         }
@@ -60,5 +62,7 @@ namespace Allors.Domain.Print.SalesOrderModel
         public string TotalIncVat { get; }
 
         public int PaymentNetDays { get; }
+
+        public string Currency { get; }
     }
 }

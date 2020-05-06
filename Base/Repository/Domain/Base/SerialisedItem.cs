@@ -267,7 +267,17 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public InternalOrganisation ReportingUnit { get; set; }
+        public InternalOrganisation Buyer { get; set; }
+
+        #region Allors
+        [Id("3a7c5038-bd54-4caa-8f61-7d8a5336f24b")]
+        [AssociationId("f8f573c9-6313-4862-9abb-5dca2592c48d")]
+        [RoleId("4c01f67c-5ca8-4262-8264-9e864b6c696b")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public InternalOrganisation Seller { get; set; }
 
         #region Allors
         [Id("E9ACD0EE-693C-4459-9F40-D478F538659F")]

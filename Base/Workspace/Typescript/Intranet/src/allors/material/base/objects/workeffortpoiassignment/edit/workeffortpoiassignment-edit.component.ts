@@ -93,7 +93,8 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
 
         this.allors.context.reset();
 
-        this.purchaseOrders = loaded.collections.PurchaseOrders as PurchaseOrder[];
+        const purchaseOrders = loaded.collections.PurchaseOrders as PurchaseOrder[];
+        this.purchaseOrders = purchaseOrders.filter(v => v.PurchaseOrderItems.find(i => i.WorkEffortPurchaseOrderItemAssignmentsWherePurchaseOrderItem.length === 0));
 
         if (isCreate) {
           this.workEffort = loaded.objects.WorkEffort as WorkEffort;

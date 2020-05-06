@@ -92,7 +92,8 @@ namespace Allors.Domain
             && !this.ExistSerialisedItemsWhereSuppliedBy
             && !this.ExistSerialisedItemsWhereOwnedBy
             && !this.ExistSerialisedItemsWhereRentedBy
-            && !this.ExistSerialisedItemsWhereReportingUnit
+            && !this.ExistSerialisedItemsWhereBuyer
+            && !this.ExistSerialisedItemsWhereSeller
             && !this.ExistWorkEffortsWhereCustomer
             && !this.ExistWorkEffortsWhereExecutedBy
             && !this.ExistWorkEffortPartyAssignmentsWhereParty;

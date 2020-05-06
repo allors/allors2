@@ -49,7 +49,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithPrivatePhoto(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 800, height: 600)).Build());
             @this.WithAvailableForSale(faker.Random.Bool());
 
-            @this.WithReportingUnit(internalOrganisation);
+            @this.WithBuyer(internalOrganisation);
+            @this.WithSeller(internalOrganisation);
             @this.OwnedBy = (availability.IsSold ? new Organisations(@this.Session).FindBy(M.Organisation.IsInternalOrganisation, false) : internalOrganisation) ?? internalOrganisation;
 
             if (availability.IsInRent)

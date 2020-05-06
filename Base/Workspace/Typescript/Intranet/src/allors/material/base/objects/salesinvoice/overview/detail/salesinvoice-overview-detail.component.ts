@@ -204,7 +204,10 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
             pull.VatRate(),
             pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.VatClause({ sort: new Sort(m.VatClause.Name) }),
-            pull.Currency({ sort: new Sort(m.Currency.Name) }),
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.IsoCode)
+            }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: [

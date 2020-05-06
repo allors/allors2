@@ -120,6 +120,8 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                   Locale: x,
                 },
                 Ownership: x,
+                Buyer: x,
+                Seller: x,
                 OwnedBy: x,
                 RentedBy: x,
                 PrimaryPhoto: x,

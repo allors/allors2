@@ -131,9 +131,14 @@ namespace Allors.Domain
                 builder.Append(string.Join(" ", this.OwnedBy.PartyName));
             }
 
-            if (this.ExistReportingUnit)
+            if (this.ExistBuyer)
             {
-                builder.Append(string.Join(" ", this.ReportingUnit.PartyName));
+                builder.Append(string.Join(" ", this.Buyer.PartyName));
+            }
+
+            if (this.ExistSeller)
+            {
+                builder.Append(string.Join(" ", this.Seller.PartyName));
             }
 
             if (this.ExistPartWhereSerialisedItem)

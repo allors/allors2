@@ -753,6 +753,7 @@ namespace Allors.Domain
                     .WithFee(this.Fee)
                     .WithCustomerReference(this.CustomerReference)
                     .WithPaymentMethod(this.PaymentMethod)
+                    .WithCurrency(this.Currency)
                     .Build();
 
                 foreach (SalesOrderItem orderItem in this.ValidOrderItems)

@@ -274,7 +274,11 @@
     </div>
 
     <div class="row">
+      <a-mat-select class="col" [object]="invoice" [roleType]="m.SalesInvoice.Currency" [options]="currencies" display="IsoCode"  class="col-md"></a-mat-select>
       <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AdvancePayment"></a-mat-input>
+    </div>
+
+    <div class="row">
       <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference"></a-mat-input>
       <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-textarea>
       <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>

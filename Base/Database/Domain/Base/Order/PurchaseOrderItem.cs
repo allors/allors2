@@ -397,7 +397,7 @@ namespace Allors.Domain
                     serialisedItemDeriveRoles.PurchasePrice = this.TotalExVat;
 
                     serialisedItem.OwnedBy = order.OrderedBy;
-                    serialisedItem.ReportingUnit = order.OrderedBy;
+                    serialisedItem.Buyer = order.OrderedBy;
                     serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session()).Available;
 
                     var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
