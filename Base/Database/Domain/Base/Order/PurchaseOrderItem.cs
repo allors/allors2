@@ -287,15 +287,6 @@ namespace Allors.Domain
             {
                 this.CanInvoice = false;
             }
-
-            this.AddSecurityToken(new SecurityTokens(this.Session()).DefaultSecurityToken);
-
-            if (this.ExistPurchaseOrderWherePurchaseOrderItem)
-            {
-                this.AddSecurityToken(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy.LocalAdministratorSecurityToken);
-                this.AddSecurityToken(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy.PurchaseOrderApproverLevel1SecurityToken);
-                this.AddSecurityToken(this.PurchaseOrderWherePurchaseOrderItem.OrderedBy.PurchaseOrderApproverLevel2SecurityToken);
-            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
