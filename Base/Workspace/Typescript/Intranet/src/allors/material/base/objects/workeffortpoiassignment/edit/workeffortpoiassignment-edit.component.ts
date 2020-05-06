@@ -27,6 +27,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
 
   private subscription: Subscription;
   purchaseOrders: PurchaseOrder[];
+  purchaseOrderItems: PurchaseOrderItem[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -92,8 +93,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
 
         this.allors.context.reset();
 
-        const purchaseOrders = loaded.collections.PurchaseOrders as PurchaseOrder[];
-        this.purchaseOrders = purchaseOrders.filter(v => v.WorkEffortPurchaseOrderItemAssignmentsWherePurchaseOrder.length === 0);
+        this.purchaseOrders = loaded.collections.PurchaseOrders as PurchaseOrder[];
 
         if (isCreate) {
           this.workEffort = loaded.objects.WorkEffort as WorkEffort;
@@ -149,5 +149,9 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
       },
         this.saveService.errorHandler
       );
+  }
+
+  public purchaseOrderSelected(purchaseOrder: PurchaseOrder): void {
+    this.purchaseOrderItems = purchaseOrder.PurchaseOrderItems.filter(v => v.WorkEffortPurchaseOrderItemAssignmentsWherePurchaseOrderItem.length === 0);
   }
 }

@@ -147,9 +147,9 @@ namespace Allors.Domain
             var revise = this.Meta.Revise;
 
             config.Deny(this.ObjectType, created, reopen, complete, invoice, revise);
-            config.Deny(this.ObjectType, inProgress, reopen, revise);
+            config.Deny(this.ObjectType, inProgress, cancel, reopen, revise);
             config.Deny(this.ObjectType, cancelled, cancel, invoice, complete, revise);
-            config.Deny(this.ObjectType, completed, reopen, complete);
+            config.Deny(this.ObjectType, completed, cancel, reopen, complete);
             config.Deny(this.ObjectType, finished, cancel, reopen, complete, invoice, revise);
 
             config.Deny(this.ObjectType, cancelled, Operations.Write);

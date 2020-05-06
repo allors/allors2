@@ -27,17 +27,16 @@ namespace Allors.Domain
             var confirm = this.Meta.Confirm;
             var cancel = this.Meta.Cancel;
             var reopen = this.Meta.Reopen;
-            var createSalesInvoice = this.Meta.CreateSalesInvoice;
             var delete = this.Meta.Delete;
             var setPaid = this.Meta.SetPaid;
 
-            config.Deny(this.ObjectType, created, approve, reject, reopen, createSalesInvoice, setPaid);
-            config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, createSalesInvoice, setPaid, delete);
-            config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, createSalesInvoice, setPaid, delete);
+            config.Deny(this.ObjectType, created, approve, reject, reopen, setPaid);
+            config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, setPaid, delete);
+            config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, setPaid, delete);
             config.Deny(this.ObjectType, awaitingApproval, confirm, cancel, reopen, setPaid, delete);
             config.Deny(this.ObjectType, notPaid, approve, confirm, reopen, delete);
             config.Deny(this.ObjectType, partiallyPaid, approve, confirm, reopen, delete);
-            config.Deny(this.ObjectType, received, createSalesInvoice, delete);
+            config.Deny(this.ObjectType, received, delete);
 
             config.Deny(this.ObjectType, notPaid, Operations.Write);
             config.Deny(this.ObjectType, partiallyPaid, Operations.Write);

@@ -49,7 +49,7 @@ namespace Allors.Domain
                     }
                 }
 
-                return false;
+                return true;
             }
         }
 
@@ -219,11 +219,6 @@ namespace Allors.Domain
             {
                 this.AddDeniedPermission(deletePermission);
             }
-
-            if (this.ExistSalesInvoiceWherePurchaseInvoice)
-            {
-                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.CreateSalesInvoice, Operations.Execute));
-            }
         }
 
         public void BasePrint(PrintablePrint method)
@@ -252,57 +247,6 @@ namespace Allors.Domain
                 this.RenderPrintDocument(this.BilledTo?.PurchaseInvoiceTemplate, model, images);
 
                 this.PrintDocument.Media.InFileName = $"{this.InvoiceNumber}.odt";
-            }
-        }
-
-        public void BaseCreateSalesInvoice(PurchaseInvoiceCreateSalesInvoice method)
-        {
-            var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
-                .WithPurchaseInvoice(this)
-                .WithBilledFrom(this.BilledTo)
-                .WithBilledFromContactPerson(this.BilledToContactPerson)
-                .WithBillToCustomer(this.BillToEndCustomer)
-                .WithBillToContactMechanism(this.BillToEndCustomerContactMechanism)
-                .WithBillToContactPerson(this.BillToEndCustomerContactPerson)
-                .WithShipToCustomer(this.ShipToEndCustomer)
-                .WithShipToAddress(this.ShipToEndCustomerAddress)
-                .WithShipToContactPerson(this.ShipToEndCustomerContactPerson)
-                .WithDescription(this.Description)
-                .WithInvoiceDate(this.Session().Now())
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
-                .WithVatRegime(this.VatRegime)
-                .WithDiscountAdjustment(this.DiscountAdjustment)
-                .WithSurchargeAdjustment(this.SurchargeAdjustment)
-                .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
-                .WithFee(this.Fee)
-                .WithCustomerReference(this.CustomerReference)
-                .WithPaymentMethod(this.BillToCustomerPaymentMethod)
-                .WithComment(this.Comment)
-                .WithInternalComment(this.InternalComment)
-                .Build();
-
-            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.PurchaseInvoiceItems)
-            {
-                var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
-                    .WithInvoiceItemType(purchaseInvoiceItem.InvoiceItemType)
-                    .WithAssignedUnitPrice(purchaseInvoiceItem.AssignedUnitPrice)
-                    .WithProduct(purchaseInvoiceItem.Product)
-                    .WithSerialisedItem(purchaseInvoiceItem.SerialisedItem)
-                    .WithQuantity(purchaseInvoiceItem.Quantity)
-                    .WithComment(purchaseInvoiceItem.Comment)
-                    .WithInternalComment(purchaseInvoiceItem.InternalComment)
-                    .Build();
-
-                salesInvoice.AddSalesInvoiceItem(invoiceItem);
-            }
-
-            var internalOrganisation = (InternalOrganisation)salesInvoice.BilledFrom;
-            if (!internalOrganisation.ActiveCustomers.Contains(salesInvoice.BillToCustomer))
-            {
-                new CustomerRelationshipBuilder(this.Strategy.Session)
-                    .WithCustomer(salesInvoice.BillToCustomer)
-                    .WithInternalOrganisation(internalOrganisation)
-                    .Build();
             }
         }
 

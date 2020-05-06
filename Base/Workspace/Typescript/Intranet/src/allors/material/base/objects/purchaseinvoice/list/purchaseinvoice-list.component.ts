@@ -43,7 +43,6 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
   cancel: Action;
   reopen: Action;
   reject: Action;
-  createSalesInvoice: Action;
   print: Action;
   setPaid: Action;
 
@@ -81,7 +80,6 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
     this.reject = methodService.create(allors.context, this.m.PurchaseInvoice.Reject, { name: 'Reject' });
     this.cancel = methodService.create(allors.context, this.m.PurchaseInvoice.Cancel, { name: 'Cancel' });
     this.reopen = methodService.create(allors.context, this.m.PurchaseInvoice.Reopen, { name: 'Reopen' });
-    this.createSalesInvoice = methodService.create(allors.context, this.m.PurchaseInvoice.CreateSalesInvoice, { name: 'Create Sales Invoice' });
     this.print = printService.print();
 
     this.delete = deleteService.delete(allors.context);
@@ -174,7 +172,6 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
         this.cancel,
         this.reopen,
         this.reject,
-        this.createSalesInvoice,
         this.print,
         this.setPaid
       ],
