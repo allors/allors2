@@ -65,6 +65,46 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void WorkTask_StateFinished()
+        {
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
+            var billToMechelen = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(mechelenAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").WithPartyContactMechanism(billToMechelen).Build();
+            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
+
+            this.Session.Derive();
+
+            workTask.Complete();
+
+            this.Session.Derive();
+
+            workTask.Invoice();
+
+            this.Session.Derive();
+
+            Assert.Equal(new WorkEffortStates(this.Session).Finished, workTask.WorkEffortState);
+
+            User user = this.Administrator;
+            this.Session.SetUser(user);
+
+            var acl = new AccessControlLists(this.Administrator)[workTask];
+            Assert.False(acl.CanExecute(M.WorkEffort.Invoice));
+            Assert.False(acl.CanExecute(M.WorkEffort.Cancel));
+            Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
+            Assert.False(acl.CanExecute(M.WorkEffort.Complete));
+        }
+
+        [Fact]
         public void WorkTask_StateCancelled_TimeEntry()
         {
             var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
