@@ -313,15 +313,6 @@ namespace Allors.Domain
             }
 
             this.ResetPrintDocument();
-
-            this.AddSecurityToken(new SecurityTokens(this.Session()).DefaultSecurityToken);
-
-            if (this.ExistOrderedBy)
-            {
-                this.AddSecurityToken(this.OrderedBy.LocalAdministratorSecurityToken);
-                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken);
-                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken);
-            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
