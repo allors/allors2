@@ -14,9 +14,9 @@ public partial class Build
     [Parameter("DotNet Verbosity")]
     private readonly DotNetVerbosity DotNetVerbosity = DotNetVerbosity.Quiet;
 
-    [Solution] private readonly Solution Solution;
-    [GitRepository] private readonly GitRepository GitRepository;
-    [GitVersion] private readonly GitVersion GitVersion;
+    //[Solution] private readonly Solution Solution;
+    //[GitRepository] private readonly GitRepository GitRepository;
+    //[GitVersion] private readonly GitVersion GitVersion;
 
     private readonly Paths Paths = new Paths(RootDirectory);
 
