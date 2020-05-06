@@ -86,6 +86,7 @@ namespace Allors.Domain
 
             var completePermission = new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Complete, Operations.Execute);
             var cancelPermission = new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Cancel, Operations.Execute);
+
             if (@this.ServiceEntriesWhereWorkEffort.Any(v => !v.ExistThroughDate))
             {
                 @this.AddDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Complete, Operations.Execute));
@@ -93,11 +94,18 @@ namespace Allors.Domain
             }
             else
             {
-                @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Cancel, Operations.Execute));
-
-                if (@this.WorkEffortState.IsInProgress)
+                if (@this.WorkEffortState.IsCreated)
                 {
+                    @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Cancel, Operations.Execute));
+                }
+                else if(@this.WorkEffortState.IsInProgress)
+                {
+                    @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Cancel, Operations.Execute));
                     @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Complete, Operations.Execute));
+                }
+                else if (@this.WorkEffortState.IsCompleted)
+                {
+                    @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Cancel, Operations.Execute));
                 }
             }
         }

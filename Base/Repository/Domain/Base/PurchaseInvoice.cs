@@ -351,6 +351,17 @@ namespace Allors.Repository
         public Media[] ElectronicDocuments { get; set; }
 
         #region Allors
+        [Id("b1a0d63f-a0bc-424e-9294-e3b7b37e9c6e")]
+        [AssociationId("aa45e232-6893-4932-abf5-2b7a82af2464")]
+        [RoleId("cecf02cf-8102-4889-880f-b0861451c266")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal ActualInvoiceAmount { get; set; }
+
+        #region Allors
         [Id("797A9C2C-A2CF-4AE3-8395-B2F25D0F40C1")]
         #endregion
         [Workspace]

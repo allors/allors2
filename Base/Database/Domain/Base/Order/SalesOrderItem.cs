@@ -615,7 +615,6 @@ namespace Allors.Domain
                 }
             }
 
-
             if (!this.SalesOrderItemInvoiceState.NotInvoiced || !this.SalesOrderItemShipmentState.NotShipped)
             {
                 var deniablePermissionByOperandTypeId = new Dictionary<Guid, Permission>();

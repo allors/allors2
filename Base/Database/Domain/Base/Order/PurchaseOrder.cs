@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Meta;
@@ -314,6 +315,13 @@ namespace Allors.Domain
             this.ResetPrintDocument();
 
             this.AddSecurityToken(new SecurityTokens(this.Session()).DefaultSecurityToken);
+
+            if (this.ExistOrderedBy)
+            {
+                this.AddSecurityToken(this.OrderedBy.LocalAdministratorSecurityToken);
+                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel1SecurityToken);
+                this.AddSecurityToken(this.OrderedBy.PurchaseOrderApproverLevel2SecurityToken);
+            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)
@@ -336,6 +344,31 @@ namespace Allors.Domain
             {
                 this.AddDeniedPermission(deletePermission);
             }
+
+            if (!this.PurchaseOrderShipmentState.IsNotReceived)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Reject, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Cancel, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.QuickReceive, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Revise, Operations.Execute));
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.SetReadyForProcessing, Operations.Execute));
+
+                var deniablePermissionByOperandTypeId = new Dictionary<Guid, Permission>();
+
+                foreach (Permission permission in this.Session().Extent<Permission>())
+                {
+                    if (permission.ConcreteClassPointer == this.strategy.Class.Id && permission.Operation == Operations.Write)
+                    {
+                        deniablePermissionByOperandTypeId.Add(permission.OperandTypePointer, permission);
+                    }
+                }
+
+                foreach (var keyValuePair in deniablePermissionByOperandTypeId)
+                {
+                    this.AddDeniedPermission(keyValuePair.Value);
+                }
+            }
+
         }
 
         public void BaseDelete(PurchaseOrderDelete method)

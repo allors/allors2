@@ -20,6 +20,8 @@ interface Row extends TableRow {
   state: string;
   shipmentState: string;
   customerReference: string;
+  totalExVat: string;
+  totalIncVat: string;
   lastModifiedDate: string;
 }
 
@@ -82,6 +84,8 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
         { name: 'state' },
         { name: 'shipmentState' },
         { name: 'customerReference', sort: true },
+        { name: 'totalExVat', sort: true },
+        { name: 'totalIncVat', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
@@ -169,6 +173,8 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       {
         number: m.PurchaseOrder.OrderNumber,
         customerReference: m.PurchaseOrder.CustomerReference,
+        totalExVat: m.PurchaseOrder.TotalExVat,
+        totalIncVat: m.PurchaseOrder.TotalIncVat,
         lastModifiedDate: m.PurchaseOrder.LastModifiedDate,
       }
     );
@@ -231,6 +237,8 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
             state: `${v.PurchaseOrderState && v.PurchaseOrderState.Name}`,
             shipmentState: `${v.PurchaseOrderShipmentState && v.PurchaseOrderShipmentState.Name}`,
             customerReference: `${v.Description || ''}`,
+            totalExVat: v.TotalExVat,
+            totalIncVat: v.TotalIncVat,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });

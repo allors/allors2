@@ -21,7 +21,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   readonly m: Meta;
 
   invoice: PurchaseInvoice;
-  goods: Good[] = [];
 
   currencies: Currency[];
   vatRates: VatRate[];
@@ -132,16 +131,13 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
             }
           },
         }),
-        pull.Good({
-          name: goodPullName,
-          sort: new Sort(m.Good.Name)
-        })
       );
     };
 
     panel.onPulled = (loaded) => {
-      this.invoice = loaded.objects[purchaseInvoicePullName] as PurchaseInvoice;
-      this.goods = loaded.collections[goodPullName] as Good[];
+      if (this.panel.isCollapsed) {
+        this.invoice = loaded.objects[purchaseInvoicePullName] as PurchaseInvoice;
+      }
     };
   }
 

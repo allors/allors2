@@ -36,10 +36,10 @@ namespace Allors.Domain
         {
             get
             {
-                if (this.PurchaseOrders.Any())
+                if (this.PurchaseOrders.Count > 0)
                 {
                     var orderTotal = this.PurchaseInvoiceItems.SelectMany(v => v.OrderItemBillingsWhereInvoiceItem).Select(o => o.OrderItem).Sum(i => i.TotalExVat);
-                    if (this.TotalExVat > orderTotal)
+                    if (this.TotalIncVat > this.ActualInvoiceAmount)
                     {
                         return true;
                     }
@@ -49,7 +49,7 @@ namespace Allors.Domain
                     }
                 }
 
-                return true;
+                return false;
             }
         }
 
@@ -463,7 +463,9 @@ namespace Allors.Domain
         {
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
             {
-                if (purchaseInvoiceItem.PurchaseInvoiceItemState.IsNotPaid && purchaseInvoiceItem.ExistSerialisedItem)
+                if (purchaseInvoiceItem.PurchaseInvoiceItemState.IsNotPaid
+                    && purchaseInvoiceItem.ExistSerialisedItem
+                    && purchaseInvoiceItem.InvoiceItemType.IsProductItem)
                 {
                     var serialisedItem = purchaseInvoiceItem.SerialisedItem;
                     var deriveRoles = (SerialisedItemDerivedRoles)purchaseInvoiceItem.SerialisedItem;
@@ -473,7 +475,6 @@ namespace Allors.Domain
 
                     serialisedItem.OwnedBy = this.BilledTo;
                     serialisedItem.ReportingUnit = this.BilledTo;
-
                 }
 
                 purchaseInvoiceItem.BaseOnDerivePrices();

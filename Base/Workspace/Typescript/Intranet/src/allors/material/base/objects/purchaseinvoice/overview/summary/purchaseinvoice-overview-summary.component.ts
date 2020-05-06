@@ -150,15 +150,5 @@ export class PurchasInvoiceOverviewSummaryComponent {
       },
       this.saveService.errorHandler);
   }
-
-  public createSalesInvoice(invoice: PurchaseInvoice): void {
-
-    this.panel.manager.context.invoke(invoice.CreateSalesInvoice)
-      .subscribe((invoked: Invoked) => {
-        this.snackBar.open('Successfully created a sales invoice.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-      this.saveService.errorHandler);
-  }
 }
 

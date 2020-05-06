@@ -150,7 +150,7 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, inProgress, reopen, revise);
             config.Deny(this.ObjectType, cancelled, cancel, invoice, complete, revise);
             config.Deny(this.ObjectType, completed, reopen, complete);
-            config.Deny(this.ObjectType, finished, reopen, complete, cancel, invoice, revise);
+            config.Deny(this.ObjectType, finished, cancel, reopen, complete, invoice, revise);
 
             config.Deny(this.ObjectType, cancelled, Operations.Write);
             config.Deny(this.ObjectType, completed, Operations.Write);

@@ -25,10 +25,6 @@ namespace Allors.Domain
             var completed = states.Completed;
             var finished = states.Finished;
 
-            var shipmentStates = new PurchaseOrderShipmentStates(this.Session);
-            var partiallyReceived = shipmentStates.PartiallyReceived;
-            var received = shipmentStates.Received;
-
             var approve = this.Meta.Approve;
             var reject = this.Meta.Reject;
             var hold = this.Meta.Hold;
@@ -49,8 +45,6 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, awaitingApprovalLevel2, hold, @continue, setReadyForProcessing, cancel, reopen, send, quickReceive, @continue, revise);
             config.Deny(this.ObjectType, inProcess, approve, reject, @continue, setReadyForProcessing, quickReceive);
             config.Deny(this.ObjectType, sent, approve, reject, hold, @continue, setReadyForProcessing, reopen, send);
-            config.Deny(this.ObjectType, partiallyReceived, cancel, reject, revise, setReadyForProcessing);
-            config.Deny(this.ObjectType, received, cancel, reject, quickReceive, revise, setReadyForProcessing);
             config.Deny(this.ObjectType, completed, approve, reject, hold, @continue, setReadyForProcessing, cancel, reopen, send, quickReceive, revise);
 
             config.Deny(this.ObjectType, inProcess, Operations.Write);

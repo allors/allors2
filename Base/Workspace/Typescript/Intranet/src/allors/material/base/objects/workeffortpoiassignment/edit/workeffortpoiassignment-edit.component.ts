@@ -66,7 +66,8 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
               sort: new Sort(this.m.PurchaseOrder.OrderNumber),
               include: {
                 TakenViaSupplier: x,
-                PurchaseOrderItems: x
+                PurchaseOrderItems: x,
+                WorkEffortPurchaseOrderItemAssignmentsWherePurchaseOrder: x,
               }
             }),
           ];
@@ -91,7 +92,8 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
 
         this.allors.context.reset();
 
-        this.purchaseOrders = loaded.collections.PurchaseOrders as PurchaseOrder[];
+        const purchaseOrders = loaded.collections.PurchaseOrders as PurchaseOrder[];
+        this.purchaseOrders = purchaseOrders.filter(v => v.WorkEffortPurchaseOrderItemAssignmentsWherePurchaseOrder.length === 0);
 
         if (isCreate) {
           this.workEffort = loaded.objects.WorkEffort as WorkEffort;
@@ -99,6 +101,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
 
           this.workEffortPurchaseOrderItemAssignment = this.allors.context.create('WorkEffortPurchaseOrderItemAssignment') as WorkEffortPurchaseOrderItemAssignment;
           this.workEffortPurchaseOrderItemAssignment.Assignment = this.workEffort;
+          this.workEffortPurchaseOrderItemAssignment.Quantity = 1;
 
         } else {
           this.workEffortPurchaseOrderItemAssignment = loaded.objects.WorkEffortPurchaseOrderItemAssignment as WorkEffortPurchaseOrderItemAssignment;
