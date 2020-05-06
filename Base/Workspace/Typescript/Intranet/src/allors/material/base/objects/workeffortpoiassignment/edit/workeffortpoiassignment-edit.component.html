@@ -8,7 +8,7 @@
 
       <div class="row">
         <mat-form-field class="col-md">
-          <mat-select [(ngModel)]="selectedPurchaseOrder" name="order" placeholder="PurchaseOrder" multiple="false">
+          <mat-select [(ngModel)]="selectedPurchaseOrder" name="order" placeholder="PurchaseOrder" multiple="false" (ngModelChange)="purchaseOrderSelected($event)">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let purchaseOrder of purchaseOrders" [value]="purchaseOrder"> {{ purchaseOrder.displayName }} </mat-option>
           </mat-select>
@@ -17,7 +17,7 @@
 
       <div class="row">
           <a-mat-select *ngIf="selectedPurchaseOrder" class="col-md" [object]="workEffortPurchaseOrderItemAssignment" [roleType]="m.WorkEffortPurchaseOrderItemAssignment.PurchaseOrderItem"
-          [options]="selectedPurchaseOrder.PurchaseOrderItems" display="Description"></a-mat-select>
+          [options]="purchaseOrderItems" display="Description"></a-mat-select>
       </div>
 
       <div class="row">
