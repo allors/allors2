@@ -39,7 +39,7 @@ namespace Allors.Domain
                 if (this.PurchaseOrders.Count > 0)
                 {
                     var orderTotal = this.PurchaseInvoiceItems.SelectMany(v => v.OrderItemBillingsWhereInvoiceItem).Select(o => o.OrderItem).Sum(i => i.TotalExVat);
-                    if (this.TotalIncVat > this.ActualInvoiceAmount)
+                    if (this.TotalExVat > this.ActualInvoiceAmount)
                     {
                         return true;
                     }
