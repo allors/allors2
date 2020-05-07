@@ -262,6 +262,8 @@ namespace Tests
                 .WithNonSerialisedPartDefaults(allors)
                 .Build();
 
+            var good_4 = new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(allors).Build();
+
             var productCategory_1 = new ProductCategoryBuilder(this.Session)
                 .WithInternalOrganisation(allors)
                 .WithName("Best selling gizmo's")
@@ -281,6 +283,7 @@ namespace Tests
                 .WithProduct(good_1)
                 .WithProduct(good_2)
                 .WithProduct(good_3)
+                .WithProduct(good_4)
                 .Build();
 
             new CatalogueBuilder(this.Session)

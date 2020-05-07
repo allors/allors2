@@ -27,10 +27,7 @@ namespace Allors.Domain.Derivations
 
         public IDerivationError[] Errors => this.errors.ToArray();
 
-        public void AddError(IDerivationError derivationError)
-        {
-            this.errors.Add(derivationError);
-        }
+        public void AddError(IDerivationError derivationError) => this.errors.Add(derivationError);
 
         public void AddError(IObject association, RoleType roleType, string errorMessage, params object[] messageParam)
         {

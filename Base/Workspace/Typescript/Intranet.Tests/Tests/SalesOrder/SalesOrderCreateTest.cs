@@ -19,7 +19,7 @@ namespace Tests.SalesOrderTests
     public class SalesOrderCreateTest : Test
     {
         private readonly SalesOrderListComponent salesOrderListPage;
-        private Organisation internalOrganisation;
+        private readonly Organisation internalOrganisation;
 
         public SalesOrderCreateTest(TestFixture fixture)
             : base(fixture)
