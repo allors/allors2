@@ -8,10 +8,11 @@ namespace Allors.Domain.TestPopulation
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Allors.Meta;
 
     public static partial class SalesOrderItemBuilderExtensions
     {
-        public static SalesOrderItemBuilder WithDefaults(this SalesOrderItemBuilder @this, Organisation internalOrganisation)
+        public static SalesOrderItemBuilder WithDefaults(this SalesOrderItemBuilder @this)
         {
             var faker = @this.Session.Faker();
             var invoiceItemTypes = @this.Session.Extent<InvoiceItemType>().ToList();
@@ -20,7 +21,9 @@ namespace Allors.Domain.TestPopulation
                 invoiceItemTypes.Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId) || v.UniqueId.Equals(InvoiceItemTypes.PartItemId)).FirstOrDefault(),
             }).ToList();
 
-            var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
+            var unifiedGoodExtent = @this.Session.Extent<UnifiedGood>();
+            unifiedGoodExtent.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).Serialised);
+            var serializedProduct = unifiedGoodExtent.First();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
@@ -34,11 +37,14 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static SalesOrderItemBuilder WithGSEDefaults(this SalesOrderItemBuilder @this, Organisation internalOrganisation)
+        public static SalesOrderItemBuilder WithGSEDefaults(this SalesOrderItemBuilder @this)
         {
             var faker = @this.Session.Faker();
-            var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
             var invoiceItemType = @this.Session.Extent<InvoiceItemType>().Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId)).FirstOrDefault();
+
+            var unifiedGoodExtent = @this.Session.Extent<UnifiedGood>();
+            unifiedGoodExtent.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).Serialised);
+            var serializedProduct = unifiedGoodExtent.First();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
