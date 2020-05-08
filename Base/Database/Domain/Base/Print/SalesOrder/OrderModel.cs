@@ -32,10 +32,10 @@ namespace Allors.Domain.Print.SalesOrderModel
             this.CustomerReference = order.CustomerReference;
 
             // TODO: Where does the currency come from?
-            this.SubTotal = currencyIsoCode + " " + order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
-            this.TotalExVat = currencyIsoCode + " " + order.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.SubTotal = order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalExVat = order.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.VatCharge = order.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = currencyIsoCode + " " + order.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalIncVat = currencyIsoCode + " " + order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
 
             this.PaymentNetDays = order.PaymentNetDays;

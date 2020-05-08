@@ -2,7 +2,7 @@ import * as moment from 'moment/moment';
 
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
-import { BasePrice, PriceComponent, SupplierOffering, Part } from '../../../../../../domain';
+import { BasePrice, PriceComponent, SupplierOffering, Part, ProductIdentificationType } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { Equals, Sort } from '../../../../../../../allors/framework';
 
@@ -26,6 +26,7 @@ export class NonUnifiedPartOverviewSummaryComponent {
   allSupplierOfferings: SupplierOffering[];
   currentSupplierOfferings: SupplierOffering[];
   inactiveSupplierOfferings: SupplierOffering[];
+  partnumber: string[];
 
   constructor(
     @Self() public panel: PanelService,
@@ -87,7 +88,8 @@ export class NonUnifiedPartOverviewSummaryComponent {
             }
           }
         }),
-      );
+        pull.ProductIdentificationType(),
+        );
     };
 
     panel.onPulled = (loaded) => {
@@ -103,6 +105,10 @@ export class NonUnifiedPartOverviewSummaryComponent {
       this.allSupplierOfferings = loaded.collections[supplierOfferingsPullName] as SupplierOffering[];
       this.currentSupplierOfferings = this.allSupplierOfferings.filter(v => moment(v.FromDate).isBefore(now) && (v.ThroughDate === null || moment(v.ThroughDate).isAfter(now)));
       this.inactiveSupplierOfferings = this.allSupplierOfferings.filter(v => moment(v.FromDate).isAfter(now) || (v.ThroughDate !== null && moment(v.ThroughDate).isBefore(now)));
+
+      const goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
+      const partNumberType = goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
+      this.partnumber = this.part.ProductIdentifications.filter(v => v.ProductIdentificationType === partNumberType).map(w => w.Identification);
 
       if (this.part.SuppliedBy.length > 0) {
         this.suppliers = this.part.SuppliedBy

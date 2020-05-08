@@ -25,8 +25,8 @@ namespace Allors.Domain.Print.SalesOrderModel
 
             this.Quantity = item.QuantityOrdered;
             // TODO: Where does the currency come from?
-            this.Price = currencyIsoCode + " " + item.UnitPrice.ToString("N2", new CultureInfo("nl-BE"));
-            this.Amount = currencyIsoCode + " " + item.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.Price = item.UnitPrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.Amount = item.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.Comment = item.Comment;
         }
 

@@ -24,11 +24,11 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.CustomerReference = invoice.CustomerReference;
 
             // TODO: Where does the currency come from?
-            this.SubTotal = currencyIsoCode + " " + invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
-            this.Deposit = currencyIsoCode + " " + invoice.AmountPaid.ToString("N2", new CultureInfo("nl-BE"));
-            this.TotalExVat = currencyIsoCode + " " + invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.SubTotal = invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.Deposit = invoice.AmountPaid.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalExVat = invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.VatCharge = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = currencyIsoCode + " " + invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalIncVat = currencyIsoCode + " " + invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
 
             this.PaymentNetDays = invoice.PaymentNetDays;
