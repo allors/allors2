@@ -69,10 +69,10 @@ namespace Allors.Server
                                               }).Distinct().ToArray();
 
                                 var propertyType = fetch.Step.End.PropertyType;
-                                name = name ?? propertyType.PluralName;
+                                name ??= propertyType.PluralName;
                             }
 
-                            name = name ?? extent.ObjectType.PluralName;
+                            name ??= extent.ObjectType.PluralName;
 
                             if (result.Skip.HasValue || result.Take.HasValue)
                             {
@@ -94,7 +94,7 @@ namespace Allors.Server
                         }
                         else
                         {
-                            name = name ?? extent.ObjectType.PluralName;
+                            name ??= extent.ObjectType.PluralName;
                             response.AddCollection(name, objects);
                         }
                     }
