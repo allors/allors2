@@ -23,9 +23,9 @@ namespace Allors.Data
 
         public string Parameter { get; set; }
 
-        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.Extent?.HasMissingArguments(parameters) == false;
-
-        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Extent?.HasMissingArguments(parameters) == false;
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingArguments(parameters);
+      
+        bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.HasMissingArguments(parameters);
 
         public Predicate Save() =>
             new Predicate
@@ -39,31 +39,36 @@ namespace Allors.Data
 
         void IPredicate.Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate)
         {
-            var objects = this.Parameter != null ? session.GetObjects(parameters[this.Parameter]) : this.Objects;
+            if (!this.HasMissingArguments(parameters))
+            {
+                var objects = this.Parameter != null ? session.GetObjects(parameters[this.Parameter]) : this.Objects;
 
-            if (this.PropertyType is IRoleType roleType)
-            {
-                if (objects != null)
+                if (this.PropertyType is IRoleType roleType)
                 {
-                    compositePredicate.AddContainedIn(roleType, objects);
+                    if (objects != null)
+                    {
+                        compositePredicate.AddContainedIn(roleType, objects);
+                    }
+                    else
+                    {
+                        compositePredicate.AddContainedIn(roleType, this.Extent.Build(session, parameters));
+                    }
                 }
                 else
                 {
-                    compositePredicate.AddContainedIn(roleType, this.Extent.Build(session, parameters));
-                }
-            }
-            else
-            {
-                var associationType = (IAssociationType)this.PropertyType;
-                if (objects != null)
-                {
-                    compositePredicate.AddContainedIn(associationType, objects);
-                }
-                else
-                {
-                    compositePredicate.AddContainedIn(associationType, this.Extent.Build(session, parameters));
+                    var associationType = (IAssociationType)this.PropertyType;
+                    if (objects != null)
+                    {
+                        compositePredicate.AddContainedIn(associationType, objects);
+                    }
+                    else
+                    {
+                        compositePredicate.AddContainedIn(associationType, this.Extent.Build(session, parameters));
+                    }
                 }
             }
         }
+
+        private bool HasMissingArguments(IDictionary<string, string> parameters) => (this.Parameter != null && (parameters?.ContainsKey(this.Parameter) == false)) || this.Extent?.HasMissingArguments(parameters) == true;
     }
 }
