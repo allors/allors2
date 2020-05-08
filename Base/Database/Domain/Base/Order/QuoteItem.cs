@@ -91,6 +91,73 @@ namespace Allors.Domain
 
             if (derivation.ChangeSet.IsCreated(this) && !this.ExistDetails)
             {
+                this.DeriveDetails();
+            }
+
+            if (this.ExistRequestItem)
+            {
+                this.RequiredByDate = this.RequestItem.RequiredByDate;
+            }
+
+            if (!this.ExistUnitOfMeasure)
+            {
+                this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
+            }
+
+            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
+
+            // Calculate Totals
+            this.TotalBasePrice = this.UnitBasePrice * this.Quantity;
+            this.TotalDiscount = this.UnitDiscount * this.Quantity;
+            this.TotalSurcharge = this.UnitSurcharge * this.Quantity;
+
+            if (this.TotalBasePrice > 0)
+            {
+                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
+                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
+            }
+            else
+            {
+                this.TotalDiscountAsPercentage = 0;
+                this.TotalSurchargeAsPercentage = 0;
+            }
+
+            this.TotalExVat = this.UnitPrice * this.Quantity;
+            this.TotalVat = this.UnitVat * this.Quantity;
+            this.TotalIncVat = this.TotalExVat + this.TotalVat;
+
+            // CurrentVersion is Previous Version until PostDerive
+            var previousSerialisedItem = this.CurrentVersion?.SerialisedItem;
+            if (previousSerialisedItem != null && previousSerialisedItem != this.SerialisedItem)
+            {
+                previousSerialisedItem.DerivationTrigger = Guid.NewGuid();
+            }
+        }
+
+        public void BaseOnPostDerive(ObjectOnPostDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (!this.ExistUnitPrice)
+            {
+                derivation.Validation.AddError(this, this.Meta.UnitPrice, ErrorMessages.UnitPriceRequired);
+            }
+
+            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
+            if (this.IsDeletable)
+            {
+                this.RemoveDeniedPermission(deletePermission);
+            }
+            else
+            {
+                this.AddDeniedPermission(deletePermission);
+            }
+        }
+
+        public void BaseDeriveDetails(QuoteItemDeriveDetails method)
+        {
+            if (!method.Result.HasValue)
+            {
                 if (this.ExistSerialisedItem)
                 {
                     var builder = new StringBuilder();
@@ -195,65 +262,8 @@ namespace Allors.Domain
 
                     this.Details = details;
                 }
-            }
 
-            if (this.ExistRequestItem)
-            {
-                this.RequiredByDate = this.RequestItem.RequiredByDate;
-            }
-
-            if (!this.ExistUnitOfMeasure)
-            {
-                this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
-            }
-
-            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
-
-            // Calculate Totals
-            this.TotalBasePrice = this.UnitBasePrice * this.Quantity;
-            this.TotalDiscount = this.UnitDiscount * this.Quantity;
-            this.TotalSurcharge = this.UnitSurcharge * this.Quantity;
-
-            if (this.TotalBasePrice > 0)
-            {
-                this.TotalDiscountAsPercentage = Math.Round(this.TotalDiscount / this.TotalBasePrice * 100, 2);
-                this.TotalSurchargeAsPercentage = Math.Round(this.TotalSurcharge / this.TotalBasePrice * 100, 2);
-            }
-            else
-            {
-                this.TotalDiscountAsPercentage = 0;
-                this.TotalSurchargeAsPercentage = 0;
-            }
-
-            this.TotalExVat = this.UnitPrice * this.Quantity;
-            this.TotalVat = this.UnitVat * this.Quantity;
-            this.TotalIncVat = this.TotalExVat + this.TotalVat;
-
-            // CurrentVersion is Previous Version until PostDerive
-            var previousSerialisedItem = this.CurrentVersion?.SerialisedItem;
-            if (previousSerialisedItem != null && previousSerialisedItem != this.SerialisedItem)
-            {
-                previousSerialisedItem.DerivationTrigger = Guid.NewGuid();
-            }
-        }
-
-        public void BaseOnPostDerive(ObjectOnPostDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (!this.ExistUnitPrice)
-            {
-                derivation.Validation.AddError(this, this.Meta.UnitPrice, ErrorMessages.UnitPriceRequired);
-            }
-
-            var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
-            if (this.IsDeletable)
-            {
-                this.RemoveDeniedPermission(deletePermission);
-            }
-            else
-            {
-                this.AddDeniedPermission(deletePermission);
+                method.Result = true;
             }
         }
 

@@ -373,5 +373,11 @@ namespace Allors.Repository
         [Workspace]
         public void Send() { }
 
+        #region Allors
+        [Id("81f4a9c9-d170-4590-8b1e-c42900093645")]
+        #endregion
+        [Workspace]
+        public void DeriveDetails() { }
+
     }
 }

@@ -99,7 +99,14 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseComplete(this WorkEffort @this, WorkEffortComplete method) => @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
+        public static void BaseComplete(this WorkEffort @this, WorkEffortComplete method)
+        {
+            if (!method.Result.HasValue)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
+                method.Result = true;
+            }
+        }
 
         public static void BaseCancel(this WorkEffort @this, WorkEffortCancel cancel) => @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Cancelled;
 
