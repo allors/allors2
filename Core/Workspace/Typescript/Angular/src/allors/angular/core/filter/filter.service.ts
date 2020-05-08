@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { FilterFieldDefinition } from './FilterFieldDefinition';
-import { Predicate, And, Or, Not, ContainedIn, Filter } from '../../../framework';
+import { Predicate, And, Or, Not, ContainedIn, Filter, Extent } from '../../../framework';
 import { FilterField } from './FilterField';
 import { ParametrizedPredicate } from '../../../framework/data/ParametrizedPredicate';
 
 import { FilterOptions } from './FilterOptions';
 
-function getParameterizedPredicates(predicate: Predicate, results: ParametrizedPredicate[] = []): ParametrizedPredicate[] {
+function getParameterizedPredicates(predicate: Predicate | Extent, results: ParametrizedPredicate[] = []): ParametrizedPredicate[] {
 
   if (predicate instanceof Filter) {
     if (predicate.predicate) {
