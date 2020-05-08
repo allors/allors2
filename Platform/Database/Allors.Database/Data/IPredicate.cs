@@ -11,6 +11,8 @@ namespace Allors.Data
 
     public interface IPredicate
     {
+        string[] Dependencies { get; }
+
         Predicate Save();
 
         void Build(ISession session, IDictionary<string, string> parameters, Allors.ICompositePredicate compositePredicate);

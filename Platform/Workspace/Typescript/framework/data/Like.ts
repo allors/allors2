@@ -23,6 +23,7 @@ export class Like extends ParametrizedPredicate {
   public toJSON(): any {
     return {
       kind: 'Like',
+      dependencies: this.dependencies,
       roleType: this.roleType.id,
       parameter: this.parameter,
       value: this.value,

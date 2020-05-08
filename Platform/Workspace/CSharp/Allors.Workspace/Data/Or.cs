@@ -12,13 +12,11 @@ namespace Allors.Workspace.Data
 
     public class Or : ICompositePredicate
     {
+        public string[] Dependencies { get; set; }
+
         public Or(params IPredicate[] operands) => this.Operands = operands;
 
         public IPredicate[] Operands { get; set; }
-
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => this.Operands.All(v => v.ShouldTreeShake(arguments));
-
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.All(v => v.HasMissingArguments(arguments));
 
         void IPredicateContainer.AddPredicate(IPredicate predicate) => this.Operands = new List<IPredicate>(this.Operands) { predicate }.ToArray();
 
@@ -26,6 +24,7 @@ namespace Allors.Workspace.Data
             new Predicate()
             {
                 Kind = PredicateKind.Or,
+                Dependencies = this.Dependencies,
                 Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
             };
     }

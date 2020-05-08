@@ -19,6 +19,8 @@ namespace Allors.Protocol.Data
 
         public string Parameter { get; set; }
 
+        public string[] Dependencies { get; set; }
+
         public Predicate Operand { get; set; }
 
         public Predicate[] Operands { get; set; }

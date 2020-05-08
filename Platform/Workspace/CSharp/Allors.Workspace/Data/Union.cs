@@ -20,8 +20,6 @@ namespace Allors.Workspace.Data
 
         public Sort[] Sorting { get; set; }
 
-        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.Any(v => v.HasMissingArguments(arguments));
-
         public Extent ToJson() =>
             new Extent
             {

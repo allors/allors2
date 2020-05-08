@@ -11,6 +11,8 @@ namespace Allors.Workspace.Data
 
     public class GreaterThan : IRolePredicate
     {
+        public string[] Dependencies { get; set; }
+
         public GreaterThan(IRoleType roleType = null) => this.RoleType = roleType;
 
         public IRoleType RoleType { get; set; }
@@ -23,13 +25,10 @@ namespace Allors.Workspace.Data
             new Predicate
             {
                 Kind = PredicateKind.GreaterThan,
+                Dependencies = this.Dependencies,
                 RoleType = this.RoleType?.Id,
                 Value = UnitConvert.ToString(this.Value),
                 Parameter = this.Parameter,
             };
-
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
-
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
     }
 }

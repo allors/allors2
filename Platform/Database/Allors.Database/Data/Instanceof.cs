@@ -12,6 +12,8 @@ namespace Allors.Data
 
     public class Instanceof : IPropertyPredicate
     {
+        public string[] Dependencies { get; set; }
+
         public Instanceof(IComposite objectType = null) => this.ObjectType = objectType;
 
         public string Argument { get; set; }
@@ -28,7 +30,7 @@ namespace Allors.Data
                 PropertyType = this.PropertyType?.Id,
             };
 
-        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingDependencies(parameters) || ((IPredicate)this).HasMissingArguments(parameters);
 
         bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Argument != null && (parameters == null || !parameters.ContainsKey(this.Argument));
 

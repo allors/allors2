@@ -36,6 +36,30 @@ namespace Tests
         }
 
         [Fact]
+        public void EqualsWithDependencies()
+        {
+            var filter = new Filter(M.Person.ObjectType)
+            {
+                Predicate = new Equals { Dependencies = new[] { "useFirstname" }, PropertyType = M.Person.FirstName, Value = "John"},
+            };
+
+            var arguments = new Dictionary<string, string> { };
+            var queryExtent = filter.Build(this.Session, arguments);
+
+            var extent = this.Session.Extent(M.Person.ObjectType);
+
+            Assert.Equal(extent.ToArray(), queryExtent.ToArray());
+
+            arguments.Add("useFirstname", "x");
+            queryExtent = filter.Build(this.Session, arguments);
+
+            extent = this.Session.Extent(M.Person.ObjectType);
+            extent.Filter.AddEquals(M.Person.FirstName, "John");
+
+            Assert.Equal(extent.ToArray(), queryExtent.ToArray());
+        }
+
+        [Fact]
         public void EqualsWithoutParameters()
         {
             var filter = new Filter(M.Person.ObjectType)

@@ -11,6 +11,8 @@ namespace Allors.Workspace.Data
 
     public class Equals : IPropertyPredicate
     {
+        public string[] Dependencies { get; set; }
+
         public Equals(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
         /// <inheritdoc/>
@@ -26,14 +28,11 @@ namespace Allors.Workspace.Data
             new Predicate
             {
                 Kind = PredicateKind.Equals,
+                Dependencies = this.Dependencies,
                 PropertyType = this.PropertyType.Id,
                 Object = this.Object?.Id.ToString(),
                 Value = UnitConvert.ToString(this.Value),
                 Parameter = this.Parameter,
             };
-
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
-
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
     }
 }

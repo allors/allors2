@@ -21,6 +21,7 @@ export class Exists extends ParametrizedPredicate {
   public toJSON(): any {
     return {
       kind: 'Exists',
+      dependencies: this.dependencies,
       propertytype: this.propertyType.id,
       parameter: this.parameter,
     };

@@ -21,8 +21,6 @@ namespace Allors.Workspace.Data
 
         public Sort[] Sorting { get; set; }
 
-        bool IExtent.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Predicate != null && this.Predicate.HasMissingArguments(arguments);
-
         void IPredicateContainer.AddPredicate(IPredicate predicate) => this.Predicate = predicate;
 
         public Extent ToJson() =>

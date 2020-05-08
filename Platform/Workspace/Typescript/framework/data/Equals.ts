@@ -25,6 +25,7 @@ export class Equals extends ParametrizedPredicate {
   public toJSON(): any {
     return {
       kind: 'Equals',
+      dependencies: this.dependencies,
       propertytype: this.propertyType.id,
       parameter: this.parameter,
       value: serialize(this.value),

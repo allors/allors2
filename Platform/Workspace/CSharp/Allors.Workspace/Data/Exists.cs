@@ -5,12 +5,13 @@
 
 namespace Allors.Workspace.Data
 {
-    using System.Collections.Generic;
     using Allors.Protocol.Data;
     using Allors.Workspace.Meta;
 
     public class Exists : IPropertyPredicate
     {
+        public string[] Dependencies { get; set; }
+
         public Exists(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
         public string Parameter { get; set; }
@@ -21,12 +22,9 @@ namespace Allors.Workspace.Data
             new Predicate
             {
                 Kind = PredicateKind.Exists,
+                Dependencies = this.Dependencies,
                 PropertyType = this.PropertyType?.Id,
                 Parameter = this.Parameter,
             };
-
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
-
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
     }
 }

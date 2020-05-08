@@ -11,13 +11,11 @@ namespace Allors.Workspace.Data
 
     public class Not : ICompositePredicate
     {
+        public string[] Dependencies { get; set; }
+
         public Not(IPredicate operand = null) => this.Operand = operand;
 
         public IPredicate Operand { get; set; }
-
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => this.Operand == null || this.Operand.ShouldTreeShake(arguments);
-
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operand != null && this.Operand.HasMissingArguments(arguments);
 
         void IPredicateContainer.AddPredicate(IPredicate predicate) => this.Operand = predicate;
 
@@ -25,6 +23,7 @@ namespace Allors.Workspace.Data
             new Predicate()
             {
                 Kind = PredicateKind.Not,
+                Dependencies = this.Dependencies,
                 Operand = this.Operand?.ToJson(),
             };
     }

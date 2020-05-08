@@ -1,7 +1,8 @@
 import { Predicate } from './Predicate';
 
 export class And implements Predicate {
-  public operands: Predicate[];
+  dependencies: string[];
+  operands: Predicate[];
 
   constructor(fields?: Partial<And> | Predicate[]) {
     if (fields instanceof Array) {
@@ -12,9 +13,10 @@ export class And implements Predicate {
     }
   }
 
-  public toJSON(): any {
+  toJSON(): any {
     return {
       kind: 'And',
+      dependencies: this.dependencies,
       operands: this.operands,
     };
   }

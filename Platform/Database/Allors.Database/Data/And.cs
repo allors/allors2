@@ -12,11 +12,13 @@ namespace Allors.Data
 
     public class And : ICompositePredicate
     {
+        public string[] Dependencies { get; set; }
+
         public And(params IPredicate[] operands) => this.Operands = operands;
 
         public IPredicate[] Operands { get; set; }
 
-        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.Operands.All(v => v.ShouldTreeShake(parameters));
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingDependencies(parameters) || this.Operands.All(v => v.ShouldTreeShake(parameters));
 
         bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Operands.All(v => v.HasMissingArguments(parameters));
 

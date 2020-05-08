@@ -5,9 +5,10 @@ import { Extent } from './Extent';
 import { CompositeTypes } from '../workspace/Types';
 
 export class ContainedIn extends ParametrizedPredicate {
-  public propertyType: PropertyType;
-  public extent: Extent;
-  public objects: Array<CompositeTypes>;
+  dependencies: string[];
+  propertyType: PropertyType;
+  extent: Extent;
+  objects: Array<CompositeTypes>;
 
   constructor(fields?: Partial<ContainedIn> | PropertyType) {
     super();
@@ -26,6 +27,7 @@ export class ContainedIn extends ParametrizedPredicate {
   public toJSON(): any {
     return {
       kind: 'ContainedIn',
+      dependencies: this.dependencies,
       propertytype: this.propertyType.id,
       parameter: this.parameter,
       extent: this.extent,

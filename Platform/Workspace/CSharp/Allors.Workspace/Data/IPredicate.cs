@@ -5,16 +5,12 @@
 
 namespace Allors.Workspace.Data
 {
-    using System.Collections.Generic;
-
     using Allors.Protocol.Data;
 
     public interface IPredicate
     {
+        string[] Dependencies { get; set; }
+
         Predicate ToJson();
-
-        bool ShouldTreeShake(IReadOnlyDictionary<string, object> arguments);
-
-        bool HasMissingArguments(IReadOnlyDictionary<string, object> arguments);
     }
 }

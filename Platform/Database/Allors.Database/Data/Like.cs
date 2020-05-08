@@ -12,6 +12,8 @@ namespace Allors.Data
 
     public class Like : IRolePredicate
     {
+        public string[] Dependencies { get; set; }
+
         public Like(IRoleType roleType = null) => this.RoleType = roleType;
 
         public IRoleType RoleType { get; set; }
@@ -29,7 +31,7 @@ namespace Allors.Data
                 Parameter = this.Parameter,
             };
 
-        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => ((IPredicate)this).HasMissingArguments(parameters);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingDependencies(parameters) || ((IPredicate)this).HasMissingArguments(parameters);
 
         bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Parameter != null && (parameters == null || !parameters.ContainsKey(this.Parameter));
 

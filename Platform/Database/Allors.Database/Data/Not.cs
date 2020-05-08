@@ -11,11 +11,13 @@ namespace Allors.Data
 
     public class Not : ICompositePredicate
     {
+        public string[] Dependencies { get; set; }
+
         public Not(IPredicate operand = null) => this.Operand = operand;
 
         public IPredicate Operand { get; set; }
 
-        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.Operand == null || this.Operand.ShouldTreeShake(parameters);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingDependencies(parameters) || this.Operand == null || this.Operand.ShouldTreeShake(parameters);
 
         bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.Operand != null && this.Operand.HasMissingArguments(parameters);
 

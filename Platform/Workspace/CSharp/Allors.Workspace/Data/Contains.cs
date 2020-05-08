@@ -11,6 +11,8 @@ namespace Allors.Workspace.Data
 
     public class Contains : IPropertyPredicate
     {
+        public string[] Dependencies { get; set; }
+
         public Contains(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
         public IPropertyType PropertyType { get; set; }
@@ -23,13 +25,10 @@ namespace Allors.Workspace.Data
             new Predicate
             {
                 Kind = PredicateKind.Contains,
+                Dependencies = this.Dependencies,
                 PropertyType = this.PropertyType?.Id,
                 Object = this.Object?.Id.ToString(),
                 Parameter = this.Parameter,
             };
-
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => ((IPredicate)this).HasMissingArguments(arguments);
-
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Parameter != null && (arguments == null || !arguments.ContainsKey(this.Parameter));
     }
 }

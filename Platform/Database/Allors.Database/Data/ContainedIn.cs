@@ -13,6 +13,8 @@ namespace Allors.Data
 
     public class ContainedIn : IPropertyPredicate
     {
+        public string[] Dependencies { get; set; }
+
         public ContainedIn(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
         public IPropertyType PropertyType { get; set; }
@@ -23,7 +25,7 @@ namespace Allors.Data
 
         public string Parameter { get; set; }
 
-        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingArguments(parameters);
+        bool IPredicate.ShouldTreeShake(IDictionary<string, string> parameters) => this.HasMissingDependencies(parameters) || this.HasMissingArguments(parameters);
       
         bool IPredicate.HasMissingArguments(IDictionary<string, string> parameters) => this.HasMissingArguments(parameters);
 

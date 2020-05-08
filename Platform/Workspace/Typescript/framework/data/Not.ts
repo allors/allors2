@@ -1,15 +1,17 @@
 import { Predicate } from './Predicate';
 
 export class Not implements Predicate {
-  public operand: Predicate;
+  dependencies: string[];
+  operand: Predicate;
 
   constructor(fields?: Partial<Not>) {
     Object.assign(this, fields);
   }
 
-  public toJSON(): any {
+  toJSON(): any {
     return {
       kind: 'Not',
+      dependencies: this.dependencies,
       operand: this.operand,
     };
   }

@@ -20,18 +20,21 @@ namespace Allors.Protocol.Data
                 case PredicateKind.And:
                     return new And
                     {
+                        Dependencies = @this.Dependencies,
                         Operands = @this.Operands.Select(v => v.Load(session)).ToArray(),
                     };
 
                 case PredicateKind.Or:
                     return new Or
                     {
+                        Dependencies = @this.Dependencies,
                         Operands = @this.Operands.Select(v => v.Load(session)).ToArray(),
                     };
 
                 case PredicateKind.Not:
                     return new Not
                     {
+                        Dependencies = @this.Dependencies,
                         Operand = @this.Operand.Load(session),
                     };
 
@@ -45,6 +48,7 @@ namespace Allors.Protocol.Data
 
                             return new Instanceof(@this.ObjectType != null ? (IComposite)session.Database.MetaPopulation.Find(@this.ObjectType.Value) : null)
                             {
+                                Dependencies = @this.Dependencies,
                                 PropertyType = propertyType,
                             };
 
@@ -52,6 +56,7 @@ namespace Allors.Protocol.Data
 
                             return new Exists
                             {
+                                Dependencies = @this.Dependencies,
                                 PropertyType = propertyType,
                                 Parameter = @this.Parameter,
                             };
@@ -60,6 +65,7 @@ namespace Allors.Protocol.Data
 
                             return new Contains
                             {
+                                Dependencies = @this.Dependencies,
                                 PropertyType = propertyType,
                                 Parameter = @this.Parameter,
                                 Object = session.Instantiate(@this.Object),
@@ -67,7 +73,12 @@ namespace Allors.Protocol.Data
 
                         case PredicateKind.ContainedIn:
 
-                            var containedIn = new ContainedIn(propertyType) { Parameter = @this.Parameter };
+                            var containedIn = new ContainedIn(propertyType)
+                            {
+                                Dependencies = @this.Dependencies,
+                                Parameter = @this.Parameter
+                            };
+
                             if (@this.Objects != null)
                             {
                                 containedIn.Objects = @this.Objects.Select(session.Instantiate).ToArray();
@@ -81,7 +92,12 @@ namespace Allors.Protocol.Data
 
                         case PredicateKind.Equals:
 
-                            var equals = new Equals(propertyType) { Parameter = @this.Parameter };
+                            var equals = new Equals(propertyType)
+                            {
+                                Dependencies = @this.Dependencies,
+                                Parameter = @this.Parameter
+                            };
+
                             if (@this.Object != null)
                             {
                                 equals.Object = session.Instantiate(@this.Object);
@@ -98,6 +114,7 @@ namespace Allors.Protocol.Data
 
                             return new Between(roleType)
                             {
+                                Dependencies = @this.Dependencies,
                                 Parameter = @this.Parameter,
                                 Values = @this.Values?.Select(v => UnitConvert.Parse(roleType.ObjectType.Id, v)).ToArray(),
                             };
@@ -106,6 +123,7 @@ namespace Allors.Protocol.Data
 
                             return new GreaterThan(roleType)
                             {
+                                Dependencies = @this.Dependencies,
                                 Parameter = @this.Parameter,
                                 Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.Value),
                             };
@@ -114,6 +132,7 @@ namespace Allors.Protocol.Data
 
                             return new LessThan(roleType)
                             {
+                                Dependencies = @this.Dependencies,
                                 Parameter = @this.Parameter,
                                 Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.Value),
                             };
@@ -122,6 +141,7 @@ namespace Allors.Protocol.Data
 
                             return new Like(roleType)
                             {
+                                Dependencies = @this.Dependencies,
                                 Parameter = @this.Parameter,
                                 Value = UnitConvert.Parse(roleType.ObjectType.Id, @this.Value)?.ToString(),
                             };

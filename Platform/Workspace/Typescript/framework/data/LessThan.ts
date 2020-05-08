@@ -24,6 +24,7 @@ export class LessThan extends ParametrizedPredicate {
   public toJSON(): any {
     return {
       kind: 'LessThan',
+      dependencies: this.dependencies,
       roleType: this.roleType.id,
       parameter: this.parameter,
       value: serialize(this.value),

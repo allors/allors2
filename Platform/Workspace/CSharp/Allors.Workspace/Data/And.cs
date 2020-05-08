@@ -12,18 +12,17 @@ namespace Allors.Workspace.Data
 
     public class And : ICompositePredicate
     {
+        public string[] Dependencies { get; set; }
+
         public And(params IPredicate[] operands) => this.Operands = operands;
 
         public IPredicate[] Operands { get; set; }
-
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments) => this.Operands.All(v => v.ShouldTreeShake(arguments));
-
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments) => this.Operands.All(v => v.HasMissingArguments(arguments));
 
         public Predicate ToJson() =>
             new Predicate()
             {
                 Kind = PredicateKind.And,
+                Dependencies = this.Dependencies,
                 Operands = this.Operands.Select(v => v.ToJson()).ToArray(),
             };
 

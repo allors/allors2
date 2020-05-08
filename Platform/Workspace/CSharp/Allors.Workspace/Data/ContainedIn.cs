@@ -13,6 +13,8 @@ namespace Allors.Workspace.Data
 
     public class ContainedIn : IPropertyPredicate
     {
+        public string[] Dependencies { get; set; }
+
         public ContainedIn(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
         public IPropertyType PropertyType { get; set; }
@@ -23,46 +25,11 @@ namespace Allors.Workspace.Data
 
         public string Parameter { get; set; }
 
-        bool IPredicate.ShouldTreeShake(IReadOnlyDictionary<string, object> arguments)
-        {
-            if (this.Parameter != null)
-            {
-                if (arguments == null || !arguments.ContainsKey(this.Parameter))
-                {
-                    return false;
-                }
-            }
-
-            if (this.Extent != null)
-            {
-                return this.Extent.HasMissingArguments(arguments);
-            }
-
-            return false;
-        }
-
-        bool IPredicate.HasMissingArguments(IReadOnlyDictionary<string, object> arguments)
-        {
-            if (this.Parameter != null)
-            {
-                if (arguments == null || !arguments.ContainsKey(this.Parameter))
-                {
-                    return true;
-                }
-            }
-
-            if (this.Extent != null)
-            {
-                return this.Extent.HasMissingArguments(arguments);
-            }
-
-            return false;
-        }
-
         public Predicate ToJson() =>
             new Predicate
             {
                 Kind = PredicateKind.ContainedIn,
+                Dependencies = this.Dependencies,
                 PropertyType = this.PropertyType?.Id,
                 Extent = this.Extent?.ToJson(),
                 Values = this.Objects.Select(v => v.Id.ToString()).ToArray(),

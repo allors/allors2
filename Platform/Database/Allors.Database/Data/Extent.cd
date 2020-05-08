@@ -31,7 +31,7 @@
       <Property Name="PropertyType" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAgAIAAAAAAAAAQAAAAAAACCAAABAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAgAIAAAAAAAAAQAAAAAAACCAACBAA=</HashCode>
       <FileName>Data\Contains.cs</FileName>
       <NewMemberFileName>Data\Intersects.cs</NewMemberFileName>
     </TypeIdentifier>
@@ -43,7 +43,7 @@
       <Property Name="RoleType" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAIAAIAAAAAAAAAAAIAAAAAAAAAQAAAAAAAgCAAABAA=</HashCode>
+      <HashCode>AAIAAIAAAAAAAAAAAIAAAAAAAAAQAAAAAAAgCAACBAA=</HashCode>
       <FileName>Data\Between.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -54,7 +54,7 @@
       <Property Name="PropertyType" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAgAIAAAAAAAAAQAAAAAAAiCAAABAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAgAIAAAAAAAAAQAAAAAAAiCAACBAA=</HashCode>
       <FileName>Data\Equals.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -79,7 +79,7 @@
       <Property Name="PropertyType" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAIAAAAAAAAAQAAAAAAACCAAABAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAIAAAAAAAAAQAAAAAAACCAACBAA=</HashCode>
       <FileName>Data\Exists.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -93,7 +93,7 @@
       <Property Name="RoleType" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAIAAIAAAAAAAAAAAIAAAAAAAAAQAAAAAAAgCAAABAA=</HashCode>
+      <HashCode>AAIAAIAAAAAAAAAAAIAAAAAAAAAQAAAAAAAgCAACBAA=</HashCode>
       <FileName>Data\GreaterThan.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -130,7 +130,7 @@
       <Property Name="RoleType" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAIAAIAAAAAAAAAAAIAAAAAAAAAQAAAAAAAgCAAABAA=</HashCode>
+      <HashCode>AAIAAIAAAAAAAAAAAIAAAAAAAAAQAAAAAAAgCAACBAA=</HashCode>
       <FileName>Data\LessThan.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -149,7 +149,7 @@
   <Class Name="Allors.Data.Not" BaseTypeListCollapsed="true">
     <Position X="13.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAIAAAAAAAAAAAAIAAAAACAEABAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAIAAAAAAAAAAAAIAAAAACAECBAA=</HashCode>
       <FileName>Data\Not.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -157,7 +157,7 @@
   <Class Name="Allors.Data.Or" BaseTypeListCollapsed="true">
     <Position X="11.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAIAAAAAAAAACAAIAAAAACAAABAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAIAAAAAAAAACAAIAAAAACAACBAA=</HashCode>
       <FileName>Data\Or.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -178,10 +178,10 @@
     <AssociationLine Name="Predicate" Type="Allors.Data.IPredicate" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="7.312" Y="3.75" />
-        <Point X="7.312" Y="3.125" />
-        <Point X="8.792" Y="3.125" Type="JumpStart" />
-        <Point X="8.958" Y="3.125" Type="JumpEnd" />
-        <Point X="11.25" Y="3.125" />
+        <Point X="7.312" Y="3.5" />
+        <Point X="7.75" Y="3.5" />
+        <Point X="7.75" Y="3.673" />
+        <Point X="11.5" Y="3.673" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -203,7 +203,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EAAAAIAAAAAAAAAAAIAAAAAAAAAQAAEAAAACCAAABAA=</HashCode>
+      <HashCode>MAAAAIAAAAAAAAAAAIAAAAAAAAAQAAEAAAACCAACBAA=</HashCode>
       <FileName>Data\ContainedIn.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -214,7 +214,7 @@
   <Class Name="Allors.Data.And">
     <Position X="9.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAIAAAIAAAAAAAAACAAAAAAAACAAABAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAIAAAIAAAAAAAAACAAAAAAAACAACBAA=</HashCode>
       <FileName>Data\And.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -227,7 +227,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Data.IPredicateContainer">
-    <Position X="8" Y="1.75" Width="1.75" />
+    <Position X="8.5" Y="1.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\IPredicateContainer.cs</FileName>
@@ -242,7 +242,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Meta.IPropertyType" Collapsed="true">
-    <Position X="10.75" Y="8" Width="1.5" />
+    <Position X="10.75" Y="8.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAiAAAAAAAAAJAAAAAAAQAAAAAAAACAIAAAABAAAA=</HashCode>
       <FileName>Meta\IPropertyType.cs</FileName>
@@ -311,10 +311,10 @@
       <FileName>Meta\IRoleType.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Data.IPredicate" Collapsed="true">
-    <Position X="11.25" Y="2.75" Width="1.5" />
+  <Interface Name="Allors.Data.IPredicate">
+    <Position X="11.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IABAAIAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>IABAAIAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAACAAA=</HashCode>
       <FileName>Data\IPredicate.cs</FileName>
     </TypeIdentifier>
   </Interface>
