@@ -48,8 +48,8 @@
                 </div>
 
                 <div>
+                    <button *ngIf="!useSearch" mat-button color="primary" (click)="apply()">Apply</button>
                     <button mat-button mat-dialog-close>Cancel</button>
-                    <button mat-button color="primary" (click)="apply()">Apply</button>
                 </div>
             </mat-step>
 

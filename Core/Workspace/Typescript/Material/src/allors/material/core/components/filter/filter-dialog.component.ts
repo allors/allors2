@@ -15,7 +15,6 @@ import { assert } from '../../../../../allors/framework';
   templateUrl: 'filter-dialog.component.html',
 })
 export class AllorsMaterialFilterDialogComponent implements OnInit {
-
   @ViewChild('stepper', { static: true }) stepper: MatStepper;
 
   filterService: AllorsFilterService;
@@ -27,8 +26,8 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AllorsMaterialFilterDialogComponent>,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) data: any) {
-
+    @Inject(MAT_DIALOG_DATA) data: any
+  ) {
     this.filterService = data.filterService;
   }
 
@@ -45,24 +44,32 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
   }
 
   get useToggle(): boolean {
-    return !this.filterFieldDefinition?.options?.search && (this.filterFieldDefinition?.predicate.objectType.isBoolean ?? false);
+    return (
+      !this.filterFieldDefinition?.options?.search &&
+      (this.filterFieldDefinition?.predicate.objectType.isBoolean ?? false)
+    );
   }
 
   get useDatepicker(): boolean {
-    return !this.filterFieldDefinition?.options?.search && (this.filterFieldDefinition?.predicate.objectType.isDateTime ?? false);
+    return (
+      !this.filterFieldDefinition?.options?.search &&
+      (this.filterFieldDefinition?.predicate.objectType.isDateTime ?? false)
+    );
   }
 
   get useInput(): boolean {
-    return !this.filterFieldDefinition?.options?.search &&
+    return (
+      !this.filterFieldDefinition?.options?.search &&
       (!this.filterFieldDefinition?.predicate.objectType.isBoolean ?? false) &&
-      (!this.filterFieldDefinition?.predicate.objectType.isDateTime ?? false);
+      (!this.filterFieldDefinition?.predicate.objectType.isDateTime ?? false)
+    );
   }
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       definition: ['', Validators.required],
       value: ['', Validators.required],
-      value2: ['', Validators.required]
+      value2: ['', Validators.required],
     });
   }
 
@@ -91,32 +98,43 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
   }
 
   apply() {
-
     assert(this.filterFieldDefinition);
 
+    const objectType = this.filterFieldDefinition.predicate.objectType;
     const options = this.filterFieldDefinition.options;
+
     let value = this.formGroup.get('value')?.value;
     let value2 = this.formGroup.get('value2')?.value;
 
-    if (this.filterFieldDefinition.predicate.objectType.isDateTime) {
-      value = value ? value.toISOString() : null;
-      value2 = value2 ? value2.toISOString() : null;
-    }
+    const inValid =
+      value == null || (objectType.isComposite && value.objectType == null);
 
-    if (!value2) {
-      this.filterService.addFilterField(new FilterField({
-        definition: this.filterFieldDefinition,
-        value: value.id ? value.id : value,
-        display: options?.display(value) ?? value,
-      }));
+    if (!inValid) {
+      if (objectType.isDateTime) {
+        value = value ? value.toISOString() : null;
+        value2 = value2 ? value2.toISOString() : null;
+      }
 
-    } else {
-      this.filterService.addFilterField(new FilterField({
-        definition: this.filterFieldDefinition,
-        value,
-        value2,
-        display: options?.display ? `${options.display(value)} <-> ${options.display(value2)}` : `${value} <-> ${value2}`,
-      }));
+      if (!value2) {
+        this.filterService.addFilterField(
+          new FilterField({
+            definition: this.filterFieldDefinition,
+            value: value.id ? value.id : value,
+            display: options?.display(value) ?? value,
+          })
+        );
+      } else {
+        this.filterService.addFilterField(
+          new FilterField({
+            definition: this.filterFieldDefinition,
+            value,
+            value2,
+            display: options?.display
+              ? `${options.display(value)} <-> ${options.display(value2)}`
+              : `${value} <-> ${value2}`,
+          })
+        );
+      }
     }
 
     this.dialogRef.close();
