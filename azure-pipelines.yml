@@ -36,8 +36,6 @@ stages:
           target: 'BaseWorkspaceTypescriptIntranetGenericTests'
         base_workspace_typescript_intranet_specific:
           target: 'BaseWorkspaceTypescriptIntranetSpecificTests'
-        base_workspace_csharp:
-          target: 'BaseWorkspaceCSharpTest'
       maxParallel: 10
 
     steps:

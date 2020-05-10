@@ -30,38 +30,7 @@
     <Compile Include="..\..\..\..\Core\Workspace\Typescript\Material.Tests\Core*\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Tests\Application\**" />
-    <Compile Remove="Tests\Catalogue\**" />
-    <Compile Remove="Tests\CommunicationEvent\**" />
-    <Compile Remove="Tests\Good\**" />
-    <Compile Remove="Tests\ProductCategory\**" />
-    <Compile Remove="Tests\ProductQuote\**" />
-    <Compile Remove="Tests\ProductType\**" />
-    <Compile Remove="Tests\SerialisedItemCharacteristic\**" />
-    <Compile Remove="Tests\SerialisedItem\**" />
-    <Compile Remove="Tests\WorkEffort\**" />
-    <EmbeddedResource Remove="Tests\Application\**" />
-    <EmbeddedResource Remove="Tests\Catalogue\**" />
-    <EmbeddedResource Remove="Tests\CommunicationEvent\**" />
-    <EmbeddedResource Remove="Tests\Good\**" />
-    <EmbeddedResource Remove="Tests\ProductCategory\**" />
-    <EmbeddedResource Remove="Tests\ProductQuote\**" />
-    <EmbeddedResource Remove="Tests\ProductType\**" />
-    <EmbeddedResource Remove="Tests\SerialisedItemCharacteristic\**" />
-    <EmbeddedResource Remove="Tests\SerialisedItem\**" />
-    <EmbeddedResource Remove="Tests\WorkEffort\**" />
-    <None Remove="Tests\Application\**" />
-    <None Remove="Tests\Catalogue\**" />
-    <None Remove="Tests\CommunicationEvent\**" />
-    <None Remove="Tests\Good\**" />
-    <None Remove="Tests\ProductCategory\**" />
-    <None Remove="Tests\ProductQuote\**" />
-    <None Remove="Tests\ProductType\**" />
-    <None Remove="Tests\SerialisedItemCharacteristic\**" />
-    <None Remove="Tests\SerialisedItem\**" />
-    <None Remove="Tests\WorkEffort\**" />
-  </ItemGroup>
+  
 
   <ItemGroup>
     <None Update="appSettings.json">
@@ -76,16 +45,5 @@
     <None Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Tests\PurchaseInvoiceItem\" />
-    <Folder Include="Tests\PurchaseOrderItem\" />
-    <Folder Include="Tests\PurchaseOrder\" />
-    <Folder Include="Tests\PurchaseInvoice\" />
-    <Folder Include="Tests\SalesInvoiceItem\" />
-    <Folder Include="Tests\SalesInvoice\" />
-    <Folder Include="Tests\RequestItem\" />
-    <Folder Include="Tests\RequestForQuote\" />
   </ItemGroup>
 </Project>

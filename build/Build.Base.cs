@@ -67,28 +67,6 @@ partial class Build
              DotNetPublish(dotNetPublishSettings);
          });
 
-    private Target BasePublishExcellAddin => _ => _
-         .DependsOn(BaseWorkspaceCSharpExcellAddin)
-         .DependsOn(BasePublishServer)
-         .DependsOn(BasePublishCommands)
-         .Executes(() =>
-         {
-             CopyFile(Paths.SignTool, Paths.BaseWorkspaceCSharpExcelAddInSignTool, FileExistsPolicy.Overwrite);
-
-             var msBuildSettings = new MSBuildSettings()
-                 .SetRestore(true)
-                 .SetProjectFile(Paths.BaseWorkspaceCSharpExcelAddInProject)
-                 .SetTargets("Publish")
-                 .AddProperty("InstallUrl", "https://base.allors.com/excel/")
-                 .SetPackageOutputPath(Paths.ArtifactsBaseExcellAddIn);
-             MSBuild(msBuildSettings);
-
-             DeleteFile(Paths.BaseWorkspaceCSharpExcelAddInSignTool);
-
-             DeleteDirectory(Paths.ArtifactsBaseExcellAddIn);
-             CopyDirectoryRecursively(Paths.BaseWorkspaceCSharpExcelAddIn / "bin" / Configuration / "app.publish", Paths.ArtifactsBaseExcellAddIn);
-         });
-
     private Target BasePublishServer => _ => _
              .DependsOn(BaseGenerate)
          .Executes(() =>
@@ -115,21 +93,6 @@ partial class Build
                  .SetWorkingDirectory(Paths.Base)
                  .SetProjectFile(Paths.BaseWorkspaceTypescriptAutotestGenerateGenerate));
          });
-
-    private Target BaseWorkspaceCSharpExcellAddin => _ => _
-         .DependsOn(BaseGenerate)
-         .Executes(() =>
-         {
-             var msBuildSettings = new MSBuildSettings()
-                 .SetRestore(true)
-                 .SetProjectFile(Paths.BaseWorkspaceCSharpExcelAddInProject)
-                 .SetTargets("Build")
-                 .SetPackageOutputPath(Paths.ArtifactsBaseExcellAddIn);
-             MSBuild(msBuildSettings);
-         });
-
-    private Target BaseWorkspaceCSharpTest => _ => _
-         .DependsOn(BaseWorkspaceCSharpExcellAddin);
 
     private Target BaseWorkspaceNpmInstall => _ => _
                          .Executes(() =>
@@ -249,7 +212,6 @@ partial class Build
 
     private Target BaseTest => _ => _
         .DependsOn(BaseDatabaseTest)
-        .DependsOn(BaseWorkspaceCSharpTest)
         .DependsOn(BaseWorkspaceTypescriptTest);
 
     private Target Base => _ => _

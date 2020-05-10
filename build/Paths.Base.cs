@@ -16,9 +16,6 @@ public partial class Paths
     public AbsolutePath BaseDatabaseResourcesBase => BaseDatabaseResources / "Base";
 
     public AbsolutePath BaseWorkspaceCSharp => Base / "Workspace/CSharp";
-    public AbsolutePath BaseWorkspaceCSharpExcelAddIn => BaseWorkspaceCSharp / "ExcelAddIn";
-    public AbsolutePath BaseWorkspaceCSharpExcelAddInProject => BaseWorkspaceCSharpExcelAddIn / "ExcelAddIn.csproj";
-    public AbsolutePath BaseWorkspaceCSharpExcelAddInSignTool => BaseWorkspaceCSharpExcelAddIn / "signtool.exe";
 
     public AbsolutePath BaseWorkspaceTypescriptDomain => Base / "Workspace/Typescript/Domain";
     public AbsolutePath BaseWorkspaceTypescriptIntranet => Base / "Workspace/Typescript/Intranet";
