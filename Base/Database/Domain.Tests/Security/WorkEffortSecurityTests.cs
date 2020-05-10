@@ -59,7 +59,7 @@ namespace Allors.Domain
 
             var acl = new AccessControlLists(this.Administrator)[workTask];
             Assert.True(acl.CanExecute(M.WorkEffort.Invoice));
-            Assert.True(acl.CanExecute(M.WorkEffort.Cancel));
+            Assert.False(acl.CanExecute(M.WorkEffort.Cancel));
             Assert.False(acl.CanExecute(M.WorkEffort.Reopen));
             Assert.False(acl.CanExecute(M.WorkEffort.Complete));
         }

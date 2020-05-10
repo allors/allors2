@@ -367,8 +367,8 @@ namespace Allors.Domain
             var acl = new AccessControlLists(this.Session.GetUser())[item];
 
             Assert.True(acl.CanExecute(M.PurchaseOrderItem.Delete));
-            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
-            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.True(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.True(acl.CanExecute(M.PurchaseOrderItem.Reject));
         }
 
         [Fact]
@@ -397,12 +397,11 @@ namespace Allors.Domain
             this.order.SetReadyForProcessing();
 
             this.Session.Derive();
-            this.Session.Commit();
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).InProcess, item.PurchaseOrderItemState);
             var acl = new AccessControlLists(this.Session.GetUser())[item];
-            Assert.True(acl.CanExecute(M.PurchaseOrderItem.Cancel));
-            Assert.True(acl.CanExecute(M.PurchaseOrderItem.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
+            Assert.False(acl.CanExecute(M.PurchaseOrderItem.Reject));
         }
 
         [Fact]

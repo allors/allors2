@@ -37,7 +37,7 @@ namespace Allors.Domain
             var quickReceive = this.Meta.QuickReceive;
             var invoice = this.Meta.Invoice;
 
-            config.Deny(this.ObjectType, created, approve, reject, @continue, reopen, send, quickReceive, invoice, revise);
+            config.Deny(this.ObjectType, created, approve, cancel, reject, @continue, reopen, send, quickReceive, invoice, revise);
             config.Deny(this.ObjectType, onHold, approve, hold, setReadyForProcessing, reopen, send, quickReceive, invoice, revise);
             config.Deny(this.ObjectType, cancelled, approve, reject, hold, @continue, setReadyForProcessing, cancel, send, quickReceive, invoice, revise);
             config.Deny(this.ObjectType, rejected, approve, reject, hold, @continue, setReadyForProcessing, cancel, send, quickReceive, invoice, revise);

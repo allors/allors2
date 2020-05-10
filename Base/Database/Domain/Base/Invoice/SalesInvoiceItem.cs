@@ -173,13 +173,13 @@ namespace Allors.Domain
                 this.AmountPaid += paymentApplication.AmountApplied;
             }
 
-            if (salesInvoice.SalesInvoiceState.IsReadyForPosting && this.SalesInvoiceItemState.IsCancelledByInvoice)
+            if (salesInvoice != null && salesInvoice.SalesInvoiceState.IsReadyForPosting && this.SalesInvoiceItemState.IsCancelledByInvoice)
             {
                 this.SalesInvoiceItemState = salesInvoiceItemStates.ReadyForPosting;
             }
 
             // SalesInvoiceItem States
-            if (this.IsValid)
+            if (salesInvoice != null && this.IsValid)
             {
                 if (salesInvoice.SalesInvoiceState.IsWrittenOff)
                 {

@@ -1054,7 +1054,7 @@ namespace Allors.Domain
 
             var acl = new AccessControlLists(this.Session.GetUser())[invoice];
             Assert.True(acl.CanExecute(M.SalesInvoice.Send));
-            Assert.True(acl.CanExecute(M.SalesInvoice.WriteOff));
+            Assert.False(acl.CanExecute(M.SalesInvoice.WriteOff));
             Assert.True(acl.CanExecute(M.SalesInvoice.CancelInvoice));
             Assert.True(acl.CanExecute(M.SalesInvoice.Delete));
             Assert.False(acl.CanExecute(M.SalesInvoice.SetPaid));

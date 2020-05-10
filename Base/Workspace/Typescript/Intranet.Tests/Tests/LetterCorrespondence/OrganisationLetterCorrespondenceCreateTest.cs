@@ -58,13 +58,13 @@ namespace Tests.LetterCorrespondenceTests
                 .FromParty.Select(organisation)
                 .ToParty.Select(employee)
                 .FromPostalAddress.Select(organisationAddress)
-                .Subject.Set("subject")
-                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22))
-                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22))
-                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23))
-                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23))
-                .Comment.Set("comment")
-                .SAVE.Click();
+                .Subject.Set("subject");
+            letterCorrespondenceEdit.ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 22));
+            letterCorrespondenceEdit.ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 22));
+            letterCorrespondenceEdit.ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 23));
+            letterCorrespondenceEdit.ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 23));
+            letterCorrespondenceEdit.Comment.Set("comment");
+                            letterCorrespondenceEdit.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
