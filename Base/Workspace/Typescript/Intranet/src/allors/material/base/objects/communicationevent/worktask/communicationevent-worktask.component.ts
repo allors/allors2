@@ -124,6 +124,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
     this.allors.context.save()
       .subscribe((saved: Saved) => {
         this.goBack();
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

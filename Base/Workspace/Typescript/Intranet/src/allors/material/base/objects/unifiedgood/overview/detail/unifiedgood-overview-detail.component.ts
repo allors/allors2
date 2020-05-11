@@ -311,6 +311,7 @@ export class UnifiedGoodOverviewDetailComponent extends TestScope implements OnI
 
     this.allors.context.save()
       .subscribe(() => {
+        this.refreshService.refresh();
         this.panel.toggle();
       });
   }

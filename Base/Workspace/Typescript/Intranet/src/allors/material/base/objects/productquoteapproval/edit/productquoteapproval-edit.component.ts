@@ -117,6 +117,7 @@ export class ProductQuoteApprovalEditComponent extends TestScope implements OnIn
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

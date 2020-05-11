@@ -118,6 +118,7 @@ export class DisbursementEditComponent extends TestScope implements OnInit, OnDe
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

@@ -220,6 +220,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

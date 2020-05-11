@@ -146,6 +146,7 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

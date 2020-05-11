@@ -163,6 +163,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
 
     this.allors.context.save()
       .subscribe(() => {
+        this.refreshService.refresh();
         this.panel.toggle();
       },
         this.saveService.errorHandler

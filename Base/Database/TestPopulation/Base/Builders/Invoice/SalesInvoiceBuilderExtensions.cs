@@ -49,8 +49,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE).Build();
-            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE).Build();
+            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());
@@ -89,8 +89,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE).Build();
-            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE).Build();
+            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());
@@ -127,8 +127,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE).Build();
-            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE).Build();
+            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());
@@ -173,8 +173,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE).Build();
-            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE).Build();
+            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());

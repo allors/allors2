@@ -356,6 +356,7 @@ export class EmailCommunicationEditComponent extends TestScope implements OnInit
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

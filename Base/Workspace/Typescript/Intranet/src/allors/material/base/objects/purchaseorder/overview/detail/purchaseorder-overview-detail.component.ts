@@ -171,6 +171,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
     this.allors.context
       .save()
       .subscribe(() => {
+        this.refreshService.refresh();
         this.panel.toggle();
       },
         this.saveService.errorHandler

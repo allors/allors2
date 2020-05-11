@@ -341,20 +341,12 @@ namespace Tests
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
-            var salesOrder_2 = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(allors).Build();
-            var salesOrder_1 = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
-            var salesOrder_4 = new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(allors).Build();
-            var salesOrder_3 = new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(allors).Build();
+            new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(allors).Build();
+            new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
+            new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(allors).Build();
+            new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(allors).Build();
 
-            var salesInvoiceItem_1 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
-            var salesInvoiceItem_2 = new SalesInvoiceItemBuilder(this.Session).WithGSEDefaults(allors).Build();
-            var salesInvoiceItem_3 = new SalesInvoiceItemBuilder(this.Session).WithDefaults(allors).Build();
-
-            var salesInvoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors).Build();
-
-            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem_1);
-            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem_2);
-            salesInvoice.AddSalesInvoiceItem(salesInvoiceItem_3);
+            new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors).Build();
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good_1.Part)

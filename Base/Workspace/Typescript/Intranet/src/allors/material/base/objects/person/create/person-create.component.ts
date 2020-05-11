@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService, TestScope, SingletonId } from '../../../../../angular';
+import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService, TestScope, SingletonId, RefreshService } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, Currency } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -53,6 +53,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
+    public refreshService: RefreshService,
     private route: ActivatedRoute,
     private saveService: SaveService,
     private fetcher: FetcherService,
@@ -178,6 +179,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

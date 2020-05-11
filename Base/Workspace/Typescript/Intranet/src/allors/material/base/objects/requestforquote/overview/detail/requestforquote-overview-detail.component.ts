@@ -162,6 +162,7 @@ export class RequestForQuoteOverviewDetailComponent extends TestScope implements
 
     this.allors.context.save()
       .subscribe(() => {
+        this.refreshService.refresh();
         this.panel.toggle();
       },
         this.saveService.errorHandler

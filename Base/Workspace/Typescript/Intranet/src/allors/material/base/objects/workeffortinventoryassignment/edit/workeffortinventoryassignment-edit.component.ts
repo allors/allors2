@@ -164,6 +164,7 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

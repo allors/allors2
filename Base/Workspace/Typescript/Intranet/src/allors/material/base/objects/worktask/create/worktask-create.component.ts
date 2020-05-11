@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, NavigationService, MetaService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { ContextService, NavigationService, MetaService, FetcherService, InternalOrganisationId, TestScope, RefreshService } from '../../../../../angular';
 import { SaveService, FiltersService } from '../../../../../material';
 import { InternalOrganisation, Locale, WorkTask, Organisation, Party, PartyContactMechanism, Person, ContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
@@ -46,6 +46,7 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
+    public refreshService: RefreshService,
     private saveService: SaveService,
     private route: ActivatedRoute,
     private fetcher: FetcherService,
@@ -165,6 +166,7 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

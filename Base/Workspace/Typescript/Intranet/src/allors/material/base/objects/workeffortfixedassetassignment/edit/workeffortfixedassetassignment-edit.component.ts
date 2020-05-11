@@ -149,6 +149,7 @@ export class WorkEffortFixedAssetAssignmentEditComponent extends TestScope imple
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

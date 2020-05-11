@@ -104,6 +104,7 @@ export class TelecommunicationsNumberCreateComponent extends TestScope implement
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

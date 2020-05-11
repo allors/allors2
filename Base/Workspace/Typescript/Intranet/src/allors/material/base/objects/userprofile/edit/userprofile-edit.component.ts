@@ -109,6 +109,7 @@ export class UserProfileEditComponent extends TestScope implements OnInit, OnDes
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

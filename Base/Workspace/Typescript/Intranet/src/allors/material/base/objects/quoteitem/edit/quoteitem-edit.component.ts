@@ -345,6 +345,7 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );
