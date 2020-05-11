@@ -439,6 +439,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Throughdate less than fromdate.
+        /// </summary>
+        public static string ThroughDateInvalid {
+            get {
+                return ResourceManager.GetString("ThroughDateInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to unit price is required.
         /// </summary>
         public static string UnitPriceRequired {

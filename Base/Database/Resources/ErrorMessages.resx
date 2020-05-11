@@ -252,4 +252,7 @@
   <data name="WorkerActiveTimeEntry" xml:space="preserve">
     <value>Person is working on {0}</value>
   </data>
+  <data name="ThroughDateInvalid" xml:space="preserve">
+    <value>Throughdate less than fromdate</value>
+  </data>
 </root>

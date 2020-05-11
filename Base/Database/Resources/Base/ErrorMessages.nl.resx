@@ -246,4 +246,7 @@
   <data name="WorkerActiveTimeEntry" xml:space="preserve">
     <value>Persoon werkt aan {0}</value>
   </data>
+  <data name="ThroughDateInvalid" xml:space="preserve">
+    <value>Tot datum kleiner dan vanaf datum</value>
+  </data>
 </root>
