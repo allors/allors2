@@ -37,7 +37,7 @@ namespace Tests.SalesOrderItemTests
         [Fact]
         public void EditWithDefaults()
         {
-            var salesOrder = new SalesOrders(this.Session).Extent().Where(v => v.OrderNumber.Equals("a-SO4")).FirstOrDefault();
+            var salesOrder = new SalesOrders(this.Session).Extent().FirstOrDefault();
 
             var before = new SalesOrderItems(this.Session).Extent().ToArray();
 
@@ -110,8 +110,9 @@ namespace Tests.SalesOrderItemTests
 
             var before = new SalesOrderItems(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderItemBuilder(this.Session).WithGSEDefaults().Build();
-            salesOrder.AddSalesOrderItem(expected);
+            var disposableSalesOrder = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
+            var expected = disposableSalesOrder.SalesOrderItems.First;
+            var id = before.First().Id;
 
             this.Session.Derive();
 
@@ -128,21 +129,32 @@ namespace Tests.SalesOrderItemTests
             var salesOrderOverview = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver);
             var salesOrderItemOverviewPanel = salesOrderOverview.SalesorderitemOverviewPanel.Click();
 
-            var salesOrderItemCreate = salesOrderItemOverviewPanel
-                .CreateSalesOrderItem()
-                .BuildForDefaults(expected);
+            salesOrderItemOverviewPanel.Table.DefaultAction(salesOrder.SalesOrderItems.First());
+
+            var salesOrderItemEdit = new SalesOrderItemEditComponent(this.Driver);
+
+            salesOrderItemEdit.Description.Set(expected.Description);
+            salesOrderItemEdit.Comment.Set(expected.Comment);
+            salesOrderItemEdit.InternalComment.Set(expected.InternalComment);
+            if (expectedInvoiceItemType.IsProductItem || expectedInvoiceItemType.IsPartItem)
+            {
+                salesOrderItemEdit.Product.Select(expected.Product.Name);
+                salesOrderItemEdit.SerialisedItem.Select(expected.SerialisedItem);
+                salesOrderItemEdit.QuantityOrdered.Set(expected.QuantityOrdered.ToString());
+            }
+            salesOrderItemEdit.PriceableAssignedUnitPrice_2.Set(expected.AssignedUnitPrice.ToString());
 
             this.Session.Rollback();
-            salesOrderItemCreate.SAVE.Click();
+            salesOrderItemEdit.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
 
             var after = new SalesOrderItems(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length + 1);
+            var actual = (SalesOrderItem)this.Session.Instantiate(id);
 
-            var actual = after.Except(before).First();
+            Assert.Equal(after.Length, before.Length);
 
             Assert.Equal(expectedDescription, actual.Description);
             Assert.Equal(expectedComment, actual.Comment);
