@@ -186,6 +186,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

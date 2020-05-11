@@ -124,6 +124,7 @@ export class ProductCategoryEditComponent extends TestScope implements OnInit, O
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

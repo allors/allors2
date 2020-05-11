@@ -175,6 +175,7 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
     this.allors.context
       .save()
       .subscribe(() => {
+        this.refreshService.refresh();
         this.panel.toggle();
       },
         this.saveService.errorHandler

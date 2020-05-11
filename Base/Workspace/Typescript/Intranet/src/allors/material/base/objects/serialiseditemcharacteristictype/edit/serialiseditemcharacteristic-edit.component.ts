@@ -136,6 +136,7 @@ export class SerialisedItemCharacteristicEditComponent extends TestScope impleme
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

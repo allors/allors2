@@ -118,6 +118,7 @@ export class ReceiptEditComponent extends TestScope implements OnInit, OnDestroy
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

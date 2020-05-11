@@ -101,6 +101,7 @@ export class CarrierEditComponent extends TestScope implements OnInit, OnDestroy
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

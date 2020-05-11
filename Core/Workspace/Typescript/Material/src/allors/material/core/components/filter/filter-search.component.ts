@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {
   filter,
   debounceTime,
@@ -51,9 +51,13 @@ export class AllorsMaterialFilterSearchComponent implements OnInit {
       distinctUntilChanged(),
       switchMap((v) => {
         const value = v.value;
-        return this.filterFieldDefinition.options.search.create(this.allors)(
-          value
-        );
+        if (!this.filterFieldDefinition?.options) {
+          return of([]);
+        } else {
+          return this.filterFieldDefinition.options.search.create(this.allors)(
+            value
+          );
+        }
       })
     );
   }

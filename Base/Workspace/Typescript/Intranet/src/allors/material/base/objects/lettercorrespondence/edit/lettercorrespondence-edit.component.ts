@@ -362,6 +362,7 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
           };
 
           this.dialogRef.close(data);
+          this.refreshService.refresh();
         },
         this.saveService.errorHandler
       );

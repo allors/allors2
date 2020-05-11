@@ -115,6 +115,7 @@ export class PurchaseOrderApprovalLevel1EditComponent extends TestScope implemen
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

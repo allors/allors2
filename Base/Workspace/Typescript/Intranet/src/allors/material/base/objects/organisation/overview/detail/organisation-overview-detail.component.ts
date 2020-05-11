@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ContextService, MetaService, PanelService, FetcherService, TestScope, SingletonId } from '../../../../../../angular';
+import { ContextService, MetaService, PanelService, FetcherService, TestScope, SingletonId, RefreshService } from '../../../../../../angular';
 import { CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, LegalForm } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
@@ -40,6 +40,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
     public metaService: MetaService,
     public saveService: SaveService,
     public location: Location,
+    public refreshService: RefreshService,
     private route: ActivatedRoute,
     private singletonId: SingletonId,
     private fetcher: FetcherService
@@ -153,6 +154,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
     this.allors.context
       .save()
       .subscribe(() => {
+        this.refreshService.refresh();
         window.history.back();
       },
         this.saveService.errorHandler

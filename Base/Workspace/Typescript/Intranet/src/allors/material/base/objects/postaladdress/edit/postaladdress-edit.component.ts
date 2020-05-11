@@ -96,6 +96,7 @@ export class PostalAddressEditComponent extends TestScope implements OnInit, OnD
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

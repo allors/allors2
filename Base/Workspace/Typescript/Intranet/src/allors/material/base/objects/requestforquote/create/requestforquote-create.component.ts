@@ -100,6 +100,7 @@ export class RequestForQuoteCreateComponent extends TestScope implements OnInit,
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );
