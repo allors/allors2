@@ -423,5 +423,7 @@ namespace Allors.Repository
 
         public void CreateSalesInvoice() { }
 
+        public void CreateWorkEffortInvoice() { }
+
     }
 }
