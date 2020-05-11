@@ -622,6 +622,7 @@ namespace Allors.Domain
                         .WithProduct(salesInvoiceItem.Product)
                         .WithSerialisedItem(salesInvoiceItem.SerialisedItem)
                         .WithQuantity(salesInvoiceItem.Quantity)
+                        .WithDescription(salesInvoiceItem.Description)
                         .WithComment(salesInvoiceItem.Comment)
                         .WithInternalComment(salesInvoiceItem.InternalComment)
                         .Build();
