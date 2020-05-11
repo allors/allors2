@@ -332,6 +332,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
     this.allors.context
       .save()
       .subscribe(() => {
+        this.refreshService.refresh();
         this.panel.toggle();
       },
         this.saveService.errorHandler

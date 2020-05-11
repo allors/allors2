@@ -145,6 +145,7 @@ export class PositionTypeRateEditComponent extends TestScope implements OnInit, 
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

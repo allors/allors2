@@ -178,6 +178,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

@@ -162,6 +162,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

@@ -140,6 +140,7 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

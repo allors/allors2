@@ -155,6 +155,7 @@ export class EmploymentEditComponent extends TestScope implements OnInit, OnDest
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

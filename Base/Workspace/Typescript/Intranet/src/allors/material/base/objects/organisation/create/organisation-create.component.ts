@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { Saved, ContextService, MetaService, FetcherService, InternalOrganisationId, TestScope, SingletonId } from '../../../../../angular';
+import { Saved, ContextService, MetaService, FetcherService, InternalOrganisationId, TestScope, SingletonId, RefreshService } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, LegalForm } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
@@ -57,6 +57,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
     public dialogRef: MatDialogRef<OrganisationCreateComponent>,
     public metaService: MetaService,
     public location: Location,
+    public refreshService: RefreshService,
     private saveService: SaveService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
@@ -242,6 +243,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

@@ -131,6 +131,7 @@ export class SubContractorRelationshipEditComponent extends TestScope implements
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

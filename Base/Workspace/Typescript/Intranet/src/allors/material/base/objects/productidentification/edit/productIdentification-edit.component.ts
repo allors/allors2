@@ -111,6 +111,7 @@ export class ProductIdentificationEditComponent extends TestScope implements OnI
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );

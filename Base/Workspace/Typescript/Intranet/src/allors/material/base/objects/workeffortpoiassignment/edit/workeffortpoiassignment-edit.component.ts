@@ -147,6 +147,7 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
         };
 
         this.dialogRef.close(data);
+        this.refreshService.refresh();
       },
         this.saveService.errorHandler
       );
