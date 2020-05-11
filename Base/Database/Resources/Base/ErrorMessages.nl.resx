@@ -228,7 +228,7 @@
   <data name="FrequencyNotSupported" xml:space="preserve">
     <value>Frequentie wordt niet ondersteund</value>
   </data>
-  <data name="String1" xml:space="preserve">
+  <data name="SerializedItemQuantity" xml:space="preserve">
     <value>Serieel item is uniek.  Aantal moet gelijk zijn aan 1</value>
   </data>
   <data name="UnitPriceRequired" xml:space="preserve">
@@ -236,5 +236,14 @@
   </data>
   <data name="ReservedFromNonSerialisedInventoryItem" xml:space="preserve">
     <value>reserved from non serialised inventory item</value>
+  </data>
+  <data name="InsufficientStock" xml:space="preserve">
+    <value>Item is niet op voorraad</value>
+  </data>
+  <data name="PartyIsNotASubcontractor" xml:space="preserve">
+    <value>Gekozen partij is geen onderaannemer voor deze interne organisatie</value>
+  </data>
+  <data name="WorkerActiveTimeEntry" xml:space="preserve">
+    <value>Persoon werkt aan {0}</value>
   </data>
 </root>
