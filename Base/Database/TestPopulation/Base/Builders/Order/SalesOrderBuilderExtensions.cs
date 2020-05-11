@@ -62,8 +62,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipFromAddress(sellerOrganisation.ShippingAddress);
             @this.WithShipToContactPerson(shipToContact);
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesOrderItem(salesOrderItem_NonGSE).Build();
-            @this.WithSalesOrderItem(salesOrderItem_GSE).Build();
+            @this.WithSalesOrderItem(salesOrderItem_NonGSE);
+            @this.WithSalesOrderItem(salesOrderItem_GSE);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -106,8 +106,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipFromAddress(sellerOrganisation.ShippingAddress);
             @this.WithShipToContactPerson(shipToContact);
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesOrderItem(salesOrderItem_NonGSE).Build();
-            @this.WithSalesOrderItem(salesOrderItem_GSE).Build();
+            @this.WithSalesOrderItem(salesOrderItem_NonGSE);
+            @this.WithSalesOrderItem(salesOrderItem_GSE);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -161,8 +161,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipFromAddress(sellerOrganisation.ShippingAddress);
             @this.WithShipToContactPerson(shipToContact);
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesOrderItem(salesOrderItem_NonGSE).Build();
-            @this.WithSalesOrderItem(salesOrderItem_GSE).Build();
+            @this.WithSalesOrderItem(salesOrderItem_NonGSE);
+            @this.WithSalesOrderItem(salesOrderItem_GSE);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -201,8 +201,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipToAddress(shipToCustomer.ShippingAddress);
             @this.WithShipFromAddress(sellerOrganisation.ShippingAddress);
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesOrderItem(salesOrderItem_NonGSE).Build();
-            @this.WithSalesOrderItem(salesOrderItem_GSE).Build();
+            @this.WithSalesOrderItem(salesOrderItem_NonGSE);
+            @this.WithSalesOrderItem(salesOrderItem_GSE);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
