@@ -72,9 +72,7 @@ namespace Tests.LetterCorrespondenceTests
             var personOverview = new PersonOverviewComponent(this.personListPage.Driver);
 
             var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
-            var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);
-            var cell = row.FindCell("description");
-            cell.Click();
+            communicationEventOverview.Table.DefaultAction(editCommunicationEvent);
 
             var letterCorrespondenceEditComponent = new LetterCorrespondenceEditComponent(this.Driver);
             letterCorrespondenceEditComponent

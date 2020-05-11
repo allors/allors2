@@ -77,9 +77,7 @@ namespace Tests.PartyRelationshipTests
             var personOverview = new PersonOverviewComponent(this.personListPage.Driver);
 
             var partyRelationshipOverview = personOverview.PartyrelationshipOverviewPanel.Click();
-            var row = partyRelationshipOverview.Table.FindRow(editPartyRelationship);
-            var cell = row.FindCell("type");
-            cell.Click();
+            partyRelationshipOverview.Table.DefaultAction(editPartyRelationship);
 
             var customerRelationshipEditComponent = new CustomerRelationshipEditComponent(this.Driver);
             customerRelationshipEditComponent.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))

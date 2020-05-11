@@ -70,9 +70,7 @@ namespace Tests.LetterCorrespondenceTests
             var organisationOverviewPage = new OrganisationOverviewComponent(this.organisationListPage.Driver);
 
             var communicationEventOverview = organisationOverviewPage.CommunicationeventOverviewPanel.Click();
-            var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);
-            var cell = row.FindCell("description");
-            cell.Click();
+            communicationEventOverview.Table.DefaultAction(editCommunicationEvent);
 
             var letterCorrespondenceEdit = new LetterCorrespondenceEditComponent(organisationOverviewPage.Driver);
             letterCorrespondenceEdit

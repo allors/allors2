@@ -92,9 +92,7 @@ namespace Tests.PartyRelationshipTests
             var personOverviewPage = new PersonOverviewComponent(this.people.Driver);
 
             var partyRelationshipOverview = personOverviewPage.PartyrelationshipOverviewPanel.Click();
-            var row = partyRelationshipOverview.Table.FindRow(this.editPartyRelationship);
-            var cell = row.FindCell("type");
-            cell.Click();
+            partyRelationshipOverview.Table.DefaultAction(this.editPartyRelationship);
 
             var employmentEditComponent = new EmploymentEditComponent(this.Driver);
             employmentEditComponent.FromDate.Set(DateTimeFactory.CreateDate(2018, 12, 22))

@@ -58,10 +58,8 @@ namespace Tests.EmailCommunicationTests
             var organisationOverview = new OrganisationOverviewComponent(this.organisationListPage.Driver);
 
             var communicationEventOverview = organisationOverview.CommunicationeventOverviewPanel.Click();
-            var row = communicationEventOverview.Table.FindRow(editCommunicationEvent);
-            var cell = row.FindCell("description");
-            cell.Click();
-
+            communicationEventOverview.Table.DefaultAction(editCommunicationEvent);
+            
             var emailCommunicationEdit = new EmailCommunicationEditComponent(organisationOverview.Driver);
             emailCommunicationEdit
                 .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
