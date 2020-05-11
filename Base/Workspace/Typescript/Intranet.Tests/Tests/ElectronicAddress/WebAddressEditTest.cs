@@ -48,9 +48,7 @@ namespace Tests.ElectronicAddressTests
             var personOverview = new PersonOverviewComponent(this.personListPage.Driver);
 
             var contactMechanismOverview = personOverview.ContactmechanismOverviewPanel.Click();
-            var row = contactMechanismOverview.Table.FindRow(editContactMechanism);
-            var cell = row.FindCell("contact");
-            cell.Click();
+            contactMechanismOverview.Table.DefaultAction(editContactMechanism);
 
             var webAddressEdit = new WebAddressEditComponent(this.Driver);
             webAddressEdit

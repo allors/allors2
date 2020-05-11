@@ -70,9 +70,7 @@ namespace Tests.PhoneCommunicationTests
             var personOverview = new PersonOverviewComponent(this.people.Driver);
 
             var communicationEventOverview = personOverview.CommunicationeventOverviewPanel.Click();
-            var row = communicationEventOverview.Table.FindRow(this.editCommunicationEvent);
-            var cell = row.FindCell("description");
-            cell.Click();
+            communicationEventOverview.Table.DefaultAction(this.editCommunicationEvent);
 
             var phoneCommunicationEditComponent = new PhoneCommunicationEditComponent(this.Driver);
             phoneCommunicationEditComponent

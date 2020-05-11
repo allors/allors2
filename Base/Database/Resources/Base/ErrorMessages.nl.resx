@@ -247,6 +247,6 @@
     <value>Persoon werkt aan {0}</value>
   </data>
   <data name="ThroughDateInvalid" xml:space="preserve">
-    <value>Tot dataum kleiner dan vanaf datum</value>
+    <value>Tot datum kleiner dan vanaf datum</value>
   </data>
 </root>

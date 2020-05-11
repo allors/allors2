@@ -98,9 +98,7 @@ namespace Tests.PartyRelationshipTests
             var organisationOverview = new OrganisationOverviewComponent(this.organisationListPage.Driver);
 
             var partyRelationshipOverview = organisationOverview.PartyrelationshipOverviewPanel.Click();
-            var row = partyRelationshipOverview.Table.FindRow(editPartyRelationship);
-            var cell = row.FindCell("type");
-            cell.Click();
+            partyRelationshipOverview.Table.DefaultAction(editPartyRelationship);
 
             var partyRelationshipEdit = new EmploymentEditComponent(organisationOverview.Driver);
             partyRelationshipEdit
