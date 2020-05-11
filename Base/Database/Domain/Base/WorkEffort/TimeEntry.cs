@@ -7,6 +7,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Linq;
+    using Resources;
 
     public partial class TimeEntry
     {
@@ -98,6 +99,18 @@ namespace Allors.Domain
                 this.Worker = this.TimeSheetWhereTimeEntry.Worker;
             }
 
+            if (this.ExistWorker)
+            {
+                var otherActiveTimeEntry = this.Worker.TimeEntriesWhereWorker.FirstOrDefault(v =>
+                                v.Id != this.Id
+                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
+
+                if (otherActiveTimeEntry != null)
+                {
+                    derivation.Validation.AddError(this, this.Meta.Worker, ErrorMessages.WorkerActiveTimeEntry.Replace("{0}", otherActiveTimeEntry.WorkEffort?.WorkEffortNumber));
+                }
+            }
+
             var billingRate = 0M;
             if (this.AssignedBillingRate.HasValue)
             {
@@ -162,11 +175,6 @@ namespace Allors.Domain
             {
                 derivation.Validation.AssertExists(this, this.Meta.BillingFrequency);
             }
-
-            //if (this.ExistAmountOfTime)
-            //{
-            //    derivation.Validation.AssertExists(this, this.Meta.TimeFrequency);
-            //}
 
             // calculate AmountOfTime Or ThroughDate
             var frequencies = new TimeFrequencies(this.Strategy.Session);

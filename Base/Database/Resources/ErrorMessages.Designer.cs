@@ -232,7 +232,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insufficient stock.
+        ///   Looks up a localized string similar to Item is not in stock.
         /// </summary>
         public static string InsufficientStock {
             get {
@@ -453,6 +453,15 @@ namespace Resources {
         public static string WorkEffortRateError {
             get {
                 return ResourceManager.GetString("WorkEffortRateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Person is working on {0}.
+        /// </summary>
+        public static string WorkerActiveTimeEntry {
+            get {
+                return ResourceManager.GetString("WorkerActiveTimeEntry", resourceCulture);
             }
         }
     }
