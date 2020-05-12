@@ -25,16 +25,10 @@ namespace src.allors.material.@base.objects.salesorder.create
         {
             @this.CustomerReference.Set(salesOrder.CustomerReference);
             @this.Description.Set(salesOrder.Description);
-            @this.InternalComment.Set(salesOrder.Comment);
+            @this.InternalComment.Set(salesOrder.InternalComment);
             @this.BillToCustomer.Select(salesOrder.BillToCustomer.DisplayName());
             @this.BillToContactPerson.Select(salesOrder.BillToContactPerson);
             @this.BillToContactMechanism.Select(salesOrder.BillToContactMechanism);
-            @this.BillToEndCustomer.Select(salesOrder.BillToEndCustomer.DisplayName());
-            @this.BillToEndCustomerContactMechanism.Select(salesOrder.BillToEndCustomerContactMechanism);
-            @this.BillToEndCustomerContactPerson.Select(salesOrder.BillToEndCustomerContactPerson);
-            @this.ShipToEndCustomer.Select(salesOrder.ShipToEndCustomer.DisplayName());
-            @this.ShipToEndCustomerAddress.Select(salesOrder.ShipToEndCustomerAddress);
-            @this.ShipToEndCustomerContactPerson.Select(salesOrder.ShipToEndCustomerContactPerson);
             @this.ShipToCustomer.Select(salesOrder.ShipToCustomer.DisplayName());
             @this.ShipToAddress.Select(salesOrder.ShipToAddress);
             @this.ShipFromAddress.Select(salesOrder.ShipFromAddress);

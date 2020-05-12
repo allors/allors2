@@ -131,7 +131,7 @@ namespace Tests.SalesOrderTests
 
             var salesOrderCreate = this.salesOrderListPage
                 .CreateSalesOrder()
-                .BuildForOrganisationInternalDefaults(expected);
+                .BuildForOrganisationExternalDefaults(expected);
 
 
             this.Session.Rollback();

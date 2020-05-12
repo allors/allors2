@@ -249,4 +249,7 @@
   <data name="ThroughDateInvalid" xml:space="preserve">
     <value>Tot datum kleiner dan vanaf datum</value>
   </data>
+  <data name="FutureDateInvalid" xml:space="preserve">
+    <value>Datum in toekomst is niet toegestaan</value>
+  </data>
 </root>
