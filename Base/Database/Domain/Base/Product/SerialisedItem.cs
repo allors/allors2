@@ -66,19 +66,6 @@ namespace Allors.Domain
                 this.Name = this.PartWhereSerialisedItem.Name;
             }
 
-            var purchaseOrderItem = this.PurchaseOrderItemsWhereSerialisedItem.OrderByDescending(v => v.PurchaseOrderWherePurchaseOrderItem.OrderDate).FirstOrDefault();
-
-            if (purchaseOrderItem == null)
-            {
-                purchaseOrderItem = this.Session().Extent<PurchaseOrderItem>()
-                    .OrderByDescending(v => v.PurchaseOrderWherePurchaseOrderItem.OrderDate)
-                    .FirstOrDefault(v => Object.Equals(v.SerialNumber, this.SerialNumber));
-            }
-
-            this.PurchasePrice = purchaseOrderItem?.TotalExVat ?? this.AssignedPurchasePrice;
-            this.PurchaseOrder = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem;
-            this.SuppliedBy = purchaseOrderItem?.PurchaseOrderWherePurchaseOrderItem.TakenViaSupplier ?? this.AssignedSuppliedBy;
-
             this.OnQuote = this.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft
                         || v.QuoteItemState.IsSubmitted || v.QuoteItemState.IsApproved
                         || v.QuoteItemState.IsAwaitingAcceptance || v.QuoteItemState.IsAccepted);

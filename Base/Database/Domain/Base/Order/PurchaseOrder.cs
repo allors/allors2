@@ -526,9 +526,16 @@ namespace Allors.Domain
                             serialisedItemDeriveRoles.SuppliedBy = this.TakenViaSupplier;
                             serialisedItem.RemoveAssignedPurchasePrice();
                             serialisedItemDeriveRoles.PurchasePrice = orderItem.TotalExVat;
+                            serialisedItem.AcquiredDate = orderItem.PurchaseOrderWherePurchaseOrderItem.OrderDate;
+
+                            if (serialisedItem.ExistAcquiredDate && serialisedItem.ExistAcquisitionYear)
+                            {
+                                serialisedItem.RemoveAcquisitionYear();
+                            }
 
                             serialisedItem.OwnedBy = this.OrderedBy;
                             serialisedItem.Buyer = this.OrderedBy;
+                            serialisedItem.Ownership = new Ownerships(this.Session()).Own;
                             serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session()).Available;
 
                             var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
