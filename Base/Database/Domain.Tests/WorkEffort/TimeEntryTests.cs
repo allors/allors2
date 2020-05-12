@@ -192,48 +192,48 @@ namespace Allors.Domain
             Assert.Equal(4.00M * 24.00M, timeEntry.ActualHours);
         }
 
-        [Fact]
-        public void GivenActiveTimeEntry_WhenCreatingNewEntryForSamePerson_ThenDerivationError()
-        {
-            // Arrange
-            var frequencies = new TimeFrequencies(this.Session);
+        //[Fact]
+        //public void GivenActiveTimeEntry_WhenCreatingNewEntryForSamePerson_ThenDerivationError()
+        //{
+        //    // Arrange
+        //    var frequencies = new TimeFrequencies(this.Session);
 
-            var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
-            var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
-            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+        //    var customer = new OrganisationBuilder(this.Session).WithName("Org1").Build();
+        //    var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
+        //    new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
-            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
+        //    var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
+        //    var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+        //    new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
 
-            this.Session.Derive(true);
+        //    this.Session.Derive(true);
 
-            var now = DateTimeFactory.CreateDateTime(this.Session.Now());
-            var later = DateTimeFactory.CreateDateTime(now.AddHours(4));
+        //    var now = DateTimeFactory.CreateDateTime(this.Session.Now());
+        //    var later = DateTimeFactory.CreateDateTime(now.AddHours(4));
 
-            var timeEntry = new TimeEntryBuilder(this.Session)
-                .WithRateType(new RateTypes(this.Session).StandardRate)
-                .WithFromDate(now.AddSeconds(-1))
-                .WithTimeFrequency(frequencies.Hour)
-                .WithWorkEffort(workOrder)
-                .Build();
+        //    var timeEntry = new TimeEntryBuilder(this.Session)
+        //        .WithRateType(new RateTypes(this.Session).StandardRate)
+        //        .WithFromDate(now.AddSeconds(-1))
+        //        .WithTimeFrequency(frequencies.Hour)
+        //        .WithWorkEffort(workOrder)
+        //        .Build();
 
-            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntry);
+        //    employee.TimeSheetWhereWorker.AddTimeEntry(timeEntry);
 
-            this.Session.Derive(true);
+        //    this.Session.Derive(true);
 
-            var secondTimeEntry = new TimeEntryBuilder(this.Session)
-                .WithRateType(new RateTypes(this.Session).StandardRate)
-                .WithFromDate(now)
-                .WithTimeFrequency(frequencies.Hour)
-                .WithWorkEffort(workOrder)
-                .Build();
+        //    var secondTimeEntry = new TimeEntryBuilder(this.Session)
+        //        .WithRateType(new RateTypes(this.Session).StandardRate)
+        //        .WithFromDate(now)
+        //        .WithTimeFrequency(frequencies.Hour)
+        //        .WithWorkEffort(workOrder)
+        //        .Build();
 
-            employee.TimeSheetWhereWorker.AddTimeEntry(secondTimeEntry);
+        //    employee.TimeSheetWhereWorker.AddTimeEntry(secondTimeEntry);
 
-            var errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
-            var expectedMessage = ErrorMessages.WorkerActiveTimeEntry.Replace("{0}", secondTimeEntry.WorkEffort?.WorkEffortNumber);
-            Assert.NotNull(errors.Find(e => e.Message.Equals(expectedMessage)));
-        }
+        //    var errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
+        //    var expectedMessage = ErrorMessages.WorkerActiveTimeEntry.Replace("{0}", secondTimeEntry.WorkEffort?.WorkEffortNumber);
+        //    Assert.NotNull(errors.Find(e => e.Message.Equals(expectedMessage)));
+        //}
     }
 }

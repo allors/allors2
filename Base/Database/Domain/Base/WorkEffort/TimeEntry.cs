@@ -99,18 +99,18 @@ namespace Allors.Domain
                 this.Worker = this.TimeSheetWhereTimeEntry.Worker;
             }
 
-            if (this.ExistWorker)
-            {
-                var otherActiveTimeEntry = this.Worker.TimeEntriesWhereWorker.FirstOrDefault(v =>
-                                v.Id != this.Id
-                                && ((v.FromDate < this.FromDate && (!v.ExistThroughDate || v.ThroughDate > this.FromDate))
-                                    || (v.FromDate > this.FromDate && v.FromDate < this.ThroughDate)));
+            //if (this.ExistWorker)
+            //{
+            //    var otherActiveTimeEntry = this.Worker.TimeEntriesWhereWorker.FirstOrDefault(v =>
+            //                    v.Id != this.Id
+            //                    && ((v.FromDate < this.FromDate && (!v.ExistThroughDate || v.ThroughDate > this.FromDate))
+            //                        || (v.FromDate > this.FromDate && v.FromDate < this.ThroughDate)));
 
-                if (otherActiveTimeEntry != null)
-                {
-                    derivation.Validation.AddError(this, this.Meta.Worker, ErrorMessages.WorkerActiveTimeEntry.Replace("{0}", otherActiveTimeEntry.WorkEffort?.WorkEffortNumber));
-                }
-            }
+            //    if (otherActiveTimeEntry != null)
+            //    {
+            //        derivation.Validation.AddError(this, this.Meta.Worker, ErrorMessages.WorkerActiveTimeEntry.Replace("{0}", otherActiveTimeEntry.WorkEffort?.WorkEffortNumber));
+            //    }
+            //}
 
             var billingRate = 0M;
             if (this.AssignedBillingRate.HasValue)
