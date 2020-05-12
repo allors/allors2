@@ -14,6 +14,7 @@ import { EmailAddressCreateComponent, EmailAddressCreateModule } from '../allors
 import { EmailAddressEditComponent, EmailAddressEditModule } from '../allors/material/base/objects/emailaddress/edit/emailaddress-edit.module';
 import { EmailCommunicationEditComponent, EmailCommunicationEditModule } from '../allors/material/base/objects/emailcommunication/edit/emailcommunication-edit.module';
 import { EmploymentEditComponent, EmploymentEditModule } from '../allors/material/base/objects/employment/edit/employment-edit.module';
+import { NonSerialisedInventoryItemEditComponent, NonSerialisedInventoryItemEditModule } from '../allors/material/base/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 import { NonUnifiedGoodCreateComponent, NonUnifiedGoodCreateModule } from '../allors/material/base/objects/nonunifiedgood/create/nonunifiedgood-create.module';
 import { NonUnifiedPartCreateComponent, NonUnifiedPartCreateModule } from '../allors/material/base/objects/nonunifiedpart/create/nonunifiedpart-create.module';
 import { InventoryItemTransactionEditComponent, InventoryItemTransactionEditModule } from '../allors/material/base/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
@@ -75,6 +76,7 @@ import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditMo
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/base/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/core/services/object';
+import { NonSerialisedInventoryItemComponent } from 'src/allors/material/base/objects/nonserialisedinventoryitem/overview/panel/nonserialisedinventoryitem-overview-panel.module';
 
 export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
@@ -97,6 +99,7 @@ export const create = {
   [ids.OrderTerm]: SalesTermEditComponent,
   [ids.Organisation]: OrganisationCreateComponent,
   [ids.OrganisationContactRelationship]: OrganisationContactRelationshipEditComponent,
+  [ids.NonSerialisedInventoryItem]: NonSerialisedInventoryItemEditComponent,
   [ids.NonUnifiedGood]: NonUnifiedGoodCreateComponent,
   [ids.NonUnifiedPart]: NonUnifiedPartCreateComponent,
   [ids.PartNumber]: ProductIdentificationEditComponent,
@@ -165,6 +168,7 @@ export const edit = {
   [ids.IsbnIdentification]: ProductIdentificationEditComponent,
   [ids.LetterCorrespondence]: LetterCorrespondenceEditComponent,
   [ids.ManufacturerIdentification]: ProductIdentificationEditComponent,
+  [ids.NonSerialisedInventoryItem]: NonSerialisedInventoryItemEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
   [ids.OrganisationContactRelationship]: OrganisationContactRelationshipEditComponent,
   [ids.PartyContactMechanism]: PartyContactmechanismEditComponent,
@@ -231,6 +235,7 @@ export const edit = {
     LetterCorrespondenceEditModule,
     OrganisationCreateModule,
     OrganisationContactRelationshipEditModule,
+    NonSerialisedInventoryItemEditModule,
     NonUnifiedPartCreateModule,
     PartyContactmechanismEditModule,
     PartyRateEditModule,
@@ -296,6 +301,7 @@ export const edit = {
     EmailCommunicationEditComponent,
     EmploymentEditComponent,
     FaceToFaceCommunicationEditComponent,
+    NonSerialisedInventoryItemComponent,
     NonUnifiedGoodCreateComponent,
     NonUnifiedPartCreateComponent,
     InventoryItemTransactionEditComponent,

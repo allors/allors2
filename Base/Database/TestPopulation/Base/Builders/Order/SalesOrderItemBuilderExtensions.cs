@@ -16,10 +16,10 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
             var invoiceItemTypes = @this.Session.Extent<InvoiceItemType>().ToList();
-            var otherInvoiceItemTypes = invoiceItemTypes.Except(new List<InvoiceItemType>
-            {
-                invoiceItemTypes.Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId) || v.UniqueId.Equals(InvoiceItemTypes.PartItemId)).FirstOrDefault(),
-            }).ToList();
+
+            var otherInvoiceItemTypes = invoiceItemTypes.Except(
+                invoiceItemTypes.Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId) || v.UniqueId.Equals(InvoiceItemTypes.PartItemId)).ToList())
+                .ToList();
 
             var unifiedGoodExtent = @this.Session.Extent<UnifiedGood>();
             unifiedGoodExtent.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).Serialised);
@@ -37,10 +37,10 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static SalesOrderItemBuilder WithGSEDefaults(this SalesOrderItemBuilder @this)
+        public static SalesOrderItemBuilder WithProductDefaults(this SalesOrderItemBuilder @this)
         {
             var faker = @this.Session.Faker();
-            var invoiceItemType = @this.Session.Extent<InvoiceItemType>().Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId)).FirstOrDefault();
+            var invoiceItemType = @this.Session.Extent<InvoiceItemType>().FirstOrDefault(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId));
 
             var unifiedGoodExtent = @this.Session.Extent<UnifiedGood>();
             unifiedGoodExtent.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).Serialised);

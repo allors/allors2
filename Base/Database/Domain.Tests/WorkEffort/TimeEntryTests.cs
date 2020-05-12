@@ -213,7 +213,7 @@ namespace Allors.Domain
 
             var timeEntry = new TimeEntryBuilder(this.Session)
                 .WithRateType(new RateTypes(this.Session).StandardRate)
-                .WithFromDate(now)
+                .WithFromDate(now.AddSeconds(-1))
                 .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();

@@ -10,20 +10,6 @@ namespace Allors.Domain
 
     public partial class TimeSheet
     {
-        public void BaseOnPreDerive(ObjectOnPreDerive method)
-        {
-            //var (iteration, changeSet, derivedObjects) = method;
-
-            //if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRole(this, this.Meta.TimeEntries))
-            //{
-            //    foreach (TimeEntry timeEntry in this.TimeEntries)
-            //    {
-            //        iteration.AddDependency(timeEntry, this);
-            //        iteration.Mark(timeEntry);
-            //    }
-            //}
-        }
-
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
             if (method.SecurityTokens == null)

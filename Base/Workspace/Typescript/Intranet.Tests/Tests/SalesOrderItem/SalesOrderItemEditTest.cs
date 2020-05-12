@@ -35,15 +35,17 @@ namespace Tests.SalesOrderItemTests
          * MinimalWithNonGSEDefaults
          **/
         [Fact]
-        public void EditWithDefaults()
+        public void EditWithNonGSEDefaults()
         {
             var salesOrder = new SalesOrders(this.Session).Extent().FirstOrDefault();
 
             var before = new SalesOrderItems(this.Session).Extent().ToArray();
 
             var disposableSalesOrder = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
-            var expected = disposableSalesOrder.SalesOrderItems.First;
-            var id = before.First().Id;
+            var expected = disposableSalesOrder.SalesOrderItems.First(v => !(v.InvoiceItemType.IsProductItem || v.InvoiceItemType.IsPartItem));
+
+            var salesOrderItem = salesOrder.SalesOrderItems.First(v => !(v.InvoiceItemType.IsProductItem || v.InvoiceItemType.IsPartItem));
+            var id = salesOrderItem.Id;
 
             this.Session.Derive();
 
@@ -60,19 +62,13 @@ namespace Tests.SalesOrderItemTests
             var salesOrderOverview = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver);
             var salesOrderItemOverviewPanel = salesOrderOverview.SalesorderitemOverviewPanel.Click();
 
-            salesOrderItemOverviewPanel.Table.DefaultAction(salesOrder.SalesOrderItems.First());
+            salesOrderItemOverviewPanel.Table.DefaultAction(salesOrderItem);
 
             var salesOrderItemEdit = new SalesOrderItemEditComponent(this.Driver);
 
             salesOrderItemEdit.Description.Set(expected.Description);
             salesOrderItemEdit.Comment.Set(expected.Comment);
             salesOrderItemEdit.InternalComment.Set(expected.InternalComment);
-            if (expectedInvoiceItemType.IsProductItem || expectedInvoiceItemType.IsPartItem)
-            {
-                salesOrderItemEdit.Product.Select(expected.Product.Name);
-                salesOrderItemEdit.SerialisedItem.Select(expected.SerialisedItem);
-                salesOrderItemEdit.QuantityOrdered.Set(expected.QuantityOrdered.ToString());
-            }
             salesOrderItemEdit.PriceableAssignedUnitPrice_1.Set(expected.AssignedUnitPrice.ToString());
 
             this.Session.Rollback();
@@ -90,13 +86,6 @@ namespace Tests.SalesOrderItemTests
             Assert.Equal(expectedDescription, actual.Description);
             Assert.Equal(expectedComment, actual.Comment);
             Assert.Equal(expectedInternalComment, actual.InternalComment);
-            Assert.Equal(expectedInvoiceItemType, actual.InvoiceItemType);
-            if (expectedInvoiceItemType.IsProductItem || expectedInvoiceItemType.IsPartItem)
-            {
-                Assert.Equal(expectedProduct, actual.Product);
-                Assert.Equal(expectedSerialisedItem, actual.SerialisedItem);
-                Assert.Equal(expectedQuantityOrdered, actual.QuantityOrdered);
-            }
             Assert.Equal(expectedAssignedUnitPrice, actual.AssignedUnitPrice);
         }
 
@@ -104,15 +93,17 @@ namespace Tests.SalesOrderItemTests
          * MinimalWithGSEDefaults
          **/
         [Fact]
-        public void EditWithGSEDefaults()
+        public void EditWithSerialisedProductItemDefaults()
         {
             var salesOrder = new SalesOrders(this.Session).Extent().FirstOrDefault();
 
             var before = new SalesOrderItems(this.Session).Extent().ToArray();
 
             var disposableSalesOrder = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
-            var expected = disposableSalesOrder.SalesOrderItems.First;
-            var id = before.First().Id;
+            var expected = disposableSalesOrder.SalesOrderItems.First(v => v.InvoiceItemType.IsProductItem);
+
+            var salesOrderItem = salesOrder.SalesOrderItems.First(v => v.InvoiceItemType.IsProductItem);
+            var id = salesOrderItem.Id;
 
             this.Session.Derive();
 
@@ -129,19 +120,13 @@ namespace Tests.SalesOrderItemTests
             var salesOrderOverview = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver);
             var salesOrderItemOverviewPanel = salesOrderOverview.SalesorderitemOverviewPanel.Click();
 
-            salesOrderItemOverviewPanel.Table.DefaultAction(salesOrder.SalesOrderItems.First());
+            salesOrderItemOverviewPanel.Table.DefaultAction(salesOrderItem);
 
             var salesOrderItemEdit = new SalesOrderItemEditComponent(this.Driver);
 
             salesOrderItemEdit.Description.Set(expected.Description);
             salesOrderItemEdit.Comment.Set(expected.Comment);
             salesOrderItemEdit.InternalComment.Set(expected.InternalComment);
-            if (expectedInvoiceItemType.IsProductItem || expectedInvoiceItemType.IsPartItem)
-            {
-                salesOrderItemEdit.Product.Select(expected.Product.Name);
-                salesOrderItemEdit.SerialisedItem.Select(expected.SerialisedItem);
-                salesOrderItemEdit.QuantityOrdered.Set(expected.QuantityOrdered.ToString());
-            }
             salesOrderItemEdit.PriceableAssignedUnitPrice_2.Set(expected.AssignedUnitPrice.ToString());
 
             this.Session.Rollback();
@@ -160,13 +145,17 @@ namespace Tests.SalesOrderItemTests
             Assert.Equal(expectedComment, actual.Comment);
             Assert.Equal(expectedInternalComment, actual.InternalComment);
             Assert.Equal(expectedInvoiceItemType, actual.InvoiceItemType);
-            if (expectedInvoiceItemType.IsProductItem || expectedInvoiceItemType.IsPartItem)
-            {
-                Assert.Equal(expectedProduct, actual.Product);
-                Assert.Equal(expectedSerialisedItem, actual.SerialisedItem);
-                Assert.Equal(expectedQuantityOrdered, actual.QuantityOrdered);
-            }
             Assert.Equal(expectedAssignedUnitPrice, actual.AssignedUnitPrice);
+        }
+
+        [Fact]
+        public void EditWithNonSerialisedProductItemDefaults()
+        {
+        }
+
+        [Fact]
+        public void EditWithNonSerialisedPartItemDefaults()
+        {
         }
     }
 }

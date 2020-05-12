@@ -37,7 +37,7 @@ namespace Allors.Domain.TestPopulation
             var shipToContact = shipToCustomer.CurrentContacts.FirstOrDefault();
 
             var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
-            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithGSEDefaults().Build();
+            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithProductDefaults().Build();
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
@@ -87,7 +87,7 @@ namespace Allors.Domain.TestPopulation
             var shipToContact = shipToCustomer is Person shipToContactPerson ? shipToContactPerson : shipToCustomer.CurrentContacts.FirstOrDefault();
 
             var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
-            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithGSEDefaults().Build();
+            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithProductDefaults().Build();
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
@@ -138,7 +138,7 @@ namespace Allors.Domain.TestPopulation
             var shipToContact = shipToCustomer.CurrentContacts.FirstOrDefault();
 
             var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
-            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithGSEDefaults().Build();
+            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithProductDefaults().Build();
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
@@ -184,7 +184,7 @@ namespace Allors.Domain.TestPopulation
             var billToCustomer = shipToCustomer;
 
             var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
-            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithGSEDefaults().Build();
+            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithProductDefaults().Build();
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
