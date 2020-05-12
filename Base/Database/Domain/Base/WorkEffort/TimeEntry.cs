@@ -104,7 +104,7 @@ namespace Allors.Domain
                 var otherActiveTimeEntry = this.Worker.TimeEntriesWhereWorker.FirstOrDefault(v =>
                                 v.Id != this.Id
                                 && ((v.FromDate < this.FromDate && (!v.ExistThroughDate || v.ThroughDate > this.FromDate))
-                                    || (v.FromDate > this.FromDate && (!v.ExistThroughDate || v.FromDate < this.ThroughDate))));
+                                    || (v.FromDate > this.FromDate && v.FromDate < this.ThroughDate)));
 
                 if (otherActiveTimeEntry != null)
                 {
