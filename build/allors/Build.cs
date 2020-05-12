@@ -8,9 +8,6 @@ using static Nuke.Common.IO.FileSystemTasks;
 
 public partial class Build
 {
-    [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    private readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
-
     [Parameter("DotNet Verbosity")]
     private readonly DotNetVerbosity DotNetVerbosity = DotNetVerbosity.Quiet;
 
