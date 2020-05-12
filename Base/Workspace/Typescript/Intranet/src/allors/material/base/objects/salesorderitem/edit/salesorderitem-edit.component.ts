@@ -462,7 +462,7 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
       .subscribe((loaded) => {
 
         this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
-        this.serialisedItems = this.part.SerialisedItems.filter(v => v.AvailableForSale === true || v.SerialisedItemAvailability === this.inRent);
+        this.serialisedItems = this.part.SerialisedItems;
 
         if (this.orderItem.Product !== this.previousProduct) {
           this.orderItem.SerialisedItem = null;
