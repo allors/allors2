@@ -14,6 +14,7 @@ import { EmailAddressCreateComponent, EmailAddressCreateModule } from '../allors
 import { EmailAddressEditComponent, EmailAddressEditModule } from '../allors/material/base/objects/emailaddress/edit/emailaddress-edit.module';
 import { EmailCommunicationEditComponent, EmailCommunicationEditModule } from '../allors/material/base/objects/emailcommunication/edit/emailcommunication-edit.module';
 import { EmploymentEditComponent, EmploymentEditModule } from '../allors/material/base/objects/employment/edit/employment-edit.module';
+import { NonSerialisedInventoryItemComponent } from '../allors/material/base/objects/nonserialisedinventoryitem/overview/panel/nonserialisedinventoryitem-overview-panel.module';
 import { NonSerialisedInventoryItemEditComponent, NonSerialisedInventoryItemEditModule } from '../allors/material/base/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 import { NonUnifiedGoodCreateComponent, NonUnifiedGoodCreateModule } from '../allors/material/base/objects/nonunifiedgood/create/nonunifiedgood-create.module';
 import { NonUnifiedPartCreateComponent, NonUnifiedPartCreateModule } from '../allors/material/base/objects/nonunifiedpart/create/nonunifiedpart-create.module';
@@ -76,7 +77,6 @@ import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditMo
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/base/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/core/services/object';
-import { NonSerialisedInventoryItemComponent } from 'src/allors/material/base/objects/nonserialisedinventoryitem/overview/panel/nonserialisedinventoryitem-overview-panel.module';
 
 export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
