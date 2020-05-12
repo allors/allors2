@@ -94,11 +94,6 @@ namespace Allors.Domain
             var useInternalRate = this.WorkEffort?.Customer is Organisation organisation && organisation.IsInternalOrganisation;
             var rateType = useInternalRate ? new RateTypes(this.Session()).InternalRate : this.RateType;
 
-            if (this.ExistThroughDate && this.ThroughDate < this.FromDate)
-            {
-                derivation.Validation.AddError(this, this.Meta.Worker, ErrorMessages.ThroughDateInvalid);
-            }
-
             if (this.ExistTimeSheetWhereTimeEntry)
             {
                 this.Worker = this.TimeSheetWhereTimeEntry.Worker;
@@ -108,7 +103,8 @@ namespace Allors.Domain
             {
                 var otherActiveTimeEntry = this.Worker.TimeEntriesWhereWorker.FirstOrDefault(v =>
                                 v.Id != this.Id
-                                && v.FromDate <= this.FromDate && (!v.ExistThroughDate || v.ThroughDate >= this.FromDate));
+                                && ((v.FromDate < this.FromDate && (!v.ExistThroughDate || v.ThroughDate > this.FromDate))
+                                    || (v.FromDate > this.FromDate && (!v.ExistThroughDate || v.FromDate < this.ThroughDate))));
 
                 if (otherActiveTimeEntry != null)
                 {
