@@ -36,8 +36,9 @@ namespace Allors.Domain.TestPopulation
             var endContact = endCustomer is Person endContactPerson ? endContactPerson : endCustomer.CurrentContacts.FirstOrDefault();
             var shipToContact = shipToCustomer.CurrentContacts.FirstOrDefault();
 
-            var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
-            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithProductDefaults().Build();
+            var salesOrderItem_Default = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
+            var salesOrderItem_Product = new SalesOrderItemBuilder(@this.Session).WithProductItemDefaults().Build();
+            var salesOrderItem_Part = new SalesOrderItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
@@ -62,8 +63,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipFromAddress(sellerOrganisation.ShippingAddress);
             @this.WithShipToContactPerson(shipToContact);
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesOrderItem(salesOrderItem_NonGSE);
-            @this.WithSalesOrderItem(salesOrderItem_GSE);
+            @this.WithSalesOrderItem(salesOrderItem_Default);
+            @this.WithSalesOrderItem(salesOrderItem_Product);
+            @this.WithSalesOrderItem(salesOrderItem_Part);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -86,8 +88,9 @@ namespace Allors.Domain.TestPopulation
 
             var shipToContact = shipToCustomer is Person shipToContactPerson ? shipToContactPerson : shipToCustomer.CurrentContacts.FirstOrDefault();
 
-            var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
-            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithProductDefaults().Build();
+            var salesOrderItem_Default = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
+            var salesOrderItem_Product = new SalesOrderItemBuilder(@this.Session).WithProductItemDefaults().Build();
+            var salesOrderItem_Part = new SalesOrderItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
@@ -106,8 +109,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipFromAddress(sellerOrganisation.ShippingAddress);
             @this.WithShipToContactPerson(shipToContact);
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesOrderItem(salesOrderItem_NonGSE);
-            @this.WithSalesOrderItem(salesOrderItem_GSE);
+            @this.WithSalesOrderItem(salesOrderItem_Default);
+            @this.WithSalesOrderItem(salesOrderItem_Product);
+            @this.WithSalesOrderItem(salesOrderItem_Part);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -137,8 +141,9 @@ namespace Allors.Domain.TestPopulation
 
             var shipToContact = shipToCustomer.CurrentContacts.FirstOrDefault();
 
-            var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
-            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithProductDefaults().Build();
+            var salesOrderItem_Default = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
+            var salesOrderItem_Product = new SalesOrderItemBuilder(@this.Session).WithProductItemDefaults().Build();
+            var salesOrderItem_Part = new SalesOrderItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
@@ -161,8 +166,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipFromAddress(sellerOrganisation.ShippingAddress);
             @this.WithShipToContactPerson(shipToContact);
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesOrderItem(salesOrderItem_NonGSE);
-            @this.WithSalesOrderItem(salesOrderItem_GSE);
+            @this.WithSalesOrderItem(salesOrderItem_Default);
+            @this.WithSalesOrderItem(salesOrderItem_Product);
+            @this.WithSalesOrderItem(salesOrderItem_Part);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -183,8 +189,9 @@ namespace Allors.Domain.TestPopulation
             var shipToCustomer = faker.Random.ListItem(sellerOrganisation.ActiveCustomers.Where(v => v.GetType().Name == "Person").ToList());
             var billToCustomer = shipToCustomer;
 
-            var salesOrderItem_NonGSE = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
-            var salesOrderItem_GSE = new SalesOrderItemBuilder(@this.Session).WithProductDefaults().Build();
+            var salesOrderItem_Default = new SalesOrderItemBuilder(@this.Session).WithDefaults().Build();
+            var salesOrderItem_Product = new SalesOrderItemBuilder(@this.Session).WithProductItemDefaults().Build();
+            var salesOrderItem_Part = new SalesOrderItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
@@ -201,8 +208,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipToAddress(shipToCustomer.ShippingAddress);
             @this.WithShipFromAddress(sellerOrganisation.ShippingAddress);
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesOrderItem(salesOrderItem_NonGSE);
-            @this.WithSalesOrderItem(salesOrderItem_GSE);
+            @this.WithSalesOrderItem(salesOrderItem_Default);
+            @this.WithSalesOrderItem(salesOrderItem_Product);
+            @this.WithSalesOrderItem(salesOrderItem_Part);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());

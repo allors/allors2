@@ -6,19 +6,19 @@
 
 namespace Allors.Domain.TestPopulation
 {
-    using System.Collections.Generic;
     using System.Linq;
+    using Allors.Meta;
 
     public static partial class SalesInvoiceItemBuilderExtensions
     {
-        public static SalesInvoiceItemBuilder WithDefaults(this SalesInvoiceItemBuilder @this, Organisation internalOrganisation)
+        public static SalesInvoiceItemBuilder WithDefaults(this SalesInvoiceItemBuilder @this)
         {
             var faker = @this.Session.Faker();
             var invoiceItemTypes = @this.Session.Extent<InvoiceItemType>().ToList();
-            var otherInvoiceItemTypes = invoiceItemTypes.Except(new List<InvoiceItemType>
-            {
-                invoiceItemTypes.Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId) || v.UniqueId.Equals(InvoiceItemTypes.PartItemId)).FirstOrDefault(),
-            }).ToList();
+
+            var otherInvoiceItemTypes = invoiceItemTypes.Except(
+                invoiceItemTypes.Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId) || v.UniqueId.Equals(InvoiceItemTypes.PartItemId)).ToList())
+                .ToList();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
@@ -31,11 +31,14 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static SalesInvoiceItemBuilder WithGSEDefaults(this SalesInvoiceItemBuilder @this, Organisation internalOrganisation)
+        public static SalesInvoiceItemBuilder WithProductItemDefaults(this SalesInvoiceItemBuilder @this)
         {
             var faker = @this.Session.Faker();
-            var serializedProduct = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
             var invoiceItemType = @this.Session.Extent<InvoiceItemType>().Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId)).FirstOrDefault();
+
+            var unifiedGoodExtent = @this.Session.Extent<UnifiedGood>();
+            unifiedGoodExtent.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).Serialised);
+            var serializedProduct = unifiedGoodExtent.First();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
@@ -43,6 +46,28 @@ namespace Allors.Domain.TestPopulation
             @this.WithInvoiceItemType(invoiceItemType);
             @this.WithProduct(serializedProduct);
             @this.WithSerialisedItem(serializedProduct.SerialisedItems.First);
+            @this.WithMessage(faker.Lorem.Sentence());
+            @this.WithQuantity(1);
+            @this.WithAssignedUnitPrice(faker.Random.UInt());
+
+            return @this;
+        }
+
+        public static SalesInvoiceItemBuilder WithPartItemDefaults(this SalesInvoiceItemBuilder @this)
+        {
+            var faker = @this.Session.Faker();
+            var invoiceItemType = @this.Session.Extent<InvoiceItemType>().Where(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId)).FirstOrDefault();
+
+            var unifiedGoodExtent = @this.Session.Extent<UnifiedGood>();
+            unifiedGoodExtent.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).Serialised);
+            var serializedPart = unifiedGoodExtent.First();
+
+            @this.WithDescription(faker.Lorem.Sentences(2));
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
+            @this.WithInvoiceItemType(invoiceItemType);
+            @this.WithProduct(serializedPart);
+            @this.WithSerialisedItem(serializedPart.SerialisedItems.First);
             @this.WithMessage(faker.Lorem.Sentence());
             @this.WithQuantity(1);
             @this.WithAssignedUnitPrice(faker.Random.UInt());

@@ -21,8 +21,9 @@ namespace Allors.Domain.TestPopulation
             var otherInternalOrganization = internalOrganisations.Except(new List<Organisation> { internalOrganisation }).FirstOrDefault();
 
             var endCustomer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
-            var salesInvoiceItem_NonGSE = new SalesInvoiceItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
-            var salesInvoiceItem_GSE = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
+            var salesInvoiceItem_Default = new SalesInvoiceItemBuilder(@this.Session).WithDefaults().Build();
+            var salesInvoiceItem_Product = new SalesInvoiceItemBuilder(@this.Session).WithProductItemDefaults().Build();
+            var salesInvoiceItem_Part = new SalesInvoiceItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
@@ -49,8 +50,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Default);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Product);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Part);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());
@@ -70,8 +72,9 @@ namespace Allors.Domain.TestPopulation
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
-            var salesInvoiceItem_NonGSE = new SalesInvoiceItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
-            var salesInvoiceItem_GSE = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
+            var salesInvoiceItem_Default = new SalesInvoiceItemBuilder(@this.Session).WithDefaults().Build();
+            var salesInvoiceItem_Product = new SalesInvoiceItemBuilder(@this.Session).WithProductItemDefaults().Build();
+            var salesInvoiceItem_Part = new SalesInvoiceItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
             @this.WithBilledFrom(internalOrganisation);
@@ -89,8 +92,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Default);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Product);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Part);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());
@@ -107,8 +111,9 @@ namespace Allors.Domain.TestPopulation
 
             var customer = internalOrganisation.ActiveCustomers.Where(v => v.GetType().Name == typeof(Person).Name).FirstOrDefault();
 
-            var salesInvoiceItem_NonGSE = new SalesInvoiceItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
-            var salesInvoiceItem_GSE = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
+            var salesInvoiceItem_Default = new SalesInvoiceItemBuilder(@this.Session).WithDefaults().Build();
+            var salesInvoiceItem_Product = new SalesInvoiceItemBuilder(@this.Session).WithProductItemDefaults().Build();
+            var salesInvoiceItem_Part = new SalesInvoiceItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
@@ -127,8 +132,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Default);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Product);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Part);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());
@@ -145,8 +151,9 @@ namespace Allors.Domain.TestPopulation
 
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
 
-            var salesInvoiceItem_NonGSE = new SalesInvoiceItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
-            var salesInvoiceItem_GSE = new SalesInvoiceItemBuilder(@this.Session).WithGSEDefaults(internalOrganisation).Build();
+            var salesInvoiceItem_Default = new SalesInvoiceItemBuilder(@this.Session).WithDefaults().Build();
+            var salesInvoiceItem_Product = new SalesInvoiceItemBuilder(@this.Session).WithProductItemDefaults().Build();
+            var salesInvoiceItem_Part = new SalesInvoiceItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
             var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
@@ -173,8 +180,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceType(salesInvoiceType);
             @this.WithTotalListPrice(faker.Random.Decimal());
             @this.WithPaymentMethod(paymentMethod);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_NonGSE);
-            @this.WithSalesInvoiceItem(salesInvoiceItem_GSE);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Default);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Product);
+            @this.WithSalesInvoiceItem(salesInvoiceItem_Part);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
             @this.WithIsRepeatingInvoice(faker.Random.Bool());

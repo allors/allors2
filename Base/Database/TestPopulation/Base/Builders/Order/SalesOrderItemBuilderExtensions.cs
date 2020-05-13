@@ -6,7 +6,6 @@
 
 namespace Allors.Domain.TestPopulation
 {
-    using System.Collections.Generic;
     using System.Linq;
     using Allors.Meta;
 
@@ -37,7 +36,7 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static SalesOrderItemBuilder WithProductDefaults(this SalesOrderItemBuilder @this)
+        public static SalesOrderItemBuilder WithProductItemDefaults(this SalesOrderItemBuilder @this)
         {
             var faker = @this.Session.Faker();
             var invoiceItemType = @this.Session.Extent<InvoiceItemType>().FirstOrDefault(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId));
@@ -52,6 +51,27 @@ namespace Allors.Domain.TestPopulation
             @this.WithInvoiceItemType(invoiceItemType);
             @this.WithProduct(serializedProduct);
             @this.WithSerialisedItem(serializedProduct.SerialisedItems.First);
+            @this.WithQuantityOrdered(1);
+            @this.WithAssignedUnitPrice(faker.Random.UInt());
+
+            return @this;
+        }
+
+        public static SalesOrderItemBuilder WithPartItemDefaults(this SalesOrderItemBuilder @this)
+        {
+            var faker = @this.Session.Faker();
+            var invoiceItemType = @this.Session.Extent<InvoiceItemType>().FirstOrDefault(v => v.UniqueId.Equals(InvoiceItemTypes.PartItemId));
+
+            var unifiedGoodExtent = @this.Session.Extent<UnifiedGood>();
+            unifiedGoodExtent.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).Serialised);
+            var serializedPart = unifiedGoodExtent.First();
+
+            @this.WithDescription(faker.Lorem.Sentences(2));
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
+            @this.WithInvoiceItemType(invoiceItemType);
+            @this.WithProduct(serializedPart);
+            @this.WithSerialisedItem(serializedPart.SerialisedItems.First);
             @this.WithQuantityOrdered(1);
             @this.WithAssignedUnitPrice(faker.Random.UInt());
 

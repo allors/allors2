@@ -32,10 +32,10 @@ namespace Tests.SalesOrderItemTests
         }
 
         /**
-         * MinimalWithNonGSEDefaults
+         * MinimalWithDefaults except Product/Part Item
          **/
         [Fact]
-        public void EditWithNonGSEDefaults()
+        public void EditWithDefaults()
         {
             var salesOrder = new SalesOrders(this.Session).Extent().FirstOrDefault();
 
@@ -90,7 +90,7 @@ namespace Tests.SalesOrderItemTests
         }
 
         /**
-         * MinimalWithGSEDefaults
+         * MinimalWithProductItemDefaults
          **/
         [Fact]
         public void EditWithSerialisedProductItemDefaults()
