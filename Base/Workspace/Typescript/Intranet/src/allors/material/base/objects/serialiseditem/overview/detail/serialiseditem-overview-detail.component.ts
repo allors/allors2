@@ -133,7 +133,8 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                 PublicLocalisedElectronicDocuments: x,
                 PrivateLocalisedElectronicDocuments: x,
                 PurchaseOrder: x,
-                SuppliedBy: x
+                SuppliedBy: x,
+                AssignedSuppliedBy: x,
               }
             }),
             this.fetcher.internalOrganisation,

@@ -97,6 +97,17 @@ namespace Allors.Domain
                     @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Complete, Operations.Execute));
                 }
             }
+
+            var reviseFinishedPermission = new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.ReviseFinished, Operations.Execute);
+
+            if (@this.WorkEffortState.IsFinished && @this.Customer.Equals(@this.ExecutedBy))
+            {
+                @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.ReviseFinished, Operations.Execute));
+            }
+            else
+            {
+                @this.AddDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.ReviseFinished, Operations.Execute));
+            }
         }
 
         public static void BaseComplete(this WorkEffort @this, WorkEffortComplete method)
@@ -123,6 +134,18 @@ namespace Allors.Domain
         }
 
         public static void BaseRevise(this WorkEffort @this, WorkEffortRevise method)
+        {
+            if (@this.ExistActualStart)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
+            }
+            else
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Created;
+            }
+        }
+
+        public static void BaseReviseFinished(this WorkEffort @this, WorkEffortReviseFinished method)
         {
             if (@this.ExistActualStart)
             {

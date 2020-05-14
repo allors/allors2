@@ -145,16 +145,17 @@ namespace Allors.Domain
             var complete = this.Meta.Complete;
             var invoice = this.Meta.Invoice;
             var revise = this.Meta.Revise;
+            var reviseFinished = this.Meta.ReviseFinished;
 
-            config.Deny(this.ObjectType, created, reopen, complete, invoice, revise);
-            config.Deny(this.ObjectType, inProgress, cancel, reopen, revise);
-            config.Deny(this.ObjectType, cancelled, cancel, invoice, complete, revise);
-            config.Deny(this.ObjectType, completed, cancel, reopen, complete);
+            config.Deny(this.ObjectType, created, reopen, complete, invoice, revise, reviseFinished);
+            config.Deny(this.ObjectType, inProgress, cancel, reopen, revise, reviseFinished);
+            config.Deny(this.ObjectType, cancelled, cancel, invoice, complete, revise, reviseFinished);
+            config.Deny(this.ObjectType, completed, cancel, reopen, complete, reviseFinished);
             config.Deny(this.ObjectType, finished, cancel, reopen, complete, invoice, revise);
 
             config.Deny(this.ObjectType, cancelled, Operations.Write);
             config.Deny(this.ObjectType, completed, Operations.Write);
-            config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, finished, Operations.Write);
 
             config.Deny(M.TimeEntry, cancelled, Operations.Write);
             config.Deny(M.TimeEntry, finished, Operations.Write);

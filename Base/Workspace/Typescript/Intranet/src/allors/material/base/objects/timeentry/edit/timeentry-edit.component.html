@@ -20,11 +20,8 @@
     </div>
 
     <div class="row">
-      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate" (selected)="findBillingRate($event)"></a-mat-datetimepicker>
-    </div>
-
-    <div class="row">
-      <a-mat-datetimepicker class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.ThroughDate" ></a-mat-datetimepicker>
+      <a-mat-datetimepicker class="col-md-6" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate" (selected)="findBillingRate($event)"></a-mat-datetimepicker>
+      <a-mat-datetimepicker class="col-md-6" [object]="timeEntry" [roleType]="m.TimeEntry.ThroughDate" ></a-mat-datetimepicker>
     </div>
 
     <div class="row">
