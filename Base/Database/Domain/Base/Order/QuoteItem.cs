@@ -104,7 +104,7 @@ namespace Allors.Domain
                 this.UnitOfMeasure = new UnitsOfMeasure(this.Strategy.Session).Piece;
             }
 
-            this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
+            this.UnitVat = this.ExistVatRate ? this.UnitPrice * this.VatRate.Rate / 100 : 0;
 
             // Calculate Totals
             this.TotalBasePrice = this.UnitBasePrice * this.Quantity;

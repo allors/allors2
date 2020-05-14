@@ -138,7 +138,7 @@ namespace Allors.Domain
                 this.VatRegime = this.AssignedVatRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.VatRegime;
                 this.VatRate = this.VatRegime?.VatRate;
 
-                this.UnitVat = this.ExistVatRate ? Math.Round(this.UnitPrice * this.VatRate.Rate / 100, 2) : 0;
+                this.UnitVat = this.ExistVatRate ? this.UnitPrice * this.VatRate.Rate / 100 : 0;
                 this.TotalBasePrice = this.UnitBasePrice * this.Quantity;
                 this.TotalDiscount = this.UnitDiscount * this.Quantity;
                 this.TotalSurcharge = this.UnitSurcharge * this.Quantity;
