@@ -193,6 +193,15 @@ namespace Allors.Domain
                 this.ContactsUserGroup = new UserGroupBuilder(this.Strategy.Session).WithName(customerContactGroupName).Build();
             }
 
+            DeriveRelationships();
+
+            this.ContactsUserGroup.Members = this.CurrentContacts.ToArray();
+
+            this.Sync();
+        }
+
+        public void DeriveRelationships()
+        {
             this.CurrentSuppliers = this.SupplierRelationshipsWhereInternalOrganisation
                 .Where(v => v.FromDate <= this.Strategy.Session.Now() && (!v.ExistThroughDate || v.ThroughDate >= this.Strategy.Session.Now()))
                 .Select(v => v.Supplier)
@@ -220,10 +229,6 @@ namespace Allors.Domain
             this.InactiveContacts = this.InactiveOrganisationContactRelationships
                 .Select(v => v.Contact)
                 .ToArray();
-
-            this.ContactsUserGroup.Members = this.CurrentContacts.ToArray();
-
-            this.Sync();
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)

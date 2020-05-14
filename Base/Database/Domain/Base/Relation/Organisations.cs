@@ -12,6 +12,16 @@ namespace Allors.Domain
 
     public partial class Organisations
     {
+        public static void Daily(ISession session)
+        {
+            var organisations = new Organisations(session).Extent();
+
+            foreach (Organisation organisation in organisations)
+            {
+                organisation.DeriveRelationships();
+            }
+        }
+
         public static Organisation CreateInternalOrganisation(
             ISession session,
             string name,

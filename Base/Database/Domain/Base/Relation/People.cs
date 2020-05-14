@@ -11,6 +11,16 @@ namespace Allors.Domain
 
     public partial class People
     {
+        public static void Daily(ISession session)
+        {
+            var people = new People(session).Extent();
+
+            foreach (Person person in people)
+            {
+                person.DeriveRelationships();
+            }
+        }
+
         protected override void BasePrepare(Setup setup)
         {
             setup.AddDependency(this.Meta.ObjectType, M.Role);

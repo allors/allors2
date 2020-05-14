@@ -57,6 +57,17 @@ namespace Allors.Domain
 
             this.VatRegime = new VatRegimes(this.Session()).PrivatePerson;
 
+            DeriveRelationships();
+
+            if (!this.ExistTimeSheetWhereWorker && (this.BaseIsActiveEmployee(now) || this.CurrentOrganisationContactRelationships.Count > 0))
+            {
+                new TimeSheetBuilder(this.Strategy.Session).WithWorker(this).Build();
+            }
+        }
+
+        public void DeriveRelationships()
+        {
+            var now = this.Session().Now();
             var allOrganisationContactRelationships = this.OrganisationContactRelationshipsWhereContact;
 
             this.CurrentOrganisationContactRelationships = allOrganisationContactRelationships
@@ -66,11 +77,6 @@ namespace Allors.Domain
             this.InactiveOrganisationContactRelationships = allOrganisationContactRelationships
                 .Except(this.CurrentOrganisationContactRelationships)
                 .ToArray();
-
-            if (!this.ExistTimeSheetWhereWorker && (this.BaseIsActiveEmployee(now) || this.CurrentOrganisationContactRelationships.Count > 0))
-            {
-                new TimeSheetBuilder(this.Strategy.Session).WithWorker(this).Build();
-            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)

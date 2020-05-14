@@ -423,11 +423,5 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Revise();
-
-        #region Allors
-        [Id("681b28c1-cdf8-49ab-b1e9-d6dbfca6a564")]
-        #endregion
-        [Workspace]
-        void ReviseFinished();
     }
 }
