@@ -97,17 +97,6 @@ namespace Allors.Domain
                     @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.Complete, Operations.Execute));
                 }
             }
-
-            var reviseFinishedPermission = new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.ReviseFinished, Operations.Execute);
-
-            if (@this.WorkEffortState.IsFinished && @this.Customer.Equals(@this.ExecutedBy))
-            {
-                @this.RemoveDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.ReviseFinished, Operations.Execute));
-            }
-            else
-            {
-                @this.AddDeniedPermission(new Permissions(@this.Strategy.Session).Get((Class)@this.Strategy.Class, MetaWorkEffort.Instance.ReviseFinished, Operations.Execute));
-            }
         }
 
         public static void BaseComplete(this WorkEffort @this, WorkEffortComplete method)
