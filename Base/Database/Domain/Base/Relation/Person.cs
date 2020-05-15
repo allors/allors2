@@ -53,6 +53,21 @@ namespace Allors.Domain
 
             this.Strategy.Session.Prefetch(this.PrefetchPolicy);
 
+            if (this.ExistSalutation
+                && (this.Salutation.Equals(new Salutations(this.Session()).Mr)
+                    || this.Salutation.Equals(new Salutations(this.Session()).Dr)))
+            {
+                this.Gender = new GenderTypes(this.Session()).Male;
+            }
+
+            if (this.ExistSalutation
+                && (this.Salutation.Equals(new Salutations(this.Session()).Mrs)
+                    || this.Salutation.Equals(new Salutations(this.Session()).Ms)
+                    || this.Salutation.Equals(new Salutations(this.Session()).Mme)))
+            {
+                this.Gender = new GenderTypes(this.Session()).Female;
+            }
+
             this.PartyName = this.DerivePartyName();
 
             this.VatRegime = new VatRegimes(this.Session()).PrivatePerson;

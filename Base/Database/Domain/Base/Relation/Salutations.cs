@@ -9,11 +9,11 @@ namespace Allors.Domain
 
     public partial class Salutations
     {
-        private static readonly Guid MrId = new Guid("970D27DD-CE6F-4943-8BAF-7BE48FC7EE23");
-        private static readonly Guid MrsId = new Guid("0CEEB74D-62C5-4166-9823-EA65BDA5A46F");
-        private static readonly Guid DrId = new Guid("5827A6B6-375A-4781-9400-FAD8D62064A1");
-        private static readonly Guid MsId = new Guid("BE1E6992-EFB6-4445-BDB6-B7AAE849EEEA");
-        private static readonly Guid MmeId = new Guid("DF2FC141-D035-47EB-8135-A880A4EBC93C");
+        public static readonly Guid MrId = new Guid("970D27DD-CE6F-4943-8BAF-7BE48FC7EE23");
+        public static readonly Guid MrsId = new Guid("0CEEB74D-62C5-4166-9823-EA65BDA5A46F");
+        public static readonly Guid DrId = new Guid("5827A6B6-375A-4781-9400-FAD8D62064A1");
+        public static readonly Guid MsId = new Guid("BE1E6992-EFB6-4445-BDB6-B7AAE849EEEA");
+        public static readonly Guid MmeId = new Guid("DF2FC141-D035-47EB-8135-A880A4EBC93C");
 
         private UniquelyIdentifiableSticky<Salutation> cache;
 

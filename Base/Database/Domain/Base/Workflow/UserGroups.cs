@@ -12,22 +12,14 @@ namespace Allors.Domain
     public partial class UserGroups
     {
         public static readonly Guid EmployeesId = new Guid("ED2D31E3-E18E-4C08-9AF3-F9D849D0F6B2");
-        public static readonly Guid LocalAdministratorsGlobalId = new Guid("02011FEF-D342-44AE-A001-6AC1D3670A6E");
-        public static readonly Guid SalesAccountManagersId = new Guid("449EA7CE-124B-4E19-AFDF-46CAFB8D7B20");
 
         public UserGroup Employees => this.Cache[EmployeesId];
-
-        public UserGroup LocalAdministratorsGlobal => this.Cache[LocalAdministratorsGlobalId];
-
-        public UserGroup SalesAccountManagers => this.Cache[SalesAccountManagersId];
 
         protected override void BaseSetup(Setup setup)
         {
             var merge = this.cache.Merger().Action();
 
             merge(EmployeesId, v => v.Name = "Employees");
-            merge(LocalAdministratorsGlobalId, v => v.Name = "Local Administrators Global");
-            merge(SalesAccountManagersId, v => v.Name = "Sales AccountManagers");
         }
     }
 }
