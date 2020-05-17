@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+require('browser-env')();
 import * as fs from 'fs';
 import { data } from '../src/allors/meta';
 import { MetaPopulation } from '../src/allors/framework';
