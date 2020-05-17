@@ -57,13 +57,8 @@
         </div>
 
         <div class="row">
-          <a-mat-quill class="col-md" [object]="data" [roleType]="m.Data.Markdown"></a-mat-quill>
+          <a-mat-markdown class="col-md" [object]="data" [roleType]="m.Data.Markdown"></a-mat-markdown>
           <textarea class="col-md">{{data.Markdown}}</textarea>
-        </div>
-
-        <div class="row">
-          <a-mat-quill class="col-md" [object]="data" [roleType]="m.Data.Html"></a-mat-quill>
-          <textarea class="col-md">{{data.Html}}</textarea>
         </div>
 
         <div class="row">

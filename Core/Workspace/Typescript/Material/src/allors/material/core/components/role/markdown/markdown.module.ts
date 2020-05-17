@@ -8,16 +8,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AllorsFocusModule } from '../../../../../angular';
 
-import { AllorsMaterialQuillComponent } from './quill.component';
-export { AllorsMaterialQuillComponent } from './quill.component';
+import { AllorsMaterialMarkdownComponent } from './markdown.component';
+export { AllorsMaterialMarkdownComponent } from './markdown.component';
 
 @NgModule({
-  declarations: [
-    AllorsMaterialQuillComponent,
-  ],
-  exports: [
-    AllorsMaterialQuillComponent,
-  ],
+  declarations: [AllorsMaterialMarkdownComponent],
+  exports: [AllorsMaterialMarkdownComponent],
   imports: [
     FormsModule,
     CommonModule,
@@ -25,8 +21,7 @@ export { AllorsMaterialQuillComponent } from './quill.component';
     MatGridListModule,
     MatInputModule,
     MatExpansionModule,
-    AllorsFocusModule
+    AllorsFocusModule,
   ],
 })
-export class AllorsMaterialQuillModule {
-}
+export class AllorsMaterialMarkdownModule {}

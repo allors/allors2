@@ -10,6 +10,10 @@ export class AllorsErrorHandler implements ErrorHandler {
 
   handleError(error: any) {
 
+    if(error instanceof SyntaxError){
+      return;
+    }
+
     const message: string = error && error.message;
     if (message.startsWith('ExpressionChangedAfterItHasBeenCheckedError')) {
       return;
