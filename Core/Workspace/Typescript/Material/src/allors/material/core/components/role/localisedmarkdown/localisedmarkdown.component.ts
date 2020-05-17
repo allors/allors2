@@ -9,6 +9,8 @@ import {
 import { NgForm } from '@angular/forms';
 import { LocalisedRoleField } from '../../../../../angular';
 
+import * as EasyMDE from 'easymde';
+
 @Component({
   // tslint:disable-next-line: component-selector
   selector: 'a-mat-localised-markdown',
