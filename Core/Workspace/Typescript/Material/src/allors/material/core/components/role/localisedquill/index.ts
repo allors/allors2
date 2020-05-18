@@ -1,1 +1,0 @@
-export * from './localisedquill.module';

@@ -8,15 +8,15 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AllorsFocusModule } from '../../../../../angular';
 
-import { AllorsMaterialLocalisedQuillComponent } from './localisedquill.component';
-export { AllorsMaterialLocalisedQuillComponent } from './localisedquill.component';
+import { AllorsMaterialLocalisedMarkdownComponent } from './localisedmarkdown.component';
+export { AllorsMaterialLocalisedMarkdownComponent } from './localisedmarkdown.component';
 
 @NgModule({
   declarations: [
-    AllorsMaterialLocalisedQuillComponent,
+    AllorsMaterialLocalisedMarkdownComponent,
   ],
   exports: [
-    AllorsMaterialLocalisedQuillComponent,
+    AllorsMaterialLocalisedMarkdownComponent,
   ],
   imports: [
     FormsModule,
@@ -28,5 +28,5 @@ export { AllorsMaterialLocalisedQuillComponent } from './localisedquill.componen
     AllorsFocusModule
   ],
 })
-export class AllorsMaterialLocalisedQuillModule {
+export class AllorsMaterialLocalisedMarkdownModule {
 }
