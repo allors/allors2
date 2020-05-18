@@ -3,6 +3,7 @@ using Allors.Domain.TestPopulation;
 namespace src.allors.material.@base.objects.customershipment.create
 {
     using Allors.Domain;
+    using Components;
     using Xunit;
 
     public static partial class CustomerShipmentCreateComponentExtensions
@@ -10,6 +11,8 @@ namespace src.allors.material.@base.objects.customershipment.create
         public static CustomerShipmentCreateComponent Build(this CustomerShipmentCreateComponent @this, CustomerShipment shipment, bool minimal = false)
         {
             @this.ShipToParty.Select(shipment.ShipToParty.DisplayName());
+
+            @this.Driver.WaitForAngular();
 
             if (!minimal)
             {

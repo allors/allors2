@@ -59,7 +59,11 @@ namespace Tests.CustomerShipmentTests
             var shipmentOverviewDetail = shipmentOverview.CustomershipmentOverviewDetail.Click();
 
             shipmentOverviewDetail
-                .ShipToParty.Select(expected.ShipToParty?.DisplayName())
+                .ShipToParty.Select(expected.ShipToParty?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
+            shipmentOverviewDetail
                 .ShipToAddress.Select(expected.ShipToAddress)
                 .ShipFromAddress.Select(expected.ShipFromParty?.ShippingAddress)
                 .ShipmentMethod.Select(expected.ShipmentMethod)

@@ -84,6 +84,9 @@ namespace Tests.SalesOrderTests
             var actual = after.Except(before).First();
 
             Assert.Equal(expectedBillToCustomer, actual.BillToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
             Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
@@ -147,6 +150,9 @@ namespace Tests.SalesOrderTests
             var actual = after.Except(before).First();
 
             Assert.Equal(expectedBillToCustomer, actual.BillToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
             Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
@@ -210,6 +216,9 @@ namespace Tests.SalesOrderTests
             var actual = after.Except(before).First();
 
             Assert.Equal(expectedBillToCustomer, actual.BillToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
             Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
             Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
@@ -269,6 +278,9 @@ namespace Tests.SalesOrderTests
             var actual = after.Except(before).First();
 
             Assert.Equal(expectedBillToCustomer, actual.BillToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
             Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
             Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
             Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());

@@ -61,11 +61,17 @@ namespace Tests.SalesOrderTests
             var salesOrderOverviewDetail = salesOrderOverview.SalesorderOverviewDetail.Click();
 
             salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
             salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
             salesOrderOverviewDetail.BillToContactPerson.Select(expected.BillToContactPerson);
             salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
-            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
+            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
             salesOrderOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
             salesOrderOverviewDetail.Description.Set(expected.Description);
@@ -125,11 +131,17 @@ namespace Tests.SalesOrderTests
             var salesOrderOverviewDetail = salesOrderOverview.SalesorderOverviewDetail.Click();
 
             salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
             salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
             salesOrderOverviewDetail.BillToContactPerson.Select(expected.BillToContactPerson);
             salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
-            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
+            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
             salesOrderOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
             salesOrderOverviewDetail.Description.Set(expected.Description);
@@ -189,11 +201,17 @@ namespace Tests.SalesOrderTests
             var salesOrderOverviewDetail = salesOrderOverview.SalesorderOverviewDetail.Click();
 
             salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
             salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
             salesOrderOverviewDetail.BillToContactPerson.Select(expected.BillToContactPerson);
             salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
-            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
+            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
             salesOrderOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
             salesOrderOverviewDetail.Description.Set(expected.Description);
@@ -251,8 +269,14 @@ namespace Tests.SalesOrderTests
             var salesOrderOverviewDetail = salesOrderOverview.SalesorderOverviewDetail.Click();
 
             salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
             salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
             salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
+
+            this.Driver.WaitForAngular();
+
             salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
             salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
             salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
