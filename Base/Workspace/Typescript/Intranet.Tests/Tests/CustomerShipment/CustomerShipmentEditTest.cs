@@ -74,7 +74,7 @@ namespace Tests.CustomerShipmentTests
                 .HandlingInstruction.Set(expected.HandlingInstruction)
                 .Comment.Set(expected.Comment);
 
-            if (expected.ExistShipFromContactPerson)
+            if (expected.ExistShipToContactPerson)
             {
                 shipmentOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
             }
