@@ -15,7 +15,7 @@ import * as EasyMDE from 'easymde';
   // tslint:disable-next-line: component-selector
   selector: 'a-mat-localised-markdown',
   template: `
-    <h4>{{ label }}</h4>
+    <h4>{{ localisedLabel }}</h4>
     <textarea #easymde></textarea>
   `,
   encapsulation: ViewEncapsulation.None,
