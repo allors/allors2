@@ -10,6 +10,7 @@ namespace Allors.Domain
     using System.Text;
 
     using Allors.Meta;
+    using Resources;
 
     public partial class SerialisedItem
     {
@@ -73,6 +74,12 @@ namespace Allors.Domain
             if (!this.ExistName && this.ExistPartWhereSerialisedItem)
             {
                 this.Name = this.PartWhereSerialisedItem.Name;
+            }
+
+            var doubles = this.PartWhereSerialisedItem?.SerialisedItems.Where(v => v.SerialNumber.Equals(this.SerialNumber)).ToArray();
+            if (doubles?.Length > 1)
+            {
+                derivation.Validation.AddError(this, this.Meta.SerialNumber, ErrorMessages.SameSerialNumber);
             }
 
             this.OnQuote = this.QuoteItemsWhereSerialisedItem.Any(v => v.QuoteItemState.IsDraft

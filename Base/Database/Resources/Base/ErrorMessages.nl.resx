@@ -252,4 +252,7 @@
   <data name="FutureDateInvalid" xml:space="preserve">
     <value>Datum in toekomst is niet toegestaan</value>
   </data>
+  <data name="SameSerialNumber" xml:space="preserve">
+    <value>Serialised item met dit serie nummer bestaat al</value>
+  </data>
 </root>
