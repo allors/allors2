@@ -258,4 +258,7 @@
   <data name="FutureDateInvalid" xml:space="preserve">
     <value>Date in Future is invalid</value>
   </data>
+  <data name="SameSerialNumber" xml:space="preserve">
+    <value>Serialised item with same serial number already exitst</value>
+  </data>
 </root>

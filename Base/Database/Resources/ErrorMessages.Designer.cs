@@ -160,6 +160,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date in Future is invalid.
+        /// </summary>
+        public static string FutureDateInvalid {
+            get {
+                return ResourceManager.GetString("FutureDateInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General Ledger Account must be balance sheet account.
         /// </summary>
         public static string GeneralLedgerAccountNotBalanceAccount {
@@ -426,6 +435,15 @@ namespace Resources {
         public static string SalesOrderItemQuantityToShipNowNotAvailable {
             get {
                 return ResourceManager.GetString("SalesOrderItemQuantityToShipNowNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serialised item with same serial number already exitst.
+        /// </summary>
+        public static string SameSerialNumber {
+            get {
+                return ResourceManager.GetString("SameSerialNumber", resourceCulture);
             }
         }
         
