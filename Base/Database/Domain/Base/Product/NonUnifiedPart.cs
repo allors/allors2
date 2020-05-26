@@ -55,14 +55,18 @@ namespace Allors.Domain
 
             var identifications = this.ProductIdentifications;
             identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.Strategy.Session).Part);
-            var partNumber = identifications.FirstOrDefault();
+            var partIdentification = identifications.FirstOrDefault();
 
-            if (partNumber == null && setings.UsePartNumberCounter)
+            if (partIdentification == null && setings.UsePartNumberCounter)
             {
-                this.AddProductIdentification(new PartNumberBuilder(this.Strategy.Session)
+                partIdentification = new PartNumberBuilder(this.Strategy.Session)
                     .WithIdentification(setings.NextPartNumber())
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Strategy.Session).Part).Build());
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Strategy.Session).Part).Build();
+
+                this.AddProductIdentification(partIdentification);
             }
+
+            this.ProductNumber = partIdentification.Identification;
 
             foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
             {

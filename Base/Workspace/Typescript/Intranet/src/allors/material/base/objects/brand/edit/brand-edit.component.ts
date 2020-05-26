@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { Saved, ContextService, MetaService, RefreshService, TestScope, FetcherService } from '../../../../../angular';
-import { Brand, Locale } from '../../../../../domain';
+import { Brand, Locale, Model } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -22,8 +22,10 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
 
   public brand: Brand;
   locales: Locale[];
+  addModel = false;
 
   private subscription: Subscription;
+  models: Model[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -86,7 +88,15 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
             this.title = 'View Brand';
           }
         }
+
+        this.models = this.brand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       });
+  }
+
+  public modelAdded(model: Model): void {
+    this.brand.AddModel(model);
+    this.models = this.brand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+    this.allors.context.session.hasChanges = true;
   }
 
   public ngOnDestroy(): void {

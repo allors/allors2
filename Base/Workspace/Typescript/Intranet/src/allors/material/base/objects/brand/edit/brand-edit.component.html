@@ -9,6 +9,30 @@
     </div>
 
     <div class="row">
+      <div class="col-md">
+      <div class="row">
+        <mat-form-field class="col">
+          <mat-select [(ngModel)]="models" name="modelName" placeholder="Model" multiple="true" disabled="true" >
+            <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-mini-fab color="accent" type="button" (click)="addModel = !addModel">
+          <mat-icon *ngIf="!addModel">add</mat-icon>
+          <mat-icon *ngIf="addModel">close</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <mat-card *ngIf="addModel">
+        <mat-card-header>Add a new model</mat-card-header>
+        <mat-card-content>
+          <model-inline (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false"></model-inline>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+    <div class="row">
       <a-mat-markdown class="col-md" [object]="brand" [roleType]="m.Brand.Description"></a-mat-markdown>
     </div>
 

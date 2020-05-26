@@ -41,6 +41,15 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnInit(ObjectOnInit method)
+        {
+            if (!this.ExistPartWhereSerialisedItem && this.ExistCreateForPart)
+            {
+                this.CreateForPart.AddSerialisedItem(this);
+                this.RemoveCreateForPart();
+            }
+        }
+
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var (iteration, changeSet, derivedObjects) = method;

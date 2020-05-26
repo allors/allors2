@@ -66,14 +66,18 @@ namespace Allors.Domain
 
             var identifications = this.ProductIdentifications;
             identifications.Filter.AddEquals(M.ProductIdentification.ProductIdentificationType, new ProductIdentificationTypes(this.Strategy.Session).Good);
-            var goodNumber = identifications.FirstOrDefault();
+            var goodIdentification = identifications.FirstOrDefault();
 
-            if (goodNumber == null && settings.UseProductNumberCounter)
+            if (goodIdentification == null && settings.UseProductNumberCounter)
             {
-                this.AddProductIdentification(new ProductNumberBuilder(this.Strategy.Session)
+                goodIdentification = new ProductNumberBuilder(this.Strategy.Session)
                     .WithIdentification(settings.NextProductNumber())
-                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Strategy.Session).Good).Build());
+                    .WithProductIdentificationType(new ProductIdentificationTypes(this.Strategy.Session).Good).Build();
+
+                this.AddProductIdentification(goodIdentification);
             }
+
+            this.ProductNumber = goodIdentification.Identification;
 
             if (!this.ExistProductIdentifications)
             {

@@ -35,6 +35,8 @@ import { AllorsMaterialSlideToggleModule } from '../../../../core/components/rol
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
+import { ModelInlineModule } from '../../model/inline/model-inline.module';
+
 import { BrandEditComponent } from './brand-edit.component';
 export { BrandEditComponent } from './brand-edit.component';
 
@@ -46,6 +48,8 @@ export { BrandEditComponent } from './brand-edit.component';
     BrandEditComponent,
   ],
   imports: [
+    ModelInlineModule,
+
     AllorsMaterialAutoCompleteModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,

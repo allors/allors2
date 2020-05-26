@@ -9,8 +9,8 @@ namespace Allors.Domain
 
     public partial class InventoryItemKinds
     {
-        private static readonly Guid SerialisedId = new Guid("2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
-        private static readonly Guid NonSerialisedId = new Guid("EAA6C331-0DD9-4bb1-8245-12A673304468");
+        public static readonly Guid SerialisedId = new Guid("2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE");
+        public static readonly Guid NonSerialisedId = new Guid("EAA6C331-0DD9-4bb1-8245-12A673304468");
 
         private UniquelyIdentifiableSticky<InventoryItemKind> cache;
 

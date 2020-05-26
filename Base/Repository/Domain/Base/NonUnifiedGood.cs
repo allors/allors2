@@ -17,6 +17,8 @@ namespace Allors.Repository
         #region inherited properties
         public string Comment { get; set; }
 
+        public string ProductNumber { get; set; }
+
         public LocalisedText[] LocalisedComments { get; set; }
 
         public Guid UniqueId { get; set; }

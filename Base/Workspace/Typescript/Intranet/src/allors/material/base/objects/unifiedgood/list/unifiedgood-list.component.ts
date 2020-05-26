@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
+import * as moment from 'moment/moment';
 
 import { PullRequest, And, Like, Equals, Contains, Exists } from '../../../../../framework';
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
@@ -20,6 +21,7 @@ interface Row extends TableRow {
   categories: string;
   qoh: string;
   photos: string;
+  lastModifiedDate: string;
 }
 
 @Component({
@@ -61,10 +63,11 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
       selection: true,
       columns: [
         { name: 'name', sort: true },
-        { name: 'id' },
+        { name: 'id', sort: true },
         { name: 'photos' },
         { name: 'categories' },
         { name: 'qoh' },
+        { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
         overviewService.overview(),
@@ -121,6 +124,8 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
     const sorter = new Sorter(
       {
         name: [m.UnifiedGood.Name],
+        id: [m.UnifiedGood.ProductNumber],
+        lastModifiedDate: m.UnifiedGood.LastModifiedDate,
       }
     );
 
@@ -179,11 +184,11 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
           return {
             object: v,
             name: v.Name,
-            id: v.ProductIdentifications
-                .find(p => p.ProductIdentificationType.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f' || p.ProductIdentificationType.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6').Identification,
+            id: v.ProductNumber,
             categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.DisplayName).join(', '),
             qoh: v.QuantityOnHand,
             photos: v.Photos.length.toString(),
+            lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
       });

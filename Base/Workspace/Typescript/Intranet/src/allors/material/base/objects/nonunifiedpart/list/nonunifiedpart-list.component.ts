@@ -80,7 +80,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       selection: true,
       columns: [
         { name: 'name', sort: true },
-        { name: 'partNo' },
+        { name: 'partNo', sort: true },
         { name: 'type' },
         { name: 'categories' },
         { name: 'qoh' },
@@ -217,6 +217,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     const sorter = new Sorter(
       {
         name: m.NonUnifiedPart.Name,
+        partNo: m.NonUnifiedPart.ProductNumber,
         lastModifiedDate: m.UnifiedProduct.LastModifiedDate,
       }
     );
@@ -338,7 +339,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
           return {
             object: v,
             name: v.Name,
-            partNo: partNumberByPart[v.id][0],
+            partNo: v.ProductNumber,
             qoh: v.QuantityOnHand,
             localQoh: facilitySearchId && (v.InventoryItemsWherePart as NonSerialisedInventoryItem[]).find(i => i.Facility.id === facilitySearchId).QuantityOnHand,
             categories: partCategories.filter(w => w.Parts.includes(v)).map((w) => w.displayName).join(', '),

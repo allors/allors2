@@ -416,6 +416,19 @@ namespace Allors.Repository
         [Workspace]
         public bool OnWorkEffort { get; set; }
 
+        // When created in workspace (excel) this property is used to add serialised item to this part
+        // When done this propery is removed.
+        #region Allors
+        [Id("a89b77c7-1c42-4262-af60-ede3c907ea01")]
+        [AssociationId("fcee8af4-1af0-4459-b07a-adaf56b8519d")]
+        [RoleId("35d19f2a-42f5-441b-8f6c-35d5d9de1d1a")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Workspace]
+        public Part CreateForPart { get; set; }
+
         #region inherited methods
         public void OnBuild() { }
 

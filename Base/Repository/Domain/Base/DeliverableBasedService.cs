@@ -18,6 +18,8 @@ namespace Allors.Repository
 
         public string InternalComment { get; set; }
 
+        public string ProductNumber { get; set; }
+
         public DateTime SupportDiscontinuationDate { get; set; }
 
         public DateTime SalesDiscontinuationDate { get; set; }

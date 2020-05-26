@@ -23,6 +23,16 @@ namespace Allors.Repository
         ProductIdentification[] ProductIdentifications { get; set; }
 
         #region Allors
+        [Id("8cbbbd41-3eb9-4ce5-a5ce-72660a94e9f5")]
+        [AssociationId("6cbdc0f8-5ec6-4614-9f51-5ff10545b95f")]
+        [RoleId("8974eae4-b432-41d6-858e-8f720193d6bf")]
+        #endregion
+        [Derived]
+        [Workspace]
+        [Size(-1)]
+        string ProductNumber { get; set; }
+
+        #region Allors
         [Id("7423a3e3-3619-4afa-ab67-e605b2a62e02")]
         [AssociationId("153ce3b0-0969-40d7-a766-1320ecaef8ac")]
         [RoleId("62228e49-a697-4f1f-8a85-6f1976afd7bb")]
