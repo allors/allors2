@@ -108,7 +108,8 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
           const id = this.panel.manager.id;
 
           const pulls = [
-            this.fetcher.ownWarehouses,
+            // this.fetcher.ownWarehouses,
+            pull.Facility(),
             pull.PurchaseOrder({
               object: id,
               include: {

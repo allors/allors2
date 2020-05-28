@@ -485,6 +485,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         include: {
           InventoryItemKind: x,
           SerialisedItems: {
+            SerialisedInventoryItemsWhereSerialisedItem: x,
             RequestItemsWhereSerialisedItem: {
               RequestItemState: x,
               RequestWhereRequestItem: {
@@ -524,6 +525,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
         if (this.isCustomerShipment) {
           this.serialisedItems = part.SerialisedItems.filter(v => v.AvailableForSale === true);
+        } else {
+          this.serialisedItems = part.SerialisedItems.filter(v => v.SerialisedInventoryItemsWhereSerialisedItem.length === 0);
         }
 
         if (this.shipmentItem.Good !== this.previousGood) {

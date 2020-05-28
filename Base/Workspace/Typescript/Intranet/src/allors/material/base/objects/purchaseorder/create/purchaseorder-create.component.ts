@@ -75,6 +75,9 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
           const pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.ownWarehouses,
+            pull.Facility({
+              name: 'AllFacilities',
+            }),
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
@@ -91,16 +94,18 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
       .subscribe((loaded) => {
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.facilities = loaded.collections.Facilities as Facility[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
 
+        this.facilities = loaded.collections.AllFacilities as Facility[];
+        const warehouses = loaded.collections.Facilities as Facility[];
+
         this.order = this.allors.context.create('PurchaseOrder') as PurchaseOrder;
         this.order.OrderedBy = this.internalOrganisation;
 
-        if (this.facilities.length > 0) {
-          this.order.Facility = this.facilities[0];
+        if (warehouses.length > 0) {
+          this.order.Facility = warehouses[0];
         }
 
         if (this.order.TakenViaSupplier) {
@@ -111,7 +116,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         if (this.order.OrderedBy) {
           this.updateOrderedBy(this.order.OrderedBy);
         }
-
       });
   }
 

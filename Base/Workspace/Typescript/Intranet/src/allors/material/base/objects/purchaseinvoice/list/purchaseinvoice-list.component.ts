@@ -7,7 +7,7 @@ import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory, ActionTarget, FetcherService, UserId } from '../../../../../angular';
-import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt, Organisation, Person, UserGroup } from '../../../../../domain';
+import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt, Organisation, Person, UserGroup, PurchaseInvoiceState } from '../../../../../domain';
 import { And, Like, PullRequest, Equals } from '../../../../../framework';
 import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService, AllorsMaterialDialogService } from '../../../../../material';
 import { MethodService } from '../../../../../material/core/services/actions';
@@ -188,6 +188,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
     const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseInvoice.BilledTo });
     const predicate = new And([
       new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, parameter: 'number' }),
+      new Equals({ propertyType: m.PurchaseInvoice.PurchaseInvoiceState, parameter: 'state' }),
       new Equals({ propertyType: m.PurchaseInvoice.PurchaseInvoiceType, parameter: 'type' }),
       internalOrganisationPredicate
     ]);
@@ -197,9 +198,15 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       roleTypes: [m.PurchaseInvoiceType.Name],
     });
 
+    const stateSearch = new SearchFactory({
+      objectType: m.PurchaseInvoiceState,
+      roleTypes: [m.PurchaseInvoiceState.Name],
+    });
+
     this.filterService.init(predicate,
       {
         type: { search: typeSearch, display: (v: PurchaseInvoiceType) => v && v.Name },
+        state: { search: stateSearch, display: (v: PurchaseInvoiceState) => v && v.Name },
       });
 
     const sorter = new Sorter(

@@ -62,11 +62,6 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExistsAtMostOne(this, this.Meta.AcquiredDate, this.Meta.AcquisitionYear);
 
-            if (!this.ExistPartWhereSerialisedItem && this.ExistCreateForPart)
-            {
-                this.CreateForPart.AddSerialisedItem(this);
-            }
-
             if (!this.ExistName && this.ExistPartWhereSerialisedItem)
             {
                 this.Name = this.PartWhereSerialisedItem.Name;

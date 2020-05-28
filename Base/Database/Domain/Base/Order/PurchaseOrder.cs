@@ -541,6 +541,16 @@ namespace Allors.Domain
                             var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
                                 .FirstOrDefault(v => v.SerialisedItem.Equals(serialisedItem) && v.Facility.Equals(this.Facility));
 
+                            //new InventoryItemTransactionBuilder(this.Session())
+                            //    .WithSerialisedItem(serialisedItem)
+                            //    .WithPart(orderItem.Part)
+                            //    .WithQuantity(1)
+                            //    .WithSerialisedInventoryItemState(serialisedInventoryItemState)
+                            //    .WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount)
+                            //    .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                            //    .WithFacility(facility)
+                            //    .Build();
+
                             if (inventoryItem == null)
                             {
                                 new SerialisedInventoryItemBuilder(this.Session())

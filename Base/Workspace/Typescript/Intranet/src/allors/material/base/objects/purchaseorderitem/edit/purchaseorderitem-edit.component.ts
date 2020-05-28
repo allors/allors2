@@ -309,7 +309,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           fetch: {
             SerialisedItems: {
               include: {
-                OwnedBy: x
+                OwnedBy: x,
+                SerialisedInventoryItemsWhereSerialisedItem: x,
               }
             }
           }
@@ -330,7 +331,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       .subscribe((loaded) => {
         this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
-        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
+        const serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
+        this.serialisedItems = serialisedItems.filter(v => v.SerialisedInventoryItemsWhereSerialisedItem.length === 0);
 
         if (this.orderItem.SerialisedItem) {
           this.serialisedItems.push(this.orderItem.SerialisedItem);
