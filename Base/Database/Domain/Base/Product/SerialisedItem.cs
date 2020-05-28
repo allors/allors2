@@ -42,15 +42,6 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseOnInit(ObjectOnInit method)
-        {
-            if (!this.ExistPartWhereSerialisedItem && this.ExistCreateForPart)
-            {
-                this.CreateForPart.AddSerialisedItem(this);
-                this.RemoveCreateForPart();
-            }
-        }
-
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var (iteration, changeSet, derivedObjects) = method;
@@ -71,10 +62,17 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExistsAtMostOne(this, this.Meta.AcquiredDate, this.Meta.AcquisitionYear);
 
+            if (!this.ExistPartWhereSerialisedItem && this.ExistCreateForPart)
+            {
+                this.CreateForPart.AddSerialisedItem(this);
+            }
+
             if (!this.ExistName && this.ExistPartWhereSerialisedItem)
             {
                 this.Name = this.PartWhereSerialisedItem.Name;
             }
+
+            this.SuppliedBy = this.AssignedSuppliedBy ?? this.PartWhereSerialisedItem?.SupplierOfferingsWherePart?.FirstOrDefault()?.Supplier;
 
             var doubles = this.PartWhereSerialisedItem?.SerialisedItems.Where(v => v.SerialNumber.Equals(this.SerialNumber)).ToArray();
             if (doubles?.Length > 1)
