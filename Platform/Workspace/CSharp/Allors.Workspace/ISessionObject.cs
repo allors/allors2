@@ -44,6 +44,6 @@ namespace Allors.Workspace
 
         void Reset();
 
-        void Refresh(bool overwrite = false);
+        void Refresh(bool merge = false);
     }
 }

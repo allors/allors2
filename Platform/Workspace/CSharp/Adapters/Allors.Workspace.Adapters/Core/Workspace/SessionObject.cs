@@ -284,7 +284,7 @@ namespace Allors.Workspace
             this.roleByRoleType = new Dictionary<IRoleType, object>();
         }
 
-        public void Refresh(bool overwrite = false)
+        public void Refresh(bool merge = false)
         {
             if (!this.HasChanges)
             {
@@ -292,7 +292,7 @@ namespace Allors.Workspace
             }
             else
             {
-                if (overwrite)
+                if (merge)
                 {
                     if (this.WorkspaceObject != null)
                     {
