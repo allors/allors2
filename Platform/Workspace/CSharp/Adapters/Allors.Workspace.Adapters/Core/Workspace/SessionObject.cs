@@ -284,6 +284,24 @@ namespace Allors.Workspace
             this.roleByRoleType = new Dictionary<IRoleType, object>();
         }
 
+        public void Refresh(bool overwrite = false)
+        {
+            if (!this.HasChanges)
+            {
+                this.Reset();
+            }
+            else
+            {
+                if (overwrite)
+                {
+                    if (this.WorkspaceObject != null)
+                    {
+                        this.WorkspaceObject = this.WorkspaceObject.Workspace.Get(this.Id);
+                    }
+                }
+            }
+        }
+
         internal object GetForAssociation(IRoleType roleType)
         {
             if (!this.roleByRoleType.TryGetValue(roleType, out var value))

@@ -43,5 +43,7 @@ namespace Allors.Workspace
         PushRequestNewObject SaveNew();
 
         void Reset();
+
+        void Refresh(bool overwrite = false);
     }
 }

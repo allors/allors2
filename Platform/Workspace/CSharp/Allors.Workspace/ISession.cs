@@ -25,6 +25,8 @@ namespace Allors.Workspace
 
         void Reset();
 
+        void Refresh();
+
         IEnumerable<ISessionObject> GetAssociation(ISessionObject @object, IAssociationType associationType);
     }
 }

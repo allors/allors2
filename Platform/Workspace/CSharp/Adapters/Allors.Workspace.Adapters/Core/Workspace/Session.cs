@@ -74,6 +74,15 @@ namespace Allors.Workspace
             }
         }
 
+        public void Refresh()
+        {
+            foreach (var sessionObject in this.sessionObjectById.Values)
+            {
+                sessionObject.Refresh();
+            }
+        }
+
+
         public PushRequest PushRequest() =>
             new PushRequest
             {
