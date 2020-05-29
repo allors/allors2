@@ -117,6 +117,7 @@ namespace Allors.Domain
                 if (shipmentItem.Part.InventoryItemKind.Serialised)
                 {
                     new InventoryItemTransactionBuilder(this.Session())
+                        .WithPart(shipmentItem.Part)
                         .WithSerialisedItem(shipmentItem.SerialisedItem)
                         .WithUnitOfMeasure(shipmentItem.Part.UnitOfMeasure)
                         .WithFacility(shipmentItem.ShipmentWhereShipmentItem.ShipToFacility)

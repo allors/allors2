@@ -203,19 +203,26 @@ namespace Allors.Domain
 
             if (this.Part.InventoryItemKind.Serialised && this.Quantity > 0)
             {
-                var builder = new SerialisedInventoryItemBuilder(this.Strategy.Session)
-                    .WithFacility(facility)
-                    .WithUnitOfMeasure(unitOfMeasure)
-                    .WithSerialisedItem(this.SerialisedItem)
-                    .WithPart(this.Part)
-                    .WithSerialisedInventoryItemState(this.SerialisedInventoryItemState);
+                var inventoryItems = this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem;
+                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
+                var inventoryItem = inventoryItems.First;
 
-                if (this.ExistLot)
+                if (inventoryItem == null)
                 {
-                    builder.WithLot(this.Lot);
-                }
+                    var builder = new SerialisedInventoryItemBuilder(this.Strategy.Session)
+                        .WithFacility(facility)
+                        .WithUnitOfMeasure(unitOfMeasure)
+                        .WithSerialisedItem(this.SerialisedItem)
+                        .WithPart(this.Part)
+                        .WithSerialisedInventoryItemState(this.SerialisedInventoryItemState);
 
-                this.InventoryItem = builder.Build();
+                    if (this.ExistLot)
+                    {
+                        builder.WithLot(this.Lot);
+                    }
+
+                    this.InventoryItem = builder.Build();
+                }
             }
             else if (this.Part.InventoryItemKind.NonSerialised)
             {

@@ -332,7 +332,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
         const serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
-        this.serialisedItems = serialisedItems.filter(v => v.SerialisedInventoryItemsWhereSerialisedItem.length === 0);
+        this.serialisedItems = serialisedItems.filter(v => v.SerialisedInventoryItemsWhereSerialisedItem.length === 0 || v.SerialisedInventoryItemsWhereSerialisedItem[0].Quantity === 0);
 
         if (this.orderItem.SerialisedItem) {
           this.serialisedItems.push(this.orderItem.SerialisedItem);

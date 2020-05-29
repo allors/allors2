@@ -537,30 +537,6 @@ namespace Allors.Domain
                             serialisedItem.Buyer = this.OrderedBy;
                             serialisedItem.Ownership = new Ownerships(this.Session()).Own;
                             serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session()).Available;
-
-                            var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
-                                .FirstOrDefault(v => v.SerialisedItem.Equals(serialisedItem) && v.Facility.Equals(this.Facility));
-
-                            //new InventoryItemTransactionBuilder(this.Session())
-                            //    .WithSerialisedItem(serialisedItem)
-                            //    .WithPart(orderItem.Part)
-                            //    .WithQuantity(1)
-                            //    .WithSerialisedInventoryItemState(serialisedInventoryItemState)
-                            //    .WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount)
-                            //    .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                            //    .WithFacility(facility)
-                            //    .Build();
-
-                            if (inventoryItem == null)
-                            {
-                                new SerialisedInventoryItemBuilder(this.Session())
-                                    .WithSerialisedItem(serialisedItem)
-                                    .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Good)
-                                    .WithPart(orderItem.Part)
-                                    .WithUnitOfMeasure(new UnitsOfMeasure(this.Session()).Piece)
-                                    .WithFacility(this.Facility)
-                                    .Build();
-                            }
                         }
                     }
                 }
