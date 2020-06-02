@@ -36,6 +36,7 @@ import { CommunicationEventOverviewPanelModule } from '../../communicationevent/
 import { ContactMechanismOverviewPanelModule } from '../../contactmechanism/overview/panel/contactmechanism-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
 import { PartyRelationshipOverviewPanelModule } from '../../partyrelationship/overview/panel/partyrelationship-overview-panel.module';
+import { SerialisedInventoryItemOverviewPanelModule } from '../../serialisedinventoryitem/overview/panel/serialisedinventoryitem-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortFixedAssetAssignmentOverviewPanelModule } from '../../workeffortfixedassetassignment/overview/panel/workeffortfixedassetassignment-overview-panel.module';
 import { WorkTaskOverviewPanelModule } from '../../worktask/overview/panel/worktask-overview-panel.module';
@@ -61,6 +62,7 @@ export { SerialisedItemOverviewComponent } from './serialiseditem-overview.compo
     ContactMechanismOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
     PartyRelationshipOverviewPanelModule,
+    SerialisedInventoryItemOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortFixedAssetAssignmentOverviewPanelModule,
     WorkTaskOverviewPanelModule,

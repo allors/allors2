@@ -487,6 +487,7 @@ namespace Allors.Domain
                     {
                         shipmentItem = new ShipmentItemBuilder(session)
                             .WithPart(orderItem.Part)
+                            .WithStoredInFacility(orderItem.StoredInFacility)
                             .WithQuantity(orderItem.QuantityOrdered)
                             .WithUnitPurchasePrice(orderItem.UnitPrice)
                             .WithContentsDescription($"{orderItem.QuantityOrdered} * {orderItem.Part.Name}")
@@ -498,12 +499,6 @@ namespace Allors.Domain
                             .WithOrderItem(orderItem)
                             .WithShipmentItem(shipmentItem)
                             .WithQuantity(orderItem.QuantityOrdered)
-                            .Build();
-
-                        new ShipmentReceiptBuilder(session)
-                            .WithQuantityAccepted(orderItem.QuantityOrdered)
-                            .WithShipmentItem(shipmentItem)
-                            .WithOrderItem(orderItem)
                             .Build();
 
                         if (orderItem.Part.InventoryItemKind.Serialised)
@@ -536,7 +531,6 @@ namespace Allors.Domain
                             serialisedItem.OwnedBy = this.OrderedBy;
                             serialisedItem.Buyer = this.OrderedBy;
                             serialisedItem.Ownership = new Ownerships(this.Session()).Own;
-                            serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session()).Available;
                         }
                     }
                 }

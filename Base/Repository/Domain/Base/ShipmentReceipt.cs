@@ -41,6 +41,18 @@ namespace Allors.Repository
         [Workspace]
         public InventoryItem InventoryItem { get; set; }
 
+        // Set this when invent does not exist. On deriving it will create an InventoryItemTransaction for this Facility.
+        // The InventoryItemTransaction will then create the InventoryItem
+        #region Allors
+        [Id("a74aced0-2c7b-4947-b5a8-dace618e5286")]
+        [AssociationId("84966823-20af-478f-b22c-569e4429f2e8")]
+        [RoleId("d5ffc967-1316-4a7e-a5c4-3bf8a12d5a9c")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Facility Facility { get; set; }
+
         #region Allors
         [Id("87f84720-1233-4779-be9d-4b0a12ba19cd")]
         [AssociationId("77a773f7-e649-4dd1-9dd9-d7a5eb09ae95")]

@@ -152,6 +152,16 @@ namespace Allors.Repository
         public InventoryItem[] ReservedFromInventoryItems { get; set; }
 
         #region Allors
+        [Id("669a3209-1fc9-45ad-8331-7602f5c16ce0")]
+        [AssociationId("c61871b7-5341-4902-bab4-3327e006d7ed")]
+        [RoleId("6cc1cec2-f115-4f06-aabb-da5f72d7d35c")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Facility StoredInFacility { get; set; }
+
+        #region Allors
         [Id("b9bfaea8-e5f0-4b0e-955f-df28ed63e8e3")]
         [AssociationId("7da8c058-92b7-4fd7-9eaf-7b7fb94f62cf")]
         [RoleId("fb45aece-26e0-42ec-8dac-ddfcf11e61d9")]

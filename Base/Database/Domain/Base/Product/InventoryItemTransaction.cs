@@ -166,13 +166,13 @@ namespace Allors.Domain
                     derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
                 }
 
-                if (this.Reason.IncreasesQuantityOnHand == true && this.Quantity <= 0)
+                if (this.Reason.IncreasesQuantityOnHand == true && (this.Quantity < -1 || this.Quantity > 1))
                 {
                     var message = "Invalid transaction";
                     derivation.Validation.AddError(this, this.Meta.Reason, message);
                 }
 
-                if (this.Reason.IncreasesQuantityOnHand == false && this.Quantity <= 0)
+                if (this.Reason.IncreasesQuantityOnHand == false && (this.Quantity < -1 || this.Quantity > 1))
                 {
                     var message = "Invalid transaction";
                     derivation.Validation.AddError(this, this.Meta.Reason, message);
@@ -195,7 +195,7 @@ namespace Allors.Domain
             var facility = this.Facility ?? this.Part.DefaultFacility;
             var unitOfMeasure = this.UnitOfMeasure ?? this.Part.UnitOfMeasure;
 
-            if (this.Part.InventoryItemKind.Serialised && this.Quantity <= 0)
+            if (this.Part.InventoryItemKind.Serialised && (this.Quantity < -1 || this.Quantity > 1))
             {
                 var message = "Invalid transaction";
                 derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
