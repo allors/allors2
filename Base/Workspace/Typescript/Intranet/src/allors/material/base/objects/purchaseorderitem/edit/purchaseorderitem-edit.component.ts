@@ -171,11 +171,11 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
         } else {
           this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
+          this.selectedFacility = this.orderItem.StoredInFacility;
 
           if (this.orderItem.Part) {
             this.unifiedGood = this.orderItem.Part.objectType.name === m.UnifiedGood.name;
             this.nonUnifiedPart = this.orderItem.Part.objectType.name === m.NonUnifiedPart.name;
-            this.selectedFacility = this.orderItem.StoredInFacility;
 
             if (this.unifiedGood) {
               this.updateFromPart(this.orderItem.Part);
@@ -226,7 +226,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
   public save(): void {
 
-    this.orderItem.StoredInFacility = this.selectedFacility;
+    this.onSave();
 
     this.allors.context.save()
       .subscribe(() => {
@@ -245,6 +245,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   public update(): void {
     const { context } = this.allors;
 
+    this.onSave();
+
     context
       .save()
       .subscribe(() => {
@@ -253,6 +255,10 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       },
         this.saveService.errorHandler
       );
+  }
+
+  private onSave() {
+    this.orderItem.StoredInFacility = this.selectedFacility;
   }
 
   private updateFromSparePart(part: Part) {

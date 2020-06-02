@@ -72,7 +72,7 @@ namespace Allors.Domain
                 {
                     var inventoryItems = this.ShipmentItem.Part.InventoryItemsWherePart;
                     inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.Facility);
-                    inventoryItems.Filter.AddEquals(M.NonSerialisedInventoryItem.NonSerialisedInventoryItemState, new NonSerialisedInventoryItemStates(this.Session()).Good);
+                    //inventoryItems.Filter.AddEquals(M.NonSerialisedInventoryItem.NonSerialisedInventoryItemState, new NonSerialisedInventoryItemStates(this.Session()).Good);
                     this.InventoryItem = inventoryItems.First;
 
                     if (!this.ExistInventoryItem)

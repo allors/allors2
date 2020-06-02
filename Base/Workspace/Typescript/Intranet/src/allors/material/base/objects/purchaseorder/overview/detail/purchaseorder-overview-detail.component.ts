@@ -43,7 +43,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
   private previousSupplier: Party;
 
-  facilities: Facility[];
   private takenVia: Party;
 
   private subscription: Subscription;
@@ -108,8 +107,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
           const id = this.panel.manager.id;
 
           const pulls = [
-            // this.fetcher.ownWarehouses,
-            pull.Facility(),
             pull.PurchaseOrder({
               object: id,
               include: {
@@ -143,7 +140,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
 
-        this.facilities = loaded.collections.Facilities as Facility[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
 

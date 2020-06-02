@@ -44,7 +44,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   addShipToAddress = false;
   addShipToContactPerson = false;
 
-  facilities: Facility[];
   private takenVia: Party;
 
   private subscription: Subscription;
@@ -75,9 +74,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
           const pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.ownWarehouses,
-            pull.Facility({
-              name: 'AllFacilities',
-            }),
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
@@ -98,15 +94,8 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
 
-        this.facilities = loaded.collections.AllFacilities as Facility[];
-        const warehouses = loaded.collections.Facilities as Facility[];
-
         this.order = this.allors.context.create('PurchaseOrder') as PurchaseOrder;
         this.order.OrderedBy = this.internalOrganisation;
-
-        if (warehouses.length > 0) {
-          this.order.Facility = warehouses[0];
-        }
 
         if (this.order.TakenViaSupplier) {
           this.takenVia = this.order.TakenViaSupplier;
