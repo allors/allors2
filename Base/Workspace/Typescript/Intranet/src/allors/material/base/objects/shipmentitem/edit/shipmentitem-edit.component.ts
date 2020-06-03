@@ -576,6 +576,12 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           }
         }
       }),
+      pull.NonUnifiedPart({
+        object: part.id,
+        include: {
+          InventoryItemKind: x,
+          }
+      }),
     ];
 
     this.allors.context
