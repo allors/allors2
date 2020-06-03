@@ -30,6 +30,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../core/components/rol
 import { AllorsMaterialStaticModule } from '../../../../core/components/role/static';
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
+import { FacilityInlineModule } from '../../facility/inline/facility-inline.module';
 import { OrganisationInlineModule } from '../../organisation/inline/organisation-inline.module';
 import { PartyInlineModule } from '../../party/inline/party-inline.module';
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
@@ -58,6 +59,7 @@ export { PurchaseOrderCreateComponent } from './purchaseorder-create.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
+    FacilityInlineModule,
     FormsModule,
     MatButtonModule,
     MatCardModule,

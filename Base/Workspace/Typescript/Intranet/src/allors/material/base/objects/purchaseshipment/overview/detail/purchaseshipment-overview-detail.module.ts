@@ -33,6 +33,7 @@ import { AllorsMaterialLocalisedTextModule } from '../../../../../core/component
 import { AllorsMaterialFilesModule } from '../../../../../core/components/role/files';
 import { AllorsMaterialDatepickerModule } from '../../../../../core/components/role/datepicker';
 
+import { FacilityInlineModule } from '../../../facility/inline/facility-inline.module';
 import { OrganisationInlineModule } from '../../../organisation/inline/organisation-inline.module';
 import { PartyInlineModule } from '../../../party/inline/party-inline.module';
 import { PersonInlineModule } from '../../../person/inline/person-inline.module';
@@ -81,6 +82,7 @@ export { PurchaseShipmentOverviewDetailComponent } from './purchaseshipment-over
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+    FacilityInlineModule,
     ContactMechanismInlineModule,
     OrganisationInlineModule,
     PostalAddressInlineModule,

@@ -160,7 +160,28 @@
       </div>
 
       <div class="row">
-        <a-mat-select class="col-md" [object]="order" [roleType]="m.PurchaseOrder.StoredInFacility" [options]="facilities" display="Name" label="Facility/Storage location"></a-mat-select>
+        <div class="col-md">
+          <div class="row">
+            <mat-form-field class="col">
+              <mat-select [(ngModel)]="selectedFacility" name="facilityName" placeholder="facility" multiple="false" label="Facility/Storage location">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let facility of facilities" [value]="facility">{{ facility.Name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-mini-fab color="accent" type="button" (click)="addFacility = !addFacility">
+              <mat-icon *ngIf="!addFacility">add</mat-icon>
+              <mat-icon *ngIf="addFacility">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 pb-3" *ngIf="addFacility">
+          <mat-card>
+            <mat-card-header>Add new Facility</mat-card-header>
+            <mat-card-content>
+              <facility-inline (cancelled)="addFacility = false" (saved)="facilityAdded($event); addFacility = false"></facility-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
         <a-mat-input class="col-md" [object]="order" [roleType]="m.PurchaseOrder.CustomerReference"></a-mat-input>
       </div>
 

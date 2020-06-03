@@ -32,7 +32,7 @@
       <div class="row">
         <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.Part"
                             display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
-        <a-mat-select class="col-md" [disabled]="selectedPurchaseOrderItem || !shipmentItem.isNew || !isSerialized" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
+        <a-mat-select class="col-md" *ngIf="isSerialized" [disabled]="selectedPurchaseOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
                       [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
       </div>
   
@@ -67,7 +67,7 @@
             </mat-card-content>
           </mat-card>
         </div>
-      </div>
+      </div> 
 
     </div>
 

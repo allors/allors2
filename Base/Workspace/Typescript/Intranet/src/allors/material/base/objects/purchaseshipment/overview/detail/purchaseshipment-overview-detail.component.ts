@@ -25,12 +25,15 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
   shipToContacts: Person[] = [];
   shipFromContacts: Person[] = [];
   internalOrganisation: Organisation;
-  facilities: Facility[];
   locales: Locale[];
   shipmentMethods: ShipmentMethod[];
   carriers: Carrier[];
   addShipToAddress = false;
   addShipFromContactPerson = false;
+
+  facilities: Facility[];
+  selectedFacility: Facility;
+  addFacility = false;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
@@ -107,7 +110,7 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
 
           const pulls = [
             this.fetcher.locales,
-            this.fetcher.ownWarehouses,
+            pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.InternalOrganisation(
               {
                 object: this.internalOrganisationId.value,
@@ -162,6 +165,8 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
         this.shipToContacts = loaded.collections.CurrentContacts as Person[];
 
         this.purchaseShipment = loaded.objects.PurchaseShipment as PurchaseShipment;
+        this.selectedFacility = this.purchaseShipment.ShipToFacility;
+
         this.facilities = loaded.collections.Facilities as Facility[];
         this.shipmentMethods = loaded.collections.ShipmentMethods as ShipmentMethod[];
         this.carriers = loaded.collections.Carriers as Carrier[];
@@ -183,6 +188,8 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
 
   public save(): void {
 
+    this.purchaseShipment.ShipToFacility = this.selectedFacility;
+
     this.allors.context.save()
       .subscribe(() => {
         this.refreshService.refresh();
@@ -190,6 +197,13 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
       },
         this.saveService.errorHandler
       );
+  }
+
+  public facilityAdded(facility: Facility): void {
+    this.facilities.push(facility);
+    this.selectedFacility = facility;
+
+    this.allors.context.session.hasChanges = true;
   }
 
   public shipFromContactPersonAdded(person: Person): void {

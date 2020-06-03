@@ -191,5 +191,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
   public facilityAdded(facility: Facility): void {
     this.facilities.push(facility);
     this.selectedFacility = facility;
+
+    this.allors.context.session.hasChanges = true;
   }
 }

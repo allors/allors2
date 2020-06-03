@@ -33,6 +33,8 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   vatRegimes: VatRegime[];
   internalOrganisation: Organisation;
   facilities: Facility[];
+  selectedFacility: Facility;
+  addFacility = false;
 
   addSupplier = false;
 
@@ -118,6 +120,8 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
   public save(): void {
 
+    this.order.StoredInFacility = this.selectedFacility;
+
     this.allors.context
       .save()
       .subscribe(() => {
@@ -196,6 +200,13 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
   public supplierSelected(supplier: Party) {
     this.updateSupplier(supplier);
+  }
+
+  public facilityAdded(facility: Facility): void {
+    this.facilities.push(facility);
+    this.selectedFacility = facility;
+
+    this.allors.context.session.hasChanges = true;
   }
 
   private updateSupplier(supplier: Party): void {

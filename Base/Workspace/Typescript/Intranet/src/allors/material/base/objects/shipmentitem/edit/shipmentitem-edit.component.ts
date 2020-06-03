@@ -115,8 +115,12 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
               object: this.data.id,
               include: {
                 SyncedShipment: x,
-                Good: x,
-                Part: x,
+                Good: {
+                  UnifiedGood_InventoryItemKind: x,
+                },
+                Part: {
+                  InventoryItemKind: x,
+                },
                 SerialisedItem: x,
                 ShipmentItemState: x,
                 StoredInFacility: x,
@@ -299,6 +303,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         if (isCreate) {
           this.title = 'Add Shipment Item';
           this.shipmentItem = this.allors.context.create('ShipmentItem') as ShipmentItem;
+          this.selectedFacility = this.shipment.ShipToFacility;
+
           this.shipment.AddShipmentItem(this.shipmentItem);
         } else {
 
@@ -442,6 +448,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   public facilityAdded(facility: Facility): void {
     this.facilities.push(facility);
     this.selectedFacility = facility;
+
+    this.allors.context.session.hasChanges = true;
   }
 
   private loadProduct(product: Product): void {
@@ -562,6 +570,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
+        this.isSerialized = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
         this.inventoryItems = loaded.collections.InventoryItems as InventoryItem[];
 
         if (this.shipmentItem.Part !== this.previousPart) {

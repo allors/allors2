@@ -27,6 +27,10 @@ export class PurchaseShipmentCreateComponent extends TestScope implements OnInit
   shipToContacts: Person[] = [];
   internalOrganisation: Organisation;
 
+  facilities: Facility[];
+  selectedFacility: Facility;
+  addFacility = false;
+
   addSupplier = false;
   addShipFromContactPerson = false;
 
@@ -34,7 +38,6 @@ export class PurchaseShipmentCreateComponent extends TestScope implements OnInit
   addShipToContactPerson = false;
 
   private subscription: Subscription;
-  facilities: Facility[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -61,6 +64,7 @@ export class PurchaseShipmentCreateComponent extends TestScope implements OnInit
 
           const pulls = [
             this.fetcher.internalOrganisation,
+            pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: new Sort(m.Organisation.PartyName),
@@ -97,6 +101,8 @@ export class PurchaseShipmentCreateComponent extends TestScope implements OnInit
 
   public save(): void {
 
+    this.shipment.ShipToFacility = this.selectedFacility;
+
     this.allors.context
       .save()
       .subscribe(() => {
@@ -110,6 +116,13 @@ export class PurchaseShipmentCreateComponent extends TestScope implements OnInit
       },
         this.saveService.errorHandler
       );
+  }
+
+  public facilityAdded(facility: Facility): void {
+    this.facilities.push(facility);
+    this.selectedFacility = facility;
+
+    this.allors.context.session.hasChanges = true;
   }
 
   public supplierAdded(organisation: Organisation): void {

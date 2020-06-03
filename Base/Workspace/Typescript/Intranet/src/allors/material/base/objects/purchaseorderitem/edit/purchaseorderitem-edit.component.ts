@@ -167,6 +167,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         if (isCreate) {
           this.title = 'Add Order Item';
           this.orderItem = this.allors.context.create('PurchaseOrderItem') as PurchaseOrderItem;
+          this.selectedFacility = this.order.StoredInFacility;
           this.order.AddPurchaseOrderItem(this.orderItem);
 
         } else {
@@ -216,6 +217,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   public facilityAdded(facility: Facility): void {
     this.facilities.push(facility);
     this.selectedFacility = facility;
+
+    this.allors.context.session.hasChanges = true;
   }
 
   public ngOnDestroy(): void {
