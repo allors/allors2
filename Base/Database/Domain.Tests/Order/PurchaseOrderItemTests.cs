@@ -432,13 +432,17 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.order.TakenViaSupplier).Build();
+            this.Session.Derive();
+
             var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).Build();
             shipment.AddShipmentItem(shipmentItem);
+            this.Session.Derive();
 
             new ShipmentReceiptBuilder(this.Session)
                 .WithQuantityAccepted(3)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item)
+                .WithFacility(shipmentItem.StoredInFacility)
                 .Build();
 
             this.Session.Derive();
@@ -620,6 +624,10 @@ namespace Allors.Domain
             this.order.QuickReceive();
             this.Session.Derive();
 
+            var shipment = (PurchaseShipment)item.OrderShipmentsWhereOrderItem.First.ShipmentItem.ShipmentWhereShipmentItem;
+            shipment.Receive();
+            this.Session.Derive();
+
             Assert.Equal(new PurchaseOrderItemStates(this.Session).Completed, item.PurchaseOrderItemState);
             var acl = new AccessControlLists(this.Session.GetUser())[item];
             Assert.False(acl.CanExecute(M.PurchaseOrderItem.Cancel));
@@ -654,6 +662,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             this.order.QuickReceive();
+            this.Session.Derive();
+
+            var shipment = (PurchaseShipment)item.OrderShipmentsWhereOrderItem.First.ShipmentItem.ShipmentWhereShipmentItem;
+            shipment.Receive();
             this.Session.Derive();
 
             Assert.True(item.PurchaseOrderItemShipmentState.IsReceived);
@@ -727,13 +739,17 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.order.TakenViaSupplier).Build();
+            this.Session.Derive();
+
             var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).Build();
             shipment.AddShipmentItem(shipmentItem);
+            this.Session.Derive();
 
             new ShipmentReceiptBuilder(this.Session)
                 .WithQuantityAccepted(3)
                 .WithShipmentItem(shipmentItem)
                 .WithOrderItem(item)
+                .WithFacility(shipmentItem.StoredInFacility)
                 .Build();
 
             this.Session.Derive();

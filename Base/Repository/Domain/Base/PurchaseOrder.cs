@@ -327,7 +327,7 @@ namespace Allors.Repository
         [Required]
         [Indexed]
         [Workspace]
-        public Facility Facility { get; set; }
+        public Facility StoredInFacility { get; set; }
 
         #region Allors
         [Id("d74bd1fd-f243-4b5d-8061-1eafe7c25beb")]

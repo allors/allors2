@@ -140,7 +140,7 @@ namespace Allors.Domain
 
             foreach (PurchaseOrderItem purchaseOrderItem in this.Part.PurchaseOrderItemsWherePart)
             {
-                var facility = purchaseOrderItem.PurchaseOrderWherePurchaseOrderItem.Facility;
+                var facility = purchaseOrderItem.PurchaseOrderWherePurchaseOrderItem.StoredInFacility;
                 if ((purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess)
                      || purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Sent))
                     && this.Facility.Equals(facility))

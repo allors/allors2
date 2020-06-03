@@ -101,6 +101,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (!this.ExistStoredInFacility && this.PurchaseOrderWherePurchaseOrderItem.ExistStoredInFacility)
+            {
+                this.StoredInFacility = this.PurchaseOrderWherePurchaseOrderItem.StoredInFacility;
+            }
+
             // States
             var states = new PurchaseOrderItemStates(this.Session());
 
@@ -257,7 +262,7 @@ namespace Allors.Domain
                 if (this.ExistPart)
                 {
                     var inventoryItems = this.Part.InventoryItemsWherePart;
-                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
+                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.StoredInFacility);
                     inventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                 }
 
@@ -342,11 +347,12 @@ namespace Allors.Domain
                     .WithShipmentMethod(new ShipmentMethods(session).Ground)
                     .WithShipToParty(order.OrderedBy)
                     .WithShipFromParty(order.TakenViaSupplier)
-                    .WithShipToFacility(order.Facility)
+                    .WithShipToFacility(order.StoredInFacility)
                     .Build();
 
                 var shipmentItem = new ShipmentItemBuilder(session)
                     .WithPart(this.Part)
+                    .WithStoredInFacility(this.StoredInFacility)
                     .WithQuantity(this.QuantityOrdered)
                     .WithUnitPurchasePrice(this.UnitPrice)
                     .WithContentsDescription($"{this.QuantityOrdered} * {this.Part.Name}")
@@ -358,12 +364,6 @@ namespace Allors.Domain
                     .WithOrderItem(this)
                     .WithShipmentItem(shipmentItem)
                     .WithQuantity(this.QuantityOrdered)
-                    .Build();
-
-                new ShipmentReceiptBuilder(session)
-                    .WithQuantityAccepted(this.QuantityOrdered)
-                    .WithShipmentItem(shipmentItem)
-                    .WithOrderItem(this)
                     .Build();
 
                 if (this.Part.InventoryItemKind.Serialised)
@@ -389,21 +389,6 @@ namespace Allors.Domain
 
                     serialisedItem.OwnedBy = order.OrderedBy;
                     serialisedItem.Buyer = order.OrderedBy;
-                    serialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session()).Available;
-
-                    var inventoryItem = serialisedItem.SerialisedInventoryItemsWhereSerialisedItem
-                        .FirstOrDefault(v => v.SerialisedItem.Equals(serialisedItem) && v.Facility.Equals(order.Facility));
-
-                    if (inventoryItem == null)
-                    {
-                        new SerialisedInventoryItemBuilder(this.Session())
-                            .WithSerialisedItem(serialisedItem)
-                            .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(this.Session()).Good)
-                            .WithPart(this.Part)
-                            .WithUnitOfMeasure(new UnitsOfMeasure(this.Session()).Piece)
-                            .WithFacility(order.Facility)
-                            .Build();
-                    }
                 }
 
                 if (shipment.ShipToParty is InternalOrganisation internalOrganisation)

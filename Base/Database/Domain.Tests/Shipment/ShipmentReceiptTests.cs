@@ -88,6 +88,10 @@ namespace Allors.Domain
             order.QuickReceive();
             this.Session.Derive();
 
+            var shipment = (PurchaseShipment)item1.OrderShipmentsWhereOrderItem.First.ShipmentItem.ShipmentWhereShipmentItem;
+            shipment.Receive();
+            this.Session.Derive();
+
             var receipt = item1.ShipmentReceiptsWhereOrderItem.Single();
 
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), receipt.InventoryItem.Facility);
@@ -114,6 +118,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.QuickReceive();
+            this.Session.Derive();
+
+            var shipment = (PurchaseShipment)item1.OrderShipmentsWhereOrderItem.First.ShipmentItem.ShipmentWhereShipmentItem;
+            shipment.Receive();
             this.Session.Derive();
 
             var receipt = item1.ShipmentReceiptsWhereOrderItem.Single();
@@ -224,6 +232,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.QuickReceive();
+            this.Session.Derive();
+
+            var shipment = (PurchaseShipment)item1.OrderShipmentsWhereOrderItem.First.ShipmentItem.ShipmentWhereShipmentItem;
+            shipment.Receive();
             this.Session.Derive();
 
             Assert.Equal(10, item1.QuantityReceived);

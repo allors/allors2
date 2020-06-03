@@ -170,7 +170,7 @@ namespace Allors.Repository
         [RoleId("D2C6D6DB-F38B-49E4-9AC5-187CD41D3863")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        public Facility Facility { get; set; }
+        public Facility StoredInFacility { get; set; }
 
         #region Allors
         [Id("57C5DCE6-ACA0-4D03-89B2-4D7CC3AE6E45")]

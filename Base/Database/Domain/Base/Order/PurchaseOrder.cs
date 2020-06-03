@@ -122,9 +122,9 @@ namespace Allors.Domain
                 this.Currency = this.OrderedBy?.PreferredCurrency;
             }
 
-            if (!this.ExistFacility && this.OrderedBy?.StoresWhereInternalOrganisation.Count == 1)
+            if (!this.ExistStoredInFacility && this.OrderedBy?.StoresWhereInternalOrganisation.Count == 1)
             {
-                this.Facility = this.OrderedBy.StoresWhereInternalOrganisation.Single().DefaultFacility;
+                this.StoredInFacility = this.OrderedBy.StoresWhereInternalOrganisation.Single().DefaultFacility;
             }
         }
 
@@ -477,7 +477,7 @@ namespace Allors.Domain
                     .WithShipToParty(this.OrderedBy)
                     .WithShipToAddress(this.ShipToAddress)
                     .WithShipFromParty(this.TakenViaSupplier)
-                    .WithShipToFacility(this.Facility)
+                    .WithShipToFacility(this.StoredInFacility)
                     .Build();
 
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)

@@ -405,7 +405,7 @@ line2")
                 .WithTakenViaSupplier(allors.ActiveSuppliers.First)
                 .WithPurchaseOrderItem(purchaseOrderItem_1)
                 .WithCustomerReference("reference 123")
-                .WithFacility(facility)
+                .WithStoredInFacility(facility)
                 .Build();
 
             var workTask = new WorkTaskBuilder(this.Session)

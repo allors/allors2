@@ -81,6 +81,13 @@ namespace Allors.Domain
         public void BaseOnDerivePurchaseShipmentItem(IDerivation derivation)
         {
             if (this.ShipmentWhereShipmentItem is PurchaseShipment
+                && !this.ExistStoredInFacility
+                && this.ShipmentWhereShipmentItem.ExistShipToFacility)
+            {
+                this.StoredInFacility = this.ShipmentWhereShipmentItem.ShipToFacility;
+            }
+
+            if (this.ShipmentWhereShipmentItem is PurchaseShipment
                 && this.ExistShipmentReceiptWhereShipmentItem)
             {
                 this.Quantity = 0;

@@ -185,6 +185,7 @@
         </div>
 
         <div class="row">
+          <a-mat-select class="col-md" [object]="order" [roleType]="m.PurchaseOrder.StoredInFacility" [options]="facilities" display="Name"></a-mat-select>
           <a-mat-input class="col-md" [object]="order" [roleType]="m.PurchaseOrder.CustomerReference"></a-mat-input>
         </div>
 

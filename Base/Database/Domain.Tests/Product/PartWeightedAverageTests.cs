@@ -17,6 +17,7 @@ namespace Allors.Domain
         public void GivenNonSerialisedUnifiedGood_WhenPurchased_ThenAverageCostIsCalculated()
         {
             this.InternalOrganisation.IsAutomaticallyReceived = true;
+            var defaultFacility = this.InternalOrganisation.StoresWhereInternalOrganisation.Single().DefaultFacility;
 
             var secondFacility = new FacilityBuilder(this.Session)
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
@@ -32,6 +33,7 @@ namespace Allors.Domain
 
             var purchaseOrder1 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
+                .WithStoredInFacility(defaultFacility)
                 .WithDeliveryDate(this.Session.Now())
                 .Build();
 
@@ -54,7 +56,7 @@ namespace Allors.Domain
 
             var purchaseOrder2 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
-                .WithFacility(secondFacility)
+                .WithStoredInFacility(secondFacility)
                 .WithDeliveryDate(this.Session.Now())
                 .Build();
 
@@ -270,6 +272,7 @@ namespace Allors.Domain
             // Purchase: 90 items at 8.35 euro
             var purchaseOrder3 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
+                .WithStoredInFacility(defaultFacility)
                 .WithDeliveryDate(this.Session.Now())
                 .Build();
 
@@ -292,6 +295,7 @@ namespace Allors.Domain
             // Purchase: 50 items at 8.45 euro
             var purchaseOrder4 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
+                .WithStoredInFacility(defaultFacility)
                 .WithDeliveryDate(this.Session.Now())
                 .Build();
 
@@ -482,6 +486,7 @@ namespace Allors.Domain
         public void GivenNonSerialisedNonUnifiedPart_WhenPurchased_ThenAverageCostIsCalculated()
         {
             this.InternalOrganisation.IsAutomaticallyReceived = true;
+            var defaultFacility = this.InternalOrganisation.StoresWhereInternalOrganisation.Single().DefaultFacility;
 
             var secondFacility = new FacilityBuilder(this.Session)
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
@@ -504,6 +509,7 @@ namespace Allors.Domain
             var purchaseOrder1 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .WithDeliveryDate(this.Session.Now())
+                .WithStoredInFacility(defaultFacility)
                 .Build();
 
             this.Session.Derive();
@@ -525,7 +531,7 @@ namespace Allors.Domain
 
             var purchaseOrder2 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
-                .WithFacility(secondFacility)
+                .WithStoredInFacility(secondFacility)
                 .WithDeliveryDate(this.Session.Now())
                 .Build();
 
@@ -741,6 +747,7 @@ namespace Allors.Domain
             // Purchase: 90 items at 8.35 euro
             var purchaseOrder3 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
+                .WithStoredInFacility(defaultFacility)
                 .WithDeliveryDate(this.Session.Now())
                 .Build();
 
@@ -763,6 +770,7 @@ namespace Allors.Domain
             // Purchase: 50 items at 8.45 euro
             var purchaseOrder4 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
+                .WithStoredInFacility(defaultFacility)
                 .WithDeliveryDate(this.Session.Now())
                 .Build();
 

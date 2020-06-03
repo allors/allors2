@@ -32,6 +32,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   vatRates: VatRate[];
   vatRegimes: VatRegime[];
   internalOrganisation: Organisation;
+  facilities: Facility[];
 
   addSupplier = false;
 
@@ -73,10 +74,10 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            this.fetcher.ownWarehouses,
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
+            pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: new Sort(m.Organisation.PartyName),
@@ -93,6 +94,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
+        this.facilities  = loaded.collections.Facilities as Facility[];
 
         this.order = this.allors.context.create('PurchaseOrder') as PurchaseOrder;
         this.order.OrderedBy = this.internalOrganisation;

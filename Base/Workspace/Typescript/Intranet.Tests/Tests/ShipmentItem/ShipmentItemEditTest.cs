@@ -56,7 +56,7 @@ namespace Tests.ShipmentItemTests
 
             var shipmentItemCreate = shipmentItemOverview.CreateShipmentItem();
             shipmentItemCreate
-                .ShipmentItemGood_1.Select(serializedGood.Name)
+                .Good.Select(serializedGood.Name)
                 .ShipmentItemSerialisedItem_1.Select(serialisedItem)
                 .NextSerialisedItemAvailability.Select(new SerialisedItemAvailabilities(this.Session).Sold)
                 .SAVE.Click();
@@ -90,7 +90,7 @@ namespace Tests.ShipmentItemTests
 
             var shipmentItemCreate = shipmentItemOverview.CreateShipmentItem();
             shipmentItemCreate
-                .ShipmentItemGood_1.Select(nonSerializedGood.Name)
+                .Good.Select(nonSerializedGood.Name)
                 .Quantity.Set("5")
                 .SAVE.Click();
 
@@ -128,7 +128,7 @@ namespace Tests.ShipmentItemTests
 
             var shipmentItemCreate = shipmentItemOverview.CreateShipmentItem();
             shipmentItemCreate
-                .ShipmentItemGood_1.Select(serializedGood.Name)
+                .Good.Select(serializedGood.Name)
                 .ShipmentItemSerialisedItem_1.Select(serialisedItem)
                 .NextSerialisedItemAvailability.Select(new SerialisedItemAvailabilities(this.Session).Sold)
                 .SAVE.Click();

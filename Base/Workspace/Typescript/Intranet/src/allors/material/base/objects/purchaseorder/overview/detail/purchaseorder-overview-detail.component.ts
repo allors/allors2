@@ -30,6 +30,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
   vatRates: VatRate[];
   vatRegimes: VatRegime[];
   internalOrganisation: Organisation;
+  facilities: Facility[];
 
   addSupplier = false;
   addTakenViaContactMechanism = false;
@@ -129,6 +130,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
             }),
             pull.VatRate(),
             pull.VatRegime(),
+            pull.Facility({ sort: new Sort(m.Facility.Name) }),
           ];
 
           return this.allors.context
@@ -142,6 +144,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.facilities  = loaded.collections.Facilities as Facility[];
 
         if (this.order.TakenViaSupplier) {
           this.takenVia = this.order.TakenViaSupplier;
