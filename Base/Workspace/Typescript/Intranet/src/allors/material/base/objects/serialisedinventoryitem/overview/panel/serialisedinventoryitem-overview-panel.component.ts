@@ -10,6 +10,7 @@ interface Row extends TableRow {
   object: InventoryItem;
   facility: string;
   item: string;
+  quantity: number;
   state: string;
 }
 
@@ -88,19 +89,21 @@ export class SerialisedInventoryItemComponent extends TestScope implements OnIni
       columns: [
         { name: 'facility', sort: true },
         { name: 'item', sort: true },
+        { name: 'quantity', sort: true },
         { name: 'state', sort: true },
       ],
       defaultAction: this.changeInventory,
     });
 
-    const pullName = `${this.panel.name}_${this.m.SerialisedInventoryItem.name}`;
-
+    const inventoryPullName = `${this.panel.name}_${this.m.SerialisedInventoryItem.name}`;
+    const serialiseditemPullName = `${this.panel.name}_${this.m.SerialisedItem.name}`;
+ 
     this.panel.onPull = (pulls) => {
       const id = this.panel.manager.id;
 
       pulls.push(
         pull.Part({
-          name: pullName,
+          name: inventoryPullName,
           object: id,
           fetch: {
             InventoryItemsWherePart: {
@@ -111,21 +114,37 @@ export class SerialisedInventoryItemComponent extends TestScope implements OnIni
               }
             }
           },
+        }),
+        pull.SerialisedItem({
+          name: inventoryPullName,
+          object: id,
+          fetch: {
+            SerialisedInventoryItemsWhereSerialisedItem: {
+              include: {
+                SerialisedInventoryItemState: x,
+                Facility: x,
+                UnitOfMeasure: x
+              }
+            }
+          },
         })
       );
 
       this.panel.onPulled = (loaded) => {
 
-        this.objects = loaded.collections[pullName] as SerialisedInventoryItem[];
-        this.objects = this.objects.filter(v => v.Quantity > 0);
+        const inventoryObjects = loaded.collections[inventoryPullName] as SerialisedInventoryItem[] ?? [];
+        const serialisedItemobjects = loaded.collections[serialiseditemPullName] as SerialisedInventoryItem[] ?? [];
+
+        this.objects = inventoryObjects.concat(serialisedItemobjects);
 
         if (this.objects) {
-          this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
+          this.table.total = loaded.values[`${this.objects.length}_total`] || this.objects.length;
           this.table.data = this.objects.map((v) => {
             return {
               object: v,
               facility: v.Facility.Name,
               item: v.SerialisedItem.displayName,
+              quantity: v.Quantity,
               state: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
             } as Row;
           });

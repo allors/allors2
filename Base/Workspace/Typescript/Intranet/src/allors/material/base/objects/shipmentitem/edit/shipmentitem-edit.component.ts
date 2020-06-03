@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
-import { InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SerialisedItemState, RequestItemState, RequestState, QuoteItemState, QuoteState, ShipmentItemState, ShipmentState, PurchaseOrderItem, PurchaseOrderState, SupplierOffering, ShipmentReceipt, SerialisedItemAvailability } from '../../../../../domain';
+import { InventoryItem, NonSerialisedInventoryItem, Product, Shipment, ShipmentItem, SerialisedInventoryItem, SerialisedItem, Part, OrderShipment, SalesOrderItem, Good, SalesOrderItemState, SalesOrderState, SerialisedItemState, RequestItemState, RequestState, QuoteItemState, QuoteState, ShipmentItemState, ShipmentState, PurchaseOrderItem, PurchaseOrderState, SupplierOffering, SerialisedItemAvailability, Facility } from '../../../../../domain';
 import { PullRequest, IObject, Equals, Sort, And, ContainedIn, Filter } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -30,7 +30,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   serialisedItems: SerialisedItem[] = [];
   sold: SerialisedItemAvailability;
   orderShipment: OrderShipment;
-  shipmentReceipt: ShipmentReceipt;
   salesOrderItems: SalesOrderItem[] = [];
   selectedSalesOrderItem: SalesOrderItem;
   selectedPurchaseOrderItem: PurchaseOrderItem;
@@ -41,6 +40,9 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   isSerialized: boolean;
   supplierPartsFilter: SearchFactory;
   serialisedItemAvailabilities: SerialisedItemAvailability[];
+  selectedFacility: Facility;
+  addFacility = false;
+  facilities: Facility[];
 
   draftRequestItem: RequestItemState;
   submittedRequestItem: RequestItemState;
@@ -116,7 +118,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
                 Good: x,
                 Part: x,
                 SerialisedItem: x,
-                ShipmentItemState: x
+                ShipmentItemState: x,
+                StoredInFacility: x,
               }
             }),
             pull.ShipmentItem({
@@ -187,6 +190,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
             pull.PurchaseOrderState(),
             pull.ShipmentItemState(),
             pull.ShipmentState(),
+            pull.Facility(),
           ];
 
           return this.allors.context
@@ -205,6 +209,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         this.isCustomerShipment = this.shipment.objectType === this.metaService.m.CustomerShipment;
         this.isPurchaseShipment = this.shipment.objectType === this.metaService.m.PurchaseShipment;
 
+        this.facilities = loaded.collections.Facilities as Facility[];
         this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
         this.sold = this.serialisedItemAvailabilities.find((v: SerialisedItemAvailability) => v.UniqueId === '9bdc0a55-4e3c-4604-b054-2441a551aa1c');
 
@@ -295,10 +300,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           this.title = 'Add Shipment Item';
           this.shipmentItem = this.allors.context.create('ShipmentItem') as ShipmentItem;
           this.shipment.AddShipmentItem(this.shipmentItem);
-
-          if (this.isPurchaseShipment) {
-            this.shipmentReceipt = this.allors.context.create('ShipmentReceipt') as ShipmentReceipt;
-          }
         } else {
 
           // This UI does not allow shipmentitem to be combination from multiple order items
@@ -318,8 +319,6 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
             }
           }
 
-          this.shipmentReceipt = loaded.objects.ShipmentReceipt as ShipmentReceipt;
-
           if (this.shipmentItem.Good) {
             this.previousGood = this.shipmentItem.Good;
             this.loadProduct(this.shipmentItem.Good);
@@ -330,12 +329,13 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
             this.loadPart(this.shipmentItem.Part);
           }
 
+          this.selectedFacility = this.shipmentItem.StoredInFacility;
           this.serialisedItems.push(this.shipmentItem.SerialisedItem);
 
           if (this.shipmentItem.CanWriteQuantity) {
-            this.title = 'Edit Shipment Order Item';
+            this.title = 'Edit Shipment Item';
           } else {
-            this.title = 'View Shipment Order Item';
+            this.title = 'View Shipment Item';
           }
         }
       });
@@ -437,6 +437,11 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
       this.shipmentItem.Quantity = '1';
     }
+  }
+
+  public facilityAdded(facility: Facility): void {
+    this.facilities.push(facility);
+    this.selectedFacility = facility;
   }
 
   private loadProduct(product: Product): void {
@@ -579,9 +584,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
     }
 
     if (this.isPurchaseShipment) {
-      this.shipmentReceipt.OrderItem = this.selectedPurchaseOrderItem;
-      this.shipmentReceipt.ShipmentItem = this.shipmentItem;
-      this.shipmentReceipt.QuantityAccepted = this.shipmentItem.Quantity;
+      this.shipmentItem.StoredInFacility = this.selectedFacility;
     }
   }
 }

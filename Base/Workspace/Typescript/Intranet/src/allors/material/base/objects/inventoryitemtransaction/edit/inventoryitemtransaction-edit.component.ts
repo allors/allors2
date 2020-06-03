@@ -68,7 +68,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            this.fetcher.warehouses,
+            pull.Facility(),
             pull.Part(),
             pull.InventoryTransactionReason(),
             pull.NonSerialisedInventoryItemState(),
@@ -98,7 +98,11 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
             pull.SerialisedItem({
               object: this.data.associationId,
               fetch: {
-                PartWhereSerialisedItem: x,
+                PartWhereSerialisedItem: {
+                  include: {
+                    PartWeightedAverage: x,
+                  }
+                }
               }
             })
           ];

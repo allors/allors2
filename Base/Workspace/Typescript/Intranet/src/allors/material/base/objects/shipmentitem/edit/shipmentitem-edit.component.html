@@ -30,8 +30,8 @@
       </div>
 
       <div class="row">
-        <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good"
-                            display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
+        <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.Part"
+                            display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
         <a-mat-select class="col-md" [disabled]="selectedPurchaseOrderItem || !shipmentItem.isNew || !isSerialized" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
                       [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
       </div>
@@ -43,10 +43,32 @@
           </mat-select>
         </mat-form-field>
       </div>
-    
+
       <div class="row">
-        <a-mat-select class="col-md" [object]="shipmentReceipt" [roleType]="m.ShipmentReceipt.InventoryItem" [options]="inventoryItems" display="facilityName"></a-mat-select>
+        <div class="col">
+          <div class="row">
+            <mat-form-field class="col">
+              <mat-select [(ngModel)]="selectedFacility" name="facilityName" placeholder="facility" multiple="false">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let facility of facilities" [value]="facility">{{ facility.Name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-mini-fab color="accent" type="button" (click)="addFacility = !addFacility">
+              <mat-icon *ngIf="!addFacility">add</mat-icon>
+              <mat-icon *ngIf="addFacility">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 pb-3" *ngIf="addFacility">
+          <mat-card>
+            <mat-card-header>Add new Facility</mat-card-header>
+            <mat-card-content>
+              <facility-inline (cancelled)="addFacility = false" (saved)="facilityAdded($event); addFacility = false"></facility-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
+
     </div>
 
     <div class="row">

@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, FetcherService, SearchFactory } from '../../../../../angular';
-import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering, SerialisedItem, Organisation, UnifiedGood, NonUnifiedPart } from '../../../../../domain';
+import { PurchaseOrder, PurchaseOrderItem, VatRate, VatRegime, Part, SupplierOffering, SerialisedItem, Organisation, UnifiedGood, NonUnifiedPart, Facility } from '../../../../../domain';
 import { PullRequest, IObject, Equals, And, LessThan, Or, Not, Exists, GreaterThan, Filter, ContainedIn } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -30,6 +30,9 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   surcharge: number;
   supplierOfferings: SupplierOffering[];
   supplierOffering: SupplierOffering;
+  selectedFacility: Facility;
+  addFacility = false;
+  facilities: Facility[];
 
   private subscription: Subscription;
   serialisedItems: SerialisedItem[];
@@ -75,6 +78,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
                 PurchaseOrderItemPaymentState: x,
                 Part: x,
                 SerialisedItem: x,
+                StoredInFacility: x,
                 VatRate: x,
                 VatRegime: {
                   VatRate: x,
@@ -94,6 +98,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
             }),
             pull.VatRate(),
             pull.VatRegime(),
+            pull.Facility(),
           ];
 
           if (isCreate && this.data.associationId) {
@@ -130,6 +135,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.facilities = loaded.collections.Facilities as Facility[];
 
         if (isCreate) {
           this.supplierOfferings = loaded.collections.AllSupplierOfferings as SupplierOffering[];
@@ -165,6 +171,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
         } else {
           this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
+          this.selectedFacility = this.orderItem.StoredInFacility;
 
           if (this.orderItem.Part) {
             this.unifiedGood = this.orderItem.Part.objectType.name === m.UnifiedGood.name;
@@ -206,6 +213,11 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
     }
   }
 
+  public facilityAdded(facility: Facility): void {
+    this.facilities.push(facility);
+    this.selectedFacility = facility;
+  }
+
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -213,6 +225,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   }
 
   public save(): void {
+
+    this.onSave();
 
     this.allors.context.save()
       .subscribe(() => {
@@ -231,6 +245,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
   public update(): void {
     const { context } = this.allors;
 
+    this.onSave();
+
     context
       .save()
       .subscribe(() => {
@@ -239,6 +255,10 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       },
         this.saveService.errorHandler
       );
+  }
+
+  private onSave() {
+    this.orderItem.StoredInFacility = this.selectedFacility;
   }
 
   private updateFromSparePart(part: Part) {

@@ -19,7 +19,7 @@ export class PurchaseShipmentCreateComponent extends TestScope implements OnInit
 
   readonly m: Meta;
 
-  title = 'Add Purchase Order';
+  title = 'Add Purchase Shipment';
 
   shipment: PurchaseShipment;
   shipFromContacts: Person[] = [];
