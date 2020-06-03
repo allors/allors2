@@ -43,6 +43,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   selectedFacility: Facility;
   addFacility = false;
   facilities: Facility[];
+  goodIsSelected = false;
+  partIsSelected = false;
 
   draftRequestItem: RequestItemState;
   submittedRequestItem: RequestItemState;
@@ -326,11 +328,15 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           }
 
           if (this.shipmentItem.Good) {
+            this.goodIsSelected = true;
+            this.partIsSelected = false;
             this.previousGood = this.shipmentItem.Good;
             this.loadProduct(this.shipmentItem.Good);
           }
 
           if (this.shipmentItem.Part) {
+            this.partIsSelected = true;
+            this.goodIsSelected = false;
             this.previousPart = this.shipmentItem.Part;
             this.loadPart(this.shipmentItem.Part);
           }
@@ -386,12 +392,18 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   }
 
   public goodSelected(product: Product): void {
+    this.goodIsSelected = true;
+    this.partIsSelected = false;
+
     if (product) {
       this.loadProduct(product);
     }
   }
 
   public partSelected(part: Part): void {
+    this.partIsSelected = true;
+    this.goodIsSelected = false;
+
     if (part) {
       this.loadPart(part);
     }
