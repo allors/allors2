@@ -46,7 +46,7 @@ namespace Allors.Domain
                 this.UnitOfMeasure = this.Part?.UnitOfMeasure;
             }
 
-            if (this.ExistPart && this.Part.InventoryItemKind.Serialised)
+            if (this.ExistPart && this.Part.InventoryItemKind.IsSerialised)
             {
                 if (!this.ExistSerialisedInventoryItemState)
                 {
@@ -152,7 +152,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.Part.InventoryItemKind.Serialised)
+            if (this.Part.InventoryItemKind.IsSerialised)
             {
                 if (this.Quantity != 1 && this.Quantity != -1 && this.Quantity != 0)
                 {
@@ -195,13 +195,13 @@ namespace Allors.Domain
             var facility = this.Facility ?? this.Part.DefaultFacility;
             var unitOfMeasure = this.UnitOfMeasure ?? this.Part.UnitOfMeasure;
 
-            if (this.Part.InventoryItemKind.Serialised && (this.Quantity < -1 || this.Quantity > 1))
+            if (this.Part.InventoryItemKind.IsSerialised && (this.Quantity < -1 || this.Quantity > 1))
             {
                 var message = "Invalid transaction";
                 derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
             }
 
-            if (this.Part.InventoryItemKind.Serialised && this.Quantity > 0)
+            if (this.Part.InventoryItemKind.IsSerialised && this.Quantity > 0)
             {
                 var inventoryItems = this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem;
                 inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
@@ -224,7 +224,7 @@ namespace Allors.Domain
                     this.InventoryItem = builder.Build();
                 }
             }
-            else if (this.Part.InventoryItemKind.NonSerialised)
+            else if (this.Part.InventoryItemKind.IsNonSerialised)
             {
                 var inventoryItems = this.Part.InventoryItemsWherePart;
                 inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);

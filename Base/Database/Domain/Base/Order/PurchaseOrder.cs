@@ -501,7 +501,7 @@ namespace Allors.Domain
                             .WithQuantity(orderItem.QuantityOrdered)
                             .Build();
 
-                        if (orderItem.Part.InventoryItemKind.Serialised)
+                        if (orderItem.Part.InventoryItemKind.IsSerialised)
                         {
                             var serialisedItem = orderItem.SerialisedItem;
                             if (!orderItem.ExistSerialisedItem)

@@ -138,7 +138,7 @@ namespace Allors.Domain
                     }
                 }
 
-                if (shipmentItem.Part.InventoryItemKind.Serialised)
+                if (shipmentItem.Part.InventoryItemKind.IsSerialised)
                 {
                     new InventoryItemTransactionBuilder(this.Session())
                         .WithPart(shipmentItem.Part)

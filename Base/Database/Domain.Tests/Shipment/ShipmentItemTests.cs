@@ -9,11 +9,34 @@ using Allors.Domain.TestPopulation;
 
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
     using Xunit;
 
     public class ShipmentItemTests : DomainTest
     {
+        [Fact]
+        public void GivenPurchaseShipmentItemForNonSerialisedNotFromPurchaseOrder_WhenDerived_ThenUnitPurchasePriceIsRequired()
+        {
+            var good1 = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
+
+            User user = this.Administrator;
+            this.Session.SetUser(user);
+
+            var shipment = new PurchaseShipmentBuilder(this.Session)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .WithShipFromParty(this.InternalOrganisation.ActiveSuppliers.First)
+                .Build();
+
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(good1.Part).WithQuantity(1).Build();
+            shipment.AddShipmentItem(shipmentItem);
+
+            var validation = this.Session.Derive(false);
+
+            Assert.True(validation.HasErrors);
+            Assert.Single(validation.Errors);
+            Assert.Contains(MetaShipmentItem.Instance.UnitPurchasePrice, validation.Errors.First().RoleTypes);
+        }
     }
 
     [Trait("Category", "Security")]

@@ -7,8 +7,8 @@ namespace Allors.Domain
 {
     public partial class InventoryItemKind
     {
-        public bool Serialised => this.Equals(new InventoryItemKinds(this.Strategy.Session).Serialised);
+        public bool IsSerialised => this.Equals(new InventoryItemKinds(this.Strategy.Session).Serialised);
 
-        public bool NonSerialised => this.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised);
+        public bool IsNonSerialised => this.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised);
     }
 }

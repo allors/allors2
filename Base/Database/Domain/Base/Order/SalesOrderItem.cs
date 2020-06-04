@@ -458,7 +458,7 @@ namespace Allors.Domain
 
                 if (this.Part != null && salesOrder?.TakenBy != null)
                 {
-                    if (this.Part.InventoryItemKind.Serialised)
+                    if (this.Part.InventoryItemKind.IsSerialised)
                     {
                         if (!this.ExistReservedFromSerialisedInventoryItem)
                         {

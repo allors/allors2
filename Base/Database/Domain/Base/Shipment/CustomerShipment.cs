@@ -297,7 +297,7 @@ namespace Allors.Domain
 
                     foreach (InventoryItem inventoryItem in shipmentItem.ReservedFromInventoryItems)
                     {
-                        if (inventoryItem.Part.InventoryItemKind.Serialised)
+                        if (inventoryItem.Part.InventoryItemKind.IsSerialised)
                         {
                             new InventoryItemTransactionBuilder(this.Session())
                                 .WithPart(shipmentItem.Part)

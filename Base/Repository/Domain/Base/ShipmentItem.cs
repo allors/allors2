@@ -211,7 +211,6 @@ namespace Allors.Repository
         [AssociationId("f3787589-5b6a-476f-a629-cf6c42ad9038")]
         [RoleId("65357b47-cb61-45b5-a064-69c65a7a2e97")]
         #endregion
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]

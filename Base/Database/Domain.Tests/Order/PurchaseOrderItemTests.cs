@@ -434,7 +434,7 @@ namespace Allors.Domain
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.order.TakenViaSupplier).Build();
             this.Session.Derive();
 
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).WithUnitPurchasePrice(1).Build();
             shipment.AddShipmentItem(shipmentItem);
             this.Session.Derive();
 
@@ -741,7 +741,7 @@ namespace Allors.Domain
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.order.TakenViaSupplier).Build();
             this.Session.Derive();
 
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantity(10).WithUnitPurchasePrice(1).Build();
             shipment.AddShipmentItem(shipmentItem);
             this.Session.Derive();
 

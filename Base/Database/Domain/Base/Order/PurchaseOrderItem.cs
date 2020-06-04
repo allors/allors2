@@ -187,7 +187,7 @@ namespace Allors.Domain
                 this.TotalIncVat = this.TotalExVat + this.TotalVat;
             }
 
-            if (this.ExistPart && this.Part.InventoryItemKind.Serialised)
+            if (this.ExistPart && this.Part.InventoryItemKind.IsSerialised)
             {
                 derivation.Validation.AssertAtLeastOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
                 derivation.Validation.AssertExistsAtMostOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
@@ -366,7 +366,7 @@ namespace Allors.Domain
                     .WithQuantity(this.QuantityOrdered)
                     .Build();
 
-                if (this.Part.InventoryItemKind.Serialised)
+                if (this.Part.InventoryItemKind.IsSerialised)
                 {
                     var serialisedItem = this.SerialisedItem;
                     if (!this.ExistSerialisedItem)

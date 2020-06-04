@@ -179,7 +179,7 @@ namespace Allors.Domain
 
         private void SyncDefaultInventoryItem()
         {
-            if (this.InventoryItemKind.NonSerialised)
+            if (this.InventoryItemKind.IsNonSerialised)
             {
                 var inventoryItems = this.InventoryItemsWherePart;
 

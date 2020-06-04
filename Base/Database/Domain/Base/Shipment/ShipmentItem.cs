@@ -80,14 +80,25 @@ namespace Allors.Domain
 
         public void BaseOnDerivePurchaseShipmentItem(IDerivation derivation)
         {
-            if (this.ShipmentWhereShipmentItem is PurchaseShipment
+            if (this.ExistShipmentWhereShipmentItem
+                && this.ShipmentWhereShipmentItem is PurchaseShipment
+                && this.ExistPart
+                && this.Part.InventoryItemKind.IsNonSerialised
+                && !this.ExistUnitPurchasePrice)
+            {
+                derivation.Validation.AssertExists(this, this.Meta.UnitPurchasePrice);
+            }
+
+            if (this.ExistShipmentWhereShipmentItem
+                && this.ShipmentWhereShipmentItem is PurchaseShipment
                 && !this.ExistStoredInFacility
                 && this.ShipmentWhereShipmentItem.ExistShipToFacility)
             {
                 this.StoredInFacility = this.ShipmentWhereShipmentItem.ShipToFacility;
             }
 
-            if (this.ShipmentWhereShipmentItem is PurchaseShipment
+            if (this.ExistShipmentWhereShipmentItem
+                && this.ShipmentWhereShipmentItem is PurchaseShipment
                 && this.ExistShipmentReceiptWhereShipmentItem)
             {
                 this.Quantity = 0;
