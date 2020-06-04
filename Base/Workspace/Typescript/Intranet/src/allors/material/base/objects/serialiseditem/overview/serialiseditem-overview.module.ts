@@ -36,6 +36,10 @@ import { CommunicationEventOverviewPanelModule } from '../../communicationevent/
 import { ContactMechanismOverviewPanelModule } from '../../contactmechanism/overview/panel/contactmechanism-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
 import { PartyRelationshipOverviewPanelModule } from '../../partyrelationship/overview/panel/partyrelationship-overview-panel.module';
+import { ProductQuoteOverviewPanelModule } from '../../../../base/objects/productquote/overview/panel/productquote-overview-panel.module';
+import { RequestForQuoteOverviewPanelModule } from '../../../../base/objects/requestforquote/overview/panel/requestforquote-overview-panel.module';
+import { SalesInvoiceOverviewPanelModule } from '../../salesinvoice/overview/panel/salesinvoice-overview-panel.module';
+import { SalesOrderOverviewPanelModule } from '../../../../base/objects/salesorder/overview/panel/salesorder-overview-panel.module';
 import { SerialisedInventoryItemOverviewPanelModule } from '../../serialisedinventoryitem/overview/panel/serialisedinventoryitem-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortFixedAssetAssignmentOverviewPanelModule } from '../../workeffortfixedassetassignment/overview/panel/workeffortfixedassetassignment-overview-panel.module';
@@ -62,6 +66,10 @@ export { SerialisedItemOverviewComponent } from './serialiseditem-overview.compo
     ContactMechanismOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
     PartyRelationshipOverviewPanelModule,
+    ProductQuoteOverviewPanelModule,
+    RequestForQuoteOverviewPanelModule,
+    SalesInvoiceOverviewPanelModule,
+    SalesOrderOverviewPanelModule,
     SerialisedInventoryItemOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortFixedAssetAssignmentOverviewPanelModule,

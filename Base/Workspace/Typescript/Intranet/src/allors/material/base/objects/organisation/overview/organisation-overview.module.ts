@@ -34,7 +34,11 @@ import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmech
 import { PartyRateOverviewPanelModule } from '../../partyrate/overview/panel/partyrate-overview-panel.module';
 import { PurchaseOrderOverviewPanelModule } from '../../purchaseorder/overview/panel/purchaseorder-overview-panel.module';
 import { PartyRelationshipOverviewPanelModule } from '../../partyrelationship/overview/panel/partyrelationship-overview-panel.module';
+import { ProductQuoteOverviewPanelModule } from '../../../../base/objects/productquote/overview/panel/productquote-overview-panel.module';
 import { RepeatingPurchaseInvoiceOverviewPanelModule } from '../../repeatingpurchaseinvoice/overview/panel/repeatingpurchaseinvoice-overview-panel.module';
+import { RequestForQuoteOverviewPanelModule } from '../../requestforquote/overview/panel/requestforquote-overview-panel.module';
+import { SalesInvoiceOverviewPanelModule } from '../../salesinvoice/overview/panel/salesinvoice-overview-panel.module';
+import { SalesOrderOverviewPanelModule } from '../../salesorder/overview/panel/salesorder-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 import { WorkTaskOverviewPanelModule } from '../../worktask/overview/panel/worktask-overview-panel.module';
@@ -62,6 +66,10 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     PartyRateOverviewPanelModule,
     PartyRelationshipOverviewPanelModule,
     PurchaseOrderOverviewPanelModule,
+    ProductQuoteOverviewPanelModule,
+    RequestForQuoteOverviewPanelModule,
+    SalesInvoiceOverviewPanelModule,
+    SalesOrderOverviewPanelModule,
     RepeatingPurchaseInvoiceOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,
