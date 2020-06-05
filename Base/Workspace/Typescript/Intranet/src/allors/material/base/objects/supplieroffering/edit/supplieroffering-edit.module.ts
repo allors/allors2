@@ -18,6 +18,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
 import { AllorsMaterialChipsModule } from '../../../../core/components/role/chips';
 import { AllorsMaterialFooterModule } from '../../../../core/components/footer';
 import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
@@ -41,6 +42,7 @@ export { SupplierOfferingEditComponent } from './supplieroffering-edit.component
     SupplierOfferingEditComponent,
   ],
   imports: [
+    AllorsMaterialAutoCompleteModule,
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialDatetimepickerModule,

@@ -10,7 +10,7 @@ import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData } from '../../../../../material/core/services/object';
-import { SaveService } from '../../../../../../allors/material';
+import { SaveService, FiltersService } from '../../../../../../allors/material';
 
 
 @Component({
@@ -40,6 +40,7 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
     public dialogRef: MatDialogRef<SupplierOfferingEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
+    public filtersService: FiltersService,
     private saveService: SaveService,
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId,
