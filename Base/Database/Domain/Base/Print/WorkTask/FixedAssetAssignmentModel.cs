@@ -15,8 +15,8 @@ namespace Allors.Domain.Print.WorkTaskModel
             var session = assignment.Strategy.Session;
 
             this.Name = assignment.FixedAsset?.Name;
-            this.Comment = assignment.FixedAsset?.Comment;
-
+            this.Comment = assignment.FixedAsset?.Comment?.Split('\n');
+            
             if (assignment.FixedAsset is SerialisedItem serialisedItem)
             {
                 this.CustomerReferenceNumber = serialisedItem.CustomerReferenceNumber;
@@ -45,6 +45,6 @@ namespace Allors.Domain.Print.WorkTaskModel
 
         public string Hours { get; }
 
-        public string Comment { get; }
+        public string[] Comment { get; }
     }
 }

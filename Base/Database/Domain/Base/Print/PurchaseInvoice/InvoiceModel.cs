@@ -11,7 +11,7 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
     {
         public InvoiceModel(PurchaseInvoice invoice)
         {
-            this.Description = invoice.Description;
+            this.Description = invoice.Description?.Split('\n');
             this.Number = invoice.InvoiceNumber;
             this.Date = invoice.InvoiceDate.ToString("yyyy-MM-dd");
             this.CustomerReference = invoice.CustomerReference;
@@ -25,7 +25,7 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
             this.TotalIncVat = invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
         }
 
-        public string Description { get; }
+        public string[] Description { get; }
 
         public string Number { get; }
 

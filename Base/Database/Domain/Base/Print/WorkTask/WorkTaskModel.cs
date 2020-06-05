@@ -14,9 +14,9 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             this.Number = workTask.WorkEffortNumber;
             this.Name = workTask.Name;
-            this.Description = workTask.Description;
-            this.WorkDone = workTask.WorkDone;
-
+            this.Description = workTask.Description?.Split('\n');
+            this.WorkDone = workTask.WorkDone?.Split('\n');
+            
             this.Date = (workTask.ThroughDate() ?? workTask.Strategy.Session.Now()).ToString("yyyy-MM-dd");
             this.Purpose = string.Join(", ", workTask.WorkEffortPurposes.Select(v => v.Name));
             this.Facility = workTask.Facility?.Name;
@@ -63,9 +63,9 @@ namespace Allors.Domain.Print.WorkTaskModel
 
         public string Name { get; }
 
-        public string Description { get; }
+        public string[] Description { get; }
 
-        public string WorkDone { get; }
+        public string[] WorkDone { get; }
 
         public string Purpose { get; }
 

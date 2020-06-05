@@ -11,7 +11,7 @@ namespace Allors.Domain.Print.PurchaseOrderModel
     {
         public OrderModel(PurchaseOrder order)
         {
-            this.Description = order.Description;
+            this.Description = order.Description?.Split('\n');
             this.Number = order.OrderNumber;
             this.Date = order.OrderDate.ToString("yyyy-MM-dd");
             this.CustomerReference = order.CustomerReference;
@@ -25,7 +25,7 @@ namespace Allors.Domain.Print.PurchaseOrderModel
             this.TotalIncVat = order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
         }
 
-        public string Description { get; }
+        public string[] Description { get; }
 
         public string Number { get; }
 

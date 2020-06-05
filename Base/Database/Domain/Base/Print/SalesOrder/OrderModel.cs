@@ -14,7 +14,7 @@ namespace Allors.Domain.Print.SalesOrderModel
         {
             var currencyIsoCode = order.Currency.IsoCode;
 
-            this.Description = order.Description;
+            this.Description = order.Description?.Split('\n');
             this.Currency = currencyIsoCode;
             this.Number = order.OrderNumber;
             this.Date = order.OrderDate.ToString("yyyy-MM-dd");
@@ -41,7 +41,7 @@ namespace Allors.Domain.Print.SalesOrderModel
             this.PaymentNetDays = order.PaymentNetDays;
         }
 
-        public string Description { get; }
+        public string[] Description { get; }
 
         public string Number { get; }
 

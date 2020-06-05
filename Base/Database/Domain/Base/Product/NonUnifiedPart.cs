@@ -68,18 +68,13 @@ namespace Allors.Domain
 
             this.ProductNumber = partIdentification.Identification;
 
+            this.RemoveSuppliedBy();
             foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
             {
                 if (supplierOffering.FromDate <= this.Session().Now()
                     && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.Session().Now()))
                 {
                     this.AddSuppliedBy(supplierOffering.Supplier);
-                }
-
-                if (supplierOffering.FromDate > this.Session().Now()
-                    || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < this.Session().Now()))
-                {
-                    this.RemoveSuppliedBy(supplierOffering.Supplier);
                 }
             }
 

@@ -22,6 +22,7 @@ interface Row extends TableRow {
   reference: string;
   description: string;
   totalExVat: string;
+  totalIncVat: string;
   lastModifiedDate: string;
 }
 
@@ -163,6 +164,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
         { name: 'state' },
         { name: 'description', sort: true },
         { name: 'totalExVat', sort: true },
+        { name: 'totalIncVat', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [
@@ -326,6 +328,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
             reference: v.SalesInvoiceState && `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,
             description: v.Description,
             totalExVat: v.TotalExVat,
+            totalIncVat: v.TotalIncVat,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });

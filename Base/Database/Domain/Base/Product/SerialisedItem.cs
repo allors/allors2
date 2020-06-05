@@ -69,7 +69,10 @@ namespace Allors.Domain
 
             this.SuppliedBy = this.AssignedSuppliedBy ?? this.PartWhereSerialisedItem?.SupplierOfferingsWherePart?.FirstOrDefault()?.Supplier;
 
-            var doubles = this.PartWhereSerialisedItem?.SerialisedItems.Where(v => v.SerialNumber.Equals(this.SerialNumber)).ToArray();
+            var doubles = this.PartWhereSerialisedItem?.SerialisedItems.Where(v =>
+                !string.IsNullOrEmpty(v.SerialNumber)
+                && v.SerialNumber != "."
+                && v.SerialNumber.Equals(this.SerialNumber)).ToArray();
             if (doubles?.Length > 1)
             {
                 derivation.Validation.AddError(this, this.Meta.SerialNumber, ErrorMessages.SameSerialNumber);

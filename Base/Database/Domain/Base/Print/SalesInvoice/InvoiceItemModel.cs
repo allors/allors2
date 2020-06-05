@@ -18,25 +18,27 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
             this.Product = item.ExistProduct ? item.Product?.Name : item.Part?.Name;
 
-            if (item.ExistDescription)
+            var description = item.Description;
+            if (description != null)
             {
-                this.Description = item.Description;
-                this.Description = Markdown.ToPlainText(this.Description);
+                description = Markdown.ToPlainText(description);
             }
+
+            this.Description = description?.Split('\n');
 
             this.Quantity = item.Quantity;
             // TODO: Where does the currency come from?
             var currency = "€";
             this.Price = item.UnitPrice.ToString("N2", new CultureInfo("nl-BE"));
             this.Amount = item.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.Comment = item.Comment;
+            this.Comment = item.Comment?.Split('\n');
         }
 
         public string Reference { get; }
 
         public string Product { get; }
 
-        public string Description { get; }
+        public string[] Description { get; }
 
         public decimal Quantity { get; }
 
@@ -44,6 +46,6 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
         public string Amount { get; }
 
-        public string Comment { get; }
+        public string[] Comment { get; }
     }
 }

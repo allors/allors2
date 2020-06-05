@@ -37,6 +37,11 @@ namespace Allors.Domain
             {
                 this.EstimatedArrivalDate = this.Session().Now().Date;
             }
+
+            if (!this.ExistShipmentNumber && this.ExistShipToParty)
+            {
+                this.ShipmentNumber = ((InternalOrganisation)this.ShipToParty).NextShipmentNumber(this.Session().Now().Year);
+            }
         }
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
