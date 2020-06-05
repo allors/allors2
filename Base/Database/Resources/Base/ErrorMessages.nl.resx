@@ -255,4 +255,7 @@
   <data name="SameSerialNumber" xml:space="preserve">
     <value>Serialised item met dit serie nummer bestaat al</value>
   </data>
+  <data name="InvalidQuantity" xml:space="preserve">
+    <value>Aantal is niet toegestaan</value>
+  </data>
 </root>

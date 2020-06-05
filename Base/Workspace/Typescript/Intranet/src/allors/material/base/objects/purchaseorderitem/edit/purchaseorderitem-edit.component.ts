@@ -36,7 +36,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
   private subscription: Subscription;
   serialisedItems: SerialisedItem[];
-  serialised: boolean;
+  isSerialised: boolean;
   internalOrganisation: Organisation;
   sparePartsFilter: SearchFactory;
   nonUnifiedPart: boolean;
@@ -202,6 +202,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
       this.nonUnifiedPart = this.orderItem.Part.objectType.name === this.m.NonUnifiedPart.name;
 
       this.updateFromPart(part);
+    } else {
+        this.orderItem.QuantityOrdered = '1';
     }
   }
 
@@ -306,7 +308,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
     this.allors.context
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
+        this.isSerialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
         const supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
         this.supplierOffering = supplierOfferings.find(v => moment(v.FromDate).isBefore(moment())
@@ -352,7 +354,11 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
     this.allors.context
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
+        this.isSerialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
+
+        if (this.isSerialised) {
+          this.orderItem.QuantityOrdered = '1';
+        }
 
         const serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
         this.serialisedItems = serialisedItems.filter(v => v.SerialisedInventoryItemsWhereSerialisedItem.length === 0 || v.SerialisedInventoryItemsWhereSerialisedItem[0].Quantity === 0);

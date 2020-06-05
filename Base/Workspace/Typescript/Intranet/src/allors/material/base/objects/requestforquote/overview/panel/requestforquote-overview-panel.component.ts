@@ -136,7 +136,7 @@ export class RequestForQuoteOverviewPanelComponent extends TestScope implements 
           return {
             object: v,
             number: v.RequestNumber,
-            customer: v.Originator.displayName,
+            customer: v.Originator && v.Originator.displayName,
             state: v.RequestState ? v.RequestState.Name : '',
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;

@@ -261,4 +261,7 @@
   <data name="SameSerialNumber" xml:space="preserve">
     <value>Serialised item with same serial number already exitst</value>
   </data>
+  <data name="InvalidQuantity" xml:space="preserve">
+    <value>Quantity is not valid</value>
+  </data>
 </root>

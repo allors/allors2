@@ -27,10 +27,10 @@
     </div>
 
     <div *ngIf="unifiedGood" class="row">
-      <a-mat-select class="col-md" [disabled]="!serialised" [object]="orderItem" (changed)="partSelected($event)"
+      <a-mat-select class="col-md" [disabled]="!isSerialised" [object]="orderItem" (changed)="partSelected($event)"
         [roleType]="m.PurchaseOrderItem.SerialisedItem" [options]="serialisedItems" display="displayName">
       </a-mat-select>
-      <a-mat-input class="col-md" [disabled]="!serialised || orderItem.SerialisedItem" [object]="orderItem"
+      <a-mat-input class="col-md" [disabled]="!isSerialised || orderItem.SerialisedItem" [object]="orderItem"
         [roleType]="m.PurchaseOrderItem.SerialNumber"></a-mat-input>
     </div>
 

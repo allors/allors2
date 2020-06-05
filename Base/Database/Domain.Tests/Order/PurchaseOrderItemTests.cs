@@ -6,7 +6,10 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
+    using Resources;
     using Xunit;
 
     public class PurchaseOrderItemTests : DomainTest
@@ -75,6 +78,150 @@ namespace Allors.Domain
 
             this.Session.Derive();
             this.Session.Commit();
+        }
+
+        [Fact]
+        public void GivenOrderItemForSubcontractingWork_WhenDerived_ThenOrderQuantityMustBeEqualTo1()
+        {
+            this.InstantiateObjects(this.Session);
+
+            var item = new PurchaseOrderItemBuilder(this.Session)
+                .WithDescription("Do Something")
+                .WithQuantityOrdered(0)
+                .WithAssignedUnitPrice(1)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            var expectedErrorMessage = ErrorMessages.InvalidQuantity;
+
+            var errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
+
+            this.Session.Rollback();
+
+            item = new PurchaseOrderItemBuilder(this.Session)
+                .WithDescription("Do Something")
+                .WithQuantityOrdered(2)
+                .WithAssignedUnitPrice(1)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
+
+            this.Session.Rollback();
+
+            item = new PurchaseOrderItemBuilder(this.Session)
+                .WithDescription("Do Something")
+                .WithQuantityOrdered(1)
+                .WithAssignedUnitPrice(1)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            Assert.False(this.Session.Derive(false).HasErrors);
+        }
+
+        [Fact]
+        public void GivenOrderItemForSerialisedPart_WhenDerived_ThenOrderQuantityMustBeEqualTo1()
+        {
+            this.InstantiateObjects(this.Session);
+
+            var serialisedPart = new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(serialisedPart)
+                .WithSerialNumber("1")
+                .WithQuantityOrdered(0)
+                .WithAssignedUnitPrice(1)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            var expectedErrorMessage = ErrorMessages.InvalidQuantity;
+
+            var errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
+
+            this.Session.Rollback();
+
+            item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(serialisedPart)
+                .WithSerialNumber("1")
+                .WithQuantityOrdered(2)
+                .WithAssignedUnitPrice(1)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
+
+            this.Session.Rollback();
+
+            item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(serialisedPart)
+                .WithAssignedUnitPrice(1)
+                .WithQuantityOrdered(1)
+                .WithSerialNumber("1")
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            Assert.False(this.Session.Derive(false).HasErrors);
+        }
+
+        [Fact]
+        public void GivenOrderItemForNonSerialisedPart_WhenDerived_ThenOrderQuantityMustBeGreaterEqual1()
+        {
+            this.InstantiateObjects(this.Session);
+
+            var nonSerialisedPart = new UnifiedGoodBuilder(this.Session).WithNonSerialisedDefaults(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(nonSerialisedPart)
+                .WithQuantityOrdered(0)
+                .WithAssignedUnitPrice(1)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            var expectedErrorMessage = ErrorMessages.InvalidQuantity;
+
+            var errors = new List<IDerivationError>(this.Session.Derive(false).Errors);
+            Assert.Single(errors.FindAll(e => e.Message.Equals(expectedErrorMessage)));
+
+            this.Session.Rollback();
+
+            item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(nonSerialisedPart)
+                .WithQuantityOrdered(2)
+                .WithAssignedUnitPrice(1)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            Assert.False(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(nonSerialisedPart)
+                .WithAssignedUnitPrice(1)
+                .WithQuantityOrdered(2)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]

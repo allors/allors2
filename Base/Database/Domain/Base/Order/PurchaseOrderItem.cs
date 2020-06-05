@@ -191,6 +191,21 @@ namespace Allors.Domain
             {
                 derivation.Validation.AssertAtLeastOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
                 derivation.Validation.AssertExistsAtMostOne(this, M.PurchaseOrderItem.SerialisedItem, M.PurchaseOrderItem.SerialNumber);
+
+                if (this.QuantityOrdered != 1)
+                {
+                    derivation.Validation.AddError(this, M.PurchaseOrderItem.QuantityOrdered, Resources.ErrorMessages.InvalidQuantity);
+                }
+            }
+
+            if (!this.ExistPart && this.QuantityOrdered != 1)
+            {
+                derivation.Validation.AddError(this, M.PurchaseOrderItem.QuantityOrdered, Resources.ErrorMessages.InvalidQuantity);
+            }
+
+            if (this.ExistPart && this.Part.InventoryItemKind.IsNonSerialised && this.QuantityOrdered == 0)
+            {
+                derivation.Validation.AddError(this, M.PurchaseOrderItem.QuantityOrdered, Resources.ErrorMessages.InvalidQuantity);
             }
 
             var purchaseOrderItemShipmentStates = new PurchaseOrderItemShipmentStates(derivation.Session);
