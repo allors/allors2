@@ -31,6 +31,20 @@ namespace Allors.Domain
             }
         }
 
+        public static void BaseOnPreDerive(this Request @this, ObjectOnPreDerive method)
+        {
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (iteration.IsMarked(@this) || changeSet.IsCreated(@this) || changeSet.HasChangedRoles(@this))
+            {
+                foreach (RequestItem requestItem in @this.RequestItems)
+                {
+                    iteration.AddDependency(requestItem, @this);
+                    iteration.Mark(requestItem);
+                }
+            }
+        }
+
         public static void BaseOnDerive(this Request @this, ObjectOnDerive method)
         {
             var session = @this.Strategy.Session;

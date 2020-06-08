@@ -18,9 +18,12 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public bool IsValid => !(this.RequestItemState.IsCancelled || this.RequestItemState.IsRejected);
+
         internal bool IsDeletable =>
             (this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Draft)
                 || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Submitted)
+                || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Rejected)
                 || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Cancelled))
             && !this.ExistQuoteItemsWhereRequestItem;
 
@@ -52,6 +55,30 @@ namespace Allors.Domain
             derivation.Validation.AssertAtLeastOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.SerialisedItem, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
             derivation.Validation.AssertExistsAtMostOne(this, M.RequestItem.Product, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
             derivation.Validation.AssertExistsAtMostOne(this, M.RequestItem.SerialisedItem, M.RequestItem.ProductFeature, M.RequestItem.Description, M.RequestItem.NeededSkill, M.RequestItem.Deliverable);
+
+            var requestItemStates = new RequestItemStates(derivation.Session);
+            if (this.IsValid)
+            {
+                if (this.RequestWhereRequestItem.RequestState.IsSubmitted && this.RequestItemState.IsDraft)
+                {
+                    this.RequestItemState = requestItemStates.Submitted;
+                }
+
+                if (this.RequestWhereRequestItem.RequestState.IsCancelled)
+                {
+                    this.RequestItemState = requestItemStates.Cancelled;
+                }
+
+                if (this.RequestWhereRequestItem.RequestState.IsRejected)
+                {
+                    this.RequestItemState = requestItemStates.Rejected;
+                }
+
+                if (this.RequestWhereRequestItem.RequestState.IsQuoted)
+                {
+                    this.RequestItemState = requestItemStates.Quoted;
+                }
+            }
 
             if (!this.ExistUnitOfMeasure)
             {

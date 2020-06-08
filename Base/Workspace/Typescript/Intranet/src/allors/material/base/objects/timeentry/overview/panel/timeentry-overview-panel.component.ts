@@ -2,7 +2,7 @@ import { Component, Self, OnInit, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, Action, MetaService, TestScope } from '../../../../../../angular';
 import { TimeEntry, WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { DeleteService, TableRow, Table, ObjectData, EditService } from '../../../../..';
+import { DeleteService, TableRow, Table, ObjectData, EditService, Sorter } from '../../../../..';
 import * as moment from 'moment/moment';
 
 interface Row extends TableRow {
@@ -82,6 +82,14 @@ export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit
       autoFilter: true,
     });
 
+    const sorter = new Sorter(
+      {
+        number: [this.m.TimeEntry.FromDate],
+        name: [this.m.TimeEntry.ThroughDate],
+        description: [this.m.TimeEntry.AmountOfTime],
+      }
+    );
+
     const pullName = `${this.panel.name}_${this.m.TimeEntry.name}`;
 
     this.panel.onPull = (pulls) => {
@@ -92,6 +100,7 @@ export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit
       pulls.push(
         pull.WorkEffort({
           name: pullName,
+          // sort: sorter.create(sort),
           object: id,
           fetch: {
             ServiceEntriesWhereWorkEffort: {
