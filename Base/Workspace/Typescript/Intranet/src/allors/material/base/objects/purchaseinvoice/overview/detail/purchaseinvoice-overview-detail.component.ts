@@ -110,6 +110,10 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
               InvoiceItemType: x
             },
             BilledFrom: x,
+            BilledFromContactMechanism: {
+              PostalAddress_Country: {
+              }
+            },
             BilledFromContactPerson: x,
             BillToEndCustomer: x,
             BillToEndCustomerContactPerson: x,
@@ -163,6 +167,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
               include: {
                 BilledFrom: x,
                 BilledFromContactPerson: x,
+                BilledFromContactMechanism: x,
                 ShipToCustomer: x,
                 BillToEndCustomer: x,
                 BillToEndCustomerContactMechanism: x,
