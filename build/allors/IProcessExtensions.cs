@@ -5,7 +5,7 @@ public static partial class IProcessExtensions
 {
     private const int SUCCESS = 0;
 
-    public static void Execute(this IProcess @this)
+    public static void ThrowOnFailure(this IProcess @this)
     {
         if (!@this.WaitForExit())
         {
