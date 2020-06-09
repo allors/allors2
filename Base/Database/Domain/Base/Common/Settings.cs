@@ -1,4 +1,4 @@
-﻿// <copyright file="Settings.cs" company="Allors bvba">
+// <copyright file="Settings.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -35,7 +35,7 @@ namespace Allors.Domain
 
         public string NextSerialisedItemNumber()
         {
-            var serialisedItemNumber = this.SerialisedItemCounter.NextValue();
+            var serialisedItemNumber = ++this.SerialisedItemCounter.Value;
             return string.Concat(this.SerialisedItemPrefix, serialisedItemNumber);
         }
 

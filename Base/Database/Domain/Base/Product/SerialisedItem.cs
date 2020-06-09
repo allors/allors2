@@ -31,12 +31,6 @@ namespace Allors.Domain
                 this.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).NA;
             }
 
-            // TODO: move to service
-            //if (!this.ExistItemNumber)
-            //{
-            //    this.ItemNumber = this.Strategy.Session.GetSingleton().Settings.NextSerialisedItemNumber();
-            //}
-
             if (!this.ExistDerivationTrigger)
             {
                 this.DerivationTrigger = Guid.NewGuid();

@@ -15,6 +15,7 @@ namespace Allors.Domain
             }
         }
 
+        // TODO: Remove after migration to Workers
         public int NextValue() => Counters.NextValue(this.Strategy.Session, this.UniqueId);
     }
 }

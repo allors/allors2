@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, merge } from 'rxjs';
-import { map, filter, scan, debounceTime } from 'rxjs/operators';
+import { map, filter, scan, debounceTime, share } from 'rxjs/operators';
 
 @Injectable()
 export class AllorsBarcodeService {
@@ -28,6 +28,7 @@ export class AllorsBarcodeService {
         map((events) => {
           return events.map(v => v.key).join('').trim();
         }),
+        share()
       );
 
     this.scan$ = merge(scanner, this.simulateSubject);
