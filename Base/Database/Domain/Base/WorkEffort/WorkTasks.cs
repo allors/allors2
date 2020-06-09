@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Meta;
@@ -152,9 +153,14 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, completed, cancel, reopen, complete);
             config.Deny(this.ObjectType, finished, cancel, reopen, complete, invoice, revise);
 
-            config.Deny(this.ObjectType, cancelled, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operations.Write);
-            config.Deny(this.ObjectType, finished, Operations.Write);
+            var except = new HashSet<IOperandType>
+            {
+                this.Meta.ElectronicDocuments.RoleType,
+            };
+
+            config.DenyExcept(this.ObjectType, cancelled, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, completed, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, finished, except, Operations.Write);
 
             config.Deny(M.TimeEntry, cancelled, Operations.Write);
             config.Deny(M.TimeEntry, finished, Operations.Write);

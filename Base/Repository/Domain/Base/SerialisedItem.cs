@@ -112,7 +112,6 @@ namespace Allors.Repository
         [RoleId("0CC2B6F1-69F7-404A-9620-57152FE2782C")]
         #endregion
         [Derived]
-        [Required]
         [Size(256)]
         [Workspace]
         public string ItemNumber { get; set; }

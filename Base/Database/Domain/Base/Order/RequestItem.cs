@@ -21,7 +21,8 @@ namespace Allors.Domain
         public bool IsValid => !(this.RequestItemState.IsCancelled || this.RequestItemState.IsRejected);
 
         internal bool IsDeletable =>
-            (this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Draft)
+            this.ExistRequestItemState
+            && (this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Draft)
                 || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Submitted)
                 || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Rejected)
                 || this.RequestItemState.Equals(new RequestItemStates(this.Strategy.Session).Cancelled))
