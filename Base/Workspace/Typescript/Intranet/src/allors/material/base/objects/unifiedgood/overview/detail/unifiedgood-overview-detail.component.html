@@ -84,8 +84,7 @@
           <div class="row">
             <a-mat-select class="col-md" [object]="good" [roleType]="m.UnifiedGood.ProductType" [options]="productTypes"
               display="Name" (selected)="update()"></a-mat-select>
-            <a-mat-select class="col-md" [object]="good" [roleType]="m.UnifiedGood.InventoryItemKind" [options]="inventoryItemKinds"
-              display="Name"></a-mat-select>
+            <a-mat-static class="col-md" [object]="good" [roleType]="m.UnifiedGood.InventoryItemKind" display="Name"></a-mat-static>
           </div>
 
           <div class="row">

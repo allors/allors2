@@ -35,7 +35,7 @@ namespace Allors.Domain
 
         public string NextSerialisedItemNumber()
         {
-            var serialisedItemNumber = ++this.SerialisedItemCounter.Value;
+            var serialisedItemNumber = this.SerialisedItemCounter.NextValue();
             return string.Concat(this.SerialisedItemPrefix, serialisedItemNumber);
         }
 

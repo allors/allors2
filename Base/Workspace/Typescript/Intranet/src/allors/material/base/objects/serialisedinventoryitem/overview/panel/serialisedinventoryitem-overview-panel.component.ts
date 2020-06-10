@@ -143,7 +143,7 @@ export class SerialisedInventoryItemComponent extends TestScope implements OnIni
             return {
               object: v,
               facility: v.Facility.Name,
-              item: v.SerialisedItem.displayName,
+              item: v.SerialisedItem?.displayName,
               quantity: v.Quantity,
               state: v.SerialisedInventoryItemState ? v.SerialisedInventoryItemState.Name : ''
             } as Row;

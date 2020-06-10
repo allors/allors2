@@ -71,6 +71,7 @@ namespace Allors.Domain
                 v.Name = "Fee";
                 localisedName.Set(v, dutchLocale, "Honorarium");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(DiscountId, v =>
@@ -78,6 +79,7 @@ namespace Allors.Domain
                 v.Name = "Discount";
                 localisedName.Set(v, dutchLocale, "Korting");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(InterestChargeId, v =>
@@ -85,6 +87,7 @@ namespace Allors.Domain
                 v.Name = "Interest Charge";
                 localisedName.Set(v, dutchLocale, "Interest toeslag");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(MiscChargeId, v =>
@@ -92,6 +95,7 @@ namespace Allors.Domain
                 v.Name = "Miscellaneous Charge";
                 localisedName.Set(v, dutchLocale, "Overige toeslag");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(PromotionId, v =>
@@ -99,6 +103,7 @@ namespace Allors.Domain
                 v.Name = "Promotion";
                 localisedName.Set(v, dutchLocale, "Verkoopbevordering");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(ShippingAndHandlingId, v =>
@@ -106,6 +111,7 @@ namespace Allors.Domain
                 v.Name = "Shipping & Handling";
                 localisedName.Set(v, dutchLocale, "Bezorgkosten");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(SurchargeId, v =>
@@ -113,6 +119,7 @@ namespace Allors.Domain
                 v.Name = "Surcharge";
                 localisedName.Set(v, dutchLocale, "Toeslag");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(WarrantyId, v =>
@@ -120,6 +127,7 @@ namespace Allors.Domain
                 v.Name = "Warranty";
                 localisedName.Set(v, dutchLocale, "Garantie");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(ProductFeatureItemId, v =>
@@ -148,6 +156,7 @@ namespace Allors.Domain
                 v.Name = "Time";
                 localisedName.Set(v, dutchLocale, "Tijd");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(FreightChargeId, v =>
@@ -155,6 +164,7 @@ namespace Allors.Domain
                 v.Name = "Freight Charge";
                 localisedName.Set(v, dutchLocale, "Vracht toeslag");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(WorkDoneId, v =>
@@ -162,6 +172,7 @@ namespace Allors.Domain
                 v.Name = "Work Done";
                 localisedName.Set(v, dutchLocale, "Uitgevoerde werkzaamheden");
                 v.IsActive = true;
+                v.MaxQuantity = 1;
             });
 
             merge(OtherId, v =>

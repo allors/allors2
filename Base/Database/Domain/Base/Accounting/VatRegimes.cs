@@ -10,18 +10,21 @@ namespace Allors.Domain
 
     public partial class VatRegimes
     {
-        private static readonly Guid PrivatePersonId = new Guid("001A6A60-CC8A-4e6a-8FC0-BCE9707FA496");
-        private static readonly Guid AssessableId = new Guid("5973BE64-C785-480f-AF30-74D32C6D6AF9");
-        private static readonly Guid ExportId = new Guid("3268B6E5-995D-4f4b-B94E-AF4BE25F4282");
-        private static readonly Guid IntraCommunautairId = new Guid("CFA1860E-DEBA-49a8-9062-E5577CDE0CCC");
-        private static readonly Guid ServiceB2BId = new Guid("4D57C8ED-1DF4-4db2-9AAA-4552257DC2BF");
-        private static readonly Guid ExemptId = new Guid("82986030-5E18-43c1-8CBE-9832ACD4151D");
+        public static readonly Guid PrivatePersonId = new Guid("001A6A60-CC8A-4e6a-8FC0-BCE9707FA496");
+        public static readonly Guid Assessable21Id = new Guid("5973BE64-C785-480f-AF30-74D32C6D6AF9");
+        public static readonly Guid Assessable10Id = new Guid("a82edb4e-dc92-4864-96fe-26ec6d1ef914");
+        public static readonly Guid ExportId = new Guid("3268B6E5-995D-4f4b-B94E-AF4BE25F4282");
+        public static readonly Guid IntraCommunautairId = new Guid("CFA1860E-DEBA-49a8-9062-E5577CDE0CCC");
+        public static readonly Guid ServiceB2BId = new Guid("4D57C8ED-1DF4-4db2-9AAA-4552257DC2BF");
+        public static readonly Guid ExemptId = new Guid("82986030-5E18-43c1-8CBE-9832ACD4151D");
 
         private UniquelyIdentifiableSticky<VatRegime> cache;
 
         public VatRegime PrivatePerson => this.Cache[PrivatePersonId];
 
-        public VatRegime Assessable => this.Cache[AssessableId];
+        public VatRegime Assessable21 => this.Cache[Assessable21Id];
+
+        public VatRegime Assessable10 => this.Cache[Assessable10Id];
 
         public VatRegime Export => this.Cache[ExportId];
 
@@ -43,6 +46,7 @@ namespace Allors.Domain
         {
             var vatRate0 = new VatRates(this.Session).Zero;
             var vatRate21 = new VatRates(this.Session).TwentyOne;
+            var vatRate10 = new VatRates(this.Session).Ten;
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
@@ -57,11 +61,19 @@ namespace Allors.Domain
                 v.IsActive = true;
             });
 
-            merge(AssessableId, v =>
+            merge(Assessable21Id, v =>
             {
                 v.Name = "VAT Assessable 21%";
                 localisedName.Set(v, dutchLocale, "BTW-plichtig 21%");
                 v.VatRate = vatRate21;
+                v.IsActive = true;
+            });
+
+            merge(Assessable10Id, v =>
+            {
+                v.Name = "VAT Assessable 10%";
+                localisedName.Set(v, dutchLocale, "BTW-plichtig 10%");
+                v.VatRate = vatRate10;
                 v.IsActive = true;
             });
 

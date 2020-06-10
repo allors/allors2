@@ -29,6 +29,15 @@ namespace Allors.Repository
 
         #endregion
 
+        #region Allors
+        [Id("61ab84cf-b3ac-49ab-a54b-4e57b280dc70")]
+        [AssociationId("66d29ed1-0ea2-480a-939f-766476944c7e")]
+        [RoleId("c2c3cac8-96b9-430d-911d-474483435fe6")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        public decimal MaxQuantity { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }
@@ -46,6 +55,5 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         #endregion
-
     }
 }

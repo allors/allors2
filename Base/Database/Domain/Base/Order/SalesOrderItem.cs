@@ -134,17 +134,17 @@ namespace Allors.Domain
 
             if (this.Part != null && this.Part.InventoryItemKind.IsSerialised && this.QuantityOrdered != 1)
             {
-                derivation.Validation.AddError(this, M.PurchaseOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
+                derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
             }
 
             if (this.Part != null && this.Part.InventoryItemKind.IsNonSerialised && this.QuantityOrdered == 0)
             {
-                derivation.Validation.AddError(this, M.PurchaseOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
+                derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
             }
 
-            if (!this.InvoiceItemType.IsPartItem && !this.InvoiceItemType.IsProductItem && !this.InvoiceItemType.IsOther && this.QuantityOrdered != 1)
+            if (this.InvoiceItemType.MaxQuantity.HasValue && this.QuantityOrdered > this.InvoiceItemType.MaxQuantity.Value)
             {
-                derivation.Validation.AddError(this, M.PurchaseOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
+                derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
             }
 
             var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);

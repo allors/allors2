@@ -105,6 +105,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
             }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
+              sort: new Sort(m.InvoiceItemType.Name),
             }),
             pull.VatRate(),
             pull.VatRegime(),
@@ -176,8 +177,6 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
 
   public save(): void {
 
-    this.onSave();
-
     this.allors.context.save()
       .subscribe(() => {
         const data: IObject = {
@@ -248,12 +247,5 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         }
 
       });
-  }
-
-  private onSave() {
-
-    if (this.invoiceItem.InvoiceItemType !== this.productItemType) {
-      this.invoiceItem.Quantity = '1';
-    }
   }
 }

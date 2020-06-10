@@ -8,6 +8,7 @@ namespace Allors.Domain
     using System;
     using System.Text;
     using Allors.Meta;
+    using Resources;
 
     public partial class SalesInvoiceItem
     {
@@ -149,17 +150,27 @@ namespace Allors.Domain
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
 
+            if (this.Part != null && this.Part.InventoryItemKind.IsSerialised && this.Quantity != 1)
+            {
+                derivation.Validation.AddError(this, M.SalesInvoiceItem.Quantity, ErrorMessages.InvalidQuantity);
+            }
+
+            if (this.Part != null && this.Part.InventoryItemKind.IsNonSerialised && this.Quantity == 0)
+            {
+                derivation.Validation.AddError(this, M.SalesInvoiceItem.Quantity, ErrorMessages.InvalidQuantity);
+            }
+
+            if (this.InvoiceItemType.MaxQuantity.HasValue && this.Quantity > this.InvoiceItemType.MaxQuantity.Value)
+            {
+                derivation.Validation.AddError(this, M.SalesInvoiceItem.Quantity, ErrorMessages.InvalidQuantity);
+            }
+
             this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesInvoiceWhereSalesInvoiceItem?.VatRegime;
             this.VatRate = this.Product?.VatRate;
 
             if (this.ExistVatRegime && this.VatRegime.ExistVatRate)
             {
                 this.VatRate = this.VatRegime.VatRate;
-            }
-
-            if (this.ExistInvoiceItemType && this.Quantity == 0)
-            {
-                this.Quantity = 1;
             }
 
             if (this.ExistInvoiceItemType && this.IsSubTotalItem().Result == true && this.Quantity <= 0)
