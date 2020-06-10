@@ -142,7 +142,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderShippedInMultipleParts_WhenPaymentsAreReceived_ThenObjectStateCorrespondingSalesOrderIsUpdated()
         {
-            var assessable = new VatRegimes(this.Session).Assessable;
+            var assessable = new VatRegimes(this.Session).Assessable21;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
@@ -357,7 +357,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPendingShipmentAndAssignedPickList_WhenNewOrderIsConfirmed_ThenNewPickListIsCreatedAndSingleOrderShipmentIsUpdated()
         {
-            var assessable = new VatRegimes(this.Session).Assessable;
+            var assessable = new VatRegimes(this.Session).Assessable21;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
@@ -460,7 +460,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderOnHold_WhenInventoryBecomesAvailable_ThenOrderIsNotSelectedForShipment()
         {
-            var assessable = new VatRegimes(this.Session).Assessable;
+            var assessable = new VatRegimes(this.Session).Assessable21;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
@@ -530,7 +530,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderOnHold_WhenOrderIsContinued_ThenOrderIsSelectedForShipment()
         {
-            var assessable = new VatRegimes(this.Session).Assessable;
+            var assessable = new VatRegimes(this.Session).Assessable21;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
@@ -606,7 +606,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderNotPartiallyShipped_WhenInComplete_ThenOrderIsNotSelectedForShipment()
         {
-            var assessable = new VatRegimes(this.Session).Assessable;
+            var assessable = new VatRegimes(this.Session).Assessable21;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
@@ -717,7 +717,7 @@ namespace Allors.Domain
             var productItem = new InvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
-            var assessable = new VatRegimes(this.Session).Assessable;
+            var assessable = new VatRegimes(this.Session).Assessable21;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
@@ -810,7 +810,7 @@ namespace Allors.Domain
             var productItem = new InvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
-            var assessable = new VatRegimes(this.Session).Assessable;
+            var assessable = new VatRegimes(this.Session).Assessable21;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
@@ -905,7 +905,7 @@ namespace Allors.Domain
         {
             new Stores(this.Session).Extent().First.OrderThreshold = 1;
 
-            var assessable = new VatRegimes(this.Session).Assessable;
+            var assessable = new VatRegimes(this.Session).Assessable21;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 
@@ -958,7 +958,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderWithManualShipmentSchedule_WhenOrderIsConfirmed_ThenInventoryIsNotReservedAndOrderIsNotShipped()
         {
-            var assessable = new VatRegimes(this.Session).Assessable;
+            var assessable = new VatRegimes(this.Session).Assessable21;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
 

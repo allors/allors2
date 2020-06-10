@@ -156,7 +156,6 @@ namespace Allors.Domain
                 v.Name = "Time";
                 localisedName.Set(v, dutchLocale, "Tijd");
                 v.IsActive = true;
-                v.MaxQuantity = 1;
             });
 
             merge(FreightChargeId, v =>

@@ -37,14 +37,14 @@ namespace Tests
         {
             var id = Guid.NewGuid();
 
-            new CounterBuilder(this.Session).WithUniqueId(id).Build();
+            var counter = new CounterBuilder(this.Session).WithUniqueId(id).Build();
             this.Session.Derive();
             this.Session.Commit();
 
-            Assert.Equal(1, Counters.NextValue(this.Session, id));
-            Assert.Equal(2, Counters.NextValue(this.Session, id));
-            Assert.Equal(3, Counters.NextValue(this.Session, id));
-            Assert.Equal(4, Counters.NextValue(this.Session, id));
+            Assert.Equal(1, counter.NextValue());
+            Assert.Equal(2, counter.NextValue());
+            Assert.Equal(3, counter.NextValue());
+            Assert.Equal(4, counter.NextValue());
         }
     }
 }

@@ -391,7 +391,7 @@ line2")
                 .WithCustomerReference("a reference number")
                 .WithDescription("Purchase of 1 used Aircraft Towbar")
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
-                .WithVatRegime(new VatRegimes(this.Session).Assessable)
+                .WithVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
 
             var purchaseOrderItem_1 = new PurchaseOrderItemBuilder(this.Session)

@@ -333,7 +333,7 @@ line2")
                     .WithSalesOrderItem(salesOrderItem3)
                     .WithCustomerReference("a reference number")
                     .WithDescription("Sale of 1 used Aircraft Towbar")
-                    .WithVatRegime(new VatRegimes(@this.Session()).Assessable)
+                    .WithVatRegime(new VatRegimes(@this.Session()).Assessable21)
                     .Build();
 
                 var salesInvoiceItem1 = new SalesInvoiceItemBuilder(@this.Session())
@@ -375,7 +375,7 @@ line2")
                     .WithDescription("Sale of 1 used Aircraft Towbar")
                     .WithSalesInvoiceType(new SalesInvoiceTypes(@this.Session()).SalesInvoice)
                     .WithSalesTerm(incoTerm)
-                    .WithVatRegime(new VatRegimes(@this.Session()).Assessable)
+                    .WithVatRegime(new VatRegimes(@this.Session()).Assessable21)
                     .Build();
 
                 for (var j = 0; j < 3; j++)
@@ -383,7 +383,7 @@ line2")
                     var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session())
                         .WithDescription("Extra Charge")
                         .WithAssignedUnitPrice(100 + j)
-                        .WithQuantity(j)
+                        .WithQuantity(1)
                         .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).MiscCharge)
                         .Build();
 
@@ -431,7 +431,7 @@ line2")
                     .WithCustomerReference("a reference number")
                     .WithDescription("Purchase of 1 used Aircraft Towbar")
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(@this.Session()).PurchaseInvoice)
-                    .WithVatRegime(new VatRegimes(@this.Session()).Assessable)
+                    .WithVatRegime(new VatRegimes(@this.Session()).Assessable21)
                     .Build();
 
                 var purchaseOrderItem1 = new PurchaseOrderItemBuilder(@this.Session())

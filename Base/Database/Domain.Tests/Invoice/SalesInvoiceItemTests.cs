@@ -231,7 +231,6 @@ namespace Allors.Domain
             Assert.Equal(new SalesInvoiceItemStates(this.Session).ReadyForPosting, item.SalesInvoiceItemState);
             Assert.Equal(item.SalesInvoiceItemState, item.LastSalesInvoiceItemState);
             Assert.Equal(0, item.AmountPaid);
-            Assert.Equal(1, item.Quantity);
         }
 
         [Fact]

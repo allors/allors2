@@ -142,7 +142,7 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
             }
 
-            if (this.InvoiceItemType.MaxQuantity.HasValue && this.QuantityOrdered > this.InvoiceItemType.MaxQuantity.Value)
+            if (this.ExistInvoiceItemType && this.InvoiceItemType.MaxQuantity.HasValue && this.QuantityOrdered > this.InvoiceItemType.MaxQuantity.Value)
             {
                 derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
             }
