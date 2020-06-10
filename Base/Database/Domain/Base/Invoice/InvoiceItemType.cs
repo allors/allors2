@@ -30,5 +30,7 @@ namespace Allors.Domain
         public bool IsProductItem => this.UniqueId == InvoiceItemTypes.ProductItemId;
 
         public bool IsTime => this.UniqueId == InvoiceItemTypes.TimeId;
+
+        public bool IsOther => this.UniqueId == InvoiceItemTypes.OtherId;
     }
 }
