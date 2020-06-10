@@ -164,7 +164,6 @@ namespace Allors.Domain
                 v.Name = "Freight Charge";
                 localisedName.Set(v, dutchLocale, "Vracht toeslag");
                 v.IsActive = true;
-                v.MaxQuantity = 1;
             });
 
             merge(WorkDoneId, v =>
