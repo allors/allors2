@@ -762,14 +762,14 @@ namespace Allors.Domain
 
                     var leftToInvoice = (orderItem.QuantityOrdered * orderItem.UnitPrice) - amountAlreadyInvoiced;
 
-                    if (leftToInvoice > 0)
+                    if (leftToInvoice != 0)
                     {
                         var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                             .WithInvoiceItemType(orderItem.InvoiceItemType)
                             .WithAssignedUnitPrice(orderItem.UnitPrice)
                             .WithProduct(orderItem.Product)
-                            .WithQuantity(orderItem.CostOfGoodsSold)
-                            .WithCostOfGoodsSold(orderItem.QuantityOrdered)
+                            .WithQuantity(orderItem.QuantityOrdered)
+                            .WithCostOfGoodsSold(orderItem.CostOfGoodsSold)
                             .WithAssignedVatRegime(orderItem.AssignedVatRegime)
                             .WithDescription(orderItem.Description)
                             .WithInternalComment(orderItem.InternalComment)

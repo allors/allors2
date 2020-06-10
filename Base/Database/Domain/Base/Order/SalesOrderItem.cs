@@ -132,6 +132,21 @@ namespace Allors.Domain
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
             var shipped = new ShipmentStates(this.Session()).Shipped;
 
+            if (this.Part != null && this.Part.InventoryItemKind.IsSerialised && this.QuantityOrdered != 1)
+            {
+                derivation.Validation.AddError(this, M.PurchaseOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
+            }
+
+            if (this.Part != null && this.Part.InventoryItemKind.IsNonSerialised && this.QuantityOrdered == 0)
+            {
+                derivation.Validation.AddError(this, M.PurchaseOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
+            }
+
+            if (!this.InvoiceItemType.IsPartItem && !this.InvoiceItemType.IsProductItem && !this.InvoiceItemType.IsOther && this.QuantityOrdered != 1)
+            {
+                derivation.Validation.AddError(this, M.PurchaseOrderItem.QuantityOrdered, ErrorMessages.InvalidQuantity);
+            }
+
             var salesOrderItemShipmentStates = new SalesOrderItemShipmentStates(derivation.Session);
             var salesOrderItemPaymentStates = new SalesOrderItemPaymentStates(derivation.Session);
             var salesOrderItemInvoiceStates = new SalesOrderItemInvoiceStates(derivation.Session);

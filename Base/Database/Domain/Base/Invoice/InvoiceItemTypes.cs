@@ -23,6 +23,7 @@ namespace Allors.Domain
         public static readonly Guid TimeId = new Guid("DA178F93-234A-41ed-815C-819AF8CA4E6F");
         public static readonly Guid FreightChargeId = new Guid("199AEA42-FDC1-4C40-AF19-2255EBBD2729");
         public static readonly Guid WorkDoneId = new Guid("A4D2E6D0-C6C1-46EC-A1CF-3A64822E7A9E");
+        public static readonly Guid OtherId = new Guid("8AB1F56A-B07E-4552-83A7-CA2DA2043740");
 
         private UniquelyIdentifiableSticky<InvoiceItemType> cache;
 
@@ -53,6 +54,8 @@ namespace Allors.Domain
         public InvoiceItemType FreightCharge => this.Cache[FreightChargeId];
 
         public InvoiceItemType WorkDone => this.Cache[WorkDoneId];
+
+        public InvoiceItemType Other => this.Cache[OtherId];
 
         private UniquelyIdentifiableSticky<InvoiceItemType> Cache => this.cache ??= new UniquelyIdentifiableSticky<InvoiceItemType>(this.Session);
 
@@ -158,6 +161,13 @@ namespace Allors.Domain
             {
                 v.Name = "Work Done";
                 localisedName.Set(v, dutchLocale, "Uitgevoerde werkzaamheden");
+                v.IsActive = true;
+            });
+
+            merge(OtherId, v =>
+            {
+                v.Name = "Other";
+                localisedName.Set(v, dutchLocale, "Anders");
                 v.IsActive = true;
             });
         }
