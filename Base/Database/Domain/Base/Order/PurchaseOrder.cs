@@ -518,7 +518,6 @@ namespace Allors.Domain
                             // HACK: DerivedRoles (WIP)
                             var serialisedItemDeriveRoles = (SerialisedItemDerivedRoles)serialisedItem;
                             serialisedItemDeriveRoles.PurchaseOrder = this;
-                            serialisedItemDeriveRoles.SuppliedBy = this.TakenViaSupplier;
                             serialisedItem.RemoveAssignedPurchasePrice();
                             serialisedItemDeriveRoles.PurchasePrice = orderItem.TotalExVat;
                             serialisedItem.AcquiredDate = orderItem.PurchaseOrderWherePurchaseOrderItem.OrderDate;
@@ -528,6 +527,7 @@ namespace Allors.Domain
                                 serialisedItem.RemoveAcquisitionYear();
                             }
 
+                            serialisedItem.AssignedSuppliedBy = this.TakenViaSupplier;
                             serialisedItem.OwnedBy = this.OrderedBy;
                             serialisedItem.Buyer = this.OrderedBy;
                             serialisedItem.Ownership = new Ownerships(this.Session()).Own;

@@ -33,6 +33,17 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnPreDerive(ObjectOnPreDerive method)
+        {
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRole(this, this.Meta.Quantity))
+            {
+                iteration.AddDependency(this.SerialisedItem, this);
+                iteration.Mark(this.SerialisedItem);
+            }
+        }
+
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
