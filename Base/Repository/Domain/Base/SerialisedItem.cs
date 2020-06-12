@@ -359,6 +359,7 @@ namespace Allors.Repository
         [Workspace]
         public DateTime ExpectedReturnDate { get; set; }
 
+        // TODO: Don't use WHERE in role name
         #region Allors
         [Id("E927291E-21A1-4289-B5AF-4A2CA2996DA2")]
         [AssociationId("2955FFAE-0058-432B-801B-3E440A9308B8")]

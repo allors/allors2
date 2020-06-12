@@ -11,151 +11,152 @@ mat-sidenav-content > div {
   > mat-toolbar {
     flex: 0 0 auto;
   }
-  > ng-component {
+  > ng-component, > div {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    .a-main {
+  }
+}
+
+.a-main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background-color: whitesmoke;
+  > .a-breadcrumb {
+    flex: 0 0 auto;
+    background-color: white;
+    > .row {
+      padding-left: 12px;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+  }
+
+  > .a-list {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    > .a-content {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      background-color: whitesmoke;
-      > .a-breadcrumb {
+      background-color: white;
+      > mat-toolbar {
         flex: 0 0 auto;
-        background-color: white;
-        > .row {
-          padding-left: 12px;
-          padding-top: 0.5rem;
-          padding-bottom: 0.5rem;
-        }
       }
-
-      > .a-list {
-        flex-grow: 1;
+      > .a-header {
+        flex: 0 0 auto;
+      }
+      > .a-items {
+        flex: 1 1 0;
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        padding-top: 2rem;
-        padding-left: 2rem;
-        padding-right: 2rem;
-        > .a-content {
-          flex-grow: 1;
+
+        a-mat-table {
+          flex: 1 1 0;
+        }
+      }
+    }
+  }
+
+  > .a-overview {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 2rem;
+
+    @include media-breakpoint-up(md)
+    {
+      > .a-content {
+        flex-grow: 1;
+
+        .expanded-panel-container {
           display: flex;
           flex-direction: column;
           align-items: stretch;
-          background-color: white;
-          > mat-toolbar {
-            flex: 0 0 auto;
-          }
-          > .a-header {
-            flex: 0 0 auto;
-          }
-          > .a-items {
+
+          .expanded-panel {
             flex: 1 1 0;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-
-            a-mat-table {
-              flex: 1 1 0;
-            }
-          }
-        }
-      }
-
-      > .a-overview {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        padding-top: 2rem;
-
-        @include media-breakpoint-up(md)
-        {
-          > .a-content {
-            flex-grow: 1;
-
-            .expanded-panel-container {
               display: flex;
               flex-direction: column;
               align-items: stretch;
 
-              .expanded-panel {
+              > div {
                 flex: 1 1 0;
-                  display: flex;
-                  flex-direction: column;
-                  align-items: stretch;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
 
-                  > div {
-                    flex: 1 1 0;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: stretch;
-
-                    a-mat-table {
-                      flex: 1 1 0;
-                    }
-                  }
+                a-mat-table {
+                  flex: 1 1 0;
                 }
               }
             }
-         }
-       }
+          }
+        }
+     }
+   }
 
-      > .a-edit {
+  > .a-edit {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+    > mat-card {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      > mat-card-content {
         flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        padding: 1rem;
-        > mat-card {
-          flex-grow: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: stretch;
-          > mat-card-content {
-            flex-grow: 1;
-            overflow: auto;
-            div.row {
-              padding-bottom: 0.5rem;
-            }
-          }
-          > mat-card-actions {
-            flex: 0 0 auto;
-          }
+        overflow: auto;
+        div.row {
+          padding-bottom: 0.5rem;
         }
       }
+      > mat-card-actions {
+        flex: 0 0 auto;
+      }
+    }
+  }
 
-      > .a-app {
-        flex-grow: 1;
+  > .a-app {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding-top: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    > .a-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      background-color: white;
+      > mat-toolbar {
+        flex: 0 0 auto;
+      }
+      > .a-header {
+        flex: 0 0 auto;
+      }
+      > .a-body {
+        flex: 1 1 0;
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        padding-top: 2rem;
-        padding-left: 2rem;
-        padding-right: 2rem;
-        > .a-content {
-          flex-grow: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: stretch;
-          background-color: white;
-          > mat-toolbar {
-            flex: 0 0 auto;
-          }
-          > .a-header {
-            flex: 0 0 auto;
-          }
-          > .a-body {
-            flex: 1 1 0;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            overflow: auto;
-          }
-        }
+        overflow: auto;
       }
     }
   }
