@@ -23,7 +23,7 @@ export class AllorsBarcodeService {
         }, []),
         debounceTime(50),
         filter((events) => {
-          return events.length > 4;
+          return events.length >= 4;
         }),
         map((events) => {
           return events.map(v => v.key).join('').trim();
