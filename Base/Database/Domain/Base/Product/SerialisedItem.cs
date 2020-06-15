@@ -42,20 +42,6 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseOnPreDerive(ObjectOnPreDerive method)
-        {
-            var (iteration, changeSet, derivedObjects) = method;
-
-            if (changeSet.HasChangedRole(this, this.Meta.OwnedBy) && this.ExistSerialisedInventoryItemsWhereSerialisedItem)
-            {
-                foreach (InventoryItem inventoryItem in this.SerialisedInventoryItemsWhereSerialisedItem)
-                {
-                    iteration.AddDependency(inventoryItem, this);
-                    iteration.Mark(inventoryItem);
-                }
-            }
-        }
-
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

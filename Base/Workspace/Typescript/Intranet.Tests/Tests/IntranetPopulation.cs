@@ -238,6 +238,8 @@ namespace Tests
 
             var good_1 = new NonUnifiedGoodBuilder(this.Session).WithNonSerialisedPartDefaults(allors).Build();
 
+            this.Session.Derive();
+
             new InventoryItemTransactionBuilder(this.Session)
                 .WithPart(good_1.Part)
                 .WithQuantity(100)
@@ -251,6 +253,8 @@ namespace Tests
             var serialisedItem1 = new SerialisedItemBuilder(this.Session).WithDefaults(allors).Build();
 
             good_2.Part.AddSerialisedItem(serialisedItem1);
+
+            this.Session.Derive();
 
             new SerialisedInventoryItemBuilder(this.Session)
                 .WithPart(good_2.Part)
@@ -440,6 +444,8 @@ line2")
                 .WithFullfillContactMechanism(allors.ActiveCustomers.First.GeneralCorrespondence)
                 .Build();
 
+            this.Session.Derive();
+
             var quoteItem = new QuoteItemBuilder(this.Session)
                 .WithProduct(new Goods(this.Session).Extent().First)
                 .WithQuantity(1)
@@ -448,10 +454,14 @@ line2")
 
             quote.AddQuoteItem(quoteItem);
 
+            this.Session.Derive();
+
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithTakenBy(allors)
                 .WithShipToCustomer(allors.ActiveCustomers.First)
                 .Build();
+
+            this.Session.Derive();
 
             var salesOrderItem = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good_1)
@@ -461,7 +471,11 @@ line2")
 
             salesOrder.AddSalesOrderItem(salesOrderItem);
 
+            this.Session.Derive();
+
             new CustomerShipmentBuilder(this.Session).WithDefaults(allors).Build();
+
+            this.Session.Derive();
 
             new PurchaseShipmentBuilder(this.Session).WithDefaults(allors).Build();
 
