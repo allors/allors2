@@ -65,7 +65,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       columns: [
         { name: 'id', sort: true },
         { name: 'name', sort: true },
-        { name: 'categories' },
+        { name: 'categories', sort: true },
         { name: 'availability' },
         { name: 'ownership' },
         { name: 'suppliedBy' },
@@ -194,6 +194,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
     const sorter = new Sorter(
       {
         id: [m.SerialisedItem.ItemNumber],
+        categories: [m.SerialisedItem.DisplayProductCategories],
         name: [m.SerialisedItem.Name],
       }
     );

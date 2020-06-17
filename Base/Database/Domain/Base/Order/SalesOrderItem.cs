@@ -57,6 +57,19 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
+            }
+        }
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSalesOrderItemState)
@@ -682,6 +695,8 @@ namespace Allors.Domain
         public void BaseReopen(OrderItemReopen method) => this.SalesOrderItemState = this.PreviousSalesOrderItemState;
 
         public void SyncPrices(IDerivation derivation, SalesOrder salesOrder) => this.CalculatePrice(derivation, salesOrder, true);
+
+        public void Sync(Order order) => this.SyncedOrder = order;
 
         private void CalculatePrice(IDerivation derivation, SalesOrder salesOrder, bool useValueOrdered = false)
         {

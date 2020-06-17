@@ -383,6 +383,7 @@ namespace Allors.Repository
         [AssociationId("1eb73e6c-e4b6-474f-b338-51bd8dc6ce8c")]
         [RoleId("e0ca04f1-1a86-40c0-82ba-12d8197d4f8e")]
         #endregion
+        [Indexed]
         [Workspace]
         public string DisplayProductCategories { get; set; }
 

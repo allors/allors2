@@ -604,5 +604,13 @@ namespace Allors.Domain
                 }
             }
         }
+
+        private void Sync(IDerivation derivation, SalesOrderItem[] validOrderItems)
+        {
+            foreach (var orderItem in validOrderItems)
+            {
+                orderItem.Sync(this);
+            }
+        }
     }
 }
