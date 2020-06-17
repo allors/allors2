@@ -25,7 +25,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
             // TODO: Where does the currency come from?
             this.SubTotal = invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
-            this.Deposit = invoice.AmountPaid.ToString("N2", new CultureInfo("nl-BE"));
+            this.Deposit = invoice.AdvancePayment.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalExVat = invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.VatCharge = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
             this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
