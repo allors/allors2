@@ -384,7 +384,17 @@ namespace Allors.Repository
         [RoleId("e0ca04f1-1a86-40c0-82ba-12d8197d4f8e")]
         #endregion
         [Workspace]
-        public string DisplayProductCategories{ get; set; }
+        public string DisplayProductCategories { get; set; }
+
+        #region Allors
+        [Id("23572f9e-9423-49ac-baf7-c0ecb039c823")]
+        [AssociationId("89bda606-88e3-4900-a1d0-86f11d36a550")]
+        [RoleId("cf15f073-b214-4320-bb79-04584cd70175")]
+        #endregion
+        [Indexed]
+        [Derived]
+        [Workspace]
+        public string SerialisedItemAvailabilityName { get; set; }
 
         #region Allors
         [Id("80c6e34f-aadd-4ef6-b8cf-da532833ac03")]

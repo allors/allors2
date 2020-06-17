@@ -29,5 +29,20 @@ namespace Allors.Domain
             var errors = new List<string>(this.Session.Derive(false).Errors.Select(v => v.Message));
             Assert.Contains(expectedErrorMessage, errors);
         }
+
+        [Fact]
+        public void GivenSerializedItem_WhenDerived_ThenAvailabilityIsSet()
+        {
+            var available = new SerialisedItemAvailabilities(this.Session).Available;
+            var newItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("111").WithSerialisedItemAvailability(available).Build();
+            this.Session.Derive();
+
+            //Assert.Equal(available, newItem.Availability);
+
+            newItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session).NotAvailable;
+            this.Session.Derive();
+
+            //Assert.Equal(available, newItem.Availability);
+        }
     }
 }
