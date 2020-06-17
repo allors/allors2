@@ -65,6 +65,19 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
+        {
+            if (method.SecurityTokens == null)
+            {
+                method.SecurityTokens = this.SyncedOrder?.SecurityTokens.ToArray();
+            }
+
+            if (method.DeniedPermissions == null)
+            {
+                method.DeniedPermissions = this.SyncedOrder?.DeniedPermissions.ToArray();
+            }
+        }
+
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistPurchaseOrderItemState)
@@ -426,5 +439,6 @@ namespace Allors.Domain
 
         public void BaseReopen(OrderItemReopen method) => this.PurchaseOrderItemState = this.PreviousPurchaseOrderItemState;
 
+        public void Sync(Order order) => this.SyncedOrder = order;
     }
 }

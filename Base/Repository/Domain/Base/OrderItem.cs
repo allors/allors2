@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("f3ef0124-e867-4da2-9323-80fbe1f214c2")]
     #endregion
-    public partial interface OrderItem : Transitional, Priceable, Deletable
+    public partial interface OrderItem : Transitional, Priceable, Deletable, DelegatedAccessControlledObject
     {
         #region Allors
         [Id("7D6B04D2-062C-45B8-96AB-DC41A3DECAF8")]
@@ -140,6 +140,16 @@ namespace Allors.Repository
         [Workspace]
         [Indexed]
         OrderItem[] Associations { get; set; }
+
+        #region Allors
+        [Id("0b3cdfbf-0b75-4a9e-8f5c-40d37908710b")]
+        [AssociationId("55dd2656-3bc0-4723-847d-1476cd83ed16")]
+        [RoleId("7d7b9b1e-c2d8-460e-8d17-5d5a6f4fb1f7")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Synced]
+        Order SyncedOrder { get; set; }
 
         #region Allors
         [Id("feeed27a-c421-476c-b233-02d2fb9db76d")]

@@ -95,6 +95,8 @@ namespace Allors.Repository
 
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
+        public Order SyncedOrder { get; set; }
+
         public User CreatedBy { get; set; }
 
         public User LastModifiedBy { get; set; }
@@ -314,6 +316,8 @@ namespace Allors.Repository
         public void Delete() { }
 
         public void Reopen() { }
+
+        public void DelegateAccess() { }
 
         #endregion
 

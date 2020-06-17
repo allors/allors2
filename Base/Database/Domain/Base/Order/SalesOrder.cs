@@ -880,6 +880,7 @@ namespace Allors.Domain
                     featureItem.SyncPrices(derivation, this);
                 }
 
+                salesOrderItem.Sync(this);
                 salesOrderItem.SyncPrices(derivation, this);
             }
 
