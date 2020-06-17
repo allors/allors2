@@ -431,6 +431,8 @@ namespace Allors.Domain
                         totalListPrice += item1.UnitPrice;
                     }
                 }
+
+                this.TotalIncVat -= this.AdvancePayment;
             }
 
             var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);
@@ -481,7 +483,9 @@ namespace Allors.Domain
             }
 
             // If receipts are not matched at invoice level
-            if (this.AmountPaid > 0)
+            // if only advancedPayment is received do not set to partially paid
+            // this would disable the invoice for editing and adding new items
+            if (this.AmountPaid - this.AdvancePayment > 0)
             {
                 if (this.AmountPaid >= this.TotalIncVat)
                 {
@@ -489,7 +493,10 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    this.SalesInvoiceState = salesInvoiceStates.PartiallyPaid;
+                    if (this.AmountPaid > 0)
+                    {
+                        this.SalesInvoiceState = salesInvoiceStates.PartiallyPaid;
+                    }
                 }
 
                 foreach (var invoiceItem in validInvoiceItems)
