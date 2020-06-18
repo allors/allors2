@@ -36,9 +36,9 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete);
             config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete);
             config.Deny(this.ObjectType, awaitingApproval, confirm, cancel, reopen, setPaid, delete);
-            config.Deny(this.ObjectType, notPaid, approve, confirm, reopen, delete);
-            config.Deny(this.ObjectType, partiallyPaid, approve, confirm, reopen, delete);
-            config.Deny(this.ObjectType, received, createSalesInvoice, delete);
+            config.Deny(this.ObjectType, notPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete);
+            config.Deny(this.ObjectType, partiallyPaid, cancel, reject, approve, confirm, reopen, delete);
+            config.Deny(this.ObjectType, received, delete);
 
             var except = new HashSet<IOperandType>
             {

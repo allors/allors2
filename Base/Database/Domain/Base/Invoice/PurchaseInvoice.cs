@@ -234,7 +234,7 @@ namespace Allors.Domain
             }
 
             if (this.ExistSalesInvoiceWherePurchaseInvoice ||
-                !(this.BilledFrom as Organisation)?.IsInternalOrganisation == true)
+                (this.BilledFrom as Organisation)?.IsInternalOrganisation == false)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
             }
@@ -471,6 +471,8 @@ namespace Allors.Domain
                     .WithInternalOrganisation(internalOrganisation)
                     .Build();
             }
+
+            this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
         }
 
         public void BaseOnDeriveInvoiceItems(IDerivation derivation)

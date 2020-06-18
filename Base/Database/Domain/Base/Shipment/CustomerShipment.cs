@@ -176,8 +176,7 @@ namespace Allors.Domain
             this.BaseOnDeriveCurrentObjectState(derivation);
 
             if (this.ShipmentState.IsShipped
-                && (!this.ExistLastShipmentState || !this.LastShipmentState.IsShipped)
-                && (this.ShipFromParty as InternalOrganisation)?.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).CustomerShipmentShip) == true)
+                && (!this.ExistLastShipmentState || !this.LastShipmentState.IsShipped))
             {
                 foreach (var item in this.ShipmentItems.Where(v => v.ExistSerialisedItem))
                 {
@@ -185,7 +184,8 @@ namespace Allors.Domain
                     {
                         item.SerialisedItem.SerialisedItemAvailability = item.NextSerialisedItemAvailability;
 
-                        if (item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
+                        if ((this.ShipFromParty as InternalOrganisation)?.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).CustomerShipmentShip) == true
+                            && item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
                         {
                             item.SerialisedItem.OwnedBy = this.ShipToParty;
                             item.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;

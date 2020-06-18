@@ -588,9 +588,11 @@ namespace Allors.Domain
                 salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid;
 
                 if (salesInvoiceItem.ExistSerialisedItem
+                    && (this.BillToCustomer as InternalOrganisation)?.IsInternalOrganisation == false
                     && this.BilledFrom.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).SalesInvoiceSend)
-                    && salesInvoiceItem.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
+                    && salesInvoiceItem.NextSerialisedItemAvailability?.Equals(new SerialisedItemAvailabilities(this.Session()).Sold) == true)
                 {
+                    salesInvoiceItem.SerialisedItem.Seller = this.BilledFrom;
                     salesInvoiceItem.SerialisedItem.OwnedBy = this.BillToCustomer;
                     salesInvoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
                 }
