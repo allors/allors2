@@ -161,6 +161,19 @@ namespace Allors.Domain
                 }
             }
 
+            if (!this.PurchaseInvoiceState.IsCreated && !this.PurchaseInvoiceState.IsAwaitingApproval)
+            {
+                foreach (var invoiceItem in validInvoiceItems)
+                {
+                    if (invoiceItem.ExistSerialisedItem
+                        && this.BilledTo.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseInvoiceConfirm))
+                    {
+                        invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
+                        invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
+                    }
+                }
+            }
+
             this.AmountPaid = this.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
 
             //// Perhaps payments are recorded at the item level.
@@ -221,7 +234,7 @@ namespace Allors.Domain
             }
 
             if (this.ExistSalesInvoiceWherePurchaseInvoice ||
-                !(this.BilledFrom as Organisation).IsInternalOrganisation)
+                !(this.BilledFrom as Organisation)?.IsInternalOrganisation == true)
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
             }

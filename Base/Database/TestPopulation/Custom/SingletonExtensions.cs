@@ -6,6 +6,7 @@
 
 namespace Allors
 {
+    using System;
     using System.IO;
     using System.Linq;
     using Allors.Domain;
@@ -32,6 +33,8 @@ namespace Allors
             var us = new Countries(@this.Session()).FindBy(M.Country.IsoCode, "US");
 
             var allorsLogo = dataPath + @"\www\admin\images\logo.png";
+
+            var serialisedItemSoldOns = new SerialisedItemSoldOn[] { new SerialisedItemSoldOns(@this.Session()).SalesInvoiceSend, new SerialisedItemSoldOns(@this.Session()).PurchaseInvoiceConfirm };
 
             var allors = Organisations.CreateInternalOrganisation(
                 session: @this.Session(),
@@ -84,7 +87,7 @@ namespace Allors
                 purchaseOrderNeedsApproval: true,
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip,
+                serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true);
 
             var dipu = Organisations.CreateInternalOrganisation(
@@ -138,7 +141,7 @@ namespace Allors
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip,
+                serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true);
 
             // Give Administrator access

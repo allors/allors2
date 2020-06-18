@@ -441,7 +441,7 @@ namespace Allors.Domain
 
             if (this.SalesOrderState.IsInProcess
                 && (!this.ExistLastSalesOrderState || !this.LastSalesOrderState.IsInProcess)
-                && this.TakenBy.SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).SalesOrderAccept)
+                && this.TakenBy.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).SalesOrderAccept))
             {
                 foreach (SalesOrderItem item in this.ValidOrderItems.Where(v => ((SalesOrderItem)v).ExistSerialisedItem))
                 {
@@ -779,6 +779,7 @@ namespace Allors.Domain
                         if (orderItem.ExistSerialisedItem)
                         {
                             invoiceItem.SerialisedItem = orderItem.SerialisedItem;
+                            invoiceItem.NextSerialisedItemAvailability = orderItem.NextSerialisedItemAvailability;
                         }
 
                         salesInvoice.AddSalesInvoiceItem(invoiceItem);

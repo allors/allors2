@@ -177,9 +177,9 @@ namespace Allors.Domain
 
             if (this.ShipmentState.IsShipped
                 && (!this.ExistLastShipmentState || !this.LastShipmentState.IsShipped)
-                && ((InternalOrganisation)this.ShipFromParty).SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).CustomerShipmentShip)
+                && (this.ShipFromParty as InternalOrganisation)?.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).CustomerShipmentShip) == true)
             {
-                foreach (ShipmentItem item in this.ShipmentItems.Where(v => v.ExistSerialisedItem))
+                foreach (var item in this.ShipmentItems.Where(v => v.ExistSerialisedItem))
                 {
                     if (item.ExistNextSerialisedItemAvailability)
                     {

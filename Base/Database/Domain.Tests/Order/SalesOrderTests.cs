@@ -2601,7 +2601,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSettingSerialisedItemSoldOnSalesOrderAccept_WhenAcceptingSalesOrder_ThenSerialisedItemStateIsChanged()
         {
-            this.InternalOrganisation.SerialisedItemSoldOn = new SerialisedItemSoldOns(this.Session).SalesOrderAccept;
+            this.InternalOrganisation.AddSerialisedItemSoldOn(new SerialisedItemSoldOns(this.Session).SalesOrderAccept);
 
             this.Session.Derive();
 

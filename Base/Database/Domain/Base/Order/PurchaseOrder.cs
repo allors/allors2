@@ -528,9 +528,13 @@ namespace Allors.Domain
                             }
 
                             serialisedItem.AssignedSuppliedBy = this.TakenViaSupplier;
-                            serialisedItem.OwnedBy = this.OrderedBy;
                             serialisedItem.Buyer = this.OrderedBy;
-                            serialisedItem.Ownership = new Ownerships(this.Session()).Own;
+
+                            if (this.OrderedBy.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseshipmentReceive))
+                            {
+                                serialisedItem.OwnedBy = this.OrderedBy;
+                                serialisedItem.Ownership = new Ownerships(this.Session()).Own;
+                            }
                         }
                     }
                 }

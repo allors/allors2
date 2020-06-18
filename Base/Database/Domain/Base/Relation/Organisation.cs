@@ -55,7 +55,6 @@ namespace Allors.Domain
             && !this.ExistEmploymentsWhereEmployer
             && !this.ExistEngagementsWhereBillToParty
             && !this.ExistEngagementsWherePlacingParty
-            && !this.ExistInventoryOwnershipsWhereOwner
             && !this.ExistPartsWhereManufacturedBy
             && !this.ExistPartsWhereSuppliedBy
             && !this.ExistOrganisationGlAccountsWhereInternalOrganisation

@@ -43,6 +43,8 @@ namespace Tests
 
             var allorsLogo = this.DataPath + @"\www\admin\images\logo.png";
 
+            var serialisedItemSoldOns = new SerialisedItemSoldOn[] { new SerialisedItemSoldOns(this.Session).SalesInvoiceSend, new SerialisedItemSoldOns(this.Session).PurchaseInvoiceConfirm };
+
             var allors = Organisations.CreateInternalOrganisation(
                 session: this.Session,
                 name: "Allors BVBA",
@@ -94,7 +96,7 @@ namespace Tests
                 purchaseOrderNeedsApproval: true,
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(this.Session).CustomerShipmentShip,
+                serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true);
 
             var dipu = Organisations.CreateInternalOrganisation(
@@ -148,7 +150,7 @@ namespace Tests
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(this.Session).CustomerShipmentShip,
+                serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true);
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
