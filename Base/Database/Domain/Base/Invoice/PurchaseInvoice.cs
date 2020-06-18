@@ -486,9 +486,6 @@ namespace Allors.Domain
 
                     serialisedItem.RemoveAssignedPurchasePrice();
                     deriveRoles.PurchasePrice = purchaseInvoiceItem.TotalExVat;
-
-                    serialisedItem.OwnedBy = this.BilledTo;
-                    serialisedItem.Buyer = this.BilledTo;
                 }
 
                 purchaseInvoiceItem.BaseOnDerivePrices();
