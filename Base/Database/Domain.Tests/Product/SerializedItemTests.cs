@@ -34,17 +34,19 @@ namespace Allors.Domain
         public void GivenSerializedItem_WhenDerived_ThenAvailabilityIsSet()
         {
             var available = new SerialisedItemAvailabilities(this.Session).Available;
+            var notAvailable = new SerialisedItemAvailabilities(this.Session).NotAvailable;
+
             var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             Assert.Equal(available, newItem.SerialisedItemAvailability);
 
-            newItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session).NotAvailable;
+            newItem.SerialisedItemAvailability = notAvailable;
 
             this.Session.Derive();
 
-            Assert.NotEqual(available, newItem.SerialisedItemAvailability);
+            Assert.Equal(notAvailable, newItem.SerialisedItemAvailability);
         }
     }
 }
