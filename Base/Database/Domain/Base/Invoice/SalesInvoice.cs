@@ -431,8 +431,6 @@ namespace Allors.Domain
                         totalListPrice += item1.UnitPrice;
                     }
                 }
-
-                this.TotalIncVat -= this.AdvancePayment;
             }
 
             var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);
