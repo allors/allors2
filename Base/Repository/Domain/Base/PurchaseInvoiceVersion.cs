@@ -79,6 +79,11 @@ namespace Allors.Repository
         public Guid DerivationId { get; set; }
 
         public DateTime DerivationTimeStamp { get; set; }
+
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public decimal TotalIrpf { get; set; }
+
         #endregion
 
         #region Allors
