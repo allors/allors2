@@ -38,6 +38,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
   part: Part;
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
+  serialisedItemAvailabilities: SerialisedItemAvailability[];
 
   private previousProduct;
   private subscription: Subscription;
@@ -85,6 +86,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
               {
                 SalesInvoiceItemState: x,
                 SerialisedItem: x,
+                NextSerialisedItemAvailability: x,
                 Facility: {
                   Owner: x,
                 },
@@ -103,6 +105,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
                 }
               }
             }),
+            pull.SerialisedItemAvailability(),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
@@ -138,6 +141,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
         this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
         this.facilities = loaded.collections.Facilities as Facility[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');

@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
 import { AllorsMaterialHeaderModule } from '../../../../core/components/header';
 import { AllorsMaterialInputModule } from '../../../../core/components/role/input';
@@ -38,6 +39,7 @@ export { PersonCreateComponent } from './person-create.component';
     PersonCreateComponent,
   ],
   imports: [
+    AllorsMaterialAutoCompleteModule,
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,
     AllorsMaterialFooterModule,

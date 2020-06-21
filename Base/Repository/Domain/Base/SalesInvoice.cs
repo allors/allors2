@@ -91,6 +91,11 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
 
         public DateTime LastModifiedDate { get; set; }
+
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public decimal TotalIrpf { get; set; }
+
         #endregion
 
         #region ObjectStates

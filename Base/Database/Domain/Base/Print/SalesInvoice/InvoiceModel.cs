@@ -30,6 +30,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.VatCharge = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
             this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalIncVat = currencyIsoCode + " " + invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalToPay = currencyIsoCode + " " + (invoice.TotalIncVat - invoice.AdvancePayment).ToString("N2", new CultureInfo("nl-BE"));
 
             this.PaymentNetDays = invoice.PaymentNetDays;
 
@@ -74,6 +75,8 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public string TotalVat { get; }
 
         public string TotalIncVat { get; }
+
+        public string TotalToPay { get; }
 
         public int PaymentNetDays { get; }
 

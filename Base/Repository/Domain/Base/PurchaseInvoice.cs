@@ -91,6 +91,10 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
 
         public DateTime LastModifiedDate { get; set; }
+
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public decimal TotalIrpf { get; set; }
         #endregion
 
         #region ObjectStates
@@ -390,6 +394,12 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Reopen() { }
+
+        #region Allors
+        [Id("422DD593-DECC-40FD-9216-D5A25458B59F")]
+        #endregion
+        [Workspace]
+        public void CreateSalesInvoice() { }
 
         #region Allors
         [Id("4BF977FA-75AF-4D6D-8CD7-7250D527EF61")]

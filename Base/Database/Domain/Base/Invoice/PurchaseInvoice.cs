@@ -161,6 +161,19 @@ namespace Allors.Domain
                 }
             }
 
+            if (!this.PurchaseInvoiceState.IsCreated && !this.PurchaseInvoiceState.IsAwaitingApproval)
+            {
+                foreach (var invoiceItem in validInvoiceItems)
+                {
+                    if (invoiceItem.ExistSerialisedItem
+                        && this.BilledTo.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseInvoiceConfirm))
+                    {
+                        invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
+                        invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
+                    }
+                }
+            }
+
             this.AmountPaid = this.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
 
             //// Perhaps payments are recorded at the item level.
@@ -218,6 +231,12 @@ namespace Allors.Domain
             else
             {
                 this.AddDeniedPermission(deletePermission);
+            }
+
+            if (this.ExistSalesInvoiceWherePurchaseInvoice ||
+                (this.BilledFrom as Organisation)?.IsInternalOrganisation == false)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
             }
         }
 
@@ -403,6 +422,59 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseCreateSalesInvoice(PurchaseInvoiceCreateSalesInvoice method)
+        {
+            var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
+                .WithPurchaseInvoice(this)
+                .WithBilledFrom(this.BilledTo)
+                .WithBilledFromContactPerson(this.BilledToContactPerson)
+                .WithBillToCustomer(this.BillToEndCustomer)
+                .WithBillToContactMechanism(this.BillToEndCustomerContactMechanism)
+                .WithBillToContactPerson(this.BillToEndCustomerContactPerson)
+                .WithShipToCustomer(this.ShipToEndCustomer)
+                .WithShipToAddress(this.ShipToEndCustomerAddress)
+                .WithShipToContactPerson(this.ShipToEndCustomerContactPerson)
+                .WithDescription(this.Description)
+                .WithInvoiceDate(this.Session().Now())
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
+                .WithVatRegime(this.VatRegime)
+                .WithDiscountAdjustment(this.DiscountAdjustment)
+                .WithSurchargeAdjustment(this.SurchargeAdjustment)
+                .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
+                .WithFee(this.Fee)
+                .WithCustomerReference(this.CustomerReference)
+                .WithPaymentMethod(this.BillToCustomerPaymentMethod)
+                .WithComment(this.Comment)
+                .WithInternalComment(this.InternalComment)
+                .Build();
+
+            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.PurchaseInvoiceItems)
+            {
+                var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
+                    .WithInvoiceItemType(purchaseInvoiceItem.InvoiceItemType)
+                    .WithAssignedUnitPrice(purchaseInvoiceItem.AssignedUnitPrice)
+                    .WithProduct(purchaseInvoiceItem.Product)
+                    .WithSerialisedItem(purchaseInvoiceItem.SerialisedItem)
+                    .WithQuantity(purchaseInvoiceItem.Quantity)
+                    .WithComment(purchaseInvoiceItem.Comment)
+                    .WithInternalComment(purchaseInvoiceItem.InternalComment)
+                    .Build();
+
+                salesInvoice.AddSalesInvoiceItem(invoiceItem);
+            }
+
+            var internalOrganisation = (InternalOrganisation)salesInvoice.BilledFrom;
+            if (!internalOrganisation.ActiveCustomers.Contains(salesInvoice.BillToCustomer))
+            {
+                new CustomerRelationshipBuilder(this.Strategy.Session)
+                    .WithCustomer(salesInvoice.BillToCustomer)
+                    .WithInternalOrganisation(internalOrganisation)
+                    .Build();
+            }
+
+            this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
+        }
+
         public void BaseOnDeriveInvoiceItems(IDerivation derivation)
         {
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
@@ -416,9 +488,6 @@ namespace Allors.Domain
 
                     serialisedItem.RemoveAssignedPurchasePrice();
                     deriveRoles.PurchasePrice = purchaseInvoiceItem.TotalExVat;
-
-                    serialisedItem.OwnedBy = this.BilledTo;
-                    serialisedItem.Buyer = this.BilledTo;
                 }
 
                 purchaseInvoiceItem.BaseOnDerivePrices();

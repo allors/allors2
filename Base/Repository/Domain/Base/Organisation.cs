@@ -243,9 +243,12 @@ namespace Allors.Repository
         public decimal PurchaseOrderApprovalThresholdLevel1 { get; set; }
 
         public decimal PurchaseOrderApprovalThresholdLevel2 { get; set; }
+
         public bool IsAutomaticallyReceived { get; set; }
+
         public bool AutoGeneratePurchaseShipment { get; set; }
-        public SerialisedItemSoldOn SerialisedItemSoldOn { get; set; }
+
+        public SerialisedItemSoldOn[] SerialisedItemSoldOns { get; set; }
 
         #endregion
 

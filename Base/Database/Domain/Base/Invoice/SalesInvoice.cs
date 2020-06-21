@@ -431,8 +431,6 @@ namespace Allors.Domain
                         totalListPrice += item1.UnitPrice;
                     }
                 }
-
-                this.TotalIncVat -= this.AdvancePayment;
             }
 
             var salesInvoiceItemStates = new SalesInvoiceItemStates(derivation.Session);
@@ -588,6 +586,16 @@ namespace Allors.Domain
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
                 salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid;
+
+                if (salesInvoiceItem.ExistSerialisedItem
+                    && (this.BillToCustomer as InternalOrganisation)?.IsInternalOrganisation == false
+                    && this.BilledFrom.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).SalesInvoiceSend)
+                    && salesInvoiceItem.NextSerialisedItemAvailability?.Equals(new SerialisedItemAvailabilities(this.Session()).Sold) == true)
+                {
+                    salesInvoiceItem.SerialisedItem.Seller = this.BilledFrom;
+                    salesInvoiceItem.SerialisedItem.OwnedBy = this.BillToCustomer;
+                    salesInvoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
+                }
             }
 
             if (this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation)

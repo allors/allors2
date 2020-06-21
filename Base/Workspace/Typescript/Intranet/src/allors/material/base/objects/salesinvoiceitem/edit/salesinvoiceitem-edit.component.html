@@ -38,7 +38,8 @@
           display="Name" label="Item VAT regime"></a-mat-select>
         <a-mat-static class="col-md" [object]="invoiceItem.VatRate" [roleType]="m.VatRate.Rate" display="Rate"
           label="Rate %"></a-mat-static>
-      </div>
+          <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.NextSerialisedItemAvailability" [options]="serialisedItemAvailabilities" display="Name" label="Next Item State"></a-mat-select>
+        </div>
 
       <div class="row">
         <a-mat-input class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-input>

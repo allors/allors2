@@ -643,14 +643,14 @@ namespace Allors.Repository
         bool AutoGeneratePurchaseShipment { get; set; }
 
         #region Allors
-        [Id("0d2ebe14-389a-44e7-8bee-06e622c9590b")]
-        [AssociationId("04fcd869-4626-49c1-b06f-80b03c390ec1")]
-        [RoleId("45e58d93-fc82-4ee7-8031-65731b9e40e0")]
+        [Id("b263b4a6-567e-4f55-a26d-a3a40a14ad3f")]
+        [AssociationId("6ba0e7c9-061c-4aa2-a4c6-bb283d9b9fcb")]
+        [RoleId("3e718ad2-2432-4cf7-9417-67e1168326de")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        SerialisedItemSoldOn SerialisedItemSoldOn { get; set; }
+        SerialisedItemSoldOn[] SerialisedItemSoldOns { get; set; }
 
         #region inherited methods
 

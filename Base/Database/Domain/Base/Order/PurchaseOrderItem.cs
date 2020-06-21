@@ -414,9 +414,6 @@ namespace Allors.Domain
                     serialisedItemDeriveRoles.SuppliedBy = order.TakenViaSupplier;
                     serialisedItem.RemoveAssignedPurchasePrice();
                     serialisedItemDeriveRoles.PurchasePrice = this.TotalExVat;
-
-                    serialisedItem.OwnedBy = order.OrderedBy;
-                    serialisedItem.Buyer = order.OrderedBy;
                 }
 
                 if (shipment.ShipToParty is InternalOrganisation internalOrganisation)

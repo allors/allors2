@@ -124,6 +124,16 @@ namespace Allors.Repository
         public SerialisedItem SerialisedItem { get; set; }
 
         #region Allors
+        [Id("ac302862-d876-43c0-a938-8058a6d3c2e8")]
+        [AssociationId("388abc03-79d9-4014-aa95-ab356a0e3429")]
+        [RoleId("49b1a593-2a10-43d5-ad25-f7b4b9b8930e")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItemAvailability NextSerialisedItemAvailability { get; set; }
+
+        #region Allors
         [Id("7A952F88-BC4E-4F23-A0D5-44D47E30666E")]
         [AssociationId("9D5B95BE-20AA-4D1A-81A2-6FD69B1A6365")]
         [RoleId("26EC36C3-42D1-4941-90D3-2E1B45132E1B")]
