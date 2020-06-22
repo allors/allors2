@@ -337,6 +337,7 @@ namespace Allors.Domain
                 this.TotalVat = 0;
                 this.TotalIncVat = 0;
                 this.TotalListPrice = 0;
+                this.TotalIrpf = 0;
 
                 foreach (var item in validInvoiceItems)
                 {

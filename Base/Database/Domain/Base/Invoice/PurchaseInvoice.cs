@@ -284,6 +284,7 @@ namespace Allors.Domain
                 this.TotalVat = 0;
                 this.TotalExVat = 0;
                 this.TotalIncVat = 0;
+                this.TotalIrpf = 0;
 
                 foreach (PurchaseInvoiceItem item in this.PurchaseInvoiceItems)
                 {
