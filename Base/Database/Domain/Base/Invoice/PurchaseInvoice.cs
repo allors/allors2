@@ -168,6 +168,11 @@ namespace Allors.Domain
                     if (invoiceItem.ExistSerialisedItem
                         && this.BilledTo.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseInvoiceConfirm))
                     {
+                        if ((this.BilledFrom as InternalOrganisation)?.IsInternalOrganisation == false)
+                        {
+                            invoiceItem.SerialisedItem.Buyer = this.BilledTo;
+                        }
+
                         invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
                         invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
                     }
