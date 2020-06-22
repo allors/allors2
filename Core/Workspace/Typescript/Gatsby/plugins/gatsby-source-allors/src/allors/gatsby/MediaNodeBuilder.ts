@@ -1,9 +1,9 @@
-import { CreateNodeArgs, PluginOptions } from 'gatsby';
+import { CreateNodeArgs, PluginOptions, GatsbyCache } from 'gatsby';
 import { createRemoteFileNode } from 'gatsby-source-filesystem';
 import { Download } from '../domain/core/Media';
 
 export class MediaNodeBuilder {
-  constructor(private args: CreateNodeArgs, private options: PluginOptions) {}
+  constructor(private args: CreateNodeArgs, private options: PluginOptions) { }
 
   async build(): Promise<void> {
     const {
@@ -26,7 +26,7 @@ export class MediaNodeBuilder {
           url: url,
           parentNodeId: node.id,
           store,
-          cache,
+          cache: cache as any, // TODO: remove any when gatsby typescript definitions are up to date
           createNode,
           createNodeId,
           reporter,
