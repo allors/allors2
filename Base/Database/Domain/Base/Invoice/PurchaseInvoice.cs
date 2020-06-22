@@ -168,6 +168,11 @@ namespace Allors.Domain
                     if (invoiceItem.ExistSerialisedItem
                         && this.BilledTo.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseInvoiceConfirm))
                     {
+                        if ((this.BilledFrom as InternalOrganisation)?.IsInternalOrganisation == false)
+                        {
+                            invoiceItem.SerialisedItem.Buyer = this.BilledTo;
+                        }
+
                         invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
                         invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
                     }
@@ -279,6 +284,7 @@ namespace Allors.Domain
                 this.TotalVat = 0;
                 this.TotalExVat = 0;
                 this.TotalIncVat = 0;
+                this.TotalIrpf = 0;
 
                 foreach (PurchaseInvoiceItem item in this.PurchaseInvoiceItems)
                 {

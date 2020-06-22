@@ -337,6 +337,7 @@ namespace Allors.Domain
                 this.TotalVat = 0;
                 this.TotalIncVat = 0;
                 this.TotalListPrice = 0;
+                this.TotalIrpf = 0;
 
                 foreach (var item in validInvoiceItems)
                 {
@@ -586,6 +587,7 @@ namespace Allors.Domain
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
                 salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid;
+                salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.NextSerialisedItemAvailability;
 
                 if (salesInvoiceItem.ExistSerialisedItem
                     && (this.BillToCustomer as InternalOrganisation)?.IsInternalOrganisation == false
