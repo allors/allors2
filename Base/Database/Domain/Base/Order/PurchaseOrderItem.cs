@@ -311,8 +311,7 @@ namespace Allors.Domain
                 }
             }
 
-            if ((this.IsValid && !this.ExistOrderItemBillingsWhereOrderItem &&
-                this.PurchaseOrderItemShipmentState.IsReceived) || this.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!this.ExistPart && this.QuantityReceived == 1))
+            if (this.IsValid && !this.ExistOrderItemBillingsWhereOrderItem)
             {
                 this.CanInvoice = true;
             }

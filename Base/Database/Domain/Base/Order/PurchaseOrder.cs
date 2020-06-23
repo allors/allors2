@@ -70,8 +70,7 @@ namespace Allors.Domain
             {
                 foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
                 {
-                    if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
-                        (purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1)))
+                    if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem)
                     {
                         return true;
                     }

@@ -153,14 +153,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
           if (this.invoiceItem.Part) {
             this.unifiedGood = this.invoiceItem.Part.objectType.name === m.UnifiedGood.name;
             this.nonUnifiedPart = this.invoiceItem.Part.objectType.name === m.NonUnifiedPart.name;
-
-            if (this.unifiedGood) {
-              this.updateFromPart(this.invoiceItem.Part);
-            }
-
-            if (this.nonUnifiedPart) {
-              this.updateFromSparePart(this.invoiceItem.Part);
-            }
+            this.updateFromPart(this.invoiceItem.Part);
           }
 
           if (this.invoiceItem.CanWriteQuantity) {
@@ -199,15 +192,6 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
     }
   }
 
-  public sparePartSelected(part: Part): void {
-    if (part) {
-      this.unifiedGood = this.invoiceItem.Part.objectType.name === this.m.UnifiedGood.name;
-      this.nonUnifiedPart = this.invoiceItem.Part.objectType.name === this.m.NonUnifiedPart.name;
-
-      this.updateFromSparePart(part);
-    }
-  }
-
   public save(): void {
 
     this.onSave();
@@ -237,6 +221,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
           Part: {
             include: {
               SerialisedItems: x,
+              InventoryItemKind: x,
             }
           }
         }
@@ -244,6 +229,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       pull.UnifiedGood({
         object: product.id,
         include: {
+          InventoryItemKind: x,
           SerialisedItems: x,
         }
       })
@@ -255,10 +241,11 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
 
         this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
         this.serialisedItems = this.part.SerialisedItems;
+        this.serialised = this.part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
       });
   }
 
-  private updateFromSparePart(part: Part) {
+  private updateFromPart(part: Part) {
 
     const { pull, x } = this.metaService;
 
@@ -321,45 +308,5 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       this.invoiceItem.InvoiceItemType !== this.partItemType) {
       this.invoiceItem.Quantity = '1';
     }
-  }
-
-  private updateFromPart(part: Part) {
-
-    const { pull, x } = this.metaService;
-
-    const pulls = [
-      pull.Part(
-        {
-          object: part,
-          fetch: {
-            SerialisedItems: {
-              include: {
-                OwnedBy: x
-              }
-            }
-          }
-        }
-      ),
-      pull.Part(
-        {
-          object: part,
-          include: {
-            InventoryItemKind: x,
-          }
-        }
-      ),
-    ];
-
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
-
-        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
-
-        if (this.invoiceItem.SerialisedItem) {
-          this.serialisedItems.push(this.invoiceItem.SerialisedItem);
-        }
-      });
   }
 }
