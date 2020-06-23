@@ -13,6 +13,7 @@ interface Row extends TableRow {
   object: QuoteItem;
   itemType: string;
   item: string;
+  itemId: string;
   state: string;
   quantity: string;
   price: string;
@@ -86,6 +87,7 @@ export class QuoteItemOverviewPanelComponent extends TestScope {
       columns: [
         { name: 'itemType' },
         { name: 'item' },
+        { name: 'itemId' },
         { name: 'state' },
         { name: 'quantity'},
         { name: 'price'},
@@ -143,6 +145,7 @@ export class QuoteItemOverviewPanelComponent extends TestScope {
           object: v,
           itemType: v.InvoiceItemType.Name,
           item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
+          itemId: `${v.SerialisedItem && v.SerialisedItem.ItemNumber}`,
           state: `${v.QuoteItemState && v.QuoteItemState.Name}`,
           quantity: v.Quantity,
           price: v.UnitPrice,

@@ -173,8 +173,13 @@ namespace Allors.Domain
                             invoiceItem.SerialisedItem.Buyer = this.BilledTo;
                         }
 
-                        invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
-                        invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
+                        // who comes first?
+                        // Item you purchased can be on sold via sales invoice even before purchase invoice is created and confirmed!!
+                        if (!invoiceItem.SerialisedItem.ExistSalesInvoiceItemsWhereSerialisedItem)
+                        {
+                            invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
+                            invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
+                        }
                     }
                 }
             }
@@ -238,8 +243,13 @@ namespace Allors.Domain
                 this.AddDeniedPermission(deletePermission);
             }
 
-            if (this.ExistSalesInvoiceWherePurchaseInvoice ||
-                (this.BilledFrom as Organisation)?.IsInternalOrganisation == false)
+            if (!this.ExistSalesInvoiceWherePurchaseInvoice
+                && (this.BilledFrom as Organisation)?.IsInternalOrganisation == true
+                && (this.PurchaseInvoiceState.IsPaid || this.PurchaseInvoiceState.IsPartiallyPaid || this.PurchaseInvoiceState.IsNotPaid))
+            {
+                this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
+            }
+            else
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
             }
@@ -342,7 +352,7 @@ namespace Allors.Domain
             {
                 if (purchaseInvoiceItem.ExistPart)
                 {
-                    var previousOffering = purchaseInvoiceItem.Part.SupplierOfferingsWherePart.Single(v =>
+                    var previousOffering = purchaseInvoiceItem.Part.SupplierOfferingsWherePart.FirstOrDefault(v =>
                         v.Supplier.Equals(this.BilledFrom) && v.FromDate <= this.Session().Now() &&
                         (!v.ExistThroughDate || v.ThroughDate >= this.Session().Now()));
 
@@ -376,6 +386,7 @@ namespace Allors.Domain
                         new SupplierOfferingBuilder(this.Session())
                             .WithSupplier(this.BilledFrom)
                             .WithPart(purchaseInvoiceItem.Part)
+                            .WithUnitOfMeasure(purchaseInvoiceItem.Part?.UnitOfMeasure)
                             .WithPrice(purchaseInvoiceItem.UnitBasePrice)
                             .WithFromDate(this.Session().Now())
                             .Build();

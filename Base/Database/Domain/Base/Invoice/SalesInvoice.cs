@@ -587,7 +587,6 @@ namespace Allors.Domain
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
                 salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid;
-                salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.NextSerialisedItemAvailability;
 
                 if (salesInvoiceItem.ExistSerialisedItem
                     && (this.BillToCustomer as InternalOrganisation)?.IsInternalOrganisation == false
@@ -597,6 +596,8 @@ namespace Allors.Domain
                     salesInvoiceItem.SerialisedItem.Seller = this.BilledFrom;
                     salesInvoiceItem.SerialisedItem.OwnedBy = this.BillToCustomer;
                     salesInvoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
+                    salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.NextSerialisedItemAvailability;
+                    salesInvoiceItem.SerialisedItem.AvailableForSale = false;
                 }
             }
 

@@ -183,6 +183,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
                   PurchaseOrderPaymentState: x,
                   ValidOrderItems: {
                     PurchaseOrderItem_Part: x,
+                    PurchaseOrderItem_SerialisedItem: x,
                   },
                   PrintDocument: {
                     Media: x
@@ -216,6 +217,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
             PurchaseInvoiceItems: {
               Part: x,
               InvoiceItemType: x,
+              SerialisedItem: x,
             }
           }
         }),
@@ -266,6 +268,10 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
         invoiceItem.Description = purchaseOrderItem.Description;
         invoiceItem.InternalComment = purchaseOrderItem.InternalComment;
         invoiceItem.Message = purchaseOrderItem.Message;
+
+        if (purchaseOrderItem.SerialisedItem) {
+          invoiceItem.SerialisedItem = purchaseOrderItem.SerialisedItem;;
+        }
 
         if (invoiceItem.Part) {
           invoiceItem.InvoiceItemType = this.partItem;
