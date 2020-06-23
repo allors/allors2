@@ -68,7 +68,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
         { name: 'categories', sort: true },
         { name: 'availability', sort: true },
         { name: 'ownership' },
-        { name: 'suppliedBy' },
+        { name: 'suppliedBy', sort: true },
         { name: 'ownedBy' },
         { name: 'rentedBy' },
       ],
@@ -209,7 +209,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , ,]),
+        }, [, , , , ]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
@@ -247,7 +247,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
             categories: v.DisplayProductCategories,
             availability: v.SerialisedItemAvailabilityName,
             ownership: `${v.Ownership && v.Ownership.Name}`,
-            suppliedBy: v.SuppliedBy ? v.SuppliedBy.displayName : '',
+            suppliedBy: v.SuppliedByPartyName,
             ownedBy: v.OwnedBy ? v.OwnedBy.displayName : '',
             rentedBy: v.RentedBy ? v.RentedBy.displayName : '',
           } as Row;
