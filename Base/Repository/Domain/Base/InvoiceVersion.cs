@@ -303,18 +303,6 @@ namespace Allors.Repository
         decimal TotalVat { get; set; }
 
         #region Allors
-        [Id("e533a4dd-6114-4e96-9e03-1a6c4699f05a")]
-        [AssociationId("5d84319e-d029-4687-8121-f9b27f1a887f")]
-        [RoleId("13a57156-27f1-4f91-96b0-0ae60398b674")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        decimal TotalIrpf { get; set; }
-
-        #region Allors
         [Id("7E572C4E-C2B5-4008-93CC-D9F909EAF0C6")]
         [AssociationId("B1CF18D5-623E-47F8-A518-385425D32144")]
         [RoleId("82BE11EF-4994-4F76-997E-4779C72690C8")]
