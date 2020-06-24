@@ -6,7 +6,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
     using Xunit;
     using System.Linq;
     using Allors.Domain.TestPopulation;
@@ -81,6 +80,18 @@ namespace Allors.Domain
 
             var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
             unifiedGood.AddSerialisedItem(newItem);
+
+            this.Session.Derive();
+
+            Assert.Equal(supplier.PartyName, newItem.SuppliedByPartyName);
+        }
+
+        [Fact]
+        public void GivenSerializedItem_WhenDerived_ThenOwnedByPartyNameIsSet()
+        {
+            var supplier = this.InternalOrganisation.ActiveSuppliers.First;
+
+            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).WithAssignedSuppliedBy(supplier).Build();
 
             this.Session.Derive();
 
