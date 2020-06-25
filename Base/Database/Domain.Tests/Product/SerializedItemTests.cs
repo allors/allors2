@@ -89,13 +89,14 @@ namespace Allors.Domain
         [Fact]
         public void GivenSerializedItem_WhenDerived_ThenOwnedByPartyNameIsSet()
         {
-            var supplier = this.InternalOrganisation.ActiveSuppliers.First;
+            var customer = this.InternalOrganisation.ActiveCustomers.First;
 
-            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).WithAssignedSuppliedBy(supplier).Build();
+            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
+            newItem.OwnedBy = customer;
 
             this.Session.Derive();
 
-            Assert.Equal(supplier.PartyName, newItem.SuppliedByPartyName);
+            Assert.Equal(customer.PartyName, newItem.OwnedByPartyName);
         }
     }
 }
