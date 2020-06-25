@@ -408,6 +408,16 @@ namespace Allors.Repository
         public string SuppliedByPartyName { get; set; }
 
         #region Allors
+        [Id("ea0a8474-490b-4ae3-8c0d-546b9167b552")]
+        [AssociationId("6429cb2c-2c8a-4ad6-842c-cbf35b829ede")]
+        [RoleId("a5b2c7cd-a64f-454a-aefd-0f4630fcc715")]
+        #endregion
+        [Indexed]
+        [Derived]
+        [Workspace]
+        public string OwnedByPartyName { get; set; }
+
+        #region Allors
         [Id("80c6e34f-aadd-4ef6-b8cf-da532833ac03")]
         [AssociationId("d668026d-14b7-4071-84bf-f8e28c7dfbc9")]
         [RoleId("63799217-89c0-41f7-bf35-3ec9f962ecf2")]
