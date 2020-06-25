@@ -283,13 +283,10 @@ export class SessionObject implements ISessionObject {
     if (!!value) {
       this.assertExists();
 
-      const roles = this.get(roleType);
-      const index = roles.indexOf(value);
-      if (index >= 0) {
-        roles.splice(index, 1);
-      }
+      const roles = this.get(roleType) as [];
+      const newRoles = roles.filter(v => v !== value);
 
-      this.set(roleType, roles);
+      this.set(roleType, newRoles);
 
       this.session.hasChanges = true;
     }

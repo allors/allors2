@@ -8,6 +8,7 @@ export abstract class FiltersService {
     serialisedgoodsFilter: SearchFactory;
     internalOrganisationsFilter: SearchFactory;
     nonUnifiedPartsFilter: SearchFactory;
+    unifiedGoodsFilter: SearchFactory;
     organisationsFilter: SearchFactory;
     partiesFilter: SearchFactory;
     partsFilter: SearchFactory;

@@ -71,18 +71,21 @@ export abstract class AssociationField extends Field
 
   set model(association: ISessionObject | undefined) {
     if (this.existObject) {
+      const prevModel = this.model;
+
+      if (prevModel && prevModel !== association) {
+        if (this.roleType.isOne) {
+          prevModel.set(this.roleType, null);
+        } else {
+          prevModel.remove(this.roleType, this.object);
+        }
+      }
+
       if (association) {
         if (this.roleType.isOne) {
-          this.model?.set(this.roleType, null);
           association.set(this.roleType, this.object);
         } else {
           association.add(this.roleType, this.object);
-        }
-      } else {
-        if (this.roleType.isOne) {
-          this.model?.set(this.roleType, null);
-        } else {
-          this.model?.remove(this.roleType, this.object);
         }
       }
     }
