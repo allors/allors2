@@ -64,6 +64,12 @@ namespace Allors.Domain
                 iteration.AddDependency(invoice, this);
                 iteration.Mark(invoice);
             }
+
+            foreach(OrderItemBilling orderItemBilling in this.OrderItemBillingsWhereInvoiceItem)
+            {
+                iteration.AddDependency(orderItemBilling.OrderItem, this);
+                iteration.Mark(orderItemBilling.OrderItem);
+            }
         }
 
         public void BaseOnPostDerive(ObjectOnPostDerive method)

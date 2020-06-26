@@ -9,6 +9,7 @@ interface Row extends TableRow {
   object: SalesInvoice;
   number: string;
   state: string;
+  totalExVat: string;
   customer: string;
   lastModifiedDate: string;
 }
@@ -67,6 +68,7 @@ export class SalesInvoiceOverviewPanelComponent extends TestScope implements OnI
       columns: [
         { name: 'number', sort },
         { name: 'state', sort },
+        { name: 'totalExVat', sort },
         { name: 'customer', sort },
         { name: 'lastModifiedDate', sort },
       ],
@@ -137,6 +139,7 @@ export class SalesInvoiceOverviewPanelComponent extends TestScope implements OnI
             object: v,
             number: v.InvoiceNumber,
             customer: v.BillToCustomer.displayName,
+            totalExVat: v.TotalExVat,
             state: v.SalesInvoiceState ? v.SalesInvoiceState.Name : '',
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;

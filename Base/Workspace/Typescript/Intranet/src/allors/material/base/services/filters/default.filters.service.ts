@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
-import { SearchFactory, WorkspaceService, InternalOrganisationId } from '../../../../angular';
-import { And, ContainedIn, Equals, Filter, Contains, Not, Or } from '../../../../framework';
-import { Meta } from '../../../../meta';
+import { SearchFactory, InternalOrganisationId, MetaService } from '../../../../angular';
+import { And, ContainedIn, Equals, Filter, Or } from '../../../../framework';
+import { Meta, TreeFactory } from '../../../../meta';
 
 import { FiltersService } from './filters.service';
-import { Party } from '../../../../domain';
 
 @Injectable()
 export class DefaultFiltersService extends FiltersService {
 
   private m: Meta;
+  private tree: TreeFactory;
 
   constructor(
-    private workspaceService: WorkspaceService,
+    private metaService: MetaService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
     super();
 
-    this.m = this.workspaceService.metaPopulation as Meta;
+    this.m = this.metaService.m;
+    this.tree = this.metaService.tree;
   }
 
   get goodsFilter() {
@@ -54,6 +55,14 @@ export class DefaultFiltersService extends FiltersService {
     return new SearchFactory({
       objectType: this.m.NonUnifiedPart,
       roleTypes: [this.m.NonUnifiedPart.Name, this.m.NonUnifiedPart.SearchString],
+    });
+  }
+
+  get unifiedGoodsFilter() {
+    return new SearchFactory({
+      objectType: this.m.UnifiedGood,
+      roleTypes: [this.m.UnifiedGood.Name, this.m.UnifiedGood.SearchString],
+      include: this.tree.UnifiedGood({SerialisedItems: {}})
     });
   }
 

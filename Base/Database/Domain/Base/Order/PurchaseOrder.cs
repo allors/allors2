@@ -70,8 +70,7 @@ namespace Allors.Domain
             {
                 foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
                 {
-                    if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem &&
-                        (purchaseOrderItem.PurchaseOrderItemShipmentState.IsReceived || purchaseOrderItem.PurchaseOrderItemShipmentState.IsPartiallyReceived || (!purchaseOrderItem.ExistPart && purchaseOrderItem.QuantityReceived == 1)))
+                    if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem)
                     {
                         return true;
                     }
@@ -518,10 +517,10 @@ namespace Allors.Domain
                             }
 
                             serialisedItem.AssignedSuppliedBy = this.TakenViaSupplier;
-                            serialisedItem.Buyer = this.OrderedBy;
 
                             if (this.OrderedBy.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseshipmentReceive))
                             {
+                                serialisedItem.Buyer = this.OrderedBy;
                                 serialisedItem.OwnedBy = this.OrderedBy;
                                 serialisedItem.Ownership = new Ownerships(this.Session()).Own;
                             }

@@ -80,8 +80,6 @@ namespace Allors.Repository
 
         public IrpfRegime IrpfRegime { get; set; }
 
-        public decimal TotalIrpf { get; set; }
-
         #endregion
 
         #region Allors

@@ -1,6 +1,17 @@
-﻿import { ObjectType, OperandType, RoleType, AssociationType, MethodType } from '../meta';
+﻿import {
+  ObjectType,
+  OperandType,
+  RoleType,
+  AssociationType,
+  MethodType,
+} from '../meta';
 import { ids } from '../../meta/generated/ids.g';
-import { UnitTypes, CompositeTypes, ParameterTypes, isSessionObject } from '../workspace/Types';
+import {
+  UnitTypes,
+  CompositeTypes,
+  ParameterTypes,
+  isSessionObject,
+} from '../workspace/Types';
 
 import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
 import { PushRequestObject } from './../protocol/push/PushRequestObject';
@@ -32,7 +43,10 @@ export interface ISessionObject extends IObject {
   canRead(roleType: RoleType): boolean | undefined;
   canWrite(roleTyp: RoleType): boolean | undefined;
   canExecute(methodType: MethodType): boolean | undefined;
-  isPermited(operandType: OperandType, operation: Operations): boolean | undefined;
+  isPermited(
+    operandType: OperandType,
+    operation: Operations
+  ): boolean | undefined;
 
   get(roleType: RoleType): any;
   set(roleType: RoleType, value: any): void;
@@ -86,7 +100,10 @@ export class SessionObject implements ISessionObject {
     return this.isPermited(methodType, Operations.Execute);
   }
 
-  public isPermited(operandType: OperandType, operation: Operations): boolean | undefined {
+  public isPermited(
+    operandType: OperandType,
+    operation: Operations
+  ): boolean | undefined {
     if (this.roleByRoleType === undefined) {
       return undefined;
     }
@@ -94,7 +111,11 @@ export class SessionObject implements ISessionObject {
     if (this.newId) {
       return true;
     } else if (this.workspaceObject) {
-      const permission = this.session.workspace.permission(this.objectType, operandType, operation);
+      const permission = this.session.workspace.permission(
+        this.objectType,
+        operandType,
+        operation
+      );
       return permission ? this.workspaceObject.isPermitted(permission) : false;
     }
 
@@ -125,10 +146,14 @@ export class SessionObject implements ISessionObject {
         } else {
           try {
             if (roleType.isOne) {
-              const role: string = this.workspaceObject?.roleByRoleTypeId.get(roleType.id);
+              const role: string = this.workspaceObject?.roleByRoleTypeId.get(
+                roleType.id
+              );
               value = role ? this.session.get(role) : null;
             } else {
-              const roles: string[] = this.workspaceObject?.roleByRoleTypeId.get(roleType.id);
+              const roles: string[] = this.workspaceObject?.roleByRoleTypeId.get(
+                roleType.id
+              );
               value = roles
                 ? roles.map((role) => {
                     return this.session.get(role);
@@ -140,11 +165,13 @@ export class SessionObject implements ISessionObject {
             try {
               stringValue = this.toString();
             } catch (e2) {
-              throw new Error(`Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}]`);
+              throw new Error(
+                `Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}]`
+              );
             }
 
             throw new Error(
-              `Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`,
+              `Could not get role ${roleType.name} from [objectType: ${this.objectType.name}, id: ${this.id}, value: '${stringValue}']`
             );
           }
         }
@@ -177,10 +204,14 @@ export class SessionObject implements ISessionObject {
           }
         } else {
           if (roleType.isOne) {
-            const role: string = this.workspaceObject?.roleByRoleTypeId.get(roleType.id);
+            const role: string = this.workspaceObject?.roleByRoleTypeId.get(
+              roleType.id
+            );
             value = role ? this.session.getForAssociation(role) : null;
           } else {
-            const roles: string[] = this.workspaceObject?.roleByRoleTypeId.get(roleType.id);
+            const roles: string[] = this.workspaceObject?.roleByRoleTypeId.get(
+              roleType.id
+            );
             value = roles
               ? roles.map((role) => {
                   return this.session.getForAssociation(role);
@@ -252,13 +283,10 @@ export class SessionObject implements ISessionObject {
     if (!!value) {
       this.assertExists();
 
-      const roles = this.get(roleType);
-      const index = roles.indexOf(value);
-      if (index >= 0) {
-        roles.splice(index, 1);
-      }
+      const roles = this.get(roleType) as [];
+      const newRoles = roles.filter(v => v !== value);
 
-      this.set(roleType, roles);
+      this.set(roleType, newRoles);
 
       this.session.hasChanges = true;
     }
@@ -270,7 +298,20 @@ export class SessionObject implements ISessionObject {
     const associations = this.session.getAssociation(this, associationType);
 
     if (associationType.isOne) {
-      return associations.length > 0 ? associations[0] : null;
+      const association = associations.length > 0 ? associations[0] : null;
+      const roleType = associationType.relationType.roleType;
+
+      if (association) {
+        if (roleType.isOne && association.get(roleType) === this) {
+          return association;
+        }
+
+        if (roleType.isMany && association.get(roleType).indexOf(this) > -1) {
+          return association;
+        }
+      }
+
+      return null;
     }
 
     return associations;
@@ -309,7 +350,8 @@ export class SessionObject implements ISessionObject {
       delete this.objectType;
       delete this.roleByRoleType;
     } else {
-      this.workspaceObject = this.workspaceObject?.workspace.get(this.id) ?? undefined;
+      this.workspaceObject =
+        this.workspaceObject?.workspace.get(this.id) ?? undefined;
       this.roleByRoleType = new Map();
     }
 
@@ -362,16 +404,24 @@ export class SessionObject implements ISessionObject {
           if (roleType.isOne) {
             saveRole.s = role ? role.id || role.newId : null;
           } else {
-            const roleIds = role.map((item: SessionObject) => item.id ?? item.newId);
+            const roleIds = role.map(
+              (item: SessionObject) => item.id ?? item.newId
+            );
             if (this.newId) {
               saveRole.a = roleIds;
             } else {
-              const originalRoleIds = this.workspaceObject?.roleByRoleTypeId.get(roleType.id) as string[];
+              const originalRoleIds = this.workspaceObject?.roleByRoleTypeId.get(
+                roleType.id
+              ) as string[];
               if (!originalRoleIds) {
                 saveRole.a = roleIds;
               } else {
-                saveRole.a = roleIds.filter((v: string) => originalRoleIds.indexOf(v) < 0);
-                saveRole.r = originalRoleIds.filter((v) => roleIds.indexOf(v) < 0);
+                saveRole.a = roleIds.filter(
+                  (v: string) => originalRoleIds.indexOf(v) < 0
+                );
+                saveRole.r = originalRoleIds.filter(
+                  (v) => roleIds.indexOf(v) < 0
+                );
               }
             }
           }
@@ -385,7 +435,9 @@ export class SessionObject implements ISessionObject {
   }
 }
 
-export function serializeObject(roles: { [name: string]: ParameterTypes } | undefined): { [name: string]: string } {
+export function serializeObject(
+  roles: { [name: string]: ParameterTypes } | undefined
+): { [name: string]: string } {
   if (roles) {
     return Object.keys(roles).reduce((obj, v) => {
       const role = roles[v];

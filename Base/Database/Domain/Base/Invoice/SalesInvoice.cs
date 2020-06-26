@@ -340,6 +340,7 @@ namespace Allors.Domain
                 this.TotalIrpf = 0;
                 this.TotalIncVat = 0;
                 this.TotalListPrice = 0;
+                this.TotalIrpf = 0;
                 this.GrandTotal = 0;
 
                 foreach (var item in validInvoiceItems)
@@ -661,11 +662,15 @@ namespace Allors.Domain
                 salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid;
 
                 if (salesInvoiceItem.ExistSerialisedItem
+                    && (this.BillToCustomer as InternalOrganisation)?.IsInternalOrganisation == false
                     && this.BilledFrom.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).SalesInvoiceSend)
-                    && salesInvoiceItem.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
+                    && salesInvoiceItem.NextSerialisedItemAvailability?.Equals(new SerialisedItemAvailabilities(this.Session()).Sold) == true)
                 {
+                    salesInvoiceItem.SerialisedItem.Seller = this.BilledFrom;
                     salesInvoiceItem.SerialisedItem.OwnedBy = this.BillToCustomer;
                     salesInvoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
+                    salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.NextSerialisedItemAvailability;
+                    salesInvoiceItem.SerialisedItem.AvailableForSale = false;
                 }
             }
 

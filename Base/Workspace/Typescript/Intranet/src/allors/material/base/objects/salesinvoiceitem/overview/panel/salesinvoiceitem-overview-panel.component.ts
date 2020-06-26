@@ -12,6 +12,7 @@ import { ObjectData, ObjectService } from '../../../../../core/services/object';
 interface Row extends TableRow {
   object: SalesInvoiceItem;
   item: string;
+  itemId: string;
   type: string;
   state: string;
   quantity: string;
@@ -75,6 +76,7 @@ export class SalesInvoiceItemOverviewPanelComponent extends TestScope {
       selection: true,
       columns: [
         { name: 'item', sort },
+        { name: 'itemId' },
         { name: 'type', sort },
         { name: 'state', sort },
         { name: 'quantity', sort },
@@ -106,6 +108,7 @@ export class SalesInvoiceItemOverviewPanelComponent extends TestScope {
               include: {
                 SalesInvoiceItemState: x,
                 InvoiceItemType: x,
+                SerialisedItem: x,
               }
             }
           }
@@ -126,6 +129,7 @@ export class SalesInvoiceItemOverviewPanelComponent extends TestScope {
         return {
           object: v,
           item: (v.Product && v.Product.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || '',
+          itemId: `${v.SerialisedItem && v.SerialisedItem.ItemNumber}`,
           type: `${v.InvoiceItemType && v.InvoiceItemType.Name}`,
           state: `${v.SalesInvoiceItemState && v.SalesInvoiceItemState.Name}`,
           quantity: v.Quantity,

@@ -10,7 +10,7 @@ export * from './core/components/sidenavtoggle/sidenavtoggle.module';
 export * from './core/components/table/table.module';
 export * from './core/components/media/media.module';
 
-export * from './core/components/association/select/select.module';
+export * from './core/components/association/autocomplete/autocomplete.module';
 
 export * from './core/components/role/autocomplete/autocomplete.module';
 export * from './core/components/role/checkbox/checkbox.module';

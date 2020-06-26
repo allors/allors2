@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { SearchFactory, ContextService, MetaService, RefreshService, TestScope, FetcherService } from '../../../../../angular';
-import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, NonUnifiedPart, SupplierOffering, SerialisedItemAvailability } from '../../../../../domain';
+import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, NonUnifiedPart, SupplierOffering, SerialisedItemAvailability, UnifiedGood } from '../../../../../domain';
 import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
@@ -201,6 +201,13 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
     }
   }
 
+  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
+    const unifiedGood = this.invoiceItem.Product as UnifiedGood;
+    this.serialisedItem = unifiedGood.SerialisedItems.find((v) => v === serialisedItem);
+    this.invoiceItem.AssignedUnitPrice = this.serialisedItem.ExpectedSalesPrice;
+    this.invoiceItem.Quantity = '1';
+}
+
   private refreshSerialisedItems(good: Product): void {
 
     const { pull, x } = this.metaService;
@@ -217,6 +224,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
             SerialisedItems: {
               include: {
                 SerialisedItemAvailability: x,
+                PartWhereSerialisedItem: x,
               }
             }
           }
@@ -229,6 +237,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
           SerialisedItems: {
             include: {
               SerialisedItemAvailability: x,
+              PartWhereSerialisedItem: x,
             }
           }
         }
