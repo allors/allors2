@@ -197,6 +197,7 @@ namespace Allors.Domain
             }
 
             this.VatRegime ??= this.TakenViaSupplier?.VatRegime;
+            this.IrpfRegime ??= this.TakenViaSupplier?.IrpfRegime;
 
             this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
 
@@ -277,8 +278,10 @@ namespace Allors.Domain
                 this.TotalDiscount = 0;
                 this.TotalSurcharge = 0;
                 this.TotalVat = 0;
+                this.TotalIrpf = 0;
                 this.TotalExVat = 0;
                 this.TotalIncVat = 0;
+                this.GrandTotal = 0;
 
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
                 {
@@ -286,8 +289,10 @@ namespace Allors.Domain
                     this.TotalDiscount += orderItem.TotalDiscount;
                     this.TotalSurcharge += orderItem.TotalSurcharge;
                     this.TotalVat += orderItem.TotalVat;
+                    this.TotalIrpf += orderItem.TotalIrpf;
                     this.TotalExVat += orderItem.TotalExVat;
                     this.TotalIncVat += orderItem.TotalIncVat;
+                    this.GrandTotal += orderItem.GrandTotal;
                 }
             }
 
@@ -366,24 +371,9 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
-                if (this.ExistShippingAndHandlingCharge)
+                foreach (OrderAdjustment orderAdjustment in this.OrderAdjustments)
                 {
-                    this.ShippingAndHandlingCharge.Delete();
-                }
-
-                if (this.ExistFee)
-                {
-                    this.Fee.Delete();
-                }
-
-                if (this.ExistDiscountAdjustment)
-                {
-                    this.DiscountAdjustment.Delete();
-                }
-
-                if (this.ExistSurchargeAdjustment)
-                {
-                    this.SurchargeAdjustment.Delete();
+                    orderAdjustment.Delete();
                 }
 
                 foreach (PurchaseOrderItem item in this.PurchaseOrderItems)
@@ -568,13 +558,43 @@ namespace Allors.Domain
                     .WithDescription(this.Description)
                     .WithInvoiceDate(this.Session().Now())
                     .WithVatRegime(this.VatRegime)
-                    .WithDiscountAdjustment(this.DiscountAdjustment)
-                    .WithSurchargeAdjustment(this.SurchargeAdjustment)
-                    .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
-                    .WithFee(this.Fee)
+                    .WithIrpfRegime(this.IrpfRegime)
                     .WithCustomerReference(this.CustomerReference)
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session()).PurchaseInvoice)
                     .Build();
+
+                foreach (OrderAdjustment orderAdjustment in this.OrderAdjustments)
+                {
+                    OrderAdjustment newAdjustment = null;
+                    if (orderAdjustment.GetType().Name.Equals(typeof(DiscountAdjustment).Name))
+                    {
+                        newAdjustment = new DiscountAdjustmentBuilder(this.Session()).Build();
+                    }
+
+                    if (orderAdjustment.GetType().Name.Equals(typeof(SurchargeAdjustment).Name))
+                    {
+                        newAdjustment = new SurchargeAdjustmentBuilder(this.Session()).Build();
+                    }
+
+                    if (orderAdjustment.GetType().Name.Equals(typeof(Fee).Name))
+                    {
+                        newAdjustment = new FeeBuilder(this.Session()).Build();
+                    }
+
+                    if (orderAdjustment.GetType().Name.Equals(typeof(ShippingAndHandlingCharge).Name))
+                    {
+                        newAdjustment = new ShippingAndHandlingChargeBuilder(this.Session()).Build();
+                    }
+
+                    if (orderAdjustment.GetType().Name.Equals(typeof(MiscellaneousCharge).Name))
+                    {
+                        newAdjustment = new MiscellaneousChargeBuilder(this.Session()).Build();
+                    }
+
+                    newAdjustment.Amount ??= orderAdjustment.Amount;
+                    newAdjustment.Percentage ??= orderAdjustment.Percentage;
+                    purchaseInvoice.AddOrderAdjustment(newAdjustment);
+                }
 
                 foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
                 {
@@ -585,6 +605,7 @@ namespace Allors.Domain
                             .WithPart(orderItem.Part)
                             .WithQuantity(orderItem.QuantityOrdered)
                             .WithAssignedVatRegime(orderItem.AssignedVatRegime)
+                            .WithAssignedIrpfRegime(orderItem.AssignedIrpfRegime)
                             .WithDescription(orderItem.Description)
                             .WithInternalComment(orderItem.InternalComment)
                             .WithMessage(orderItem.Message)
@@ -594,7 +615,7 @@ namespace Allors.Domain
 
                         invoiceItem.InvoiceItemType = invoiceItem.ExistPart ?
                             invoiceItemTypes.PartItem :
-                            invoiceItemTypes.WorkDone;
+                            invoiceItemTypes.Service;
 
                         purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
 

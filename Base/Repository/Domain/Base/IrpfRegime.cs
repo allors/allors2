@@ -45,6 +45,9 @@ namespace Allors.Repository
         [Indexed]
         public IrpfRate IrpfRate { get; set; }
 
+        /// <summary>
+        /// Contains the accounting account assigned for the invoices/credit memos of purchase.
+        /// </summary>
         #region Allors
         [Id("a33a4f2c-ad70-4455-8cd6-68606d39446d")]
         [AssociationId("b0840a03-d3e0-4e43-b3a0-b7a60bd54066")]
@@ -53,7 +56,20 @@ namespace Allors.Repository
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        public OrganisationGlAccount GeneralLedgerAccount { get; set; }
+        public OrganisationGlAccount PurchaseGeneralLedgerAccount { get; set; }
+
+        /// <summary>
+        /// contains the accounting account assigned for sales invoices/credit memos.
+        /// </summary>
+        #region Allors
+        [Id("337192f2-085f-4c56-b492-c9c69138c125")]
+        [AssociationId("181e688f-203a-4b54-8e68-9e133bbb1ecf")]
+        [RoleId("b92fe22a-3d10-43d7-92c3-b5c0c1e52b64")]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public OrganisationGlAccount SalesGeneralLedgerAccount { get; set; }
 
         #region inherited methods
 

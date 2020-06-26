@@ -61,7 +61,7 @@ namespace Allors.Domain
                             var timeEntries = rateGroup.ToArray();
 
                             var invoiceItem = new SalesInvoiceItemBuilder(session)
-                                .WithInvoiceItemType(new InvoiceItemTypes(session).Time)
+                                .WithInvoiceItemType(new InvoiceItemTypes(session).Service)
                                 .WithAssignedUnitPrice(rateGroup.Key)
                                 .WithQuantity(timeEntries.Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m))
                                 .Build();
@@ -112,7 +112,7 @@ namespace Allors.Domain
                                 foreach (WorkEffortPurchaseOrderItemAssignment purchaseOrderItemAssignment in workEffort.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment)
                                 {
                                     var invoiceItem = new SalesInvoiceItemBuilder(session)
-                                        .WithInvoiceItemType(new InvoiceItemTypes(session).WorkDone)
+                                        .WithInvoiceItemType(new InvoiceItemTypes(session).Service)
                                         .WithAssignedUnitPrice(purchaseOrderItemAssignment.UnitSellingPrice)
                                         .WithQuantity(purchaseOrderItemAssignment.Quantity)
                                         .Build();

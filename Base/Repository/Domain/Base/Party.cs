@@ -418,6 +418,16 @@ namespace Allors.Repository
         VatRegime VatRegime { get; set; }
 
         #region Allors
+        [Id("bf0b654e-405b-46a6-9118-23a6c5746a31")]
+        [AssociationId("c9baec49-e9d2-44eb-bab5-ce01c45e07fe")]
+        [RoleId("7253c357-4178-418a-b613-1be9a37a7957")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public IrpfRegime IrpfRegime { get; set; }
+
+        #region Allors
         [Id("DEC610BF-5051-44EA-B4F9-1D912DCD19D5")]
         [AssociationId("4F0A52D4-886A-4348-B0BC-50461BBABDD9")]
         [RoleId("F74DD0DF-CC88-4FA5-90CC-968CC82CA65B")]

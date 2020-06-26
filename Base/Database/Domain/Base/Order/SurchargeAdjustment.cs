@@ -29,29 +29,7 @@ namespace Allors.Domain
                         iteration.Mark(salesOrderItem);
                     }
                 }
-
-                if (this.ExistOrderWhereSurchargeAdjustment)
-                {
-                    var salesOrder = (SalesOrder)this.OrderWhereSurchargeAdjustment;
-                    iteration.AddDependency(this, salesOrder);
-                    iteration.Mark(salesOrder);
-                }
-
-                if (this.ExistInvoiceWhereSurchargeAdjustment)
-                {
-                    var salesInvoice = (SalesInvoice)this.InvoiceWhereSurchargeAdjustment;
-                    iteration.AddDependency(this, salesInvoice);
-                    iteration.Mark(salesInvoice);
-                }
             }
-        }
-
-        public void BaseOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
-            derivation.Validation.AssertAtLeastOne(this, M.SurchargeAdjustment.Amount, M.SurchargeAdjustment.Percentage);
-            derivation.Validation.AssertExistsAtMostOne(this, M.SurchargeAdjustment.Amount, M.SurchargeAdjustment.Percentage);
         }
     }
 }

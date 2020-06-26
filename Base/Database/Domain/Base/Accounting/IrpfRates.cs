@@ -9,9 +9,12 @@ namespace Allors.Domain
 
     public partial class IrpfRates
     {
+        public static readonly Guid ZeroId = new Guid("438a01c9-e6b9-4aaf-88f5-7654cc8bc524");
         public static readonly Guid TenId = new Guid("8d7ba239-caf8-41e8-a6b8-cbf10fc7223f");
 
         private UniquelyIdentifiableSticky<IrpfRate> cache;
+
+        public IrpfRate Zero => this.Cache[ZeroId];
 
         public IrpfRate Ten => this.Cache[TenId];
 
@@ -21,6 +24,7 @@ namespace Allors.Domain
         {
             var merge = this.Cache.Merger().Action();
 
+            merge(ZeroId, v => v.Rate = 0);
             merge(TenId, v => v.Rate = 10);
         }
     }

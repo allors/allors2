@@ -22,6 +22,10 @@ namespace Allors.Repository
 
         public SalesTerm[] SalesTerms { get; set; }
 
+        public DiscountAdjustment[] DiscountAdjustments { get; set; }
+
+        public SurchargeAdjustment[] SurchargeAdjustments { get; set; }
+
         public decimal TotalInvoiceAdjustment { get; set; }
 
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
@@ -44,8 +48,6 @@ namespace Allors.Repository
 
         public decimal TotalDiscountAsPercentage { get; set; }
 
-        public DiscountAdjustment DiscountAdjustment { get; set; }
-
         public decimal UnitVat { get; set; }
 
         public VatRegime VatRegime { get; set; }
@@ -66,6 +68,8 @@ namespace Allors.Repository
 
         public decimal TotalIncVat { get; set; }
 
+        public decimal GrandTotal { get; set; }
+
         public decimal TotalSurchargeAsPercentage { get; set; }
 
         public decimal TotalDiscount { get; set; }
@@ -78,7 +82,15 @@ namespace Allors.Repository
 
         public decimal TotalExVat { get; set; }
 
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        public IrpfRate IrpfRate { get; set; }
+
+        public decimal UnitIrpf { get; set; }
+
+        public decimal TotalIrpf { get; set; }
 
         #endregion
 

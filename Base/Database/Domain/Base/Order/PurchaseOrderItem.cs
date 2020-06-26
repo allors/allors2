@@ -190,14 +190,21 @@ namespace Allors.Domain
                 this.VatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
                 this.VatRate = this.VatRegime?.VatRate;
 
-                this.UnitVat = this.ExistVatRate ? this.UnitPrice * this.VatRate.Rate / 100 : 0;
+                this.IrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseOrderWherePurchaseOrderItem.IrpfRegime;
+                this.IrpfRate = this.IrpfRegime?.IrpfRate;
+
                 this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
                 this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
                 this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;
                 this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+
+                this.UnitVat = this.ExistVatRate ? this.UnitPrice * this.VatRate.Rate / 100 : 0;
+                this.UnitIrpf = this.ExistIrpfRate ? this.UnitPrice * this.IrpfRate.Rate / 100 : 0;
                 this.TotalVat = this.UnitVat * this.QuantityOrdered;
                 this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
+                this.TotalIrpf = this.UnitIrpf * this.QuantityOrdered;
                 this.TotalIncVat = this.TotalExVat + this.TotalVat;
+                this.GrandTotal = this.TotalIncVat - this.TotalIrpf;
             }
 
             if (this.ExistPart && this.Part.InventoryItemKind.IsSerialised)

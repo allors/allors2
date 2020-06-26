@@ -381,10 +381,10 @@ line2")
                 .Build();
 
             var purchaseInvoiceItem_3 = new PurchaseInvoiceItemBuilder(this.Session)
-                .WithDescription("Fee")
+                .WithDescription("Service")
                 .WithAssignedUnitPrice(100)
                 .WithQuantity(1)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Service)
                 .Build();
 
             var purchaseInvoice = new PurchaseInvoiceBuilder(this.Session)

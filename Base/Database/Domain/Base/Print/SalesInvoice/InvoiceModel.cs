@@ -27,10 +27,14 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.SubTotal = invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
             this.Deposit = invoice.AdvancePayment.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalExVat = invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.VatCharge = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
+            this.VatRate = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
             this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.TotalIncVat = currencyIsoCode + " " + invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.TotalToPay = currencyIsoCode + " " + (invoice.TotalIncVat - invoice.AdvancePayment).ToString("N2", new CultureInfo("nl-BE"));
+            this.IrpfRate = invoice.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
+            this.TotalIrpf = invoice.TotalIrpf.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalIncVat = invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.GrandTotal = invoice.GrandTotal.ToString("N2", new CultureInfo("nl-BE"));
+
+            this.TotalToPay = currencyIsoCode + " " + (invoice.GrandTotal - invoice.AdvancePayment).ToString("N2", new CultureInfo("nl-BE"));
 
             this.PaymentNetDays = invoice.PaymentNetDays;
 
@@ -70,11 +74,17 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
         public string TotalExVat { get; }
 
-        public string VatCharge { get; }
+        public string VatRate { get; }
 
         public string TotalVat { get; }
 
+        public string IrpfRate { get; }
+
+        public string TotalIrpf { get; }
+
         public string TotalIncVat { get; }
+
+        public string GrandTotal { get; }
 
         public string TotalToPay { get; }
 

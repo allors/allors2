@@ -184,6 +184,61 @@ namespace Allors.Repository
         [Workspace]
         public RequestItem RequestItem { get; set; }
 
+        #region Allors
+        [Id("2a181149-58cd-4b82-86eb-b2f28e439481")]
+        [AssociationId("9b0d9fbb-3d31-4512-934d-3bc042b7ff1a")]
+        [RoleId("48fa181d-a8ae-4519-a275-edacc1767419")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        public IrpfRegime IrpfRegime { get; set; }
+
+        #region Allors
+        [Id("81b88b1b-3718-48ed-bace-174b65aa83bc")]
+        [AssociationId("57d255c1-c3d9-4370-a934-7fdbaaaf6d66")]
+        [RoleId("d9bb93b3-bf32-404b-a45c-2fba8d876608")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        #region Allors
+        [Id("17f50756-7c9f-404c-974b-4af5b30a65d1")]
+        [AssociationId("35ed2892-36ac-4e12-b8f8-59abfa92b587")]
+        [RoleId("9382767c-f1f6-456e-81be-125cf4d7df12")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        public IrpfRate IrpfRate { get; set; }
+
+        #region Allors
+        [Id("647c3cdb-88af-4446-9d05-cf9ba72ab08c")]
+        [AssociationId("67d8a124-ad6b-4f02-b5f5-2eccee525520")]
+        [RoleId("4282d539-81fb-4736-af21-283a9a53164a")]
+        #endregion
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal UnitIrpf { get; set; }
+
+        #region Allors
+        [Id("cd920eb3-b705-4304-b210-96d8d7beecd5")]
+        [AssociationId("f567a1f3-1484-48bf-a81c-4a44159408f3")]
+        [RoleId("40d6f220-3cc5-4cce-b1e7-eab855c46440")]
+        #endregion
+        [Required]
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal TotalIrpf { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

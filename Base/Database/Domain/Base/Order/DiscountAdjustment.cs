@@ -29,52 +29,6 @@ namespace Allors.Domain
                         iteration.Mark(salesOrderItem);
                     }
                 }
-
-                if (this.ExistOrderWhereDiscountAdjustment)
-                {
-                    var salesOrder = (SalesOrder)this.OrderWhereDiscountAdjustment;
-                    iteration.AddDependency(this, salesOrder);
-                    iteration.Mark(salesOrder);
-                }
-
-                if (this.ExistInvoiceWhereDiscountAdjustment)
-                {
-                    var salesInvoice = (SalesInvoice)this.InvoiceWhereDiscountAdjustment;
-                    iteration.AddDependency(this, salesInvoice);
-                    iteration.Mark(salesInvoice);
-                }
-            }
-        }
-
-        public void BaseOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (!this.ExistCurrentVersion)
-            {
-                derivation.Validation.AssertAtLeastOne(
-                    this,
-                    M.DiscountAdjustment.Amount,
-                    M.DiscountAdjustment.Percentage);
-                derivation.Validation.AssertExistsAtMostOne(
-                    this,
-                    M.DiscountAdjustment.Amount,
-                    M.DiscountAdjustment.Percentage);
-            }
-            else
-            {
-                if (this.ExistAmount && this.ExistPercentage)
-                {
-                    var version = this.CurrentVersion;
-                    if (version.ExistAmount)
-                    {
-                        this.RemoveAmount();
-                    }
-                    else
-                    {
-                        this.RemovePercentage();
-                    }
-                }
             }
         }
     }

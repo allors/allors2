@@ -79,15 +79,6 @@ namespace Allors.Repository
         string CustomerReference { get; set; }
 
         #region Allors
-        [Id("826CBCB8-EEA9-4FCF-9D96-47B28E350C6C")]
-        [AssociationId("532FBA10-583B-4C91-B514-31CC800110DE")]
-        [RoleId("89061789-4862-4D64-84D2-BB60FE34F698")]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToOne)]
-        Fee Fee { get; set; }
-
-        #region Allors
         [Id("4A6AC333-A672-459C-929D-A999A8DBBF08")]
         [AssociationId("D6D08D9B-7FBE-432E-8ED4-6A7DF741277B")]
         [RoleId("2BAA62A0-B829-4072-BD24-3368915F9B95")]
@@ -96,6 +87,16 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         decimal TotalExVat { get; set; }
+
+        #region Allors
+        [Id("2d710be9-39be-4a8b-a88d-ceb960691acb")]
+        [AssociationId("62cab763-bd70-4459-b839-0521f1ab0184")]
+        [RoleId("1be9c62d-6485-436c-8355-0c8ad9e279f6")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        [Indexed]
+        OrderAdjustment[] OrderAdjustments { get; set; }
 
         #region Allors
         [Id("83929DB1-5DFC-4D9F-A10E-C46CBD55ACA1")]
@@ -116,6 +117,18 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         decimal TotalVat { get; set; }
+
+        #region Allors
+        [Id("24c94389-7016-433c-81b0-d63eea705d20")]
+        [AssociationId("46218a54-5a81-4eb6-b4b3-1ae67765ac75")]
+        [RoleId("cf3b1523-4eeb-4d44-8f00-d99040600a40")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalIrpf { get; set; }
 
         #region Allors
         [Id("12DE1B8C-8488-4C18-B048-753640329AA6")]
@@ -178,15 +191,6 @@ namespace Allors.Repository
         DateTime EntryDate { get; set; }
 
         #region Allors
-        [Id("8A64D902-CE14-4D05-9AA5-FA0747309ED3")]
-        [AssociationId("7441AE7B-8AB5-4273-ADEF-1D77BB56CA19")]
-        [RoleId("9A5260E2-49C2-4BAB-8A26-7E165938C5FB")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        DiscountAdjustment DiscountAdjustment { get; set; }
-
-        #region Allors
         [Id("B6C314CD-6BBE-4D6A-9FDC-F19A18C128D8")]
         [AssociationId("5F77DA29-F781-4220-832C-F09D08F364C0")]
         [RoleId("3B383E2A-6F59-47AC-8E60-562B31E9F79F")]
@@ -217,6 +221,16 @@ namespace Allors.Repository
         VatRegime VatRegime { get; set; }
 
         #region Allors
+        [Id("360268c9-501e-4f13-8ea0-01cce00197f5")]
+        [AssociationId("802ceb59-d77d-4150-bd3a-e0546c83a46d")]
+        [RoleId("5f8aeadb-a12e-47df-88e2-f701b0afb5a0")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        IrpfRegime IrpfRegime { get; set; }
+
+        #region Allors
         [Id("1ABA537A-2AC5-48BE-A4CA-D39B8811F10E")]
         [AssociationId("0159AD78-87CE-4034-B800-C4F84CB2CC22")]
         [RoleId("23138D1E-86D7-4CBE-B755-05ACE485EB64")]
@@ -228,13 +242,16 @@ namespace Allors.Repository
         decimal TotalShippingAndHandling { get; set; }
 
         #region Allors
-        [Id("45F0FEB5-6D0F-4FB8-AC5F-C85E5D4BA32E")]
-        [AssociationId("98E772C0-0E93-4CC0-AB1D-2D956AF5F1A4")]
-        [RoleId("1640BAEC-B8BA-4205-99C2-1F4383B0680D")]
+        [Id("eb5fad3d-e047-4efc-bd2e-b9b874dc6cc8")]
+        [AssociationId("2745add8-f0a5-447d-9535-68e7ebf5d959")]
+        [RoleId("3ffd6dad-9541-4804-a7c6-83d53373d252")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
         [Workspace]
-        ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
+        decimal GrandTotal { get; set; }
 
         #region Allors
         [Id("D2B76765-60EC-4D08-9AE5-26398DC0A7A2")]
@@ -275,13 +292,15 @@ namespace Allors.Repository
         decimal TotalFee { get; set; }
 
         #region Allors
-        [Id("CFC6FD15-37EE-455F-BE57-00B1C3FF2481")]
-        [AssociationId("D63DAF25-07D7-4F68-B1A0-D671C533CB57")]
-        [RoleId("A03CDFDC-F5C2-4225-805B-67B8D00C83EB")]
+        [Id("c53a554d-eb77-4247-8eb7-ae5b353da13f")]
+        [AssociationId("26e6d7d6-be03-4940-9da7-1857e18fddfb")]
+        [RoleId("a89917a7-93a1-4fc9-abdd-904036233315")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
         [Workspace]
-        [Indexed]
-        SurchargeAdjustment SurchargeAdjustment { get; set; }
+        decimal TotalExtraCharge { get; set; }
     }
 }

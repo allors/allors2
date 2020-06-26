@@ -21,6 +21,7 @@ namespace Allors.Domain
         public SerialisedItemAvailability InRent => this.Cache[InRentId];
 
         public SerialisedItemAvailability Available => this.Cache[AvailableId];
+
         public SerialisedItemAvailability NotAvailable => this.Cache[NotAvailableId];
 
         private UniquelyIdentifiableSticky<SerialisedItemAvailability> Cache =>

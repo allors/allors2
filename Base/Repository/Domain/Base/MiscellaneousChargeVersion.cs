@@ -1,4 +1,4 @@
-// <copyright file="DiscountAdjustmentVersion.cs" company="Allors bvba">
+// <copyright file="MiscellaneousChargeVersion.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -10,9 +10,9 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
-    [Id("458F158D-F613-44FC-849A-5438302FA7EB")]
+    [Id("3157385d-80f5-4b50-b462-4212d6c81f66")]
     #endregion
-    public partial class DiscountAdjustmentVersion : OrderAdjustmentVersion
+    public partial class MiscellaneousChargeVersion : OrderAdjustmentVersion
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

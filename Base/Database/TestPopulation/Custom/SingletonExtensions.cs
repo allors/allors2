@@ -321,10 +321,10 @@ line2")
                     .Build();
 
                 var salesOrderItem3 = new SalesOrderItemBuilder(@this.Session())
-                    .WithDescription("Fee")
+                    .WithDescription("Service")
                     .WithAssignedUnitPrice(100)
                     .WithQuantityOrdered(1)
-                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Fee)
+                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Service)
                     .Build();
 
                 var order = new SalesOrderBuilder(@this.Session())
@@ -357,10 +357,10 @@ line2")
                     .Build();
 
                 var salesInvoiceItem3 = new SalesInvoiceItemBuilder(@this.Session())
-                    .WithDescription("Fee")
+                    .WithDescription("Service")
                     .WithAssignedUnitPrice(100)
                     .WithQuantity(1)
-                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Fee)
+                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Service)
                     .Build();
 
                 var exw = new IncoTermTypes(@this.Session()).Exw;
@@ -384,10 +384,10 @@ line2")
                 for (var j = 0; j < 3; j++)
                 {
                     var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session())
-                        .WithDescription("Extra Charge")
+                        .WithDescription("Some service being delivered")
                         .WithAssignedUnitPrice(100 + j)
                         .WithQuantity(1)
-                        .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).MiscCharge)
+                        .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Service)
                         .Build();
 
                     salesInvoice.AddSalesInvoiceItem(salesInvoiceItem);
@@ -419,10 +419,10 @@ line2")
                     .Build();
 
                 var purchaseInvoiceItem3 = new PurchaseInvoiceItemBuilder(@this.Session())
-                    .WithDescription("Fee")
+                    .WithDescription("Service")
                     .WithAssignedUnitPrice(100)
                     .WithQuantity(1)
-                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Fee)
+                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Service)
                     .Build();
 
                 var purchaseInvoice = new PurchaseInvoiceBuilder(@this.Session())

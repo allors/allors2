@@ -142,6 +142,62 @@ namespace Allors.Repository
         OrderItem[] Associations { get; set; }
 
         #region Allors
+        [Id("e31314f8-c9f4-45d0-a1c7-81184091e41b")]
+        [AssociationId("5ea14d74-09d1-4482-8ae4-2d227f46a6fd")]
+        [RoleId("36b80cb9-5e23-4233-889a-21f5dc6e1527")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        IrpfRegime IrpfRegime { get; set; }
+
+        #region Allors
+        [Id("9a273bd4-5718-4b8f-a97e-7810f4104a45")]
+        [AssociationId("5ce1d9fa-7e0b-49cc-89c4-abc4ee26003b")]
+        [RoleId("25559b6a-41dc-48b0-a28f-839f8e4c5e36")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        IrpfRegime AssignedIrpfRegime { get; set; }
+
+        #region Allors
+        [Id("b09dcce5-f5df-49dd-b62e-9c17860feda2")]
+        [AssociationId("c8399843-e5e2-4de8-adb5-31659e8a5ce6")]
+        [RoleId("80b0f6c6-0ec1-4f88-a681-991272581a52")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        IrpfRate IrpfRate { get; set; }
+
+        #region Allors
+        [Id("a726e7b8-9414-4582-a591-fb98b33bef15")]
+        [AssociationId("be556811-9093-4b24-b91c-5df18f796151")]
+        [RoleId("24b640f2-0d75-4d44-bd96-63d2a993c003")]
+        #endregion
+        [Required]
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal UnitIrpf { get; set; }
+
+        #region Allors
+        [Id("6b6a1629-a213-4cfa-9fb6-91eec520e865")]
+        [AssociationId("c0482a85-957f-4000-96d4-174a90cfee61")]
+        [RoleId("4aa2ab16-ac47-4e0c-a274-8c4f92f0e785")]
+        #endregion
+        [Required]
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalIrpf { get; set; }
+
+        #region Allors
         [Id("0b3cdfbf-0b75-4a9e-8f5c-40d37908710b")]
         [AssociationId("55dd2656-3bc0-4723-847d-1476cd83ed16")]
         [RoleId("7d7b9b1e-c2d8-460e-8d17-5d5a6f4fb1f7")]

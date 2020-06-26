@@ -114,5 +114,61 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Synced]
         Invoice SyncedInvoice { get; set; }
+
+        #region Allors
+        [Id("124e6101-f1df-427e-bd19-9c8fe69ff3ee")]
+        [AssociationId("5a2822e5-c30b-4dd5-a5a9-1dca869ae7c1")]
+        [RoleId("db50bd74-8ade-4ae4-8193-93ccd7bbffaa")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        IrpfRegime IrpfRegime { get; set; }
+
+        #region Allors
+        [Id("92e1308f-53d2-449d-aa26-6d1fd0daa7d3")]
+        [AssociationId("c2ec6614-e181-41f5-a4c0-3847b144e973")]
+        [RoleId("f3cf556c-4045-43b2-85d0-c3f24efbf5fc")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        IrpfRegime AssignedIrpfRegime { get; set; }
+
+        #region Allors
+        [Id("3a068974-bf77-448b-9f60-3bf4f27a85ad")]
+        [AssociationId("94b26aa9-3116-4f8e-83cb-c3442462f8ec")]
+        [RoleId("840066b3-cf50-434b-839d-6ede677c9bfa")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        IrpfRate IrpfRate { get; set; }
+
+        #region Allors
+        [Id("5210f7b3-0902-4e40-9178-c61ecd634726")]
+        [AssociationId("e1ee5aeb-3b2a-4aa9-8f17-e1f315bc82e0")]
+        [RoleId("3a51416e-fea6-4827-9d3d-9de6ade665db")]
+        #endregion
+        [Required]
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal UnitIrpf { get; set; }
+
+        #region Allors
+        [Id("e7ef0a88-bfaf-420b-9979-6647ea1aa022")]
+        [AssociationId("1ceb1bfb-5e6a-464c-acf6-368f5d945685")]
+        [RoleId("277fa1d7-dd93-4d4a-a39e-98e87217387e")]
+        #endregion
+        [Required]
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalIrpf { get; set; }
     }
 }

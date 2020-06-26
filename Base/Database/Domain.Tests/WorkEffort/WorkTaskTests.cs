@@ -688,7 +688,7 @@ namespace Allors.Domain
             .WithShipToCustomer(customer)
             .WithTakenBy(takenBy)
             .WithSalesOrderItem(new SalesOrderItemBuilder(this.Session)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).MiscCharge)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Service)
                 .WithAssignedUnitPrice(1)
                 .Build())
             .WithSalesTerm(new OrderTermBuilder(this.Session)
