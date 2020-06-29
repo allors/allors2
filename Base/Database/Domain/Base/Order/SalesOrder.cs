@@ -931,7 +931,7 @@ namespace Allors.Domain
                         this.TotalVat += item.TotalVat;
                         this.TotalIrpf += item.TotalIrpf;
                         this.TotalIncVat += item.TotalIncVat;
-                        this.TotalListPrice += item.UnitPrice;
+                        this.TotalListPrice += item.TotalExVat;
                         this.GrandTotal += item.GrandTotal;
                     }
                 }

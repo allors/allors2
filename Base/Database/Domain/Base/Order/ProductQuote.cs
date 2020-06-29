@@ -194,7 +194,7 @@ namespace Allors.Domain
                         this.TotalVat += quoteItem.TotalVat;
                         this.TotalIrpf += quoteItem.TotalIrpf;
                         this.TotalIncVat += quoteItem.TotalIncVat;
-                        this.TotalListPrice += quoteItem.UnitPrice;
+                        this.TotalListPrice += quoteItem.TotalExVat;
                         this.GrandTotal += quoteItem.GrandTotal;
                     }
                 }

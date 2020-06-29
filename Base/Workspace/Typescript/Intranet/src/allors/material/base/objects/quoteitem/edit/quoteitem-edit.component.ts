@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { SearchFactory, ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good, InvoiceItemType, VatRate, VatRegime, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState } from '../../../../../domain';
+import { InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure, SerialisedItem, Part, Good, InvoiceItemType, VatRate, VatRegime, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, IrpfRate, IrpfRegime } from '../../../../../domain';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -37,6 +37,8 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
   serialisedItems: SerialisedItem[] = [];
   vatRates: VatRate[];
   vatRegimes: VatRegime[];
+  irpfRates: IrpfRate[];
+  irpfRegimes: IrpfRegime[];
 
   private previousProduct;
   private previousSerialisedItem: SerialisedItem;
@@ -116,6 +118,10 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
                   VatRate: x,
                   VatRegime: {
                     VatRate: x,
+                  },
+                  IrpfRate: x,
+                  IrpfRegime: {
+                    IrpfRate: x,
                   }
                 }
               }
@@ -140,6 +146,8 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
             }),
             pull.VatRate(),
             pull.VatRegime(),
+            pull.IrpfRate(),
+            pull.IrpfRegime(),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
@@ -186,6 +194,8 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
         this.requestItem = loaded.objects.RequestItem as RequestItem;
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRates = loaded.collections.IrpfRates as IrpfRate[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId === 'f4bbdb52-3441-4768-92d4-729c6c5d6f1b');
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];

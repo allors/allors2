@@ -14,7 +14,7 @@ import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../core/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { VatRegime, Currency } from '../../../../../domain/generated';
+import { VatRegime, Currency, IrpfRegime } from '../../../../../domain/generated';
 
 @Component({
   templateUrl: './organisation-create.component.html',
@@ -49,6 +49,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
 
   legalForms: LegalForm[];
   vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
   currencies: Currency[];
 
   constructor(
@@ -113,6 +114,9 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
             }),
             pull.VatRegime({
               sort: new Sort(m.VatRegime.Name)
+            }),
+            pull.IrpfRegime({
+              sort: new Sort(m.IrpfRegime.Name)
             })
           ];
 
@@ -175,6 +179,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
         this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8b5e0cee-4c98-42f1-8f18-3638fba943a0');
         this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId === '8c6d629b-1e27-4520-aa8c-e8adf93a5095');

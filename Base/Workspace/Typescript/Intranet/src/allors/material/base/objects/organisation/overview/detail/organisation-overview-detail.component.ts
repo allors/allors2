@@ -10,7 +10,7 @@ import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { SaveService } from '../../../../../../material';
 import { switchMap, filter } from 'rxjs/operators';
-import { VatRegime, Currency } from '../../../../../../domain/generated';
+import { VatRegime, Currency, IrpfRegime } from '../../../../../../domain/generated';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -32,6 +32,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
   private subscription: Subscription;
   legalForms: LegalForm[];
   vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
   currencies: Currency[];
 
   constructor(
@@ -123,6 +124,9 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
             }),
             pull.VatRegime({
               sort: new Sort(m.VatRegime.Name)
+            }),
+            pull.IrpfRegime({
+              sort: new Sort(m.IrpfRegime.Name)
             })
           ];
 
@@ -140,6 +144,7 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.legalForms = loaded.collections.LegalForms as LegalForm[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
       });
   }
 
