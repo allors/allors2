@@ -1300,7 +1300,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var invoice = customer.SalesInvoicesWhereBillToCustomer.First;
-            Assert.Equal(15M, invoice.ShippingAndHandlingCharge.Amount);
+            Assert.Equal(15M, invoice.TotalShippingAndHandling);
         }
     }
 

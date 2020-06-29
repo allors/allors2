@@ -362,22 +362,52 @@ namespace Allors.Domain
                                 .WithSalesChannel(salesOrder.SalesChannel)
                                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                                 .WithVatRegime(salesOrder.VatRegime)
-                                .WithDiscountAdjustment(salesOrder.DiscountAdjustment)
-                                .WithSurchargeAdjustment(salesOrder.SurchargeAdjustment)
-                                .WithShippingAndHandlingCharge(salesOrder.ShippingAndHandlingCharge)
-                                .WithFee(salesOrder.Fee)
+                                .WithIrpfRegime(salesOrder.IrpfRegime)
                                 .WithCustomerReference(salesOrder.CustomerReference)
                                 .WithPaymentMethod(this.PaymentMethod)
                                 .Build();
 
                             invoiceByOrder.Add(salesOrder, salesInvoice);
 
+                            foreach (OrderAdjustment orderAdjustment in salesOrder.OrderAdjustments)
+                            {
+                                OrderAdjustment newAdjustment = null;
+                                if (orderAdjustment.GetType().Name.Equals(typeof(DiscountAdjustment).Name))
+                                {
+                                    newAdjustment = new DiscountAdjustmentBuilder(this.Session()).Build();
+                                }
+
+                                if (orderAdjustment.GetType().Name.Equals(typeof(SurchargeAdjustment).Name))
+                                {
+                                    newAdjustment = new SurchargeAdjustmentBuilder(this.Session()).Build();
+                                }
+
+                                if (orderAdjustment.GetType().Name.Equals(typeof(Fee).Name))
+                                {
+                                    newAdjustment = new FeeBuilder(this.Session()).Build();
+                                }
+
+                                if (orderAdjustment.GetType().Name.Equals(typeof(ShippingAndHandlingCharge).Name))
+                                {
+                                    newAdjustment = new ShippingAndHandlingChargeBuilder(this.Session()).Build();
+                                }
+
+                                if (orderAdjustment.GetType().Name.Equals(typeof(MiscellaneousCharge).Name))
+                                {
+                                    newAdjustment = new MiscellaneousChargeBuilder(this.Session()).Build();
+                                }
+
+                                newAdjustment.Amount ??= orderAdjustment.Amount;
+                                newAdjustment.Percentage ??= orderAdjustment.Percentage;
+                                salesInvoice.AddOrderAdjustment(newAdjustment);
+                            }
+
                             if (!costsInvoiced)
                             {
                                 var costs = this.BaseOnDeriveShippingAndHandlingCharges();
                                 if (costs > 0)
                                 {
-                                    salesInvoice.ShippingAndHandlingCharge = new ShippingAndHandlingChargeBuilder(this.Strategy.Session).WithAmount(costs).Build();
+                                    salesInvoice.AddOrderAdjustment(new ShippingAndHandlingChargeBuilder(this.Strategy.Session).WithAmount(costs).Build());
                                     costsInvoiced = true;
                                 }
                             }

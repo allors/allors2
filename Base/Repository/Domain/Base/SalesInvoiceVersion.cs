@@ -34,13 +34,9 @@ namespace Allors.Repository
 
         public string Description { get; set; }
 
-        public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
-
-        public Fee Fee { get; set; }
+        public OrderAdjustment[] OrderAdjustments { get; set; }
 
         public string CustomerReference { get; set; }
-
-        public DiscountAdjustment DiscountAdjustment { get; set; }
 
         public decimal AmountPaid { get; set; }
 
@@ -49,6 +45,8 @@ namespace Allors.Repository
         public BillingAccount BillingAccount { get; set; }
 
         public decimal TotalIncVat { get; set; }
+
+        public decimal GrandTotal { get; set; }
 
         public decimal TotalSurcharge { get; set; }
 
@@ -59,8 +57,6 @@ namespace Allors.Repository
         public DateTime EntryDate { get; set; }
 
         public decimal TotalShippingAndHandling { get; set; }
-
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
         public decimal TotalExVat { get; set; }
 
@@ -75,6 +71,8 @@ namespace Allors.Repository
         public decimal TotalVat { get; set; }
 
         public decimal TotalFee { get; set; }
+
+        public decimal TotalExtraCharge { get; set; }
 
         public Guid DerivationId { get; set; }
 

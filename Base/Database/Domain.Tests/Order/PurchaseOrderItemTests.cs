@@ -74,6 +74,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(takenViaContactMechanism)
                 .WithDeliveryDate(this.Session.Now())
                 .WithVatRegime(new VatRegimes(this.Session).Exempt)
+                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable10)
                 .Build();
 
             this.Session.Derive();
@@ -360,6 +361,7 @@ namespace Allors.Domain
             Assert.Equal(45, item1.TotalExVat);
             Assert.Equal(0, item1.TotalVat);
             Assert.Equal(45, item1.TotalIncVat);
+            Assert.Equal(1.5M, item1.UnitIrpf);
 
             Assert.Equal(45, this.order.TotalBasePrice);
             Assert.Equal(0, this.order.TotalDiscount);
@@ -367,6 +369,8 @@ namespace Allors.Domain
             Assert.Equal(45, this.order.TotalExVat);
             Assert.Equal(0, this.order.TotalVat);
             Assert.Equal(45, this.order.TotalIncVat);
+            Assert.Equal(4.5M, this.order.TotalIrpf);
+            Assert.Equal(40.5M, this.order.GrandTotal);
         }
 
         [Fact]

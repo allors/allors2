@@ -35,7 +35,7 @@ namespace Allors.Repository
 
         public string CustomerReference { get; set; }
 
-        public Fee Fee { get; set; }
+        public OrderAdjustment[] OrderAdjustments { get; set; }
 
         public decimal TotalExVat { get; set; }
 
@@ -55,17 +55,15 @@ namespace Allors.Repository
 
         public DateTime EntryDate { get; set; }
 
-        public DiscountAdjustment DiscountAdjustment { get; set; }
-
         public OrderKind OrderKind { get; set; }
 
         public decimal TotalIncVat { get; set; }
 
+        public decimal GrandTotal { get; set; }
+
         public VatRegime VatRegime { get; set; }
 
         public decimal TotalShippingAndHandling { get; set; }
-
-        public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
 
         public DateTime OrderDate { get; set; }
 
@@ -75,11 +73,15 @@ namespace Allors.Repository
 
         public decimal TotalFee { get; set; }
 
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
+        public decimal TotalExtraCharge { get; set; }
 
         public Guid DerivationId { get; set; }
 
         public DateTime DerivationTimeStamp { get; set; }
+
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public decimal TotalIrpf { get; set; }
         #endregion
 
         #region Allors

@@ -43,26 +43,6 @@ namespace Allors.Repository
         string Description { get; set; }
 
         #region Allors
-        [Id("2f7d19a8-75e1-4c95-b60f-60343f2dd4bc")]
-        [AssociationId("31c04533-c845-4b71-bf88-79e4c3ad8ec4")]
-        [RoleId("6bdaa705-8ea0-4df2-936a-0b392556a21d")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        [Indexed]
-        ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
-
-        #region Allors
-        [Id("3b1a0c47-dd3e-406c-a1e7-bc88f7a10794")]
-        [AssociationId("7ce35340-fbb1-4689-a4e5-2a7f17455d37")]
-        [RoleId("72db7683-8659-441f-ae23-0407e4e11c11")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Workspace]
-        Fee Fee { get; set; }
-
-        #region Allors
         [Id("4b2eedbb-ec59-4e18-949f-f467e41f6401")]
         [AssociationId("b41474a8-482f-458f-b70d-b11e97129ea0")]
         [RoleId("5bab4dea-3566-4421-96c5-27b774b6542a")]
@@ -70,16 +50,6 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         string CustomerReference { get; set; }
-
-        #region Allors
-        [Id("4b3a3ad0-d624-46f1-a53c-f79980b50793")]
-        [AssociationId("72a0c734-9199-45fd-8264-a80721a016f2")]
-        [RoleId("95e67307-5e1b-451a-ab4a-c93079b25c76")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Workspace]
-        DiscountAdjustment DiscountAdjustment { get; set; }
 
         #region Allors
         [Id("4d3f69a0-6e9d-4ba3-acd8-e5dab2a7f401")]
@@ -152,6 +122,18 @@ namespace Allors.Repository
         decimal TotalBasePrice { get; set; }
 
         #region Allors
+        [Id("7a783e3c-9197-4d1a-8291-f95a3b3a799d")]
+        [AssociationId("03f9fd09-c4c9-4d52-b15e-e83ceb490019")]
+        [RoleId("d5738ae0-13ed-4466-8fb1-f6ade4fba672")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal GrandTotal { get; set; }
+
+        #region Allors
         [Id("82541f62-bf0e-4e33-9971-15a5a4fa4469")]
         [AssociationId("b3579af4-1c8e-46c5-bc1c-a9d7711a4a48")]
         [RoleId("d54fdbf9-c580-4a49-b058-28aab77d81e0")]
@@ -183,16 +165,6 @@ namespace Allors.Repository
         decimal TotalShippingAndHandling { get; set; }
 
         #region Allors
-        [Id("982949e0-87ac-400c-8830-a779b75e10ad")]
-        [AssociationId("0892c266-1b04-4d66-b344-1e29ddf09bd4")]
-        [RoleId("f1fb8739-1cb1-4080-ac63-b78512218d3a")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        [Workspace]
-        SurchargeAdjustment SurchargeAdjustment { get; set; }
-
-        #region Allors
         [Id("9eec85a4-e41a-4ca2-82fa-2dc0aa45c9d5")]
         [AssociationId("26c9285b-4c0e-443e-914b-ceb95d37a8fe")]
         [RoleId("4d9bb0e9-23b1-429e-bf61-2fa3b9afb2b8")]
@@ -203,6 +175,16 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal TotalExVat { get; set; }
+
+        #region Allors
+        [Id("5e4bc0b7-8d9a-45ea-a5e7-8c608a286fdf")]
+        [AssociationId("99c6caaf-3b1e-4735-8695-a5df344f546e")]
+        [RoleId("10930c0b-ce15-47d2-bfba-fdff48103275")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        [Indexed]
+        OrderAdjustment[] OrderAdjustments { get; set; }
 
         #region Allors
         [Id("9ff2d65b-0478-41cc-b70b-0df90cdbe190")]
@@ -288,6 +270,18 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal TotalFee { get; set; }
+
+        #region Allors
+        [Id("636a3b83-7157-42a4-bc24-db5419ccb3b7")]
+        [AssociationId("06ba4fd1-96af-448a-85dc-3392b89755b2")]
+        [RoleId("53485360-3319-456b-84a3-9b759b5c2117")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalExtraCharge { get; set; }
 
         #region Allors
         [Id("BBA2D4EA-D31F-4C68-8935-2AC3CC1A267D")]

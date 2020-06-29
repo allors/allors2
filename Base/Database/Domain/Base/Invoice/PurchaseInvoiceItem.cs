@@ -107,51 +107,24 @@ namespace Allors.Domain
 
             if (this.ExistUnitBasePrice)
             {
-                var discountAdjustment = this.GetDiscountAdjustment();
-
-                if (discountAdjustment != null)
-                {
-                    if (discountAdjustment.Percentage.HasValue)
-                    {
-                        this.UnitDiscount += Math.Round(this.UnitBasePrice * discountAdjustment.Percentage.Value / 100, 2);
-                    }
-                    else
-                    {
-                        if (discountAdjustment.Amount.HasValue)
-                        {
-                            this.UnitDiscount += discountAdjustment.Amount.Value;
-                        }
-                    }
-                }
-
-                var surchargeAdjustment = this.GetSurchargeAdjustment();
-
-                if (surchargeAdjustment != null)
-                {
-                    if (surchargeAdjustment.Percentage.HasValue)
-                    {
-                        this.UnitSurcharge += Math.Round(this.UnitBasePrice * surchargeAdjustment.Percentage.Value / 100, 2);
-                    }
-                    else
-                    {
-                        if (surchargeAdjustment.Amount.HasValue)
-                        {
-                            this.UnitSurcharge += surchargeAdjustment.Amount.Value;
-                        }
-                    }
-                }
-
                 this.VatRegime = this.AssignedVatRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.VatRegime;
                 this.VatRate = this.VatRegime?.VatRate;
 
-                this.UnitVat = this.ExistVatRate ? this.UnitPrice * this.VatRate.Rate / 100 : 0;
+                this.IrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.IrpfRegime;
+                this.IrpfRate = this.IrpfRegime?.IrpfRate;
+
                 this.TotalBasePrice = this.UnitBasePrice * this.Quantity;
                 this.TotalDiscount = this.UnitDiscount * this.Quantity;
                 this.TotalSurcharge = this.UnitSurcharge * this.Quantity;
                 this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
+
+                this.UnitVat = this.ExistVatRate ? this.UnitPrice * this.VatRate.Rate / 100 : 0;
+                this.UnitIrpf = this.ExistIrpfRate ? this.UnitPrice * this.IrpfRate.Rate / 100 : 0;
                 this.TotalVat = this.UnitVat * this.Quantity;
                 this.TotalExVat = this.UnitPrice * this.Quantity;
+                this.TotalIrpf = this.UnitIrpf * this.Quantity;
                 this.TotalIncVat = this.TotalExVat + this.TotalVat;
+                this.GrandTotal = this.TotalIncVat - this.TotalIrpf;
             }
         }
 
@@ -172,27 +145,5 @@ namespace Allors.Domain
         public void BaseReject(PurchaseInvoiceItemReject method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Rejected;
 
         public void Sync(Invoice invoice) => this.SyncedInvoice = invoice;
-
-        private SurchargeAdjustment GetSurchargeAdjustment()
-        {
-            var surchargeAdjustment = this.ExistSurchargeAdjustment ? this.SurchargeAdjustment : null;
-            if (surchargeAdjustment == null && this.ExistPurchaseInvoiceWherePurchaseInvoiceItem)
-            {
-                surchargeAdjustment = this.PurchaseInvoiceWherePurchaseInvoiceItem.ExistSurchargeAdjustment ? this.PurchaseInvoiceWherePurchaseInvoiceItem.SurchargeAdjustment : null;
-            }
-
-            return surchargeAdjustment;
-        }
-
-        private DiscountAdjustment GetDiscountAdjustment()
-        {
-            var discountAdjustment = this.ExistDiscountAdjustment ? this.DiscountAdjustment : null;
-            if (discountAdjustment == null && this.ExistPurchaseInvoiceWherePurchaseInvoiceItem)
-            {
-                discountAdjustment = this.PurchaseInvoiceWherePurchaseInvoiceItem.ExistDiscountAdjustment ? this.PurchaseInvoiceWherePurchaseInvoiceItem.DiscountAdjustment : null;
-            }
-
-            return discountAdjustment;
-        }
     }
 }

@@ -1,4 +1,4 @@
-// <copyright file="ShippingAndHandlingCharge.cs" company="Allors bvba">
+// <copyright file="MiscellaneousCharge.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -9,9 +9,9 @@ namespace Allors.Repository
     using Allors.Repository.Attributes;
 
     #region Allors
-    [Id("e7625d17-2485-4894-ba1a-c565b8c6052c")]
+    [Id("0be4eedc-a33a-4ded-9c30-5798851b3a3f")]
     #endregion
-    public partial class ShippingAndHandlingCharge : OrderAdjustment
+    public partial class MiscellaneousCharge : OrderAdjustment
     {
         #region inherited properties
         public decimal Amount { get; set; }
@@ -34,24 +34,24 @@ namespace Allors.Repository
 
         #region Versioning
         #region Allors
-        [Id("ec66e7f7-6792-43d7-bd8e-f0bf10c48b4e")]
-        [AssociationId("7869f6dc-8d2a-4e27-bf1d-f520896ec052")]
-        [RoleId("0e358a11-dc67-4f30-814f-5d7d26b076fe")]
+        [Id("276bfe6d-ac6c-4036-9849-51f50ddb8d55")]
+        [AssociationId("c42f941b-a6e2-49f2-b5d5-ae86b3d52493")]
+        [RoleId("70b54993-cf19-4f33-ba59-bbe8c6ccaa6a")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
-        public ShippingAndHandlingChargeVersion CurrentVersion { get; set; }
+        public MiscellaneousChargeVersion CurrentVersion { get; set; }
 
         #region Allors
-        [Id("c09581be-2da0-4268-bb34-e025393bda1e")]
-        [AssociationId("36dc7849-2602-4643-ada3-00dc4781368e")]
-        [RoleId("c84b1293-d484-4db7-aa32-481d42496483")]
+        [Id("c948d6ae-6a64-41de-b86d-3d194cfccebf")]
+        [AssociationId("8fb40421-a4de-48c9-ad2f-fd87113868c8")]
+        [RoleId("f12ab47e-143e-448b-b9f1-16ca4b786c6f")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
-        public ShippingAndHandlingChargeVersion[] AllVersions { get; set; }
+        public MiscellaneousChargeVersion[] AllVersions { get; set; }
         #endregion
 
         #region inherited methods

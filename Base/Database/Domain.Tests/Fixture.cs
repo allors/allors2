@@ -123,13 +123,10 @@ namespace Allors
 
                 new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(orderProcessor).WithEmployer(internalOrganisation).Build();
 
-                var vatRate21 = new VatRateBuilder(session).WithRate(21).Build();
-
                 var good1 = new NonUnifiedGoodBuilder(session)
                     .WithProductIdentification(new ProductNumberBuilder(session)
                         .WithIdentification("1")
                         .WithProductIdentificationType(new ProductIdentificationTypes(session).Good).Build())
-                    .WithVatRate(vatRate21)
                     .WithName("good1")
                     .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
                     .WithPart(new NonUnifiedPartBuilder(session)
@@ -143,7 +140,6 @@ namespace Allors
                     .WithProductIdentification(new ProductNumberBuilder(session)
                         .WithIdentification("2")
                         .WithProductIdentificationType(new ProductIdentificationTypes(session).Good).Build())
-                    .WithVatRate(vatRate21)
                     .WithName("good2")
                     .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
                     .WithPart(new NonUnifiedPartBuilder(session)
@@ -157,7 +153,6 @@ namespace Allors
                     .WithProductIdentification(new ProductNumberBuilder(session)
                         .WithIdentification("3")
                         .WithProductIdentificationType(new ProductIdentificationTypes(session).Good).Build())
-                    .WithVatRate(vatRate21)
                     .WithName("good3")
                     .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
                     .WithPart(new NonUnifiedPartBuilder(session)

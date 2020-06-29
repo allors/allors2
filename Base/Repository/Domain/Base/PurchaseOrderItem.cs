@@ -33,6 +33,10 @@ namespace Allors.Repository
 
         public PurchaseOrder CorrespondingPurchaseOrder { get; set; }
 
+        public DiscountAdjustment[] DiscountAdjustments { get; set; }
+
+        public SurchargeAdjustment[] SurchargeAdjustments { get; set; }
+
         public decimal TotalOrderAdjustment { get; set; }
 
         public QuoteItem QuoteItem { get; set; }
@@ -47,6 +51,18 @@ namespace Allors.Repository
 
         public OrderItem[] Associations { get; set; }
 
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        public IrpfRate IrpfRate { get; set; }
+
+        public decimal UnitIrpf { get; set; }
+
+        public decimal TotalIrpf { get; set; }
+
+        public decimal GrandTotal { get; set; }
+
         public string Message { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
@@ -58,8 +74,6 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedComments { get; set; }
 
         public decimal TotalDiscountAsPercentage { get; set; }
-
-        public DiscountAdjustment DiscountAdjustment { get; set; }
 
         public decimal UnitVat { get; set; }
 
@@ -92,8 +106,6 @@ namespace Allors.Repository
         public decimal TotalBasePrice { get; set; }
 
         public decimal TotalExVat { get; set; }
-
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
         public Order SyncedOrder { get; set; }
 

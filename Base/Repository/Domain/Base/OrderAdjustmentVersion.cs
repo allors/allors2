@@ -23,17 +23,6 @@ namespace Allors.Repository
         decimal Amount { get; set; }
 
         #region Allors
-        [Id("0C588999-DFAD-4657-9CC0-D5C770B6B036")]
-        [AssociationId("206CBA54-EDE3-4FCE-9CE2-595D4B59245D")]
-        [RoleId("E2B3117F-7482-4855-B863-C621847BF810")]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-
-        VatRate VatRate { get; set; }
-
-        #region Allors
         [Id("C9703601-2F24-4D5D-83B6-14411D872435")]
         [AssociationId("2F0F8FDA-CD11-404D-A5CE-8EF78E4D5AFA")]
         [RoleId("107921F2-FC7A-4B69-A8F6-02B8574D2D67")]

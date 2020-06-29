@@ -20,9 +20,12 @@ namespace Allors.Domain.Print.PurchaseOrderModel
             var currency = "€";
             this.SubTotal = order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.TotalExVat = order.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.VatCharge = order.VatRegime?.VatRate?.Rate.ToString("n2");
+            this.VatRate = order.VatRegime?.VatRate?.Rate.ToString("n2");
             this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.IrpfRate = order.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
+            this.TotalIrpf = order.TotalIrpf.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.TotalIncVat = order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.GrandTotal = order.GrandTotal.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
         }
 
         public string[] Description { get; }
@@ -37,10 +40,16 @@ namespace Allors.Domain.Print.PurchaseOrderModel
 
         public string TotalExVat { get; }
 
-        public string VatCharge { get; }
+        public string VatRate { get; }
 
         public string TotalVat { get; }
 
+        public string IrpfRate { get; }
+
+        public string TotalIrpf { get; }
+
         public string TotalIncVat { get; }
+
+        public string GrandTotal { get; }
     }
 }

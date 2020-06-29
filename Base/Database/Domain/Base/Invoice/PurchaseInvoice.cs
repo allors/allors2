@@ -110,6 +110,9 @@ namespace Allors.Domain
                 }
             }
 
+            this.VatRegime ??= this.BilledFrom?.VatRegime;
+            this.IrpfRegime ??= (this.BilledFrom as Organisation)?.IrpfRegime;
+
             this.PurchaseOrders = this.InvoiceItems.SelectMany(v => v.OrderItemBillingsWhereInvoiceItem).Select(v => v.OrderItem.OrderWhereValidOrderItem).ToArray();
 
             var validInvoiceItems = this.PurchaseInvoiceItems.Where(v => v.IsValid).ToArray();
@@ -295,6 +298,7 @@ namespace Allors.Domain
                 this.TotalExVat = 0;
                 this.TotalIncVat = 0;
                 this.TotalIrpf = 0;
+                this.GrandTotal = 0;
 
                 foreach (PurchaseInvoiceItem item in this.PurchaseInvoiceItems)
                 {
@@ -304,6 +308,7 @@ namespace Allors.Domain
                     this.TotalVat += item.TotalVat;
                     this.TotalExVat += item.TotalExVat;
                     this.TotalIncVat += item.TotalIncVat;
+                    this.GrandTotal += item.GrandTotal;
                 }
             }
         }
@@ -407,24 +412,9 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
-                if (this.ExistShippingAndHandlingCharge)
+                foreach (OrderAdjustment orderAdjustment in this.OrderAdjustments)
                 {
-                    this.ShippingAndHandlingCharge.Delete();
-                }
-
-                if (this.ExistFee)
-                {
-                    this.Fee.Delete();
-                }
-
-                if (this.ExistDiscountAdjustment)
-                {
-                    this.DiscountAdjustment.Delete();
-                }
-
-                if (this.ExistSurchargeAdjustment)
-                {
-                    this.SurchargeAdjustment.Delete();
+                    orderAdjustment.Delete();
                 }
 
                 foreach (PurchaseInvoiceItem invoiceItem in this.PurchaseInvoiceItems)
@@ -454,16 +444,46 @@ namespace Allors.Domain
                 .WithDescription(this.Description)
                 .WithInvoiceDate(this.Session().Now())
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
-                .WithVatRegime(this.VatRegime)
-                .WithDiscountAdjustment(this.DiscountAdjustment)
-                .WithSurchargeAdjustment(this.SurchargeAdjustment)
-                .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
-                .WithFee(this.Fee)
+                .WithVatRegime(this.BilledTo.VatRegime)
+                .WithIrpfRegime(this.BilledTo.IrpfRegime)
                 .WithCustomerReference(this.CustomerReference)
                 .WithPaymentMethod(this.BillToCustomerPaymentMethod)
                 .WithComment(this.Comment)
                 .WithInternalComment(this.InternalComment)
                 .Build();
+
+            foreach (OrderAdjustment orderAdjustment in this.OrderAdjustments)
+            {
+                OrderAdjustment newAdjustment = null;
+                if (orderAdjustment.GetType().Name.Equals(typeof(DiscountAdjustment).Name))
+                {
+                    newAdjustment = new DiscountAdjustmentBuilder(this.Session()).Build();
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(SurchargeAdjustment).Name))
+                {
+                    newAdjustment = new SurchargeAdjustmentBuilder(this.Session()).Build();
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(Fee).Name))
+                {
+                    newAdjustment = new FeeBuilder(this.Session()).Build();
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(ShippingAndHandlingCharge).Name))
+                {
+                    newAdjustment = new ShippingAndHandlingChargeBuilder(this.Session()).Build();
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(MiscellaneousCharge).Name))
+                {
+                    newAdjustment = new MiscellaneousChargeBuilder(this.Session()).Build();
+                }
+
+                newAdjustment.Amount ??= orderAdjustment.Amount;
+                newAdjustment.Percentage ??= orderAdjustment.Percentage;
+                salesInvoice.AddOrderAdjustment(newAdjustment);
+            }
 
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.PurchaseInvoiceItems)
             {

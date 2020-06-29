@@ -557,7 +557,12 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var invoice = new SalesInvoiceBuilder(this.Session).WithBillToCustomer(customer).WithBillToContactMechanism(contactMechanism).Build();
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(contactMechanism)
+                .WithVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable10)
+                .Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.Session)
                 .WithProduct(good)
@@ -573,6 +578,8 @@ namespace Allors.Domain
             Assert.Equal(8, invoice.TotalExVat);
             Assert.Equal(1.68M, invoice.TotalVat);
             Assert.Equal(9.68M, invoice.TotalIncVat);
+            Assert.Equal(0.8M, invoice.TotalIrpf);
+            Assert.Equal(8.88M, invoice.GrandTotal);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session)
                 .WithProduct(good)
@@ -602,9 +609,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoiceWithShippingAndHandlingAmount_WhenDeriving_ThenInvoiceTotalsMustIncludeShippingAndHandlingAmount()
         {
-            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithLocality("Mechelen")
@@ -618,7 +623,8 @@ namespace Allors.Domain
                 .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithShippingAndHandlingCharge(adjustment)
+                .WithOrderAdjustment(adjustment)
+                .WithVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();
@@ -641,9 +647,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoiceWithShippingAndHandlingPercentage_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeShippingAndHandlingAmount()
         {
-            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
+            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithLocality("Mechelen")
@@ -657,7 +661,8 @@ namespace Allors.Domain
                 .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithShippingAndHandlingCharge(adjustment)
+                .WithOrderAdjustment(adjustment)
+                .WithVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();
@@ -680,9 +685,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoiceWithFeeAmount_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeFeeAmount()
         {
-            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithLocality("Mechelen")
@@ -696,7 +699,8 @@ namespace Allors.Domain
                 .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
+                .WithVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();
@@ -719,9 +723,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoiceWithFeePercentage_WhenDeriving_ThenSalesInvoiceTotalsMustIncludeFeeAmount()
         {
-            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithPercentage(5).Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithLocality("Mechelen")
@@ -735,7 +737,8 @@ namespace Allors.Domain
                 .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
+                .WithVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(invoice.BillToCustomer).Build();

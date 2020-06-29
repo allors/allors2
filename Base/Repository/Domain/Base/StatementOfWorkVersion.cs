@@ -40,11 +40,19 @@ namespace Allors.Repository
 
         public VatClause DerivedVatClause { get; set; }
 
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        public decimal TotalIrpf { get; set; }
+
         public decimal TotalExVat { get; set; }
 
         public decimal TotalVat { get; set; }
 
         public decimal TotalIncVat { get; set; }
+
+        public decimal GrandTotal { get; set; }
 
         public decimal TotalSurcharge { get; set; }
 
@@ -54,17 +62,13 @@ namespace Allors.Repository
 
         public decimal TotalFee { get; set; }
 
+        public decimal TotalExtraCharge { get; set; }
+
         public decimal TotalBasePrice { get; set; }
 
         public decimal TotalListPrice { get; set; }
 
-        public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
-
-        public DiscountAdjustment DiscountAdjustment { get; set; }
-
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
-
-        public Fee Fee { get; set; }
+        public OrderAdjustment[] OrderAdjustments { get; set; }
 
         public Currency Currency { get; set; }
 

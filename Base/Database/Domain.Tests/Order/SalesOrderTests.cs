@@ -1515,7 +1515,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).Build();
 
             var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1535,7 +1535,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithShippingAndHandlingCharge(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             const decimal quantityOrdered = 3;
@@ -1567,7 +1567,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
+            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).Build();
 
             var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1586,7 +1586,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithShippingAndHandlingCharge(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             const decimal quantityOrdered = 3;
@@ -1618,7 +1618,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).Build();
 
             var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1637,7 +1637,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             const decimal quantityOrdered = 3;
@@ -1664,11 +1664,11 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).Build();
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(billToCustomer)
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             this.Session.Derive();
@@ -1687,12 +1687,12 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).Build();
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithShipFromAddress(shipFrom)
                 .WithBillToCustomer(billToCustomer)
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             this.Session.Derive();
@@ -1713,7 +1713,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithPercentage(5).Build();
 
             var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1732,7 +1732,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             const decimal quantityOrdered = 3;

@@ -186,6 +186,8 @@ namespace Allors.Repository
 
         public VatRegime VatRegime { get; set; }
 
+        public IrpfRegime IrpfRegime { get; set; }
+
         public Agreement[] Agreements { get; set; }
         
         public PaymentMethod DefaultPaymentMethod { get; set; }

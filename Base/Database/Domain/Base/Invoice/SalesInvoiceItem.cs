@@ -67,28 +67,6 @@ namespace Allors.Domain
             }
         }
 
-        public void SetActualDiscountAmount(decimal amount)
-        {
-            if (!this.ExistDiscountAdjustment)
-            {
-                this.DiscountAdjustment = new DiscountAdjustmentBuilder(this.Strategy.Session).Build();
-            }
-
-            this.DiscountAdjustment.Amount = amount;
-            this.DiscountAdjustment.RemovePercentage();
-        }
-
-        public void SetActualDiscountPercentage(decimal percentage)
-        {
-            if (!this.ExistDiscountAdjustment)
-            {
-                this.DiscountAdjustment = new DiscountAdjustmentBuilder(this.Strategy.Session).Build();
-            }
-
-            this.DiscountAdjustment.Percentage = percentage;
-            this.DiscountAdjustment.RemoveAmount();
-        }
-
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSalesInvoiceItemState)
@@ -179,12 +157,10 @@ namespace Allors.Domain
             }
 
             this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesInvoiceWhereSalesInvoiceItem?.VatRegime;
-            this.VatRate = this.Product?.VatRate;
+            this.VatRate = this.VatRegime?.VatRate;
 
-            if (this.ExistVatRegime && this.VatRegime.ExistVatRate)
-            {
-                this.VatRate = this.VatRegime.VatRate;
-            }
+            this.IrpfRegime = this.ExistAssignedIrpfRegime ? this.AssignedIrpfRegime : this.SalesInvoiceWhereSalesInvoiceItem?.IrpfRegime;
+            this.IrpfRate = this.IrpfRegime?.IrpfRate;
 
             if (this.ExistInvoiceItemType && this.IsSubTotalItem().Result == true && this.Quantity <= 0)
             {

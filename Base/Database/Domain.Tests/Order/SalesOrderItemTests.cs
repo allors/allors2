@@ -363,27 +363,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOrderItemWithoutVatRateAndOrderWithoutVatRegime_WhenDeriving_ThenItemDerivedVatRateIsFromOrderedProduct()
-        {
-            this.InstantiateObjects(this.Session);
-
-            var expected = this.good.VatRate;
-
-            var salesOrder = new SalesOrderBuilder(this.Session)
-                .WithBillToCustomer(this.billToCustomer)
-                .WithShipToAddress(this.shipToContactMechanismMechelen)
-                .Build();
-
-            var orderItem = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(1).Build();
-            salesOrder.AddSalesOrderItem(orderItem);
-
-            this.Session.Derive();
-
-            Assert.Equal(salesOrder.VatRegime, orderItem.VatRegime);
-            Assert.Equal(expected, orderItem.VatRate);
-        }
-
-        [Fact]
         public void GivenOrderItemWithAssignedDeliveryDate_WhenDeriving_ThenDeliveryDateIsOrderItemAssignedDeliveryDate()
         {
             this.InstantiateObjects(this.Session);

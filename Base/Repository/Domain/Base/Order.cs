@@ -67,6 +67,18 @@ namespace Allors.Repository
         decimal TotalVat { get; set; }
 
         #region Allors
+        [Id("7d23c0ec-57c9-4129-b7d1-ea4ec1ab83dd")]
+        [AssociationId("cab49d9b-ea70-4284-85f2-70a45497933d")]
+        [RoleId("38e534ed-4b3b-4855-8a7f-5c55e0a1827f")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalIrpf { get; set; }
+
+        #region Allors
         [Id("ba6e8dd3-ad74-4ead-96df-d9ba2e067bfc")]
         [AssociationId("a75c25e4-c88d-4d2b-981a-c5b561264e87")]
         [RoleId("77ce4873-d2fa-4f0b-ba8d-0403886d613c")]
@@ -127,6 +139,18 @@ namespace Allors.Repository
         decimal TotalFee { get; set; }
 
         #region Allors
+        [Id("c0443691-9d8e-4192-a51e-09abb1dbbf24")]
+        [AssociationId("a4512098-b115-4d39-854d-f1a073972f87")]
+        [RoleId("e2a99ab6-8f9f-40ce-be2f-bd313802adc2")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal TotalExtraCharge { get; set; }
+
+        #region Allors
         [Id("f636599a-9c61-4952-abcf-963e6f6bdcd8")]
         [AssociationId("94feb243-bb62-4bf4-9947-76d54df2f13c")]
         [RoleId("5955d3b6-b5cd-4878-a71f-070ce9a343cf")]
@@ -139,44 +163,26 @@ namespace Allors.Repository
         decimal TotalBasePrice { get; set; }
 
         #region Allors
-        [Id("d5d2ec87-064b-4743-9a5e-55b68a84caf6")]
-        [AssociationId("fec8b5fd-bf0f-4579-9af0-5a590b2b5b94")]
-        [RoleId("1fba3917-63b1-472e-96bf-08fc5068a7b6")]
+        [Id("41c58b71-f1f7-49c1-b852-8281bb8c8969")]
+        [AssociationId("9742ffef-97ac-4fcc-b7b6-4e10279d47e7")]
+        [RoleId("fe183a38-6fa8-47dc-bff6-c47180fcd8e9")]
         #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
         [Workspace]
-        [Indexed]
-        ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
+        decimal GrandTotal { get; set; }
 
         #region Allors
-        [Id("addf2b1e-a7c1-4ba8-94f0-13c99d2b8f63")]
-        [AssociationId("c9ccf0b5-b3a2-4a46-a035-4567215ce48a")]
-        [RoleId("2ad9cab5-25ea-49d2-9f70-145de25b2170")]
+        [Id("af6aaba3-20df-48b0-95ea-08aaad9b1183")]
+        [AssociationId("8f4eac17-bb85-46ef-9bc0-8b6a4a4413a0")]
+        [RoleId("8037ef85-18bd-4911-81af-3044c081be63")]
         #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
+        [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
         [Indexed]
-        DiscountAdjustment DiscountAdjustment { get; set; }
-
-        #region Allors
-        [Id("fc6cb229-6c94-4c80-a4a6-697d1d752997")]
-        [AssociationId("2481df7c-624c-44ce-a201-7d7c4d339780")]
-        [RoleId("f2540864-d417-482b-a7bf-0f01c1f185eb")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        [Indexed]
-        SurchargeAdjustment SurchargeAdjustment { get; set; }
-
-        #region Allors
-        [Id("615a233a-659a-44cc-b056-fe02643cbeed")]
-        [AssociationId("847041e8-d780-4640-803d-927b23f7932f")]
-        [RoleId("18ff7372-059c-4717-9d9f-a3a20ea5a7ba")]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Indexed]
-        Fee Fee { get; set; }
+        OrderAdjustment[] OrderAdjustments { get; set; }
 
         #region Allors
         [Id("73521788-7e0e-4ea2-9961-1a58f68cde5c")]
@@ -257,6 +263,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         VatRegime VatRegime { get; set; }
+
+        #region Allors
+        [Id("3182b8cf-477c-47fc-84c5-93ea78edcc7d")]
+        [AssociationId("548ce982-3c9a-448b-8faa-67345dcf81c3")]
+        [RoleId("7e41aa08-1bb5-41df-a34a-e7a4e0a3f66e")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        IrpfRegime IrpfRegime { get; set; }
 
         #region Allors
         [Id("e039e94d-db89-4a17-a692-e82fdb53bfea")]
