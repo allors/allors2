@@ -8,7 +8,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, AllorsFilterService, TestScope } from '../../../../../angular';
 import { SaveService, FiltersService } from '../../../../../material';
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote, CustomerRelationship } from '../../../../../domain';
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote, CustomerRelationship, VatRegime, IrpfRegime } from '../../../../../domain';
 import { PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 
@@ -29,6 +29,8 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
   currencies: Currency[];
   contactMechanisms: ContactMechanism[] = [];
   contacts: Person[] = [];
+  vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
 
   addContactPerson = false;
   addContactMechanism = false;
@@ -64,7 +66,9 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.Currency({ sort: new Sort(m.Currency.Name) })
+            pull.Currency({ sort: new Sort(m.Currency.Name) }),
+            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) })
           ];
 
           return this.allors.context
@@ -78,6 +82,8 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
         this.quote = loaded.objects.ProductQuote as ProductQuote;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.currencies = loaded.collections.Currencies as Currency[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
 
         this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
         this.quote.Issuer = this.internalOrganisation;

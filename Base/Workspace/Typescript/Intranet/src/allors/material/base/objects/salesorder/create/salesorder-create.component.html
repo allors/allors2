@@ -293,14 +293,17 @@
       </div>
 
       <div class="row">
+        <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.VatRegime"
+          [options]="vatRegimes" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.IrpfRegime"
+          [options]="irpfRegimes" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
         <a-mat-input class="col-md" [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-input>
         <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.Currency" [options]="currencies" display="IsoCode"  class="col-md"></a-mat-select>
       </div>
 
-      <div class="row">
-        <a-mat-textarea class="col-md" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-textarea>
-        <a-mat-textarea class="col-md-12" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
-      </div>
     </div>
   </mat-dialog-content>
 

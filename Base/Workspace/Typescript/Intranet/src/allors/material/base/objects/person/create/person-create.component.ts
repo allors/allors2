@@ -6,7 +6,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService, TestScope, SingletonId, RefreshService } from '../../../../../angular';
-import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, Currency } from '../../../../../domain';
+import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, Currency, IrpfRegime } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -33,6 +33,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
   salutations: Enumeration[];
   organisationContactKinds: OrganisationContactKind[];
   selectedContactKinds: OrganisationContactKind[] = [];
+  irpfRegimes: IrpfRegime[];
 
   roles: PersonRole[];
   selectedRoles: PersonRole[] = [];
@@ -114,6 +115,9 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
             pull.Organisation({
               name: 'AllOrganisations',
               sort: new Sort(m.Organisation.PartyName)
+            }),
+            pull.IrpfRegime({
+              sort: new Sort(m.IrpfRegime.Name)
             })
           ];
 
@@ -132,6 +136,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
         this.locales = loaded.collections.Locales as Locale[] || [];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.roles = loaded.collections.PersonRoles as PersonRole[];
         this.organisationContactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
 

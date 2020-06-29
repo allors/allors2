@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Saved, ContextService, MetaService, PanelService, RefreshService, SingletonId, InternalOrganisationId, FetcherService, TestScope } from '../../../../../../angular';
-import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility, VatClause } from '../../../../../../domain';
+import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility, VatClause, IrpfRegime } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
@@ -29,8 +29,8 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
   shipFromAddresses: ContactMechanism[] = [];
   shipToAddresses: ContactMechanism[] = [];
   shipToEndCustomerAddresses: ContactMechanism[] = [];
-  vatRates: VatRate[];
   vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
   vatClauses: VatClause[];
   billToContacts: Person[] = [];
   billToEndCustomerContacts: Person[] = [];
@@ -249,16 +249,17 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
                 ShipToEndCustomerContactPerson: x,
                 AssignedVatClause: x,
                 DerivedVatClause: x,
-                VatRegime: {
-                  VatRate: x,
-                }
+                VatRegime: x,
+                IrpfRegime: x,
               }
             }),
             pull.VatRate(),
             pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.VatClause({ sort: new Sort(m.VatClause.Name) }),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
-            pull.Store({
+            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
+              pull.Store({
               predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: this.internalOrganisation }),
               include: { BillingProcess: x },
               sort: new Sort(m.Store.Name)
@@ -289,8 +290,8 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
         this.order = loaded.objects.SalesOrder as SalesOrder;
 
         this.facilities = loaded.collections.Facilities as Facility[];
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.vatClauses = loaded.collections.VatClauses as VatClause[];
         this.stores = loaded.collections.Stores as Store[];
         this.currencies = loaded.collections.Currencies as Currency[];

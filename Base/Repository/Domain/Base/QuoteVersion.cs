@@ -134,7 +134,6 @@ namespace Allors.Repository
         [RoleId("c257d5ba-22e9-4e78-98f9-d18c20e5ed24")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
         [Indexed]
         [Workspace]
         IrpfRegime IrpfRegime { get; set; }

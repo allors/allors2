@@ -35,9 +35,7 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
   parts: Part[];
   serialisedItem: SerialisedItem;
   serialisedItems: SerialisedItem[] = [];
-  vatRates: VatRate[];
   vatRegimes: VatRegime[];
-  irpfRates: IrpfRate[];
   irpfRegimes: IrpfRegime[];
 
   private previousProduct;
@@ -115,14 +113,12 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
                   RequestItem: x,
                   Product: x,
                   SerialisedItem: x,
-                  VatRate: x,
                   VatRegime: {
                     VatRate: x,
                   },
-                  IrpfRate: x,
                   IrpfRegime: {
                     IrpfRate: x,
-                  }
+                  },
                 }
               }
             ),
@@ -139,15 +135,20 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
               fetch: {
                 QuoteWhereQuoteItem: {
                   include: {
-                    VatRegime: x
+                    VatRegime: {
+                      VatRate: x,
+                    },
+                    IrpfRegime: {
+                      IrpfRate: x,
+                    },
                   }
                 }
               }
             }),
-            pull.VatRate(),
-            pull.VatRegime(),
-            pull.IrpfRate(),
-            pull.IrpfRegime(),
+            pull.VatRegime({ 
+              sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({ 
+              sort: new Sort(m.IrpfRegime.Name) }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
               sort: new Sort(m.InvoiceItemType.Name),
@@ -173,7 +174,12 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
               pull.ProductQuote({
                 object: this.data.associationId,
                 include: {
-                  VatRegime: x
+                  VatRegime: {
+                    VatRate: x,
+                  },
+                  IrpfRegime: {
+                    IrpfRate: x,
+                  }
                 }
               }),
             );
@@ -189,12 +195,9 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
       .subscribe(({ loaded, create }) => {
         this.allors.context.reset();
 
-        this.quote = loaded.objects.ProductQuote as ProductQuote;
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
         this.requestItem = loaded.objects.RequestItem as RequestItem;
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.irpfRates = loaded.collections.IrpfRates as IrpfRate[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId === 'f4bbdb52-3441-4768-92d4-729c6c5d6f1b');
@@ -255,10 +258,12 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
 
         if (create) {
           this.title = 'Add Quote Item';
+          this.quote = loaded.objects.ProductQuote as ProductQuote;
           this.quoteItem = this.allors.context.create('QuoteItem') as QuoteItem;
           this.quoteItem.UnitOfMeasure = piece;
           this.quote.AddQuoteItem(this.quoteItem);
         } else {
+          this.quote = this.quoteItem.QuoteWhereQuoteItem as ProductQuote;
 
           if (this.quoteItem.Product) {
             this.previousProduct = this.quoteItem.Product;
@@ -445,7 +450,6 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
           this.serialisedItem = null;
           this.previousProduct = this.quoteItem.Product;
         }
-
       });
   }
 }

@@ -905,185 +905,182 @@ namespace Allors.Domain
             }
 
             // Calculate Totals
-            if (this.ExistValidOrderItems)
+            this.TotalBasePrice = 0;
+            this.TotalDiscount = 0;
+            this.TotalSurcharge = 0;
+            this.TotalExVat = 0;
+            this.TotalFee = 0;
+            this.TotalShippingAndHandling = 0;
+            this.TotalExtraCharge = 0;
+            this.TotalVat = 0;
+            this.TotalIrpf = 0;
+            this.TotalIncVat = 0;
+            this.TotalListPrice = 0;
+            this.GrandTotal = 0;
+
+            foreach (var item in validOrderItems)
             {
-                this.TotalBasePrice = 0;
-                this.TotalDiscount = 0;
-                this.TotalSurcharge = 0;
-                this.TotalExVat = 0;
-                this.TotalFee = 0;
-                this.TotalShippingAndHandling = 0;
-                this.TotalExtraCharge = 0;
-                this.TotalVat = 0;
-                this.TotalIrpf = 0;
-                this.TotalIncVat = 0;
-                this.TotalListPrice = 0;
-                this.GrandTotal = 0;
-
-                foreach (var item in validOrderItems)
+                if (!item.ExistSalesOrderItemWhereOrderedWithFeature)
                 {
-                    if (!item.ExistSalesOrderItemWhereOrderedWithFeature)
-                    {
-                        this.TotalBasePrice += item.TotalBasePrice;
-                        this.TotalDiscount += item.TotalDiscount;
-                        this.TotalSurcharge += item.TotalSurcharge;
-                        this.TotalExVat += item.TotalExVat;
-                        this.TotalVat += item.TotalVat;
-                        this.TotalIrpf += item.TotalIrpf;
-                        this.TotalIncVat += item.TotalIncVat;
-                        this.TotalListPrice += item.TotalExVat;
-                        this.GrandTotal += item.GrandTotal;
-                    }
+                    this.TotalBasePrice += item.TotalBasePrice;
+                    this.TotalDiscount += item.TotalDiscount;
+                    this.TotalSurcharge += item.TotalSurcharge;
+                    this.TotalExVat += item.TotalExVat;
+                    this.TotalVat += item.TotalVat;
+                    this.TotalIrpf += item.TotalIrpf;
+                    this.TotalIncVat += item.TotalIncVat;
+                    this.TotalListPrice += item.TotalExVat;
+                    this.GrandTotal += item.GrandTotal;
                 }
+            }
 
-                foreach(OrderAdjustment orderAdjustment in this.OrderAdjustments)
+            foreach(OrderAdjustment orderAdjustment in this.OrderAdjustments)
+            {
+                if (orderAdjustment.GetType().Name.Equals(typeof(DiscountAdjustment).Name))
                 {
-                    if (orderAdjustment.GetType().Name.Equals(typeof(DiscountAdjustment).Name))
-                    {
-                        var discount = orderAdjustment.Percentage.HasValue ?
-                                        Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
-                                        orderAdjustment.Amount ?? 0;
-
-                        this.TotalDiscount += discount;
-                        this.TotalExVat -= discount;
-
-                        if (this.ExistVatRegime)
-                        {
-                            var vat = Math.Round(discount * this.VatRegime.VatRate.Rate / 100, 2);
-
-                            this.TotalVat -= vat;
-                            this.TotalIncVat -= discount + vat;
-                            this.GrandTotal -= discount + vat;
-                        }
-
-                        if (this.ExistIrpfRegime)
-                        {
-                            var irpf = Math.Round(discount * this.IrpfRegime.IrpfRate.Rate / 100, 2);
-
-                            this.TotalIrpf -= irpf;
-                            this.GrandTotal += irpf;
-                        }
-                    }
-
-                    if (orderAdjustment.GetType().Name.Equals(typeof(SurchargeAdjustment).Name))
-                    {
-                        var surcharge = orderAdjustment.Percentage.HasValue ?
-                                        Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
-                                        orderAdjustment.Amount ?? 0;
-
-                        this.TotalSurcharge += surcharge;
-                        this.TotalExVat += surcharge;
-
-                        if (this.ExistVatRegime)
-                        {
-                            var vat = Math.Round(surcharge * this.VatRegime.VatRate.Rate / 100, 2);
-                            this.TotalVat += vat;
-                            this.TotalIncVat += surcharge + vat;
-                            this.GrandTotal -= surcharge + vat;
-                        }
-
-                        if (this.ExistIrpfRegime)
-                        {
-                            var irpf = Math.Round(surcharge * this.IrpfRegime.IrpfRate.Rate / 100, 2);
-
-                            this.TotalIrpf += irpf;
-                            this.GrandTotal -= irpf;
-                        }
-                    }
-
-                    if (orderAdjustment.GetType().Name.Equals(typeof(Fee).Name))
-                    {
-                        var fee = orderAdjustment.Percentage.HasValue ?
+                    var discount = orderAdjustment.Percentage.HasValue ?
                                     Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
                                     orderAdjustment.Amount ?? 0;
 
-                        this.TotalFee += fee;
-                        this.TotalExtraCharge += fee;
-                        this.TotalExVat += fee;
+                    this.TotalDiscount += discount;
+                    this.TotalExVat -= discount;
 
-                        if (this.ExistVatRegime)
-                        {
-                            var vat = Math.Round(fee * this.VatRegime.VatRate.Rate / 100, 2);
-                            this.TotalVat += vat;
-                            this.TotalIncVat += fee + vat;
-                            this.GrandTotal -= fee + vat;
-                        }
+                    if (this.ExistVatRegime)
+                    {
+                        var vat = Math.Round(discount * this.VatRegime.VatRate.Rate / 100, 2);
 
-                        if (this.ExistIrpfRegime)
-                        {
-                            var irpf = Math.Round(fee * this.IrpfRegime.IrpfRate.Rate / 100, 2);
-
-                            this.TotalIrpf += irpf;
-                            this.GrandTotal -= irpf;
-                        }
+                        this.TotalVat -= vat;
+                        this.TotalIncVat -= discount + vat;
+                        this.GrandTotal -= discount + vat;
                     }
 
-                    if (orderAdjustment.GetType().Name.Equals(typeof(ShippingAndHandlingCharge).Name))
+                    if (this.ExistIrpfRegime)
                     {
-                        var shipping = orderAdjustment.Percentage.HasValue ?
-                                        Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
-                                        orderAdjustment.Amount ?? 0;
+                        var irpf = Math.Round(discount * this.IrpfRegime.IrpfRate.Rate / 100, 2);
 
-                        this.TotalShippingAndHandling += shipping;
-                        this.TotalExtraCharge += shipping;
-                        this.TotalExVat += shipping;
-
-                        if (this.ExistVatRegime)
-                        {
-                            var vat = Math.Round(shipping * this.VatRegime.VatRate.Rate / 100, 2);
-                            this.TotalVat += vat;
-                            this.TotalIncVat += shipping + vat;
-                            this.GrandTotal -= shipping + vat;
-                        }
-
-                        if (this.ExistIrpfRegime)
-                        {
-                            var irpf = Math.Round(shipping * this.IrpfRegime.IrpfRate.Rate / 100, 2);
-
-                            this.TotalIrpf += irpf;
-                            this.GrandTotal -= irpf;
-                        }
-                    }
-
-                    if (orderAdjustment.GetType().Name.Equals(typeof(MiscellaneousCharge).Name))
-                    {
-                        var miscellaneous = orderAdjustment.Percentage.HasValue ?
-                                        Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
-                                        orderAdjustment.Amount ?? 0;
-
-                        this.TotalExtraCharge += miscellaneous;
-                        this.TotalExVat += miscellaneous;
-
-                        if (this.ExistVatRegime)
-                        {
-                            var vat = Math.Round(miscellaneous * this.VatRegime.VatRate.Rate / 100, 2);
-                            this.TotalVat += vat;
-                            this.TotalIncVat += miscellaneous + vat;
-                            this.GrandTotal -= miscellaneous + vat;
-                        }
-
-                        if (this.ExistIrpfRegime)
-                        {
-                            var irpf = Math.Round(miscellaneous * this.IrpfRegime.IrpfRate.Rate / 100, 2);
-
-                            this.TotalIrpf += irpf;
-                            this.GrandTotal -= irpf;
-                        }
+                        this.TotalIrpf -= irpf;
+                        this.GrandTotal += irpf;
                     }
                 }
 
-                //// Only take into account items for which there is data at the item level.
-                //// Skip negative sales.
-                decimal totalUnitBasePrice = 0;
-                decimal totalListPrice = 0;
-
-                foreach (var item1 in validOrderItems)
+                if (orderAdjustment.GetType().Name.Equals(typeof(SurchargeAdjustment).Name))
                 {
-                    if (item1.TotalExVat > 0)
+                    var surcharge = orderAdjustment.Percentage.HasValue ?
+                                    Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
+                                    orderAdjustment.Amount ?? 0;
+
+                    this.TotalSurcharge += surcharge;
+                    this.TotalExVat += surcharge;
+
+                    if (this.ExistVatRegime)
                     {
-                        totalUnitBasePrice += item1.UnitBasePrice;
-                        totalListPrice += item1.UnitPrice;
+                        var vat = Math.Round(surcharge * this.VatRegime.VatRate.Rate / 100, 2);
+                        this.TotalVat += vat;
+                        this.TotalIncVat += surcharge + vat;
+                        this.GrandTotal -= surcharge + vat;
                     }
+
+                    if (this.ExistIrpfRegime)
+                    {
+                        var irpf = Math.Round(surcharge * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+
+                        this.TotalIrpf += irpf;
+                        this.GrandTotal -= irpf;
+                    }
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(Fee).Name))
+                {
+                    var fee = orderAdjustment.Percentage.HasValue ?
+                                Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
+                                orderAdjustment.Amount ?? 0;
+
+                    this.TotalFee += fee;
+                    this.TotalExtraCharge += fee;
+                    this.TotalExVat += fee;
+
+                    if (this.ExistVatRegime)
+                    {
+                        var vat = Math.Round(fee * this.VatRegime.VatRate.Rate / 100, 2);
+                        this.TotalVat += vat;
+                        this.TotalIncVat += fee + vat;
+                        this.GrandTotal -= fee + vat;
+                    }
+
+                    if (this.ExistIrpfRegime)
+                    {
+                        var irpf = Math.Round(fee * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+
+                        this.TotalIrpf += irpf;
+                        this.GrandTotal -= irpf;
+                    }
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(ShippingAndHandlingCharge).Name))
+                {
+                    var shipping = orderAdjustment.Percentage.HasValue ?
+                                    Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
+                                    orderAdjustment.Amount ?? 0;
+
+                    this.TotalShippingAndHandling += shipping;
+                    this.TotalExtraCharge += shipping;
+                    this.TotalExVat += shipping;
+
+                    if (this.ExistVatRegime)
+                    {
+                        var vat = Math.Round(shipping * this.VatRegime.VatRate.Rate / 100, 2);
+                        this.TotalVat += vat;
+                        this.TotalIncVat += shipping + vat;
+                        this.GrandTotal -= shipping + vat;
+                    }
+
+                    if (this.ExistIrpfRegime)
+                    {
+                        var irpf = Math.Round(shipping * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+
+                        this.TotalIrpf += irpf;
+                        this.GrandTotal -= irpf;
+                    }
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(MiscellaneousCharge).Name))
+                {
+                    var miscellaneous = orderAdjustment.Percentage.HasValue ?
+                                    Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
+                                    orderAdjustment.Amount ?? 0;
+
+                    this.TotalExtraCharge += miscellaneous;
+                    this.TotalExVat += miscellaneous;
+
+                    if (this.ExistVatRegime)
+                    {
+                        var vat = Math.Round(miscellaneous * this.VatRegime.VatRate.Rate / 100, 2);
+                        this.TotalVat += vat;
+                        this.TotalIncVat += miscellaneous + vat;
+                        this.GrandTotal -= miscellaneous + vat;
+                    }
+
+                    if (this.ExistIrpfRegime)
+                    {
+                        var irpf = Math.Round(miscellaneous * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+
+                        this.TotalIrpf += irpf;
+                        this.GrandTotal -= irpf;
+                    }
+                }
+            }
+
+            //// Only take into account items for which there is data at the item level.
+            //// Skip negative sales.
+            decimal totalUnitBasePrice = 0;
+            decimal totalListPrice = 0;
+
+            foreach (var item1 in validOrderItems)
+            {
+                if (item1.TotalExVat > 0)
+                {
+                    totalUnitBasePrice += item1.UnitBasePrice;
+                    totalListPrice += item1.UnitPrice;
                 }
             }
         }
