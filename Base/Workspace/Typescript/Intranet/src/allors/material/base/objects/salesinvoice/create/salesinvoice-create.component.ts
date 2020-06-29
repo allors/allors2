@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, TestScope } from '../../../../../angular';
-import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, CustomerRelationship, SalesInvoiceType, Currency } from '../../../../../domain';
+import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, CustomerRelationship, SalesInvoiceType, Currency, VatRegime, IrpfRegime } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { InternalOrganisationId } from '../../../../../angular/base/state';
@@ -32,6 +32,8 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
   shipToEndCustomerContacts: Person[] = [];
   internalOrganisation: Organisation;
   currencies: Currency[];
+  vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
 
   addShipToCustomer = false;
   addShipToAddress = false;
@@ -102,6 +104,8 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
               sort: new Sort(m.Currency.IsoCode)
             }),
+            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.SalesInvoiceType({
               predicate: new Equals({ propertyType: m.SalesInvoiceType.IsActive, value: true }),
               sort: new Sort(m.SalesInvoiceType.Name),
@@ -117,6 +121,8 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.salesInvoiceTypes = loaded.collections.SalesInvoiceTypes as SalesInvoiceType[];
         this.currencies = loaded.collections.Currencies as Currency[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
 
         this.invoice = this.allors.context.create('SalesInvoice') as SalesInvoice;
         this.invoice.BilledFrom = this.internalOrganisation;

@@ -119,7 +119,6 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
                 Product: x,
                 SerialisedItem: x,
                 QuoteItem: x,
-                VatRate: x,
                 VatRegime: {
                   VatRate: x,
                 },
@@ -194,7 +193,6 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.order = loaded.objects.SalesOrder as SalesOrder;
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
@@ -261,11 +259,13 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
 
         if (isCreate) {
           this.title = 'Add Order Item';
+          this.order = loaded.objects.SalesOrder as SalesOrder;
           this.orderItem = this.allors.context.create('SalesOrderItem') as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
 
         } else {
           this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
+          this.order = this.orderItem.SalesOrderWhereSalesOrderItem;
 
           if (this.orderItem.Product) {
             this.previousProduct = this.orderItem.Product;
@@ -275,14 +275,6 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
             }
           } else {
             this.serialisedItems.push(this.orderItem.SerialisedItem);
-          }
-
-          if (this.orderItem.DiscountAdjustment) {
-            this.discount = parseFloat(this.orderItem.DiscountAdjustment.Amount);
-          }
-
-          if (this.orderItem.SurchargeAdjustment) {
-            this.surcharge = parseFloat(this.orderItem.SurchargeAdjustment.Amount);
           }
 
           if (this.orderItem.CanWriteAssignedUnitPrice) {

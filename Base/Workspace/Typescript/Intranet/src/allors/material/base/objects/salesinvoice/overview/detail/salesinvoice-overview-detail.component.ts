@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope, InternalOrganisationId } from '../../../../../../angular';
-import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship, VatClause, Country } from '../../../../../../domain';
+import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship, VatClause, Country, IrpfRegime } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
@@ -24,8 +24,8 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
   goods: Good[] = [];
   internalOrganisation: Organisation;
   currencies: Currency[];
-  vatRates: VatRate[];
   vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
   vatClauses: VatClause[];
   billToContactMechanisms: ContactMechanism[] = [];
   billToContacts: Person[] = [];
@@ -117,9 +117,6 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
               SalesTerms: {
                 TermType: x,
               },
-              VatRegime: {
-                VatRate: x
-              },
               AssignedVatClause: x,
               DerivedVatClause: x,
               Currency: x,
@@ -201,8 +198,8 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
                 DerivedVatClause: x
               },
             }),
-            pull.VatRate(),
             pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.VatClause({ sort: new Sort(m.VatClause.Name) }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
@@ -223,8 +220,8 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
       .subscribe((loaded) => {
         this.allors.context.reset();
 
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.vatClauses = loaded.collections.VatClauses as VatClause[];
         this.currencies = loaded.collections.Currencies as Currency[];
 

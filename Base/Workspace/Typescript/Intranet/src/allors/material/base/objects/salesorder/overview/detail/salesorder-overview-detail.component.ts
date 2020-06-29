@@ -253,8 +253,6 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
                 IrpfRegime: x,
               }
             }),
-            pull.VatRate(),
-            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.VatClause({ sort: new Sort(m.VatClause.Name) }),
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
             pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),

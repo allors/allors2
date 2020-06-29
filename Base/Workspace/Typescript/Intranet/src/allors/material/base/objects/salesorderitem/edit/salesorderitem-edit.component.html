@@ -77,14 +77,6 @@
         <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityShortFalled" label="Quantity short"></a-mat-static>
       </div>
 
-      <!-- <mat-form-field>
-          <input matInput placeholder="Discount amount" name="discount" [(ngModel)]="discount">
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput placeholder="Surcharge amount" name="surcharge" [(ngModel)]="surcharge">
-        </mat-form-field>
-        <br/> -->
-
       <div class="row">
         <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.Description"></a-mat-textarea>
         <a-mat-static class="col-md-12" *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment"
