@@ -289,27 +289,25 @@ namespace Allors.Domain
 
         public void BaseOnDeriveInvoiceTotals()
         {
-            if (this.ExistPurchaseInvoiceItems)
-            {
-                this.TotalBasePrice = 0;
-                this.TotalDiscount = 0;
-                this.TotalSurcharge = 0;
-                this.TotalVat = 0;
-                this.TotalExVat = 0;
-                this.TotalIncVat = 0;
-                this.TotalIrpf = 0;
-                this.GrandTotal = 0;
+            this.TotalBasePrice = 0;
+            this.TotalDiscount = 0;
+            this.TotalSurcharge = 0;
+            this.TotalVat = 0;
+            this.TotalExVat = 0;
+            this.TotalIncVat = 0;
+            this.TotalIrpf = 0;
+            this.TotalExtraCharge = 0;
+            this.GrandTotal = 0;
 
-                foreach (PurchaseInvoiceItem item in this.PurchaseInvoiceItems)
-                {
-                    this.TotalBasePrice += item.TotalBasePrice;
-                    this.TotalSurcharge += item.TotalSurcharge;
-                    this.TotalSurcharge += item.TotalSurcharge;
-                    this.TotalVat += item.TotalVat;
-                    this.TotalExVat += item.TotalExVat;
-                    this.TotalIncVat += item.TotalIncVat;
-                    this.GrandTotal += item.GrandTotal;
-                }
+            foreach (PurchaseInvoiceItem item in this.PurchaseInvoiceItems)
+            {
+                this.TotalBasePrice += item.TotalBasePrice;
+                this.TotalSurcharge += item.TotalSurcharge;
+                this.TotalIrpf += item.TotalIrpf;
+                this.TotalVat += item.TotalVat;
+                this.TotalExVat += item.TotalExVat;
+                this.TotalIncVat += item.TotalIncVat;
+                this.GrandTotal += item.GrandTotal;
             }
         }
 

@@ -271,28 +271,26 @@ namespace Allors.Domain
                 }
             }
 
-            if (this.ExistValidOrderItems)
-            {
-                this.TotalBasePrice = 0;
-                this.TotalDiscount = 0;
-                this.TotalSurcharge = 0;
-                this.TotalVat = 0;
-                this.TotalIrpf = 0;
-                this.TotalExVat = 0;
-                this.TotalIncVat = 0;
-                this.GrandTotal = 0;
+            this.TotalBasePrice = 0;
+            this.TotalDiscount = 0;
+            this.TotalSurcharge = 0;
+            this.TotalVat = 0;
+            this.TotalIrpf = 0;
+            this.TotalExVat = 0;
+            this.TotalExtraCharge = 0;
+            this.TotalIncVat = 0;
+            this.GrandTotal = 0;
 
-                foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
-                {
-                    this.TotalBasePrice += orderItem.TotalBasePrice;
-                    this.TotalDiscount += orderItem.TotalDiscount;
-                    this.TotalSurcharge += orderItem.TotalSurcharge;
-                    this.TotalVat += orderItem.TotalVat;
-                    this.TotalIrpf += orderItem.TotalIrpf;
-                    this.TotalExVat += orderItem.TotalExVat;
-                    this.TotalIncVat += orderItem.TotalIncVat;
-                    this.GrandTotal += orderItem.GrandTotal;
-                }
+            foreach (PurchaseOrderItem orderItem in this.ValidOrderItems)
+            {
+                this.TotalBasePrice += orderItem.TotalBasePrice;
+                this.TotalDiscount += orderItem.TotalDiscount;
+                this.TotalSurcharge += orderItem.TotalSurcharge;
+                this.TotalVat += orderItem.TotalVat;
+                this.TotalIrpf += orderItem.TotalIrpf;
+                this.TotalExVat += orderItem.TotalExVat;
+                this.TotalIncVat += orderItem.TotalIncVat;
+                this.GrandTotal += orderItem.GrandTotal;
             }
 
             this.PreviousTakenViaSupplier = this.TakenViaSupplier;
@@ -413,7 +411,7 @@ namespace Allors.Domain
 
         public void BaseCancel(OrderCancel method) => this.PurchaseOrderState = new PurchaseOrderStates(this.Strategy.Session).Cancelled;
 
-        public void BaseSetReadyForProcessing(PurchaseOrderSetReadyForProcessing  method) => this.PurchaseOrderState = this.NeedsApprovalLevel1
+        public void BaseSetReadyForProcessing(PurchaseOrderSetReadyForProcessing method) => this.PurchaseOrderState = this.NeedsApprovalLevel1
                 ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel1
                 : this.PurchaseOrderState = this.NeedsApprovalLevel2
                     ? new PurchaseOrderStates(this.Strategy.Session).AwaitingApprovalLevel2
