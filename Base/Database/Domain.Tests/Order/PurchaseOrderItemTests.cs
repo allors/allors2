@@ -361,7 +361,7 @@ namespace Allors.Domain
             Assert.Equal(45, item1.TotalExVat);
             Assert.Equal(0, item1.TotalVat);
             Assert.Equal(45, item1.TotalIncVat);
-            Assert.Equal(1.5M, item1.UnitIrpf);
+            Assert.Equal(2.85M, item1.UnitIrpf);
 
             Assert.Equal(45, this.order.TotalBasePrice);
             Assert.Equal(0, this.order.TotalDiscount);
@@ -369,8 +369,8 @@ namespace Allors.Domain
             Assert.Equal(45, this.order.TotalExVat);
             Assert.Equal(0, this.order.TotalVat);
             Assert.Equal(45, this.order.TotalIncVat);
-            Assert.Equal(4.5M, this.order.TotalIrpf);
-            Assert.Equal(40.5M, this.order.GrandTotal);
+            Assert.Equal(8.55M, this.order.TotalIrpf);
+            Assert.Equal(36.45M, this.order.GrandTotal);
         }
 
         [Fact]

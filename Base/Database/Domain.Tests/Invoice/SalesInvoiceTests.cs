@@ -578,8 +578,8 @@ namespace Allors.Domain
             Assert.Equal(8, invoice.TotalExVat);
             Assert.Equal(1.68M, invoice.TotalVat);
             Assert.Equal(9.68M, invoice.TotalIncVat);
-            Assert.Equal(0.8M, invoice.TotalIrpf);
-            Assert.Equal(8.88M, invoice.GrandTotal);
+            Assert.Equal(1.52M, invoice.TotalIrpf);
+            Assert.Equal(8.16M, invoice.GrandTotal);
 
             var item2 = new SalesInvoiceItemBuilder(this.Session)
                 .WithProduct(good)

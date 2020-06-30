@@ -346,7 +346,7 @@ namespace Allors.Domain
             Assert.Equal(45, this.order.TotalExVat);
             Assert.Equal(9.45m, this.order.TotalVat);
             Assert.Equal(54.45m, this.order.TotalIncVat);
-            Assert.Equal(15, this.order.TotalListPrice);
+            Assert.Equal(45, this.order.TotalListPrice);
         }
 
         [Fact]

@@ -50,8 +50,6 @@ namespace Tests.SalesOrderTests
             Assert.True(expected.ExistShipToContactPerson);
             Assert.True(expected.ExistShipFromAddress);
             Assert.True(expected.ExistCustomerReference);
-            Assert.True(expected.ExistDescription);
-            Assert.True(expected.ExistInternalComment);
 
             this.Session.Derive();
 
@@ -63,8 +61,6 @@ namespace Tests.SalesOrderTests
             var expectedShipToContactPerson = expected.ShipToContactPerson;
             var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
-            var expectedDescription = expected.Description;
-            var expectedInternalComment = expected.InternalComment;
 
             var salesOrderCreate = this.salesOrderListPage
                 .CreateSalesOrder()
@@ -94,8 +90,6 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
             Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);
-            Assert.Equal(expectedDescription, actual.Description);
-            Assert.Equal(expectedInternalComment, actual.InternalComment);
         }
 
         /**
@@ -116,8 +110,6 @@ namespace Tests.SalesOrderTests
             Assert.True(expected.ExistShipToContactPerson);
             Assert.True(expected.ExistShipFromAddress);
             Assert.True(expected.ExistCustomerReference);
-            Assert.True(expected.ExistDescription);
-            Assert.True(expected.ExistInternalComment);
 
             this.Session.Derive();
 
@@ -129,13 +121,10 @@ namespace Tests.SalesOrderTests
             var expectedShipToContactPerson = expected.ShipToContactPerson;
             var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
-            var expectedDescription = expected.Description;
-            var expectedInternalComment = expected.InternalComment;
 
             var salesOrderCreate = this.salesOrderListPage
                 .CreateSalesOrder()
                 .BuildForOrganisationExternalDefaults(expected);
-
 
             this.Session.Rollback();
             salesOrderCreate.SAVE.Click();
@@ -160,8 +149,6 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
             Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);
-            Assert.Equal(expectedDescription, actual.Description);
-            Assert.Equal(expectedInternalComment, actual.InternalComment);
         }
 
         /**
@@ -182,8 +169,6 @@ namespace Tests.SalesOrderTests
             Assert.True(expected.ExistShipToContactPerson);
             Assert.True(expected.ExistShipFromAddress);
             Assert.True(expected.ExistCustomerReference);
-            Assert.True(expected.ExistDescription);
-            Assert.True(expected.ExistInternalComment);
 
             this.Session.Derive();
 
@@ -195,8 +180,6 @@ namespace Tests.SalesOrderTests
             var expectedShipToContactPerson = expected.ShipToContactPerson;
             var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
-            var expectedDescription = expected.Description;
-            var expectedInternalComment = expected.InternalComment;
 
             var salesOrderCreate = this.salesOrderListPage
                 .CreateSalesOrder()
@@ -226,8 +209,6 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
             Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);
-            Assert.Equal(expectedDescription, actual.Description);
-            Assert.Equal(expectedInternalComment, actual.InternalComment);
         }
 
         /**
@@ -246,8 +227,6 @@ namespace Tests.SalesOrderTests
             Assert.True(expected.ExistShipToAddress);
             Assert.True(expected.ExistShipFromAddress);
             Assert.True(expected.ExistCustomerReference);
-            Assert.True(expected.ExistDescription);
-            Assert.True(expected.ExistInternalComment);
 
             this.Session.Derive();
 
@@ -257,13 +236,10 @@ namespace Tests.SalesOrderTests
             var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
             var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
             var expectedCustomerReference = expected.CustomerReference;
-            var expectedDescription = expected.Description;
-            var expectedInternalComment = expected.InternalComment;
 
             var salesOrderCreate = this.salesOrderListPage
                 .CreateSalesOrder()
                 .BuildForPersonExternalDefaults(expected);
-
 
             this.Session.Rollback();
             salesOrderCreate.SAVE.Click();
@@ -286,8 +262,6 @@ namespace Tests.SalesOrderTests
             Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
             Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
             Assert.Equal(expectedCustomerReference, actual.CustomerReference);
-            Assert.Equal(expectedDescription, actual.Description);
-            Assert.Equal(expectedInternalComment, actual.InternalComment);
         }
     }
 }

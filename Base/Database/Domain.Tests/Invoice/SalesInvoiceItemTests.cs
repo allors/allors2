@@ -302,7 +302,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var irpfRate10 = new IrpfRates(this.Session).FindBy(M.IrpfRate.Rate, 10);
+            var irpfRate19 = new IrpfRates(this.Session).FindBy(M.IrpfRate.Rate, 19);
 
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
@@ -316,7 +316,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(salesInvoice.IrpfRegime, invoiceItem.IrpfRegime);
-            Assert.Equal(irpfRate10, invoiceItem.IrpfRate);
+            Assert.Equal(irpfRate19, invoiceItem.IrpfRate);
         }
 
         [Fact]
@@ -406,8 +406,8 @@ namespace Allors.Domain
             Assert.Equal(45, item1.TotalExVat);
             Assert.Equal(9.45m, item1.TotalVat);
             Assert.Equal(54.45m, item1.TotalIncVat);
-            Assert.Equal(4.5m, item1.TotalIrpf);
-            Assert.Equal(49.95m, item1.GrandTotal);
+            Assert.Equal(8.55m, item1.TotalIrpf);
+            Assert.Equal(45.90m, item1.GrandTotal);
 
             Assert.Equal(30, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
@@ -415,9 +415,9 @@ namespace Allors.Domain
             Assert.Equal(45, this.invoice.TotalExVat);
             Assert.Equal(9.45m, this.invoice.TotalVat);
             Assert.Equal(54.45m, this.invoice.TotalIncVat);
-            Assert.Equal(15, this.invoice.TotalListPrice);
-            Assert.Equal(4.5m, this.invoice.TotalIrpf);
-            Assert.Equal(49.95m, this.invoice.GrandTotal);
+            Assert.Equal(45, this.invoice.TotalListPrice);
+            Assert.Equal(8.55m, this.invoice.TotalIrpf);
+            Assert.Equal(45.90m, this.invoice.GrandTotal);
         }
 
         [Fact]
