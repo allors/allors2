@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
-import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem, SupplierOffering } from '../../../../../domain';
+import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem, SupplierOffering, IrpfRegime } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -25,8 +25,8 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
   invoiceItem: PurchaseInvoiceItem;
   orderItem: PurchaseOrderItem;
   inventoryItems: InventoryItem[];
-  vatRates: VatRate[];
   vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   invoiceItemTypes: InvoiceItemType[];
@@ -79,7 +79,10 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
                 SerialisedItem: x,
                 VatRegime: {
                   VatRate: x,
-                }
+                },
+                IrpfRegime: {
+                  IrpfRate: x,
+                },
               }
             }),
             pull.PurchaseInvoiceItem({
@@ -87,7 +90,12 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               fetch: {
                 PurchaseInvoiceWherePurchaseInvoiceItem: {
                   include: {
-                    VatRegime: x
+                    VatRegime: {
+                      VatRate: x,
+                    },
+                    IrpfRegime: {
+                      IrpfRate: x,
+                    },
                   }
                 }
               }
@@ -95,8 +103,10 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
             }),
-            pull.VatRate(),
-            pull.VatRegime()
+            pull.VatRegime({ 
+              sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({ 
+              sort: new Sort(m.IrpfRegime.Name) }),
           ];
 
           if (this.data.associationId) {
@@ -104,7 +114,12 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               pull.PurchaseInvoice({
                 object: this.data.associationId,
                 include: {
-                  VatRegime: x
+                  VatRegime: {
+                    VatRate: x,
+                  },
+                  IrpfRegime: {
+                    IrpfRate: x,
+                  }
                 }
               })
             );
@@ -119,11 +134,10 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
         this.invoiceItem = loaded.objects.PurchaseInvoiceItem as PurchaseInvoiceItem;
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
@@ -146,9 +160,11 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
 
         if (isCreate) {
           this.title = 'Add purchase invoice Item';
+          this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
           this.invoiceItem = this.allors.context.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
           this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
         } else {
+          this.invoice = this.invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem;
 
           if (this.invoiceItem.Part) {
             this.unifiedGood = this.invoiceItem.Part.objectType.name === m.UnifiedGood.name;

@@ -32,8 +32,8 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.IrpfRate = invoice.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
 
             // IRPF is subtracted for total amount to pay
-            var totalitrf = invoice.TotalIrpf * -1;
-            this.TotalIrpf = totalitrf.ToString("N2", new CultureInfo("nl-BE"));
+            var totalIrpf = invoice.TotalIrpf * -1;
+            this.TotalIrpf = totalIrpf.ToString("N2", new CultureInfo("nl-BE"));
             this.PrintIrpf = invoice.TotalIrpf != 0;
 
             this.TotalIncVat = invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));

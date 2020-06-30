@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, VatRate, VatRegime, CustomerRelationship, SupplierRelationship } from '../../../../../domain';
+import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, VatRate, VatRegime, CustomerRelationship, SupplierRelationship, IrpfRegime } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
@@ -21,8 +21,8 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
 
   invoice: PurchaseInvoice;
   currencies: Currency[];
-  vatRates: VatRate[];
   vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
   purchaseInvoiceTypes: PurchaseInvoiceType[];
   internalOrganisation: Organisation;
 
@@ -96,8 +96,8 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.VatRate(),
-            pull.VatRegime(),
+            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.Currency({
               sort: new Sort(m.Currency.Name),
             }),
@@ -114,8 +114,8 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
       .subscribe((loaded) => {
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.currencies = loaded.collections.Currencies as Currency[];
         this.purchaseInvoiceTypes = loaded.collections.PurchaseInvoiceTypes as PurchaseInvoiceType[];
 

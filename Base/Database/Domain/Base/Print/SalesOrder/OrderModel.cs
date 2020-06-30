@@ -38,9 +38,9 @@ namespace Allors.Domain.Print.SalesOrderModel
             this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
 
             // IRPF is subtracted for total amount to pay
-            var totalitrf = order.TotalIrpf * -1;
+            var totalIrpf = order.TotalIrpf * -1;
             this.IrpfRate = order.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
-            this.TotalIrpf = totalitrf.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalIrpf = totalIrpf.ToString("N2", new CultureInfo("nl-BE"));
             this.PrintIrpf = order.TotalIrpf != 0;
 
             this.TotalIncVat = order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
