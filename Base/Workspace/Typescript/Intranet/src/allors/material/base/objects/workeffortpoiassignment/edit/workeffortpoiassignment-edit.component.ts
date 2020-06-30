@@ -67,7 +67,10 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
               sort: new Sort(this.m.PurchaseOrder.OrderNumber),
               include: {
                 TakenViaSupplier: x,
-                PurchaseOrderItems: x,
+                PurchaseOrderItems: {
+                  Part: x,
+                  PurchaseOrderWherePurchaseOrderItem: x,
+                },
                 WorkEffortPurchaseOrderItemAssignmentsWherePurchaseOrder: x,
               }
             }),
@@ -93,9 +96,6 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
 
         this.allors.context.reset();
 
-        const purchaseOrders = loaded.collections.PurchaseOrders as PurchaseOrder[];
-        this.purchaseOrders = purchaseOrders.filter(v => v.PurchaseOrderItems.find(i => i.WorkEffortPurchaseOrderItemAssignmentsWherePurchaseOrderItem.length === 0));
-
         if (isCreate) {
           this.workEffort = loaded.objects.WorkEffort as WorkEffort;
           this.title = 'Add purchase order item assignment';
@@ -115,6 +115,13 @@ export class WorkEffortPurchaseOrderItemAssignmentEditComponent extends TestScop
             this.title = 'View purchase order item assignment';
           }
         }
+
+        const purchaseOrders = loaded.collections.PurchaseOrders as PurchaseOrder[];
+        this.purchaseOrders = purchaseOrders
+          .filter(v => v.PurchaseOrderItems
+                  .find(i => i.WorkEffortPurchaseOrderItemAssignmentsWherePurchaseOrderItem.length === 0
+                            && !i.Part
+                            && i.PurchaseOrderWherePurchaseOrderItem.OrderedBy === this.workEffort.TakenBy));
       });
   }
 
