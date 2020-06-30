@@ -74,7 +74,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(takenViaContactMechanism)
                 .WithDeliveryDate(this.Session.Now())
                 .WithVatRegime(new VatRegimes(this.Session).Exempt)
-                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable10)
+                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
             this.Session.Derive();

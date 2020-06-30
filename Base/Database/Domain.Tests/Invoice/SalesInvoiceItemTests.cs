@@ -286,7 +286,7 @@ namespace Allors.Domain
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithBillToContactMechanism(this.billToContactMechanismMechelen)
-                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable10)
+                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithInvoiceItemType(productItem).Build();
@@ -307,7 +307,7 @@ namespace Allors.Domain
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithBillToContactMechanism(this.billToContactMechanismMechelen)
-                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable10)
+                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(1).Build();
@@ -388,7 +388,7 @@ namespace Allors.Domain
                 .WithQuantity(3)
                 .WithAssignedUnitPrice(15)
                 .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
-                .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable10)
+                .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
             this.invoice.AddSalesInvoiceItem(item1);
@@ -425,7 +425,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var irpfRegime = new IrpfRegimes(this.Session).Assessable10;
+            var irpfRegime = new IrpfRegimes(this.Session).Assessable19;
 
             const decimal quantity = 3;
             var item1 = new SalesInvoiceItemBuilder(this.Session)

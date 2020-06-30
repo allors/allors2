@@ -561,7 +561,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithVatRegime(new VatRegimes(this.Session).Assessable21)
-                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable10)
+                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.Session)
