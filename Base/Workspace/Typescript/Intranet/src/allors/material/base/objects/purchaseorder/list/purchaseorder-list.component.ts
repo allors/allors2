@@ -193,7 +193,6 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           internalOrganisationPredicate.object = internalOrganisationId;
-          supplierPredicate.object = internalOrganisationId;
 
           const pulls = [
             this.fetcher.internalOrganisation,
