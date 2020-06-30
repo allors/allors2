@@ -150,7 +150,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   public takenViaContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.takenVia as Organisation;
+    organisationContactRelationship.Organisation = this.order.TakenViaSupplier as Organisation;
     organisationContactRelationship.Contact = person;
 
     this.takenViaContacts.push(person);
