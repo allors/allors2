@@ -94,6 +94,8 @@ namespace Allors.Repository
 
         public decimal TotalIrpf { get; set; }
 
+        public int SortableInvoiceNumber { get; set; }
+
         #endregion
 
         #region ObjectStates

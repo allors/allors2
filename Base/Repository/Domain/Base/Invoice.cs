@@ -295,6 +295,15 @@ namespace Allors.Repository
         InvoiceItem[] ValidInvoiceItems { get; set; }
 
         #region Allors
+        [Id("1ef6f9b0-c541-4a8d-9ce2-fb6a330244e9")]
+        [AssociationId("194041ad-93b6-4eb2-802d-2e5d111c3177")]
+        [RoleId("f34e32a1-606c-4272-bdf8-b0545ba0c34b")]
+        #endregion
+        [Indexed]
+        [Workspace]
+        int SortableInvoiceNumber { get; set; }
+
+        #region Allors
 
         [Id("B9226E72-AD90-4195-9DC7-64A26D12E6A3")]
 

@@ -93,6 +93,9 @@ namespace Allors.Repository
         public IrpfRegime IrpfRegime { get; set; }
 
         public decimal TotalIrpf { get; set; }
+
+        public int SortableInvoiceNumber { get; set; }
+
         #endregion
 
         #region ObjectStates

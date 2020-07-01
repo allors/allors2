@@ -166,6 +166,7 @@ namespace Allors.Domain
             if (!this.ExistInvoiceNumber && this.ExistStore)
             {
                 this.InvoiceNumber = this.Store.NextTemporaryInvoiceNumber();
+                this.SortableInvoiceNumber = int.Parse(this.InvoiceNumber);
             }
 
             if (!this.ExistBilledFromContactMechanism && this.ExistBilledFrom)
@@ -646,6 +647,21 @@ namespace Allors.Domain
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice))
             {
                 this.InvoiceNumber = this.Store.NextInvoiceNumber(this.InvoiceDate.Year);
+                if (this.Store.ExistSalesInvoiceNumberPrefix)
+                {
+                    if (this.Store.SalesInvoiceNumberPrefix.Contains("{year}"))
+                    {
+                        this.SortableInvoiceNumber = int.Parse(string.Concat(this.InvoiceDate.Year.ToString(), this.InvoiceNumber.Substring(this.Store.SalesInvoiceNumberPrefix.Length)));
+                    }
+                    else
+                    {
+                        this.SortableInvoiceNumber = int.Parse(this.InvoiceNumber.Substring(this.Store.SalesInvoiceNumberPrefix.Length));
+                    }
+                }
+                else
+                {
+                    this.SortableInvoiceNumber = int.Parse(this.InvoiceNumber);
+                }
             }
 
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).CreditNote))
