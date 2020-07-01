@@ -70,7 +70,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
         { name: 'ownership' },
         { name: 'suppliedBy', sort: true },
         { name: 'ownedBy', sort: true },
-        { name: 'rentedBy' },
+        { name: 'rentedBy', sort: true }
       ],
       actions: [
         overviewService.overview(),
@@ -249,7 +249,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
             ownership: `${v.Ownership && v.Ownership.Name}`,
             suppliedBy: v.SuppliedByPartyName,
             ownedBy: v.OwnedByPartyName,
-            rentedBy: v.RentedBy ? v.RentedBy.displayName : '',
+            rentedBy: v.RentedByPartyName,
           } as Row;
         });
       });
