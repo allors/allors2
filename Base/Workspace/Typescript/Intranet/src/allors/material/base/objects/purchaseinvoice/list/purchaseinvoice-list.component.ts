@@ -7,7 +7,7 @@ import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory, ActionTarget, FetcherService, UserId } from '../../../../../angular';
-import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt, Organisation, Person, UserGroup, PurchaseInvoiceState, Party, Product, SerialisedItem } from '../../../../../domain';
+import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt, Organisation, Person, UserGroup, PurchaseInvoiceState, Party, Product, SerialisedItem, Part } from '../../../../../domain';
 import { And, Like, PullRequest, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService, AllorsMaterialDialogService } from '../../../../../material';
 import { MethodService } from '../../../../../material/core/services/actions';
