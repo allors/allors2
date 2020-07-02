@@ -96,6 +96,8 @@ namespace Allors.Repository
 
         public string WorkItemDescription { get; set; }
 
+        public int SortableOrderNumber { get; set; }
+
         #endregion
 
         #region ObjectStates

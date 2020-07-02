@@ -117,6 +117,8 @@ namespace Allors.Repository
 
         public Media[] ElectronicDocuments { get; set; }
 
+        public int SortableWorkEffortNumber { get; set; }
+
         #endregion
 
         #region Allors

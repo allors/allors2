@@ -10,7 +10,7 @@ namespace Allors.Domain
     using Allors.Domain.Derivations.Default;
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
-
+    using Bogus.DataSets;
     using Xunit;
 
     public class QuoteTests : DomainTest
@@ -117,6 +117,61 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(1300, quote.TotalExVat);
+        }
+
+        [Fact]
+        public void GivenIssuerWithoutQuoteNumberPrefix_WhenDeriving_ThenSortableQuoteNumberIsSet()
+        {
+            this.InternalOrganisation.RemoveQuoteNumberPrefix();
+            this.Session.Derive();
+
+            var party = new PersonBuilder(this.Session).WithLastName("party").Build();
+
+            var quote = new ProductQuoteBuilder(this.Session)
+                .WithReceiver(party)
+                .WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build())
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(quote.QuoteNumber), quote.SortableQuoteNumber);
+        }
+
+        [Fact]
+        public void GivenIssuerWithQuoteNumberPrefix_WhenDeriving_ThenSortableQuoteNumberIsSet()
+        {
+            this.InternalOrganisation.QuoteNumberPrefix = "prefix-";
+            this.Session.Derive();
+
+            var party = new PersonBuilder(this.Session).WithLastName("party").Build();
+
+            var quote = new ProductQuoteBuilder(this.Session)
+                .WithReceiver(party)
+                .WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build())
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(quote.QuoteNumber.Split('-')[1]), quote.SortableQuoteNumber);
+        }
+
+        [Fact]
+        public void GivenIssuerWithParametrizedQuoteNumberPrefix_WhenDeriving_ThenSortableQuoteNumberIsSet()
+        {
+            this.InternalOrganisation.QuoteNumberPrefix = "prefix-{year}-";
+            this.Session.Derive();
+
+            var party = new PersonBuilder(this.Session).WithLastName("party").Build();
+
+            var quote = new ProductQuoteBuilder(this.Session)
+                .WithReceiver(party)
+                .WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build())
+                .WithIssueDate(this.Session.Now().Date)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), quote.QuoteNumber.Split('-').Last())), quote.SortableQuoteNumber);
         }
     }
 }

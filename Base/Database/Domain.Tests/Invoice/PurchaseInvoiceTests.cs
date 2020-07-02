@@ -6,6 +6,7 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
     using Resources;
     using Xunit;
@@ -78,6 +79,66 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal("incoming invoiceno: 2", invoice2.InvoiceNumber);
+        }
+
+        [Fact]
+        public void GivenBilledToWithoutInvoiceNumberPrefix_WhenDeriving_ThenSortableInvoiceNumberIsSet()
+        {
+            this.InternalOrganisation.RemovePurchaseInvoiceNumberPrefix();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
+            var invoice = new PurchaseInvoiceBuilder(this.Session)
+                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
+                .WithBilledFrom(supplier)
+                .Build();
+
+            invoice.Confirm();
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(invoice.InvoiceNumber), invoice.SortableInvoiceNumber);
+        }
+
+        [Fact]
+        public void GivenBilledToWithInvoiceNumberPrefix_WhenDeriving_ThenSortableInvoiceNumberIsSet()
+        {
+            this.InternalOrganisation.PurchaseInvoiceNumberPrefix = "prefix-";
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
+            var invoice = new PurchaseInvoiceBuilder(this.Session)
+                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
+                .WithBilledFrom(supplier)
+                .Build();
+
+            invoice.Confirm();
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(invoice.InvoiceNumber.Split('-')[1]), invoice.SortableInvoiceNumber);
+        }
+
+        [Fact]
+        public void GivenBilledToWithParametrizedInvoiceNumberPrefix_WhenDeriving_ThenSortableInvoiceNumberIsSet()
+        {
+            this.InternalOrganisation.PurchaseInvoiceNumberPrefix = "prefix-{year}-";
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
+            var invoice = new PurchaseInvoiceBuilder(this.Session)
+                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
+                .WithBilledFrom(supplier)
+                .Build();
+
+            invoice.Confirm();
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), invoice.InvoiceNumber.Split('-').Last())), invoice.SortableInvoiceNumber);
         }
     }
 }

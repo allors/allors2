@@ -116,6 +116,8 @@ namespace Allors.Repository
 
         public ObjectState[] ObjectStates { get; set; }
 
+        public int SortableQuoteNumber { get; set; }
+
         #endregion
 
         #region Allors

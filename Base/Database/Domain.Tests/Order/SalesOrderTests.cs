@@ -7,6 +7,7 @@
 namespace Allors.Domain
 {
     using System.Linq;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
 
     using Xunit;
@@ -1380,6 +1381,48 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal("the format is 2", order2.OrderNumber);
+        }
+
+        [Fact]
+        public void GivenIssuerWithoutOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.RemoveSalesOrderNumberPrefix();
+            new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(order.OrderNumber), order.SortableOrderNumber);
+        }
+
+        [Fact]
+        public void GivenIssuerWithOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.SalesOrderNumberPrefix = "prefix-";
+            new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(order.OrderNumber.Split('-')[1]), order.SortableOrderNumber);
+        }
+
+        [Fact]
+        public void GivenIssuerWithParametrizedOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.SalesOrderNumberPrefix = "prefix-{year}-";
+            new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), order.OrderNumber.Split('-').Last())), order.SortableOrderNumber);
         }
 
         [Fact]

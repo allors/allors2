@@ -261,7 +261,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
 
     const sorter = new Sorter(
       {
-        number: m.SalesInvoice.InvoiceNumber,
+        number: m.SalesInvoice.SortableInvoiceNumber,
         type: m.SalesInvoice.SalesInvoiceType,
         reference: m.SalesInvoice.CustomerReference,
         description: m.SalesInvoice.Description,

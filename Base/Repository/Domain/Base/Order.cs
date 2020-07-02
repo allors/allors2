@@ -292,6 +292,16 @@ namespace Allors.Repository
         DateTime DeliveryDate { get; set; }
 
         #region Allors
+        [Id("6f0c38b9-8f08-4eb4-8b99-9596121a75a1")]
+        [AssociationId("a03d06f2-c395-46c3-b906-0831c2353ebe")]
+        [RoleId("42cfb074-3217-46c5-a718-a67d5404c573")]
+        #endregion
+        [Indexed]
+        [Derived]
+        [Workspace]
+        int SortableOrderNumber { get; set; }
+
+        #region Allors
 
         [Id("14B59435-4304-4070-AA25-EFDAB6431E73")]
 

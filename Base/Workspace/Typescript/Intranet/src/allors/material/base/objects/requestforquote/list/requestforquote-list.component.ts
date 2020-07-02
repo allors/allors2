@@ -111,7 +111,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
 
     const sorter = new Sorter(
       {
-        number: m.Request.RequestNumber,
+        number: m.Request.SortableRequestNumber,
         description: m.Request.Description,
         responseRequired: m.Request.RequiredResponseDate,
         lastModifiedDate: m.Request.LastModifiedDate,

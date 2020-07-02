@@ -93,6 +93,8 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
 
         public DateTime LastModifiedDate { get; set; }
+
+        public int SortableOrderNumber { get; set; }
         #endregion
 
         #region ObjectStates

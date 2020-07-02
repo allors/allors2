@@ -408,6 +408,16 @@ namespace Allors.Repository
         Person ContactPerson { get; set; }
 
         #region Allors
+        [Id("c44822c3-beb9-4eab-bfe0-f8f270460f26")]
+        [AssociationId("05820858-8fc3-437a-b5f1-2b8e48353fea")]
+        [RoleId("d13d6305-62c6-4426-8386-f26372dcc814")]
+        #endregion
+        [Indexed]
+        [Derived]
+        [Workspace]
+        int SortableQuoteNumber { get; set; }
+
+        #region Allors
 
         [Id("8C858157-B9BC-4E2C-97BC-646066532854")]
 

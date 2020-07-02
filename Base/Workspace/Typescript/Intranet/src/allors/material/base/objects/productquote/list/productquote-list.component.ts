@@ -116,7 +116,7 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
 
     const sorter = new Sorter(
       {
-        number: m.Quote.QuoteNumber,
+        number: m.Quote.SortableQuoteNumber,
         description: m.Quote.Description,
         responseRequired: m.Quote.RequiredResponseDate,
         lastModifiedDate: m.Quote.LastModifiedDate,

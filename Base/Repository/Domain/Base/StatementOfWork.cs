@@ -116,6 +116,8 @@ namespace Allors.Repository
 
         public LocalisedText[] LocalisedComments { get; set; }
 
+        public int SortableQuoteNumber { get; set; }
+
         #endregion
 
         #region Versioning

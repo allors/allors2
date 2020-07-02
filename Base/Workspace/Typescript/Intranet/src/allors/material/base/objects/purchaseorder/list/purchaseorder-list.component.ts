@@ -171,7 +171,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
 
     const sorter = new Sorter(
       {
-        number: m.PurchaseOrder.OrderNumber,
+        number: m.PurchaseOrder.SortableOrderNumber,
         customerReference: m.PurchaseOrder.CustomerReference,
         totalExVat: m.PurchaseOrder.TotalExVat,
         totalIncVat: m.PurchaseOrder.TotalIncVat,

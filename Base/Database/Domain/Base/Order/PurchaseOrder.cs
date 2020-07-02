@@ -111,11 +111,6 @@ namespace Allors.Domain
                 }
             }
 
-            if (!this.ExistOrderNumber)
-            {
-                this.OrderNumber = this.OrderedBy?.NextPurchaseOrderNumber(this.OrderDate.Year);
-            }
-
             if (!this.ExistCurrency)
             {
                 this.Currency = this.OrderedBy?.PreferredCurrency;
@@ -160,6 +155,12 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+
+            if (!this.ExistOrderNumber)
+            {
+                this.OrderNumber = this.OrderedBy?.NextPurchaseOrderNumber(this.OrderDate.Year);
+                this.SortableOrderNumber = this.Session().GetSingleton().SortableNumber(this.OrderedBy?.PurchaseOrderNumberPrefix, this.OrderNumber, this.OrderDate.Year.ToString());
+            }
 
             if (this.TakenViaSupplier is Organisation supplier)
             {

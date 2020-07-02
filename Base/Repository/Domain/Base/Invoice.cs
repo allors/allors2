@@ -300,6 +300,7 @@ namespace Allors.Repository
         [RoleId("f34e32a1-606c-4272-bdf8-b0545ba0c34b")]
         #endregion
         [Indexed]
+        [Derived]
         [Workspace]
         int SortableInvoiceNumber { get; set; }
 

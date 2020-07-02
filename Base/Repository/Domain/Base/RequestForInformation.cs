@@ -77,6 +77,8 @@ namespace Allors.Repository
 
         public PrintDocument PrintDocument { get; set; }
 
+        public int SortableRequestNumber { get; set; }
+
         #endregion
 
         #region Versioning

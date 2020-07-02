@@ -128,11 +128,6 @@ namespace Allors.Domain
             {
                 this.OriginFacility = this.ExistStore ? this.Store.DefaultFacility : this.Strategy.Session.GetSingleton().Settings.DefaultFacility;
             }
-
-            if (!this.ExistOrderNumber && this.ExistStore)
-            {
-                this.OrderNumber = this.Store.NextSalesOrderNumber(this.OrderDate.Year);
-            }
         }
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
@@ -176,6 +171,12 @@ namespace Allors.Domain
             this.ShipToAddress ??= this.ShipToCustomer?.ShippingAddress;
             this.ShipmentMethod ??= this.ShipToCustomer?.DefaultShipmentMethod ?? this.Store.DefaultShipmentMethod;
             this.PaymentMethod ??= this.ShipToCustomer?.PartyFinancialRelationshipsWhereParty?.FirstOrDefault(v => object.Equals(v.InternalOrganisation, this.TakenBy))?.DefaultPaymentMethod ?? this.Store.DefaultCollectionMethod;
+
+            if (!this.ExistOrderNumber && this.ExistStore)
+            {
+                this.OrderNumber = this.Store.NextSalesOrderNumber(this.OrderDate.Year);
+                this.SortableOrderNumber = this.Session().GetSingleton().SortableNumber(this.Store.SalesOrderNumberPrefix, this.OrderNumber, this.OrderDate.Year.ToString());
+            }
 
             if (this.BillToCustomer?.BaseIsActiveCustomer(this.TakenBy, this.OrderDate) == false)
             {

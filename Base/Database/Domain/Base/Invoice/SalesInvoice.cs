@@ -166,7 +166,7 @@ namespace Allors.Domain
             if (!this.ExistInvoiceNumber && this.ExistStore)
             {
                 this.InvoiceNumber = this.Store.NextTemporaryInvoiceNumber();
-                this.SortableInvoiceNumber = int.Parse(this.InvoiceNumber);
+                this.SortableInvoiceNumber = this.Session().GetSingleton().SortableNumber(null, this.InvoiceNumber, this.InvoiceDate.Year.ToString());
             }
 
             if (!this.ExistBilledFromContactMechanism && this.ExistBilledFrom)
@@ -644,29 +644,18 @@ namespace Allors.Domain
 
         public void BaseSend(SalesInvoiceSend method)
         {
+            var singleton = this.Session().GetSingleton();
+
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice))
             {
                 this.InvoiceNumber = this.Store.NextInvoiceNumber(this.InvoiceDate.Year);
-                if (this.Store.ExistSalesInvoiceNumberPrefix)
-                {
-                    if (this.Store.SalesInvoiceNumberPrefix.Contains("{year}"))
-                    {
-                        this.SortableInvoiceNumber = int.Parse(string.Concat(this.InvoiceDate.Year.ToString(), this.InvoiceNumber.Substring(this.Store.SalesInvoiceNumberPrefix.Length)));
-                    }
-                    else
-                    {
-                        this.SortableInvoiceNumber = int.Parse(this.InvoiceNumber.Substring(this.Store.SalesInvoiceNumberPrefix.Length));
-                    }
-                }
-                else
-                {
-                    this.SortableInvoiceNumber = int.Parse(this.InvoiceNumber);
-                }
+                this.SortableInvoiceNumber = singleton.SortableNumber(this.Store.SalesInvoiceNumberPrefix, this.InvoiceNumber, this.InvoiceDate.Year.ToString());
             }
 
             if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).CreditNote))
             {
                 this.InvoiceNumber = this.Store.NextCreditNoteNumber(this.InvoiceDate.Year);
+                this.SortableInvoiceNumber = singleton.SortableNumber(this.Store.CreditNoteNumberPrefix, this.InvoiceNumber, this.InvoiceDate.Year.ToString());
             }
 
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).NotPaid;

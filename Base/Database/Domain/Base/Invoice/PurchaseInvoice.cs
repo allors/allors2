@@ -100,6 +100,7 @@ namespace Allors.Domain
             if (!this.ExistInvoiceNumber)
             {
                 this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber(this.InvoiceDate.Year);
+                this.SortableInvoiceNumber = this.Session().GetSingleton().SortableNumber(this.BilledTo.PurchaseInvoiceNumberPrefix, this.InvoiceNumber, this.InvoiceDate.Year.ToString());
             }
 
             if (this.BilledFrom is Organisation supplier)

@@ -59,5 +59,25 @@ namespace Allors.Domain
 
             return null;
         }
+
+        public int SortableNumber(string prefix, string identification, string year)
+        {
+            if (prefix != null)
+            {
+                if (prefix.Contains("{year}"))
+                {
+                    // this.Store.SalesInvoiceNumberPrefix.Length - 2 because of {} in this string
+                    return int.Parse(string.Concat(year, identification.Substring(prefix.Length - 2)));
+                }
+                else
+                {
+                    return int.Parse(identification.Substring(prefix.Length));
+                }
+            }
+            else
+            {
+                return int.Parse(identification);
+            }
+        }
     }
 }

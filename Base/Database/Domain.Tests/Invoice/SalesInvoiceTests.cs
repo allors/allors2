@@ -8,6 +8,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Linq;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Resources;
     using Xunit;
@@ -238,6 +239,54 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal("2", invoice2.InvoiceNumber);
+        }
+
+        [Fact]
+        public void GivenBilledFromWithoutInvoiceNumberPrefix_WhenDeriving_ThenSortableInvoiceNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.RemoveSalesInvoiceNumberPrefix();
+            new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            var invoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            invoice.Send();
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(invoice.InvoiceNumber), invoice.SortableInvoiceNumber);
+        }
+
+        [Fact]
+        public void GivenBilledFromWithInvoiceNumberPrefix_WhenDeriving_ThenSortableInvoiceNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.SalesInvoiceNumberPrefix = "prefix-";
+            new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            var invoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            invoice.Send();
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(invoice.InvoiceNumber.Split('-')[1]), invoice.SortableInvoiceNumber);
+        }
+
+        [Fact]
+        public void GivenBilledFromWithParametrizedInvoiceNumberPrefix_WhenDeriving_ThenSortableInvoiceNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.SalesInvoiceNumberPrefix = "prefix-{year}-";
+            new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            var invoice = new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            invoice.Send();
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), invoice.InvoiceNumber.Split('-').Last())), invoice.SortableInvoiceNumber);
         }
 
         [Fact]

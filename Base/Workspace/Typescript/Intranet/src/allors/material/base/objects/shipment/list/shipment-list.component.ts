@@ -136,7 +136,7 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
 
     const sorter = new Sorter(
       {
-        number: m.Shipment.ShipmentNumber,
+        number: m.Shipment.SortableShipmentNumber,
         from: m.Shipment.ShipFromParty,
         to: m.Shipment.ShipToParty,
         lastModifiedDate: m.Shipment.LastModifiedDate,

@@ -97,11 +97,6 @@ namespace Allors.Domain
                 this.EstimatedShipDate = this.Session().Now().Date;
             }
 
-            if (!this.ExistShipmentNumber && this.ExistStore)
-            {
-                this.ShipmentNumber = this.Store.NextShipmentNumber();
-            }
-
             if (!this.ExistCarrier && this.ExistStore)
             {
                 this.Carrier = this.Store.DefaultCarrier;
@@ -140,6 +135,12 @@ namespace Allors.Domain
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+
+            if (!this.ExistShipmentNumber && this.ExistStore)
+            {
+                this.ShipmentNumber = this.Store.NextShipmentNumber();
+                this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(this.Store.OutgoingShipmentNumberPrefix, this.ShipmentNumber, this.CreationDate.Value.Year.ToString());
+            }
 
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 

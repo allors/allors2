@@ -6,6 +6,7 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
     using Resources;
     using Xunit;
@@ -158,6 +159,63 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal("the format is 2", order2.OrderNumber);
+        }
+
+        [Fact]
+        public void GivenBilledToWithoutOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
+        {
+            this.InternalOrganisation.RemovePurchaseOrderNumberPrefix();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
+            var order = new PurchaseOrderBuilder(this.Session)
+                .WithTakenViaSupplier(supplier)
+                .Build();
+
+            order.SetReadyForProcessing();
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(order.OrderNumber), order.SortableOrderNumber);
+        }
+
+        [Fact]
+        public void GivenBilledToWithOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
+        {
+            this.InternalOrganisation.PurchaseOrderNumberPrefix = "prefix-";
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
+            var order = new PurchaseOrderBuilder(this.Session)
+                .WithTakenViaSupplier(supplier)
+                .Build();
+
+            order.SetReadyForProcessing();
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(order.OrderNumber.Split('-')[1]), order.SortableOrderNumber);
+        }
+
+        [Fact]
+        public void GivenBilledToWithParametrizedOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
+        {
+            this.InternalOrganisation.PurchaseOrderNumberPrefix = "prefix-{year}-";
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
+            var order = new PurchaseOrderBuilder(this.Session)
+                .WithTakenViaSupplier(supplier)
+                .Build();
+
+            order.SetReadyForProcessing();
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), order.OrderNumber.Split('-').Last())), order.SortableOrderNumber);
         }
 
         [Fact]

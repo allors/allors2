@@ -211,7 +211,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
 
     const sorter = new Sorter(
       {
-        number: m.PurchaseInvoice.InvoiceNumber,
+        number: m.PurchaseInvoice.SortableInvoiceNumber,
         type: m.PurchaseInvoice.PurchaseInvoiceType,
         reference: m.PurchaseInvoice.CustomerReference,
         dueDate: m.PurchaseInvoice.DueDate,

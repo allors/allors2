@@ -56,6 +56,7 @@ namespace Allors.Domain
             if (!@this.ExistWorkEffortNumber && @this.ExistTakenBy)
             {
                 @this.DerivedRoles.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
+                @this.DerivedRoles.SortableWorkEffortNumber = @this.Session().GetSingleton().SortableNumber(@this.TakenBy.WorkEffortPrefix, @this.WorkEffortNumber, @this.CreationDate.Value.Year.ToString());
             }
 
             if (!@this.ExistExecutedBy && @this.ExistTakenBy)
