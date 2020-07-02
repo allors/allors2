@@ -58,6 +58,8 @@ namespace Allors.Domain
 
             this.SuppliedByPartyName = this.ExistSuppliedBy ? this.SuppliedBy.PartyName : string.Empty;
             this.OwnedByPartyName = this.ExistOwnedBy ? this.OwnedBy.PartyName : string.Empty;
+            this.RentedByPartyName = this.ExistRentedBy ? this.RentedBy.PartyName : string.Empty;
+            this.OwnershipByOwnershipName = this.ExistOwnership ? this.Ownership.Name : string.Empty;
             this.SerialisedItemAvailabilityName = this.ExistSerialisedItemAvailability ? this.SerialisedItemAvailability.Name : string.Empty;
 
             var doubles = this.PartWhereSerialisedItem?.SerialisedItems.Where(v =>

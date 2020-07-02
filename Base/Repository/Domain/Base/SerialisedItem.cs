@@ -418,6 +418,26 @@ namespace Allors.Repository
         public string OwnedByPartyName { get; set; }
 
         #region Allors
+        [Id("0e2a38d0-c550-4cd7-8fc1-e2f93c546b5d")]
+        [AssociationId("7c905f64-5f21-4316-8fc7-eb758cbfee92")]
+        [RoleId("df0424ed-ac64-4c0c-b0ed-57a04270b2d8")]
+        #endregion
+        [Indexed]
+        [Derived]
+        [Workspace]
+        public string RentedByPartyName { get; set; }
+
+        #region Allors
+        [Id("148487bd-4561-400a-8540-ae1e57fa2268")]
+        [AssociationId("ae0a240d-442a-49ab-be1f-057b59ff7645")]
+        [RoleId("cd419e8d-7431-4c2e-9baa-7b8d6c781a31")]
+        #endregion
+        [Indexed]
+        [Derived]
+        [Workspace]
+        public string OwnershipByOwnershipName { get; set; }
+
+        #region Allors
         [Id("80c6e34f-aadd-4ef6-b8cf-da532833ac03")]
         [AssociationId("d668026d-14b7-4071-84bf-f8e28c7dfbc9")]
         [RoleId("63799217-89c0-41f7-bf35-3ec9f962ecf2")]
