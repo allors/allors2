@@ -67,7 +67,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
         { name: 'name', sort: true },
         { name: 'categories', sort: true },
         { name: 'availability', sort: true },
-        { name: 'ownership' },
+        { name: 'ownership', sort: true },
         { name: 'suppliedBy', sort: true },
         { name: 'ownedBy', sort: true },
         { name: 'rentedBy', sort: true }
@@ -246,7 +246,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
             name: v.Name,
             categories: v.DisplayProductCategories,
             availability: v.SerialisedItemAvailabilityName,
-            ownership: `${v.Ownership && v.Ownership.Name}`,
+            ownership: v.OwnershipByOwnershipName,
             suppliedBy: v.SuppliedByPartyName,
             ownedBy: v.OwnedByPartyName,
             rentedBy: v.RentedByPartyName,
