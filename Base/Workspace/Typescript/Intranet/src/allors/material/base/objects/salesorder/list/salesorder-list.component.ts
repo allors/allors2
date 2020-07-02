@@ -94,6 +94,8 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
+      initialSort: 'number',
+      initialSortDirection: 'desc',
     });
   }
 

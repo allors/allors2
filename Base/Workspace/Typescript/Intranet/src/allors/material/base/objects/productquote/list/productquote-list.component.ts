@@ -83,6 +83,8 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
+      initialSort: 'number',
+      initialSortDirection: 'desc',
     });
   }
 

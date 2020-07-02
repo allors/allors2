@@ -79,6 +79,8 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
+      initialSort: 'number',
+      initialSortDirection: 'desc',
     });
   }
 

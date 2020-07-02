@@ -179,7 +179,7 @@ namespace Allors.Domain
 
                         // who comes first?
                         // Item you purchased can be on sold via sales invoice even before purchase invoice is created and confirmed!!
-                        if (!invoiceItem.SerialisedItem.ExistSalesInvoiceItemsWhereSerialisedItem)
+                        if (!invoiceItem.SerialisedItem.SalesInvoiceItemsWhereSerialisedItem.Any(v => (v.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer as Organisation)?.IsInternalOrganisation == false))
                         {
                             invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
                             invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
