@@ -143,7 +143,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
 
     const sorter = new Sorter(
       {
-        number: [m.WorkEffort.WorkEffortNumber],
+        number: [m.WorkEffort.SortableWorkEffortNumber],
         name: [m.WorkEffort.Name],
         description: [m.WorkEffort.Description],
         lastModifiedDate: m.Person.LastModifiedDate,
