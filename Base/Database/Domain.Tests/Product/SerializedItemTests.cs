@@ -98,5 +98,19 @@ namespace Allors.Domain
 
             Assert.Equal(customer.PartyName, newItem.OwnedByPartyName);
         }
+
+
+        [Fact]
+        public void GivenSerializedItem_WhenDerived_ThenRentedByPartyNameIsSet()
+        {
+            var customer = this.InternalOrganisation.ActiveCustomers.First;
+
+            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
+            newItem.RentedBy = customer;
+
+            this.Session.Derive();
+
+            Assert.Equal(customer.PartyName, newItem.RentedByPartyName);
+        }
     }
 }
