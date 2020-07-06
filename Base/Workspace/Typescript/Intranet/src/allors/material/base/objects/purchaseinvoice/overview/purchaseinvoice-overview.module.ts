@@ -29,6 +29,7 @@ import { AllorsMaterialStaticModule } from '../../../../core/components/role/sta
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
+import { OrderAdjustmentOverviewPanelModule } from '../../orderadjustment/overview/panel/orderadjustment-overview-panel.module';
 import { PaymentOverviewPanelModule } from '../../payment/overview/panel/payment-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
 import { PurchaseOrderInvoiceOverviewPanelModule } from '../../purchaseorder/overview/invoicepanel/purchaseorderinvoice-overview-panel.module';
@@ -39,15 +40,15 @@ import { PurchaseInvoiceOverviewSummaryModule } from './summary/purchaseinvoice-
 import { PurchaseInvoiceOverviewDetailModule } from './detail/purchaseinvoice-overview-detail.module';
 import { PurchaseInvoiceItemOverviewPanelModule } from '../../purchaseinvoiceitem/overview/panel/purchaseinvoiceitem-overview-panel.module';
 
-export { PurchasInvoiceOverviewComponent } from './purchaseinvoice-overview.component';
-import { PurchasInvoiceOverviewComponent } from './purchaseinvoice-overview.component';
+export { PurchaseInvoiceOverviewComponent as PurchasInvoiceOverviewComponent } from './purchaseinvoice-overview.component';
+import { PurchaseInvoiceOverviewComponent } from './purchaseinvoice-overview.component';
 
 @NgModule({
   declarations: [
-    PurchasInvoiceOverviewComponent,
+    PurchaseInvoiceOverviewComponent,
   ],
   exports: [
-    PurchasInvoiceOverviewComponent,
+    PurchaseInvoiceOverviewComponent,
   ],
   imports: [
     PurchaseInvoiceOverviewSummaryModule,
@@ -55,6 +56,7 @@ import { PurchasInvoiceOverviewComponent } from './purchaseinvoice-overview.comp
     PurchaseInvoiceItemOverviewPanelModule,
 
     CommunicationEventOverviewPanelModule,
+    OrderAdjustmentOverviewPanelModule,
     PaymentOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
     PurchaseOrderInvoiceOverviewPanelModule,

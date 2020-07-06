@@ -153,24 +153,6 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
       pulls.push(
         this.fetcher.internalOrganisation,
         pull.InvoiceItemType(),
-        pull.PurchaseOrder(
-          {
-            predicate: new And([
-              new Equals({ propertyType: m.PurchaseOrder.OrderedBy, object: internalOrganisationId.value }),
-              new ContainedIn({
-                propertyType: m.PurchaseOrder.TakenViaSupplier,
-                extent: new Filter({
-                  objectType: m.Organisation,
-                  predicate: new ContainedIn({
-                    propertyType: m.Organisation.PurchaseInvoicesWhereBilledFrom,
-                    objects: [id]
-                  })
-                })
-              })
-            ]),
-            sort: new Sort(m.PurchaseOrder.OrderNumber)
-          },
-        ),
         pull.PurchaseInvoice({
           name: pullName,
           object: id,

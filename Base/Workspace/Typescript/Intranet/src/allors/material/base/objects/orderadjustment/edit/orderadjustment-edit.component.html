@@ -1,0 +1,23 @@
+<form *ngIf="object" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="object" [roleType]="m.OrderAdjustment.Amount"></a-mat-input>
+      <a-mat-input class="col-md" [object]="object" [roleType]="m.OrderAdjustment.Percentage"></a-mat-input>
+    </div>
+
+    <div class="row">
+      <a-mat-textarea class="col-md" [object]="object" [roleType]="m.OrderAdjustment.Description"></a-mat-textarea>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

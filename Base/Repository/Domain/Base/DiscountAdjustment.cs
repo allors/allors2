@@ -19,6 +19,8 @@ namespace Allors.Repository
 
         public decimal Percentage { get; set; }
 
+        public string Description { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }

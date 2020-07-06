@@ -29,6 +29,7 @@ import { AllorsMaterialStaticModule } from '../../../../core/components/role/sta
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
+import { OrderAdjustmentOverviewPanelModule } from '../../orderadjustment/overview/panel/orderadjustment-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
 import { RepeatingSalesInvoiceOverviewPanelModule } from '../../repeatingsalesinvoice/overview/panel/repeatingsalesinvoice-overview-panel.module';
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
@@ -57,6 +58,7 @@ import { SalesInvoiceOverviewComponent } from './salesinvoice-overview.component
     SalesTermOverviewPanelModule,
 
     CommunicationEventOverviewPanelModule,
+    OrderAdjustmentOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
     PaymentOverviewPanelModule,
     RepeatingSalesInvoiceOverviewPanelModule,

@@ -29,13 +29,13 @@ import { AllorsMaterialStaticModule } from '../../../../core/components/role/sta
 import { AllorsMaterialTextAreaModule } from '../../../../core/components/role/textarea';
 
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
+import { OrderAdjustmentOverviewPanelModule } from '../../orderadjustment/overview/panel/orderadjustment-overview-panel.module';
 import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
-import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
-import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
-
 import { ProductQuoteOverviewSummaryModule } from './summary/productquote-overview-summary.module';
 import { ProductQuoteOverviewDetailModule } from './detail/productquote-overview-detail.module';
 import { QuoteItemOverviewPanelModule } from '../../quoteitem/overview/panel/quoteitem-overview-panel.module';
+import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
+import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 
 export { ProductQuoteOverviewComponent } from './productquote-overview.component';
 import { ProductQuoteOverviewComponent } from './productquote-overview.component';
@@ -53,6 +53,7 @@ import { ProductQuoteOverviewComponent } from './productquote-overview.component
     QuoteItemOverviewPanelModule,
 
     CommunicationEventOverviewPanelModule,
+    OrderAdjustmentOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
     SerialisedItemOverviewPanelModule,
     WorkEffortPartyAssignmentOverviewPanelModule,
