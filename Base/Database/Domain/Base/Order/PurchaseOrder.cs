@@ -68,9 +68,29 @@ namespace Allors.Domain
         {
             get
             {
-                foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
+                if (this.PurchaseOrderState.IsSent || this.PurchaseOrderState.IsCompleted)
                 {
-                    if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem)
+                    foreach (PurchaseOrderItem purchaseOrderItem in this.ValidOrderItems)
+                    {
+                        if (!purchaseOrderItem.ExistOrderItemBillingsWhereOrderItem)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        private bool CanRevise
+        {
+            get
+            {
+                if ((this.PurchaseOrderState.IsSent || this.PurchaseOrderState.IsCompleted)
+                    && this.PurchaseOrderShipmentState.IsNotReceived)
+                {
+                    if (!this.ExistPurchaseInvoicesWherePurchaseOrder)
                     {
                         return true;
                     }
@@ -327,6 +347,15 @@ namespace Allors.Domain
             else
             {
                 this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
+            }
+
+            if (this.CanRevise)
+            {
+                this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Revise, Operations.Execute));
+            }
+            else
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Revise, Operations.Execute));
             }
 
             var deletePermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
