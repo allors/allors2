@@ -112,5 +112,16 @@ namespace Allors.Domain
 
             Assert.Equal(customer.PartyName, newItem.RentedByPartyName);
         }
+
+        [Fact]
+        public void GivenSerializedItem_WhenDerived_ThenOwnershipByOwnershipNameIsSet()
+        {
+            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
+            newItem.Ownership = new Ownerships(this.Session).Own;
+
+            this.Session.Derive();
+
+            Assert.Equal(newItem.Ownership.Name, newItem.OwnershipByOwnershipName);
+        }
     }
 }
