@@ -96,10 +96,13 @@ namespace Allors.Domain
             {
                 this.SalesOrderItemPaymentState = new SalesOrderItemPaymentStates(this.Strategy.Session).NotPaid;
             }
+        }
 
-            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
+        public void BaseOnInit(ObjectOnInit method)
+        {
+            if (this.ExistProduct && !this.ExistInvoiceItemType)
             {
-                this.NextSerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Sold;
+                this.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).ProductItem;
             }
         }
 
@@ -144,6 +147,11 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
             var shipped = new ShipmentStates(this.Session()).Shipped;
+
+            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
+            {
+                derivation.Validation.AssertExists(this, this.Meta.NextSerialisedItemAvailability);
+            }
 
             if (this.Part != null && this.Part.InventoryItemKind.IsSerialised && this.QuantityOrdered != 1)
             {

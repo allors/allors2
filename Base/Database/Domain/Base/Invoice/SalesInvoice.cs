@@ -846,6 +846,7 @@ namespace Allors.Domain
                     .WithQuantity(salesInvoiceItem.Quantity)
                     .WithDescription(salesInvoiceItem.Description)
                     .WithSerialisedItem(salesInvoiceItem.SerialisedItem)
+                    .WithNextSerialisedItemAvailability(salesInvoiceItem.NextSerialisedItemAvailability)
                     .WithComment(salesInvoiceItem.Comment)
                     .WithInternalComment(salesInvoiceItem.InternalComment)
                     .WithMessage(salesInvoiceItem.Message)

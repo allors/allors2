@@ -70,18 +70,6 @@ export class DefaultFiltersService extends FiltersService {
     return new SearchFactory({
       objectType: this.m.SerialisedItem,
       roleTypes: [this.m.SerialisedItem.Name, this.m.SerialisedItem.SearchString],
-      post: (predicate: And) => {
-        predicate.operands.push(new ContainedIn({
-          propertyType: this.m.SerialisedItem.SerialisedItemAvailability,
-          extent: new Filter({
-            objectType: this.m.SerialisedItemAvailability,
-            predicate: new Or([
-              new Equals({ propertyType: this.m.SerialisedItemAvailability.UniqueId, value: 'c60f5741-a93f-48cc-b416-445aeb3fb166' }),
-              new Equals({ propertyType: this.m.SerialisedItemAvailability.UniqueId, value: '74499ac5-cac9-4276-8b9e-e47f977104fd' }),
-            ])
-          })
-        }));
-      },
     });
   }
 

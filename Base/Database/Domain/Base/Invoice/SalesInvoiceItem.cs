@@ -121,11 +121,6 @@ namespace Allors.Domain
 
         public void BaseOnInit(ObjectOnInit method)
         {
-            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
-            {
-                this.NextSerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Sold;
-            }
-
             if (this.ExistProduct && !this.ExistInvoiceItemType)
             {
                 this.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).ProductItem;
@@ -140,6 +135,11 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
+
+            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
+            {
+                derivation.Validation.AssertExists(this, this.Meta.NextSerialisedItemAvailability);
+            }
 
             if (this.Part != null && this.Part.InventoryItemKind.IsSerialised && this.Quantity != 1)
             {
