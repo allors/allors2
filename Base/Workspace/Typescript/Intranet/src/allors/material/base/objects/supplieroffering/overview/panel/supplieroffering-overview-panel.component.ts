@@ -126,8 +126,8 @@ export class SupplierOfferingOverviewPanelComponent extends TestScope implements
         supplier: v.Supplier.displayName,
         price: v.Currency.IsoCode + ' ' + v.Price,
         uom: v.UnitOfMeasure.Abbreviation || v.UnitOfMeasure.Name,
-        from: moment(v.FromDate).format('L'),
-        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : ''
+        from: moment(v.FromDate).format('DD-MM-YYYY'),
+        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('DD-MM-YYYY') : ''
       } as Row;
     });
   }

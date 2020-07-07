@@ -125,9 +125,9 @@ export class RepeatingPurchaseInvoiceOverviewPanelComponent extends TestScope {
           internalOrganisation: v.InternalOrganisation.PartyName,
           frequency: v.Frequency.Name,
           dayOfWeek: v.DayOfWeek && v.DayOfWeek.Name,
-          previousExecutionDate: v.PreviousExecutionDate && moment(v.PreviousExecutionDate).format('L'),
-          nextExecutionDate: v.NextExecutionDate && moment(v.NextExecutionDate).format('L'),
-          finalExecutionDate: v.FinalExecutionDate && moment(v.FinalExecutionDate).format('L'),
+          previousExecutionDate: v.PreviousExecutionDate && moment(v.PreviousExecutionDate).format('DD-MM-YYYY'),
+          nextExecutionDate: v.NextExecutionDate && moment(v.NextExecutionDate).format('DD-MM-YYYY'),
+          finalExecutionDate: v.FinalExecutionDate && moment(v.FinalExecutionDate).format('DD-MM-YYYY'),
         } as Row;
       });
     };

@@ -27,8 +27,7 @@ interface Row extends TableRow {
 export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit {
   workEffort: WorkEffort;
   private subscription: Subscription;
-
-  @HostBinding('class.expanded-panel') get expandedPanelClass() {
+@HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
   }
 
@@ -166,8 +165,8 @@ export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit
             return {
               object: v,
               person: v.Worker.displayName,
-              from: moment(v.FromDate).format('L'),
-              through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
+              from: moment(v.FromDate).format('DD-MM-YYYY'),
+              through: v.ThroughDate !== null ? moment(v.ThroughDate).format('DD-MM-YYYY') : '',
               time: v.AmountOfTime,
             } as Row;
           });

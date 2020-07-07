@@ -145,8 +145,8 @@ export class PriceComponentOverviewPanelComponent extends TestScope implements O
         object: v,
         type: v.objectType.name,
         price: v.Currency.IsoCode + ' ' + v.Price,
-        from: moment(v.FromDate).format('L'),
-        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
+        from: moment(v.FromDate).format('DD-MM-YYYY'),
+        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('DD-MM-YYYY') : '',
         lastModifiedDate: moment(v.LastModifiedDate).fromNow()
       } as Row;
     });

@@ -164,8 +164,8 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
             object: v,
             positionType: this.positionTypes.filter(p => p.PositionTypeRate === v).map(p => p.Title).join(', '),
             rateType: v.RateType.Name,
-            from: moment(v.FromDate).format('L'),
-            through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
+            from: moment(v.FromDate).format('DD-MM-YYYY'),
+            through: v.ThroughDate !== null ? moment(v.ThroughDate).format('DD-MM-YYYY') : '',
             rate: v.Rate,
             frequency: v.Frequency.Name,
           } as Row;
