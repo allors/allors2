@@ -1,6 +1,6 @@
 import { Component, Self, HostBinding } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, Action, MetaService, ContextService, TestScope } from '../../../../../../angular';
-import { Payment, PaymentMethod } from '../../../../../../domain';
+import { Payment, PaymentMethod, Invoice, SalesInvoice, PurchaseInvoice } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, EditService, MethodService } from '../../../../..';
 import * as moment from 'moment/moment';
@@ -32,6 +32,7 @@ export class PaymentOverviewPanelComponent extends TestScope {
 
   payments: Payment[];
   table: Table<Row>;
+  receive: boolean;
 
   delete: Action;
   edit: Action;
@@ -103,10 +104,29 @@ export class PaymentOverviewPanelComponent extends TestScope {
             }
           }
         }),
+        pull.Invoice({
+          object: this.panel.manager.id,
+          include: {
+            SalesInvoice_SalesInvoiceType: x,
+            PurchaseInvoice_PurchaseInvoiceType: x,
+          }
+        }),
       );
     };
 
     panel.onPulled = (loaded) => {
+
+      const invoice = loaded.objects.Invoice as Invoice;
+
+      if (invoice.objectType.name === this.m.SalesInvoice.name) {
+        const salesInvoice = invoice as SalesInvoice;
+        this.receive = salesInvoice.SalesInvoiceType.UniqueId === '92411bf1-835e-41f8-80af-6611efce5b32';
+      }
+
+      if (invoice.objectType.name === this.m.PurchaseInvoice.name) {
+        const salesInvoice = invoice as PurchaseInvoice;
+        this.receive = salesInvoice.PurchaseInvoiceType.UniqueId === '0187d927-81f5-4d6a-9847-58b674ad3e6a';
+      }
 
       this.payments = loaded.collections[pullName] as Payment[];
 
