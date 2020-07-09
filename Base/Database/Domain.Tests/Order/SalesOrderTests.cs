@@ -2690,6 +2690,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithSerialisedItem(serialisedItem)
+                .WithNextSerialisedItemAvailability(new SerialisedItemAvailabilities(this.Session).Sold)
                 .WithQuantityOrdered(1)
                 .WithAssignedUnitPrice(1)
                 .Build();
@@ -2750,6 +2751,7 @@ namespace Allors.Domain
             Assert.False(acl.CanExecute(M.SalesOrder.Reject));
             Assert.True(acl.CanExecute(M.SalesOrder.Hold));
             Assert.False(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.False(acl.CanExecute(M.SalesOrder.Accept));
         }
 
         [Fact]

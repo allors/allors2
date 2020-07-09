@@ -17,7 +17,7 @@ export class OrderAdjustmentEditComponent extends TestScope implements OnInit, O
 
   public m: Meta;
 
-  public title = 'Edit Order/Invoice Adjustment';
+  public title: string;
 
   public container: ISessionObject;
   public object: OrderAdjustment;
@@ -76,9 +76,11 @@ export class OrderAdjustmentEditComponent extends TestScope implements OnInit, O
         this.object = loaded.objects.OrderAdjustment as OrderAdjustment;
 
         if (create) {
-          this.title = 'Add Order/Invoice Adjustment';
+          this.title = `Add ${ objectType.name }`;
           this.object = this.allors.context.create(objectType.name) as OrderAdjustment;
           this.container.add(associationRoleType, this.object);
+        } else {
+          this.title = `Edit ${ objectType.name }`;
         }
 
       });

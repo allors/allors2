@@ -20,6 +20,7 @@ namespace Allors.Domain.TestPopulation
 
             @this.WithGood(good);
             @this.WithSerialisedItem(serializedItem);
+            @this.WithNextSerialisedItemAvailability(faker.Random.ListItem(@this.Session.Extent<SerialisedItemAvailability>()));
             @this.WithQuantity(1);
 
             return @this;

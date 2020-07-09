@@ -26,6 +26,13 @@ namespace Allors.Domain.Print.ProductQuoteModel
             this.TotalExVat = quote.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.VatRate = quote.VatRegime?.VatRate?.Rate.ToString("n2");
             this.TotalVat = quote.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+
+            // IRPF is subtracted for total amount to pay
+            var totalIrpf = quote.TotalIrpf * -1;
+            this.IrpfRate = quote.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
+            this.TotalIrpf = totalIrpf.ToString("N2", new CultureInfo("nl-BE"));
+            this.PrintIrpf = quote.TotalIrpf != 0;
+
             this.IrpfRate = quote.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
             this.TotalIrpf = quote.TotalIrpf.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.TotalIncVat = quote.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
@@ -57,5 +64,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
         public string TotalIncVat { get; }
 
         public string GrandTotal { get; }
+
+        public bool PrintIrpf { get; }
     }
 }

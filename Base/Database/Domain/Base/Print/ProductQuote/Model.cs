@@ -31,7 +31,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
             this.Receiver = new ReceiverModel(quote, images);
 
             this.QuoteItems = quote.QuoteItems.Select(v => new QuoteItemModel(v, images)).ToArray();
-
+            this.OrderAdjustments = quote.OrderAdjustments.Select(v => new OrderAdjustmentModel(v)).ToArray();
         }
 
         public QuoteModel Quote { get; }
@@ -45,5 +45,7 @@ namespace Allors.Domain.Print.ProductQuoteModel
         public ReceiverModel Receiver { get; }
 
         public QuoteItemModel[] QuoteItems { get; }
+
+        public OrderAdjustmentModel[] OrderAdjustments { get; }
     }
 }
