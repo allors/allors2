@@ -244,6 +244,17 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("b77555e9-b850-459b-9682-68859e7eeca4")]
+        [AssociationId("e8b663a6-5f6a-49d1-b7bd-60c9dbfc7b34")]
+        [RoleId("86be7f5a-6dcc-4864-9629-fd929f14d4c3")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public InvoiceItemType InvoiceItemType { get; set; }
+
+        #region Allors
         [Id("64e30c56-a77d-4ecf-b21e-e480dd5a25d8")]
         [AssociationId("448695c9-c23b-4ae0-98d7-802a8ae4e9f8")]
         [RoleId("9586b58f-8ae0-4b26-81b6-085a9e28aa77")]
