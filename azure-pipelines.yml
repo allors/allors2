@@ -34,6 +34,18 @@ stages:
           target: 'BaseWorkspaceTypescriptTest'
         base_workspace_typescript_intranet_generic:
           target: 'BaseWorkspaceTypescriptIntranetGenericTests'
+        base_workspace_typescript_relation_specific:
+          target: 'BaseWorkspaceTypescriptRelationSpecificTests'
+        base_workspace_typescript_invoice_specific:
+          target: 'BaseWorkspaceTypescriptInvoiceSpecificTests'
+        base_workspace_typescript_order_specific:
+          target: 'BaseWorkspaceTypescriptOrderSpecificTests'
+        base_workspace_typescript_product_specific:
+          target: 'BaseWorkspaceTypescriptProductSpecificTests'
+        base_workspace_typescript_shipment_specific:
+          target: 'BaseWorkspaceTypescriptShipmentSpecificTests'
+        base_workspace_typescript_workeffort_specific:
+          target: 'BaseWorkspaceTypescriptWorkeffortSpecificTests'
         base_workspace_typescript_intranet_specific:
           target: 'BaseWorkspaceTypescriptIntranetSpecificTests'
       maxParallel: 10
