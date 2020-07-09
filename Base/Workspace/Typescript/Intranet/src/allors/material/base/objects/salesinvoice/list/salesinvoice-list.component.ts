@@ -19,7 +19,7 @@ interface Row extends TableRow {
   type: string;
   billedTo: string;
   state: string;
-  reference: string;
+  invoiceDate: string;
   description: string;
   totalExVat: string;
   totalIncVat: string;
@@ -160,7 +160,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
         { name: 'number', sort: true },
         { name: 'type', sort: true },
         { name: 'billedTo' },
-        { name: 'reference', sort: true },
+        { name: 'invoiceDate', sort: true },
         { name: 'state' },
         { name: 'description', sort: true },
         { name: 'totalExVat', sort: true },
@@ -265,7 +265,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       {
         number: m.SalesInvoice.SortableInvoiceNumber,
         type: m.SalesInvoice.SalesInvoiceType,
-        reference: m.SalesInvoice.CustomerReference,
+        invoiceDate: m.SalesInvoice.InvoiceDate,
         description: m.SalesInvoice.Description,
         lastModifiedDate: m.SalesInvoice.LastModifiedDate,
       }
@@ -327,7 +327,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
             type: `${v.SalesInvoiceType && v.SalesInvoiceType.Name}`,
             billedTo: v.BillToCustomer && v.BillToCustomer.displayName,
             state: `${v.SalesInvoiceState && v.SalesInvoiceState.Name}`,
-            reference: v.SalesInvoiceState && `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,
+            invoiceDate: moment(v.InvoiceDate).format('DD-MM-YYYY'),
             description: v.Description,
             totalExVat: v.TotalExVat,
             totalIncVat: v.TotalIncVat,

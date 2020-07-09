@@ -532,6 +532,7 @@ namespace Allors.Domain
                         .WithAssignedIrpfRegime(quoteItem.AssignedIrpfRegime)
                         .WithProduct(quoteItem.Product)
                         .WithSerialisedItem(quoteItem.SerialisedItem)
+                        .WithNextSerialisedItemAvailability(new SerialisedItemAvailabilities(this.Session()).Sold) 
                         .WithProductFeature(quoteItem.ProductFeature)
                         .WithQuantityOrdered(quoteItem.Quantity)
                         .WithInternalComment(quoteItem.InternalComment)

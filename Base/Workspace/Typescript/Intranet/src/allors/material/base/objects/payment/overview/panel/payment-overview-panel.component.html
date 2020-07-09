@@ -25,7 +25,8 @@
     </div>
   </div>
 
-  <a-mat-factory-fab [objectType]="metaService.m.Payment" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
+  <a-mat-factory-fab *ngIf="receive"  [objectType]="metaService.m.Receipt" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
+  <a-mat-factory-fab *ngIf="!receive" [objectType]="metaService.m.Disbursement" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
 
   <div>
     <a-mat-table [table]="table"></a-mat-table>
