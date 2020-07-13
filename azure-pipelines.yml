@@ -51,11 +51,13 @@ stages:
       maxParallel: 10
 
     steps:
+    - powershell: Set-Culture -CultureInfo nl-BE
+      displayName: CultureInfo nl-BE
     - task: UseDotNet@2
       displayName: 'Use .NET Core 3.1 sdk'
       inputs:
         packageType: sdk
-        version: 3.1.300
+        version: 3.1.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
     - task: PowerShell@2
       inputs:
