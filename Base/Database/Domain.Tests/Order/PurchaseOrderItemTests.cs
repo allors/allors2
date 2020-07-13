@@ -116,6 +116,7 @@ namespace Allors.Domain
 
             item = new PurchaseOrderItemBuilder(this.Session)
                 .WithDescription("Do Something")
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Service)
                 .WithQuantityOrdered(1)
                 .WithAssignedUnitPrice(1)
                 .Build();

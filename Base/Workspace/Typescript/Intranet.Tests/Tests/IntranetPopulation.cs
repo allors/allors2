@@ -238,12 +238,12 @@ namespace Tests
 
             var brand = new BrandBuilder(this.Session).WithDefaults().Build();
 
-            var good_1 = new NonUnifiedGoodBuilder(this.Session).WithNonSerialisedPartDefaults(allors).Build();
+            var good_1 = new UnifiedGoodBuilder(this.Session).WithNonSerialisedDefaults(allors).Build();
 
             this.Session.Derive();
 
             new InventoryItemTransactionBuilder(this.Session)
-                .WithPart(good_1.Part)
+                .WithPart(good_1)
                 .WithQuantity(100)
                 .WithReason(new InventoryTransactionReasons(this.Session).Unknown)
                 .Build();
@@ -355,7 +355,7 @@ namespace Tests
             new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors).Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(good_1.Part)
+                .WithPart(good_1)
                 .WithSupplier(allors.ActiveSuppliers.First)
                 .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -365,7 +365,7 @@ namespace Tests
 
             var purchaseInvoiceItem_1 = new PurchaseInvoiceItemBuilder(this.Session)
                 .WithDescription("first item")
-                .WithProduct(good_1)
+                .WithPart(good_1)
                 .WithAssignedUnitPrice(3000)
                 .WithQuantity(1)
                 .WithMessage(@"line1
@@ -402,7 +402,7 @@ line2")
 
             var purchaseOrderItem_1 = new PurchaseOrderItemBuilder(this.Session)
                 .WithDescription("first purchase order item")
-                .WithPart(good_1.Part)
+                .WithPart(good_1)
                 .WithQuantityOrdered(1)
                 .Build();
 

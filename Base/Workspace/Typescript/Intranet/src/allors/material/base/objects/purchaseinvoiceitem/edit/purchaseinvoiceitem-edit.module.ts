@@ -20,9 +20,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { FacilityInlineModule } from '../../facility/inline/facility-inline.module';
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../core/components/role/autocomplete';
-
 import { AllorsMaterialChipsModule } from '../../../../core/components/role/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../core/components/role/datepicker';
 import { AllorsMaterialFileModule } from '../../../../core/components/role/file';
@@ -59,6 +59,8 @@ export { PurchaseInvoiceItemEditComponent } from './purchaseinvoiceitem-edit.com
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
+
+    FacilityInlineModule,
 
     FormsModule,
     MatButtonModule,

@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Struct Name="System.Boolean" Collapsed="true">
+    <Position X="16.25" Y="2" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="Allors.Domain.VatRegime">
+    <Position X="8.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAABAAAAAAIAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="VatRate" />
+      <Property Name="VatClause" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.VatClause" Collapsed="true">
+    <Position X="11.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.VatForm" Collapsed="true">
+    <Position X="5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="VatReturnBoxes" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.VatRate">
+    <Position X="8.25" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QBAgQSgAADAAAAAAgAAAAAAAAAAAAAAAgAAIAAAAAEA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="VatReturnBoxes" />
+      <Property Name="TaxAuthority" />
+      <Property Name="VatRateUsage" />
+      <Property Name="VatRatePurchaseKind" />
+      <Property Name="VatTariff" />
+      <Property Name="VatToReceiveAccount" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.VatRatePurchaseKind" Collapsed="true">
+    <Position X="5" Y="5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.VatRateUsage" Collapsed="true">
+    <Position X="5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.VatReturnBox">
+    <Position X="8.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEABAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="VatReturnBoxType" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.VatReturnBoxType">
+    <Position X="10.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.VatTariff" Collapsed="true">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Organisation" Collapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAoAgBAAAAAoAABAAAgAQAAEAAAAgAACABAAAgAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.OrganisationGlAccount" Collapsed="true">
+    <Position X="12.5" Y="5.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAAAAAACAACAAAAAAAAAAAEAAACAAAAAAAAAEAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="InternalOrganisation" />
+      <Property Name="GeneralLedgerAccount" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.GeneralLedgerAccount" Collapsed="true">
+    <Position X="16.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQBAACEiiAQAAAEAAAUAAA4AAAAAAEAAAQAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
+    <Position X="12.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>WgTAAAGESRYAAAKAUExQJxMKBgmtgoIACAECgAgxSAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="VatDeactivated" />
+    </ShowAsAssociation>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

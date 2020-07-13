@@ -43,7 +43,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithInvoiceItemType(invoiceItemType);
-            @this.WithProduct(serializedProduct);
+            @this.WithPart(serializedProduct);
             @this.WithSerialisedItem(serializedProduct.SerialisedItems.First);
             @this.WithQuantity(1);
             @this.WithAssignedUnitPrice(faker.Random.UInt());
@@ -64,7 +64,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithInvoiceItemType(invoiceItemType);
-            @this.WithProduct(serializedPart);
+            @this.WithPart(serializedPart);
             @this.WithSerialisedItem(serializedPart.SerialisedItems.First);
             @this.WithQuantity(1);
             @this.WithAssignedUnitPrice(faker.Random.UInt());

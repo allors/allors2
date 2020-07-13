@@ -44,7 +44,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Accounting\Customer.cd" />
+    <None Include="Accounting\Overview.cd" />
+    <None Include="Accounting\VAT.cd" />
     <None Include="Content\Print.cd" />
     <None Include="General\Media.cd" />
     <None Include="General\Localised.cd" />
