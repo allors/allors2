@@ -43,7 +43,7 @@ namespace Allors.Server.Controllers
             catch (Exception e)
             {
                 this.Logger.LogError(e, "Exception");
-                return this.BadRequest(e);
+                return this.BadRequest(e.Message);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Allors.Server.Controllers
             catch (Exception e)
             {
                 this.Logger.LogError(e, "Exception");
-                return this.BadRequest(e);
+                return this.BadRequest(e.Message);
             }
         }
 
@@ -92,7 +92,7 @@ namespace Allors.Server.Controllers
             catch (Exception e)
             {
                 this.Logger.LogError(e, "Exception");
-                return this.BadRequest(e);
+                return this.BadRequest(e.Message);
             }
         }
     }
