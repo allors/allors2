@@ -94,6 +94,11 @@ namespace Allors.Domain
             {
                 this.PurchaseOrderItemPaymentState = new PurchaseOrderItemPaymentStates(this.Strategy.Session).NotPaid;
             }
+
+            if (this.ExistPart && !this.ExistInvoiceItemType)
+            {
+                this.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).PartItem;
+            }
         }
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)

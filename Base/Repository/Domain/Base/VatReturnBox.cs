@@ -37,6 +37,16 @@ namespace Allors.Repository
 
         public string Description { get; set; }
 
+        #region Allors
+        [Id("beb55438-918d-4876-8d0b-989b7d9fabfa")]
+        [AssociationId("419c0cb0-f596-40bb-84e7-1ebb5c2361de")]
+        [RoleId("1a61ebd7-e255-42c9-932a-05031df0f2ab")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+
+        public VatReturnBoxType VatReturnBoxType { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

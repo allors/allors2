@@ -629,6 +629,7 @@ namespace Allors.Domain
                     {
                         var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
                             .WithAssignedUnitPrice(orderItem.UnitPrice)
+                            .WithInvoiceItemType(orderItem.InvoiceItemType)
                             .WithPart(orderItem.Part)
                             .WithQuantity(orderItem.QuantityOrdered)
                             .WithAssignedVatRegime(orderItem.AssignedVatRegime)
@@ -637,12 +638,6 @@ namespace Allors.Domain
                             .WithInternalComment(orderItem.InternalComment)
                             .WithMessage(orderItem.Message)
                             .Build();
-
-                        var invoiceItemTypes = new InvoiceItemTypes(this.Strategy.Session);
-
-                        invoiceItem.InvoiceItemType = invoiceItem.ExistPart ?
-                            invoiceItemTypes.PartItem :
-                            invoiceItemTypes.Service;
 
                         purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
 

@@ -206,7 +206,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public Product Product { get; set; }
+        public Product ObsoleteProduct { get; set; }
 
         #region Allors
         [Id("B036079F-0B4A-4F7A-87A2-F3854A01F73A")]

@@ -108,7 +108,6 @@ export class PurchaseInvoiceItemOverviewPanelComponent extends TestScope {
               include: {
                 PurchaseInvoiceItemState: x,
                 Part: x,
-                Product: x,
                 InvoiceItemType: x
               }
             }
@@ -129,7 +128,7 @@ export class PurchaseInvoiceItemOverviewPanelComponent extends TestScope {
       this.table.data = this.purchaseInvoiceItems.map((v) => {
         return {
           object: v,
-          item: (v.Product && v.Product.Name) || (v.Part && v.Part.Name) || '',
+          item: (v.Part && v.Part.Name) || '',
           itemId: v.SerialisedItem && v.SerialisedItem.ItemNumber,
           type: `${v.InvoiceItemType && v.InvoiceItemType.Name}`,
           state: `${v.PurchaseInvoiceItemState && v.PurchaseInvoiceItemState.Name}`,

@@ -249,6 +249,7 @@ namespace Allors.Repository
         [RoleId("86be7f5a-6dcc-4864-9629-fd929f14d4c3")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
         [Workspace]
         public InvoiceItemType InvoiceItemType { get; set; }

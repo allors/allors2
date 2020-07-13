@@ -729,7 +729,7 @@ namespace Allors.Domain
                         .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice)
                         .WithAssignedVatRegime(salesInvoiceItem.AssignedVatRegime)
                         .WithAssignedIrpfRegime(salesInvoiceItem.AssignedIrpfRegime)
-                        .WithProduct(salesInvoiceItem.Product)
+                        .WithPart(salesInvoiceItem.Product as UnifiedGood)
                         .WithSerialisedItem(salesInvoiceItem.SerialisedItem)
                         .WithQuantity(salesInvoiceItem.Quantity)
                         .WithDescription(salesInvoiceItem.Description)
