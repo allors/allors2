@@ -196,6 +196,16 @@ namespace Allors.Repository
         public SerialisedItem SerialisedItem { get; set; }
 
         #region Allors
+        [Id("f3516e3b-4bb6-45a2-b7e8-089f20d35648")]
+        [AssociationId("639a53df-23b2-4629-ae6b-e1ed3716ff60")]
+        [RoleId("05977b32-3111-4023-b059-95b15ca6648e")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Workspace]
+        public SerialisedItemVersion SerialisedItemVersionBeforeSale { get; set; }
+
+        #region Allors
         [Id("d1931e89-bbe7-4c90-8d22-564c4a8604d0")]
         [AssociationId("35dbb954-be71-466c-b2d0-bbccfb4563eb")]
         [RoleId("ca519df2-7172-4a50-ba2e-514d4b5cae1f")]

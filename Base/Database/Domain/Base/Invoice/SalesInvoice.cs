@@ -645,20 +645,36 @@ namespace Allors.Domain
             }
 
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).NotPaid;
+
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
                 salesInvoiceItem.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).NotPaid;
 
-                if (salesInvoiceItem.ExistSerialisedItem
+                if (this.SalesInvoiceType.Equals(new SalesInvoiceTypes(this.Session()).SalesInvoice)
+                    && salesInvoiceItem.ExistSerialisedItem
                     && (this.BillToCustomer as InternalOrganisation)?.IsInternalOrganisation == false
                     && this.BilledFrom.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).SalesInvoiceSend)
                     && salesInvoiceItem.NextSerialisedItemAvailability?.Equals(new SerialisedItemAvailabilities(this.Session()).Sold) == true)
                 {
+                    salesInvoiceItem.SerialisedItemVersionBeforeSale = salesInvoiceItem.SerialisedItem.CurrentVersion;
+
                     salesInvoiceItem.SerialisedItem.Seller = this.BilledFrom;
                     salesInvoiceItem.SerialisedItem.OwnedBy = this.BillToCustomer;
                     salesInvoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
                     salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.NextSerialisedItemAvailability;
                     salesInvoiceItem.SerialisedItem.AvailableForSale = false;
+                }
+
+                if (this.SalesInvoiceType.Equals(new SalesInvoiceTypes(this.Session()).CreditNote)
+                    && salesInvoiceItem.ExistSerialisedItem
+                    && (this.BillToCustomer as InternalOrganisation)?.IsInternalOrganisation == false
+                    && this.BilledFrom.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).SalesInvoiceSend))
+                {
+                    salesInvoiceItem.SerialisedItem.Seller = salesInvoiceItem.SerialisedItemVersionBeforeSale.Seller;
+                    salesInvoiceItem.SerialisedItem.OwnedBy = salesInvoiceItem.SerialisedItemVersionBeforeSale.OwnedBy;
+                    salesInvoiceItem.SerialisedItem.Ownership = salesInvoiceItem.SerialisedItemVersionBeforeSale.Ownership;
+                    salesInvoiceItem.SerialisedItem.SerialisedItemAvailability = salesInvoiceItem.SerialisedItemVersionBeforeSale.SerialisedItemAvailability;
+                    salesInvoiceItem.SerialisedItem.AvailableForSale = salesInvoiceItem.SerialisedItemVersionBeforeSale.AvailableForSale;
                 }
             }
 
@@ -973,7 +989,7 @@ namespace Allors.Domain
             {
                 var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                     .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
-                    .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice * -1)
+                    .WithAssignedUnitPrice(salesInvoiceItem.AssignedUnitPrice)
                     .WithProduct(salesInvoiceItem.Product)
                     .WithQuantity(salesInvoiceItem.Quantity)
                     .WithAssignedVatRegime(salesInvoiceItem.AssignedVatRegime)
@@ -983,6 +999,7 @@ namespace Allors.Domain
                     .WithComment(salesInvoiceItem.Comment)
                     .WithInternalComment(salesInvoiceItem.InternalComment)
                     .WithFacility(salesInvoiceItem.Facility)
+                    .WithSerialisedItemVersionBeforeSale(salesInvoiceItem.SerialisedItemVersionBeforeSale)
                     .Build();
 
                 invoiceItem.ProductFeatures = salesInvoiceItem.ProductFeatures;
