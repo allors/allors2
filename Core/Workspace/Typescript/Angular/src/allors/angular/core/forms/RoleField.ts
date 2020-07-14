@@ -75,6 +75,10 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
         }
       }
 
+      if(this.roleType.objectType.isDecimal){
+        value = (value as string)?.replace(",", ".");
+      }
+
       this.object.set(this.roleType, value);
     }
   }
@@ -89,7 +93,6 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
 
   get textType(): string {
     if (this.roleType.objectType.name === 'Integer' ||
-      this.roleType.objectType.name === 'Decimal' ||
       this.roleType.objectType.name === 'Float') {
       return 'number';
     }

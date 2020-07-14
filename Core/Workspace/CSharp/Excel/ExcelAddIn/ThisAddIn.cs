@@ -10,7 +10,7 @@ namespace ExcelAddIn
     using Allors.Workspace.Meta;
     using Allors.Workspace.Remote;
     using Application;
-    using Allors.Excel.Embedded;
+    using Allors.Excel.Interop;
     using Microsoft.Extensions.DependencyInjection;
     using Nito.AsyncEx;
     using ObjectFactory = Allors.Workspace.ObjectFactory;

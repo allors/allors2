@@ -58,5 +58,15 @@ return false;
             var elements = @this.FindElements(selector);
             return (elements.Count == 1) && elements[0].Displayed;
         }
+
+        public static string Locale(this IWebDriver @this)
+        {
+            const string Function = "return window.navigator.userLanguage || window.navigator.language;";
+
+            var javascriptExecutor = (IJavaScriptExecutor)@this;
+            var locale = (string)javascriptExecutor.ExecuteScript(Function);
+
+            return locale;
+        }
     }
 }

@@ -1,15 +1,13 @@
-using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading;
-using Allors.Excel.Embedded;
-using Nito.AsyncEx;
-using Office = Microsoft.Office.Core;
-
 namespace ExcelAddIn
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Runtime.InteropServices;
+    using Nito.AsyncEx;
+    using Office = Microsoft.Office.Core;
     using Allors.Excel;
+    using Allors.Excel.Interop;
 
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility
