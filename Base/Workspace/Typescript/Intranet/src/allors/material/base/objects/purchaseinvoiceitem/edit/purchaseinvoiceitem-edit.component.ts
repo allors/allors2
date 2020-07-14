@@ -102,6 +102,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
             }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
+              sort: new Sort(m.InvoiceItemType.Name)
             }),
             pull.VatRegime({
               sort: new Sort(m.VatRegime.Name) }),
