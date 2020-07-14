@@ -211,6 +211,10 @@
         </div>
 
         <div class="row">
+          <a-mat-select class="col-md-6" [object]="order" [roleType]="m.PurchaseOrder.Currency" [options]="currencies" display="IsoCode"  class="col-md"></a-mat-select>
+        </div>
+  
+        <div class="row">
           <a-mat-textarea class="col-md" [object]="order" [roleType]="m.PurchaseOrder.Description"></a-mat-textarea>
         </div>
 

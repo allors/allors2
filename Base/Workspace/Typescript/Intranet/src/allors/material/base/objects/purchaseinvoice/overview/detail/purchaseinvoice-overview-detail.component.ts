@@ -182,7 +182,8 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
             pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.Currency({
-              sort: new Sort(m.Currency.Name),
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.IsoCode)
             }),
             pull.PurchaseInvoiceType({
               predicate: new Equals({ propertyType: m.PurchaseInvoiceType.IsActive, value: true }),

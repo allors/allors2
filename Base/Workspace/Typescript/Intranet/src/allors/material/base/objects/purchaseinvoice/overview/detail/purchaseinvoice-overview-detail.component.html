@@ -318,6 +318,10 @@
             </div>
     
             <div class="row">
+              <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.PurchaseInvoice.Currency" [options]="currencies" display="IsoCode"  class="col-md"></a-mat-select>
+            </div>
+        
+            <div class="row">
               <a-mat-textarea class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-textarea>
             </div>
     
