@@ -124,6 +124,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
 
         this.invoice = this.allors.context.create('PurchaseInvoice') as PurchaseInvoice;
         this.invoice.BilledTo = this.internalOrganisation;
+        this.invoice.Currency = this.internalOrganisation.PreferredCurrency;
 
         if (this.invoice.BilledFrom) {
           this.updateBilledFrom(this.invoice.BilledFrom);

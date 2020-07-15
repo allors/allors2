@@ -141,8 +141,10 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         this.currencies = loaded.collections.Currencies as Currency[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
+
         this.order = this.allors.context.create('SalesOrder') as SalesOrder;
         this.order.TakenBy = this.internalOrganisation;
+        this.order.Currency = this.internalOrganisation.PreferredCurrency;
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipFromAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
