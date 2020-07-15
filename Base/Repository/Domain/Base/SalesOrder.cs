@@ -648,6 +648,12 @@ namespace Allors.Repository
         [Workspace]
         public void Ship() { }
 
+        #region Allors
+        [Id("35c5cfac-f8bc-4640-9aaa-50989fd9f765")]
+        #endregion
+        [Workspace]
+        public void DoTransfer() { }
+
         #region inherited methods
         public void OnBuild() { }
 
