@@ -37,22 +37,23 @@ namespace Allors.Domain
             var invoice = this.Meta.Invoice;
             var reject = this.Meta.Reject;
             var cancel = this.Meta.Cancel;
+            var transfer = this.Meta.DoTransfer;
 
             config.Deny(this.ObjectType, provisional, reject, approve, @continue, ship, invoice, post, accept, reopen, revise);
-            config.Deny(this.ObjectType, requestsApproval, setReadyForPosting, hold, @continue, ship, invoice, post, accept, reopen, revise);
-            config.Deny(this.ObjectType, readyForPosting, setReadyForPosting, approve, complete, @continue, ship, invoice, accept, reopen);
-            config.Deny(this.ObjectType, awaitingAcceptance, setReadyForPosting, post, approve, hold, @continue, complete, ship, invoice, reopen);
-            config.Deny(this.ObjectType, inProcess, setReadyForPosting, post, accept, reject, approve, @continue, reopen);
-            config.Deny(this.ObjectType, onHold, setReadyForPosting, reject, approve, hold, ship, invoice, post, accept, revise);
-            config.Deny(this.ObjectType, rejected, reject, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, cancel);
-            config.Deny(this.ObjectType, cancelled, cancel, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, reject);
-            config.Deny(this.ObjectType, completed, complete, reject, cancel, approve, hold, @continue, setReadyForPosting, invoice, post, accept, reopen, revise);
+            config.Deny(this.ObjectType, requestsApproval, setReadyForPosting, hold, @continue, ship, invoice, post, accept, reopen, revise, transfer);
+            config.Deny(this.ObjectType, readyForPosting, setReadyForPosting, approve, complete, @continue, ship, invoice, accept, reopen, transfer);
+            config.Deny(this.ObjectType, awaitingAcceptance, setReadyForPosting, post, approve, hold, @continue, complete, ship, invoice, reopen, transfer);
+            config.Deny(this.ObjectType, inProcess, setReadyForPosting, post, accept, reject, approve, @continue, reopen, transfer);
+            config.Deny(this.ObjectType, onHold, setReadyForPosting, reject, approve, hold, ship, invoice, post, accept, revise, transfer);
+            config.Deny(this.ObjectType, rejected, reject, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, cancel, transfer);
+            config.Deny(this.ObjectType, cancelled, cancel, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, reject, transfer);
+            config.Deny(this.ObjectType, completed, complete, reject, cancel, approve, hold, @continue, setReadyForPosting, invoice, post, accept, reopen, revise, transfer);
 
             config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
             config.Deny(this.ObjectType, inProcess, Operations.Write);
             config.Deny(this.ObjectType, cancelled, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Write);
-            config.Deny(this.ObjectType, completed,Operations.Write);
+            config.Deny(this.ObjectType, completed, Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }
     }
