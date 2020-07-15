@@ -6,7 +6,6 @@
 namespace Allors.Domain
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Meta;
 
     public class WorkspaceAccessControlLists : IAccessControlLists
@@ -15,7 +14,6 @@ namespace Allors.Domain
                                                     .WithRule(M.AccessControl.CacheId.RoleType)
                                                     .WithRule(M.AccessControl.EffectivePermissions)
                                                     .Build();
-
         public WorkspaceAccessControlLists(User user)
         {
             this.User = user;
@@ -26,8 +24,6 @@ namespace Allors.Domain
         public IReadOnlyDictionary<AccessControl, HashSet<long>> EffectivePermissionIdsByAccessControl { get; set; }
 
         public User User { get; }
-
-        public IEnumerable<AccessControl> AccessControls => this.AclByObject.SelectMany(v => v.Value.AccessControls).Distinct();
 
         private Dictionary<IObject, IAccessControlList> AclByObject { get; }
 
@@ -45,7 +41,7 @@ namespace Allors.Domain
             }
         }
 
-        private Dictionary<AccessControl, HashSet<long>> EffectivePermissionsByAccessControl()
+         private Dictionary<AccessControl, HashSet<long>> EffectivePermissionsByAccessControl()
         {
             var session = this.User.Session();
 

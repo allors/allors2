@@ -14,8 +14,15 @@ namespace Allors.Domain
         internal WorkspaceAccessControlCacheEntry(AccessControl accessControl)
         {
             this.CacheId = accessControl.CacheId;
-
-            this.EffectiveWorkspacePermissionIds = new HashSet<long>(accessControl.EffectiveWorkspacePermissions.Select(v => v.Id));
+            if (!string.IsNullOrWhiteSpace(accessControl.EffectiveWorkspacePermissionIds))
+            {
+                this.EffectiveWorkspacePermissionIds = new HashSet<long>(accessControl.EffectiveWorkspacePermissionIds.Split(',').Select(long.Parse));
+                
+            }
+            else
+            {
+                this.EffectiveWorkspacePermissionIds = new HashSet<long>();
+            }
         }
 
         public Guid CacheId { get; }

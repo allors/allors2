@@ -269,7 +269,7 @@ export class Workspace implements IWorkspace {
         const id = v.i;
         const version = v.v;
         const permissionIds = new Set<string>();
-        v.p.forEach((w) => {
+        v.p?.split(',').forEach((w) => {
           if (!this.permissionById.has(w)) {
             if (missingPermissionIds === undefined) {
               missingPermissionIds = new Set();
