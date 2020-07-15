@@ -8,11 +8,12 @@ namespace ExcelAddIn
     using Office = Microsoft.Office.Core;
     using Allors.Excel;
     using Allors.Excel.Interop;
+    using Microsoft.Office.Core;
 
     [ComVisible(true)]
-    public class Ribbon : Office.IRibbonExtensibility
+    public class Ribbon : IRibbonExtensibility
     {
-        private Office.IRibbonUI ribbon;
+        private IRibbonUI ribbon;
         private string userLabel = "Not logged in";
         private string authenticationLabel = "Log in";
 
@@ -53,12 +54,12 @@ namespace ExcelAddIn
             }
         }
 
-        public string GetUserLabel(Office.IRibbonControl control)
+        public string GetUserLabel(IRibbonControl control)
         {
             return this.UserLabel;
         }
 
-        public string GetAuthenticateLabel(Office.IRibbonControl control)
+        public string GetAuthenticateLabel(IRibbonControl control)
         {
             return this.AuthenticationLabel;
         }
@@ -67,7 +68,7 @@ namespace ExcelAddIn
 
         #region Ribbon Callbacks
 
-        public void OnAuthenticate(Office.IRibbonControl control)
+        public void OnAuthenticate(IRibbonControl control)
         {
             try
             {
@@ -79,7 +80,7 @@ namespace ExcelAddIn
             }
         }
 
-        public void OnClick(Office.IRibbonControl control)
+        public void OnClick(IRibbonControl control)
         {
             if (this.AddIn != null)
             {
@@ -94,7 +95,7 @@ namespace ExcelAddIn
             }
         }
 
-        public void Ribbon_Load(Office.IRibbonUI ribbonUI) => this.ribbon = ribbonUI;
+        public void Ribbon_Load(IRibbonUI ribbonUI) => this.ribbon = ribbonUI;
 
         #endregion
 
