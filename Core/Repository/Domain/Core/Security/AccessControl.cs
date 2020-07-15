@@ -66,14 +66,13 @@ namespace Allors.Repository
         public Permission[] EffectivePermissions { get; set; }
 
         #region Allors
-        [Id("7423967D-5105-4DEA-AB46-36E55BAAFB4E")]
-        [AssociationId("8047A6B8-9769-477C-AF16-386098D4A32E")]
-        [RoleId("597C0471-B90B-4F54-A193-C12EA0A340D4")]
+        [Id("F61EB5F5-A25A-41CC-8957-95BBA61CE952")]
+        [AssociationId("BEF68208-B0D4-411C-BAEA-7A51F4C9207A")]
+        [RoleId("FC6B22DB-548A-41C5-AF12-5EBF8D1E4216")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
+        [Size(-1)]
         [Derived]
-        public Permission[] EffectiveWorkspacePermissions { get; set; }
+        public string EffectiveWorkspacePermissionIds { get; set; }
 
         #region Allors
         [Id("50ecae85-e5a9-467e-99a3-78703d954b2f")]

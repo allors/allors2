@@ -5,20 +5,38 @@
 
 namespace Allors.Services
 {
+    using System.Linq;
+    using System.Security.Claims;
     using Microsoft.AspNetCore.Http;
 
     public class UserService : IUserService
     {
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        private string userName;
+        private long? userId;
 
         public UserService(IHttpContextAccessor httpContextAccessor = null) => this.httpContextAccessor = httpContextAccessor;
 
-        public string UserName
+        public long? UserId
         {
-            get => this.userName ?? this.httpContextAccessor?.HttpContext.User.Identity.Name;
-            set => this.userName = value;
+            get
+            {
+                if (!this.userId.HasValue)
+                {
+                    var nameIdentifier =
+                        this.httpContextAccessor?.HttpContext.User.Claims
+                            .FirstOrDefault(v => v.Type == ClaimTypes.NameIdentifier)
+                            ?.Value;
+
+                    if (long.TryParse(nameIdentifier, out var userId))
+                    {
+                        this.userId = userId;
+                    }
+                }
+
+                return this.userId;
+            }
+            set => this.userId = value;
         }
     }
 }

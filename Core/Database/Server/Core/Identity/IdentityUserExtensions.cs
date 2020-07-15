@@ -32,6 +32,7 @@ namespace Allors.Security
             var claims = new[]
                              {
                                  new Claim(ClaimTypes.Name, @this.UserName), // Required for User.Identity.Name
+                                 new Claim(ClaimTypes.NameIdentifier, @this.Id), // Required for UserService
                                  new Claim(JwtRegisteredClaimNames.Sub, @this.UserName),
                                  new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                              };

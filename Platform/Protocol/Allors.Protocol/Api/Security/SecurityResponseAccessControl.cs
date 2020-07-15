@@ -13,13 +13,13 @@ namespace Allors.Protocol.Remote.Security
         public string I { get; set; }
 
         /// <summary>
-        /// Gets or sets the permissions ids.
-        /// </summary>
-        public string[] P { get; set; }
-
-        /// <summary>
         /// Gets or sets the version.
         /// </summary>
         public string V { get; set; }
+
+        /// <summary>
+        /// Gets or sets the permissions ids.
+        /// </summary>
+        public string P { get; set; }
     }
 }
