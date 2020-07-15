@@ -10,10 +10,13 @@ namespace Allors.Domain
 
     public partial class IrpfRegimes
     {
+        public static readonly Guid Assessable15Id = new Guid("f6780ae0-39fc-459c-8ec0-d3c5a5fb066c");
         public static readonly Guid Assessable19Id = new Guid("a82edb4e-dc92-4864-96fe-26ec6d1ef914");
         public static readonly Guid ExemptId = new Guid("82986030-5E18-43c1-8CBE-9832ACD4151D");
 
         private UniquelyIdentifiableSticky<IrpfRegime> cache;
+
+        public IrpfRegime Assessable15 => this.Cache[Assessable15Id];
 
         public IrpfRegime Assessable19 => this.Cache[Assessable19Id];
 
@@ -32,6 +35,14 @@ namespace Allors.Domain
 
             var merge = this.Cache.Merger().Action();
             var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
+
+            merge(Assessable19Id, v =>
+            {
+                v.Name = "IRPF Assessable 15%";
+                localisedName.Set(v, dutchLocale, "IRPF-plichtig 15%");
+                v.IrpfRate = new IrpfRates(this.Session).fifteen;
+                v.IsActive = true;
+            });
 
             merge(Assessable19Id, v =>
             {
