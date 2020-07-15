@@ -78,7 +78,10 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
             this.fetcher.internalOrganisation,
             pull.VatRate(),
             pull.VatRegime(),
-            pull.Currency({ sort: new Sort(m.Currency.Name) }),
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.IsoCode)
+            }),
             pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),

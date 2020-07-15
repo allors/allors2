@@ -105,6 +105,21 @@ export class DefaultFiltersService extends FiltersService {
     });
   }
 
+  get allSuppliersFilter() {
+    return new SearchFactory({
+      objectType: this.m.Organisation,
+      roleTypes: [this.m.Organisation.PartyName],
+      post: (predicate: And) => {
+        predicate.operands.push(new ContainedIn({
+          propertyType: this.m.Organisation.SupplierRelationshipsWhereSupplier,
+          extent: new Filter({
+            objectType: this.m.SupplierRelationship,
+          })
+        }));
+      },
+    });
+  }
+
   get subContractorsFilter() {
     return new SearchFactory({
       objectType: this.m.Organisation,

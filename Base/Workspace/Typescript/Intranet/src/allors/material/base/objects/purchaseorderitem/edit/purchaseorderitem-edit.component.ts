@@ -78,6 +78,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
               object: id,
               include:
               {
+                InvoiceItemType: x,
                 PurchaseOrderItemState: x,
                 PurchaseOrderItemShipmentState: x,
                 PurchaseOrderItemPaymentState: x,
@@ -109,6 +110,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
             }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
+              sort: new Sort(m.InvoiceItemType.Name)
             }),
             pull.VatRegime({
               sort: new Sort(m.VatRegime.Name)

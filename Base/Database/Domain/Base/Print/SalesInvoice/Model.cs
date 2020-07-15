@@ -19,7 +19,11 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.ShipTo = new ShipToModel(invoice);
 
             this.InvoiceItems = invoice.SalesInvoiceItems.Select(v => new InvoiceItemModel(v)).ToArray();
-            this.OrderAdjustments = invoice.OrderAdjustments.Select(v => new OrderAdjustmentModel(v)).ToArray();
+
+            if (invoice.ExistOrderAdjustments)
+            {
+                this.OrderAdjustments = invoice.OrderAdjustments.Select(v => new OrderAdjustmentModel(v)).ToArray();
+            }
 
             var paymentTerm = new InvoiceTermTypes(session).PaymentNetDays;
             this.SalesTerms = invoice.SalesTerms.Where(v => !v.TermType.Equals(paymentTerm)).Select(v => new SalesTermModel(v)).ToArray();

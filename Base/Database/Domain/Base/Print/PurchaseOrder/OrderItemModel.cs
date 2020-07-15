@@ -12,8 +12,14 @@ namespace Allors.Domain.Print.PurchaseOrderModel
     {
         public OrderItemModel(PurchaseOrderItem item)
         {
-            this.Part = item.ExistPart ? item.Part?.Name : item.Description;
-            var description = item.ExistPart ? item.Description : string.Empty;
+            this.Part = item.Part?.Name;
+            var description = item.Description;
+
+            if (string.IsNullOrEmpty(this.Part) && description == null)
+            {
+                description = item.InvoiceItemType.Name;
+            }
+
             this.Description = description?.Split('\n');
 
             this.Quantity = item.QuantityOrdered;

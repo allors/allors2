@@ -134,6 +134,10 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
             pull.VatRate(),
             pull.VatRegime(),
             pull.Facility({ sort: new Sort(m.Facility.Name) }),
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.IsoCode)
+            }),
           ];
 
           return this.allors.context
@@ -149,6 +153,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
         this.facilities  = loaded.collections.Facilities as Facility[];
+        this.currencies = loaded.collections.Currencies as Currency[];
 
         if (this.order.TakenViaSupplier) {
           this.takenVia = this.order.TakenViaSupplier;

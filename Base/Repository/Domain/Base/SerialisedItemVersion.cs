@@ -118,6 +118,25 @@ namespace Allors.Repository
         public string InternalComment { get; set; }
 
         #region Allors
+        [Id("53857cc0-5fcb-43ee-960d-a9d0c2189b18")]
+        [AssociationId("b2dd2602-23eb-408b-991b-63e0d14d9f5d")]
+        [RoleId("5d1fc961-e30e-4ae2-88b7-8a17c23a4e40")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool AvailableForSale { get; set; }
+
+        #region Allors
+        [Id("c8217953-ad82-4db3-b70f-231bae89c298")]
+        [AssociationId("ddab0c06-19fe-4aa0-a897-d0dafdd9ebde")]
+        [RoleId("e5614e7c-1915-4b40-9e2f-06b369fe5a48")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public InternalOrganisation Seller { get; set; }
+
+        #region Allors
         [Id("34F61A40-3794-4195-A269-749C68CBC8A4")]
         [AssociationId("747929AE-9654-45F5-A450-97ADFF3813F8")]
         [RoleId("248B523D-D654-480F-BA7F-DB446E7D5CEB")]
