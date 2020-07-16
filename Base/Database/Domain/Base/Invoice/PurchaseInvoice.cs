@@ -71,6 +71,14 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnInit(ObjectOnInit method)
+        {
+            if (!this.ExistCurrency)
+            {
+                this.Currency = this.BilledTo?.PreferredCurrency;
+            }
+        }
+
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var (iteration, changeSet, derivedObjects) = method;

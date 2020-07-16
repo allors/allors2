@@ -16,21 +16,21 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
             this.Date = invoice.InvoiceDate.ToString("yyyy-MM-dd");
             this.CustomerReference = invoice.CustomerReference;
 
-            // TODO: Where does the currency come from?
-            var currency = "€";
-            this.SubTotal = invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.TotalExVat = invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.SubTotal = invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalExVat = invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.VatRate = invoice.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
             this.IrpfRate = invoice.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
 
             // IRPF is subtracted for total amount to pay
             var totalIrpf = invoice.TotalIrpf * -1;
-            this.TotalIrpf = totalIrpf.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalIrpf = totalIrpf.ToString("N2", new CultureInfo("nl-BE"));
             this.PrintIrpf = invoice.TotalIrpf != 0;
 
-            this.TotalIncVat = invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.GrandTotal = invoice.GrandTotal.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalIncVat = invoice.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
+
+            var currencyIsoCode = invoice.Currency.IsoCode;
+            this.GrandTotal = currencyIsoCode + " " + invoice.GrandTotal.ToString("N2", new CultureInfo("nl-BE"));
         }
 
         public string[] Description { get; }

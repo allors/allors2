@@ -16,16 +16,16 @@ namespace Allors.Domain.Print.PurchaseOrderModel
             this.Date = order.OrderDate.ToString("yyyy-MM-dd");
             this.CustomerReference = order.CustomerReference;
 
-            // TODO: Where does the currency come from?
-            var currency = "€";
-            this.SubTotal = order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.TotalExVat = order.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.SubTotal = order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalExVat = order.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.VatRate = order.VatRegime?.VatRate?.Rate.ToString("n2");
-            this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
             this.IrpfRate = order.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
-            this.TotalIrpf = order.TotalIrpf.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.TotalIncVat = order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.GrandTotal = order.GrandTotal.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.TotalIrpf = order.TotalIrpf.ToString("N2", new CultureInfo("nl-BE"));
+            this.TotalIncVat = order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
+
+            var currencyIsoCode = order.Currency.IsoCode;
+            this.GrandTotal = currencyIsoCode + " " + order.GrandTotal.ToString("N2", new CultureInfo("nl-BE"));
         }
 
         public string[] Description { get; }
