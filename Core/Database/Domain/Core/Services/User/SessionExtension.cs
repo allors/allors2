@@ -15,7 +15,7 @@ namespace Allors.Domain
         {
             var userService = @this.ServiceProvider.GetRequiredService<IUserService>();
             var userId = userService.UserId;
-            return (User) (userId.HasValue ? @this.Instantiate(userId.Value) : null);
+            return (User) (userId.HasValue ? @this.Instantiate(userId.Value) : new AutomatedAgents(@this).Guest);
         }
 
         public static void SetUser(this ISession @this, User user)
