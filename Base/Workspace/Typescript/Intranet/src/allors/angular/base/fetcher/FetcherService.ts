@@ -38,6 +38,7 @@ export class FetcherService {
         ActiveEmployees: x,
         ActiveSuppliers: x,
         FacilitiesWhereOwner: x,
+        PreferredCurrency: x,
       }
     });
   }

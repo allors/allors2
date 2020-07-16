@@ -103,6 +103,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
         this.order = this.allors.context.create('PurchaseOrder') as PurchaseOrder;
         this.order.OrderedBy = this.internalOrganisation;
+        this.order.Currency = this.internalOrganisation.PreferredCurrency;
 
         if (this.order.TakenViaSupplier) {
           this.takenVia = this.order.TakenViaSupplier;
