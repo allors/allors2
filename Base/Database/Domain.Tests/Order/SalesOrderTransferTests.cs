@@ -6,19 +6,31 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
 
     using Xunit;
 
-    public class SalesOrderTests : DomainTest
+    public class SalesOrderTransferTests : DomainTest
     {
         [Fact]
-        public void GivenSalesOrderBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
+        public void GivenSalesOrderBuilder_WhenProvisional_ThenOrderCanTranseft()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
             var internalOrganisation = this.InternalOrganisation;
+
+            var anotherInternalOrganisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
+                .WithDoAccounting(false)
+                .WithName("another internalOrganisation")
+                .WithPreferredCurrency(new Currencies(this.Session).CurrencyByCode["EUR"])
+                .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
+                .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
+                .WithPurchaseOrderNumberPrefix("purchase orderno: ")
+                .WithSubAccountCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+                .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
@@ -35,16 +47,18 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new SalesOrderStates(this.Session).Provisional, order.SalesOrderState);
-            Assert.True(order.PartiallyShip);
-            Assert.Equal(this.Session.Now().Date, order.OrderDate.Date);
-            Assert.Equal(this.Session.Now().Date, order.EntryDate.Date);
-            Assert.Equal(order.PreviousBillToCustomer, order.BillToCustomer);
-            Assert.Equal(order.PreviousShipToCustomer, order.ShipToCustomer);
-            Assert.Equal(order.VatRegime, order.BillToCustomer.VatRegime);
-            Assert.Equal(new Stores(this.Session).FindBy(M.Store.Name, "store"), order.Store);
-            Assert.Equal(order.Store.DefaultCollectionMethod, order.PaymentMethod);
-            Assert.Equal(order.Store.DefaultShipmentMethod, order.ShipmentMethod);
+            var transfer = new SalesOrderTransferBuilder(this.Session)
+                .WithFrom(order)
+                .WithInternalOrganisation(anotherInternalOrganisation)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.True(transfer.ExistTo);
+            Assert.Equal(transfer.To.TakenBy, anotherInternalOrganisation);
+            Assert.Equal(order.ShipToCustomer, transfer.To.ShipToCustomer);
+            //TODO: Add More Asserts
+
         }
 
         [Fact]
@@ -2715,7 +2729,7 @@ namespace Allors.Domain
     }
 
     [Trait("Category", "Security")]
-    public class SalesOrderSecurityTests : DomainTest
+    public class SalesOrderTransferSecurityTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };
 
