@@ -95,7 +95,6 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
                 .WithName("good")
                 .WithPart(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -107,7 +106,6 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10101")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
@@ -123,7 +121,6 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v10102")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
                 .WithPart(new NonUnifiedPartBuilder(this.Session)
                     .WithProductIdentification(new PartNumberBuilder(this.Session)
@@ -138,7 +135,6 @@ namespace Allors.Domain
                 .WithProductIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("v101")
                     .WithProductIdentificationType(new ProductIdentificationTypes(this.Session).Good).Build())
-                .WithVatRate(this.vatRate21)
                 .WithName("virtual good")
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
@@ -157,12 +153,10 @@ namespace Allors.Domain
                 .Build();
 
             this.feature1 = new ColourBuilder(this.Session)
-                .WithVatRate(this.vatRate21)
                 .WithName("white")
                 .Build();
 
             this.feature2 = new ColourBuilder(this.Session)
-                .WithVatRate(this.vatRate21)
                 .WithName("black")
                 .Build();
 
@@ -324,9 +318,14 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(3).WithAssignedUnitPrice(15).Build();
-            this.order.AddSalesOrderItem(item1);
+            var item1 = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(3)
+                .WithAssignedUnitPrice(15)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .Build();
 
+            this.order.AddSalesOrderItem(item1);
             this.Session.Derive();
 
             Assert.Equal(10, item1.UnitBasePrice);
@@ -347,7 +346,7 @@ namespace Allors.Domain
             Assert.Equal(45, this.order.TotalExVat);
             Assert.Equal(9.45m, this.order.TotalVat);
             Assert.Equal(54.45m, this.order.TotalIncVat);
-            Assert.Equal(15, this.order.TotalListPrice);
+            Assert.Equal(45, this.order.TotalListPrice);
         }
 
         [Fact]
@@ -356,9 +355,13 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
-            this.order.AddSalesOrderItem(item1);
+            var item1 = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(quantityOrdered)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .Build();
 
+            this.order.AddSalesOrderItem(item1);
             this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);
@@ -2003,9 +2006,13 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             const decimal quantityOrdered = 3;
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.variantGood).WithQuantityOrdered(quantityOrdered).Build();
-            this.order.AddSalesOrderItem(item1);
+            var item1 = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.variantGood)
+                .WithQuantityOrdered(quantityOrdered)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .Build();
 
+            this.order.AddSalesOrderItem(item1);
             this.Session.Derive();
 
             Assert.Equal(this.currentVirtualGoodBasePrice.Price, item1.UnitBasePrice);
@@ -2123,9 +2130,13 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             const decimal quantityOrdered = 6;
-            var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
-            this.order.AddSalesOrderItem(item1);
+            var item1 = new SalesOrderItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithQuantityOrdered(quantityOrdered)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .Build();
 
+            this.order.AddSalesOrderItem(item1);
             this.Session.Derive();
 
             Assert.Equal(this.currentGoodBasePrice.Price, item1.UnitBasePrice);

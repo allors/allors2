@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Allors.Documents" Version="1.0.0" />
+    <PackageReference Include="Allors.Documents" Version="1.0.3" />
     <PackageReference Include="DataUtils.DataUrl" Version="1.0.2" />
     <PackageReference Include="Markdig" Version="0.20.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
     <PackageReference Include="MimeTypesMap" Version="1.0.8" />
   </ItemGroup>
 

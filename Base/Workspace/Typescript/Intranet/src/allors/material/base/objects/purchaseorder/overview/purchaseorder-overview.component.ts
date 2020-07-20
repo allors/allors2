@@ -56,7 +56,9 @@ export class PurchaseOrderOverviewComponent extends TestScope implements AfterVi
             pull.PurchaseOrder({
               object: this.panelManager.id,
               include: {
-                PurchaseOrderItems: x,
+                PurchaseOrderItems: {
+                  InvoiceItemType: x,
+                }
               }
             }),
           ];

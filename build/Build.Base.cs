@@ -199,7 +199,175 @@ partial class Build
                             s => s
                                 .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
                                 .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptIntranetTests.trx")
-                                .SetFilter("Category!=Generic")
+                                .SetFilter("Category=Other")
+                                .SetResultsDirectory(Paths.ArtifactsTests));
+                    }
+                }
+            }
+        });
+
+    private Target BaseWorkspaceTypescriptRelationSpecificTests => _ => _
+        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(BasePublishServer)
+        .DependsOn(BasePublishCommands)
+        .DependsOn(BaseResetDatabase)
+        .Executes(async () =>
+        {
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Populate(Paths.ArtifactsBaseCommands);
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
+                    {
+                        await server.Ready();
+                        await angular.Init();
+                        DotNetTest(
+                            s => s
+                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
+                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptRelationTests.trx")
+                                .SetFilter("Category=Relation")
+                                .SetResultsDirectory(Paths.ArtifactsTests));
+                    }
+                }
+            }
+        });
+
+    private Target BaseWorkspaceTypescriptOrderSpecificTests => _ => _
+        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(BasePublishServer)
+        .DependsOn(BasePublishCommands)
+        .DependsOn(BaseResetDatabase)
+        .Executes(async () =>
+        {
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Populate(Paths.ArtifactsBaseCommands);
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
+                    {
+                        await server.Ready();
+                        await angular.Init();
+                        DotNetTest(
+                            s => s
+                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
+                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptOrderTests.trx")
+                                .SetFilter("Category=Order")
+                                .SetResultsDirectory(Paths.ArtifactsTests));
+                    }
+                }
+            }
+        });
+
+    private Target BaseWorkspaceTypescriptInvoiceSpecificTests => _ => _
+        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(BasePublishServer)
+        .DependsOn(BasePublishCommands)
+        .DependsOn(BaseResetDatabase)
+        .Executes(async () =>
+        {
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Populate(Paths.ArtifactsBaseCommands);
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
+                    {
+                        await server.Ready();
+                        await angular.Init();
+                        DotNetTest(
+                            s => s
+                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
+                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptInvoiceTests.trx")
+                                .SetFilter("Category=Invoice")
+                                .SetResultsDirectory(Paths.ArtifactsTests));
+                    }
+                }
+            }
+        });
+
+    private Target BaseWorkspaceTypescriptProductSpecificTests => _ => _
+        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(BasePublishServer)
+        .DependsOn(BasePublishCommands)
+        .DependsOn(BaseResetDatabase)
+        .Executes(async () =>
+        {
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Populate(Paths.ArtifactsBaseCommands);
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
+                    {
+                        await server.Ready();
+                        await angular.Init();
+                        DotNetTest(
+                            s => s
+                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
+                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptProductTests.trx")
+                                .SetFilter("Category=Product")
+                                .SetResultsDirectory(Paths.ArtifactsTests));
+                    }
+                }
+            }
+        });
+
+    private Target BaseWorkspaceTypescriptShipmentSpecificTests => _ => _
+        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(BasePublishServer)
+        .DependsOn(BasePublishCommands)
+        .DependsOn(BaseResetDatabase)
+        .Executes(async () =>
+        {
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Populate(Paths.ArtifactsBaseCommands);
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
+                    {
+                        await server.Ready();
+                        await angular.Init();
+                        DotNetTest(
+                            s => s
+                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
+                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptShipmentTests.trx")
+                                .SetFilter("Category=Shipment")
+                                .SetResultsDirectory(Paths.ArtifactsTests));
+                    }
+                }
+            }
+        });
+
+    private Target BaseWorkspaceTypescriptWorkEffortSpecificTests => _ => _
+        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(BasePublishServer)
+        .DependsOn(BasePublishCommands)
+        .DependsOn(BaseResetDatabase)
+        .Executes(async () =>
+        {
+            using (var sqlServer = new SqlServer())
+            {
+                sqlServer.Restart();
+                sqlServer.Populate(Paths.ArtifactsBaseCommands);
+                using (var server = new Server(Paths.ArtifactsBaseServer))
+                {
+                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
+                    {
+                        await server.Ready();
+                        await angular.Init();
+                        DotNetTest(
+                            s => s
+                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
+                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptWorkEffortTests.trx")
+                                .SetFilter("Category=WorkEffort")
                                 .SetResultsDirectory(Paths.ArtifactsTests));
                     }
                 }

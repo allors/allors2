@@ -22,8 +22,6 @@ namespace src.allors.material.@base.objects.salesorder.create
             @this.ShipToAddress.Select(salesOrder.ShipToAddress);
             @this.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
             @this.CustomerReference.Set(salesOrder.CustomerReference);
-            @this.Description.Set(salesOrder.Description);
-            @this.InternalComment.Set(salesOrder.InternalComment);
 
             return @this;
         }
@@ -31,8 +29,6 @@ namespace src.allors.material.@base.objects.salesorder.create
         public static SalesOrderCreateComponent BuildForOrganisationExternalDefaults(this SalesOrderCreateComponent @this, SalesOrder salesOrder)
         {
             @this.CustomerReference.Set(salesOrder.CustomerReference);
-            @this.Description.Set(salesOrder.Description);
-            @this.InternalComment.Set(salesOrder.InternalComment);
             @this.BillToCustomer.Select(salesOrder.BillToCustomer.DisplayName());
 
             @this.Driver.WaitForAngular();
@@ -66,8 +62,6 @@ namespace src.allors.material.@base.objects.salesorder.create
             @this.ShipToAddress.Select(salesOrder.ShipToAddress);
             @this.ShipToContactPerson.Select(salesOrder.ShipToContactPerson);
             @this.CustomerReference.Set(salesOrder.CustomerReference);
-            @this.Description.Set(salesOrder.Description);
-            @this.InternalComment.Set(salesOrder.InternalComment);
 
             return @this;
         }
@@ -86,8 +80,6 @@ namespace src.allors.material.@base.objects.salesorder.create
 
             @this.ShipToAddress.Select(salesOrder.ShipToAddress);
             @this.CustomerReference.Set(salesOrder.CustomerReference);
-            @this.Description.Set(salesOrder.Description);
-            @this.InternalComment.Set(salesOrder.InternalComment);
 
             return @this;
         }

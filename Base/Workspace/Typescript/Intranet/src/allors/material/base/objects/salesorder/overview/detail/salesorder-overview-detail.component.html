@@ -321,8 +321,10 @@
         </div>
 
         <div class="row">
-          <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
-          <a-mat-static class="col-md" [object]="order.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
+          <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.VatRegime"
+            [options]="vatRegimes" display="Name"></a-mat-select>
+          <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.IrpfRegime" [options]="irpfRegimes"
+            display="Name"></a-mat-select>
         </div>
 
         <div class="row">

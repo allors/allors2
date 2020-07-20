@@ -13,7 +13,7 @@ import { InternalOrganisationId } from '../../../../../angular/base/state';
   templateUrl: './purchaseinvoice-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class PurchasInvoiceOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
+export class PurchaseInvoiceOverviewComponent extends TestScope implements AfterViewInit, OnDestroy {
 
   title = 'Purchase Invoice';
 

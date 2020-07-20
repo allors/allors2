@@ -28,13 +28,9 @@ namespace Allors.Repository
 
         public string Description { get; set; }
 
-        public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
-
-        public Fee Fee { get; set; }
+        public OrderAdjustment[] OrderAdjustments { get; set; }
 
         public string CustomerReference { get; set; }
-
-        public DiscountAdjustment DiscountAdjustment { get; set; }
 
         public decimal AmountPaid { get; set; }
 
@@ -43,6 +39,8 @@ namespace Allors.Repository
         public BillingAccount BillingAccount { get; set; }
 
         public decimal TotalIncVat { get; set; }
+
+        public decimal GrandTotal { get; set; }
 
         public decimal TotalSurcharge { get; set; }
 
@@ -53,8 +51,6 @@ namespace Allors.Repository
         public DateTime EntryDate { get; set; }
 
         public decimal TotalShippingAndHandling { get; set; }
-
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
         public decimal TotalExVat { get; set; }
 
@@ -69,6 +65,8 @@ namespace Allors.Repository
         public decimal TotalVat { get; set; }
 
         public decimal TotalFee { get; set; }
+
+        public decimal TotalExtraCharge { get; set; }
 
         public InvoiceItem[] ValidInvoiceItems { get; set; }
 
@@ -91,6 +89,13 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
 
         public DateTime LastModifiedDate { get; set; }
+
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public decimal TotalIrpf { get; set; }
+
+        public int SortableInvoiceNumber { get; set; }
+
         #endregion
 
         #region ObjectStates
@@ -390,6 +395,12 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Reopen() { }
+
+        #region Allors
+        [Id("422DD593-DECC-40FD-9216-D5A25458B59F")]
+        #endregion
+        [Workspace]
+        public void CreateSalesInvoice() { }
 
         #region Allors
         [Id("4BF977FA-75AF-4D6D-8CD7-7250D527EF61")]

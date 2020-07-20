@@ -84,7 +84,8 @@
     <button *ngIf="invoice.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
     <button *ngIf="invoice.CanExecuteConfirm" mat-button (click)="confirm()">Confirm</button>
     <button *ngIf="invoice.CanExecuteReopen" mat-button (click)="reopen()">Reopen</button>
-    <button mat-button type="button" (click)="print.execute(invoice)">Print</button>
+    <button *ngIf="invoice.CanExecuteCreateSalesInvoice" mat-button type="button" (click)="createSalesInvoice(invoice)">Create Sales invoice</button>
+    <button *ngIf="invoice.CanExecutePrint" mat-button type="button" (click)="print.execute(invoice)">Print</button>
   </mat-card-actions>
 
 </mat-card>

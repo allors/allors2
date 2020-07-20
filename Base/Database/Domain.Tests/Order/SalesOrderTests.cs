@@ -7,6 +7,7 @@
 namespace Allors.Domain
 {
     using System.Linq;
+    using Allors.Domain.TestPopulation;
     using Allors.Meta;
 
     using Xunit;
@@ -1383,6 +1384,48 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenIssuerWithoutOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.RemoveSalesOrderNumberPrefix();
+            new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(order.OrderNumber), order.SortableOrderNumber);
+        }
+
+        [Fact]
+        public void GivenIssuerWithOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.SalesOrderNumberPrefix = "prefix-";
+            new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(order.OrderNumber.Split('-')[1]), order.SortableOrderNumber);
+        }
+
+        [Fact]
+        public void GivenIssuerWithParametrizedOrderNumberPrefix_WhenDeriving_ThenSortableOrderNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.SalesOrderNumberPrefix = "prefix-{year}-";
+            new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.InternalOrganisation).Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), order.OrderNumber.Split('-').Last())), order.SortableOrderNumber);
+        }
+
+        [Fact]
         public void GivenSalesOrder_WhenDeriving_ThenTakenByContactMechanismMustExist()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
@@ -1515,7 +1558,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).Build();
 
             var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1535,7 +1578,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithShippingAndHandlingCharge(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             const decimal quantityOrdered = 3;
@@ -1567,7 +1610,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
+            var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).Build();
 
             var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1586,7 +1629,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithShippingAndHandlingCharge(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             const decimal quantityOrdered = 3;
@@ -1618,7 +1661,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).Build();
 
             var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1637,7 +1680,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             const decimal quantityOrdered = 3;
@@ -1664,11 +1707,11 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).Build();
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(billToCustomer)
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             this.Session.Derive();
@@ -1687,12 +1730,12 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).Build();
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithShipFromAddress(shipFrom)
                 .WithBillToCustomer(billToCustomer)
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             this.Session.Derive();
@@ -1713,7 +1756,7 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var adjustment = new FeeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
+            var adjustment = new FeeBuilder(this.Session).WithPercentage(5).Build();
 
             var good = new NonUnifiedGoods(this.Session).FindBy(M.Good.Name, "good1");
 
@@ -1732,7 +1775,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .WithFee(adjustment)
+                .WithOrderAdjustment(adjustment)
                 .Build();
 
             const decimal quantityOrdered = 3;
@@ -2601,7 +2644,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSettingSerialisedItemSoldOnSalesOrderAccept_WhenAcceptingSalesOrder_ThenSerialisedItemStateIsChanged()
         {
-            this.InternalOrganisation.SerialisedItemSoldOn = new SerialisedItemSoldOns(this.Session).SalesOrderAccept;
+            this.InternalOrganisation.AddSerialisedItemSoldOn(new SerialisedItemSoldOns(this.Session).SalesOrderAccept);
 
             this.Session.Derive();
 
@@ -2647,6 +2690,7 @@ namespace Allors.Domain
             var orderItem = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(good)
                 .WithSerialisedItem(serialisedItem)
+                .WithNextSerialisedItemAvailability(new SerialisedItemAvailabilities(this.Session).Sold)
                 .WithQuantityOrdered(1)
                 .WithAssignedUnitPrice(1)
                 .Build();
@@ -2707,6 +2751,7 @@ namespace Allors.Domain
             Assert.False(acl.CanExecute(M.SalesOrder.Reject));
             Assert.True(acl.CanExecute(M.SalesOrder.Hold));
             Assert.False(acl.CanExecute(M.SalesOrder.Continue));
+            Assert.False(acl.CanExecute(M.SalesOrder.Accept));
         }
 
         [Fact]

@@ -96,10 +96,13 @@ namespace Allors.Domain
             {
                 this.SalesOrderItemPaymentState = new SalesOrderItemPaymentStates(this.Strategy.Session).NotPaid;
             }
+        }
 
-            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
+        public void BaseOnInit(ObjectOnInit method)
+        {
+            if (this.ExistProduct && !this.ExistInvoiceItemType)
             {
-                this.NextSerialisedItemAvailability = new SerialisedItemAvailabilities(this.Strategy.Session).Sold;
+                this.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).ProductItem;
             }
         }
 
@@ -144,6 +147,11 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
             var shipped = new ShipmentStates(this.Session()).Shipped;
+
+            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
+            {
+                derivation.Validation.AssertExists(this, this.Meta.NextSerialisedItemAvailability);
+            }
 
             if (this.Part != null && this.Part.InventoryItemKind.IsSerialised && this.QuantityOrdered != 1)
             {
@@ -762,18 +770,18 @@ namespace Allors.Domain
 
                 this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
 
-                if (this.ExistDiscountAdjustment)
+                foreach(OrderAdjustment orderAdjustment in this.DiscountAdjustments)
                 {
-                    this.UnitDiscount += this.DiscountAdjustment.Percentage.HasValue
-                        ? Math.Round(this.UnitPrice * this.DiscountAdjustment.Percentage.Value / 100, 2)
-                        : this.DiscountAdjustment.Amount ?? 0;
+                    this.UnitDiscount += orderAdjustment.Percentage.HasValue
+                        ? Math.Round(this.UnitPrice * orderAdjustment.Percentage.Value / 100, 2)
+                        : orderAdjustment.Amount ?? 0;
                 }
 
-                if (this.ExistSurchargeAdjustment)
+                foreach (OrderAdjustment orderAdjustment in this.SurchargeAdjustments)
                 {
-                    this.UnitSurcharge += this.SurchargeAdjustment.Percentage.HasValue
-                        ? Math.Round(this.UnitPrice * this.SurchargeAdjustment.Percentage.Value / 100, 2)
-                        : this.SurchargeAdjustment.Amount ?? 0;
+                    this.UnitSurcharge += orderAdjustment.Percentage.HasValue
+                        ? Math.Round(this.UnitPrice * orderAdjustment.Percentage.Value / 100, 2)
+                        : orderAdjustment.Amount ?? 0;
                 }
 
                 this.UnitPrice = this.UnitBasePrice - this.UnitDiscount + this.UnitSurcharge;
@@ -788,6 +796,7 @@ namespace Allors.Domain
             }
 
             this.UnitVat = this.ExistVatRate ? this.UnitPrice * this.VatRate.Rate / 100 : 0;
+            this.UnitIrpf = this.ExistIrpfRate ? this.UnitPrice * this.IrpfRate.Rate / 100 : 0;
 
             // Calculate Totals
             this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
@@ -809,6 +818,8 @@ namespace Allors.Domain
             this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
             this.TotalVat = this.UnitVat * this.QuantityOrdered;
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
+            this.TotalIrpf = this.UnitIrpf * this.QuantityOrdered;
+            this.GrandTotal = this.TotalIncVat - this.TotalIrpf;
         }
     }
 }

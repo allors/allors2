@@ -5,40 +5,19 @@
 
 namespace Allors.Server
 {
-    using System.Collections.Generic;
     using System.Linq;
     using Allors.Domain;
     using Allors.Protocol.Remote.Security;
-    using Meta;
-    using Protocol;
 
     public class SecurityResponseBuilder
     {
-        private static readonly PrefetchPolicy AccessControlPrefetchPolicy;
-        private static readonly PrefetchPolicy PermissionPrefetchPolicy;
-
         private readonly ISession session;
         private readonly SecurityRequest securityRequest;
-        private readonly IAccessControlLists acls;
 
-        static SecurityResponseBuilder()
-        {
-            AccessControlPrefetchPolicy = new PrefetchPolicyBuilder()
-                .WithRule(M.AccessControl.EffectiveWorkspacePermissions)
-                .Build();
-
-            PermissionPrefetchPolicy = new PrefetchPolicyBuilder()
-                .WithRule(M.Permission.ConcreteClassPointer)
-                .WithRule(M.Permission.OperandTypePointer)
-                .WithRule(M.Permission.OperationEnum)
-                .Build();
-        }
-
-        public SecurityResponseBuilder(ISession session, SecurityRequest securityRequest, IAccessControlLists acls)
+        public SecurityResponseBuilder(ISession session, SecurityRequest securityRequest)
         {
             this.session = session;
             this.securityRequest = securityRequest;
-            this.acls = acls;
         }
 
         public SecurityResponse Build()
@@ -50,14 +29,12 @@ namespace Allors.Server
                 var accessControlIds = this.securityRequest.AccessControls;
                 var accessControls = this.session.Instantiate(accessControlIds).Cast<AccessControl>().ToArray();
 
-                this.session.Prefetch(AccessControlPrefetchPolicy, accessControls);
-
                 securityResponse.AccessControls = accessControls
                     .Select(v => new SecurityResponseAccessControl
                     {
                         I = v.Strategy.ObjectId.ToString(),
                         V = v.Strategy.ObjectVersion.ToString(),
-                        P = v.EffectiveWorkspacePermissions.Select(w => w.Id.ToString()).ToArray(),
+                        P = v.EffectiveWorkspacePermissionIds,
                     }).ToArray();
             }
 

@@ -34,16 +34,30 @@ stages:
           target: 'BaseWorkspaceTypescriptTest'
         base_workspace_typescript_intranet_generic:
           target: 'BaseWorkspaceTypescriptIntranetGenericTests'
+        base_workspace_typescript_relation_specific:
+          target: 'BaseWorkspaceTypescriptRelationSpecificTests'
+        base_workspace_typescript_invoice_specific:
+          target: 'BaseWorkspaceTypescriptInvoiceSpecificTests'
+        base_workspace_typescript_order_specific:
+          target: 'BaseWorkspaceTypescriptOrderSpecificTests'
+        base_workspace_typescript_product_specific:
+          target: 'BaseWorkspaceTypescriptProductSpecificTests'
+        base_workspace_typescript_shipment_specific:
+          target: 'BaseWorkspaceTypescriptShipmentSpecificTests'
+        base_workspace_typescript_workeffort_specific:
+          target: 'BaseWorkspaceTypescriptWorkeffortSpecificTests'
         base_workspace_typescript_intranet_specific:
           target: 'BaseWorkspaceTypescriptIntranetSpecificTests'
       maxParallel: 10
 
     steps:
+    - powershell: Set-Culture -CultureInfo nl-BE
+      displayName: CultureInfo nl-BE
     - task: UseDotNet@2
       displayName: 'Use .NET Core 3.1 sdk'
       inputs:
         packageType: sdk
-        version: 3.1.300
+        version: 3.1.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
     - task: PowerShell@2
       inputs:

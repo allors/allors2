@@ -277,6 +277,49 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenInvoiceItemWithoutIrpfRegime_WhenDeriving_ThenDerivedIrpfRegimeIsFromInvoice()
+        {
+            this.InstantiateObjects(this.Session);
+
+            var productItem = new InvoiceItemTypes(this.Session).ProductItem;
+
+            var salesInvoice = new SalesInvoiceBuilder(this.Session)
+                .WithBillToCustomer(this.billToCustomer)
+                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
+                .Build();
+
+            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithInvoiceItemType(productItem).Build();
+            salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+            this.Session.Derive();
+
+            Assert.Equal(salesInvoice.IrpfRegime, invoiceItem.IrpfRegime);
+        }
+
+        [Fact]
+        public void GivenInvoiceItemWithoutIrpfRegime_WhenDeriving_ThenItemDerivedIrpfRateIsFromInvoiceIrpfRegime()
+        {
+            this.InstantiateObjects(this.Session);
+
+            var irpfRate19 = new IrpfRates(this.Session).FindBy(M.IrpfRate.Rate, 19);
+
+            var salesInvoice = new SalesInvoiceBuilder(this.Session)
+                .WithBillToCustomer(this.billToCustomer)
+                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
+                .Build();
+
+            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(1).Build();
+            salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+            this.Session.Derive();
+
+            Assert.Equal(salesInvoice.IrpfRegime, invoiceItem.IrpfRegime);
+            Assert.Equal(irpfRate19, invoiceItem.IrpfRate);
+        }
+
+        [Fact]
         public void GivenPurchasePriceInDifferenUnitOfMeasureComparedToProduct_WhenDerivingMarkupAndProfitMargin_ThenUnitOfMeasureConversionIsPerformed()
         {
             var pair = new UnitsOfMeasure(this.Session).Pair;
@@ -302,7 +345,13 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             const decimal quantity = 3;
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                .WithQuantity(quantity)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .Build();
+
             this.invoice.AddSalesInvoiceItem(item1);
 
             this.Session.Derive();
@@ -333,7 +382,15 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(3).WithAssignedUnitPrice(15).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                .WithQuantity(3)
+                .WithAssignedUnitPrice(15)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
+                .Build();
+
             this.invoice.AddSalesInvoiceItem(item1);
 
             this.Session.Derive();
@@ -349,6 +406,8 @@ namespace Allors.Domain
             Assert.Equal(45, item1.TotalExVat);
             Assert.Equal(9.45m, item1.TotalVat);
             Assert.Equal(54.45m, item1.TotalIncVat);
+            Assert.Equal(8.55m, item1.TotalIrpf);
+            Assert.Equal(45.90m, item1.GrandTotal);
 
             Assert.Equal(30, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
@@ -356,7 +415,9 @@ namespace Allors.Domain
             Assert.Equal(45, this.invoice.TotalExVat);
             Assert.Equal(9.45m, this.invoice.TotalVat);
             Assert.Equal(54.45m, this.invoice.TotalIncVat);
-            Assert.Equal(15, this.invoice.TotalListPrice);
+            Assert.Equal(45, this.invoice.TotalListPrice);
+            Assert.Equal(8.55m, this.invoice.TotalIrpf);
+            Assert.Equal(45.90m, this.invoice.GrandTotal);
         }
 
         [Fact]
@@ -364,8 +425,17 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
+            var irpfRegime = new IrpfRegimes(this.Session).Assessable19;
+
             const decimal quantity = 3;
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(quantity).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session)
+                .WithProduct(this.good)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                .WithQuantity(quantity)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
+                .WithAssignedIrpfRegime(irpfRegime)
+                .Build();
+
             this.invoice.AddSalesInvoiceItem(item1);
 
             this.Session.Derive();
@@ -375,18 +445,20 @@ namespace Allors.Domain
             Assert.Equal(0, item1.UnitSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price, item1.UnitPrice);
             Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2), item1.UnitVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * irpfRegime.IrpfRate.Rate / 100, 2), item1.UnitIrpf);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, item1.TotalExVat);
-            Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantity, item1.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * irpfRegime.IrpfRate.Rate / 100, 2) * quantity, item1.TotalIrpf);
 
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalBasePrice);
             Assert.Equal(0, this.invoice.TotalDiscount);
             Assert.Equal(0, this.invoice.TotalSurcharge);
             Assert.Equal(this.currentGood1BasePrice.Price * quantity, this.invoice.TotalExVat);
             Assert.Equal(Math.Round(item1.UnitPrice * this.vatRate21.Rate / 100, 2) * quantity, this.invoice.TotalVat);
+            Assert.Equal(Math.Round(item1.UnitPrice * irpfRegime.IrpfRate.Rate / 100, 2) * quantity, this.invoice.TotalIrpf);
         }
 
         [Fact]
@@ -1846,6 +1918,7 @@ namespace Allors.Domain
                 .WithProduct(this.good)
                 .WithQuantity(1)
                 .WithAssignedUnitPrice(100M)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
 
             this.invoice.AddSalesInvoiceItem(item1);

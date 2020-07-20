@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, SerialisedItemAvailability } from '../../../../../domain';
+import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, SerialisedItemAvailability, IrpfRegime } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -23,8 +23,8 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   order: SalesOrder;
   orderItem: SalesOrderItem;
   quoteItem: QuoteItem;
-  vatRates: VatRate[];
   vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
   discount: number;
   surcharge: number;
   inventoryItems: InventoryItem[];
@@ -119,12 +119,12 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
                 Product: x,
                 SerialisedItem: x,
                 QuoteItem: x,
-                DiscountAdjustment: x,
-                SurchargeAdjustment: x,
-                VatRate: x,
                 VatRegime: {
                   VatRate: x,
-                }
+                },
+                IrpfRegime: {
+                  IrpfRate: x,
+                },
               }
             }),
             pull.SalesOrderItem({
@@ -132,13 +132,20 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
               fetch: {
                 SalesOrderWhereSalesOrderItem: {
                   include: {
-                    VatRegime: x
+                    VatRegime: {
+                      VatRate: x,
+                    },
+                    IrpfRegime: {
+                      IrpfRate: x,
+                    },
                   }
                 }
               }
             }),
-            pull.VatRate(),
-            pull.VatRegime(),
+            pull.VatRegime({ 
+              sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({ 
+              sort: new Sort(m.IrpfRegime.Name) }),
             pull.SerialisedItemAvailability(),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
@@ -165,7 +172,12 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
               pull.SalesOrder({
                 object: this.data.associationId,
                 include: {
-                  VatRegime: x
+                  VatRegime: {
+                    VatRate: x,
+                  },
+                  IrpfRegime: {
+                    IrpfRate: x,
+                  }
                 }
               })
             );
@@ -181,10 +193,9 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.order = loaded.objects.SalesOrder as SalesOrder;
         this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
 
         this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
         this.sold = this.serialisedItemAvailabilities.find((v: SerialisedItemAvailability) => v.UniqueId === '9bdc0a55-4e3c-4604-b054-2441a551aa1c');
@@ -248,11 +259,13 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
 
         if (isCreate) {
           this.title = 'Add Order Item';
+          this.order = loaded.objects.SalesOrder as SalesOrder;
           this.orderItem = this.allors.context.create('SalesOrderItem') as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
 
         } else {
           this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
+          this.order = this.orderItem.SalesOrderWhereSalesOrderItem;
 
           if (this.orderItem.Product) {
             this.previousProduct = this.orderItem.Product;
@@ -262,14 +275,6 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
             }
           } else {
             this.serialisedItems.push(this.orderItem.SerialisedItem);
-          }
-
-          if (this.orderItem.DiscountAdjustment) {
-            this.discount = parseFloat(this.orderItem.DiscountAdjustment.Amount);
-          }
-
-          if (this.orderItem.SurchargeAdjustment) {
-            this.surcharge = parseFloat(this.orderItem.SurchargeAdjustment.Amount);
           }
 
           if (this.orderItem.CanWriteAssignedUnitPrice) {

@@ -185,21 +185,19 @@ namespace Allors.Workspace
                 {
                     var id = long.Parse(syncResponseAccessControl.I);
                     var version = long.Parse(syncResponseAccessControl.V);
-                    var permissionsIds = syncResponseAccessControl.P.Select(v =>
-                    {
-                        var permissionId = long.Parse(v);
-                        if (!this.PermissionById.ContainsKey(permissionId))
+                    var permissionsIds = syncResponseAccessControl.P
+                        ?.Split(',')
+                        .Select(v =>
                         {
-                            if (missingPermissionIds == null)
+                            var permissionId = long.Parse(v);
+                            if (!this.PermissionById.ContainsKey(permissionId))
                             {
-                                missingPermissionIds = new HashSet<long>();
+                                missingPermissionIds ??= new HashSet<long>();
+                                missingPermissionIds.Add(permissionId);
                             }
 
-                            missingPermissionIds.Add(permissionId);
-                        }
-
-                        return permissionId;
-                    });
+                            return permissionId;
+                        }) ?? Array.Empty<long>();
 
                     var accessControl = new AccessControl(id, version, new HashSet<long>(permissionsIds));
                     this.AccessControlById[id] = accessControl;

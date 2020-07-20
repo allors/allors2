@@ -153,24 +153,6 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
       pulls.push(
         this.fetcher.internalOrganisation,
         pull.InvoiceItemType(),
-        pull.PurchaseOrder(
-          {
-            predicate: new And([
-              new Equals({ propertyType: m.PurchaseOrder.OrderedBy, object: internalOrganisationId.value }),
-              new ContainedIn({
-                propertyType: m.PurchaseOrder.TakenViaSupplier,
-                extent: new Filter({
-                  objectType: m.Organisation,
-                  predicate: new ContainedIn({
-                    propertyType: m.Organisation.PurchaseInvoicesWhereBilledFrom,
-                    objects: [id]
-                  })
-                })
-              })
-            ]),
-            sort: new Sort(m.PurchaseOrder.OrderNumber)
-          },
-        ),
         pull.PurchaseInvoice({
           name: pullName,
           object: id,
@@ -183,6 +165,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
                   PurchaseOrderPaymentState: x,
                   ValidOrderItems: {
                     PurchaseOrderItem_Part: x,
+                    PurchaseOrderItem_SerialisedItem: x,
                   },
                   PrintDocument: {
                     Media: x
@@ -216,6 +199,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
             PurchaseInvoiceItems: {
               Part: x,
               InvoiceItemType: x,
+              SerialisedItem: x,
             }
           }
         }),
@@ -231,7 +215,9 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
       this.partItem = invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
       this.workItem = invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'a4d2e6d0-c6c1-46ec-a1cf-3a64822e7a9e');
 
-      this.objects = loaded.collections[pullName] as PurchaseOrder[];
+      const purchaseOrders = loaded.collections[pullName] as PurchaseOrder[];
+      this.objects = purchaseOrders.filter(v => (v.CanExecuteInvoice && this.purchaseInvoice.PurchaseInvoiceState.UniqueId === '102f4080-1d12-4090-9196-f42c094c38ca') 
+                                                  || v.PurchaseInvoicesWherePurchaseOrder.includes(this.purchaseInvoice));
 
       if (this.objects) {
         this.table.total = loaded.values[`${pullName}_total`] || this.objects.length;
@@ -266,6 +252,10 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
         invoiceItem.Description = purchaseOrderItem.Description;
         invoiceItem.InternalComment = purchaseOrderItem.InternalComment;
         invoiceItem.Message = purchaseOrderItem.Message;
+
+        if (purchaseOrderItem.SerialisedItem) {
+          invoiceItem.SerialisedItem = purchaseOrderItem.SerialisedItem;;
+        }
 
         if (invoiceItem.Part) {
           invoiceItem.InvoiceItemType = this.partItem;

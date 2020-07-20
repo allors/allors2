@@ -61,6 +61,7 @@ namespace Allors.Domain
             if (@this.ExistRecipient && !@this.ExistRequestNumber)
             {
                 @this.RequestNumber = @this.Recipient.NextRequestNumber(session.Now().Year);
+                ((RequestDerivedRoles)@this).SortableRequestNumber = @this.Session().GetSingleton().SortableNumber(@this.Recipient.RequestNumberPrefix, @this.RequestNumber, @this.RequestDate.Year.ToString());
             }
 
             @this.DeriveInitialObjectState();

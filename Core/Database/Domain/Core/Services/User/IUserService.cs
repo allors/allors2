@@ -7,6 +7,6 @@ namespace Allors.Services
 {
     public interface IUserService
     {
-        string UserName { get; set; }
+        long? UserId { get; set; }
     }
 }

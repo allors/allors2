@@ -18,6 +18,7 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
             this.ShipTo = new ShipToModel(invoice);
 
             this.InvoiceItems = invoice.PurchaseInvoiceItems.Select(v => new InvoiceItemModel(v)).ToArray();
+            this.OrderAdjustments = invoice.OrderAdjustments.Select(v => new OrderAdjustmentModel(v)).ToArray();
             this.PurchaseOrders = invoice.PurchaseInvoiceItems.SelectMany(v => v.OrderItemBillingsWhereInvoiceItem).Select(v => new PurchaseOrderModel(((PurchaseOrderItem)v.OrderItem).PurchaseOrderWherePurchaseOrderItem)).ToArray();
         }
 
@@ -32,5 +33,7 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
         public InvoiceItemModel[] InvoiceItems { get; }
 
         public PurchaseOrderModel[] PurchaseOrders { get; }
+
+        public OrderAdjustmentModel[] OrderAdjustments { get; }
     }
 }

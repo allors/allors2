@@ -68,6 +68,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
+            {
+                derivation.Validation.AssertExists(this, this.Meta.NextSerialisedItemAvailability);
+            }
+
             if (this.ExistSerialisedItem && this.Quantity != 1)
             {
                 derivation.Validation.AddError(this, this.Meta.Quantity, ErrorMessages.SerializedItemQuantity);

@@ -14,14 +14,14 @@ namespace Allors.Domain
         public static User GetUser(this ISession @this)
         {
             var userService = @this.ServiceProvider.GetRequiredService<IUserService>();
-            var userName = userService.UserName;
-            return new Users(@this).GetUser(userName);
+            var userId = userService.UserId;
+            return (User) (userId.HasValue ? @this.Instantiate(userId.Value) : new AutomatedAgents(@this).Guest);
         }
 
         public static void SetUser(this ISession @this, User user)
         {
             var userService = @this.ServiceProvider.GetRequiredService<IUserService>();
-            userService.UserName = user.UserName;
+            userService.UserId = user.Id;
         }
     }
 }

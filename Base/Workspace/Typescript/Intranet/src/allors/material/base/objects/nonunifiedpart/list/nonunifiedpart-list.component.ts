@@ -202,7 +202,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
     this.filterService.init(predicate,
       {
-        supplier: { search: this.filtersService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
+        supplier: { search: this.filtersService.allSuppliersFilter, display: (v: Organisation) => v && v.PartyName },
         manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
         brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
         model: { search: modelSearch, display: (v: Model) => v && v.Name },

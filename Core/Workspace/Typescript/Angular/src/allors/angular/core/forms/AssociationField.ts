@@ -1,23 +1,54 @@
 // tslint:disable: directive-selector
 // tslint:disable: directive-class-suffix
-import { AfterViewInit, Input, OnDestroy, QueryList, ViewChildren, Directive } from '@angular/core';
+import {
+  AfterViewInit,
+  Input,
+  OnDestroy,
+  QueryList,
+  ViewChildren,
+  Directive,
+} from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
-import { ISessionObject, AssociationType } from '../../../framework';
+import {
+  ISessionObject,
+  AssociationType,
+  RoleType,
+  assert,
+} from '../../../framework';
 import { humanize } from '../humanize';
 import { Field } from './Field';
 
 @Directive()
-export abstract class AssociationField extends Field implements AfterViewInit, OnDestroy {
+export abstract class AssociationField extends Field
+  implements AfterViewInit, OnDestroy {
+  @Input()
+  object: ISessionObject;
 
   @Input()
-  public object: ISessionObject;
+  get associationType(): AssociationType {
+    return this._associationType;
+  }
+
+  set associationType(associationType: AssociationType) {
+    assert(
+      !associationType || associationType.isOne,
+      'AssociationType should have one multiplicity'
+    );
+    this._associationType = associationType;
+  }
 
   @Input()
-  public associationType: AssociationType;
+  hint: string;
 
   @ViewChildren(NgModel) private controls: QueryList<NgModel>;
 
+  get roleType(): RoleType {
+    return this.associationType?.relationType.roleType;
+  }
+
   private id = 0;
+
+  private _associationType: AssociationType;
 
   constructor(private parentForm: NgForm) {
     super();
@@ -29,15 +60,34 @@ export abstract class AssociationField extends Field implements AfterViewInit, O
     return !!this.object;
   }
 
-  get model(): any {
-    if (this.existObject) {
-      const roleType = this.associationType.relationType.roleType;
-      return undefined;
-    }
+  get model(): ISessionObject | undefined {
+    const model =
+      this.existObject && this.associationType
+        ? this.object.getAssociation(this.associationType)
+        : undefined;
+
+    return model;
   }
 
-  set model(value: any) {
+  set model(association: ISessionObject | undefined) {
     if (this.existObject) {
+      const prevModel = this.model;
+
+      if (prevModel && prevModel !== association) {
+        if (this.roleType.isOne) {
+          prevModel.set(this.roleType, null);
+        } else {
+          prevModel.remove(this.roleType, this.object);
+        }
+      }
+
+      if (association) {
+        if (this.roleType.isOne) {
+          association.set(this.roleType, this.object);
+        } else {
+          association.add(this.roleType, this.object);
+        }
+      }
     }
   }
 

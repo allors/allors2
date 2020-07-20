@@ -66,11 +66,11 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
         { name: 'id', sort: true },
         { name: 'name', sort: true },
         { name: 'categories', sort: true },
-        { name: 'availability' },
-        { name: 'ownership' },
-        { name: 'suppliedBy' },
-        { name: 'ownedBy' },
-        { name: 'rentedBy' },
+        { name: 'availability', sort: true },
+        { name: 'ownership', sort: true },
+        { name: 'suppliedBy', sort: true },
+        { name: 'ownedBy', sort: true },
+        { name: 'rentedBy', sort: true }
       ],
       actions: [
         overviewService.overview(),
@@ -196,6 +196,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
         id: [m.SerialisedItem.ItemNumber],
         categories: [m.SerialisedItem.DisplayProductCategories],
         name: [m.SerialisedItem.Name],
+        availability: [m.SerialisedItem.SerialisedItemAvailabilityName],
       }
     );
 
@@ -208,7 +209,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
             sort,
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
-        }, [, , , ,]),
+        }, [, , , , ]),
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
@@ -244,11 +245,11 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
             id: v.ItemNumber,
             name: v.Name,
             categories: v.DisplayProductCategories,
-            availability: `${v.SerialisedItemAvailability && v.SerialisedItemAvailability.Name}`,
-            ownership: `${v.Ownership && v.Ownership.Name}`,
-            suppliedBy: v.SuppliedBy ? v.SuppliedBy.displayName : '',
-            ownedBy: v.OwnedBy ? v.OwnedBy.displayName : '',
-            rentedBy: v.RentedBy ? v.RentedBy.displayName : '',
+            availability: v.SerialisedItemAvailabilityName,
+            ownership: v.OwnershipByOwnershipName,
+            suppliedBy: v.SuppliedByPartyName,
+            ownedBy: v.OwnedByPartyName,
+            rentedBy: v.RentedByPartyName,
           } as Row;
         });
       });

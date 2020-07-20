@@ -99,6 +99,8 @@ namespace Allors.Domain
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
                     .WithBilledFrom(this.Supplier)
                     .WithBilledTo(this.InternalOrganisation)
+                    .WithVatRegime(this.Supplier.VatRegime)
+                    .WithIrpfRegime(this.Supplier.IrpfRegime)
                     .WithInvoiceDate(this.Session().Now())
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session()).PurchaseInvoice)
                     .Build();
@@ -110,6 +112,7 @@ namespace Allors.Domain
                         .WithPart(orderItem.Part)
                         .WithQuantity(orderItem.QuantityOrdered)
                         .WithAssignedVatRegime(orderItem.AssignedVatRegime)
+                        .WithAssignedIrpfRegime(orderItem.AssignedIrpfRegime)
                         .WithDescription(orderItem.Description)
                         .WithInternalComment(orderItem.InternalComment)
                         .WithMessage(orderItem.Message)
@@ -121,7 +124,7 @@ namespace Allors.Domain
                     }
                     else
                     {
-                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).WorkDone;
+                        invoiceItem.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).Service;
                     }
 
                     purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);

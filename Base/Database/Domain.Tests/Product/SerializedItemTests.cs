@@ -6,7 +6,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Meta;
     using Xunit;
     using System.Linq;
     using Allors.Domain.TestPopulation;
@@ -34,17 +33,95 @@ namespace Allors.Domain
         public void GivenSerializedItem_WhenDerived_ThenAvailabilityIsSet()
         {
             var available = new SerialisedItemAvailabilities(this.Session).Available;
+            var notAvailable = new SerialisedItemAvailabilities(this.Session).NotAvailable;
+
             var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             Assert.Equal(available, newItem.SerialisedItemAvailability);
 
-            newItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session).NotAvailable;
+            newItem.SerialisedItemAvailability = notAvailable;
 
             this.Session.Derive();
 
-            Assert.NotEqual(available, newItem.SerialisedItemAvailability);
+            Assert.Equal(notAvailable, newItem.SerialisedItemAvailability);
+        }
+
+        [Fact]
+        public void GivenSerializedItem_WhenDerived_ThenSuppliedByPartyNameIsSet()
+        {
+            var supplier = this.InternalOrganisation.ActiveSuppliers.First;
+
+            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).WithAssignedSuppliedBy(supplier).Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(supplier.PartyName, newItem.SuppliedByPartyName);
+        }
+
+        [Fact]
+        public void GivenSerializedItem_WhenDerived_ThenSuppliedByPartyNameIsSetFromSupplierOffering()
+        {
+            var supplier = this.InternalOrganisation.ActiveSuppliers.First;
+
+            var unifiedGood = new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
+            this.Session.Derive();
+
+
+            new SupplierOfferingBuilder(this.Session)
+                .WithSupplier(supplier)
+                .WithPart(unifiedGood)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(1)
+                .Build();
+
+            this.Session.Derive();
+
+            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
+            unifiedGood.AddSerialisedItem(newItem);
+
+            this.Session.Derive();
+
+            Assert.Equal(supplier.PartyName, newItem.SuppliedByPartyName);
+        }
+
+        [Fact]
+        public void GivenSerializedItem_WhenDerived_ThenOwnedByPartyNameIsSet()
+        {
+            var customer = this.InternalOrganisation.ActiveCustomers.First;
+
+            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
+            newItem.OwnedBy = customer;
+
+            this.Session.Derive();
+
+            Assert.Equal(customer.PartyName, newItem.OwnedByPartyName);
+        }
+
+
+        [Fact]
+        public void GivenSerializedItem_WhenDerived_ThenRentedByPartyNameIsSet()
+        {
+            var customer = this.InternalOrganisation.ActiveCustomers.First;
+
+            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
+            newItem.RentedBy = customer;
+
+            this.Session.Derive();
+
+            Assert.Equal(customer.PartyName, newItem.RentedByPartyName);
+        }
+
+        [Fact]
+        public void GivenSerializedItem_WhenDerived_ThenOwnershipByOwnershipNameIsSet()
+        {
+            var newItem = new SerialisedItemBuilder(this.Session).WithForSaleDefaults(this.InternalOrganisation).Build();
+            newItem.Ownership = new Ownerships(this.Session).Own;
+
+            this.Session.Derive();
+
+            Assert.Equal(newItem.Ownership.Name, newItem.OwnershipByOwnershipName);
         }
     }
 }

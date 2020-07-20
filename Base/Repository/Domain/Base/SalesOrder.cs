@@ -28,7 +28,7 @@ namespace Allors.Repository
 
         public string CustomerReference { get; set; }
 
-        public Fee Fee { get; set; }
+        public OrderAdjustment[] OrderAdjustments { get; set; }
 
         public decimal TotalExVat { get; set; }
 
@@ -50,17 +50,15 @@ namespace Allors.Repository
 
         public DateTime EntryDate { get; set; }
 
-        public DiscountAdjustment DiscountAdjustment { get; set; }
-
         public OrderKind OrderKind { get; set; }
 
         public decimal TotalIncVat { get; set; }
 
+        public decimal GrandTotal { get; set; }
+
         public VatRegime VatRegime { get; set; }
 
         public decimal TotalShippingAndHandling { get; set; }
-
-        public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
 
         public DateTime OrderDate { get; set; }
 
@@ -70,7 +68,11 @@ namespace Allors.Repository
 
         public decimal TotalFee { get; set; }
 
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
+        public decimal TotalExtraCharge { get; set; }
+
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public decimal TotalIrpf { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -91,6 +93,8 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
 
         public DateTime LastModifiedDate { get; set; }
+
+        public int SortableOrderNumber { get; set; }
         #endregion
 
         #region ObjectStates
@@ -643,6 +647,12 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Ship() { }
+
+        #region Allors
+        [Id("35c5cfac-f8bc-4640-9aaa-50989fd9f765")]
+        #endregion
+        [Workspace]
+        public void DoTransfer() { }
 
         #region inherited methods
         public void OnBuild() { }

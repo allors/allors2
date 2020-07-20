@@ -24,7 +24,7 @@ namespace Tests
         }
 
         [Fact]
-        public void Initial()
+        public void String()
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
@@ -42,6 +42,27 @@ namespace Tests
             var data = after.Except(before).First();
 
             Assert.Equal("Hello", data.String);
+        }
+
+        [Fact]
+        public void Decimal()
+        {
+            var before = new Datas(this.Session).Extent().ToArray();
+
+            this.page.Decimal.Value = 100.50m;
+
+            this.page.SAVE.Click();
+
+            this.Driver.WaitForAngular();
+            this.Session.Rollback();
+
+            var after = new Datas(this.Session).Extent().ToArray();
+
+            Assert.Equal(after.Length, before.Length + 1);
+
+            var data = after.Except(before).First();
+
+            Assert.Equal(100.50m, data.Decimal);
         }
     }
 }

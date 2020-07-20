@@ -33,6 +33,10 @@ namespace Allors.Repository
 
         public PurchaseOrder CorrespondingPurchaseOrder { get; set; }
 
+        public DiscountAdjustment[] DiscountAdjustments { get; set; }
+
+        public SurchargeAdjustment[] SurchargeAdjustments { get; set; }
+
         public decimal TotalOrderAdjustment { get; set; }
 
         public QuoteItem QuoteItem { get; set; }
@@ -47,6 +51,18 @@ namespace Allors.Repository
 
         public OrderItem[] Associations { get; set; }
 
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        public IrpfRate IrpfRate { get; set; }
+
+        public decimal UnitIrpf { get; set; }
+
+        public decimal TotalIrpf { get; set; }
+
+        public decimal GrandTotal { get; set; }
+
         public string Message { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
@@ -58,8 +74,6 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedComments { get; set; }
 
         public decimal TotalDiscountAsPercentage { get; set; }
-
-        public DiscountAdjustment DiscountAdjustment { get; set; }
 
         public decimal UnitVat { get; set; }
 
@@ -92,8 +106,6 @@ namespace Allors.Repository
         public decimal TotalBasePrice { get; set; }
 
         public decimal TotalExVat { get; set; }
-
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
         public Order SyncedOrder { get; set; }
 
@@ -230,6 +242,17 @@ namespace Allors.Repository
         [Workspace]
         public PurchaseOrderItemVersion[] AllVersions { get; set; }
         #endregion
+
+        #region Allors
+        [Id("b77555e9-b850-459b-9682-68859e7eeca4")]
+        [AssociationId("e8b663a6-5f6a-49d1-b7bd-60c9dbfc7b34")]
+        [RoleId("86be7f5a-6dcc-4864-9629-fd929f14d4c3")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Indexed]
+        [Workspace]
+        public InvoiceItemType InvoiceItemType { get; set; }
 
         #region Allors
         [Id("64e30c56-a77d-4ecf-b21e-e480dd5a25d8")]

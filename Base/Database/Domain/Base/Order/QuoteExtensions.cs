@@ -36,6 +36,7 @@ namespace Allors.Domain
             if (!@this.ExistQuoteNumber && @this.ExistIssuer)
             {
                 @this.QuoteNumber = @this.Issuer.NextQuoteNumber(session.Now().Year);
+                ((QuoteDerivedRoles)@this).SortableQuoteNumber = @this.Session().GetSingleton().SortableNumber(@this.Issuer.QuoteNumberPrefix, @this.QuoteNumber, @this.IssueDate.Year.ToString());
             }
 
             @this.Currency ??= @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
@@ -45,7 +46,10 @@ namespace Allors.Domain
                 var quoteItemDerivedRoles = (QuoteItemDerivedRoles)quoteItem;
 
                 quoteItemDerivedRoles.VatRegime = quoteItem.AssignedVatRegime ?? @this.VatRegime;
-                quoteItemDerivedRoles.VatRate = quoteItem.VatRegime?.VatRate ?? quoteItem.Product?.VatRate;
+                quoteItemDerivedRoles.VatRate = quoteItem.VatRegime?.VatRate;
+
+                quoteItemDerivedRoles.IrpfRegime = quoteItem.AssignedIrpfRegime ?? @this.IrpfRegime;
+                quoteItemDerivedRoles.IrpfRate = quoteItem.IrpfRegime?.IrpfRate;
             }
 
             @this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);
@@ -63,24 +67,9 @@ namespace Allors.Domain
                 || (propasal != null && propasal.IsDeletable)
                 || (statementOfWork != null && statementOfWork.IsDeletable))
             {
-                if (@this.ExistShippingAndHandlingCharge)
+                foreach (OrderAdjustment orderAdjustment in @this.OrderAdjustments)
                 {
-                    @this.ShippingAndHandlingCharge.Delete();
-                }
-
-                if (@this.ExistFee)
-                {
-                    @this.Fee.Delete();
-                }
-
-                if (@this.ExistDiscountAdjustment)
-                {
-                    @this.DiscountAdjustment.Delete();
-                }
-
-                if (@this.ExistSurchargeAdjustment)
-                {
-                    @this.SurchargeAdjustment.Delete();
+                    orderAdjustment.Delete();
                 }
 
                 foreach (QuoteItem item in @this.QuoteItems)
@@ -205,64 +194,6 @@ namespace Allors.Domain
         private static void Sync(this Quote @this, IDerivation derivation)
         {
             var QuoteDerivedRoles = (QuoteDerivedRoles)@this;
-            // Calculate Totals
-            QuoteDerivedRoles.TotalBasePrice = 0;
-            QuoteDerivedRoles.TotalDiscount = 0;
-            QuoteDerivedRoles.TotalSurcharge = 0;
-            QuoteDerivedRoles.TotalExVat = 0;
-            QuoteDerivedRoles.TotalFee = 0;
-            QuoteDerivedRoles.TotalShippingAndHandling = 0;
-            QuoteDerivedRoles.TotalVat = 0;
-            QuoteDerivedRoles.TotalIncVat = 0;
-            QuoteDerivedRoles.TotalListPrice = 0;
-
-            if (@this.ExistFee)
-            {
-                var fee = @this.Fee.Percentage.HasValue ?
-                                    Math.Round(@this.TotalExVat * @this.Fee.Percentage.Value / 100, 2) :
-                                    @this.Fee.Amount ?? 0;
-
-                QuoteDerivedRoles.TotalFee += fee;
-                QuoteDerivedRoles.TotalExVat += fee;
-
-                if (@this.Fee.ExistVatRate)
-                {
-                    var vat1 = Math.Round(fee * @this.Fee.VatRate.Rate / 100, 2);
-                    QuoteDerivedRoles.TotalVat += vat1;
-                    QuoteDerivedRoles.TotalIncVat += fee + vat1;
-                }
-            }
-
-            if (@this.ExistShippingAndHandlingCharge)
-            {
-                var shipping = @this.ShippingAndHandlingCharge.Percentage.HasValue ?
-                                        Math.Round(@this.TotalExVat * @this.ShippingAndHandlingCharge.Percentage.Value / 100, 2) :
-                                        @this.ShippingAndHandlingCharge.Amount ?? 0;
-
-                QuoteDerivedRoles.TotalShippingAndHandling += shipping;
-                QuoteDerivedRoles.TotalExVat += shipping;
-
-                if (@this.ShippingAndHandlingCharge.ExistVatRate)
-                {
-                    var vat2 = Math.Round(shipping * @this.ShippingAndHandlingCharge.VatRate.Rate / 100, 2);
-                    QuoteDerivedRoles.TotalVat += vat2;
-                    QuoteDerivedRoles.TotalIncVat += shipping + vat2;
-                }
-            }
-
-            //// Only take into account items for which there is data at the item level.
-            //// Skip negative sales.
-            decimal totalUnitBasePrice = 0;
-            decimal totalListPrice = 0;
-
-            foreach (QuoteItem item1 in @this.ValidQuoteItems)
-            {
-                if (item1.TotalExVat > 0)
-                {
-                    totalUnitBasePrice += item1.UnitBasePrice;
-                    totalListPrice += item1.UnitPrice;
-                }
-            }
         }
     }
 }

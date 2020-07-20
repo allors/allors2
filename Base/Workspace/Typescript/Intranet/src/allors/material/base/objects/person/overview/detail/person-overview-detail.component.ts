@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope, SingletonId } from '../../../../../../angular';
-import { Enumeration, InternalOrganisation, Locale, Organisation, Person, Currency } from '../../../../../../domain';
+import { Enumeration, InternalOrganisation, Locale, Organisation, Person, Currency, IrpfRegime } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { SaveService } from '../../../../../../../allors/material';
@@ -24,6 +24,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
   locales: Locale[];
   genders: Enumeration[];
   salutations: Enumeration[];
+  irpfRegimes: IrpfRegime[];
 
   private subscription: Subscription;
   currencies: Currency[];
@@ -119,6 +120,9 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
               predicate: new Equals({ propertyType: m.Salutation.IsActive, value: true }),
               sort: new Sort(m.Salutation.Name),
             }),
+            pull.IrpfRegime({
+              sort: new Sort(m.IrpfRegime.Name)
+            }),
             pull.Person({
               object: id,
               fetch: {
@@ -149,6 +153,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
         this.locales = loaded.collections.Locales as Locale[] || [];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
       });
 
   }

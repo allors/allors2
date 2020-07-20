@@ -18,7 +18,7 @@ namespace Allors.Server
     {
         private readonly AccessControlsWriter accessControlsWriter;
         private readonly IAccessControlLists acls;
-        private readonly Dictionary<string, List<IObject>> collectionsByName = new Dictionary<string, List<IObject>>();
+        private readonly Dictionary<string, IList<IObject>> collectionsByName = new Dictionary<string, IList<IObject>>();
         private readonly PermissionsWriter permissionsWriter;
         private readonly Dictionary<string, IObject> objectByName = new Dictionary<string, IObject>();
         private readonly HashSet<IObject> objects;
@@ -58,24 +58,34 @@ namespace Allors.Server
         {
             if (collection != null)
             {
-                if (!this.collectionsByName.TryGetValue(name, out var list))
+                var list = collection as IList<IObject> ?? collection.ToArray();
+
+                // Prefetch
+                if (tree != null && list.Count > 0)
                 {
-                    list = new List<IObject>();
+                    var session = list[0].Strategy.Session;
+                    var prefetchPolicy = tree.BuildPrefetchPolicy();
+                    session.Prefetch(prefetchPolicy, list);
+                }
+
+                if (this.collectionsByName.TryGetValue(name, out var existingIList))
+                {
+                    if (existingIList is List<IObject> existingList)
+                    {
+                        existingList.AddRange(list);
+                    }
+                    else
+                    {
+                        var newList = existingIList.Concat(list).ToArray();
+                        this.collectionsByName[name] = newList;
+                    }
+                }
+                else
+                {
                     this.collectionsByName.Add(name, list);
                 }
 
-                var inputList = collection as IList<IObject> ?? collection.ToArray();
-
-                // Prefetch
-                if (tree != null && inputList.Count > 0)
-                {
-                    var session = inputList[0].Strategy.Session;
-                    var prefetcher = tree.BuildPrefetchPolicy();
-                    session.Prefetch(prefetcher, inputList.ToArray());
-                }
-
-                list.AddRange(inputList);
-                foreach (var namedObject in inputList)
+                foreach (var namedObject in list)
                 {
                     this.objects.Add(namedObject);
                     tree?.Resolve(namedObject, this.acls, this.objects);

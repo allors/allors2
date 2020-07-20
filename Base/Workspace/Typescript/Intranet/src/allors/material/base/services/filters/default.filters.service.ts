@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
-import { SearchFactory, WorkspaceService, InternalOrganisationId } from '../../../../angular';
-import { And, ContainedIn, Equals, Filter, Contains, Not, Or } from '../../../../framework';
-import { Meta } from '../../../../meta';
+import { SearchFactory, InternalOrganisationId, MetaService } from '../../../../angular';
+import { And, ContainedIn, Equals, Filter, Or } from '../../../../framework';
+import { Meta, TreeFactory } from '../../../../meta';
 
 import { FiltersService } from './filters.service';
-import { Party } from '../../../../domain';
 
 @Injectable()
 export class DefaultFiltersService extends FiltersService {
 
   private m: Meta;
+  private tree: TreeFactory;
 
   constructor(
-    private workspaceService: WorkspaceService,
+    private metaService: MetaService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
     super();
 
-    this.m = this.workspaceService.metaPopulation as Meta;
+    this.m = this.metaService.m;
+    this.tree = this.metaService.tree;
   }
 
   get goodsFilter() {
@@ -57,22 +58,18 @@ export class DefaultFiltersService extends FiltersService {
     });
   }
 
+  get unifiedGoodsFilter() {
+    return new SearchFactory({
+      objectType: this.m.UnifiedGood,
+      roleTypes: [this.m.UnifiedGood.Name, this.m.UnifiedGood.SearchString],
+      include: this.tree.UnifiedGood({SerialisedItems: {}})
+    });
+  }
+
   get serialisedItemsFilter() {
     return new SearchFactory({
       objectType: this.m.SerialisedItem,
       roleTypes: [this.m.SerialisedItem.Name, this.m.SerialisedItem.SearchString],
-      post: (predicate: And) => {
-        predicate.operands.push(new ContainedIn({
-          propertyType: this.m.SerialisedItem.SerialisedItemAvailability,
-          extent: new Filter({
-            objectType: this.m.SerialisedItemAvailability,
-            predicate: new Or([
-              new Equals({ propertyType: this.m.SerialisedItemAvailability.UniqueId, value: 'c60f5741-a93f-48cc-b416-445aeb3fb166' }),
-              new Equals({ propertyType: this.m.SerialisedItemAvailability.UniqueId, value: '74499ac5-cac9-4276-8b9e-e47f977104fd' }),
-            ])
-          })
-        }));
-      },
     });
   }
 
@@ -102,6 +99,21 @@ export class DefaultFiltersService extends FiltersService {
           extent: new Filter({
             objectType: this.m.SupplierRelationship,
             predicate: new Equals({ propertyType: this.m.SupplierRelationship.InternalOrganisation, object: this.internalOrganisationId.value }),
+          })
+        }));
+      },
+    });
+  }
+
+  get allSuppliersFilter() {
+    return new SearchFactory({
+      objectType: this.m.Organisation,
+      roleTypes: [this.m.Organisation.PartyName],
+      post: (predicate: And) => {
+        predicate.operands.push(new ContainedIn({
+          propertyType: this.m.Organisation.SupplierRelationshipsWhereSupplier,
+          extent: new Filter({
+            objectType: this.m.SupplierRelationship,
           })
         }));
       },

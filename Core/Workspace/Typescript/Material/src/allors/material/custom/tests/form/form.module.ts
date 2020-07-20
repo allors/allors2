@@ -11,7 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import {
-  AllorsMaterialAssociationSelectModule,
+  AllorsMaterialAssociationAutoCompleteModule,
   AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialDatetimepickerModule,
   AllorsMaterialSelectModule, AllorsMaterialInputModule,
   AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule,
@@ -44,7 +44,8 @@ export { FormComponent } from './form.component';
     MatMenuModule,
     MatToolbarModule,
 
-    AllorsMaterialAssociationSelectModule,
+    AllorsMaterialAssociationAutoCompleteModule,
+
     AllorsMaterialAutoCompleteModule,
     AllorsMaterialCheckboxModule,
     AllorsMaterialChipsModule,

@@ -11,9 +11,18 @@ namespace Allors.Repository
     #region Allors
     [Id("0d8a85a8-4e76-457d-9594-84ee38c4e66f")]
     #endregion
-    public partial class SalesOrderTransfer: Object
+    public partial class SalesOrderTransfer : Object, Auditable
     {
         #region inherited properties
+
+        public User CreatedBy { get; set; }
+
+        public User LastModifiedBy { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public DateTime LastModifiedDate { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -37,9 +46,20 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToOne)]
-        [Required]
+        [Derived]
         [Workspace]
         public SalesOrder To { get; set; }
+
+        #region Allors
+        [Id("c04ff91c-911e-4923-9fc2-2a6bbd3b7f45")]
+        [AssociationId("64f2083a-0e55-4117-b3ab-d034a5611d56")]
+        [RoleId("d6988116-c5ad-4f5a-8b6a-8292f84d773b")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public InternalOrganisation InternalOrganisation { get; set; }
 
         #region inherited methods
 

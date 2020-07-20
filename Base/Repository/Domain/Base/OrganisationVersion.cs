@@ -199,6 +199,16 @@ namespace Allors.Repository
         [Workspace]
         public CustomOrganisationClassification[] CustomClassifications { get; set; }
 
+        #region Allors
+        [Id("debd810e-6678-42db-9f2a-e4b871039627")]
+        [AssociationId("8a09afd2-c9b4-4c60-bc8b-1e5b17f5968e")]
+        [RoleId("71de9c1f-e4b1-4f25-97d6-51ba2b491e4d")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public IrpfRegime IrpfRegime { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

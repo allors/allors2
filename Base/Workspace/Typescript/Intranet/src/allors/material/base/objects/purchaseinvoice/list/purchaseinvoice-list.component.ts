@@ -7,8 +7,8 @@ import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory, ActionTarget, FetcherService, UserId } from '../../../../../angular';
-import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt, Organisation, Person, UserGroup, PurchaseInvoiceState } from '../../../../../domain';
-import { And, Like, PullRequest, Equals } from '../../../../../framework';
+import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt, Organisation, Person, UserGroup, PurchaseInvoiceState, Party, Product, SerialisedItem, Part } from '../../../../../domain';
+import { And, Like, PullRequest, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService, AllorsMaterialDialogService } from '../../../../../material';
 import { MethodService } from '../../../../../material/core/services/actions';
 import { ɵangular_packages_forms_forms_x } from '@angular/forms';
@@ -177,7 +177,8 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
-      initialSort: 'number'
+      initialSort: 'number',
+      initialSortDirection: 'desc',
     });
   }
 
@@ -186,11 +187,34 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
     const { m, pull, x } = this.metaService;
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseInvoice.BilledTo });
+    const supplierPredicate = new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation });
+
     const predicate = new And([
+      internalOrganisationPredicate,
       new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, parameter: 'number' }),
       new Equals({ propertyType: m.PurchaseInvoice.PurchaseInvoiceState, parameter: 'state' }),
       new Equals({ propertyType: m.PurchaseInvoice.PurchaseInvoiceType, parameter: 'type' }),
-      internalOrganisationPredicate
+      new Equals({ propertyType: m.PurchaseInvoice.BilledFrom, parameter: 'supplier' }),
+      new ContainedIn({
+        propertyType: m.PurchaseInvoice.PurchaseInvoiceItems,
+        extent: new Filter({
+          objectType: m.PurchaseInvoiceItem,
+          predicate: new ContainedIn({
+            propertyType: m.PurchaseInvoiceItem.Part,
+            parameter: 'sparePart'
+          })
+        })
+      }),
+      new ContainedIn({
+        propertyType: m.PurchaseInvoice.PurchaseInvoiceItems,
+        extent: new Filter({
+          objectType: m.PurchaseInvoiceItem,
+          predicate: new ContainedIn({
+            propertyType: m.PurchaseInvoiceItem.SerialisedItem,
+            parameter: 'serialisedItem'
+          })
+        })
+      })
     ]);
 
     const typeSearch = new SearchFactory({
@@ -203,15 +227,41 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       roleTypes: [m.PurchaseInvoiceState.Name],
     });
 
+    const supplierSearch = new SearchFactory({
+      objectType: m.Organisation,
+      predicates: [
+        new ContainedIn({
+          propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
+          extent: new Filter({
+            objectType: m.SupplierRelationship,
+            predicate: supplierPredicate,
+          })
+        })],
+      roleTypes: [m.Organisation.PartyName],
+    });
+
+    const partSearch = new SearchFactory({
+      objectType: m.NonUnifiedPart,
+      roleTypes: [m.NonUnifiedPart.Name, m.NonUnifiedPart.SearchString],
+    });
+
+    const serialisedItemSearch = new SearchFactory({
+      objectType: m.SerialisedItem,
+      roleTypes: [m.SerialisedItem.ItemNumber],
+    });
+
     this.filterService.init(predicate,
       {
         type: { search: typeSearch, display: (v: PurchaseInvoiceType) => v && v.Name },
         state: { search: stateSearch, display: (v: PurchaseInvoiceState) => v && v.Name },
+        supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
+        sparePart: { search: partSearch, display: (v: Part) => v && v.Name },
+        serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
       });
 
     const sorter = new Sorter(
       {
-        number: m.PurchaseInvoice.InvoiceNumber,
+        number: m.PurchaseInvoice.SortableInvoiceNumber,
         type: m.PurchaseInvoice.PurchaseInvoiceType,
         reference: m.PurchaseInvoice.CustomerReference,
         dueDate: m.PurchaseInvoice.DueDate,
@@ -278,7 +328,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
             type: `${v.PurchaseInvoiceType && v.PurchaseInvoiceType.Name}`,
             billedFrom: v.BilledFrom && v.BilledFrom.displayName,
             state: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
-            reference: v.PurchaseInvoiceState.Name && `${v.CustomerReference} - ${v.PurchaseInvoiceState.Name}`,
+            reference: `${v.CustomerReference}`,
             dueDate: v.DueDate && moment(v.DueDate).format('MMM Do YY'),
             totalExVat: v.TotalExVat,
             totalIncVat: v.TotalIncVat,

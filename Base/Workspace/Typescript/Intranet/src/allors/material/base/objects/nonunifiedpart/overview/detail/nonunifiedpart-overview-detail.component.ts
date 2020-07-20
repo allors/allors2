@@ -249,7 +249,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
   }
 
   public brandSelected(brand: Brand): void {
-
+    
     const { pull, x } = this.metaService;
 
     const pulls = [
@@ -265,9 +265,11 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
     this.allors.context
       .load(new PullRequest({ pulls }))
       .subscribe(() => {
-        this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        this.models = this.selectedBrand?.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       });
-  }
+
+      this.setDirty();
+    }
 
   public save(): void {
 

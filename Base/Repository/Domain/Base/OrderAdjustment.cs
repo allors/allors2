@@ -10,7 +10,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c5578565-c07a-4dc1-8381-41955db364e2")]
     #endregion
-    public partial interface OrderAdjustment : Deletable, Object
+    public partial interface OrderAdjustment : Deletable, Versioned
     {
         #region Allors
         [Id("4e7cbdda-9f19-44dd-bbef-6cab5d92a8a3")]
@@ -23,17 +23,6 @@ namespace Allors.Repository
         decimal Amount { get; set; }
 
         #region Allors
-        [Id("78d6de86-0f4d-4d8e-a9a6-4730668fa754")]
-        [AssociationId("51d96df2-1e92-4ea2-8ec7-e918d5781ae7")]
-        [RoleId("933a70e0-0fa0-42cd-a4d5-b3eb10b57802")]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-
-        VatRate VatRate { get; set; }
-
-        #region Allors
         [Id("bc1ad594-88b6-4176-994c-a52be672f06d")]
         [AssociationId("ebc960bf-dd8c-4854-afec-185b260315e9")]
         [RoleId("9d2f66e2-0bbd-46ab-b65b-43e6b38383b9")]
@@ -42,5 +31,14 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         decimal Percentage { get; set; }
+
+        #region Allors
+        [Id("9f563bb3-36c2-4d9f-9520-dc725d32b2e8")]
+        [AssociationId("5a22c8bc-cd1c-41d8-b14f-772c4c94da8a")]
+        [RoleId("5c5c87a4-cb29-4d78-af4a-94cc8d6a45c9")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        string Description { get; set; }
     }
 }

@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Meta;
@@ -23,8 +24,7 @@ namespace Allors.Domain
             (this.PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Strategy.Session).Created)
                 || this.PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Strategy.Session).Cancelled)
                 || this.PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Strategy.Session).Rejected))
-            && this.ExistSalesInvoiceWherePurchaseInvoice
-            && this.PurchaseInvoiceItems.All(v => v.IsDeletable);
+            && this.ExistSalesInvoiceWherePurchaseInvoice;
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
@@ -71,6 +71,14 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnInit(ObjectOnInit method)
+        {
+            if (!this.ExistCurrency)
+            {
+                this.Currency = this.BilledTo?.PreferredCurrency;
+            }
+        }
+
         public void BaseOnPreDerive(ObjectOnPreDerive method)
         {
             var (iteration, changeSet, derivedObjects) = method;
@@ -100,6 +108,7 @@ namespace Allors.Domain
             if (!this.ExistInvoiceNumber)
             {
                 this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber(this.InvoiceDate.Year);
+                this.SortableInvoiceNumber = this.Session().GetSingleton().SortableNumber(this.BilledTo.PurchaseInvoiceNumberPrefix, this.InvoiceNumber, this.InvoiceDate.Year.ToString());
             }
 
             if (this.BilledFrom is Organisation supplier)
@@ -109,6 +118,9 @@ namespace Allors.Domain
                     derivation.Validation.AddError(this, this.Meta.BilledFrom, ErrorMessages.PartyIsNotASupplier);
                 }
             }
+
+            this.VatRegime ??= this.BilledFrom?.VatRegime;
+            this.IrpfRegime ??= (this.BilledFrom as Organisation)?.IrpfRegime;
 
             this.PurchaseOrders = this.InvoiceItems.SelectMany(v => v.OrderItemBillingsWhereInvoiceItem).Select(v => v.OrderItem.OrderWhereValidOrderItem).ToArray();
 
@@ -157,6 +169,29 @@ namespace Allors.Domain
                     else
                     {
                         this.PurchaseInvoiceState = purchaseInvoiceStates.PartiallyPaid;
+                    }
+                }
+            }
+
+            if (!this.PurchaseInvoiceState.IsCreated && !this.PurchaseInvoiceState.IsAwaitingApproval)
+            {
+                foreach (var invoiceItem in validInvoiceItems)
+                {
+                    if (invoiceItem.ExistSerialisedItem
+                        && this.BilledTo.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseInvoiceConfirm))
+                    {
+                        if ((this.BilledFrom as InternalOrganisation)?.IsInternalOrganisation == false)
+                        {
+                            invoiceItem.SerialisedItem.Buyer = this.BilledTo;
+                        }
+
+                        // who comes first?
+                        // Item you purchased can be on sold via sales invoice even before purchase invoice is created and confirmed!!
+                        if (!invoiceItem.SerialisedItem.SalesInvoiceItemsWhereSerialisedItem.Any(v => (v.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer as Organisation)?.IsInternalOrganisation == false))
+                        {
+                            invoiceItem.SerialisedItem.OwnedBy = this.BilledTo;
+                            invoiceItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
+                        }
                     }
                 }
             }
@@ -219,6 +254,17 @@ namespace Allors.Domain
             {
                 this.AddDeniedPermission(deletePermission);
             }
+
+            if (!this.ExistSalesInvoiceWherePurchaseInvoice
+                && (this.BilledFrom as Organisation)?.IsInternalOrganisation == true
+                && (this.PurchaseInvoiceState.IsPaid || this.PurchaseInvoiceState.IsPartiallyPaid || this.PurchaseInvoiceState.IsNotPaid))
+            {
+                this.RemoveDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
+            }
+            else
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
+            }
         }
 
         public void BasePrint(PrintablePrint method)
@@ -252,25 +298,148 @@ namespace Allors.Domain
 
         public void BaseOnDeriveInvoiceTotals()
         {
-            if (this.ExistPurchaseInvoiceItems)
-            {
-                this.TotalBasePrice = 0;
-                this.TotalDiscount = 0;
-                this.TotalSurcharge = 0;
-                this.TotalVat = 0;
-                this.TotalExVat = 0;
-                this.TotalIncVat = 0;
+            this.TotalBasePrice = 0;
+            this.TotalDiscount = 0;
+            this.TotalSurcharge = 0;
+            this.TotalVat = 0;
+            this.TotalExVat = 0;
+            this.TotalIncVat = 0;
+            this.TotalIrpf = 0;
+            this.TotalExtraCharge = 0;
+            this.GrandTotal = 0;
 
-                foreach (PurchaseInvoiceItem item in this.PurchaseInvoiceItems)
+            foreach (PurchaseInvoiceItem item in this.PurchaseInvoiceItems)
+            {
+                this.TotalBasePrice += item.TotalBasePrice;
+                this.TotalSurcharge += item.TotalSurcharge;
+                this.TotalIrpf += item.TotalIrpf;
+                this.TotalVat += item.TotalVat;
+                this.TotalExVat += item.TotalExVat;
+                this.TotalIncVat += item.TotalIncVat;
+                this.GrandTotal += item.GrandTotal;
+            }
+
+            var discount = 0M;
+            var discountVat = 0M;
+            var discountIrpf = 0M;
+            var surcharge = 0M;
+            var surchargeVat = 0M;
+            var surchargeIrpf = 0M;
+            var fee = 0M;
+            var feeVat = 0M;
+            var feeIrpf = 0M;
+            var shipping = 0M;
+            var shippingVat = 0M;
+            var shippingIrpf = 0M;
+            var miscellaneous = 0M;
+            var miscellaneousVat = 0M;
+            var miscellaneousIrpf = 0M;
+
+            foreach (OrderAdjustment orderAdjustment in this.OrderAdjustments)
+            {
+                if (orderAdjustment.GetType().Name.Equals(typeof(DiscountAdjustment).Name))
                 {
-                    this.TotalBasePrice += item.TotalBasePrice;
-                    this.TotalSurcharge += item.TotalSurcharge;
-                    this.TotalSurcharge += item.TotalSurcharge;
-                    this.TotalVat += item.TotalVat;
-                    this.TotalExVat += item.TotalExVat;
-                    this.TotalIncVat += item.TotalIncVat;
+                    discount = orderAdjustment.Percentage.HasValue ?
+                                    Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
+                                    orderAdjustment.Amount ?? 0;
+
+                    this.TotalDiscount += discount;
+
+                    if (this.ExistVatRegime)
+                    {
+                        discountVat = Math.Round(discount * this.VatRegime.VatRate.Rate / 100, 2);
+                    }
+
+                    if (this.ExistIrpfRegime)
+                    {
+                        discountIrpf = Math.Round(discount * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                    }
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(SurchargeAdjustment).Name))
+                {
+                    surcharge = orderAdjustment.Percentage.HasValue ?
+                                        Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
+                                        orderAdjustment.Amount ?? 0;
+
+                    this.TotalSurcharge += surcharge;
+
+                    if (this.ExistVatRegime)
+                    {
+                        surchargeVat = Math.Round(surcharge * this.VatRegime.VatRate.Rate / 100, 2);
+                    }
+
+                    if (this.ExistIrpfRegime)
+                    {
+                        surchargeIrpf = Math.Round(surcharge * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                    }
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(Fee).Name))
+                {
+                    fee = orderAdjustment.Percentage.HasValue ?
+                                Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
+                                orderAdjustment.Amount ?? 0;
+
+                    this.TotalFee += fee;
+
+                    if (this.ExistVatRegime)
+                    {
+                        feeVat = Math.Round(fee * this.VatRegime.VatRate.Rate / 100, 2);
+                    }
+
+                    if (this.ExistIrpfRegime)
+                    {
+                        feeIrpf = Math.Round(fee * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                    }
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(ShippingAndHandlingCharge).Name))
+                {
+                    shipping = orderAdjustment.Percentage.HasValue ?
+                                    Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
+                                    orderAdjustment.Amount ?? 0;
+
+                    this.TotalShippingAndHandling += shipping;
+
+                    if (this.ExistVatRegime)
+                    {
+                        shippingVat = Math.Round(shipping * this.VatRegime.VatRate.Rate / 100, 2);
+                    }
+
+                    if (this.ExistIrpfRegime)
+                    {
+                        shippingIrpf = Math.Round(shipping * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                    }
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(MiscellaneousCharge).Name))
+                {
+                    miscellaneous = orderAdjustment.Percentage.HasValue ?
+                                    Math.Round(this.TotalExVat * orderAdjustment.Percentage.Value / 100, 2) :
+                                    orderAdjustment.Amount ?? 0;
+
+                    this.TotalExtraCharge += miscellaneous;
+
+                    if (this.ExistVatRegime)
+                    {
+                        miscellaneousVat = Math.Round(miscellaneous * this.VatRegime.VatRate.Rate / 100, 2);
+                    }
+
+                    if (this.ExistIrpfRegime)
+                    {
+                        miscellaneousIrpf = Math.Round(miscellaneous * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                    }
                 }
             }
+
+            this.TotalExtraCharge = fee + shipping + miscellaneous;
+
+            this.TotalExVat = this.TotalExVat - discount + surcharge + fee + shipping + miscellaneous;
+            this.TotalVat = this.TotalVat - discountVat + surchargeVat + feeVat + shippingVat + miscellaneousVat;
+            this.TotalIncVat = this.TotalIncVat - discount - discountVat + surcharge + surchargeVat + fee + feeVat + shipping + shippingVat + miscellaneous + miscellaneousVat;
+            this.TotalIrpf = this.TotalIrpf + discountIrpf - surchargeIrpf - feeIrpf - shippingIrpf - miscellaneousIrpf;
+            this.GrandTotal = this.TotalIncVat - this.TotalIrpf;
         }
 
         public void BaseConfirm(PurchaseInvoiceConfirm method) => this.PurchaseInvoiceState = this.NeedsApproval ? new PurchaseInvoiceStates(this.Strategy.Session).AwaitingApproval : new PurchaseInvoiceStates(this.Strategy.Session).NotPaid;
@@ -317,7 +486,7 @@ namespace Allors.Domain
             {
                 if (purchaseInvoiceItem.ExistPart)
                 {
-                    var previousOffering = purchaseInvoiceItem.Part.SupplierOfferingsWherePart.Single(v =>
+                    var previousOffering = purchaseInvoiceItem.Part.SupplierOfferingsWherePart.FirstOrDefault(v =>
                         v.Supplier.Equals(this.BilledFrom) && v.FromDate <= this.Session().Now() &&
                         (!v.ExistThroughDate || v.ThroughDate >= this.Session().Now()));
 
@@ -351,6 +520,7 @@ namespace Allors.Domain
                         new SupplierOfferingBuilder(this.Session())
                             .WithSupplier(this.BilledFrom)
                             .WithPart(purchaseInvoiceItem.Part)
+                            .WithUnitOfMeasure(purchaseInvoiceItem.Part?.UnitOfMeasure)
                             .WithPrice(purchaseInvoiceItem.UnitBasePrice)
                             .WithFromDate(this.Session().Now())
                             .Build();
@@ -371,24 +541,9 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
-                if (this.ExistShippingAndHandlingCharge)
+                foreach (OrderAdjustment orderAdjustment in this.OrderAdjustments)
                 {
-                    this.ShippingAndHandlingCharge.Delete();
-                }
-
-                if (this.ExistFee)
-                {
-                    this.Fee.Delete();
-                }
-
-                if (this.ExistDiscountAdjustment)
-                {
-                    this.DiscountAdjustment.Delete();
-                }
-
-                if (this.ExistSurchargeAdjustment)
-                {
-                    this.SurchargeAdjustment.Delete();
+                    orderAdjustment.Delete();
                 }
 
                 foreach (PurchaseInvoiceItem invoiceItem in this.PurchaseInvoiceItems)
@@ -401,6 +556,89 @@ namespace Allors.Domain
                     salesTerm.Delete();
                 }
             }
+        }
+
+        public void BaseCreateSalesInvoice(PurchaseInvoiceCreateSalesInvoice method)
+        {
+            var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
+                .WithPurchaseInvoice(this)
+                .WithBilledFrom(this.BilledTo)
+                .WithBilledFromContactPerson(this.BilledToContactPerson)
+                .WithBillToCustomer(this.BillToEndCustomer)
+                .WithBillToContactMechanism(this.BillToEndCustomerContactMechanism)
+                .WithBillToContactPerson(this.BillToEndCustomerContactPerson)
+                .WithShipToCustomer(this.ShipToEndCustomer)
+                .WithShipToAddress(this.ShipToEndCustomerAddress)
+                .WithShipToContactPerson(this.ShipToEndCustomerContactPerson)
+                .WithDescription(this.Description)
+                .WithInvoiceDate(this.Session().Now())
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
+                .WithVatRegime(this.BilledTo.VatRegime)
+                .WithIrpfRegime(this.BilledTo.IrpfRegime)
+                .WithCustomerReference(this.CustomerReference)
+                .WithPaymentMethod(this.BillToCustomerPaymentMethod)
+                .WithComment(this.Comment)
+                .WithInternalComment(this.InternalComment)
+                .Build();
+
+            foreach (OrderAdjustment orderAdjustment in this.OrderAdjustments)
+            {
+                OrderAdjustment newAdjustment = null;
+                if (orderAdjustment.GetType().Name.Equals(typeof(DiscountAdjustment).Name))
+                {
+                    newAdjustment = new DiscountAdjustmentBuilder(this.Session()).Build();
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(SurchargeAdjustment).Name))
+                {
+                    newAdjustment = new SurchargeAdjustmentBuilder(this.Session()).Build();
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(Fee).Name))
+                {
+                    newAdjustment = new FeeBuilder(this.Session()).Build();
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(ShippingAndHandlingCharge).Name))
+                {
+                    newAdjustment = new ShippingAndHandlingChargeBuilder(this.Session()).Build();
+                }
+
+                if (orderAdjustment.GetType().Name.Equals(typeof(MiscellaneousCharge).Name))
+                {
+                    newAdjustment = new MiscellaneousChargeBuilder(this.Session()).Build();
+                }
+
+                newAdjustment.Amount ??= orderAdjustment.Amount;
+                newAdjustment.Percentage ??= orderAdjustment.Percentage;
+                salesInvoice.AddOrderAdjustment(newAdjustment);
+            }
+
+            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.PurchaseInvoiceItems)
+            {
+                var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
+                    .WithInvoiceItemType(purchaseInvoiceItem.InvoiceItemType)
+                    .WithAssignedUnitPrice(purchaseInvoiceItem.AssignedUnitPrice)
+                    .WithProduct(purchaseInvoiceItem.Part as UnifiedGood)
+                    .WithSerialisedItem(purchaseInvoiceItem.SerialisedItem)
+                    .WithQuantity(purchaseInvoiceItem.Quantity)
+                    .WithComment(purchaseInvoiceItem.Comment)
+                    .WithInternalComment(purchaseInvoiceItem.InternalComment)
+                    .Build();
+
+                salesInvoice.AddSalesInvoiceItem(invoiceItem);
+            }
+
+            var internalOrganisation = (InternalOrganisation)salesInvoice.BilledFrom;
+            if (!internalOrganisation.ActiveCustomers.Contains(salesInvoice.BillToCustomer))
+            {
+                new CustomerRelationshipBuilder(this.Strategy.Session)
+                    .WithCustomer(salesInvoice.BillToCustomer)
+                    .WithInternalOrganisation(internalOrganisation)
+                    .Build();
+            }
+
+            this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.CreateSalesInvoice, Operations.Execute));
         }
 
         public void BaseOnDeriveInvoiceItems(IDerivation derivation)
@@ -416,9 +654,6 @@ namespace Allors.Domain
 
                     serialisedItem.RemoveAssignedPurchasePrice();
                     deriveRoles.PurchasePrice = purchaseInvoiceItem.TotalExVat;
-
-                    serialisedItem.OwnedBy = this.BilledTo;
-                    serialisedItem.Buyer = this.BilledTo;
                 }
 
                 purchaseInvoiceItem.BaseOnDerivePrices();

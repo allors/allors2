@@ -44,29 +44,6 @@ namespace Allors.Domain
                 @this.Facility = @this.Part.DefaultFacility;
             }
 
-            Party owner = (Organisation)@this.Facility.Owner;
-            if (@this is SerialisedInventoryItem item)
-            {
-                owner = item.SerialisedItem?.OwnedBy ?? item.SerialisedItem?.Seller ?? item.SerialisedItem?.Buyer;
-            }
-
-            foreach (var inventoryOwnership in @this.InventoryOwnershipsWhereInventoryItem.Where(v => v.FromDate < now && (!v.ExistThroughDate || v.ThroughDate >= now)))
-            {
-                if (!Equals(inventoryOwnership.Owner, owner))
-                {
-                    inventoryOwnership.ThroughDate = now;
-                }
-            }
-
-            var ownerInventoryOwnership = @this.InventoryOwnershipsWhereInventoryItem.FirstOrDefault(v => v.Owner.Equals(owner) && v.FromDate < now && (!v.ExistThroughDate || v.ThroughDate >= now));
-            if (ownerInventoryOwnership == null && owner != null)
-            {
-                new InventoryOwnershipBuilder(session)
-                    .WithInventoryItem(@this)
-                    .WithOwner(owner)
-                    .Build();
-            }
-
             // TODO: Let Sync set Unit of Measure
             if (!@this.ExistUnitOfMeasure)
             {
@@ -84,14 +61,6 @@ namespace Allors.Domain
             builder.Append(part.SearchString);
 
             @this.SearchString = builder.ToString();
-        }
-
-        public static void BaseDelete(this InventoryItem @this, DeletableDelete method)
-        {
-            foreach (InventoryOwnership inventoryOwnership in @this.InventoryOwnershipsWhereInventoryItem)
-            {
-                inventoryOwnership.Delete();
-            }
         }
     }
 }

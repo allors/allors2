@@ -78,7 +78,10 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
             this.fetcher.internalOrganisation,
             pull.VatRate(),
             pull.VatRegime(),
-            pull.Currency({ sort: new Sort(m.Currency.Name) }),
+            pull.Currency({
+              predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
+              sort: new Sort(m.Currency.IsoCode)
+            }),
             pull.Facility({ sort: new Sort(m.Facility.Name) }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
@@ -100,6 +103,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
         this.order = this.allors.context.create('PurchaseOrder') as PurchaseOrder;
         this.order.OrderedBy = this.internalOrganisation;
+        this.order.Currency = this.internalOrganisation.PreferredCurrency;
 
         if (this.order.TakenViaSupplier) {
           this.takenVia = this.order.TakenViaSupplier;
@@ -150,7 +154,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
   public takenViaContactPersonAdded(person: Person): void {
 
     const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.takenVia as Organisation;
+    organisationContactRelationship.Organisation = this.order.TakenViaSupplier as Organisation;
     organisationContactRelationship.Contact = person;
 
     this.takenViaContacts.push(person);

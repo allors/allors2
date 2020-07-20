@@ -269,6 +269,16 @@ namespace Allors.Repository
         DateTime EstimatedArrivalDate { get; set; }
 
         #region Allors
+        [Id("6708b143-57a5-4634-8eef-29fa143665b1")]
+        [AssociationId("4abd800a-ee8d-483a-9b46-d8a0d854c5be")]
+        [RoleId("5e0673a4-b79e-4130-a00c-4b9e2c8bec1d")]
+        #endregion
+        [Indexed]
+        [Derived]
+        [Workspace]
+        int SortableShipmentNumber { get; set; }
+
+        #region Allors
 
         [Id("11D44169-2D96-4310-AD6C-59417D8CA0C2")]
 

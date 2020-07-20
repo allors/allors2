@@ -76,7 +76,7 @@ namespace Allors.Database.Adapters
                             normalizedUnit = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond, DateTimeKind.Utc);
                         }
                     }
-                    else if (!(unit is decimal))
+                    else if (!(unit is DateTime))
                     {
                         throw new ArgumentException("RoleType is not a DateTime.");
                     }

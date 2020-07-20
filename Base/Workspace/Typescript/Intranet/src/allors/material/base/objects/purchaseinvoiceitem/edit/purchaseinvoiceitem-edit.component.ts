@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
-import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem, SupplierOffering } from '../../../../../domain';
+import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem, SupplierOffering, IrpfRegime, UnifiedGood } from '../../../../../domain';
 import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
@@ -25,13 +25,15 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
   invoiceItem: PurchaseInvoiceItem;
   orderItem: PurchaseOrderItem;
   inventoryItems: InventoryItem[];
-  vatRates: VatRate[];
   vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
   serialisedInventoryItem: SerialisedInventoryItem;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   invoiceItemTypes: InvoiceItemType[];
   partItemType: InvoiceItemType;
   productItemType: InvoiceItemType;
+  serviceItemType: InvoiceItemType;
+  timeItemType: InvoiceItemType;
   part: Part;
   serialisedItems: SerialisedItem[];
   serialisedItem: SerialisedItem;
@@ -41,8 +43,6 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
 
   private subscription: Subscription;
   partsFilter: SearchFactory;
-  transportItemType: InvoiceItemType;
-  refurbishItemType: InvoiceItemType;
   supplierOffering: SupplierOffering;
 
   constructor(
@@ -63,7 +63,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$)
+    this.subscription = combineLatest([this.refreshService.refresh$])
       .pipe(
         switchMap(() => {
 
@@ -79,7 +79,10 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
                 SerialisedItem: x,
                 VatRegime: {
                   VatRate: x,
-                }
+                },
+                IrpfRegime: {
+                  IrpfRate: x,
+                },
               }
             }),
             pull.PurchaseInvoiceItem({
@@ -87,16 +90,24 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               fetch: {
                 PurchaseInvoiceWherePurchaseInvoiceItem: {
                   include: {
-                    VatRegime: x
+                    VatRegime: {
+                      VatRate: x,
+                    },
+                    IrpfRegime: {
+                      IrpfRate: x,
+                    },
                   }
                 }
               }
             }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
+              sort: new Sort(m.InvoiceItemType.Name)
             }),
-            pull.VatRate(),
-            pull.VatRegime()
+            pull.VatRegime({
+              sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({
+              sort: new Sort(m.IrpfRegime.Name) }),
           ];
 
           if (this.data.associationId) {
@@ -104,7 +115,12 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               pull.PurchaseInvoice({
                 object: this.data.associationId,
                 include: {
-                  VatRegime: x
+                  VatRegime: {
+                    VatRate: x,
+                  },
+                  IrpfRegime: {
+                    IrpfRate: x,
+                  }
                 }
               })
             );
@@ -119,16 +135,15 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
         this.invoiceItem = loaded.objects.PurchaseInvoiceItem as PurchaseInvoiceItem;
         this.orderItem = loaded.objects.PurchaseOrderItem as PurchaseOrderItem;
-        this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.partItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'ff2b943d-57c9-4311-9c56-9ff37959653b');
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '0d07f778-2735-44cb-8354-fb887ada42ad');
-        this.transportItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === '96c1c0ff-b0f1-480f-91a7-4658bebe6674');
-        this.refurbishItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'f2d9770b-f933-48b0-a495-df80cb702fce');
+        this.serviceItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'a4d2e6d0-c6c1-46ec-a1cf-3a64822e7a9e');
+        this.timeItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId === 'da178f93-234a-41ed-815c-819af8ca4e6f');
 
         this.partsFilter = new SearchFactory({
           objectType: this.m.Part,
@@ -146,21 +161,16 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
 
         if (isCreate) {
           this.title = 'Add purchase invoice Item';
+          this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
           this.invoiceItem = this.allors.context.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
           this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
         } else {
+          this.invoice = this.invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem;
 
           if (this.invoiceItem.Part) {
             this.unifiedGood = this.invoiceItem.Part.objectType.name === m.UnifiedGood.name;
             this.nonUnifiedPart = this.invoiceItem.Part.objectType.name === m.NonUnifiedPart.name;
-
-            if (this.unifiedGood) {
-              this.updateFromPart(this.invoiceItem.Part);
-            }
-
-            if (this.nonUnifiedPart) {
-              this.updateFromSparePart(this.invoiceItem.Part);
-            }
+            this.updateFromPart(this.invoiceItem.Part);
           }
 
           if (this.invoiceItem.CanWriteQuantity) {
@@ -178,9 +188,10 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
     }
   }
 
-  public goodSelected(product: Product): void {
-    if (product) {
-      this.refreshSerialisedItems(product);
+  public goodSelected(unifiedGood: UnifiedGood): void {
+    if (unifiedGood) {
+      this.part = unifiedGood;
+      this.refreshSerialisedItems(unifiedGood);
     }
   }
 
@@ -196,15 +207,6 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       this.nonUnifiedPart = this.invoiceItem.Part.objectType.name === this.m.NonUnifiedPart.name;
 
       this.updateFromPart(part);
-    }
-  }
-
-  public sparePartSelected(part: Part): void {
-    if (part) {
-      this.unifiedGood = this.invoiceItem.Part.objectType.name === this.m.UnifiedGood.name;
-      this.nonUnifiedPart = this.invoiceItem.Part.objectType.name === this.m.NonUnifiedPart.name;
-
-      this.updateFromSparePart(part);
     }
   }
 
@@ -226,24 +228,26 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       );
   }
 
-  private refreshSerialisedItems(product: Product): void {
+  private refreshSerialisedItems(unifiedGood: UnifiedGood): void {
 
     const { pull, x } = this.metaService;
 
     const pulls = [
       pull.NonUnifiedGood({
-        object: product.id,
+        object: unifiedGood.id,
         fetch: {
           Part: {
             include: {
               SerialisedItems: x,
+              InventoryItemKind: x,
             }
           }
         }
       }),
       pull.UnifiedGood({
-        object: product.id,
+        object: unifiedGood.id,
         include: {
+          InventoryItemKind: x,
           SerialisedItems: x,
         }
       })
@@ -253,12 +257,12 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
-        this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
         this.serialisedItems = this.part.SerialisedItems;
+        this.serialised = this.part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
       });
   }
 
-  private updateFromSparePart(part: Part) {
+  private updateFromPart(part: Part) {
 
     const { pull, x } = this.metaService;
 
@@ -300,6 +304,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
     this.allors.context
       .load(new PullRequest({ pulls }))
       .subscribe((loaded) => {
+        this.part = (loaded.objects.UnifiedGood || loaded.objects.Part) as Part;
         this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
         const supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
@@ -321,45 +326,5 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
       this.invoiceItem.InvoiceItemType !== this.partItemType) {
       this.invoiceItem.Quantity = '1';
     }
-  }
-
-  private updateFromPart(part: Part) {
-
-    const { pull, x } = this.metaService;
-
-    const pulls = [
-      pull.Part(
-        {
-          object: part,
-          fetch: {
-            SerialisedItems: {
-              include: {
-                OwnedBy: x
-              }
-            }
-          }
-        }
-      ),
-      pull.Part(
-        {
-          object: part,
-          include: {
-            InventoryItemKind: x,
-          }
-        }
-      ),
-    ];
-
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-        this.serialised = part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
-
-        this.serialisedItems = loaded.collections.SerialisedItems as SerialisedItem[];
-
-        if (this.invoiceItem.SerialisedItem) {
-          this.serialisedItems.push(this.invoiceItem.SerialisedItem);
-        }
-      });
   }
 }

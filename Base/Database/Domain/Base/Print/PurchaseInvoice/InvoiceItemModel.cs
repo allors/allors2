@@ -12,15 +12,19 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
     {
         public InvoiceItemModel(PurchaseInvoiceItem item)
         {
-            this.Part = item.ExistPart ? item.Part?.Name : item.Description;
-            var description = item.ExistPart ? item.Description : string.Empty;
+            this.Part = item.Part?.Name;
+            var description = item.Description;
+
+            if (string.IsNullOrEmpty(this.Part) && description == null)
+            {
+                description = item.InvoiceItemType.Name;
+            }
+
             this.Description = description?.Split('\n');
 
             this.Quantity = item.Quantity;
-            // TODO: Where does the currency come from?
-            var currency = "€";
-            this.Price = item.UnitPrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.Amount = item.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
+            this.Price = item.UnitPrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.Amount = item.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
             this.Comment = item.Comment?.Split('\n');
             this.SupplierProductId = item.Part?.SupplierOfferingsWherePart?.FirstOrDefault(v => v.Supplier.Equals(item.PurchaseInvoiceWherePurchaseInvoiceItem.BilledFrom))?.SupplierProductId;
         }

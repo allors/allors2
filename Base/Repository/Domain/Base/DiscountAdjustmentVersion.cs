@@ -27,8 +27,6 @@ namespace Allors.Repository
 
         public decimal Amount { get; set; }
 
-        public VatRate VatRate { get; set; }
-
         public decimal Percentage { get; set; }
 
         #endregion

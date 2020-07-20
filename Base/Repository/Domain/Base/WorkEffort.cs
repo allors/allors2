@@ -395,6 +395,16 @@ namespace Allors.Repository
         public Media[] ElectronicDocuments { get; set; }
 
         #region Allors
+        [Id("d21f9909-1dfd-4c7d-9559-68fb1fc29f26")]
+        [AssociationId("fe2dda86-029a-46a8-83cd-f3c92525a3c1")]
+        [RoleId("2151c494-2f3e-45b4-a598-b3d025be2205")]
+        #endregion
+        [Indexed]
+        [Derived]
+        [Workspace]
+        int SortableWorkEffortNumber { get; set; }
+
+        #region Allors
         [Id("D9234724-215F-4F6C-B3E8-9743CB22A245")]
         #endregion
         [Workspace]

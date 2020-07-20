@@ -6,6 +6,7 @@
 
 namespace Allors
 {
+    using System;
     using System.IO;
     using System.Linq;
     using Allors.Domain;
@@ -33,6 +34,8 @@ namespace Allors
 
             var allorsLogo = dataPath + @"\www\admin\images\logo.png";
 
+            var serialisedItemSoldOns = new SerialisedItemSoldOn[] { new SerialisedItemSoldOns(@this.Session()).SalesInvoiceSend, new SerialisedItemSoldOns(@this.Session()).PurchaseInvoiceConfirm };
+
             var allors = Organisations.CreateInternalOrganisation(
                 session: @this.Session(),
                 name: "Allors BVBA",
@@ -58,7 +61,7 @@ namespace Allors
                 storeName: "Allors Store",
                 billingProcess: new BillingProcesses(@this.Session()).BillingForOrderItems,
                 outgoingShipmentNumberPrefix: "a-CS",
-                salesInvoiceNumberPrefix: "a-SI",
+                salesInvoiceNumberPrefix: "a-SI-{year}-",
                 salesOrderNumberPrefix: "a-SO",
                 purchaseOrderNumberPrefix: "a-PO",
                 purchaseInvoiceNumberPrefix: "a-PI",
@@ -75,16 +78,16 @@ namespace Allors
                 isAutomaticallyReceived: false,
                 autoGeneratePurchaseShipment: false,
                 useCreditNoteSequence: true,
-                requestCounterValue: 1,
-                quoteCounterValue: 1,
-                orderCounterValue: 1,
-                purchaseOrderCounterValue: 1,
-                invoiceCounterValue: 1,
-                purchaseInvoiceCounterValue: 1,
+                requestCounterValue: 0,
+                quoteCounterValue: 0,
+                orderCounterValue: 0,
+                purchaseOrderCounterValue: 0,
+                invoiceCounterValue: 100,
+                purchaseInvoiceCounterValue: 0,
                 purchaseOrderNeedsApproval: true,
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip,
+                serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true);
 
             var dipu = Organisations.CreateInternalOrganisation(
@@ -129,16 +132,16 @@ namespace Allors
                 isAutomaticallyReceived: false,
                 autoGeneratePurchaseShipment: false,
                 useCreditNoteSequence: true,
-                requestCounterValue: 1,
-                quoteCounterValue: 1,
-                orderCounterValue: 1,
-                purchaseOrderCounterValue: 1,
-                purchaseInvoiceCounterValue: 1,
-                invoiceCounterValue: 1,
+                requestCounterValue: 0,
+                quoteCounterValue: 0,
+                orderCounterValue: 0,
+                purchaseOrderCounterValue: 0,
+                purchaseInvoiceCounterValue: 0,
+                invoiceCounterValue: 0,
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(@this.Session()).CustomerShipmentShip,
+                serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true);
 
             // Give Administrator access
@@ -318,10 +321,10 @@ line2")
                     .Build();
 
                 var salesOrderItem3 = new SalesOrderItemBuilder(@this.Session())
-                    .WithDescription("Fee")
+                    .WithDescription("Service")
                     .WithAssignedUnitPrice(100)
                     .WithQuantityOrdered(1)
-                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Fee)
+                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Service)
                     .Build();
 
                 var order = new SalesOrderBuilder(@this.Session())
@@ -354,10 +357,10 @@ line2")
                     .Build();
 
                 var salesInvoiceItem3 = new SalesInvoiceItemBuilder(@this.Session())
-                    .WithDescription("Fee")
+                    .WithDescription("Service")
                     .WithAssignedUnitPrice(100)
                     .WithQuantity(1)
-                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Fee)
+                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Service)
                     .Build();
 
                 var exw = new IncoTermTypes(@this.Session()).Exw;
@@ -381,10 +384,10 @@ line2")
                 for (var j = 0; j < 3; j++)
                 {
                     var salesInvoiceItem = new SalesInvoiceItemBuilder(@this.Session())
-                        .WithDescription("Extra Charge")
+                        .WithDescription("Some service being delivered")
                         .WithAssignedUnitPrice(100 + j)
                         .WithQuantity(1)
-                        .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).MiscCharge)
+                        .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Service)
                         .Build();
 
                     salesInvoice.AddSalesInvoiceItem(salesInvoiceItem);
@@ -416,10 +419,10 @@ line2")
                     .Build();
 
                 var purchaseInvoiceItem3 = new PurchaseInvoiceItemBuilder(@this.Session())
-                    .WithDescription("Fee")
+                    .WithDescription("Service")
                     .WithAssignedUnitPrice(100)
                     .WithQuantity(1)
-                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Fee)
+                    .WithInvoiceItemType(new InvoiceItemTypes(@this.Session()).Service)
                     .Build();
 
                 var purchaseInvoice = new PurchaseInvoiceBuilder(@this.Session())

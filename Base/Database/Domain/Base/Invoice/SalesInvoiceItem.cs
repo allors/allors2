@@ -67,28 +67,6 @@ namespace Allors.Domain
             }
         }
 
-        public void SetActualDiscountAmount(decimal amount)
-        {
-            if (!this.ExistDiscountAdjustment)
-            {
-                this.DiscountAdjustment = new DiscountAdjustmentBuilder(this.Strategy.Session).Build();
-            }
-
-            this.DiscountAdjustment.Amount = amount;
-            this.DiscountAdjustment.RemovePercentage();
-        }
-
-        public void SetActualDiscountPercentage(decimal percentage)
-        {
-            if (!this.ExistDiscountAdjustment)
-            {
-                this.DiscountAdjustment = new DiscountAdjustmentBuilder(this.Strategy.Session).Build();
-            }
-
-            this.DiscountAdjustment.Percentage = percentage;
-            this.DiscountAdjustment.RemoveAmount();
-        }
-
         public void BaseOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSalesInvoiceItemState)
@@ -141,6 +119,14 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnInit(ObjectOnInit method)
+        {
+            if (this.ExistProduct && !this.ExistInvoiceItemType)
+            {
+                this.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).ProductItem;
+            }
+        }
+
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -149,6 +135,11 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
+
+            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability && salesInvoice.SalesInvoiceType.Equals(new SalesInvoiceTypes(this.Session()).SalesInvoice))
+            {
+                derivation.Validation.AssertExists(this, this.Meta.NextSerialisedItemAvailability);
+            }
 
             if (this.Part != null && this.Part.InventoryItemKind.IsSerialised && this.Quantity != 1)
             {
@@ -166,12 +157,10 @@ namespace Allors.Domain
             }
 
             this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesInvoiceWhereSalesInvoiceItem?.VatRegime;
-            this.VatRate = this.Product?.VatRate;
+            this.VatRate = this.VatRegime?.VatRate;
 
-            if (this.ExistVatRegime && this.VatRegime.ExistVatRate)
-            {
-                this.VatRate = this.VatRegime.VatRate;
-            }
+            this.IrpfRegime = this.ExistAssignedIrpfRegime ? this.AssignedIrpfRegime : this.SalesInvoiceWhereSalesInvoiceItem?.IrpfRegime;
+            this.IrpfRate = this.IrpfRegime?.IrpfRate;
 
             if (this.ExistInvoiceItemType && this.IsSubTotalItem().Result == true && this.Quantity <= 0)
             {

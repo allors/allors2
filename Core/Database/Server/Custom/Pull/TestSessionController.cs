@@ -29,7 +29,7 @@ namespace Allors.Server.Controllers
         public IActionResult UserName()
         {
             var user = this.Session.GetUser();
-            var result = user.UserName;
+            var result = user?.UserName;
             return this.Content(result);
         }
     }

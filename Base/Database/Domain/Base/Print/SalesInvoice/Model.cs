@@ -20,6 +20,11 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
             this.InvoiceItems = invoice.SalesInvoiceItems.Select(v => new InvoiceItemModel(v)).ToArray();
 
+            if (invoice.ExistOrderAdjustments)
+            {
+                this.OrderAdjustments = invoice.OrderAdjustments.Select(v => new OrderAdjustmentModel(v)).ToArray();
+            }
+
             var paymentTerm = new InvoiceTermTypes(session).PaymentNetDays;
             this.SalesTerms = invoice.SalesTerms.Where(v => !v.TermType.Equals(paymentTerm)).Select(v => new SalesTermModel(v)).ToArray();
         }
@@ -35,5 +40,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public InvoiceItemModel[] InvoiceItems { get; }
 
         public SalesTermModel[] SalesTerms { get; }
+
+        public OrderAdjustmentModel[] OrderAdjustments { get; }
     }
 }

@@ -48,7 +48,7 @@ export class Table<Row extends TableRow> implements BaseTable {
         if (typeof config.initialSort === 'string') {
           sort = {
             active: config.initialSort,
-            direction: 'asc'
+            direction: config.initialSortDirection || 'asc'
           };
         } else if (config.initialSort.active) {
           sort = {

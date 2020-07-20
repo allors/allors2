@@ -40,10 +40,6 @@ namespace Allors.Repository
 
         public VatRate VatRate { get; set; }
 
-        public DiscountAdjustment DiscountAdjustment { get; set; }
-
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
-
         public decimal TotalBasePrice { get; set; }
 
         public decimal TotalVat { get; set; }
@@ -59,6 +55,11 @@ namespace Allors.Repository
         public decimal TotalSurcharge { get; set; }
 
         public decimal TotalSurchargeAsPercentage { get; set; }
+
+        public decimal GrandTotal { get; set; }
+        public DiscountAdjustment[] DiscountAdjustments { get; set; }
+
+        public SurchargeAdjustment[] SurchargeAdjustments { get; set; }
 
         public string Comment { get; set; }
 
@@ -322,6 +323,62 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         public string Details { get; set; }
+
+        #region Allors
+        [Id("5ccce98c-eeec-439f-adf5-d472aa00eecd")]
+        [AssociationId("35703d63-c4c0-4ea7-a70c-9e9e9ab358ae")]
+        [RoleId("ddb00591-5cb3-47be-9aa3-8b6068389e5b")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        public IrpfRegime IrpfRegime { get; set; }
+
+        #region Allors
+        [Id("ecd72f14-a7f3-43d9-bc95-46f0339ab920")]
+        [AssociationId("572c07ae-1636-4e47-8e9d-1011f7e8209d")]
+        [RoleId("36d36820-0c0e-42c7-a05b-e105f57bd6c1")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        #region Allors
+        [Id("da79fdb4-2488-4b7c-926f-209d62d901fc")]
+        [AssociationId("2ee018ef-54d8-4b06-b28f-d39c7c592968")]
+        [RoleId("eb2e0ec8-cfcc-40ec-9af5-538f7d035cdf")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        public IrpfRate IrpfRate { get; set; }
+
+        #region Allors
+        [Id("e646b243-674a-42c5-804a-596bfcc80d33")]
+        [AssociationId("657746b3-4411-4e34-ad80-7b1f029e25c7")]
+        [RoleId("a80887e2-641e-4edd-9c9c-f11a6edd971d")]
+        #endregion
+        [Required]
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal UnitIrpf { get; set; }
+
+        #region Allors
+        [Id("135abd04-f017-435b-b7db-b0a3dc730674")]
+        [AssociationId("44ccd48b-ae20-4d5b-8f57-b13847f3d29b")]
+        [RoleId("a4f6e5fb-f74e-465c-81fb-39f98880709b")]
+        #endregion
+        [Required]
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal TotalIrpf { get; set; }
 
         #region inherited methods
 

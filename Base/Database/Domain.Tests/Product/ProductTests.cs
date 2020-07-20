@@ -55,13 +55,6 @@ namespace Allors.Domain
             builder.WithName("good");
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithVatRate(vatRate21);
-            builder.Build();
-
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 

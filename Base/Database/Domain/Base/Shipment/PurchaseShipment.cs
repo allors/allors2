@@ -37,11 +37,6 @@ namespace Allors.Domain
             {
                 this.EstimatedArrivalDate = this.Session().Now().Date;
             }
-
-            if (!this.ExistShipmentNumber && this.ExistShipToParty)
-            {
-                this.ShipmentNumber = ((InternalOrganisation)this.ShipToParty).NextShipmentNumber(this.Session().Now().Year);
-            }
         }
 
         public void BaseOnPreDerive(ObjectOnPreDerive method)
@@ -92,6 +87,7 @@ namespace Allors.Domain
             if (!this.ExistShipmentNumber && shipToParty != null)
             {
                 this.ShipmentNumber = shipToParty.NextShipmentNumber(this.Strategy.Session.Now().Year);
+                this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(((InternalOrganisation)this.ShipToParty).IncomingShipmentNumberPrefix, this.ShipmentNumber, this.CreationDate.Value.Year.ToString());
             }
 
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)
@@ -158,6 +154,12 @@ namespace Allors.Domain
 
                     shipmentItem.SerialisedItem.SerialisedItemAvailability = new SerialisedItemAvailabilities(this.Session()).Available;
                     shipmentItem.SerialisedItem.AvailableForSale = true;
+
+                    if ((this.ShipToParty as InternalOrganisation)?.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).PurchaseshipmentReceive) == true)
+                    {
+                        shipmentItem.SerialisedItem.OwnedBy = this.ShipToParty;
+                        shipmentItem.SerialisedItem.Ownership = new Ownerships(this.Session()).Own;
+                    }
                 }
                 else
                 {

@@ -34,9 +34,17 @@ namespace Allors.Domain.Print.SalesOrderModel
             // TODO: Where does the currency come from?
             this.SubTotal = order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalExVat = order.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.VatCharge = order.VatRegime?.VatRate?.Rate.ToString("n2");
+            this.VatRate = order.VatRegime?.VatRate?.Rate.ToString("n2");
             this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.TotalIncVat = currencyIsoCode + " " + order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
+
+            // IRPF is subtracted for total amount to pay
+            var totalIrpf = order.TotalIrpf * -1;
+            this.IrpfRate = order.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
+            this.TotalIrpf = totalIrpf.ToString("N2", new CultureInfo("nl-BE"));
+            this.PrintIrpf = order.TotalIrpf != 0;
+
+            this.TotalIncVat = order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
+            this.GrandTotal = currencyIsoCode + " " + order.GrandTotal.ToString("N2", new CultureInfo("nl-BE"));
 
             this.PaymentNetDays = order.PaymentNetDays;
         }
@@ -55,14 +63,22 @@ namespace Allors.Domain.Print.SalesOrderModel
 
         public string TotalExVat { get; }
 
-        public string VatCharge { get; }
+        public string VatRate { get; }
 
         public string TotalVat { get; }
 
+        public string IrpfRate { get; }
+
+        public string TotalIrpf { get; }
+
         public string TotalIncVat { get; }
+
+        public string GrandTotal { get; }
 
         public int PaymentNetDays { get; }
 
         public string Currency { get; }
+
+        public bool PrintIrpf { get; }
     }
 }

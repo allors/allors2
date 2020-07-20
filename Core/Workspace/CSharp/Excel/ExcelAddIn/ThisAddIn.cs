@@ -10,7 +10,7 @@ namespace ExcelAddIn
     using Allors.Workspace.Meta;
     using Allors.Workspace.Remote;
     using Application;
-    using Allors.Excel.Embedded;
+    using Allors.Excel.Interop;
     using Microsoft.Extensions.DependencyInjection;
     using Nito.AsyncEx;
     using ObjectFactory = Allors.Workspace.ObjectFactory;
@@ -41,8 +41,9 @@ namespace ExcelAddIn
             var workspace = new Workspace(objectFactory);
             this.Client = new Client(this.database, workspace);
             var program = new Program(serviceProvider, this.Client);
+            var office = new Office();
 
-            this.AddIn = new AddIn(this.Application, program);
+            this.AddIn = new AddIn(this.Application, program, office);
             this.Ribbon.AddIn = this.AddIn;
             this.Ribbon.Authentication = new Authentication(this.Ribbon, database, this.Client, configuration);
             await program.OnStart(this.AddIn);

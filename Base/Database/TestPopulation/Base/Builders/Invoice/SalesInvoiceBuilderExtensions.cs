@@ -25,7 +25,7 @@ namespace Allors.Domain.TestPopulation
             var salesInvoiceItem_Product = new SalesInvoiceItemBuilder(@this.Session).WithProductItemDefaults().Build();
             var salesInvoiceItem_Part = new SalesInvoiceItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
-            var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
+            var salesInvoiceType = new SalesInvoiceTypes(@this.Session).SalesInvoice;
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
@@ -69,7 +69,7 @@ namespace Allors.Domain.TestPopulation
 
             var customer = internalOrganisation.ActiveCustomers.Where(v => v.GetType().Name == typeof(Organisation).Name).FirstOrDefault();
 
-            var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
+            var salesInvoiceType = new SalesInvoiceTypes(@this.Session).SalesInvoice;
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             var salesInvoiceItem_Default = new SalesInvoiceItemBuilder(@this.Session).WithDefaults().Build();
@@ -115,7 +115,7 @@ namespace Allors.Domain.TestPopulation
             var salesInvoiceItem_Product = new SalesInvoiceItemBuilder(@this.Session).WithProductItemDefaults().Build();
             var salesInvoiceItem_Part = new SalesInvoiceItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
-            var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
+            var salesInvoiceType = new SalesInvoiceTypes(@this.Session).SalesInvoice;
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
@@ -155,7 +155,7 @@ namespace Allors.Domain.TestPopulation
             var salesInvoiceItem_Product = new SalesInvoiceItemBuilder(@this.Session).WithProductItemDefaults().Build();
             var salesInvoiceItem_Part = new SalesInvoiceItemBuilder(@this.Session).WithPartItemDefaults().Build();
 
-            var salesInvoiceType = faker.Random.ListItem(@this.Session.Extent<SalesInvoiceType>());
+            var salesInvoiceType = new SalesInvoiceTypes(@this.Session).CreditNote;
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));

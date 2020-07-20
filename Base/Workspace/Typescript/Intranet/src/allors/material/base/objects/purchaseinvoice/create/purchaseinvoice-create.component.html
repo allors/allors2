@@ -281,9 +281,10 @@
     </div>
 
     <div class="row">
-      <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.VatRegime" [options]="vatRegimes"
-        display="Name"></a-mat-select>
-      <a-mat-static class="col-md" [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
+      <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.VatRegime"
+        [options]="vatRegimes" display="Name"></a-mat-select>
+      <a-mat-select class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.IrpfRegime"
+        [options]="irpfRegimes" display="Name"></a-mat-select>
     </div>
 
     <div class="row">
@@ -297,13 +298,7 @@
     </div>
 
     <div class="row">
-      <a-mat-textarea class="col-md" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-textarea>
-    </div>
-
-    <div class="row">
-      <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.PurchaseInvoice.Comment"></a-mat-textarea>
-      <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.PurchaseInvoice.InternalComment"></a-mat-textarea>
-      <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.PurchaseInvoice.Message"></a-mat-textarea>
+      <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.PurchaseInvoice.Currency" [options]="currencies" display="IsoCode"  class="col-md"></a-mat-select>
     </div>
 
   </mat-dialog-content>

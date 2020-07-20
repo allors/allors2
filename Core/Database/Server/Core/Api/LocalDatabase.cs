@@ -154,8 +154,7 @@ namespace Allors.Workspace.Local
             {
                 using (var session = this.Database.CreateSession())
                 {
-                    var acls = new WorkspaceAccessControlLists(session.GetUser());
-                    var responseBuilder = new SecurityResponseBuilder(session, request, acls);
+                    var responseBuilder = new SecurityResponseBuilder(session, request);
                     var response = responseBuilder.Build();
                     return Task.FromResult(response);
                 }

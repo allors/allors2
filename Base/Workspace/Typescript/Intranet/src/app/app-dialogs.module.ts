@@ -22,6 +22,7 @@ import { InventoryItemTransactionEditComponent, InventoryItemTransactionEditModu
 import { ProductIdentificationEditComponent, ProductIdentificationEditModule } from '../allors/material/base/objects/productidentification/edit/productIdentification-edit.module';
 import { FaceToFaceCommunicationEditComponent, FaceToFaceCommunicationEditModule } from '../allors/material/base/objects/facetofacecommunication/edit/facetofacecommunication-edit.module';
 import { LetterCorrespondenceEditComponent, LetterCorrespondenceEditModule } from '../allors/material/base/objects/lettercorrespondence/edit/lettercorrespondence-edit.module';
+import { OrderAdjustmentEditComponent, OrderAdjustmentEditModule } from '../allors/material/base/objects/orderadjustment/edit/orderadjustment-edit.module';
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/base/objects/organisation/create/organisation-create.module';
 import { OrganisationContactRelationshipEditComponent, OrganisationContactRelationshipEditModule } from '../allors/material/base/objects/organisationcontactrelationship/edit/organisationcontactrelationship-edit.module';
 import { PartyContactmechanismEditComponent, PartyContactmechanismEditModule } from '../allors/material/base/objects/partycontactmechanism/edit/partycontactmechanism-edit.module';
@@ -77,6 +78,7 @@ import { WorkEffortPartyAssignmentEditComponent, WorkEffortPartyAssignmentEditMo
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/base/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/core/services/object';
+import { OrderAdjustmentOverviewPanelComponent } from 'src/allors/material/base/objects/orderadjustment/overview/panel/orderadjustment-overview-panel.module';
 
 export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
@@ -85,17 +87,20 @@ export const create = {
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
   [ids.CustomerShipment]: CustomerShipmentCreateComponent,
   [ids.Disbursement]: DisbursementEditComponent,
+  [ids.DiscountAdjustment]: OrderAdjustmentEditComponent,
   [ids.EanIdentification]: ProductIdentificationEditComponent,
   [ids.EmailAddress]: EmailAddressCreateComponent,
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
   [ids.Employment]: EmploymentEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
+  [ids.Fee]: OrderAdjustmentEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
   [ids.InventoryItemTransaction]: InventoryItemTransactionEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.IsbnIdentification]: ProductIdentificationEditComponent,
   [ids.LetterCorrespondence]: LetterCorrespondenceEditComponent,
   [ids.ManufacturerIdentification]: ProductIdentificationEditComponent,
+  [ids.MiscellaneousCharge]: OrderAdjustmentEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
   [ids.Organisation]: OrganisationCreateComponent,
   [ids.OrganisationContactRelationship]: OrganisationContactRelationshipEditComponent,
@@ -133,10 +138,12 @@ export const create = {
   [ids.SerialisedItem]: SerialisedItemCreateComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.ShipmentItem]: ShipmentItemEditComponent,
+  [ids.ShippingAndHandlingCharge]: OrderAdjustmentEditComponent,
   [ids.SkuIdentification]: ProductIdentificationEditComponent,
   [ids.SubContractorRelationship]: SubContractorRelationshipEditComponent,
   [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
+  [ids.SurchargeAdjustment]: OrderAdjustmentEditComponent,
   [ids.TelecommunicationsNumber]: TelecommunicationsNumberCreateComponent,
   [ids.TimeEntry]: TimeEntryEditComponent,
   [ids.UnifiedGood]: UnifiedGoodCreateComponent,
@@ -157,17 +164,20 @@ export const edit = {
   [ids.Catalogue]: CatalogueEditComponent,
   [ids.CustomerRelationship]: CustomerRelationshipEditComponent,
   [ids.Disbursement]: DisbursementEditComponent,
+  [ids.DiscountAdjustment]: OrderAdjustmentEditComponent,
   [ids.EanIdentification]: ProductIdentificationEditComponent,
   [ids.EmailAddress]: EmailAddressEditComponent,
   [ids.EmailCommunication]: EmailCommunicationEditComponent,
   [ids.Employment]: EmploymentEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationEditComponent,
+  [ids.Fee]: OrderAdjustmentEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
   [ids.InventoryItemTransaction]: InventoryItemTransactionEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.IsbnIdentification]: ProductIdentificationEditComponent,
   [ids.LetterCorrespondence]: LetterCorrespondenceEditComponent,
   [ids.ManufacturerIdentification]: ProductIdentificationEditComponent,
+  [ids.MiscellaneousCharge]: OrderAdjustmentEditComponent,
   [ids.NonSerialisedInventoryItem]: NonSerialisedInventoryItemEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
   [ids.OrganisationContactRelationship]: OrganisationContactRelationshipEditComponent,
@@ -196,10 +206,12 @@ export const edit = {
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
   [ids.SerialisedItemCharacteristicType]: SerialisedItemCharacteristicEditComponent,
   [ids.ShipmentItem]: ShipmentItemEditComponent,
+  [ids.ShippingAndHandlingCharge]: OrderAdjustmentEditComponent,
   [ids.SkuIdentification]: ProductIdentificationEditComponent,
   [ids.SupplierOffering]: SupplierOfferingEditComponent,
   [ids.SubContractorRelationship]: SubContractorRelationshipEditComponent,
   [ids.SupplierRelationship]: SupplierRelationshipEditComponent,
+  [ids.SurchargeAdjustment]: OrderAdjustmentEditComponent,
   [ids.TelecommunicationsNumber]: TelecommunicationsNumberEditComponent,
   [ids.TimeEntry]: TimeEntryEditComponent,
   [ids.UpcaIdentification]: ProductIdentificationEditComponent,
@@ -233,6 +245,7 @@ export const edit = {
     ProductIdentificationEditModule,
     InventoryItemTransactionEditModule,
     LetterCorrespondenceEditModule,
+    OrderAdjustmentEditModule,
     OrganisationCreateModule,
     OrganisationContactRelationshipEditModule,
     NonSerialisedInventoryItemEditModule,
@@ -306,6 +319,7 @@ export const edit = {
     NonUnifiedPartCreateComponent,
     InventoryItemTransactionEditComponent,
     LetterCorrespondenceEditComponent,
+    OrderAdjustmentEditComponent,
     OrganisationCreateComponent,
     OrganisationContactRelationshipEditComponent,
     PersonCreateComponent,

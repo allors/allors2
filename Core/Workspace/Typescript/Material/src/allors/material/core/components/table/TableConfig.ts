@@ -1,4 +1,4 @@
-import { Sort } from '@angular/material/sort';
+import { Sort, SortDirection } from '@angular/material/sort';
 
 import { Action } from '../../../../angular';
 
@@ -16,6 +16,8 @@ export interface TableConfig {
     autoSort?: boolean;
 
     initialSort?: Partial<Sort> | string;
+
+    initialSortDirection?: SortDirection;
 
     pageSize?: number;
 

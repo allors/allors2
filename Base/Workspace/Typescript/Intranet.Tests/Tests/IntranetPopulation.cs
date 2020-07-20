@@ -43,6 +43,8 @@ namespace Tests
 
             var allorsLogo = this.DataPath + @"\www\admin\images\logo.png";
 
+            var serialisedItemSoldOns = new SerialisedItemSoldOn[] { new SerialisedItemSoldOns(this.Session).SalesInvoiceSend, new SerialisedItemSoldOns(this.Session).PurchaseInvoiceConfirm };
+
             var allors = Organisations.CreateInternalOrganisation(
                 session: this.Session,
                 name: "Allors BVBA",
@@ -94,7 +96,7 @@ namespace Tests
                 purchaseOrderNeedsApproval: true,
                 purchaseOrderApprovalThresholdLevel1: 1000M,
                 purchaseOrderApprovalThresholdLevel2: 5000M,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(this.Session).CustomerShipmentShip,
+                serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true);
 
             var dipu = Organisations.CreateInternalOrganisation(
@@ -148,7 +150,7 @@ namespace Tests
                 purchaseOrderNeedsApproval: false,
                 purchaseOrderApprovalThresholdLevel1: null,
                 purchaseOrderApprovalThresholdLevel2: null,
-                serialisedItemSoldOn: new SerialisedItemSoldOns(this.Session).CustomerShipmentShip,
+                serialisedItemSoldOns: serialisedItemSoldOns,
                 collectiveWorkEffortInvoice: true);
 
             singleton.Settings.DefaultFacility = allors.FacilitiesWhereOwner.First;
@@ -236,12 +238,12 @@ namespace Tests
 
             var brand = new BrandBuilder(this.Session).WithDefaults().Build();
 
-            var good_1 = new NonUnifiedGoodBuilder(this.Session).WithNonSerialisedPartDefaults(allors).Build();
+            var good_1 = new UnifiedGoodBuilder(this.Session).WithNonSerialisedDefaults(allors).Build();
 
             this.Session.Derive();
 
             new InventoryItemTransactionBuilder(this.Session)
-                .WithPart(good_1.Part)
+                .WithPart(good_1)
                 .WithQuantity(100)
                 .WithReason(new InventoryTransactionReasons(this.Session).Unknown)
                 .Build();
@@ -353,7 +355,7 @@ namespace Tests
             new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors).Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(good_1.Part)
+                .WithPart(good_1)
                 .WithSupplier(allors.ActiveSuppliers.First)
                 .WithFromDate(this.Session.Now().AddMinutes(-1))
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -363,7 +365,7 @@ namespace Tests
 
             var purchaseInvoiceItem_1 = new PurchaseInvoiceItemBuilder(this.Session)
                 .WithDescription("first item")
-                .WithProduct(good_1)
+                .WithPart(good_1)
                 .WithAssignedUnitPrice(3000)
                 .WithQuantity(1)
                 .WithMessage(@"line1
@@ -379,10 +381,10 @@ line2")
                 .Build();
 
             var purchaseInvoiceItem_3 = new PurchaseInvoiceItemBuilder(this.Session)
-                .WithDescription("Fee")
+                .WithDescription("Service")
                 .WithAssignedUnitPrice(100)
                 .WithQuantity(1)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Service)
                 .Build();
 
             var purchaseInvoice = new PurchaseInvoiceBuilder(this.Session)
@@ -400,7 +402,7 @@ line2")
 
             var purchaseOrderItem_1 = new PurchaseOrderItemBuilder(this.Session)
                 .WithDescription("first purchase order item")
-                .WithPart(good_1.Part)
+                .WithPart(good_1)
                 .WithQuantityOrdered(1)
                 .Build();
 

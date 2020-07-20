@@ -165,8 +165,8 @@ export class PartyRelationshipOverviewPanelComponent extends TestScope implement
         object: v,
         type: v.objectType.name,
         parties: v.Parties.map(w => w.displayName).join(', '),
-        from: moment(v.FromDate).format('L'),
-        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('L') : '',
+        from: moment(v.FromDate).format('DD-MM-YYYY'),
+        through: v.ThroughDate !== null ? moment(v.ThroughDate).format('DD-MM-YYYY') : '',
       } as Row;
     });
   }

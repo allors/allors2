@@ -53,8 +53,13 @@ namespace Allors.Domain
                 this.Name = this.PartWhereSerialisedItem.Name;
             }
 
+            this.PurchasePrice = this.AssignedPurchasePrice ?? this.PurchaseOrderItemsWhereSerialisedItem.LastOrDefault()?.UnitPrice ?? 0M;
             this.SuppliedBy = this.AssignedSuppliedBy ?? this.PartWhereSerialisedItem?.SupplierOfferingsWherePart?.FirstOrDefault()?.Supplier;
 
+            this.SuppliedByPartyName = this.ExistSuppliedBy ? this.SuppliedBy.PartyName : string.Empty;
+            this.OwnedByPartyName = this.ExistOwnedBy ? this.OwnedBy.PartyName : string.Empty;
+            this.RentedByPartyName = this.ExistRentedBy ? this.RentedBy.PartyName : string.Empty;
+            this.OwnershipByOwnershipName = this.ExistOwnership ? this.Ownership.Name : string.Empty;
             this.SerialisedItemAvailabilityName = this.ExistSerialisedItemAvailability ? this.SerialisedItemAvailability.Name : string.Empty;
 
             var doubles = this.PartWhereSerialisedItem?.SerialisedItems.Where(v =>

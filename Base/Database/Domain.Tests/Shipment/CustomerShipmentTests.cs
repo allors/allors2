@@ -9,6 +9,7 @@ using Allors.Domain.TestPopulation;
 
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
     using Xunit;
 
@@ -94,6 +95,8 @@ namespace Allors.Domain
                 .WithShipmentMethod(store.DefaultShipmentMethod)
                 .Build();
 
+            this.Session.Derive();
+
             Assert.Equal("1", shipment1.ShipmentNumber);
 
             var shipment2 = new CustomerShipmentBuilder(this.Session)
@@ -101,6 +104,8 @@ namespace Allors.Domain
                 .WithStore(store)
                 .WithShipmentMethod(store.DefaultShipmentMethod)
                 .Build();
+
+            this.Session.Derive();
 
             Assert.Equal("2", shipment2.ShipmentNumber);
         }
@@ -127,6 +132,8 @@ namespace Allors.Domain
                 .WithShipmentMethod(store.DefaultShipmentMethod)
                 .Build();
 
+            this.Session.Derive();
+
             Assert.Equal("the format is 1", shipment1.ShipmentNumber);
 
             var shipment2 = new CustomerShipmentBuilder(this.Session)
@@ -136,7 +143,47 @@ namespace Allors.Domain
                 .WithShipmentMethod(store.DefaultShipmentMethod)
                 .Build();
 
+            this.Session.Derive();
+
             Assert.Equal("the format is 2", shipment2.ShipmentNumber);
+        }
+
+        [Fact]
+        public void GivenShipFromWithoutShipmentNumberPrefix_WhenDeriving_ThenSortableShipmentNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.RemoveOutgoingShipmentNumberPrefix();
+            this.Session.Derive();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
+            var shipment = new CustomerShipmentBuilder(this.Session)
+                .WithShipToParty(new PersonBuilder(this.Session).WithLastName("person1").Build())
+                .WithShipToAddress(shipToAddress)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(shipment.ShipmentNumber), shipment.SortableShipmentNumber);
+        }
+
+        [Fact]
+        public void GivenShipFromWithShipmentNumberPrefix_WhenDeriving_ThenSortableShipmentNumberIsSet()
+        {
+            this.InternalOrganisation.StoresWhereInternalOrganisation.First.OutgoingShipmentNumberPrefix = "prefix-";
+            this.Session.Derive();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var shipToAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
+            var shipment = new CustomerShipmentBuilder(this.Session)
+                .WithShipToParty(new PersonBuilder(this.Session).WithLastName("person1").Build())
+                .WithShipToAddress(shipToAddress)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(shipment.ShipmentNumber.Split('-')[1]), shipment.SortableShipmentNumber);
         }
 
         [Fact]
@@ -1300,7 +1347,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var invoice = customer.SalesInvoicesWhereBillToCustomer.First;
-            Assert.Equal(15M, invoice.ShippingAndHandlingCharge.Amount);
+            Assert.Equal(15M, invoice.TotalShippingAndHandling);
         }
     }
 

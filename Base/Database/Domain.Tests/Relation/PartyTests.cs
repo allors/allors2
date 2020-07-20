@@ -69,7 +69,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(242M, partyFinancial.OpenOrderAmount);
+            Assert.Equal(200M, partyFinancial.OpenOrderAmount);
         }
     }
 }

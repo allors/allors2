@@ -23,6 +23,10 @@ namespace Allors.Repository
 
         public SalesTerm[] SalesTerms { get; set; }
 
+        public DiscountAdjustment[] DiscountAdjustments { get; set; }
+
+        public SurchargeAdjustment[] SurchargeAdjustments { get; set; }
+
         public decimal TotalInvoiceAdjustment { get; set; }
 
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
@@ -45,8 +49,6 @@ namespace Allors.Repository
 
         public decimal TotalDiscountAsPercentage { get; set; }
 
-        public DiscountAdjustment DiscountAdjustment { get; set; }
-
         public decimal UnitVat { get; set; }
 
         public VatRegime VatRegime { get; set; }
@@ -67,6 +69,8 @@ namespace Allors.Repository
 
         public decimal TotalIncVat { get; set; }
 
+        public decimal GrandTotal { get; set; }
+
         public decimal TotalSurchargeAsPercentage { get; set; }
 
         public decimal TotalDiscount { get; set; }
@@ -79,7 +83,15 @@ namespace Allors.Repository
 
         public decimal TotalExVat { get; set; }
 
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        public IrpfRate IrpfRate { get; set; }
+
+        public decimal UnitIrpf { get; set; }
+
+        public decimal TotalIrpf { get; set; }
 
         #endregion
 
@@ -122,6 +134,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public SerialisedItem SerialisedItem { get; set; }
+
+        #region Allors
+        [Id("ac302862-d876-43c0-a938-8058a6d3c2e8")]
+        [AssociationId("388abc03-79d9-4014-aa95-ab356a0e3429")]
+        [RoleId("49b1a593-2a10-43d5-ad25-f7b4b9b8930e")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItemAvailability NextSerialisedItemAvailability { get; set; }
 
         #region Allors
         [Id("7A952F88-BC4E-4F23-A0D5-44D47E30666E")]

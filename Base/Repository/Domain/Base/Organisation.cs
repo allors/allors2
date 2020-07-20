@@ -186,6 +186,8 @@ namespace Allors.Repository
 
         public VatRegime VatRegime { get; set; }
 
+        public IrpfRegime IrpfRegime { get; set; }
+
         public Agreement[] Agreements { get; set; }
         
         public PaymentMethod DefaultPaymentMethod { get; set; }
@@ -243,9 +245,12 @@ namespace Allors.Repository
         public decimal PurchaseOrderApprovalThresholdLevel1 { get; set; }
 
         public decimal PurchaseOrderApprovalThresholdLevel2 { get; set; }
+
         public bool IsAutomaticallyReceived { get; set; }
+
         public bool AutoGeneratePurchaseShipment { get; set; }
-        public SerialisedItemSoldOn SerialisedItemSoldOn { get; set; }
+
+        public SerialisedItemSoldOn[] SerialisedItemSoldOns { get; set; }
 
         #endregion
 

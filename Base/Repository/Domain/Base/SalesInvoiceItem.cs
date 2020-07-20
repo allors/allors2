@@ -26,6 +26,10 @@ namespace Allors.Repository
 
         public SalesTerm[] SalesTerms { get; set; }
 
+        public DiscountAdjustment[] DiscountAdjustments { get; set; }
+
+        public SurchargeAdjustment[] SurchargeAdjustments { get; set; }
+
         public decimal TotalInvoiceAdjustment { get; set; }
 
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
@@ -51,8 +55,6 @@ namespace Allors.Repository
         public LocalisedText[] LocalisedComments { get; set; }
 
         public decimal TotalDiscountAsPercentage { get; set; }
-
-        public DiscountAdjustment DiscountAdjustment { get; set; }
 
         public decimal UnitVat { get; set; }
 
@@ -86,7 +88,17 @@ namespace Allors.Repository
 
         public decimal TotalExVat { get; set; }
 
-        public SurchargeAdjustment SurchargeAdjustment { get; set; }
+        public decimal GrandTotal { get; set; }
+
+        public IrpfRegime IrpfRegime { get; set; }
+
+        public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        public IrpfRate IrpfRate { get; set; }
+
+        public decimal UnitIrpf { get; set; }
+
+        public decimal TotalIrpf { get; set; }
 
         public User CreatedBy { get; set; }
 
@@ -182,6 +194,26 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public SerialisedItem SerialisedItem { get; set; }
+
+        #region Allors
+        [Id("f3516e3b-4bb6-45a2-b7e8-089f20d35648")]
+        [AssociationId("639a53df-23b2-4629-ae6b-e1ed3716ff60")]
+        [RoleId("05977b32-3111-4023-b059-95b15ca6648e")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Workspace]
+        public SerialisedItemVersion SerialisedItemVersionBeforeSale { get; set; }
+
+        #region Allors
+        [Id("d1931e89-bbe7-4c90-8d22-564c4a8604d0")]
+        [AssociationId("35dbb954-be71-466c-b2d0-bbccfb4563eb")]
+        [RoleId("ca519df2-7172-4a50-ba2e-514d4b5cae1f")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItemAvailability NextSerialisedItemAvailability { get; set; }
 
         #region Allors
         [Id("0854aece-6ca1-4b8d-99a9-6d424de8dfd4")]

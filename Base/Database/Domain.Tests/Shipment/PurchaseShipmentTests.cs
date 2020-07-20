@@ -112,6 +112,44 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenShipToWithoutShipmentNumberPrefix_WhenDeriving_ThenSortableShipmentNumberIsSet()
+        {
+            this.InternalOrganisation.RemoveIncomingShipmentNumberPrefix();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
+            var shipment = new PurchaseShipmentBuilder(this.Session)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .WithShipFromParty(supplier)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(shipment.ShipmentNumber), shipment.SortableShipmentNumber);
+        }
+
+        [Fact]
+        public void GivenShipToWithShipmentNumberPrefix_WhenDeriving_ThenSortableShipmentNumberIsSet()
+        {
+            this.InternalOrganisation.IncomingShipmentNumberPrefix= "prefix-";
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
+            var shipment = new PurchaseShipmentBuilder(this.Session)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .WithShipFromParty(supplier)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(int.Parse(shipment.ShipmentNumber.Split('-')[1]), shipment.SortableShipmentNumber);
+        }
+
+        [Fact]
         public void GivenPurchaseShipmentWithShipToCustomerWithshippingAddress_WhenDeriving_ThenDerivedShipToCustomerAndDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();

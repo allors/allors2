@@ -12,6 +12,8 @@ import { ObjectData, ObjectService } from '../../../../../../material/core/servi
 interface Row extends TableRow {
   object: PurchaseOrderItem;
   item: string;
+  itemId; string;
+  type: string;
   state: string;
   ordered: string;
   received: string;
@@ -85,6 +87,8 @@ export class PurchaseOrderItemOverviewPanelComponent extends TestScope {
       selection: true,
       columns: [
         { name: 'item', sort },
+        { name: 'itemId' },
+        { name: 'type', sort },
         { name: 'state', sort },
         { name: 'ordered', sort },
         { name: 'received', sort },
@@ -141,6 +145,8 @@ export class PurchaseOrderItemOverviewPanelComponent extends TestScope {
         return {
           object: v,
           item: (v.Part && v.Part.Name) || (v.SerialisedItem && v.SerialisedItem.Name) || v.Description,
+          itemId: v.SerialisedItem && v.SerialisedItem.ItemNumber,
+          type: `${v.InvoiceItemType && v.InvoiceItemType.Name}`,
           state: `${v.PurchaseOrderItemState && v.PurchaseOrderItemState.Name}`,
           ordered: v.QuantityOrdered,
           received: v.QuantityReceived,

@@ -46,6 +46,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithInvoiceItemType(invoiceItemType);
             @this.WithProduct(serializedProduct);
             @this.WithSerialisedItem(serializedProduct.SerialisedItems.First);
+            @this.WithNextSerialisedItemAvailability(faker.Random.ListItem(@this.Session.Extent<SerialisedItemAvailability>()));
             @this.WithMessage(faker.Lorem.Sentence());
             @this.WithQuantity(1);
             @this.WithAssignedUnitPrice(faker.Random.UInt());
@@ -68,6 +69,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithInvoiceItemType(invoiceItemType);
             @this.WithProduct(serializedPart);
             @this.WithSerialisedItem(serializedPart.SerialisedItems.First);
+            @this.WithNextSerialisedItemAvailability(faker.Random.ListItem(@this.Session.Extent<SerialisedItemAvailability>()));
             @this.WithMessage(faker.Lorem.Sentence());
             @this.WithQuantity(1);
             @this.WithAssignedUnitPrice(faker.Random.UInt());

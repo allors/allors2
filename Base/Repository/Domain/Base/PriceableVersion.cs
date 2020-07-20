@@ -23,13 +23,22 @@ namespace Allors.Repository
         decimal TotalDiscountAsPercentage { get; set; }
 
         #region Allors
-        [Id("97F0156D-82B8-40F6-A4E4-F0F975C1C57F")]
-        [AssociationId("8C825CC6-AECD-44DE-9DAC-BE1D29FB7660")]
-        [RoleId("98566D81-9BF6-48AC-AA78-7C21D55A5F41")]
+        [Id("19eaba19-7179-4511-87b8-7a8f48e4a7a3")]
+        [AssociationId("fdcf6969-2ffb-47f9-b9a6-659433e928e1")]
+        [RoleId("cb705f63-7ef5-451a-8a0b-857449e4ff8f")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-        DiscountAdjustment DiscountAdjustment { get; set; }
+        DiscountAdjustment[] DiscountAdjustments { get; set; }
+
+        #region Allors
+        [Id("9db9535d-9dc9-4bbf-8a4f-aae8839383fe")]
+        [AssociationId("9f0656bb-81a3-44aa-87c9-ebe97a64d13e")]
+        [RoleId("60e97a65-4882-447c-930d-6ee7e7488bf7")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        SurchargeAdjustment[] SurchargeAdjustments { get; set; }
 
         #region Allors
         [Id("DBB03B6B-93EA-41FD-838D-D89C38D192FA")]
@@ -201,12 +210,15 @@ namespace Allors.Repository
         decimal TotalExVat { get; set; }
 
         #region Allors
-        [Id("1817B33A-C8CD-4F87-BB4F-BFE0ABCCCF24")]
-        [AssociationId("CB923F27-92A3-4C9F-B4D1-D1D3E801B5B7")]
-        [RoleId("7CCA3632-FC96-4D03-ABB3-BD5B10FA8FF2")]
+        [Id("38c29c2f-94a7-4e71-9282-b91b67ef3368")]
+        [AssociationId("d0a75c1a-1e7d-4a2f-9342-c23f2fd6fa5a")]
+        [RoleId("e19f925f-f30b-4a90-95ce-adae757ced9a")]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        SurchargeAdjustment SurchargeAdjustment { get; set; }
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        decimal GrandTotal { get; set; }
     }
 }

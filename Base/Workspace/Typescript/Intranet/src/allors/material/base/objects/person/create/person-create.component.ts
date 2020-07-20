@@ -6,9 +6,9 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Saved, ContextService, NavigationService, MetaService, InternalOrganisationId, FetcherService, TestScope, SingletonId, RefreshService } from '../../../../../angular';
-import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, Currency } from '../../../../../domain';
+import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole, Currency, IrpfRegime } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
-import { ObjectData, SaveService } from '../../../../../material';
+import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -33,6 +33,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
   salutations: Enumeration[];
   organisationContactKinds: OrganisationContactKind[];
   selectedContactKinds: OrganisationContactKind[] = [];
+  irpfRegimes: IrpfRegime[];
 
   roles: PersonRole[];
   selectedRoles: PersonRole[] = [];
@@ -52,6 +53,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
     public dialogRef: MatDialogRef<PersonCreateComponent>,
     public metaService: MetaService,
     public navigationService: NavigationService,
+    public filtersService: FiltersService,
     public location: Location,
     public refreshService: RefreshService,
     private route: ActivatedRoute,
@@ -111,7 +113,11 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
               object: this.data.associationId,
             }),
             pull.Organisation({
+              name: 'AllOrganisations',
               sort: new Sort(m.Organisation.PartyName)
+            }),
+            pull.IrpfRegime({
+              sort: new Sort(m.IrpfRegime.Name)
             })
           ];
 
@@ -124,12 +130,13 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
 
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
-        this.organisations = loaded.collections.Organisations as Organisation[];
+        this.organisations = loaded.collections.AllOrganisations as Organisation[];
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.currencies = loaded.collections.Currencies as Currency[];
         this.locales = loaded.collections.Locales as Locale[] || [];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
         this.roles = loaded.collections.PersonRoles as PersonRole[];
         this.organisationContactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
 

@@ -10,7 +10,7 @@ import { PullRequest, And, Equals, Filter, ContainedIn } from '../../../../../fr
 import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, UserId, FetcherService } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
-import { PurchaseOrder, Party, PurchaseOrderState, Product, SerialisedItem, Organisation, Person, UserGroup } from '../../../../../domain';
+import { PurchaseOrder, Party, PurchaseOrderState, Product, SerialisedItem, Organisation, Person, UserGroup, Part } from '../../../../../domain';
 import { MethodService } from '../../../../../material/core/services/actions';
 
 interface Row extends TableRow {
@@ -20,6 +20,7 @@ interface Row extends TableRow {
   state: string;
   shipmentState: string;
   customerReference: string;
+  invoice: string;
   totalExVat: string;
   totalIncVat: string;
   lastModifiedDate: string;
@@ -84,6 +85,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
         { name: 'state' },
         { name: 'shipmentState' },
         { name: 'customerReference', sort: true },
+        { name: 'invoice'},
         { name: 'totalExVat', sort: true },
         { name: 'totalIncVat', sort: true },
         { name: 'lastModifiedDate', sort: true },
@@ -95,6 +97,8 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
+      initialSort: 'number',
+      initialSortDirection: 'desc',
     });
   }
 
@@ -117,7 +121,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
           objectType: m.PurchaseOrderItem,
           predicate: new ContainedIn({
             propertyType: m.PurchaseOrderItem.Part,
-            parameter: 'part'
+            parameter: 'sparePart'
           })
         })
       }),
@@ -151,9 +155,9 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       roleTypes: [m.Organisation.PartyName],
     });
 
-    const productSearch = new SearchFactory({
-      objectType: m.Product,
-      roleTypes: [m.Product.Name],
+    const partSearch = new SearchFactory({
+      objectType: m.NonUnifiedPart,
+      roleTypes: [m.NonUnifiedPart.Name, m.NonUnifiedPart.SearchString],
     });
 
     const serialisedItemSearch = new SearchFactory({
@@ -165,13 +169,13 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       active: { initialValue: true },
       state: { search: stateSearch, display: (v: PurchaseOrderState) => v && v.Name },
       supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
-      product: { search: productSearch, display: (v: Product) => v && v.Name },
+      sparePart: { search: partSearch, display: (v: Part) => v && v.Name },
       serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
 
     const sorter = new Sorter(
       {
-        number: m.PurchaseOrder.OrderNumber,
+        number: m.PurchaseOrder.SortableOrderNumber,
         customerReference: m.PurchaseOrder.CustomerReference,
         totalExVat: m.PurchaseOrder.TotalExVat,
         totalIncVat: m.PurchaseOrder.TotalIncVat,
@@ -193,7 +197,6 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           internalOrganisationPredicate.object = internalOrganisationId;
-          supplierPredicate.object = internalOrganisationId;
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -210,6 +213,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
                 TakenViaSupplier: x,
                 PurchaseOrderState: x,
                 PurchaseOrderShipmentState: x,
+                PurchaseInvoicesWherePurchaseOrder: x,
               },
               parameters: this.filterService.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -237,6 +241,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
             state: `${v.PurchaseOrderState && v.PurchaseOrderState.Name}`,
             shipmentState: `${v.PurchaseOrderShipmentState && v.PurchaseOrderShipmentState.Name}`,
             customerReference: `${v.Description || ''}`,
+            invoice: v.PurchaseInvoicesWherePurchaseOrder.map(w => w.InvoiceNumber).join(', '),
             totalExVat: v.TotalExVat,
             totalIncVat: v.TotalIncVat,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()

@@ -43,7 +43,8 @@ export class SearchFactory {
           name: 'results',
           predicate: and,
           sort: this.options.roleTypes.map((roleType: RoleType) => new Sort({ roleType })),
-          parameters
+          parameters,
+          include: this.options.include,
         }),
       ];
 

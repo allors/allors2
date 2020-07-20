@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
-import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, CustomerRelationship, Currency } from '../../../../../domain';
+import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, CustomerRelationship, Currency, VatRegime, IrpfRegime } from '../../../../../domain';
 import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { ObjectData } from '../../../../../material/core/services/object';
@@ -34,6 +34,8 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
   stores: Store[];
   internalOrganisation: Organisation;
   currencies: Currency[];
+  vatRegimes: VatRegime[];
+  irpfRegimes: IrpfRegime[];
 
   addShipFromAddress = false;
 
@@ -105,6 +107,8 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
               sort: new Sort(m.Currency.IsoCode)
             }),
+            pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
+            pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.Store({
               predicate: new Equals({ propertyType: m.Store.InternalOrganisation, object: internalOrganisationId }),
               include: { BillingProcess: x },
@@ -135,8 +139,12 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.stores = loaded.collections.Stores as Store[];
         this.currencies = loaded.collections.Currencies as Currency[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
+
         this.order = this.allors.context.create('SalesOrder') as SalesOrder;
         this.order.TakenBy = this.internalOrganisation;
+        this.order.Currency = this.internalOrganisation.PreferredCurrency;
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipFromAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);

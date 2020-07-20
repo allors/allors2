@@ -97,11 +97,6 @@ namespace Allors.Domain
                 this.EstimatedShipDate = this.Session().Now().Date;
             }
 
-            if (!this.ExistShipmentNumber && this.ExistStore)
-            {
-                this.ShipmentNumber = this.Store.NextShipmentNumber();
-            }
-
             if (!this.ExistCarrier && this.ExistStore)
             {
                 this.Carrier = this.Store.DefaultCarrier;
@@ -141,6 +136,12 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (!this.ExistShipmentNumber && this.ExistStore)
+            {
+                this.ShipmentNumber = this.Store.NextShipmentNumber();
+                this.SortableShipmentNumber = this.Session().GetSingleton().SortableNumber(this.Store.OutgoingShipmentNumberPrefix, this.ShipmentNumber, this.CreationDate.Value.Year.ToString());
+            }
+
             var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistShipFromParty && internalOrganisations.Count() == 1)
@@ -176,16 +177,16 @@ namespace Allors.Domain
             this.BaseOnDeriveCurrentObjectState(derivation);
 
             if (this.ShipmentState.IsShipped
-                && (!this.ExistLastShipmentState || !this.LastShipmentState.IsShipped)
-                && ((InternalOrganisation)this.ShipFromParty).SerialisedItemSoldOn == new SerialisedItemSoldOns(this.Session()).CustomerShipmentShip)
+                && (!this.ExistLastShipmentState || !this.LastShipmentState.IsShipped))
             {
-                foreach (ShipmentItem item in this.ShipmentItems.Where(v => v.ExistSerialisedItem))
+                foreach (var item in this.ShipmentItems.Where(v => v.ExistSerialisedItem))
                 {
                     if (item.ExistNextSerialisedItemAvailability)
                     {
                         item.SerialisedItem.SerialisedItemAvailability = item.NextSerialisedItemAvailability;
 
-                        if (item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
+                        if ((this.ShipFromParty as InternalOrganisation)?.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).CustomerShipmentShip) == true
+                            && item.NextSerialisedItemAvailability.Equals(new SerialisedItemAvailabilities(this.Session()).Sold))
                         {
                             item.SerialisedItem.OwnedBy = this.ShipToParty;
                             item.SerialisedItem.Ownership = new Ownerships(this.Session()).ThirdParty;
@@ -362,22 +363,52 @@ namespace Allors.Domain
                                 .WithSalesChannel(salesOrder.SalesChannel)
                                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                                 .WithVatRegime(salesOrder.VatRegime)
-                                .WithDiscountAdjustment(salesOrder.DiscountAdjustment)
-                                .WithSurchargeAdjustment(salesOrder.SurchargeAdjustment)
-                                .WithShippingAndHandlingCharge(salesOrder.ShippingAndHandlingCharge)
-                                .WithFee(salesOrder.Fee)
+                                .WithIrpfRegime(salesOrder.IrpfRegime)
                                 .WithCustomerReference(salesOrder.CustomerReference)
                                 .WithPaymentMethod(this.PaymentMethod)
                                 .Build();
 
                             invoiceByOrder.Add(salesOrder, salesInvoice);
 
+                            foreach (OrderAdjustment orderAdjustment in salesOrder.OrderAdjustments)
+                            {
+                                OrderAdjustment newAdjustment = null;
+                                if (orderAdjustment.GetType().Name.Equals(typeof(DiscountAdjustment).Name))
+                                {
+                                    newAdjustment = new DiscountAdjustmentBuilder(this.Session()).Build();
+                                }
+
+                                if (orderAdjustment.GetType().Name.Equals(typeof(SurchargeAdjustment).Name))
+                                {
+                                    newAdjustment = new SurchargeAdjustmentBuilder(this.Session()).Build();
+                                }
+
+                                if (orderAdjustment.GetType().Name.Equals(typeof(Fee).Name))
+                                {
+                                    newAdjustment = new FeeBuilder(this.Session()).Build();
+                                }
+
+                                if (orderAdjustment.GetType().Name.Equals(typeof(ShippingAndHandlingCharge).Name))
+                                {
+                                    newAdjustment = new ShippingAndHandlingChargeBuilder(this.Session()).Build();
+                                }
+
+                                if (orderAdjustment.GetType().Name.Equals(typeof(MiscellaneousCharge).Name))
+                                {
+                                    newAdjustment = new MiscellaneousChargeBuilder(this.Session()).Build();
+                                }
+
+                                newAdjustment.Amount ??= orderAdjustment.Amount;
+                                newAdjustment.Percentage ??= orderAdjustment.Percentage;
+                                salesInvoice.AddOrderAdjustment(newAdjustment);
+                            }
+
                             if (!costsInvoiced)
                             {
                                 var costs = this.BaseOnDeriveShippingAndHandlingCharges();
                                 if (costs > 0)
                                 {
-                                    salesInvoice.ShippingAndHandlingCharge = new ShippingAndHandlingChargeBuilder(this.Strategy.Session).WithAmount(costs).Build();
+                                    salesInvoice.AddOrderAdjustment(new ShippingAndHandlingChargeBuilder(this.Strategy.Session).WithAmount(costs).Build());
                                     costsInvoiced = true;
                                 }
                             }

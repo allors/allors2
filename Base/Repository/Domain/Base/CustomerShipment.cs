@@ -91,6 +91,8 @@ namespace Allors.Repository
 
         public DateTime EstimatedArrivalDate { get; set; }
 
+        public int SortableShipmentNumber { get; set; }
+
         #endregion
 
         #region Versioning

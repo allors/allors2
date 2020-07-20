@@ -94,6 +94,8 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
       ],
       defaultAction: overviewService.overview(),
       pageSize: 50,
+      initialSort: 'number',
+      initialSortDirection: 'desc',
     });
   }
 
@@ -166,7 +168,7 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
 
     const sorter = new Sorter(
       {
-        number: m.SalesOrder.OrderNumber,
+        number: m.SalesOrder.SortableOrderNumber,
         customerReference: m.SalesOrder.CustomerReference,
         lastModifiedDate: m.SalesOrder.LastModifiedDate,
       }
