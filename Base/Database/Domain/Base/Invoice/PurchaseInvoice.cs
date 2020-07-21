@@ -130,6 +130,14 @@ namespace Allors.Domain
             var purchaseInvoiceStates = new PurchaseInvoiceStates(this.Strategy.Session);
             var purchaseInvoiceItemStates = new PurchaseInvoiceItemStates(this.Strategy.Session);
 
+            this.AmountPaid = this.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
+
+            //// Perhaps payments are recorded at the item level.
+            if (this.AmountPaid == 0)
+            {
+                this.AmountPaid = this.InvoiceItems.Sum(v => v.AmountPaid);
+            }
+
             foreach (var invoiceItem in validInvoiceItems)
             {
                 if (invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsCreated)
@@ -196,18 +204,10 @@ namespace Allors.Domain
                 }
             }
 
-            this.AmountPaid = this.PaymentApplicationsWhereInvoice.Sum(v => v.AmountApplied);
-
-            //// Perhaps payments are recorded at the item level.
-            if (this.AmountPaid == 0)
-            {
-                this.AmountPaid = this.InvoiceItems.Sum(v => v.AmountPaid);
-            }
-
             // If disbursements are not matched at invoice level
             if (this.AmountPaid > 0)
             {
-                if (this.AmountPaid >= this.TotalIncVat)
+                if (this.AmountPaid >= decimal.Round(this.TotalIncVat, 2))
                 {
                     this.PurchaseInvoiceState = purchaseInvoiceStates.Paid;
                 }
@@ -218,7 +218,7 @@ namespace Allors.Domain
 
                 foreach (var invoiceItem in validInvoiceItems)
                 {
-                    if (this.AmountPaid >= this.TotalIncVat)
+                    if (this.AmountPaid >= decimal.Round(this.TotalIncVat, 2))
                     {
                         invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Paid;
                     }
