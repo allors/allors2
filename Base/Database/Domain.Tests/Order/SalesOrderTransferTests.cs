@@ -16,52 +16,6 @@ namespace Allors.Domain
     public class SalesOrderTransferTests : DomainTest
     {
         [Fact]
-        public void GivenSalesOrderBuilder_WhenProvisional_ThenOrderCanTranseft()
-        {
-            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
-            var internalOrganisation = this.InternalOrganisation;
-
-            var anotherInternalOrganisation = new OrganisationBuilder(this.Session)
-                .WithIsInternalOrganisation(true)
-                .WithDoAccounting(false)
-                .WithName("another internalOrganisation")
-                .WithPreferredCurrency(new Currencies(this.Session).CurrencyByCode["EUR"])
-                .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
-                .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
-                .WithPurchaseOrderNumberPrefix("purchase orderno: ")
-                .WithSubAccountCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
-
-            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-
-            this.Session.Derive();
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(this.InternalOrganisation)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
-                .Build();
-
-            this.Session.Derive();
-
-            var transfer = new SalesOrderTransferBuilder(this.Session)
-                .WithFrom(order)
-                .WithInternalOrganisation(anotherInternalOrganisation)
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.True(transfer.ExistTo);
-            Assert.Equal(transfer.To.TakenBy, anotherInternalOrganisation);
-            Assert.Equal(order.ShipToCustomer, transfer.To.ShipToCustomer);
-            //TODO: Add More Asserts
-
-        }
-
-        [Fact]
         public void GivenSalesOrderForItemsThatAreAvailable_WhenShipped_ThenOrderIsCompleted()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
@@ -2732,6 +2686,52 @@ namespace Allors.Domain
     public class SalesOrderTransferSecurityTests : DomainTest
     {
         public override Config Config => new Config { SetupSecurity = true };
+
+        [Fact]
+        public void GivenSalesOrderBuilder_WhenProvisional_ThenOrderCanTransfer()
+        {
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
+            var internalOrganisation = this.InternalOrganisation;
+
+            var anotherInternalOrganisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
+                .WithDoAccounting(false)
+                .WithName("another internalOrganisation")
+                .WithPreferredCurrency(new Currencies(this.Session).CurrencyByCode["EUR"])
+                .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
+                .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
+                .WithPurchaseOrderNumberPrefix("purchase orderno: ")
+                .WithSubAccountCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+                .Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+
+            this.Session.Derive();
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            this.Session.Derive();
+
+            var transfer = new SalesOrderTransferBuilder(this.Session)
+                .WithFrom(order)
+                .WithInternalOrganisation(anotherInternalOrganisation)
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.True(transfer.ExistTo);
+            Assert.Equal(transfer.To.TakenBy, anotherInternalOrganisation);
+            Assert.Equal(order.ShipToCustomer, transfer.To.ShipToCustomer);
+            //TODO: Add More Asserts
+
+        }
 
         [Fact]
         public void GivenSalesOrder_WhenObjectStateIsProvisional_ThenCheckTransitions()
