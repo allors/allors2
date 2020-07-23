@@ -1,5 +1,7 @@
 trigger:
 - master
+- feature/*
+- issue/*
 
 stages:
 - stage: Platform
