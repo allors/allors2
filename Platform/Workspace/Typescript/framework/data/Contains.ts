@@ -1,9 +1,9 @@
 import { PropertyType, ObjectType } from '../meta';
 import { ISessionObject } from '../workspace/SessionObject';
-import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { ParameterizablePredicate } from './ParameterizablePredicate';
 import { CompositeTypes } from '../workspace/Types';
 
-export class Contains extends ParametrizedPredicate {
+export class Contains extends ParameterizablePredicate {
   dependencies: string[];
   propertyType: PropertyType;
   parameter: string;

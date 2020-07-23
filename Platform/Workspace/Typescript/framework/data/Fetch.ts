@@ -6,13 +6,13 @@ import { Node } from './Node';
 const includeKey = 'include';
 
 export class Fetch {
-  public step: Step;
+  public step?: Step;
 
-  public include: Tree | Node[];
+  public include?: Tree | Node[];
 
-  constructor(fields?: Partial<Fetch> | ObjectType, literal?: any) {
-    if (fields instanceof ObjectType) {
-      const objectType = fields as ObjectType;
+  constructor(fieldsOrObjectType?: Partial<Fetch> | ObjectType, literal?: any) {
+    if (fieldsOrObjectType instanceof ObjectType) {
+      const objectType = fieldsOrObjectType as ObjectType;
 
       if (literal) {
         const keys = Object.keys(literal);
@@ -33,7 +33,7 @@ export class Fetch {
         }
       }
     } else {
-      Object.assign(this, fields);
+      Object.assign(this, fieldsOrObjectType);
     }
   }
 

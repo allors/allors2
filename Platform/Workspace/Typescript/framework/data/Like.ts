@@ -1,8 +1,8 @@
 import { RoleType, ObjectType } from '../meta';
 
-import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { ParameterizablePredicate } from './ParameterizablePredicate';
 
-export class Like extends ParametrizedPredicate {
+export class Like extends ParameterizablePredicate {
   public roleType: RoleType;
   public value: string;
 

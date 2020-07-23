@@ -3,7 +3,7 @@ export { Fetch } from './Fetch';
 export { Extent } from './Extent';
 export { Sort } from './Sort';
 export { Predicate } from './Predicate';
-export { ParametrizedPredicate } from './ParametrizedPredicate';
+export { ParameterizablePredicate as ParametrizedPredicate } from './ParameterizablePredicate';
 export { And } from './And';
 export { Between } from './Between';
 export { ContainedIn } from './ContainedIn';

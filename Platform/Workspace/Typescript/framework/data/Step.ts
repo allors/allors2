@@ -1,18 +1,37 @@
-import { AssociationType, RoleType, ObjectType, PropertyType } from '../meta';
-import { Tree } from './Tree';
+import { ObjectType, PropertyType } from "../meta";
+import { Tree } from "./Tree";
+import { timeStamp } from 'console';
 
-const includeKey = 'include';
+const includeKey = "include";
+
+interface StepArgs {
+  propertyType: PropertyType;
+
+  include?: Tree;
+
+  next?: Step | Tree;
+}
 
 export class Step {
-  public include: Tree;
-
   public propertyType: PropertyType;
 
-  public next: Step | Tree;
+  public include?: Tree;
 
-  constructor(fields?: Partial<Step> | ObjectType, stepName?: string, literal?: { [key: string]: any }) {
-    if (fields instanceof ObjectType) {
-      const objectType = fields as ObjectType;
+  public next?: Step | Tree;
+
+  constructor(args: StepArgs);
+  constructor(
+    objectType: ObjectType,
+    stepName: string,
+    literal?: { [key: string]: any }
+  );
+  constructor(
+    args: StepArgs | ObjectType,
+    stepName?: string,
+    literal?: { [key: string]: any }
+  ) {
+    if (args instanceof ObjectType) {
+      const objectType = args as ObjectType;
 
       let propertyType: PropertyType | undefined;
       if (stepName) {
@@ -23,13 +42,13 @@ export class Step {
 
         if (!propertyType) {
           const metaPopulation = objectType.metaPopulation;
-          const [subTypeName, subStepName] = stepName.split('_');
+          const [subTypeName, subStepName] = stepName.split("_");
 
           const subType = metaPopulation.objectTypeByName.get(subTypeName);
           if (subType) {
             propertyType = subType.roleTypeByName.get(subStepName);
 
-            if (!this.propertyType) {
+            if (!propertyType) {
               propertyType = subType.associationTypeByName.get(subStepName);
             }
           }
@@ -37,7 +56,7 @@ export class Step {
       }
 
       if (!propertyType) {
-        throw new Error('Unknown role or association: ' + stepName);
+        throw new Error("Unknown role or association: " + stepName);
       }
 
       this.propertyType = propertyType;
@@ -57,11 +76,17 @@ export class Step {
         const nextStepName = keys.find((v) => v !== includeKey);
         if (nextStepName) {
           const nextStepLiteral = literal[nextStepName];
-          this.next = new Step(this.propertyType.objectType, nextStepName, nextStepLiteral);
+          this.next = new Step(
+            this.propertyType.objectType,
+            nextStepName,
+            nextStepLiteral
+          );
         }
       }
     } else {
-      Object.assign(this, fields);
+      this.propertyType = args.propertyType;
+      this.include = args.include;
+      this.next = args.next;
     }
   }
 

@@ -1,20 +1,31 @@
-import { PropertyType, ObjectType } from '../meta';
-import { ISessionObject, serialize } from '../workspace/SessionObject';
-import { ParametrizedPredicate } from './ParametrizedPredicate';
-import { UnitTypes, CompositeTypes } from '../workspace/Types';
+import { PropertyType, ObjectType } from "../meta";
+import { ISessionObject, serialize } from "../workspace/SessionObject";
+import {
+  ParameterizablePredicate,
+  ParameterizablePredicateArgs,
+} from "./ParameterizablePredicate";
+import { UnitTypes, CompositeTypes } from "../workspace/Types";
+import { assert } from "../assert";
 
-export class Equals extends ParametrizedPredicate {
+export interface EqualsArgs
+  extends ParameterizablePredicateArgs,
+    Pick<Equals, "propertyType" | "value" | "object"> {}
+
+export class Equals extends ParameterizablePredicate {
   public propertyType: PropertyType;
-  public value: UnitTypes;
-  public object: CompositeTypes;
+  public value?: UnitTypes;
+  public object?: CompositeTypes;
 
-  constructor(fields?: Partial<Equals> | PropertyType) {
+  constructor(propertyType: PropertyType);
+  constructor(args: EqualsArgs);
+  constructor(args: EqualsArgs | PropertyType) {
     super();
 
-    if ((fields as PropertyType).objectType) {
-      this.propertyType = fields as PropertyType;
+    if ((args as PropertyType).objectType) {
+      this.propertyType = args as PropertyType;
     } else {
-      Object.assign(this, fields);
+      Object.assign(this, args);
+      this.propertyType = (args as EqualsArgs).propertyType;
     }
   }
 
@@ -24,12 +35,15 @@ export class Equals extends ParametrizedPredicate {
 
   public toJSON(): any {
     return {
-      kind: 'Equals',
+      kind: "Equals",
       dependencies: this.dependencies,
       propertytype: this.propertyType.id,
       parameter: this.parameter,
       value: serialize(this.value),
-      object: this.object && (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object,
+      object:
+        this.object && (this.object as ISessionObject).id
+          ? (this.object as ISessionObject).id
+          : this.object,
     };
   }
 }

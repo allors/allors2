@@ -18,18 +18,16 @@ import { getLocaleDateTimeFormat } from '@angular/common';
 export class OrganisationComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
 
   title: string;
-
-  field: RoleField;
-
   m: Meta;
-  people: Person[];
-
-  organisation: Organisation;
-
   peopleFilter: SearchFactory;
 
+  field!: RoleField;
+  people!: Person[];
+  organisation!: Organisation;
+
+  private subscription!: Subscription;
+
   private refresh$: BehaviorSubject<Date>;
-  private subscription: Subscription;
 
   constructor(
     @Self() public allors: ContextService,

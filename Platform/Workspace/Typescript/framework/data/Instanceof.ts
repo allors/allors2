@@ -2,7 +2,7 @@ import { ObjectType, PropertyType } from '../meta';
 
 import { Predicate } from './Predicate';
 
-export class Instanceof implements Predicate {
+export class Instanceof implements ParametrizedPredicate {
   dependencies: string[];
   propertyType: PropertyType;
   objectType: ObjectType;

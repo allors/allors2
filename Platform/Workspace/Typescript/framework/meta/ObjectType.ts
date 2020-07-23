@@ -1,9 +1,9 @@
-import { AssociationType } from './AssociationType';
-import { MetaObject } from './MetaObject';
-import { MetaPopulation } from './MetaPopulation';
-import { MethodType } from './MethodType';
-import { RoleType } from './RoleType';
-import { ids } from '../../meta/generated/ids.g';
+import { AssociationType } from "./AssociationType";
+import { MetaObject } from "./MetaObject";
+import { MetaPopulation } from "./MetaPopulation";
+import { MethodType } from "./MethodType";
+import { RoleType } from "./RoleType";
+import { ids } from "../../meta/generated/ids.g";
 
 export enum Kind {
   unit,
@@ -12,10 +12,7 @@ export enum Kind {
 }
 
 export class ObjectType implements MetaObject {
-  id: string;
-  name: string;
-  plural: string;
-  kind: Kind;
+
   interfaces: ObjectType[];
   subtypes: ObjectType[];
   classes: ObjectType[];
@@ -32,7 +29,14 @@ export class ObjectType implements MetaObject {
   associationTypeByName: Map<string, AssociationType>;
   methodTypeByName: Map<string, MethodType>;
 
-  constructor(public metaPopulation: MetaPopulation) {
+  constructor(
+    public metaPopulation: MetaPopulation,
+    public id: string,
+    public name: string,
+    public plural: string,
+    public kind: Kind
+  ) {
+    this.interfaces = [];
     this.subtypes = [];
     this.classes = [];
 

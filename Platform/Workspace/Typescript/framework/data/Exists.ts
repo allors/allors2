@@ -1,7 +1,7 @@
 import { PropertyType, ObjectType } from '../meta';
-import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { ParameterizablePredicate } from './ParameterizablePredicate';
 
-export class Exists extends ParametrizedPredicate {
+export class Exists extends ParameterizablePredicate {
   propertyType: PropertyType;
 
   constructor(fields?: Partial<Exists> | PropertyType) {

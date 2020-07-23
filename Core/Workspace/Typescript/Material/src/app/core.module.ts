@@ -1,20 +1,36 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { environment } from '../environments/environment';
 
 import {
-  AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule,
-  AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule
+  AllorsModule,
+  AllorsFocusModule,
+  AllorsBarcodeModule,
+  AllorsFilterModule,
+  AllorsRefreshModule,
+  AuthenticationModule,
+  MediaModule,
+  NavigationModule,
 } from '../allors/angular';
 
-import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule } from '../allors/material';
+import {
+  DeleteModule,
+  NavigateModule,
+  DialogModule,
+  LoggingModule,
+  SideNavModule,
+} from '../allors/material';
 import { SaveModule } from 'src/allors/material/core/services/save';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete';
+import { AuthenticationConfig } from 'src/allors/angular/core/authentication/authentication.config';
 
 @NgModule({
   imports: [
@@ -24,7 +40,9 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete
     HttpClientModule,
 
     AllorsModule.forRoot({ url: environment.url }),
-    AuthenticationModule.forRoot({ url: environment.url + environment.authenticationUrl }),
+    AuthenticationModule.forRoot(
+      new AuthenticationConfig(environment.url + environment.authenticationUrl)
+    ),
     LoggingModule.forRoot({ console: true }),
     SaveModule,
 
@@ -45,15 +63,16 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'nl-BE' },
-    { provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: { autoActiveFirstOption: true } }
+    {
+      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
+      useValue: { autoActiveFirstOption: true },
+    },
   ],
 })
 export class CoreModule {
-
   constructor(@Optional() @SkipSelf() core: CoreModule) {
     if (core) {
       throw new Error('Only use CoreModule from AppModule');
     }
   }
-
 }

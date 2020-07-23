@@ -18,10 +18,10 @@ export class PersonComponent extends TestScope implements OnInit, AfterViewInit,
   public title: string;
 
   public m: Meta;
-  public locales: Locale[];
-  public person: Person;
+  public locales!: Locale[];
+  public person!: Person;
 
-  private subscription: Subscription;
+  private subscription!: Subscription;
 
   constructor(
     @Self() private allors: ContextService,

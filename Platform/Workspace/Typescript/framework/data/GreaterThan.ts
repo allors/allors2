@@ -1,9 +1,9 @@
 import { RoleType, ObjectType } from '../meta';
-import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { ParameterizablePredicate } from './ParameterizablePredicate';
 import { UnitTypes } from '../workspace/Types';
 import { serialize } from '../workspace/SessionObject';
 
-export class GreaterThan extends ParametrizedPredicate {
+export class GreaterThan extends ParameterizablePredicate {
   public roleType: RoleType;
   public value: UnitTypes;
 

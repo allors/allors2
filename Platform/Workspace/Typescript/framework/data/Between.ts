@@ -1,12 +1,10 @@
-import { RoleType, ObjectType } from '../meta';
-import { ParametrizedPredicate } from './ParametrizedPredicate';
-import { UnitTypes } from '../workspace';
-import { serializeArray } from '../workspace/SessionObject';
+import { RoleType, ObjectType } from "../meta";
+import { ParameterizablePredicate } from "./ParameterizablePredicate";
+import { UnitTypes } from "../workspace";
+import { serializeArray } from "../workspace/SessionObject";
 
-export class Between extends ParametrizedPredicate {
-  dependencies: string[];
+export class Between extends ParameterizablePredicate {
   roleType: RoleType;
-  parameter: string;
   values: UnitTypes[];
 
   constructor(fields?: Partial<Between> | RoleType) {
@@ -25,7 +23,7 @@ export class Between extends ParametrizedPredicate {
 
   toJSON(): any {
     return {
-      kind: 'Between',
+      kind: "Between",
       dependencies: this.dependencies,
       roleType: this.roleType.id,
       parameter: this.parameter,

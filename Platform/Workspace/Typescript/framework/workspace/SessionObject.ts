@@ -4,23 +4,23 @@
   RoleType,
   AssociationType,
   MethodType,
-} from '../meta';
-import { ids } from '../../meta/generated/ids.g';
+} from "../meta";
+import { ids } from "../../meta/generated/ids.g";
 import {
   UnitTypes,
   CompositeTypes,
   ParameterTypes,
   isSessionObject,
-} from '../workspace/Types';
+} from "../workspace/Types";
 
-import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
-import { PushRequestObject } from './../protocol/push/PushRequestObject';
-import { PushRequestRole } from './../protocol/push/PushRequestRole';
+import { PushRequestNewObject } from "./../protocol/push/PushRequestNewObject";
+import { PushRequestObject } from "./../protocol/push/PushRequestObject";
+import { PushRequestRole } from "./../protocol/push/PushRequestRole";
 
-import { Method } from './Method';
-import { ISession, Session } from './Session';
-import { IWorkspaceObject } from './WorkspaceObject';
-import { Operations } from '../protocol/Operations';
+import { Method } from "./Method";
+import { ISession, Session } from "./Session";
+import { IWorkspaceObject } from "./WorkspaceObject";
+import { Operations } from "../protocol/Operations";
 
 export interface IObject {
   id: string;
@@ -161,7 +161,7 @@ export class SessionObject implements ISessionObject {
                 : [];
             }
           } catch (e) {
-            let stringValue = 'N/A';
+            let stringValue = "N/A";
             try {
               stringValue = this.toString();
             } catch (e2) {
@@ -250,7 +250,7 @@ export class SessionObject implements ISessionObject {
       }
     }
 
-    if (value === '') {
+    if (value === "") {
       if (roleType.objectType.isUnit) {
         if (!roleType.objectType.isString) {
           value = null;
@@ -284,7 +284,7 @@ export class SessionObject implements ISessionObject {
       this.assertExists();
 
       const roles = this.get(roleType) as [];
-      const newRoles = roles.filter(v => v !== value);
+      const newRoles = roles.filter((v) => v !== value);
 
       this.set(roleType, newRoles);
 
@@ -442,7 +442,7 @@ export function serializeObject(
     return Object.keys(roles).reduce((obj, v) => {
       const role = roles[v];
       if (Array.isArray(role)) {
-        obj[v] = role.map((w) => serialize(w)).join(',');
+        obj[v] = role.map((w) => serialize(w)).join(",");
       } else {
         obj[v] = serialize(role);
       }
@@ -461,12 +461,14 @@ export function serializeArray(roles: UnitTypes[]): (string | null)[] {
   return [];
 }
 
-export function serialize(role: UnitTypes | CompositeTypes): string | null {
+export function serialize(
+  role: UnitTypes | CompositeTypes | undefined | null
+): string | null {
   if (role === undefined || role === null) {
     return null;
   }
 
-  if (typeof role === 'string') {
+  if (typeof role === "string") {
     return role;
   }
 
@@ -484,7 +486,7 @@ export function serialize(role: UnitTypes | CompositeTypes): string | null {
 export function deserialize(value: string, objectType: ObjectType): UnitTypes {
   switch (objectType.id) {
     case ids.Boolean:
-      return value === 'true' ? true : false;
+      return value === "true" ? true : false;
     case ids.Float:
       return parseFloat(value);
     case ids.Integer:

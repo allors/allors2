@@ -1,14 +1,23 @@
-import { RoleType } from '../meta';
+import { RoleType } from "../meta";
+
+export interface SortArgs {
+  roleType: RoleType;
+  descending?: boolean;
+}
 
 export class Sort {
   public roleType: RoleType;
-  public descending = false;
+  public descending: boolean;
 
-  constructor(fields?: Partial<Sort> | RoleType) {
-    if ((fields as RoleType).id) {
-      this.roleType = fields as RoleType;
+  constructor(args: SortArgs);
+  constructor(roleType: RoleType, descending?: boolean);
+  constructor(args: SortArgs | RoleType, descending?: boolean ) {
+    if (args instanceof RoleType) {
+      this.roleType = args;
+      this.descending = descending ?? false;
     } else {
-      Object.assign(this, fields);
+      this.roleType = args.roleType;
+      this.descending = args.descending ?? false;
     }
   }
 
