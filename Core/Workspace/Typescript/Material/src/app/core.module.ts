@@ -40,9 +40,9 @@ import { AuthenticationConfig } from 'src/allors/angular/core/authentication/aut
     HttpClientModule,
 
     AllorsModule.forRoot({ url: environment.url }),
-    AuthenticationModule.forRoot(
-      new AuthenticationConfig(environment.url + environment.authenticationUrl)
-    ),
+    AuthenticationModule.forRoot({
+      url: environment.url + environment.authenticationUrl,
+    }),
     LoggingModule.forRoot({ console: true }),
     SaveModule,
 

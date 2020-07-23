@@ -42,7 +42,7 @@
     "max-classes-per-file": false,
     "max-line-length": [
       true,
-      240
+      140
     ],
     "member-ordering": [
       true,
@@ -55,7 +55,6 @@
         ]
       }
     ],
-    "no-any": true,
     "no-console": [
       true,
       "debug",

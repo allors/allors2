@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { RoleField, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService, TestScope } from '../../../../../angular';
 import { Organisation, Person } from '../../../../../domain';
-import { PullRequest, assert } from '../../../../../framework';
+import { PullRequest, assert, ISession, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { getLocaleDateTimeFormat } from '@angular/common';
 
@@ -21,7 +21,7 @@ export class OrganisationComponent extends TestScope implements OnInit, AfterVie
   m: Meta;
   peopleFilter: SearchFactory;
 
-  field!: RoleField;
+  selected: ISessionObject;
   people!: Person[];
   organisation!: Organisation;
 
@@ -113,7 +113,7 @@ export class OrganisationComponent extends TestScope implements OnInit, AfterVie
     window.history.back();
   }
 
-  public ownerSelected(field: RoleField): void {
-    this.field = field;
+  public ownerSelected(selected: ISessionObject): void {
+    this.selected = selected;
   }
 }
