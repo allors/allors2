@@ -22,20 +22,6 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseOnPreDerive(this Party @this, ObjectOnPreDerive method)
-        {
-            var (iteration, changeSet, derivedObjects) = method;
-
-            if (iteration.IsMarked(@this) || changeSet.IsCreated(@this) || changeSet.HasChangedRoles(@this))
-            {
-                foreach (PartyFinancialRelationship partyFinancialRelationship in @this.PartyFinancialRelationshipsWhereParty)
-                {
-                    iteration.AddDependency(partyFinancialRelationship, @this);
-                    iteration.Mark(partyFinancialRelationship);
-                }
-            }
-        }
-
         public static void BaseOnDerive(this Party @this, ObjectOnDerive method)
         {
             @this.DerivedRoles.BillingAddress = null;

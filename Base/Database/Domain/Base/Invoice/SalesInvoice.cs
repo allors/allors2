@@ -101,7 +101,6 @@ namespace Allors.Domain
 
             if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-
                 if (this.ExistBillToCustomer)
                 {
                     var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;

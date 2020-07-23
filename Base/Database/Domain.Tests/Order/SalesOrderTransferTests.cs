@@ -2690,19 +2690,160 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderBuilder_WhenProvisional_ThenOrderCanTransfer()
         {
-            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
+            var customer = new PersonBuilder(this.Session).WithFirstName("Jubayer").Build();
             var internalOrganisation = this.InternalOrganisation;
 
-            var anotherInternalOrganisation = new OrganisationBuilder(this.Session)
-                .WithIsInternalOrganisation(true)
-                .WithDoAccounting(false)
-                .WithName("another internalOrganisation")
-                .WithPreferredCurrency(new Currencies(this.Session).CurrencyByCode["EUR"])
-                .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
-                .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
-                .WithPurchaseOrderNumberPrefix("purchase orderno: ")
-                .WithSubAccountCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+            //Another InternalOrg Begins
+            var session = this.Session;
+            var singleton = session.GetSingleton();
+
+            var belgium = new Countries(session).CountryByIsoCode["BE"];
+            var euro = belgium.Currency;
+
+            var bank = new BankBuilder(session).WithCountry(belgium).WithName("ING België").WithBic("BBRUBEBB").Build();
+
+            var ownBankAccount = new OwnBankAccountBuilder(session)
+                    .WithBankAccount(new BankAccountBuilder(session).WithBank(bank)
+                                        .WithCurrency(euro)
+                                        .WithIban("BE24557215223438")
+                                        .WithNameOnAccount("Jubayer")
+                                        .Build())
+                    .WithDescription("Main bank account")
+                    .Build();
+
+            var postalAddress = new PostalAddressBuilder(session)
+                .WithAddress1("Kleine Nieuwedijkstraat 2")
+                .WithLocality("Mechelen")
+                .WithCountry(belgium)
                 .Build();
+
+            var anotherInternalOrganisation = new OrganisationBuilder(session)
+                    .WithIsInternalOrganisation(true)
+                    .WithDoAccounting(false)
+                    .WithName("internalOrganisation")
+                    .WithPreferredCurrency(new Currencies(session).CurrencyByCode["EUR"])
+                    .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
+                    .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
+                    .WithPurchaseOrderNumberPrefix("purchase orderno: ")
+                    .WithDefaultCollectionMethod(ownBankAccount)
+                    .WithSubAccountCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+                    .Build();
+
+            anotherInternalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+                .WithUseAsDefault(true)
+                .WithContactMechanism(postalAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
+                .WithContactPurpose(new ContactMechanismPurposes(session).BillingAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(session).ShippingAddress)
+                .Build());
+
+            var facility = new FacilityBuilder(session)
+                .WithFacilityType(new FacilityTypes(session).Warehouse)
+                .WithName("facility")
+                .WithOwner(anotherInternalOrganisation)
+                .Build();
+
+            singleton.Settings.DefaultFacility = facility;
+
+            var collectionMethod = new PaymentMethods(session).Extent().First;
+
+            new StoreBuilder(session)
+                .WithName("store")
+                .WithBillingProcess(new BillingProcesses(session).BillingForShipmentItems)
+                .WithInternalOrganisation(anotherInternalOrganisation)
+                .WithOutgoingShipmentNumberPrefix("shipmentno: ")
+                .WithSalesInvoiceNumberPrefix("invoiceno: ")
+                .WithSalesOrderNumberPrefix("orderno: ")
+                .WithDefaultShipmentMethod(new ShipmentMethods(session).Ground)
+                .WithDefaultCarrier(new Carriers(session).Fedex)
+                .WithCreditLimit(500)
+                .WithPaymentGracePeriod(10)
+                .WithDefaultCollectionMethod(collectionMethod)
+                .WithIsImmediatelyPicked(false)
+                .WithAutoGenerateShipmentPackage(false)
+                .WithIsImmediatelyPacked(true)
+                .Build();
+
+            new ProductCategoryBuilder(session).WithName("Primary Category").Build();
+
+            anotherInternalOrganisation.CreateB2BCustomer(session.Faker());
+            anotherInternalOrganisation.CreateB2CCustomer(session.Faker());
+            anotherInternalOrganisation.CreateSupplier(session.Faker());
+            anotherInternalOrganisation.CreateSubContractor(session.Faker());
+
+            var purchaser = new PersonBuilder(session).WithFirstName("Mr").WithLastName("Purchaser").WithUserName("anotherPurchaser").Build();
+            var orderProcessor = new PersonBuilder(session).WithFirstName("Mr").WithLastName("OrderProcessor").WithUserName("anotherOrderProcessor").Build();
+
+            // Adding newly created persons to EmployeeUserGroup as employees do not have any permission when created
+            var employeesUserGroup = new UserGroups(session).Employees;
+            employeesUserGroup.AddMember(purchaser);
+            employeesUserGroup.AddMember(orderProcessor);
+
+            new UserGroups(session).Creators.AddMember(purchaser);
+            new UserGroups(session).Creators.AddMember(orderProcessor);
+
+            new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(purchaser).WithEmployer(anotherInternalOrganisation).Build();
+
+            new EmploymentBuilder(session).WithFromDate(session.Now()).WithEmployee(orderProcessor).WithEmployer(anotherInternalOrganisation).Build();
+
+            var good1 = new NonUnifiedGoodBuilder(session)
+                .WithProductIdentification(new ProductNumberBuilder(session)
+                    .WithIdentification("1")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(session).Good).Build())
+                .WithName("good1")
+                .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
+                .WithPart(new NonUnifiedPartBuilder(session)
+                    .WithProductIdentification(new PartNumberBuilder(session)
+                        .WithIdentification("1")
+                        .WithProductIdentificationType(new ProductIdentificationTypes(session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(session).NonSerialised).Build())
+                .Build();
+
+            var good2 = new NonUnifiedGoodBuilder(session)
+                .WithProductIdentification(new ProductNumberBuilder(session)
+                    .WithIdentification("2")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(session).Good).Build())
+                .WithName("good2")
+                .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
+                .WithPart(new NonUnifiedPartBuilder(session)
+                    .WithProductIdentification(new PartNumberBuilder(session)
+                        .WithIdentification("2")
+                        .WithProductIdentificationType(new ProductIdentificationTypes(session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(session).NonSerialised).Build())
+                .Build();
+
+            var good3 = new NonUnifiedGoodBuilder(session)
+                .WithProductIdentification(new ProductNumberBuilder(session)
+                    .WithIdentification("3")
+                    .WithProductIdentificationType(new ProductIdentificationTypes(session).Good).Build())
+                .WithName("good3")
+                .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
+                .WithPart(new NonUnifiedPartBuilder(session)
+                    .WithProductIdentification(new PartNumberBuilder(session)
+                        .WithIdentification("3")
+                        .WithProductIdentificationType(new ProductIdentificationTypes(session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(session).NonSerialised).Build())
+                .Build();
+
+            var catMain = new ProductCategoryBuilder(session).WithName("main cat").Build();
+
+            new ProductCategoryBuilder(session)
+                .WithName("cat for good1")
+                .WithPrimaryParent(catMain)
+                .WithProduct(good1)
+                .Build();
+
+            new ProductCategoryBuilder(session)
+                .WithName("cat for good2")
+                .WithPrimaryParent(catMain)
+                .WithProduct(good2)
+                .WithProduct(good3)
+                .Build();
+
+            session.Derive();
+            session.Commit();
+
+            //Another InternalOrg Ends
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 

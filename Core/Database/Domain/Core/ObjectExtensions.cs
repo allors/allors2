@@ -60,12 +60,16 @@ namespace Allors
             var session = strategy.Session;
             var @class = strategy.Class;
 
-            var clone = (T)session.Create(@class);
+            var clone = (T)ObjectBuilder.Build(session, @class);
+
             foreach (var roleType in @class.RoleTypes.Where(v => !(v.RelationType.IsDerived || v.RelationType.IsSynced) && !deepClone.Contains(v) && (v.ObjectType.IsUnit || v.AssociationType.IsMany)))
             {
                 var relationType = roleType.RelationType;
-                var role = @this.Strategy.GetRole(relationType);
-                clone.Strategy.SetRole(relationType, role);
+                if (!clone.Strategy.ExistRole(relationType))
+                {
+                    var role = @this.Strategy.GetRole(relationType);
+                    clone.Strategy.SetRole(relationType, role);
+                }
             }
 
             foreach(var roleType in deepClone)

@@ -9,6 +9,14 @@ namespace Allors.Domain
 
     public partial class PartyFinancialRelationship
     {
+        public void BaseOnPreDerive(ObjectOnPreDerive method)
+        {
+            var (iteration, changeSet, derivedObjects) = method;
+
+            iteration.AddDependency(this, this.Party.SalesOrdersWhereBillToCustomer);
+            iteration.AddDependency(this, this.Party.SalesInvoicesWhereBillToCustomer);
+        }
+
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var party = this.Party;

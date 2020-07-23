@@ -44,6 +44,17 @@ namespace Allors.Domain
                 else
                 {
                     this.To = this.From.Clone(this.From.Meta.SalesOrderItems);
+                    this.To.TakenBy = this.InternalOrganisation;
+
+                    // TODO: Make sure 'from' customer is also a customer in 'to' internal organisation
+                    if (!this.To.TakenBy.ActiveCustomers.Contains(this.To.BillToCustomer))
+                    {
+                        new CustomerRelationshipBuilder(this.Strategy.Session)
+                            .WithInternalOrganisation(this.To.TakenBy)
+                            .WithCustomer(this.To.BillToCustomer)
+                            .Build();
+                    }
+
                     this.From.SalesOrderState = new SalesOrderStates(this.strategy.Session).Transferred;
                 }
             }
