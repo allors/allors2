@@ -1,7 +1,7 @@
 import { PushRequestRole } from './PushRequestRole';
 
-export class PushRequestObject {
-  public i: string;
-  public v: string | null;
-  public roles: PushRequestRole[];
+export interface PushRequestObject {
+  i: string;
+  v?: string;
+  roles?: PushRequestRole[];
 }

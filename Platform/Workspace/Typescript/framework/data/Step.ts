@@ -1,6 +1,5 @@
 import { ObjectType, PropertyType } from "../meta";
 import { Tree } from "./Tree";
-import { timeStamp } from 'console';
 
 const includeKey = "include";
 

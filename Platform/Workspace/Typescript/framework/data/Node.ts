@@ -40,7 +40,7 @@ export class Node {
 
   public toJSON(): any {
     return {
-      nodes: this.nodes,
+      nodes: this.nodes?.length > 0 ? this.nodes : undefined,
       propertytype: this.propertyType.id,
     };
   }

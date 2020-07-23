@@ -1,16 +1,21 @@
 import { PropertyType, ObjectType } from '../meta';
-import { ParameterizablePredicate } from './ParameterizablePredicate';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
+
+export interface ExistArgs extends ParameterizablePredicateArgs, Pick<Exists, 'propertyType'> {}
 
 export class Exists extends ParameterizablePredicate {
   propertyType: PropertyType;
 
-  constructor(fields?: Partial<Exists> | PropertyType) {
+  constructor(propertyType: PropertyType);
+  constructor(args: ExistArgs);
+  constructor(args: ExistArgs | PropertyType) {
     super();
 
-    if ((fields as PropertyType).objectType) {
-      this.propertyType = fields as PropertyType;
+    if ((args as PropertyType).objectType) {
+      this.propertyType = args as PropertyType;
     } else {
-      Object.assign(this, fields);
+      Object.assign(this, args);
+      this.propertyType = (args as ExistArgs).propertyType;
     }
   }
 

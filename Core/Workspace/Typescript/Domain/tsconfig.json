@@ -18,6 +18,8 @@
       "es2018",
       "dom"
     ],
+    "preserveSymlinks": true,
+    "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*", "test/**/*"],

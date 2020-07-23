@@ -1,19 +1,24 @@
 import { RoleType, ObjectType } from '../meta';
-import { ParameterizablePredicate } from './ParameterizablePredicate';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
 import { UnitTypes } from '../workspace/Types';
 import { serialize } from '../workspace/SessionObject';
 
+export interface LessThanArgs extends ParameterizablePredicateArgs, Pick<LessThan, 'roleType' | 'value'> {}
+
 export class LessThan extends ParameterizablePredicate {
   public roleType: RoleType;
-  public value: UnitTypes;
+  public value?: UnitTypes;
 
-  constructor(fields?: Partial<LessThan> | RoleType) {
+  constructor(roleType: RoleType);
+  constructor(args: LessThanArgs);
+  constructor(args: LessThanArgs | RoleType)  {
     super();
 
-    if ((fields as RoleType).objectType) {
-      this.roleType = fields as RoleType;
+    if (args instanceof RoleType) {
+      this.roleType = args;
     } else {
-      Object.assign(this, fields);
+      Object.assign(this, args);
+      this.roleType = args.roleType;
     }
   }
 

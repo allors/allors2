@@ -24,3 +24,4 @@ export { Filter } from './Filter';
 export { Tree } from './Tree';
 export { Result } from './Result';
 export { FlatPull } from './FlatPull';
+export { Operator } from './Operator';

@@ -3,7 +3,8 @@ import { ObjectType, AssociationType } from '../meta';
 import { PushRequest } from './../protocol/push/PushRequest';
 import { PushResponse } from './../protocol/push/PushResponse';
 
-import { ISessionObject, SessionObject } from './SessionObject';
+import { ISessionObject } from './ISessionObject';
+import { SessionObject } from './SessionObject';
 import { IWorkspace, Workspace } from './Workspace';
 import { WorkspaceObject, IWorkspaceObject } from './WorkspaceObject';
 import { Operations } from '../protocol/Operations';
@@ -14,7 +15,7 @@ export interface ISession {
 
   hasChanges: boolean;
 
-  get(id: string): ISessionObject | null;
+  get(id: string): ISessionObject | undefined;
 
   create(objectType: ObjectType | string): ISessionObject;
 
@@ -46,9 +47,9 @@ export class Session implements ISession {
     this.sessionObjectByIdByClass = new Map();
   }
 
-  public get(id: string): ISessionObject | null {
+  public get(id: string): ISessionObject | undefined {
     if (!id) {
-      return null;
+      return undefined;
     }
 
     let sessionObject = this.existingSessionObjectById.get(id);
@@ -63,12 +64,12 @@ export class Session implements ISession {
       }
     }
 
-    return sessionObject ?? null;
+    return sessionObject;
   }
 
-  public getForAssociation(id: string): ISessionObject | null {
+  public getForAssociation(id: string): ISessionObject | undefined {
     if (!id) {
-      return null;
+      return undefined;
     }
 
     let sessionObject = this.existingSessionObjectById.get(id);
@@ -84,7 +85,7 @@ export class Session implements ISession {
       }
     }
 
-    return sessionObject ?? null;
+    return sessionObject;
   }
 
   public create(objectType: ObjectType | string): ISessionObject {
@@ -118,7 +119,7 @@ export class Session implements ISession {
     }
 
     const newSessionObject = object as SessionObject;
-    const newId = newSessionObject.newId;
+    const newId = newSessionObject.newId!;
 
     if (this.newSessionObjectById.has(newId)) {
       for (const sessionObject of this.newSessionObjectById.values()) {
@@ -251,7 +252,7 @@ export class Session implements ISession {
   }
 
   private instantiate(workspaceObject: IWorkspaceObject): SessionObject {
-    const constructor: typeof SessionObject | undefined = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
+    const constructor = this.workspace.constructorByObjectType.get(workspaceObject.objectType);
     if (!constructor) {
       throw new Error(`Could not get constructor for ${workspaceObject.objectType.name}`);
     }

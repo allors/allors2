@@ -1,18 +1,12 @@
-import { Sort } from './Sort';
+import { Operator, OperatorArgs } from './Operator';
 import { Extent } from './Extent';
-import { ObjectType } from '../meta';
 
-export class Union {
-  public operands: Extent[];
-
-  public sort: Sort[];
-
-  public get objectType(): ObjectType | undefined {
-    return this.operands && this.operands.length > 0 ? this.operands[0].objectType : undefined;
-  }
-
-  constructor(fields?: Partial<Union>) {
-    Object.assign(this, fields);
+export class Union extends Operator {
+  constructor(...operands: Extent[]);
+  constructor(operands: Extent[]);
+  constructor(args?: OperatorArgs);
+  constructor(args: any) {
+    super(args);
   }
 
   public toJSON(): any {

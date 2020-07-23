@@ -1,15 +1,21 @@
-import { Predicate } from './Predicate';
+import { Predicate, PredicateArgs } from './Predicate';
 
-export class Or implements Predicate {
-  dependencies: string[];
-  operands: Predicate[];
+export interface OrArgs extends PredicateArgs, Pick<Or, "operands"> {}
 
-  constructor(fields?: Partial<Or> | Predicate[]) {
-    if (fields instanceof Array) {
-      this.operands = fields;
+export class Or extends Predicate {
+  operands?: Predicate[];
+
+  constructor(args: OrArgs);
+  constructor(...operands: Predicate[]);
+  constructor(operands: Predicate[]);
+  constructor(args: any) {
+    super();
+
+    if (args instanceof Array) {
+      this.operands = args;
     } else {
-      Object.assign(this, fields);
-      this.operands = this.operands ? this.operands : [];
+      Object.assign(this, args);
+      this.operands = args.operands;
     }
   }
 

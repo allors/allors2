@@ -1,14 +1,18 @@
 import { ObjectType } from "../meta";
-import { Predicate } from "./Predicate";
+import { Predicate, PredicateArgs } from "./Predicate";
 
 export type ParameterizablePredicateArgs = Pick<
   ParameterizablePredicate,
-  "dependencies" | "parameter"
->;
+  "parameter"
+> &
+  PredicateArgs;
 
-export abstract class ParameterizablePredicate implements Predicate {
-  dependencies?: string[];
+export abstract class ParameterizablePredicate extends Predicate {
   parameter?: string;
 
   abstract get objectType(): ObjectType;
+
+  constructor() {
+    super();
+  }
 }

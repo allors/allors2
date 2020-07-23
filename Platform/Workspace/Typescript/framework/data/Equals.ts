@@ -1,15 +1,10 @@
-import { PropertyType, ObjectType } from "../meta";
-import { ISessionObject, serialize } from "../workspace/SessionObject";
-import {
-  ParameterizablePredicate,
-  ParameterizablePredicateArgs,
-} from "./ParameterizablePredicate";
-import { UnitTypes, CompositeTypes } from "../workspace/Types";
-import { assert } from "../assert";
+import { PropertyType, ObjectType } from '../meta';
+import { ISessionObject } from '../workspace/ISessionObject';
+import { serialize } from '../workspace/SessionObject';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
+import { UnitTypes, CompositeTypes } from '../workspace/Types';
 
-export interface EqualsArgs
-  extends ParameterizablePredicateArgs,
-    Pick<Equals, "propertyType" | "value" | "object"> {}
+export interface EqualsArgs extends ParameterizablePredicateArgs, Pick<Equals, 'propertyType' | 'value' | 'object'> {}
 
 export class Equals extends ParameterizablePredicate {
   public propertyType: PropertyType;
@@ -35,15 +30,12 @@ export class Equals extends ParameterizablePredicate {
 
   public toJSON(): any {
     return {
-      kind: "Equals",
+      kind: 'Equals',
       dependencies: this.dependencies,
       propertytype: this.propertyType.id,
       parameter: this.parameter,
       value: serialize(this.value),
-      object:
-        this.object && (this.object as ISessionObject).id
-          ? (this.object as ISessionObject).id
-          : this.object,
+      object: this.object && (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object,
     };
   }
 }

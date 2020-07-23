@@ -1,7 +1,7 @@
 import { Pull } from '../../data';
 
 export class PullRequest {
-  public pulls: Pull[];
+  public pulls?: Pull[];
 
   constructor(fields?: Partial<PullRequest>) {
     Object.assign(this, fields);

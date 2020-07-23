@@ -1,21 +1,24 @@
 import { PropertyType, ObjectType } from '../meta';
-import { ISessionObject } from '../workspace/SessionObject';
-import { ParameterizablePredicate } from './ParameterizablePredicate';
+import { ISessionObject } from '../workspace/ISessionObject';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
 import { CompositeTypes } from '../workspace/Types';
 
-export class Contains extends ParameterizablePredicate {
-  dependencies: string[];
-  propertyType: PropertyType;
-  parameter: string;
-  object: CompositeTypes;
+export interface ContainsArgs extends ParameterizablePredicateArgs, Pick<Contains, 'propertyType' | 'object'> {}
 
-  constructor(fields?: Partial<Contains> | PropertyType) {
+export class Contains extends ParameterizablePredicate {
+  propertyType: PropertyType;
+  object?: CompositeTypes;
+
+  constructor(propertyType: PropertyType);
+  constructor(args: ContainsArgs);
+  constructor(args: ContainsArgs | PropertyType) {
     super();
 
-    if ((fields as PropertyType).objectType) {
-      this.propertyType = fields as PropertyType;
+    if ((args as PropertyType).objectType) {
+      this.propertyType = args as PropertyType;
     } else {
-      Object.assign(this, fields);
+      Object.assign(this, args);
+      this.propertyType = (args as ContainsArgs).propertyType;
     }
   }
 

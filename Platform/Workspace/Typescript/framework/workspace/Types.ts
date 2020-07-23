@@ -1,4 +1,5 @@
-﻿import { ISessionObject, SessionObject } from '../workspace/SessionObject';
+﻿import { ISessionObject } from '../workspace/ISessionObject';
+import { SessionObject } from '../workspace/SessionObject';
 
 export type UnitTypes = string | Date | boolean | number;
 export type CompositeTypes = ISessionObject | string;

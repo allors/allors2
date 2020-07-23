@@ -13,11 +13,11 @@ export class PushRequestInfo {
 
     pushRequest.newObjects?.forEach(v => {
       keys.add(v.t);
-      v.roles.forEach(w => keys.add(w.t));
+      v.roles?.forEach(w => keys.add(w.t));
     });
 
     pushRequest.objects?.forEach(v => {
-      v.roles.forEach(w => keys.add(w.t));
+      v.roles?.forEach(w => keys.add(w.t));
     });
 
     keys.forEach(key => {
