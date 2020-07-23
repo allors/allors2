@@ -118,6 +118,37 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void SalesOrder()
+        {
+            var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(this.Session.Now()).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+
+            this.Session.Derive();
+
+            var employee = new Employments(this.Session).Extent().Select(v => v.Employee).First();
+            this.Session.SetUser(employee);
+
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToCustomer(customer)
+                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .Build();
+
+            this.Session.Derive();
+
+            Assert.Equal(new SalesOrderStates(this.Session).Provisional, order.SalesOrderState);
+
+            var acl = new AccessControlLists(employee)[order];
+            Assert.False(acl.CanExecute(M.SalesOrder.DoTransfer));
+            Assert.False(acl.CanWrite(M.SalesOrder.Description));
+            Assert.True(acl.CanRead(M.SalesOrder.Description));
+        }
+
+        [Fact]
         public void UserGroup()
         {
             var userGroup = new UserGroups(this.Session).Administrators;

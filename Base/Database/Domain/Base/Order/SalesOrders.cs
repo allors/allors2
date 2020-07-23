@@ -23,6 +23,7 @@ namespace Allors.Domain
             var rejected = new SalesOrderStates(this.Session).Rejected;
             var completed = new SalesOrderStates(this.Session).Completed;
             var finished = new SalesOrderStates(this.Session).Finished;
+            var tranferred = new SalesOrderStates(this.Session).Transferred;
 
             var setReadyForPosting = this.Meta.SetReadyForPosting;
             var post = this.Meta.Post;
@@ -47,6 +48,7 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, onHold, setReadyForPosting, reject, approve, hold, ship, invoice, post, accept, revise, transfer);
             config.Deny(this.ObjectType, rejected, reject, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, cancel, transfer);
             config.Deny(this.ObjectType, cancelled, cancel, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, reject, transfer);
+            config.Deny(this.ObjectType, tranferred, cancel, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, reject, transfer);
             config.Deny(this.ObjectType, completed, complete, reject, cancel, approve, hold, @continue, setReadyForPosting, invoice, post, accept, reopen, revise, transfer);
 
             config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
