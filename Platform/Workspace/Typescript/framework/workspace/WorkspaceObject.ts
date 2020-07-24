@@ -5,7 +5,6 @@ import { Permission } from './Permission';
 import { AccessControl } from './AccessControl';
 import { Compressor } from '../protocol/Compressor';
 import { deserialize } from './SessionObject';
-import { Meta } from 'src/allors/meta';
 
 export interface IWorkspaceObject {
   workspace: IWorkspace;

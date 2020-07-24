@@ -1,12 +1,11 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {
-  BrowserAnimationsModule,
-  NoopAnimationsModule,
-} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+
+import { enGB } from 'date-fns/locale';
 
 import { environment } from '../environments/environment';
 
@@ -19,18 +18,12 @@ import {
   AuthenticationModule,
   MediaModule,
   NavigationModule,
+  DateModule,
 } from '../allors/angular';
 
-import {
-  DeleteModule,
-  NavigateModule,
-  DialogModule,
-  LoggingModule,
-  SideNavModule,
-} from '../allors/material';
-import { SaveModule } from 'src/allors/material/core/services/save';
+import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule, AllorsDateAdapter } from '../allors/material';
+import { SaveModule } from '../allors/material/core/services/save';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete';
-import { AuthenticationConfig } from 'src/allors/angular/core/authentication/authentication.config';
 
 @NgModule({
   imports: [
@@ -60,12 +53,31 @@ import { AuthenticationConfig } from 'src/allors/angular/core/authentication/aut
     // Actions
     DeleteModule.forRoot(),
     NavigateModule.forRoot(),
+
+    // Date
+    DateModule.forRoot({
+      locale: enGB,
+    }),
   ],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'nl-BE' },
     {
       provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
       useValue: { autoActiveFirstOption: true },
+    },
+    { provide: DateAdapter, useClass: AllorsDateAdapter },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'dd/MM/yyyy',
+        },
+        display: {
+          dateInput: 'dd/MM/yyyy',
+          monthYearLabel: 'LLL y',
+          dateA11yLabel: 'MMMM d, y',
+          monthYearA11yLabel: 'MMMM y',
+        },
+      },
     },
   ],
 })

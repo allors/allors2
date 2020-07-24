@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { AllorsFocusModule } from '../../../../../angular';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import { AllorsMaterialMonthpickerComponent } from './monthpicker.component';
 export { AllorsMaterialMonthpickerComponent } from './monthpicker.component';
@@ -24,7 +23,6 @@ export { AllorsMaterialMonthpickerComponent } from './monthpicker.component';
     MatInputModule,
     MatIconModule,
     MatDatepickerModule,
-    MatMomentDateModule,
     AllorsFocusModule
   ],
  })

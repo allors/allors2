@@ -1,4 +1,4 @@
-import * as moment from 'moment/moment';
+
 import {
   AfterViewInit,
   Component,
@@ -24,7 +24,8 @@ import {
   TestScope,
 } from '../../../../angular';
 import { RadioGroupOption } from '../../../../material';
-import { SaveService } from 'src/allors/material/core/services/save';
+import { SaveService } from '../../../core/services/save';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   templateUrl: './form.component.html',
@@ -68,7 +69,8 @@ export class FormComponent extends TestScope
     private workspaceService: WorkspaceService,
     private titleService: Title,
     private route: ActivatedRoute,
-    private saveService: SaveService
+    private saveService: SaveService,
+    private dateAdapter: DateAdapter<string>
   ) {
     super();
 
@@ -161,19 +163,22 @@ export class FormComponent extends TestScope
 
   newDate() {
     if (this.data) {
-      this.data.Date = moment.utc().toISOString();
+      var today = this.dateAdapter.today();
+      this.data.Date = today;
     }
   }
 
   newDateTime() {
     if (this.data) {
-      this.data.DateTime = moment.utc().toISOString();
+      var today = this.dateAdapter.today();
+      this.data.DateTime = today;
     }
   }
 
   newDateTime2() {
     if (this.data) {
-      this.data.DateTime2 = moment.utc().toISOString();
+      var today = this.dateAdapter.today();
+      this.data.DateTime2 = today;
     }
   }
 

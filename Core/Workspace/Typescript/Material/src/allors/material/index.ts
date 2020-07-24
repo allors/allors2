@@ -1,4 +1,4 @@
-// Base Components
+// Core Components
 export * from './core/components/dialog/dialog.module';
 export * from './core/components/filter/filter.module';
 export * from './core/components/factoryfab/factoryfab.module';
@@ -29,13 +29,14 @@ export * from './core/components/role/slidetoggle/slidetoggle.module';
 export * from './core/components/role/static/static.module';
 export * from './core/components/role/textarea/textarea.module';
 
-// Base Services
+// Core Services
 export * from './core/services/actions';
 export * from './core/services/dialog';
 export * from './core/services/object';
 export * from './core/services/logging';
 export * from './core/services/sidenav';
 
-// Base Misc
+// Core Misc
+export * from './core/dateadapter';
 export * from './core/sorting';
 
