@@ -1,7 +1,6 @@
 import * as compiler from '@angular/compiler';
 
 import { Node } from './Node';
-import { textSpanIntersectsWith, textChangeRangeIsUnchanged } from 'typescript';
 
 export class Attribute implements Node {
 

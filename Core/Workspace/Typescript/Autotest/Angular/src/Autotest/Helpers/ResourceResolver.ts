@@ -1,4 +1,4 @@
-import { ResourceResolver as NgastResourceResolver } from 'ngast';
+import { ResourceResolver as NgastResourceResolver } from '../../ngast/resource-resolver';
 import { readFile, readFileSync } from 'fs';
 
 export class ResourceResolver implements NgastResourceResolver {

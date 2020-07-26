@@ -1,4 +1,4 @@
-import { PipeSymbol } from "ngast";
+import { PipeSymbol } from "../../ngast/pipe-symbol";;
 import { PathResolver } from '../Helpers';
 
 export class Pipe {

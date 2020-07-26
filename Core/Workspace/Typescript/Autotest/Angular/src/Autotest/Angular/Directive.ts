@@ -1,4 +1,4 @@
-import { DirectiveSymbol } from 'ngast';
+import { DirectiveSymbol } from "../../ngast/directive-symbol";
 import { PathResolver } from '../Helpers';
 
 import { Template } from './Template';
@@ -24,8 +24,8 @@ export class Directive {
         this.path = pathResolver.relative(directive.symbol.filePath);
 
         this.isComponent = directive.isComponent();
-        this.selector = nonResolvedMetadata.selector !== 'ng-component' ? nonResolvedMetadata.selector : undefined;
-        this.exportAs = nonResolvedMetadata.exportAs;
+        this.selector = nonResolvedMetadata?.selector !== 'ng-component' ? nonResolvedMetadata?.selector : undefined;
+        this.exportAs = nonResolvedMetadata?.exportAs;
 
         if (resolvedMetadata && resolvedMetadata.template) {
             this.template = new Template(this, resolvedMetadata, pathResolver);

@@ -1,4 +1,4 @@
-import { ProviderSymbol } from "ngast";
+import { ProviderSymbol } from "../../ngast/provider-symbol";;
 import { PathResolver } from '../Helpers';
 import { Reference } from './Reference';
 
