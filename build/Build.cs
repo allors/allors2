@@ -14,6 +14,10 @@ partial class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     private readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
+    Target Setup => _ => _
+        .DependsOn(CoreSetup)
+        .DependsOn(BaseSetup);
+
     Target ResetDatabase => _ => _
         .DependsOn(AdaptersResetDatabase)
         .DependsOn(CoreResetDatabase)
