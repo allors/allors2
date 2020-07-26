@@ -56,7 +56,10 @@ namespace Tests
             this.Driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromMinutes(5);
 
             // Move to monitor on the left
-            this.Driver.Manage().Window.Position = new Point(-800, 0);
+            //this.Driver.Manage().Window.Position = new Point(-800, 0);
+            // Move to monitor on the right
+            this.Driver.Manage().Window.Position = new Point(10000, 0);
+
             try
             {
                 this.Driver.Manage().Window.Maximize();

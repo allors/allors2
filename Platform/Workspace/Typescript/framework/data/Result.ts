@@ -12,6 +12,8 @@ export class Result {
   public take?: number;
 
   constructor(args?: Partial<Result>) {
-    Object.assign(this, args);
+    if (args) {
+      Object.assign(this, args);
+    }
   }
 }

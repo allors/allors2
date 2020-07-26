@@ -1,4 +1,4 @@
-import { RoleType } from "../meta";
+import { RoleType } from '../meta';
 
 export interface SortArgs {
   roleType: RoleType;
@@ -11,11 +11,11 @@ export class Sort {
 
   constructor(args: SortArgs);
   constructor(roleType: RoleType, descending?: boolean);
-  constructor(args: SortArgs | RoleType, descending?: boolean ) {
+  constructor(args: SortArgs | RoleType, descending?: boolean) {
     if (args instanceof RoleType) {
       this.roleType = args;
       this.descending = descending ?? false;
-    } else {
+    } else if (args) {
       this.roleType = args.roleType;
       this.descending = args.descending ?? false;
     }

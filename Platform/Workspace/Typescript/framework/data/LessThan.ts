@@ -11,12 +11,12 @@ export class LessThan extends ParameterizablePredicate {
 
   constructor(roleType: RoleType);
   constructor(args: LessThanArgs);
-  constructor(args: LessThanArgs | RoleType)  {
+  constructor(args: LessThanArgs | RoleType) {
     super();
 
     if (args instanceof RoleType) {
       this.roleType = args;
-    } else {
+    } else if (args) {
       Object.assign(this, args);
       this.roleType = args.roleType;
     }

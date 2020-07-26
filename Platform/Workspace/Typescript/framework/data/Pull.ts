@@ -80,7 +80,7 @@ export class Pull {
           this.results.push(result);
         }
       }
-    } else {
+    } else if (args) {
       Object.assign(this, args);
       this.objectType = args.objectType;
     }

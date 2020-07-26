@@ -10,17 +10,17 @@ export class Like extends ParameterizablePredicate {
 
   constructor(roleType: RoleType);
   constructor(args: GreaterThanArgs);
-  constructor(args: GreaterThanArgs | RoleType)  {
+  constructor(args: GreaterThanArgs | RoleType) {
     super();
 
     if (args instanceof RoleType) {
       this.roleType = args;
-    } else {
+    } else if (args) {
       Object.assign(this, args);
       this.roleType = args.roleType;
     }
   }
-  
+
   get objectType(): ObjectType {
     return this.roleType.objectType;
   }

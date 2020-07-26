@@ -1,6 +1,6 @@
 import { Predicate, PredicateArgs } from './Predicate';
 
-export interface NotArgs extends PredicateArgs, Pick<Not, "operand"> {}
+export interface NotArgs extends PredicateArgs, Pick<Not, 'operand'> {}
 
 export class Not extends Predicate {
   operand?: Predicate;
@@ -12,7 +12,7 @@ export class Not extends Predicate {
 
     if (args instanceof Predicate) {
       this.operand = args;
-    } else {
+    } else if (args) {
       Object.assign(this, args);
       this.operand = args?.operand;
     }

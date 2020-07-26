@@ -20,7 +20,7 @@ export abstract class Operator {
   constructor(args: any) {
     if (args instanceof Array) {
       this.operands = args;
-    } else {
+    } else if (args) {
       Object.assign(this, args);
       this.operands = args.operands;
     }

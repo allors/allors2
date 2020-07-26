@@ -16,7 +16,7 @@ export class Filter {
   constructor(args: FilterArgs | ObjectType) {
     if (args instanceof ObjectType) {
       this.objectType = args;
-    } else {
+    } else if (args) {
       Object.assign(this, args);
       this.objectType = args.objectType;
     }

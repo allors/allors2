@@ -1,9 +1,9 @@
 import { Predicate, PredicateArgs } from './Predicate';
 
-export interface OrArgs extends PredicateArgs, Pick<Or, "operands"> {}
+export interface OrArgs extends PredicateArgs, Pick<Or, 'operands'> {}
 
 export class Or extends Predicate {
-  operands?: Predicate[];
+  operands: Predicate[];
 
   constructor(args: OrArgs);
   constructor(...operands: Predicate[]);
@@ -13,9 +13,11 @@ export class Or extends Predicate {
 
     if (args instanceof Array) {
       this.operands = args;
-    } else {
+    } else if (args) {
       Object.assign(this, args);
       this.operands = args.operands;
+    } else{
+      this.operands = [];
     }
   }
 

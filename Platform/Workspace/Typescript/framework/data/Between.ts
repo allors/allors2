@@ -16,7 +16,7 @@ export class Between extends ParameterizablePredicate {
 
     if (args instanceof RoleType) {
       this.roleType = args;
-    } else {
+    } else if (args) {
       Object.assign(this, args);
       this.roleType = args.roleType;
     }

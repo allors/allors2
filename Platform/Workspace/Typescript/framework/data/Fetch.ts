@@ -10,9 +10,9 @@ export class Fetch {
 
   public include?: Tree | Node[];
 
-  constructor(fieldsOrObjectType?: Partial<Fetch> | ObjectType, literal?: any) {
-    if (fieldsOrObjectType instanceof ObjectType) {
-      const objectType = fieldsOrObjectType as ObjectType;
+  constructor(args?: Partial<Fetch> | ObjectType, literal?: any) {
+    if (args instanceof ObjectType) {
+      const objectType = args as ObjectType;
 
       if (literal) {
         const keys = Object.keys(literal);
@@ -32,8 +32,8 @@ export class Fetch {
           this.step = new Step(objectType, stepName, stepLiteral);
         }
       }
-    } else {
-      Object.assign(this, fieldsOrObjectType);
+    } else if (args) {
+      Object.assign(this, args);
     }
   }
 
