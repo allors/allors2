@@ -1,13 +1,22 @@
-import { Predicate } from './Predicate';
+import { Predicate, PredicateArgs } from './Predicate';
 
-export class Not implements Predicate {
-  dependencies: string[];
-  operand: Predicate;
+export interface NotArgs extends PredicateArgs, Pick<Not, 'operand'> {}
 
-  constructor(fields?: Partial<Not>) {
-    Object.assign(this, fields);
+export class Not extends Predicate {
+  operand?: Predicate;
+
+  constructor(args: NotArgs);
+  constructor(operand?: Predicate);
+  constructor(args?: NotArgs | Predicate) {
+    super();
+
+    if (args instanceof Predicate) {
+      this.operand = args;
+    } else if (args) {
+      Object.assign(this, args);
+      this.operand = args?.operand;
+    }
   }
-
   toJSON(): any {
     return {
       kind: 'Not',

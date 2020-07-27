@@ -12,3 +12,4 @@ function link(src, dst){
 }
 
 link ('../../../../../Core/Workspace/Typescript/Autotest/Angular/src/Autotest', 'src');
+link ('../../../../../Core/Workspace/Typescript/Autotest/Angular/src/ngast', 'src');

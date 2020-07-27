@@ -4,11 +4,11 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { FilterFieldDefinition } from './FilterFieldDefinition';
 import { Predicate, And, Or, Not, ContainedIn, Filter, Extent } from '../../../framework';
 import { FilterField } from './FilterField';
-import { ParametrizedPredicate } from '../../../framework/data/ParametrizedPredicate';
+import { ParameterizablePredicate } from '../../../framework/data/ParameterizablePredicate';
 
 import { FilterOptions } from './FilterOptions';
 
-function getParameterizedPredicates(predicate: Predicate | Extent, results: ParametrizedPredicate[] = []): ParametrizedPredicate[] {
+function getParameterizedPredicates(predicate: Predicate | Extent, results: ParameterizablePredicate[] = []): ParameterizablePredicate[] {
 
   if (predicate instanceof Filter) {
     if (predicate.predicate) {
@@ -34,8 +34,8 @@ function getParameterizedPredicates(predicate: Predicate | Extent, results: Para
     }
   }
 
-  if (predicate instanceof ParametrizedPredicate) {
-    if ((predicate as ParametrizedPredicate).parameter) {
+  if (predicate instanceof ParameterizablePredicate) {
+    if ((predicate as ParameterizablePredicate).parameter) {
       results.push(predicate);
     }
   }

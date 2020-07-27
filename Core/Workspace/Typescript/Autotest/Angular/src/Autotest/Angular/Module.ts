@@ -1,4 +1,4 @@
-import { ModuleSymbol } from "ngast";
+import { ModuleSymbol } from "../../ngast/module-symbol";
 import { Route } from './Route';
 import { PathResolver } from '../Helpers';
 import { Reference } from './Reference';

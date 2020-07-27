@@ -1,21 +1,24 @@
 import { RoleType, ObjectType } from '../meta';
-import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
 import { UnitTypes } from '../workspace';
-import { serializeArray } from '../workspace/SessionObject';
+import { serialize, serializeAllDefined } from '../workspace/SessionObject';
 
-export class Between extends ParametrizedPredicate {
-  dependencies: string[];
+export interface BetweenArgs extends ParameterizablePredicateArgs, Pick<Between, 'roleType' | 'values'> {}
+
+export class Between extends ParameterizablePredicate {
   roleType: RoleType;
-  parameter: string;
-  values: UnitTypes[];
+  values?: UnitTypes[];
 
-  constructor(fields?: Partial<Between> | RoleType) {
+  constructor(roleType: RoleType);
+  constructor(args: BetweenArgs);
+  constructor(args: BetweenArgs | RoleType) {
     super();
 
-    if ((fields as RoleType).objectType) {
-      this.roleType = fields as RoleType;
-    } else {
-      Object.assign(this, fields);
+    if (args instanceof RoleType) {
+      this.roleType = args;
+    } else if (args) {
+      Object.assign(this, args);
+      this.roleType = args.roleType;
     }
   }
 
@@ -24,12 +27,17 @@ export class Between extends ParametrizedPredicate {
   }
 
   toJSON(): any {
+
     return {
       kind: 'Between',
       dependencies: this.dependencies,
       roleType: this.roleType.id,
       parameter: this.parameter,
-      values: serializeArray(this.values),
+      values: this.values ? serialize(this.values) : undefined,
     };
+
+    function serialize(values: UnitTypes[]): string[] | undefined {
+      return values.map((v) => serializeAllDefined(v));
+    }
   }
 }

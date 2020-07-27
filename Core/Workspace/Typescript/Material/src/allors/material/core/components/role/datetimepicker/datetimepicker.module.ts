@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { AllorsFocusModule } from '../../../../../angular';
 
 import { AllorsMaterialDatetimepickerComponent } from './datetimepicker.component';
-import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 export { AllorsMaterialDatetimepickerComponent } from './datetimepicker.component';
 
 @NgModule({
@@ -24,7 +23,6 @@ export { AllorsMaterialDatetimepickerComponent } from './datetimepicker.componen
     MatInputModule,
     MatIconModule,
     MatDatepickerModule,
-    MatMomentDateModule,
     AllorsFocusModule
   ],
 })

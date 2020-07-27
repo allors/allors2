@@ -10,22 +10,26 @@ import { Sort } from './Sort';
 import { Tree } from './Tree';
 import { serializeObject } from '../workspace/SessionObject';
 
+export type PullArgs = Pick<Pull, 'objectType' | 'extentRef' | 'extent' | 'object' | 'results' | 'parameters'>;
+
 export class Pull {
+  public objectType: ObjectType;
+
   public extentRef?: string;
 
   public extent?: Extent;
 
-  public objectType: ObjectType;
-
   public object?: CompositeTypes;
 
-  public results: Result[];
+  public results?: Result[];
 
   public parameters?: { [name: string]: ParameterTypes };
 
-  constructor(fields?: Partial<Pull> | ObjectType, flat?: FlatPull) {
-    if (fields instanceof ObjectType) {
-      this.objectType = fields as ObjectType;
+  constructor(args: PullArgs);
+  constructor(objectType: ObjectType, flat?: FlatPull);
+  constructor(args: PullArgs | ObjectType, flat?: FlatPull) {
+    if (args instanceof ObjectType) {
+      this.objectType = args as ObjectType;
 
       if (!flat) {
         this.extent = new Filter({ objectType: this.objectType });
@@ -76,8 +80,9 @@ export class Pull {
           this.results.push(result);
         }
       }
-    } else {
-      Object.assign(this, fields);
+    } else if (args) {
+      Object.assign(this, args);
+      this.objectType = args.objectType;
     }
   }
 

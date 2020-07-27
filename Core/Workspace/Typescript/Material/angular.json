@@ -8,9 +8,6 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
-        },
-        "@schematics/angular:application": {
-          "strict": true
         }
       },
       "root": "",
@@ -36,7 +33,14 @@
               "src/styles.scss",
               "./node_modules/easymde/dist/easymde.min.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "zone.js",
+              "markdown.component",
+              "easymde",
+              "codemirror",
+              "codemirror-spell-checker"
+           ]
           },
           "configurations": {
             "production": {

@@ -1,20 +1,26 @@
 import { PropertyType, ObjectType } from '../meta';
-import { ISessionObject, serialize } from '../workspace/SessionObject';
-import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { ISessionObject } from '../workspace/ISessionObject';
+import { serialize } from '../workspace/SessionObject';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
 import { UnitTypes, CompositeTypes } from '../workspace/Types';
 
-export class Equals extends ParametrizedPredicate {
-  public propertyType: PropertyType;
-  public value: UnitTypes;
-  public object: CompositeTypes;
+export interface EqualsArgs extends ParameterizablePredicateArgs, Pick<Equals, 'propertyType' | 'value' | 'object'> {}
 
-  constructor(fields?: Partial<Equals> | PropertyType) {
+export class Equals extends ParameterizablePredicate {
+  public propertyType: PropertyType;
+  public value?: UnitTypes;
+  public object?: CompositeTypes;
+
+  constructor(propertyType: PropertyType);
+  constructor(args: EqualsArgs);
+  constructor(args: EqualsArgs | PropertyType) {
     super();
 
-    if ((fields as PropertyType).objectType) {
-      this.propertyType = fields as PropertyType;
-    } else {
-      Object.assign(this, fields);
+    if ((args as PropertyType).objectType) {
+      this.propertyType = args as PropertyType;
+    } else if (args) {
+      Object.assign(this, args);
+      this.propertyType = (args as EqualsArgs).propertyType;
     }
   }
 

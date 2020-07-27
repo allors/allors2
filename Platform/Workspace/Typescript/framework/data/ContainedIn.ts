@@ -1,22 +1,26 @@
 import { PropertyType, ObjectType } from '../meta';
-import { ISessionObject } from '../workspace/SessionObject';
-import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { ISessionObject } from '../workspace/ISessionObject';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
 import { Extent } from './Extent';
 import { CompositeTypes } from '../workspace/Types';
 
-export class ContainedIn extends ParametrizedPredicate {
-  dependencies: string[];
-  propertyType: PropertyType;
-  extent: Extent;
-  objects: Array<CompositeTypes>;
+export interface ContainedInArgs extends ParameterizablePredicateArgs, Pick<ContainedIn, 'propertyType' | 'extent' | 'objects'> {}
 
-  constructor(fields?: Partial<ContainedIn> | PropertyType) {
+export class ContainedIn extends ParameterizablePredicate {
+  propertyType: PropertyType;
+  extent?: Extent;
+  objects?: Array<CompositeTypes>;
+
+  constructor(propertyType: PropertyType);
+  constructor(args: ContainedInArgs);
+  constructor(args: ContainedInArgs | PropertyType) {
     super();
 
-    if ((fields as PropertyType).objectType) {
-      this.propertyType = fields as PropertyType;
-    } else {
-      Object.assign(this, fields);
+    if ((args as PropertyType).objectType) {
+      this.propertyType = args as PropertyType;
+    } else if (args) {
+      Object.assign(this, args);
+      this.propertyType = (args as ContainedInArgs).propertyType;
     }
   }
 

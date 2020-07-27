@@ -78,7 +78,7 @@ partial class Build
          });
 
     private Target BaseWorkspaceAutotest => _ => _
-         .DependsOn(BaseWorkspaceSetup)
+         .DependsOn(BaseGenerate)
          .Executes(() =>
          {
              foreach (var path in new[] { Paths.BaseWorkspaceTypescriptIntranet, Paths.BaseWorkspaceTypescriptAutotestAngular })
@@ -94,7 +94,7 @@ partial class Build
                  .SetProjectFile(Paths.BaseWorkspaceTypescriptAutotestGenerateGenerate));
          });
 
-    private Target BaseWorkspaceNpmInstall => _ => _
+    private Target BaseSetup => _ => _
                          .Executes(() =>
          {
              foreach (var path in Paths.BaseWorkspaceTypescript)
@@ -105,12 +105,8 @@ partial class Build
              }
          });
 
-    private Target BaseWorkspaceSetup => _ => _
-         .DependsOn(BaseWorkspaceNpmInstall)
-         .DependsOn(BaseGenerate);
-
     private Target BaseWorkspaceTypescriptDomain => _ => _
-         .DependsOn(BaseWorkspaceSetup)
+         .DependsOn(BaseGenerate)
          .DependsOn(EnsureDirectories)
          .Executes(() =>
          {
@@ -122,7 +118,7 @@ partial class Build
          });
 
     private Target BaseWorkspaceTypescriptIntranet => _ => _
-         .DependsOn(BaseWorkspaceSetup)
+         .DependsOn(BaseGenerate)
          .DependsOn(BasePublishServer)
          .DependsOn(BasePublishCommands)
          .DependsOn(BaseResetDatabase)

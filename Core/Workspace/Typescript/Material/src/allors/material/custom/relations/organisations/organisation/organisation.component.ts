@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { RoleField, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService, TestScope } from '../../../../../angular';
 import { Organisation, Person } from '../../../../../domain';
-import { PullRequest, assert } from '../../../../../framework';
+import { PullRequest, assert, ISession, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { getLocaleDateTimeFormat } from '@angular/common';
 
@@ -18,18 +18,16 @@ import { getLocaleDateTimeFormat } from '@angular/common';
 export class OrganisationComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
 
   title: string;
-
-  field: RoleField;
-
   m: Meta;
-  people: Person[];
-
-  organisation: Organisation;
-
   peopleFilter: SearchFactory;
 
+  selected: ISessionObject;
+  people!: Person[];
+  organisation!: Organisation;
+
+  private subscription!: Subscription;
+
   private refresh$: BehaviorSubject<Date>;
-  private subscription: Subscription;
 
   constructor(
     @Self() public allors: ContextService,
@@ -115,7 +113,7 @@ export class OrganisationComponent extends TestScope implements OnInit, AfterVie
     window.history.back();
   }
 
-  public ownerSelected(field: RoleField): void {
-    this.field = field;
+  public ownerSelected(selected: ISessionObject): void {
+    this.selected = selected;
   }
 }

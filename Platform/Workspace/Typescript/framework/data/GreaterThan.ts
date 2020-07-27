@@ -1,19 +1,24 @@
 import { RoleType, ObjectType } from '../meta';
-import { ParametrizedPredicate } from './ParametrizedPredicate';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
 import { UnitTypes } from '../workspace/Types';
 import { serialize } from '../workspace/SessionObject';
 
-export class GreaterThan extends ParametrizedPredicate {
-  public roleType: RoleType;
-  public value: UnitTypes;
+export interface GreaterThanArgs extends ParameterizablePredicateArgs, Pick<GreaterThan, 'roleType' | 'value'> {}
 
-  constructor(fields?: Partial<GreaterThan> | RoleType) {
+export class GreaterThan extends ParameterizablePredicate {
+  public roleType: RoleType;
+  public value?: UnitTypes;
+
+  constructor(roleType: RoleType);
+  constructor(args: GreaterThanArgs);
+  constructor(args: GreaterThanArgs | RoleType) {
     super();
 
-    if ((fields as RoleType).objectType) {
-      this.roleType = fields as RoleType;
-    } else {
-      Object.assign(this, fields);
+    if (args instanceof RoleType) {
+      this.roleType = args;
+    } else if (args) {
+      Object.assign(this, args);
+      this.roleType = args.roleType;
     }
   }
 

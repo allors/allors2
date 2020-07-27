@@ -15,13 +15,12 @@ import { Meta } from '../../../../../meta';
 })
 export class PersonOverviewComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
 
-  public m: Meta;
-  public person: Person;
-  public locales: Locale[];
-
   public title: string;
+  public m: Meta;
 
-  private subscription: Subscription;
+  public person!: Person;
+  public locales!: Locale[];
+  private subscription!: Subscription;
 
   constructor(
     @Self() private allors: ContextService,

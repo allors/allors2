@@ -1,6 +1,7 @@
 export * from './authentication';
 export * from './actions';
 export * from './barcode';
+export * from './date';
 export * from './data';
 export * from './decorators';
 export * from './filter';

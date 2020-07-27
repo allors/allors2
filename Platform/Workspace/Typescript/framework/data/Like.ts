@@ -1,18 +1,23 @@
 import { RoleType, ObjectType } from '../meta';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
+import { GreaterThanArgs } from './GreaterThan';
 
-import { ParametrizedPredicate } from './ParametrizedPredicate';
+export interface LikeArgs extends ParameterizablePredicateArgs, Pick<Like, 'roleType' | 'value'> {}
 
-export class Like extends ParametrizedPredicate {
+export class Like extends ParameterizablePredicate {
   public roleType: RoleType;
-  public value: string;
+  public value?: string;
 
-  constructor(fields?: Partial<Like> | RoleType) {
+  constructor(roleType: RoleType);
+  constructor(args: GreaterThanArgs);
+  constructor(args: GreaterThanArgs | RoleType) {
     super();
 
-    if ((fields as RoleType).objectType) {
-      this.roleType = fields as RoleType;
-    } else {
-      Object.assign(this, fields);
+    if (args instanceof RoleType) {
+      this.roleType = args;
+    } else if (args) {
+      Object.assign(this, args);
+      this.roleType = args.roleType;
     }
   }
 

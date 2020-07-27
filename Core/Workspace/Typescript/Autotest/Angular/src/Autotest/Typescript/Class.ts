@@ -1,4 +1,4 @@
-import { ClassDeclaration, isPropertyDeclaration, PropertyDeclaration, ClassElement, isMethodDeclaration, MethodDeclaration, Program, TypeChecker, SyntaxKind, isTypeNode } from 'typescript';
+import { ClassDeclaration, isPropertyDeclaration, PropertyDeclaration, ClassElement, isMethodDeclaration, MethodDeclaration, Program, TypeChecker } from 'typescript';
 import * as tsutils from "tsutils";
 
 import { Property } from './Property';

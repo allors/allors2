@@ -94,7 +94,7 @@ partial class Build
             }
         });
 
-    Target CoreWorkspaceNpmInstall => _ => _
+    Target CoreSetup => _ => _
         .Executes(() =>
         {
             foreach (var path in Paths.CoreWorkspaceTypescript)
@@ -105,12 +105,8 @@ partial class Build
             }
         });
 
-    Target CoreWorkspaceSetup => _ => _
-        .DependsOn(CoreWorkspaceNpmInstall)
-        .DependsOn(CoreGenerate);
-
     Target CoreWorkspaceAutotest => _ => _
-        .DependsOn(CoreWorkspaceSetup)
+        .DependsOn(CoreGenerate)
         .Executes(() =>
         {
             foreach (var path in new[] { Paths.CoreWorkspaceTypescriptMaterial, Paths.CoreWorkspaceTypescriptAutotestAngular })
@@ -127,7 +123,7 @@ partial class Build
         });
 
     Target CoreWorkspaceTypescriptDomain => _ => _
-        .DependsOn(CoreWorkspaceSetup)
+        .DependsOn(CoreGenerate)
         .DependsOn(EnsureDirectories)
         .Executes(() =>
         {
@@ -139,7 +135,7 @@ partial class Build
         });
 
     Target CoreWorkspaceTypescriptPromise => _ => _
-        .DependsOn(CoreWorkspaceSetup)
+        .DependsOn(CoreGenerate)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(EnsureDirectories)
@@ -163,7 +159,7 @@ partial class Build
         });
 
     Target CoreWorkspaceTypescriptAngular => _ => _
-        .DependsOn(CoreWorkspaceSetup)
+        .DependsOn(CoreGenerate)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(EnsureDirectories)
@@ -189,7 +185,7 @@ partial class Build
         });
 
     Target CoreWorkspaceTypescriptMaterial => _ => _
-        .DependsOn(CoreWorkspaceSetup)
+        .DependsOn(CoreGenerate)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(CoreResetDatabase)

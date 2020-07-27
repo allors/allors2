@@ -1,5 +1,7 @@
 trigger:
 - master
+- feature/*
+- issue/*
 
 stages:
 - stage: Platform
@@ -59,6 +61,13 @@ stages:
         packageType: sdk
         version: 3.1.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
+    - task: PowerShell@2
+      inputs:
+        targetType: 'filePath'
+        filePath: 'build.ps1'
+        arguments: -target setup
+        failOnStderr: true
+      displayName: Setup
     - task: PowerShell@2
       inputs:
         targetType: 'filePath'

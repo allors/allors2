@@ -1,18 +1,27 @@
-import { ObjectType, PropertyType } from '../meta';
+import { ObjectType, PropertyType, RoleType } from '../meta';
+import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
 
-import { Predicate } from './Predicate';
+export interface InstanceofArgs extends ParameterizablePredicateArgs, Pick<Instanceof, 'propertyType' | 'objectType'> {}
 
-export class Instanceof implements Predicate {
-  dependencies: string[];
+export class Instanceof extends ParameterizablePredicate {
   propertyType: PropertyType;
-  objectType: ObjectType;
+  instanceObjectType?: ObjectType;
 
-  constructor(fields?: Partial<Instanceof> | PropertyType) {
-    if ((fields as PropertyType).objectType) {
-      this.propertyType = fields as PropertyType;
-    } else {
-      Object.assign(this, fields);
+  constructor(propertyType: PropertyType);
+  constructor(args: InstanceofArgs);
+  constructor(args: InstanceofArgs | PropertyType) {
+    super();
+
+    if ((args as PropertyType).objectType) {
+      this.propertyType = args as PropertyType;
+    } else if (args) {
+      Object.assign(this, args);
+      this.propertyType = (args as InstanceofArgs).propertyType;
     }
+  }
+
+  get objectType(): ObjectType {
+    return this.propertyType.objectType;
   }
 
   toJSON(): any {
@@ -20,7 +29,8 @@ export class Instanceof implements Predicate {
       kind: 'Instanceof',
       dependencies: this.dependencies,
       propertytype: this.propertyType.id,
-      objecttype: this.objectType.id,
+      parameter: this.parameter,
+      objecttype: this.instanceObjectType?.id,
     };
   }
 }

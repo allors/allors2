@@ -1,18 +1,28 @@
-import { AssociationType, RoleType, ObjectType, PropertyType } from '../meta';
+import { ObjectType, PropertyType } from '../meta';
 import { Tree } from './Tree';
 
 const includeKey = 'include';
 
-export class Step {
-  public include: Tree;
+interface StepArgs {
+  propertyType: PropertyType;
 
+  include?: Tree;
+
+  next?: Step | Tree;
+}
+
+export class Step {
   public propertyType: PropertyType;
 
-  public next: Step | Tree;
+  public include?: Tree;
 
-  constructor(fields?: Partial<Step> | ObjectType, stepName?: string, literal?: { [key: string]: any }) {
-    if (fields instanceof ObjectType) {
-      const objectType = fields as ObjectType;
+  public next?: Step | Tree;
+
+  constructor(args: StepArgs);
+  constructor(objectType: ObjectType, stepName: string, literal?: { [key: string]: any });
+  constructor(args: StepArgs | ObjectType, stepName?: string, literal?: { [key: string]: any }) {
+    if (args instanceof ObjectType) {
+      const objectType = args as ObjectType;
 
       let propertyType: PropertyType | undefined;
       if (stepName) {
@@ -29,7 +39,7 @@ export class Step {
           if (subType) {
             propertyType = subType.roleTypeByName.get(subStepName);
 
-            if (!this.propertyType) {
+            if (!propertyType) {
               propertyType = subType.associationTypeByName.get(subStepName);
             }
           }
@@ -60,8 +70,10 @@ export class Step {
           this.next = new Step(this.propertyType.objectType, nextStepName, nextStepLiteral);
         }
       }
-    } else {
-      Object.assign(this, fields);
+    } else if (args) {
+      this.propertyType = args.propertyType;
+      this.include = args.include;
+      this.next = args.next;
     }
   }
 

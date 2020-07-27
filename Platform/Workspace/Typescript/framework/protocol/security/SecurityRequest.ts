@@ -1,9 +1,5 @@
-export class SecurityRequest {
-  public accessControls: string[];
+export interface SecurityRequest {
+  accessControls?: string[];
 
-  public permissions: string[];
-
-  constructor(fields?: Partial<SecurityRequest>) {
-    Object.assign(this, fields);
-  }
+  permissions: string[];
 }

@@ -21,62 +21,70 @@ export class WorkspaceObject implements IWorkspaceObject {
   objectType: ObjectType;
   id: string;
   version: string;
-  sortedAccessControlIds: string | null;
-  sortedDeniedPermissionIds: string | null;
+  sortedAccessControlIds?: string;
+  sortedDeniedPermissionIds?: string;
 
   roleByRoleTypeId: Map<string, any>;
 
-  private cachedSortedAccessControlIds: string | null;
-  private cachedSortedDeniedPermissionIds: string | null;
-  private cachedAccessControls: (AccessControl | undefined)[] | null;
-  private cachedDeniedPermissions: Set<Permission | null> | null;
+  private cachedSortedAccessControlIds: string | undefined;
+  private cachedSortedDeniedPermissionIds: string | undefined;
+  private cachedAccessControls: (AccessControl | undefined)[] | undefined;
+  private cachedDeniedPermissions: Set<Permission | undefined> | undefined;
 
-  constructor(workspace: Workspace) {
-    this.workspace = workspace;
-    this.cachedAccessControls = null;
-    this.cachedDeniedPermissions = null;
-    this.roleByRoleTypeId = new Map();
-  }
-
-  new(id: string, objectType: ObjectType) {
-    this.objectType = objectType;
-    this.id = id;
-    this.version = '0';
-  }
-
-  sync(
+  constructor(
+    workspace: Workspace,
+    metaPopulation: MetaPopulation,
     syncResponseObject: SyncResponseObject,
     sortedAccessControlIdsDecompress: (compressed: string) => string,
     sortedDeniedPermissionIdsDecompress: (compressed: string) => string,
-    metaPopulation: MetaPopulation,
+  );
+  constructor(workspace: Workspace, objectType: ObjectType, id: string);
+  constructor(
+    workspace: Workspace,
+    objectTypeOrMetaPopulation: ObjectType | MetaPopulation,
+    idOrSyncResponseObject: string | SyncResponseObject,
+    sortedAccessControlIdsDecompress?: (compressed: string) => string,
+    sortedDeniedPermissionIdsDecompress?: (compressed: string) => string,
   ) {
-    this.id = syncResponseObject.i;
-    this.version = syncResponseObject.v;
-    this.objectType = metaPopulation.metaObjectById.get(syncResponseObject.t) as ObjectType;
-
+    this.workspace = workspace;
     this.roleByRoleTypeId = new Map();
-    if (syncResponseObject.r) {
-      syncResponseObject.r.forEach((role) => {
-        const roleTypeId = role.t;
-        const roleType = metaPopulation.metaObjectById.get(roleTypeId) as RoleType;
 
-        let value: any = role.v;
-        if (roleType.objectType.isUnit) {
-          value = deserialize(value, roleType.objectType);
-        } else {
-          if (roleType.isMany) {
-            value = (value as string).split(Compressor.itemSeparator);
+    if(objectTypeOrMetaPopulation instanceof ObjectType){
+      this.objectType = objectTypeOrMetaPopulation;
+      this.id = idOrSyncResponseObject as string;
+      this.version = '0';
+    } else{
+      const metaPopulation = objectTypeOrMetaPopulation as MetaPopulation;
+      const syncResponseObject = idOrSyncResponseObject as SyncResponseObject;
+
+      this.id = syncResponseObject.i;
+      this.version = syncResponseObject.v;
+      this.objectType = metaPopulation.metaObjectById.get(syncResponseObject.t) as ObjectType;
+  
+      this.roleByRoleTypeId = new Map();
+      if (syncResponseObject.r) {
+        syncResponseObject.r.forEach((role) => {
+          const roleTypeId = role.t;
+          const roleType = metaPopulation.metaObjectById.get(roleTypeId) as RoleType;
+  
+          let value: any = role.v;
+          if (roleType.objectType.isUnit) {
+            value = deserialize(value, roleType.objectType);
+          } else {
+            if (roleType.isMany) {
+              value = (value as string).split(Compressor.itemSeparator);
+            }
           }
-        }
-
-        this.roleByRoleTypeId.set(roleType.id, value);
-      });
+  
+          this.roleByRoleTypeId.set(roleType.id, value);
+        });
+      }
+  
+      this.sortedAccessControlIds = syncResponseObject?.a ? sortedAccessControlIdsDecompress!(syncResponseObject.a) : undefined;
+      this.sortedDeniedPermissionIds = syncResponseObject?.d ? sortedDeniedPermissionIdsDecompress!(syncResponseObject.d) : undefined;
     }
 
-    this.sortedAccessControlIds = syncResponseObject?.a ? sortedAccessControlIdsDecompress(syncResponseObject.a) : null;
-    this.sortedDeniedPermissionIds = syncResponseObject?.d ? sortedDeniedPermissionIdsDecompress(syncResponseObject.d) : null;
   }
-
   isPermitted(permission: Permission): boolean {
     if (permission == null) {
       return false;
@@ -89,7 +97,7 @@ export class WorkspaceObject implements IWorkspaceObject {
           .split(Compressor.itemSeparator)
           .map((v) => this.workspace.accessControlById.get(v));
       } else {
-        this.sortedAccessControlIds = null;
+        delete(this.sortedAccessControlIds);
       }
     }
 
@@ -102,7 +110,7 @@ export class WorkspaceObject implements IWorkspaceObject {
           // @ts-ignore
           .forEach((v) => this.cachedDeniedPermissions.add(this.workspace.permissionById.get(v)));
       } else {
-        this.cachedDeniedPermissions = null;
+        delete(this.cachedDeniedPermissions);
       }
     }
 

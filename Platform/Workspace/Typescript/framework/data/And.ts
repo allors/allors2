@@ -1,15 +1,23 @@
-import { Predicate } from './Predicate';
+import { Predicate, PredicateArgs } from './Predicate';
 
-export class And implements Predicate {
-  dependencies: string[];
+export interface AndArgs extends PredicateArgs, Pick<And, 'operands'> {}
+
+export class And extends Predicate {
   operands: Predicate[];
 
-  constructor(fields?: Partial<And> | Predicate[]) {
-    if (fields instanceof Array) {
-      this.operands = fields;
-    } else {
-      Object.assign(this, fields);
-      this.operands = this.operands ? this.operands : [];
+  constructor(args: AndArgs);
+  constructor(...operands: Predicate[]);
+  constructor(operands: Predicate[]);
+  constructor(args: any) {
+    super();
+
+    if (args instanceof Array) {
+      this.operands = args;
+    } else if (args) {
+      Object.assign(this, args);
+      this.operands = args.operands;
+    } else{
+      this.operands = [];
     }
   }
 
