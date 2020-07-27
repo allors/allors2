@@ -9,7 +9,6 @@ import { ParameterizablePredicate } from '../../../framework/data/Parameterizabl
 import { FilterOptions } from './FilterOptions';
 
 function getParameterizedPredicates(predicate: Predicate | Extent, results: ParameterizablePredicate[] = []): ParameterizablePredicate[] {
-
   if (predicate instanceof Filter) {
     if (predicate.predicate) {
       getParameterizedPredicates(predicate.predicate, results);
@@ -43,10 +42,8 @@ function getParameterizedPredicates(predicate: Predicate | Extent, results: Para
   return results;
 }
 
-
 @Injectable()
 export class AllorsFilterService {
-
   filterFieldDefinitions: FilterFieldDefinition[];
 
   readonly filterFields$: Observable<FilterField[]>;
@@ -74,15 +71,20 @@ export class AllorsFilterService {
 
   init(predicate: Predicate, options?: { [parameter: string]: Partial<FilterOptions> }) {
     const predicates = getParameterizedPredicates(predicate);
-    this.filterFieldDefinitions = predicates.map((v) => new FilterFieldDefinition({
-      predicate: v,
-      options: options ? new FilterOptions(options[v.parameter]) : undefined
-    }));
+    this.filterFieldDefinitions = predicates.map(
+      (v) =>
+        new FilterFieldDefinition({
+          predicate: v,
+          options: options && v.parameter ? new FilterOptions(options[v.parameter]) : undefined,
+        }),
+    );
   }
 
   parameters(filterFields: FilterField[]): any {
     return filterFields.reduce((acc, cur) => {
-      acc[cur.definition.predicate.parameter] = cur.argument;
+      if (cur.definition.predicate.parameter) {
+        acc[cur.definition.predicate.parameter] = cur.argument;
+      }
       return acc;
     }, {} as { [key: string]: any });
   }

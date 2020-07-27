@@ -95,7 +95,7 @@ export abstract class AssociationField extends Field
     return this.associationType.name + '_' + this.id;
   }
 
-  get label(): string {
+  get label(): string | undefined {
     return humanize(this.associationType.name);
   }
 

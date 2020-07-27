@@ -18,8 +18,8 @@ export class FilterFieldDefinition {
     return this.predicate instanceof Between;
   }
 
-  get fieldName(): string {
-    return humanize(this.predicate.parameter);
+  get fieldName(): string | undefined {
+    return this.predicate.parameter ? humanize(this.predicate.parameter) : undefined;
   }
 
   get criteria(): string {

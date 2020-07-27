@@ -13,7 +13,7 @@ import { serializeObject } from '../workspace/SessionObject';
 export type PullArgs = Pick<Pull, 'objectType' | 'extentRef' | 'extent' | 'object' | 'results' | 'parameters'>;
 
 export class Pull {
-  public objectType: ObjectType;
+  public objectType?: ObjectType;
 
   public extentRef?: string;
 

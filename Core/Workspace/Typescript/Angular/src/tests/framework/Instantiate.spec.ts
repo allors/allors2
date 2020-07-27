@@ -1,6 +1,6 @@
 import { async } from '@angular/core/testing';
 
-import { PullRequest, Pull, Filter, Result, Fetch, Tree, TreeNode } from '../../allors/framework';
+import { PullRequest, Pull, Filter, Result, Fetch, Tree, Node } from '../../allors/framework';
 import { Person, Organisation } from '../../allors/domain';
 import { Fixture } from '../Fixture.spec';
 
@@ -71,7 +71,7 @@ describe('Instantiate', () => {
                   include: new Tree({
                     objectType: m.Person,
                     nodes: [
-                      new TreeNode({
+                      new Node({
                         propertyType: m.Person.Photo,
                       }),
                     ]

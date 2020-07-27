@@ -1,6 +1,6 @@
 import { async } from '@angular/core/testing';
 
-import { PullRequest, Pull, Filter, Result, Fetch, Tree, TreeNode } from '../../allors/framework';
+import { PullRequest, Pull, Filter, Result, Fetch, Tree, Node } from '../../allors/framework';
 import { Loaded } from '../../allors/angular';
 import { Person, Organisation } from '../../allors/domain';
 import { Fixture } from '../Fixture.spec';
@@ -49,7 +49,7 @@ describe('Extent', () => {
                   include: new Tree({
                     objectType: m.Person,
                     nodes: [
-                      new TreeNode({
+                      new Node({
                         propertyType: m.Person.Photo,
                       }),
                     ]

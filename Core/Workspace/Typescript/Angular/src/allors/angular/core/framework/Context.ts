@@ -124,7 +124,7 @@ export class Context {
 
   private security(
     request: SecurityRequest
-  ): Observable<SecurityRequest | null> {
+  ): Observable<SecurityRequest | undefined> {
     return this.database.security(request).pipe(
       switchMap((response: SecurityResponse) => {
         const phase2Request = this.workspace.security(response);
