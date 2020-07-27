@@ -55,6 +55,8 @@ namespace Allors.Domain
                             .Build();
                     }
 
+                    //TODO: ShipToCustomer
+
                     this.From.SalesOrderState = new SalesOrderStates(this.strategy.Session).Transferred;
                 }
             }
