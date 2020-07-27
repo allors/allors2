@@ -7,7 +7,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { SearchFactory, ContextService, MetaService, RefreshService, TestScope, FetcherService } from '../../../../../angular';
 import { Facility, NonUnifiedGood, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, NonUnifiedPart, SupplierOffering, SerialisedItemAvailability, UnifiedGood, IrpfRegime } from '../../../../../domain';
-import { And, Equals, PullRequest, Sort, Filter, IObject } from '../../../../../framework';
+import { And, Equals, PullRequest, Sort, Filter, IObject, ISessionObject } from '../../../../../framework';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -217,7 +217,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
     }
   }
 
-  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
+  public serialisedItemSelected(serialisedItem: ISessionObject): void {
     const unifiedGood = this.invoiceItem.Product as UnifiedGood;
     this.serialisedItem = unifiedGood.SerialisedItems.find((v) => v === serialisedItem);
     this.invoiceItem.AssignedUnitPrice = this.serialisedItem.ExpectedSalesPrice;

@@ -5,7 +5,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { Product, RequestItem, UnitOfMeasure, Request, Part, SerialisedItem, Good, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentState, ShipmentItemState } from '../../../../../domain';
-import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject, ISessionObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -220,14 +220,16 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
     }
   }
 
-  public goodSelected(product: Product): void {
+  public goodSelected(product: ISessionObject): void {
     if (product) {
-      this.refreshSerialisedItems(product);
+      this.refreshSerialisedItems(product as Good);
     }
   }
 
-  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    if (serialisedItem) {
+  public serialisedItemSelected(obj: ISessionObject): void {
+    if (obj) {
+      const serialisedItem= obj as SerialisedItem;
+      
       const onOtherRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
       .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
         && (v.RequestWhereRequestItem?.RequestState === this.anonymousRequest || v.RequestWhereRequestItem?.RequestState === this.submittedRequest || v.RequestWhereRequestItem?.RequestState === this.pendingCustomerRequest));

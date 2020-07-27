@@ -13,7 +13,6 @@ import {
   AllorsModule,
   AllorsFocusModule,
   AllorsBarcodeModule,
-  AllorsFilterModule,
   AllorsRefreshModule,
   AuthenticationModule,
   MediaModule,
@@ -41,7 +40,6 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete
 
     AllorsBarcodeModule.forRoot(),
     AllorsFocusModule.forRoot(),
-    AllorsFilterModule.forRoot(),
     AllorsRefreshModule.forRoot(),
     DialogModule.forRoot(),
     MediaModule.forRoot({ url: environment.url }),

@@ -5,7 +5,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { PullRequest, And, Like, ContainedIn, Filter, GreaterThan, Equals } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory, TestScope, FetcherService } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory, TestScope, FetcherService, FilterBuilder } from '../../../../../angular';
 import { TableRow, OverviewService, DeleteService, Table, Sorter, MethodService } from '../../../..';
 
 import { Organisation, Country } from '../../../../../domain';
@@ -26,7 +26,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './organisation-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class OrganisationListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -38,10 +38,11 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
 
   private subscription: Subscription;
   internalOrganisation: Organisation;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -160,7 +161,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       },
     });
 
-    this.filterService.init(predicate, {
+    this.filterBuilder = new FilterBuilder(predicate, {
       customerAt: {
         search: internalOrganisationSearch,
         initialValue: this.internalOrganisation,
@@ -184,7 +185,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -210,7 +211,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
                   }
                 },
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

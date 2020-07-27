@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { Saved, ContextService, MetaService, PanelService, RefreshService, SingletonId, InternalOrganisationId, FetcherService, TestScope } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress, CustomerRelationship, Facility, VatClause, IrpfRegime } from '../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { PullRequest, Sort, Equals, ISessionObject } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService, FiltersService } from '../../../../../../material';
@@ -414,16 +414,16 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
     this.order.ShipToEndCustomerContactPerson = person;
   }
 
-  public billToCustomerSelected(party: Party) {
-    this.updateBillToCustomer(party);
+  public billToCustomerSelected(party: ISessionObject) {
+    this.updateBillToCustomer(party as Party);
   }
 
-  public billToEndCustomerSelected(party: Party) {
-    this.updateBillToEndCustomer(party);
+  public billToEndCustomerSelected(party: ISessionObject) {
+    this.updateBillToEndCustomer(party as Party);
   }
 
-  public shipToEndCustomerSelected(party: Party) {
-    this.updateShipToEndCustomer(party);
+  public shipToEndCustomerSelected(party: ISessionObject) {
+    this.updateShipToEndCustomer(party as Party);
   }
 
   public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
@@ -671,9 +671,9 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
       });
   }
 
-  public shipToCustomerSelected(party: Party) {
+  public shipToCustomerSelected(party: ISessionObject) {
     if (party) {
-      this.updateShipToCustomer(party);
+      this.updateShipToCustomer(party as Party);
     }
   }
 

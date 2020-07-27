@@ -7,7 +7,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { PullRequest, And, Equals, Filter, ContainedIn } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, UserId, FetcherService } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, UserId, FetcherService, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
 import { PurchaseOrder, Party, PurchaseOrderState, Product, SerialisedItem, Organisation, Person, UserGroup, Part } from '../../../../../domain';
@@ -28,7 +28,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './purchaseorder-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class PurchaseOrderListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -48,10 +48,11 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
   canCreate: boolean;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public refreshService: RefreshService,
     public overviewService: OverviewService,
@@ -165,7 +166,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       roleTypes: [m.SerialisedItem.ItemNumber],
     });
 
-    this.filterService.init(predicate, {
+    this.filterBuilder = new FilterBuilder(predicate, {
       active: { initialValue: true },
       state: { search: stateSearch, display: (v: PurchaseOrderState) => v && v.Name },
       supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
@@ -183,7 +184,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -215,7 +216,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
                 PurchaseOrderShipmentState: x,
                 PurchaseInvoicesWherePurchaseOrder: x,
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

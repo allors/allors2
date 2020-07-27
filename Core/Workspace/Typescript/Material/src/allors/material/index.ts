@@ -37,6 +37,5 @@ export * from './core/services/logging';
 export * from './core/services/sidenav';
 
 // Core Misc
-export * from './core/dateadapter';
 export * from './core/sorting';
-
+export * from './core/dateadapter';

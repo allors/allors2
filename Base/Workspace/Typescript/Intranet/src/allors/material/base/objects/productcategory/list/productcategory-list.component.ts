@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains, Exists, Not } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { ProductCategory, CatScope, Good } from '../../../../../domain';
@@ -20,7 +20,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './productcategory-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class ProductCategoryListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -32,10 +32,11 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
   delete: Action;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public refreshService: RefreshService,
     public overviewService: OverviewService,
@@ -99,7 +100,7 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
       roleTypes: [m.Good.Name],
     });
 
-    this.filterService.init(predicate,
+    this.filterBuilder = new FilterBuilder(predicate,
       {
         scope: { search: scopeSearch, display: (v: CatScope) => v && v.Name },
         product: { search: productSearch, display: (v: Good) => v && v.Name }
@@ -113,7 +114,7 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -144,7 +145,7 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
                   PrimaryAncestors: x,
                 }
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

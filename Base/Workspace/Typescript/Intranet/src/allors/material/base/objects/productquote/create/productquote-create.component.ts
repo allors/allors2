@@ -6,10 +6,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, AllorsFilterService, TestScope } from '../../../../../angular';
+import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
 import { SaveService, FiltersService } from '../../../../../material';
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote, CustomerRelationship, VatRegime, IrpfRegime } from '../../../../../domain';
-import { PullRequest, Sort, IObject } from '../../../../../framework';
+import { PullRequest, Sort, IObject, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 
 import { ObjectData } from '../../../../../material/core/services/object';
@@ -98,9 +98,9 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
     return !this.quote.Receiver || this.quote.Receiver.objectType.name === this.m.Person.name;
   }
 
-  public receiverSelected(party: Party): void {
+  public receiverSelected(party: ISessionObject): void {
     if (party) {
-      this.update(party);
+      this.update(party as Party);
     }
   }
 

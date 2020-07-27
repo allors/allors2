@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { ProductType } from '../../../../../domain';
@@ -17,7 +17,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './producttype-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class ProductTypesOverviewComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -29,10 +29,11 @@ export class ProductTypesOverviewComponent extends TestScope implements OnInit, 
   delete: Action;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public refreshService: RefreshService,
     public overviewService: OverviewService,
@@ -78,7 +79,7 @@ export class ProductTypesOverviewComponent extends TestScope implements OnInit, 
       new Like({ roleType: m.ProductType.Name, parameter: 'name' }),
     ]);
 
-    this.filterService.init(predicate);
+    this.filterBuilder = new FilterBuilder(predicate);
 
     const sorter = new Sorter(
       {
@@ -86,7 +87,7 @@ export class ProductTypesOverviewComponent extends TestScope implements OnInit, 
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -105,7 +106,7 @@ export class ProductTypesOverviewComponent extends TestScope implements OnInit, 
               include: {
                 SerialisedItemCharacteristicTypes: x,
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

@@ -32,7 +32,7 @@
       <div class="row">
         <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem && !partIsSelected"  [object]="shipmentItem" [roleType]="m.ShipmentItem.Part"
                             display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
-        <a-mat-select class="col-md" *ngIf="isSerialized" [disabled]="selectedPurchaseOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
+        <a-mat-select class="col-md" *ngIf="isSerialized" [disabled]="!!selectedPurchaseOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
                       [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
       </div>
   
@@ -69,7 +69,7 @@
         </div>
       </div> 
 
-      <a-mat-input class="col-md" [disabled]="isSerialized || selectedPurchaseOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.UnitPurchasePrice"></a-mat-input>
+      <a-mat-input class="col-md" [disabled]="isSerialized || !!selectedPurchaseOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.UnitPurchasePrice"></a-mat-input>
     </div>
 
     <div class="row">

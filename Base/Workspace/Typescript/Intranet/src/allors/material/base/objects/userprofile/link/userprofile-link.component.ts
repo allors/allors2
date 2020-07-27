@@ -4,7 +4,7 @@ import { Subscription, } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { PullRequest } from '../../../../../framework';
-import { AllorsFilterService, ContextService, RefreshService, MetaService, UserId, Action } from '../../../../../angular';
+import { ContextService, RefreshService, MetaService, UserId, Action } from '../../../../../angular';
 import { EditService } from '../../../../../material';
 import { Person, Organisation } from '../../../../../domain';
 
@@ -14,7 +14,7 @@ import { ObjectService } from '../../../../core/services/object';
   // tslint:disable-next-line:component-selector
   selector: 'userprofile-link',
   templateUrl: './userprofile-link.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class UserProfileLinkComponent implements OnInit, OnDestroy {
 

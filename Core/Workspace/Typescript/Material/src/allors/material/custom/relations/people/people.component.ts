@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort } from '@angular/material/sort';
@@ -9,12 +8,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { switchMap, scan } from 'rxjs/operators';
+import { switchMap, scan, filter } from 'rxjs/operators';
 
-import { PullRequest, SessionObject, And, Like } from '../../../../framework';
-import { Invoked, MediaService, ContextService, NavigationService, AllorsFilterService, MetaService, TestScope } from '../../../../angular';
+import { PullRequest, SessionObject } from '../../../../framework';
+import { MediaService, ContextService, NavigationService, MetaService, TestScope, FilterBuilder } from '../../../../angular';
 import { Person } from '../../../../domain';
-import { TableRow, Sorter, AllorsMaterialDialogService } from '../../../../material';
+import { TableRow, AllorsMaterialDialogService } from '../../../../material';
 
 interface Row extends TableRow {
   person: Person;
@@ -25,10 +24,9 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './people.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService],
 })
 export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
-
   public title = 'People';
 
   public displayedColumns = ['select', 'firstName', 'lastName', 'email', 'menu'];
@@ -36,6 +34,8 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
 
   public total: number;
   public dataSource = new MatTableDataSource<Row>();
+
+  public filterBuilder: FilterBuilder;
 
   private sort$: BehaviorSubject<Sort | null>;
   private refresh$: BehaviorSubject<Date>;
@@ -45,16 +45,14 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private location: Location,
-    titleService: Title) {
-
+    titleService: Title,
+  ) {
     super();
 
     titleService.setTitle(this.title);
@@ -65,51 +63,35 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-
     const { x, m, pull } = this.metaService;
-
-    const predicate = new And([
-      new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      new Like({ roleType: m.Person.LastName, parameter: 'lasttName' }),
-      new Like({ roleType: m.Person.UserEmail, parameter: 'email' }),
-    ]);
-
-    this.filterService.init(predicate);
-
-    const sorter = new Sorter(
-      {
-        firstName: m.Person.FirstName,
-        lastName: m.Person.LastName,
-        email: m.Person.UserEmail,
-      }
-    );
-
-    this.subscription = combineLatest([this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$])
+    this.filterBuilder = m.Person.filterBuilder;
+    
+    this.subscription = combineLatest([this.refresh$, this.filterBuilder.filterFields$, this.sort$, this.pager$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
             refresh,
             filterFields,
             sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
         }),
         switchMap(([, filterFields, sort, pageEvent]) => {
-
           const pulls = [
             pull.Person({
-              predicate,
-              sort: sort ? sorter.create(sort) : null,
+              predicate: this.filterBuilder.predicate,
+              sort: sort ? m.Person.sorter.create(sort) : null,
               include: {
-                Pictures: x
+                Pictures: x,
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
-            })];
+            }),
+          ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
-        })
+        }),
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
@@ -142,7 +124,7 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
   }
 
   public get selectedPeople() {
-    return this.selection.selected.map(v => v.person);
+    return this.selection.selected.map((v) => v.person);
   }
 
   public isAllSelected() {
@@ -152,9 +134,7 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
   }
 
   public masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+    this.isAllSelected() ? this.selection.clear() : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
   public goBack(): void {
@@ -174,23 +154,22 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
   }
 
   public delete(person: Person | Person[]): void {
-
     const people = person instanceof SessionObject ? [person as Person] : person instanceof Array ? person : [];
     const methods = people.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
     if (methods.length > 0) {
       this.dialogService
         .confirm(
-          methods.length === 1 ?
-            { message: 'Are you sure you want to delete this person?' } :
-            { message: 'Are you sure you want to delete these people?' })
+          methods.length === 1
+            ? { message: 'Are you sure you want to delete this person?' }
+            : { message: 'Are you sure you want to delete these people?' },
+        )
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors.context.invoke(methods)
-              .subscribe((invoked: Invoked) => {
-                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                this.refresh();
-              });
+            this.allors.context.invoke(methods).subscribe(() => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            });
           }
         });
     }

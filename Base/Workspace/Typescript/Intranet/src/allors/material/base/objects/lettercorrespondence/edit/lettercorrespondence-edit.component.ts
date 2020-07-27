@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, NavigationService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, CommunicationEventState } from '../../../../../domain';
-import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject, ISessionObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -272,9 +272,9 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
     }
   }
 
-  public fromPartySelected(party: Party) {
+  public fromPartySelected(party: ISessionObject) {
     if (party) {
-      this.updateFromParty(party);
+      this.updateFromParty(party as Party);
     }
   }
 
@@ -310,9 +310,9 @@ export class LetterCorrespondenceEditComponent extends TestScope implements OnIn
       });
   }
 
-  public toPartySelected(party: Party) {
+  public toPartySelected(party: ISessionObject) {
     if (party) {
-      this.updateToParty(party);
+      this.updateToParty(party as Party);
     }
   }
 

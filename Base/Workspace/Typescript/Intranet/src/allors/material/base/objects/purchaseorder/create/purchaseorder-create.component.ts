@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, PurchaseOrder, VatRate, VatRegime, SupplierRelationship, Facility, SubContractorRelationship } from '../../../../../domain';
-import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
+import { Equals, PullRequest, Sort, IObject, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { SaveService, FiltersService } from '../../../../../material';
 
@@ -202,8 +202,8 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
     this.order.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public supplierSelected(supplier: Party) {
-    this.updateSupplier(supplier);
+  public supplierSelected(supplier: ISessionObject) {
+    this.updateSupplier(supplier as Party);
   }
 
   public facilityAdded(facility: Facility): void {

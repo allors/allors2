@@ -7,7 +7,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseOrder, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem, SupplierOffering, IrpfRegime, Facility, UnifiedGood } from '../../../../../domain';
-import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan } from '../../../../../framework';
+import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan, ISessionObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -221,14 +221,14 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
     }
   }
 
-  public goodSelected(unifiedGood: UnifiedGood): void {
+  public goodSelected(unifiedGood: ISessionObject): void {
     if (unifiedGood) {
-      this.part = unifiedGood;
-      this.refreshSerialisedItems(unifiedGood);
+      this.part = unifiedGood as UnifiedGood;
+      this.refreshSerialisedItems(unifiedGood as UnifiedGood);
     }
   }
 
-  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
+  public serialisedItemSelected(serialisedItem: ISessionObject): void {
 
     if(serialisedItem) {
     this.serialisedItem = this.part.SerialisedItems.find(v => v === serialisedItem);
@@ -236,12 +236,12 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
     }
   }
 
-  public partSelected(part: Part): void {
+  public partSelected(part: ISessionObject): void {
     if (part) {
       this.unifiedGood = this.orderItem.Part.objectType.name === this.m.UnifiedGood.name;
       this.nonUnifiedPart = this.orderItem.Part.objectType.name === this.m.NonUnifiedPart.name;
 
-      this.updateFromPart(part);
+      this.updateFromPart(part as Part);
     }
   }
 

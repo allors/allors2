@@ -4,8 +4,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, NavigationService, MetaService, RefreshService, TestScope } from '../../../../../angular';
-import { CommunicationEventPurpose, ContactMechanism, PhoneCommunication, Party, PartyContactMechanism, Person, Organisation, TelecommunicationsNumber, OrganisationContactRelationship, CommunicationEventState } from '../../../../../domain';
-import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import {
+  CommunicationEventPurpose,
+  ContactMechanism,
+  PhoneCommunication,
+  Party,
+  PartyContactMechanism,
+  Person,
+  Organisation,
+  TelecommunicationsNumber,
+  OrganisationContactRelationship,
+  CommunicationEventState,
+} from '../../../../../domain';
+import { PullRequest, Sort, Equals, IObject, ISessionObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { InternalOrganisationId } from '../../../../../angular/base/state';
@@ -13,10 +24,9 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './phonecommunication-edit.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class PhoneCommunicationEditComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
 
   addFromParty = false;
@@ -48,20 +58,17 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId,
   ) {
-
     super();
 
     this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(() => {
-
           const isCreate = this.data.id === undefined;
 
           let pulls = [
@@ -70,18 +77,18 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
               include: {
                 FromParty: {
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
+                    ContactMechanism: x,
+                  },
                 },
                 ToParty: {
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
+                    ContactMechanism: x,
+                  },
                 },
                 PhoneNumber: x,
                 EventPurposes: x,
-                CommunicationEventState: x
-              }
+                CommunicationEventState: x,
+              },
             }),
             pull.Organisation({
               object: this.internalOrganisationId.value,
@@ -90,16 +97,16 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
                 ActiveEmployees: {
                   CurrentPartyContactMechanisms: {
                     ContactMechanism: x,
-                  }
-                }
-              }
+                  },
+                },
+              },
             }),
             pull.CommunicationEventPurpose({
               predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
-              sort: new Sort(m.CommunicationEventPurpose.Name)
+              sort: new Sort(m.CommunicationEventPurpose.Name),
             }),
             pull.CommunicationEventState({
-              sort: new Sort(m.CommunicationEventState.Name)
+              sort: new Sort(m.CommunicationEventState.Name),
             }),
           ];
 
@@ -110,17 +117,17 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
                 object: this.data.associationId,
                 include: {
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
-                }
+                    ContactMechanism: x,
+                  },
+                },
               }),
               pull.Person({
                 object: this.data.associationId,
                 include: {
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x
-                  }
-                }
+                    ContactMechanism: x,
+                  },
+                },
               }),
             ];
           }
@@ -131,21 +138,16 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
               pull.CommunicationEvent({
                 object: this.data.id,
                 fetch: {
-                  InvolvedParties: x
-                }
+                  InvolvedParties: x,
+                },
               }),
             ];
           }
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
-        })
+          return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
+        }),
       )
       .subscribe(({ loaded, isCreate }) => {
-
         this.allors.context.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
@@ -163,7 +165,6 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
 
           this.party = this.organisation || this.person;
         } else {
-
           this.communicationEvent = loaded.objects.PhoneCommunication as PhoneCommunication;
 
           this.updateFromParty(this.communicationEvent.FromParty);
@@ -180,7 +181,7 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
 
         if (!!this.organisation) {
           contacts.add(this.organisation);
-        } 
+        }
 
         if (internalOrganisation.ActiveEmployees !== undefined) {
           internalOrganisation.ActiveEmployees.reduce((c, e) => c.add(e), contacts);
@@ -210,7 +211,6 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
   }
 
   public fromPhoneNumberAdded(partyContactMechanism: PartyContactMechanism): void {
-
     if (!!this.communicationEvent.FromParty) {
       this.communicationEvent.FromParty.AddPartyContactMechanism(partyContactMechanism);
     }
@@ -222,7 +222,6 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
   }
 
   public toPhoneNumberAdded(partyContactMechanism: PartyContactMechanism): void {
-
     if (!!this.communicationEvent.ToParty) {
       this.communicationEvent.ToParty.AddPartyContactMechanism(partyContactMechanism);
     }
@@ -248,20 +247,22 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
   }
 
   private sortContacts(): void {
-    this.contacts.sort((a, b) => (a.displayName > b.displayName) ? 1 : ((b.displayName > a.displayName) ? -1 : 0));
+    this.contacts.sort((a, b) => (a.displayName > b.displayName ? 1 : b.displayName > a.displayName ? -1 : 0));
   }
 
   private addContactRelationship(party: Person): void {
     if (this.organisation) {
-      const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+      const relationShip: OrganisationContactRelationship = this.allors.context.create(
+        'OrganisationContactRelationship',
+      ) as OrganisationContactRelationship;
       relationShip.Contact = party;
       relationShip.Organisation = this.organisation;
     }
   }
 
-  public fromPartySelected(party: Party) {
+  public fromPartySelected(party: ISessionObject) {
     if (party) {
-      this.updateFromParty(party);
+      this.updateFromParty(party as Party);
     }
   }
 
@@ -275,26 +276,25 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
           PartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                ContactMechanismType: x
-              }
-            }
-          }
+                ContactMechanismType: x,
+              },
+            },
+          },
         },
-      })
+      }),
     ];
 
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
-        this.fromPhonenumbers = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
-      });
+    this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
+      const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
+      this.fromPhonenumbers = partyContactMechanisms
+        .filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber)
+        .map((v) => v.ContactMechanism);
+    });
   }
 
-  public toPartySelected(party: Party) {
+  public toPartySelected(party: ISessionObject) {
     if (party) {
-      this.updateToParty(party);
+      this.updateToParty(party as Party);
     }
   }
 
@@ -308,36 +308,31 @@ export class PhoneCommunicationEditComponent extends TestScope implements OnInit
           PartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                ContactMechanismType: x
-              }
-            }
-          }
+                ContactMechanismType: x,
+              },
+            },
+          },
         },
-      })
+      }),
     ];
 
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
-        this.toPhonenumbers = partyContactMechanisms.filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
-      });
+    this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
+      const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
+      this.toPhonenumbers = partyContactMechanisms
+        .filter((v) => v.ContactMechanism.objectType === this.metaService.m.TelecommunicationsNumber)
+        .map((v) => v.ContactMechanism);
+    });
   }
 
   public save(): void {
+    this.allors.context.save().subscribe(() => {
+      const data: IObject = {
+        id: this.communicationEvent.id,
+        objectType: this.communicationEvent.objectType,
+      };
 
-    this.allors.context.save()
-      .subscribe(() => {
-        const data: IObject = {
-          id: this.communicationEvent.id,
-          objectType: this.communicationEvent.objectType,
-        };
-
-        this.dialogRef.close(data);
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+      this.dialogRef.close(data);
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 }

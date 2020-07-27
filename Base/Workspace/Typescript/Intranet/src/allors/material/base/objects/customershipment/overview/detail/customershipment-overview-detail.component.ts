@@ -4,7 +4,7 @@ import { switchMap, filter } from 'rxjs/operators';
 
 import { ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope, InternalOrganisationId } from '../../../../../../angular';
 import { Locale, Organisation, CustomerShipment, Currency, PostalAddress, Person, Party, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, PartyContactMechanism } from '../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { PullRequest, Sort, Equals, ISessionObject } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { SaveService, FiltersService } from '../../../../../../../allors/material';
 
@@ -202,8 +202,8 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
     this.customerShipment.ShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public customerSelected(customer: Party) {
-    this.updateShipToParty(customer);
+  public customerSelected(customer: ISessionObject) {
+    this.updateShipToParty(customer as Party);
   }
 
   private updateShipToParty(customer: Party): void {

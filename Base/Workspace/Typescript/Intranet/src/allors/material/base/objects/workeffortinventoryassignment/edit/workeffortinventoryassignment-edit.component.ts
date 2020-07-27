@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { WorkEffortInventoryAssignment, WorkEffort, Part, InventoryItem, Facility, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, SerialisedInventoryItem, Organisation } from '../../../../../domain';
-import { PullRequest, Sort, IObject } from '../../../../../framework';
+import { PullRequest, Sort, IObject, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData } from '../../../../../material/core/services/object';
@@ -170,8 +170,8 @@ export class WorkEffortInventoryAssignmentEditComponent extends TestScope implem
       );
   }
 
-  public inventoryItemSelected(inventoryItem: InventoryItem): void {
-    this.serialised = inventoryItem.Part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
+  public inventoryItemSelected(inventoryItem: ISessionObject): void {
+    this.serialised = (inventoryItem as InventoryItem).Part.InventoryItemKind.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae';
 
     if (inventoryItem.objectType === this.metaService.m.NonSerialisedInventoryItem) {
       const item = inventoryItem as NonSerialisedInventoryItem;

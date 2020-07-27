@@ -42,15 +42,23 @@ function getParameterizedPredicates(predicate: Predicate | Extent, results: Para
   return results;
 }
 
-@Injectable()
-export class AllorsFilterService {
+export class FilterBuilder {
   filterFieldDefinitions: FilterFieldDefinition[];
 
   readonly filterFields$: Observable<FilterField[]>;
   private readonly filterFieldsSubject: BehaviorSubject<FilterField[]>;
 
-  constructor() {
+  constructor(public predicate: Predicate, options?: { [parameter: string]: Partial<FilterOptions> }) {
     this.filterFields$ = this.filterFieldsSubject = new BehaviorSubject([]);
+
+    const predicates = getParameterizedPredicates(predicate);
+    this.filterFieldDefinitions = predicates.map(
+      (v) =>
+        new FilterFieldDefinition({
+          predicate: v,
+          options: options && v.parameter ? new FilterOptions(options[v.parameter]) : undefined,
+        }),
+    );
   }
 
   get filterFields(): FilterField[] {
@@ -67,17 +75,6 @@ export class AllorsFilterService {
 
   removeFilterField(filterField: FilterField): any {
     this.filterFieldsSubject.next(this.filterFields.filter((v) => v !== filterField));
-  }
-
-  init(predicate: Predicate, options?: { [parameter: string]: Partial<FilterOptions> }) {
-    const predicates = getParameterizedPredicates(predicate);
-    this.filterFieldDefinitions = predicates.map(
-      (v) =>
-        new FilterFieldDefinition({
-          predicate: v,
-          options: options && v.parameter ? new FilterOptions(options[v.parameter]) : undefined,
-        }),
-    );
   }
 
   parameters(filterFields: FilterField[]): any {

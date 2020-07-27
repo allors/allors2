@@ -5,7 +5,7 @@ import { switchMap, filter } from 'rxjs/operators';
 import { Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService, FetcherService, TestScope } from '../../../../../../angular';
 import { SaveService, FiltersService } from '../../../../../../material';
 import { WorkTask, Party, WorkEffortState, Priority, WorkEffortPurpose, Person, ContactMechanism, Organisation, PartyContactMechanism, OrganisationContactRelationship, WorkEffort } from '../../../../../../domain';
-import { Equals, PullRequest, Sort } from '../../../../../../framework';
+import { Equals, PullRequest, Sort, ISessionObject } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 
 @Component({
@@ -173,8 +173,8 @@ export class WorkTaskOverviewDetailComponent extends TestScope implements OnInit
     this.workTask.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public customerSelected(customer: Party) {
-    this.updateCustomer(customer);
+  public customerSelected(customer: ISessionObject) {
+    this.updateCustomer(customer as Party);
   }
 
   private updateCustomer(party: Party) {

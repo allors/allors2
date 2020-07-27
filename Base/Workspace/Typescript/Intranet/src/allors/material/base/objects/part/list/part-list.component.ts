@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
 
 import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
@@ -25,7 +25,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './part-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class PartListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -38,10 +38,11 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   goodIdentificationTypes: ProductIdentificationType[];
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -144,7 +145,7 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
       roleTypes: [m.Facility.Name],
     });
 
-    this.filterService.init(predicate,
+    this.filterBuilder = new FilterBuilder(predicate,
       {
         supplier: { search: this.filtersService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
         manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
@@ -167,7 +168,7 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -193,7 +194,7 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
                   ProductIdentificationType: x
                 },
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

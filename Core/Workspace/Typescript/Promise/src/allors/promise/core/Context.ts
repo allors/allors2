@@ -92,8 +92,10 @@ export class Context {
         .push(pushRequest)
         .then((pushResponse: PushResponse) => {
           this.session.pushResponse(pushResponse);
-          const syncRequest: SyncRequest = new SyncRequest();
-          syncRequest.objects = pushRequest.objects?.map((v: PushRequestObject) => v.i) ?? [];
+          const syncRequest: SyncRequest = {
+            objects: pushRequest.objects?.map((v: PushRequestObject) => v.i) ?? []
+          };
+
           if (pushResponse.newObjects) {
             for (const newObject of pushResponse.newObjects) {
               syncRequest.objects.push(newObject.i);

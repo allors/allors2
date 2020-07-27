@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { Brand } from '../../../../../domain';
@@ -17,10 +17,9 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './brand-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService],
 })
 export class BrandsOverviewComponent extends TestScope implements OnInit, OnDestroy {
-
   public title = 'Brands';
 
   table: Table<Row>;
@@ -29,10 +28,10 @@ export class BrandsOverviewComponent extends TestScope implements OnInit, OnDest
   delete: Action;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     public overviewService: OverviewService,
@@ -58,57 +57,50 @@ export class BrandsOverviewComponent extends TestScope implements OnInit, OnDest
 
     this.table = new Table({
       selection: true,
-      columns: [
-        { name: 'name', sort: true },
-      ],
-      actions: [
-        this.edit,
-        this.delete
-      ],
+      columns: [{ name: 'name', sort: true }],
+      actions: [this.edit, this.delete],
       defaultAction: this.edit,
       pageSize: 50,
     });
   }
 
   ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
-    const predicate = new And([
-      new Like({ roleType: m.Brand.Name, parameter: 'name' }),
-    ]);
+    const predicate = new And([new Like({ roleType: m.Brand.Name, parameter: 'name' })]);
 
-    this.filterService.init(predicate);
+    this.filterBuilder = new FilterBuilder(predicate);
 
-    const sorter = new Sorter(
-      {
-        name: m.Brand.Name,
-      }
-    );
+    const sorter = new Sorter({
+      name: m.Brand.Name,
+    });
 
-    this.subscription = combineLatest([this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$])
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$])
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
-          return [
-            refresh,
-            filterFields,
-            sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-          ];
-        }, [, , , , ]),
+        scan(
+          ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+            return [
+              refresh,
+              filterFields,
+              sort,
+              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            ];
+          },
+          [, , , ,],
+        ),
         switchMap(([, filterFields, sort, pageEvent]) => {
-
           const pulls = [
             pull.Brand({
               predicate,
               sort: sorter.create(sort),
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
-            })];
+            }),
+          ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
-        })
+        }),
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
@@ -118,7 +110,7 @@ export class BrandsOverviewComponent extends TestScope implements OnInit, OnDest
         this.table.data = objects.map((v) => {
           return {
             object: v,
-            name: `${v.Name}`
+            name: `${v.Name}`,
           } as Row;
         });
       });

@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItem, Part, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, SerialisedItemAvailability, IrpfRegime } from '../../../../../domain';
-import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
+import { Equals, PullRequest, Sort, IObject, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
@@ -310,14 +310,15 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
       );
   }
 
-  public goodSelected(product: Product): void {
+  public goodSelected(product: ISessionObject): void {
     if (product) {
-      this.refreshSerialisedItems(product);
+      this.refreshSerialisedItems(product as Product);
     }
   }
 
-  public serialisedItemSelected(serialisedItem: SerialisedItem): void {
-    if (serialisedItem) {
+  public serialisedItemSelected(obj: ISessionObject): void {
+    if (obj) {
+      const serialisedItem = obj as SerialisedItem;
       const onRequestItem = serialisedItem.RequestItemsWhereSerialisedItem
       .find(v => (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem)
         && (v.RequestWhereRequestItem.RequestState === this.anonymousRequest || v.RequestWhereRequestItem.RequestState === this.submittedRequest || v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest));

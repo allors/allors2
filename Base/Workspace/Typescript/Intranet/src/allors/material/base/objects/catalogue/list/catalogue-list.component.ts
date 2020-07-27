@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, EditService, DeleteService } from '../../../..';
 
 import { Catalogue, CatScope } from '../../../../../domain';
@@ -19,7 +19,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './catalogue-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class CataloguesListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -31,10 +31,11 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
   delete: Action;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public refreshService: RefreshService,
     public overviewService: OverviewService,
@@ -91,7 +92,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
       roleTypes: [m.CatScope.Name],
     });
 
-    this.filterService.init(predicate, { Scope: { search: scopeSearch, display: (v: CatScope) => v && v.Name } });
+    this.filterBuilder = new FilterBuilder(predicate, { Scope: { search: scopeSearch, display: (v: CatScope) => v && v.Name } });
 
     const sorter = new Sorter(
       {
@@ -101,7 +102,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
       }
     );
 
-    this.subscription = combineLatest([this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$])
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -125,7 +126,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
                 ProductCategories: x,
                 CatScope: x
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

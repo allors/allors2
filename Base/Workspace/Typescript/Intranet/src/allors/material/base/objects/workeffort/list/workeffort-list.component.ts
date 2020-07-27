@@ -7,7 +7,7 @@ import * as moment from 'moment/moment';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
 import { WorkEffort, Person, FixedAsset, WorkEffortState, Party } from '../../../../../domain';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId, TestScope, SearchFactory } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId, TestScope, SearchFactory, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService, ObjectService } from '../../../../../material';
 
 interface Row extends TableRow {
@@ -25,7 +25,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './workeffort-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class WorkEffortListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -36,10 +36,11 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
   delete: Action;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -134,7 +135,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
       roleTypes: [m.FixedAsset.SearchString],
     });
 
-    this.filterService.init(predicate,
+    this.filterBuilder = new FilterBuilder(predicate,
     {
       state: { search: stateSearch, display: (v: WorkEffortState) => v && v.Name },
       customer: { search: partySearch, display: (v: Party) => v && v.PartyName },
@@ -152,7 +153,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -186,7 +187,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
                   Party: x
                 }
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

@@ -7,8 +7,26 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { environment } from '../environments/environment';
 
-import { AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule } from '../allors/angular';
-import { DeleteModule, NavigateModule, DialogModule, LoggingModule, SideNavModule, MethodModule, PrintModule, SaveModule, FiltersService } from '../allors/material';
+import {
+  AllorsModule,
+  AllorsFocusModule,
+  AllorsBarcodeModule,
+  AllorsRefreshModule,
+  AuthenticationModule,
+  MediaModule,
+  NavigationModule,
+} from '../allors/angular';
+import {
+  DeleteModule,
+  NavigateModule,
+  DialogModule,
+  LoggingModule,
+  SideNavModule,
+  MethodModule,
+  PrintModule,
+  SaveModule,
+  FiltersService,
+} from '../allors/material';
 
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -30,13 +48,12 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete
 
     AllorsModule.forRoot({ url: environment.url }),
     AuthenticationModule.forRoot({
-      url: environment.url + environment.authenticationUrl
+      url: environment.url + environment.authenticationUrl,
     }),
     LoggingModule.forRoot({ console: true }),
 
     AllorsBarcodeModule.forRoot(),
     AllorsFocusModule.forRoot(),
-    AllorsFilterModule.forRoot(),
     AllorsRefreshModule.forRoot(),
     DialogModule.forRoot(),
     MediaModule.forRoot({ url: environment.url }),
@@ -54,15 +71,15 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete
     // Angular Calendar
     CalendarModule.forRoot({
       provide: DateAdapter,
-      useFactory: adapterFactory
-    })
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'nl-BE' },
     { provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS, useValue: { autoActiveFirstOption: true } },
     { provide: FiltersService, useClass: DefaultFiltersService },
-    ConfigService
-  ]
+    ConfigService,
+  ],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() core: CoreModule) {

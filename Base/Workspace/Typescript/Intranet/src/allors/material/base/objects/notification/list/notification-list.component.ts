@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { PullRequest } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, UserId, TestScope } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, UserId, TestScope } from '../../../../../angular';
 import { TableRow, Table, DeleteService, MethodService } from '../../../..';
 import { Notification } from '../../../../../domain';
 import { ObjectService } from '../../../../core/services/object';
@@ -20,7 +20,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './notification-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class NotificationListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -34,7 +34,7 @@ export class NotificationListComponent extends TestScope implements OnInit, OnDe
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -71,7 +71,7 @@ export class NotificationListComponent extends TestScope implements OnInit, OnDe
 
     const { pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [

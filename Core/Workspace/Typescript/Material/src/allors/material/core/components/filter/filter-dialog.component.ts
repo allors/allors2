@@ -1,15 +1,16 @@
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
-import { Component, Inject, ViewChild, OnInit } from '@angular/core';
+import { Component, Inject, ViewChild, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { timer } from 'rxjs';
 
-import { AllorsFilterService } from '../../../../angular/core/filter';
+import { FilterBuilder } from '../../../../angular/core/filter';
 import { FilterField } from '../../../../../allors/angular/core/filter/FilterField';
 import { FilterFieldDefinition } from '../../../../../allors/angular/core/filter/FilterFieldDefinition';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { assert } from '../../../../../allors/framework';
+import { AllorsFocusService } from '../../../../../allors/angular';
 
 @Component({
   templateUrl: 'filter-dialog.component.html',
@@ -17,7 +18,12 @@ import { assert } from '../../../../../allors/framework';
 export class AllorsMaterialFilterDialogComponent implements OnInit {
   @ViewChild('stepper', { static: true }) stepper: MatStepper;
 
-  filterService: AllorsFilterService;
+  @ViewChild('focus1') focus1: ElementRef;
+  @ViewChild('focus2') focus2: ElementRef;
+  @ViewChild('focus3') focus3: ElementRef;
+  @ViewChild('focus4') focus4: ElementRef;
+
+  builder: FilterBuilder;
 
   formGroup: FormGroup;
 
@@ -26,9 +32,10 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AllorsMaterialFilterDialogComponent>,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) data: any
+    private focusService: AllorsFocusService,
+    @Inject(MAT_DIALOG_DATA) data: any,
   ) {
-    this.filterService = data.filterService;
+    this.builder = data.filterBuilder;
   }
 
   get isBetween() {
@@ -44,17 +51,11 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
   }
 
   get useToggle(): boolean {
-    return (
-      !this.filterFieldDefinition?.options?.search &&
-      (this.filterFieldDefinition?.predicate.objectType.isBoolean ?? false)
-    );
+    return !this.filterFieldDefinition?.options?.search && (this.filterFieldDefinition?.predicate.objectType.isBoolean ?? false);
   }
 
   get useDatepicker(): boolean {
-    return (
-      !this.filterFieldDefinition?.options?.search &&
-      (this.filterFieldDefinition?.predicate.objectType.isDateTime ?? false)
-    );
+    return !this.filterFieldDefinition?.options?.search && (this.filterFieldDefinition?.predicate.objectType.isDateTime ?? false);
   }
 
   get useInput(): boolean {
@@ -71,6 +72,15 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
       value: ['', Validators.required],
       value2: ['', Validators.required],
     });
+  }
+
+  focus() {
+    setTimeout(() => {
+      this.focus1?.nativeElement.focus();
+      this.focus2?.nativeElement.focus();
+      this.focus3?.nativeElement.focus();
+      this.focus4?.nativeElement.focus();
+    }, 0);
   }
 
   stepperSelectionChange(event: StepperSelectionEvent) {
@@ -106,8 +116,7 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
     let value = this.formGroup.get('value')?.value;
     let value2 = this.formGroup.get('value2')?.value;
 
-    const inValid =
-      value == null || (objectType.isComposite && value.objectType == null);
+    const inValid = value == null || (objectType.isComposite && value.objectType == null);
 
     if (!inValid) {
       if (objectType.isDateTime) {
@@ -116,23 +125,21 @@ export class AllorsMaterialFilterDialogComponent implements OnInit {
       }
 
       if (!value2) {
-        this.filterService.addFilterField(
+        this.builder.addFilterField(
           new FilterField({
             definition: this.filterFieldDefinition,
             value: value.id ? value.id : value,
             display: options?.display(value) ?? value,
-          })
+          }),
         );
       } else {
-        this.filterService.addFilterField(
+        this.builder.addFilterField(
           new FilterField({
             definition: this.filterFieldDefinition,
             value,
             value2,
-            display: options?.display
-              ? `${options.display(value)} <-> ${options.display(value2)}`
-              : `${value} <-> ${value2}`,
-          })
+            display: options?.display ? `${options.display(value)} <-> ${options.display(value2)}` : `${value} <-> ${value2}`,
+          }),
         );
       }
     }

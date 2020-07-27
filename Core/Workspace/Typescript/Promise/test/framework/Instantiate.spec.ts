@@ -1,5 +1,5 @@
 import { Person, Media } from '../../src/allors/domain';
-import { PullRequest, Pull, Filter, TreeNode, Tree, Result, Fetch, MetaPopulation } from '../../src/allors/framework';
+import { PullRequest, Pull, Filter, Tree, Node, Result, Fetch, MetaPopulation } from '../../src/allors/framework';
 
 import { assert } from 'chai';
 import 'mocha';
@@ -84,7 +84,7 @@ describe('Instantiate',
                     include: new Tree({
                       objectType: m.Person,
                       nodes: [
-                        new TreeNode({
+                        new Node({
                           propertyType: m.Person.Photo,
                         }),
                       ]

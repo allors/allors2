@@ -4,7 +4,7 @@ import { Subscription, } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { PullRequest } from '../../../../../framework';
-import { AllorsFilterService, ContextService, NavigationService, RefreshService, MetaService, UserId } from '../../../../../angular';
+import { ContextService, NavigationService, RefreshService, MetaService, UserId } from '../../../../../angular';
 
 import { Task, Person } from '../../../../../domain';
 
@@ -14,7 +14,7 @@ import { ObjectService } from '../../../../core/services/object';
   // tslint:disable-next-line:component-selector
   selector: 'taskassignment-link',
   templateUrl: './taskassignment-link.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class TaskAssignmentLinkComponent implements OnInit, OnDestroy {
 

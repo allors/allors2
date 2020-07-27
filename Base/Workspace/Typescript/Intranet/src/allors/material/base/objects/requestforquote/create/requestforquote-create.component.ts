@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, InternalOrganisationId, FetcherService, TestScope } from '../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Party, PartyContactMechanism, OrganisationContactRelationship, CustomerRelationship } from '../../../../../domain';
-import { PullRequest, Sort, IObject } from '../../../../../framework';
+import { PullRequest, Sort, IObject, ISessionObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta, FetchService } from '../../../../../meta';
 import { switchMap } from 'rxjs/operators';
@@ -110,9 +110,9 @@ export class RequestForQuoteCreateComponent extends TestScope implements OnInit,
     return !this.request.Originator || this.request.Originator.objectType.name === this.m.Person.name;
   }
 
-  public originatorSelected(party: Party) {
+  public originatorSelected(party: ISessionObject) {
     if (party) {
-      this.updateOriginator(party);
+      this.updateOriginator(party as Party);
     }
   }
 

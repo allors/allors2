@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
-import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, Organisation, PostalAddress, CustomerRelationship, SupplierRelationship, IrpfRegime } from '../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, PurchaseInvoice, PurchaseInvoiceType, OrganisationContactRelationship, PostalAddress, CustomerRelationship, SupplierRelationship, IrpfRegime, Organisation } from '../../../../../../domain';
+import { PullRequest, Sort, Equals, ISessionObject } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService, FiltersService } from '../../../../../../material';
@@ -352,27 +352,27 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
     this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public billedFromSelected(organisation: Organisation) {
+  public billedFromSelected(organisation: ISessionObject) {
     if (organisation) {
-      this.updateBilledFrom(organisation);
+      this.updateBilledFrom(organisation as Organisation);
     }
   }
 
-  public shipToCustomerSelected(party: Party) {
+  public shipToCustomerSelected(party: ISessionObject) {
     if (party) {
-      this.updateShipToCustomer(party);
+      this.updateShipToCustomer(party as Party);
     }
   }
 
-  public billToEndCustomerSelected(party: Party) {
+  public billToEndCustomerSelected(party: ISessionObject) {
     if (party) {
-      this.updateBillToEndCustomer(party);
+      this.updateBillToEndCustomer(party as Party);
     }
   }
 
-  public shipToEndCustomerSelected(party: Party) {
+  public shipToEndCustomerSelected(party: ISessionObject) {
     if (party) {
-      this.updateShipToEndCustomer(party);
+      this.updateShipToEndCustomer(party as Party);
     }
   }
 

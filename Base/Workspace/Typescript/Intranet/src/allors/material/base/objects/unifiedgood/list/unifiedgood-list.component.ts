@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { PullRequest, And, Like, Equals, Contains, Exists } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { UnifiedGood, ProductCategory, Brand, Model, ProductIdentification } from '../../../../../domain';
@@ -26,7 +26,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './unifiedgood-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -37,10 +37,11 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
   delete: Action;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -113,7 +114,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
       roleTypes: [m.ProductIdentification.Identification],
     });
 
-    this.filterService.init(predicate,
+    this.filterBuilder = new FilterBuilder(predicate,
       {
         category: { search: categorySearch, display: (v: ProductCategory) => v && v.DisplayName },
         identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
@@ -129,7 +130,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -152,7 +153,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
                   ProductIdentificationType: x
                 }
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

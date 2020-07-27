@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
 import { Organisation, RequestForQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Party, CustomerRelationship } from '../../../../../../domain';
-import { PullRequest, Sort } from '../../../../../../framework';
+import { PullRequest, Sort, ISessionObject } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService, FiltersService } from '../../../../../../material';
@@ -173,9 +173,9 @@ export class RequestForQuoteOverviewDetailComponent extends TestScope implements
     return !this.request.Originator || this.request.Originator.objectType.name === this.m.Person.name;
   }
 
-  public originatorSelected(party: Party) {
+  public originatorSelected(party: ISessionObject) {
     if (party) {
-      this.update(party);
+      this.update(party as Party);
     }
   }
 

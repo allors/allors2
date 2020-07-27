@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { ContactMechanism, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, SalesOrder, Store, CustomerRelationship, Currency, VatRegime, IrpfRegime } from '../../../../../domain';
-import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
+import { Equals, PullRequest, Sort, IObject, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { ObjectData } from '../../../../../material/core/services/object';
 import { SaveService, FiltersService } from '../../../../../material';
@@ -310,22 +310,22 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
     this.order.ShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public shipToCustomerSelected(party: Party) {
+  public shipToCustomerSelected(party: ISessionObject) {
     if (party) {
-      this.updateShipToCustomer(party);
+      this.updateShipToCustomer(party as Party);
     }
   }
 
-  public billToCustomerSelected(party: Party) {
-    this.updateBillToCustomer(party);
+  public billToCustomerSelected(party: ISessionObject) {
+    this.updateBillToCustomer(party as Party);
   }
 
-  public billToEndCustomerSelected(party: Party) {
-    this.updateBillToEndCustomer(party);
+  public billToEndCustomerSelected(party: ISessionObject) {
+    this.updateBillToEndCustomer(party as Party);
   }
 
-  public shipToEndCustomerSelected(party: Party) {
-    this.updateShipToEndCustomer(party);
+  public shipToEndCustomerSelected(party: ISessionObject) {
+    this.updateShipToEndCustomer(party as Party);
   }
 
   private updateShipToCustomer(party: Party): void {

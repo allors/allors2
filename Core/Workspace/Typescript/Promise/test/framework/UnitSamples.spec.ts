@@ -1,5 +1,5 @@
 import { Person, Media, UnitSample } from '../../src/allors/domain';
-import { PullRequest, Pull, Filter, TreeNode, Tree, Result, Fetch, MetaPopulation } from '../../src/allors/framework';
+import { PullRequest, Pull, Filter, Node, Tree, Result, Fetch, MetaPopulation } from '../../src/allors/framework';
 
 import { assert } from 'chai';
 import 'mocha';

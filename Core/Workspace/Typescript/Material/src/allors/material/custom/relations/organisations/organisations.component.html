@@ -28,7 +28,7 @@
       </div>
 
       <mat-card-content class="container-fluid a-search">
-        <a-mat-filter></a-mat-filter>
+        <a-mat-filter [builder]="filterBuilder"></a-mat-filter>
       </mat-card-content>
 
       <mat-card-content *ngIf="table.data && table.data.length === 0" class="container-fluid a-noresult">

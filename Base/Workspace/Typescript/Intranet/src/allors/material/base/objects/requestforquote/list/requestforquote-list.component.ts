@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { PullRequest, And, Equals, ContainedIn, Filter } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FetcherService, UserId } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FetcherService, UserId, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { Request, RequestState, Party, Organisation, Person, UserGroup } from '../../../../../domain';
@@ -23,7 +23,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './requestforquote-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class RequestForQuoteListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -38,10 +38,11 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
   canCreate: boolean;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public refreshService: RefreshService,
     public overviewService: OverviewService,
@@ -105,7 +106,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
     });
 
 
-    this.filterService.init(predicate, {
+    this.filterBuilder = new FilterBuilder(predicate, {
       active: { initialValue: true },
       state: { search: stateSearch, display: (v: RequestState) => v && v.Name },
       from: { search: originatorSearch, display: (v: Party) => v && v.PartyName },
@@ -120,7 +121,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -147,7 +148,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
                 Originator: x,
                 RequestState: x,
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

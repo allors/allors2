@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or, Sort, GreaterThan } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, SingletonId, UserId, InternalOrganisationId, FetcherService } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, SingletonId, UserId, InternalOrganisationId, FetcherService } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService, PrintService, SaveService } from '../../../..';
 
 import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory, NonUnifiedPartBarcodePrint, Singleton, NonSerialisedInventoryItem, Person } from '../../../../../domain';
@@ -28,7 +28,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './nonunifiedpart-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
@@ -50,7 +50,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -200,7 +200,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       roleTypes: [m.Facility.Name],
     });
 
-    this.filterService.init(predicate,
+    this.filterBuilder = new FilterBuilder(predicate,
       {
         supplier: { search: this.filtersService.allSuppliersFilter, display: (v: Organisation) => v && v.PartyName },
         manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
@@ -222,7 +222,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -253,7 +253,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
                   ProductIdentificationType: x,
                 },
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

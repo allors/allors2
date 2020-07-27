@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, NavigationService, MetaService, RefreshService, InternalOrganisationId, TestScope } from '../../../../../angular';
 import { CommunicationEventPurpose, EmailAddress, EmailCommunication, EmailTemplate, Party, Person, Organisation, CommunicationEventState, ContactMechanism, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
-import { PullRequest, Sort, Equals, IObject } from '../../../../../framework';
+import { PullRequest, Sort, Equals, IObject, ISessionObject } from '../../../../../framework';
 import { ObjectData, SaveService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -268,9 +268,9 @@ export class EmailCommunicationEditComponent extends TestScope implements OnInit
     this.sortContacts();
   }
 
-  public fromPartySelected(party: Party) {
+  public fromPartySelected(party: ISessionObject) {
     if (party) {
-      this.updateFromParty(party);
+      this.updateFromParty(party as Party);
     }
   }
 
@@ -313,9 +313,9 @@ export class EmailCommunicationEditComponent extends TestScope implements OnInit
       });
   }
 
-  public toPartySelected(party: Party) {
+  public toPartySelected(party: ISessionObject) {
     if (party) {
-      this.updateToParty(party);
+      this.updateToParty(party as Party);
     }
   }
 

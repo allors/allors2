@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like, Contains } from '../../../../../framework';
-import { AllorsFilterService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { PositionTypeRate, PositionType, RateType } from '../../../../../domain';
@@ -23,7 +23,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './positiontyperate-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class PositionTypeRatesOverviewComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -36,10 +36,11 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
 
   private subscription: Subscription;
   positionTypes: PositionType[];
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public refreshService: RefreshService,
     public overviewService: OverviewService,
@@ -103,7 +104,7 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
       predicates: [new Equals({ propertyType: m.RateType.IsActive, value: true })]
     });
 
-    this.filterService.init(predicate,
+    this.filterBuilder = new FilterBuilder(predicate,
       {
         active: { initialValue: true },
         positionType: { search: positionTypeSearch, display: (v: PositionType) => v && v.Title },
@@ -118,7 +119,7 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -138,7 +139,7 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
                 Frequency: x,
                 RateType: x
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

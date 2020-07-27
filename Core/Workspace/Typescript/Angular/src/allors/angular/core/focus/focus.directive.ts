@@ -10,7 +10,6 @@ import { AllorsFocusService } from './focus.service';
   selector: '[aFocus]',
 })
 export class AllorsFocusDirective implements OnDestroy {
-
   @Input() aFocusTrigger: any;
 
   private subscription: Subscription;
@@ -18,22 +17,26 @@ export class AllorsFocusDirective implements OnDestroy {
   constructor(
     private readonly element: ElementRef<HTMLElement>,
     private readonly focusService: AllorsFocusService,
-    @Inject(PLATFORM_ID) platformId: string) {
-
+    @Inject(PLATFORM_ID) platformId: string,
+  ) {
     const inBrowser = isPlatformBrowser(platformId);
 
     this.subscription = this.focusService.focus$
       .pipe(
-        switchMap((v) => timer(100)
-          .pipe(
+        switchMap((v) =>
+          timer(100).pipe(
             filter(() => {
               return inBrowser && v === this.aFocusTrigger;
-            })),
-        ))
+            }),
+          ),
+        ),
+      )
       .subscribe(() => {
         try {
-          this.element.nativeElement.focus();
-        } catch { }
+          setTimeout(() => {
+            this.element.nativeElement.focus();
+          }, 0);
+        } catch {}
       });
   }
 

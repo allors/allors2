@@ -6,7 +6,7 @@ import { Subscription, combineLatest, Subject } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { AllorsFilterService, ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope, Invoked, ActionTarget, UserId, FetcherService } from '../../../../../angular';
+import { ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope, Invoked, ActionTarget, UserId, FetcherService, FilterBuilder } from '../../../../../angular';
 import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem, SalesInvoiceType, PaymentApplication, Disbursement, Receipt, User, Organisation, Person, UserGroup } from '../../../../../domain';
 import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter, Exists } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, AllorsMaterialDialogService } from '../../../../../material';
@@ -28,7 +28,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './salesinvoice-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -53,10 +53,11 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
   canCreate: boolean;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public methodService: MethodService,
     public printService: PrintService,
@@ -248,7 +249,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       roleTypes: [m.SerialisedItem.ItemNumber],
     });
 
-    this.filterService.init(predicate, {
+    this.filterBuilder = new FilterBuilder(predicate, {
       repeating: { initialValue: true },
       active: { initialValue: true },
       type: { search: typeSearch, display: (v: SalesInvoiceType) => v && v.Name },
@@ -271,7 +272,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -302,7 +303,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
                 SalesInvoiceState: x,
                 SalesInvoiceType: x,
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

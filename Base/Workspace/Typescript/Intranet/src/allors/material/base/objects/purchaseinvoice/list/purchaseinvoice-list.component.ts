@@ -6,7 +6,7 @@ import { combineLatest, Subscription } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { AllorsFilterService, ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory, ActionTarget, FetcherService, UserId } from '../../../../../angular';
+import { ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory, ActionTarget, FetcherService, UserId, FilterBuilder } from '../../../../../angular';
 import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt, Organisation, Person, UserGroup, PurchaseInvoiceState, Party, Product, SerialisedItem, Part } from '../../../../../domain';
 import { And, Like, PullRequest, Equals, ContainedIn, Filter } from '../../../../../framework';
 import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService, AllorsMaterialDialogService } from '../../../../../material';
@@ -28,7 +28,7 @@ interface Row extends TableRow {
 }
 @Component({
   templateUrl: './purchaseinvoice-list.component.html',
-  providers: [ContextService, AllorsFilterService]
+  providers: [ContextService]
 })
 export class PurchaseInvoiceListComponent extends TestScope implements OnInit, OnDestroy {
 
@@ -51,10 +51,11 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
   canCreate: boolean;
 
   private subscription: Subscription;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
-    @Self() private filterService: AllorsFilterService,
+    
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
@@ -250,7 +251,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       roleTypes: [m.SerialisedItem.ItemNumber],
     });
 
-    this.filterService.init(predicate,
+    this.filterBuilder = new FilterBuilder(predicate,
       {
         type: { search: typeSearch, display: (v: PurchaseInvoiceType) => v && v.Name },
         state: { search: stateSearch, display: (v: PurchaseInvoiceState) => v && v.Name },
@@ -271,7 +272,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -303,7 +304,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                   Media: x
                 },
               },
-              parameters: this.filterService.parameters(filterFields),
+              parameters: this.filterBuilder.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

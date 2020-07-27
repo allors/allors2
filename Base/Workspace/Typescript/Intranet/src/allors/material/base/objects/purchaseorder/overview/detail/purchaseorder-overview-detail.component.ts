@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { Saved, ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
 import { Organisation, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, Party, VatRate, VatRegime, PostalAddress, CustomerRelationship, Facility, PurchaseOrder, SupplierRelationship, SubContractorRelationship } from '../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { PullRequest, Sort, Equals, ISessionObject } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService, FiltersService } from '../../../../../../material';
@@ -257,8 +257,8 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
     this.order.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public supplierSelected(supplier: Party) {
-    this.updateSupplier(supplier);
+  public supplierSelected(supplier: ISessionObject) {
+    this.updateSupplier(supplier as Party);
   }
 
   private updateSupplier(supplier: Party): void {

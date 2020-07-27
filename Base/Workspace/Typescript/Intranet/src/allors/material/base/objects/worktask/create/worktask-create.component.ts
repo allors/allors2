@@ -8,7 +8,7 @@ import { switchMap } from 'rxjs/operators';
 import { ContextService, NavigationService, MetaService, FetcherService, InternalOrganisationId, TestScope, RefreshService } from '../../../../../angular';
 import { SaveService, FiltersService } from '../../../../../material';
 import { InternalOrganisation, Locale, WorkTask, Organisation, Party, PartyContactMechanism, Person, ContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
-import { PullRequest, Sort, IObject } from '../../../../../framework';
+import { PullRequest, Sort, IObject, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -93,8 +93,8 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
       });
   }
 
-  public customerSelected(customer: Party) {
-    this.updateCustomer(customer);
+  public customerSelected(customer: ISessionObject) {
+    this.updateCustomer(customer as Party);
   }
 
   private updateCustomer(party: Party) {

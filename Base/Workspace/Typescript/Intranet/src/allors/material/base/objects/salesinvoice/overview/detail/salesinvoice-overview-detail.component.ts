@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope, InternalOrganisationId } from '../../../../../../angular';
 import { Currency, ContactMechanism, Person, PartyContactMechanism, Good, Party, VatRate, VatRegime, OrganisationContactRelationship, Organisation, PostalAddress, SalesInvoice, CustomerRelationship, VatClause, Country, IrpfRegime } from '../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { PullRequest, Sort, Equals, ISessionObject } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService, FiltersService } from '../../../../../../material';
@@ -371,27 +371,27 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
     this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
-  public billToCustomerSelected(party: Party) {
+  public billToCustomerSelected(party: ISessionObject) {
     if (party) {
-      this.updateBillToCustomer(party);
+      this.updateBillToCustomer(party as Party);
     }
   }
 
-  public billToEndCustomerSelected(party: Party) {
+  public billToEndCustomerSelected(party: ISessionObject) {
     if (party) {
-      this.updateBillToEndCustomer(party);
+      this.updateBillToEndCustomer(party as Party);
     }
   }
 
-  public shipToCustomerSelected(party: Party) {
+  public shipToCustomerSelected(party: ISessionObject) {
     if (party) {
-      this.updateShipToCustomer(party);
+      this.updateShipToCustomer(party as Party);
     }
   }
 
-  public shipToEndCustomerSelected(party: Party) {
+  public shipToEndCustomerSelected(party: ISessionObject) {
     if (party) {
-      this.updateShipToEndCustomer(party);
+      this.updateShipToEndCustomer(party as Party);
     }
   }
 

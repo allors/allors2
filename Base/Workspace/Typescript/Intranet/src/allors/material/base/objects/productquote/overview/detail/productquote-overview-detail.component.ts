@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 
 import { Saved, ContextService, MetaService, PanelService, RefreshService, FetcherService, TestScope } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, PartyContactMechanism, OrganisationContactRelationship, SalesOrder, Party, RequestForQuote, CustomerRelationship, VatRate, VatRegime, IrpfRegime } from '../../../../../../domain';
-import { PullRequest, Sort } from '../../../../../../framework';
+import { PullRequest, Sort, ISessionObject } from '../../../../../../framework';
 import { Meta } from '../../../../../../meta';
 import { switchMap, filter } from 'rxjs/operators';
 import { SaveService, FiltersService } from '../../../../../../material';
@@ -202,9 +202,9 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
     this.productQuote.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
-  public receiverSelected(party: Party): void {
+  public receiverSelected(party: ISessionObject): void {
     if (party) {
-      this.update(party);
+      this.update(party as Party);
     }
   }
 

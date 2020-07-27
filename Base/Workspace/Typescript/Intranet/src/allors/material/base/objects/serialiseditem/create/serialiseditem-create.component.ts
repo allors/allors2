@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { SaveService, FiltersService, ObjectData } from '../../../../../material';
 import { ContextService, SearchFactory, MetaService, RefreshService, FetcherService, InternalOrganisationId, TestScope, SingletonId } from '../../../../../angular';
 import { Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party, Singleton, Enumeration } from '../../../../../domain';
-import { Equals, PullRequest, Sort, IObject } from '../../../../../framework';
+import { Equals, PullRequest, Sort, IObject, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -115,8 +115,9 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
     }
   }
 
-  public partSelected(part: Part): void {
-    if (part !== undefined) {
+  public partSelected(obj: ISessionObject): void {
+    if (obj) {
+      const part = obj as Part;
       this.selectedPart = part;
       this.serialisedItem.Name = part.Name;
 
