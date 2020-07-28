@@ -16,7 +16,7 @@ export class Or extends Predicate {
     } else if (args) {
       Object.assign(this, args);
       this.operands = args.operands;
-    } else{
+    } else {
       this.operands = [];
     }
   }

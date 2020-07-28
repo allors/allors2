@@ -17,7 +17,7 @@ export class Tree {
       if (literal) {
         this.nodes = Object.keys(literal).map((propertyName) => new Node(this.objectType as ObjectType, propertyName, literal));
       }
-    } else if (args) {
+    } else {
       this.objectType = args.objectType;
       this.nodes = args.nodes;
     }

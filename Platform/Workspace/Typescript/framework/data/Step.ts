@@ -3,13 +3,7 @@ import { Tree } from './Tree';
 
 const includeKey = 'include';
 
-interface StepArgs {
-  propertyType: PropertyType;
-
-  include?: Tree;
-
-  next?: Step | Tree;
-}
+type StepArgs = Pick<Step, 'propertyType' | 'include' | 'next'>;
 
 export class Step {
   public propertyType: PropertyType;
@@ -70,7 +64,7 @@ export class Step {
           this.next = new Step(this.propertyType.objectType, nextStepName, nextStepLiteral);
         }
       }
-    } else if (args) {
+    } else {
       this.propertyType = args.propertyType;
       this.include = args.include;
       this.next = args.next;

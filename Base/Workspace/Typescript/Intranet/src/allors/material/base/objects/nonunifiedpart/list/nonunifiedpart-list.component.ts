@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter, Or, Sort, GreaterThan } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, SingletonId, UserId, InternalOrganisationId, FetcherService } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, SingletonId, UserId, InternalOrganisationId, FetcherService, FilterBuilder } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService, PrintService, SaveService } from '../../../..';
 
 import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType, NonUnifiedPart, PartCategory, NonUnifiedPartBarcodePrint, Singleton, NonSerialisedInventoryItem, Person } from '../../../../../domain';
@@ -47,6 +47,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
   facilities: Facility[];
   user: Person;
   internalOrganisation: Organisation;
+  filterBuilder: FilterBuilder;
 
   constructor(
     @Self() public allors: ContextService,
@@ -303,7 +304,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
 
         this.parts = loaded.collections.NonUnifiedParts as NonUnifiedPart[];
 
-        const inStockSearch = this.filterService.filterFields.find(v => v.definition.fieldName === 'In Stock');
+        const inStockSearch = this.filterBuilder.filterFields.find(v => v.definition.fieldName === 'In Stock');
         let facilitySearchId = inStockSearch?.value;
         if (inStockSearch !== undefined)
         {
@@ -312,7 +313,7 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
           });
         }
 
-        const outOStockSearch = this.filterService.filterFields.find(v => v.definition.fieldName === 'Out Of Stock');
+        const outOStockSearch = this.filterBuilder.filterFields.find(v => v.definition.fieldName === 'Out Of Stock');
         if (facilitySearchId === undefined) {
           facilitySearchId = outOStockSearch?.value;
         }

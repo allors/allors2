@@ -13,10 +13,10 @@ export class And extends Predicate {
 
     if (args instanceof Array) {
       this.operands = args;
-    } else if (args) {
+    } else if(args) {
       Object.assign(this, args);
       this.operands = args.operands;
-    } else{
+    } else {
       this.operands = [];
     }
   }

@@ -71,14 +71,13 @@ export class NotificationListComponent extends TestScope implements OnInit, OnDe
 
     const { pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.table.sort$, this.table.pager$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, sort, pageEvent]) => {
           return [
             refresh,
-            filterFields,
             sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            (previousRefresh !== refresh) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
         }, [, , , , ]),
         switchMap(([, , ]) => {

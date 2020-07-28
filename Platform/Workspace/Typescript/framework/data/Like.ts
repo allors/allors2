@@ -15,7 +15,7 @@ export class Like extends ParameterizablePredicate {
 
     if (args instanceof RoleType) {
       this.roleType = args;
-    } else if (args) {
+    } else {
       Object.assign(this, args);
       this.roleType = args.roleType;
     }

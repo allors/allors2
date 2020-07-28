@@ -32,7 +32,7 @@ export class Fetch {
           this.step = new Step(objectType, stepName, stepLiteral);
         }
       }
-    } else if (args) {
+    } else {
       Object.assign(this, args);
     }
   }

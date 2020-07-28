@@ -13,7 +13,7 @@ export class Exists extends ParameterizablePredicate {
 
     if ((args as PropertyType).objectType) {
       this.propertyType = args as PropertyType;
-    } else if (args) {
+    } else {
       Object.assign(this, args);
       this.propertyType = (args as ExistArgs).propertyType;
     }

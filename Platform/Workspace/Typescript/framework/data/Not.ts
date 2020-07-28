@@ -12,7 +12,7 @@ export class Not extends Predicate {
 
     if (args instanceof Predicate) {
       this.operand = args;
-    } else if (args) {
+    } else {
       Object.assign(this, args);
       this.operand = args?.operand;
     }

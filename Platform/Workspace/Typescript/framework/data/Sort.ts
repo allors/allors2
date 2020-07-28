@@ -15,7 +15,7 @@ export class Sort {
     if (args instanceof RoleType) {
       this.roleType = args;
       this.descending = descending ?? false;
-    } else if (args) {
+    } else {
       this.roleType = args.roleType;
       this.descending = args.descending ?? false;
     }
