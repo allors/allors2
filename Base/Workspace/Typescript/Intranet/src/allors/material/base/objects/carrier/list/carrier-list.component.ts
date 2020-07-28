@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope, FilterBuilder } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { Carrier } from '../../../../../domain';
@@ -29,7 +29,7 @@ export class CarrierListComponent extends TestScope implements OnInit, OnDestroy
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -79,15 +79,16 @@ export class CarrierListComponent extends TestScope implements OnInit, OnDestroy
       new Like({ roleType: m.Carrier.Name, parameter: 'name' }),
     ]);
 
-    this.filterBuilder = new FilterBuilder(predicate);
-
+    const filterDefinition = new FilterDefinition(predicate);
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         name: m.Carrier.Name,
       }
     );
 
-    this.subscription = combineLatest([this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$])
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -103,7 +104,7 @@ export class CarrierListComponent extends TestScope implements OnInit, OnDestroy
             pull.Carrier({
               predicate,
               sort: sorter.create(sort),
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope, FilterBuilder } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { PositionType } from '../../../../../domain';
@@ -30,7 +30,7 @@ export class PositionTypesOverviewComponent extends TestScope implements OnInit,
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -81,15 +81,16 @@ export class PositionTypesOverviewComponent extends TestScope implements OnInit,
       new Like({ roleType: m.PositionType.Title, parameter: 'title' }),
     ]);
 
-    this.filterBuilder = new FilterBuilder(predicate);
-
+    const filterDefinition = new FilterDefinition(predicate);
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         title: m.PositionType.Title,
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -108,7 +109,7 @@ export class PositionTypesOverviewComponent extends TestScope implements OnInit,
               include: {
                 PositionTypeRate: x,
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

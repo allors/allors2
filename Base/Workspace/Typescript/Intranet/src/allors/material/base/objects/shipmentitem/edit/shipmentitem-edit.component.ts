@@ -34,7 +34,7 @@ import {
   SerialisedItemAvailability,
   Facility,
 } from '../../../../../domain';
-import { PullRequest, IObject, Equals, Sort, And, ContainedIn, Filter, ISessionObject } from '../../../../../framework';
+import { PullRequest, IObject, Equals, Sort, And, ContainedIn, Extent, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
@@ -328,7 +328,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
               predicate.operands.push(
                 new ContainedIn({
                   propertyType: this.m.Part.SupplierOfferingsWherePart,
-                  extent: new Filter({
+                  extent: new Extent({
                     objectType: this.m.SupplierOffering,
                     predicate: new Equals({ propertyType: m.SupplierOffering.Supplier, object: this.shipment.ShipFromParty }),
                   }),

@@ -4,8 +4,8 @@ import { combineLatest, Subscription } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { PullRequest, And, Like, ContainedIn, Filter, GreaterThan, Equals } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory, TestScope, FetcherService, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Like, ContainedIn, Extent, GreaterThan, Equals } from '../../../../../framework';
+import { MediaService, ContextService, NavigationService, RefreshService, Action, MetaService, SearchFactory, TestScope, FetcherService, FilterDefinition,  Filter } from '../../../../../angular';
 import { TableRow, OverviewService, DeleteService, Table, Sorter, MethodService } from '../../../..';
 
 import { Organisation, Country } from '../../../../../domain';
@@ -38,7 +38,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
 
   private subscription: Subscription;
   internalOrganisation: Organisation;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -96,7 +96,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
       new ContainedIn({
         propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.SupplierRelationship,
           predicate: new Equals({
             propertyType: m.SupplierRelationship.InternalOrganisation,
@@ -106,7 +106,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       }),
       new ContainedIn({
         propertyType: m.Party.CustomerRelationshipsWhereCustomer,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.CustomerRelationship,
           predicate: new Equals({
             propertyType: m.CustomerRelationship.InternalOrganisation,
@@ -116,11 +116,11 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       }),
       new ContainedIn({
         propertyType: m.Party.PartyContactMechanisms,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.PartyContactMechanism,
           predicate: new ContainedIn({
             propertyType: m.PartyContactMechanism.ContactMechanism,
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.PostalAddress,
               predicate: new ContainedIn({
                 propertyType: m.PostalAddress.Country,
@@ -132,11 +132,11 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       }),
       new ContainedIn({
         propertyType: m.Party.PartyContactMechanisms,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.PartyContactMechanism,
           predicate: new ContainedIn({
             propertyType: m.PartyContactMechanism.ContactMechanism,
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.PostalAddress,
               predicate: new Like({
                 roleType: m.PostalAddress.Locality,
@@ -161,7 +161,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       },
     });
 
-    this.filterBuilder = new FilterBuilder(predicate, {
+    const filterDefinition = new FilterDefinition(predicate, {
       customerAt: {
         search: internalOrganisationSearch,
         initialValue: this.internalOrganisation,
@@ -177,7 +177,8 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
         display: (v: Country) => v && v.Name
       }
     });
-
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         name: m.Organisation.Name,
@@ -185,7 +186,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -211,7 +212,7 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
                   }
                 },
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

@@ -4,11 +4,32 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Like, Equals, Contains, ContainedIn, Extent } from '../../../../../framework';
+import {
+  MediaService,
+  ContextService,
+  NavigationService,
+  Action,
+  RefreshService,
+  MetaService,
+  SearchFactory,
+  TestScope,
+  FilterDefinition,
+  Filter,
+} from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, FiltersService } from '../../../..';
 
-import { Part, ProductIdentificationType, ProductIdentification, Facility, Organisation, Brand, Model, InventoryItemKind, ProductType } from '../../../../../domain';
+import {
+  Part,
+  ProductIdentificationType,
+  ProductIdentification,
+  Facility,
+  Organisation,
+  Brand,
+  Model,
+  InventoryItemKind,
+  ProductType,
+} from '../../../../../domain';
 
 import { ObjectService } from '../../../../../material/core/services/object';
 
@@ -25,10 +46,9 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './part-list.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class PartListComponent extends TestScope implements OnInit, OnDestroy {
-
   public title = 'Parts';
 
   table: Table<Row>;
@@ -38,11 +58,11 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   goodIdentificationTypes: ProductIdentificationType[];
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
-    
+
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -51,7 +71,7 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private filtersService: FiltersService,
-    titleService: Title
+    titleService: Title,
   ) {
     super();
 
@@ -71,12 +91,9 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
         { name: 'qoh' },
         { name: 'brand' },
         { name: 'model' },
-        { name: 'kind' }
+        { name: 'kind' },
       ],
-      actions: [
-        overviewService.overview(),
-        this.delete
-      ],
+      actions: [overviewService.overview(), this.delete],
       defaultAction: overviewService.overview(),
       pageSize: 50,
     });
@@ -98,14 +115,14 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
       new Equals({ propertyType: m.Part.ProductType, parameter: 'type' }),
       new ContainedIn({
         propertyType: m.Part.InventoryItemsWherePart,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.InventoryItem,
           predicate: new Equals({
             propertyType: m.InventoryItem.Facility,
-            parameter: 'facility'
-          })
-        })
-      })
+            parameter: 'facility',
+          }),
+        }),
+      }),
     ]);
 
     const typeSearch = new SearchFactory({
@@ -145,41 +162,41 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
       roleTypes: [m.Facility.Name],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate,
-      {
-        supplier: { search: this.filtersService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
-        manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
-        brand: { search: brandSearch, display: (v: Brand) => v && v && v.Name },
-        model: { search: modelSearch, display: (v: Model) => v.Name },
-        kind: { search: kindSearch, display: (v: InventoryItemKind) => v && v.Name },
-        type: { search: typeSearch, display: (v: ProductType) => v && v.Name },
-        identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
-        facility: { search: facilitySearch, display: (v: Facility) => v && v.Name },
-      });
+    const filterDefinition = new FilterDefinition(predicate, {
+      supplier: { search: this.filtersService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
+      manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
+      brand: { search: brandSearch, display: (v: Brand) => v && v && v.Name },
+      model: { search: modelSearch, display: (v: Model) => v.Name },
+      kind: { search: kindSearch, display: (v: InventoryItemKind) => v && v.Name },
+      type: { search: typeSearch, display: (v: ProductType) => v && v.Name },
+      identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
+      facility: { search: facilitySearch, display: (v: Facility) => v && v.Name },
+    });
+    this.filter = new Filter(filterDefinition);
+    
+    const sorter = new Sorter({
+      name: m.NonUnifiedPart.Name,
+      // partNo: m.NonUnifiedPartNumber.Identification,
+      // type: m.ProductType.Name,
+      // brand: m.Brand.Name,
+      // model: m.Model.Name,
+      // kind: m.InventoryItemKind.Name
+    });
 
-    const sorter = new Sorter(
-      {
-        name: m.NonUnifiedPart.Name,
-        // partNo: m.NonUnifiedPartNumber.Identification,
-        // type: m.ProductType.Name,
-        // brand: m.Brand.Name,
-        // model: m.Model.Name,
-        // kind: m.InventoryItemKind.Name
-      }
-    );
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
-          return [
-            refresh,
-            filterFields,
-            sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-          ];
-        }, [, , , , , ]),
+        scan(
+          ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+            return [
+              refresh,
+              filterFields,
+              sort,
+              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            ];
+          },
+          [, , , , ,],
+        ),
         switchMap(([, filterFields, sort, pageEvent]) => {
-
           const pulls = [
             pull.Part({
               predicate,
@@ -191,10 +208,10 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
                 PrimaryPhoto: x,
                 InventoryItemKind: x,
                 ProductIdentifications: {
-                  ProductIdentificationType: x
+                  ProductIdentificationType: x,
                 },
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),
@@ -202,9 +219,8 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
             pull.BasePrice(),
           ];
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }));
-        })
+          return this.allors.context.load(new PullRequest({ pulls }));
+        }),
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
@@ -214,7 +230,9 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
         const partNumberByPart = parts.reduce((map, obj) => {
-          map[obj.id] = obj.ProductIdentifications.filter(v => v.ProductIdentificationType === partNumberType).map(w => w.Identification);
+          map[obj.id] = obj.ProductIdentifications.filter((v) => v.ProductIdentificationType === partNumberType).map(
+            (w) => w.Identification,
+          );
           return map;
         }, {});
 

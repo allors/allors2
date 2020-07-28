@@ -6,9 +6,9 @@ import { Subscription, combineLatest, Subject } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope, Invoked, ActionTarget, UserId, FetcherService, FilterBuilder } from '../../../../../angular';
+import { ContextService, NavigationService, MediaService, MetaService, RefreshService, Action, SearchFactory, InternalOrganisationId, TestScope, Invoked, ActionTarget, UserId, FetcherService, FilterDefinition,  Filter } from '../../../../../angular';
 import { SalesInvoice, SalesInvoiceState, Party, Product, SerialisedItem, SalesInvoiceType, PaymentApplication, Disbursement, Receipt, User, Organisation, Person, UserGroup } from '../../../../../domain';
-import { And, Like, PullRequest, Sort, Equals, ContainedIn, Filter, Exists } from '../../../../../framework';
+import { And, Like, PullRequest, Sort, Equals, ContainedIn, Extent, Exists } from '../../../../../framework';
 import { PrintService, Sorter, Table, TableRow, DeleteService, OverviewService, AllorsMaterialDialogService } from '../../../../../material';
 import { MethodService } from '../../../../../material/core/services/actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -53,7 +53,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
   canCreate: boolean;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -204,7 +204,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       new Equals({ propertyType: m.SalesInvoice.IsRepeating, parameter: 'repeating' }),
       new ContainedIn({
         propertyType: m.SalesInvoice.SalesInvoiceItems,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.SalesInvoiceItem,
           predicate: new ContainedIn({
             propertyType: m.SalesInvoiceItem.Product,
@@ -214,7 +214,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       }),
       new ContainedIn({
         propertyType: m.SalesInvoice.SalesInvoiceItems,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.SalesInvoiceItem,
           predicate: new ContainedIn({
             propertyType: m.SalesInvoiceItem.SerialisedItem,
@@ -249,7 +249,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       roleTypes: [m.SerialisedItem.ItemNumber],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate, {
+    const filterDefinition = new FilterDefinition(predicate, {
       repeating: { initialValue: true },
       active: { initialValue: true },
       type: { search: typeSearch, display: (v: SalesInvoiceType) => v && v.Name },
@@ -261,7 +261,8 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       product: { search: productSearch, display: (v: Product) => v && v.Name },
       serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
-
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         number: m.SalesInvoice.SortableInvoiceNumber,
@@ -272,7 +273,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -303,7 +304,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
                 SalesInvoiceState: x,
                 SalesInvoiceType: x,
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

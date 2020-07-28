@@ -15,10 +15,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
-import { AllorsFocusModule } from '../../../../angular';
-
-import { AllorsMaterialFilterDialogComponent } from './filter-dialog.component';
-import { AllorsMaterialFilterSearchComponent } from './filter-search.component';
+import { AllorsMaterialFilterFieldDialogComponent } from './field/dialog.component';
+import { AllorsMaterialFilterFieldSearchComponent } from './field/search.component';
 
 import { AllorsMaterialFilterComponent } from './filter.component';
 export { AllorsMaterialFilterComponent } from './filter.component';
@@ -26,20 +24,19 @@ export { AllorsMaterialFilterComponent } from './filter.component';
 @NgModule({
   declarations: [
     AllorsMaterialFilterComponent,
-    AllorsMaterialFilterDialogComponent,
-    AllorsMaterialFilterSearchComponent,
+    AllorsMaterialFilterFieldDialogComponent,
+    AllorsMaterialFilterFieldSearchComponent,
   ],
   exports: [
     AllorsMaterialFilterComponent,
   ],
   entryComponents: [
-    AllorsMaterialFilterDialogComponent
+    AllorsMaterialFilterFieldDialogComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AllorsFocusModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatChipsModule,

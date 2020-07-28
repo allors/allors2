@@ -1,6 +1,6 @@
 import { Meta } from '../allors/meta';
 import { MetaPopulation, And, Like } from '../allors/framework';
-import { FilterBuilder } from '../allors/angular';
+import { FilterDefinition } from '../allors/angular';
 import { Sorter } from '../allors/material';
 
 export function appMeta(metaPopulation: MetaPopulation) {
@@ -8,7 +8,7 @@ export function appMeta(metaPopulation: MetaPopulation) {
 
   m.Person.list = '/contacts/people';
   m.Person.overview = '/contacts/person/:id';
-  m.Person.filterBuilder = new FilterBuilder(
+  m.Person.filterDefinition = new FilterDefinition(
     new And([
       new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
       new Like({ roleType: m.Person.LastName, parameter: 'lastName' }),
@@ -23,6 +23,6 @@ export function appMeta(metaPopulation: MetaPopulation) {
 
   m.Organisation.list = '/contacts/organisations';
   m.Organisation.overview = '/contacts/organisation/:id';
-  m.Organisation.filterBuilder = new FilterBuilder(new And([new Like({ roleType: m.Organisation.Name, parameter: 'name' })]));
+  m.Organisation.filterDefinition = new FilterDefinition(new And([new Like({ roleType: m.Organisation.Name, parameter: 'name' })]));
   m.Organisation.sorter = new Sorter({ name: m.Organisation.Name });
 }

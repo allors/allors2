@@ -5,8 +5,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { PullRequest, And, Equals, ContainedIn, Filter } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FetcherService, UserId, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Equals, ContainedIn } from '../../../../../framework';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FetcherService, UserId, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { Request, RequestState, Party, Organisation, Person, UserGroup } from '../../../../../domain';
@@ -38,7 +38,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
   canCreate: boolean;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -106,12 +106,13 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
     });
 
 
-    this.filterBuilder = new FilterBuilder(predicate, {
+    const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
       state: { search: stateSearch, display: (v: RequestState) => v && v.Name },
       from: { search: originatorSearch, display: (v: Party) => v && v.PartyName },
     });
-
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         number: m.Request.SortableRequestNumber,
@@ -121,7 +122,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -148,7 +149,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
                 Originator: x,
                 RequestState: x,
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

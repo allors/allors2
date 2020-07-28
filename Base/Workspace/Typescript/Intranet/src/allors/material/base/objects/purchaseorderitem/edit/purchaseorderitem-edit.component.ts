@@ -7,7 +7,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseOrder, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem, SupplierOffering, IrpfRegime, Facility, UnifiedGood } from '../../../../../domain';
-import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan, ISessionObject } from '../../../../../framework';
+import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Extent, LessThan, Or, Not, Exists, GreaterThan, ISessionObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -175,7 +175,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           post: (predicate: And) => {
             predicate.operands.push(new ContainedIn({
               propertyType: this.m.NonUnifiedPart.SupplierOfferingsWherePart,
-              extent: new Filter({
+              extent: new Extent({
                 objectType: this.m.SupplierOffering,
                 predicate: new And([
                   new Equals({ propertyType: m.SupplierOffering.Supplier, object: this.order.TakenViaSupplier }),

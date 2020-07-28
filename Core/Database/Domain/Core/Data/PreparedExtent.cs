@@ -11,6 +11,7 @@ namespace Allors.Domain
 
     using Allors.Data;
     using Allors.Protocol.Data;
+    using Extent = Protocol.Data.Extent;
 
     public partial class PreparedExtent
     {

@@ -4,8 +4,8 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains, Exists, Not } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Equals, Like, ContainedIn, Extent, Contains, Exists, Not } from '../../../../../framework';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { PartCategory } from '../../../../../domain';
@@ -32,7 +32,7 @@ export class PartCategoryListComponent extends TestScope implements OnInit, OnDe
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -85,15 +85,16 @@ export class PartCategoryListComponent extends TestScope implements OnInit, OnDe
       new Like({ roleType: m.PartCategory.Name, parameter: 'name' }),
     ]);
 
-    this.filterBuilder = new FilterBuilder(predicate);
-
+    const filterDefinition = new FilterDefinition(predicate);
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         name: m.PartCategory.Name,
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -121,7 +122,7 @@ export class PartCategoryListComponent extends TestScope implements OnInit, OnDe
                   PrimaryAncestors: x,
                 }
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

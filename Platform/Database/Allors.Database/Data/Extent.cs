@@ -10,9 +10,9 @@ namespace Allors.Data
     using Allors.Meta;
     using Allors.Protocol.Data;
 
-    public class Filter : IExtent, IPredicateContainer
+    public class Extent : IExtent, IPredicateContainer
     {
-        public Filter(IComposite objectType) => this.ObjectType = objectType;
+        public Extent(IComposite objectType) => this.ObjectType = objectType;
 
         public IComposite ObjectType { get; set; }
 
@@ -44,10 +44,10 @@ namespace Allors.Data
 
         void IPredicateContainer.AddPredicate(IPredicate predicate) => this.Predicate = predicate;
 
-        public Extent Save() =>
-            new Extent
+        public Protocol.Data.Extent Save() =>
+            new Protocol.Data.Extent
             {
-                Kind = ExtentKind.Filter,
+                Kind = ExtentKind.Extent,
                 ObjectType = this.ObjectType?.Id,
                 Predicate = this.Predicate?.Save(),
                 Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray(),

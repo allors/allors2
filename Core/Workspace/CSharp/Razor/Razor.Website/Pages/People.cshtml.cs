@@ -27,7 +27,7 @@ namespace Razor.Pages
 
             var pull = new Pull
             {
-                Extent = new Filter(M.Person.ObjectType),
+                Extent = new Extent(M.Person.ObjectType),
             };
 
             var result = await context.Load(pull);

@@ -1,4 +1,4 @@
-import { Extent } from './Extent';
+import { IExtent } from './IExtent';
 import { ISessionObject } from '../workspace';
 import { Result } from './Result';
 import { Fetch } from './Fetch';
@@ -10,7 +10,7 @@ import { ParameterTypes } from '../workspace/Types';
 export interface FlatPull {
   extentRef?: string;
 
-  extent?: Extent;
+  extent?: IExtent;
 
   predicate?: Predicate;
 

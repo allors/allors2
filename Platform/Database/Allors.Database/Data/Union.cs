@@ -34,8 +34,8 @@ namespace Allors.Data
             return extent;
         }
 
-        public Extent Save() =>
-            new Extent
+        public Protocol.Data.Extent Save() =>
+            new Protocol.Data.Extent
             {
                 Kind = ExtentKind.Union,
                 Operands = this.Operands.Select(v => v.Save()).ToArray(),

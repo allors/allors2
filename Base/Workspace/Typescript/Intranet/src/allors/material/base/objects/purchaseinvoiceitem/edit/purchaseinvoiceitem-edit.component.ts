@@ -7,7 +7,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 import { ContextService, MetaService, RefreshService, TestScope, SearchFactory } from '../../../../../angular';
 import { InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime, Part, Product, SerialisedItem, SupplierOffering, IrpfRegime, UnifiedGood } from '../../../../../domain';
-import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Filter, LessThan, Or, Not, Exists, GreaterThan, ISessionObject } from '../../../../../framework';
+import { PullRequest, Equals, Sort, IObject, And, ContainedIn, Extent, LessThan, Or, Not, Exists, GreaterThan, ISessionObject } from '../../../../../framework';
 import { ObjectData, SaveService, FiltersService } from '../../../../../material';
 import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
@@ -151,7 +151,7 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
           post: (predicate: And) => {
             predicate.operands.push(new ContainedIn({
               propertyType: this.m.Part.SupplierOfferingsWherePart,
-              extent: new Filter({
+              extent: new Extent({
                 objectType: this.m.SupplierOffering,
                 predicate: new Equals({ propertyType: m.SupplierOffering.Supplier, object: this.invoice.BilledFrom }),
               })

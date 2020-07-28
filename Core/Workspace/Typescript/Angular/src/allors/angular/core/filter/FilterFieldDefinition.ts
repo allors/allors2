@@ -1,9 +1,9 @@
-import { ParametrizedPredicate, Like, Equals, Exists, Between } from '../../../../allors/framework';
+import { ParameterizablePredicate, Like, Equals, Exists, Between } from '../../../../allors/framework';
 import { FilterOptions } from './FilterOptions';
 import { humanize } from '../humanize';
 
 export class FilterFieldDefinition {
-  predicate: ParametrizedPredicate;
+  predicate: ParameterizablePredicate;
   options?: FilterOptions;
 
   get isLike() {
@@ -18,7 +18,7 @@ export class FilterFieldDefinition {
     return this.predicate instanceof Between;
   }
 
-  get fieldName(): string | undefined {
+  get name(): string | undefined {
     return this.predicate.parameter ? humanize(this.predicate.parameter) : undefined;
   }
 

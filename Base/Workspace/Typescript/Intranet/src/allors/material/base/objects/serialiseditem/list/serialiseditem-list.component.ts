@@ -5,8 +5,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Like, ContainedIn, Extent, Equals } from '../../../../../framework';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { SerialisedItem, SerialisedItemState, Ownership, Organisation, Party, Brand, Model, SerialisedItemAvailability, ProductCategory, ProductType, UnifiedGood } from '../../../../../domain';
@@ -38,7 +38,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -103,7 +103,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       new Like({ roleType: m.SerialisedItem.DisplayProductCategories, parameter: 'category' }),
       new ContainedIn({
         propertyType: m.SerialisedItem.PartWhereSerialisedItem,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.Part,
           predicate: new Equals({
             propertyType: m.Part.Brand,
@@ -113,7 +113,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       }),
       new ContainedIn({
         propertyType: m.SerialisedItem.PartWhereSerialisedItem,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.Part,
           predicate: new Equals({
             propertyType: m.Part.Model,
@@ -123,7 +123,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       }),
       new ContainedIn({
         propertyType: m.SerialisedItem.PartWhereSerialisedItem,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.UnifiedGood,
           predicate: new ContainedIn({
             propertyType: m.UnifiedGood.ProductType,
@@ -176,7 +176,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       roleTypes: [m.ProductType.Name],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate, {
+    const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
       onQuote: { initialValue: true },
       onSalesOrder: { initialValue: true },
@@ -191,7 +191,8 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       model: { search: modelSearch, display: (v: Model) => v && v.Name },
       productType: { search: productTypeSearch, display: (v: ProductType) => v && v.Name },
     });
-
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         id: [m.SerialisedItem.ItemNumber],
@@ -201,7 +202,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -225,7 +226,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
                 OwnedBy: x,
                 RentedBy: x
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

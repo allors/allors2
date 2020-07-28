@@ -1,14 +1,14 @@
 import { PropertyType, ObjectType } from '../meta';
 import { ISessionObject } from '../workspace/ISessionObject';
 import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
-import { Extent } from './Extent';
+import { IExtent } from './IExtent';
 import { CompositeTypes } from '../workspace/Types';
 
 export interface ContainedInArgs extends ParameterizablePredicateArgs, Pick<ContainedIn, 'propertyType' | 'extent' | 'objects'> {}
 
 export class ContainedIn extends ParameterizablePredicate {
   propertyType: PropertyType;
-  extent?: Extent;
+  extent?: IExtent;
   objects?: Array<CompositeTypes>;
 
   constructor(propertyType: PropertyType);

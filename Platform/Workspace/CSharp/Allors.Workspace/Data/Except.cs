@@ -20,8 +20,8 @@ namespace Allors.Workspace.Data
 
         public Sort[] Sorting { get; set; }
 
-        public Extent ToJson() =>
-            new Extent
+        public Protocol.Data.Extent ToJson() =>
+            new Protocol.Data.Extent
             {
                 Kind = ExtentKind.Except,
                 Operands = this.Operands.Select(v => v.ToJson()).ToArray(),

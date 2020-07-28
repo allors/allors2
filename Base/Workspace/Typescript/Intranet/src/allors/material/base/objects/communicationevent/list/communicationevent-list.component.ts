@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope, FilterBuilder } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, DeleteService, EditService } from '../../../..';
 
 import { CommunicationEvent } from '../../../../../domain';
@@ -37,7 +37,7 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
   edit: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -89,8 +89,9 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
       new Like({ roleType: m.CommunicationEvent.Subject, parameter: 'subject' }),
     ]);
 
-    this.filterBuilder = new FilterBuilder(predicate);
-
+    const filterDefinition = new FilterDefinition(predicate);
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         subject: m.CommunicationEvent.Subject,
@@ -98,7 +99,7 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
       }
     );
 
-    this.subscription = combineLatest([this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$])
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -118,7 +119,7 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
                 CommunicationEventState: x,
                 InvolvedParties: x,
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

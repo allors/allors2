@@ -6,7 +6,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like, Contains } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterBuilder } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { PositionTypeRate, PositionType, RateType } from '../../../../../domain';
@@ -36,7 +36,7 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
 
   private subscription: Subscription;
   positionTypes: PositionType[];
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -104,12 +104,13 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
       predicates: [new Equals({ propertyType: m.RateType.IsActive, value: true })]
     });
 
-    this.filterBuilder = new FilterBuilder(predicate,
+    const filterDefinition = new FilterDefinition(predicate,
       {
         active: { initialValue: true },
         positionType: { search: positionTypeSearch, display: (v: PositionType) => v && v.Title },
         rateType: { search: rateTypeSearch, display: (v: RateType) => v && v.Name },
       });
+      this.filter = new Filter(filterDefinition);
 
     const sorter = new Sorter(
       {
@@ -119,7 +120,7 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -139,7 +140,7 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
                 Frequency: x,
                 RateType: x
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

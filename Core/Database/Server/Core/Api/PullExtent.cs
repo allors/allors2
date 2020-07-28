@@ -12,6 +12,7 @@ namespace Allors.Server
     using Allors.Data;
     using Allors.Domain;
     using Allors.Services;
+    using Extent = Allors.Extent;
 
     public class PullExtent
     {

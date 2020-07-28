@@ -6,10 +6,47 @@ import { combineLatest, Subscription } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { ContextService, MediaService, MetaService, RefreshService, Action, NavigationService, InternalOrganisationId, TestScope, SearchFactory, ActionTarget, FetcherService, UserId, FilterBuilder } from '../../../../../angular';
-import { PurchaseInvoice, PurchaseInvoiceType, PaymentApplication, Disbursement, Receipt, Organisation, Person, UserGroup, PurchaseInvoiceState, Party, Product, SerialisedItem, Part } from '../../../../../domain';
-import { And, Like, PullRequest, Equals, ContainedIn, Filter } from '../../../../../framework';
-import { OverviewService, Sorter, TableRow, Table, DeleteService, PrintService, AllorsMaterialDialogService } from '../../../../../material';
+import {
+  ContextService,
+  MediaService,
+  MetaService,
+  RefreshService,
+  Action,
+  NavigationService,
+  InternalOrganisationId,
+  TestScope,
+  SearchFactory,
+  ActionTarget,
+  FetcherService,
+  UserId,
+  FilterDefinition,
+  Filter,
+} from '../../../../../angular';
+import {
+  PurchaseInvoice,
+  PurchaseInvoiceType,
+  PaymentApplication,
+  Disbursement,
+  Receipt,
+  Organisation,
+  Person,
+  UserGroup,
+  PurchaseInvoiceState,
+  Party,
+  Product,
+  SerialisedItem,
+  Part,
+} from '../../../../../domain';
+import { And, Like, PullRequest, Equals, ContainedIn, Extent } from '../../../../../framework';
+import {
+  OverviewService,
+  Sorter,
+  TableRow,
+  Table,
+  DeleteService,
+  PrintService,
+  AllorsMaterialDialogService,
+} from '../../../../../material';
 import { MethodService } from '../../../../../material/core/services/actions';
 import { ɵangular_packages_forms_forms_x } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -28,10 +65,9 @@ interface Row extends TableRow {
 }
 @Component({
   templateUrl: './purchaseinvoice-list.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class PurchaseInvoiceListComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
 
   public title = 'Purchase Invoices';
@@ -51,11 +87,11 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
   canCreate: boolean;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
-    
+
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
@@ -69,7 +105,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
     private internalOrganisationId: InternalOrganisationId,
     private userId: UserId,
     private fetcher: FetcherService,
-    titleService: Title
+    titleService: Title,
   ) {
     super();
 
@@ -88,22 +124,20 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       this.table.selection.clear();
     });
 
-
     this.setPaid = {
       name: 'setaspaid',
       displayName: () => 'Set as Paid',
       description: () => '',
       disabled: (target: ActionTarget) => {
         if (Array.isArray(target)) {
-          const anyDisabled = (target as PurchaseInvoice[]).filter(v => !v.CanExecuteSetPaid);
+          const anyDisabled = (target as PurchaseInvoice[]).filter((v) => !v.CanExecuteSetPaid);
           return target.length > 0 ? anyDisabled.length > 0 : true;
         } else {
           return !(target as PurchaseInvoice).CanExecuteSetPaid;
         }
       },
       execute: (target: PurchaseInvoice) => {
-
-        const invoices = Array.isArray(target) ? target as PurchaseInvoice[] : [target as PurchaseInvoice];
+        const invoices = Array.isArray(target) ? (target as PurchaseInvoice[]) : [target as PurchaseInvoice];
         const targets = invoices.filter((v) => v.CanExecuteSetPaid);
 
         if (targets.length > 0) {
@@ -114,9 +148,10 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                 targets.forEach((purchaseInvoice) => {
                   const amountToPay = parseFloat(purchaseInvoice.TotalIncVat) - parseFloat(purchaseInvoice.AmountPaid);
 
-                  if (purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309-a4cb-4ab7-8f75-3bb11dcf3783' ||
-                    purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d927-81f5-4d6a-9847-58b674ad3e6a') {
-
+                  if (
+                    purchaseInvoice.PurchaseInvoiceType.UniqueId === 'd08f0309-a4cb-4ab7-8f75-3bb11dcf3783' ||
+                    purchaseInvoice.PurchaseInvoiceType.UniqueId === '0187d927-81f5-4d6a-9847-58b674ad3e6a'
+                  ) {
                     const paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
                     paymentApplication.Invoice = purchaseInvoice;
                     paymentApplication.AmountApplied = amountToPay.toString();
@@ -141,16 +176,15 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                   }
                 });
 
-                this.allors.context.save()
-                  .subscribe(() => {
-                    snackBar.open('Successfully set to fully paid.', 'close', { duration: 5000 });
-                    refreshService.refresh();
-                  });
+                this.allors.context.save().subscribe(() => {
+                  snackBar.open('Successfully set to fully paid.', 'close', { duration: 5000 });
+                  refreshService.refresh();
+                });
               }
             });
         }
       },
-      result: null
+      result: null,
     };
 
     this.table = new Table({
@@ -166,16 +200,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
         { name: 'totalIncVat', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
-      actions: [
-        overviewService.overview(),
-        this.delete,
-        this.approve,
-        this.cancel,
-        this.reopen,
-        this.reject,
-        this.print,
-        this.setPaid
-      ],
+      actions: [overviewService.overview(), this.delete, this.approve, this.cancel, this.reopen, this.reject, this.print, this.setPaid],
       defaultAction: overviewService.overview(),
       pageSize: 50,
       initialSort: 'number',
@@ -184,7 +209,6 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
   }
 
   public ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseInvoice.BilledTo });
@@ -198,24 +222,24 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       new Equals({ propertyType: m.PurchaseInvoice.BilledFrom, parameter: 'supplier' }),
       new ContainedIn({
         propertyType: m.PurchaseInvoice.PurchaseInvoiceItems,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.PurchaseInvoiceItem,
           predicate: new ContainedIn({
             propertyType: m.PurchaseInvoiceItem.Part,
-            parameter: 'sparePart'
-          })
-        })
+            parameter: 'sparePart',
+          }),
+        }),
       }),
       new ContainedIn({
         propertyType: m.PurchaseInvoice.PurchaseInvoiceItems,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.PurchaseInvoiceItem,
           predicate: new ContainedIn({
             propertyType: m.PurchaseInvoiceItem.SerialisedItem,
-            parameter: 'serialisedItem'
-          })
-        })
-      })
+            parameter: 'serialisedItem',
+          }),
+        }),
+      }),
     ]);
 
     const typeSearch = new SearchFactory({
@@ -233,11 +257,12 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       predicates: [
         new ContainedIn({
           propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
-          extent: new Filter({
+          extent: new Extent({
             objectType: m.SupplierRelationship,
             predicate: supplierPredicate,
-          })
-        })],
+          }),
+        }),
+      ],
       roleTypes: [m.Organisation.PartyName],
     });
 
@@ -251,46 +276,52 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
       roleTypes: [m.SerialisedItem.ItemNumber],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate,
-      {
-        type: { search: typeSearch, display: (v: PurchaseInvoiceType) => v && v.Name },
-        state: { search: stateSearch, display: (v: PurchaseInvoiceState) => v && v.Name },
-        supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
-        sparePart: { search: partSearch, display: (v: Part) => v && v.Name },
-        serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
-      });
+    const filterDefinition = new FilterDefinition(predicate, {
+      type: { search: typeSearch, display: (v: PurchaseInvoiceType) => v && v.Name },
+      state: { search: stateSearch, display: (v: PurchaseInvoiceState) => v && v.Name },
+      supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
+      sparePart: { search: partSearch, display: (v: Part) => v && v.Name },
+      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
+    });
+    this.filter = new Filter(filterDefinition);
+    
+    const sorter = new Sorter({
+      number: m.PurchaseInvoice.SortableInvoiceNumber,
+      type: m.PurchaseInvoice.PurchaseInvoiceType,
+      reference: m.PurchaseInvoice.CustomerReference,
+      dueDate: m.PurchaseInvoice.DueDate,
+      totalExVat: m.PurchaseInvoice.TotalExVat,
+      totalIncVat: m.PurchaseInvoice.TotalIncVat,
+      lastModifiedDate: m.PurchaseInvoice.LastModifiedDate,
+    });
 
-    const sorter = new Sorter(
-      {
-        number: m.PurchaseInvoice.SortableInvoiceNumber,
-        type: m.PurchaseInvoice.PurchaseInvoiceType,
-        reference: m.PurchaseInvoice.CustomerReference,
-        dueDate: m.PurchaseInvoice.DueDate,
-        totalExVat: m.PurchaseInvoice.TotalExVat,
-        totalIncVat: m.PurchaseInvoice.TotalIncVat,
-        lastModifiedDate: m.PurchaseInvoice.LastModifiedDate,
-      }
-    );
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(
+      this.refreshService.refresh$,
+      this.filter.fields$,
+      this.table.sort$,
+      this.table.pager$,
+      this.internalOrganisationId.observable$,
+    )
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
-          return [
-            refresh,
-            filterFields,
-            sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-            internalOrganisationId
-          ];
-        }, [, , , , ,]),
+        scan(
+          ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
+            return [
+              refresh,
+              filterFields,
+              sort,
+              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+              internalOrganisationId,
+            ];
+          },
+          [, , , , ,],
+        ),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
-
           internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.Person({
-              object: this.userId.value
+              object: this.userId.value,
             }),
             pull.PurchaseInvoice({
               predicate,
@@ -301,16 +332,17 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
                 PurchaseInvoiceState: x,
                 PurchaseInvoiceType: x,
                 PrintDocument: {
-                  Media: x
+                  Media: x,
                 },
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
-            })];
+            }),
+          ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
-        })
+        }),
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
@@ -322,20 +354,22 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
 
         const purchaseInvoices = loaded.collections.PurchaseInvoices as PurchaseInvoice[];
         this.table.total = loaded.values.PurchaseInvoices_total;
-        this.table.data = purchaseInvoices.filter(v => v.CanReadInvoiceNumber).map((v) => {
-          return {
-            object: v,
-            number: v.InvoiceNumber,
-            type: `${v.PurchaseInvoiceType && v.PurchaseInvoiceType.Name}`,
-            billedFrom: v.BilledFrom && v.BilledFrom.displayName,
-            state: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
-            reference: `${v.CustomerReference}`,
-            dueDate: v.DueDate && moment(v.DueDate).format('MMM Do YY'),
-            totalExVat: v.TotalExVat,
-            totalIncVat: v.TotalIncVat,
-            lastModifiedDate: moment(v.LastModifiedDate).fromNow()
-          } as Row;
-        });
+        this.table.data = purchaseInvoices
+          .filter((v) => v.CanReadInvoiceNumber)
+          .map((v) => {
+            return {
+              object: v,
+              number: v.InvoiceNumber,
+              type: `${v.PurchaseInvoiceType && v.PurchaseInvoiceType.Name}`,
+              billedFrom: v.BilledFrom && v.BilledFrom.displayName,
+              state: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
+              reference: `${v.CustomerReference}`,
+              dueDate: v.DueDate && moment(v.DueDate).format('MMM Do YY'),
+              totalExVat: v.TotalExVat,
+              totalIncVat: v.TotalIncVat,
+              lastModifiedDate: moment(v.LastModifiedDate).fromNow(),
+            } as Row;
+          });
       });
   }
 

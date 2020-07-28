@@ -21,7 +21,7 @@ namespace Tests.Remote
 
             var pull = new Pull
             {
-                Extent = new Filter(M.C1.ObjectType),
+                Extent = new Extent(M.C1.ObjectType),
             };
 
             var result = context.Load(pull).Result;
@@ -44,7 +44,7 @@ namespace Tests.Remote
 
             var pull = new Pull
             {
-                Extent = new Filter(M.C1.ObjectType),
+                Extent = new Extent(M.C1.ObjectType),
             };
 
             var result = context.Load(pull).Result;
@@ -76,7 +76,7 @@ namespace Tests.Remote
 
             var pull = new Pull
             {
-                Extent = new Filter(M.C1.ObjectType),
+                Extent = new Extent(M.C1.ObjectType),
             };
 
             var result = context.Load(pull).Result;

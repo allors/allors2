@@ -2,7 +2,7 @@
 <mat-toolbar style="background-color: transparent; cursor:pointer;" (click)="add($event)">
     <mat-toolbar-row>
         <mat-chip-list *ngIf="hasFields" class="mr-3">
-            <mat-chip *ngFor="let field of builder.filterFields" [removable]="true" (removed)="remove(field)">{{field.definition.predicate.parameter}}: {{field.display}} <mat-icon matChipRemove>cancel</mat-icon>
+            <mat-chip *ngFor="let field of filter.fields" [removable]="true" (removed)="remove(field)">{{field.definition.predicate.parameter}}: {{field.display}} <mat-icon matChipRemove>cancel</mat-icon>
             </mat-chip>
         </mat-chip-list>
 

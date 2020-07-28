@@ -8,7 +8,7 @@ namespace Allors.Protocol.Data
     // TODO: Make enumeration lik PredicateKind
     public static class ExtentKind
     {
-        public const string Filter = "Filter";
+        public const string Extent = "Extent";
 
         public const string Union = "Union";
 

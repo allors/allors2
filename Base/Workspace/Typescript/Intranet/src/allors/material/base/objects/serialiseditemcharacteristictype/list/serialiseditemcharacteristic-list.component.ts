@@ -5,7 +5,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterBuilder } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, EditService } from '../../../..';
 
 import { SerialisedItemCharacteristicType, UnitOfMeasure, IUnitOfMeasure } from '../../../../../domain';
@@ -31,7 +31,7 @@ export class SerialisedItemCharacteristicListComponent extends TestScope impleme
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -90,12 +90,13 @@ export class SerialisedItemCharacteristicListComponent extends TestScope impleme
       predicates: [new Equals({ propertyType: m.IUnitOfMeasure.IsActive, value: true })]
     });
 
-    this.filterBuilder = new FilterBuilder(predicate,
+    const filterDefinition = new FilterDefinition(predicate,
       {
         active: { initialValue: true },
         uom: { search: uomSearch, display: (v: IUnitOfMeasure) => v && v.Name },
       });
-
+      this.filter = new Filter(filterDefinition);
+      
     const sorter = new Sorter(
       {
         name: m.SerialisedItemCharacteristicType.Name,
@@ -104,7 +105,7 @@ export class SerialisedItemCharacteristicListComponent extends TestScope impleme
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -123,7 +124,7 @@ export class SerialisedItemCharacteristicListComponent extends TestScope impleme
               include: {
                 UnitOfMeasure: x,
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

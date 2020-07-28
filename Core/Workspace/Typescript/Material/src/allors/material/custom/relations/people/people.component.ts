@@ -11,7 +11,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan, filter } from 'rxjs/operators';
 
 import { PullRequest, SessionObject } from '../../../../framework';
-import { MediaService, ContextService, NavigationService, MetaService, TestScope, FilterBuilder } from '../../../../angular';
+import { MediaService, ContextService, NavigationService, MetaService, TestScope, Filter } from '../../../../angular';
 import { Person } from '../../../../domain';
 import { TableRow, AllorsMaterialDialogService } from '../../../../material';
 
@@ -35,7 +35,7 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
   public total: number;
   public dataSource = new MatTableDataSource<Row>();
 
-  public filterBuilder: FilterBuilder;
+  public filter: Filter;
 
   private sort$: BehaviorSubject<Sort | null>;
   private refresh$: BehaviorSubject<Date>;
@@ -64,9 +64,9 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const { x, m, pull } = this.metaService;
-    this.filterBuilder = m.Person.filterBuilder;
+    this.filter = m.Person.filter = m.Person.filter ?? new Filter(m.Person.filterDefinition);
     
-    this.subscription = combineLatest([this.refresh$, this.filterBuilder.filterFields$, this.sort$, this.pager$])
+    this.subscription = combineLatest([this.refresh$, this.filter.fields$, this.sort$, this.pager$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -79,12 +79,12 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.Person({
-              predicate: this.filterBuilder.predicate,
+              predicate: this.filter.definition.predicate,
               sort: sort ? m.Person.sorter.create(sort) : null,
               include: {
                 Pictures: x,
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

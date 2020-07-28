@@ -1,10 +1,10 @@
 import { CompositeTypes, ParameterTypes } from '../workspace/Types';
-import { Extent } from './Extent';
+import { IExtent } from './IExtent';
 import { ISessionObject } from '../workspace';
 import { Result } from './Result';
 import { FlatPull } from './FlatPull';
 import { ObjectType } from '../meta';
-import { Filter } from './Filter';
+import { Extent } from './Extent';
 import { Fetch } from './Fetch';
 import { Sort } from './Sort';
 import { Tree } from './Tree';
@@ -17,7 +17,7 @@ export class Pull {
 
   public extentRef?: string;
 
-  public extent?: Extent;
+  public extent?: IExtent;
 
   public object?: CompositeTypes;
 
@@ -32,7 +32,7 @@ export class Pull {
       this.objectType = args as ObjectType;
 
       if (!flat) {
-        this.extent = new Filter({ objectType: this.objectType });
+        this.extent = new Extent({ objectType: this.objectType });
       } else {
         this.extentRef = flat.extentRef;
         this.extent = flat.extent;
@@ -46,11 +46,11 @@ export class Pull {
             throw new Error('predicate conflicts with object/extent/extentRef');
           }
 
-          this.extent = new Filter({ objectType: this.objectType, predicate: flat.predicate, sort });
+          this.extent = new Extent({ objectType: this.objectType, predicate: flat.predicate, sort });
         }
 
         if (!this.object && !this.extent && !this.extentRef) {
-          this.extent = new Filter({ objectType: this.objectType, sort });
+          this.extent = new Extent({ objectType: this.objectType, sort });
         }
 
         if (flat.fetchRef || flat.fetch || flat.include || flat.name || flat.skip || flat.take) {

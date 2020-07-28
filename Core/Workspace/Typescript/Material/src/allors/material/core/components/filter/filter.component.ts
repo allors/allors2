@@ -1,10 +1,8 @@
 import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
-import { FilterBuilder } from '../../../../angular/core/filter';
-import { AllorsMaterialFilterDialogComponent } from './filter-dialog.component';
+import { Filter } from '../../../../angular/core/filter';
 import { FilterField } from '../../../../angular/core/filter/FilterField';
-import { ObjectType } from 'src/allors/framework';
+import { AllorsMaterialFilterFieldDialogComponent } from './field/dialog.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -12,22 +10,22 @@ import { ObjectType } from 'src/allors/framework';
   templateUrl: './filter.component.html',
 })
 export class AllorsMaterialFilterComponent {
-  @Input() builder: FilterBuilder;
+  @Input() filter: Filter;
 
   @ViewChild('toolBar', { static: true }) toolBar: ElementRef;
 
   constructor(private dialog: MatDialog) {}
 
   get hasFields() {
-    return this.builder.filterFields.length > 0;
+    return this.filter.fields.length > 0;
   }
 
   clear() {
-    this.builder.clearFilterFields();
+    this.filter.clearFields();
   }
 
   remove(field: FilterField) {
-    this.builder.removeFilterField(field);
+    this.filter.removeField(field);
   }
 
   add(event: MouseEvent) {
@@ -39,8 +37,8 @@ export class AllorsMaterialFilterComponent {
     let left = event.pageX < offsetLeft + 60 ? event.pageX - 20 : event.pageX - 40;
     left = left < twoThirds ? left : twoThirds;
 
-    this.dialog.open(AllorsMaterialFilterDialogComponent, {
-      data: { filterBuilder: this.builder },
+    this.dialog.open(AllorsMaterialFilterFieldDialogComponent, {
+      data: { filterBuilder: this.filter },
       autoFocus: true,
       backdropClass: 'nada',
       position: {

@@ -1,5 +1,5 @@
 import { SearchFactory } from '../data';
-import { ISessionObject, PropertyType } from '../../../../allors/framework';
+import { PropertyType } from '../../../../allors/framework';
 
 export class FilterOptions {
   search: SearchFactory;

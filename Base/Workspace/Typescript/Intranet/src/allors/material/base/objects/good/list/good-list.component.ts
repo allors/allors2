@@ -5,8 +5,19 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { PullRequest, And, Like, Equals, Filter, Contains, Exists } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Like, Equals, Extent, Contains, Exists } from '../../../../../framework';
+import {
+  MediaService,
+  ContextService,
+  NavigationService,
+  Action,
+  RefreshService,
+  MetaService,
+  SearchFactory,
+  TestScope,
+  FilterDefinition,
+  Filter,
+} from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { ProductCategory, Brand, Model, ProductIdentification, Good, NonUnifiedGood, UnifiedGood } from '../../../../../domain';
@@ -23,10 +34,9 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './good-list.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
-
   public title = 'Goods';
 
   table: Table<Row>;
@@ -34,11 +44,11 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
-    
+
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -46,8 +56,8 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    titleService: Title) {
-
+    titleService: Title,
+  ) {
     super();
 
     titleService.setTitle(this.title);
@@ -59,23 +69,14 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
 
     this.table = new Table({
       selection: true,
-      columns: [
-        { name: 'name', sort: true },
-        { name: 'id' },
-        { name: 'categories' },
-        { name: 'qoh' },
-      ],
-      actions: [
-        overviewService.overview(),
-        this.delete
-      ],
+      columns: [{ name: 'name', sort: true }, { name: 'id' }, { name: 'categories' }, { name: 'qoh' }],
+      actions: [overviewService.overview(), this.delete],
       defaultAction: overviewService.overview(),
       pageSize: 50,
     });
   }
 
   public ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
@@ -87,7 +88,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
       // TODO: use Or filter
       // new ContainedIn({
       //   propertyType: m.NonUnifiedGood.Part,
-      //   extent: new Filter({
+      //   extent: new Extent({
       //     objectType: m.Part,
       //     predicate: new Equals({
       //       propertyType: m.Part.Brand,
@@ -97,7 +98,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
       // }),
       // new ContainedIn({
       //   propertyType: m.NonUnifiedGood.Part,
-      //   extent: new Filter({
+      //   extent: new Extent({
       //     objectType: m.Part,
       //     predicate: new Equals({
       //       propertyType: m.Part.Model,
@@ -127,32 +128,32 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
       roleTypes: [m.ProductIdentification.Identification],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate,
-      {
-        category: { search: categorySearch, display: (v: ProductCategory) => v && v.Name },
-        identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
-        brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
-        model: { search: modelSearch, display: (v: Model) => v && v.Name },
-      });
+    const filterDefinition = new FilterDefinition(predicate, {
+      category: { search: categorySearch, display: (v: ProductCategory) => v && v.Name },
+      identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
+      brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
+      model: { search: modelSearch, display: (v: Model) => v && v.Name },
+    });
+    this.filter = new Filter(filterDefinition);
 
-    const sorter = new Sorter(
-      {
-        name: [m.Good.Name],
-      }
-    );
+    const sorter = new Sorter({
+      name: [m.Good.Name],
+    });
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
-          return [
-            refresh,
-            filterFields,
-            sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-          ];
-        }, [, , , , , ]),
+        scan(
+          ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+            return [
+              refresh,
+              filterFields,
+              sort,
+              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            ];
+          },
+          [, , , , ,],
+        ),
         switchMap(([, filterFields, sort, pageEvent]) => {
-
           const pulls = [
             pull.Good({
               predicate,
@@ -160,10 +161,10 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
               include: {
                 NonUnifiedGood_Part: x,
                 ProductIdentifications: {
-                  ProductIdentificationType: x
-                }
+                  ProductIdentificationType: x,
+                },
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),
@@ -174,15 +175,15 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
                 ProductCategoriesWhereProduct: {
                   include: {
                     Products: x,
-                    PrimaryAncestors: x
-                  }
+                    PrimaryAncestors: x,
+                  },
                 },
-              }
-            })
+              },
+            }),
           ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
-        })
+        }),
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
@@ -195,10 +196,14 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
           return {
             object: v,
             name: v.Name,
-            id: v.ProductIdentifications.find(p => p.ProductIdentificationType.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f').Identification,
-            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.displayName).join(', '),
+            id: v.ProductIdentifications.find((p) => p.ProductIdentificationType.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f')
+              .Identification,
+            categories: productCategories
+              .filter((w) => w.Products.includes(v))
+              .map((w) => w.displayName)
+              .join(', '),
             // qoh: v.Part && v.Part.QuantityOnHand
-            qoh: ((v as NonUnifiedGood).Part && (v as NonUnifiedGood).Part.QuantityOnHand) || (v as UnifiedGood).QuantityOnHand
+            qoh: ((v as NonUnifiedGood).Part && (v as NonUnifiedGood).Part.QuantityOnHand) || (v as UnifiedGood).QuantityOnHand,
           } as Row;
         });
       });

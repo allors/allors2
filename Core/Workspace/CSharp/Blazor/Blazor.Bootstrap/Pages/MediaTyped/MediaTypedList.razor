@@ -26,7 +26,7 @@
 
         var pull = new Pull
         {
-            Extent = new Filter(M.MediaTyped.ObjectType),
+            Extent = new Extent(M.MediaTyped.ObjectType),
         };
 
         var result = await context.Load(pull);

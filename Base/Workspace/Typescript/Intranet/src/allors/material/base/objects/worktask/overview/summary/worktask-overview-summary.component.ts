@@ -4,7 +4,7 @@ import { WorkTask, SalesInvoice, SerialisedItem, FixedAsset, Printable } from '.
 import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrintService, SaveService } from '../../../../../../../allors/material';
-import { Equals, And, ContainedIn, Filter } from '../../../../../../../allors/framework';
+import { Equals, And, ContainedIn, Extent } from '../../../../../../../allors/framework';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -109,7 +109,7 @@ export class WorkTaskOverviewSummaryComponent {
           predicate:
             new ContainedIn({
               propertyType: m.TimeEntryBilling.TimeEntry,
-              extent: new Filter({
+              extent: new Extent({
                 objectType: m.ServiceEntry,
                 predicate: new Equals({
                   propertyType: m.ServiceEntry.WorkEffort, object: id

@@ -1,9 +1,9 @@
 import { Operator, OperatorArgs } from './Operator';
-import { Extent } from './Extent';
+import { IExtent } from './IExtent';
 
 export class Union extends Operator {
-  constructor(...operands: Extent[]);
-  constructor(operands: Extent[]);
+  constructor(...operands: IExtent[]);
+  constructor(operands: IExtent[]);
   constructor(args?: OperatorArgs);
   constructor(args: any) {
     super(args);

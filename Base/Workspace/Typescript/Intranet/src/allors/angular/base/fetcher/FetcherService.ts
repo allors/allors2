@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Pull, Result, Fetch, Equals, Sort, ContainedIn, Filter, Like, And } from '../../../framework';
+import { Pull, Result, Fetch, Equals, Sort, ContainedIn, Extent, Like, And } from '../../../framework';
 import { PullFactory } from '../../../meta';
 
 import { MetaService } from '../../core/framework/MetaService';
@@ -49,7 +49,7 @@ export class FetcherService {
     return this.pull.Facility({
       predicate: new ContainedIn({
         propertyType: m.Facility.FacilityType,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.FacilityType,
           predicate: new Equals({
             propertyType: m.FacilityType.UniqueId,
@@ -75,7 +75,7 @@ export class FetcherService {
           }),
           new ContainedIn({
             propertyType: m.Facility.FacilityType,
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.FacilityType,
               predicate: new Equals({
                 propertyType: m.FacilityType.UniqueId,

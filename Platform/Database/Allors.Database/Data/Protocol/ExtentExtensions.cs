@@ -31,14 +31,14 @@ namespace Allors.Protocol.Data
 
             switch (@this.Kind)
             {
-                case ExtentKind.Filter:
+                case ExtentKind.Extent:
                     if (!@this.ObjectType.HasValue)
                     {
                         return null;
                     }
 
                     var objectType = (IComposite)session.Database.ObjectFactory.MetaPopulation.Find(@this.ObjectType.Value);
-                    extent = new Filter(objectType)
+                    extent = new Allors.Data.Extent(objectType)
                     {
                         Predicate = @this.Predicate?.Load(session),
                     };

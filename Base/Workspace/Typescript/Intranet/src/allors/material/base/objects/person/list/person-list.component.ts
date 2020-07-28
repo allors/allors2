@@ -5,8 +5,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Like, ContainedIn, Extent, Equals } from '../../../../../framework';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { Person, Country, Organisation } from '../../../../../domain';
@@ -35,7 +35,7 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -86,11 +86,11 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       new Like({ roleType: m.Person.LastName, parameter: 'lastName' }),
       new ContainedIn({
         propertyType: m.Party.PartyContactMechanisms,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.PartyContactMechanism,
           predicate: new ContainedIn({
             propertyType: m.PartyContactMechanism.ContactMechanism,
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.PostalAddress,
               predicate: new ContainedIn({
                 propertyType: m.PostalAddress.Country,
@@ -102,11 +102,11 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       }),
       new ContainedIn({
         propertyType: m.Party.PartyContactMechanisms,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.PartyContactMechanism,
           predicate: new ContainedIn({
             propertyType: m.PartyContactMechanism.ContactMechanism,
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.PostalAddress,
               predicate: new Like({
                 roleType: m.PostalAddress.Locality,
@@ -118,7 +118,7 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       }),
       new ContainedIn({
         propertyType: m.Party.CustomerRelationshipsWhereCustomer,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.CustomerRelationship,
           predicate: new Equals({
             propertyType: m.CustomerRelationship.InternalOrganisation,
@@ -141,14 +141,15 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       },
     });
 
-    this.filterBuilder = new FilterBuilder(predicate, { 
+    const filterDefinition = new FilterDefinition(predicate, { 
       customerAt: {
         search: internalOrganisationSearch,
         display: (v: Organisation) => v && v.Name
       },
       country: { search: countrySearch, display: (v: Country) => v && v.Name },
     });
-
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         name: [m.Person.FirstName, m.Person.LastName],
@@ -156,7 +157,7 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
       }
     );
 
-    this.subscription = combineLatest([this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$])
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -181,7 +182,7 @@ export class PersonListComponent extends TestScope implements OnInit, OnDestroy 
                   }
                 }
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

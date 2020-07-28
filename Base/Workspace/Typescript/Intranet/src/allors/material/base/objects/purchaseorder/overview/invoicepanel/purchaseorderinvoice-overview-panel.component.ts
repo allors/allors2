@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PanelService, MetaService, RefreshService, Action, NavigationService, TestScope, ContextService, FetcherService, Invoked, ActionTarget, InternalOrganisationId } from '../../../../../../angular';
 import { InvoiceItemType, PurchaseOrder, PurchaseOrderItem, PurchaseInvoice, PurchaseInvoiceItem, Organisation, OrderItemBilling } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
-import { And, Equals, Filter, Sort, ContainedIn } from '../../../../../../framework';
+import { And, Equals, Extent, Sort, ContainedIn } from '../../../../../../framework';
 import { DeleteService, TableRow, Table, OverviewService, PrintService, SaveService, MethodService } from '../../../../..';
 import { ObjectService, ObjectData } from '../../../../../core/services/object';
 
@@ -180,7 +180,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
             predicate: new And([
               new ContainedIn({
                 propertyType: m.OrderItemBilling.InvoiceItem,
-                extent: new Filter({
+                extent: new Extent({
                   objectType: m.InvoiceItem,
                   predicate: new ContainedIn({
                     propertyType: m.InvoiceItem.InvoiceWhereValidInvoiceItem,

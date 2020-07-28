@@ -6,8 +6,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { PullRequest, And, Equals, Filter, ContainedIn, Or } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Equals, Extent, ContainedIn, Or } from '../../../../../framework';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
 import { Shipment, Party, ShipmentState } from '../../../../../domain';
@@ -37,7 +37,7 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -103,7 +103,7 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
       new Equals({ propertyType: m.Shipment.ShipToParty, parameter: 'supplier' }),
       new ContainedIn({
         propertyType: m.Shipment.ShipmentItems,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.ShipmentItem,
           predicate: new ContainedIn({
             propertyType: m.ShipmentItem.Part,
@@ -123,7 +123,7 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
       predicates: [
         new ContainedIn({
           propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
-          extent: new Filter({
+          extent: new Extent({
             objectType: m.SupplierRelationship,
             predicate: supplierPredicate,
           })
@@ -131,12 +131,13 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
       roleTypes: [m.Organisation.PartyName],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate, {
+    const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
       state: { search: stateSearch, display: (v: ShipmentState) => v && v.Name },
       supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
     });
-
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         number: m.Shipment.SortableShipmentNumber,
@@ -146,7 +147,7 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -172,7 +173,7 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
                 ShipFromParty: x,
                 ShipmentState: x,
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

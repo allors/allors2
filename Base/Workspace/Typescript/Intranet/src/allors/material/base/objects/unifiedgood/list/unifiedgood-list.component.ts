@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
 import { PullRequest, And, Like, Equals, Contains, Exists } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterBuilder } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService } from '../../../..';
 
 import { UnifiedGood, ProductCategory, Brand, Model, ProductIdentification } from '../../../../../domain';
@@ -37,7 +37,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -114,14 +114,15 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
       roleTypes: [m.ProductIdentification.Identification],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate,
+    const filterDefinition = new FilterDefinition(predicate,
       {
         category: { search: categorySearch, display: (v: ProductCategory) => v && v.DisplayName },
         identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
         brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
         model: { search: modelSearch, display: (v: Model) => v && v.Name },
       });
-
+      this.filter = new Filter(filterDefinition);
+      
     const sorter = new Sorter(
       {
         name: [m.UnifiedGood.Name],
@@ -130,7 +131,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -153,7 +154,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
                   ProductIdentificationType: x
                 }
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),

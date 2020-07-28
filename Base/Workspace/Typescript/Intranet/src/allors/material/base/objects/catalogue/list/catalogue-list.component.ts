@@ -4,8 +4,8 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Equals, Like, ContainedIn, Filter, Contains } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Equals, Like, ContainedIn, Extent, Contains } from '../../../../../framework';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, EditService, DeleteService } from '../../../..';
 
 import { Catalogue, CatScope } from '../../../../../domain';
@@ -31,7 +31,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -92,8 +92,9 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
       roleTypes: [m.CatScope.Name],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate, { Scope: { search: scopeSearch, display: (v: CatScope) => v && v.Name } });
-
+    const filterDefinition = new FilterDefinition(predicate, { Scope: { search: scopeSearch, display: (v: CatScope) => v && v.Name } });
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         name: m.Catalogue.Name,
@@ -102,7 +103,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
       }
     );
 
-    this.subscription = combineLatest([this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$])
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -126,7 +127,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
                 ProductCategories: x,
                 CatScope: x
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

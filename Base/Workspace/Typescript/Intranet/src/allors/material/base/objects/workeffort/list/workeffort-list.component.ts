@@ -5,9 +5,9 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { PullRequest, And, Like, Equals, Contains, ContainedIn, Filter } from '../../../../../framework';
+import { PullRequest, And, Like, Equals, Contains, ContainedIn, Extent } from '../../../../../framework';
 import { WorkEffort, Person, FixedAsset, WorkEffortState, Party } from '../../../../../domain';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId, TestScope, SearchFactory, FilterBuilder } from '../../../../../angular';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, InternalOrganisationId, TestScope, SearchFactory, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService, ObjectService } from '../../../../../material';
 
 interface Row extends TableRow {
@@ -36,7 +36,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
   delete: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -101,14 +101,14 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
       new Like({ roleType: m.WorkEffort.Description, parameter: 'Description' }),
       new ContainedIn({
         propertyType: m.WorkEffort.WorkEffortPartyAssignmentsWhereAssignment,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.WorkEffortPartyAssignment,
           predicate: new Equals({ propertyType: m.WorkEffortPartyAssignment.Party, parameter: 'worker' })
         })
       }),
       new ContainedIn({
         propertyType: m.WorkEffort.WorkEffortFixedAssetAssignmentsWhereAssignment,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.WorkEffortFixedAssetAssignment,
           predicate: new Equals({ propertyType: m.WorkEffortFixedAssetAssignment.FixedAsset, parameter: 'equipment' })
         })
@@ -135,7 +135,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
       roleTypes: [m.FixedAsset.SearchString],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate,
+    const filterDefinition = new FilterDefinition(predicate,
     {
       state: { search: stateSearch, display: (v: WorkEffortState) => v && v.Name },
       customer: { search: partySearch, display: (v: Party) => v && v.PartyName },
@@ -143,7 +143,8 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
       worker: { search: personSearch, display: (v: Person) => v && v.displayName },
       equipment: { search: equipmentSearch, display: (v: FixedAsset) => v && v.displayName },
     });
-
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         number: [m.WorkEffort.SortableWorkEffortNumber],
@@ -153,7 +154,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -187,7 +188,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
                   Party: x
                 }
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

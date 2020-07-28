@@ -8,16 +8,16 @@ import {
   switchMap,
 } from 'rxjs/operators';
 
-import { ISessionObject, assert } from '../../../../../allors/framework';
-import { ContextService } from '../../../../../allors/angular';
-import { FilterFieldDefinition } from '../../../../../allors/angular/core/filter/FilterFieldDefinition';
+import { ISessionObject, assert } from '../../../../../framework';
+import { ContextService } from '../../../../../angular';
+import { FilterFieldDefinition } from '../../../../../angular/core/filter/FilterFieldDefinition';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'a-mat-filter-search',
-  templateUrl: './filter-search.component.html',
+  selector: 'a-mat-filter-field-search',
+  templateUrl: './search.component.html',
 })
-export class AllorsMaterialFilterSearchComponent implements OnInit {
+export class AllorsMaterialFilterFieldSearchComponent implements OnInit {
   @Input() debounceTime = 400;
 
   @Input()

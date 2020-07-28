@@ -6,8 +6,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { PullRequest, And, Equals, Filter, ContainedIn } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, UserId, FetcherService, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Equals, Extent, ContainedIn } from '../../../../../framework';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, InternalOrganisationId, TestScope, UserId, FetcherService, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, OverviewService, DeleteService, PrintService } from '../../../..';
 
 import { PurchaseOrder, Party, PurchaseOrderState, Product, SerialisedItem, Organisation, Person, UserGroup, Part } from '../../../../../domain';
@@ -48,7 +48,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
   canCreate: boolean;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -118,7 +118,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       new Equals({ propertyType: m.PurchaseOrder.TakenViaSupplier, parameter: 'supplier' }),
       new ContainedIn({
         propertyType: m.PurchaseOrder.PurchaseOrderItems,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.PurchaseOrderItem,
           predicate: new ContainedIn({
             propertyType: m.PurchaseOrderItem.Part,
@@ -128,7 +128,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       }),
       new ContainedIn({
         propertyType: m.PurchaseOrder.PurchaseOrderItems,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.PurchaseOrderItem,
           predicate: new ContainedIn({
             propertyType: m.PurchaseOrderItem.SerialisedItem,
@@ -148,7 +148,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       predicates: [
         new ContainedIn({
           propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
-          extent: new Filter({
+          extent: new Extent({
             objectType: m.SupplierRelationship,
             predicate: supplierPredicate,
           })
@@ -166,14 +166,15 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       roleTypes: [m.SerialisedItem.ItemNumber],
     });
 
-    this.filterBuilder = new FilterBuilder(predicate, {
+    const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
       state: { search: stateSearch, display: (v: PurchaseOrderState) => v && v.Name },
       supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
       sparePart: { search: partSearch, display: (v: Part) => v && v.Name },
       serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
-
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         number: m.PurchaseOrder.SortableOrderNumber,
@@ -184,7 +185,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
           return [
@@ -216,7 +217,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
                 PurchaseOrderShipmentState: x,
                 PurchaseInvoicesWherePurchaseOrder: x,
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

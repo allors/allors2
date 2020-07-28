@@ -27,7 +27,7 @@ namespace Tests.Remote
                     {
                         new Pull
                         {
-                            Extent = new Filter(M.C2.ObjectType)
+                            Extent = new Extent(M.C2.ObjectType)
                             {
                                 Predicate = new Equals(M.C2.Name) {Value = "c2C"},
                             },
@@ -71,7 +71,7 @@ namespace Tests.Remote
                     {
                         new Pull
                         {
-                            Extent = new Filter(M.C2.ObjectType)
+                            Extent = new Extent(M.C2.ObjectType)
                             {
                                 Predicate = new Equals(M.C2.Name) {Value = "c2C"},
                             },

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SearchFactory, InternalOrganisationId, MetaService } from '../../../../angular';
-import { And, ContainedIn, Equals, Filter, Or } from '../../../../framework';
+import { And, ContainedIn, Equals, Extent, Or } from '../../../../framework';
 import { Meta, TreeFactory } from '../../../../meta';
 
 import { FiltersService } from './filters.service';
@@ -35,7 +35,7 @@ export class DefaultFiltersService extends FiltersService {
       post: (predicate: And) => {
         predicate.operands.push(new ContainedIn({
           propertyType: this.m.UnifiedGood.InventoryItemKind,
-          extent: new Filter({
+          extent: new Extent({
             objectType: this.m.InventoryItemKind,
             predicate: new Equals({ propertyType: this.m.InventoryItemKind.UniqueId, value: '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae' }),
           })
@@ -80,7 +80,7 @@ export class DefaultFiltersService extends FiltersService {
       post: (predicate: And) => {
         predicate.operands.push(new ContainedIn({
           propertyType: this.m.Party.CustomerRelationshipsWhereCustomer,
-          extent: new Filter({
+          extent: new Extent({
             objectType: this.m.CustomerRelationship,
             predicate: new Equals({ propertyType: this.m.CustomerRelationship.InternalOrganisation, object: this.internalOrganisationId.value }),
           })
@@ -96,7 +96,7 @@ export class DefaultFiltersService extends FiltersService {
       post: (predicate: And) => {
         predicate.operands.push(new ContainedIn({
           propertyType: this.m.Organisation.SupplierRelationshipsWhereSupplier,
-          extent: new Filter({
+          extent: new Extent({
             objectType: this.m.SupplierRelationship,
             predicate: new Equals({ propertyType: this.m.SupplierRelationship.InternalOrganisation, object: this.internalOrganisationId.value }),
           })
@@ -112,7 +112,7 @@ export class DefaultFiltersService extends FiltersService {
       post: (predicate: And) => {
         predicate.operands.push(new ContainedIn({
           propertyType: this.m.Organisation.SupplierRelationshipsWhereSupplier,
-          extent: new Filter({
+          extent: new Extent({
             objectType: this.m.SupplierRelationship,
           })
         }));
@@ -127,7 +127,7 @@ export class DefaultFiltersService extends FiltersService {
       post: (predicate: And) => {
         predicate.operands.push(new ContainedIn({
           propertyType: this.m.Organisation.SubContractorRelationshipsWhereSubContractor,
-          extent: new Filter({
+          extent: new Extent({
             objectType: this.m.SubContractorRelationship,
             predicate: new Equals({ propertyType: this.m.SubContractorRelationship.Contractor, object: this.internalOrganisationId.value }),
           })
@@ -143,7 +143,7 @@ export class DefaultFiltersService extends FiltersService {
       post: (predicate: And) => {
         predicate.operands.push(new ContainedIn({
           propertyType: this.m.Person.EmploymentsWhereEmployee,
-          extent: new Filter({
+          extent: new Extent({
             objectType: this.m.Employment,
             predicate: new Equals({ propertyType: this.m.Employment.Employer, object: this.internalOrganisationId.value }),
           })

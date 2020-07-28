@@ -5,8 +5,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment/moment';
 
-import { PullRequest, And, Like, ContainedIn, Filter, Equals } from '../../../../../framework';
-import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, UserId, TestScope, FilterBuilder } from '../../../../../angular';
+import { PullRequest, And, Like, ContainedIn, Extent, Equals } from '../../../../../framework';
+import { MediaService, ContextService, NavigationService, Action, RefreshService, MetaService, SearchFactory, UserId, TestScope, FilterDefinition,  Filter } from '../../../../../angular';
 import { Sorter, TableRow, Table, EditService } from '../../../..';
 import { TaskAssignment } from '../../../../../domain';
 import { ObjectService } from '../../../../core/services/object';
@@ -30,7 +30,7 @@ export class TaskAssignmentListComponent extends TestScope implements OnInit, On
   edit: Action;
 
   private subscription: Subscription;
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   constructor(
     @Self() public allors: ContextService,
@@ -78,22 +78,23 @@ export class TaskAssignmentListComponent extends TestScope implements OnInit, On
       new Equals({ propertyType: m.TaskAssignment.User, object: this.userId.value }),
       new ContainedIn({
         propertyType: m.TaskAssignment.Task,
-        extent: new Filter({
+        extent: new Extent({
           objectType: m.Task,
           predicate: new Like({ roleType: m.Task.Title, parameter: 'title' }),
         })
       }),
     ]);
 
-    this.filterBuilder = new FilterBuilder(predicate);
-
+    const filterDefinition = new FilterDefinition(predicate);
+    this.filter = new Filter(filterDefinition);
+    
     const sorter = new Sorter(
       {
         dateCreated: m.Task.DateCreated,
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -115,7 +116,7 @@ export class TaskAssignmentListComponent extends TestScope implements OnInit, On
                 },
                 User: x
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             })];

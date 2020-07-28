@@ -1,8 +1,10 @@
-import { FilterBuilder } from '../../core/filter';
+import { FilterDefinition } from '../filter/FilterDefinition';
+import { Filter } from '../filter/Filter';
 
 declare module '../../../framework/meta/ObjectType' {
   interface ObjectType {
-    filterBuilder: FilterBuilder;
+    filterDefinition?: FilterDefinition;
+    filter?: Filter;
   }
 }
 

@@ -11,9 +11,9 @@ namespace Allors.Workspace.Data
 
     using Allors.Workspace.Meta;
 
-    public class Filter : IExtent, IPredicateContainer
+    public class Extent : IExtent, IPredicateContainer
     {
-        public Filter(IComposite objectType) => this.ObjectType = objectType;
+        public Extent(IComposite objectType) => this.ObjectType = objectType;
 
         public IComposite ObjectType { get; set; }
 
@@ -23,10 +23,10 @@ namespace Allors.Workspace.Data
 
         void IPredicateContainer.AddPredicate(IPredicate predicate) => this.Predicate = predicate;
 
-        public Extent ToJson() =>
-            new Extent
+        public Protocol.Data.Extent ToJson() =>
+            new Protocol.Data.Extent
             {
-                Kind = ExtentKind.Filter,
+                Kind = ExtentKind.Extent,
                 ObjectType = this.ObjectType?.Id,
                 Predicate = this.Predicate?.ToJson(),
                 Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray(),

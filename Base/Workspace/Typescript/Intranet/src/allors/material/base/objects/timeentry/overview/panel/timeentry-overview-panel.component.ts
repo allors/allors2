@@ -3,7 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter, scan } from 'rxjs/operators';
 
 import { PanelService, NavigationService, RefreshService, Action, MetaService, TestScope, ContextService } from '../../../../../../angular';
-import { Equals, PullRequest, Sort, ContainedIn, Filter } from '../../../../../../framework';
+import { Equals, PullRequest, Sort, ContainedIn, Extent } from '../../../../../../framework';
 import { TimeEntry, WorkEffort } from '../../../../../../domain';
 import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table, ObjectData, EditService, Sorter } from '../../../../..';

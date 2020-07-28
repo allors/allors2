@@ -5,7 +5,7 @@ import { scan, switchMap } from 'rxjs/operators';
 
 import { Organisation } from '../../../../domain';
 import { PullRequest, And, Like } from '../../../../framework';
-import { ContextService, NavigationService, RefreshService, Action, MetaService, TestScope, FilterBuilder } from '../../../../angular';
+import { ContextService, NavigationService, RefreshService, Action, MetaService, TestScope, Filter } from '../../../../angular';
 import { Table, TableRow } from '../../../../material';
 
 import { DeleteService, OverviewService } from '../../../../material';
@@ -28,7 +28,7 @@ export class OrganisationsComponent extends TestScope implements OnInit, OnDestr
   overview: Action;
   delete: Action;
 
-  filterBuilder: FilterBuilder;
+  filter: Filter;
 
   private subscription: Subscription;
 
@@ -60,9 +60,10 @@ export class OrganisationsComponent extends TestScope implements OnInit, OnDestr
 
   public ngOnInit(): void {
     const { x, m, pull } = this.metaService;
-    this.filterBuilder = m.Organisation.filterBuilder;
 
-    this.subscription = combineLatest([this.refreshService.refresh$, this.filterBuilder.filterFields$, this.table.sort$, this.table.pager$])
+    this.filter = m.Organisation.filter = m.Organisation.filter ?? new Filter(m.Organisation.filterDefinition);
+
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => [
           refresh,
@@ -73,13 +74,13 @@ export class OrganisationsComponent extends TestScope implements OnInit, OnDestr
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.Organisation({
-              predicate: this.filterBuilder.predicate,
+              predicate: this.filter.definition.predicate,
               sort: sort ? m.Organisation.sorter.create(sort) : null,
               include: {
                 Owner: x,
                 Employees: x,
               },
-              parameters: this.filterBuilder.parameters(filterFields),
+              parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),
