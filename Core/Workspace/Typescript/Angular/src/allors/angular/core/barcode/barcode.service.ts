@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, merge } from 'rxjs';
 import { map, filter, scan, debounceTime, share } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AllorsBarcodeService {
-
   scan$: Observable<string>;
 
   private keypressSubject: Subject<any>;
@@ -15,21 +16,23 @@ export class AllorsBarcodeService {
     this.keypressSubject = new Subject();
     this.simulateSubject = new Subject();
 
-    const scanner = this.keypressSubject
-      .pipe(
-        scan((events: KeyboardEvent[], event: KeyboardEvent) => {
-          events = [...events, event].filter(v => event.timeStamp < v.timeStamp + 100);
-          return events;
-        }, []),
-        debounceTime(50),
-        filter((events) => {
-          return events.length >= 4;
-        }),
-        map((events) => {
-          return events.map(v => v.key).join('').trim();
-        }),
-        share()
-      );
+    const scanner = this.keypressSubject.pipe(
+      scan((events: KeyboardEvent[], event: KeyboardEvent) => {
+        events = [...events, event].filter((v) => event.timeStamp < v.timeStamp + 100);
+        return events;
+      }, []),
+      debounceTime(50),
+      filter((events) => {
+        return events.length >= 4;
+      }),
+      map((events) => {
+        return events
+          .map((v) => v.key)
+          .join('')
+          .trim();
+      }),
+      share(),
+    );
 
     this.scan$ = merge(scanner, this.simulateSubject);
   }

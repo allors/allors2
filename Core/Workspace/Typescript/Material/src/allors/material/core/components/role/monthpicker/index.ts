@@ -1,2 +1,2 @@
-export * from './monthpicker.module';
+export * from './monthpicker.component';
 

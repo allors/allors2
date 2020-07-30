@@ -1,1 +1,2 @@
-export * from './localisedmarkdown.module';
+export * from './localisedmarkdown.component';
+

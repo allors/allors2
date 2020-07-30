@@ -2,7 +2,7 @@ import { Component, Optional, Output, EventEmitter, Self, Inject, Input, ViewChi
 import { NgForm } from '@angular/forms';
 
 import { RoleField } from '../../../../../angular';
-import { MatDatepicker } from '@angular/material/datepicker/datepicker';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   // tslint:disable-next-line:component-selector

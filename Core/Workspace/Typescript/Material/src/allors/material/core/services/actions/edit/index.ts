@@ -1,1 +1,2 @@
-export * from './edit.module';
+export * from './EditAction';
+export * from './edit.service';

@@ -1,2 +1,2 @@
-export * from './static.module';
+export * from './static.component';
 

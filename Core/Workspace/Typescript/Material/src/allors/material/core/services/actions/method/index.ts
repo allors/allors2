@@ -1,1 +1,3 @@
-export * from './method.module';
+export * from './MethodAction';
+export * from './MethodConfig';
+export * from './method.service';

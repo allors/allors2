@@ -1,1 +1,3 @@
-export * from './overview.module';
+export * from './OverviewAction';
+export * from './overview.service';
+

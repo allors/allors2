@@ -1,7 +1,9 @@
-import { Component, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AllorsMaterialSideNavService {
   private toggleSource = new Subject<void>();
   public toggle$ = this.toggleSource.asObservable();

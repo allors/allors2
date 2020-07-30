@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Optional, Output } from '@angular/core'
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import { MediaService } from '../../../../angular';
+import { MediaService } from '../../../../angular/core/media';
 import { Media } from '../../../../domain';
 import { ISessionObject } from '../../../../framework';
 

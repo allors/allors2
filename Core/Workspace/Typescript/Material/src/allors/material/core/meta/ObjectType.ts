@@ -1,4 +1,4 @@
-import { Sorter } from '../../core/sorting';
+import { Sorter } from '../../core/sorting/Sorter';
 
 declare module '../../../framework/meta/ObjectType' {
   interface ObjectType {

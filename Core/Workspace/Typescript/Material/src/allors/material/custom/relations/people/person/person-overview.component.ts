@@ -4,7 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Loaded, ContextService, MetaService, TestScope } from '../../../../../angular';
+import { Loaded, ContextService, MetaService } from '../../../../../angular';
+import { TestScope } from '../../../../../angular/core/test';
 import { Locale, Person } from '../../../../../domain';
 import { PullRequest, assert } from '../../../../../framework';
 import { Meta } from '../../../../../meta';

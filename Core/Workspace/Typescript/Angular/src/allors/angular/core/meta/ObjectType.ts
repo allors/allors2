@@ -1,5 +1,4 @@
-import { FilterDefinition } from '../filter/FilterDefinition';
-import { Filter } from '../filter/Filter';
+import { Filter, FilterDefinition } from '../filter';
 
 declare module '../../../framework/meta/ObjectType' {
   interface ObjectType {
@@ -7,4 +6,3 @@ declare module '../../../framework/meta/ObjectType' {
     filter?: Filter;
   }
 }
-

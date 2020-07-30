@@ -1,4 +1,5 @@
-import { humanize, Action } from '../../../../angular';
+import { humanize } from '../../../../framework';
+import { Action } from '../../../../angular';
 
 export class Column {
 

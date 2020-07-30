@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 
-import { NavigationService, Action } from '../../../../../angular';
+import { Action } from '../../../../../angular';
+import { NavigationService } from '../../../../../angular/core/navigation';
 
 import { OverviewAction } from './OverviewAction';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class OverviewService {
-
-  constructor(
-    private navigationService: NavigationService
-  ) { }
+  constructor(private navigationService: NavigationService) {}
 
   overview(): Action {
     return new OverviewAction(this.navigationService);

@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AllorsFocusService {
+  public focus$: Observable<any>;
+  private focusSubject: BehaviorSubject<any>;
 
-    public focus$: Observable<any>;
-    private focusSubject: BehaviorSubject<any>;
+  constructor() {
+    this.focusSubject = new BehaviorSubject(undefined);
+    this.focus$ = this.focusSubject;
+  }
 
-    constructor() {
-
-      this.focusSubject = new BehaviorSubject(undefined);
-      this.focus$ = this.focusSubject;
-    }
-
-    public focus(trigger: any) {
-        this.focusSubject.next(trigger);
-    }
+  public focus(trigger: any) {
+    this.focusSubject.next(trigger);
+  }
 }

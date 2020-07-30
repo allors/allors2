@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { AllorsBarcodeService } from '../../../../angular';
+import { AllorsBarcodeService } from '../../../../angular/core/barcode';
 
 @Component({
   // tslint:disable-next-line:component-selector

@@ -1,9 +1,11 @@
-import { Injectable, ɵangular_packages_core_core_bj } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { IObject, ObjectType } from '../../../framework';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class NavigationService {
   constructor(private router: Router) {}
 

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PanelManagerService } from '../../../../angular';
+import { PanelManagerService } from '../../../../angular/core/panel';
 
 @Component({
   // tslint:disable-next-line:component-selector

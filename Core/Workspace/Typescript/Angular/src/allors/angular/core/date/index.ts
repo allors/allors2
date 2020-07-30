@@ -1,1 +1,2 @@
-export * from './date.module';
+export * from './date.config';
+export * from './date.service';

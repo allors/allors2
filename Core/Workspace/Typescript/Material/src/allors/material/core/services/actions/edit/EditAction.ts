@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs';
 
-import { Action, ActionTarget, RefreshService } from '../../../../../angular';
+import { Action, ActionTarget } from '../../../../../angular';
+import { RefreshService } from '../../../../../angular/core/services/refresh.service';
 
 import { ISessionObject, RoleType } from '../../../../../framework';
 import { ObjectService } from '../../object';

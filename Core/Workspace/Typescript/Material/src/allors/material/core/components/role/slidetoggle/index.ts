@@ -1,2 +1,2 @@
-export * from './slidetoggle.module';
+export * from './slidetoggle.component';
 

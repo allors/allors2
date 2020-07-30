@@ -7,14 +7,14 @@ import { switchMap } from 'rxjs/operators';
 import { Locale, Person } from '../../../../../domain';
 import { PullRequest, Pull, assert } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { Loaded, ContextService, MetaService, TestScope } from '../../../../../angular';
+import { Loaded, ContextService, MetaService } from '../../../../../angular';
+import { TestScope } from '../../../../../angular/core/test';
 
 @Component({
   templateUrl: './person.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class PersonComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
-
   public title: string;
 
   public m: Meta;
@@ -27,8 +27,8 @@ export class PersonComponent extends TestScope implements OnInit, AfterViewInit,
     @Self() private allors: ContextService,
     private metaService: MetaService,
     private titleService: Title,
-    private route: ActivatedRoute) {
-
+    private route: ActivatedRoute,
+  ) {
     super();
 
     this.title = 'Person';
@@ -52,24 +52,21 @@ export class PersonComponent extends TestScope implements OnInit, AfterViewInit,
               include: {
                 Photo: x,
                 Pictures: x,
-              }
+              },
             }),
-            pull.Locale()
+            pull.Locale(),
           ];
           this.allors.context.reset();
-          return this.allors.context
-            .load(new PullRequest({ pulls }));
-        })
+          return this.allors.context.load(new PullRequest({ pulls }));
+        }),
       )
       .subscribe((loaded: Loaded) => {
-
-        this.person = loaded.objects.Person as Person || this.allors.context.create('Person') as Person;
+        this.person = (loaded.objects.Person as Person) || (this.allors.context.create('Person') as Person);
         this.locales = loaded.collections.Locales as Locale[];
       });
   }
 
-  public ngAfterViewInit(): void {
-  }
+  public ngAfterViewInit(): void {}
 
   public ngOnDestroy(): void {
     if (this.subscription) {
@@ -78,12 +75,9 @@ export class PersonComponent extends TestScope implements OnInit, AfterViewInit,
   }
 
   public save(): void {
-
-    this.allors.context
-      .save()
-      .subscribe(() => {
-        this.goBack();
-      });
+    this.allors.context.save().subscribe(() => {
+      this.goBack();
+    });
   }
 
   public goBack(): void {

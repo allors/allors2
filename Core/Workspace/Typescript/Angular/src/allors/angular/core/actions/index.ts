@@ -1,3 +1,3 @@
 export * from './Action';
-export * from './ActionTarget';
 export * from './ActionResult';
+export * from './ActionTarget';

@@ -1,1 +1,2 @@
-export * from './delete.module';
+export * from './DeleteAction';
+export * from './delete.service';

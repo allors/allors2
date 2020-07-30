@@ -1,6 +1,6 @@
 import { async } from '@angular/core/testing';
 
-import { PullRequest, Pull, Filter, Result, Fetch, Tree, Node } from '../../allors/framework';
+import { PullRequest, Pull, Extent, Result, Fetch, Tree, Node } from '../../allors/framework';
 import { Person, Organisation } from '../../allors/domain';
 import { Fixture } from '../Fixture.spec';
 
@@ -62,7 +62,7 @@ describe('Instantiate', () => {
 
         const pulls = [
           new Pull({
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.Person,
             }),
             results: [

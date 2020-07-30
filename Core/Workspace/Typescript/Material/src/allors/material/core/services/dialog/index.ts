@@ -1,2 +1,3 @@
-export * from './dialog.module';
-
+export * from './dialog.config';
+export * from  './dialog.data';
+export * from  './dialog.service';

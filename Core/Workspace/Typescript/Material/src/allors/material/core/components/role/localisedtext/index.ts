@@ -1,2 +1,2 @@
-export * from './localisedtext.module';
+export * from './localisedtext.component';
 

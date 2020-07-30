@@ -1,49 +1,65 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { enGB } from 'date-fns/locale';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { CoreModule } from './core.module';
-import { AuthModule } from './auth/auth.module';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { MainModule } from './main/main.module';
+import { AppRoutingModule } from './app-routing.module';
+
+import { AllorsModule } from '../allors/angular/core/framework';
+import { AllorsAngularModule } from '../allors/angular';
+import { AllorsMaterialModule } from '../allors/material';
 
 import { WorkspaceService } from '../allors/angular';
-
-import * as relations from '../allors/material/custom/relations';
-import * as tests from '../allors/material/custom/tests';
-
 import { appMeta } from './app.meta';
+import { environment } from '../environments/environment';
+
+import { AppComponent } from './app.component';
+import { LoginComponent } from './auth';
+import { DashboardComponent } from './dashboard';
+import { MainComponent } from './main';
 
 export function appInitFactory(workspaceService: WorkspaceService) {
-  return () => (appMeta(workspaceService.metaPopulation));
+  return () => appMeta(workspaceService.metaPopulation);
 }
 
 @NgModule({
   bootstrap: [AppComponent],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent, LoginComponent, DashboardComponent, MainComponent],
   imports: [
     CoreModule,
-
-    // App Components
-    AuthModule.forRoot(),
-    MainModule,
-    DashboardModule,
-
-    relations.Modules,
-    tests.Modules,
-
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSidenavModule,
+    MatToolbarModule,
+
+    AllorsModule.forRoot({ url: environment.url }),
+    AllorsAngularModule.forRoot({
+      dateConfig: {
+        locale: enGB,
+      },
+      mediaConfig: { url: environment.url },
+      authenticationConfig: {
+        url: environment.url + environment.authenticationUrl,
+      },
+    }),
+    AllorsMaterialModule,
+
   ],
   providers: [
     {
       provide: APP_INITIALIZER,
       useFactory: appInitFactory,
       deps: [WorkspaceService],
-      multi: true
+      multi: true,
     },
-  ]
+  ],
 })
-export class AppModule { }
+export class AppModule {}

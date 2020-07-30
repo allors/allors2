@@ -1,7 +1,7 @@
 import { Meta } from '../allors/meta';
 import { MetaPopulation, And, Like } from '../allors/framework';
 import { FilterDefinition } from '../allors/angular';
-import { Sorter } from '../allors/material';
+import { Sorter } from '../allors/material/core/sorting';
 
 export function appMeta(metaPopulation: MetaPopulation) {
   const m = metaPopulation as Meta;

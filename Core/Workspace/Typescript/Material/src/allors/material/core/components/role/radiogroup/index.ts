@@ -1,2 +1,2 @@
-export * from './radiogroup.module';
+export * from './radiogroup.component';
 

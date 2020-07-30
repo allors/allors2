@@ -10,10 +10,14 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan, filter } from 'rxjs/operators';
 
+import { MediaService } from '../../../../angular/core/media';
 import { PullRequest, SessionObject } from '../../../../framework';
-import { MediaService, ContextService, NavigationService, MetaService, TestScope, Filter } from '../../../../angular';
+import { ContextService, MetaService, Filter } from '../../../../angular';
+import { TestScope } from '../../../../angular/core/test';
+import { NavigationService } from '../../../../angular/core/navigation';
 import { Person } from '../../../../domain';
-import { TableRow, AllorsMaterialDialogService } from '../../../../material';
+import { TableRow } from '../../../../material/core/components/table';
+import { AllorsMaterialDialogService } from '../../../core/services/dialog';
 
 interface Row extends TableRow {
   person: Person;
@@ -65,7 +69,7 @@ export class PeopleComponent extends TestScope implements OnInit, OnDestroy {
   public ngOnInit(): void {
     const { x, m, pull } = this.metaService;
     this.filter = m.Person.filter = m.Person.filter ?? new Filter(m.Person.filterDefinition);
-    
+
     this.subscription = combineLatest([this.refresh$, this.filter.fields$, this.sort$, this.pager$])
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {

@@ -4,12 +4,13 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { filter } from 'rxjs/operators';
 
 import { ObjectType } from '../../allors/framework';
-import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
+import { SideMenuItem } from '../../allors/material/core/components/sidemenu';
 import { ContextService, MetaService } from '../../allors/angular';
 import { Organisation } from '../../allors/domain';
 import { Router, NavigationEnd } from '@angular/router';
 import { menu } from './main.menu';
 import { Observable, Subscription } from 'rxjs';
+import { AllorsMaterialSideNavService } from '../../allors/material/core/services/sidenav';
 
 @Component({
   styleUrls: ['main.component.scss'],

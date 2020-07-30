@@ -5,11 +5,11 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { RoleField, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService, TestScope } from '../../../../../angular';
+import { SearchFactory, Loaded, ContextService, MetaService } from '../../../../../angular';
+import { TestScope } from '../../../../../angular/core/test';
 import { Organisation, Person } from '../../../../../domain';
-import { PullRequest, assert, ISession, ISessionObject } from '../../../../../framework';
+import { PullRequest, ISessionObject } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
-import { getLocaleDateTimeFormat } from '@angular/common';
 
 @Component({
   templateUrl: './organisation.component.html',

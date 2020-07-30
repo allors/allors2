@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { RoleType } from './../../../../../framework';
-import { RefreshService } from '../../../../../angular';
+import { RefreshService } from '../../../../../angular/core/services/refresh.service';
 import { ObjectService } from '../../../../../material/core/services/object';
 
 import { EditAction } from './EditAction';

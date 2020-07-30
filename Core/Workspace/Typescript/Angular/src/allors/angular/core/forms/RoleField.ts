@@ -2,8 +2,7 @@
 // tslint:disable: directive-class-suffix
 import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren, Directive } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
-import { ISessionObject, RoleType } from '../../../framework';
-import { humanize } from '../humanize';
+import { ISessionObject, RoleType, humanize } from '../../../framework';
 import { Field } from './Field';
 
 @Directive()

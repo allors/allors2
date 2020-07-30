@@ -1,3 +1,2 @@
-export * from './focus.module';
-export { AllorsFocusService } from './focus.service';
-
+export * from './focus.directive';
+export * from './focus.service';

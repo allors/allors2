@@ -4,12 +4,21 @@ import { Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
 
 import { AuthenticationConfig } from './authentication.config';
-import { AuthenticationTokenRequest } from './AuthenticationTokenRequest';
-import { AuthenticationTokenResponse } from './AuthenticationTokenResponse';
 import { throwError, Observable } from 'rxjs';
 
 import { UserId } from '../state/UserId';
 import { Router } from '@angular/router';
+
+export interface AuthenticationTokenRequest {
+  userName: string;
+  password: string;
+}
+
+export interface AuthenticationTokenResponse {
+  authenticated: boolean;
+  userId: string;
+  token: string;
+}
 
 @Injectable()
 export class AuthenticationService {

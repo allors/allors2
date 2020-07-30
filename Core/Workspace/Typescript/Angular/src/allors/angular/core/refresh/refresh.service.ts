@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class RefreshService {
-
   refresh$: Observable<Date>;
   private refreshSubject$: BehaviorSubject<Date>;
 

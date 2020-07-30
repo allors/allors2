@@ -1,11 +1,4 @@
-
-import {
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  Self,
-} from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
@@ -15,15 +8,9 @@ import { switchMap } from 'rxjs/operators';
 import { Meta } from '../../../../meta';
 import { Person, Data, Organisation } from '../../../../domain';
 import { PullRequest } from '../../../../framework';
-import {
-  SearchFactory,
-  Loaded,
-  WorkspaceService,
-  ContextService,
-  MetaService,
-  TestScope,
-} from '../../../../angular';
-import { RadioGroupOption } from '../../../../material';
+import { SearchFactory, Loaded, WorkspaceService, ContextService, MetaService } from '../../../../angular';
+import { TestScope } from '../../../../angular/core/test';
+import { RadioGroupOption } from '../../../../material/core/components/role/radiogroup';
 import { SaveService } from '../../../core/services/save';
 import { DateAdapter } from '@angular/material/core';
 
@@ -31,8 +18,7 @@ import { DateAdapter } from '@angular/material/core';
   templateUrl: './form.component.html',
   providers: [ContextService],
 })
-export class FormComponent extends TestScope
-  implements OnInit, AfterViewInit, OnDestroy {
+export class FormComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
   title: string;
   m: Meta;
 
@@ -70,7 +56,7 @@ export class FormComponent extends TestScope
     private titleService: Title,
     private route: ActivatedRoute,
     private saveService: SaveService,
-    private dateAdapter: DateAdapter<string>
+    private dateAdapter: DateAdapter<string>,
   ) {
     super();
 
@@ -85,11 +71,7 @@ export class FormComponent extends TestScope
     });
     this.peopleFilter = new SearchFactory({
       objectType: this.m.Person,
-      roleTypes: [
-        this.m.Person.FirstName,
-        this.m.Person.LastName,
-        this.m.Person.UserName,
-      ],
+      roleTypes: [this.m.Person.FirstName, this.m.Person.LastName, this.m.Person.UserName],
     });
 
     this.refresh$ = new BehaviorSubject<Date>(new Date());
@@ -97,10 +79,7 @@ export class FormComponent extends TestScope
 
   ngOnInit(): void {
     const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$: Observable<[UrlSegment[], Date]> = combineLatest(
-      route$,
-      this.refresh$
-    );
+    const combined$: Observable<[UrlSegment[], Date]> = combineLatest(route$, this.refresh$);
 
     const { m, pull, x } = this.metaService;
 
@@ -129,7 +108,7 @@ export class FormComponent extends TestScope
           ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
-        })
+        }),
       )
       .subscribe((loaded: Loaded) => {
         this.allors.context.reset();

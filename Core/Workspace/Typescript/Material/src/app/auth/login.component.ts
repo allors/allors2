@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { AuthenticationService, TestScope } from '../../allors/angular';
+import { AuthenticationService } from '../../allors/angular/core/authentication';
+import { TestScope } from '../../allors/angular/core/test';
 
 @Component({
   templateUrl: './login.component.html',

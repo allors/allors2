@@ -1,9 +1,7 @@
-import { Component, Input, OnChanges, Optional , SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, Optional } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { humanize, LocalisedRoleField } from '../../../../../angular';
-import { Locale, LocalisedText } from '../../../../../domain';
-import { assert } from '../../../../../framework';
+import { LocalisedRoleField } from '../../../../../angular';
 
 @Component({
   // tslint:disable-next-line:component-selector

@@ -1,2 +1,2 @@
-export * from './sidenavtoggle.module';
+export * from './sidenavtoggle.component';
 

@@ -1,6 +1,6 @@
 import { async } from '@angular/core/testing';
 
-import { PullRequest, Pull, Filter, Result, Fetch, Tree, Node } from '../../allors/framework';
+import { PullRequest, Pull, Extent, Result, Fetch, Tree, Node } from '../../allors/framework';
 import { Loaded } from '../../allors/angular';
 import { Person, Organisation } from '../../allors/domain';
 import { Fixture } from '../Fixture.spec';
@@ -40,7 +40,7 @@ describe('Extent', () => {
 
         const pulls = [
           new Pull({
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.Person,
             }),
             results: [
@@ -83,7 +83,7 @@ describe('Extent', () => {
 
         const pulls = [
           new Pull({
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.Organisation,
             }),
             results: [
@@ -122,7 +122,7 @@ describe('Extent', () => {
 
         const pulls = [
           new Pull({
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.Organisation,
             }),
             results: [
@@ -152,7 +152,7 @@ describe('Extent', () => {
 
         const pulls = [
           new Pull({
-            extent: new Filter({
+            extent: new Extent({
               objectType: m.Organisation,
             }),
             results: [
@@ -185,7 +185,7 @@ describe('Extent', () => {
 
         const pulls = [
           new Pull({
-            extent: new Filter(m.Organisation),
+            extent: new Extent(m.Organisation),
             results: [
               new Result({
                 fetch: fetch.Organisation({
@@ -216,7 +216,7 @@ describe('Extent', () => {
 
         const pulls = [
           new Pull({
-            extent: new Filter(m.Organisation),
+            extent: new Extent(m.Organisation),
             results: [
               new Result({
                 fetch: fetch.Organisation({

@@ -2,7 +2,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 
 import { Deletable } from '../../../../../domain';
-import { Action, ActionTarget, Invoked, Context, RefreshService} from '../../../../../angular';
+import { Action, ActionTarget, Invoked, Context} from '../../../../../angular';
+import { RefreshService } from '../../../../../angular/core/refresh';
 import { AllorsMaterialDialogService } from '../../dialog';
 import { SaveService } from '../../save';
 

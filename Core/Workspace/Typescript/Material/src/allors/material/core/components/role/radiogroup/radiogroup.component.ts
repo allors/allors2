@@ -1,7 +1,8 @@
 import { Component, Input, Optional } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { RoleField, humanize } from '../../../../../angular';
+import { humanize } from '../../../../../framework';
+import { RoleField } from '../../../../../angular';
 
 export interface RadioGroupOption {
   label?: string;

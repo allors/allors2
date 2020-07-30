@@ -1,26 +1,12 @@
 // tslint:disable: directive-selector
 // tslint:disable: directive-class-suffix
-import {
-  AfterViewInit,
-  Input,
-  OnDestroy,
-  QueryList,
-  ViewChildren,
-  Directive,
-} from '@angular/core';
+import { AfterViewInit, Input, OnDestroy, QueryList, ViewChildren, Directive } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
-import {
-  ISessionObject,
-  AssociationType,
-  RoleType,
-  assert,
-} from '../../../framework';
-import { humanize } from '../humanize';
+import { ISessionObject, AssociationType, RoleType, assert, humanize } from '../../../framework';
 import { Field } from './Field';
 
 @Directive()
-export abstract class AssociationField extends Field
-  implements AfterViewInit, OnDestroy {
+export abstract class AssociationField extends Field implements AfterViewInit, OnDestroy {
   @Input()
   object: ISessionObject;
 
@@ -30,10 +16,7 @@ export abstract class AssociationField extends Field
   }
 
   set associationType(associationType: AssociationType) {
-    assert(
-      !associationType || associationType.isOne,
-      'AssociationType should have one multiplicity'
-    );
+    assert(!associationType || associationType.isOne, 'AssociationType should have one multiplicity');
     this._associationType = associationType;
   }
 
@@ -61,10 +44,7 @@ export abstract class AssociationField extends Field
   }
 
   get model(): ISessionObject | undefined {
-    const model =
-      this.existObject && this.associationType
-        ? this.object.getAssociation(this.associationType)
-        : undefined;
+    const model = this.existObject && this.associationType ? this.object.getAssociation(this.associationType) : undefined;
 
     return model;
   }

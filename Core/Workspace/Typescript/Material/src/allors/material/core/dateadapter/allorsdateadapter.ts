@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { format, setDay, setMonth, getDaysInMonth, parse, toDate, addYears, addMonths, addDays } from 'date-fns';
-import { DateService } from '../../../angular/core/date/date.service';
+import { DateService } from '../../../angular/core/date';
 
 const ISO_8601_REGEX = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|(?:(?:\+|-)\d{2}:\d{2}))?)?$/;
 

@@ -1,4 +1,4 @@
-import { Injectable, Optional, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { DateConfig } from './date.config';
 
 @Injectable({

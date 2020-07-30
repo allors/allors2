@@ -4,11 +4,14 @@ import { Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
 import { Organisation } from '../../../../domain';
-import { PullRequest, And, Like } from '../../../../framework';
-import { ContextService, NavigationService, RefreshService, Action, MetaService, TestScope, Filter } from '../../../../angular';
-import { Table, TableRow } from '../../../../material';
+import { PullRequest } from '../../../../framework';
+import { ContextService, Filter, Action, MetaService } from '../../../../angular';
+import { TestScope } from '../../../../angular/core/test';
+import { RefreshService } from '../../../../angular/core/refresh';
+import { Table,TableRow } from '../../../../material/core/components/table';
 
-import { DeleteService, OverviewService } from '../../../../material';
+import { DeleteService } from '../../../../material/core/services/actions/delete/delete.service';
+import { OverviewService } from '../../../../material/core/services/actions/overview/overview.service';
 
 interface Row extends TableRow {
   object: Organisation;
@@ -46,7 +49,7 @@ export class OrganisationsComponent extends TestScope implements OnInit, OnDestr
 
     this.overview = overviewService.overview();
     this.delete = deleteService.delete(allors.context);
-    this.delete.result.subscribe((v) => {
+    this.delete.result.subscribe(() => {
       this.table.selection.clear();
     });
 

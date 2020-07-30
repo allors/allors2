@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Optional, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { RoleField, MediaService } from '../../../../../angular';
+import { RoleField } from '../../../../../angular';
+import { MediaService } from '../../../../../angular/core/media';
 import { Media } from '../../../../../domain';
 
 @Component({

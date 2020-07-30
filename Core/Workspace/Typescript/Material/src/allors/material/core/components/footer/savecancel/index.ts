@@ -1,2 +1,2 @@
-export * from './savecancel.module';
+export * from './savecancel.component';
 

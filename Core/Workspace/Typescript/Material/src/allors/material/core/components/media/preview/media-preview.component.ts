@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MediaService } from '../../../../../angular';
+import { MediaService } from '../../../../../angular/core/media';
 
 import { DialogData } from './dialog.data';
 

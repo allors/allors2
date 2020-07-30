@@ -1,6 +1,5 @@
-import { ParameterizablePredicate, Like, Equals, Exists, Between } from '../../../../allors/framework';
+import { ParameterizablePredicate, Like, Equals, Exists, Between, humanize } from '../../../../allors/framework';
 import { FilterOptions } from './FilterOptions';
-import { humanize } from '../humanize';
 
 export class FilterFieldDefinition {
   predicate: ParameterizablePredicate;

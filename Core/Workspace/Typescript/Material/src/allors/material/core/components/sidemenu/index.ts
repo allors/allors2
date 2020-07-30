@@ -1,2 +1,2 @@
-export * from './sidemenu.module';
-
+export * from './sidemenu.component';
+export * from './sidemenuitem';

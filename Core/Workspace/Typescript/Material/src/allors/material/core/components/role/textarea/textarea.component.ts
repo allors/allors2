@@ -2,7 +2,7 @@ import { Component, Optional, ViewChild, NgZone } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
-import { Test, RoleField } from '../../../../../angular';
+import { RoleField } from '../../../../../angular';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -10,7 +10,6 @@ import { take } from 'rxjs/operators';
   selector: 'a-mat-textarea',
   templateUrl: './textarea.component.html',
 })
-@Test
 export class AllorsMaterialTextareaComponent extends RoleField {
 
   @ViewChild('autosize') autosize: CdkTextareaAutosize;

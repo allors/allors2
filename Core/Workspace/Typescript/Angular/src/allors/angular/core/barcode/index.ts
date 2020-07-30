@@ -1,3 +1,2 @@
-export * from './barcode.module';
-export { AllorsBarcodeService } from './barcode.service';
-
+export * from './barcode.directive';
+export * from './barcode.service';

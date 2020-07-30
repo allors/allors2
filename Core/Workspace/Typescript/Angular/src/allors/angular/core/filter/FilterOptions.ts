@@ -1,4 +1,4 @@
-import { SearchFactory } from '../data';
+import { SearchFactory } from '../search';
 import { PropertyType } from '../../../../allors/framework';
 
 export class FilterOptions {

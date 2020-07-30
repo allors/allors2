@@ -8,7 +8,8 @@ import { Locale, Organisation } from '../../../../../domain';
 import { PullRequest, assert } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 
-import { Loaded, ContextService, MetaService, TestScope } from '../../../../../angular';
+import { Loaded, ContextService, MetaService} from '../../../../../angular';
+import { TestScope } from '../../../../../angular/core/test';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
