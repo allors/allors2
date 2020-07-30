@@ -1,9 +1,6 @@
-import { Meta } from "../../src/allors/meta";
-import { SyncResponse } from "../../src/allors/framework/protocol/sync/SyncResponse";
-import { Compressor } from "../../src/allors/framework/protocol/Compressor";
-import { ResponseType } from "../../src/allors/framework/protocol/ResponseType";
-import { SecurityResponse } from "../../src/allors/framework/protocol/security/SecurityResponse";
-import { Operations } from "../../src/allors/framework/protocol/Operations";
+import { Meta } from "@allors/meta";
+import { ResponseType, SyncResponse, SecurityResponse } from "@allors/framework";
+import { Operations } from "@allors/framework/protocol/Operations";
 
 export function syncResponse(m: Meta): SyncResponse {
   return {

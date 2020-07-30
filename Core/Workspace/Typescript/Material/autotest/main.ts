@@ -3,8 +3,9 @@ require('browser-env')();
 import * as fs from 'fs';
 import { data } from '../src/allors/meta';
 import { MetaPopulation } from '../src/allors/framework';
-import { menu } from '../src/app/main/main.menu';
 import { appMeta } from '../src/app/app.meta';
+
+import { menu } from '../src/allors/material/custom/main/main.menu';
 
 console.log();
 console.log('Autotest');

@@ -14,13 +14,13 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "commonjs",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "lib": ["es2018", "dom"],
     "preserveSymlinks": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@allors/*": ["./src/allors/*"]
+    }
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": []

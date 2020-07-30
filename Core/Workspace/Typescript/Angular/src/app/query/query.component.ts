@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
-import { Loaded, ContextService, MetaService } from '../../allors/angular';
-import { Organisation } from '../../allors/domain';
-import { Like, PullRequest, Sort } from '../../allors/framework';
+import { Loaded, ContextService, MetaService } from '@allors/angular/framework';
+import { Organisation } from '@allors/domain';
+import { Like, PullRequest, Sort } from '@allors/framework';
 
 @Component({
   templateUrl: './query.component.html',

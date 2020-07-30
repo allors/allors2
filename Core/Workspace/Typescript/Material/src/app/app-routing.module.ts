@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthorizationService } from './auth/authorization.service';
-
-import { LoginComponent } from './auth/login.component';
-import { MainComponent } from './main/main.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import {
+  LoginComponent,
+  MainComponent,
+  DashboardComponent,
   OrganisationsComponent,
   OrganisationOverviewComponent,
   OrganisationComponent,
@@ -14,7 +12,9 @@ import {
   PersonOverviewComponent,
   PersonComponent,
   FormComponent,
-} from '../allors/material';
+} from '../allors/material/module';
+
+import { AuthorizationService } from '../allors/custom/material/auth';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },

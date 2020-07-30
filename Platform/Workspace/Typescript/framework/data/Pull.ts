@@ -3,7 +3,7 @@ import { IExtent } from './IExtent';
 import { ISessionObject } from '../workspace';
 import { Result } from './Result';
 import { FlatPull } from './FlatPull';
-import { ObjectType } from '../meta';
+import { ObjectType } from '@allors/framework';
 import { Extent } from './Extent';
 import { Fetch } from './Fetch';
 import { Sort } from './Sort';

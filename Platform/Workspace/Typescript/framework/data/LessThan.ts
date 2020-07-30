@@ -1,4 +1,4 @@
-import { RoleType, ObjectType } from '../meta';
+import { RoleType, ObjectType } from '@allors/meta';
 import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
 import { UnitTypes } from '../workspace/Types';
 import { serialize } from '../workspace/SessionObject';

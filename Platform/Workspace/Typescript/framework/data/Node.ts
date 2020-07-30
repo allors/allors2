@@ -1,4 +1,4 @@
-import { ObjectType, PropertyType } from '../meta';
+import { ObjectType, PropertyType } from '@allors/framework';
 
 export type NodeArgs = Pick<Node, 'propertyType' | 'nodes'>;
 

@@ -1,27 +1,28 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { enGB } from 'date-fns/locale';
 
+import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { CoreModule } from './core.module';
+import { AllorsAngularModule } from '../allors/angular';
+import { AllorsMaterialModule } from '../allors/material/dateadapter';
 import { AppRoutingModule } from './app-routing.module';
 
-import { AllorsModule } from '../allors/angular/core/framework';
-import { AllorsAngularModule } from '../allors/angular';
-import { AllorsMaterialModule } from '../allors/material';
-
 import { WorkspaceService } from '../allors/angular';
+import { AllorsDateAdapter } from '../allors/material/core/dateadapter';
 import { appMeta } from './app.meta';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth';
-import { DashboardComponent } from './dashboard';
-import { MainComponent } from './main';
 
 export function appInitFactory(workspaceService: WorkspaceService) {
   return () => appMeta(workspaceService.metaPopulation);
@@ -29,29 +30,31 @@ export function appInitFactory(workspaceService: WorkspaceService) {
 
 @NgModule({
   bootstrap: [AppComponent],
-  declarations: [AppComponent, LoginComponent, DashboardComponent, MainComponent],
+  declarations: [AppComponent],
   imports: [
-    CoreModule,
+    BrowserModule,
+    environment.production ? BrowserAnimationsModule : NoopAnimationsModule,
+    RouterModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule,
     MatCardModule,
     MatFormFieldModule,
     MatSidenavModule,
     MatToolbarModule,
 
-    AllorsModule.forRoot({ url: environment.url }),
     AllorsAngularModule.forRoot({
+      databaseConfig: { url: environment.url },
+      authenticationConfig: {
+        url: environment.url + environment.authenticationUrl,
+      },
       dateConfig: {
         locale: enGB,
       },
       mediaConfig: { url: environment.url },
-      authenticationConfig: {
-        url: environment.url + environment.authenticationUrl,
-      },
     }),
     AllorsMaterialModule,
-
+    AppRoutingModule,
   ],
   providers: [
     {
@@ -59,6 +62,25 @@ export function appInitFactory(workspaceService: WorkspaceService) {
       useFactory: appInitFactory,
       deps: [WorkspaceService],
       multi: true,
+    },
+    {
+      provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,
+      useValue: { autoActiveFirstOption: true },
+    },
+    { provide: DateAdapter, useClass: AllorsDateAdapter },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'dd/MM/yyyy',
+        },
+        display: {
+          dateInput: 'dd/MM/yyyy',
+          monthYearLabel: 'LLL y',
+          dateA11yLabel: 'MMMM d, y',
+          monthYearA11yLabel: 'MMMM y',
+        },
+      },
     },
   ],
 })

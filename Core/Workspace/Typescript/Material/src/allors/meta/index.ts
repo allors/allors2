@@ -1,5 +1,5 @@
 export * from './generated';
 
-import './core'
-import '../angular/core/meta'
-import '../material/core/meta'
+import '../core/meta'
+import '../core/angular/meta'
+import '../core/material/meta'

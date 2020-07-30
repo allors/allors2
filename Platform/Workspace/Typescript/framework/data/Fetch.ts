@@ -1,4 +1,4 @@
-import { ObjectType } from '../meta';
+import { ObjectType } from '@allors/framework';
 import { Tree } from './Tree';
 import { Step } from './Step';
 import { Node } from './Node';

@@ -1,4 +1,4 @@
-import { RoleType } from '../meta';
+import { RoleType } from '@allors/meta';
 
 export interface SortArgs {
   roleType: RoleType;

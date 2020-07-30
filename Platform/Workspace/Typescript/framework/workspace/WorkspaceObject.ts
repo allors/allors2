@@ -1,4 +1,4 @@
-import { ObjectType, MetaObject, RoleType, MetaPopulation } from '../meta';
+import { ObjectType, MetaObject, RoleType, MetaPopulation } from '@allors/meta';
 import { SyncResponseObject } from '../protocol/sync/SyncResponseObject';
 import { IWorkspace, Workspace } from './Workspace';
 import { Permission } from './Permission';

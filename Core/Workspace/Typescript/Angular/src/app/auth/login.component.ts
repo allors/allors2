@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { AuthenticationService } from '../../allors/angular';
+import { AuthenticationService } from '@allors/angular/authentication';
 
 @Component({
   templateUrl: './login.component.html',

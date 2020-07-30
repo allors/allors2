@@ -1,8 +1,9 @@
 import { async } from '@angular/core/testing';
 
-import { PullRequest, Pull, Extent, Result, Fetch, Tree, Node } from '../../allors/framework';
-import { Loaded } from '../../allors/angular';
-import { Person, Organisation } from '../../allors/domain';
+import { PullRequest, Pull, Extent, Result, Fetch, Tree, Node } from '@allors/framework';
+import { Person, Organisation } from '@allors/domain';
+import { Loaded } from '@allors/angular/framework';
+
 import { Fixture } from '../Fixture.spec';
 
 let fixture: Fixture;

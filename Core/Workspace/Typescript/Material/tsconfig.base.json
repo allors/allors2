@@ -18,7 +18,12 @@
     ],
     "preserveSymlinks": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "allors/*": [
+        "./src/allors/*"
+      ],
+    }
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

@@ -21,7 +21,10 @@
       "dom"
     ],
     "preserveSymlinks": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@allors/*": ["./src/allors/*"]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

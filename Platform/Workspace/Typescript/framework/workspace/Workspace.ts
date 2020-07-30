@@ -1,4 +1,4 @@
-import { MetaPopulation, ObjectType, OperandType } from '../meta';
+import { MetaPopulation, ObjectType, OperandType } from '@allors/meta';
 
 import { PullResponse } from './../protocol/pull/PullResponse';
 import { SyncRequest } from './../protocol/sync/SyncRequest';

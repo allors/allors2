@@ -1,5 +1,5 @@
-﻿import { ObjectType, OperandType, RoleType, AssociationType, MethodType } from '../meta';
-import { ids } from '../../meta/generated/ids.g';
+﻿import { ObjectType, OperandType, RoleType, AssociationType, MethodType } from '@allors/meta';
+import { ids } from '@allors/meta/generated/ids.g';
 import { UnitTypes, CompositeTypes, ParameterTypes, isSessionObject } from '../workspace/Types';
 
 import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';

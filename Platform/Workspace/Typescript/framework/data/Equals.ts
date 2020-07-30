@@ -1,4 +1,4 @@
-import { PropertyType, ObjectType } from '../meta';
+import { PropertyType, ObjectType } from '@allors/framework';
 import { ISessionObject } from '../workspace/ISessionObject';
 import { serialize } from '../workspace/SessionObject';
 import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';

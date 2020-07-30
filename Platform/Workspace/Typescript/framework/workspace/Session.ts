@@ -1,4 +1,4 @@
-import { ObjectType, AssociationType } from '../meta';
+import { ObjectType, AssociationType } from '@allors/meta';
 
 import { PushRequest } from './../protocol/push/PushRequest';
 import { PushResponse } from './../protocol/push/PushResponse';

@@ -1,4 +1,4 @@
-﻿import { ObjectType, OperandType, RoleType, AssociationType, MethodType } from '../meta';
+﻿import { ObjectType, OperandType, RoleType, AssociationType, MethodType } from '@allors/meta';
 
 import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
 import { PushRequestObject } from './../protocol/push/PushRequestObject';

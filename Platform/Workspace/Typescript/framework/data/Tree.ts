@@ -1,4 +1,4 @@
-import { ObjectType } from '../meta';
+import { ObjectType } from '@allors/framework';
 import { Node } from './Node';
 
 export type TreeArgs = Pick<Tree, 'objectType' | 'nodes'>;

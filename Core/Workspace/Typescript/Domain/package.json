@@ -9,9 +9,9 @@
     "postinstall": "node ./postinstall.js",
     "lint": "tslint --fix --project ./tsconfig.json",
     "lint-fix": "tslint --fix --project ./tsconfig.json",
-    "test": "mocha --require ts-node/register --preserve-symlinks ./test/**/*.spec.ts",
-    "tc:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts",
-    "az:test": "mocha --require ts-node/register --preserve-symlinks --reporter mocha-trx-reporter ./test/**/*.spec.ts"
+    "test": "mocha --require ts-node/register -r tsconfig-paths/register --preserve-symlinks ./test/**/*.spec.ts",
+    "tc:test": "mocha --require ts-node/register -r tsconfig-paths/register --preserve-symlinks --reporter mocha-teamcity-reporter ./test/**/*.spec.ts",
+    "az:test": "mocha --require ts-node/register -r tsconfig-paths/register --preserve-symlinks --reporter mocha-trx-reporter ./test/**/*.spec.ts"
   },
   "devDependencies": {
     "@types/chai": "latest",
@@ -23,6 +23,7 @@
     "mocha-teamcity-reporter": "latest",
     "mocha-trx-reporter": "latest",
     "ts-node": "latest",
+    "tsconfig-paths": "^3.9.0",
     "tslint": "latest",
     "typescript": "latest"
   },
