@@ -1,4 +1,5 @@
-import { ObjectType, humanize } from '@allors/framework';
+import { ObjectType } from '@allors/framework/meta/ObjectType';
+import { humanize } from '@allors/framework/humanize';
 
 const icon = Symbol('icon');
 const displayName = Symbol('displayName');

@@ -1,6 +1,4 @@
-﻿import { Response } from './Response';
-
-export interface DerivationError {
+﻿export interface DerivationError {
   m: string;
   r: string[][];
 }

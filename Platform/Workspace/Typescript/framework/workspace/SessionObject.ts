@@ -1,16 +1,21 @@
-﻿import { ObjectType, OperandType, RoleType, AssociationType, MethodType } from '@allors/meta';
-import { ids } from '@allors/meta/generated/ids.g';
-import { UnitTypes, CompositeTypes, ParameterTypes, isSessionObject } from '../workspace/Types';
-
-import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
-import { PushRequestObject } from './../protocol/push/PushRequestObject';
-import { PushRequestRole } from './../protocol/push/PushRequestRole';
 
 import { Method } from './Method';
 import { ISession, Session } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
 import { Operations } from '../protocol/Operations';
 import { ISessionObject } from './ISessionObject';
+import { ObjectType } from '../meta/ObjectType';
+import { RoleType } from '../meta/RoleType';
+import { MethodType } from '../meta/MethodType';
+import { OperandType } from '../meta/OperandType';
+import { AssociationType } from '../meta/AssociationType';
+import { PushRequestObject } from '../protocol/push/PushRequestObject';
+import { PushRequestNewObject } from '../protocol/push/PushRequestNewObject';
+import { PushRequestRole } from '../protocol/push/PushRequestRole';
+import { ParameterTypes, UnitTypes, CompositeTypes } from './Types';
+
+// TODO: Reverse dependency
+import { ids } from '@allors/meta/generated/ids.g';
 
 export abstract class SessionObject implements ISessionObject {
   public objectType!: ObjectType;
@@ -321,7 +326,7 @@ export abstract class SessionObject implements ISessionObject {
 
   private assertExists() {
     if (this.roleByRoleType === undefined) {
-      throw new Error("Object doesn't exist anymore.");
+      throw new Error('Object doesn\'t exist anymore.');
     }
   }
 
@@ -330,8 +335,8 @@ export abstract class SessionObject implements ISessionObject {
       const saveRoles = new Array<PushRequestRole>();
 
       for (const [roleType, value] of this.changedRoleByRoleType) {
-        let role = value;
-        let saveRole: PushRequestRole = {
+        const role = value;
+        const saveRole: PushRequestRole = {
           t: roleType.id,
         };
 

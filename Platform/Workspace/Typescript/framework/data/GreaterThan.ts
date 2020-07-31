@@ -1,7 +1,8 @@
-import { RoleType, ObjectType } from '@allors/meta';
-import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
-import { UnitTypes } from '../workspace/Types';
 import { serialize } from '../workspace/SessionObject';
+import { ParameterizablePredicateArgs, ParameterizablePredicate } from './ParameterizablePredicate';
+import { RoleType } from '../meta/RoleType';
+import { UnitTypes } from '../workspace/Types';
+import { ObjectType } from '../meta/ObjectType';
 
 export interface GreaterThanArgs extends ParameterizablePredicateArgs, Pick<GreaterThan, 'roleType' | 'value'> {}
 

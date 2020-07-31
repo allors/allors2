@@ -1,8 +1,9 @@
-import { PropertyType, ObjectType } from '@allors/framework';
-import { ISessionObject } from '../workspace/ISessionObject';
 import { serialize } from '../workspace/SessionObject';
-import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
+import { ParameterizablePredicateArgs, ParameterizablePredicate } from './ParameterizablePredicate';
+import { PropertyType } from '../meta/PropertyType';
 import { UnitTypes, CompositeTypes } from '../workspace/Types';
+import { ObjectType } from '../meta/ObjectType';
+import { ISessionObject } from '../workspace/ISessionObject';
 
 export interface EqualsArgs extends ParameterizablePredicateArgs, Pick<Equals, 'propertyType' | 'value' | 'object'> {}
 

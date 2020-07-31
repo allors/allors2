@@ -1,7 +1,7 @@
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import { FilterDefinition } from './FilterDefinition';
 import { FilterField } from './FilterField';
+import { FilterDefinition } from './FilterDefinition';
 
 export class Filter {
   readonly fields$: Observable<FilterField[]>;

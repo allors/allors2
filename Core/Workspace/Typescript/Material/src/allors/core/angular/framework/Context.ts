@@ -87,7 +87,7 @@ export class Context {
           objects:
             pushRequest.objects?.map((v: PushRequestObject) => v.i) ?? [],
         };
-        
+
         if (pushResponse.newObjects) {
           for (const newObject of pushResponse.newObjects) {
             syncRequest.objects.push(newObject.i);

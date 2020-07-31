@@ -1,10 +1,12 @@
-import { ObjectType, MetaObject, RoleType, MetaPopulation } from '@allors/meta';
 import { SyncResponseObject } from '../protocol/sync/SyncResponseObject';
 import { IWorkspace, Workspace } from './Workspace';
 import { Permission } from './Permission';
 import { AccessControl } from './AccessControl';
 import { Compressor } from '../protocol/Compressor';
 import { deserialize } from './SessionObject';
+import { ObjectType } from '../meta/ObjectType';
+import { MetaPopulation } from '../meta/MetaPopulation';
+import { RoleType } from '../meta/RoleType';
 
 export interface IWorkspaceObject {
   workspace: IWorkspace;
@@ -49,7 +51,7 @@ export class WorkspaceObject implements IWorkspaceObject {
     this.workspace = workspace;
     this.roleByRoleTypeId = new Map();
 
-    if(objectTypeOrMetaPopulation instanceof ObjectType){
+    if (objectTypeOrMetaPopulation instanceof ObjectType){
       this.objectType = objectTypeOrMetaPopulation;
       this.id = idOrSyncResponseObject as string;
       this.version = '0';
@@ -60,13 +62,13 @@ export class WorkspaceObject implements IWorkspaceObject {
       this.id = syncResponseObject.i;
       this.version = syncResponseObject.v;
       this.objectType = metaPopulation.metaObjectById.get(syncResponseObject.t) as ObjectType;
-  
+
       this.roleByRoleTypeId = new Map();
       if (syncResponseObject.r) {
         syncResponseObject.r.forEach((role) => {
           const roleTypeId = role.t;
           const roleType = metaPopulation.metaObjectById.get(roleTypeId) as RoleType;
-  
+
           let value: any = role.v;
           if (roleType.objectType.isUnit) {
             value = deserialize(value, roleType.objectType);
@@ -75,11 +77,11 @@ export class WorkspaceObject implements IWorkspaceObject {
               value = (value as string).split(Compressor.itemSeparator);
             }
           }
-  
+
           this.roleByRoleTypeId.set(roleType.id, value);
         });
       }
-  
+
       this.sortedAccessControlIds = syncResponseObject?.a ? sortedAccessControlIdsDecompress!(syncResponseObject.a) : undefined;
       this.sortedDeniedPermissionIds = syncResponseObject?.d ? sortedDeniedPermissionIdsDecompress!(syncResponseObject.d) : undefined;
     }

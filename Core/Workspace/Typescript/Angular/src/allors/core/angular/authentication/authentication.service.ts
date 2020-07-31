@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { map, catchError } from 'rxjs/operators';
-
-import { AuthenticationConfig } from './authentication.config';
 import { throwError, Observable } from 'rxjs';
 
-import { Router } from '@angular/router';
-import { UserId } from '../state/UserId';
+import { UserId } from '@allors/angular/state';
+
+import { AuthenticationConfig } from './authentication.config';
 
 export interface AuthenticationTokenRequest {
   userName: string;

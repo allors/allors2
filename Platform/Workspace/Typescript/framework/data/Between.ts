@@ -1,7 +1,8 @@
-import { RoleType, ObjectType } from '@allors/framework';
-import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
-import { UnitTypes } from '../workspace';
-import { serialize, serializeAllDefined } from '../workspace/SessionObject';
+import { ParameterizablePredicateArgs, ParameterizablePredicate } from './ParameterizablePredicate';
+import { RoleType } from '../meta/RoleType';
+import { UnitTypes } from '../workspace/Types';
+import { ObjectType } from '../meta/ObjectType';
+import { serializeAllDefined } from '../workspace/SessionObject';
 
 export interface BetweenArgs extends ParameterizablePredicateArgs, Pick<Between, 'roleType' | 'values'> {}
 

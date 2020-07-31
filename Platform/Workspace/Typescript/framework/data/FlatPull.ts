@@ -1,10 +1,10 @@
 import { IExtent } from './IExtent';
-import { ISessionObject } from '../workspace';
 import { Result } from './Result';
 import { Fetch } from './Fetch';
 import { Predicate } from './Predicate';
 import { Sort } from './Sort';
 import { Tree } from './Tree';
+import { ISessionObject } from '../workspace/ISessionObject';
 import { ParameterTypes } from '../workspace/Types';
 
 export interface FlatPull {

@@ -1,12 +1,12 @@
-import { domain } from '@allors/domain';
-import { Media } from '@allors/domain/generated/Media.g';
 import { Meta } from '@allors/meta';
-import { assert } from '@allors/framework';
+import { domain, Media } from '@allors/domain';
+
+import { assert } from '@allors/framework/assert';
 
 export const Download = 'download';
 export const IsImage = 'isImage';
 
-declare module @domain/generated/Media.g' {
+declare module '@allors/domain/generated/Media.g' {
   interface Media {
     [Download]: string;
     [IsImage]: boolean;

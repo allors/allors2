@@ -1,11 +1,13 @@
-﻿import { ObjectType, OperandType, RoleType, AssociationType, MethodType } from '@allors/meta';
-
-import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
-import { PushRequestObject } from './../protocol/push/PushRequestObject';
-
+﻿import { ObjectType } from '../meta/ObjectType';
 import { ISession } from './Session';
 import { IWorkspaceObject } from './WorkspaceObject';
+import { RoleType } from '../meta/RoleType';
+import { MethodType } from '../meta/MethodType';
+import { OperandType } from '../meta/OperandType';
 import { Operations } from '../protocol/Operations';
+import { AssociationType } from '../meta/AssociationType';
+import { PushRequestObject } from '../protocol/push/PushRequestObject';
+import { PushRequestNewObject } from '../protocol/push/PushRequestNewObject';
 
 export interface IObject {
   id: string;

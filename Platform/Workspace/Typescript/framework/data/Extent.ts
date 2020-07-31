@@ -1,4 +1,4 @@
-import { ObjectType } from '@allors/framework';
+import { ObjectType } from '../meta/ObjectType';
 import { Predicate } from './Predicate';
 import { Sort } from './Sort';
 

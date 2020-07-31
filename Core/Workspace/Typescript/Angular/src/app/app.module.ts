@@ -6,11 +6,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { enGB } from 'date-fns/locale';
 
-import { WorkspaceService } from '../allors/angular/framework';
+import { WorkspaceService } from '@allors/angular/framework';
+import { AllorsAngularModule } from '@allors/angular/module';
 
-import { AllorsAngularModule } from '../allors/angular/module';
 import { AppRoutingModule } from './app-routing.module';
-
 import { environment } from '../environments/environment';
 import { appMeta } from './app.meta';
 

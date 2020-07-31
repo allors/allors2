@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { Meta, PullFactory, FetchFactory, TreeFactory } from '@allors/meta';
 import { WorkspaceService } from './WorkspaceService';
 

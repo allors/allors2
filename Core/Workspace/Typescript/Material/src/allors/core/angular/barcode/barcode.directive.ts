@@ -1,4 +1,5 @@
 import { Directive, HostListener } from '@angular/core';
+
 import { AllorsBarcodeService } from './barcode.service';
 
 @Directive({

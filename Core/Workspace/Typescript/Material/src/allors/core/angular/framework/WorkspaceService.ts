@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { domain } from '@allors/domain';
 import { MetaPopulation, Workspace } from '@allors/framework';
 import { data } from '@allors/meta';
+import { domain } from '@allors/domain';
 
 @Injectable()
 export class WorkspaceService {

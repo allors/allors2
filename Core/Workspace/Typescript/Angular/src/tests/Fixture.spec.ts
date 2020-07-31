@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { enGB } from 'date-fns/locale';
 
 import { environment } from '../environments/environment';
-import { AllorsAngularModule } from '../allors/angular/module';
+import { AllorsAngularModule } from '@allors/angular/module';
 import { MetaService, ContextService } from '../allors/angular/framework';
 import { AuthenticationService } from '../allors/angular/authentication';
 

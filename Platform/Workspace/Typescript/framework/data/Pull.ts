@@ -1,14 +1,14 @@
-import { CompositeTypes, ParameterTypes } from '../workspace/Types';
+import { serializeObject } from '../workspace/SessionObject';
+import { ObjectType } from '../meta/ObjectType';
 import { IExtent } from './IExtent';
-import { ISessionObject } from '../workspace';
+import { CompositeTypes, ParameterTypes } from '../workspace/Types';
 import { Result } from './Result';
 import { FlatPull } from './FlatPull';
-import { ObjectType } from '@allors/framework';
 import { Extent } from './Extent';
-import { Fetch } from './Fetch';
 import { Sort } from './Sort';
+import { Fetch } from './Fetch';
 import { Tree } from './Tree';
-import { serializeObject } from '../workspace/SessionObject';
+import { ISessionObject } from '../workspace/ISessionObject';
 
 export type PullArgs = Pick<Pull, 'objectType' | 'extentRef' | 'extent' | 'object' | 'results' | 'parameters'>;
 

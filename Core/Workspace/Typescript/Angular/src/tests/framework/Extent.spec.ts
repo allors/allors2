@@ -66,7 +66,7 @@ describe('Extent', () => {
         const loaded = await fixture.allors.context
           .load(new PullRequest({ pulls })).toPromise();
 
-        const people = loaded.collections['People'] as Person[];
+        const people = loaded.collections.People as Person[];
 
         expect(people.length).toBe(6);
 
@@ -103,7 +103,7 @@ describe('Extent', () => {
 
         const loaded = await fixture.allors.context.load(new PullRequest({ pulls })).toPromise();
 
-        const organisations = loaded.collections['Organisations'] as Organisation[];
+        const organisations = loaded.collections.Organisations as Organisation[];
 
         expect(organisations.length).not.toBe(0);
 
@@ -142,7 +142,7 @@ describe('Extent', () => {
           .load(new PullRequest({ pulls }))
           .toPromise();
 
-        const owners = loaded.collections['Owners'] as Person[];
+        const owners = loaded.collections.Owners as Person[];
 
         expect(owners.length).toBe(2);
       });
@@ -172,7 +172,7 @@ describe('Extent', () => {
           .load(new PullRequest({ pulls }))
           .toPromise();
 
-        const employees = loaded.collections['Employees'] as Person[];
+        const employees = loaded.collections.Employees as Person[];
 
         expect(employees.length).toBe(3);
       });
@@ -203,7 +203,7 @@ describe('Extent', () => {
           .load(new PullRequest({ pulls }))
           .toPromise();
 
-        const employees = loaded.collections['Employees'] as Person[];
+        const employees = loaded.collections.Employees as Person[];
 
         expect(employees.length).toBe(3);
       });
@@ -238,7 +238,7 @@ describe('Extent', () => {
           .load(new PullRequest({ pulls }))
           .toPromise();
 
-        const owners = loaded.collections['Owners'] as Person[];
+        const owners = loaded.collections.Owners as Person[];
 
         owners.forEach(v => v.Photo);
 

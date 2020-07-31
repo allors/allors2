@@ -1,14 +1,13 @@
-import { ObjectType, AssociationType } from '@allors/meta';
-
-import { PushRequest } from './../protocol/push/PushRequest';
-import { PushResponse } from './../protocol/push/PushResponse';
-
 import { ISessionObject } from './ISessionObject';
 import { SessionObject } from './SessionObject';
 import { IWorkspace, Workspace } from './Workspace';
 import { WorkspaceObject, IWorkspaceObject } from './WorkspaceObject';
 import { Operations } from '../protocol/Operations';
 import { PushRequestObject } from '../protocol/push/PushRequestObject';
+import { ObjectType } from '../meta/ObjectType';
+import { PushRequest } from '../protocol/push/PushRequest';
+import { PushResponse } from '../protocol/push/PushResponse';
+import { AssociationType } from '../meta/AssociationType';
 
 export interface ISession {
   workspace: IWorkspace;

@@ -1,5 +1,6 @@
-import { PropertyType, ObjectType } from '@allors/framework';
 import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
+import { PropertyType } from '../meta/PropertyType';
+import { ObjectType } from '../meta/ObjectType';
 
 export interface ExistArgs extends ParameterizablePredicateArgs, Pick<Exists, 'propertyType'> {}
 

@@ -1,7 +1,7 @@
-import { MetaPopulation } from "./MetaPopulation";
-import { AssociationType } from "./AssociationType";
-import { RoleType, RoleTypeVirtual } from "./RoleType";
-import { RelationTypeData } from "./Data";
+import { MetaPopulation } from './MetaPopulation';
+import { AssociationType } from './AssociationType';
+import { RoleType, RoleTypeVirtual } from './RoleType';
+import { RelationTypeData } from './Data';
 import { ObjectType } from './ObjectType';
 
 export class RelationType {
@@ -26,7 +26,7 @@ export class RelationType {
         const objectType = this.metaPopulation.metaObjectById.get(
           dataConcreteRoleType.objectTypeId
         ) as ObjectType;
-        
+
         this.roleType.overridesByClass.set(objectType, roleTypeOverride);
       });
     }

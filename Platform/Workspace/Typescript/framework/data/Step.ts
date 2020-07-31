@@ -1,5 +1,6 @@
-import { ObjectType, PropertyType } from '@allors/framework';
+import { PropertyType } from '../meta/PropertyType';
 import { Tree } from './Tree';
+import { ObjectType } from '../meta/ObjectType';
 
 const includeKey = 'include';
 

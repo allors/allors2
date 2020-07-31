@@ -1,11 +1,9 @@
 ﻿import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { And, ISessionObject, Like, Or, PullRequest, Pull, RoleType, Sort } from '@allors/framework';
+import { And, ISessionObject, Like, Or, PullRequest, Pull, RoleType, Sort, ParameterTypes } from '@allors/framework';
 import { Loaded, Context, ContextService } from '@allors/angular/framework';
-
 import { SearchOptions } from './SearchOptions';
-import { ParameterTypes } from '@allors/framework/workspace/Types';
 
 export class SearchFactory {
   constructor(private options: SearchOptions) { }

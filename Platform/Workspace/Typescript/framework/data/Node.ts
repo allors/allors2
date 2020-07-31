@@ -1,4 +1,5 @@
-import { ObjectType, PropertyType } from '@allors/framework';
+import { PropertyType } from '../meta/PropertyType';
+import { ObjectType } from '../meta/ObjectType';
 
 export type NodeArgs = Pick<Node, 'propertyType' | 'nodes'>;
 
@@ -10,26 +11,26 @@ export class Node {
   constructor(objectType: ObjectType, propertyTypeName: string, json: any);
   constructor(args: ObjectType | NodeArgs, propertyTypeName?: string, json?: any) {
 
-    if(args instanceof ObjectType){
+    if (args instanceof ObjectType){
       const objectType = args;
       let propertyType = objectType.roleTypeByName.get(propertyTypeName!) || objectType.associationTypeByName.get(propertyTypeName!);
 
       if (!propertyType) {
         const metaPopulation = objectType.metaPopulation;
         const [subTypeName, subStepName] = propertyTypeName!.split('_');
-  
+
         const subType = metaPopulation.objectTypeByName.get(subTypeName);
         if (subType) {
           propertyType = subType.roleTypeByName.get(subStepName) || subType.associationTypeByName.get(propertyTypeName!);
         }
       }
-  
+
       if (!propertyType) {
         throw new Error(`No property ${propertyTypeName} found on ${objectType.name}`);
       }
-  
+
       this.propertyType = propertyType;
-  
+
       const property = json[propertyTypeName!];
       this.nodes = property.nodes
         ? property.nodes

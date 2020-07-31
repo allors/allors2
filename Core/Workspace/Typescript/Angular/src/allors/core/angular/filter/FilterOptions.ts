@@ -1,5 +1,5 @@
-import { SearchFactory } from '@allors/angular/search';
 import { PropertyType } from '@allors/framework';
+import { SearchFactory } from '@allors/angular/search';
 
 export class FilterOptions {
   search: SearchFactory;

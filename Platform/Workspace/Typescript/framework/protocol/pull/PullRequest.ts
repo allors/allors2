@@ -1,4 +1,4 @@
-import { Pull } from '../../data';
+import { Pull } from '../../data/Pull';
 
 export class PullRequest {
   public pulls?: Pull[];

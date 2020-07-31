@@ -1,6 +1,7 @@
-import { RoleType, ObjectType } from '@allors/meta';
 import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
 import { GreaterThanArgs } from './GreaterThan';
+import { RoleType } from '../meta/RoleType';
+import { ObjectType } from '../meta/ObjectType';
 
 export interface LikeArgs extends ParameterizablePredicateArgs, Pick<Like, 'roleType' | 'value'> {}
 

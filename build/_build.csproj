@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <NukeSpecificationFiles Include="**\*.json" Exclude="bin\**;obj\**" />
+    <NukeSpecificationFiles Include="**\*.json" Exclude="bin\**;obj\**;Properties\**" />
     <NukeExternalFiles Include="**\*.*.ext" Exclude="bin\**;obj\**" />
     <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
 

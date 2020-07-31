@@ -21,7 +21,7 @@ export class RoleType implements PropertyType {
   isOne: boolean;
   mediaType?: string;
 
-  private virtual: RoleTypeVirtual
+  private virtual: RoleTypeVirtual;
 
   isRequired(objectType: ObjectType): boolean {
     const override = objectType ? this.overridesByClass.get(objectType) : null;

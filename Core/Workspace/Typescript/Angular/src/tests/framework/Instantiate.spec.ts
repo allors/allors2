@@ -37,7 +37,7 @@ describe('Instantiate', () => {
 
         const pulls = [
           new Pull({
-            object: object
+            object
           }),
         ];
 
@@ -88,7 +88,7 @@ describe('Instantiate', () => {
           .load(new PullRequest({ pulls }))
           .toPromise();
 
-        people = loaded.collections['People'] as Person[];
+        people = loaded.collections.People as Person[];
 
         expect(people.length).not.toBe(0);
 

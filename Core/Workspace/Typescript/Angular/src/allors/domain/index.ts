@@ -1,4 +1,4 @@
-import { Workspace } from '@allors/framework';
+import { Workspace } from '@allors/framework/workspace';
 
 class Domain {
 
@@ -19,5 +19,5 @@ export const domain = new Domain();
 
 export * from './generated';
 
-import '../core/domain'
-import '../custom/domain'
+import '../core/domain';
+import '../custom/domain';

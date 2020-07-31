@@ -74,8 +74,8 @@ export abstract class RoleField extends Field implements AfterViewInit, OnDestro
         }
       }
 
-      if(this.roleType.objectType.isDecimal){
-        value = (value as string)?.replace(",", ".");
+      if (this.roleType.objectType.isDecimal){
+        value = (value as string)?.replace(',', '.');
       }
 
       this.object.set(this.roleType, value);

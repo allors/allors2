@@ -1,18 +1,17 @@
-import { MetaPopulation, ObjectType, OperandType } from '@allors/meta';
-
-import { PullResponse } from './../protocol/pull/PullResponse';
-import { SyncRequest } from './../protocol/sync/SyncRequest';
-import { SyncResponse } from './../protocol/sync/SyncResponse';
-import { SecurityRequest } from '../protocol/security/SecurityRequest';
-import { SecurityResponse } from '../protocol/security/SecurityResponse';
-
-import { Operations } from '../protocol/Operations';
-
 import { SessionObject } from './SessionObject';
 import { WorkspaceObject, IWorkspaceObject } from './WorkspaceObject';
 import { AccessControl } from './AccessControl';
 import { Permission } from './Permission';
 import { Compressor } from '../protocol/Compressor';
+import { MetaPopulation } from '../meta/MetaPopulation';
+import { ObjectType } from '../meta/ObjectType';
+import { PullResponse } from '../protocol/pull/PullResponse';
+import { SyncRequest } from '../protocol/sync/SyncRequest';
+import { SyncResponse } from '../protocol/sync/SyncResponse';
+import { SecurityRequest } from '../protocol/security/SecurityRequest';
+import { SecurityResponse } from '../protocol/security/SecurityResponse';
+import { OperandType } from '../meta/OperandType';
+import { Operations } from '../protocol/Operations';
 
 export interface IWorkspace {
   metaPopulation: MetaPopulation;
@@ -62,7 +61,7 @@ export class Workspace implements IWorkspace {
 
     this.metaPopulation.classes.forEach((objectType) => {
       const DynamicClass = (() => {
-        return function () {
+        return function() {
           // @ts-ignore
           const prototype1 = Object.getPrototypeOf(this);
           const prototype2 = Object.getPrototypeOf(prototype1);
@@ -107,11 +106,11 @@ export class Workspace implements IWorkspace {
           });
 
           if (roleType.isMany) {
-            prototype['Add' + roleType.singular] = function (this: SessionObject, value: SessionObject) {
+            prototype['Add' + roleType.singular] = function(this: SessionObject, value: SessionObject) {
               return this.add(roleType, value);
             };
 
-            prototype['Remove' + roleType.singular] = function (this: SessionObject, value: SessionObject) {
+            prototype['Remove' + roleType.singular] = function(this: SessionObject, value: SessionObject) {
               return this.remove(roleType, value);
             };
           }

@@ -1,4 +1,7 @@
+
+// TODO: Reverse dependency
 import { ids } from '@allors/meta/generated/ids.g';
+
 
 export const unitIdByTypeName: { [key: string]: string } = {
   Binary: ids.Binary,

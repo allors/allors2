@@ -3,9 +3,9 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Loaded, ContextService, MetaService } from '@allors/angular/framework';
-import { Organisation } from '@allors/domain';
 import { PullRequest, assert } from '@allors/framework';
+import { Organisation } from '@allors/domain';
+import { Loaded, ContextService, MetaService } from '@allors/angular/framework';
 
 @Component({
   templateUrl: './fetch.component.html',

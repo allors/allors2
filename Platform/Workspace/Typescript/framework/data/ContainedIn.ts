@@ -1,8 +1,9 @@
-import { PropertyType, ObjectType } from '@allors/framework';
-import { ISessionObject } from '../workspace/ISessionObject';
-import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
+import { ParameterizablePredicateArgs, ParameterizablePredicate } from './ParameterizablePredicate';
 import { IExtent } from './IExtent';
+import { PropertyType } from '../meta/PropertyType';
 import { CompositeTypes } from '../workspace/Types';
+import { ObjectType } from '../meta/ObjectType';
+import { ISessionObject } from '../workspace/ISessionObject';
 
 export interface ContainedInArgs extends ParameterizablePredicateArgs, Pick<ContainedIn, 'propertyType' | 'extent' | 'objects'> {}
 

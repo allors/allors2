@@ -1,7 +1,7 @@
-import { ObjectType } from '@allors/framework';
 import { Tree } from './Tree';
 import { Step } from './Step';
 import { Node } from './Node';
+import { ObjectType } from '../meta/ObjectType';
 
 const includeKey = 'include';
 

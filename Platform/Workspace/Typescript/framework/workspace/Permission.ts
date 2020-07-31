@@ -1,5 +1,5 @@
-import { OperandType } from '@allors/meta/OperandType';
-import { ObjectType } from '@allors/meta/ObjectType';
+import { ObjectType } from '../meta/ObjectType';
+import { OperandType } from '../meta/OperandType';
 import { Operations } from '../protocol/Operations';
 
 export class Permission {

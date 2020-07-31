@@ -1,12 +1,10 @@
-import { MetaData, ObjectTypeData } from "./Data";
+import { MetaData, ObjectTypeData } from './Data';
 
-import { MetaObject } from "./MetaObject";
-import { Kind, ObjectType } from "./ObjectType";
-import { unitIdByTypeName } from "./Units";
-import { RelationType } from "./RelationType";
-import { MethodType } from "./MethodType";
-import { RoleType, RoleTypeVirtual } from "./RoleType";
-import { AssociationType } from "./AssociationType";
+import { MetaObject } from './MetaObject';
+import { Kind, ObjectType } from './ObjectType';
+import { unitIdByTypeName } from './Units';
+import { RelationType } from './RelationType';
+import { MethodType } from './MethodType';
 
 export class MetaPopulation {
   readonly metaObjectById: Map<string, MetaObject>;
@@ -29,20 +27,20 @@ export class MetaPopulation {
 
     // Units
     this.units = [
-      "Binary",
-      "Boolean",
-      "DateTime",
-      "Decimal",
-      "Float",
-      "Integer",
-      "String",
-      "Unique",
+      'Binary',
+      'Boolean',
+      'DateTime',
+      'Decimal',
+      'Float',
+      'Integer',
+      'String',
+      'Unique',
     ].map((unitName) => {
       const objectType = new ObjectType(
         this,
         unitIdByTypeName[unitName],
         unitName,
-        unitName === "Binary" ? "Binaries" : unitName + "s",
+        unitName === 'Binary' ? 'Binaries' : unitName + 's',
         Kind.unit
       );
 

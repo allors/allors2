@@ -1,5 +1,6 @@
-import { ObjectType, PropertyType, RoleType } from '@allors/meta';
 import { ParameterizablePredicate, ParameterizablePredicateArgs } from './ParameterizablePredicate';
+import { PropertyType } from '../meta/PropertyType';
+import { ObjectType } from '../meta/ObjectType';
 
 export interface InstanceofArgs extends ParameterizablePredicateArgs, Pick<Instanceof, 'propertyType' | 'objectType'> {}
 

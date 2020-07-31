@@ -6,11 +6,6 @@ export { InvokeResponse } from './invoke/InvokeResponse';
 export { PullRequest } from './pull/PullRequest';
 export { PullResponse } from './pull/PullResponse';
 
-export { Response } from './Response';
-export { ResponseType } from './ResponseType';
-export { ResponseError } from './ResponseError';
-export { DerivationError } from './DerivationError';
-
 export { PushRequest } from './push/PushRequest';
 export { PushRequestNewObject } from './push/PushRequestNewObject';
 export { PushRequestObject } from './push/PushRequestObject';
@@ -26,3 +21,10 @@ export { SyncRequest } from './sync/SyncRequest';
 export { SyncResponse } from './sync/SyncResponse';
 export { SyncResponseObject } from './sync/SyncResponseObject';
 export { SyncResponseRole } from './sync/SyncResponseRole';
+
+export { Operations } from './Operations';
+export { Response } from './Response';
+export { ResponseType } from './ResponseType';
+export { ResponseError } from './ResponseError';
+export { DerivationError } from './DerivationError';
+

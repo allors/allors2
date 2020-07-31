@@ -17,7 +17,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "allors/*": ["./src/allors/*"]
+      "@allors/*": ["./src/allors/*"]
     }
   }
 }

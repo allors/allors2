@@ -1,8 +1,7 @@
-import { FilterFieldDefinition } from './FilterFieldDefinition';
-import { Predicate, And, Or, Not, ContainedIn, Extent, IExtent } from '@allors/framework';
-import { ParameterizablePredicate } from '@allors/framework/data/ParameterizablePredicate';
+import { Predicate, And, Or, Not, ContainedIn, Extent, IExtent, ParameterizablePredicate } from '@allors/framework';
 
 import { FilterOptions } from './FilterOptions';
+import { FilterFieldDefinition } from './FilterFieldDefinition';
 
 function parametrize(predicate: Predicate | IExtent, results: ParameterizablePredicate[] = []): ParameterizablePredicate[] {
   if (predicate instanceof Extent) {

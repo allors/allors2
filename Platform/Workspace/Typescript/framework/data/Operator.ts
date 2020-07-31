@@ -1,6 +1,6 @@
 import { Sort } from './Sort';
 import { IExtent } from './IExtent';
-import { ObjectType } from '@allors/framework';
+import { ObjectType } from '../meta/ObjectType';
 
 export type OperatorArgs = Pick<Operator, 'operands' | 'sort'>;
 

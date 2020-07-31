@@ -1,9 +1,11 @@
-import { AssociationType } from "./AssociationType";
-import { MetaObject } from "./MetaObject";
-import { MetaPopulation } from "./MetaPopulation";
-import { MethodType } from "./MethodType";
-import { RoleType } from "./RoleType";
-import { ids } from "../../meta/generated/ids.g";
+import { AssociationType } from './AssociationType';
+import { MetaObject } from './MetaObject';
+import { MetaPopulation } from './MetaPopulation';
+import { MethodType } from './MethodType';
+import { RoleType } from './RoleType';
+
+// TODO: Reverse dependency
+import { ids } from '@allors/meta/generated/ids.g';
 
 export enum Kind {
   unit,
