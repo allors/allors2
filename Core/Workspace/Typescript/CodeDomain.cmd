@@ -1,5 +1,6 @@
 @echo off
 
 cd domain
-code .
+call code .
+exit
 

@@ -1,6 +1,7 @@
 @echo off
 
 cd material
-code .
+call code .
+exit
 
 

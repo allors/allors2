@@ -1,0 +1,202 @@
+{
+  "version": 1,
+  "projects": {
+    "meta": {
+      "root": "libs/meta",
+      "sourceRoot": "libs/meta/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "libs/meta/tsconfig.lib.json",
+              "libs/meta/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/meta/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/meta/jest.config.js",
+            "tsConfig": "libs/meta/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "workspace-data": {
+      "root": "libs/workspace/data",
+      "sourceRoot": "libs/workspace/data/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "libs/workspace/data/tsconfig.lib.json",
+              "libs/workspace/data/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/workspace/data/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/workspace/data/jest.config.js",
+            "tsConfig": "libs/workspace/data/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "workspace-domain": {
+      "root": "libs/workspace/domain",
+      "sourceRoot": "libs/workspace/domain/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "libs/workspace/domain/tsconfig.lib.json",
+              "libs/workspace/domain/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/workspace/domain/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/workspace/domain/jest.config.js",
+            "tsConfig": "libs/workspace/domain/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "workspace-meta": {
+      "root": "libs/workspace/meta",
+      "sourceRoot": "libs/workspace/meta/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "libs/workspace/meta/tsconfig.lib.json",
+              "libs/workspace/meta/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/workspace/meta/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/workspace/meta/jest.config.js",
+            "tsConfig": "libs/workspace/meta/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "workspace-protocol": {
+      "root": "libs/workspace/protocol",
+      "sourceRoot": "libs/workspace/protocol/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": [
+              "libs/workspace/protocol/tsconfig.lib.json",
+              "libs/workspace/protocol/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/workspace/protocol/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/workspace/protocol/jest.config.js",
+            "tsConfig": "libs/workspace/protocol/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/workspace"
+  },
+  "schematics": {
+    "@nrwl/workspace": {
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/cypress": {
+      "cypress-project": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/react": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/web": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/node": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/nx-plugin": {
+      "plugin": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/nest": {
+      "application": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/express": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      }
+    }
+  }
+}

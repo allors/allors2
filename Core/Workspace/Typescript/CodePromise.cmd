@@ -1,5 +1,6 @@
 @echo off
 
 cd promise
-code .
+call code .
+exit
 

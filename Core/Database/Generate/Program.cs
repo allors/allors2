@@ -38,8 +38,8 @@ namespace Allors
                     { "Workspace/Csharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/generated" },
                     { "Workspace/Csharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/generated" },
 
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/allors/domain/generated" },
+                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/meta/libs/meta/src/generated" },
+                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/domain/libs/domain/src/generated" },
 
                     { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Angular/src/allors/meta/generated" },
                     { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Angular/src/allors/domain/generated" },

@@ -1,5 +1,6 @@
 @echo off
 
 cd gatsby
-code .
+call code .
+exit
 
