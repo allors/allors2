@@ -6,7 +6,7 @@ import { data, Meta } from '@allors/meta';
 import { Organisation, Person, extend } from '@allors/domain';
 
 import { syncResponse, securityResponse } from './fixture';
-import { PushRequestInfo } from '../helpers/PushRequestInfo';
+import { PushRequestInfo } from './helpers/PushRequestInfo';
 
 import 'jest-extended';
 

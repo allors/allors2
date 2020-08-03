@@ -2,7 +2,6 @@ import { MetaPopulation } from '@allors/workspace/meta';
 import { Workspace } from '@allors/workspace/domain';
 
 import { data, PullFactory, Meta } from '@allors/meta';
-import { extend } from '../../index';
 
 describe('Filter',
     () => {
@@ -13,7 +12,6 @@ describe('Filter',
         beforeEach(async () => {
             m = new MetaPopulation(data) as Meta;
             workspace = new Workspace(m);
-            extend(workspace);
 
             factory = new PullFactory(m);
         });

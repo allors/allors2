@@ -5,7 +5,7 @@ import { ResponseType, PullResponse } from '@allors/workspace/protocol';
 import { data, Meta } from '@allors/meta';
 
 import { syncResponse, securityResponse, securityResponse2 } from './fixture';
-import { extend } from '../../index';
+import { extend } from '../index';
 
 describe('Workspace',
   () => {

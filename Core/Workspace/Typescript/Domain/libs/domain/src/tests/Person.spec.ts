@@ -3,9 +3,7 @@ import { Session, Workspace } from '@allors/workspace/domain';
 
 import { data, Meta } from '@allors/meta';
 
-import '../../index';
-import '../../custom/Person';
-import { extend, Person } from '../..';
+import { extend, Person } from '..';
 
 describe('Person', () => {
   let session: Session;

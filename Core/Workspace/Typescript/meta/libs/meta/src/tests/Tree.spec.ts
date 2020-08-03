@@ -2,7 +2,8 @@ import { MetaPopulation } from '@allors/workspace/meta';
 import { Workspace } from '@allors/workspace/domain';
 
 import { data, TreeFactory, Meta } from '@allors/meta';
-import { extend } from '../../index';
+
+import 'jest-extended';
 
 describe('Tree', () => {
   let m: Meta;
@@ -12,7 +13,6 @@ describe('Tree', () => {
   beforeEach(async () => {
     m = new MetaPopulation(data) as Meta;
     workspace = new Workspace(m);
-    extend(workspace);
 
     factory = new TreeFactory(m);
   });

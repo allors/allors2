@@ -2,7 +2,6 @@ import { MetaPopulation } from '@allors/workspace/meta';
 import { Workspace } from '@allors/workspace/domain';
 
 import { data, FetchFactory, Meta } from '@allors/meta';
-import { extend } from '../../index';
 
 describe('Fetch', () => {
   let m: Meta;
@@ -12,7 +11,6 @@ describe('Fetch', () => {
   beforeEach(async () => {
     m = new MetaPopulation(data) as Meta;
     workspace = new Workspace(m);
-    extend(workspace);
 
     factory = new FetchFactory(m);
   });
