@@ -1,18 +1,19 @@
 import { MetaPopulation } from '@allors/workspace/meta';
 import { Workspace } from '@allors/workspace/domain';
 
-import { domain } from '@allors/domain';
 import { data, PullFactory, Meta } from '@allors/meta';
+import { extend } from '../../index';
 
 describe('Filter',
     () => {
         let m: Meta;
         let factory: PullFactory;
+        let workspace: Workspace;
 
         beforeEach(async () => {
             m = new MetaPopulation(data) as Meta;
-            const workspace = new Workspace(m);
-            domain.apply(workspace);
+            workspace = new Workspace(m);
+            extend(workspace);
 
             factory = new PullFactory(m);
         });
@@ -26,7 +27,7 @@ describe('Filter',
                     const json = JSON.stringify(original);
                     const pull = JSON.parse(json);
 
-                    assert.isDefined(pull);
+                    expect(pull).toBeDefined();
                 });
             });
     });

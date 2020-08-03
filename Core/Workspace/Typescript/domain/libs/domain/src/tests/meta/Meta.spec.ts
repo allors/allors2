@@ -10,20 +10,20 @@ describe('Meta',
 
     it('is defined',
       () => {
-        assert.isDefined(metaDomain);
+        expect(metaDomain).toBeDefined();
       });
 
     it('metaInterfaces should be defined',
       () => {
         data.interfaces.forEach((v) => {
-          assert.isDefined(metaDomain[v.name]);
+          expect(metaDomain[v.name]).toBeDefined();
         });
       });
 
     it('metaClasses should be defined',
       () => {
         data.classes.forEach((v) => {
-          assert.isDefined(metaDomain[v.name]);
+          expect(metaDomain[v.name]).toBeDefined();
         });
       });
 
@@ -31,7 +31,7 @@ describe('Meta',
       () => {
         data.interfaces.concat(data.classes).forEach((v) => {
           const metaObjectType: ObjectType = metaDomain[v.name];
-          assert.isDefined(metaObjectType);
+          expect(metaObjectType).toBeDefined();
         });
       });
 
@@ -45,7 +45,7 @@ describe('Meta',
 
           roleTypes.forEach((w) => {
             const metaRoleType = metaObjectType[w.name];
-            assert.isDefined(metaRoleType);
+            expect(metaRoleType).toBeDefined();
           });
         });
       });
@@ -60,23 +60,23 @@ describe('Meta',
 
           associationTypes.forEach((w) => {
             const metaAssociationType = metaObjectType[w.name];
-            assert.isDefined(metaAssociationType);
+            expect(metaAssociationType).toBeDefined();
           });
         });
       });
 
     it('hierarchy should be defined for roles',
       () => {
-        assert.isDefined(metaDomain.C1.Name);
-        assert.isDefined(metaDomain.I1.Name);
-        assert.isDefined(metaDomain.I12.Name);
+        expect(metaDomain.C1.Name).toBeDefined();
+        expect(metaDomain.I1.Name).toBeDefined();
+        expect(metaDomain.I12.Name).toBeDefined();
       });
 
     it('hierarchy should be defined for associations',
       () => {
-        assert.isDefined(metaDomain.C1.C2WhereS1One2One);
-        assert.isDefined(metaDomain.I1.C2WhereS1One2One);
-        assert.isDefined(metaDomain.S1.C2WhereS1One2One);
+        expect(metaDomain.C1.C2WhereS1One2One).toBeDefined();
+        expect(metaDomain.I1.C2WhereS1One2One).toBeDefined();
+        expect(metaDomain.S1.C2WhereS1One2One).toBeDefined();
       });
 
   });

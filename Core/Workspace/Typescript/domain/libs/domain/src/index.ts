@@ -1,23 +1,8 @@
-import { Workspace } from '@allors/framework';
-
-class Domain {
-
-    private extensions: Array<(workspace: Workspace) => void> = [];
-
-    public extend(extension: (workspace: Workspace) => void) {
-        this.extensions.push(extension);
-    }
-
-    public apply(workspace: Workspace) {
-        this.extensions.forEach((v) => {
-            v(workspace);
-        });
-    }
-}
-
-export const domain = new Domain();
+import { Workspace } from '@allors/workspace/domain';
+import { extendPerson } from './custom/Person';
 
 export * from './generated';
 
-import '../core/domain';
-import '../custom/domain';
+export function extend(workspace: Workspace) {
+  extendPerson(workspace);
+}

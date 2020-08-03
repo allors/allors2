@@ -3,9 +3,9 @@ import { Workspace } from '@allors/workspace/domain';
 import { ResponseType, PullResponse } from '@allors/workspace/protocol';
 
 import { data, Meta } from '@allors/meta';
-import { domain } from '@allors/domain';
 
 import { syncResponse, securityResponse, securityResponse2 } from './fixture';
+import { extend } from '../../index';
 
 describe('Workspace',
   () => {
@@ -16,7 +16,7 @@ describe('Workspace',
     beforeEach(() => {
       m = new MetaPopulation(data) as Meta;
       workspace = new Workspace(m);
-      domain.apply(workspace);
+      extend(workspace);
     });
 
     it('should have its relations set when synced', () => {
@@ -24,14 +24,14 @@ describe('Workspace',
 
       const martien = workspace.get('3');
 
-      assert.equal(martien?.id, '3');
-      assert.equal(martien?.version, '1003');
-      assert.equal(martien?.objectType.name, 'Person');
-      assert.equal(martien?.roleByRoleTypeId.get(m.Person.FirstName.id), 'Martien');
-      assert.equal(martien?.roleByRoleTypeId.get(m.Person.MiddleName.id), 'van');
-      assert.equal(martien?.roleByRoleTypeId.get(m.Person.LastName.id), 'Knippenberg');
-      assert.isUndefined(martien?.roleByRoleTypeId.get(m.Person.IsStudent.id));
-      assert.isUndefined(martien?.roleByRoleTypeId.get(m.Person.BirthDate.id));
+      expect(martien?.id).toBe( '3');
+      expect(martien?.version).toBe( '1003');
+      expect(martien?.objectType.name).toBe( 'Person');
+      expect(martien?.roleByRoleTypeId.get(m.Person.FirstName.id)).toBe( 'Martien');
+      expect(martien?.roleByRoleTypeId.get(m.Person.MiddleName.id)).toBe( 'van');
+      expect(martien?.roleByRoleTypeId.get(m.Person.LastName.id)).toBe( 'Knippenberg');
+      expect(martien?.roleByRoleTypeId.get(m.Person.IsStudent.id)).toBeUndefined();
+      expect(martien?.roleByRoleTypeId.get(m.Person.BirthDate.id)).toBeUndefined();
     });
 
     describe('synced with same access control',
@@ -54,8 +54,8 @@ describe('Workspace',
 
           const requireLoad = workspace.diff(pullResponse);
 
-          assert.equal(requireLoad.objects.length, 1);
-          assert.equal(requireLoad.objects[0], '103');
+          expect(requireLoad.objects.length).toBe( 1);
+          expect(requireLoad.objects[0]).toBe( '103');
         });
       },
     );
@@ -79,8 +79,8 @@ describe('Workspace',
 
           const syncRequest = workspace.diff(pullResponse);
 
-          assert.equal(syncRequest.objects.length, 2);
-          assert.sameMembers(syncRequest.objects, ['101', '102']);
+          expect(syncRequest.objects.length).toBe( 2);
+          expect(syncRequest.objects).toIncludeSameMembers( ['101', '102']);
         });
       });
 
@@ -102,7 +102,7 @@ describe('Workspace',
 
           if (accessControl802?.permissionIds) {
             for (const permission of accessControl802.permissionIds) {
-              assert.include(accessControl801?.permissionIds ?? [], permission);
+              expect(accessControl801?.permissionIds ?? []).toContain( permission);
             }
           }
 

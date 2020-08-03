@@ -3,10 +3,12 @@ import { Session, Workspace } from '@allors/workspace/domain';
 import { PushResponse, ResponseType } from '@allors/workspace/protocol';
 
 import { data, Meta } from '@allors/meta';
-import { domain, Organisation, Person } from '@allors/domain';
+import { Organisation, Person, extend } from '@allors/domain';
 
 import { syncResponse, securityResponse } from './fixture';
 import { PushRequestInfo } from '../helpers/PushRequestInfo';
+
+import 'jest-extended';
 
 describe('Session', () => {
   let m: Meta;
@@ -15,7 +17,8 @@ describe('Session', () => {
   beforeEach(() => {
     m = new MetaPopulation(data) as Meta;
     workspace = new Workspace(m);
-    domain.apply(workspace);
+    extend(workspace);
+
     workspace.sync(syncResponse(m));
     workspace.security(securityResponse(m));
   });
@@ -29,16 +32,16 @@ describe('Session', () => {
 
     it('should throw exception for existing object', () => {
       const koen = session.get('1') as Person;
-      assert.throw(() => {
+      expect(() => {
         session.delete(koen);
-      });
+      }).toThrow();
     });
 
     it('should not throw exception for a new object', () => {
       const jos = session.create(m.Person) as Person;
-      assert.doesNotThrow(() => {
+      expect(() => {
         session.delete(jos);
-      });
+      }).not.toThrow();
     });
 
     it('should throw exception for a deleted object', () => {
@@ -46,31 +49,34 @@ describe('Session', () => {
 
       session.delete(acme);
 
-      assert.isUndefined(acme.CanReadName);
-      assert.isUndefined(acme.CanWriteName);
-      assert.isUndefined(acme.Name);
-      assert.throw(() => {
+      expect(acme.CanReadName).toBeUndefined();
+      expect(acme.CanWriteName).toBeUndefined();
+      expect(acme.Name).toBeUndefined();
+
+      expect(() => {
         acme.Name = 'Acme';
-      });
+      }).toThrow();
 
       const jos = session.create(m.Person) as Person;
 
-      assert.isUndefined(acme.CanReadOwner);
-      assert.isUndefined(acme.CanWriteOwner);
-      assert.isUndefined(acme.Owner);
-      assert.throw(() => {
+      expect(acme.CanReadOwner).toBeUndefined();
+      expect(acme.CanWriteOwner).toBeUndefined();
+      expect(acme.Owner).toBeUndefined();
+
+      expect(() => {
         acme.Owner = jos;
-      });
+      }).toThrow();
 
-      assert.isUndefined(acme.CanReadEmployees);
-      assert.isUndefined(acme.CanWriteEmployees);
-      assert.isUndefined(acme.Employees);
-      assert.throw(() => {
+      expect(acme.CanReadEmployees).toBeUndefined();
+      expect(acme.CanWriteEmployees).toBeUndefined();
+      expect(acme.Employees).toBeUndefined();
+
+      expect(() => {
         acme.AddEmployee(jos);
-      });
+      }).toThrow();
 
-      assert.isUndefined(acme.CanExecuteJustDoIt);
-      assert.isUndefined(acme.JustDoIt);
+      expect(acme.CanExecuteJustDoIt).toBeUndefined();
+      expect(acme.JustDoIt).toBeUndefined();
     });
 
     it('should delete role from existing object', () => {
@@ -81,7 +87,7 @@ describe('Session', () => {
 
       session.delete(jos);
 
-      assert.isNull(acme.Owner);
+      expect(acme.Owner).toBeNull();
     });
 
     it('should remove role from existing object', () => {
@@ -92,7 +98,7 @@ describe('Session', () => {
 
       session.delete(jos);
 
-      assert.notInclude(acme.Employees, jos);
+      expect(acme.Employees).not.toContain(jos);
     });
 
     it('should delete role from new object', () => {
@@ -103,7 +109,7 @@ describe('Session', () => {
 
       session.delete(jos);
 
-      assert.isNull(acme.Owner);
+      expect(acme.Owner).toBeNull();
     });
 
     it('should remove role from new object', () => {
@@ -114,7 +120,7 @@ describe('Session', () => {
 
       session.delete(jos);
 
-      assert.notInclude(acme.Employees, jos);
+      expect(acme.Employees).not.toContain( jos);
     });
   });
 
@@ -128,27 +134,27 @@ describe('Session', () => {
     it('should get unit roles', () => {
       const koen = session.get('1') as Person;
 
-      assert.equal(koen.FirstName, 'Koen');
-      assert.isNull(koen.MiddleName);
-      assert.equal(koen.LastName, 'Van Exem');
-      assert.equal(koen.BirthDate, '1973-03-27T18:00:00Z');
-      assert.isTrue(koen.IsStudent);
+      expect(koen.FirstName).toBe('Koen');
+      expect(koen.MiddleName).toBeNull();
+      expect(koen.LastName).toBe( 'Van Exem');
+      expect(koen.BirthDate).toBe( '1973-03-27T18:00:00Z');
+      expect(koen.IsStudent).toBeTruthy();
 
       const patrick = session.get('2') as Person;
 
-      assert.equal(patrick.FirstName, 'Patrick');
-      assert.isNull(patrick.MiddleName);
-      assert.equal(patrick.LastName, 'De Boeck');
-      assert.isNull(patrick.BirthDate);
-      assert.isFalse(patrick.IsStudent);
+      expect(patrick.FirstName).toBe( 'Patrick');
+      expect(patrick.MiddleName).toBeNull();
+      expect(patrick.LastName).toBe( 'De Boeck');
+      expect(patrick.BirthDate).toBeNull();
+      expect(patrick.IsStudent).toBeFalsy();
 
       const martien = session.get('3') as Person;
 
-      assert.equal(martien.FirstName, 'Martien');
-      assert.equal(martien.MiddleName, 'van');
-      assert.equal(martien.LastName, 'Knippenberg');
-      assert.isNull(martien.BirthDate);
-      assert.isNull(martien.IsStudent);
+      expect(martien.FirstName).toBe( 'Martien');
+      expect(martien.MiddleName).toBe( 'van');
+      expect(martien.LastName).toBe( 'Knippenberg');
+      expect(martien.BirthDate).toBeNull();
+      expect(martien.IsStudent).toBeNull();
     });
 
     it('should get composite roles', () => {
@@ -158,18 +164,18 @@ describe('Session', () => {
 
       const acme = session.get('101') as Organisation;
 
-      assert.equal(acme.Owner, koen);
-      assert.isNull(acme.Manager);
+      expect(acme.Owner).toBe( koen);
+      expect(acme.Manager).toBeNull();
 
       const ocme = session.get('102') as Organisation;
 
-      assert.equal(ocme.Owner, patrick);
-      assert.isNull(ocme.Manager);
+      expect(ocme.Owner).toBe( patrick);
+      expect(ocme.Manager).toBeNull();
 
       const icme = session.get('103') as Organisation;
 
-      assert.equal(icme.Owner, martien);
-      assert.isNull(icme.Manager);
+      expect(icme.Owner).toBe( martien);
+      expect(icme.Manager).toBeNull();
     });
 
     it('should get composites roles', () => {
@@ -181,13 +187,13 @@ describe('Session', () => {
       const ocme = session.get('102') as Organisation;
       const icme = session.get('103') as Organisation;
 
-      assert.sameMembers(acme.Employees, [koen, patrick, martien]);
-      assert.sameMembers(ocme.Employees, [koen]);
-      assert.sameMembers(icme.Employees, []);
+      expect(acme.Employees).toIncludeSameMembers([koen, patrick, martien]);
+      expect(ocme.Employees).toIncludeSameMembers( [koen]);
+      expect(icme.Employees).toIncludeSameMembers( []);
 
-      assert.sameMembers(acme.Shareholders, []);
-      assert.sameMembers(ocme.Shareholders, []);
-      assert.sameMembers(icme.Shareholders, []);
+      expect(acme.Shareholders).toIncludeSameMembers( []);
+      expect(ocme.Shareholders).toIncludeSameMembers( []);
+      expect(icme.Shareholders).toIncludeSameMembers( []);
     });
 
     describe('two different sessions with same objects', () => {
@@ -238,15 +244,15 @@ describe('Session', () => {
         });
 
         it('should see changes in this session', () => {
-          assert.equal(martien1.FirstName, 'Martien');
-          assert.equal(martien1.LastName, 'Knippenberg');
-          assert.equal(martien1.MiddleName, 'van');
+          expect(martien1.FirstName).toBe( 'Martien');
+          expect(martien1.LastName).toBe( 'Knippenberg');
+          expect(martien1.MiddleName).toBe( 'van');
         });
 
         it('should not see changes in the other session', () => {
-          assert.equal(martien2.FirstName, 'Martinus');
-          assert.equal(martien2.LastName, 'Knippenberg');
-          assert.equal(martien2.MiddleName, 'X');
+          expect(martien2.FirstName).toBe( 'Martinus');
+          expect(martien2.LastName).toBe( 'Knippenberg');
+          expect(martien2.MiddleName).toBe( 'X');
         });
       });
 
@@ -258,23 +264,23 @@ describe('Session', () => {
         });
 
         it('should see changes in this session', () => {
-          assert.equal(acme1.Owner, koen1);
-          assert.equal(ocme1.Owner, patrick1);
-          assert.equal(icme1.Owner, martien1);
+          expect(acme1.Owner).toBe( koen1);
+          expect(ocme1.Owner).toBe( patrick1);
+          expect(icme1.Owner).toBe( martien1);
 
-          assert.isNull(acme1.Manager);
-          assert.isNull(ocme1.Manager);
-          assert.isNull(icme1.Manager);
+          expect(acme1.Manager).toBeNull();
+          expect(ocme1.Manager).toBeNull();
+          expect(icme1.Manager).toBeNull();
         });
 
         it('should not see changes in the other session', () => {
-          assert.equal(acme2.Owner, martien2);
-          assert.isNull(ocme2.Owner);
-          assert.equal(icme2.Owner, martien2);
+          expect(acme2.Owner).toBe( martien2);
+          expect(ocme2.Owner).toBeNull();
+          expect(icme2.Owner).toBe( martien2);
 
-          assert.equal(acme2.Manager, patrick2);
-          assert.isNull(ocme2.Manager);
-          assert.isNull(icme2.Manager);
+          expect(acme2.Manager).toBe( patrick2);
+          expect(ocme2.Manager).toBeNull();
+          expect(icme2.Manager).toBeNull();
         });
       });
 
@@ -285,15 +291,15 @@ describe('Session', () => {
         });
 
         it('should see changes in this session', () => {
-          assert.sameMembers(acme1.Employees, [koen1, patrick1, martien1]);
-          assert.sameMembers(ocme1.Employees, [koen1]);
-          assert.sameMembers(icme1.Employees, []);
+          expect(acme1.Employees).toIncludeSameMembers([koen1, patrick1, martien1]);
+          expect(ocme1.Employees).toIncludeSameMembers( [koen1]);
+          expect(icme1.Employees).toIncludeSameMembers( []);
         });
 
         it('should not see changes in the other session', () => {
-          assert.sameMembers(acme2.Employees, []);
-          assert.sameMembers(ocme2.Employees, [koen2]);
-          assert.sameMembers(icme2.Employees, [koen2, patrick2, martien2]);
+          expect(acme2.Employees).toIncludeSameMembers( []);
+          expect(ocme2.Employees).toIncludeSameMembers( [koen2]);
+          expect(icme2.Employees).toIncludeSameMembers( [koen2, patrick2, martien2]);
         });
       });
     });
@@ -315,12 +321,12 @@ describe('Session', () => {
       const save = session.pushRequest();
       const info = new PushRequestInfo(save, m);
 
-      assert.equal(save.objects?.length, 2);
+      expect(save.objects?.length).toBe( 2);
 
       const savedAcme = save.objects?.find((v) => v.i === '101');
 
-      assert.equal(savedAcme?.v, '1101');
-      assert.equal(savedAcme?.roles?.length, 2);
+      expect(savedAcme?.v).toBe( '1101');
+      expect(savedAcme?.roles?.length).toBe( 2);
 
       const savedAcmeOwner = savedAcme?.roles?.find((v) =>
         info.is(v.t, m.Organisation.Owner)
@@ -329,25 +335,25 @@ describe('Session', () => {
         info.is(v.t, m.Organisation.Manager)
       );
 
-      assert.equal(savedAcmeOwner?.s, '3');
-      assert.isUndefined(savedAcmeOwner?.a);
-      assert.isUndefined(savedAcmeOwner?.r);
-      assert.equal(savedAcmeManager?.s, '2');
-      assert.isUndefined(savedAcmeManager?.a);
-      assert.isUndefined(savedAcmeManager?.r);
+      expect(savedAcmeOwner?.s).toBe( '3');
+      expect(savedAcmeOwner?.a).toBeUndefined();
+      expect(savedAcmeOwner?.r).toBeUndefined();
+      expect(savedAcmeManager?.s).toBe( '2');
+      expect(savedAcmeManager?.a).toBeUndefined();
+      expect(savedAcmeManager?.r).toBeUndefined();
 
       const savedOcme = save.objects?.find((v) => v.i === '102');
 
-      assert.equal(savedOcme?.v, '1102');
-      assert.equal(savedOcme?.roles?.length, 1);
+      expect(savedOcme?.v).toBe( '1102');
+      expect(savedOcme?.roles?.length).toBe( 1);
 
       const savedOcmeOwner = savedOcme?.roles?.find((v) =>
         info.is(v.t, m.Organisation.Owner)
       );
 
-      assert.isNull(savedOcmeOwner?.s);
-      assert.isUndefined(savedOcmeOwner?.a);
-      assert.isUndefined(savedOcmeOwner?.r);
+      expect(savedOcmeOwner?.s).toBeNull();
+      expect(savedOcmeOwner?.a).toBeUndefined();
+      expect(savedOcmeOwner?.r).toBeUndefined();
     });
 
     it('pushRequest should have all changes from session', () => {
@@ -367,12 +373,12 @@ describe('Session', () => {
       const save = session.pushRequest();
       const info = new PushRequestInfo(save, m);
 
-      assert.equal(save.objects?.length, 2);
+      expect(save.objects?.length).toBe( 2);
 
       const savedAcme = save.objects?.find((v) => v.i === '101');
 
-      assert.equal(savedAcme?.v, '1101');
-      assert.equal(savedAcme?.roles?.length, 2);
+      expect(savedAcme?.v).toBe( '1101');
+      expect(savedAcme?.roles?.length).toBe( 2);
 
       const savedAcmeOwner = savedAcme?.roles?.find((v) =>
         info.is(v.t, m.Organisation.Owner)
@@ -381,25 +387,25 @@ describe('Session', () => {
         info.is(v.t, m.Organisation.Manager)
       );
 
-      assert.equal(savedAcmeOwner?.s, '3');
-      assert.isUndefined(savedAcmeOwner?.a);
-      assert.isUndefined(savedAcmeOwner?.r);
-      assert.equal(savedAcmeManager?.s, '2');
-      assert.isUndefined(savedAcmeManager?.a);
-      assert.isUndefined(savedAcmeManager?.r);
+      expect(savedAcmeOwner?.s).toBe( '3');
+      expect(savedAcmeOwner?.a).toBeUndefined();
+      expect(savedAcmeOwner?.r).toBeUndefined();
+      expect(savedAcmeManager?.s).toBe( '2');
+      expect(savedAcmeManager?.a).toBeUndefined();
+      expect(savedAcmeManager?.r).toBeUndefined();
 
       const savedOcme = save.objects?.find((v) => v.i === '102');
 
-      assert.equal(savedOcme?.v, '1102');
-      assert.equal(savedOcme?.roles?.length, 1);
+      expect(savedOcme?.v).toBe( '1102');
+      expect(savedOcme?.roles?.length).toBe( 1);
 
       const savedOcmeOwner = savedOcme?.roles?.find((v) =>
         info.is(v.t, m.Organisation.Owner)
       );
 
-      assert.isNull(savedOcmeOwner?.s);
-      assert.isUndefined(savedOcmeOwner?.a);
-      assert.isUndefined(savedOcmeOwner?.r);
+      expect(savedOcmeOwner?.s).toBeNull();
+      expect(savedOcmeOwner?.a).toBeUndefined();
+      expect(savedOcmeOwner?.r).toBeUndefined();
     });
 
     it('should save with many objects', () => {
@@ -422,61 +428,61 @@ describe('Session', () => {
       const save = session.pushRequest();
       const info = new PushRequestInfo(save, m);
 
-      assert.equal(save.newObjects?.length, 3);
-      assert.equal(save.objects?.length, 0);
+      expect(save.newObjects?.length).toBe( 3);
+      expect(save.objects?.length).toBe( 0);
 
       {
         const savedMathijs = save.newObjects?.find(
           (v) => v.ni === mathijs.newId
         );
-        assert.isTrue(info.is(savedMathijs?.t ?? '', m.Person));
-        assert.equal(savedMathijs?.roles?.length, 2);
+        expect(info.is(savedMathijs?.t ?? '', m.Person)).toBeTruthy();
+        expect(savedMathijs?.roles?.length).toBe( 2);
 
         const savedMathijsFirstName = savedMathijs?.roles?.find((v) =>
           info.is(v.t, m.Person.FirstName)
         );
-        assert.equal(savedMathijsFirstName?.s, 'Mathijs');
+        expect(savedMathijsFirstName?.s).toBe( 'Mathijs');
 
         const savedMathijsLastName = savedMathijs?.roles?.find((v) =>
           info.is(v.t, m.Person.LastName)
         );
-        assert.equal(savedMathijsLastName?.s, 'Verwer');
+        expect(savedMathijsLastName?.s).toBe( 'Verwer');
       }
 
       {
         const savedAcme2 = save.newObjects?.find((v) => v.ni === acme2.newId);
-        assert.isTrue(info.is(savedAcme2?.t ?? '', m.Organisation));
-        assert.equal(savedAcme2?.roles?.length, 3);
+        expect(info.is(savedAcme2?.t ?? '', m.Organisation)).toBeTruthy();
+        expect(savedAcme2?.roles?.length).toBe( 3);
 
         const savedAcme2Manager = savedAcme2?.roles?.find((v) =>
           info.is(v.t, m.Organisation.Manager)
         );
-        assert.equal(savedAcme2Manager?.s, mathijs.newId);
+        expect(savedAcme2Manager?.s).toBe( mathijs.newId);
 
         const savedAcme2Employees = savedAcme2?.roles?.find((v) =>
           info.is(v.t, m.Organisation.Employees)
         );
-        assert.isUndefined(savedAcme2Employees?.s);
-        assert.sameMembers(savedAcme2Employees?.a ?? [], [mathijs.newId]);
-        assert.isUndefined(savedAcme2Employees?.r);
+        expect(savedAcme2Employees?.s).toBeUndefined();
+        expect(savedAcme2Employees?.a ?? []).toIncludeSameMembers( [mathijs.newId]);
+        expect(savedAcme2Employees?.r).toBeUndefined();
       }
 
       {
         const savedAcme3 = save.newObjects?.find((v) => v.ni === acme3.newId);
-        assert.isTrue(info.is(savedAcme3?.t ?? '', m.Organisation));
-        assert.equal(savedAcme3?.roles?.length, 3);
+        expect(info.is(savedAcme3?.t ?? '', m.Organisation)).toBeTruthy();
+        expect(savedAcme3?.roles?.length).toBe( 3);
 
         const savedAcme3Manager = savedAcme3?.roles?.find((v) =>
           info.is(v.t, m.Organisation.Manager)
         );
-        assert.equal(savedAcme3Manager?.s, '3');
+        expect(savedAcme3Manager?.s).toBe( '3');
 
         const savedAcme3Employees = savedAcme3?.roles?.find((v) =>
           info.is(v.t, m.Organisation.Employees)
         );
-        assert.isUndefined(savedAcme3Employees?.s);
-        assert.sameMembers(savedAcme3Employees?.a ?? [], ['3']);
-        assert.isUndefined(savedAcme3Employees?.r);
+        expect(savedAcme3Employees?.s).toBeUndefined();
+        expect(savedAcme3Employees?.a ?? []).toIncludeSameMembers( ['3']);
+        expect(savedAcme3Employees?.r).toBeUndefined();
       }
     });
 
@@ -496,47 +502,47 @@ describe('Session', () => {
       const save = session.pushRequest();
       const info = new PushRequestInfo(save, m);
 
-      assert.equal(save.newObjects?.length, 0);
-      assert.equal(save.objects?.length, 3);
+      expect(save.newObjects?.length).toBe( 0);
+      expect(save.objects?.length).toBe( 3);
 
       const savedAcme = save.objects?.find((v) => v.i === '101');
 
-      assert.equal(savedAcme?.v, '1101');
-      assert.equal(savedAcme?.roles?.length, 1);
+      expect(savedAcme?.v).toBe( '1101');
+      expect(savedAcme?.roles?.length).toBe( 1);
 
       const savedAcmeEmployees = savedAcme?.roles?.find((v) =>
         info.is(v.t, m.Organisation.Employees)
       );
 
-      assert.isUndefined(savedAcmeEmployees?.s);
-      assert.sameMembers(savedAcmeEmployees?.a ?? [], []);
-      assert.sameMembers(savedAcmeEmployees?.r ?? [], ['1', '2', '3']);
+      expect(savedAcmeEmployees?.s).toBeUndefined();
+      expect(savedAcmeEmployees?.a ?? []).toIncludeSameMembers( []);
+      expect(savedAcmeEmployees?.r ?? []).toIncludeSameMembers( ['1', '2', '3']);
 
       const savedOcme = save.objects?.find((v) => v.i === '102');
 
-      assert.equal(savedOcme?.v, '1102');
-      assert.equal(savedOcme?.roles?.length, 1);
+      expect(savedOcme?.v).toBe( '1102');
+      expect(savedOcme?.roles?.length).toBe( 1);
 
       const savedOcmeEmployees = savedOcme?.roles?.find((v) =>
         info.is(v.t, m.Organisation.Employees)
       );
 
-      assert.isUndefined(savedOcmeEmployees?.s);
-      assert.sameMembers(savedOcmeEmployees?.a ?? [], ['2', '3']);
-      assert.sameMembers(savedOcmeEmployees?.r ?? [], ['1']);
+      expect(savedOcmeEmployees?.s).toBeUndefined();
+      expect(savedOcmeEmployees?.a ?? []).toIncludeSameMembers( ['2', '3']);
+      expect(savedOcmeEmployees?.r ?? []).toIncludeSameMembers( ['1']);
 
       const savedIcme = save.objects?.find((v) => v.i === '103');
 
-      assert.equal(savedIcme?.v, '1103');
-      assert.equal(savedIcme?.roles?.length, 1);
+      expect(savedIcme?.v).toBe( '1103');
+      expect(savedIcme?.roles?.length).toBe( 1);
 
       const savedIcmeEmployees = savedIcme?.roles?.find((v) =>
         info.is(v.t, m.Organisation.Employees)
       );
 
-      assert.isUndefined(savedIcmeEmployees?.s);
-      assert.sameMembers(savedIcmeEmployees?.a ?? [], ['1', '2', '3']);
-      assert.isUndefined(savedIcmeEmployees?.r);
+      expect(savedIcmeEmployees?.s).toBeUndefined();
+      expect(savedIcmeEmployees?.a ?? []).toIncludeSameMembers( ['1', '2', '3']);
+      expect(savedIcmeEmployees?.r).toBeUndefined();
     });
 
     it('should save with new objects', () => {
@@ -559,72 +565,72 @@ describe('Session', () => {
       const save = session.pushRequest();
       const info = new PushRequestInfo(save, m);
 
-      assert.equal(save.newObjects?.length, 3);
-      assert.equal(save.objects?.length, 0);
+      expect(save.newObjects?.length).toBe( 3);
+      expect(save.objects?.length).toBe( 0);
 
       {
         const savedMathijs = save.newObjects?.find(
           (v) => v.ni === mathijs.newId
         );
-        assert.isTrue(info.is(savedMathijs?.t ?? '', m.Person));
-        assert.equal(savedMathijs?.roles?.length, 2);
+        expect(info.is(savedMathijs?.t ?? '', m.Person)).toBeTruthy();
+        expect(savedMathijs?.roles?.length).toBe( 2);
 
         const savedMathijsFirstName = savedMathijs?.roles?.find((v) =>
           info.is(v.t, m.Person.FirstName)
         );
-        assert.equal(savedMathijsFirstName?.s, 'Mathijs');
+        expect(savedMathijsFirstName?.s).toBe( 'Mathijs');
 
         const savedMathijsLastName = savedMathijs?.roles?.find((v) =>
           info.is(v.t, m.Person.LastName)
         );
-        assert.equal(savedMathijsLastName?.s, 'Verwer');
+        expect(savedMathijsLastName?.s).toBe( 'Verwer');
       }
 
       {
         const savedAcme2 = save.newObjects?.find((v) => v.ni === acme2.newId);
-        assert.isTrue(info.is(savedAcme2?.t ?? '', m.Organisation));
-        assert.equal(savedAcme2?.roles?.length, 3);
+        expect(info.is(savedAcme2?.t ?? '', m.Organisation)).toBeTruthy();
+        expect(savedAcme2?.roles?.length).toBe( 3);
 
         const savedAcme2Manager = savedAcme2?.roles?.find((v) =>
           info.is(v.t, m.Organisation.Manager)
         );
-        assert.equal(savedAcme2Manager?.s, mathijs.newId);
+        expect(savedAcme2Manager?.s).toBe( mathijs.newId);
 
         const savedAcme2Employees = savedAcme2?.roles?.find((v) =>
           info.is(v.t, m.Organisation.Employees)
         );
-        assert.isUndefined(savedAcme2Employees?.s);
-        assert.sameMembers(savedAcme2Employees?.a ?? [], [mathijs.newId]);
-        assert.isUndefined(savedAcme2Employees?.r);
+        expect(savedAcme2Employees?.s).toBeUndefined();
+        expect(savedAcme2Employees?.a ?? []).toIncludeSameMembers( [mathijs.newId]);
+        expect(savedAcme2Employees?.r).toBeUndefined();
       }
 
       {
         const savedAcme3 = save.newObjects?.find((v) => v.ni === acme3.newId);
-        assert.isTrue(info.is(savedAcme3?.t ?? '', m.Organisation));
-        assert.equal(savedAcme3?.roles?.length, 3);
+        expect(info.is(savedAcme3?.t ?? '', m.Organisation)).toBeTruthy();
+        expect(savedAcme3?.roles?.length).toBe( 3);
 
         const savedAcme3Manager = savedAcme3?.roles?.find((v) =>
           info.is(v.t, m.Organisation.Manager)
         );
-        assert.equal(savedAcme3Manager?.s, '3');
+        expect(savedAcme3Manager?.s).toBe( '3');
 
         const savedAcme3Employees = savedAcme3?.roles?.find((v) =>
           info.is(v.t, m.Organisation.Employees)
         );
-        assert.isUndefined(savedAcme3Employees?.s);
-        assert.sameMembers(savedAcme3Employees?.a ?? [], ['3']);
-        assert.isUndefined(savedAcme3Employees?.r);
+        expect(savedAcme3Employees?.s).toBeUndefined();
+        expect(savedAcme3Employees?.a ?? []).toIncludeSameMembers( ['3']);
+        expect(savedAcme3Employees?.r).toBeUndefined();
       }
     });
 
     it('should exist when created', () => {
       const john = session.create(m.Person) as Person;
 
-      assert.exists(john);
+      expect(john).toBeDefined();
 
-      assert.isNull(john.FirstName);
-      assert.isTrue(john.CanReadFirstName);
-      assert.isTrue(john.CanWriteFirstName);
+      expect(john.FirstName).toBeNull();
+      expect(john.CanReadFirstName).toBeTruthy();
+      expect(john.CanWriteFirstName).toBeTruthy();
     });
 
     it('reset', () => {
@@ -643,24 +649,24 @@ describe('Session', () => {
 
       session.reset();
 
-      assert.isFalse(mathijs.isNew);
-      assert.isUndefined(mathijs.id);
-      assert.isUndefined(mathijs.newId);
-      assert.isUndefined(mathijs.session);
-      assert.isUndefined(mathijs.objectType);
-      assert.isUndefined(mathijs.FirstName);
-      assert.isUndefined(mathijs.LastName);
-      assert.isUndefined(mathijs.CycleOne);
-      assert.isUndefined(mathijs.CycleMany);
+      expect(mathijs.isNew).toBeFalsy();
+      expect(mathijs.id).toBeUndefined();
+      expect(mathijs.newId).toBeUndefined();
+      expect(mathijs.session).toBeUndefined();
+      expect(mathijs.objectType).toBeUndefined();
+      expect(mathijs.FirstName).toBeUndefined();
+      expect(mathijs.LastName).toBeUndefined();
+      expect(mathijs.CycleOne).toBeUndefined();
+      expect(mathijs.CycleMany).toBeUndefined();
 
-      assert.isFalse(acme2.isNew);
-      assert.isUndefined(acme2.id);
-      assert.isUndefined(acme2.newId);
-      assert.isUndefined(acme2.session);
-      assert.isUndefined(acme2.objectType);
-      assert.isUndefined(acme2.Name);
-      assert.isUndefined(acme2.Owner);
-      assert.isUndefined(acme2.Manager);
+      expect(acme2.isNew).toBeFalsy();
+      expect(acme2.id).toBeUndefined();
+      expect(acme2.newId).toBeUndefined();
+      expect(acme2.session).toBeUndefined();
+      expect(acme2.objectType).toBeUndefined();
+      expect(acme2.Name).toBeUndefined();
+      expect(acme2.Owner).toBeUndefined();
+      expect(acme2.Manager).toBeUndefined();
     });
 
     it('onsaved', () => {
@@ -690,13 +696,13 @@ describe('Session', () => {
 
       session.pushResponse(pushResponse);
 
-      assert.isUndefined(mathijs.newId);
-      assert.equal(mathijs.id, '10000');
-      assert.equal(mathijs.objectType.name, 'Person');
+      expect(mathijs.newId).toBeUndefined();
+      expect(mathijs.id).toBe( '10000');
+      expect(mathijs.objectType.name).toBe( 'Person');
 
       mathijs = session.get('10000') as Person;
 
-      assert.exists(mathijs);
+      expect(mathijs).toBeDefined();
 
       let exceptionThrown = false;
       try {
@@ -705,7 +711,7 @@ describe('Session', () => {
         exceptionThrown = true;
       }
 
-      assert.isTrue(exceptionThrown);
+      expect(exceptionThrown).toBeTruthy();
     });
 
     it('methodCanExecute', () => {
@@ -713,59 +719,59 @@ describe('Session', () => {
       const ocme = session.get('102') as Organisation;
       const icme = session.get('103') as Organisation;
 
-      assert.isTrue(acme.CanReadName);
-      assert.isFalse(ocme.CanReadName);
-      assert.isFalse(icme.CanReadName);
+      expect(acme.CanReadName).toBeTruthy();
+      expect(ocme.CanReadName).toBeFalsy();
+      expect(icme.CanReadName).toBeFalsy();
 
-      assert.isTrue(acme.CanWriteOwner);
-      assert.isFalse(ocme.CanWriteOwner);
-      assert.isFalse(icme.CanWriteOwner);
+      expect(acme.CanWriteOwner).toBeTruthy();
+      expect(ocme.CanWriteOwner).toBeFalsy();
+      expect(icme.CanWriteOwner).toBeFalsy();
 
-      assert.isTrue(acme.CanExecuteJustDoIt);
-      assert.isFalse(ocme.CanExecuteJustDoIt);
-      assert.isFalse(icme.CanExecuteJustDoIt);
+      expect(acme.CanExecuteJustDoIt).toBeTruthy();
+      expect(ocme.CanExecuteJustDoIt).toBeFalsy();
+      expect(icme.CanExecuteJustDoIt).toBeFalsy();
     });
 
     it('get', () => {
       const acme = session.create(m.Organisation) as Organisation;
 
       let acmeAgain = session.get(acme.id);
-      assert.equal(acmeAgain, acme);
+      expect(acmeAgain).toBe( acme);
 
       acmeAgain = session.get(acme.newId!);
-      assert.equal(acmeAgain, acme);
+      expect(acmeAgain).toBe( acme);
     });
 
     it('hasChangesWithNewObject', () => {
-      assert.isFalse(session.hasChanges);
+      expect(session.hasChanges).toBeFalsy();
 
       const walter = session.create(m.Person) as Person;
 
-      assert.isTrue(session.hasChanges);
+      expect(session.hasChanges).toBeTruthy();
     });
 
     it('hasChangesWithChangedRelations', () => {
       const martien = session.get('3') as Person;
 
-      assert.isFalse(session.hasChanges);
+      expect(session.hasChanges).toBeFalsy();
 
       // Unit
       martien.FirstName = 'New Name';
 
-      assert.isTrue(session.hasChanges);
+      expect(session.hasChanges).toBeTruthy();
 
       session.reset();
 
       const acme = session.get('101') as Organisation;
 
-      assert.include(acme.Employees, martien);
+      expect(acme.Employees).toContain(martien);
 
       // Composites
       acme.RemoveEmployee(martien);
 
-      assert.isTrue(session.hasChanges);
+      expect(session.hasChanges).toBeTruthy();
 
-      assert.notInclude(acme.Employees, martien);
+      expect(acme.Employees).not.toContain( martien);
     });
   });
 });

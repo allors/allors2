@@ -11,7 +11,7 @@ describe('MetaPopulation',
 
             it('should be newable',
                 () => {
-                    assert.isNotNull(metaPopulation);
+                    expect(metaPopulation).not.toBeNull();
                 });
 
             describe('init with empty data population', () => {
@@ -20,7 +20,7 @@ describe('MetaPopulation',
                     () => {
                         ['Binary', 'Boolean', 'DateTime', 'Decimal', 'Float', 'Integer', 'String', 'Unique'].forEach((name) => {
                             const unit = (metaPopulation.objectTypeByName as {[key: string]: any})[name];
-                            assert.isNotNull(unit);
+                            expect(unit).not.toBeNull();
                         });
                     });
 
@@ -28,7 +28,7 @@ describe('MetaPopulation',
                     () => {
                         ['Media', 'ObjectState', 'Counter', 'Person', 'Role', 'UserGroup'].forEach((name) => {
                             const unit = (metaPopulation.objectTypeByName as {[key: string]: any})[name];
-                            assert.isNotNull(unit);
+                            expect(unit).not.toBeNull();
                         });
                     });
             });
