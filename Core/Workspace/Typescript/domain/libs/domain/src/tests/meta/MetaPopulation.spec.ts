@@ -1,9 +1,6 @@
-import * as chai from 'chai';
-import { assert } from 'chai';
-import 'mocha';
+import { MetaPopulation } from '@allors/workspace/meta';
 
-import { MetaPopulation } from '../../src/allors/framework';
-import { data } from '../../src/allors/meta';
+import { data } from '@allors/meta';
 
 describe('MetaPopulation',
     () => {

@@ -1,9 +1,9 @@
-import { assert } from 'chai';
-import 'mocha';
+import { MetaPopulation } from '@allors/workspace/meta';
+import { Workspace } from '@allors/workspace/domain';
+import { ResponseType, PullResponse } from '@allors/workspace/protocol';
 
-import { domain } from '../../src/allors/domain';
-import { MetaPopulation, PullResponse, ResponseType, Workspace } from '../../src/allors/framework';
-import { data, Meta } from '../../src/allors/meta';
+import { data, Meta } from '@allors/meta';
+import { domain } from '@allors/domain';
 
 import { syncResponse, securityResponse, securityResponse2 } from './fixture';
 

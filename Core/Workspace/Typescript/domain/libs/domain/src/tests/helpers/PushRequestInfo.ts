@@ -1,7 +1,5 @@
-import { MetaObject } from '../../src/allors/framework/meta/MetaObject';
-import { PushRequest } from '../../src/allors/framework/protocol/push/PushRequest';
-import { MetaPopulation } from '../../src/allors/framework/meta/MetaPopulation';
-import { assert } from '../../src/allors/framework/assert';
+import { MetaPopulation, assert, MetaObject } from '@allors/workspace/meta';
+import { PushRequest } from '@allors/workspace/protocol';
 
 export class PushRequestInfo {
   metaTypeByKey: Map<string, MetaObject>;

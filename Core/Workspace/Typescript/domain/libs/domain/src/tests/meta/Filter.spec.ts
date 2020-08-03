@@ -1,9 +1,8 @@
-import { domain } from '../../src/allors/domain';
-import { MetaPopulation, Workspace } from '../../src/allors/framework';
-import { data, PullFactory, Meta } from '../../src/allors/meta';
+import { MetaPopulation } from '@allors/workspace/meta';
+import { Workspace } from '@allors/workspace/domain';
 
-import { assert } from 'chai';
-import 'mocha';
+import { domain } from '@allors/domain';
+import { data, PullFactory, Meta } from '@allors/meta';
 
 describe('Filter',
     () => {

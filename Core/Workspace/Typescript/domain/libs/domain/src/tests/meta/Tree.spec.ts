@@ -1,9 +1,8 @@
-import { domain, Organisation, Person } from '../../src/allors/domain';
-import { MetaPopulation, PullRequest, Session, Workspace } from '../../src/allors/framework';
-import { data, TreeFactory, Meta } from '../../src/allors/meta';
+import { MetaPopulation } from '@allors/workspace/meta';
+import { Workspace } from '@allors/workspace/domain';
 
-import { assert } from 'chai';
-import 'mocha';
+import { data, TreeFactory, Meta } from '@allors/meta';
+import { domain } from '@allors/domain';
 
 describe('Tree',
   () => {
