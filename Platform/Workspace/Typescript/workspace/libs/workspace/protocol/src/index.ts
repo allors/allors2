@@ -29,4 +29,4 @@ export { ResponseError } from './ResponseError';
 export { DerivationError } from './DerivationError';
 
 export { Compressor } from './Compressor';
-
+export { services } from './services';

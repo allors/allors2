@@ -38,20 +38,8 @@ namespace Allors
                     { "Workspace/Csharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/generated" },
                     { "Workspace/Csharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/generated" },
 
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/meta/libs/meta/src/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/domain/libs/domain/src/generated" },
-
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Angular/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Angular/src/allors/domain/generated" },
-
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Material/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Material/src/allors/domain/generated" },
-
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Promise/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Promise/src/allors/domain/generated" },
-
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Gatsby/plugins/gatsby-source-allors/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Gatsby/plugins/gatsby-source-allors/src/allors/domain/generated" },
+                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript.Nx/libs/meta/src/generated" },
+                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript.Nx/libs/domain/src/generated" },
 
                     { "Workspace/Typescript.legacy/Templates/meta.ts.stg", "Workspace/Typescript.legacy/Site/wwwroot/generated/meta" },
                     { "Workspace/Typescript.legacy/Templates/domain.ts.stg", "Workspace/Typescript.legacy/Site/wwwroot/generated/domain" },

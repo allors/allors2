@@ -1,0 +1,54 @@
+{
+  "npmScope": "allors",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "meta": {
+      "tags": []
+    },
+    "workspace-data": {
+      "tags": []
+    },
+    "workspace-domain": {
+      "tags": []
+    },
+    "workspace-meta": {
+      "tags": []
+    },
+    "workspace-protocol": {
+      "tags": []
+    },
+    "domain": {
+      "tags": []
+    },
+    "angular-core": {
+      "tags": []
+    },
+    "angular-app": {
+      "tags": []
+    },
+    "angular/app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["angular-app"]
+    }
+  }
+}
