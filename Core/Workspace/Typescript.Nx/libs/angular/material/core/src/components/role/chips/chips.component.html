@@ -1,0 +1,25 @@
+<mat-form-field *ngIf="!disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let item of model" [removable]="!disabled" (removed)="remove(item)" [attr.data-allors-chip-display]="item[display]">{{item[this.display]}}<mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon></mat-chip>
+    <input #searchInput [matChipInputFor]="chipList" aFocus (blur)="inputBlur()" (focus)="inputFocus()" [aFocusTrigger]="roleType" [matAutocomplete]="autocomplete" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [readonly]="readonly">
+  </mat-chip-list>
+
+  <button type="button" mat-button *ngIf="model.length > 0" matSuffix mat-icon-button aria-label="Clear" (click)="clear($event)">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="displayFn()" (optionSelected)="optionSelected($event)">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [attr.data-allors-option-display]="option[display]">
+      {{option[this.display]}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<mat-form-field *ngIf="disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
+  <mat-chip-list #chipListDisabled [disabled]="disabled">
+    <mat-chip *ngFor="let item of model" [attr.data-allors-chip-display]="item[display]" disabled>
+      {{item[this.display]}}
+    </mat-chip>
+    <input aFocus [aFocusTrigger]="roleType" [matChipInputFor]="chipListDisabled" type="text" autocomplete="off" matInput [placeholder]="label" [disabled]="disabled" readonly>
+  </mat-chip-list>
+</mat-form-field>

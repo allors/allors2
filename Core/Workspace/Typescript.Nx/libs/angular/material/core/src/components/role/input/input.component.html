@@ -1,0 +1,4 @@
+<mat-form-field class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
+  <input aFocus [aFocusTrigger]="roleType" matInput [type]="textType" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</mat-form-field>

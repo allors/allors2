@@ -1,0 +1,4 @@
+<div class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsRoleType" [attr.data-allors-roletype]="dataAllorsRoleType">
+  <mat-slider aFocus [aFocusTrigger]="roleType" [(ngModel)]="model" [name]="name" [invert]="invert" [min]="min" [max]="max" [step]="step" [thumbLabel]="thumbLabel" [tickInterval]="tickInterval" [vertical]="vertical" [color]="color" [required]="required" [disabled]="disabled"></mat-slider>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</div>

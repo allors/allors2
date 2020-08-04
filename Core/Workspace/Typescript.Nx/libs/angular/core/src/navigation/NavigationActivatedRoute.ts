@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { ObjectType } from '@allors/framework';
+import { ObjectType } from '@allors/meta/system';
 
 export class NavigationActivatedRoute {
 

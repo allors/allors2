@@ -1,0 +1,80 @@
+<mat-dialog-content>
+  <form [formGroup]="formGroup">
+    <mat-vertical-stepper #stepper [linear]="true" (selectionChange)="stepperSelectionChange($event)" (animationDone)="focus()">
+      <mat-step [completed]="!!fieldDefinition">
+        <ng-template matStepLabel>
+          <span *ngIf="!fieldDefinition">Field</span>
+          <span *ngIf="!!fieldDefinition">{{ fieldDefinition.name }}</span>
+        </ng-template>
+        <div class="mt-3">
+          <button
+            type="button"
+            mat-flat-button
+            color="accent"
+            class="mr-1"
+            *ngFor="let availableDefinition of filter.definition.fieldDefinitions"
+            (click)="selected(availableDefinition)"
+          >
+            {{ availableDefinition.name }}
+          </button>
+        </div>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>
+          <span *ngIf="!fieldDefinition">Criteria</span>
+          <span *ngIf="!!fieldDefinition">{{ fieldDefinition.criteria }}</span>
+        </ng-template>
+
+        <div *ngIf="useSearch">
+          <a-mat-filter-field-search [parent]="formGroup" [filterFieldDefinition]="fieldDefinition" (apply)="apply(); false"></a-mat-filter-field-search>
+        </div>
+
+        <mat-form-field *ngIf="useInput">
+          <input #focus1 matInput [placeholder]="placeholder" formControlName="value" required (keyup.enter)="apply(); false" />
+        </mat-form-field>
+
+        <mat-form-field *ngIf="isBetween && useInput">
+          <input matInput [placeholder]="placeholder" formControlName="value2" required (keyup.enter)="apply(); false" />
+        </mat-form-field>
+
+        <mat-form-field *ngIf="useDatepicker">
+          <input
+            #focus2
+            matInput
+            [matDatepicker]="picker"
+            [placeholder]="placeholder"
+            formControlName="value"
+            required
+            (keyup.enter)="apply(); (false)"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="isBetween && useDatepicker" class="ml-3">
+          <input
+            #focus3
+            matInput
+            [matDatepicker]="picker2"
+            placeholder="To"
+            formControlName="value2"
+            required
+            (keyup.enter)="apply(); (false)"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <div *ngIf="useToggle" class="m-3">
+          <mat-slide-toggle #focus4 formControlName="value" required>{{ fieldDefinition?.name }}</mat-slide-toggle>
+        </div>
+
+        <div>
+          <button *ngIf="!useSearch" mat-button color="primary" (click)="apply()">Apply</button>
+          <button mat-button mat-dialog-close>Cancel</button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
+  </form>
+</mat-dialog-content>

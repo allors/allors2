@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Pull } from '@allors/framework';
-import { Loaded } from '@allors/angular/framework';
+import { Pull } from '@allors/data/system';
+import { Loaded } from '@allors/angular/core';
 
 import { PanelManagerService } from './panelmanager.service';
 

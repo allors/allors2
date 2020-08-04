@@ -1,0 +1,4 @@
+<a-mat-footer>
+    <button mat-raised-button (click)="location.back()" type="button">CANCEL</button>
+    <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+</a-mat-footer>

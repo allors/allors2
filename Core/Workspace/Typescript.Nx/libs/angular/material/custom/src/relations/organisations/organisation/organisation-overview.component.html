@@ -1,0 +1,45 @@
+<div class="a-detail">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div class="container-fluid">
+    <div *ngIf="organisation" class="row">
+
+      <div class="col-md-6">
+        <mat-card>
+          <div class="row">
+            <div class="col">
+              <h2>
+                <mat-icon>business</mat-icon> Organisation</h2>
+            </div>
+          </div>
+
+
+
+          <mat-card-content>
+            <div class="container">
+              <div layout="row" class="push-top">
+                <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
+              </div>
+
+              <div layout="row" class="push-top">
+                <a-mat-static [object]="organisation" [roleType]="m.Organisation.Owner" display="UserName"></a-mat-static>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-button [routerLink]="[ '/contacts/editorganisation', organisation.id]">Edit</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { IObject, ObjectType } from '@allors/framework';
+import { IObject } from '@allors/domain/system';
+import { ObjectType } from '@allors/meta/system';
 
 @Injectable({
   providedIn: 'root',

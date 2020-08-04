@@ -1,0 +1,6 @@
+<div class="d-flex flex-column align-items-stretch" style="padding-bottom: 1rem;">
+  <mat-slide-toggle aFocus [aFocusTrigger]="roleType" [(ngModel)]="model" [name]="name" [disabled]="disabled" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType" (change)="change()">
+  {{label}}
+  </mat-slide-toggle>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</div>

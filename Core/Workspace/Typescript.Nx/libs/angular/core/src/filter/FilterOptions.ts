@@ -1,6 +1,6 @@
 import { PropertyType } from '@allors/meta/system';
 
-import { SearchFactory } from '../search';
+import { SearchFactory } from '../search/SearchFactory';
 
 export class FilterOptions {
   search: SearchFactory;

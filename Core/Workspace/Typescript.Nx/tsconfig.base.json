@@ -26,7 +26,11 @@
       "@allors/domain/core": ["libs/domain/core/src/index.ts"],
       "@allors/domain/custom": ["libs/domain/custom/src/index.ts"],
       "@allors/meta/core": ["libs/meta/core/src/index.ts"],
-      "@allors/meta/custom": ["libs/meta/custom/src/index.ts"]
+      "@allors/meta/custom": ["libs/meta/custom/src/index.ts"],
+      "@allors/angular/material/core": ["libs/angular/material/core/src/index.ts"],
+      "@allors/angular/material/custom": ["libs/angular/material/custom/src/index.ts"],
+      "@allors/angular/module": ["libs/angular/module/src/index.ts"],
+      "@allors/angular/material/module": ["libs/angular/material/module/src/index.ts"]
     },
     "preserveSymlinks": true,
     "resolveJsonModule": true

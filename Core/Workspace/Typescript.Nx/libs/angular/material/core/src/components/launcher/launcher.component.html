@@ -1,0 +1,10 @@
+<div *ngIf="!panelsService.expanded">
+  <mat-grid-list [cols]="3" rowHeight="150px" gutterSize="10px">
+    <mat-grid-tile *ngFor="let panel of panels" matRipple (click)="panelsService.toggle(panel.name)">
+      <mat-icon>{{panel.icon}}</mat-icon>
+      <mat-grid-tile-footer>
+        <h3 mat-line>{{panel.title}}</h3>
+      </mat-grid-tile-footer>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,0 +1,21 @@
+<div [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
+  <div class="row">
+    <mat-form-field class="col">
+      <input aFocus [aFocusTrigger]="roleType" matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label"
+        readonly (click)="fileInput.click()">
+    </mat-form-field>
+
+    <button mat-icon-button type="button" (click)="fileInput.click()">
+      <mat-icon>add_to_photos</mat-icon>
+    </button>
+  </div>
+
+  <input #fileInput type="file" (change)="onFileInput($event); fileInput.value = '';" style="display:none;"
+    multiple="multiple" />
+
+  <div *ngIf="model" class="row" style="margin-bottom: 1rem;">
+    <div class="col-6 col-sm-4 col-lg-3 d-flex mb-3" *ngFor="let media of medias">
+      <a-mat-media [media]="media" (delete)="delete(media)"></a-mat-media>
+    </div>
+  </div>
+</div>

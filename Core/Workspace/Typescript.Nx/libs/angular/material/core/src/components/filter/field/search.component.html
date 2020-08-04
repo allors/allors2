@@ -1,0 +1,8 @@
+<mat-form-field [formGroup]="parent" class="d-flex flex-column align-items-stretch">
+  <input aFocus matInput type="text" placeholder="Value" formControlName="value" [matAutocomplete]="auto" required>
+  <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="display" (optionSelected)="apply.emit()">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{display(option)}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

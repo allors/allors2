@@ -1,0 +1,99 @@
+<div class="a-master">
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{ title }}</h1>
+      <span class="col"></span>
+      <button mat-icon-button matTooltip="Export to CSV" routerLink="/export/people">
+        <mat-icon>cloud_download</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div *ngIf="dataSource">
+    <mat-card>
+      <mat-card-content class="container-fluid a-list" style="flex: 0 0 auto;">
+        <a-mat-filter [filter]="filter"></a-mat-filter>
+      </mat-card-content>
+
+      <mat-card-content class="container-fluid a-list" style="overflow: auto;">
+        <table
+          mat-table
+          matSort
+          matSortActive="name"
+          matSortDirection="asc"
+          (matSortChange)="sort($event)"
+          [dataSource]="dataSource"
+          style="width: 100%;"
+        >
+          <!-- Selection Column -->
+          <ng-container matColumnDef="select" sticky>
+            <th mat-header-cell *matHeaderCellDef (click)="$event.stopPropagation()" style="width: 4rem;">
+              <mat-checkbox
+                (change)="$event ? masterToggle() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()"
+              >
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
+              <mat-checkbox (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"> </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.firstName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.lastName }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+            <td mat-cell *matCellDef="let row">
+              {{ row.email }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="menu" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef style="width: 2rem;"></th>
+            <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()" [mat-menu-trigger-for]="menu">
+              <button type="button" mat-icon-button>
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <a (click)="navigation.overview(row.person)" mat-menu-item>Details</a>
+                <button mat-menu-item (click)="delete(row.person)" [disabled]="!row.person.CanExecuteDelete">Delete</button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            (click)="navigation.overview(row.person)"
+            style="cursor: pointer;"
+            [attr.data-allors-id]="row.person.id"
+          ></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <a mat-raised-button routerLink="/contacts/addperson">
+        Add New
+      </a>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

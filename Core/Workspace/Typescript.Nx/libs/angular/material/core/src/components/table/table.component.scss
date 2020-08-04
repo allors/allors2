@@ -1,0 +1,15 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  > div {
+    flex-grow: 1;
+    overflow: auto;
+    > table {
+      width: 100%;
+    }
+  }
+  > mat-paginator {
+    flex: 0 0 auto;
+  }
+}

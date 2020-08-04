@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>{{title}}</h1>
+
+<mat-dialog-content>
+
+  <div *ngIf="isAccessError">
+    <h2>You do not have the required rights.</h2>
+    <ul>
+      <li *ngFor="let error of response.accessErrors;">{{error}}</li>
+    </ul>
+  </div>
+
+  <div *ngIf="isVersionError">
+    <h2>Modifications were detected since last access</h2>
+    <ul>
+      <li *ngFor="let error of response.versionErrors;">{{error}}</li>
+    </ul>
+  </div>
+
+  <div *ngIf="isMissingError">
+    <h2>Access to a deleted object was requested.</h2>
+    <ul>
+      <li *ngFor="let error of response.missingErrors;">{{error}}</li>
+    </ul>
+  </div>
+
+  <div *ngIf="isDerivationError">
+    <h2>Following errors were encountered during derivation.</h2>
+    <ul>
+      <li *ngFor="let error of response.derivationErrors;">{{error.m}}</li>
+    </ul>
+  </div>
+
+  <div *ngIf="isOtherError">
+    {{response.errorMessage}}
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <a mat-button (click)="close()">Close</a>
+</mat-dialog-actions>

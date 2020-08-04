@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { map, catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 
-import { UserId } from '../state';
+import { UserId } from '../state/UserId';
 
 import { AuthenticationConfig } from './authentication.config';
 

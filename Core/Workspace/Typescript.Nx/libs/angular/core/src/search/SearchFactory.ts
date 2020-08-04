@@ -6,8 +6,9 @@ import { ISessionObject, ParameterTypes } from '@allors/domain/system';
 import { And, Like, Or, Pull, Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 
-import { Context, ContextService } from '../framework';
-import { Loaded } from '../framework/responses';
+import { Context } from '../framework/Context';
+import { ContextService } from '../framework/ContextService';
+import { Loaded } from '../framework/responses/Loaded';
 
 import { SearchOptions } from './SearchOptions';
 

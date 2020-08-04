@@ -1,0 +1,12 @@
+<mat-sidenav-container class="sidenav-container" fullscreen>
+
+  <mat-sidenav style="width: 18rem;" #drawer class="sidenav side-theme" fixedInViewport="true" attr.role="navigation" mode="side">
+    <mat-toolbar>Allors Base</mat-toolbar>
+    <a-mat-sidemenu [items]="sideMenuItems"></a-mat-sidemenu>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+      <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

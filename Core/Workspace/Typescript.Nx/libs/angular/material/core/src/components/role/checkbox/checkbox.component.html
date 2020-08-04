@@ -1,0 +1,6 @@
+<div class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
+  <mat-checkbox aFocus [aFocusTrigger]="roleType" [(ngModel)]="model" [name]="name" [indeterminate]="!required" [disabled]="disabled">
+    {{label}}
+  </mat-checkbox>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</div>

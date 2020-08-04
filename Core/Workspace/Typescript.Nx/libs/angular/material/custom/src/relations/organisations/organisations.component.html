@@ -1,0 +1,56 @@
+<div class="a-master">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+      <button mat-icon-button matTooltip="Export">
+        <mat-icon>cloud_download</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div>
+    <mat-card *ngIf="table.data">
+
+      <div class="a-header">
+        <mat-toolbar style="background-color: transparent">
+          <mat-toolbar-row>
+            <div class="pl-3 mr-auto">{{title}}</div>
+            <div>
+              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Delete" (click)="delete.execute(table.selected)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-toolbar-row>
+        </mat-toolbar>
+      </div>
+
+      <mat-card-content class="container-fluid a-search">
+        <a-mat-filter [filter]="filter"></a-mat-filter>
+      </mat-card-content>
+
+      <mat-card-content *ngIf="table.data && table.data.length === 0" class="container-fluid a-noresult">
+        <div >
+          <h3>No organisations to display.</h3>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content *ngIf="table.data && table.data.length > 0" class="container-fluid a-result">
+        <a-mat-table [table]="table"></a-mat-table>
+      </mat-card-content>
+
+    </mat-card>
+  </div>
+
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <a mat-raised-button [routerLink]="['/contacts/addorganisation']">
+        Add New
+      </a>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+</div>

@@ -6,5 +6,6 @@ import { extendPerson } from './Person';
 
 export function extend(workspace: Workspace) {
   extendCore(workspace);
+  
   extendPerson(workspace);
 }

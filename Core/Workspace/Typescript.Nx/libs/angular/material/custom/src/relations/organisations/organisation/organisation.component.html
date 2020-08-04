@@ -1,0 +1,64 @@
+<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div>
+    <mat-card>
+      <form #form="ngForm" *ngIf="organisation" (submit)="save()">
+        <mat-card-content class="container-fluid">
+
+          <div class="row">
+            <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
+          </div>
+
+          <div class="row">
+            <a-mat-autocomplete class="col-md" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create(allors.context)" display="UserName" (changed)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
+            <a-mat-autocomplete class="col-md" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" (changed)="ownerSelected($event)" hint="With options"></a-mat-autocomplete>
+          </div>
+
+          <div class="row">
+            <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-select>
+            <a-mat-chips class="col-md" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-chips>
+          </div>
+
+          <div class="row pt-5">
+            <h3 class="col-md">Output</h3>
+            <div class="col-md">{{organisation?.Owner?.UserName}}</div>
+          </div>
+
+          <div class="row">
+            <h3 class="col-md">Security</h3>
+            <div class="col-md">
+              CanWrite Name: {{organisation.CanWriteName}}
+              <br> CanWrite Owner: {{organisation.CanWriteOwner}}
+              <br> CanWrite Employees: {{organisation.CanWriteEmployees}}
+            </div>
+
+          </div>
+
+          <div class="row">
+            <h3 class="col-md">Events</h3>
+            <div class="col-md">id: {{selected?.id}}</div>
+          </div>
+
+        </mat-card-content>
+      </form>
+    </mat-card>
+
+  </div>
+
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <button mat-button (click)="toggleCanWrite()" type="button">TOGGLE CANWRITE</button>
+      <button mat-button color="primary" type="submit">SAVE</button>
+      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+</form>

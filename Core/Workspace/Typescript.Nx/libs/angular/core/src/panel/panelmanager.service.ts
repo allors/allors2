@@ -2,15 +2,19 @@ import { Injectable } from '@angular/core';
 import { Params, Router, ActivatedRoute } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import { Pull, ObjectType } from '@allors/framework';
-import { Loaded, Context, DatabaseService, WorkspaceService } from '@allors/angular/framework';
+import { ObjectType } from '@allors/meta/system';
+import { Pull } from '@allors/data/system';
+
+import { Loaded } from '../framework/responses/Loaded';
+import { Context } from '../framework/Context';
+import { DatabaseService } from '../framework/DatabaseService';
+import { WorkspaceService } from '../framework/WorkspaceService';
 import { PanelService } from './panel.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PanelManagerService {
-
   context: Context;
 
   id: string;
@@ -26,12 +30,7 @@ export class PanelManagerService {
     return this.expanded ? 'expanded-panel-container' : 'collapsed-panel-container';
   }
 
-  constructor(
-    databaseService: DatabaseService,
-    workspaceService: WorkspaceService,
-    public router: Router,
-    public route: ActivatedRoute
-  ) {
+  constructor(databaseService: DatabaseService, workspaceService: WorkspaceService, public router: Router, public route: ActivatedRoute) {
     const database = databaseService.database;
     const workspace = workspaceService.workspace;
     this.context = new Context(database, workspace);
@@ -61,5 +60,4 @@ export class PanelManagerService {
     queryParams.panel = panel;
     this.router.navigate(['.'], { relativeTo: this.route, queryParams, queryParamsHandling: 'merge' });
   }
-
 }

@@ -1,0 +1,24 @@
+<mat-nav-list>
+
+  <div fxLayout="column" *ngFor="let item of items">
+
+    <mat-list-item *ngIf="!hasChildren(item)" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
+      <a matLine [routerLink]="item.link" attr.data-allors-id="{{item.id}}">{{item.title}}</a>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="hasChildren(item)" (click)="item.open = !item.open" [ngClass]="{'collapsed': !item.open, 'expanded': !!item.open}">
+      <mat-icon mat-list-icon>{{item.icon}}</mat-icon>
+      <span mat-line>{{item.title}}</span>
+      <mat-icon *ngIf="!!item.open" class="expander">expand_less</mat-icon>
+      <mat-icon *ngIf="!item.open" class="expander">expand_more</mat-icon>
+    </mat-list-item>
+
+    <div *ngIf="hasChildren(item) && item.open">
+      <mat-list-item *ngFor="let child of item.children" class="expanded" routerLinkActive="active" (click)="router.navigate([child.link])">
+        <mat-icon mat-list-icon>{{child.icon}}</mat-icon>
+        <a matLine [routerLink]="child.link"  attr.data-allors-id="{{child.id}}">{{child.title}}</a>
+      </mat-list-item>
+    </div>
+  </div>
+</mat-nav-list>

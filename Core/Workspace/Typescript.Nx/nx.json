@@ -61,6 +61,25 @@
     },
     "meta-custom": {
       "tags": []
+    },
+    "angular-material-core": {
+      "tags": []
+    },
+    "angular-material-app": {
+      "tags": []
+    },
+    "angular/material/app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["angular-material-app"]
+    },
+    "angular-material-custom": {
+      "tags": []
+    },
+    "angular-module": {
+      "tags": []
+    },
+    "angular-material-module": {
+      "tags": []
     }
   }
 }

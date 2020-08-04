@@ -16,7 +16,7 @@ export class MetaService {
   tree: TreeFactory;
 
   constructor(public workspaceService: WorkspaceService) {
-    this.m = workspaceService.metaPopulation as Meta;
+    this.m = workspaceService.workspace.metaPopulation as Meta;
     this.pull = new PullFactory(this.m);
     this.fetch = new FetchFactory(this.m);
     this.tree = new TreeFactory(this.m);

@@ -1,4 +1,5 @@
-import { Filter, FilterDefinition } from '../filter';
+import { Filter } from '../filter/Filter';
+import { FilterDefinition } from '../filter/FilterDefinition';
 
 declare module '@allors/meta/system' {
   interface ObjectType {

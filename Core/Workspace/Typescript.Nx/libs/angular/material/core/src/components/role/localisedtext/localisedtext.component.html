@@ -1,0 +1,4 @@
+<mat-form-field class="d-flex flex-column align-items-stretch">
+  <textarea aFocus [aFocusTrigger]="roleType" matInput [(ngModel)]="localisedText" [name]="localisedName" [placeholder]="localisedLabel"></textarea>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</mat-form-field>

@@ -1,0 +1,18 @@
+::ng-deep .a-mat-factory-fab .mat-menu-content {
+  padding: 0 !important;
+}
+
+.factoryfab-wrapper {
+  position: relative
+}
+
+.factoryfab{
+  position: absolute; 
+  left: -1.6rem; 
+  top: -1.6rem; 
+  z-index: 5;
+}
+
+.title {
+  margin: auto;
+}

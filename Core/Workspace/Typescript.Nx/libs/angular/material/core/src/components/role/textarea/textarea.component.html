@@ -1,0 +1,4 @@
+<mat-form-field class="d-flex flex-column align-items-stretch">
+  <textarea aFocus [aFocusTrigger]="roleType" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType"></textarea>
+  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+</mat-form-field>
