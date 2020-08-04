@@ -1,4 +1,4 @@
-import { RoleType } from '../../../../../framework';
+import { RoleType } from '@allors/meta/system';
 
 export interface MethodConfig {
   name?: string;

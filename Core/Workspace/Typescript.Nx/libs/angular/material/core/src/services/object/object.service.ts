@@ -2,7 +2,9 @@ import { Injectable, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, throwError } from 'rxjs';
 
-import { ObjectType, ISessionObject, IObject } from '../../../../framework';
+import { IObject, ISessionObject } from '@allors/domain/system';
+import { Context } from '@allors/angular/core';
+import { ObjectType } from '@allors/meta/system';
 
 import { OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from './object.tokens';
 import { ObjectData } from './object.data';

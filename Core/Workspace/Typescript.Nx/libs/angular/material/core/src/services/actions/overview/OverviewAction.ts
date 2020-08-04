@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs';
 
-import { ActionTarget, Action } from '../../../../../angular';
-import { NavigationService } from '../../../../../angular/core/navigation';
+import { ActionTarget, Action, NavigationService } from '@allors/angular/core';
+
 function objectTypeName(target: ActionTarget) {
   return Array.isArray(target) ? (target.length > 0) && target[0].objectType.name : target.objectType.name;
 }

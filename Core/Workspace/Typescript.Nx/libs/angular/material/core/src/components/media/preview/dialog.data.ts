@@ -1,5 +1,5 @@
 import { Media } from '@allors/domain/generated';
 
-export interface DialogData {
+export interface MediaDialogData {
   media: Media;
 }

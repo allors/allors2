@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, Optional, Output } from '@angular/core'
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import { MediaService } from '../../../../angular/core/media';
-import { Media } from '../../../../domain';
-import { ISessionObject } from '../../../../framework';
+import { ISessionObject } from '@allors/domain/system';
+import { MediaService } from '@allors/angular/core';
+import { Media } from '@allors/domain/generated';
 
 import { AllorMediaPreviewComponent } from './preview/media-preview.component';
 

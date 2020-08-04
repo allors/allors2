@@ -1,13 +1,12 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject, config } from 'rxjs';
+import { Subject } from 'rxjs';
 
-import { RefreshService } from '../../../../../angular/core/refresh';
-import { MethodType, ISessionObject } from '../../../../../framework';
+import { MethodType } from '@allors/meta/system';
+import { ISessionObject } from '@allors/domain/system';
+import { RefreshService, ActionTarget, Action, Context, Invoked } from '@allors/angular/core';
 
+import { SaveService } from '../../..';
 import { MethodConfig } from './MethodConfig';
-import { SaveService } from '../../save';
-import { Context, Invoked } from '../../../../../angular/core/framework';
-import { Action, ActionTarget } from '../../../../../angular/core/actions';
 
 export class MethodAction implements Action {
   name = 'method';
@@ -25,7 +24,7 @@ export class MethodAction implements Action {
       const methods = objects.filter((v) => v.canExecute(methodType)).map((v) => (v as any)[methodType.name]);
 
       if (methods.length > 0) {
-        context.invoke(methods).subscribe((invoked: Invoked) => {
+        context.invoke(methods).subscribe(() => {
           snackBar.open('Successfully executed ' + methodType.name + '.', 'close', { duration: 5000 });
           refreshService.refresh();
           this.result.next(true);

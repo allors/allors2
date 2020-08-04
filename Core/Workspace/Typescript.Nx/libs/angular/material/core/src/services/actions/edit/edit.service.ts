@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { RoleType } from './../../../../../framework';
-import { RefreshService } from '../../../../../angular/core/refresh';
-import { ObjectService } from '../../../../../material/core/services/object';
+import { RoleType } from '@allors/meta/system';
+import { RefreshService } from '@allors/angular/core';
 
 import { EditAction } from './EditAction';
+import { ObjectService } from '../../object/object.service';
 
 @Injectable({
   providedIn: 'root',

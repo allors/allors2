@@ -1,10 +1,10 @@
 import { Subject } from 'rxjs';
 
-import { Action, ActionTarget } from '../../../../../angular';
-import { RefreshService } from '../../../../../angular/core/refresh';
+import { RoleType } from '@allors/meta/system';
+import { ISessionObject } from '@allors/domain/system';
+import { RefreshService, ActionTarget, Action } from '@allors/angular/core';
 
-import { ISessionObject, RoleType } from '../../../../../framework';
-import { ObjectService } from '../../object';
+import { ObjectService } from '../../..';
 
 export class EditAction implements Action {
 
@@ -38,7 +38,7 @@ export class EditAction implements Action {
   execute(target: ActionTarget) {
     let editObject = this.resolve(target);
     this.objectService.edit(editObject)
-      .subscribe((v) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.result.next(true);
       });

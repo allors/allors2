@@ -1,4 +1,4 @@
-import { ids } from '../../allors/meta/generated/ids.g';
+import { ids } from '@allors/meta/generated';
 
 export interface MenuItem {
   id?: string;

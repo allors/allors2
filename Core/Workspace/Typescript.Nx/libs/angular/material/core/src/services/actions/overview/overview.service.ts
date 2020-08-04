@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Action } from '../../../../../angular';
-import { NavigationService } from '../../../../../angular/core/navigation';
-
 import { OverviewAction } from './OverviewAction';
+import { NavigationService, Action } from '@allors/angular/core';
 
 @Injectable({
   providedIn: 'root',

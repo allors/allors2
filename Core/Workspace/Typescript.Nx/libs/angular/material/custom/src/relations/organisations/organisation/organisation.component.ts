@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Title, Meta } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { ContextService, TestScope, SearchFactory, MetaService, Loaded } from '@
 import { ISessionObject } from '@allors/domain/system';
 import { Person, Organisation } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
+import { Meta } from '@allors/meta/generated';
 
 @Component({
   templateUrl: './organisation.component.html',

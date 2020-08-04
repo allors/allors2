@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Media } from '@allors/domain/generated';
 import { MediaService } from '@allors/angular/core';
 
-import { DialogData } from './dialog.data';
+import { MediaDialogData } from './dialog.data';
 
 @Component({
   templateUrl: './media-preview.component.html',
@@ -15,7 +15,7 @@ export class AllorMediaPreviewComponent {
 
   constructor(
     public dialogRef: MatDialogRef<AllorMediaPreviewComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: MediaDialogData,
     private mediaService: MediaService
   ) {
     this.media = data.media;

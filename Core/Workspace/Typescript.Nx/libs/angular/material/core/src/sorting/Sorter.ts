@@ -1,7 +1,7 @@
 import { Sort } from '@angular/material/sort';
 
-import { RoleType } from '../../../framework';
-import { Sort as AllorsSort } from './../../../framework';
+import { Sort as AllorsSort } from '@allors/data/system';
+import { RoleType } from '@allors/meta/system';
 
 export class Sorter {
     private config: { [index: string]: RoleType | RoleType[] };

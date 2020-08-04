@@ -439,8 +439,14 @@
             "tsConfig": "apps/angular/material/app/tsconfig.app.json",
             "aot": true,
             "assets": ["apps/angular/material/app/src/favicon.ico", "apps/angular/material/app/src/assets"],
-            "styles": ["apps/angular/material/app/src/styles.scss"],
-            "scripts": []
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/angular/material/app/src/styles.scss",
+              "./node_modules/easymde/dist/easymde.min.css"
+            ],
+            "scripts": [],
+            "allowedCommonJsDependencies": ["zone.js", "markdown.component", "easymde", "codemirror", "codemirror-spell-checker"],
+            "preserveSymlinks": true
           },
           "configurations": {
             "production": {

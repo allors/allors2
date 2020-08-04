@@ -6,8 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { enGB } from 'date-fns/locale';
 
-import { extend as extendDomain } from '@allors/domain/custom';
-import { WorkspaceService, extend as extendAngular } from '@allors/angular/core';
+import { WorkspaceService } from '@allors/angular/core';
 import { AllorsAngularModule } from '@allors/angular/module';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +25,8 @@ import { data } from '@allors/meta/generated';
 
 import '@allors/meta/core';
 import '@allors/angular/core';
+import { extend as extendDomain } from '@allors/domain/custom';
+import { extend as extendAngular } from '@allors/angular/core';
 
 const metaPopulation = new MetaPopulation(data);
 const workspace = new Workspace(metaPopulation);

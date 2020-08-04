@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Title, Meta } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { ContextService, TestScope, MetaService, Loaded } from '@allors/angular/
 import { Organisation } from '@allors/domain/generated';
 import { assert } from '@allors/meta/system';
 import { PullRequest } from '@allors/protocol/system';
+import { Meta } from '@allors/meta/generated';
 
 @Component({
   templateUrl: './organisation-overview.component.html',

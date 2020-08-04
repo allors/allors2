@@ -2,7 +2,7 @@ import { Component, Optional } from '@angular/core';
 import { Location } from '@angular/common';
 import { NgForm } from '@angular/forms';
 
-import { ContextService } from '../../../../../angular/core/framework';
+import { ContextService } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

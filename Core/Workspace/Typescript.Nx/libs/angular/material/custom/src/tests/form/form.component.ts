@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Title, Meta } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, UrlSegment, Data } from '@angular/router';
 
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
@@ -10,6 +10,7 @@ import { ContextService, TestScope, SearchFactory, MetaService, WorkspaceService
 import { Organisation, Person } from '@allors/domain/generated';
 import { SaveService, RadioGroupOption } from '@allors/angular/material/core';
 import { PullRequest } from '@allors/protocol/system';
+import { Meta } from '@allors/meta/generated';
 
 @Component({
   templateUrl: './form.component.html',

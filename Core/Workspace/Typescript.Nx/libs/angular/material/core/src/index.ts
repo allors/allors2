@@ -2,16 +2,26 @@ export { AllorsMaterialAssociationAutoCompleteComponent } from './components/ass
 
 export { AllorsMaterialDialogComponent } from './components/dialog/dialog.component';
 export { FactoryFabComponent } from './components/factoryfab/factoryfab.component';
+
+export { AllorsMaterialFilterFieldDialogComponent } from './components/filter/field/dialog.component';
+export { AllorsMaterialFilterFieldSearchComponent } from './components/filter/field/search.component';
 export { AllorsMaterialFilterComponent } from './components/filter/filter.component';
+
+export { AllorsMaterialFooterSaveCancelComponent } from './components/footer/savecancel/savecancel.component';
 export { AllorsMaterialFooterComponent } from './components/footer/footer.component';
+
 export { AllorsMaterialHeaderComponent } from './components/header/header.component';
 export { AllorsMaterialLauncherComponent } from './components/launcher/launcher.component';
+
+export { MediaDialogData } from './components/media/preview/dialog.data';
+export { AllorMediaPreviewComponent } from './components/media/preview/media-preview.component';
 export { AllorsMaterialMediaComponent } from './components/media/media.component';
 
 export { AllorsMaterialAutocompleteComponent } from './components/role/autocomplete/autocomplete.component';
 export { AllorsMaterialCheckboxComponent } from './components/role/checkbox/checkbox.component';
 export { AllorsMaterialChipsComponent } from './components/role/chips/chips.component';
 export { AllorsMaterialDatepickerComponent } from './components/role/datepicker/datepicker.component';
+export { AllorsMaterialDatetimepickerComponent } from './components/role/datetimepicker/datetimepicker.component';
 export { AllorsMaterialFileComponent } from './components/role/file/file.component';
 export { AllorsMaterialFilesComponent } from './components/role/files/files.component';
 export { AllorsMaterialInputComponent } from './components/role/input/input.component';

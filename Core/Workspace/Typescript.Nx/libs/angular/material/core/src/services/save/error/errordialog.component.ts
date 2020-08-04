@@ -1,6 +1,8 @@
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, Inject } from '@angular/core';
-import { ResponseError, Response, DerivationError } from '../../../../../framework';
+
+import { Response } from '@allors/protocol/system';
+import { ResponseError } from '@allors/protocol/system';
 
 @Component({
   templateUrl: 'errordialog.component.html',

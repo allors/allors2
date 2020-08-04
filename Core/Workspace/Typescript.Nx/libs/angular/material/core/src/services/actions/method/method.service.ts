@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Action, Context } from '../../../../../angular';
-import { RefreshService } from '../../../../../angular/core/refresh';
-import { MethodAction } from './MethodAction';
-import { MethodType } from '../../../../../framework';
+import { MethodType } from '@allors/meta/system';
+import { RefreshService, Action, Context } from '@allors/angular/core';
 
+import { SaveService } from '../../save/save.service';
+
+import { MethodAction } from './MethodAction';
 import { MethodConfig } from './MethodConfig';
-import { SaveService } from '../../save';
 
 @Injectable({
   providedIn: 'root',

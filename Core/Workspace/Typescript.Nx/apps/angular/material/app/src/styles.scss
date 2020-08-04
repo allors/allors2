@@ -3,7 +3,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-@import "allors/core/material/styles/bootstrap";
-@import "allors/core/material/styles/layout";
+@import "../../../../../libs/angular/material/core/src/styles/bootstrap";
+@import "../../../../../libs/angular/material/core/src/styles/layout";
 
-@import "allors/custom/material/styles/layout";
+@import "../../../../../libs/angular/material/custom/src/styles/layout";

@@ -5,12 +5,12 @@ import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import { Action } from '../../../../angular/core/actions';
+import { ISessionObject } from '@allors/domain/system';
+import { Action } from '@allors/angular/core';
 
 import { Column } from './Column';
 import { BehaviorSubject } from 'rxjs';
 import { TableRow } from './TableRow';
-import { ISessionObject } from '../../../../../allors/framework';
 
 export interface BaseTable {
   columns: Column[];

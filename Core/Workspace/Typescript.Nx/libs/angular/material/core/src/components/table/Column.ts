@@ -1,5 +1,5 @@
-import { humanize } from '../../../../framework';
-import { Action } from '../../../../angular/core/actions';
+import { humanize } from '@allors/meta/system';
+import { Action } from '@allors/angular/core';
 
 export class Column {
 

@@ -12,14 +12,31 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { MetaPopulation } from '@allors/meta/system';
+import { data } from '@allors/meta/generated';
+import { Workspace } from '@allors/domain/system';
 import { WorkspaceService } from '@allors/angular/core';
+
 import { AppRoutingModule } from './app-routing.module';
 import { appMeta } from './app.meta';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
+import '@allors/meta/core';
+import '@allors/angular/core';
+import { AllorsAngularModule } from '@allors/angular/module';
+import { AllorsMaterialModule } from '@allors/angular/material/module';
+import { extend as extendDomain } from '@allors/domain/custom';
+import { extend as extendAngular } from '@allors/angular/core';
+import { AllorsDateAdapter } from '@allors/angular/material/core';
+
+const metaPopulation = new MetaPopulation(data);
+const workspace = new Workspace(metaPopulation);
+extendDomain(workspace);
+extendAngular(workspace);
+
 export function appInitFactory(workspaceService: WorkspaceService) {
-  return () => appMeta(workspaceService.metaPopulation);
+  return () => appMeta(metaPopulation);
 }
 
 @NgModule({
@@ -39,6 +56,7 @@ export function appInitFactory(workspaceService: WorkspaceService) {
 
     AllorsAngularModule.forRoot({
       databaseConfig: { url: environment.url },
+      workspaceConfig: { workspace },
       authenticationConfig: {
         url: environment.url + environment.authenticationUrl,
       },

@@ -1,3 +1,3 @@
-import { ISessionObject } from '../../../../framework';
+import { ISessionObject } from '@allors/domain/system';
 
 export interface TableRow { object: ISessionObject; }

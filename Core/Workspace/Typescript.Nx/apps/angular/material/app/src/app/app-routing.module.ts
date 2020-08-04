@@ -12,9 +12,9 @@ import {
   PersonOverviewComponent,
   PersonComponent,
   FormComponent,
-} from '../allors/material/module';
+} from '@allors/angular/material/module';
 
-import { AuthorizationService } from '../allors/custom/material/auth';
+import { AuthorizationService } from '@allors/angular/material/custom';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
