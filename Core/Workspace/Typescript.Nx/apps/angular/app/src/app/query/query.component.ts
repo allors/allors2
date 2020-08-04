@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
-import { Like, Sort } from '@allors/workspace/data';
-import { PullRequest } from '@allors/workspace/protocol';
+import { Like, Sort } from '@allors/data/system';
+import { PullRequest } from '@allors/protocol/system';
 
-import { Organisation } from '@allors/domain';
+import { Organisation } from '@allors/domain/generated';
 import { Loaded, ContextService, MetaService } from '@allors/angular/core';
 
 @Component({

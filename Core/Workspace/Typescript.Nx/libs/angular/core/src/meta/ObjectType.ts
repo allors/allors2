@@ -1,6 +1,6 @@
 import { Filter, FilterDefinition } from '../filter';
 
-declare module '@allors/workspace/meta' {
+declare module '@allors/meta/system' {
   interface ObjectType {
     filterDefinition?: FilterDefinition;
     filter?: Filter;

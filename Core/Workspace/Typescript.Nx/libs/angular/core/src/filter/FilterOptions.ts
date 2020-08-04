@@ -1,4 +1,4 @@
-import { PropertyType } from '@allors/workspace/meta';
+import { PropertyType } from '@allors/meta/system';
 
 import { SearchFactory } from '../search';
 

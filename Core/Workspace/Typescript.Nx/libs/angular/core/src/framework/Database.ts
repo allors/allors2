@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { assert } from '@allors/workspace/meta';
-import { Method } from '@allors/workspace/domain';
-import { Pull } from '@allors/workspace/data';
+import { assert } from '@allors/meta/system';
+import { Method } from '@allors/domain/system';
+import { Pull } from '@allors/data/system';
 import {
   PullResponse,
   PushRequest,
@@ -20,7 +20,7 @@ import {
   InvokeResponse,
   InvokeOptions,
   services,
-} from '@allors/workspace/protocol';
+} from '@allors/protocol/system';
 
 export class Database {
   constructor(private http: HttpClient, public url: string) {}

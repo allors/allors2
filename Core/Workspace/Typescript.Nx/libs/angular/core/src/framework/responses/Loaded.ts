@@ -1,6 +1,6 @@
-import { assert } from '@allors/workspace/meta';
-import { ISession, ISessionObject } from '@allors/workspace/domain';
-import { PullResponse } from '@allors/workspace/protocol';
+import { assert } from '@allors/meta/system';
+import { ISession, ISessionObject } from '@allors/domain/system';
+import { PullResponse } from '@allors/protocol/system';
 
 export class Loaded {
   public objects: { [name: string]: ISessionObject } = {};

@@ -1,9 +1,9 @@
-import { MetaPopulation } from '@allors/workspace/meta';
-import { And, Like } from '@allors/workspace/data';
+import { MetaPopulation } from '@allors/meta/system';
+import { And, Like } from '@allors/data/system';
 
 import { FilterDefinition } from '@allors/angular/core';
 
-import { Meta } from '@allors/meta';
+import { Meta } from '@allors/meta/generated';
 
 export function appMeta(metaPopulation: MetaPopulation) {
   const m = metaPopulation as Meta;

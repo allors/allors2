@@ -3,8 +3,8 @@
 import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren, Directive } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 
-import { RoleType, assert, humanize } from '@allors/workspace/meta';
-import { ISessionObject } from '@allors/workspace/domain';
+import { RoleType, assert, humanize } from '@allors/meta/system';
+import { ISessionObject } from '@allors/domain/system';
 
 import { Field } from './Field';
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MetaPopulation } from '@allors/workspace/meta';
-import { Workspace } from '@allors/workspace/domain';
-import { data } from '@allors/meta';
-import { extend } from '@allors/domain';
+import { MetaPopulation } from '@allors/meta/system';
+import { Workspace } from '@allors/domain/system';
+import { data } from '@allors/meta/generated';
+import { extend } from '@allors/domain/generated';
 
 @Injectable()
 export class WorkspaceService {

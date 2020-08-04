@@ -1,2 +1,2 @@
-import { ISessionObject } from '@allors/workspace/domain';
+import { ISessionObject } from '@allors/domain/system';
 export type ActionTarget = ISessionObject | ISessionObject[];

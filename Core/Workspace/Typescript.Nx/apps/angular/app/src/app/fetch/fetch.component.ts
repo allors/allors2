@@ -3,10 +3,10 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import {  assert } from '@allors/workspace/meta';
-import { PullRequest } from '@allors/workspace/protocol';
+import {  assert } from '@allors/meta/system';
+import { PullRequest } from '@allors/protocol/system';
 
-import { Organisation } from '@allors/domain';
+import { Organisation } from '@allors/domain/generated';
 import { Loaded, ContextService, MetaService } from '@allors/angular/core';
 
 @Component({

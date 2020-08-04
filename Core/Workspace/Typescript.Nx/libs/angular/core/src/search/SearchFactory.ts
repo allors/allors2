@@ -1,10 +1,10 @@
 ﻿import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { RoleType } from '@allors/workspace/meta';
-import { ISessionObject, ParameterTypes } from '@allors/workspace/domain';
-import { And, Like, Or, Pull, Sort } from '@allors/workspace/data';
-import { PullRequest } from '@allors/workspace/protocol';
+import { RoleType } from '@allors/meta/system';
+import { ISessionObject, ParameterTypes } from '@allors/domain/system';
+import { And, Like, Or, Pull, Sort } from '@allors/data/system';
+import { PullRequest } from '@allors/protocol/system';
 
 import { Context, ContextService } from '../framework';
 import { Loaded } from '../framework/responses';

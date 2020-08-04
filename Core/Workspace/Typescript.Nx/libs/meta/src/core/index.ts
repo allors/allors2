@@ -1,2 +1,0 @@
-import './ObjectType';
-import './RoleType';

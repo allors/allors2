@@ -11,7 +11,7 @@ function link(src, dst){
     .catch((e) =>  e.errno && e.errno != -4075 ? console.log(e) : console.log('already linked'))
 }
 
-link ('../../../../Platform/Workspace/Typescript/workspace/libs/workspace/data/src', 'libs/workspace/data');
-link ('../../../../Platform/Workspace/Typescript/workspace/libs/workspace/domain/src', 'libs/workspace/domain');
-link ('../../../../Platform/Workspace/Typescript/workspace/libs/workspace/meta/src', 'libs/workspace/meta');
-link ('../../../../Platform/Workspace/Typescript/workspace/libs/workspace/protocol/src', 'libs/workspace/protocol');
+link ('../../../Platform/Workspace/Typescript/libs/data/system/src', 'libs/data/system');
+link ('../../../Platform/Workspace/Typescript/libs/domain/system/src', 'libs/domain/system');
+link ('../../../Platform/Workspace/Typescript/libs/meta/system/src', 'libs/meta/system');
+link ('../../../Platform/Workspace/Typescript/libs/protocol/system/src', 'libs/protocol/system');

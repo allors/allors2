@@ -1,4 +1,4 @@
-import { Workspace } from '@allors/workspace/domain';
+import { Workspace } from '@allors/domain/system';
 import { extendMedia } from './domain/Media';
 
 export * from './module';

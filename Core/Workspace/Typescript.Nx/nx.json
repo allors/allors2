@@ -22,24 +22,6 @@
     }
   },
   "projects": {
-    "meta": {
-      "tags": []
-    },
-    "workspace-data": {
-      "tags": []
-    },
-    "workspace-domain": {
-      "tags": []
-    },
-    "workspace-meta": {
-      "tags": []
-    },
-    "workspace-protocol": {
-      "tags": []
-    },
-    "domain": {
-      "tags": []
-    },
     "angular-core": {
       "tags": []
     },
@@ -49,6 +31,36 @@
     "angular/app-e2e": {
       "tags": [],
       "implicitDependencies": ["angular-app"]
+    },
+    "data-system": {
+      "tags": []
+    },
+    "meta-generated": {
+      "tags": []
+    },
+    "domain-generated": {
+      "tags": []
+    },
+    "domain-system": {
+      "tags": []
+    },
+    "meta-system": {
+      "tags": []
+    },
+    "protocol-system": {
+      "tags": []
+    },
+    "domain-core": {
+      "tags": []
+    },
+    "domain-custom": {
+      "tags": []
+    },
+    "meta-core": {
+      "tags": []
+    },
+    "meta-custom": {
+      "tags": []
     }
   }
 }

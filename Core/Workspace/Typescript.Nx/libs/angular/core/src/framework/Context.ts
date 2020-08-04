@@ -1,7 +1,7 @@
 import { Observable, of } from 'rxjs';
 
-import { ObjectType } from '@allors/workspace/meta';
-import { ISession, Session, Method, ISessionObject, Workspace } from '@allors/workspace/domain';
+import { ObjectType } from '@allors/meta/system';
+import { ISession, Session, Method, ISessionObject, Workspace } from '@allors/domain/system';
 import {
   PullResponse,
   SyncRequest,
@@ -13,7 +13,7 @@ import {
   InvokeResponse,
   SecurityResponse,
   SecurityRequest,
-} from '@allors/workspace/protocol';
+} from '@allors/protocol/system';
 
 import { Loaded } from './responses/Loaded';
 import { switchMap, map } from 'rxjs/operators';

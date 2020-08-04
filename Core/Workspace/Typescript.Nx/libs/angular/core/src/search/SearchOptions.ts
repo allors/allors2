@@ -1,5 +1,5 @@
-﻿import { ObjectType, RoleType } from '@allors/workspace/meta';
-import { And, Predicate, Tree } from '@allors/workspace/data';
+﻿import { ObjectType, RoleType } from '@allors/meta/system';
+import { And, Predicate, Tree } from '@allors/data/system';
 
 export interface SearchOptions {
   objectType: ObjectType;

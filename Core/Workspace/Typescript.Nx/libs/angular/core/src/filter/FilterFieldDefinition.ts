@@ -1,5 +1,5 @@
-import { humanize } from '@allors/workspace/meta';
-import { ParameterizablePredicate, Like, Equals, Exists, Between } from '@allors/workspace/data';
+import { humanize } from '@allors/meta/system';
+import { ParameterizablePredicate, Like, Equals, Exists, Between } from '@allors/data/system';
 
 import { FilterOptions } from './FilterOptions';
 
