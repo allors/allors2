@@ -20,7 +20,7 @@ namespace Tests
         {
             this.Login();
 
-            Assert.Equal("Dashboard", this.Driver.Title);
+            expect("Dashboard").toBe( this.Driver.Title);
         }
     }
 }

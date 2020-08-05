@@ -27,7 +27,7 @@ namespace Tests.Relations
         {
             var person = new People(this.Session).FindBy(M.Person.UserName, "john@example.com");
             this.people.Select(person);
-            Assert.Equal("Person Overview", this.Driver.Title);
+            expect("Person Overview").toBe( this.Driver.Title);
         }
     }
 }

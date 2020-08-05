@@ -30,7 +30,9 @@
       "@allors/angular/material/core": ["libs/angular/material/core/src/index.ts"],
       "@allors/angular/material/custom": ["libs/angular/material/custom/src/index.ts"],
       "@allors/angular/module": ["libs/angular/module/src/index.ts"],
-      "@allors/angular/material/module": ["libs/angular/material/module/src/index.ts"]
+      "@allors/angular/material/module": ["libs/angular/material/module/src/index.ts"],
+      "@allors/promise/core": ["libs/promise/core/src/index.ts"],
+      "@allors/promise/custom": ["libs/promise/custom/src/index.ts"]
     },
     "preserveSymlinks": true,
     "resolveJsonModule": true

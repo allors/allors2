@@ -23,7 +23,7 @@ namespace Tests.Relations
         }
 
         [Fact]
-        public void Title() => Assert.Equal("People", this.Driver.Title);
+        public void Title() => expect("People").toBe( this.Driver.Title);
 
         [Fact]
         public void Table()

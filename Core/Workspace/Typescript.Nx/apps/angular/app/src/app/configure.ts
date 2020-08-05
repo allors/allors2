@@ -5,7 +5,7 @@ import { FilterDefinition } from '@allors/angular/core';
 
 import { Meta } from '@allors/meta/generated';
 
-export function appMeta(metaPopulation: MetaPopulation) {
+export function configure(metaPopulation: MetaPopulation) {
   const m = metaPopulation as Meta;
 
   m.Person.filterDefinition = new FilterDefinition(

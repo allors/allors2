@@ -627,6 +627,128 @@
           "style": "scss"
         }
       }
+    },
+    "gatsby-app": {
+      "root": "apps/gatsby/app",
+      "sourceRoot": "apps/gatsby/app/src",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/gatsby:build",
+          "options": {
+            "outputPath": "apps/gatsby/app/public",
+            "uglify": true,
+            "color": true,
+            "profile": false
+          },
+          "configurations": {
+            "production": {}
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/gatsby:server",
+          "options": {
+            "buildTarget": "gatsby-app:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "gatsby-app:build:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["apps/gatsby/app/tsconfig.json", "apps/gatsby/app/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!apps/gatsby/app/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/gatsby/app/jest.config.js",
+            "tsConfig": "apps/gatsby/app/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "gatsby/app-e2e": {
+      "root": "apps/gatsby/app-e2e",
+      "sourceRoot": "apps/gatsby/app-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/gatsby/app-e2e/cypress.json",
+            "tsConfig": "apps/gatsby/app-e2e/tsconfig.e2e.json",
+            "devServerTarget": "gatsby-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "gatsby-app:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/gatsby/app-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/gatsby/app-e2e/**/*"]
+          }
+        }
+      }
+    },
+    "promise-core": {
+      "root": "libs/promise/core",
+      "sourceRoot": "libs/promise/core/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["libs/promise/core/tsconfig.lib.json", "libs/promise/core/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/promise/core/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/promise/core/jest.config.js",
+            "tsConfig": "libs/promise/core/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "promise-custom": {
+      "root": "libs/promise/custom",
+      "sourceRoot": "libs/promise/custom/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["libs/promise/custom/tsconfig.lib.json", "libs/promise/custom/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/promise/custom/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/promise/custom/jest.config.js",
+            "tsConfig": "libs/promise/custom/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
@@ -696,6 +818,10 @@
     },
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
+    },
+    "@nrwl/gatsby": {
+      "application": {}
     }
-  }
+  },
+  "defaultProject": "gatsby-app"
 }

@@ -38,7 +38,7 @@ namespace Tests
                 this.page = this.Sidenav.NavigateToForm();
 
                 var actual = this.page.DateTime.Value;
-                Assert.Equal(expected, actual);
+                expect(expected).toBe( actual);
             }
 
             {
@@ -51,7 +51,7 @@ namespace Tests
                 this.page = this.Sidenav.NavigateToForm();
 
                 var actual = this.page.DateTime.Value;
-                Assert.Equal(expected, actual);
+                expect(expected).toBe( actual);
             }
         }
 
@@ -70,12 +70,12 @@ namespace Tests
 
             var after = new Datas(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length + 1);
+            expect(after.Length).toBe( before.Length + 1);
 
             var data = after.Except(before).First();
 
             Assert.True(data.ExistDateTime);
-            Assert.Equal(date, data.DateTime);
+            expect(date).toBe( data.DateTime);
         }
 
         [Fact]
@@ -98,11 +98,11 @@ namespace Tests
 
             var after = new Datas(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length + 1);
+            expect(after.Length).toBe( before.Length + 1);
 
             var data = after.Except(before).First();
 
-            Assert.Equal(date, data.DateTime);
+            expect(date).toBe( data.DateTime);
         }
     }
 }

@@ -37,11 +37,11 @@ namespace Tests
 
             var after = new Datas(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length + 1);
+            expect(after.Length).toBe( before.Length + 1);
 
             var data = after.Except(before).First();
 
-            Assert.Equal(10, data.Slider);
+            expect(10).toBe( data.Slider);
         }
     }
 }

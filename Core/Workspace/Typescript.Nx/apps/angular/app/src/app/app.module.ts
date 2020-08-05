@@ -11,8 +11,6 @@ import { AllorsAngularModule } from '@allors/angular/module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
-import { appMeta } from './app.meta';
-
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login.component';
 import { FetchComponent } from './fetch/fetch.component';
@@ -27,13 +25,15 @@ import '@allors/meta/core';
 import '@allors/angular/core';
 import { extend as extendDomain } from '@allors/domain/custom';
 import { extend as extendAngular } from '@allors/angular/core';
+import { configure } from './configure';
+
 export function appInitFactory(workspaceService: WorkspaceService) {
   return () => {
     const metaPopulation = new MetaPopulation(data);
     const workspace = new Workspace(metaPopulation);
     extendDomain(workspace);
     extendAngular(workspace);
-    appMeta(metaPopulation);
+    configure(metaPopulation);
 
     workspaceService.workspace = workspace;
   };

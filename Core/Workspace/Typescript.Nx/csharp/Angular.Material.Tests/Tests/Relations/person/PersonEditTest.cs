@@ -28,7 +28,7 @@ namespace Tests.Relations
         public void Title()
         {
             this.people.AddNew.Click();
-            Assert.Equal("Person", this.Driver.Title);
+            expect("Person").toBe( this.Driver.Title);
         }
 
         [Fact]
@@ -48,12 +48,12 @@ namespace Tests.Relations
 
             var after = new People(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length + 1);
+            expect(after.Length).toBe( before.Length + 1);
 
             var person = after.Except(before).First();
 
-            Assert.Equal("Jos", person.FirstName);
-            Assert.Equal("Smos", person.LastName);
+            expect("Jos").toBe( person.FirstName);
+            expect("Smos").toBe( person.LastName);
         }
 
         [Fact]
@@ -73,10 +73,10 @@ namespace Tests.Relations
 
             var after = new People(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length);
+            expect(after.Length).toBe( before.Length);
 
-            Assert.Equal("Jos", person.FirstName);
-            Assert.Equal("Smos", person.LastName);
+            expect("Jos").toBe( person.FirstName);
+            expect("Smos").toBe( person.LastName);
         }
     }
 }

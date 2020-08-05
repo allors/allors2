@@ -37,11 +37,11 @@ namespace Tests
 
             var after = new Datas(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length + 1);
+            expect(after.Length).toBe( before.Length + 1);
 
             var data = after.Except(before).First();
 
-            Assert.Equal("Hello", data.String);
+            expect("Hello").toBe( data.String);
         }
 
         [Fact]
@@ -58,11 +58,11 @@ namespace Tests
 
             var after = new Datas(this.Session).Extent().ToArray();
 
-            Assert.Equal(after.Length, before.Length + 1);
+            expect(after.Length).toBe( before.Length + 1);
 
             var data = after.Except(before).First();
 
-            Assert.Equal(100.50m, data.Decimal);
+            expect(100.50m).toBe( data.Decimal);
         }
     }
 }
