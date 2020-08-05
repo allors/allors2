@@ -270,6 +270,6 @@
     }
   },
   "plugins": ["import", "jsx-a11y", "react", "react-hooks"],
-  "extends": ["../../../.eslintrc"],
+  "extends": ["../../.eslintrc"],
   "ignorePatterns": ["!**/*", "public"]
 }

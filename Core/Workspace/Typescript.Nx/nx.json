@@ -81,18 +81,18 @@
     "angular-material-module": {
       "tags": []
     },
-    "gatsby-app": {
-      "tags": []
-    },
-    "gatsby/app-e2e": {
-      "tags": [],
-      "implicitDependencies": ["gatsby-app"]
-    },
     "promise-core": {
       "tags": []
     },
     "promise-custom": {
       "tags": []
+    },
+    "gatsby": {
+      "tags": []
+    },
+    "gatsby-e2e": {
+      "tags": [],
+      "implicitDependencies": ["gatsby"]
     }
   }
 }

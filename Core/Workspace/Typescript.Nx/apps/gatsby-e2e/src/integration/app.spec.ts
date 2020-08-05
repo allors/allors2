@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('gatsby-app', () => {
+describe('gatsby', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
@@ -8,6 +8,6 @@ describe('gatsby-app', () => {
     cy.login('my-email@something.com', 'myPassword');
 
     // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome to gatsby-app!');
+    getGreeting().contains('Welcome to gatsby!');
   });
 });

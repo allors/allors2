@@ -6,3 +6,7 @@
 /apps/gatsby-app/node_modules
 /apps/gatsby-app/public
 /apps/gatsby-app/.cache
+
+/apps/gatsby/node_modules
+/apps/gatsby/public
+/apps/gatsby/.cache

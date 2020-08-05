@@ -5,10 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "chrome",
+      "name": "chrome (angular)",
       "type": "chrome",
       "request": "launch",
       "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "chrome (gatsby)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8000",
       "webRoot": "${workspaceFolder}"
     },
     {

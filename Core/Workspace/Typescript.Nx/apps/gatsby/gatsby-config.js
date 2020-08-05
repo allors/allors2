@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `gatsby/app`,
+    title: `gatsby`,
     description: `This is a gatsby application created by Nx.`,
   },
   plugins: [
@@ -32,7 +32,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby/app`,
+        name: `gatsby`,
         short_name: `starter`,
         start_url: `/`,
         background_color: `#663399`,
