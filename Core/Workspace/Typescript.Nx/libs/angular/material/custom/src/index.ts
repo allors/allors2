@@ -16,6 +16,6 @@ export * from './relations/people/people.component'
 
 export * from './tests/form/form.component'
 
+export { menu } from './main/main.menu'
 
-
-
+export { configure } from './configure';

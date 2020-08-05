@@ -48,7 +48,7 @@ export { TableConfig } from './components/table/TableConfig';
 export { TableRow } from './components/table/TableRow';
 export { AllorsMaterialTableComponent } from './components/table/table.component';
 
-export { AllorsDateAdapter } from './dateadapter/allorsdateadapter';
+export { AllorsDateAdapter as AllorsDateAdapter } from './dateadapter/allorsdateadapter';
 
 export { DeleteService } from './services/actions/delete/delete.service';
 export { DeleteAction } from './services/actions/delete/DeleteAction';

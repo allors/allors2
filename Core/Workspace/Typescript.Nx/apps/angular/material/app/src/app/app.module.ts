@@ -18,25 +18,34 @@ import { Workspace } from '@allors/domain/system';
 import { WorkspaceService } from '@allors/angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { appMeta } from './app.meta';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
 import '@allors/meta/core';
 import '@allors/angular/core';
+
 import { AllorsAngularModule } from '@allors/angular/module';
 import { AllorsMaterialModule } from '@allors/angular/material/module';
-import { extend as extendDomain } from '@allors/domain/custom';
-import { extend as extendAngular } from '@allors/angular/core';
 import { AllorsDateAdapter } from '@allors/angular/material/core';
 
-const metaPopulation = new MetaPopulation(data);
-const workspace = new Workspace(metaPopulation);
-extendDomain(workspace);
-extendAngular(workspace);
+import { extend as extendDomain } from '@allors/domain/custom';
+import { extend as extendAngular } from '@allors/angular/core';
+import { configure as configureMaterial } from '@allors/angular/material/custom';
 
 export function appInitFactory(workspaceService: WorkspaceService) {
-  return () => appMeta(metaPopulation);
+  return () => {
+    const metaPopulation = new MetaPopulation(data);
+    const workspace = new Workspace(metaPopulation);
+
+    // Extend
+    extendDomain(workspace);
+    extendAngular(workspace);
+    
+    // Configure
+    configureMaterial(metaPopulation);
+
+    workspaceService.workspace = workspace;
+  };
 }
 
 @NgModule({
@@ -56,7 +65,6 @@ export function appInitFactory(workspaceService: WorkspaceService) {
 
     AllorsAngularModule.forRoot({
       databaseConfig: { url: environment.url },
-      workspaceConfig: { workspace },
       authenticationConfig: {
         url: environment.url + environment.authenticationUrl,
       },

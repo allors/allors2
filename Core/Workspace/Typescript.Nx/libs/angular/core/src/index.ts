@@ -44,7 +44,6 @@ export { DatabaseConfig } from './framework/DatabaseConfig';
 export { DatabaseService } from './framework/DatabaseService';
 export { MetaService } from './framework/MetaService';
 export { WorkspaceService } from './framework/WorkspaceService';
-export { WorkspaceConfig } from './framework/WorkspaceConfig';
 
 export { MediaConfig } from './media/media.config';
 export { MediaService } from './media/media.service';

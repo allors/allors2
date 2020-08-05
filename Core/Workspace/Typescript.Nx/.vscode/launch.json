@@ -5,11 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "chrome",
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
             "url": "http://localhost:4200",
             "webRoot": "${workspaceFolder}"
-        }
+        },
+        {
+            "name": "scaffold",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/dist/out-tsc/tools/scaffold/src/main.js"
+          },
     ]
 }

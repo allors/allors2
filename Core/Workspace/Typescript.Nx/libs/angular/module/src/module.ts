@@ -18,7 +18,6 @@ import {
   WorkspaceService,
   ContextService,
   DatabaseConfig,
-  WorkspaceConfig,
 } from '@allors/angular/core';
 
 export {
@@ -50,7 +49,6 @@ export {
 export class AllorsAngularModule {
   static forRoot(config?: {
     databaseConfig: Partial<DatabaseConfig>;
-    workspaceConfig: Partial<WorkspaceConfig>;
     authenticationConfig: Partial<AuthenticationConfig>;
     dateConfig: Partial<DateConfig>;
     mediaConfig: Partial<MediaConfig>;
@@ -61,7 +59,6 @@ export class AllorsAngularModule {
         DatabaseService,
         { provide: DatabaseConfig, useValue: config?.databaseConfig },
         WorkspaceService,
-        { provide: WorkspaceConfig, useValue: config?.workspaceConfig },
         ContextService,
         AuthenticationService,
         {

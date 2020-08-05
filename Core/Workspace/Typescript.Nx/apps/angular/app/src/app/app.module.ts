@@ -27,14 +27,16 @@ import '@allors/meta/core';
 import '@allors/angular/core';
 import { extend as extendDomain } from '@allors/domain/custom';
 import { extend as extendAngular } from '@allors/angular/core';
-
-const metaPopulation = new MetaPopulation(data);
-const workspace = new Workspace(metaPopulation);
-extendDomain(workspace);
-extendAngular(workspace);
-
 export function appInitFactory(workspaceService: WorkspaceService) {
-  return () => appMeta(metaPopulation);
+  return () => {
+    const metaPopulation = new MetaPopulation(data);
+    const workspace = new Workspace(metaPopulation);
+    extendDomain(workspace);
+    extendAngular(workspace);
+    appMeta(metaPopulation);
+
+    workspaceService.workspace = workspace;
+  };
 }
 
 @NgModule({
@@ -51,7 +53,6 @@ export function appInitFactory(workspaceService: WorkspaceService) {
     // Allors
     AllorsAngularModule.forRoot({
       databaseConfig: { url: environment.url },
-      workspaceConfig: { workspace },
       authenticationConfig: {
         url: environment.url + environment.authenticationUrl,
       },
