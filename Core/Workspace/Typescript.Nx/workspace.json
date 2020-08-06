@@ -749,6 +749,54 @@
           }
         }
       }
+    },
+    "gatsby-source-core": {
+      "root": "libs/gatsby/source/core",
+      "sourceRoot": "libs/gatsby/source/core/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["libs/gatsby/source/core/tsconfig.lib.json", "libs/gatsby/source/core/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/gatsby/source/core/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/gatsby/source/core/jest.config.js",
+            "tsConfig": "libs/gatsby/source/core/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "gatsby-source-custom": {
+      "root": "libs/gatsby/source/custom",
+      "sourceRoot": "libs/gatsby/source/custom/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "tsConfig": ["libs/gatsby/source/custom/tsconfig.lib.json", "libs/gatsby/source/custom/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/gatsby/source/custom/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/gatsby/source/custom/jest.config.js",
+            "tsConfig": "libs/gatsby/source/custom/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {

@@ -1,0 +1,10 @@
+{
+  "name": "custom",
+  "version": "1.0.0",
+  "description": "Gatsby Source Custom",
+  "dependencies": {
+    "axios": "*",
+    "gatsby": "*",
+    "gatsby-source-filesystem": "*"
+  }
+}

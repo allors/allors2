@@ -93,6 +93,12 @@
     "gatsby-e2e": {
       "tags": [],
       "implicitDependencies": ["gatsby"]
+    },
+    "gatsby-source-core": {
+      "tags": []
+    },
+    "gatsby-source-custom": {
+      "tags": []
     }
   }
 }

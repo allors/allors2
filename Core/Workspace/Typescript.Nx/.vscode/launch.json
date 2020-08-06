@@ -33,7 +33,7 @@
         "${workspaceRoot}/node_modules/jest/bin/jest.js",
         "--runInBand",
         "--no-cache",
-        "--config=${workspaceFolder}/libs/promise/custom/jest.config.js"
+        "--config=${workspaceFolder}/libs/gatsby/source/custom/jest.config.js"
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
