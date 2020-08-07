@@ -1,0 +1,55 @@
+import { Workspace } from '@allors/domain/system';
+
+import { extendAutomatedAgent } from './AutomatedAgent';
+import { extendContactMechanism } from './ContactMechanism';
+import { extendEmailAddress } from './EmailAddress';
+import { extendFixedAsset } from './FixedAsset';
+import { extendInventoryItem } from './InventoryItem';
+import { extendNonSerialisedInventoryItem } from './NonSerialisedInventoryItem';
+import { extendOrganisation } from './Organisation';
+import { extendPartCategory } from './PartCategory';
+import { extendParty } from './Party';
+import { extendPerson } from './Person';
+import { extendPostalAddress } from './PostalAddress';
+import { extendProductCategory } from './ProductCategory';
+import { extendPurchaseOrder } from './PurchaseOrder';
+import { extendPurchaseOrderItem } from './PurchaseOrderItem';
+import { extendSerialisedInventoryItem } from './SerialisedInventoryItem';
+import { extendSerialisedItem } from './SerialisedItem';
+import { extendSerialisedItemCharacteristicType } from './SerialisedItemCharacteristicType';
+import { extendTelecommunicationsNumber } from './TelecommunicationsNumber';
+import { extendUnifiedGood } from './UnifiedGood';
+import { extendUnifiedProduct } from './UnifiedProduct';
+import { extendUser } from './User';
+import { extendWebAddress } from './WebAddress';
+import { extendWorkEffortInventoryAssignment } from './WorkEffortInventoryAssignment';
+import { extendWorkEffortPartyAssignment } from './WorkEffortPartyAssignment';
+import { extendWorkEffortState } from './WorkEffortState';
+
+export function extend(workspace: Workspace) {
+  extendAutomatedAgent(workspace);
+  extendContactMechanism(workspace);
+  extendEmailAddress(workspace);
+  extendFixedAsset(workspace);
+  extendInventoryItem(workspace);
+  extendNonSerialisedInventoryItem(workspace);
+  extendOrganisation(workspace);
+  extendPartCategory(workspace);
+  extendParty(workspace);
+  extendPerson(workspace);
+  extendPostalAddress(workspace);
+  extendProductCategory(workspace);
+  extendPurchaseOrder(workspace);
+  extendPurchaseOrderItem(workspace);
+  extendSerialisedInventoryItem(workspace);
+  extendSerialisedItem(workspace);
+  extendSerialisedItemCharacteristicType(workspace);
+  extendTelecommunicationsNumber(workspace);
+  extendUnifiedGood(workspace);
+  extendUnifiedProduct(workspace);
+  extendUser(workspace);
+  extendWebAddress(workspace);
+  extendWorkEffortInventoryAssignment(workspace);
+  extendWorkEffortPartyAssignment(workspace);
+  extendWorkEffortState(workspace);
+}

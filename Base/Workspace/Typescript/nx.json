@@ -1,0 +1,90 @@
+{
+  "npmScope": "allors",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "intranet": {
+      "tags": []
+    },
+    "intranet-e2e": {
+      "tags": [],
+      "implicitDependencies": ["intranet"]
+    },
+    "data-system": {
+      "tags": []
+    },
+    "domain-core": {
+      "tags": []
+    },
+    "domain-custom": {
+      "tags": []
+    },
+    "domain-generated": {
+      "tags": []
+    },
+    "domain-system": {
+      "tags": []
+    },
+    "meta-core": {
+      "tags": []
+    },
+    "meta-custom": {
+      "tags": []
+    },
+    "meta-generated": {
+      "tags": []
+    },
+    "meta-system": {
+      "tags": []
+    },
+    "protocol-system": {
+      "tags": []
+    },
+    "angular-core": {
+      "tags": []
+    },
+    "angular-module": {
+      "tags": []
+    },
+    "angular-material-core": {
+      "tags": []
+    },
+    "angular-material-base": {
+      "tags": []
+    },
+    "angular-material-module": {
+      "tags": []
+    },
+    "angular-material-custom": {
+      "tags": []
+    },
+    "angular-base": {
+      "tags": []
+    },
+    "meta-base": {
+      "tags": []
+    },
+    "domain-base": {
+      "tags": []
+    }
+  }
+}
