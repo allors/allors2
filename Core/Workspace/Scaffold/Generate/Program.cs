@@ -20,10 +20,10 @@ namespace Allors
                 string[,] config =
                 {
                     {
-                        "./Workspace/Scaffold/Templates/sidenav.cs.stg", "./Workspace/Typescript/Material.Tests/generated/sidenav",
+                        "./Workspace/Scaffold/Templates/sidenav.cs.stg", "./Workspace/Scaffold/Angular.Material.Tests/generated/sidenav",
                     },
                     {
-                        "./Workspace/Scaffold/Templates/component.cs.stg", "./Workspace/Typescript/Material.Tests/generated/components",
+                        "./Workspace/Scaffold/Templates/component.cs.stg", "./Workspace/Scaffold/Angular.Material.Tests/generated/components",
                     },
                 };
 
@@ -60,9 +60,9 @@ namespace Allors
                     MetaPopulation = MetaPopulation.Instance,
                 };
 
-                model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/Material/dist/autotest/meta.json"));
-                model.LoadProject(new FileInfo("./Workspace/Typescript/Autotest/Angular/dist/project.json"));
-                model.LoadMenu(new FileInfo("./Workspace/Typescript/Material/dist/autotest/menu.json"));
+                model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/dist/scaffold/meta.json"));
+                model.LoadProject(new FileInfo("./Workspace/Typescript/dist/scaffold/project.json"));
+                model.LoadMenu(new FileInfo("./Workspace/Typescript/dist/scaffold/menu.json"));
 
                 switch (args.Length)
                 {

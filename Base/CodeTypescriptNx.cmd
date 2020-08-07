@@ -1,6 +1,7 @@
 @echo off
 
-cd gatsby
+cd workspace\typescript.nx
 call code .
 exit
+
 

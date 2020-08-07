@@ -10,6 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CSharp\Meta\Workspace.Meta.csproj" />
+    <ProjectReference Include="..\..\CSharp\Meta\Workspace.Meta.csproj" />
   </ItemGroup>
 </Project>
