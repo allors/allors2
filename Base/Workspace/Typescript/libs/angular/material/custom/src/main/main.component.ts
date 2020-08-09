@@ -12,7 +12,7 @@ import { Equals } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { InternalOrganisationId } from '@allors/angular/base';
 
-import { menu } from '..';
+import { menu } from './main.menu';
 
 
 @Component({

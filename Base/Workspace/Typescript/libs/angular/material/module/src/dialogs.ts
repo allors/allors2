@@ -71,7 +71,7 @@ import {
   TelecommunicationsNumberEditComponent,
   UserProfileEditComponent,
   WebAddressEditComponent,
-} from '@allors/angular/material/module';
+} from '@allors/angular/material/base';
 
 export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
