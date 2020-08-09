@@ -13,13 +13,12 @@ import { SaveService, ObjectData } from '@allors/angular/material/core';
 import { InternalOrganisationId, FetcherService, FiltersService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort, And, ContainedIn, Extent, LessThan, Or, Not, Exists, GreaterThan } from '@allors/data/system';
-import { PrintService } from '../../../services/actions';
 
 @Component({
-  templateUrl: './salesterm-edit.component.html',
+  templateUrl: './salesordertransfer-edit.component.html',
   providers: [ContextService]
 })
-export class SalesTermEditComponent extends TestScope implements OnInit, OnDestroy {
+export class SalesOrderTransferEditComponent extends TestScope implements OnInit, OnDestroy {
 
   public m: Meta;
 
@@ -34,7 +33,7 @@ export class SalesTermEditComponent extends TestScope implements OnInit, OnDestr
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public dialogRef: MatDialogRef<SalesTermEditComponent>,
+    public dialogRef: MatDialogRef<SalesOrderTransferEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,

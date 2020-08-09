@@ -29,6 +29,7 @@ import {
   Facility,
 } from '@allors/domain/generated';
 import { And, Like, ContainedIn, Extent, Equals, Contains } from '@allors/data/system';
+import { FiltersService } from '@allors/angular/base';
 
 interface Row extends TableRow {
   object: Part;

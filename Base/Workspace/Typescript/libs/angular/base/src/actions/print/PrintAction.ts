@@ -1,8 +1,8 @@
 import { Subject } from 'rxjs';
 
-import { RoleType, ISessionObject } from './../../../../../framework';
-import { Printable } from '../../../../../domain';
-import { Action, ActionTarget} from '../../../../../angular';
+import { Action, ActionTarget } from '@allors/angular/core';
+import { RoleType } from '@allors/meta/system';
+import { Printable } from '@allors/domain/generated';
 
 import { PrintConfig } from './print.config';
 

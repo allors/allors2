@@ -13,7 +13,7 @@ import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/
 import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { IObject } from '@allors/domain/system';
-import { PrintService } from '../../../../services/actions';
+
 
 interface Row extends TableRow {
   object: Payment;
@@ -139,7 +139,7 @@ export class PaymentOverviewPanelComponent extends TestScope {
       this.table.data = this.payments.map((v) => {
         return {
           object: v,
-          date: v.EffectiveDate && format(new Date(v.EffectiveDate), ''MMM Do YY''),
+          date: v.EffectiveDate && format(new Date(v.EffectiveDate), 'MMM Do YY'),
           amount: v.Amount
         } as Row;
       });

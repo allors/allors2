@@ -3,7 +3,3 @@ declare module '@allors/domain/generated' {
     displayName: string;
   }
 }
-
-export function extendContactMechanism(workspace) {
-};
-

@@ -1,11 +1,10 @@
-import { Component, Output, EventEmitter, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 
 import { ContextService, MetaService } from '@allors/angular/core';
-import { PartyContactMechanism, ContactMechanismPurpose, EmailAddress, Facility, FacilityType, Organisation } from '@allors/domain/generated';
+import { Person, Enumeration } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 import { Equals, Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
-import { FetcherService } from '@allors/angular/base';
 
 
 @Component({
@@ -38,7 +37,7 @@ export class PersonInlineComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.metaService;
+    const { pull } = this.metaService;
 
     const pulls = [
       pull.Locale({

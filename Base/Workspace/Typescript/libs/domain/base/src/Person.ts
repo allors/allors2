@@ -1,7 +1,8 @@
+import { inlineLists } from 'common-tags';
+
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
-import { Person } from '@allors/domain/generated';
-import { inlineLists } from 'common-tags';
+import { Person, EmailAddress, TelecommunicationsNumber } from '@allors/domain/generated';
 
 declare module '@allors/domain/generated' {
   interface Person {

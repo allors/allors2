@@ -13,7 +13,7 @@ import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/
 import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { IObject } from '@allors/domain/system';
-import { PrintService } from '../../../../services/actions';
+
 
 interface Row extends TableRow {
   object: PurchaseOrder;

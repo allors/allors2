@@ -21,8 +21,8 @@ import { PullRequest } from '@allors/protocol/system';
 import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
 import { Person, Organisation, Quote, QuoteState, Party } from '@allors/domain/generated';
 import { And, Equals } from '@allors/data/system';
-import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
-import { PrintService } from '../../../services/actions';
+import { InternalOrganisationId, FetcherService, PrintService } from '@allors/angular/base';
+
 
 interface Row extends TableRow {
   object: Quote;

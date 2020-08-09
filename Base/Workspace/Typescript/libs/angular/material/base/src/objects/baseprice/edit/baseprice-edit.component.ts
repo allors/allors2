@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, TestScope, MetaService, RefreshService } from '@allors/angular/core';
 import { Organisation, Good, Part, PriceComponent, InternalOrganisation, NonUnifiedGood } from '@allors/domain/generated';

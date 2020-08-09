@@ -45,7 +45,7 @@ import {
 } from '@allors/domain/generated';
 import { And, Like, ContainedIn, Extent, Equals } from '@allors/data/system';
 import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
-import { PrintService } from '../../../services/actions';
+
 import { Meta } from '@allors/meta/generated';
 import { MatSnackBar } from '@angular/material/snack-bar';
 

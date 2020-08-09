@@ -7,5 +7,3 @@ declare module '@allors/domain/generated' {
     displayName: string;
   }
 }
-
-export function extendParty(workspace) {}

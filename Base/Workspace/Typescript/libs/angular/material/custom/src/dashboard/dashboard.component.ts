@@ -1,14 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { TestScope } from '@allors/angular/core';
+
+interface Item {
+  title: string;
+  subtitle: string;
+  icon: string;
+  routerLink: string[];
+}
 
 @Component({
+  styleUrls: ['./dashboard.component.scss'],
   templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent {
+export class DashboardComponent extends TestScope implements OnInit {
 
-  public title = 'Home';
+  constructor(
+    private titleService: Title
+  ) {
+    super();
 
-  constructor(private titleService: Title) {
     this.titleService.setTitle('Dashboard');
+  }
+
+  ngOnInit(): void {
   }
 }

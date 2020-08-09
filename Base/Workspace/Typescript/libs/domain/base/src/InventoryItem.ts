@@ -4,6 +4,3 @@ declare module '@allors/domain/generated' {
     }
 }
 
-export function extendInventoryItem(workspace) {
-};
-

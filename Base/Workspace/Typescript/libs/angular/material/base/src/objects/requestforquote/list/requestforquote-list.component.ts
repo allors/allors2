@@ -187,7 +187,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
             from: v.Originator && v.Originator.displayName,
             state: `${v.RequestState && v.RequestState.Name}`,
             description: `${v.Description || ''}`,
-            responseRequired: v.RequiredResponseDate && format(new Date(v.RequiredResponseDate), ''MMM Do YY''),
+            responseRequired: v.RequiredResponseDate && format(new Date(v.RequiredResponseDate), 'MMM Do YY'),
             lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date())
           } as Row;
         });

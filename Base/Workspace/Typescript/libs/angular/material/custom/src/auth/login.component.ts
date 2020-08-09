@@ -5,16 +5,12 @@ import { Subscription } from 'rxjs';
 
 import { TestScope, AuthenticationService } from '@allors/angular/core';
 
+import { ConfigService } from '../config/config.service';
+
 @Component({
   templateUrl: './login.component.html',
 })
 export class LoginComponent extends TestScope implements OnDestroy {
-
-  public loginFormGhost = this.formBuilder.group({
-    password: ['', Validators.required],
-    userName: ['', Validators.required],
-  });
-
   public loginForm = this.formBuilder.group({
     password: ['', Validators.required],
     userName: ['', Validators.required],
@@ -23,6 +19,7 @@ export class LoginComponent extends TestScope implements OnDestroy {
   private subscription: Subscription;
 
   constructor(
+    private configService: ConfigService,
     private authService: AuthenticationService,
     private router: Router,
     public formBuilder: FormBuilder,
@@ -30,7 +27,7 @@ export class LoginComponent extends TestScope implements OnDestroy {
     super();
   }
 
-  public login() {
+  public login(event) {
     const userName = this.loginForm.controls.userName.value;
     const password = this.loginForm.controls.password.value;
 
@@ -38,10 +35,18 @@ export class LoginComponent extends TestScope implements OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    this.subscription = this.authService.login$(userName, password).subscribe(
+    this.subscription = this.authService
+    .login$(userName, password)
+    .subscribe(
       (result) => {
         if (result.authenticated) {
-          this.router.navigate(['/']);
+          this.configService.setup()
+            .subscribe(() => {
+              this.router.navigate(['/']);
+            },
+            (error) => {
+              alert('Error during setup. Please restart.');
+            });
         } else {
           alert('Could not log in');
         }

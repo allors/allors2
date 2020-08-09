@@ -43,7 +43,8 @@
       "@allors/angular/base": ["libs/angular/base/src/index.ts"],
       "@allors/meta/base": ["libs/meta/base/src/index.ts"],
       "@allors/domain/base": ["libs/domain/base/src/index.ts"]
-    }
+    },
+    "resolveJsonModule": true,
   },
   "exclude": ["node_modules", "tmp"]
 }

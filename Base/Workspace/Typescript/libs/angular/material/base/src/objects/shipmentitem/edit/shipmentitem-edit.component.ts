@@ -13,7 +13,7 @@ import { SaveService, ObjectData } from '@allors/angular/material/core';
 import { InternalOrganisationId, FetcherService, FiltersService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort, And, ContainedIn, Extent, LessThan, Or, Not, Exists, GreaterThan } from '@allors/data/system';
-import { PrintService } from '../../../services/actions';
+
 
 @Component({
   templateUrl: './shipmentitem-edit.component.html',

@@ -23,7 +23,7 @@ import { Organisation, Party, SerialisedItem, SerialisedItemState, SerialisedIte
 import { And, Equals, ContainedIn, Extent, Like, Or, Contains, Exists } from '@allors/data/system';
 import { InternalOrganisationId } from '@allors/angular/base';
 
-import { PrintService } from '../../../services/actions';
+
 
 
 interface Row extends TableRow {

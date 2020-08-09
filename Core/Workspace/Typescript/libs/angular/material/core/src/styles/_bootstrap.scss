@@ -20,12 +20,12 @@ $link-hover-color: currentColor;
 $link-hover-decoration: none;
 $label-margin-bottom: 0;
 
-@import "../../../../../node_modules/bootstrap/scss/functions";
-@import "../../../../../node_modules/bootstrap/scss/variables";
-@import "../../../../../node_modules/bootstrap/scss/mixins";
-@import "../../../../../node_modules/bootstrap/scss/reboot";
-@import "../../../../../node_modules/bootstrap/scss/grid";
-@import "../../../../../node_modules/bootstrap/scss/utilities";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/utilities";
 
 * {
   &:active,

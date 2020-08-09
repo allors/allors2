@@ -3,8 +3,3 @@ declare module '@allors/domain/generated' {
         categoryNames: string;
     }
 }
-
-export function extendUnifiedProduct(workspace) {
-};
-
-

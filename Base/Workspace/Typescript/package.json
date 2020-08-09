@@ -43,8 +43,12 @@
     "@angular/platform-browser-dynamic": "^10.0.0",
     "@angular/router": "^10.0.0",
     "@nrwl/angular": "10.0.8",
+    "angular-calendar": "^0.28.16",
+    "bootstrap": "^4.5.2",
     "common-tags": "^1.8.0",
     "date-fns": "^2.15.0",
+    "easymde": "^2.11.0",
+    "jsnlog": "^2.29.0",
     "rxjs": "~6.5.5",
     "zone.js": "^0.10.2"
   },

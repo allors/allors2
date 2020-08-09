@@ -23,7 +23,7 @@ import { TableRow, Table, OverviewService, DeleteService, Sorter, MethodService,
 import { Person, Organisation, Quote, QuoteState, Party, SalesInvoice, PaymentApplication, Receipt, Disbursement, SalesInvoiceType, SalesInvoiceState, Product, SerialisedItem } from '@allors/domain/generated';
 import { And, Equals, ContainedIn, Extent } from '@allors/data/system';
 import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
-import { PrintService } from '../../../services/actions';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 

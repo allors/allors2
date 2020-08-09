@@ -1,9 +1,12 @@
-.sidenav-container {
-    height: 100%;
+mat-sidenav {
+  mat-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      height: 66%;
+      width: 100%;
+    }
   }
-  
-  .sidenav {
-    width: 200px;
-    box-shadow: 3px 0 6px rgba(0,0,0,.24);
-  }
-  
+}

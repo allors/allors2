@@ -2,15 +2,15 @@ import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
 import { WorkEffortState } from '@allors/domain/generated';
 
-declare module '@allors/domain/generated' {
-  interface WorkEffortState {
-    created: boolean;
-    inProgress: boolean;
-    cancelled: boolean;
-    completed: boolean;
-    finished: boolean;
-  }
-}
+// declare module '@allors/domain/generated' {
+//   interface WorkEffortState {
+//     created: boolean;
+//     inProgress: boolean;
+//     cancelled: boolean;
+//     completed: boolean;
+//     finished: boolean;
+//   }
+// }
 
 const createdId = 'c082cd60-5c5f-4948-bdb1-06bd9c385751';
 const inProgressId = '7a83df7b-9918-4b10-8f99-48896f9db105';

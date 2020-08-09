@@ -5,20 +5,6 @@ import { switchMap, scan } from 'rxjs/operators';
 import { format, formatDistance } from 'date-fns';
 
 import {
-  ContextService,
-  TestScope,
-  MetaService,
-  RefreshService,
-  Action,
-  Filter,
-  NavigationService,
-  MediaService,
-  FilterDefinition,
-  SingletonId,
-  UserId,
-  SearchFactory,
-} from '@allors/angular/core';
-import {
   Brand,
   Part,
   ProductIdentificationType,
@@ -36,6 +22,20 @@ import {
 } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import {
+  ContextService,
+  MetaService,
+  RefreshService,
+  Action,
+  Filter,
+  NavigationService,
+  MediaService,
+  FilterDefinition,
+  SingletonId,
+  UserId,
+  SearchFactory,
+} from '@allors/angular/core';
+import { PrintService, FiltersService } from '@allors/angular/base';
+import {
   TableRow,
   Table,
   OverviewService,
@@ -46,8 +46,6 @@ import {
   SaveService,
 } from '@allors/angular/material/core';
 import { And, Like, Or, ContainedIn, Extent, Contains, Equals } from '@allors/data/system';
-import { PrintService } from '../../../services/actions';
-import { FiltersService } from '../../../services/filters';
 import { FetcherService, InternalOrganisationId } from '@allors/angular/base';
 
 interface Row extends TableRow {
