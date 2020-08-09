@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Title, Meta } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import { formatDistance } from 'date-fns';
@@ -21,7 +21,7 @@ import { PullRequest } from '@allors/protocol/system';
 import { TableRow, Table, OverviewService, DeleteService, Sorter, ObjectService, EditService, MethodService } from '@allors/angular/material/core';
 import { Organisation, Party, SerialisedItem, SerialisedItemState, SerialisedItemAvailability, Ownership, Brand, Model, ProductType, SerialisedItemCharacteristicType, IUnitOfMeasure, Shipment, ShipmentState, TaskAssignment, UnifiedGood, ProductCategory, ProductIdentification, WorkEffort, WorkEffortState, Person, FixedAsset } from '@allors/domain/generated';
 import { And, Equals, ContainedIn, Extent, Like, Or, Contains, Exists } from '@allors/data/system';
-import { InternalOrganisationId } from '@allors/angular/base';
+import { InternalOrganisationId, PrintService } from '@allors/angular/base';
 
 
 

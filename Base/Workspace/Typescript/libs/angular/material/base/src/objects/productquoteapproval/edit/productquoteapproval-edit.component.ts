@@ -8,7 +8,7 @@ import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation
 import { PullRequest } from '@allors/protocol/system';
 import { Meta, ids } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/core';
-import { InternalOrganisationId, FetcherService, FiltersService } from '@allors/angular/base';
+import { InternalOrganisationId, FetcherService, FiltersService, PrintService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
 

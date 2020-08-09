@@ -23,7 +23,6 @@
       "@allors/domain/system": ["libs/domain/system/src/index.ts"],
       "@allors/meta/system": ["libs/meta/system/src/index.ts"],
       "@allors/protocol/system": ["libs/protocol/system/src/index.ts"],
-      "@allors/domain/core": ["libs/domain/core/src/index.ts"],
       "@allors/domain/custom": ["libs/domain/custom/src/index.ts"],
       "@allors/meta/core": ["libs/meta/core/src/index.ts"],
       "@allors/meta/custom": ["libs/meta/custom/src/index.ts"],

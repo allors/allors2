@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { Title, Meta } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import { format, formatDistance } from 'date-fns';
@@ -22,9 +22,10 @@ import { PullRequest } from '@allors/protocol/system';
 import { TableRow, Table, OverviewService, DeleteService, Sorter, MethodService, AllorsMaterialDialogService } from '@allors/angular/material/core';
 import { Person, Organisation, Quote, QuoteState, Party, SalesInvoice, PaymentApplication, Receipt, Disbursement, SalesInvoiceType, SalesInvoiceState, Product, SerialisedItem } from '@allors/domain/generated';
 import { And, Equals, ContainedIn, Extent } from '@allors/data/system';
-import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
+import { InternalOrganisationId, FetcherService, PrintService } from '@allors/angular/base';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Meta } from '@allors/meta/generated';
 
 
 interface Row extends TableRow {

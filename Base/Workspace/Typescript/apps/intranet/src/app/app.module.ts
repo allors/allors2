@@ -1,3 +1,8 @@
+// Meta extensions
+import '@allors/meta/core';
+import '@allors/angular/module';
+import '@allors/angular/material/module';
+
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -5,43 +10,35 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { enGB } from 'date-fns/locale';
 import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { enGB } from 'date-fns/locale';
 
 import { MetaPopulation } from '@allors/meta/system';
 import { data } from '@allors/meta/generated';
 import { Workspace } from '@allors/domain/system';
 import { WorkspaceService } from '@allors/angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { environment } from '../environments/environment';
-import { AppComponent } from './app.component';
-
-import '@allors/meta/core';
-import '@allors/angular/core';
-
 import { AllorsAngularModule } from '@allors/angular/module';
 import { AllorsMaterialModule } from '@allors/angular/material/module';
 import { AllorsDateAdapter } from '@allors/angular/material/core';
 
-import { extend as extendDomain } from '@allors/domain/custom';
+import { extend as extendDomain } from '@allors/domain/base';
 import { extend as extendAngular } from '@allors/angular/core';
 import { configure as configureMaterial } from '@allors/angular/material/custom';
+
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 
 export function appInitFactory(workspaceService: WorkspaceService) {
   return () => {
     const metaPopulation = new MetaPopulation(data);
     const workspace = new Workspace(metaPopulation);
 
-    // Extend
+    // Domain extensions
     extendDomain(workspace);
     extendAngular(workspace);
-    
-    // Configure
+
+    // Configuration
     configureMaterial(metaPopulation);
 
     workspaceService.workspace = workspace;
@@ -58,10 +55,8 @@ export function appInitFactory(workspaceService: WorkspaceService) {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatSidenavModule,
-    MatToolbarModule,
+
+    AllorsAngularModule,
 
     AllorsAngularModule.forRoot({
       databaseConfig: { url: environment.url },

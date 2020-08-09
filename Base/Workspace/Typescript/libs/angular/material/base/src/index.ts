@@ -1,3 +1,5 @@
+import '@allors/domain/base';
+
 export { BasepriceEditComponent } from './objects/baseprice/edit/baseprice-edit.component';
 
 export { BrandEditComponent } from './objects/brand/edit/brand-edit.component';
@@ -21,6 +23,8 @@ export { CustomerRelationshipEditComponent } from './objects/customerrelationshi
 
 export { CustomerShipmentCreateComponent } from './objects/customershipment/create/customershipment-create.component';
 export { CustomerShipmentOverviewComponent } from './objects/customershipment/overview/customershipment-overview.component';
+export { CustomerShipmentOverviewDetailComponent } from './objects/customershipment/overview/detail/customershipment-overview-detail.component';
+export { CustomerShipmentOverviewSummaryComponent } from './objects/customershipment/overview/summary/customershipment-overview-summary.component';
 
 export { DisbursementEditComponent } from './objects/disbursement/edit/disbursement-edit.component';
 

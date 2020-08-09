@@ -1,26 +1,22 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest, BehaviorSubject, Observable } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { ContextService, TestScope, MetaService, RefreshService, Context, Saved, NavigationService, Action, Invoked, SearchFactory } from '@allors/angular/core';
-import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship, InventoryItem, InternalOrganisation, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem, ContactMechanism, LetterCorrespondence, PartyContactMechanism, PostalAddress, OrderAdjustment, OrganisationContactKind, PartyRate, TimeFrequency, RateType, PhoneCommunication, TelecommunicationsNumber, PositionType, PositionTypeRate, ProductIdentification, ProductIdentificationType, ProductType, SerialisedItemCharacteristicType, PurchaseInvoiceApproval, PurchaseOrderApprovalLevel1, PurchaseOrderApprovalLevel2, PurchaseOrder, PurchaseOrderItem, VatRegime, IrpfRegime, InvoiceItemType, SupplierOffering, UnifiedGood, Product, ProductQuote, QuoteItem, RequestItem, UnitOfMeasure, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, Receipt, SalesInvoice, PaymentApplication, RepeatingPurchaseInvoice, DayOfWeek, RepeatingSalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedItemAvailability, NonUnifiedPart, SalesOrder, SalesTerm, TermType, Singleton, IUnitOfMeasure, Shipment, ShipmentItem, OrderShipment, PurchaseOrderState, Good, SubContractorRelationship, SupplierRelationship, WorkEffortFixedAssetAssignment, WorkEffort, WorkEffortInventoryAssignment } from '@allors/domain/generated';
+import { ContextService, TestScope, MetaService, RefreshService } from '@allors/angular/core';
+import { Employment, Person, Party, WorkEffort, WorkEffortPartyAssignment } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta, ids } from '@allors/meta/generated';
+import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/core';
-import { InternalOrganisationId, FetcherService, FiltersService } from '@allors/angular/base';
-import { IObject, ISessionObject } from '@allors/domain/system';
-import { Equals, Sort, And, ContainedIn, Extent, LessThan, Or, Not, Exists, GreaterThan } from '@allors/data/system';
-
+import { InternalOrganisationId } from '@allors/angular/base';
+import { IObject } from '@allors/domain/system';
+import { Sort } from '@allors/data/system';
 
 @Component({
   templateUrl: './workeffortpartyassignment-edit.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class WorkEffortPartyAssignmentEditComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
 
   workEffortPartyAssignment: WorkEffortPartyAssignment;
@@ -50,13 +46,11 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
   }
 
   public ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(([, internalOrganisationId]) => {
-
           const isCreate = this.data.id === undefined;
 
           let pulls = [
@@ -64,19 +58,19 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
               object: this.data.id,
               include: {
                 Assignment: x,
-                Party: x
-              }
+                Party: x,
+              },
             }),
             pull.Organisation({
               object: internalOrganisationId,
               fetch: {
                 EmploymentsWhereEmployer: {
                   include: {
-                    Employee: x
-                  }
-                }
+                    Employee: x,
+                  },
+                },
               },
-              sort: new Sort(m.Person.PartyName)
+              sort: new Sort(m.Person.PartyName),
             }),
           ];
 
@@ -84,23 +78,18 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
             pulls = [
               ...pulls,
               pull.Party({
-                object: this.data.associationId
+                object: this.data.associationId,
               }),
               pull.WorkEffort({
-                object: this.data.associationId
+                object: this.data.associationId,
               }),
             ];
           }
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
+          return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })
       )
       .subscribe(({ loaded, isCreate }) => {
-
         this.allors.context.reset();
 
         if (isCreate) {
@@ -119,7 +108,6 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
             this.assignment = this.workEffort as WorkEffort;
             this.workEffortPartyAssignment.Assignment = this.assignment;
           }
-
         } else {
           this.workEffortPartyAssignment = loaded.objects.WorkEffortPartyAssignment as WorkEffortPartyAssignment;
           this.party = this.workEffortPartyAssignment.Party;
@@ -137,7 +125,12 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
         // TODO: Martien
         const employments = loaded.collections.Employments as Employment[];
         if (this.workEffort && this.workEffort.ScheduledStart) {
-          this.employees = employments.filter(v => v.FromDate <= this.workEffort.ScheduledStart && (v.ThroughDate === null || v.ThroughDate >= this.workEffort.ScheduledStart)).map(v => v.Employee);
+          this.employees = employments
+            .filter(
+              (v) =>
+                v.FromDate <= this.workEffort.ScheduledStart && (v.ThroughDate === null || v.ThroughDate >= this.workEffort.ScheduledStart)
+            )
+            .map((v) => v.Employee);
         } else {
           this.employees = [this.person];
         }
@@ -151,18 +144,14 @@ export class WorkEffortPartyAssignmentEditComponent extends TestScope implements
   }
 
   public save(): void {
+    this.allors.context.save().subscribe(() => {
+      const data: IObject = {
+        id: this.workEffortPartyAssignment.id,
+        objectType: this.workEffortPartyAssignment.objectType,
+      };
 
-    this.allors.context.save()
-      .subscribe(() => {
-        const data: IObject = {
-          id: this.workEffortPartyAssignment.id,
-          objectType: this.workEffortPartyAssignment.objectType,
-        };
-
-        this.dialogRef.close(data);
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+      this.dialogRef.close(data);
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 }

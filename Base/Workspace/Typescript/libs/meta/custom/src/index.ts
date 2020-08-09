@@ -1,1 +1,0 @@
-import '@allors/meta/core';

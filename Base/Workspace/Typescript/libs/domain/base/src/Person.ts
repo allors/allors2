@@ -1,18 +1,13 @@
-import { inlineLists } from 'common-tags';
-
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
+import { Workspace } from '@allors/domain/system';
+
 import { Person, EmailAddress, TelecommunicationsNumber } from '@allors/domain/generated';
 
-declare module '@allors/domain/generated' {
-  interface Person {
-    displayName: string;
-    displayEmail: string;
-    displayPhone: string;
-  }
-}
+import { inlineLists } from 'common-tags';
 
-export function extendPerson(workspace) {
+
+export function extendPerson(workspace: Workspace) {
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.Person);
   assert(cls);

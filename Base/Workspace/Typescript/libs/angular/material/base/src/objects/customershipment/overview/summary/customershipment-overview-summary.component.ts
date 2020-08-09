@@ -1,18 +1,11 @@
-import { Component, Self, OnInit, OnDestroy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, UnifiedGood, SalesOrder, RepeatingSalesInvoice, Good, WorkEffort, PurchaseOrder, PurchaseInvoice, Shipment, NonUnifiedGood, BasePrice, PriceComponent, ProductIdentificationType, SerialisedItem, RequestForQuote, ProductQuote, CustomerShipment, Quote } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService, Invoked } from '@allors/angular/core';
+import { SalesOrder, CustomerShipment } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
+import { SaveService } from '@allors/angular/material/core';
+import { PrintService } from '@allors/angular/base';
 
 
 @Component({
@@ -44,7 +37,7 @@ export class CustomerShipmentOverviewSummaryComponent {
     const shipmentPullName = `${panel.name}_${this.m.Shipment.name}`;
 
     panel.onPull = (pulls) => {
-      const { m, pull, x } = this.metaService;
+      const { pull, x } = this.metaService;
 
       pulls.push(
 
@@ -92,7 +85,7 @@ export class CustomerShipmentOverviewSummaryComponent {
   public invoice(): void {
 
     this.panel.manager.context.invoke(this.shipment.Invoice)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully invoiced.', 'close', { duration: 5000 });
       },
@@ -102,7 +95,7 @@ export class CustomerShipmentOverviewSummaryComponent {
   public cancel(): void {
 
     this.panel.manager.context.invoke(this.shipment.Cancel)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
@@ -112,7 +105,7 @@ export class CustomerShipmentOverviewSummaryComponent {
   public hold(): void {
 
     this.panel.manager.context.invoke(this.shipment.Hold)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
       },
@@ -122,7 +115,7 @@ export class CustomerShipmentOverviewSummaryComponent {
   public continue(): void {
 
     this.panel.manager.context.invoke(this.shipment.Continue)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
       },
@@ -132,7 +125,7 @@ export class CustomerShipmentOverviewSummaryComponent {
   public pick(): void {
 
     this.panel.manager.context.invoke(this.shipment.Pick)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.panel.toggle();
         this.snackBar.open('Successfully picked.', 'close', { duration: 5000 });
         this.refreshService.refresh();
@@ -143,7 +136,7 @@ export class CustomerShipmentOverviewSummaryComponent {
   public ship(): void {
 
     this.panel.manager.context.invoke(this.shipment.Ship)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.panel.toggle();
         this.snackBar.open('Successfully shipped.', 'close', { duration: 5000 });
         this.refreshService.refresh();

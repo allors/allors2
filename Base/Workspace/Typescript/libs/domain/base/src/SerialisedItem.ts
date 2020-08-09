@@ -1,16 +1,10 @@
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
-import { SerialisedItem } from '@allors/domain/generated';
+import { SerialisedItem, UnifiedGood } from '@allors/domain/generated';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface SerialisedItem {
-    displayName: string;
-    age: number;
-    yearsToGo: number;
-  }
-}
 
-export function extendSerialisedItem(workspace) {
+export function extendSerialisedItem(workspace: Workspace) {
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.SerialisedItem);
   assert(cls);

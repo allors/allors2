@@ -1,19 +1,9 @@
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
-import { Organisation } from '@allors/domain/generated';
+import { Organisation, PostalAddress, TelecommunicationsNumber } from '@allors/domain/generated';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface Organisation {
-    displayName: string;
-    displayClassification: string;
-    displayPhone: string;
-    displayAddress: string;
-    displayAddress2: string;
-    displayAddress3: string;
-  }
-}
-
-export function extendOrganisation(workspace) {
+export function extendOrganisation(workspace: Workspace) {
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.Organisation);
   assert(cls);

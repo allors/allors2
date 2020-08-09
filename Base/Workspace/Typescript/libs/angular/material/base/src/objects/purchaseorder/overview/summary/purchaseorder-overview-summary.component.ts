@@ -9,7 +9,7 @@ import { TestScope, MetaService, NavigationService, PanelService, MediaService, 
 import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, UnifiedGood, SalesOrder, RepeatingSalesInvoice, Good, WorkEffort, PurchaseOrder, PurchaseInvoice, Shipment } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 import { ObjectData, SaveService } from '@allors/angular/material/core';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
+import { FiltersService, FetcherService, InternalOrganisationId, PrintService } from '@allors/angular/base';
 import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { IObject } from '@allors/domain/system';

@@ -1,14 +1,9 @@
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
 import { ProductCategory } from '@allors/domain/generated';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface ProductCategory {
-    displayName: string;
-  }
-}
-
-export function extendProductCategory(workspace) {
+export function extendProductCategory(workspace: Workspace) {
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.ProductCategory);
   assert(cls);

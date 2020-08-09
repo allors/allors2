@@ -1,25 +1,19 @@
-import { Component, Self, OnInit, OnDestroy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/core';
+import { WorkTask, SalesInvoice, FixedAsset, Printable } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
+import { SaveService } from '@allors/angular/material/core';
+import { PrintService } from '@allors/angular/base';
+import { ContainedIn, Extent, Equals } from '@allors/data/system';
 
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'worktask-overview-summary',
   templateUrl: './worktask-overview-summary.component.html',
-  providers: [PanelService, PrintService]
+  providers: [PanelService]
 })
 export class WorkTaskOverviewSummaryComponent {
 
@@ -69,7 +63,7 @@ export class WorkTaskOverviewSummaryComponent {
     const parentPullName = `${panel.name}_${this.m.WorkTask.name}_parent`;
 
     panel.onPull = (pulls) => {
-      const { m, pull, tree, x } = this.metaService;
+      const { m, pull, x } = this.metaService;
 
       const id = this.panel.manager.id;
 
@@ -149,7 +143,7 @@ export class WorkTaskOverviewSummaryComponent {
   public cancel(): void {
 
     this.panel.manager.context.invoke(this.workTask.Cancel)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
@@ -159,7 +153,7 @@ export class WorkTaskOverviewSummaryComponent {
   public reopen(): void {
 
     this.panel.manager.context.invoke(this.workTask.Reopen)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
       },
@@ -169,7 +163,7 @@ export class WorkTaskOverviewSummaryComponent {
   public revise(): void {
 
     this.panel.manager.context.invoke(this.workTask.Revise)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Revise successfully executed.', 'close', { duration: 5000 });
       },
@@ -179,7 +173,7 @@ export class WorkTaskOverviewSummaryComponent {
   public complete(): void {
 
     this.panel.manager.context.invoke(this.workTask.Complete)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully completed.', 'close', { duration: 5000 });
       },
@@ -189,7 +183,7 @@ export class WorkTaskOverviewSummaryComponent {
   public invoice(): void {
 
     this.panel.manager.context.invoke(this.workTask.Invoice)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully invoiced.', 'close', { duration: 5000 });
       },

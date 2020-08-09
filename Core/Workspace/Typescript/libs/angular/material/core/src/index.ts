@@ -1,3 +1,5 @@
+import './meta';
+
 export { AllorsMaterialAssociationAutoCompleteComponent } from './components/association/autocomplete/autocomplete.component';
 
 export { AllorsMaterialDialogComponent } from './components/dialog/dialog.component';
@@ -75,4 +77,3 @@ export { AllorsMaterialSideNavService } from './services/sidenav/sidenav.service
 
 export { Sorter } from './sorting/Sorter';
 
-import './meta';

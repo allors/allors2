@@ -1,17 +1,9 @@
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
 import { NonSerialisedInventoryItem } from '@allors/domain/generated';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface NonSerialisedInventoryItem {
-    // facilityName: string;
-    // quantityOnHand: number;
-    // availableToPromise: number;
-    // quantityCommittedOut: number;
-  }
-}
-
-export function extendNonSerialisedInventoryItem(workspace) {
+export function extendNonSerialisedInventoryItem(workspace: Workspace) {
 
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.NonSerialisedInventoryItem);

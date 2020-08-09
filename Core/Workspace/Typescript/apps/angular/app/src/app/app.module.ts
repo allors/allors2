@@ -1,3 +1,7 @@
+// Meta extensions
+import '@allors/meta/core';
+import '@allors/angular/core';
+
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,8 +25,6 @@ import { MetaPopulation } from '@allors/meta/system';
 import { Workspace } from '@allors/domain/system';
 import { data } from '@allors/meta/generated';
 
-import '@allors/meta/core';
-import '@allors/angular/core';
 import { extend as extendDomain } from '@allors/domain/custom';
 import { extend as extendAngular } from '@allors/angular/core';
 import { configure } from './configure';
@@ -31,8 +33,12 @@ export function appInitFactory(workspaceService: WorkspaceService) {
   return () => {
     const metaPopulation = new MetaPopulation(data);
     const workspace = new Workspace(metaPopulation);
+
+    // Domain extensions
     extendDomain(workspace);
     extendAngular(workspace);
+
+    // Configuration
     configure(metaPopulation);
 
     workspaceService.workspace = workspace;

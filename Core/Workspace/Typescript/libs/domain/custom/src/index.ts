@@ -1,11 +1,20 @@
+declare module '@allors/domain/generated' {
+  interface Organisation {
+    displayName: string;
+  }
+
+  interface Person {
+    displayName: string;
+
+    hello(): string;
+  }
+}
+
 import { Workspace } from '@allors/domain/system';
-
-import { extend as extendCore } from "@allors/domain/core"
-
+import { extendOrganisation } from './Organisation';
 import { extendPerson } from './Person';
 
 export function extend(workspace: Workspace) {
-  extendCore(workspace);
-  
+  extendOrganisation(workspace);
   extendPerson(workspace);
 }

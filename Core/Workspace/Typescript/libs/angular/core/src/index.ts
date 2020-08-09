@@ -1,5 +1,5 @@
 // Meta extensions
-import './meta/ObjectType';
+import './meta';
 
 import { Workspace } from '@allors/domain/system';
 import { extendMedia } from './domain/Media';

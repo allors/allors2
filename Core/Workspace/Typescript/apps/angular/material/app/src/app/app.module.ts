@@ -1,3 +1,7 @@
+// Meta extensions
+import '@allors/meta/core';
+import '@allors/angular/core';
+
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,9 +25,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
-import '@allors/meta/core';
-import '@allors/angular/core';
-
 import { AllorsAngularModule } from '@allors/angular/module';
 import { AllorsMaterialModule } from '@allors/angular/material/module';
 import { AllorsDateAdapter } from '@allors/angular/material/core';
@@ -37,11 +38,11 @@ export function appInitFactory(workspaceService: WorkspaceService) {
     const metaPopulation = new MetaPopulation(data);
     const workspace = new Workspace(metaPopulation);
 
-    // Extend
+     // Domain extensions
     extendDomain(workspace);
     extendAngular(workspace);
     
-    // Configure
+    // Configuration
     configureMaterial(metaPopulation);
 
     workspaceService.workspace = workspace;

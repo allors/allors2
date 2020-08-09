@@ -3,15 +3,6 @@ import { ObjectType, humanize } from '@allors/meta/system';
 const icon = Symbol('icon');
 const displayName = Symbol('displayName');
 
-declare module '@allors/meta/system' {
-  interface ObjectType {
-    icon: string;
-    displayName: string;
-    list: string;
-    overview: string;
-  }
-}
-
 Object.defineProperty(ObjectType.prototype, 'icon', {
   get(this: ObjectType): string {
     return (this as any)[icon];

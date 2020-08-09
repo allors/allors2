@@ -1,14 +1,10 @@
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
 import { SerialisedInventoryItem } from '@allors/domain/generated';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface SerialisedInventoryItem {
-    facilityName: string;
-  }
-}
 
-export function extendSerialisedInventoryItem(workspace) {
+export function extendSerialisedInventoryItem(workspace: Workspace) {
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.SerialisedInventoryItem);
   assert(cls);

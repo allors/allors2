@@ -20,9 +20,9 @@ import {
   DatabaseConfig,
 } from '@allors/angular/core';
 
-import {
-  FetcherService, InternalOrganisationId,
-} from '@allors/angular/base';
+// import {
+//   FetcherService, InternalOrganisationId,
+// } from '@allors/angular/base';
 
 export {
   // Core
@@ -38,8 +38,8 @@ export {
   WorkspaceService,
   ContextService,
   // Base
-  FetcherService,
-  InternalOrganisationId,
+  // FetcherService,
+  // InternalOrganisationId,
 };
 
 @NgModule({

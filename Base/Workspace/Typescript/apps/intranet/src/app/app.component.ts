@@ -2,11 +2,10 @@ import { Component, ElementRef } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, elementRef: ElementRef) {
@@ -15,4 +14,5 @@ export class AppComponent {
     iconRegistry.addSvgIcon('allors-mark', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/allors-mark.svg'));
 
     elementRef.nativeElement?.focus();
-  }}
+  }
+}

@@ -2,14 +2,9 @@ import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
 import { PostalAddress } from '@allors/domain/generated';
 import { oneLine, stripIndents, inlineLists } from 'common-tags';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface PostalAddress {
-    displayName: string;
-  }
-}
-
-export function extendPostalAddress(workspace) {
+export function extendPostalAddress(workspace: Workspace) {
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.PostalAddress);
   assert(cls);

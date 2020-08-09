@@ -13,10 +13,13 @@ import {
   NavigationService,
   MediaService,
   UserId,
+  Filter,
+  FilterDefinition,
 } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
 import { TableRow, Table, ObjectService, MethodService } from '@allors/angular/material/core';
 import { Notification } from '@allors/domain/generated';
+import { And, Like } from '@allors/data/system';
 
 interface Row extends TableRow {
   object: Notification;
@@ -38,6 +41,7 @@ export class NotificationListComponent extends TestScope implements OnInit, OnDe
 
   private subscription: Subscription;
 
+  filter: Filter;
   constructor(
     @Self() public allors: ContextService,
 
@@ -68,8 +72,13 @@ export class NotificationListComponent extends TestScope implements OnInit, OnDe
   }
 
   public ngOnInit(): void {
-    const { pull, x } = this.metaService;
+    const { pull, x, m } = this.metaService;
 
+    const predicate = new And([new Like({ roleType: m.Notification.Confirmed, parameter: 'confirmed' })]);
+
+    const filterDefinition = new FilterDefinition(predicate);
+    this.filter = new Filter(filterDefinition);
+    
     this.subscription = combineLatest(this.refreshService.refresh$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(

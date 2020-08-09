@@ -1,15 +1,9 @@
+import { Workspace } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
 import { AutomatedAgent } from '@allors/domain/generated';
 import { assert } from '@allors/meta/system';
 
-declare module '@allors/domain/generated' {
-  interface AutomatedAgent {
-    displayName: string;
-
-  }
-}
-
-export function extendAutomatedAgent(workspace) {
+export function extendAutomatedAgent(workspace: Workspace) {
 
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.AutomatedAgent);

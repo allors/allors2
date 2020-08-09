@@ -1,14 +1,9 @@
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
 import { WorkEffortInventoryAssignment } from '@allors/domain/generated';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface WorkEffortInventoryAssignment {
-    totalSellingPrice: string;
-  }
-}
-
-export function extendWorkEffortInventoryAssignment(workspace) {
+export function extendWorkEffortInventoryAssignment(workspace: Workspace) {
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.WorkEffortInventoryAssignment);
   assert(cls);

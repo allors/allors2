@@ -44,7 +44,7 @@ import {
   PurchaseOrderState,
 } from '@allors/domain/generated';
 import { And, Like, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
+import { InternalOrganisationId, FetcherService, PrintService } from '@allors/angular/base';
 
 import { Meta } from '@allors/meta/generated';
 import { MatSnackBar } from '@angular/material/snack-bar';

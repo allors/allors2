@@ -1,14 +1,9 @@
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
 import { PartCategory } from '@allors/domain/generated';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface PartCategory {
-    displayName: string;
-  }
-}
-
-export function extendPartCategory(workspace) {
+export function extendPartCategory(workspace: Workspace) {
 
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.PartCategory);

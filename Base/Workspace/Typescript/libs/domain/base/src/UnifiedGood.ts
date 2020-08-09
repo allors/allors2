@@ -1,15 +1,9 @@
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
 import { UnifiedGood } from '@allors/domain/generated';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface UnifiedGood {
-    categoryNames: string;
-    motorized: boolean;
-  }
-}
-
-export function extendUnifiedGood(workspace) {
+export function extendUnifiedGood(workspace: Workspace) {
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.UnifiedGood);
   assert(cls);

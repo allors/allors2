@@ -17,12 +17,11 @@ import {
   SearchFactory,
 } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
-import { TableRow, Table, OverviewService, DeleteService, Sorter, EditService } from '@allors/angular/material/core';
-import { ProductType, Person, Organisation, RequestState, Party } from '@allors/domain/generated';
-import { And, Like, Equals } from '@allors/data/system';
+import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
+import { Person, Organisation, Request, RequestState, Party } from '@allors/domain/generated';
+import { And, Equals } from '@allors/data/system';
 import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
-import { format } from 'date-fns';
-
+import { format, formatDistance } from 'date-fns';
 
 interface Row extends TableRow {
   object: Request;
@@ -36,10 +35,9 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './requestforquote-list.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class RequestForQuoteListComponent extends TestScope implements OnInit, OnDestroy {
-
   public title = 'Requests';
 
   delete: Action;
@@ -55,7 +53,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
 
   constructor(
     @Self() public allors: ContextService,
-    
+
     public metaService: MetaService,
     public refreshService: RefreshService,
     public overviewService: OverviewService,
@@ -65,14 +63,14 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
     private internalOrganisationId: InternalOrganisationId,
     private userId: UserId,
     private fetcher: FetcherService,
-    titleService: Title,
+    titleService: Title
   ) {
     super();
 
     titleService.setTitle(this.title);
 
     this.delete = deleteService.delete(allors.context);
-    this.delete.result.subscribe((v) => {
+    this.delete.result.subscribe(() => {
       this.table.selection.clear();
     });
 
@@ -86,10 +84,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
         { name: 'responseRequired', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
-      actions: [
-        overviewService.overview(),
-        this.delete
-      ],
+      actions: [overviewService.overview(), this.delete],
       defaultAction: overviewService.overview(),
       pageSize: 50,
       initialSort: 'number',
@@ -98,7 +93,6 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
   }
 
   ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.Request.Recipient });
@@ -118,42 +112,47 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
       roleTypes: [m.Party.PartyName],
     });
 
-
     const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
       state: { search: stateSearch, display: (v: RequestState) => v && v.Name },
       from: { search: originatorSearch, display: (v: Party) => v && v.PartyName },
     });
     this.filter = new Filter(filterDefinition);
-    
-    const sorter = new Sorter(
-      {
-        number: m.Request.SortableRequestNumber,
-        description: m.Request.Description,
-        responseRequired: m.Request.RequiredResponseDate,
-        lastModifiedDate: m.Request.LastModifiedDate,
-      }
-    );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    const sorter = new Sorter({
+      number: m.Request.SortableRequestNumber,
+      description: m.Request.Description,
+      responseRequired: m.Request.RequiredResponseDate,
+      lastModifiedDate: m.Request.LastModifiedDate,
+    });
+
+    this.subscription = combineLatest(
+      this.refreshService.refresh$,
+      this.filter.fields$,
+      this.table.sort$,
+      this.table.pager$,
+      this.internalOrganisationId.observable$
+    )
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
-          return [
-            refresh,
-            filterFields,
-            sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-            internalOrganisationId
-          ];
-        }, [, , , , ,]),
+        scan(
+          ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
+            return [
+              refresh,
+              filterFields,
+              sort,
+              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+              internalOrganisationId,
+            ];
+          },
+          [, , , , ,]
+        ),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
-
           internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.Person({
-              object: this.userId.value
+              object: this.userId.value,
             }),
             pull.Request({
               predicate,
@@ -165,7 +164,8 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
               parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
-            })];
+            }),
+          ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })
@@ -180,17 +180,19 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
 
         const requests = loaded.collections.Requests as Request[];
         this.table.total = loaded.values.Requests_total;
-        this.table.data = requests.filter(v => v.CanReadRequestNumber).map((v) => {
-          return {
-            object: v,
-            number: `${v.RequestNumber}`,
-            from: v.Originator && v.Originator.displayName,
-            state: `${v.RequestState && v.RequestState.Name}`,
-            description: `${v.Description || ''}`,
-            responseRequired: v.RequiredResponseDate && format(new Date(v.RequiredResponseDate), 'MMM Do YY'),
-            lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date())
-          } as Row;
-        });
+        this.table.data = requests
+          .filter((v) => v.CanReadRequestNumber)
+          .map((v) => {
+            return {
+              object: v,
+              number: `${v.RequestNumber}`,
+              from: v.Originator && v.Originator.displayName,
+              state: `${v.RequestState && v.RequestState.Name}`,
+              description: `${v.Description || ''}`,
+              responseRequired: v.RequiredResponseDate && format(new Date(v.RequiredResponseDate), 'MMM Do YY'),
+              lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
+            } as Row;
+          });
       });
   }
 

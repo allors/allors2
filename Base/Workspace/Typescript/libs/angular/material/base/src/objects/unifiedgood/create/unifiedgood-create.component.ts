@@ -1,67 +1,31 @@
 import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { ContextService, TestScope, MetaService, RefreshService, SingletonId, Saved, NavigationService, SearchFactory } from '@allors/angular/core';
+import { ContextService, TestScope, MetaService, RefreshService, NavigationService } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
-import { ObjectData, SaveService, AllorsMaterialDialogService } from '@allors/angular/material/core';
+import { ObjectData, SaveService } from '@allors/angular/material/core';
 import {
-  Organisation,
-  Facility,
   ProductType,
   ProductIdentificationType,
   Settings,
-  Part,
-  SupplierRelationship,
   InventoryItemKind,
-  SupplierOffering,
-  Brand,
-  Model,
-  PartNumber,
-  UnitOfMeasure,
-  PartCategory,
-  NonUnifiedPart,
-  CustomOrganisationClassification,
-  IndustryClassification,
-  CustomerRelationship,
-  InternalOrganisation,
-  OrganisationRole,
-  LegalForm,
-  VatRegime,
-  IrpfRegime,
-  Currency,
-  Person,
-  OrganisationContactRelationship,
-  Enumeration,
-  OrganisationContactKind,
-  PersonRole,
-  Employment,
-  PostalAddress,
-  Country,
-  Party,
-  PartyContactMechanism,
-  PurchaseInvoice,
-  PurchaseInvoiceType,
-  ContactMechanism,
-  SerialisedItem,
-  Ownership,
-  SerialisedItemState,
+  Good,
+  VatRate,
+  ProductNumber,
+  UnifiedGood,
 } from '@allors/domain/generated';
-import { Equals, Sort, And, Not, Exists } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
-import { IObject, ISessionObject } from '@allors/domain/system';
+import { Sort } from '@allors/data/system';
+import { FetcherService } from '@allors/angular/base';
+import { IObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
 
 @Component({
   templateUrl: './unifiedgood-create.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class UnifiedGoodCreateComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
   good: Good;
 
@@ -93,13 +57,11 @@ export class UnifiedGoodCreateComponent extends TestScope implements OnInit, OnD
   }
 
   public ngOnInit(): void {
-
     const { m, pull } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(() => {
-
           const pulls = [
             this.fetcher.Settings,
             pull.InventoryItemKind(),
@@ -112,7 +74,6 @@ export class UnifiedGoodCreateComponent extends TestScope implements OnInit, OnD
         })
       )
       .subscribe((loaded) => {
-
         this.allors.context.reset();
 
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
@@ -143,18 +104,14 @@ export class UnifiedGoodCreateComponent extends TestScope implements OnInit, OnD
   }
 
   public save(): void {
+    this.allors.context.save().subscribe(() => {
+      const data: IObject = {
+        id: this.good.id,
+        objectType: this.good.objectType,
+      };
 
-    this.allors.context.save()
-      .subscribe(() => {
-        const data: IObject = {
-          id: this.good.id,
-          objectType: this.good.objectType,
-        };
-
-        this.dialogRef.close(data);
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+      this.dialogRef.close(data);
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 }

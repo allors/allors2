@@ -4,7 +4,7 @@
     "defaultBase": "master"
   },
   "implicitDependencies": {
-    "angular.json": "*",
+    "workspace.json": "*",
     "package.json": {
       "dependencies": "*",
       "devDependencies": "*"
@@ -22,44 +22,37 @@
     }
   },
   "projects": {
-    "intranet": {
-      "tags": []
-    },
-    "intranet-e2e": {
-      "tags": [],
-      "implicitDependencies": ["intranet"]
-    },
     "data-system": {
-      "tags": []
-    },
-    "domain-core": {
-      "tags": []
-    },
-    "domain-custom": {
-      "tags": []
-    },
-    "domain-generated": {
       "tags": []
     },
     "domain-system": {
       "tags": []
     },
-    "meta-core": {
+    "domain-generated": {
       "tags": []
     },
-    "meta-custom": {
+    "domain-base": {
+      "tags": []
+    },
+    "domain-custom": {
+      "tags": []
+    },
+    "meta-system": {
       "tags": []
     },
     "meta-generated": {
       "tags": []
     },
-    "meta-system": {
+    "meta-core": {
       "tags": []
     },
     "protocol-system": {
       "tags": []
     },
     "angular-core": {
+      "tags": []
+    },
+    "angular-base": {
       "tags": []
     },
     "angular-module": {
@@ -71,20 +64,18 @@
     "angular-material-base": {
       "tags": []
     },
-    "angular-material-module": {
-      "tags": []
-    },
     "angular-material-custom": {
       "tags": []
     },
-    "angular-base": {
+    "angular-material-module": {
       "tags": []
     },
-    "meta-base": {
+    "intranet": {
       "tags": []
     },
-    "domain-base": {
-      "tags": []
+    "intranet-e2e": {
+      "tags": [],
+      "implicitDependencies": ["intranet"]
     }
   }
 }

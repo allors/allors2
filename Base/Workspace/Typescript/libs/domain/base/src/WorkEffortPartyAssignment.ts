@@ -1,14 +1,9 @@
 import { Meta } from '@allors/meta/generated';
 import { assert } from '@allors/meta/system';
 import { WorkEffortPartyAssignment } from '@allors/domain/generated';
+import { Workspace } from '@allors/domain/system';
 
-declare module '@allors/domain/generated' {
-  interface WorkEffortPartyAssignment {
-    displayName: string;
-  }
-}
-
-export function extendWorkEffortPartyAssignment(workspace) {
+export function extendWorkEffortPartyAssignment(workspace: Workspace) {
   const m = workspace.metaPopulation as Meta;
   const cls = workspace.constructorByObjectType.get(m.WorkEffortPartyAssignment);
   assert(cls);

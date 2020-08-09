@@ -14,6 +14,7 @@ import { InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { RoleType } from '@allors/meta/system';
 import { Pull, Fetch, Step, Sort, Equals } from '@allors/data/system';
+import { UnifiedGood } from 'libs/domain/generated/src/UnifiedGood.g';
 
 @Component({
   templateUrl: './unifiedgood-overview.component.html',
