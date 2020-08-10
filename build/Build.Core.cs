@@ -97,29 +97,19 @@ partial class Build
     Target CoreSetup => _ => _
         .Executes(() =>
         {
-            foreach (var path in Paths.CoreWorkspaceTypescript)
-            {
-                NpmInstall(s => s
-                    .SetEnvironmentVariable("npm_config_loglevel", "error")
-                    .SetWorkingDirectory(path));
-            }
+            NpmInstall(s => s
+                .SetEnvironmentVariable("npm_config_loglevel", "error")
+                .SetWorkingDirectory(Paths.CoreWorkspaceTypescript));
         });
 
-    Target CoreWorkspaceAutotest => _ => _
+    Target CoreWorkspaceScaffold => _ => _
         .DependsOn(CoreGenerate)
         .Executes(() =>
         {
-            foreach (var path in new[] { Paths.CoreWorkspaceTypescriptMaterial, Paths.CoreWorkspaceTypescriptAutotestAngular })
-            {
-                NpmRun(s => s
-                    .SetEnvironmentVariable("npm_config_loglevel", "error")
-                    .SetWorkingDirectory(path)
-                    .SetCommand("autotest"));
-            }
-
-            DotNetRun(s => s
-                .SetWorkingDirectory(Paths.Core)
-                .SetProjectFile(Paths.CoreWorkspaceTypescriptAutotestGenerateGenerate));
+            NpmRun(s => s
+                .SetEnvironmentVariable("npm_config_loglevel", "error")
+                .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                .SetCommand("scaffold"));
         });
 
     Target CoreWorkspaceTypescriptDomain => _ => _
@@ -210,7 +200,7 @@ partial class Build
         });
 
     Target CoreWorkspaceTypescriptMaterialTests => _ => _
-        .DependsOn(CoreWorkspaceAutotest)
+        .DependsOn(CoreWorkspaceScaffold)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(CoreResetDatabase)
@@ -227,7 +217,7 @@ partial class Build
                         await server.Ready();
                         await angular.Init();
                         DotNetTest(s => s
-                            .SetProjectFile(Paths.CoreWorkspaceTypescriptMaterialTests)
+                            .SetProjectFile(Paths.CoreWorkspaceScaffoldAngularMaterialTests)
                             .SetLogger("trx;LogFileName=CoreWorkspaceTypescriptMaterialTests.trx")
                             .SetResultsDirectory(Paths.ArtifactsTests));
                     }

@@ -60,6 +60,6 @@ partial class Build : NukeBuild
        
     Target Default => _ => _
         .DependsOn(AdaptersGenerate)
-        .DependsOn(CoreWorkspaceAutotest)
+        .DependsOn(CoreWorkspaceScaffold)
         .DependsOn(BaseWorkspaceAutotest);
 }
