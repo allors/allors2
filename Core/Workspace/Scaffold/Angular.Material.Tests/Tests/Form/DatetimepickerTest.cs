@@ -9,7 +9,7 @@ namespace Tests
     using System.Linq;
     using Allors.Domain;
     using Components;
-    using src.allors.material.custom.tests.form;
+    using libs.angular.material.custom.src.tests.form;
     using Xunit;
 
     [Collection("Test collection")]
@@ -38,7 +38,7 @@ namespace Tests
                 this.page = this.Sidenav.NavigateToForm();
 
                 var actual = this.page.DateTime.Value;
-                expect(expected).toBe( actual);
+                Assert.Equal(expected, actual);
             }
 
             {
@@ -51,7 +51,7 @@ namespace Tests
                 this.page = this.Sidenav.NavigateToForm();
 
                 var actual = this.page.DateTime.Value;
-                expect(expected).toBe( actual);
+                Assert.Equal(expected, actual);
             }
         }
 
@@ -70,12 +70,12 @@ namespace Tests
 
             var after = new Datas(this.Session).Extent().ToArray();
 
-            expect(after.Length).toBe( before.Length + 1);
+            Assert.Equal(after.Length, before.Length + 1);
 
             var data = after.Except(before).First();
 
             Assert.True(data.ExistDateTime);
-            expect(date).toBe( data.DateTime);
+            Assert.Equal(date, data.DateTime);
         }
 
         [Fact]
@@ -98,11 +98,11 @@ namespace Tests
 
             var after = new Datas(this.Session).Extent().ToArray();
 
-            expect(after.Length).toBe( before.Length + 1);
+            Assert.Equal(after.Length, before.Length + 1);
 
             var data = after.Except(before).First();
 
-            expect(date).toBe( data.DateTime);
+            Assert.Equal(date, data.DateTime);
         }
     }
 }

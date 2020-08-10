@@ -3,10 +3,10 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace src.app.auth
+namespace libs.angular.material.custom.src.auth
 {
     using Components;
-    using src.app.dashboard;
+    using libs.angular.material.custom.src.dashboard;
 
     public partial class LoginComponent
     {

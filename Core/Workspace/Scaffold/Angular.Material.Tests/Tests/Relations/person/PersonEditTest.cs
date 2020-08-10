@@ -8,8 +8,8 @@ namespace Tests.Relations
     using System.Linq;
     using Allors.Domain;
     using Components;
-    using src.allors.material.custom.relations.people;
-    using src.allors.material.custom.relations.people.person;
+    using libs.angular.material.custom.src.relations.people;
+    using libs.angular.material.custom.src.relations.people.person;
     using Xunit;
 
     [Collection("Test collection")]
@@ -28,7 +28,7 @@ namespace Tests.Relations
         public void Title()
         {
             this.people.AddNew.Click();
-            expect("Person").toBe( this.Driver.Title);
+            Assert.Equal("Person", this.Driver.Title);
         }
 
         [Fact]
@@ -48,12 +48,12 @@ namespace Tests.Relations
 
             var after = new People(this.Session).Extent().ToArray();
 
-            expect(after.Length).toBe( before.Length + 1);
+            Assert.Equal(after.Length, before.Length + 1);
 
             var person = after.Except(before).First();
 
-            expect("Jos").toBe( person.FirstName);
-            expect("Smos").toBe( person.LastName);
+            Assert.Equal("Jos", person.FirstName);
+            Assert.Equal("Smos", person.LastName);
         }
 
         [Fact]
@@ -73,10 +73,10 @@ namespace Tests.Relations
 
             var after = new People(this.Session).Extent().ToArray();
 
-            expect(after.Length).toBe( before.Length);
+            Assert.Equal(after.Length, before.Length);
 
-            expect("Jos").toBe( person.FirstName);
-            expect("Smos").toBe( person.LastName);
+            Assert.Equal("Jos", person.FirstName);
+            Assert.Equal("Smos", person.LastName);
         }
     }
 }

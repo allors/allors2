@@ -110,6 +110,10 @@ partial class Build
                 .SetEnvironmentVariable("npm_config_loglevel", "error")
                 .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
                 .SetCommand("scaffold"));
+            
+            DotNetRun(s => s
+                .SetWorkingDirectory(Paths.Core)
+                .SetProjectFile(Paths.CoreWorkspaceScaffoldGenerate));
         });
 
     Target CoreWorkspaceTypescriptDomain => _ => _

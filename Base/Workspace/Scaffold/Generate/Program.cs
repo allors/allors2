@@ -60,10 +60,12 @@ namespace Allors
                     MetaPopulation = MetaPopulation.Instance,
                 };
 
-                model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/dist/scaffold/meta.json"));
-                model.LoadProject(new FileInfo("./Workspace/Typescript/dist/scaffold/project.json"));
-                model.LoadMenu(new FileInfo("./Workspace/Typescript/Intranet/dist/scaffold/autotest/menu.json"));
-                model.LoadDialogs(new FileInfo("./Workspace/Typescript/Intranet/dist/scaffold/dialogs.json"));
+                var directory = "./Workspace/Typescript/dist/scaffold";
+
+                model.LoadMetaExtensions(new FileInfo($"{directory}/meta.json"));
+                model.LoadProject(new FileInfo($"{directory}/project.json"));
+                model.LoadMenu(new FileInfo($"{directory}/menu.json"));
+                model.LoadDialogs(new FileInfo($"{directory}/dialogs.json"));
 
                 switch (args.Length)
                 {

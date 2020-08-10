@@ -7,7 +7,7 @@ namespace Tests.Relations
 {
     using Allors.Domain;
     using Allors.Meta;
-    using src.allors.material.custom.relations.people;
+    using libs.angular.material.custom.src.relations.people;
     using Xunit;
 
     [Collection("Test collection")]
@@ -27,7 +27,7 @@ namespace Tests.Relations
         {
             var person = new People(this.Session).FindBy(M.Person.UserName, "john@example.com");
             this.people.Select(person);
-            expect("Person Overview").toBe( this.Driver.Title);
+            Assert.Equal("Person Overview", this.Driver.Title);
         }
     }
 }

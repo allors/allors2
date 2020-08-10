@@ -5,11 +5,15 @@
 
 namespace Autotest.Angular
 {
+    using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using Newtonsoft.Json.Linq;
 
     public partial class Reference
     {
+        static readonly Regex EatLeadingDots = new Regex(@"^(\.+)");
+
         public Reference(JToken json)
         {
             this.Name = json["name"]?.Value<string>();
@@ -30,9 +34,10 @@ namespace Autotest.Angular
             {
                 if (this.Path != null)
                 {
-                    var unescapedNamespace = this.Path.Substring(0, this.Path.LastIndexOf("/")).Replace("/", ".");
-                    var escapedNamespace = string.Join(".", unescapedNamespace.Split('.').Select(v => v.EscapeReservedKeyword()));
-                    return escapedNamespace;
+                    var path = this.Path.Substring(0, this.Path.LastIndexOf("/")).Replace("/", ".");
+                    var eatLeadingDots = EatLeadingDots.Replace(path, "");
+                    var escaped = string.Join(".", eatLeadingDots.Split('.').Select(v => v.EscapeReservedKeyword()));
+                    return escaped;
                 }
 
                 return string.Empty;

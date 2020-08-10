@@ -19,6 +19,7 @@ public partial class Paths
 
     public AbsolutePath CoreWorkspaceTypescript=> Core / "Workspace/Typescript";
     public AbsolutePath CoreWorkspaceScaffold => Core / "Workspace/Scaffold";
+    public AbsolutePath CoreWorkspaceScaffoldGenerate => CoreWorkspaceScaffold / "Generate/Generate.csproj";
     public AbsolutePath CoreWorkspaceScaffoldAngularMaterialTests => CoreWorkspaceScaffold / "Angular.Material.Tests/Angular.Material.Tests.csproj";
 
     public AbsolutePath CoreWorkspaceCSharpDomainTests => Core / "Workspace/CSharp/Domain.Tests";

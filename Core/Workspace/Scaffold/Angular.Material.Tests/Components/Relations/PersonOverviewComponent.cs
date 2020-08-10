@@ -3,7 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace src.allors.material.custom.relations.people.person
+namespace libs.angular.material.custom.src.relations.people.person
 {
     public partial class PersonOverviewComponent
     {

@@ -20,16 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.Memory\Allors.Database.Adapters.Memory.csproj" />
-    <ProjectReference Include="..\..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.SqlClient\Allors.Database.Adapters.SqlClient.csproj" />
-    <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
-    <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
-    <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />
-    <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
-    <ProjectReference Include="..\..\..\Database\TestPopulation\TestPopulation.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\..\..\..\Core\Workspace\Typescript\Material.Tests\Core*\**\*.cs" />
   </ItemGroup>
 
@@ -55,5 +45,16 @@
   <ItemGroup>
     <Folder Include="Tests\Invoice\" />
     <Folder Include="Tests\Workeffort\" />
+  </ItemGroup>
+
+  
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.Memory\Allors.Database.Adapters.Memory.csproj" />
+    <ProjectReference Include="..\..\..\..\Platform\Database\Adapters\Allors.Database.Adapters.SqlClient\Allors.Database.Adapters.SqlClient.csproj" />
+    <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
+    <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
+    <ProjectReference Include="..\..\..\Database\TestPopulation\TestPopulation.csproj" />
   </ItemGroup>
 </Project>

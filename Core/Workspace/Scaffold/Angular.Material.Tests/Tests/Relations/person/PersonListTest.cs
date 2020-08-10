@@ -7,7 +7,7 @@ namespace Tests.Relations
 {
     using Allors.Domain;
     using Allors.Meta;
-    using src.allors.material.custom.relations.people;
+    using libs.angular.material.custom.src.relations.people;
     using Xunit;
 
     [Collection("Test collection")]
@@ -23,7 +23,7 @@ namespace Tests.Relations
         }
 
         [Fact]
-        public void Title() => expect("People").toBe( this.Driver.Title);
+        public void Title() => Assert.Equal("People", this.Driver.Title);
 
         [Fact]
         public void Table()

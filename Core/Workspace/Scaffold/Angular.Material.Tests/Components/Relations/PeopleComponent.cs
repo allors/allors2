@@ -3,11 +3,11 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
-namespace src.allors.material.custom.relations.people
+namespace libs.angular.material.custom.src.relations.people
 {
     using Allors.Domain;
     using Components;
-    using src.allors.material.custom.relations.people.person;
+    using person;
 
     public partial class PeopleComponent
     {

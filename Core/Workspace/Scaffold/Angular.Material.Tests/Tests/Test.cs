@@ -13,12 +13,12 @@ namespace Tests
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
+    using libs.angular.material.custom.src.auth;
+    using libs.angular.material.custom.src.dashboard;
+    using libs.angular.material.custom.src.main;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using OpenQA.Selenium;
-    using src.app.auth;
-    using src.app.dashboard;
-    using src.app.main;
     using ObjectFactory = Allors.ObjectFactory;
 
     public abstract class Test : IDisposable
