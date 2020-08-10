@@ -96,6 +96,9 @@
     },
     "gatsby-source-custom": {
       "tags": []
+    },
+    "angular-custom": {
+      "tags": []
     }
   }
 }

@@ -16,11 +16,13 @@ namespace Allors.Server.Controllers
     {
         public TestController(IDatabaseService databaseService, ILogger<TestController> logger)
         {
-            this.Database = databaseService.Database;
+            this.DatabaseService = databaseService;
             this.Logger = logger;
         }
 
-        public IDatabase Database { get; set; }
+        public IDatabaseService DatabaseService { get; set; }
+
+        public IDatabase Database => this.DatabaseService.Database;
 
         private ILogger<TestController> Logger { get; set; }
 

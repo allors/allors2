@@ -28,6 +28,10 @@
     "scaffold:project": "npx tsc  --project ./tools/scaffold && node ./dist/out-tsc/tools/scaffold/main.js",
     "scaffold:config": "npx nx test angular-material-app",
     "scaffold": "npm run scaffold:project && npm run scaffold:config",
+    "domain:test": "npx nx test domain-custom",
+    "promise:test": "npx nx test promise-custom --runInBand",
+    "angular:test": "npx nx test angular-custom --runInBand",
+    "angular-material:serve": "npx nx serve angular-material-app",
     "gatsby:source": "npx tsc --project ./libs/gatsby/source/custom/tsconfig.lib.json"
   },
   "private": true,
@@ -92,6 +96,7 @@
     "jest": "25.2.3",
     "jest-extended": "^0.11.5",
     "jest-preset-angular": "8.1.2",
+    "jest-trx-results-processor": "^2.0.3",
     "lnk": "^1.1.0",
     "module-alias": "^2.2.2",
     "node-sass": "4.14.1",

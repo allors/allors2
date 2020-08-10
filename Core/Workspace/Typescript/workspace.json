@@ -773,6 +773,35 @@
           }
         }
       }
+    },
+    "angular-custom": {
+      "projectType": "library",
+      "root": "libs/angular/custom",
+      "sourceRoot": "libs/angular/custom/src",
+      "prefix": "allors",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/custom/tsconfig.lib.json", "libs/angular/custom/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/custom/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/custom/jest.config.js",
+            "tsConfig": "libs/angular/custom/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/angular/custom/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
     }
   },
   "cli": {

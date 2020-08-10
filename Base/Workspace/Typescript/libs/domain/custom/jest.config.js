@@ -12,4 +12,13 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
   coverageDirectory: '../../../coverage/libs/domain/custom',
+  reporters: [
+    'default',
+    [
+      'jest-trx-results-processor',
+      {
+        outputFile: '../../../artifacts/tests/base.domain.trx',
+      },
+    ],
+  ],
 };

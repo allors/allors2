@@ -77,32 +77,26 @@ partial class Build
              DotNetPublish(dotNetPublishSettings);
          });
 
-    private Target BaseWorkspaceAutotest => _ => _
+    private Target BaseSetup => _ => _
+        .Executes(() =>
+        {
+            NpmInstall(s => s
+                .SetEnvironmentVariable("npm_config_loglevel", "error")
+                .SetWorkingDirectory(Paths.BaseWorkspaceTypescript));
+        });
+
+    private Target BaseWorkspaceScaffold => _ => _
          .DependsOn(BaseGenerate)
          .Executes(() =>
          {
-             foreach (var path in new[] { Paths.BaseWorkspaceTypescriptIntranet, Paths.BaseWorkspaceTypescriptAutotestAngular })
-             {
-                 NpmRun(s => s
-                     .SetEnvironmentVariable("npm_config_loglevel", "error")
-                     .SetWorkingDirectory(path)
-                     .SetCommand("autotest"));
-             }
+             NpmRun(s => s
+                 .SetEnvironmentVariable("npm_config_loglevel", "error")
+                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescript)
+                 .SetCommand("scaffold"));
 
              DotNetRun(s => s
                  .SetWorkingDirectory(Paths.Base)
-                 .SetProjectFile(Paths.BaseWorkspaceTypescriptAutotestGenerateGenerate));
-         });
-
-    private Target BaseSetup => _ => _
-                         .Executes(() =>
-         {
-             foreach (var path in Paths.BaseWorkspaceTypescript)
-             {
-                 NpmInstall(s => s
-                     .SetEnvironmentVariable("npm_config_loglevel", "error")
-                     .SetWorkingDirectory(path));
-             }
+                 .SetProjectFile(Paths.BaseWorkspaceScaffoldGenerate));
          });
 
     private Target BaseWorkspaceTypescriptDomain => _ => _
@@ -112,9 +106,8 @@ partial class Build
          {
              NpmRun(s => s
                  .SetEnvironmentVariable("npm_config_loglevel", "error")
-                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptDomain)
-                 .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptDomain}")
-                 .SetCommand("az:test"));
+                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescript)
+                 .SetCommand("domain:test"));
          });
 
     private Target BaseWorkspaceTypescriptIntranet => _ => _
@@ -147,7 +140,7 @@ partial class Build
          });
 
     private Target BaseWorkspaceTypescriptIntranetGenericTests => _ => _
-         .DependsOn(BaseWorkspaceAutotest)
+         .DependsOn(this.BaseWorkspaceScaffold)
          .DependsOn(BasePublishServer)
          .DependsOn(BasePublishCommands)
          .DependsOn(BaseResetDatabase)
@@ -175,7 +168,7 @@ partial class Build
          });
 
     private Target BaseWorkspaceTypescriptIntranetSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(this.BaseWorkspaceScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -203,7 +196,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceTypescriptRelationSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(this.BaseWorkspaceScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -231,7 +224,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceTypescriptOrderSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(this.BaseWorkspaceScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -259,7 +252,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceTypescriptInvoiceSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(this.BaseWorkspaceScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -287,7 +280,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceTypescriptProductSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(this.BaseWorkspaceScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -315,7 +308,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceTypescriptShipmentSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(this.BaseWorkspaceScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -343,7 +336,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceTypescriptWorkEffortSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+        .DependsOn(this.BaseWorkspaceScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)

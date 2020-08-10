@@ -55,7 +55,6 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
     public dialogRef: MatDialogRef<WorkTaskCreateComponent>,
     public metaService: MetaService,
     public navigationService: NavigationService,
-    public location: Location,
     public refreshService: RefreshService,
     private saveService: SaveService,
     private route: ActivatedRoute,

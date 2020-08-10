@@ -1,37 +1,23 @@
-import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
-import { Meta } from '@allors/meta/generated'
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
+import { Meta } from '@allors/meta/generated'
 import { ContextService, TestScope, MetaService, RefreshService, SingletonId, Saved } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
 import { ObjectData, SaveService, AllorsMaterialDialogService } from '@allors/angular/material/core';
 import {
   Organisation,
-  Facility,
-  ProductType,
-  ProductIdentificationType,
-  Settings,
-  Part,
   SupplierRelationship,
-  InventoryItemKind,
-  SupplierOffering,
-  Brand,
-  Model,
-  PartNumber,
-  UnitOfMeasure,
-  PartCategory,
-  NonUnifiedPart,
   CustomOrganisationClassification,
   IndustryClassification,
   CustomerRelationship,
   InternalOrganisation,
   OrganisationRole,
   LegalForm,
+  Locale,
   VatRegime,
   IrpfRegime,
   Currency,
@@ -81,11 +67,9 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<OrganisationCreateComponent>,
     public metaService: MetaService,
-    public location: Location,
     public refreshService: RefreshService,
     private saveService: SaveService,
     private route: ActivatedRoute,
-    private dialogService: AllorsMaterialDialogService,
     private fetcher: FetcherService,
     private singletonId: SingletonId,
     private internalOrganisationId: InternalOrganisationId,
@@ -103,7 +87,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([urlSegments, date, internalOrganisationId]) => {
+        switchMap(([,, internalOrganisationId]) => {
 
           const id: string = this.route.snapshot.paramMap.get('id');
 
@@ -265,7 +249,7 @@ export class OrganisationCreateComponent extends TestScope implements OnInit, On
 
     this.allors.context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         const data: IObject = {
           id: this.organisation.id,
           objectType: this.organisation.objectType,

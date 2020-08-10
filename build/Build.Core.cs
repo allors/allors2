@@ -119,9 +119,8 @@ partial class Build
         {
             NpmRun(s => s
                 .SetEnvironmentVariable("npm_config_loglevel", "error")
-                .SetWorkingDirectory(Paths.CoreWorkspaceTypescriptDomain)
-                .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsCoreWorkspaceTypescriptDomain}")
-                .SetCommand("az:test"));
+                .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                .SetCommand("domain:test"));
         });
 
     Target CoreWorkspaceTypescriptPromise => _ => _
@@ -141,9 +140,8 @@ partial class Build
                     await server.Ready();
                     NpmRun(s => s
                         .SetEnvironmentVariable("npm_config_loglevel", "error")
-                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescriptPromise)
-                        .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsCoreWorkspaceTypescriptPromise}")
-                        .SetCommand("az:test"));
+                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                        .SetCommand("promise:test"));
                 }
             }
         });
@@ -165,36 +163,8 @@ partial class Build
                     await server.Ready();
                     NpmRun(s => s
                         .SetEnvironmentVariable("npm_config_loglevel", "error")
-                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescriptAngular)
-                        .SetArguments("--watch=false", "--reporters", "trx")
-                        .SetCommand("test"));
-                    CopyFileToDirectory(Paths.CoreWorkspaceTypescriptAngularTrx, Paths.ArtifactsTests,
-                        FileExistsPolicy.Overwrite);
-                }
-            }
-        });
-
-    Target CoreWorkspaceTypescriptMaterial => _ => _
-        .DependsOn(CoreGenerate)
-        .DependsOn(CorePublishServer)
-        .DependsOn(CorePublishCommands)
-        .DependsOn(CoreResetDatabase)
-        .Executes(async () =>
-        {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsCoreCommands);
-                using (var server = new Server(Paths.ArtifactsCoreServer))
-                {
-                    await server.Ready();
-                    NpmRun(s => s
-                        .SetEnvironmentVariable("npm_config_loglevel", "error")
-                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescriptMaterial)
-                        .SetArguments("--watch=false", "--reporters", "trx")
-                        .SetCommand("test"));
-                    CopyFileToDirectory(Paths.CoreWorkspaceTypescriptMaterialTrx, Paths.ArtifactsTests,
-                        FileExistsPolicy.Overwrite);
+                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                        .SetCommand("angular:test"));
                 }
             }
         });
@@ -212,7 +182,7 @@ partial class Build
                 sqlServer.Populate(Paths.ArtifactsCoreCommands);
                 using (var server = new Server(Paths.ArtifactsCoreServer))
                 {
-                    using (var angular = new Angular(Paths.CoreWorkspaceTypescriptMaterial))
+                    using (var angular = new Angular(Paths.CoreWorkspaceTypescript, "material:serve"))
                     {
                         await server.Ready();
                         await angular.Init();
@@ -254,7 +224,6 @@ partial class Build
         .DependsOn(CoreWorkspaceTypescriptDomain)
         .DependsOn(CoreWorkspaceTypescriptPromise)
         .DependsOn(CoreWorkspaceTypescriptAngular)
-        .DependsOn(CoreWorkspaceTypescriptMaterial)
         .DependsOn(CoreWorkspaceTypescriptMaterialTests);
 
     Target CoreWorkspaceCSharpTest => _ => _

@@ -1,4 +1,4 @@
-﻿// <copyright file="Program.cs" company="Allors bvba">
+// <copyright file="Program.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All Rights Reserved.
 // Licensed under the LGPL v3 license.
 // </copyright>
@@ -20,10 +20,10 @@ namespace Allors
                 string[,] config =
                 {
                     {
-                        "../Core/Workspace/Typescript/Autotest/Templates/sidenav.cs.stg", "./Workspace/Typescript/Intranet.Tests/generated/sidenav",
+                        "../Core/Workspace/Scaffold/Templates/sidenav.cs.stg", "./Workspace/Scaffold/Intranet.Tests/generated/sidenav",
                     },
                     {
-                        "../Core/Workspace/Typescript/Autotest/Templates/component.cs.stg", "./Workspace/Typescript/Intranet.Tests/generated/components",
+                        "../Core/Workspace/Scaffold/Templates/component.cs.stg", "./Workspace/Scaffold/Intranet.Tests/generated/components",
                     },
                 };
 
@@ -60,10 +60,10 @@ namespace Allors
                     MetaPopulation = MetaPopulation.Instance,
                 };
 
-                model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/Intranet/dist/autotest/meta.json"));
-                model.LoadProject(new FileInfo("./Workspace/Typescript/Autotest/Angular/dist/project.json"));
-                model.LoadMenu(new FileInfo("./Workspace/Typescript/Intranet/dist/autotest/menu.json"));
-                model.LoadDialogs(new FileInfo("./Workspace/Typescript/Intranet/dist/autotest/dialogs.json"));
+                model.LoadMetaExtensions(new FileInfo("./Workspace/Typescript/dist/scaffold/meta.json"));
+                model.LoadProject(new FileInfo("./Workspace/Typescript/dist/scaffold/project.json"));
+                model.LoadMenu(new FileInfo("./Workspace/Typescript/Intranet/dist/scaffold/autotest/menu.json"));
+                model.LoadDialogs(new FileInfo("./Workspace/Typescript/Intranet/dist/scaffold/dialogs.json"));
 
                 switch (args.Length)
                 {

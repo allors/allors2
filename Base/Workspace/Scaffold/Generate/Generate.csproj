@@ -10,10 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Model\Model.csproj" />
+    <Compile Include="..\..\..\..\Core\Workspace\Scaffold\Generate\Core*\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\..\Core\Workspace\Typescript\Autotest\Generate\Core*\**\*.cs" />
+    <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 </Project>

@@ -42,7 +42,6 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public saveService: SaveService,
-    public location: Location,
     public refreshService: RefreshService,
     private route: ActivatedRoute,
     private singletonId: SingletonId,

@@ -88,7 +88,6 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
     public metaService: MetaService,
     public navigationService: NavigationService,
     public filtersService: FiltersService,
-    public location: Location,
     public refreshService: RefreshService,
     private route: ActivatedRoute,
     private saveService: SaveService,

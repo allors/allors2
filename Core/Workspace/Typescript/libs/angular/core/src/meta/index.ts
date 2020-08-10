@@ -1,5 +1,4 @@
-import { Filter } from '../filter/Filter';
-import { FilterDefinition } from '../filter/FilterDefinition';
+import { FilterDefinition, Filter } from '@allors/angular/core';
 
 declare module '@allors/meta/system' {
   interface ObjectType {
