@@ -186,7 +186,7 @@ partial class Build
                 sqlServer.Populate(Paths.ArtifactsCoreCommands);
                 using (var server = new Server(Paths.ArtifactsCoreServer))
                 {
-                    using (var angular = new Angular(Paths.CoreWorkspaceTypescript, "material:serve"))
+                    using (var angular = new Angular(Paths.CoreWorkspaceTypescript, "angular-material:serve"))
                     {
                         await server.Ready();
                         await angular.Init();
