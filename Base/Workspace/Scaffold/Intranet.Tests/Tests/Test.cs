@@ -16,13 +16,13 @@ namespace Tests
     using Allors.Meta;
     using Allors.Services;
     using Bogus;
+    using libs.angular.material.custom.src.auth;
+    using libs.angular.material.custom.src.main;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using NLog.Extensions.Logging;
     using OpenQA.Selenium;
-    using src.app.auth;
-    using src.app.main;
     using Database = Allors.Database.Adapters.SqlClient.Database;
     using ObjectFactory = Allors.ObjectFactory;
 

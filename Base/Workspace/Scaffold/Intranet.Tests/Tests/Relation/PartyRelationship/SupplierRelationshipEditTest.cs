@@ -11,9 +11,9 @@ namespace Tests.PartyRelationshipTests
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
-    using src.allors.material.@base.objects.organisation.list;
-    using src.allors.material.@base.objects.organisation.overview;
-    using src.allors.material.@base.objects.supplierrelationship.edit;
+    using libs.angular.material.@base.src.objects.organisation.list;
+    using libs.angular.material.@base.src.objects.organisation.overview;
+    using libs.angular.material.@base.src.objects.supplierrelationship.edit;
     using Xunit;
 
     [Collection("Test collection")]

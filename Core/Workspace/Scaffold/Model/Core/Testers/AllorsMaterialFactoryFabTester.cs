@@ -77,8 +77,9 @@ namespace Autotest.Testers
                     var component = metaExtension.Create;
                     if (component != null)
                     {
-                        var entryComponents = this.Tester.Model.Project.LocalEntryComponents;
-                        return entryComponents.FirstOrDefault(v => v.Type?.Name == component);
+                        return this.Tester.Model.Project.LocalNonRoutedScopedComponentsWithoutSelector.FirstOrDefault(v => v.Type?.Name == component) ??
+                               this.Tester.Model.Project.LocalNonRoutedScopedComponents.FirstOrDefault(v => v.Type?.Name == component) ??
+                               this.Tester.Model.Project.LocalScopedDirectives.FirstOrDefault(v => v.Type?.Name == component);
                     }
 
                     return null;

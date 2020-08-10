@@ -10,7 +10,7 @@ namespace Tests.PartyContactMachanismTests
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
-    using src.allors.material.@base.objects.person.list;
+    using libs.angular.material.@base.src.objects.person.list;
     using Xunit;
 
     [Collection("Test collection")]

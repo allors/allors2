@@ -11,7 +11,7 @@ namespace Tests.NonUnifiedGood
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
-    using src.allors.material.@base.objects.good.list;
+    using libs.angular.material.@base.src.objects.good.list;
     using Xunit;
 
     [Collection("Test collection")]

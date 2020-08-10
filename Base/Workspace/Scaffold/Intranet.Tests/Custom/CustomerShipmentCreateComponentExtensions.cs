@@ -1,6 +1,6 @@
 using Allors.Domain.TestPopulation;
 
-namespace src.allors.material.@base.objects.customershipment.create
+namespace libs.angular.material.@base.src.objects.customershipment.create
 {
     using Allors.Domain;
     using Components;

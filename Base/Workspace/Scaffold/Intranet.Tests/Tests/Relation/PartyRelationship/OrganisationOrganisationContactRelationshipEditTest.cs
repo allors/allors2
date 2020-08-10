@@ -10,9 +10,9 @@ namespace Tests.PartyRelationshipTests
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
     using Components;
-    using src.allors.material.@base.objects.organisation.list;
-    using src.allors.material.@base.objects.organisation.overview;
-    using src.allors.material.@base.objects.organisationcontactrelationship.edit;
+    using libs.angular.material.@base.src.objects.organisation.list;
+    using libs.angular.material.@base.src.objects.organisation.overview;
+    using libs.angular.material.@base.src.objects.organisationcontactrelationship.edit;
     using Xunit;
 
     [Collection("Test collection")]

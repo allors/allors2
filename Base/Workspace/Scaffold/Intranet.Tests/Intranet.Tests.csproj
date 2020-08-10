@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Core\Workspace\Typescript\Material.Tests\Core*\**\*.cs" />
+    <Compile Include="..\..\..\..\Core\Workspace\Scaffold\Angular.Material.Tests\Core*\**\*.cs" />
   </ItemGroup>
 
   

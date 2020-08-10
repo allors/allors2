@@ -1,4 +1,4 @@
-namespace src.allors.material.@base.objects.organisation.create
+namespace libs.angular.material.@base.src.objects.organisation.create
 {
     using Allors.Domain;
     using Xunit;

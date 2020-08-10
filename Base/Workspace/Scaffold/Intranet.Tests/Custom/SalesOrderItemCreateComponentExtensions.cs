@@ -1,4 +1,4 @@
-namespace src.allors.material.@base.objects.salesorderitem.edit
+namespace libs.angular.material.@base.src.objects.salesorderitem.edit
 {
     using Allors.Domain;
 

@@ -10,8 +10,8 @@ namespace Tests.OrganisationTests
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
     using Components;
-    using src.allors.material.@base.objects.organisation.create;
-    using src.allors.material.@base.objects.organisation.list;
+    using libs.angular.material.@base.src.objects.organisation.create;
+    using libs.angular.material.@base.src.objects.organisation.list;
     using Xunit;
 
     [Collection("Test collection")]

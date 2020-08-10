@@ -11,8 +11,8 @@ namespace Tests.SalesOrderTests
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
-    using src.allors.material.@base.objects.salesorder.list;
-    using src.allors.material.@base.objects.salesorder.overview;
+    using libs.angular.material.@base.src.objects.salesorder.list;
+    using libs.angular.material.@base.src.objects.salesorder.overview;
     using Xunit;
 
     [Collection("Test collection")]

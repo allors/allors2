@@ -11,8 +11,8 @@ namespace Tests.ShipmentItemTests
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
-    using src.allors.material.@base.objects.customershipment.overview;
-    using src.allors.material.@base.objects.shipment.list;
+    using libs.angular.material.@base.src.objects.customershipment.overview;
+    using libs.angular.material.@base.src.objects.shipment.list;
     using Xunit;
 
     [Collection("Test collection")]

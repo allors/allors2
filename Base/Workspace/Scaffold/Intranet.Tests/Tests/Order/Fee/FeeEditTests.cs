@@ -10,15 +10,15 @@ namespace Tests.OrderAdjustmentTests
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
     using Components;
-    using src.allors.material.@base.objects.orderadjustment.edit;
-    using src.allors.material.@base.objects.productquote.list;
-    using src.allors.material.@base.objects.productquote.overview;
-    using src.allors.material.@base.objects.purchaseinvoice.list;
-    using src.allors.material.@base.objects.purchaseinvoice.overview;
-    using src.allors.material.@base.objects.salesinvoice.list;
-    using src.allors.material.@base.objects.salesinvoice.overview;
-    using src.allors.material.@base.objects.salesorder.list;
-    using src.allors.material.@base.objects.salesorder.overview;
+    using libs.angular.material.@base.src.objects.orderadjustment.edit;
+    using libs.angular.material.@base.src.objects.productquote.list;
+    using libs.angular.material.@base.src.objects.productquote.overview;
+    using libs.angular.material.@base.src.objects.purchaseinvoice.list;
+    using libs.angular.material.@base.src.objects.purchaseinvoice.overview;
+    using libs.angular.material.@base.src.objects.salesinvoice.list;
+    using libs.angular.material.@base.src.objects.salesinvoice.overview;
+    using libs.angular.material.@base.src.objects.salesorder.list;
+    using libs.angular.material.@base.src.objects.salesorder.overview;
     using Xunit;
 
     [Collection("Test collection")]
