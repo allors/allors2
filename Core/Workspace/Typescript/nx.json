@@ -28,10 +28,6 @@
     "angular-app": {
       "tags": []
     },
-    "angular/app-e2e": {
-      "tags": [],
-      "implicitDependencies": ["angular-app"]
-    },
     "data-system": {
       "tags": []
     },
@@ -65,10 +61,6 @@
     "angular-material-app": {
       "tags": []
     },
-    "angular/material/app-e2e": {
-      "tags": [],
-      "implicitDependencies": ["angular-material-app"]
-    },
     "angular-material-custom": {
       "tags": []
     },
@@ -86,10 +78,6 @@
     },
     "gatsby": {
       "tags": []
-    },
-    "gatsby-e2e": {
-      "tags": [],
-      "implicitDependencies": ["gatsby"]
     },
     "gatsby-source-core": {
       "tags": []

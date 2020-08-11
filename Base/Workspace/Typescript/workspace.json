@@ -515,33 +515,6 @@
           }
         }
       }
-    },
-    "intranet-e2e": {
-      "root": "apps/intranet-e2e",
-      "sourceRoot": "apps/intranet-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/intranet-e2e/cypress.json",
-            "tsConfig": "apps/intranet-e2e/tsconfig.e2e.json",
-            "devServerTarget": "intranet:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "intranet:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["apps/intranet-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/intranet-e2e/**/*"]
-          }
-        }
-      }
     }
   },
   "cli": {

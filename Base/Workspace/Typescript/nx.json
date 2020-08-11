@@ -72,10 +72,6 @@
     },
     "intranet": {
       "tags": []
-    },
-    "intranet-e2e": {
-      "tags": [],
-      "implicitDependencies": ["intranet"]
     }
   }
 }

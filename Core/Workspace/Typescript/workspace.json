@@ -122,33 +122,6 @@
         }
       }
     },
-    "angular/app-e2e": {
-      "root": "apps/angular/app-e2e",
-      "sourceRoot": "apps/angular/app-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/angular/app-e2e/cypress.json",
-            "tsConfig": "apps/angular/app-e2e/tsconfig.e2e.json",
-            "devServerTarget": "angular-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "angular-app:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["apps/angular/app-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/angular/app-e2e/**/*"]
-          }
-        }
-      }
-    },
     "data-system": {
       "root": "libs/data/system",
       "sourceRoot": "libs/data/system/src",
@@ -490,33 +463,6 @@
         }
       }
     },
-    "angular/material/app-e2e": {
-      "root": "apps/angular/material/app-e2e",
-      "sourceRoot": "apps/angular/material/app-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/angular/material/app-e2e/cypress.json",
-            "tsConfig": "apps/angular/material/app-e2e/tsconfig.e2e.json",
-            "devServerTarget": "angular-material-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "angular-material-app:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["apps/angular/material/app-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/angular/material/app-e2e/**/*"]
-          }
-        }
-      }
-    },
     "angular-material-custom": {
       "projectType": "library",
       "root": "libs/angular/material/custom",
@@ -695,33 +641,6 @@
             "jestConfig": "apps/gatsby/jest.config.js",
             "tsConfig": "apps/gatsby/tsconfig.spec.json",
             "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "gatsby-e2e": {
-      "root": "apps/gatsby-e2e",
-      "sourceRoot": "apps/gatsby-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/gatsby-e2e/cypress.json",
-            "tsConfig": "apps/gatsby-e2e/tsconfig.e2e.json",
-            "devServerTarget": "gatsby:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "gatsby:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["apps/gatsby-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/gatsby-e2e/**/*"]
           }
         }
       }

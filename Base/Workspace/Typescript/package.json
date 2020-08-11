@@ -57,7 +57,6 @@
     "@angular/compiler-cli": "^10.0.0",
     "@angular/language-service": "^10.0.0",
     "@nrwl/angular": "^10.0.10",
-    "@nrwl/cypress": "^10.0.10",
     "@nrwl/eslint-plugin-nx": "10.0.10",
     "@nrwl/jest": "^10.0.10",
     "@nrwl/workspace": "10.0.10",
