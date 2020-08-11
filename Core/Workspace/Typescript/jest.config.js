@@ -7,4 +7,5 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageReporters: ['html'],
   setupFilesAfterEnv: ['jest-extended'],
+  testTimeout: 60000,
 };
