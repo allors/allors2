@@ -125,7 +125,7 @@ partial class Build
                     await angular.Init();
                     DotNetTest(
                         s => s
-                            .SetProjectFile(Paths.BaseWorkspaceTypescript)
+                            .SetProjectFile(Paths.BaseWorkspaceIntranetTests)
                             .SetLogger($"trx;LogFileName=BaseIntranet{category}Tests.trx")
                             .SetFilter($"Category={category}")
                             .SetResultsDirectory(Paths.ArtifactsTests));
