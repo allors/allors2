@@ -1,4 +1,4 @@
-namespace libs.angular.material.@base.src.objects.salesorder.create
+namespace libs.angular.material.@base.src.export.objects.salesorder.create
 {
     using Allors.Domain;
     using Allors.Domain.TestPopulation;

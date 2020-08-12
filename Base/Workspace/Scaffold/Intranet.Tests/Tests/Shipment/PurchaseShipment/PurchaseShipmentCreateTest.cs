@@ -11,8 +11,8 @@ namespace Tests.PurchaseShipmentTests
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
-    using libs.angular.material.@base.src.objects.purchaseshipment.create;
-    using libs.angular.material.@base.src.objects.shipment.list;
+    using libs.angular.material.@base.src.export.objects.purchaseshipment.create;
+    using libs.angular.material.@base.src.export.objects.shipment.list;
     using Xunit;
 
     [Collection("Test collection")]

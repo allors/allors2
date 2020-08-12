@@ -11,9 +11,9 @@ namespace Tests.EmailCommunicationTests
     using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
-    using libs.angular.material.@base.src.objects.emailcommunication.edit;
-    using libs.angular.material.@base.src.objects.organisation.list;
-    using libs.angular.material.@base.src.objects.organisation.overview;
+    using libs.angular.material.@base.src.export.objects.emailcommunication.edit;
+    using libs.angular.material.@base.src.export.objects.organisation.list;
+    using libs.angular.material.@base.src.export.objects.organisation.overview;
     using Xunit;
 
     [Collection("Test collection")]

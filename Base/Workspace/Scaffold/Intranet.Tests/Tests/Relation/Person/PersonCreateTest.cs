@@ -8,7 +8,7 @@ namespace Tests.PersonTests
     using System.Linq;
     using Allors.Domain;
     using Components;
-    using libs.angular.material.@base.src.objects.person.list;
+    using libs.angular.material.@base.src.export.objects.person.list;
     using Xunit;
 
     [Collection("Test collection")]
