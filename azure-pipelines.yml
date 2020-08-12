@@ -64,9 +64,9 @@ stages:
       inputs:
         targetType: 'filePath'
         filePath: 'build.ps1'
-        arguments: -target setup
+        arguments: -target install
         failOnStderr: true
-      displayName: Setup
+      displayName: Install
     - task: PowerShell@2
       inputs:
         targetType: 'filePath'

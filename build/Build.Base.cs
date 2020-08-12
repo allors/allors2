@@ -78,7 +78,7 @@ partial class Build
              DotNetPublish(dotNetPublishSettings);
          });
 
-    private Target BaseSetup => _ => _
+    private Target BaseInstall => _ => _
         .Executes(() =>
         {
             NpmInstall(s => s

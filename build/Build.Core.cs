@@ -94,7 +94,7 @@ partial class Build
             }
         });
 
-    Target CoreSetup => _ => _
+    Target CoreInstall => _ => _
         .Executes(() =>
         {
             NpmInstall(s => s
