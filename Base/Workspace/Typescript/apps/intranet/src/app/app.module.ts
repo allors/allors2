@@ -21,9 +21,9 @@ import { AllorsAngularModule } from '@allors/angular/module';
 import { AllorsMaterialModule } from '@allors/angular/material/module';
 import { AllorsDateAdapter } from '@allors/angular/material/core';
 
-import { extend as extendDomain } from '@allors/domain/base';
-import { extend as extendAngular } from '@allors/angular/core';
-import { configure as configureMaterial } from '@allors/angular/material/custom';
+import { extend as extendDomain } from '@allors/domain/custom';
+import { extend as extendAngular } from '@allors/angular/module';
+import { configure as configureMaterial } from '@allors/angular/material/module';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
