@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 
 import { RoleType } from '@allors/meta/system';
 import { RefreshService } from '@allors/angular/core';
+import { ObjectService } from '@allors/angular/material/core';
 
 import { EditAction } from './EditAction';
-import { ObjectService } from '../../object/object.service';
 
 @Injectable({
   providedIn: 'root',

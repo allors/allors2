@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MethodType } from '@allors/meta/system';
 import { RefreshService, Action, Context } from '@allors/angular/core';
 
-import { SaveService } from '../../save/save.service';
+import { SaveService } from '@allors/angular/material/core';
 
 import { MethodAction } from './MethodAction';
 import { MethodConfig } from './MethodConfig';

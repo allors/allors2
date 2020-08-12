@@ -3,9 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { RefreshService, Context, Action } from '@allors/angular/core';
 
-import { SaveService } from '../../save/save.service';
-import { AllorsMaterialDialogService } from '../../dialog/dialog.service';
+
 import { DeleteAction } from './DeleteAction';
+import { AllorsMaterialDialogService, SaveService } from '@allors/angular/material/core';
 
 @Injectable({
   providedIn: 'root',
