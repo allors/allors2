@@ -3,8 +3,8 @@ import { Subject } from 'rxjs';
 
 import { RefreshService, Context, Invoked } from '@allors/angular/services/core';
 import { Deletable } from '@allors/domain/generated';
-import { AllorsMaterialDialogService, SaveService } from '@allors/angular/material/core';
 import { ActionTarget, Action } from '@allors/angular/core';
+import { AllorsMaterialDialogService, SaveService } from '@allors/angular/material/services/core';
 
 export class DeleteAction implements Action {
   name = 'delete';

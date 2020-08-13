@@ -5,7 +5,7 @@ import { RefreshService, Context } from '@allors/angular/services/core';
 import { Action } from '@allors/angular/core';
 
 import { DeleteAction } from './DeleteAction';
-import { AllorsMaterialDialogService, SaveService } from '@allors/angular/material/core';
+import { AllorsMaterialDialogService, SaveService } from '@allors/angular/material/services/core';
 
 @Injectable({
   providedIn: 'root',

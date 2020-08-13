@@ -5,6 +5,8 @@ import { IObject, ISessionObject } from '@allors/domain/system';
 import { Context } from '@allors/angular/services/core';
 import { ObjectType } from '@allors/meta/system';
 
+import { ObjectData } from './object.data';
+
 @Injectable()
 export abstract class ObjectService {
   abstract create(objectType: ObjectType, createData?: ObjectData): Observable<IObject>;

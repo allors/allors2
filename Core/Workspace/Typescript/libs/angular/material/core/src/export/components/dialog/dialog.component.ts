@@ -1,6 +1,7 @@
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, Inject } from '@angular/core';
 
+import { PromptType } from '@allors/angular/material/services/core';
 import { DialogData } from '../../services/dialog/dialog.data';
 
 @Component({

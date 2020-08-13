@@ -5,11 +5,12 @@ import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 import { ObjectType } from '@allors/meta/system';
-import { SideMenuItem, AllorsMaterialSideNavService } from '@allors/angular/material/core';
+import { SideMenuItem } from '@allors/angular/material/core';
 import { Organisation } from '@allors/domain/generated';
 
 import { menu } from './main.menu';
 import { ContextService, MetaService } from '@allors/angular/services/core';
+import { AllorsMaterialSideNavService } from '@allors/angular/material/services/core';
 
 @Component({
   styleUrls: ['main.component.scss'],

@@ -2,10 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ObjectType } from '@allors/meta/system';
 import { IObject } from '@allors/domain/system';
-import { DatabaseService, WorkspaceService, Context } from '@allors/angular/services/core';
 
-import { ObjectData} from '../../services/object/object.data';
-import { ObjectService } from '../../services/object/object.service';
+import { DatabaseService, WorkspaceService, Context } from '@allors/angular/services/core';
+import { ObjectData, ObjectService } from '@allors/angular/material/services/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

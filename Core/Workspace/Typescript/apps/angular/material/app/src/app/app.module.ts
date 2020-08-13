@@ -256,10 +256,10 @@ export function appInitFactory(workspaceService: WorkspaceService) {
   imports: [
     BrowserModule,
     environment.production ? BrowserAnimationsModule : NoopAnimationsModule,
-    RouterModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule.forRoot(routes),
 
     MatAutocompleteModule,
     MatButtonModule,
