@@ -141,8 +141,8 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
             state: v.CommunicationEventState && v.CommunicationEventState.Name,
             subject: v.Subject,
             involved: v.InvolvedParties.map((w) => w.displayName).join(', '),
-            started: v.ActualStart && format(new Date(v.ActualStart), 'MMM Do YY'),
-            ended: v.ActualEnd && format(new Date(v.ActualEnd), 'MMM Do YY'),
+            started: v.ActualStart && format(new Date(v.ActualStart), 'dd-MM-yyyy'),
+            ended: v.ActualEnd && format(new Date(v.ActualEnd), 'dd-MM-yyyy'),
             lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
           } as Row;
         });
