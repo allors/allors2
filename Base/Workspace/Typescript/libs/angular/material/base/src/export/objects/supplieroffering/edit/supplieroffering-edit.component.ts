@@ -4,10 +4,10 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService } from '@allors/angular/core';
+import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService } from '@allors/angular/services/core';
 import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';

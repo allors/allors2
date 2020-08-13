@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 
-import { ContextService } from '@allors/angular/core';
+import { ContextService } from '@allors/angular/services/core';
 import { PartyContactMechanism } from '@allors/domain/generated';
 
 @Component({

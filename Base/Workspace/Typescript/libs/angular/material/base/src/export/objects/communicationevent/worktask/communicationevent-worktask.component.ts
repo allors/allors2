@@ -4,13 +4,13 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { MetaService, ContextService, RefreshService, Saved } from '@allors/angular/core';
+import { MetaService, ContextService, RefreshService, Saved } from '@allors/angular/services/core';
 import { Organisation, WorkTask, WorkEffortState, Priority, WorkEffortPurpose, Person, WorkEffortPartyAssignment, CommunicationEvent } from '@allors/domain/generated';
 import { InternalOrganisationId } from '@allors/angular/base';
 import { Sort, Equals } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
-import { SaveService } from '@allors/angular/material/core';
+import { SaveService } from '@allors/angular/material/services/core';
 
 @Component({
   templateUrl: './communicationevent-worktask.component.html',

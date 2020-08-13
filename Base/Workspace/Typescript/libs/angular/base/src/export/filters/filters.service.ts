@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Meta, TreeFactory } from '@allors/meta/generated';
-import { SearchFactory, MetaService } from '@allors/angular/core';
+import { SearchFactory, MetaService } from '@allors/angular/services/core';
 import { And, ContainedIn, Extent, Equals } from '@allors/data/system';
 
 import { InternalOrganisationId } from '../state/InternalOrganisationId';

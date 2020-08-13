@@ -1,10 +1,12 @@
 import { Component, OnInit, Self, HostBinding } from '@angular/core';
 import { formatDistance } from 'date-fns';
 
-import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService } from '@allors/angular/core';
-import { CommunicationEvent, ContactMechanism } from '@allors/domain/generated';
-import { TableRow, Table, EditService, DeleteService, ObjectData, ObjectService } from '@allors/angular/material/core';
+import { TestScope, Action } from '@allors/angular/core';
+import { ContactMechanism } from '@allors/domain/generated';
+import { TableRow, Table, EditService, DeleteService } from '@allors/angular/material/core';
 import { Meta } from '@allors/meta/generated';
+import { MetaService, PanelService, RefreshService, NavigationService } from '@allors/angular/services/core';
+import { ObjectData } from '@allors/angular/material/services/core';
 
 interface Row extends TableRow {
   object: ContactMechanism;
@@ -16,10 +18,9 @@ interface Row extends TableRow {
   // tslint:disable-next-line:component-selector
   selector: 'contactmechanism-overview-panel',
   templateUrl: './contactmechanism-overview-panel.component.html',
-  providers: [PanelService]
+  providers: [PanelService],
 })
 export class ContactMechanismOverviewPanelComponent extends TestScope implements OnInit {
-
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
   }
@@ -53,7 +54,6 @@ export class ContactMechanismOverviewPanelComponent extends TestScope implements
   }
 
   ngOnInit() {
-
     this.panel.name = 'contactmechanism';
     this.panel.title = 'Contact Mechanisms';
     this.panel.icon = 'contacts';
@@ -69,10 +69,7 @@ export class ContactMechanismOverviewPanelComponent extends TestScope implements
         { name: 'contact', sort },
         { name: 'lastModifiedDate', sort },
       ],
-      actions: [
-        this.edit,
-        this.delete,
-      ],
+      actions: [this.edit, this.delete],
       defaultAction: this.edit,
       autoSort: true,
       autoFilter: true,
@@ -81,7 +78,6 @@ export class ContactMechanismOverviewPanelComponent extends TestScope implements
     const pullName = `${this.panel.name}_${this.m.PartyContactMechanism.name}`;
 
     this.panel.onPull = (pulls) => {
-
       const { pull, x } = this.metaService;
       const id = this.panel.manager.id;
 
@@ -93,11 +89,11 @@ export class ContactMechanismOverviewPanelComponent extends TestScope implements
             PartyContactMechanisms: {
               ContactMechanism: {
                 include: {
-                  PostalAddress_Country: x
-                }
-              }
-            }
-          }
+                  PostalAddress_Country: x,
+                },
+              },
+            },
+          },
         })
       );
     };
@@ -111,7 +107,7 @@ export class ContactMechanismOverviewPanelComponent extends TestScope implements
           return {
             object: v,
             contact: v.displayName,
-            lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date())
+            lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
           } as Row;
         });
       }

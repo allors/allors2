@@ -26,8 +26,6 @@ import {
   RefreshService,
   AllorsBarcodeService,
   NavigationService,
-  PanelService,
-  PanelManagerService,
   MediaService,
 } from '@allors/angular/services/core';
 
@@ -45,8 +43,6 @@ import {
   AllorsBarcodeServiceCore,
   AllorsFocusServiceCore,
   NavigationServiceCore,
-  PanelServiceCore,
-  PanelManagerServiceCore,
   RefreshServiceCore,
 } from '@allors/angular/core';
 
@@ -163,8 +159,6 @@ export function appInitFactory(workspaceService: WorkspaceService) {
     { provide: MediaService, useClass: MediaServiceCore },
     { provide: MediaConfig, useValue: { url: environment.url } },
     { provide: NavigationService, useClass: NavigationServiceCore },
-    { provide: PanelService, useClass: PanelServiceCore },
-    { provide: PanelManagerService, useClass: PanelManagerServiceCore },
     { provide: RefreshService, useClass: RefreshServiceCore },
   ],
 })

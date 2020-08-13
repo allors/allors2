@@ -1,27 +1,33 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest, BehaviorSubject, Observable } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { ContextService, TestScope, MetaService, RefreshService, Context, Saved, NavigationService, Action, Invoked, SearchFactory } from '@allors/angular/core';
-import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship, InventoryItem, InternalOrganisation, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem, ContactMechanism, LetterCorrespondence, PartyContactMechanism, PostalAddress, OrderAdjustment, OrganisationContactKind, PartyRate, TimeFrequency, RateType, PhoneCommunication, TelecommunicationsNumber, PositionType, PositionTypeRate, ProductIdentification, ProductIdentificationType, ProductType, SerialisedItemCharacteristicType, PurchaseInvoiceApproval, PurchaseOrderApprovalLevel1, PurchaseOrderApprovalLevel2, PurchaseOrder, PurchaseOrderItem, VatRegime, IrpfRegime, InvoiceItemType, SupplierOffering, UnifiedGood, Product, ProductQuote, QuoteItem, RequestItem, UnitOfMeasure, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, Receipt, SalesInvoice, PaymentApplication, RepeatingPurchaseInvoice, DayOfWeek, RepeatingSalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedItemAvailability, NonUnifiedPart, SalesOrder, SalesTerm, TermType, Singleton, IUnitOfMeasure, Shipment, ShipmentItem, OrderShipment, PurchaseOrderState, Good, SubContractorRelationship, SupplierRelationship, TimeEntry, TimeSheet, WorkEffort, WorkEffortAssignmentRate, WorkEffortPartyAssignment } from '@allors/domain/generated';
+import { ContextService, MetaService, RefreshService, Saved } from '@allors/angular/services/core';
+import {
+  Party,
+  PartyRate,
+  TimeFrequency,
+  RateType,
+  TimeEntry,
+  TimeSheet,
+  WorkEffort,
+  WorkEffortAssignmentRate,
+  WorkEffortPartyAssignment,
+} from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta, ids } from '@allors/meta/generated';
-import { SaveService, ObjectData } from '@allors/angular/material/core';
-import { InternalOrganisationId, FetcherService, FiltersService } from '@allors/angular/base';
-import { IObject, ISessionObject } from '@allors/domain/system';
-import { Equals, Sort, And, ContainedIn, Extent, LessThan, Or, Not, Exists, GreaterThan } from '@allors/data/system';
-
-
+import { Meta } from '@allors/meta/generated';
+import { SaveService, ObjectData } from '@allors/angular/material/services/core';
+import { IObject } from '@allors/domain/system';
+import { Sort } from '@allors/data/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './timeentry-edit.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestroy {
-
   title: string;
   subTitle: string;
 
@@ -49,7 +55,7 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
     public metaService: MetaService,
     public refreshService: RefreshService,
     private snackBar: MatSnackBar,
-    private saveService: SaveService,
+    private saveService: SaveService
   ) {
     super();
 
@@ -57,15 +63,13 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
   }
 
   public ngOnInit(): void {
-
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     const workEffortPartyAssignmentPullName = `${this.m.WorkEffortPartyAssignment.name}`;
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(() => {
-
           const isCreate = this.data.id === undefined;
 
           let pulls = [
@@ -73,8 +77,8 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
               object: this.data.id,
               include: {
                 TimeFrequency: x,
-                BillingFrequency: x
-              }
+                BillingFrequency: x,
+              },
             }),
             pull.TimeEntry({
               object: this.data.id,
@@ -82,11 +86,11 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
                 WorkEffort: {
                   WorkEffortPartyAssignmentsWhereAssignment: {
                     include: {
-                      Party: x
-                    }
-                  }
-                }
-              }
+                      Party: x,
+                    },
+                  },
+                },
+              },
             }),
             pull.RateType({ sort: new Sort(this.m.RateType.Name) }),
             pull.TimeFrequency({ sort: new Sort(this.m.TimeFrequency.Name) }),
@@ -96,7 +100,7 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
             pulls = [
               ...pulls,
               pull.WorkEffort({
-                object: this.data.associationId
+                object: this.data.associationId,
               }),
               pull.WorkEffort({
                 name: workEffortPartyAssignmentPullName,
@@ -104,23 +108,18 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
                 fetch: {
                   WorkEffortPartyAssignmentsWhereAssignment: {
                     include: {
-                      Party: x
-                    }
-                  }
-                }
+                      Party: x,
+                    },
+                  },
+                },
               }),
             ];
           }
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
+          return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })
       )
       .subscribe(({ loaded, isCreate }) => {
-
         this.allors.context.reset();
 
         this.rateTypes = loaded.collections.RateTypes as RateType[];
@@ -138,14 +137,14 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
           this.timeEntry.TimeFrequency = hour;
 
           const workEffortPartyAssignments = loaded.collections[workEffortPartyAssignmentPullName] as WorkEffortPartyAssignment[];
-          this.workers = Array.from(new Set(workEffortPartyAssignments.map(v => v.Party)).values());
+          this.workers = Array.from(new Set(workEffortPartyAssignments.map((v) => v.Party)).values());
         } else {
           this.timeEntry = loaded.objects.TimeEntry as TimeEntry;
           this.selectedWorker = this.timeEntry.Worker;
           this.workEffort = this.timeEntry.WorkEffort;
 
           const workEffortPartyAssignments = loaded.collections.WorkEffortPartyAssignments as WorkEffortPartyAssignment[];
-          this.workers = Array.from(new Set(workEffortPartyAssignments.map(v => v.Party)).values());
+          this.workers = Array.from(new Set(workEffortPartyAssignments.map((v) => v.Party)).values());
 
           if (this.timeEntry.CanWriteAssignedAmountOfTime) {
             this.title = 'Edit Time Entry';
@@ -170,64 +169,51 @@ export class TimeEntryEditComponent extends TestScope implements OnInit, OnDestr
     this.allors.context.session.hasChanges = true;
   }
 
-  public findBillingRate(parm: any): void {
+  public findBillingRate(): void {
     if (this.selectedWorker && this.timeEntry.RateType && this.timeEntry.FromDate) {
       this.workerSelected(this.selectedWorker);
     }
   }
 
   public workerSelected(party: Party): void {
-    const { pull, tree, x } = this.metaService;
+    const { pull } = this.metaService;
 
     const pulls = [
       pull.Party({
         object: party.id,
         fetch: {
-          Person_TimeSheetWhereWorker: {
-          }
+          Person_TimeSheetWhereWorker: {},
         },
       }),
     ];
 
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-
-        this.timeSheet = loaded.objects.TimeSheet as TimeSheet;
-      });
+    this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
+      this.timeSheet = loaded.objects.TimeSheet as TimeSheet;
+    });
   }
 
   public update(): void {
     const { context } = this.allors;
 
-    context
-      .save()
-      .subscribe(() => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+    context.save().subscribe(() => {
+      this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 
   public save(): void {
-
     if (!this.timeEntry.TimeSheetWhereTimeEntry) {
       this.timeSheet.AddTimeEntry(this.timeEntry);
     }
 
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        const data: IObject = {
-          id: this.timeEntry.id,
-          objectType: this.timeEntry.objectType,
-        };
+    this.allors.context.save().subscribe(() => {
+      const data: IObject = {
+        id: this.timeEntry.id,
+        objectType: this.timeEntry.objectType,
+      };
 
-        this.dialogRef.close(data);
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+      this.dialogRef.close(data);
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 }

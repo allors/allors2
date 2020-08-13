@@ -1,3 +1,5 @@
+import '@allors/angular/material/base'
+
 export { AuthorizationService } from './auth/authorization.service';
 export { LoginComponent } from './auth/login.component';
 

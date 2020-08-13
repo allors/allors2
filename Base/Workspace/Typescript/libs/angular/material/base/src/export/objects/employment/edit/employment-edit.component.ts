@@ -7,7 +7,7 @@ import { ContextService, TestScope, MetaService, RefreshService, Context } from 
 import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta, ids } from '@allors/meta/generated';
-import { SaveService, ObjectData } from '@allors/angular/material/core';
+import { SaveService, ObjectData } from '@allors/angular/material/services/core';
 import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
 

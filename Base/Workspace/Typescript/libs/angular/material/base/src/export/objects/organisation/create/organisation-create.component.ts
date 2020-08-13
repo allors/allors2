@@ -5,9 +5,9 @@ import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Meta } from '@allors/meta/generated'
-import { ContextService, TestScope, MetaService, RefreshService, SingletonId, Saved } from '@allors/angular/core';
+import { ContextService, TestScope, MetaService, RefreshService, SingletonId, Saved } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
-import { ObjectData, SaveService, AllorsMaterialDialogService } from '@allors/angular/material/core';
+import { ObjectData, SaveService, AllorsMaterialDialogService } from '@allors/angular/material/services/core';
 import {
   Organisation,
   SupplierRelationship,

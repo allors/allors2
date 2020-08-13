@@ -2,9 +2,9 @@ import { Component, OnInit, Self, OnDestroy } from '@angular/core';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { TestScope, MetaService, RefreshService, NavigationService, PanelService, ContextService, SingletonId } from '@allors/angular/core';
+import { TestScope, MetaService, RefreshService, NavigationService, PanelService, ContextService, SingletonId } from '@allors/angular/services/core';
 import { CustomerShipment, Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, InternalOrganisation, Enumeration, IrpfRegime, WorkTask, WorkEffortState, Priority, WorkEffortPurpose, ContactMechanism, WorkEffort } from '@allors/domain/generated';
-import { SaveService } from '@allors/angular/material/core';
+import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FiltersService, FetcherService } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';

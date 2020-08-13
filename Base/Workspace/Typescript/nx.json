@@ -55,9 +55,6 @@
     "angular-base": {
       "tags": []
     },
-    "angular-module": {
-      "tags": []
-    },
     "angular-material-core": {
       "tags": []
     },
@@ -67,10 +64,13 @@
     "angular-material-custom": {
       "tags": []
     },
-    "angular-material-module": {
+    "intranet": {
       "tags": []
     },
-    "intranet": {
+    "angular-services-core": {
+      "tags": []
+    },
+    "angular-material-services-core": {
       "tags": []
     }
   }

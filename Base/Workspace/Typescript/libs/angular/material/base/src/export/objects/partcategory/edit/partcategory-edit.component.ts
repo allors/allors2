@@ -3,10 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, RefreshService, Saved, MetaService } from '@allors/angular/core';
+import { ContextService, TestScope, RefreshService, Saved, MetaService } from '@allors/angular/services/core';
 import { Meta } from '@allors/meta/generated';
 import { PartCategory } from '@allors/domain/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import { FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';

@@ -1,4 +1,5 @@
 import '@allors/domain/base';
+import '@allors/angular/material/core'
 
 export { BasepriceEditComponent } from './export/objects/baseprice/edit/baseprice-edit.component';
 

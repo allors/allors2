@@ -20,5 +20,7 @@ link ('../../../Platform/Workspace/Typescript/libs/protocol/system/src', 'libs/p
 // Core
 link ('../../../Core/Workspace/Typescript/libs/meta/core/src', 'libs/meta/core');
 link ('../../../Core/Workspace/Typescript/libs/angular/core/src/export', 'libs/angular/core/src');
+link ('../../../Core/Workspace/Typescript/libs/angular/services/core/src/export', 'libs/angular/services/core/src');
 link ('../../../Core/Workspace/Typescript/libs/angular/material/core/src/export', 'libs/angular/material/core/src');
+link ('../../../Core/Workspace/Typescript/libs/angular/material/services/core/src/export', 'libs/angular/material/services/core/src');
 link ('../../../Core/Workspace/Typescript/tools/scaffold/src', 'tools/scaffold');

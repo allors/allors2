@@ -19,7 +19,7 @@ import { Workspace } from '@allors/domain/system';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
-import { AllorsDateAdapter, AllorsMaterialDialogServiceCore, ObjectServiceCore, SaveServiceCore, AllorsMaterialSideNavServiceCore } from '@allors/angular/material/core';
+
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -58,8 +58,6 @@ import {
   RefreshService,
   AllorsBarcodeService,
   NavigationService,
-  PanelService,
-  PanelManagerService,
   MediaService,
 } from '@allors/angular/services/core';
 
@@ -77,10 +75,16 @@ import {
   AllorsBarcodeServiceCore,
   AllorsFocusServiceCore,
   NavigationServiceCore,
-  PanelServiceCore,
-  PanelManagerServiceCore,
   RefreshServiceCore,
 } from '@allors/angular/core';
+
+// Allors Angular Material Services Core
+import {
+  AllorsMaterialDialogService,
+  ObjectService,
+  SaveService,
+  AllorsMaterialSideNavService,
+} from '@allors/angular/material/services/core';
 
 // Allors Angular Material Core
 import {
@@ -119,6 +123,11 @@ import {
   AllorsMaterialSideNavToggleComponent,
   AllorsMaterialTableComponent,
   FactoryFabComponent,
+  AllorsDateAdapter,
+  AllorsMaterialDialogServiceCore,
+  ObjectServiceCore,
+  SaveServiceCore,
+  AllorsMaterialSideNavServiceCore,
 } from '@allors/angular/material/core';
 
 // Allors Angular Material Custom
@@ -140,7 +149,7 @@ import { AuthorizationService } from '@allors/angular/material/custom';
 import { extend as extendDomain } from '@allors/domain/custom';
 import { extend as extendAngular } from '@allors/angular/core';
 import { configure as configureMaterial } from '@allors/angular/material/custom';
-import { AllorsMaterialDialogService, ObjectService, SaveService, AllorsMaterialSideNavService } from '@allors/angular/material/services/core';
+
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -321,10 +330,8 @@ export function appInitFactory(workspaceService: WorkspaceService) {
     { provide: MediaService, useClass: MediaServiceCore },
     { provide: MediaConfig, useValue: { url: environment.url } },
     { provide: NavigationService, useClass: NavigationServiceCore },
-    { provide: PanelService, useClass: PanelServiceCore },
-    { provide: PanelManagerService, useClass: PanelManagerServiceCore },
     { provide: RefreshService, useClass: RefreshServiceCore },
-    
+
     // Angular Material
     {
       provide: MAT_AUTOCOMPLETE_DEFAULT_OPTIONS,

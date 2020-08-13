@@ -1,6 +1,6 @@
 import { Component, OnInit, Self, HostBinding } from '@angular/core';
 
-import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService } from '@allors/angular/core';
+import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService } from '@allors/angular/services/core';
 import { WorkEffort, WorkEffortPurchaseOrderItemAssignment } from '@allors/domain/generated';
 import { TableRow, Table, EditService, DeleteService, ObjectData } from '@allors/angular/material/core';
 import { Meta } from '@allors/meta/generated';

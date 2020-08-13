@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { ContextService, MetaService } from '@allors/angular/core';
+import { ContextService, MetaService } from '@allors/angular/services/core';
 import { Brand } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 

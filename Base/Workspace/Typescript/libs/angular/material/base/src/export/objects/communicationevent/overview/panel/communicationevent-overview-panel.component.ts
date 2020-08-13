@@ -1,9 +1,11 @@
 import { Component, OnInit, Self, HostBinding } from '@angular/core';
 
-import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService } from '@allors/angular/core';
+import { MetaService, RefreshService, NavigationService, PanelService } from '@allors/angular/services/core';
 import { CommunicationEvent } from '@allors/domain/generated';
-import { TableRow, Table, EditService, DeleteService, ObjectData, ObjectService } from '@allors/angular/material/core';
+import { TableRow, Table, EditService, DeleteService } from '@allors/angular/material/core';
 import { Meta } from '@allors/meta/generated';
+import { TestScope, Action } from '@allors/angular/core';
+import { ObjectData, ObjectService } from '@allors/angular/material/services/core';
 
 interface Row extends TableRow {
   object: CommunicationEvent;

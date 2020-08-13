@@ -3,22 +3,23 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import {
-  ContextService,
-  TestScope,
-  MetaService,
-  RefreshService,
-  Action,
-  NavigationService,
-  MediaService,
-  Filter,
-  FilterDefinition,
-  SearchFactory,
-} from '@allors/angular/core';
+import { TestScope, Action, Filter, FilterDefinition, SearchFactory } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
-import { TableRow, Table, OverviewService, DeleteService, Sorter, ObjectService } from '@allors/angular/material/core';
-import { Organisation, Party, SerialisedItem, SerialisedItemState, SerialisedItemAvailability, Ownership, Brand, Model, ProductType } from '@allors/domain/generated';
+import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
+import {
+  Organisation,
+  Party,
+  SerialisedItem,
+  SerialisedItemState,
+  SerialisedItemAvailability,
+  Brand,
+  Model,
+  ProductType,
+  Ownership,
+} from '@allors/domain/generated';
 import { And, Equals, ContainedIn, Extent, Like } from '@allors/data/system';
+import { MetaService, ContextService, RefreshService, NavigationService, MediaService } from '@allors/angular/services/core';
+import { ObjectService } from '@allors/angular/material/services/core';
 
 interface Row extends TableRow {
   object: SerialisedItem;
@@ -34,10 +35,9 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './serialiseditem-list.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class SerialisedItemListComponent extends TestScope implements OnInit, OnDestroy {
-
   public title = 'Serialised Assets';
 
   table: Table<Row>;
@@ -49,7 +49,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
 
   constructor(
     @Self() public allors: ContextService,
-    
+
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -78,20 +78,16 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
         { name: 'ownership', sort: true },
         { name: 'suppliedBy', sort: true },
         { name: 'ownedBy', sort: true },
-        { name: 'rentedBy', sort: true }
+        { name: 'rentedBy', sort: true },
       ],
-      actions: [
-        overviewService.overview(),
-        this.delete
-      ],
+      actions: [overviewService.overview(), this.delete],
       defaultAction: overviewService.overview(),
       pageSize: 50,
-      initialSort: 'id'
+      initialSort: 'id',
     });
   }
 
   public ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
@@ -114,9 +110,9 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
           objectType: m.Part,
           predicate: new Equals({
             propertyType: m.Part.Brand,
-            parameter: 'brand'
-          })
-        })
+            parameter: 'brand',
+          }),
+        }),
       }),
       new ContainedIn({
         propertyType: m.SerialisedItem.PartWhereSerialisedItem,
@@ -124,9 +120,9 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
           objectType: m.Part,
           predicate: new Equals({
             propertyType: m.Part.Model,
-            parameter: 'model'
-          })
-        })
+            parameter: 'model',
+          }),
+        }),
       }),
       new ContainedIn({
         propertyType: m.SerialisedItem.PartWhereSerialisedItem,
@@ -134,28 +130,28 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
           objectType: m.UnifiedGood,
           predicate: new ContainedIn({
             propertyType: m.UnifiedGood.ProductType,
-            parameter: 'productType'
-          })
-        })
-      })
+            parameter: 'productType',
+          }),
+        }),
+      }),
     ]);
 
     const stateSearch = new SearchFactory({
       objectType: m.SerialisedItemState,
       roleTypes: [m.SerialisedItemState.Name],
-      predicates: [new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true })]
+      predicates: [new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true })],
     });
 
     const availabilitySearch = new SearchFactory({
       objectType: m.SerialisedItemAvailability,
       roleTypes: [m.SerialisedItemAvailability.Name],
-      predicates: [new Equals({ propertyType: m.SerialisedItemAvailability.IsActive, value: true })]
+      predicates: [new Equals({ propertyType: m.SerialisedItemAvailability.IsActive, value: true })],
     });
 
     const ownershipSearch = new SearchFactory({
       objectType: m.Ownership,
       roleTypes: [m.Ownership.Name],
-      predicates: [new Equals({ propertyType: m.Ownership.IsActive, value: true })]
+      predicates: [new Equals({ propertyType: m.Ownership.IsActive, value: true })],
     });
 
     const supplierSearch = new SearchFactory({
@@ -199,28 +195,28 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
       productType: { search: productTypeSearch, display: (v: ProductType) => v && v.Name },
     });
     this.filter = new Filter(filterDefinition);
-    
-    const sorter = new Sorter(
-      {
-        id: [m.SerialisedItem.ItemNumber],
-        categories: [m.SerialisedItem.DisplayProductCategories],
-        name: [m.SerialisedItem.Name],
-        availability: [m.SerialisedItem.SerialisedItemAvailabilityName],
-      }
-    );
+
+    const sorter = new Sorter({
+      id: [m.SerialisedItem.ItemNumber],
+      categories: [m.SerialisedItem.DisplayProductCategories],
+      name: [m.SerialisedItem.Name],
+      availability: [m.SerialisedItem.SerialisedItemAvailabilityName],
+    });
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
-          return [
-            refresh,
-            filterFields,
-            sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-          ];
-        }, [, , , , ]),
+        scan(
+          ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+            return [
+              refresh,
+              filterFields,
+              sort,
+              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            ];
+          },
+          [, , , ,]
+        ),
         switchMap(([, filterFields, sort, pageEvent]) => {
-
           const pulls = [
             pull.SerialisedItem({
               predicate,
@@ -231,7 +227,7 @@ export class SerialisedItemListComponent extends TestScope implements OnInit, On
                 Ownership: x,
                 SuppliedBy: x,
                 OwnedBy: x,
-                RentedBy: x
+                RentedBy: x,
               },
               parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,

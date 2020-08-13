@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy, Input } from '@angular/core';
 
-import { ContextService, MetaService } from '@allors/angular/core';
+import { ContextService, MetaService } from '@allors/angular/services/core';
 import { PartyContactMechanism, ContactMechanismPurpose, EmailAddress, Facility, FacilityType, Organisation, Model } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 import { Equals, Sort } from '@allors/data/system';

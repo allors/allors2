@@ -6,9 +6,9 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { isBefore, isAfter } from 'date-fns';
 
-import { ContextService, TestScope, MetaService, RefreshService } from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import {
   Organisation,
   Facility,

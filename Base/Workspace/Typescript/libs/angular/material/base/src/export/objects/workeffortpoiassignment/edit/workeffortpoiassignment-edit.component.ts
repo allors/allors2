@@ -4,11 +4,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService } from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 import { PurchaseOrder, PurchaseOrderItem, WorkEffort, WorkEffortPurchaseOrderItemAssignment } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
-import { SaveService, ObjectData } from '@allors/angular/material/core';
+import { SaveService, ObjectData } from '@allors/angular/material/services/core';
 import { InternalOrganisationId } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
 import { Sort } from '@allors/data/system';

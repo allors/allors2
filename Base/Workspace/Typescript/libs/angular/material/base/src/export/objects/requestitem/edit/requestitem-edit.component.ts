@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService } from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 import {
   Part,
   Request,
@@ -24,7 +24,7 @@ import {
 } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
-import { SaveService, ObjectData } from '@allors/angular/material/core';
+import { SaveService, ObjectData } from '@allors/angular/material/services/core';
 import { FiltersService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';

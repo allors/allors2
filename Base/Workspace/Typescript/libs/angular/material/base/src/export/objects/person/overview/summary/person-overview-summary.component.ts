@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService } from '@allors/angular/core';
+import { TestScope, MetaService, NavigationService, PanelService, MediaService } from '@allors/angular/services/core';
 import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 

@@ -2,14 +2,15 @@ import { Component, OnInit, Self, OnDestroy } from '@angular/core';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { TestScope, MetaService, RefreshService, NavigationService, PanelService, ContextService } from '@allors/angular/core';
+import { MetaService, RefreshService, NavigationService, PanelService, ContextService } from '@allors/angular/services/core';
 import { CustomerShipment, Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship } from '@allors/domain/generated';
-import { SaveService } from '@allors/angular/material/core';
+import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FiltersService, FetcherService } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
 import { ISessionObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

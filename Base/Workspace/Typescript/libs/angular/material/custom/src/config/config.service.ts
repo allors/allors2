@@ -2,7 +2,7 @@ import { Injectable, Self } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { ContextService, SingletonId, UserId, Loaded, MetaService } from '@allors/angular/core';
+import { ContextService, SingletonId, UserId, Loaded, MetaService } from '@allors/angular/services/core';
 import { Equals } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { Organisation, Singleton } from '@allors/domain/generated';

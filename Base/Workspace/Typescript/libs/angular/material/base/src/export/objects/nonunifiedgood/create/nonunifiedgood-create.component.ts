@@ -4,9 +4,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, PanelManagerService, NavigationService } from '@allors/angular/core';
+import { ContextService, TestScope, MetaService, RefreshService, PanelManagerService, NavigationService } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import {
   Organisation,
   Party,

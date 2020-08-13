@@ -1,7 +1,7 @@
 import { Component, Self, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { MetaService, ContextService } from '@allors/angular/core';
+import { MetaService, ContextService } from '@allors/angular/services/core';
 import { Organisation } from '@allors/domain/generated';
 import { InternalOrganisationId } from '@allors/angular/base';
 import { Sort, Equals } from '@allors/data/system';

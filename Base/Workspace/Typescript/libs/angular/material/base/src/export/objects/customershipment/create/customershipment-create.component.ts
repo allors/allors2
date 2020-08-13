@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
-import { Meta } from '@allors/meta/generated'
+import { Meta } from '@allors/meta/generated';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, PanelManagerService } from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService, PanelManagerService } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import {
   Organisation,
   Party,
@@ -24,6 +24,7 @@ import {
 import { Equals, Sort } from '@allors/data/system';
 import { InternalOrganisationId, FiltersService, FetcherService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './customershipment-create.component.html',

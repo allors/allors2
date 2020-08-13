@@ -3,13 +3,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService } from '@allors/angular/core';
-import { Organisation, Good, Part, PriceComponent, InternalOrganisation, NonUnifiedGood, Catalogue, Singleton, ProductCategory, CatScope } from '@allors/domain/generated';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
+import { Organisation, InternalOrganisation, Catalogue, Singleton, ProductCategory, CatScope } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import { FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './catalogue-edit.component.html',

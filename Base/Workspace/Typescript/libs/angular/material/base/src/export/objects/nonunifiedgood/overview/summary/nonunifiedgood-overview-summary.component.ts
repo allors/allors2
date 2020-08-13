@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 
-import { TestScope, MetaService, NavigationService, PanelService } from '@allors/angular/core';
+import { TestScope, MetaService, NavigationService, PanelService } from '@allors/angular/services/core';
 import { NonUnifiedGood } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 

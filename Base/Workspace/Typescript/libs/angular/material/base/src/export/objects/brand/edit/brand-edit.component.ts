@@ -3,20 +3,20 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, Saved } from '@allors/angular/core';
+import { TestScope } from '@allors/angular/core';
 import { Brand, Model } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
 import { FetcherService } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
+import { MetaService, ContextService, RefreshService } from '@allors/angular/services/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 
 @Component({
   templateUrl: './brand-edit.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
-
   public title: string;
   public subTitle: string;
 
@@ -36,22 +36,19 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private fetcher: FetcherService,
+    private fetcher: FetcherService
   ) {
-
     super();
 
     this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
-
     const { pull, x } = this.metaService;
 
     this.subscription = combineLatest([this.refreshService.refresh$])
       .pipe(
         switchMap(() => {
-
           const isCreate = this.data.id === undefined;
 
           const pulls = [
@@ -61,20 +58,15 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
               include: {
                 LogoImage: x,
                 Models: x,
-                LocalisedDescriptions: x
-              }
+                LocalisedDescriptions: x,
+              },
             }),
           ];
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
+          return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })
       )
       .subscribe(({ loaded, isCreate }) => {
-
         this.allors.context.reset();
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
@@ -91,13 +83,13 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
           }
         }
 
-        this.models = this.brand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        this.models = this.brand.Models.sort((a, b) => (a.Name > b.Name ? 1 : b.Name > a.Name ? -1 : 0));
       });
   }
 
   public modelAdded(model: Model): void {
     this.brand.AddModel(model);
-    this.models = this.brand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+    this.models = this.brand.Models.sort((a, b) => (a.Name > b.Name ? 1 : b.Name > a.Name ? -1 : 0));
     this.allors.context.session.hasChanges = true;
   }
 
@@ -108,19 +100,14 @@ export class BrandEditComponent extends TestScope implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    this.allors.context.save().subscribe(() => {
+      const data: IObject = {
+        id: this.brand.id,
+        objectType: this.brand.objectType,
+      };
 
-    this.allors.context
-      .save()
-      .subscribe(() => {
-        const data: IObject = {
-          id: this.brand.id,
-          objectType: this.brand.objectType,
-        };
-
-        this.dialogRef.close(data);
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+      this.dialogRef.close(data);
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 }

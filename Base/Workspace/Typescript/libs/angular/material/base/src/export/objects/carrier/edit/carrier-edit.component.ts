@@ -3,12 +3,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, Saved } from '@allors/angular/core';
+import { TestScope } from '@allors/angular/core';
 import { Carrier, SerialisedItemCharacteristicType } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { ObjectData, SaveService } from '@allors/angular/material/core';
 import { IObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
+import { MetaService, ContextService, RefreshService } from '@allors/angular/services/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 
 @Component({
   templateUrl: './carrier-edit.component.html',

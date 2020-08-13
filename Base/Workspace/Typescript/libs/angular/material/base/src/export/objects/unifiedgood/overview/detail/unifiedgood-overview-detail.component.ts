@@ -4,14 +4,14 @@ import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, RefreshService, NavigationService, PanelService, ContextService, SingletonId } from '@allors/angular/core';
-import { CustomerShipment, Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, InternalOrganisation, Enumeration, IrpfRegime, WorkTask, WorkEffortState, Priority, WorkEffortPurpose, ContactMechanism, WorkEffort, SalesOrder, ProductQuote, VatRegime, VatClause, Store, SalesOrderItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, CustomerRelationship, UnifiedGood, InventoryItemKind, ProductType, ProductCategory, VatRate, SupplierOffering, Brand, Model, ProductIdentificationType, ProductNumber, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship } from '@allors/domain/generated';
-import { SaveService } from '@allors/angular/material/core';
+import { MetaService, RefreshService, NavigationService, PanelService, ContextService } from '@allors/angular/services/core';
+import { Organisation, Facility, UnifiedGood, InventoryItemKind, ProductType, ProductCategory, VatRate, SupplierOffering, Brand, Model, ProductIdentificationType, ProductNumber, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship } from '@allors/domain/generated';
+import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
+import { FetcherService } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
-import { ISessionObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

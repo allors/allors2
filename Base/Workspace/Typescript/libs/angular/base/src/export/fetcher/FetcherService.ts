@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PullFactory } from '@allors/meta/generated';
-import { SingletonId, MetaService } from '@allors/angular/core';
+import { SingletonId, MetaService } from '@allors/angular/services/core';
 import { Pull, ContainedIn, Extent, Equals, Sort, And } from '@allors/data/system';
 
 import { InternalOrganisationId } from '../state/InternalOrganisationId';

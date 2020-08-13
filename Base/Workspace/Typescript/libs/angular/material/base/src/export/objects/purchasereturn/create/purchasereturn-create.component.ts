@@ -4,9 +4,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, NavigationService } from '@allors/angular/core';
+import { ContextService, TestScope, MetaService, RefreshService, NavigationService } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
-import { SaveService, ObjectData } from '@allors/angular/material/core';
+import { SaveService, ObjectData } from '@allors/angular/material/services/core';
 import {
   Organisation,
   InternalOrganisation,
