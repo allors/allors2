@@ -10,9 +10,9 @@ namespace Tests.TelecommunicationsNumberTests
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
     using Components;
-    using libs.angular.material.@base.src.objects.person.list;
-    using libs.angular.material.@base.src.objects.person.overview;
-    using libs.angular.material.@base.src.objects.telecommunicationsnumber.edit;
+    using libs.angular.material.@base.src.export.objects.person.list;
+    using libs.angular.material.@base.src.export.objects.person.overview;
+    using libs.angular.material.@base.src.export.objects.telecommunicationsnumber.edit;
     using Xunit;
 
     [Collection("Test collection")]

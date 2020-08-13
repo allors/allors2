@@ -9,8 +9,8 @@ namespace Tests.ElectronicAddressTests
     using Allors.Domain;
     using Allors.Domain.TestPopulation;
     using Components;
-    using libs.angular.material.@base.src.objects.person.list;
-    using libs.angular.material.@base.src.objects.person.overview;
+    using libs.angular.material.@base.src.export.objects.person.list;
+    using libs.angular.material.@base.src.export.objects.person.overview;
     using Xunit;
 
     [Collection("Test collection")]

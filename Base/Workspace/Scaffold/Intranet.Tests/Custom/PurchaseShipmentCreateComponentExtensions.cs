@@ -1,6 +1,6 @@
 using Allors.Domain.TestPopulation;
 
-namespace libs.angular.material.@base.src.objects.purchaseshipment.create
+namespace libs.angular.material.@base.src.export.objects.purchaseshipment.create
 {
     using Allors.Domain;
     using Xunit;

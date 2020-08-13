@@ -5,8 +5,8 @@ import { MethodType } from '@allors/meta/system';
 import { ISessionObject } from '@allors/domain/system';
 import { RefreshService, ActionTarget, Action, Context, Invoked } from '@allors/angular/core';
 
-import { SaveService } from '../../..';
 import { MethodConfig } from './MethodConfig';
+import { SaveService } from '@allors/angular/material/core';
 
 export class MethodAction implements Action {
   name = 'method';

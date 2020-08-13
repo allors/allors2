@@ -3,7 +3,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-@import "../../../../../libs/angular/material/core/src/styles/bootstrap";
-@import "../../../../../libs/angular/material/core/src/styles/layout";
+@import "../../../../../libs/angular/material/core/src/export/styles/bootstrap";
+@import "../../../../../libs/angular/material/core/src/export/styles/layout";
 
 @import "../../../../../libs/angular/material/custom/src/styles/layout";
