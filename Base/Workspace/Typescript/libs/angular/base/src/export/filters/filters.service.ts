@@ -10,12 +10,12 @@ import { InternalOrganisationId } from '../state/InternalOrganisationId';
 })
 export class FiltersService {
 
-  private m: Meta;
-  private tree: TreeFactory;
+  protected m: Meta;
+  protected tree: TreeFactory;
 
   constructor(
-    private metaService: MetaService,
-    private internalOrganisationId: InternalOrganisationId,
+    protected metaService: MetaService,
+    protected internalOrganisationId: InternalOrganisationId,
   ) {
     this.m = this.metaService.m;
     this.tree = this.metaService.tree;
