@@ -1,27 +1,40 @@
 import { Component, OnInit, Self, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, RefreshService, NavigationService, PanelService, ContextService, SingletonId } from '@allors/angular/services/core';
-import { CustomerShipment, Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, InternalOrganisation, Enumeration, IrpfRegime, WorkTask, WorkEffortState, Priority, WorkEffortPurpose, ContactMechanism, WorkEffort, SalesOrder, ProductQuote, VatRegime, VatClause, Store, SalesOrderItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, CustomerRelationship, UnifiedGood, InventoryItemKind, ProductType, ProductCategory, VatRate, SupplierOffering, Brand, Model, ProductIdentificationType, ProductNumber, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship, CustomOrganisationClassification, IndustryClassification, LegalForm, PurchaseOrder, NonUnifiedGood, Part, PartNumber, PartCategory, SerialisedItem, SerialisedInventoryItem, PurchaseInvoice, PurchaseInvoiceType } from '@allors/domain/generated';
+import { MetaService, RefreshService, PanelService, ContextService } from '@allors/angular/services/core';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
+import { FiltersService, FetcherService } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
 import { ISessionObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
+import {
+  PurchaseInvoice,
+  Currency,
+  VatRegime,
+  IrpfRegime,
+  PurchaseInvoiceType,
+  SupplierRelationship,
+  CustomerRelationship,
+  OrganisationContactRelationship,
+  PartyContactMechanism,
+  Person,
+  ContactMechanism,
+  Party,
+  Organisation,
+  PostalAddress,
+} from '@allors/domain/generated';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'purchaseinvoice-overview-detail',
   templateUrl: './purchaseinvoice-overview-detail.component.html',
-  providers: [ContextService, PanelService]
+  providers: [ContextService, PanelService],
 })
 export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
 
   invoice: PurchaseInvoice;
@@ -83,8 +96,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private route: ActivatedRoute,
-    public fetcher: FetcherService,
+    public fetcher: FetcherService
   ) {
     super();
 
@@ -97,11 +109,9 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
 
     // Normal
     const purchaseInvoicePullName = `${panel.name}_${this.m.PurchaseInvoice.name}`;
-    const purchaseOrderPullName = `${panel.name}_${this.m.PurchaseOrder.name}`;
-    const goodPullName = `${panel.name}_${this.m.Good.name}`;
 
     panel.onPull = (pulls) => {
-      const { m, pull, x } = this.metaService;
+      const { pull, x } = this.metaService;
 
       const { id } = this.panel.manager;
 
@@ -111,12 +121,11 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
           object: id,
           include: {
             PurchaseInvoiceItems: {
-              InvoiceItemType: x
+              InvoiceItemType: x,
             },
             BilledFrom: x,
             BilledFromContactMechanism: {
-              PostalAddress_Country: {
-              }
+              PostalAddress_Country: {},
             },
             BilledFromContactPerson: x,
             BillToEndCustomer: x,
@@ -128,17 +137,16 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
             CreatedBy: x,
             LastModifiedBy: x,
             VatRegime: {
-              VatRate: x
+              VatRate: x,
             },
             BillToEndCustomerContactMechanism: {
-              PostalAddress_Country: {
-              }
+              PostalAddress_Country: {},
             },
             ShipToEndCustomerAddress: {
-              Country: x
-            }
+              Country: x,
+            },
           },
-        }),
+        })
       );
     };
 
@@ -150,7 +158,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public ngOnInit(): void {
-
     // Expanded
     this.subscription = this.panel.manager.on$
       .pipe(
@@ -158,7 +165,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
           return this.panel.isExpanded;
         }),
         switchMap(() => {
-
           this.invoice = undefined;
 
           const { m, pull, x } = this.metaService;
@@ -180,23 +186,22 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
                 ShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
                 PurchaseInvoiceState: x,
-                VatRegime: x
-              }
+                VatRegime: x,
+              },
             }),
             pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
-              sort: new Sort(m.Currency.IsoCode)
+              sort: new Sort(m.Currency.IsoCode),
             }),
             pull.PurchaseInvoiceType({
               predicate: new Equals({ propertyType: m.PurchaseInvoiceType.IsActive, value: true }),
               sort: new Sort(m.PurchaseInvoiceType.Name),
-            })
+            }),
           ];
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -230,7 +235,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
         this.previousShipToCustomer = this.invoice.ShipToCustomer;
         this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
-
       });
   }
 
@@ -241,19 +245,13 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public save(): void {
-
-    this.allors.context
-      .save()
-      .subscribe(() => {
-        this.refreshService.refresh();
-        this.panel.toggle();
-      },
-        this.saveService.errorHandler
-      );
+    this.allors.context.save().subscribe(() => {
+      this.refreshService.refresh();
+      this.panel.toggle();
+    }, this.saveService.errorHandler);
   }
 
   public billedFromAdded(organisation: Organisation): void {
-
     const supplierRelationship = this.allors.context.create('SupplierRelationship') as SupplierRelationship;
     supplierRelationship.Supplier = organisation;
     supplierRelationship.InternalOrganisation = this.internalOrganisation;
@@ -262,7 +260,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public shipToCustomerAdded(party: Party): void {
-
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
     customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
@@ -271,7 +268,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public billToEndCustomerAdded(party: Party): void {
-
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
     customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
@@ -280,7 +276,6 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public shipToEndCustomerAdded(party: Party): void {
-
     const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
     customerRelationship.Customer = party;
     customerRelationship.InternalOrganisation = this.internalOrganisation;
@@ -289,8 +284,9 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public billedFromContactPersonAdded(person: Person): void {
-
-    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create(
+      'OrganisationContactRelationship'
+    ) as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BilledFrom as Organisation;
     organisationContactRelationship.Contact = person;
 
@@ -299,8 +295,9 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public shipToCustomerContactPersonAdded(person: Person): void {
-
-    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create(
+      'OrganisationContactRelationship'
+    ) as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BilledFrom as Organisation;
     organisationContactRelationship.Contact = person;
 
@@ -309,8 +306,9 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public billToEndCustomerContactPersonAdded(person: Person): void {
-
-    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create(
+      'OrganisationContactRelationship'
+    ) as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.ShipToEndCustomer as Organisation;
     organisationContactRelationship.Contact = person;
 
@@ -319,8 +317,9 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public shipToEndCustomerContactPersonAdded(person: Person): void {
-
-    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create(
+      'OrganisationContactRelationship'
+    ) as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.ShipToEndCustomer as Organisation;
     organisationContactRelationship.Contact = person;
 
@@ -329,28 +328,24 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   public billedFromContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-
     this.billedFromContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BilledFrom.AddPartyContactMechanism(partyContactMechanism);
     this.invoice.BilledFromContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-
     this.shipToCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.invoice.ShipToCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.invoice.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
-
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
     this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
@@ -381,106 +376,93 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   }
 
   private updateBilledFrom(party: Party): void {
-
     const { pull, x, m } = this.metaService;
 
     const pulls = [
-      pull.Organisation(
-        {
-          object: party,
-          fetch: {
-            CurrentPartyContactMechanisms: {
-              include: {
-                ContactMechanism: {
-                  PostalAddress_Country: x
-                }
-              }
-            }
-          }
-        }
-      ),
+      pull.Organisation({
+        object: party,
+        fetch: {
+          CurrentPartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_Country: x,
+              },
+            },
+          },
+        },
+      }),
       pull.Organisation({
         object: party,
         fetch: {
           CurrentContacts: x,
-        }
+        },
       }),
-      pull.PurchaseOrder(
-        {
-          predicate: new Equals({ propertyType: m.PurchaseOrder.TakenViaSupplier, object: party }),
-          sort: new Sort(m.PurchaseOrder.OrderNumber),
-        }
-      ),
+      pull.PurchaseOrder({
+        predicate: new Equals({ propertyType: m.PurchaseOrder.TakenViaSupplier, object: party }),
+        sort: new Sort(m.PurchaseOrder.OrderNumber),
+      }),
     ];
 
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
+    this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
+      if (this.invoice.BilledFrom !== this.previousBilledFrom) {
+        this.invoice.BilledFromContactMechanism = null;
+        this.invoice.BilledFromContactPerson = null;
+        this.previousBilledFrom = this.invoice.BilledFrom;
+      }
 
-        if (this.invoice.BilledFrom !== this.previousBilledFrom) {
-          this.invoice.BilledFromContactMechanism = null;
-          this.invoice.BilledFromContactPerson = null;
-          this.previousBilledFrom = this.invoice.BilledFrom;
-        }
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.billedFromContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.billedFromContacts = loaded.collections.CurrentContacts as Person[];
-      });
+      const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+      this.billedFromContactMechanisms = partyContactMechanisms
+        .filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress')
+        .map((v: PartyContactMechanism) => v.ContactMechanism);
+      this.billedFromContacts = loaded.collections.CurrentContacts as Person[];
+    });
   }
 
   private updateShipToCustomer(party: Party) {
-
     const { pull, x } = this.metaService;
 
     const pulls = [
-      pull.Party(
-        {
-          object: party,
-          fetch: {
-            CurrentPartyContactMechanisms: {
-              include: {
-                ContactMechanism: {
-                  PostalAddress_Country: x
-                }
-              }
-            }
-          }
-        }
-      ),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentPartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_Country: x,
+              },
+            },
+          },
+        },
+      }),
       pull.Party({
         object: party,
         fetch: {
           CurrentContacts: x,
-        }
+        },
       }),
       pull.Party({
         object: party,
         include: {
           PreferredCurrency: x,
           VatRegime: x,
-        }
+        },
       }),
     ];
 
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
+    this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
+      if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
+        this.invoice.ShipToEndCustomerAddress = null;
+        this.invoice.ShipToCustomerContactPerson = null;
+        this.previousShipToCustomer = this.invoice.ShipToCustomer;
+      }
 
-        if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
-          this.invoice.ShipToEndCustomerAddress = null;
-          this.invoice.ShipToCustomerContactPerson = null;
-          this.previousShipToCustomer = this.invoice.ShipToCustomer;
-        }
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.shipToCustomerAddresses = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.shipToCustomerContacts = loaded.collections.CurrentContacts as Person[];
-      });
+      const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+      this.shipToCustomerAddresses = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+      this.shipToCustomerContacts = loaded.collections.CurrentContacts as Person[];
+    });
   }
 
   private updateBillToEndCustomer(party: Party) {
-
     const { pull, x } = this.metaService;
 
     const pulls = [
@@ -490,43 +472,41 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                PostalAddress_Country: x
-              }
-            }
-          }
-        }
+                PostalAddress_Country: x,
+              },
+            },
+          },
+        },
       }),
       pull.Party({
         object: party,
         fetch: {
           CurrentContacts: x,
-        }
-      })
+        },
+      }),
     ];
 
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
+    this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
+      if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
+        this.invoice.BillToEndCustomerContactMechanism = null;
+        this.invoice.BillToEndCustomerContactPerson = null;
+        this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
+      }
 
-        if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
-          this.invoice.BillToEndCustomerContactMechanism = null;
-          this.invoice.BillToEndCustomerContactPerson = null;
-          this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
-        }
+      if (this.invoice.BillToEndCustomer !== null && this.invoice.ShipToEndCustomer === null) {
+        this.invoice.ShipToEndCustomer = this.invoice.BillToEndCustomer;
+        this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
+      }
 
-        if (this.invoice.BillToEndCustomer !== null && this.invoice.ShipToEndCustomer === null) {
-          this.invoice.ShipToEndCustomer = this.invoice.BillToEndCustomer;
-          this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
-        }
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.billToEndCustomerContactMechanisms = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
-      });
+      const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+      this.billToEndCustomerContactMechanisms = partyContactMechanisms
+        .filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress')
+        .map((v: PartyContactMechanism) => v.ContactMechanism);
+      this.billToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
+    });
   }
 
   private updateShipToEndCustomer(party: Party) {
-
     const { pull, x } = this.metaService;
 
     const pulls = [
@@ -536,39 +516,37 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
           CurrentPartyContactMechanisms: {
             include: {
               ContactMechanism: {
-                PostalAddress_Country: x
-              }
-            }
-          }
-        }
+                PostalAddress_Country: x,
+              },
+            },
+          },
+        },
       }),
       pull.Party({
         object: party,
         fetch: {
           CurrentContacts: x,
-        }
-      })
+        },
+      }),
     ];
 
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe((loaded) => {
+    this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
+      if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
+        this.invoice.ShipToEndCustomerAddress = null;
+        this.invoice.ShipToEndCustomerContactPerson = null;
+        this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
+      }
 
-        if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
-          this.invoice.ShipToEndCustomerAddress = null;
-          this.invoice.ShipToEndCustomerContactPerson = null;
-          this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
-        }
+      if (this.invoice.ShipToEndCustomer !== null && this.invoice.BillToEndCustomer === null) {
+        this.invoice.BillToEndCustomer = this.invoice.ShipToEndCustomer;
+        this.updateBillToEndCustomer(this.invoice.BillToEndCustomer);
+      }
 
-        if (this.invoice.ShipToEndCustomer !== null && this.invoice.BillToEndCustomer === null) {
-          this.invoice.BillToEndCustomer = this.invoice.ShipToEndCustomer;
-          this.updateBillToEndCustomer(this.invoice.BillToEndCustomer);
-        }
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
-        this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
-      });
+      const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
+      this.shipToEndCustomerAddresses = partyContactMechanisms
+        .filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress')
+        .map((v: PartyContactMechanism) => v.ContactMechanism);
+      this.shipToEndCustomerContacts = loaded.collections.CurrentContacts as Person[];
+    });
   }
-
 }

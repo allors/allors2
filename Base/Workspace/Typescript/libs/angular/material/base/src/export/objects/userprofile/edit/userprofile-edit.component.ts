@@ -3,13 +3,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, Saved, SingletonId } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService, Saved, SingletonId } from '@allors/angular/services/core';
 import { Locale, Organisation, Singleton, UserProfile } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
 import { IObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './userprofile-edit.component.html',

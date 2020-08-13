@@ -11,7 +11,7 @@ import { extend as extendDomain } from '@allors/domain/custom';
 import { extend as extendAngular } from '@allors/angular/core';
 import { configure as configureMaterial } from '@allors/angular/material/custom';
 
-import { create, edit } from '../../../libs/angular/material/module/src/dialogs';
+import { create, edit } from '../../../apps/intranet/src/app/app.module';
 
 interface MetaInfo {
   id: string;

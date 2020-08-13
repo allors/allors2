@@ -1,18 +1,12 @@
-import { Component, Self, OnInit, OnDestroy, Inject, HostBinding } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter, format, formatDistance } from 'date-fns';
+import { Component, Self, OnInit, HostBinding } from '@angular/core';
+import { formatDistance } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/services/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, UnifiedGood, Payment, Invoice, PurchaseInvoice, WorkEffort, SerialisedItem, SalesOrder, ProductQuote, PurchaseOrder, PriceComponent, OrderAdjustment, RequestForQuote } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService } from '@allors/angular/services/core';
+import { RequestForQuote } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService, TableRow, Table, ObjectService, MethodService, DeleteService, EditService, OverviewService, Sorter } from '@allors/angular/material/core';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
+import { TableRow, Table, DeleteService, OverviewService } from '@allors/angular/material/core';
+import { TestScope, Action } from '@allors/angular/core';
+import { ObjectData } from '@allors/angular/material/services/core';
 
 
 interface Row extends TableRow {

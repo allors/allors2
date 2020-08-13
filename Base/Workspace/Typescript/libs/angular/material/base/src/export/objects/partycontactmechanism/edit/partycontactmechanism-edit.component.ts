@@ -1,23 +1,22 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, Context, Saved, NavigationService } from '@allors/angular/services/core';
-import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship, InventoryItem, InternalOrganisation, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem, ContactMechanism, LetterCorrespondence, PartyContactMechanism, PostalAddress, OrderAdjustment, OrganisationContactKind } from '@allors/domain/generated';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
+import { Enumeration, Party, ContactMechanism, PartyContactMechanism } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta, ids } from '@allors/meta/generated';
+import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { InternalOrganisationId, FetcherService, FiltersService } from '@allors/angular/base';
-import { IObject, ISessionObject } from '@allors/domain/system';
+import { InternalOrganisationId } from '@allors/angular/base';
+import { IObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
-
+import { TestScope } from '@allors/angular/core';
 @Component({
   templateUrl: './partycontactmechanism-edit.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class PartyContactmechanismEditComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
 
   partyContactMechanism: PartyContactMechanism;
@@ -37,21 +36,19 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private internalOrganisationId: InternalOrganisationId) {
-
+    private internalOrganisationId: InternalOrganisationId
+  ) {
     super();
 
     this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(() => {
-
           const isCreate = this.data.id === undefined;
 
           const pulls = [
@@ -59,8 +56,8 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
               object: this.data.id,
               include: {
                 ContactMechanism: {
-                  PostalAddress_Country: x
-                }
+                  PostalAddress_Country: x,
+                },
               },
             }),
             pull.Party({
@@ -71,10 +68,10 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
               fetch: {
                 CurrentOrganisationContactMechanisms: {
                   include: {
-                    PostalAddress_Country: x
-                  }
-                }
-              }
+                    PostalAddress_Country: x,
+                  },
+                },
+              },
             }),
             pull.Party({
               object: this.data.associationId,
@@ -83,27 +80,22 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
                 PartyContactMechanisms: {
                   include: {
                     ContactMechanism: {
-                      PostalAddress_Country: x
-                    }
-                  }
-                }
-              }
+                      PostalAddress_Country: x,
+                    },
+                  },
+                },
+              },
             }),
             pull.ContactMechanismPurpose({
               predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
-              sort: new Sort(this.m.ContactMechanismPurpose.Name)
-            })
+              sort: new Sort(this.m.ContactMechanismPurpose.Name),
+            }),
           ];
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
+          return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })
       )
       .subscribe(({ loaded, isCreate }) => {
-
         this.allors.context.reset();
 
         this.contactMechanisms = [];
@@ -113,7 +105,7 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
         this.organisationContactMechanisms = loaded.collections.CurrentOrganisationContactMechanisms as ContactMechanism[];
 
         const partyContactMechanisms = loaded.collections.test as PartyContactMechanism[];
-        partyContactMechanisms.forEach(v => this.ownContactMechanisms.push(v.ContactMechanism));
+        partyContactMechanisms.forEach((v) => this.ownContactMechanisms.push(v.ContactMechanism));
 
         if (this.organisationContactMechanisms !== undefined) {
           this.contactMechanisms = this.contactMechanisms.concat(this.organisationContactMechanisms);
@@ -151,18 +143,14 @@ export class PartyContactmechanismEditComponent extends TestScope implements OnI
   }
 
   public save(): void {
+    this.allors.context.save().subscribe(() => {
+      const data: IObject = {
+        id: this.partyContactMechanism.id,
+        objectType: this.partyContactMechanism.objectType,
+      };
 
-    this.allors.context.save()
-      .subscribe(() => {
-        const data: IObject = {
-          id: this.partyContactMechanism.id,
-          objectType: this.partyContactMechanism.objectType,
-        };
-
-        this.dialogRef.close(data);
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+      this.dialogRef.close(data);
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 }

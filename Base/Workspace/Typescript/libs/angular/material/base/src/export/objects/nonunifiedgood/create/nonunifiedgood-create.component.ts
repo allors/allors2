@@ -2,24 +2,13 @@ import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/c
 import { Meta } from '@allors/meta/generated'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, PanelManagerService, NavigationService } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService, NavigationService } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
 import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import {
   Organisation,
-  Party,
-  Person,
-  CustomerShipment,
-  Currency,
-  PostalAddress,
-  Facility,
-  ShipmentMethod,
-  Carrier,
-  ShipmentPackage,
-  OrganisationContactRelationship,
-  PartyContactMechanism,
   Good,
   ProductCategory,
   ProductType,
@@ -29,9 +18,10 @@ import {
   ProductNumber,
   Settings,
 } from '@allors/domain/generated';
-import { Equals, Sort } from '@allors/data/system';
-import { InternalOrganisationId, FiltersService, FetcherService } from '@allors/angular/base';
-import { IObject, ISessionObject } from '@allors/domain/system';
+import { Sort } from '@allors/data/system';
+import { FiltersService, FetcherService } from '@allors/angular/base';
+import { IObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './nonunifiedgood-create.component.html',
@@ -78,7 +68,7 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { m, pull } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(

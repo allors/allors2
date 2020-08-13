@@ -1,19 +1,12 @@
-import { Component, OnInit, Self, HostBinding, AfterViewInit, OnDestroy, Injector, Input } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, filter } from 'rxjs/operators';
-import { formatDistance, format, isBefore, isAfter } from 'date-fns';
+import { Component, OnInit, Self, HostBinding } from '@angular/core';
+import { format } from 'date-fns';
 
-import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService, PanelManagerService, ContextService, NavigationActivatedRoute, ActionTarget } from '@allors/angular/services/core';
-import { CommunicationEvent, ContactMechanism, CustomerShipment, ShipmentItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, InventoryItem, NonSerialisedInventoryItem, Part, NonUnifiedPart, Organisation, SupplierOffering, PartyContactMechanism, PartyRate, ProductIdentification, PurchaseInvoiceItem, PurchaseInvoice, PurchaseOrderItem, PurchaseOrder, QuoteItem, ProductQuote, RepeatingSalesInvoice, RequestForQuote, Quote, SalesInvoiceItem, SalesOrder, SalesOrderItem, SalesTerm, SerialisedItem, Party, Shipment, TimeEntry, WorkEffort, WorkEffortPartyAssignment } from '@allors/domain/generated';
-import { TableRow, Table, EditService, DeleteService, ObjectData, ObjectService, OverviewService, MethodService, Sorter } from '@allors/angular/material/core';
+import { MetaService, NavigationService, PanelService, RefreshService, ContextService } from '@allors/angular/services/core';
+import { WorkEffort, WorkEffortPartyAssignment } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ActivatedRoute } from '@angular/router';
-import { InternalOrganisationId } from '@allors/angular/base';
-import { PullRequest } from '@allors/protocol/system';
-import { RoleType } from '@allors/meta/system';
-import { Pull, Fetch, Step, Sort, Equals } from '@allors/data/system';
+import { TableRow, Table, DeleteService, EditService } from '@allors/angular/material/core';
+import { TestScope, Action } from '@allors/angular/core';
+import { ObjectData } from '@allors/angular/material/services/core';
 
 interface Row extends TableRow {
   object: WorkEffortPartyAssignment;
@@ -70,7 +63,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope i
     this.m = this.metaService.m;
 
     this.delete = deleteService.delete(allors.context);
-    this.delete.result.subscribe((v) => {
+    this.delete.result.subscribe(() => {
       this.table.selection.clear();
     });
   }

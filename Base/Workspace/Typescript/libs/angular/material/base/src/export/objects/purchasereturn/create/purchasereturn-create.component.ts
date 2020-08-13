@@ -1,27 +1,18 @@
 import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, NavigationService } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
 import {
   Organisation,
-  InternalOrganisation,
   Person,
   OrganisationContactRelationship,
   Party,
   PartyContactMechanism,
-  ContactMechanism,
-  WorkTask,
-  ProductQuote,
-  RequestForQuote,
   Currency,
-  VatRegime,
-  IrpfRegime,
-  CustomerRelationship,
   PurchaseReturn,
   PostalAddress,
   Facility,
@@ -30,6 +21,7 @@ import { Sort, Equals } from '@allors/data/system';
 import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './purchasereturn-create.component.html',
@@ -76,7 +68,7 @@ export class PurchaseReturnCreateComponent extends TestScope implements OnInit, 
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([, internalOrganisationId]) => {
+        switchMap(() => {
 
           const pulls = [
             this.fetcher.internalOrganisation,

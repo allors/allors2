@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Action, ContextService, MetaService, RefreshService, UserId, NavigationService } from '@allors/angular/services/core';
+import {  ContextService, MetaService, RefreshService, UserId, NavigationService } from '@allors/angular/services/core';
 import { Person, Task } from '@allors/domain/generated';
-import { ObjectService, EditService } from '@allors/angular/material/core';
 import { PullRequest } from '@allors/protocol/system';
+import { ObjectService } from '@allors/angular/material/services/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

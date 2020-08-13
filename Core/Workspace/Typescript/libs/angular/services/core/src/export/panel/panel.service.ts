@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { Pull } from '@allors/data/system';
+import { Loaded } from '../framework/responses/Loaded';
+import { PanelManagerService } from './panelmanager.service';
 
-import {  PanelManagerService, Loaded } from '@allors/angular/services/core';
 
 @Injectable()
 export class PanelService {

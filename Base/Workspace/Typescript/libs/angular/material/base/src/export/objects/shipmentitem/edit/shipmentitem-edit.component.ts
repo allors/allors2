@@ -1,19 +1,43 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest, BehaviorSubject, Observable } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { ContextService, TestScope, MetaService, RefreshService, Context, Saved, NavigationService, Action, Invoked, SearchFactory } from '@allors/angular/services/core';
-import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship, InventoryItem, InternalOrganisation, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem, ContactMechanism, LetterCorrespondence, PartyContactMechanism, PostalAddress, OrderAdjustment, OrganisationContactKind, PartyRate, TimeFrequency, RateType, PhoneCommunication, TelecommunicationsNumber, PositionType, PositionTypeRate, ProductIdentification, ProductIdentificationType, ProductType, SerialisedItemCharacteristicType, PurchaseInvoiceApproval, PurchaseOrderApprovalLevel1, PurchaseOrderApprovalLevel2, PurchaseOrder, PurchaseOrderItem, VatRegime, IrpfRegime, InvoiceItemType, SupplierOffering, UnifiedGood, Product, ProductQuote, QuoteItem, RequestItem, UnitOfMeasure, RequestItemState, RequestState, QuoteItemState, QuoteState, SalesOrderItemState, SalesOrderState, ShipmentItemState, ShipmentState, Receipt, SalesInvoice, PaymentApplication, RepeatingPurchaseInvoice, DayOfWeek, RepeatingSalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedItemAvailability, NonUnifiedPart, SalesOrder, SalesTerm, TermType, Singleton, IUnitOfMeasure, Shipment, ShipmentItem, OrderShipment, PurchaseOrderState, Good } from '@allors/domain/generated';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
+import {
+  InventoryItem,
+  Part,
+  Facility,
+  SerialisedInventoryItem,
+  SerialisedItem,
+  NonSerialisedInventoryItem,
+  PurchaseOrderItem,
+  SupplierOffering,
+  Product,
+  RequestItemState,
+  RequestState,
+  QuoteItemState,
+  QuoteState,
+  SalesOrderItemState,
+  SalesOrderState,
+  ShipmentItemState,
+  ShipmentState,
+  SalesOrderItem,
+  SerialisedItemAvailability,
+  Shipment,
+  ShipmentItem,
+  OrderShipment,
+  PurchaseOrderState,
+  Good,
+} from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta, ids } from '@allors/meta/generated';
+import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { InternalOrganisationId, FetcherService, FiltersService } from '@allors/angular/base';
+import { FiltersService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
-import { Equals, Sort, And, ContainedIn, Extent, LessThan, Or, Not, Exists, GreaterThan } from '@allors/data/system';
-
+import { Equals, Sort, And, ContainedIn, Extent } from '@allors/data/system';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './shipmentitem-edit.component.html',
@@ -96,7 +120,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    public snackBar: MatSnackBar,
+    public snackBar: MatSnackBar
   ) {
     super();
 
@@ -197,7 +221,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           ];
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
-        }),
+        })
       )
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
@@ -210,7 +234,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         this.facilities = loaded.collections.Facilities as Facility[];
         this.serialisedItemAvailabilities = loaded.collections.SerialisedItemAvailabilities as SerialisedItemAvailability[];
         this.sold = this.serialisedItemAvailabilities.find(
-          (v: SerialisedItemAvailability) => v.UniqueId === '9bdc0a55-4e3c-4604-b054-2441a551aa1c',
+          (v: SerialisedItemAvailability) => v.UniqueId === '9bdc0a55-4e3c-4604-b054-2441a551aa1c'
         );
 
         const salesOrderStates = loaded.collections.SalesOrderStates as SalesOrderState[];
@@ -225,19 +249,19 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
 
         const salesOrderItemStates = loaded.collections.SalesOrderItemStates as SalesOrderItemState[];
         this.provisionalOrderItem = salesOrderItemStates.find(
-          (v: SalesOrderItemState) => v.UniqueId === '5b0993b5-5784-4e8d-b1ad-93affac9a913',
+          (v: SalesOrderItemState) => v.UniqueId === '5b0993b5-5784-4e8d-b1ad-93affac9a913'
         );
         this.readyForPostingOrderItem = salesOrderItemStates.find(
-          (v: SalesOrderItemState) => v.UniqueId === '6e4f9535-a7ce-483f-9fbd-c9fd331d355e',
+          (v: SalesOrderItemState) => v.UniqueId === '6e4f9535-a7ce-483f-9fbd-c9fd331d355e'
         );
         this.requestsApprovalOrderItem = salesOrderItemStates.find(
-          (v: SalesOrderItemState) => v.UniqueId === '8d3a4a0a-ed27-4478-baff-ece591068712',
+          (v: SalesOrderItemState) => v.UniqueId === '8d3a4a0a-ed27-4478-baff-ece591068712'
         );
         this.awaitingAcceptanceOrderItem = salesOrderItemStates.find(
-          (v: SalesOrderItemState) => v.UniqueId === 'd3965e9b-764d-4787-87b4-82cb2acb0878',
+          (v: SalesOrderItemState) => v.UniqueId === 'd3965e9b-764d-4787-87b4-82cb2acb0878'
         );
         this.inProcessOrderItem = salesOrderItemStates.find(
-          (v: SalesOrderItemState) => v.UniqueId === 'e08401f7-1deb-4b27-b0c5-8f034bffedb5',
+          (v: SalesOrderItemState) => v.UniqueId === 'e08401f7-1deb-4b27-b0c5-8f034bffedb5'
         );
         this.onHoldOrderItem = salesOrderItemStates.find((v: SalesOrderItemState) => v.UniqueId === '3b185d51-af4a-441e-be0d-f91cfcbdb5d8');
 
@@ -256,7 +280,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         this.approvedQuoteItem = quoteItemStates.find((v: QuoteItemState) => v.UniqueId === '3335810c-9e26-4604-b272-d18b831e79e0');
         this.awaitingApprovalQuoteItem = quoteItemStates.find((v: QuoteItemState) => v.UniqueId === '76155bb7-53a3-4175-b026-74274a337820');
         this.awaitingAcceptanceQuoteItem = quoteItemStates.find(
-          (v: QuoteItemState) => v.UniqueId === 'e0982b61-deb1-47cb-851b-c182f03326a1',
+          (v: QuoteItemState) => v.UniqueId === 'e0982b61-deb1-47cb-851b-c182f03326a1'
         );
         this.acceptedQuoteItem = quoteItemStates.find((v: QuoteItemState) => v.UniqueId === '6e56c9f1-7bea-4ced-a724-67e4221a5993');
 
@@ -285,14 +309,14 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
         const salesOrderItems = loaded.collections.SalesOrderItems as SalesOrderItem[];
         if (salesOrderItems) {
           this.salesOrderItems = salesOrderItems.filter(
-            (v) => v.SalesOrderWhereSalesOrderItem.SalesOrderState === inProcess && parseFloat(v.QuantityRequestsShipping) > 0,
+            (v) => v.SalesOrderWhereSalesOrderItem.SalesOrderState === inProcess && parseFloat(v.QuantityRequestsShipping) > 0
           );
         }
 
         const purchaseOrderItems = loaded.collections.PurchaseOrderItems as PurchaseOrderItem[];
         if (purchaseOrderItems) {
           this.purchaseOrderItems = purchaseOrderItems.filter(
-            (v) => v.PurchaseOrderWherePurchaseOrderItem.PurchaseOrderState === purchaseOrderinProcess,
+            (v) => v.PurchaseOrderWherePurchaseOrderItem.PurchaseOrderState === purchaseOrderinProcess
           );
         }
 
@@ -308,7 +332,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
                     objectType: this.m.SupplierOffering,
                     predicate: new Equals({ propertyType: m.SupplierOffering.Supplier, object: this.shipment.ShipFromParty }),
                   }),
-                }),
+                })
               );
             },
           });
@@ -428,7 +452,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           (v.RequestItemState === this.draftRequestItem || v.RequestItemState === this.submittedRequestItem) &&
           (v.RequestWhereRequestItem.RequestState === this.anonymousRequest ||
             v.RequestWhereRequestItem.RequestState === this.submittedRequest ||
-            v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest),
+            v.RequestWhereRequestItem.RequestState === this.pendingCustomerRequest)
       );
 
       const onQuoteItem = serialisedItem.QuoteItemsWhereSerialisedItem.find(
@@ -442,7 +466,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
           (v.QuoteWhereQuoteItem.QuoteState === this.createdQuote ||
             v.QuoteWhereQuoteItem.QuoteState === this.approvedQuote ||
             v.QuoteWhereQuoteItem.QuoteState === this.awaitingAcceptanceQuote ||
-            v.QuoteWhereQuoteItem.QuoteState === this.acceptedQuote),
+            v.QuoteWhereQuoteItem.QuoteState === this.acceptedQuote)
       );
 
       const onOrderItem = serialisedItem.SalesOrderItemsWhereSerialisedItem.find(
@@ -458,7 +482,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
             v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.requestsApprovalOrder ||
             v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.awaitingAcceptanceOrder ||
             v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.onHoldOrder ||
-            v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.inProcessOrder),
+            v.SalesOrderWhereSalesOrderItem.SalesOrderState === this.inProcessOrder)
       );
 
       const onOtherShipmentItem = serialisedItem.ShipmentItemsWhereSerialisedItem.find(
@@ -471,7 +495,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
             v.ShipmentWhereShipmentItem?.ShipmentState === this.pickingShipment ||
             v.ShipmentWhereShipmentItem?.ShipmentState === this.pickingShipment ||
             v.ShipmentWhereShipmentItem?.ShipmentState === this.packedShipment ||
-            v.ShipmentWhereShipmentItem?.ShipmentState === this.onholdShipment),
+            v.ShipmentWhereShipmentItem?.ShipmentState === this.onholdShipment)
       );
 
       if (onRequestItem) {

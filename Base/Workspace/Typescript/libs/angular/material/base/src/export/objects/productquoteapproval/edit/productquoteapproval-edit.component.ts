@@ -1,17 +1,16 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription, combineLatest, BehaviorSubject, Observable } from 'rxjs';
+import { Subscription, combineLatest, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, Context, Saved, NavigationService, Action, Invoked } from '@allors/angular/services/core';
-import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship, InventoryItem, InternalOrganisation, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem, ContactMechanism, LetterCorrespondence, PartyContactMechanism, PostalAddress, OrderAdjustment, OrganisationContactKind, PartyRate, TimeFrequency, RateType, PhoneCommunication, TelecommunicationsNumber, PositionType, PositionTypeRate, ProductIdentification, ProductIdentificationType, ProductQuoteApproval } from '@allors/domain/generated';
+import { ContextService, MetaService, RefreshService, Invoked } from '@allors/angular/services/core';
+import { ProductQuoteApproval } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta, ids } from '@allors/meta/generated';
+import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { InternalOrganisationId, FetcherService, FiltersService, PrintService } from '@allors/angular/base';
-import { IObject, ISessionObject } from '@allors/domain/system';
-import { Equals, Sort } from '@allors/data/system';
-
+import { PrintService } from '@allors/angular/base';
+import { IObject } from '@allors/domain/system';
+import { TestScope, Action } from '@allors/angular/core';
 
 @Component({
   templateUrl: './productquoteapproval-edit.component.html',
@@ -49,7 +48,7 @@ export class ProductQuoteApprovalEditComponent extends TestScope implements OnIn
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
@@ -96,7 +95,7 @@ export class ProductQuoteApprovalEditComponent extends TestScope implements OnIn
   }
 
   saveAndInvoke(methodCall: () => Observable<Invoked>): void {
-    const { m, pull, x } = this.metaService;
+    const { pull } = this.metaService;
 
     this.allors.context
       .save()
@@ -109,7 +108,7 @@ export class ProductQuoteApprovalEditComponent extends TestScope implements OnIn
           return methodCall();
         })
       )
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
 
         const data: IObject = {
           id: this.productQuoteApproval.id,

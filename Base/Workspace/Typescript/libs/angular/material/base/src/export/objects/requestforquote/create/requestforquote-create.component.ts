@@ -1,58 +1,27 @@
-import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { ContextService, TestScope, MetaService, RefreshService, SingletonId, Saved, NavigationService } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
-import { ObjectData, SaveService, AllorsMaterialDialogService } from '@allors/angular/material/services/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import {
   Organisation,
-  Facility,
-  ProductType,
-  ProductIdentificationType,
-  Settings,
-  Part,
-  SupplierRelationship,
-  InventoryItemKind,
-  SupplierOffering,
-  Brand,
-  Model,
-  PartNumber,
-  UnitOfMeasure,
-  PartCategory,
-  NonUnifiedPart,
-  CustomOrganisationClassification,
-  IndustryClassification,
   CustomerRelationship,
-  InternalOrganisation,
-  OrganisationRole,
-  LegalForm,
-  VatRegime,
-  IrpfRegime,
   Currency,
   Person,
   OrganisationContactRelationship,
-  Enumeration,
-  OrganisationContactKind,
-  PersonRole,
-  Employment,
-  PostalAddress,
-  Country,
   Party,
   PartyContactMechanism,
-  PurchaseInvoice,
-  PurchaseInvoiceType,
   ContactMechanism,
   RequestForQuote,
 } from '@allors/domain/generated';
-import { Equals, Sort, And, Not, Exists } from '@allors/data/system';
+import { Sort } from '@allors/data/system';
 import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
+import { TestScope } from '@allors/angular/core';
 
 
 @Component({

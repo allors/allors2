@@ -1,9 +1,9 @@
-import { Component, Output, EventEmitter, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 
 import { ContextService, MetaService } from '@allors/angular/services/core';
-import { PartyContactMechanism, ContactMechanismPurpose, EmailAddress, Facility, FacilityType, Organisation } from '@allors/domain/generated';
+import { Facility, FacilityType, Organisation } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { Equals, Sort } from '@allors/data/system';
+import { Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { FetcherService } from '@allors/angular/base';
 
@@ -36,7 +36,7 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.metaService;
+    const { pull } = this.metaService;
 
     const pulls = [
       this.fetcher.internalOrganisation,

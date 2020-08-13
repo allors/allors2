@@ -28,6 +28,7 @@ import { SaveService, ObjectData } from '@allors/angular/material/services/core'
 import { FiltersService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './requestitem-edit.component.html',

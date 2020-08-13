@@ -3,7 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { TestScope, AuthenticationService } from '@allors/angular/services/core';
+import { AuthenticationService } from '@allors/angular/services/core';
+import { TestScope } from '@allors/angular/core';
 
 import { ConfigService } from '../config/config.service';
 

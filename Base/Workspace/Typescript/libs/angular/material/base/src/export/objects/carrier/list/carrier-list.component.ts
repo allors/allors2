@@ -8,8 +8,7 @@ import { Carrier } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { TableRow, Table, OverviewService, EditService, DeleteService, Sorter } from '@allors/angular/material/core';
 import { And, Like } from '@allors/data/system';
-import { TestScope, Filter, FilterDefinition } from '@allors/angular/core';
-import { Action } from 'rxjs/internal/scheduler/Action';
+import { TestScope, Filter, FilterDefinition, Action } from '@allors/angular/core';
 
 interface Row extends TableRow {
   object: Carrier;

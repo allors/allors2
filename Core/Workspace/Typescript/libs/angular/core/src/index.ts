@@ -44,9 +44,6 @@ export { MediaServiceCore } from './export/media/media.service.core';
 export { NavigationServiceCore } from './export/navigation/navigation.service.core';
 export { NavigationActivatedRoute } from './export/navigation/NavigationActivatedRoute';
 
-export { PanelServiceCore } from './export/panel/panel.service.core';
-export { PanelManagerServiceCore } from './export/panel/panelmanager.service.core';
-
 export { RefreshServiceCore } from './export/refresh/refresh.service.core';
 
 export { SearchFactory } from './export/search/SearchFactory';

@@ -5,7 +5,12 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { ObjectType } from '@allors/meta/system';
 import { Pull } from '@allors/data/system';
 
-import { Context, PanelService, DatabaseService, WorkspaceService, Loaded } from '@allors/angular/services/core';
+import { DatabaseService } from '../framework/DatabaseService';
+import { WorkspaceService } from '../framework/WorkspaceService';
+import { Context } from '../framework/Context';
+import { Loaded } from '../framework/responses/Loaded';
+import { PanelService } from './panel.service';
+
 
 @Injectable()
 export class PanelManagerService {

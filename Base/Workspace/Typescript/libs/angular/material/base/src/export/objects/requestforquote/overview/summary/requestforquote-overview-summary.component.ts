@@ -1,18 +1,11 @@
-import { Component, Self, OnInit, OnDestroy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/services/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, UnifiedGood, SalesOrder, RepeatingSalesInvoice, Good, WorkEffort, PurchaseOrder, PurchaseInvoice, Shipment, NonUnifiedGood, BasePrice, PriceComponent, ProductIdentificationType, SerialisedItem, RequestForQuote, ProductQuote, CustomerShipment, Quote } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService,  Invoked } from '@allors/angular/services/core';
+import { RequestForQuote, Quote } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/services/core';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
+import { SaveService } from '@allors/angular/material/services/core';
+import { ActionTarget } from '@allors/angular/core';
 
 
 @Component({
@@ -88,7 +81,7 @@ export class RequestForQuoteOverviewSummaryComponent {
   public cancel(): void {
 
     this.panel.manager.context.invoke(this.requestForQuote.Cancel)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
@@ -98,7 +91,7 @@ export class RequestForQuoteOverviewSummaryComponent {
   public reject(): void {
 
     this.panel.manager.context.invoke(this.requestForQuote.Reject)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
       },
@@ -108,7 +101,7 @@ export class RequestForQuoteOverviewSummaryComponent {
   public submit(): void {
 
     this.panel.manager.context.invoke(this.requestForQuote.Submit)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
       },
@@ -118,7 +111,7 @@ export class RequestForQuoteOverviewSummaryComponent {
   public hold(): void {
 
     this.panel.manager.context.invoke(this.requestForQuote.Hold)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully held.', 'close', { duration: 5000 });
       },
@@ -128,7 +121,7 @@ export class RequestForQuoteOverviewSummaryComponent {
   public createQuote(): void {
 
     this.panel.manager.context.invoke(this.requestForQuote.CreateQuote)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully created a quote.', 'close', { duration: 5000 });
       },

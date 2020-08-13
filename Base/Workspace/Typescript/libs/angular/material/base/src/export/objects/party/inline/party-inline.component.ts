@@ -1,11 +1,7 @@
-import { Component, Output, EventEmitter, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
-import { ContextService, MetaService } from '@allors/angular/services/core';
-import { PartyContactMechanism, ContactMechanismPurpose, EmailAddress, Facility, FacilityType, Organisation, Party } from '@allors/domain/generated';
-import { Meta } from '@allors/meta/generated';
-import { Equals, Sort } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { FetcherService } from '@allors/angular/base';
+import { ContextService } from '@allors/angular/services/core';
+import { Party } from '@allors/domain/generated';
 
 
 @Component({

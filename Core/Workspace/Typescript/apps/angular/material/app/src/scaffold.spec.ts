@@ -1,6 +1,4 @@
 import * as fs from 'fs';
-import { TestBed, async } from '@angular/core/testing';
-import { WorkspaceService } from '@allors/angular/core';
 import { menu } from '@allors/angular/material/custom';
 
 import '@allors/meta/core';

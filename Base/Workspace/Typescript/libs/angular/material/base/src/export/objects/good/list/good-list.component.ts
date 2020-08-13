@@ -2,24 +2,14 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import { formatDistance } from 'date-fns';
 
-import {
-  ContextService,
-  TestScope,
-  MetaService,
-  RefreshService,
-  Action,
-  NavigationService,
-  MediaService,
-  Filter,
-  FilterDefinition,
-  SearchFactory,
-} from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService, NavigationService, MediaService } from '@allors/angular/services/core';
+import { ObjectService } from '@allors/angular/material/services/core';
+import { SearchFactory, FilterDefinition, Filter, TestScope, Action } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
-import { TableRow, Table, OverviewService, DeleteService, Sorter, ObjectService } from '@allors/angular/material/core';
-import { Person, Organisation, Country, Good, ProductCategory, ProductIdentification, Brand, Model, NonUnifiedGood, UnifiedGood } from '@allors/domain/generated';
-import { And, Like, ContainedIn, Extent, Equals, Contains, Exists } from '@allors/data/system';
+import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
+import { Good, ProductCategory, ProductIdentification, Brand, Model, NonUnifiedGood, UnifiedGood } from '@allors/domain/generated';
+import { And, Like, Contains, Exists } from '@allors/data/system';
 
 interface Row extends TableRow {
   object: Good;
@@ -60,7 +50,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
 
     this.delete = deleteService.delete(allors.context);
-    this.delete.result.subscribe((v) => {
+    this.delete.result.subscribe(() => {
       this.table.selection.clear();
     });
 

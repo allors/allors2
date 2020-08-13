@@ -1,16 +1,14 @@
-import { Component, OnInit, Self, HostBinding, AfterViewInit, OnDestroy, Injector } from '@angular/core';
+import { Component, Self, AfterViewInit, OnDestroy, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { formatDistance, format, isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService, PanelManagerService, ContextService, NavigationActivatedRoute, ActionTarget } from '@allors/angular/services/core';
-import { CommunicationEvent, ContactMechanism, CustomerShipment, ShipmentItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, InventoryItem, NonSerialisedInventoryItem, Part, NonUnifiedPart, Organisation, SupplierOffering, PartyContactMechanism, PartyRate, Person, Employment } from '@allors/domain/generated';
-import { TableRow, Table, EditService, DeleteService, ObjectData, ObjectService, OverviewService } from '@allors/angular/material/core';
-import { Meta } from '@allors/meta/generated';
+import { MetaService, RefreshService,  NavigationService, PanelManagerService, ContextService } from '@allors/angular/services/core';
+import { Person, Employment } from '@allors/domain/generated';
 import { ActivatedRoute } from '@angular/router';
 import { InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
+import { NavigationActivatedRoute, TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './person-overview.component.html',
@@ -44,7 +42,7 @@ export class PersonOverviewComponent extends TestScope implements AfterViewInit,
 
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
+        switchMap(([,,]) => {
 
           const { m, pull, x } = this.metaService;
 

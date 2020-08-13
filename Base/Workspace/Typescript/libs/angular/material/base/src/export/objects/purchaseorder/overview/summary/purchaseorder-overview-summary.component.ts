@@ -1,18 +1,12 @@
-import { Component, Self, OnInit, OnDestroy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/services/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, UnifiedGood, SalesOrder, RepeatingSalesInvoice, Good, WorkEffort, PurchaseOrder, PurchaseInvoice, Shipment } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService,  Invoked } from '@allors/angular/services/core';
+import { PurchaseOrder, PurchaseInvoice, Shipment } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/services/core';
-import { FiltersService, FetcherService, InternalOrganisationId, PrintService } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
+import { SaveService } from '@allors/angular/material/services/core';
+import { PrintService } from '@allors/angular/base';
+import { Action, ActionTarget } from '@allors/angular/core';
 
 
 @Component({
@@ -52,7 +46,7 @@ export class PurchaseOrderOverviewSummaryComponent {
     const purchaseInvoicePullName = `${panel.name}_${this.m.PurchaseInvoice.name}`;
 
     panel.onPull = (pulls) => {
-      const { m, pull, x } = this.metaService;
+      const { pull, x } = this.metaService;
 
       pulls.push(
 
@@ -102,7 +96,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public approve(): void {
 
     this.panel.manager.context.invoke(this.order.Approve)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
       },
@@ -112,7 +106,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public cancel(): void {
 
     this.panel.manager.context.invoke(this.order.Cancel)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
@@ -122,7 +116,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public reject(): void {
 
     this.panel.manager.context.invoke(this.order.Reject)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
       },
@@ -132,7 +126,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public hold(): void {
 
     this.panel.manager.context.invoke(this.order.Hold)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
       },
@@ -142,7 +136,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public continue(): void {
 
     this.panel.manager.context.invoke(this.order.Continue)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
       },
@@ -152,7 +146,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public setReadyForProcessing(): void {
 
     this.panel.manager.context.invoke(this.order.SetReadyForProcessing)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully set ready for processing.', 'close', { duration: 5000 });
       },
@@ -162,7 +156,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public reopen(): void {
 
     this.panel.manager.context.invoke(this.order.Reopen)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
       },
@@ -172,7 +166,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public revise(): void {
 
     this.panel.manager.context.invoke(this.order.Revise)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully revised.', 'close', { duration: 5000 });
       },
@@ -182,7 +176,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public send(): void {
 
     this.panel.manager.context.invoke(this.order.Send)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
       },
@@ -192,7 +186,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public invoice(): void {
 
     this.panel.manager.context.invoke(this.order.Invoice)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully created purchase invoice', 'close', { duration: 5000 });
       },
@@ -202,7 +196,7 @@ export class PurchaseOrderOverviewSummaryComponent {
   public quickReceive(): void {
 
     this.panel.manager.context.invoke(this.order.QuickReceive)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.panel.toggle();
         this.snackBar.open('inventory created for all items', 'close', { duration: 5000 });
         this.refreshService.refresh();

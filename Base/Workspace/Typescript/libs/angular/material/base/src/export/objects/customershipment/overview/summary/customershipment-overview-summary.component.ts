@@ -7,7 +7,6 @@ import { Meta } from '@allors/meta/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { PrintService } from '@allors/angular/base';
 
-
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'customershipment-overview-summary',

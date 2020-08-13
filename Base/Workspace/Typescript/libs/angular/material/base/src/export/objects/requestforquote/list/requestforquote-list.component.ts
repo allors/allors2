@@ -3,19 +3,8 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import {
-  ContextService,
-  TestScope,
-  MetaService,
-  RefreshService,
-  Action,
-  NavigationService,
-  MediaService,
-  Filter,
-  FilterDefinition,
-  UserId,
-  SearchFactory,
-} from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService, NavigationService, MediaService, UserId } from '@allors/angular/services/core';
+import { SearchFactory, FilterDefinition, Filter, TestScope, Action } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
 import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
 import { Person, Organisation, Request, RequestState, Party } from '@allors/domain/generated';

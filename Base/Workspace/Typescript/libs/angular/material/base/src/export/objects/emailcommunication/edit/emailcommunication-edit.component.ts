@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, NavigationService } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService, NavigationService } from '@allors/angular/services/core';
 import { EmailCommunication, Party, Person, Organisation, CommunicationEventPurpose, ContactMechanism, EmailTemplate, CommunicationEventState, PartyContactMechanism, EmailAddress, OrganisationContactRelationship } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
@@ -11,6 +11,7 @@ import { SaveService, ObjectData } from '@allors/angular/material/services/core'
 import { InternalOrganisationId } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './emailcommunication-edit.component.html',

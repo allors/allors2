@@ -29,6 +29,7 @@ import {
 import { Equals, Sort } from '@allors/data/system';
 import { FetcherService } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './nonunifiedpart-create.component.html',

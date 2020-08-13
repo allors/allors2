@@ -1,18 +1,13 @@
-import { Component, Self, OnInit, OnDestroy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
+import { Action, ActionTarget } from '@allors/angular/core';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/services/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, SalesOrder, ProductQuote, SalesOrderItem, Good, Shipment, BillingProcess, SerialisedInventoryItemState } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService,  Invoked } from '@allors/angular/services/core';
+import { SalesInvoice, SalesOrder, ProductQuote, SalesOrderItem, Good, Shipment, BillingProcess, SerialisedInventoryItemState } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/services/core';
-import { FiltersService, FetcherService, InternalOrganisationId, PrintService } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
+import { SaveService } from '@allors/angular/material/services/core';
+import { PrintService } from '@allors/angular/base';
+import { Sort, Equals } from '@allors/data/system';
 
 
 @Component({
@@ -162,7 +157,7 @@ export class SalesOrderOverviewSummaryComponent {
   public approve(): void {
 
     this.panel.manager.context.invoke(this.order.Approve)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
       },
@@ -212,7 +207,7 @@ export class SalesOrderOverviewSummaryComponent {
   public revise(): void {
 
     this.panel.manager.context.invoke(this.order.Revise)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully revised.', 'close', { duration: 5000 });
       },
@@ -222,7 +217,7 @@ export class SalesOrderOverviewSummaryComponent {
   public cancel(): void {
 
     this.panel.manager.context.invoke(this.order.Cancel)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
@@ -232,7 +227,7 @@ export class SalesOrderOverviewSummaryComponent {
   public reject(): void {
 
     this.panel.manager.context.invoke(this.order.Reject)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
       },
@@ -242,7 +237,7 @@ export class SalesOrderOverviewSummaryComponent {
   public hold(): void {
 
     this.panel.manager.context.invoke(this.order.Hold)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
       },
@@ -252,7 +247,7 @@ export class SalesOrderOverviewSummaryComponent {
   public continue(): void {
 
     this.panel.manager.context.invoke(this.order.Continue)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
       },
@@ -262,7 +257,7 @@ export class SalesOrderOverviewSummaryComponent {
   public finish(): void {
 
     this.panel.manager.context.invoke(this.order.Continue)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
       },
@@ -272,7 +267,7 @@ export class SalesOrderOverviewSummaryComponent {
   public ship(): void {
 
     this.panel.manager.context.invoke(this.order.Ship)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.panel.toggle();
         this.snackBar.open('Customer shipment successfully created.', 'close', { duration: 5000 });
         this.refreshService.refresh();
@@ -283,7 +278,7 @@ export class SalesOrderOverviewSummaryComponent {
   public invoice(): void {
 
     this.panel.manager.context.invoke(this.order.Invoice)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.panel.toggle();
         this.snackBar.open('Sales invoice successfully created.', 'close', { duration: 5000 });
         this.refreshService.refresh();

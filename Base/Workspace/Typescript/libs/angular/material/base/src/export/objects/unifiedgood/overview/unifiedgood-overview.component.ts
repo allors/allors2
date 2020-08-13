@@ -9,8 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { UnifiedGood } from 'libs/domain/generated/src/UnifiedGood.g';
-import { PanelManagerService, ContextService, RefreshService, NavigationService } from '@allors/angular/services/core';
-import { MetaService } from '@allors/meta/generated';
+import { PanelManagerService, ContextService, RefreshService, NavigationService, MetaService } from '@allors/angular/services/core';
 
 @Component({
   templateUrl: './unifiedgood-overview.component.html',

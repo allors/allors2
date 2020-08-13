@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, MetaService, RefreshService, Context } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 import { Organisation, SupplierRelationship } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta, ids } from '@allors/meta/generated';

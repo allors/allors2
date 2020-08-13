@@ -2,30 +2,16 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import { format, formatDistance } from 'date-fns';
+import { formatDistance } from 'date-fns';
 
-import {
-  ContextService,
-  TestScope,
-  MetaService,
-  RefreshService,
-  Action,
-  NavigationService,
-  MediaService,
-  Filter,
-  FilterDefinition,
-  SearchFactory,
-  UserId,
-  ActionTarget,
-} from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService, NavigationService, MediaService, UserId } from '@allors/angular/services/core';
+import { SearchFactory, FilterDefinition, Filter, TestScope, Action } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
-import { TableRow, Table, OverviewService, DeleteService, Sorter, MethodService, AllorsMaterialDialogService } from '@allors/angular/material/core';
-import { Person, Organisation, Quote, QuoteState, Party, SalesInvoice, PaymentApplication, Receipt, Disbursement, SalesInvoiceType, SalesInvoiceState, Product, SerialisedItem, SalesOrder, SalesOrderState } from '@allors/domain/generated';
+import { TableRow, Table, OverviewService, DeleteService, Sorter, MethodService } from '@allors/angular/material/core';
+import { Person, Organisation, Party, Product, SerialisedItem, SalesOrder, SalesOrderState } from '@allors/domain/generated';
 import { And, Equals, ContainedIn, Extent } from '@allors/data/system';
 import { InternalOrganisationId, FetcherService, PrintService } from '@allors/angular/base';
 import { Meta } from '@allors/meta/generated';
-
-
 
 interface Row extends TableRow {
   object: SalesOrder;
@@ -38,10 +24,9 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './salesorder-list.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class SalesOrderListComponent extends TestScope implements OnInit, OnDestroy {
-
   public title = 'Sales Orders';
 
   m: Meta;
@@ -62,7 +47,7 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
 
   constructor(
     @Self() public allors: ContextService,
-    
+
     public metaService: MetaService,
     public refreshService: RefreshService,
     public overviewService: OverviewService,
@@ -74,14 +59,14 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
     private internalOrganisationId: InternalOrganisationId,
     private userId: UserId,
     private fetcher: FetcherService,
-    titleService: Title,
+    titleService: Title
   ) {
     super();
 
     titleService.setTitle(this.title);
 
     this.delete = deleteService.delete(allors.context);
-    this.delete.result.subscribe((v) => {
+    this.delete.result.subscribe(() => {
       this.table.selection.clear();
     });
 
@@ -100,13 +85,7 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
         { name: 'customerReference', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
-      actions: [
-        overviewService.overview(),
-        this.print,
-        this.delete,
-        this.ship,
-        this.invoice
-      ],
+      actions: [overviewService.overview(), this.print, this.delete, this.ship, this.invoice],
       defaultAction: overviewService.overview(),
       pageSize: 50,
       initialSort: 'number',
@@ -115,7 +94,6 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
   }
 
   ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.SalesOrder.TakenBy });
@@ -134,9 +112,9 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
           objectType: m.SalesOrderItem,
           predicate: new ContainedIn({
             propertyType: m.SalesOrderItem.Product,
-            parameter: 'product'
-          })
-        })
+            parameter: 'product',
+          }),
+        }),
       }),
       new ContainedIn({
         propertyType: m.SalesOrder.SalesOrderItems,
@@ -144,10 +122,10 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
           objectType: m.SalesOrderItem,
           predicate: new ContainedIn({
             propertyType: m.SalesOrderItem.SerialisedItem,
-            parameter: 'serialisedItem'
-          })
-        })
-      })
+            parameter: 'serialisedItem',
+          }),
+        }),
+      }),
     ]);
 
     const stateSearch = new SearchFactory({
@@ -181,41 +159,47 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
       serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
     this.filter = new Filter(filterDefinition);
-    
-    const sorter = new Sorter(
-      {
-        number: m.SalesOrder.SortableOrderNumber,
-        customerReference: m.SalesOrder.CustomerReference,
-        lastModifiedDate: m.SalesOrder.LastModifiedDate,
-      }
-    );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$)
+    const sorter = new Sorter({
+      number: m.SalesOrder.SortableOrderNumber,
+      customerReference: m.SalesOrder.CustomerReference,
+      lastModifiedDate: m.SalesOrder.LastModifiedDate,
+    });
+
+    this.subscription = combineLatest(
+      this.refreshService.refresh$,
+      this.filter.fields$,
+      this.table.sort$,
+      this.table.pager$,
+      this.internalOrganisationId.observable$
+    )
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
-          return [
-            refresh,
-            filterFields,
-            sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-            internalOrganisationId
-          ];
-        }, [, , , , ,]),
+        scan(
+          ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
+            return [
+              refresh,
+              filterFields,
+              sort,
+              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+              internalOrganisationId,
+            ];
+          },
+          [, , , , ,]
+        ),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
-
           internalOrganisationPredicate.object = internalOrganisationId;
 
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.Person({
-              object: this.userId.value
+              object: this.userId.value,
             }),
             pull.SalesOrder({
               predicate,
               sort: sorter.create(sort),
               include: {
                 PrintDocument: {
-                  Media: x
+                  Media: x,
                 },
                 ShipToCustomer: x,
                 SalesOrderState: x,
@@ -223,7 +207,8 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
               parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
-            })];
+            }),
+          ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })
@@ -238,16 +223,18 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
 
         const requests = loaded.collections.SalesOrders as SalesOrder[];
         this.table.total = loaded.values.SalesOrders_total;
-        this.table.data = requests.filter(v => v.CanReadOrderNumber).map((v) => {
-          return {
-            object: v,
-            number: `${v.OrderNumber}`,
-            shipToCustomer: v.ShipToCustomer && v.ShipToCustomer.displayName,
-            state: `${v.SalesOrderState && v.SalesOrderState.Name}`,
-            customerReference: `${v.Description || ''}`,
-            lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date())
-          } as Row;
-        });
+        this.table.data = requests
+          .filter((v) => v.CanReadOrderNumber)
+          .map((v) => {
+            return {
+              object: v,
+              number: `${v.OrderNumber}`,
+              shipToCustomer: v.ShipToCustomer && v.ShipToCustomer.displayName,
+              state: `${v.SalesOrderState && v.SalesOrderState.Name}`,
+              customerReference: `${v.Description || ''}`,
+              lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
+            } as Row;
+          });
       });
   }
 

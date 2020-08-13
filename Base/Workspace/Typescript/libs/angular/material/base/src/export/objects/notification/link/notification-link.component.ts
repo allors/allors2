@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Action, ContextService, MetaService, RefreshService, UserId, NavigationService } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService, UserId, NavigationService } from '@allors/angular/services/core';
 import { Person, Notification } from '@allors/domain/generated';
-import { ObjectService, EditService } from '@allors/angular/material/core';
 import { PullRequest } from '@allors/protocol/system';
+import { ObjectService } from '@allors/angular/material/services/core';
 
 
 @Component({
@@ -45,7 +45,7 @@ export class NotificationLinkComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     this.subscription = this.refreshService.refresh$
       .pipe(

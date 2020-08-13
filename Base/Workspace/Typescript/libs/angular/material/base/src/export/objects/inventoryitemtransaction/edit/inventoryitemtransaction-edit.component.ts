@@ -3,14 +3,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, Context, Saved } from '@allors/angular/services/core';
-import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship, InventoryItem, InternalOrganisation, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem } from '@allors/domain/generated';
+import { ContextService, MetaService, RefreshService, Saved } from '@allors/angular/services/core';
+import { InventoryItem, InternalOrganisation, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta, ids } from '@allors/meta/generated';
+import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
+import { FetcherService } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
-import { Equals, Sort } from '@allors/data/system';
+import { Sort } from '@allors/data/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './inventoryitemtransaction-edit.component.html',
@@ -40,7 +41,6 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
   serialisedInventoryItemState: SerialisedInventoryItemState[];
 
   private subscription: Subscription;
-  private readonly refresh$: BehaviorSubject<Date>;
   nonSerialisedInventoryItem: NonSerialisedInventoryItem;
 
   constructor(
@@ -56,7 +56,6 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
     super();
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
@@ -176,7 +175,7 @@ export class InventoryItemTransactionEditComponent extends TestScope implements 
     this.inventoryItemTransaction.Facility = this.selectedFacility;
 
     this.allors.context.save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         const data: IObject = {
           id: this.inventoryItemTransaction.id,
           objectType: this.inventoryItemTransaction.objectType,

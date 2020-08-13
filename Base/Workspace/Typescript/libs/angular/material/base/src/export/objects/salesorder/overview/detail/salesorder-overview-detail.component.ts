@@ -1,16 +1,17 @@
 import { Component, OnInit, Self, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { TestScope, MetaService, RefreshService, NavigationService, PanelService, ContextService, SingletonId } from '@allors/angular/services/core';
-import { CustomerShipment, Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, InternalOrganisation, Enumeration, IrpfRegime, WorkTask, WorkEffortState, Priority, WorkEffortPurpose, ContactMechanism, WorkEffort, SalesOrder, ProductQuote, VatRegime, VatClause, Store, SalesOrderItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, CustomerRelationship } from '@allors/domain/generated';
+import { MetaService, RefreshService, PanelService, ContextService } from '@allors/angular/services/core';
+import { Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, OrganisationContactRelationship, InternalOrganisation, IrpfRegime, ContactMechanism, SalesOrder, ProductQuote, VatRegime, VatClause, Store, SalesOrderItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, CustomerRelationship } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
 import { ISessionObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 
 @Component({

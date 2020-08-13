@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import { format, formatDistance } from 'date-fns';
+import { formatDistance } from 'date-fns';
 
 import {
   Brand,
@@ -21,30 +21,11 @@ import {
   NonSerialisedInventoryItem,
 } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import {
-  ContextService,
-  MetaService,
-  RefreshService,
-  Action,
-  Filter,
-  NavigationService,
-  MediaService,
-  FilterDefinition,
-  SingletonId,
-  UserId,
-  SearchFactory,
-} from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService, NavigationService, MediaService, UserId, SingletonId } from '@allors/angular/services/core';
+import { ObjectService, SaveService } from '@allors/angular/material/services/core';
+import { SearchFactory, FilterDefinition, Filter, Action } from '@allors/angular/core';
 import { PrintService, FiltersService } from '@allors/angular/base';
-import {
-  TableRow,
-  Table,
-  OverviewService,
-  EditService,
-  DeleteService,
-  Sorter,
-  ObjectService,
-  SaveService,
-} from '@allors/angular/material/core';
+import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
 import { And, Like, Or, ContainedIn, Extent, Contains, Equals } from '@allors/data/system';
 import { FetcherService, InternalOrganisationId } from '@allors/angular/base';
 
@@ -371,12 +352,6 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         const partCategories = loaded.collections.PartCategories as PartCategory[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
-        const partNumberByPart = this.parts.reduce((map, obj) => {
-          map[obj.id] = obj.ProductIdentifications.filter((v) => v.ProductIdentificationType === partNumberType).map(
-            (w) => w.Identification
-          );
-          return map;
-        }, {});
 
         this.table.total = loaded.values.NonUnifiedParts_total;
 

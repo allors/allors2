@@ -1,18 +1,13 @@
-import { Component, Self, OnInit, OnDestroy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/services/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, UnifiedGood, SalesOrder, RepeatingSalesInvoice, Good, WorkEffort, PurchaseOrder, PurchaseInvoice, Shipment, NonUnifiedGood, BasePrice, PriceComponent, ProductIdentificationType, SerialisedItem, RequestForQuote, ProductQuote, CustomerShipment } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService,  Invoked } from '@allors/angular/services/core';
+import { Good, PurchaseOrder, PurchaseInvoice } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/services/core';
-import { FiltersService, FetcherService, InternalOrganisationId, PrintService } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
+import { SaveService } from '@allors/angular/material/services/core';
+import { PrintService } from '@allors/angular/base';
+import { Sort } from '@allors/data/system';
+import { Action, ActionTarget } from '@allors/angular/core';
 
 
 @Component({
@@ -113,7 +108,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
   public confirm(): void {
 
     this.panel.manager.context.invoke(this.invoice.Confirm)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
       },
@@ -123,7 +118,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
   public cancel(): void {
 
     this.panel.manager.context.invoke(this.invoice.Cancel)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
@@ -133,7 +128,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
   public reopen(): void {
 
     this.panel.manager.context.invoke(this.invoice.Reopen)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
       },
@@ -143,7 +138,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
   public approve(): void {
 
     this.panel.manager.context.invoke(this.invoice.Approve)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
       },
@@ -153,7 +148,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
   public reject(): void {
 
     this.panel.manager.context.invoke(this.invoice.Reject)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.refreshService.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
       },
@@ -163,7 +158,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
   public createSalesInvoice(invoice: PurchaseInvoice): void {
 
     this.panel.manager.context.invoke(invoice.CreateSalesInvoice)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.snackBar.open('Successfully created a sales invoice.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },

@@ -4,25 +4,13 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import { format, formatDistance } from 'date-fns';
 
-import {
-  ContextService,
-  TestScope,
-  MetaService,
-  RefreshService,
-  Action,
-  NavigationService,
-  MediaService,
-  Filter,
-  FilterDefinition,
-  SearchFactory,
-  UserId,
-} from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService, NavigationService, MediaService, UserId } from '@allors/angular/services/core';
+import { SearchFactory, FilterDefinition, Filter, TestScope, Action } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
 import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
 import { Person, Organisation, Quote, QuoteState, Party } from '@allors/domain/generated';
 import { And, Equals } from '@allors/data/system';
 import { InternalOrganisationId, FetcherService, PrintService } from '@allors/angular/base';
-
 
 interface Row extends TableRow {
   object: Quote;

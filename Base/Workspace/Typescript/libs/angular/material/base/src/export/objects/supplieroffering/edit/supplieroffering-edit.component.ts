@@ -4,22 +4,31 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService } from '@allors/angular/services/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship } from '@allors/domain/generated';
+import { MetaService, ContextService, RefreshService } from '@allors/angular/services/core';
+import {
+  Organisation,
+  SupplierOffering,
+  Part,
+  RatingType,
+  Ordinal,
+  UnitOfMeasure,
+  Currency,
+  Settings,
+  SupplierRelationship,
+} from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { IObject } from '@allors/domain/system';
-
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './supplieroffering-edit.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class SupplierOfferingEditComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
 
   supplierOffering: SupplierOffering;
@@ -44,7 +53,7 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
     public filtersService: FiltersService,
     private saveService: SaveService,
     private fetcher: FetcherService,
-    private internalOrganisationId: InternalOrganisationId,
+    private internalOrganisationId: InternalOrganisationId
   ) {
     super();
 
@@ -52,13 +61,11 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
   }
 
   public ngOnInit(): void {
-
     const { pull, x, m } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(() => {
-
           const isCreate = this.data.id === undefined;
 
           let pulls = [
@@ -69,8 +76,8 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
             pull.Currency({ sort: new Sort(m.Currency.Name) }),
             pull.SupplierRelationship({
               include: {
-                Supplier: x
-              }
+                Supplier: x,
+              },
             }),
           ];
 
@@ -80,8 +87,8 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
               pull.Part({
                 object: this.data.associationId,
                 include: {
-                  SuppliedBy: x
-                }
+                  SuppliedBy: x,
+                },
               }),
             ];
           }
@@ -97,24 +104,17 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
                   Preference: x,
                   Supplier: x,
                   Currency: x,
-                  UnitOfMeasure: x
-                }
+                  UnitOfMeasure: x,
+                },
               }),
             ];
           }
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
+          return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })
       )
       .subscribe(({ loaded, isCreate }) => {
-
         this.allors.context.reset();
-
-        
 
         this.ratingTypes = loaded.collections.RatingTypes as RatingType[];
         this.preferences = loaded.collections.Ordinals as Ordinal[];
@@ -123,8 +123,12 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
         this.settings = loaded.objects.Settings as Settings;
 
         const supplierRelationships = loaded.collections.SupplierRelationships as SupplierRelationship[];
-        const currentsupplierRelationships = supplierRelationships.filter(v => isBefore(new Date(v.FromDate), new Date()) && (v.ThroughDate === null || isAfter(new Date(v.ThroughDate), new Date())));
-        this.currentSuppliers = new Set(currentsupplierRelationships.map(v => v.Supplier).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0)));
+        const currentsupplierRelationships = supplierRelationships.filter(
+          (v) => isBefore(new Date(v.FromDate), new Date()) && (v.ThroughDate === null || isAfter(new Date(v.ThroughDate), new Date()))
+        );
+        this.currentSuppliers = new Set(
+          currentsupplierRelationships.map((v) => v.Supplier).sort((a, b) => (a.Name > b.Name ? 1 : b.Name > a.Name ? -1 : 0))
+        );
 
         if (isCreate) {
           this.title = 'Add supplier offering';
@@ -133,9 +137,7 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
           this.part = loaded.objects.Part as Part;
           this.supplierOffering.Part = this.part;
           this.supplierOffering.Currency = this.settings.PreferredCurrency;
-
         } else {
-
           this.supplierOffering = loaded.objects.SupplierOffering as SupplierOffering;
           this.part = this.supplierOffering.Part;
 
@@ -155,18 +157,14 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
   }
 
   public save(): void {
+    this.allors.context.save().subscribe(() => {
+      const data: IObject = {
+        id: this.supplierOffering.id,
+        objectType: this.supplierOffering.objectType,
+      };
 
-    this.allors.context.save()
-      .subscribe(() => {
-        const data: IObject = {
-          id: this.supplierOffering.id,
-          objectType: this.supplierOffering.objectType,
-        };
-
-        this.dialogRef.close(data);
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+      this.dialogRef.close(data);
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 }

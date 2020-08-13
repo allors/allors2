@@ -2,10 +2,12 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Action, ContextService, MetaService, RefreshService, UserId } from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService, UserId } from '@allors/angular/services/core';
 import { Person } from '@allors/domain/generated';
-import { ObjectService, EditService } from '@allors/angular/material/core';
+import {  EditService } from '@allors/angular/material/core';
 import { PullRequest } from '@allors/protocol/system';
+import { ObjectService } from '@allors/angular/material/services/core';
+import { Action } from '@allors/angular/core';
 
 
 @Component({

@@ -3,21 +3,47 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, Context, Saved, NavigationService } from '@allors/angular/services/core';
-import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship, InventoryItem, InternalOrganisation, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem, ContactMechanism, LetterCorrespondence, PartyContactMechanism, PostalAddress } from '@allors/domain/generated';
+import { ContextService, MetaService, RefreshService, Context, Saved, NavigationService } from '@allors/angular/services/core';
+import {
+  ElectronicAddress,
+  Enumeration,
+  Employment,
+  Person,
+  Party,
+  Organisation,
+  CommunicationEventPurpose,
+  FaceToFaceCommunication,
+  CommunicationEventState,
+  OrganisationContactRelationship,
+  InventoryItem,
+  InternalOrganisation,
+  InventoryItemTransaction,
+  InventoryTransactionReason,
+  Part,
+  Facility,
+  Lot,
+  SerialisedInventoryItem,
+  SerialisedItem,
+  NonSerialisedInventoryItemState,
+  SerialisedInventoryItemState,
+  NonSerialisedInventoryItem,
+  ContactMechanism,
+  LetterCorrespondence,
+  PartyContactMechanism,
+  PostalAddress,
+} from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta, ids } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
 import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
-import { Equals, Sort } from '@allors/data/system';
+import { TestScope, Action, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './nonserialisedinventoryitem-edit.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class NonSerialisedInventoryItemEditComponent extends TestScope implements OnInit, OnDestroy {
-
   public m: Meta;
   public title: string;
 
@@ -33,7 +59,7 @@ export class NonSerialisedInventoryItemEditComponent extends TestScope implement
     public refreshService: RefreshService,
     private saveService: SaveService,
     private fetcher: FetcherService,
-    private internalOrganisationId: InternalOrganisationId,
+    private internalOrganisationId: InternalOrganisationId
   ) {
     super();
 
@@ -41,32 +67,24 @@ export class NonSerialisedInventoryItemEditComponent extends TestScope implement
   }
 
   public ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
       .pipe(
         switchMap(() => {
-
           const isCreate = this.data.id === undefined;
 
           const pulls = [
             this.fetcher.locales,
-            pull.NonSerialisedInventoryItem(
-              {
-                object: this.data.id,
-              }
-            ),
+            pull.NonSerialisedInventoryItem({
+              object: this.data.id,
+            }),
           ];
 
-          return this.allors.context.load(new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, isCreate }))
-            );
+          return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })
       )
       .subscribe(({ loaded, isCreate }) => {
-
         this.allors.context.reset();
 
         this.nonSerialisedInventoryItem = loaded.objects.NonSerialisedInventoryItem as NonSerialisedInventoryItem;
@@ -76,7 +94,6 @@ export class NonSerialisedInventoryItemEditComponent extends TestScope implement
         } else {
           this.title = 'View Inventory Item';
         }
-
       });
   }
 
@@ -87,19 +104,14 @@ export class NonSerialisedInventoryItemEditComponent extends TestScope implement
   }
 
   public save(): void {
+    this.allors.context.save().subscribe((saved: Saved) => {
+      const data: IObject = {
+        id: this.nonSerialisedInventoryItem.id,
+        objectType: this.nonSerialisedInventoryItem.objectType,
+      };
 
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        const data: IObject = {
-          id: this.nonSerialisedInventoryItem.id,
-          objectType: this.nonSerialisedInventoryItem.objectType,
-        };
-
-        this.dialogRef.close(data);
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+      this.dialogRef.close(data);
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 }

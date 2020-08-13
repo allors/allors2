@@ -12,6 +12,7 @@ import { SaveService, ObjectData } from '@allors/angular/material/services/core'
 import { InternalOrganisationId } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
 import { Sort } from '@allors/data/system';
+import { TestScope } from '@allors/angular/core';
 
 
 @Component({

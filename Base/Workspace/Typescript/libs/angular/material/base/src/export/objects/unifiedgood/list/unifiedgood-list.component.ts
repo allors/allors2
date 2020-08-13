@@ -4,27 +4,13 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import { formatDistance } from 'date-fns';
 
-import {
-  ContextService,
-  TestScope,
-  MetaService,
-  RefreshService,
-  Action,
-  NavigationService,
-  MediaService,
-  Filter,
-  FilterDefinition,
-  SearchFactory,
-  UserId,
-} from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService, NavigationService, MediaService } from '@allors/angular/services/core';
+import { ObjectService } from '@allors/angular/material/services/core';
+import { SearchFactory, FilterDefinition, Filter, TestScope, Action } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
-import { TableRow, Table, OverviewService, DeleteService, Sorter, ObjectService, EditService, MethodService } from '@allors/angular/material/core';
-import { Organisation, Party, SerialisedItem, SerialisedItemState, SerialisedItemAvailability, Ownership, Brand, Model, ProductType, SerialisedItemCharacteristicType, IUnitOfMeasure, Shipment, ShipmentState, TaskAssignment, UnifiedGood, ProductCategory, ProductIdentification } from '@allors/domain/generated';
-import { And, Equals, ContainedIn, Extent, Like, Or, Contains, Exists } from '@allors/data/system';
-import { InternalOrganisationId } from '@allors/angular/base';
-
-
-
+import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
+import { Brand, Model, UnifiedGood, ProductCategory, ProductIdentification } from '@allors/domain/generated';
+import { And, Equals, Like, Contains, Exists } from '@allors/data/system';
 
 interface Row extends TableRow {
   object: UnifiedGood;
@@ -38,10 +24,9 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './unifiedgood-list.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDestroy {
-
   public title = 'Unified Goods';
 
   table: Table<Row>;
@@ -53,7 +38,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
 
   constructor(
     @Self() public allors: ContextService,
-    
+
     public metaService: MetaService,
     public factoryService: ObjectService,
     public refreshService: RefreshService,
@@ -68,7 +53,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
     titleService.setTitle(this.title);
 
     this.delete = deleteService.delete(allors.context);
-    this.delete.result.subscribe((v) => {
+    this.delete.result.subscribe(() => {
       this.table.selection.clear();
     });
 
@@ -82,17 +67,13 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
         { name: 'qoh' },
         { name: 'lastModifiedDate', sort: true },
       ],
-      actions: [
-        overviewService.overview(),
-        this.delete
-      ],
+      actions: [overviewService.overview(), this.delete],
       defaultAction: overviewService.overview(),
       pageSize: 50,
     });
   }
 
   public ngOnInit(): void {
-
     const { m, pull, x } = this.metaService;
 
     const predicate = new And([
@@ -126,35 +107,34 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
       roleTypes: [m.ProductIdentification.Identification],
     });
 
-    const filterDefinition = new FilterDefinition(predicate,
-      {
-        category: { search: categorySearch, display: (v: ProductCategory) => v && v.DisplayName },
-        identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
-        brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
-        model: { search: modelSearch, display: (v: Model) => v && v.Name },
-      });
-      this.filter = new Filter(filterDefinition);
-      
-    const sorter = new Sorter(
-      {
-        name: [m.UnifiedGood.Name],
-        id: [m.UnifiedGood.ProductNumber],
-        lastModifiedDate: m.UnifiedGood.LastModifiedDate,
-      }
-    );
+    const filterDefinition = new FilterDefinition(predicate, {
+      category: { search: categorySearch, display: (v: ProductCategory) => v && v.DisplayName },
+      identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
+      brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
+      model: { search: modelSearch, display: (v: Model) => v && v.Name },
+    });
+    this.filter = new Filter(filterDefinition);
+
+    const sorter = new Sorter({
+      name: [m.UnifiedGood.Name],
+      id: [m.UnifiedGood.ProductNumber],
+      lastModifiedDate: m.UnifiedGood.LastModifiedDate,
+    });
 
     this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
       .pipe(
-        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
-          return [
-            refresh,
-            filterFields,
-            sort,
-            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
-          ];
-        }, [, , , , , ]),
+        scan(
+          ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+            return [
+              refresh,
+              filterFields,
+              sort,
+              previousRefresh !== refresh || filterFields !== previousFilterFields ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+            ];
+          },
+          [, , , , ,]
+        ),
         switchMap(([, filterFields, sort, pageEvent]) => {
-
           const pulls = [
             pull.UnifiedGood({
               predicate,
@@ -163,8 +143,8 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
                 Photos: x,
                 PrimaryPhoto: x,
                 ProductIdentifications: {
-                  ProductIdentificationType: x
-                }
+                  ProductIdentificationType: x,
+                },
               },
               parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -177,11 +157,11 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
                 ProductCategoriesWhereProduct: {
                   include: {
                     Products: x,
-                    PrimaryAncestors: x
-                  }
+                    PrimaryAncestors: x,
+                  },
                 },
-              }
-            })
+              },
+            }),
           ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
@@ -199,10 +179,13 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
             object: v,
             name: v.Name,
             id: v.ProductNumber,
-            categories: productCategories.filter(w => w.Products.includes(v)).map((w) => w.DisplayName).join(', '),
+            categories: productCategories
+              .filter((w) => w.Products.includes(v))
+              .map((w) => w.DisplayName)
+              .join(', '),
             qoh: v.QuantityOnHand,
             photos: v.Photos.length.toString(),
-            lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date())
+            lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
           } as Row;
         });
       });

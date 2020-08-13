@@ -3,14 +3,16 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
-import { ContextService, TestScope, AllorsBarcodeService, Loaded, MetaService } from '@allors/angular/services/core';
+import { ContextService, AllorsBarcodeService, Loaded, MetaService } from '@allors/angular/services/core';
 import { Organisation } from '@allors/domain/generated';
-import { SideMenuItem, AllorsMaterialSideNavService } from '@allors/angular/material/core';
+import { SideMenuItem } from '@allors/angular/material/core';
+import { AllorsMaterialSideNavService } from '@allors/angular/material/services/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { ObjectType } from 'libs/meta/system/src/ObjectType';
 import { Equals } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { InternalOrganisationId } from '@allors/angular/base';
+import { TestScope } from '@allors/angular/core';
 
 import { menu } from './main.menu';
 

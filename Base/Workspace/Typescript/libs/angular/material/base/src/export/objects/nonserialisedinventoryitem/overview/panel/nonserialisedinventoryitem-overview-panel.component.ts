@@ -1,16 +1,11 @@
-import { Component, OnInit, Self, HostBinding, AfterViewInit, OnDestroy, Injector } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { formatDistance } from 'date-fns';
+import { Component, OnInit, Self, HostBinding } from '@angular/core';
 
-import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService, PanelManagerService, ContextService, NavigationActivatedRoute, ActionTarget } from '@allors/angular/services/core';
-import { CommunicationEvent, ContactMechanism, CustomerShipment, ShipmentItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, InventoryItem, NonSerialisedInventoryItem } from '@allors/domain/generated';
-import { TableRow, Table, EditService, DeleteService, ObjectData, ObjectService, OverviewService } from '@allors/angular/material/core';
+import { MetaService, NavigationService, PanelService, RefreshService } from '@allors/angular/services/core';
+import { InventoryItem, NonSerialisedInventoryItem } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ActivatedRoute } from '@angular/router';
-import { InternalOrganisationId } from '@allors/angular/base';
-import { PullRequest } from '@allors/protocol/system';
+import { TableRow, Table, DeleteService, OverviewService, EditService } from '@allors/angular/material/core';
+import { TestScope, Action, ActionTarget } from '@allors/angular/core';
+import { ObjectData, ObjectService } from '@allors/angular/material/services/core';
 
 
 interface Row extends TableRow {
@@ -70,7 +65,7 @@ export class NonSerialisedInventoryItemComponent extends TestScope implements On
 
   ngOnInit() {
 
-    const { pull, x, m } = this.metaService;
+    const { pull, x } = this.metaService;
 
     this.panel.name = 'nonserialised Inventory item';
     this.panel.title = 'Nonserialised Inventory items';

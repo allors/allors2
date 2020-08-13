@@ -1,31 +1,22 @@
-import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { Meta } from '@allors/meta/generated'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, PanelManagerService } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
 import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import {
-  Organisation,
   Party,
-  Person,
-  CustomerShipment,
-  Currency,
-  PostalAddress,
-  Facility,
-  ShipmentMethod,
-  Carrier,
-  ShipmentPackage,
-  OrganisationContactRelationship,
   PartyContactMechanism,
   ElectronicAddress,
   Enumeration,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
-import { InternalOrganisationId, FiltersService, FetcherService } from '@allors/angular/base';
-import { IObject, ISessionObject } from '@allors/domain/system';
+import { InternalOrganisationId } from '@allors/angular/base';
+import { IObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './emailaddress-create.component.html',

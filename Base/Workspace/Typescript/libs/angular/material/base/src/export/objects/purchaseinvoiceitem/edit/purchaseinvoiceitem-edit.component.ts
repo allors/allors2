@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { isBefore, isAfter } from 'date-fns';
 
-import { ContextService, TestScope, MetaService, RefreshService, SearchFactory } from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 import {
   InventoryItem,
   Part,
@@ -26,13 +26,14 @@ import { SaveService, ObjectData } from '@allors/angular/material/services/core'
 import { FiltersService } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort, And, ContainedIn, Extent } from '@allors/data/system';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './purchaseinvoiceitem-edit.component.html',
   providers: [ContextService],
 })
 export class PurchaseInvoiceItemEditComponent extends TestScope implements OnInit, OnDestroy {
-  readonly m: Meta;
+  m: Meta;
 
   title: string;
   invoice: PurchaseInvoice;

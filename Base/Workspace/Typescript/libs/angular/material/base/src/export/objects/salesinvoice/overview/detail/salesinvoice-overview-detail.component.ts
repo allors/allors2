@@ -1,18 +1,17 @@
 import { Component, OnInit, Self, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, RefreshService, NavigationService, PanelService, ContextService, SingletonId } from '@allors/angular/services/core';
-import { CustomerShipment, Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, InternalOrganisation, Enumeration, IrpfRegime, WorkTask, WorkEffortState, Priority, WorkEffortPurpose, ContactMechanism, WorkEffort, SalesOrder, ProductQuote, VatRegime, VatClause, Store, SalesOrderItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, CustomerRelationship, UnifiedGood, InventoryItemKind, ProductType, ProductCategory, VatRate, SupplierOffering, Brand, Model, ProductIdentificationType, ProductNumber, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship, CustomOrganisationClassification, IndustryClassification, LegalForm } from '@allors/domain/generated';
+import { MetaService, RefreshService, PanelService, ContextService } from '@allors/angular/services/core';
+import { Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, OrganisationContactRelationship, IrpfRegime, ContactMechanism, VatRegime, VatClause, Good, SalesInvoice, CustomerRelationship } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
 import { ISessionObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -86,10 +85,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private fetcher: FetcherService,
-    private snackBar: MatSnackBar,
-    private internalOrganisationId: InternalOrganisationId
-  ) {
+    private fetcher: FetcherService  ) {
     super();
 
     this.m = this.metaService.m;

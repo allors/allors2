@@ -1,19 +1,15 @@
-import { Component, OnInit, Self, HostBinding, AfterViewInit, OnDestroy, Injector, Input } from '@angular/core';
+import { Component, Self, AfterViewInit, OnDestroy, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { formatDistance, format, isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService, PanelManagerService, ContextService, NavigationActivatedRoute, ActionTarget } from '@allors/angular/services/core';
-import { CommunicationEvent, ContactMechanism, CustomerShipment, ShipmentItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, InventoryItem, NonSerialisedInventoryItem, Part, NonUnifiedPart, Organisation, SupplierOffering, PartyContactMechanism, PartyRate, ProductIdentification, PurchaseInvoiceItem, PurchaseInvoice, PurchaseOrderItem, PurchaseOrder, QuoteItem, ProductQuote, RepeatingSalesInvoice, RequestForQuote, Quote, SalesInvoiceItem, SalesOrder, SalesOrderItem, SalesTerm, SerialisedItem, Party } from '@allors/domain/generated';
-import { TableRow, Table, EditService, DeleteService, ObjectData, ObjectService, OverviewService, MethodService } from '@allors/angular/material/core';
+import { MetaService, RefreshService,  NavigationService, PanelManagerService, ContextService } from '@allors/angular/services/core';
+import { Part, SerialisedItem, Party } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 import { ActivatedRoute } from '@angular/router';
 import { InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
-import { RoleType } from '@allors/meta/system';
-import { Pull, Fetch, Step, Sort, Equals } from '@allors/data/system';
+import { TestScope, NavigationActivatedRoute } from '@allors/angular/core';
 
 @Component({
   templateUrl: './serialiseditem-overview.component.html',

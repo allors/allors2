@@ -1,13 +1,13 @@
 import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { MetaService, NavigationService, PanelService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/services/core';
+import { MetaService, NavigationService, PanelService, RefreshService,  Invoked } from '@allors/angular/services/core';
 import { WorkTask, SalesInvoice, FixedAsset, Printable } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { PrintService } from '@allors/angular/base';
 import { ContainedIn, Extent, Equals } from '@allors/data/system';
-
+import { Action, ActionTarget } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

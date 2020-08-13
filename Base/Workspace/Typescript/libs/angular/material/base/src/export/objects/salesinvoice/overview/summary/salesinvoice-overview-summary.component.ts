@@ -1,18 +1,13 @@
-import { Component, Self, OnInit, OnDestroy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/services/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, UnifiedGood, SalesOrder, RepeatingSalesInvoice, Good, WorkEffort } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService } from '@allors/angular/services/core';
+import { SalesInvoice, SalesOrder, RepeatingSalesInvoice, Good, WorkEffort } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/services/core';
-import { FiltersService, FetcherService, InternalOrganisationId, PrintService } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
+import { SaveService } from '@allors/angular/material/services/core';
+import { PrintService } from '@allors/angular/base';
+import { Sort, Equals } from '@allors/data/system';
+import { Action, ActionTarget } from '@allors/angular/core';
 
 
 @Component({

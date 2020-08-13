@@ -1,18 +1,12 @@
-import { Component, Self, OnInit, OnDestroy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/services/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, UnifiedGood, SalesOrder, RepeatingSalesInvoice, Good, WorkEffort, PurchaseOrder, PurchaseInvoice, Shipment, NonUnifiedGood, BasePrice, PriceComponent, ProductIdentificationType, SerialisedItem, RequestForQuote, ProductQuote, CustomerShipment, Quote, PurchaseShipment, ShipmentItem } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService,  Invoked } from '@allors/angular/services/core';
+import { PurchaseOrder, PurchaseShipment, ShipmentItem } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService } from '@allors/angular/material/services/core';
-import { FiltersService, FetcherService, InternalOrganisationId, PrintService } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
+import { SaveService } from '@allors/angular/material/services/core';
+import { PrintService } from '@allors/angular/base';
+import { ActionTarget } from '@allors/angular/core';
 
 
 @Component({
@@ -45,7 +39,7 @@ export class PurchaseShipmentOverviewSummaryComponent {
     const shipmentPullName = `${panel.name}_${this.m.Shipment.name}`;
 
     panel.onPull = (pulls) => {
-      const { m, pull, x } = this.metaService;
+      const { pull, x } = this.metaService;
 
       pulls.push(
 
@@ -94,7 +88,7 @@ export class PurchaseShipmentOverviewSummaryComponent {
   public receive(): void {
 
     this.panel.manager.context.invoke(this.shipment.Receive)
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         this.panel.toggle();
         this.snackBar.open('Successfully received.', 'close', { duration: 5000 });
         this.refreshService.refresh();

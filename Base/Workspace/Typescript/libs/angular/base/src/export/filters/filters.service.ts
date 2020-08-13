@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Meta, TreeFactory } from '@allors/meta/generated';
-import { SearchFactory, MetaService } from '@allors/angular/services/core';
+import { MetaService } from '@allors/angular/services/core';
 import { And, ContainedIn, Extent, Equals } from '@allors/data/system';
 
 import { InternalOrganisationId } from '../state/InternalOrganisationId';
+import { SearchFactory } from '@allors/angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FiltersService {
-
   protected m: Meta;
   protected tree: TreeFactory;
 
-  constructor(
-    protected metaService: MetaService,
-    protected internalOrganisationId: InternalOrganisationId,
-  ) {
+  constructor(protected metaService: MetaService, protected internalOrganisationId: InternalOrganisationId) {
     this.m = this.metaService.m;
     this.tree = this.metaService.tree;
   }
@@ -33,13 +30,15 @@ export class FiltersService {
       objectType: this.m.UnifiedGood,
       roleTypes: [this.m.UnifiedGood.Name, this.m.UnifiedGood.SearchString],
       post: (predicate: And) => {
-        predicate.operands.push(new ContainedIn({
-          propertyType: this.m.UnifiedGood.InventoryItemKind,
-          extent: new Extent({
-            objectType: this.m.InventoryItemKind,
-            predicate: new Equals({ propertyType: this.m.InventoryItemKind.UniqueId, value: '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae' }),
+        predicate.operands.push(
+          new ContainedIn({
+            propertyType: this.m.UnifiedGood.InventoryItemKind,
+            extent: new Extent({
+              objectType: this.m.InventoryItemKind,
+              predicate: new Equals({ propertyType: this.m.InventoryItemKind.UniqueId, value: '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae' }),
+            }),
           })
-        }));
+        );
       },
     });
   }
@@ -62,7 +61,7 @@ export class FiltersService {
     return new SearchFactory({
       objectType: this.m.UnifiedGood,
       roleTypes: [this.m.UnifiedGood.Name, this.m.UnifiedGood.SearchString],
-      include: this.tree.UnifiedGood({SerialisedItems: {}})
+      include: this.tree.UnifiedGood({ SerialisedItems: {} }),
     });
   }
 
@@ -78,13 +77,18 @@ export class FiltersService {
       objectType: this.m.Party,
       roleTypes: [this.m.Party.PartyName],
       post: (predicate: And) => {
-        predicate.operands.push(new ContainedIn({
-          propertyType: this.m.Party.CustomerRelationshipsWhereCustomer,
-          extent: new Extent({
-            objectType: this.m.CustomerRelationship,
-            predicate: new Equals({ propertyType: this.m.CustomerRelationship.InternalOrganisation, object: this.internalOrganisationId.value }),
+        predicate.operands.push(
+          new ContainedIn({
+            propertyType: this.m.Party.CustomerRelationshipsWhereCustomer,
+            extent: new Extent({
+              objectType: this.m.CustomerRelationship,
+              predicate: new Equals({
+                propertyType: this.m.CustomerRelationship.InternalOrganisation,
+                object: this.internalOrganisationId.value,
+              }),
+            }),
           })
-        }));
+        );
       },
     });
   }
@@ -94,13 +98,18 @@ export class FiltersService {
       objectType: this.m.Organisation,
       roleTypes: [this.m.Organisation.PartyName],
       post: (predicate: And) => {
-        predicate.operands.push(new ContainedIn({
-          propertyType: this.m.Organisation.SupplierRelationshipsWhereSupplier,
-          extent: new Extent({
-            objectType: this.m.SupplierRelationship,
-            predicate: new Equals({ propertyType: this.m.SupplierRelationship.InternalOrganisation, object: this.internalOrganisationId.value }),
+        predicate.operands.push(
+          new ContainedIn({
+            propertyType: this.m.Organisation.SupplierRelationshipsWhereSupplier,
+            extent: new Extent({
+              objectType: this.m.SupplierRelationship,
+              predicate: new Equals({
+                propertyType: this.m.SupplierRelationship.InternalOrganisation,
+                object: this.internalOrganisationId.value,
+              }),
+            }),
           })
-        }));
+        );
       },
     });
   }
@@ -110,12 +119,14 @@ export class FiltersService {
       objectType: this.m.Organisation,
       roleTypes: [this.m.Organisation.PartyName],
       post: (predicate: And) => {
-        predicate.operands.push(new ContainedIn({
-          propertyType: this.m.Organisation.SupplierRelationshipsWhereSupplier,
-          extent: new Extent({
-            objectType: this.m.SupplierRelationship,
+        predicate.operands.push(
+          new ContainedIn({
+            propertyType: this.m.Organisation.SupplierRelationshipsWhereSupplier,
+            extent: new Extent({
+              objectType: this.m.SupplierRelationship,
+            }),
           })
-        }));
+        );
       },
     });
   }
@@ -125,13 +136,18 @@ export class FiltersService {
       objectType: this.m.Organisation,
       roleTypes: [this.m.Organisation.PartyName],
       post: (predicate: And) => {
-        predicate.operands.push(new ContainedIn({
-          propertyType: this.m.Organisation.SubContractorRelationshipsWhereSubContractor,
-          extent: new Extent({
-            objectType: this.m.SubContractorRelationship,
-            predicate: new Equals({ propertyType: this.m.SubContractorRelationship.Contractor, object: this.internalOrganisationId.value }),
+        predicate.operands.push(
+          new ContainedIn({
+            propertyType: this.m.Organisation.SubContractorRelationshipsWhereSubContractor,
+            extent: new Extent({
+              objectType: this.m.SubContractorRelationship,
+              predicate: new Equals({
+                propertyType: this.m.SubContractorRelationship.Contractor,
+                object: this.internalOrganisationId.value,
+              }),
+            }),
           })
-        }));
+        );
       },
     });
   }
@@ -141,13 +157,15 @@ export class FiltersService {
       objectType: this.m.Person,
       roleTypes: [this.m.Person.PartyName, this.m.Person.UserName],
       post: (predicate: And) => {
-        predicate.operands.push(new ContainedIn({
-          propertyType: this.m.Person.EmploymentsWhereEmployee,
-          extent: new Extent({
-            objectType: this.m.Employment,
-            predicate: new Equals({ propertyType: this.m.Employment.Employer, object: this.internalOrganisationId.value }),
+        predicate.operands.push(
+          new ContainedIn({
+            propertyType: this.m.Person.EmploymentsWhereEmployee,
+            extent: new Extent({
+              objectType: this.m.Employment,
+              predicate: new Equals({ propertyType: this.m.Employment.Employer, object: this.internalOrganisationId.value }),
+            }),
           })
-        }));
+        );
       },
     });
   }

@@ -4,30 +4,10 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import { format, formatDistance } from 'date-fns';
 
-import {
-  ContextService,
-  TestScope,
-  MetaService,
-  RefreshService,
-  Action,
-  NavigationService,
-  MediaService,
-  Filter,
-  FilterDefinition,
-  SearchFactory,
-  UserId,
-  ActionTarget,
-} from '@allors/angular/core';
+import { ContextService, MetaService, RefreshService, NavigationService, MediaService, UserId } from '@allors/angular/services/core';
+import { SearchFactory, FilterDefinition, Filter, TestScope, Action, ActionTarget } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
-import {
-  TableRow,
-  Table,
-  OverviewService,
-  DeleteService,
-  Sorter,
-  MethodService,
-  AllorsMaterialDialogService,
-} from '@allors/angular/material/core';
+import { TableRow, Table, OverviewService, DeleteService, Sorter, MethodService } from '@allors/angular/material/core';
 import {
   Person,
   Organisation,
@@ -46,6 +26,7 @@ import { InternalOrganisationId, FetcherService, PrintService } from '@allors/an
 
 import { Meta } from '@allors/meta/generated';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AllorsMaterialDialogService } from '@allors/angular/material/services/core';
 
 interface Row extends TableRow {
   object: PurchaseInvoice;

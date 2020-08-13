@@ -1,19 +1,12 @@
-import { Component, Self, OnInit, OnDestroy, Inject, HostBinding } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { isBefore, isAfter, format, formatDistance } from 'date-fns';
+import { Component, Self, OnInit, HostBinding } from '@angular/core';
+import { formatDistance } from 'date-fns';
 
-import { TestScope, MetaService, NavigationService, PanelService, MediaService, ContextService, RefreshService, Action, ActionTarget, Invoked } from '@allors/angular/services/core';
-import { Organisation, Person, OrganisationContactRelationship, OrganisationContactKind, SupplierOffering, Part, RatingType, Ordinal, UnitOfMeasure, Currency, Settings, SupplierRelationship, WorkTask, SalesInvoice, FixedAsset, Printable, UnifiedGood, Payment, Invoice, PurchaseInvoice, WorkEffort, SerialisedItem } from '@allors/domain/generated';
+import { MetaService, NavigationService, PanelService, RefreshService } from '@allors/angular/services/core';
+import { WorkEffort, SerialisedItem } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ObjectData, SaveService, TableRow, Table, ObjectService, MethodService, DeleteService, EditService, OverviewService } from '@allors/angular/material/core';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
-import { Sort, ContainedIn, Extent, Equals } from '@allors/data/system';
-import { PullRequest } from '@allors/protocol/system';
-import { IObject } from '@allors/domain/system';
-
+import { TableRow, Table, DeleteService, OverviewService } from '@allors/angular/material/core';
+import { TestScope, Action } from '@allors/angular/core';
+import { ObjectData } from '@allors/angular/material/services/core';
 
 interface Row extends TableRow {
   object: WorkEffort;
@@ -29,7 +22,7 @@ interface Row extends TableRow {
   // tslint:disable-next-line:component-selector
   selector: 'worktask-overview-panel',
   templateUrl: './worktask-overview-panel.component.html',
-  providers: [PanelService]
+  providers: [PanelService],
 })
 export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit {
   serialisedItem: SerialisedItem;
@@ -58,7 +51,7 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
     public refreshService: RefreshService,
     public navigation: NavigationService,
     public overviewService: OverviewService,
-    public deleteService: DeleteService,
+    public deleteService: DeleteService
   ) {
     super();
 
@@ -66,7 +59,6 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
   }
 
   ngOnInit() {
-
     this.delete = this.deleteService.delete(this.panel.manager.context);
 
     this.panel.name = 'workeffort';
@@ -85,10 +77,7 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
         { name: 'cost', sort },
         { name: 'lastModifiedDate', sort },
       ],
-      actions: [
-        this.overviewService.overview(),
-        this.delete,
-      ],
+      actions: [this.overviewService.overview(), this.delete],
       defaultAction: this.overviewService.overview(),
       autoSort: true,
       autoFilter: true,
@@ -111,10 +100,10 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
             WorkEffortsWhereCustomer: {
               include: {
                 WorkEffortState: x,
-                Customer: x
-              }
-            }
-          }
+                Customer: x,
+              },
+            },
+          },
         }),
         pull.Person({
           name: contactPullName,
@@ -123,10 +112,10 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
             WorkEffortsWhereContactPerson: {
               include: {
                 WorkEffortState: x,
-                Customer: x
-              }
-            }
-          }
+                Customer: x,
+              },
+            },
+          },
         }),
         pull.SerialisedItem({
           name: assetPullName,
@@ -136,20 +125,19 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
               Assignment: {
                 include: {
                   WorkEffortState: x,
-                  Customer: x
-                }
-              }
-            }
-          }
+                  Customer: x,
+                },
+              },
+            },
+          },
         }),
         pull.SerialisedItem({
           object: id,
-        }),
+        })
       );
     };
 
     this.panel.onPulled = (loaded) => {
-
       this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
       const fromCustomer = loaded.collections[customerPullName] as WorkEffort[];
       const fromContact = loaded.collections[contactPullName] as WorkEffort[];
@@ -177,7 +165,7 @@ export class WorkTaskOverviewPanelComponent extends TestScope implements OnInit 
             customer: v.Customer.displayName,
             state: v.WorkEffortState ? v.WorkEffortState.Name : '',
             cost: v.TotalCost,
-            lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date())
+            lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
           } as Row;
         });
       }

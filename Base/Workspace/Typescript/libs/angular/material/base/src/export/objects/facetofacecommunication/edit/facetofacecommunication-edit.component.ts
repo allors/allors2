@@ -3,14 +3,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, Context } from '@allors/angular/core';
-import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship } from '@allors/domain/generated';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
+import { Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta, ids } from '@allors/meta/generated';
+import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { InternalOrganisationId, FetcherService } from '@allors/angular/base';
+import { InternalOrganisationId } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './facetofacecommunication-edit.component.html',

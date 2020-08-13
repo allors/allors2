@@ -1,18 +1,13 @@
-import { Component, OnInit, Self, HostBinding, AfterViewInit, OnDestroy, Injector, Input } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { formatDistance, format, isBefore, isAfter } from 'date-fns';
+import { Component, OnInit, Self, HostBinding, Input } from '@angular/core';
 
-import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService, PanelManagerService, ContextService, NavigationActivatedRoute, ActionTarget } from '@allors/angular/services/core';
-import { CommunicationEvent, ContactMechanism, CustomerShipment, ShipmentItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, InventoryItem, NonSerialisedInventoryItem, Part, NonUnifiedPart, Organisation, SupplierOffering, PartyContactMechanism, PartyRate, ProductIdentification } from '@allors/domain/generated';
-import { TableRow, Table, EditService, DeleteService, ObjectData, ObjectService, OverviewService } from '@allors/angular/material/core';
+import { MetaService, PanelService, RefreshService } from '@allors/angular/services/core';
+import { ProductIdentification } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
-import { ActivatedRoute } from '@angular/router';
-import { InternalOrganisationId } from '@allors/angular/base';
-import { PullRequest } from '@allors/protocol/system';
-import { RoleType } from '@allors/meta/system';
+import { TableRow, Table, DeleteService, EditService } from '@allors/angular/material/core';
+import { TestScope, Action } from '@allors/angular/core';
+import { ObjectData, ObjectService } from '@allors/angular/material/services/core';
 import { Pull, Fetch, Step } from '@allors/data/system';
+import { RoleType } from '@allors/meta/system';
 
 interface Row extends TableRow {
   object: ProductIdentification;

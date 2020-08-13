@@ -1,9 +1,11 @@
 import { Component, OnInit, Self, HostBinding } from '@angular/core';
 
-import { TestScope, MetaService, RefreshService, Action, NavigationService, PanelService } from '@allors/angular/services/core';
+import { MetaService, NavigationService, PanelService, RefreshService } from '@allors/angular/services/core';
 import { WorkEffort, WorkEffortPurchaseOrderItemAssignment } from '@allors/domain/generated';
-import { TableRow, Table, EditService, DeleteService, ObjectData } from '@allors/angular/material/core';
 import { Meta } from '@allors/meta/generated';
+import { TableRow, Table, DeleteService, EditService } from '@allors/angular/material/core';
+import { TestScope, Action } from '@allors/angular/core';
+import { ObjectData } from '@allors/angular/material/services/core';
 
 interface Row extends TableRow {
   object: WorkEffortPurchaseOrderItemAssignment;

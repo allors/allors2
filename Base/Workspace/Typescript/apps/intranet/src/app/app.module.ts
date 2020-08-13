@@ -4,7 +4,7 @@ import '@allors/angular/base';
 import '@allors/angular/material/custom';
 
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
@@ -42,8 +42,6 @@ import { enGB } from 'date-fns/locale';
 import { MetaPopulation } from '@allors/meta/system';
 import { data, ids } from '@allors/meta/generated';
 import { Workspace } from '@allors/domain/system';
-import { AllorsMaterialModule } from '@allors/angular/material/module';
-import { AllorsDateAdapter } from '@allors/angular/material/core';
 
 // Allors Angular Services Core
 import {
@@ -336,7 +334,7 @@ import {
 } from '@allors/angular/material/base';
 
 // Angular Material Custom
-import { LoginComponent, MainComponent, DashboardComponent, ErrorComponent } from '@allors/angular/material/custom';
+import { LoginComponent, MainComponent, DashboardComponent, ErrorComponent, AuthorizationService } from '@allors/angular/material/custom';
 
 import { extend as extendDomain } from '@allors/domain/custom';
 import { extend as extendAngular } from '@allors/angular/base';
@@ -345,7 +343,7 @@ import { configure as configureMaterial } from '@allors/angular/material/custom'
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
-const create = {
+export const create = {
   [ids.BasePrice]: BasepriceEditComponent,
   [ids.Carrier]: CarrierEditComponent,
   [ids.Catalogue]: CatalogueEditComponent,
@@ -423,7 +421,7 @@ const create = {
   [ids.WorkTask]: WorkTaskCreateComponent,
 };
 
-const edit = {
+export const edit = {
   [ids.BasePrice]: BasepriceEditComponent,
   [ids.Carrier]: CarrierEditComponent,
   [ids.Catalogue]: CatalogueEditComponent,
@@ -490,7 +488,7 @@ const edit = {
   [ids.WorkEffortPartyAssignment]: WorkEffortPartyAssignmentEditComponent,
 };
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'error', component: ErrorComponent },
   {
@@ -590,7 +588,7 @@ const routes: Routes = [
   },
 ];
 
-function appInitFactory(workspaceService: WorkspaceService) {
+export function appInitFactory(workspaceService: WorkspaceService) {
   return () => {
     const metaPopulation = new MetaPopulation(data);
     const workspace = new Workspace(metaPopulation);
@@ -609,6 +607,8 @@ function appInitFactory(workspaceService: WorkspaceService) {
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
+    AllorsFocusDirective,
+    AllorsBarcodeDirective,
     // Angular Material Core
     AllorsMaterialAssociationAutoCompleteComponent,
     AllorsMaterialDialogComponent,

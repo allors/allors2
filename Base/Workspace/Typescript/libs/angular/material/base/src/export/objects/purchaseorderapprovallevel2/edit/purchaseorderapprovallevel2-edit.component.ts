@@ -1,24 +1,22 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subscription, combineLatest, BehaviorSubject, Observable } from 'rxjs';
+import { Subscription, combineLatest, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, RefreshService, Context, Saved, NavigationService, Action, Invoked } from '@allors/angular/services/core';
-import { ElectronicAddress, Enumeration, Employment, Person, Party, Organisation, CommunicationEventPurpose, FaceToFaceCommunication, CommunicationEventState, OrganisationContactRelationship, InventoryItem, InternalOrganisation, InventoryItemTransaction, InventoryTransactionReason, Part, Facility, Lot, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItemState, SerialisedInventoryItemState, NonSerialisedInventoryItem, ContactMechanism, LetterCorrespondence, PartyContactMechanism, PostalAddress, OrderAdjustment, OrganisationContactKind, PartyRate, TimeFrequency, RateType, PhoneCommunication, TelecommunicationsNumber, PositionType, PositionTypeRate, ProductIdentification, ProductIdentificationType, ProductType, SerialisedItemCharacteristicType, PurchaseInvoiceApproval, PurchaseOrderApprovalLevel1, PurchaseOrderApprovalLevel2 } from '@allors/domain/generated';
+import { ContextService, MetaService, RefreshService, Invoked } from '@allors/angular/services/core';
+import { PurchaseOrderApprovalLevel2 } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta, ids } from '@allors/meta/generated';
+import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { InternalOrganisationId, FetcherService, FiltersService, PrintService } from '@allors/angular/base';
-import { IObject, ISessionObject } from '@allors/domain/system';
-import { Equals, Sort } from '@allors/data/system';
-
+import { PrintService } from '@allors/angular/base';
+import { IObject } from '@allors/domain/system';
+import { TestScope, Action } from '@allors/angular/core';
 
 @Component({
   templateUrl: './purchaseorderapprovallevel2-edit.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class PurchaseOrderApprovalLevel2EditComponent extends TestScope implements OnInit, OnDestroy {
-
   title: string;
   subTitle: string;
 
@@ -37,7 +35,7 @@ export class PurchaseOrderApprovalLevel2EditComponent extends TestScope implemen
     public metaService: MetaService,
     public printService: PrintService,
     public refreshService: RefreshService,
-    private saveService: SaveService,
+    private saveService: SaveService
   ) {
     super();
 
@@ -47,29 +45,23 @@ export class PurchaseOrderApprovalLevel2EditComponent extends TestScope implemen
   }
 
   public ngOnInit(): void {
-
-    const { m, pull, x } = this.metaService;
+    const { pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
         switchMap(() => {
-
           const pulls = [
             pull.PurchaseOrderApprovalLevel2({
               object: this.data.id,
               include: {
                 PurchaseOrder: {
-                  PrintDocument: x
-                }
-              }
+                  PrintDocument: x,
+                },
+              },
             }),
           ];
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => (loaded))
-            );
+          return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => loaded));
         })
       )
       .subscribe((loaded) => {
@@ -95,7 +87,7 @@ export class PurchaseOrderApprovalLevel2EditComponent extends TestScope implemen
   }
 
   saveAndInvoke(methodCall: () => Observable<Invoked>): void {
-    const { m, pull, x } = this.metaService;
+    const { pull } = this.metaService;
 
     this.allors.context
       .save()
@@ -108,7 +100,7 @@ export class PurchaseOrderApprovalLevel2EditComponent extends TestScope implemen
           return methodCall();
         })
       )
-      .subscribe((invoked: Invoked) => {
+      .subscribe(() => {
         const data: IObject = {
           id: this.purchaseOrderApproval.id,
           objectType: this.purchaseOrderApproval.objectType,
@@ -116,8 +108,6 @@ export class PurchaseOrderApprovalLevel2EditComponent extends TestScope implemen
 
         this.dialogRef.close(data);
         this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+      }, this.saveService.errorHandler);
   }
 }

@@ -10,6 +10,7 @@ import { Meta } from '@allors/meta/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { InternalOrganisationId } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './emailaddress-edit.component.html',

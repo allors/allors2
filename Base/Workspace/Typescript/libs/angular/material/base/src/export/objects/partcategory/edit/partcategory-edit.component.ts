@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ContextService, TestScope, RefreshService, Saved, MetaService } from '@allors/angular/services/core';
+import { ContextService, RefreshService, Saved, MetaService } from '@allors/angular/services/core';
 import { Meta } from '@allors/meta/generated';
 import { PartCategory } from '@allors/domain/generated';
 import { ObjectData, SaveService } from '@allors/angular/material/services/core';
@@ -11,6 +11,7 @@ import { FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { IObject } from '@allors/domain/system';
+import { TestScope, Action } from '@allors/angular/core';
 
 @Component({
   templateUrl: './partcategory-edit.component.html',

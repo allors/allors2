@@ -1,37 +1,16 @@
-import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { isBefore, isAfter } from 'date-fns';
 
-import { ContextService, TestScope, MetaService, RefreshService, SingletonId, Saved, NavigationService } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService, SingletonId, Saved, NavigationService } from '@allors/angular/services/core';
 import { PullRequest } from '@allors/protocol/system';
-import { ObjectData, SaveService, AllorsMaterialDialogService } from '@allors/angular/material/services/core';
+import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import {
   Organisation,
-  Facility,
-  ProductType,
-  ProductIdentificationType,
-  Settings,
-  Part,
-  SupplierRelationship,
-  InventoryItemKind,
-  SupplierOffering,
-  Brand,
-  Model,
-  PartNumber,
-  UnitOfMeasure,
-  PartCategory,
-  NonUnifiedPart,
-  CustomOrganisationClassification,
-  IndustryClassification,
   CustomerRelationship,
   InternalOrganisation,
-  OrganisationRole,
-  LegalForm,
-  VatRegime,
   IrpfRegime,
   Currency,
   Person,
@@ -41,10 +20,11 @@ import {
   PersonRole,
   Employment,
 } from '@allors/domain/generated';
-import { Equals, Sort, And, Not, Exists } from '@allors/data/system';
+import { Equals, Sort } from '@allors/data/system';
 import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './person-create.component.html',
@@ -108,7 +88,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.internalOrganisationId.observable$)
       .pipe(
-        switchMap(([urlSegments, date, internalOrganisationId]) => {
+        switchMap(([,]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -212,7 +192,7 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
 
     this.allors.context
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         const data: IObject = {
           id: this.person.id,
           objectType: this.person.objectType,
