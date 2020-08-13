@@ -197,7 +197,7 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
               to: v.Receiver && v.Receiver.displayName,
               state: `${v.QuoteState && v.QuoteState.Name}`,
               description: `${v.Description || ''}`,
-              responseRequired: v.RequiredResponseDate && format(new Date(v.RequiredResponseDate), 'MMM Do YY'),
+              responseRequired: v.RequiredResponseDate && format(new Date(v.RequiredResponseDate), 'dd-MM-yyyy'),
               lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
             } as Row;
           });

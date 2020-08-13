@@ -344,7 +344,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
             type: `${v.SalesInvoiceType && v.SalesInvoiceType.Name}`,
             billedTo: v.BillToCustomer && v.BillToCustomer.displayName,
             state: `${v.SalesInvoiceState && v.SalesInvoiceState.Name}`,
-            invoiceDate: format(new Date(v.InvoiceDate), 'DD-MM-YYYY'),
+            invoiceDate: format(new Date(v.InvoiceDate), 'dd-MM-yyyy'),
             description: v.Description,
             totalExVat: v.TotalExVat,
             totalIncVat: v.TotalIncVat,

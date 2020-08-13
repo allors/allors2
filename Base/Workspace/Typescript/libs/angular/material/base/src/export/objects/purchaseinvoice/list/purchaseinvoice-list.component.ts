@@ -360,7 +360,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
               billedFrom: v.BilledFrom && v.BilledFrom.displayName,
               state: `${v.PurchaseInvoiceState && v.PurchaseInvoiceState.Name}`,
               reference: `${v.CustomerReference}`,
-              dueDate: v.DueDate && format(new Date(v.DueDate), 'MMM Do YY'),
+              dueDate: v.DueDate && format(new Date(v.DueDate), 'dd-MM-yyyy'),
               totalExVat: v.TotalExVat,
               totalIncVat: v.TotalIncVat,
               lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),

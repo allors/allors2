@@ -139,7 +139,7 @@ export class PaymentOverviewPanelComponent extends TestScope {
       this.table.data = this.payments.map((v) => {
         return {
           object: v,
-          date: v.EffectiveDate && format(new Date(v.EffectiveDate), 'MMM Do YY'),
+          date: v.EffectiveDate && format(new Date(v.EffectiveDate), 'dd-MM-yyyy'),
           amount: v.Amount
         } as Row;
       });

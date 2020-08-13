@@ -173,8 +173,8 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
               .map((p) => p.Title)
               .join(', '),
             rateType: v.RateType.Name,
-            from: format(new Date(v.FromDate), 'DD-MM-YYYY'),
-            through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'DD-MM-YYYY') : '',
+            from: format(new Date(v.FromDate), 'dd-MM-yyyy'),
+            through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'dd-MM-yyyy') : '',
             rate: v.Rate,
             frequency: v.Frequency.Name,
           } as Row;

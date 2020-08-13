@@ -174,8 +174,8 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent extends TestScope i
             name: v.Assignment.Name,
             party: v.Party.displayName,
             status: v.Assignment.WorkEffortState ? v.Assignment.WorkEffortState.Name : '',
-            from: format(new Date(v.FromDate), 'DD-MM-YYYY'),
-            through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'DD-MM-YYYY') : '',
+            from: format(new Date(v.FromDate), 'dd-MM-yyyy'),
+            through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'dd-MM-yyyy') : '',
           } as Row;
         });
       }

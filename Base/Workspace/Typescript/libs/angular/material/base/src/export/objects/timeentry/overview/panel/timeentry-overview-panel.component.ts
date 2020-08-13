@@ -170,8 +170,8 @@ export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit
             return {
               object: v,
               person: v.Worker.displayName,
-              from: format(new Date(v.FromDate), 'DD-MM-YYYY'),
-              through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'DD-MM-YYYY') : '',
+              from: format(new Date(v.FromDate), 'dd-MM-yyyy'),
+              through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'dd-MM-yyyy') : '',
               time: v.AmountOfTime,
             } as Row;
           });

@@ -139,9 +139,9 @@ export class RepeatingSalesInvoiceOverviewPanelComponent extends TestScope {
           object: v,
           frequency: v.Frequency.Name,
           dayOfWeek: v.DayOfWeek && v.DayOfWeek.Name,
-          previousExecutionDate: v.PreviousExecutionDate && format(new Date(v.PreviousExecutionDate), 'DD-MM-YYYY'),
-          nextExecutionDate: v.NextExecutionDate && format(new Date(v.NextExecutionDate), 'DD-MM-YYYY'),
-          finalExecutionDate: v.FinalExecutionDate && format(new Date(v.FinalExecutionDate), 'DD-MM-YYYY'),
+          previousExecutionDate: v.PreviousExecutionDate && format(new Date(v.PreviousExecutionDate), 'dd-MM-yyyy'),
+          nextExecutionDate: v.NextExecutionDate && format(new Date(v.NextExecutionDate), 'dd-MM-yyyy'),
+          finalExecutionDate: v.FinalExecutionDate && format(new Date(v.FinalExecutionDate), 'dd-MM-yyyy'),
         } as Row;
       });
     };

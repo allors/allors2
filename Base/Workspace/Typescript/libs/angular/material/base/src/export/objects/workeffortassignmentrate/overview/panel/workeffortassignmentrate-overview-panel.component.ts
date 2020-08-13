@@ -147,8 +147,8 @@ export class WorkEffortAssignmentRateOverviewPanelComponent extends TestScope im
       return {
         object: v,
         // partyAssignment: v.WorkEffortPartyAssignment.displayName,
-        // from: format(new Date(v.FromDate), 'DD-MM-YYYY'),
-        // through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'DD-MM-YYYY') : '',
+        // from: format(new Date(v.FromDate), 'dd-MM-yyyy'),
+        // through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'dd-MM-yyyy') : '',
         rateType: v.RateType.Name,
         rate: v.Rate,
         frequency: v.Frequency.Name,

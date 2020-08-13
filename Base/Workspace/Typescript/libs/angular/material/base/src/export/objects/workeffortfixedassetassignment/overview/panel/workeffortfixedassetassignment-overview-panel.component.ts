@@ -140,8 +140,8 @@ export class WorkEffortFixedAssetAssignmentOverviewPanelComponent extends TestSc
             name: v.Assignment.Name,
             status: v.Assignment.WorkEffortState ? v.Assignment.WorkEffortState.Name : '',
             asset: v.FixedAsset.Name,
-            from: format(new Date(v.FromDate), 'DD-MM-YYYY'),
-            through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'DD-MM-YYYY') : '',
+            from: format(new Date(v.FromDate), 'dd-MM-yyyy'),
+            through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'dd-MM-yyyy') : '',
           } as Row;
         });
       }
