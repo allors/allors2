@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Optional, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { RoleField, MediaService } from '@allors/angular/core';
+import { RoleField } from '@allors/angular/core';
 import { Media } from '@allors/domain/generated';
+import { MediaService } from '@allors/angular/services/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

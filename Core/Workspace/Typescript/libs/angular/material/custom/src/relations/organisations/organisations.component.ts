@@ -5,9 +5,10 @@ import { scan, switchMap } from 'rxjs/operators';
 
 import { TableRow, Table } from '@allors/angular/material/core';
 import { Organisation } from '@allors/domain/generated';
-import { ContextService, TestScope, Filter, MetaService, RefreshService, Action } from '@allors/angular/core';
+import {  TestScope, Filter, Action } from '@allors/angular/core';
 import { DeleteService, OverviewService } from '@allors/angular/material/core';
 import { PullRequest } from '@allors/protocol/system';
+import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 
 interface Row extends TableRow {
   object: Organisation;

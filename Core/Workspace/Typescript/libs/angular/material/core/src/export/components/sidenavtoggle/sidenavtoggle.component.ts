@@ -1,5 +1,5 @@
 import { Input, Component } from '@angular/core';
-import { AllorsMaterialSideNavService } from '../../services/sidenav/sidenav.service';
+import { AllorsMaterialSideNavService } from '@allors/angular/material/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

@@ -4,11 +4,12 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, TestScope, SearchFactory, MetaService, Loaded } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 import { ISessionObject } from '@allors/domain/system';
 import { Person, Organisation } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
+import { ContextService, MetaService, Loaded } from '@allors/angular/services/core';
 
 @Component({
   templateUrl: './organisation.component.html',

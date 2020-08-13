@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ObjectType } from '@allors/meta/system';
 import { IObject } from '@allors/domain/system';
-import { DatabaseService, WorkspaceService, Context } from '@allors/angular/core';
+import { DatabaseService, WorkspaceService, Context } from '@allors/angular/services/core';
 
 import { ObjectData} from '../../services/object/object.data';
 import { ObjectService } from '../../services/object/object.service';

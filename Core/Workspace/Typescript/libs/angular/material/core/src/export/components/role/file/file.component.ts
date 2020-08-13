@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, Optional, Output } from '@angular/core'
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
-import { RoleField, MediaService } from '@allors/angular/core';
+import { RoleField} from '@allors/angular/core';
 import { ISession } from '@allors/domain/system';
 import { Media } from '@allors/domain/generated';
+import { MediaService } from '@allors/angular/services/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

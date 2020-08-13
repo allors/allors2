@@ -492,64 +492,6 @@
         }
       }
     },
-    "angular-module": {
-      "projectType": "library",
-      "root": "libs/angular/module",
-      "sourceRoot": "libs/angular/module/src",
-      "prefix": "allors",
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["libs/angular/module/tsconfig.lib.json", "libs/angular/module/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**", "!libs/angular/module/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/angular/module/jest.config.js",
-            "tsConfig": "libs/angular/module/tsconfig.spec.json",
-            "passWithNoTests": true,
-            "setupFile": "libs/angular/module/src/test-setup.ts"
-          }
-        }
-      },
-      "schematics": {
-        "@nrwl/angular:component": {
-          "style": "scss"
-        }
-      }
-    },
-    "angular-material-module": {
-      "projectType": "library",
-      "root": "libs/angular/material/module",
-      "sourceRoot": "libs/angular/material/module/src",
-      "prefix": "allors",
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["libs/angular/material/module/tsconfig.lib.json", "libs/angular/material/module/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**", "!libs/angular/material/module/**/*"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/angular/material/module/jest.config.js",
-            "tsConfig": "libs/angular/material/module/tsconfig.spec.json",
-            "passWithNoTests": true,
-            "setupFile": "libs/angular/material/module/src/test-setup.ts"
-          }
-        }
-      },
-      "schematics": {
-        "@nrwl/angular:component": {
-          "style": "scss"
-        }
-      }
-    },
     "promise-core": {
       "root": "libs/promise/core",
       "sourceRoot": "libs/promise/core/src",
@@ -713,6 +655,64 @@
             "tsConfig": "libs/angular/custom/tsconfig.spec.json",
             "passWithNoTests": true,
             "setupFile": "libs/angular/custom/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "angular-services-core": {
+      "projectType": "library",
+      "root": "libs/angular/services/core",
+      "sourceRoot": "libs/angular/services/core/src",
+      "prefix": "allors",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/services/core/tsconfig.lib.json", "libs/angular/services/core/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/services/core/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/services/core/jest.config.js",
+            "tsConfig": "libs/angular/services/core/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/angular/services/core/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      }
+    },
+    "angular-material-services-core": {
+      "projectType": "library",
+      "root": "libs/angular/material/services/core",
+      "sourceRoot": "libs/angular/material/services/core/src",
+      "prefix": "allors",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/angular/material/services/core/tsconfig.lib.json", "libs/angular/material/services/core/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/angular/material/services/core/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/angular/material/services/core/jest.config.js",
+            "tsConfig": "libs/angular/material/services/core/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/angular/material/services/core/src/test-setup.ts"
           }
         }
       },

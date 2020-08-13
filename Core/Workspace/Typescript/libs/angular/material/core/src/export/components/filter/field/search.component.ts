@@ -4,7 +4,8 @@ import { Observable, of } from 'rxjs';
 import { filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { ISessionObject } from '@allors/domain/system';
-import { FilterFieldDefinition, ContextService } from '@allors/angular/core';
+import { FilterFieldDefinition } from '@allors/angular/core';
+import { ContextService } from '@allors/angular/services/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

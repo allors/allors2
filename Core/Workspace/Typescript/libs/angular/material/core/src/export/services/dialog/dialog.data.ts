@@ -1,4 +1,4 @@
-import { DialogConfig, PromptType } from './dialog.config';
+import { DialogConfig, PromptType } from '@allors/angular/material/services/core';
 
 export interface DialogData {
   alert?: boolean;

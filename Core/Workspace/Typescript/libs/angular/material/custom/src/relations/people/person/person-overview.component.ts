@@ -4,18 +4,18 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, Loaded } from '@allors/angular/core';
+import { TestScope } from '@allors/angular/core';
 import { Person } from '@allors/domain/generated';
 import { assert } from '@allors/meta/system';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
+import { ContextService, MetaService, Loaded } from '@allors/angular/services/core';
 
 @Component({
   templateUrl: './person-overview.component.html',
-  providers: [ContextService]
+  providers: [ContextService],
 })
 export class PersonOverviewComponent extends TestScope implements OnInit, AfterViewInit, OnDestroy {
-
   public title: string;
   public m: Meta;
 
@@ -27,8 +27,8 @@ export class PersonOverviewComponent extends TestScope implements OnInit, AfterV
     @Self() private allors: ContextService,
     private metaService: MetaService,
     private titleService: Title,
-    private route: ActivatedRoute) {
-
+    private route: ActivatedRoute
+  ) {
     super();
 
     this.title = 'Person Overview';
@@ -37,13 +37,11 @@ export class PersonOverviewComponent extends TestScope implements OnInit, AfterV
   }
 
   public ngOnInit(): void {
-
     const { x, pull } = this.metaService;
 
     this.subscription = this.route.url
       .pipe(
         switchMap((url: any) => {
-
           const id = this.route.snapshot.paramMap.get('id');
           assert(id);
 
@@ -52,14 +50,13 @@ export class PersonOverviewComponent extends TestScope implements OnInit, AfterV
               object: id,
               include: {
                 Photo: x,
-              }
-            })
+              },
+            }),
           ];
 
           this.allors.context.reset();
 
-          return this.allors.context
-            .load(new PullRequest({ pulls }));
+          return this.allors.context.load(new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {
@@ -67,8 +64,7 @@ export class PersonOverviewComponent extends TestScope implements OnInit, AfterV
       });
   }
 
-  public ngAfterViewInit(): void {
-  }
+  public ngAfterViewInit(): void {}
 
   public ngOnDestroy(): void {
     if (this.subscription) {

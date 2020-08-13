@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { PanelManagerService } from '@allors/angular/core';
+import { PanelManagerService } from '@allors/angular/services/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

@@ -3,7 +3,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { timer, Subscription } from 'rxjs';
 import { filter, switchMap, tap } from 'rxjs/operators';
 
-import { AllorsFocusService } from './focus.service';
+import { AllorsFocusService } from '@allors/angular/services/core';
+
 
 @Directive({
   // tslint:disable-next-line:directive-selector

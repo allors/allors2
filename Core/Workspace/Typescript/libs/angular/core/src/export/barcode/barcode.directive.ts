@@ -1,6 +1,6 @@
 import { Directive, HostListener } from '@angular/core';
 
-import { AllorsBarcodeService } from './barcode.service';
+import { AllorsBarcodeService } from '@allors/angular/services/core';
 
 @Directive({
   // tslint:disable-next-line:directive-selector

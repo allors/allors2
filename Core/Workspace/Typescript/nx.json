@@ -64,12 +64,6 @@
     "angular-material-custom": {
       "tags": []
     },
-    "angular-module": {
-      "tags": []
-    },
-    "angular-material-module": {
-      "tags": []
-    },
     "promise-core": {
       "tags": []
     },
@@ -86,6 +80,12 @@
       "tags": []
     },
     "angular-custom": {
+      "tags": []
+    },
+    "angular-services-core": {
+      "tags": []
+    },
+    "angular-material-services-core": {
       "tags": []
     }
   }

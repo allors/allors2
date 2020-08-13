@@ -2,7 +2,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, Inject } from '@angular/core';
 
 import { DialogData } from '../../services/dialog/dialog.data';
-import { PromptType } from '../../services/dialog/dialog.config';
 
 @Component({
   templateUrl: 'dialog.component.html',

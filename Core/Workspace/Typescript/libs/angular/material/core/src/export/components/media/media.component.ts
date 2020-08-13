@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ISessionObject } from '@allors/domain/system';
-import { MediaService } from '@allors/angular/core';
+import { MediaService } from '@allors/angular/services/core';
 import { Media } from '@allors/domain/generated';
 
 import { AllorMediaPreviewComponent } from './preview/media-preview.component';

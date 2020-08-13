@@ -3,31 +3,92 @@ import '@allors/meta/core';
 import '@allors/angular/core';
 
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { enGB } from 'date-fns/locale';
 
-import { WorkspaceService } from '@allors/angular/core';
-import { AllorsAngularModule } from '@allors/angular/module';
+import { MetaPopulation } from '@allors/meta/system';
+import { Workspace } from '@allors/domain/system';
+import { data } from '@allors/meta/generated';
 
-import { AppRoutingModule } from './app-routing.module';
+// Allors Angular Services Core
+import {
+  WorkspaceService,
+  DatabaseService,
+  DatabaseConfig,
+  ContextService,
+  AuthenticationService,
+  DateService,
+  AllorsFocusService,
+  RefreshService,
+  AllorsBarcodeService,
+  NavigationService,
+  PanelService,
+  PanelManagerService,
+  MediaService,
+} from '@allors/angular/services/core';
+
+// Allors Angular Core
+import {
+  DateConfig,
+  MediaConfig,
+  AuthenticationConfig,
+  AuthenticationInterceptor,
+  AllorsFocusDirective,
+  AllorsBarcodeDirective,
+  AuthenticationServiceCore,
+  DateServiceCore,
+  MediaServiceCore,
+  AllorsBarcodeServiceCore,
+  AllorsFocusServiceCore,
+  NavigationServiceCore,
+  PanelServiceCore,
+  PanelManagerServiceCore,
+  RefreshServiceCore,
+} from '@allors/angular/core';
+
+// App
 import { environment } from '../environments/environment';
+import { AuthorizationService } from './auth/authorization.service';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login.component';
 import { FetchComponent } from './fetch/fetch.component';
 import { FormComponent } from './form/form.component';
 import { HomeComponent } from './home/home.component';
 import { QueryComponent } from './query/query.component';
-import { MetaPopulation } from '@allors/meta/system';
-import { Workspace } from '@allors/domain/system';
-import { data } from '@allors/meta/generated';
 
 import { extend as extendDomain } from '@allors/domain/custom';
 import { extend as extendAngular } from '@allors/angular/core';
 import { configure } from './configure';
+
+const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  {
+    path: '',
+    canActivate: [AuthorizationService],
+    children: [
+      {
+        component: HomeComponent,
+        path: '',
+      },
+      {
+        component: FormComponent,
+        path: 'form',
+      },
+      {
+        component: QueryComponent,
+        path: 'query',
+      },
+      {
+        component: FetchComponent,
+        path: 'fetch/:id',
+      },
+    ],
+  },
+];
 
 export function appInitFactory(workspaceService: WorkspaceService) {
   return () => {
@@ -47,27 +108,25 @@ export function appInitFactory(workspaceService: WorkspaceService) {
 
 @NgModule({
   bootstrap: [AppComponent],
-  declarations: [AppComponent, LoginComponent, FetchComponent, FormComponent, HomeComponent, QueryComponent],
+  declarations: [
+    // Allors Angular Core
+    AllorsBarcodeDirective,
+    AllorsFocusDirective,
+    // App
+    AppComponent,
+    LoginComponent,
+    FetchComponent,
+    FormComponent,
+    HomeComponent,
+    QueryComponent,
+  ],
   imports: [
     BrowserModule,
     environment.production ? BrowserAnimationsModule : NoopAnimationsModule,
-    RouterModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-
-    // Allors
-    AllorsAngularModule.forRoot({
-      databaseConfig: { url: environment.url },
-      authenticationConfig: {
-        url: environment.url + environment.authenticationUrl,
-      },
-      dateConfig: {
-        locale: enGB,
-      },
-      mediaConfig: { url: environment.url },
-    }),
-    AppRoutingModule,
+    RouterModule.forRoot(routes),
   ],
   providers: [
     {
@@ -76,6 +135,37 @@ export function appInitFactory(workspaceService: WorkspaceService) {
       deps: [WorkspaceService],
       multi: true,
     },
+    DatabaseService,
+    { provide: DatabaseConfig, useValue: { url: environment.url } },
+    WorkspaceService,
+    ContextService,
+    { provide: AuthenticationService, useClass: AuthenticationServiceCore },
+    {
+      provide: AuthenticationConfig,
+      useValue: {
+        url: environment.url + environment.authenticationUrl,
+      },
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true,
+    },
+    { provide: AllorsBarcodeService, useClass: AllorsBarcodeServiceCore },
+    { provide: DateService, useClass: DateServiceCore },
+    {
+      provide: DateConfig,
+      useValue: {
+        locale: enGB,
+      },
+    },
+    { provide: AllorsFocusService, useClass: AllorsFocusServiceCore },
+    { provide: MediaService, useClass: MediaServiceCore },
+    { provide: MediaConfig, useValue: { url: environment.url } },
+    { provide: NavigationService, useClass: NavigationServiceCore },
+    { provide: PanelService, useClass: PanelServiceCore },
+    { provide: PanelManagerService, useClass: PanelManagerServiceCore },
+    { provide: RefreshService, useClass: RefreshServiceCore },
   ],
 })
 export class AppModule {}

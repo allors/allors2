@@ -4,11 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, Loaded } from '@allors/angular/core';
+import { ContextService, MetaService, Loaded } from '@allors/angular/services/core';
 import { Organisation } from '@allors/domain/generated';
 import { assert } from '@allors/meta/system';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
+import { TestScope } from '@allors/angular/core';
 
 @Component({
   templateUrl: './organisation-overview.component.html',

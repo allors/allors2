@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Media } from '@allors/domain/generated';
-import { MediaService } from '@allors/angular/core';
+import { MediaService } from '@allors/angular/services/core';
 
 import { MediaDialogData } from './dialog.data';
 

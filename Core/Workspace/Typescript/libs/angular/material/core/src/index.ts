@@ -62,18 +62,11 @@ export { MethodConfig } from './export/services/actions/method/MethodConfig';
 export { OverviewService } from './export/services/actions/overview/overview.service';
 export { OverviewAction } from './export/services/actions/overview/OverviewAction';
 
-export { DialogConfig } from './export/services/dialog/dialog.config';
-export { DialogData } from './export/services/dialog/dialog.data';
-export { AllorsMaterialDialogService } from './export/services/dialog/dialog.service';
-
-export { ObjectData } from './export/services/object/object.data';
-export { ObjectService } from './export/services/object/object.service';
-export { OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from './export/services/object/object.tokens';
-
-export { SaveService } from './export/services/save/save.service';
+export { AllorsMaterialDialogServiceCore } from './export/services/dialog/dialog.service.core';
+export { ObjectServiceCore } from './export/services/object/object.service.core';
+export { SaveServiceCore } from './export/services/save/save.service.core';
 export { AllorsMaterialErrorDialogComponent } from './export/services/save/error/errordialog.component';
-
-export { AllorsMaterialSideNavService } from './export/services/sidenav/sidenav.service';
+export { AllorsMaterialSideNavServiceCore } from './export/services/sidenav/sidenav.service.core';
 
 export { Sorter } from './export/sorting/Sorter';
 

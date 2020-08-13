@@ -11,9 +11,10 @@ import { switchMap, scan, filter } from 'rxjs/operators';
 
 import { TableRow, AllorsMaterialDialogService } from '@allors/angular/material/core';
 import { Person } from '@allors/domain/generated';
-import { ContextService, TestScope, Filter, MetaService, MediaService, NavigationService } from '@allors/angular/core';
+import { TestScope, Filter} from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
 import { SessionObject } from '@allors/domain/system';
+import { ContextService, MetaService, NavigationService, MediaService } from '@allors/angular/services/core';
 
 interface Row extends TableRow {
   person: Person;

@@ -6,11 +6,12 @@ import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { DateAdapter } from '@angular/material/core';
-import { ContextService, TestScope, SearchFactory, MetaService, WorkspaceService, Loaded } from '@allors/angular/core';
+import { ContextService, MetaService, WorkspaceService, Loaded } from '@allors/angular/services/core';
 import { Organisation, Person } from '@allors/domain/generated';
 import { SaveService, RadioGroupOption } from '@allors/angular/material/core';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './form.component.html',

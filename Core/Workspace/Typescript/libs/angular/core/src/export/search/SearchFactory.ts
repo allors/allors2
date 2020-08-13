@@ -6,12 +6,9 @@ import { ISessionObject, ParameterTypes } from '@allors/domain/system';
 import { And, Like, Or, Pull, Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 
-import { Context } from '../framework/Context';
-import { ContextService } from '../framework/ContextService';
-import { Loaded } from '../framework/responses/Loaded';
+import { Context, ContextService, Loaded } from '@allors/angular/services/core';
 
 import { SearchOptions } from './SearchOptions';
-
 export class SearchFactory {
   constructor(private options: SearchOptions) {}
 

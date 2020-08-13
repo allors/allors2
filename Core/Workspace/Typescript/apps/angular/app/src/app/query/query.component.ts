@@ -6,7 +6,7 @@ import { Like, Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 
 import { Organisation } from '@allors/domain/generated';
-import { Loaded, ContextService, MetaService } from '@allors/angular/core';
+import { ContextService, MetaService, Loaded } from '@allors/angular/services/core';
 
 @Component({
   templateUrl: './query.component.html',

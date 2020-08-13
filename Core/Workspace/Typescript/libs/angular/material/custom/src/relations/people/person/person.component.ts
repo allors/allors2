@@ -4,11 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ContextService, TestScope, MetaService, Loaded } from '@allors/angular/core';
+import { TestScope } from '@allors/angular/core';
 import { Person } from '@allors/domain/generated';
 import { Pull } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
+import { ContextService, MetaService, Loaded } from '@allors/angular/services/core';
 
 @Component({
   templateUrl: './person.component.html',
