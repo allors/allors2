@@ -102,7 +102,7 @@ partial class Build
                 .SetWorkingDirectory(Paths.CoreWorkspaceTypescript));
         });
 
-    Target CoreWorkspaceScaffold => _ => _
+    Target CoreScaffold => _ => _
         .DependsOn(CoreGenerate)
         .Executes(() =>
         {
@@ -174,7 +174,7 @@ partial class Build
         });
 
     Target CoreWorkspaceTypescriptMaterialTests => _ => _
-        .DependsOn(CoreWorkspaceScaffold)
+        .DependsOn(CoreScaffold)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(CoreResetDatabase)

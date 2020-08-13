@@ -86,7 +86,7 @@ partial class Build
                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescript));
         });
 
-    private Target BaseWorkspaceScaffold => _ => _
+    private Target BaseScaffold => _ => _
          .DependsOn(BaseGenerate)
          .Executes(() =>
          {
@@ -135,7 +135,7 @@ partial class Build
     }
 
     private Target BaseWorkspaceIntranetGenericTests => _ => _
-         .DependsOn(this.BaseWorkspaceScaffold)
+         .DependsOn(this.BaseScaffold)
          .DependsOn(this.BasePublishServer)
          .DependsOn(this.BasePublishCommands)
          .DependsOn(this.BaseResetDatabase)
@@ -145,7 +145,7 @@ partial class Build
          });
     
     private Target BaseWorkspaceIntranetOtherTests => _ => _
-        .DependsOn(this.BaseWorkspaceScaffold)
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -155,7 +155,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceIntranetRelationTests => _ => _
-        .DependsOn(this.BaseWorkspaceScaffold)
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -165,7 +165,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceIntranetInvoiceTests => _ => _
-    .DependsOn(this.BaseWorkspaceScaffold)
+    .DependsOn(this.BaseScaffold)
     .DependsOn(BasePublishServer)
     .DependsOn(BasePublishCommands)
     .DependsOn(BaseResetDatabase)
@@ -175,7 +175,7 @@ partial class Build
     });
 
     private Target BaseWorkspaceIntranetOrderTests => _ => _
-        .DependsOn(this.BaseWorkspaceScaffold)
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -185,7 +185,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceIntranetProductTests => _ => _
-        .DependsOn(this.BaseWorkspaceScaffold)
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -195,7 +195,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceIntranetShipmentTests => _ => _
-        .DependsOn(this.BaseWorkspaceScaffold)
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
@@ -205,7 +205,7 @@ partial class Build
         });
 
     private Target BaseWorkspaceIntranetWorkEffortTests => _ => _
-        .DependsOn(this.BaseWorkspaceScaffold)
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)

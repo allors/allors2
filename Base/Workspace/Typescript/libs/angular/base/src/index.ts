@@ -4,10 +4,10 @@ export function extend(workspace: Workspace) {
   extendCore(workspace);
 }
 
-export { PrintAction } from './external/actions/print/PrintAction';
-export { PrintConfig } from './external/actions/print/print.config';
-export { PrintService } from './external/actions/print/print.service';
+export { PrintAction } from './export/actions/print/PrintAction';
+export { PrintConfig } from './export/actions/print/print.config';
+export { PrintService } from './export/actions/print/print.service';
 
-export { FetcherService } from './external/fetcher/FetcherService';
-export { FiltersService } from './external/filters/filters.service';
-export { InternalOrganisationId } from './external/state/InternalOrganisationId';
+export { FetcherService } from './export/fetcher/FetcherService';
+export { FiltersService } from './export/filters/filters.service';
+export { InternalOrganisationId } from './export/state/InternalOrganisationId';

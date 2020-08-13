@@ -57,9 +57,17 @@ partial class Build : NukeBuild
 
             DeleteDirectory(Paths.Artifacts);
         });
-       
+
+    Target Generate => _ => _
+        .DependsOn(this.AdaptersGenerate)
+        .DependsOn(this.CoreGenerate)
+        .DependsOn(this.BaseGenerate);
+
+    Target Scaffold => _ => _
+        .DependsOn(this.CoreScaffold)
+        .DependsOn(this.BaseScaffold);
+
     Target Default => _ => _
-        .DependsOn(AdaptersGenerate)
-        .DependsOn(CoreWorkspaceScaffold)
-        .DependsOn(this.BaseWorkspaceScaffold);
+        .DependsOn(this.Generate)
+        .DependsOn(this.Scaffold);
 }
