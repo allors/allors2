@@ -322,6 +322,7 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
       }
 
       this.serialisedItem = this.part.SerialisedItems.find((v) => v === serialisedItem);
+      this.requestItem.AssignedUnitPrice = this.serialisedItem?.ExpectedSalesPrice;
     }
   }
 
@@ -423,6 +424,7 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
 
       if (this.requestItem.Product !== this.previousProduct) {
         this.requestItem.SerialisedItem = null;
+        this.requestItem.AssignedUnitPrice = null;
         this.serialisedItem = null;
         this.previousProduct = this.requestItem.Product;
       }
