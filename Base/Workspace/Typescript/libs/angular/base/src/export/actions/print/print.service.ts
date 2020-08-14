@@ -5,11 +5,14 @@ import { RoleType } from '@allors/meta/system';
 import { Action } from '@allors/angular/core';
 
 import { PrintAction } from './PrintAction';
-import { PrintConfig } from './print.config';
 
-@Injectable({
-  providedIn: 'root',
-})
+
+export class PrintConfig {
+  url: string;
+}
+
+
+@Injectable()
 export class PrintService {
 
   constructor(public config: PrintConfig) {

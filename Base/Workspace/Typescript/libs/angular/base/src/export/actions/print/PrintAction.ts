@@ -4,7 +4,7 @@ import { Action, ActionTarget } from '@allors/angular/core';
 import { RoleType } from '@allors/meta/system';
 import { Printable } from '@allors/domain/generated';
 
-import { PrintConfig } from './print.config';
+import { PrintConfig } from './print.service';
 
 export class PrintAction implements Action {
 

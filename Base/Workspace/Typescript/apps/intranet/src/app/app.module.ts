@@ -337,7 +337,7 @@ import {
 import { LoginComponent, MainComponent, DashboardComponent, ErrorComponent, AuthorizationService } from '@allors/angular/material/custom';
 
 import { extend as extendDomain } from '@allors/domain/custom';
-import { extend as extendAngular } from '@allors/angular/base';
+import { extend as extendAngular, PrintService, PrintConfig } from '@allors/angular/base';
 import { configure as configureMaterial } from '@allors/angular/material/custom';
 
 import { environment } from '../environments/environment';
@@ -925,6 +925,11 @@ export function appInitFactory(workspaceService: WorkspaceService) {
     { provide: MediaConfig, useValue: { url: environment.url } },
     { provide: NavigationService, useClass: NavigationServiceCore },
     { provide: RefreshService, useClass: RefreshServiceCore },
+
+    // Angular Base
+    PrintService,
+    { provide: PrintConfig, useValue: { url: environment.url } },
+
 
     // Angular Material
     {
