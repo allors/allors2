@@ -70,4 +70,9 @@ partial class Build : NukeBuild
     Target Default => _ => _
         .DependsOn(this.Generate)
         .DependsOn(this.Scaffold);
+
+    Target All => _ => _
+        .DependsOn(this.Install)
+        .DependsOn(this.Generate)
+        .DependsOn(this.Scaffold);
 }
