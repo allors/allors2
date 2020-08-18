@@ -25,7 +25,7 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points && node ./postinstall.js",
-    "scaffold:project": "npx tsc --project ./tools/scaffold && node ./dist/out-tsc/tools/scaffold/main.js",
+    "scaffold:project": "npx tsc --project ./tools/scaffold/tsconfig.json && node ./dist/out-tsc/tools/scaffold/main.js",
     "scaffold:config": "npx nx test intranet",
     "scaffold": "npm run scaffold:project && npm run scaffold:config",
     "domain:test": "npx nx test domain-custom",
