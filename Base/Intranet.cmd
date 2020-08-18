@@ -1,6 +1,6 @@
 @echo off
 
-cd workspace\typescript\intranet
-ng serve
+cd workspace\typescript
+nx run intranet:serve
 
 

@@ -21,7 +21,7 @@ interface Row extends TableRow {
   templateUrl: './workeffortpoiassignment-overview-panel.component.html',
   providers: [PanelService]
 })
-export class WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent extends TestScope implements OnInit {
+export class WorkEffortPOIAssignmentOverviewPanelComponent extends TestScope implements OnInit {
   workEffort: WorkEffort;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
