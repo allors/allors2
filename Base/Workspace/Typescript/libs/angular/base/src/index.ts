@@ -7,8 +7,7 @@ export function extend(workspace: Workspace) {
 }
 
 export { PrintAction } from './export/actions/print/PrintAction';
-export { PrintConfig } from './export/actions/print/print.config';
-export { PrintService } from './export/actions/print/print.service';
+export { PrintService, PrintConfig } from './export/actions/print/print.service';
 
 export { FetcherService } from './export/fetcher/FetcherService';
 export { FiltersService } from './export/filters/filters.service';

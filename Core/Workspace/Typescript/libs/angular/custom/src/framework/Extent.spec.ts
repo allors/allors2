@@ -1,6 +1,5 @@
 import { async } from '@angular/core/testing';
 
-import { Loaded } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
 import { Pull, Extent, Result, Fetch, Tree, Node } from '@allors/data/system';
 import { Organisation, Person } from '@allors/domain/generated';
@@ -8,6 +7,7 @@ import { Organisation, Person } from '@allors/domain/generated';
 import { Fixture } from '../Fixture';
 
 import 'jest-extended';
+import { Loaded } from '@allors/angular/services/core';
 
 let fixture: Fixture;
 

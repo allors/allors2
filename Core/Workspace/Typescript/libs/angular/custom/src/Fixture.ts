@@ -6,20 +6,32 @@ import 'jest-extended';
 
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { APP_INITIALIZER } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { enGB } from 'date-fns/locale';
 
-import { MetaService, ContextService, AuthenticationService, WorkspaceService } from '@allors/angular/core';
 import { MetaPopulation } from '@allors/meta/system';
 import { Workspace } from '@allors/domain/system';
-import { AllorsAngularModule } from '@allors/angular/module';
+
+// Allors Angular Services Core
+import {
+  WorkspaceService,
+  DatabaseService,
+  DatabaseConfig,
+  ContextService,
+  AuthenticationService,
+  MetaService,
+} from '@allors/angular/services/core';
+
+// Allors Angular Core
+import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationServiceCore } from '@allors/angular/core';
 
 import { environment } from '../../../../apps/angular/app/src/environments/environment';
 
 import { extend as extendDomain } from '@allors/domain/custom';
 import { extend as extendAngular } from '@allors/angular/core';
 import { data } from '@allors/meta/generated';
+
+import { configure } from '../../../../apps/angular/app/src/app/configure';
 
 function appInitFactory(workspaceService: WorkspaceService) {
   return () => {
@@ -29,6 +41,9 @@ function appInitFactory(workspaceService: WorkspaceService) {
     // Domain extensions
     extendDomain(workspace);
     extendAngular(workspace);
+
+    // Configuration
+    configure(metaPopulation);
 
     workspaceService.workspace = workspace;
   };
@@ -42,26 +57,28 @@ export class Fixture {
 
   constructor() {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        RouterTestingModule,
-
-        AllorsAngularModule.forRoot({
-          databaseConfig: { url: environment.url },
-          authenticationConfig: {
-            url: environment.url + environment.authenticationUrl,
-          },
-          dateConfig: {
-            locale: enGB,
-          },
-          mediaConfig: { url: environment.url },
-        }),
-      ],
+      imports: [HttpClientModule, RouterTestingModule],
       providers: [
         {
           provide: APP_INITIALIZER,
           useFactory: appInitFactory,
           deps: [WorkspaceService],
+          multi: true,
+        },
+        DatabaseService,
+        { provide: DatabaseConfig, useValue: { url: environment.url } },
+        WorkspaceService,
+        ContextService,
+        { provide: AuthenticationService, useClass: AuthenticationServiceCore },
+        {
+          provide: AuthenticationConfig,
+          useValue: {
+            url: environment.url + environment.authenticationUrl,
+          },
+        },
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthenticationInterceptor,
           multi: true,
         },
       ],
