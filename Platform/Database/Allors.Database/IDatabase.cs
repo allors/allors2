@@ -30,6 +30,9 @@ namespace Allors
         [Obsolete]
         event RelationNotLoadedEventHandler RelationNotLoaded;
 
+
+        IDictionary<Guid, IDomainDerivation> DomainDerivationById { get; }
+
         /// <summary>
         /// Gets a value indicating whether this database is shared with other databases with the same name.
         /// </summary>
