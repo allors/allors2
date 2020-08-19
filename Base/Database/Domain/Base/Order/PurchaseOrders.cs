@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     using Allors.Meta;
 
     public partial class PurchaseOrders
@@ -47,11 +48,16 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, sent, approve, reject, hold, @continue, setReadyForProcessing, reopen, send);
             config.Deny(this.ObjectType, completed, approve, reject, hold, @continue, setReadyForProcessing, cancel, reopen, send, quickReceive, revise);
 
-            config.Deny(this.ObjectType, inProcess, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operations.Write, Operations.Execute);
-            config.Deny(this.ObjectType, completed, Operations.Write);
-            config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
+            var except = new HashSet<IOperandType>
+            {
+                this.Meta.ElectronicDocuments.RoleType,
+            };
+
+            config.DenyExcept(this.ObjectType, inProcess, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, cancelled, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, rejected, except, Operations.Write, Operations.Execute);
+            config.DenyExcept(this.ObjectType, completed, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, finished, except, Operations.Execute, Operations.Write);
         }
     }
 }

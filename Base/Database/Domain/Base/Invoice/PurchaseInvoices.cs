@@ -42,7 +42,7 @@ namespace Allors.Domain
 
             var except = new HashSet<IOperandType>
             {
-                this.Meta.ElectronicDocuments,
+                this.Meta.ElectronicDocuments.RoleType,
             };
 
             config.DenyExcept(this.ObjectType, notPaid, except, Operations.Write);

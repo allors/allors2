@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     using Allors.Meta;
 
     public partial class ProductQuotes
@@ -42,12 +43,17 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, rejected, setReadyForProcessing, approve, reject, order, send, accept, cancel, revise);
             config.Deny(this.ObjectType, cancelled, setReadyForProcessing, cancel, reject, order, send, accept, approve, revise);
 
-            config.Deny(this.ObjectType, inProcess, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operations.Write);
-            config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
-            config.Deny(this.ObjectType, accepted, Operations.Write);
-            config.Deny(this.ObjectType, ordered, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operations.Write);
+            var except = new HashSet<IOperandType>
+            {
+                this.Meta.ElectronicDocuments.RoleType,
+            };
+
+            config.DenyExcept(this.ObjectType, inProcess, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, rejected, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, awaitingAcceptance, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, accepted, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, ordered, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, cancelled, except, Operations.Write);
         }
     }
 }

@@ -254,6 +254,8 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
         if (this.productQuote.Receiver !== this.previousReceiver) {
           this.productQuote.ContactPerson = null;
           this.productQuote.FullfillContactMechanism = null;
+          this.productQuote.Currency = this.productQuote.Receiver.PreferredCurrency;
+
           this.previousReceiver = this.productQuote.Receiver;
         }
 
@@ -261,7 +263,6 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
 
-        this.productQuote.Currency = this.productQuote.Receiver.PreferredCurrency;
       });
   }
 }

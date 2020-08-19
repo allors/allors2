@@ -16,6 +16,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public Media[] ElectronicDocuments { get; set; }
+
         public ObjectState[] PreviousObjectStates { get; set; }
 
         public ObjectState[] LastObjectStates { get; set; }
@@ -344,16 +346,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public DateTime DueDate { get; set; }
-
-        #region Allors
-        [Id("eaa66e01-f597-4c71-86e5-d78652fe926b")]
-        [AssociationId("43978013-8e98-46e5-941c-ba19ba4fa6a5")]
-        [RoleId("fddb51c0-e427-4575-b9d3-24f6fd3f4e06")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        [Workspace]
-        public Media[] ElectronicDocuments { get; set; }
 
         #region Allors
         [Id("b1a0d63f-a0bc-424e-9294-e3b7b37e9c6e")]

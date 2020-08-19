@@ -1,12 +1,13 @@
-<div *ngIf="panel.isCollapsed && invoice" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
+<div *ngIf="panel.isCollapsed && invoice" (click)="panel.toggle()" attr.data-allors-panel="{{ panel.name }}">
   <div class="container mb-3">
     <div class="row rounded" style="background-color: white;">
-      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
-        <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
+      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start"
+        style="background-color: lightseagreen;">
+        <mat-icon style="color: white; zoom: 250%;">{{ panel.icon }}</mat-icon>
       </div>
       <div class="col-9 col-md-10 p-3">
-        <h4>{{panel.title}}</h4>
-        <div>{{invoice.InvoiceNumber}}</div>
+        <h4>{{ panel.title }}</h4>
+        <div>{{ invoice.InvoiceNumber }}</div>
       </div>
     </div>
   </div>
@@ -15,321 +16,379 @@
 <form *ngIf="panel.isExpanded && invoice" #form="ngForm" (submit)="save()" novalidate>
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{panel.title}}</mat-card-title>
+      <mat-card-title>{{ panel.title }}</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
-      <div class="container-fluid">
-
-        <div class="row">
-          <a-mat-static class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState" display="Name"
-            label="Status"></a-mat-static>
-        </div>
-
-        <div class="row">
-          <div class="col-md">
+      <mat-tab-group>
+        <mat-tab label="General">
+          <div class="container-fluid">
             <div class="row">
-              <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="filtersService.customersFilter.create(allors.context)"
-                display="displayName" (changed)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
-              <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteBillToCustomer" type="button" (click)="addBillToCustomer = !addBillToCustomer">
-                <mat-icon *ngIf="!addBillToCustomer">add</mat-icon>
-                <mat-icon *ngIf="addBillToCustomer">close</mat-icon>
-              </button>
+              <a-mat-static class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState"
+                display="Name" label="Status"></a-mat-static>
+            </div>
+
+            <div class="row">
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer"
+                    [filter]="filtersService.customersFilter.create(allors.context)" display="displayName"
+                    (changed)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
+                  <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteBillToCustomer" type="button"
+                    (click)="addBillToCustomer = !addBillToCustomer">
+                    <mat-icon *ngIf="!addBillToCustomer">add</mat-icon>
+                    <mat-icon *ngIf="addBillToCustomer">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <mat-card *ngIf="addBillToCustomer">
+                  <mat-card-header>Add a new customer</mat-card-header>
+                  <mat-card-content>
+                    <party-party (saved)="billToCustomerAdded($event); addBillToCustomer = false"
+                      (cancelled)="addBillToCustomer = false">
+                    </party-party>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-select class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism"
+                    [options]="billToContactMechanisms" display="displayName" class="col-md"></a-mat-select>
+                  <button mat-mini-fab color="accent"
+                    [disabled]="!invoice.BillToCustomer || !invoice.CanWriteBillToContactMechanism" type="button"
+                    (click)="addBillToContactMechanism = !addBillToContactMechanism">
+                    <mat-icon *ngIf="!addBillToContactMechanism">add</mat-icon>
+                    <mat-icon *ngIf="addBillToContactMechanism">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="invoice.BillToCustomer && addBillToContactMechanism">
+                <mat-card>
+                  <mat-card-header>Add a new ContactMechanism</mat-card-header>
+                  <mat-card-content>
+                    <party-contactmechanism
+                      (saved)="billToContactMechanismAdded($event); addBillToContactMechanism = false"
+                      (cancelled)="addBillToContactMechanism = false">
+                    </party-contactmechanism>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-select class="col" [disabled]="billToCustomerIsPerson" [object]="invoice"
+                    [roleType]="m.SalesInvoice.BillToContactPerson" [options]="billToContacts" display="displayName"
+                    label="Billing Contact Person" class="col-md"></a-mat-select>
+                  <button mat-mini-fab color="accent"
+                    [disabled]="billToCustomerIsPerson || !invoice.CanWriteBillToContactPerson" type="button"
+                    (click)="addBillToContactPerson = !addBillToContactPerson">
+                    <mat-icon *ngIf="!addBillToContactPerson">add</mat-icon>
+                    <mat-icon *ngIf="addBillToContactPerson">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="invoice.BillToCustomer && addBillToContactPerson">
+                <mat-card>
+                  <mat-card-header>Add a new person</mat-card-header>
+                  <mat-card-content>
+                    <person-inline (cancelled)="addBillToContactPerson = false"
+                      (saved)="billToContactPersonAdded($event); addBillToContactPerson = false">
+                    </person-inline>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer"
+                    [filter]="filtersService.customersFilter.create(allors.context)" display="displayName"
+                    (changed)="shipToCustomerSelected($event)" label="Ship to"></a-mat-autocomplete>
+                  <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteShipToCustomer" type="button"
+                    (click)="addShipToCustomer = !addShipToCustomer">
+                    <mat-icon *ngIf="!addShipToCustomer">add</mat-icon>
+                    <mat-icon *ngIf="addShipToCustomer">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <mat-card *ngIf="addShipToCustomer">
+                  <mat-card-header>Add a new customer</mat-card-header>
+                  <mat-card-content>
+                    <party-party (saved)="shipToCustomerAdded($event); addShipToCustomer = false"
+                      (cancelled)="addShipToCustomer = false">
+                    </party-party>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" [options]="shipToAddresses"
+                    display="displayName" class="col-md"></a-mat-select>
+                  <button mat-mini-fab color="accent"
+                    [disabled]="!invoice.ShipToCustomer || !invoice.CanWriteShipToCustomer" type="button"
+                    (click)="addShipToAddress = !addShipToAddress">
+                    <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
+                    <mat-icon *ngIf="addShipToAddress">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12 pb-3" *ngIf="invoice.ShipToCustomer && addShipToAddress">
+                <mat-card>
+                  <mat-card-header>Add a new contact mechanism</mat-card-header>
+                  <mat-card-content>
+                    <party-contactmechanism-postaladdress (cancelled)="addShipToAddress = false"
+                      (saved)="shipToAddressAdded($event); addShipToAddress = false">
+                    </party-contactmechanism-postaladdress>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-select class="col" [disabled]="shipToCustomerIsPerson" [object]="invoice"
+                    [roleType]="m.SalesInvoice.ShipToContactPerson" [options]="shipToContacts" display="displayName"
+                    label="Shipping Contact Person"></a-mat-select>
+                  <button mat-mini-fab color="accent"
+                    [disabled]="shipToCustomerIsPerson || !invoice.CanWriteShipToContactPerson" type="button"
+                    (click)="addShipToContactPerson = !addShipToContactPerson">
+                    <mat-icon *ngIf="!addShipToContactPerson">add</mat-icon>
+                    <mat-icon *ngIf="addShipToContactPerson">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="invoice.ShipToCustomer && addShipToContactPerson">
+                <mat-card>
+                  <mat-card-header>Add a new person</mat-card-header>
+                  <mat-card-content>
+                    <person-inline (cancelled)="addShipToContactPerson = false"
+                      (saved)="shipToContactPersonAdded($event); addShipToContactPerson = false">
+                    </person-inline>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer"
+                    [filter]="filtersService.customersFilter.create(allors.context)" display="displayName"
+                    (changed)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
+                  <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteShipToEndCustomer" type="button"
+                    (click)="addShipToEndCustomer = !addShipToEndCustomer">
+                    <mat-icon *ngIf="!addShipToEndCustomer">add</mat-icon>
+                    <mat-icon *ngIf="addShipToEndCustomer">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <mat-card *ngIf="addShipToEndCustomer">
+                  <mat-card-header>Add a new customer</mat-card-header>
+                  <mat-card-content>
+                    <party-party (saved)="shipToEndCustomerAdded($event); addShipToEndCustomer = false"
+                      (cancelled)="addShipToEndCustomer = false">
+                    </party-party>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-select class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress"
+                    [options]="shipToEndCustomerAddresses" display="displayName" class="col-md"></a-mat-select>
+                  <button mat-mini-fab color="accent"
+                    [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWriteShipToEndCustomer" type="button"
+                    (click)="addShipToEndCustomerAddress = !addShipToEndCustomerAddress">
+                    <mat-icon *ngIf="!addShipToEndCustomerAddress">add</mat-icon>
+                    <mat-icon *ngIf="addShipToEndCustomerAddress">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12 pb-3" *ngIf="invoice.ShipToEndCustomer && addShipToEndCustomerAddress">
+                <mat-card>
+                  <mat-card-header>Add a new contact mechanism</mat-card-header>
+                  <mat-card-content>
+                    <party-contactmechanism-postaladdress
+                      (saved)="shipToEndCustomerAddressAdded($event); addShipToEndCustomerAddress = false"
+                      (cancelled)="addShipToEndCustomerAddress = false">
+                    </party-contactmechanism-postaladdress>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-select class="col" [disabled]="shipToEndCustomerIsPerson" [object]="invoice"
+                    [roleType]="m.SalesInvoice.ShipToEndCustomerContactPerson" [options]="shipToEndCustomerContacts"
+                    display="displayName" label="Shipping Contact Person" class="col-md"></a-mat-select>
+                  <button mat-mini-fab color="accent"
+                    [disabled]="shipToEndCustomerIsPerson || !invoice.CanWriteShipToEndCustomerContactPerson"
+                    type="button" (click)="addShipToEndCustomerContactPerson = !addShipToEndCustomerContactPerson">
+                    <mat-icon *ngIf="!addShipToEndCustomerContactPerson">add</mat-icon>
+                    <mat-icon *ngIf="addShipToEndCustomerContactPerson">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="invoice.ShipToEndCustomer && addShipToEndCustomerContactPerson">
+                <mat-card>
+                  <mat-card-header>Add a new person</mat-card-header>
+                  <mat-card-content>
+                    <person-inline (cancelled)="addShipToEndCustomerContactPerson = false"
+                      (saved)="shipToEndCustomerContactPersonAdded($event); addShipToEndCustomerContactPerson = false">
+                    </person-inline>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer"
+                    [filter]="filtersService.customersFilter.create(allors.context)" display="displayName"
+                    (changed)="billToCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
+                  <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteBillToEndCustomer" type="button"
+                    (click)="addBillToEndCustomer = !addBillToEndCustomer">
+                    <mat-icon *ngIf="!addBillToEndCustomer">add</mat-icon>
+                    <mat-icon *ngIf="addBillToEndCustomer">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <mat-card *ngIf="addBillToEndCustomer">
+                  <mat-card-header>Add a new customer</mat-card-header>
+                  <mat-card-content>
+                    <party-party (saved)="billToEndCustomerAdded($event); addBillToEndCustomer = false"
+                      (cancelled)="addBillToEndCustomer = false">
+                    </party-party>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-select class="col" [object]="invoice"
+                    [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism"
+                    [options]="billToEndCustomerContactMechanisms" display="displayName" class="col-md"></a-mat-select>
+                  <button mat-mini-fab color="accent"
+                    [disabled]="!invoice.BillToEndCustomer || !invoice.CanWriteBillToEndCustomerContactMechanism"
+                    type="button"
+                    (click)="addBillToEndCustomerContactMechanism = !addBillToEndCustomerContactMechanism">
+                    <mat-icon *ngIf="!addBillToEndCustomerContactMechanism">add</mat-icon>
+                    <mat-icon *ngIf="addBillToEndCustomerContactMechanism">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12 pb-3" *ngIf="invoice.BillToEndCustomer && addBillToEndCustomerContactMechanism">
+                <mat-card>
+                  <mat-card-header>Add a new contact mechanism</mat-card-header>
+                  <mat-card-content>
+                    <party-contactmechanism
+                      (saved)="billToEndCustomerContactMechanismAdded($event); addBillToEndCustomerContactMechanism = false"
+                      (cancelled)="addBillToEndCustomerContactMechanism = false">
+                    </party-contactmechanism>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+
+              <div class="col-md">
+                <div class="row">
+                  <a-mat-select class="col" [disabled]="billToEndCustomerIsPerson" [object]="invoice"
+                    [roleType]="m.SalesInvoice.BillToEndCustomerContactPerson" [options]="billToEndCustomerContacts"
+                    display="displayName" label="Billing Contact Person" class="col-md"></a-mat-select>
+                  <button mat-mini-fab color="accent"
+                    [disabled]="billToEndCustomerIsPerson || !invoice.CanWriteBillToEndCustomerContactPerson"
+                    type="button" (click)="addBillToEndCustomerContactPerson = !addBillToEndCustomerContactPerson">
+                    <mat-icon *ngIf="!addBillToEndCustomerContactPerson">add</mat-icon>
+                    <mat-icon *ngIf="addBillToEndCustomerContactPerson">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12" *ngIf="invoice.BillToEndCustomer && addBillToEndCustomerContactPerson">
+                <mat-card>
+                  <mat-card-header>Add a new person</mat-card-header>
+                  <mat-card-content>
+                    <person-inline (cancelled)="addBillToEndCustomerContactPerson = false"
+                      (saved)="billToEndCustomerContactPersonAdded($event); addBillToEndCustomerContactPerson = false">
+                    </person-inline>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.VatRegime"
+                [options]="vatRegimes" display="Name"></a-mat-select>
+              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.IrpfRegime"
+                [options]="irpfRegimes" display="Name"></a-mat-select>
+            </div>
+
+            <div class="row">
+              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.DerivedVatClause"
+                [options]="vatClauses" display="Name" label="Applied VAT clause"></a-mat-select>
+              <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AssignedVatClause"
+                [options]="vatClauses" display="Name" label="Assign VAT clause"></a-mat-select>
+            </div>
+
+            <div class="row">
+              <a-mat-datepicker class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.InvoiceDate">
+              </a-mat-datepicker>
+              <a-mat-datepicker class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.DueDate">
+              </a-mat-datepicker>
+            </div>
+
+            <div class="row">
+              <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.Currency"
+                [options]="currencies" display="IsoCode"></a-mat-select>
+            </div>
+
+            <div class="row">
+              <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AdvancePayment"></a-mat-input>
+              <a-mat-static class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AmountPaid"></a-mat-static>
+            </div>
+
+            <div class="row">
+              <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference">
+              </a-mat-input>
+              <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Description">
+              </a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.InternalComment">
+              </a-mat-textarea>
             </div>
           </div>
-          <div class="col-md-12">
-            <mat-card *ngIf="addBillToCustomer">
-              <mat-card-header>Add a new customer</mat-card-header>
-              <mat-card-content>
-                <party-party (saved)="billToCustomerAdded($event); addBillToCustomer = false" (cancelled)="addBillToCustomer = false">
-                </party-party>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
+        </mat-tab>
 
-        <div class="row">
-          <div class="col-md">
-            <div class="row">
-              <a-mat-select class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="billToContactMechanisms"
-                display="displayName" class="col-md"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer || !invoice.CanWriteBillToContactMechanism"
-                type="button" (click)="addBillToContactMechanism = !addBillToContactMechanism">
-                <mat-icon *ngIf="!addBillToContactMechanism">add</mat-icon>
-                <mat-icon *ngIf="addBillToContactMechanism">close</mat-icon>
-              </button>
+        <mat-tab label="Documents">
+          <div class="container-fluid">
+            <div class="row pt-3">
+              <a-mat-files class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.ElectronicDocuments"
+                accept="image/*"></a-mat-files>
             </div>
           </div>
-          <div class="col-md-12" *ngIf="invoice.BillToCustomer && addBillToContactMechanism">
-            <mat-card>
-              <mat-card-header>Add a new ContactMechanism</mat-card-header>
-              <mat-card-content>
-                <party-contactmechanism (saved)="billToContactMechanismAdded($event); addBillToContactMechanism = false" (cancelled)="addBillToContactMechanism = false">
-                </party-contactmechanism>
-              </mat-card-content>
-            </mat-card>
-          </div>
-
-          <div class="col-md">
-            <div class="row">
-              <a-mat-select class="col" [disabled]="billToCustomerIsPerson" [object]="invoice" [roleType]="m.SalesInvoice.BillToContactPerson" [options]="billToContacts"
-                display="displayName" label="Billing Contact Person" class="col-md"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="billToCustomerIsPerson || !invoice.CanWriteBillToContactPerson"
-                type="button" (click)="addBillToContactPerson = !addBillToContactPerson">
-                <mat-icon *ngIf="!addBillToContactPerson">add</mat-icon>
-                <mat-icon *ngIf="addBillToContactPerson">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12" *ngIf="invoice.BillToCustomer && addBillToContactPerson">
-            <mat-card>
-              <mat-card-header>Add a new person</mat-card-header>
-              <mat-card-content>
-                <person-inline (cancelled)="addBillToContactPerson = false" (saved)="billToContactPersonAdded($event); addBillToContactPerson = false">
-                </person-inline>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md">
-            <div class="row">
-              <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" [filter]="filtersService.customersFilter.create(allors.context)"
-                display="displayName" (changed)="shipToCustomerSelected($event)" label="Ship to"></a-mat-autocomplete>
-              <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteShipToCustomer" type="button" (click)="addShipToCustomer = !addShipToCustomer">
-                <mat-icon *ngIf="!addShipToCustomer">add</mat-icon>
-                <mat-icon *ngIf="addShipToCustomer">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <mat-card *ngIf="addShipToCustomer">
-              <mat-card-header>Add a new customer</mat-card-header>
-              <mat-card-content>
-                <party-party (saved)="shipToCustomerAdded($event); addShipToCustomer = false" (cancelled)="addShipToCustomer = false">
-                </party-party>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md">
-            <div class="row">
-              <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" [options]="shipToAddresses" display="displayName"
-                class="col-md"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToCustomer || !invoice.CanWriteShipToCustomer"
-                type="button" (click)="addShipToAddress = !addShipToAddress">
-                <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
-                <mat-icon *ngIf="addShipToAddress">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12 pb-3" *ngIf="invoice.ShipToCustomer && addShipToAddress">
-            <mat-card>
-              <mat-card-header>Add a new contact mechanism</mat-card-header>
-              <mat-card-content>
-                <party-contactmechanism-postaladdress (cancelled)="addShipToAddress = false" (saved)="shipToAddressAdded($event); addShipToAddress = false">
-                </party-contactmechanism-postaladdress>
-              </mat-card-content>
-            </mat-card>
-          </div>
-
-          <div class="col-md">
-            <div class="row">
-              <a-mat-select class="col" [disabled]="shipToCustomerIsPerson" [object]="invoice" [roleType]="m.SalesInvoice.ShipToContactPerson" [options]="shipToContacts"
-                display="displayName" label="Shipping Contact Person"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="shipToCustomerIsPerson || !invoice.CanWriteShipToContactPerson"
-                type="button" (click)="addShipToContactPerson = !addShipToContactPerson">
-                <mat-icon *ngIf="!addShipToContactPerson">add</mat-icon>
-                <mat-icon *ngIf="addShipToContactPerson">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12" *ngIf="invoice.ShipToCustomer && addShipToContactPerson">
-            <mat-card>
-              <mat-card-header>Add a new person</mat-card-header>
-              <mat-card-content>
-                <person-inline (cancelled)="addShipToContactPerson = false" (saved)="shipToContactPersonAdded($event); addShipToContactPerson = false">
-                </person-inline>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md">
-            <div class="row">
-              <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" [filter]="filtersService.customersFilter.create(allors.context)"
-                display="displayName" (changed)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
-              <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteShipToEndCustomer" type="button" (click)="addShipToEndCustomer = !addShipToEndCustomer">
-                <mat-icon *ngIf="!addShipToEndCustomer">add</mat-icon>
-                <mat-icon *ngIf="addShipToEndCustomer">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <mat-card *ngIf="addShipToEndCustomer">
-              <mat-card-header>Add a new customer</mat-card-header>
-              <mat-card-content>
-                <party-party (saved)="shipToEndCustomerAdded($event); addShipToEndCustomer = false" (cancelled)="addShipToEndCustomer = false">
-                </party-party>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md">
-            <div class="row">
-              <a-mat-select class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
-                display="displayName" class="col-md"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWriteShipToEndCustomer"
-                type="button" (click)="addShipToEndCustomerAddress = !addShipToEndCustomerAddress">
-                <mat-icon *ngIf="!addShipToEndCustomerAddress">add</mat-icon>
-                <mat-icon *ngIf="addShipToEndCustomerAddress">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12 pb-3" *ngIf="invoice.ShipToEndCustomer && addShipToEndCustomerAddress">
-            <mat-card>
-              <mat-card-header>Add a new contact mechanism</mat-card-header>
-              <mat-card-content>
-                <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event); addShipToEndCustomerAddress = false" (cancelled)="addShipToEndCustomerAddress = false">
-                </party-contactmechanism-postaladdress>
-              </mat-card-content>
-            </mat-card>
-          </div>
-
-          <div class="col-md">
-            <div class="row">
-              <a-mat-select class="col" [disabled]="shipToEndCustomerIsPerson" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerContactPerson"
-                [options]="shipToEndCustomerContacts" display="displayName" label="Shipping Contact Person" class="col-md"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="shipToEndCustomerIsPerson || !invoice.CanWriteShipToEndCustomerContactPerson"
-                type="button" (click)="addShipToEndCustomerContactPerson = !addShipToEndCustomerContactPerson">
-                <mat-icon *ngIf="!addShipToEndCustomerContactPerson">add</mat-icon>
-                <mat-icon *ngIf="addShipToEndCustomerContactPerson">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12" *ngIf="invoice.ShipToEndCustomer && addShipToEndCustomerContactPerson">
-            <mat-card>
-              <mat-card-header>Add a new person</mat-card-header>
-              <mat-card-content>
-                <person-inline (cancelled)="addShipToEndCustomerContactPerson = false" (saved)="shipToEndCustomerContactPersonAdded($event); addShipToEndCustomerContactPerson = false">
-                </person-inline>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md">
-            <div class="row">
-              <a-mat-autocomplete class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" [filter]="filtersService.customersFilter.create(allors.context)"
-                display="displayName" (changed)="billToCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
-              <button mat-mini-fab color="accent" [disabled]="!invoice.CanWriteBillToEndCustomer" type="button" (click)="addBillToEndCustomer = !addBillToEndCustomer">
-                <mat-icon *ngIf="!addBillToEndCustomer">add</mat-icon>
-                <mat-icon *ngIf="addBillToEndCustomer">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <mat-card *ngIf="addBillToEndCustomer">
-              <mat-card-header>Add a new customer</mat-card-header>
-              <mat-card-content>
-                <party-party (saved)="billToEndCustomerAdded($event); addBillToEndCustomer = false" (cancelled)="addBillToEndCustomer = false">
-                </party-party>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md">
-            <div class="row">
-              <a-mat-select class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism"
-                [options]="billToEndCustomerContactMechanisms" display="displayName" class="col-md"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="!invoice.BillToEndCustomer || !invoice.CanWriteBillToEndCustomerContactMechanism"
-                type="button" (click)="addBillToEndCustomerContactMechanism = !addBillToEndCustomerContactMechanism">
-                <mat-icon *ngIf="!addBillToEndCustomerContactMechanism">add</mat-icon>
-                <mat-icon *ngIf="addBillToEndCustomerContactMechanism">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12 pb-3" *ngIf="invoice.BillToEndCustomer && addBillToEndCustomerContactMechanism">
-            <mat-card>
-              <mat-card-header>Add a new contact mechanism</mat-card-header>
-              <mat-card-content>
-                <party-contactmechanism (saved)="billToEndCustomerContactMechanismAdded($event); addBillToEndCustomerContactMechanism = false" (cancelled)="addBillToEndCustomerContactMechanism = false">
-                </party-contactmechanism>
-              </mat-card-content>
-            </mat-card>
-          </div>
-
-          <div class="col-md">
-            <div class="row">
-              <a-mat-select class="col" [disabled]="billToEndCustomerIsPerson" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactPerson"
-                [options]="billToEndCustomerContacts" display="displayName" label="Billing Contact Person" class="col-md"></a-mat-select>
-              <button mat-mini-fab color="accent" [disabled]="billToEndCustomerIsPerson || !invoice.CanWriteBillToEndCustomerContactPerson"
-                type="button" (click)="addBillToEndCustomerContactPerson = !addBillToEndCustomerContactPerson">
-                <mat-icon *ngIf="!addBillToEndCustomerContactPerson">add</mat-icon>
-                <mat-icon *ngIf="addBillToEndCustomerContactPerson">close</mat-icon>
-              </button>
-            </div>
-          </div>
-          <div class="col-md-12" *ngIf="invoice.BillToEndCustomer && addBillToEndCustomerContactPerson">
-            <mat-card>
-              <mat-card-header>Add a new person</mat-card-header>
-              <mat-card-content>
-                <person-inline (cancelled)="addBillToEndCustomerContactPerson = false" (saved)="billToEndCustomerContactPersonAdded($event); addBillToEndCustomerContactPerson = false">
-                </person-inline>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-
-        <div class="row">
-          <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.VatRegime"
-            [options]="vatRegimes" display="Name"></a-mat-select>
-          <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.IrpfRegime"
-            [options]="irpfRegimes" display="Name"></a-mat-select>
-        </div>
-    
-        <div class="row">
-          <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.DerivedVatClause" [options]="vatClauses" display="Name" label="Applied VAT clause"></a-mat-select>
-          <a-mat-select class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AssignedVatClause" [options]="vatClauses" display="Name" label="Assign VAT clause"></a-mat-select>
-        </div>
-
-        <div class="row">
-          <a-mat-datepicker class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.InvoiceDate"></a-mat-datepicker>
-          <a-mat-datepicker class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.DueDate"></a-mat-datepicker>
-        </div>
-
-        <div class="row">
-          <a-mat-select class="col-md-6" [object]="invoice" [roleType]="m.SalesInvoice.Currency" [options]="currencies" display="IsoCode"></a-mat-select>
-        </div>
-    
-        <div class="row">
-          <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AdvancePayment"></a-mat-input>
-          <a-mat-static class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.AmountPaid"></a-mat-static>
-        </div>
-
-        <div class="row">
-          <a-mat-input class="col-md" [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference"></a-mat-input>
-          <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-textarea>
-          <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
-          <a-mat-textarea class="col-md-12" [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
-        </div>
-
-      </div>
+        </mat-tab>
+      </mat-tab-group>
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE</button>
+      <button mat-button class="ml-2" color="primary" type="submit"
+        [disabled]="!form.form.valid || !allors.context.hasChanges">
+        SAVE
+      </button>
       <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
     </mat-card-actions>
   </mat-card>
-
 </form>

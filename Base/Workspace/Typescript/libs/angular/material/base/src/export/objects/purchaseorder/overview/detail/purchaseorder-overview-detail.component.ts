@@ -180,7 +180,9 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
   public save(): void {
 
-    this.order.StoredInFacility = this.selectedFacility;
+    if(this.order.StoredInFacility !== this.selectedFacility) {
+      this.order.StoredInFacility = this.selectedFacility;
+    }
 
     this.allors.context
       .save()
