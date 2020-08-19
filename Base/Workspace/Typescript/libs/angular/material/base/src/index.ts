@@ -270,7 +270,7 @@ export { WorkEffortAssignmentRateEditComponent } from './export/objects/workeffo
 export { WorkEffortAssignmentRateOverviewPanelComponent } from './export/objects/workeffortassignmentrate/overview/panel/workeffortassignmentrate-overview-panel.component';
 
 export { WorkEffortFixedAssetAssignmentEditComponent } from './export/objects/workeffortfixedassetassignment/edit/workeffortfixedassetassignment-edit.component';
-export { WorkEffortFixedAssetAssignmentOverviewPanelComponent } from './export/objects/workeffortfixedassetassignment/overview/panel/workeffortfixedassetassignment-overview-panel.component';
+export { WorkEffortFAAssignmentOverviewPanelComponent } from './export/objects/workeffortfixedassetassignment/overview/panel/workeffortfixedassetassignment-overview-panel.component';
 
 export { WorkEffortInventoryAssignmentEditComponent } from './export/objects/workeffortinventoryassignment/edit/workeffortinventoryassignment-edit.component';
 export { WorkEffortInventoryAssignmentOverviewPanelComponent } from './export/objects/workeffortinventoryassignment/overview/panel/workeffortinventoryassignment-overview-panel.component';
@@ -279,7 +279,7 @@ export { WorkEffortPartyAssignmentEditComponent } from './export/objects/workeff
 export { WorkEffortPartyAssignmentOverviewPanelComponent } from './export/objects/workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.component';
 
 export { WorkEffortPurchaseOrderItemAssignmentEditComponent } from './export/objects/workeffortpoiassignment/edit/workeffortpoiassignment-edit.component';
-export { WorkEffortPurchaseOrderItemAssignmentOverviewPanelComponent } from './export/objects/workeffortpoiassignment/overview/panel/workeffortpoiassignment-overview-panel.component';
+export { WorkEffortPOIAssignmentOverviewPanelComponent } from './export/objects/workeffortpoiassignment/overview/panel/workeffortpoiassignment-overview-panel.component';
 
 export { WorkTaskCreateComponent } from './export/objects/worktask/create/worktask-create.component';
 export { WorkTaskOverviewComponent } from './export/objects/worktask/overview/worktask-overview.component';
