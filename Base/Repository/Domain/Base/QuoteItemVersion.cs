@@ -223,7 +223,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(5)]
         [Workspace]
         public decimal UnitIrpf { get; set; }
 

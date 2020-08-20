@@ -180,7 +180,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(5)]
         [Workspace]
         decimal UnitIrpf { get; set; }
 

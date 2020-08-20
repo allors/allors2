@@ -1153,8 +1153,8 @@ namespace Allors.Domain
                 salesInvoiceItemDerivedRoles.UnitPrice = salesInvoiceItem.UnitBasePrice - salesInvoiceItem.UnitDiscount + salesInvoiceItem.UnitSurcharge;
             }
 
-            salesInvoiceItemDerivedRoles.UnitVat = salesInvoiceItem.ExistVatRate ? Math.Round(salesInvoiceItem.UnitPrice * salesInvoiceItem.VatRate.Rate / 100, 2) : 0;
-            salesInvoiceItemDerivedRoles.UnitIrpf = salesInvoiceItem.ExistIrpfRate ? Math.Round(salesInvoiceItem.UnitPrice * salesInvoiceItem.IrpfRate.Rate / 100, 2) : 0;
+            salesInvoiceItemDerivedRoles.UnitVat = salesInvoiceItem.ExistVatRate ? salesInvoiceItem.UnitPrice * salesInvoiceItem.VatRate.Rate / 100 : 0;
+            salesInvoiceItemDerivedRoles.UnitIrpf = salesInvoiceItem.ExistIrpfRate ? salesInvoiceItem.UnitPrice * salesInvoiceItem.IrpfRate.Rate / 100 : 0;
 
             // Calculate Totals
             salesInvoiceItemDerivedRoles.TotalBasePrice = salesInvoiceItem.UnitBasePrice * salesInvoiceItem.Quantity;

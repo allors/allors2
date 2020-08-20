@@ -448,8 +448,8 @@ namespace Allors.Domain
                 quoteItemDeriveRoles.UnitSurcharge += featureItem.UnitSurcharge;
             }
 
-            quoteItemDeriveRoles.UnitVat = quoteItem.ExistVatRate ? Math.Round(quoteItem.UnitPrice * quoteItem.VatRate.Rate / 100, 2) : 0;
-            quoteItemDeriveRoles.UnitIrpf = quoteItem.ExistIrpfRate ? Math.Round(quoteItem.UnitPrice * quoteItem.IrpfRate.Rate / 100, 2) : 0;
+            quoteItemDeriveRoles.UnitVat = quoteItem.ExistVatRate ? quoteItem.UnitPrice * quoteItem.VatRate.Rate / 100 : 0;
+            quoteItemDeriveRoles.UnitIrpf = quoteItem.ExistIrpfRate ? quoteItem.UnitPrice * quoteItem.IrpfRate.Rate / 100 : 0;
 
             // Calculate Totals
             quoteItemDeriveRoles.TotalBasePrice = quoteItem.UnitBasePrice * quoteItem.Quantity;
