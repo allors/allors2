@@ -8,7 +8,6 @@ namespace Tests.FaceToFaceCommunicationTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
-    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using libs.angular.material.@base.src.export.objects.facetofacecommunication.edit;
@@ -32,6 +31,10 @@ namespace Tests.FaceToFaceCommunicationTests
         [Fact]
         public void Edit()
         {
+            var faker = this.Session.Faker();
+            var subject = faker.Lorem.Sentence();
+            var location = faker.Address.FullAddress();
+
             var person = new People(this.Session).Extent().First;
 
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
@@ -39,10 +42,10 @@ namespace Tests.FaceToFaceCommunicationTests
             var secondEmployee = allors.ActiveEmployees.Last();
 
             var editCommunicationEvent = new FaceToFaceCommunicationBuilder(this.Session)
-                .WithSubject("dummy")
+                .WithSubject(subject)
                 .WithFromParty(person)
                 .WithToParty(firstEmployee)
-                .WithLocation("old location")
+                .WithLocation(location)
                 .Build();
 
             this.Session.Derive();
@@ -57,18 +60,23 @@ namespace Tests.FaceToFaceCommunicationTests
             communicationEventOverview.Table.DefaultAction(editCommunicationEvent);
 
             var faceToFaceCommunicationEditComponent = new FaceToFaceCommunicationEditComponent(this.Driver);
-            ;
+
+            var scheduleStartDate = DateTimeFactory.CreateDate(2018, 12, 24);
+            var scheduleEndDate = DateTimeFactory.CreateDate(2018, 12, 24);
+            var actualStartDate = DateTimeFactory.CreateDate(2018, 12, 24);
+            var actualEndDate = DateTimeFactory.CreateDate(2018, 12, 24);
+
             faceToFaceCommunicationEditComponent
                 .CommunicationEventState.Select(new CommunicationEventStates(this.Session).Completed)
                 .EventPurposes.Toggle(new CommunicationEventPurposes(this.Session).Conference)
-                .Location.Set("new location")
-                .Subject.Set("new subject")
+                .Subject.Set(subject)
+                .Location.Set(location)
                 .FromParty.Select(secondEmployee)
                 .ToParty.Select(person)
-                .ScheduledStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
-                .ScheduledEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
-                .ActualStart.Set(DateTimeFactory.CreateDate(2018, 12, 24))
-                .ActualEnd.Set(DateTimeFactory.CreateDate(2018, 12, 24))
+                .ScheduledStart.Set(scheduleStartDate)
+                .ScheduledEnd.Set(scheduleEndDate)
+                .ActualStart.Set(actualStartDate)
+                .ActualEnd.Set(actualEndDate)
                 .SAVE.Click();
 
             this.Driver.WaitForAngular();
@@ -82,12 +90,12 @@ namespace Tests.FaceToFaceCommunicationTests
             Assert.Contains(new CommunicationEventPurposes(this.Session).Conference, editCommunicationEvent.EventPurposes);
             Assert.Equal(secondEmployee, editCommunicationEvent.FromParty);
             Assert.Equal(person, editCommunicationEvent.ToParty);
-            Assert.Equal("new location", editCommunicationEvent.Location);
-            Assert.Equal("new subject", editCommunicationEvent.Subject);
-            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ScheduledStart);
-            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ScheduledEnd.Value.Date);
-            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ActualStart.Value.Date);
-            Assert.Equal(DateTimeFactory.CreateDate(2018, 12, 24).Date, editCommunicationEvent.ActualEnd.Value.Date);
+            Assert.Equal(subject, editCommunicationEvent.Subject);
+            Assert.Equal(location, editCommunicationEvent.Location);
+            Assert.Equal(scheduleStartDate.Date, editCommunicationEvent.ScheduledStart.Value.Date);
+            Assert.Equal(scheduleEndDate.Date, editCommunicationEvent.ScheduledEnd.Value.Date);
+            Assert.Equal(actualStartDate.Date, editCommunicationEvent.ActualStart.Value.Date);
+            Assert.Equal(actualEndDate.Date, editCommunicationEvent.ActualEnd.Value.Date);
         }
     }
 }
