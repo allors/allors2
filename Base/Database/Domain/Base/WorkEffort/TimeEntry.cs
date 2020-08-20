@@ -128,7 +128,10 @@ namespace Allors.Domain
                     }
                 }
 
-                if (billingRate == 0 && this.ExistWorkEffort && this.WorkEffort.ExistCustomer)
+                if (billingRate == 0
+                    && this.ExistWorkEffort
+                    && this.WorkEffort.ExistCustomer
+                    && (this.WorkEffort.Customer as Organisation)?.IsInternalOrganisation == false)
                 {
                     var partyRate = this.WorkEffort.Customer.PartyRates.FirstOrDefault(v => v.RateType.Equals(rateType)
                                                                                && v.Frequency.Equals(this.BillingFrequency)

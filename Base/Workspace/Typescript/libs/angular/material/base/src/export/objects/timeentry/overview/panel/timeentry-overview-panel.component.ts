@@ -112,7 +112,20 @@ export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit
     this.panel.onPulled = (loaded) => {
       this.workEffort = loaded.objects.WorkEffort as WorkEffort;
       this.objects = loaded.collections.ServiceEntries as TimeEntry[];
-    };
+
+      if (this.objects) {
+        this.table.total = this.objects.length;
+        this.table.data = this.objects.map((v) => {
+          return {
+            object: v,
+            person: v.Worker.displayName,
+            from: format(new Date(v.FromDate), 'dd-MM-yyyy'),
+            through: v.ThroughDate !== null ? format(new Date(v.ThroughDate), 'dd-MM-yyyy') : '',
+            time: v.AmountOfTime,
+          } as Row;
+        });
+      }
+  };
   }
 
   ngOnInit(): void {

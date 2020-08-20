@@ -46,6 +46,7 @@ namespace Allors.Domain
             var except = new HashSet<IOperandType>
             {
                 this.Meta.ElectronicDocuments.RoleType,
+                this.Meta.Print,
             };
 
             config.DenyExcept(this.ObjectType, inProcess, except, Operations.Write);
