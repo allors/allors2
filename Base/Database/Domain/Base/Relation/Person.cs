@@ -19,8 +19,65 @@ namespace Allors.Domain
             .WithRule(M.Person.EmploymentsWhereEmployee)
             .Build();
 
-        private bool IsDeletable => !this.ExistEmploymentsWhereEmployee
-            && (!this.ExistTimeSheetWhereWorker || !this.TimeSheetWhereWorker.ExistTimeEntries);
+        private bool IsDeletable =>
+            (!this.ExistTimeSheetWhereWorker || !this.TimeSheetWhereWorker.ExistTimeEntries)
+            && !this.ExistExternalAccountingTransactionsWhereFromParty
+            && !this.ExistExternalAccountingTransactionsWhereToParty
+            && !this.ExistShipmentsWhereShipFromParty
+            && !this.ExistShipmentsWhereShipToParty
+            && !this.ExistPaymentsWhereReceiver
+            && !this.ExistPaymentsWhereSender
+            && !this.ExistPaymentsWhereSender
+            && !this.ExistEngagementsWhereBillToParty
+            && !this.ExistEngagementsWherePlacingParty
+            && !this.ExistPartsWhereManufacturedBy
+            && !this.ExistPartsWhereSuppliedBy
+            && !this.ExistPartyFixedAssetAssignmentsWhereParty
+            && !this.ExistPickListsWhereShipToParty
+            && !this.ExistQuotesWhereReceiver
+            && !this.ExistPurchaseInvoicesWhereBilledFrom
+            && !this.ExistPurchaseInvoicesWhereShipToCustomer
+            && !this.ExistPurchaseInvoicesWhereBillToEndCustomer
+            && !this.ExistPurchaseInvoicesWhereShipToEndCustomer
+            && !this.ExistPurchaseOrdersWhereTakenViaSupplier
+            && !this.ExistPurchaseOrdersWhereTakenViaSubcontractor
+            && !this.ExistRequestsWhereOriginator
+            && !this.ExistRequirementsWhereAuthorizer
+            && !this.ExistRequirementsWhereNeededFor
+            && !this.ExistRequirementsWhereOriginator
+            && !this.ExistRequirementsWhereServicedBy
+            && !this.ExistSalesInvoicesWhereBillToCustomer
+            && !this.ExistSalesInvoicesWhereBillToEndCustomer
+            && !this.ExistSalesInvoicesWhereShipToCustomer
+            && !this.ExistSalesInvoicesWhereShipToEndCustomer
+            && !this.ExistSalesOrdersWhereBillToCustomer
+            && !this.ExistSalesOrdersWhereBillToEndCustomer
+            && !this.ExistSalesOrdersWhereShipToCustomer
+            && !this.ExistSalesOrdersWhereShipToEndCustomer
+            && !this.ExistSalesOrdersWherePlacingCustomer
+            && !this.ExistSalesOrderItemsWhereAssignedShipToParty
+            && !this.ExistSerialisedItemsWhereSuppliedBy
+            && !this.ExistSerialisedItemsWhereOwnedBy
+            && !this.ExistSerialisedItemsWhereRentedBy
+            && !this.ExistWorkEffortsWhereCustomer
+            && !this.ExistWorkEffortPartyAssignmentsWhereParty
+            && !this.ExistCashesWherePersonResponsible
+            && !this.ExistCommunicationEventsWhereOwner
+            && !this.ExistEngagementItemsWhereCurrentAssignedProfessional
+            && !this.ExistEmploymentsWhereEmployee
+            && !this.ExistEngineeringChangesWhereAuthorizer
+            && !this.ExistEngineeringChangesWhereDesigner
+            && !this.ExistEngineeringChangesWhereRequestor
+            && !this.ExistEngineeringChangesWhereTester
+            && !this.ExistEventRegistrationsWherePerson
+            && !this.ExistOwnCreditCardsWhereOwner
+            && !this.ExistPerformanceNotesWhereEmployee
+            && !this.ExistPerformanceNotesWhereGivenByManager
+            && !this.ExistPerformanceReviewsWhereEmployee
+            && !this.ExistPerformanceReviewsWhereManager
+            && !this.ExistPickListsWherePicker
+            && !this.ExistPositionFulfillmentsWherePerson
+            && !this.ExistProfessionalAssignmentsWhereProfessional;
 
         public bool BaseIsActiveEmployee(DateTime? date)
         {
@@ -115,6 +172,11 @@ namespace Allors.Domain
             }
 
             foreach (OrganisationContactRelationship deletable in this.OrganisationContactRelationshipsWhereContact)
+            {
+                deletable.Delete();
+            }
+
+            foreach (ProfessionalServicesRelationship deletable in this.ProfessionalServicesRelationshipsWhereProfessional)
             {
                 deletable.Delete();
             }
