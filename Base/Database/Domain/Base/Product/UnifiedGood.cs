@@ -33,7 +33,9 @@ namespace Allors.Domain
                                     !this.ExistWorkEffortPartStandardsWherePart &&
                                     !this.ExistPartBillOfMaterialsWherePart &&
                                     !this.ExistPartBillOfMaterialsWhereComponentPart &&
-                                    !this.ExistInventoryItemTransactionsWherePart;
+                                    !this.ExistInventoryItemTransactionsWherePart &&
+                                    !this.ExistSerialisedItems;
+                                    
 
         public void BaseOnBuild(ObjectOnBuild method)
         {
