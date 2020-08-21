@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Allors.Domain
 {
+    using System;
     using System.Linq;
 
     using Allors.Meta;
@@ -60,6 +61,11 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var defaultLocale = this.Strategy.Session.GetSingleton().DefaultLocale;
             var settings = this.Strategy.Session.GetSingleton().Settings;
+
+            if (!this.ExistDerivationTrigger)
+            {
+                this.DerivationTrigger = Guid.NewGuid();
+            }
 
             if (derivation.ChangeSet.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
             {

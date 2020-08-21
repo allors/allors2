@@ -201,9 +201,10 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
             }
 
-            if (this.Part.InventoryItemKind.IsSerialised && this.Quantity > 0)
+            if (this.Part.InventoryItemKind.IsSerialised)
             {
                 var inventoryItems = this.SerialisedItem.SerialisedInventoryItemsWhereSerialisedItem;
+                inventoryItems.Filter.AddEquals(M.InventoryItem.Part, this.Part);
                 inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
                 var inventoryItem = inventoryItems.First;
 

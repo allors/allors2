@@ -1,3 +1,4 @@
+
 // <copyright file="SalesInvoices.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -40,6 +41,7 @@ namespace Allors.Domain
             {
                 this.Meta.ElectronicDocuments.RoleType,
                 this.Meta.Print,
+                this.Meta.Credit,
             };
 
             config.DenyExcept(this.ObjectType, notPaid, except, Operations.Write);

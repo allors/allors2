@@ -6,6 +6,7 @@ import { Meta } from '@allors/meta/generated';
 import { TableRow, Table, DeleteService, OverviewService, EditService } from '@allors/angular/material/core';
 import { TestScope, Action, ActionTarget } from '@allors/angular/core';
 import { ObjectData, ObjectService } from '@allors/angular/material/services/core';
+import { SerialisedItem } from '../../../../../../../../../domain/generated/src/SerialisedItem.g';
 
 
 
@@ -119,26 +120,36 @@ export class SerialisedInventoryItemComponent extends TestScope implements OnIni
           },
         }),
         pull.SerialisedItem({
-          name: inventoryPullName,
+          name: serialiseditemPullName,
           object: id,
           fetch: {
             SerialisedInventoryItemsWhereSerialisedItem: {
               include: {
+                Part: x,
                 SerialisedInventoryItemState: x,
                 Facility: x,
                 UnitOfMeasure: x
               }
             }
           },
+        }),
+        pull.SerialisedItem({
+          object: id,
+          include: {
+            PartWhereSerialisedItem: x
+          }
         })
       );
 
       this.panel.onPulled = (loaded) => {
 
+        const serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         const inventoryObjects = loaded.collections[inventoryPullName] as SerialisedInventoryItem[] ?? [];
-        const serialisedItemobjects = loaded.collections[serialiseditemPullName] as SerialisedInventoryItem[] ?? [];
 
-        this.objects = inventoryObjects.concat(serialisedItemobjects);
+        const serialisedItemobjects = loaded.collections[serialiseditemPullName] as SerialisedInventoryItem[] ?? [];
+        const serialisedItemobjectsforPart = serialisedItemobjects.filter(v => v.Part === serialisedItem?.PartWhereSerialisedItem)
+
+        this.objects = inventoryObjects.concat(serialisedItemobjectsforPart);
 
         if (this.objects) {
           this.table.total = loaded.values[`${this.objects.length}_total`] || this.objects.length;
