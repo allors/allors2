@@ -1,4 +1,4 @@
-// <copyright file="Iteration.cs" company="Allors bvba">
+// <copyright file="Cycle.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -76,32 +76,6 @@ namespace Allors.Domain.Derivations.Default
         {
             try
             {
-                // Domain Derivations
-                var session = this.Cycle.Derivation.Session;
-                AccumulatedChangeSet domainAccumulatedChangeSet = null;
-                var domainDerivationById = session.Database.DomainDerivationById;
-                if (domainDerivationById.Any())
-                {
-                    domainAccumulatedChangeSet = new AccumulatedChangeSet();
-
-                    var changeSet = session.Checkpoint();
-                    domainAccumulatedChangeSet.Add(changeSet);
-
-                    while (changeSet.Associations.Any() || changeSet.Roles.Any() || changeSet.Created.Any() || changeSet.Deleted.Any())
-                    {
-                        var domainChangeSet = new DomainChangeSet(session, changeSet);
-                        foreach (var kvp in domainDerivationById)
-                        {
-                            var domainDerivation = kvp.Value;
-                            domainDerivation.Derive(domainChangeSet);                           
-                        }
-
-                        changeSet = session.Checkpoint();
-                        domainAccumulatedChangeSet.Add(changeSet);
-                    }
-                }
-
-                // Object Derivations
                 var config = this.Cycle.Derivation.Config;
                 var count = 1;
 
@@ -110,7 +84,7 @@ namespace Allors.Domain.Derivations.Default
                     this.Graph.Mark(marked);
                 }
 
-                this.Preparation = new Preparation(this, marked, domainAccumulatedChangeSet);
+                this.Preparation = new Preparation(this, marked);
                 this.MarkedBacklog = new HashSet<Object>();
                 this.Preparation.Execute();
 

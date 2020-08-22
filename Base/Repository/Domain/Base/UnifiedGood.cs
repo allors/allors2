@@ -139,6 +139,15 @@ namespace Allors.Repository
         public PartWeightedAverage PartWeightedAverage { get; set; }
         #endregion
 
+        #region Allors
+        [Id("f1509899-4ca0-43db-ba4d-a003d823ced7")]
+        [AssociationId("dba4dc87-ed2b-4820-9f52-0c1523dd93ab")]
+        [RoleId("bb1b74ae-9065-45c7-98ea-e5f0e89a78eb")]
+        #endregion
+        [Required]
+        [Workspace]
+        public Guid DerivationTrigger { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

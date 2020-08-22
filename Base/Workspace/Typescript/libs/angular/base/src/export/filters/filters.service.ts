@@ -61,7 +61,7 @@ export class FiltersService {
     return new SearchFactory({
       objectType: this.m.UnifiedGood,
       roleTypes: [this.m.UnifiedGood.Name, this.m.UnifiedGood.SearchString],
-      include: this.tree.UnifiedGood({ SerialisedItems: {} }),
+      include: this.tree.UnifiedGood({ SerialisedItems: {}, PartWeightedAverage: {} }),
     });
   }
 

@@ -30,8 +30,6 @@ namespace Allors.Database.Adapters.Memory
             this.concreteClassesByObjectType = new Dictionary<IObjectType, object>();
 
             this.Id = string.IsNullOrWhiteSpace(configuration.Id) ? Guid.NewGuid().ToString("N").ToLowerInvariant() : configuration.Id;
-
-            this.DomainDerivationById = new Dictionary<Guid, IDomainDerivation>();
         }
 
         public event ObjectNotLoadedEventHandler ObjectNotLoaded;
@@ -51,8 +49,6 @@ namespace Allors.Database.Adapters.Memory
         internal bool IsLoading { get; private set; }
 
         protected virtual Session Session => this.session ?? (this.session = new Session(this));
-
-        public IDictionary<Guid, IDomainDerivation> DomainDerivationById { get; }
 
         public ISession CreateSession() => this.CreateDatabaseSession();
 
