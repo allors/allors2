@@ -86,8 +86,6 @@ namespace Allors.Database.Adapters.SqlClient
             }
 
             this.SchemaName = (configuration.SchemaName ?? "allors").ToLowerInvariant();
-
-            this.DomainDerivationById = new Dictionary<Guid, IDomainDerivation>();
         }
 
         public event ObjectNotLoadedEventHandler ObjectNotLoaded;
@@ -177,8 +175,6 @@ namespace Allors.Database.Adapters.SqlClient
                 return this.mapping;
             }
         }
-
-        public IDictionary<Guid, IDomainDerivation> DomainDerivationById { get; }
 
         public ISession CreateSession()
         {

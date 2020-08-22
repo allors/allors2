@@ -10,14 +10,14 @@ namespace Allors.Domain.Derivations.Default
 
     public class Preparation : IPreparation
     {
-        public Preparation(Iteration iteration, IEnumerable<Object> marked, AccumulatedChangeSet domainAccumulatedChangeSet = null)
+        public Preparation(Iteration iteration, IEnumerable<Object> marked)
         {
             this.Iteration = iteration;
             var cycle = this.Iteration.Cycle;
             var derivation = cycle.Derivation;
             var session = derivation.Session;
 
-            var changeSet = domainAccumulatedChangeSet ?? session.Checkpoint();
+            var changeSet = session.Checkpoint();
 
             iteration.ChangeSet.Add(changeSet);
             cycle.ChangeSet.Add(changeSet);
