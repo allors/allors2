@@ -1,15 +1,11 @@
 import { Component, Self, OnInit, HostBinding } from '@angular/core';
 
 import { MetaService, NavigationService, PanelService, RefreshService } from '@allors/angular/services/core';
-import { InventoryItem, SerialisedInventoryItem } from '@allors/domain/generated';
+import { InventoryItem, SerialisedInventoryItem, SerialisedItem } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 import { TableRow, Table, DeleteService, OverviewService, EditService } from '@allors/angular/material/core';
 import { TestScope, Action, ActionTarget } from '@allors/angular/core';
 import { ObjectData, ObjectService } from '@allors/angular/material/services/core';
-import { SerialisedItem } from '../../../../../../../../../domain/generated/src/SerialisedItem.g';
-
-
-
 interface Row extends TableRow {
   object: InventoryItem;
   facility: string;
