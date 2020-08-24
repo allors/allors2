@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
-import { Disbursement, PurchaseInvoice, PaymentApplication } from '@allors/domain/generated';
+import { Disbursement, PurchaseInvoice, PaymentApplication, Invoice } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { ObjectData, SaveService } from '@allors/angular/material/services/core';
@@ -19,7 +19,7 @@ export class DisbursementEditComponent extends TestScope implements OnInit, OnDe
   readonly m: Meta;
 
   disbursement: Disbursement;
-  purchaseInvoice: PurchaseInvoice;
+  invoice: Invoice;
 
   title: string;
 
@@ -58,7 +58,7 @@ export class DisbursementEditComponent extends TestScope implements OnInit, OnDe
 
           if (isCreate && this.data.associationId) {
             pulls.push(
-              pull.PurchaseInvoice({
+              pull.Invoice({
                 object: this.data.associationId,
               })
             );
@@ -70,12 +70,12 @@ export class DisbursementEditComponent extends TestScope implements OnInit, OnDe
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.purchaseInvoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
+        this.invoice = loaded.objects.Invoice as Invoice;
 
         if (isCreate) {
           this.title = 'Add Disbursement';
           this.paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
-          this.paymentApplication.Invoice = this.purchaseInvoice;
+          this.paymentApplication.Invoice = this.invoice;
 
           this.disbursement = this.allors.context.create('Disbursement') as Disbursement;
           this.disbursement.AddPaymentApplication(this.paymentApplication);

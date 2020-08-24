@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
-import { Receipt, SalesInvoice, PaymentApplication } from '@allors/domain/generated';
+import { Receipt, SalesInvoice, PaymentApplication, Invoice } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
@@ -19,7 +19,7 @@ export class ReceiptEditComponent extends TestScope implements OnInit, OnDestroy
   readonly m: Meta;
 
   receipt: Receipt;
-  salesInvoice: SalesInvoice;
+  invoice: Invoice;
 
   title: string;
 
@@ -58,7 +58,7 @@ export class ReceiptEditComponent extends TestScope implements OnInit, OnDestroy
 
           if (isCreate && this.data.associationId) {
             pulls.push(
-              pull.SalesInvoice({
+              pull.Invoice({
                 object: this.data.associationId,
               })
             );
@@ -70,12 +70,12 @@ export class ReceiptEditComponent extends TestScope implements OnInit, OnDestroy
       .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.salesInvoice = loaded.objects.SalesInvoice as SalesInvoice;
+        this.invoice = loaded.objects.Invoice as Invoice;
 
         if (isCreate) {
           this.title = 'Add Receipt';
           this.paymentApplication = this.allors.context.create('PaymentApplication') as PaymentApplication;
-          this.paymentApplication.Invoice = this.salesInvoice;
+          this.paymentApplication.Invoice = this.invoice;
 
           this.receipt = this.allors.context.create('Receipt') as Receipt;
           this.receipt.AddPaymentApplication(this.paymentApplication);
