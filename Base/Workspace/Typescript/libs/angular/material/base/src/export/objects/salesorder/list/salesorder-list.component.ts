@@ -12,6 +12,8 @@ import { Person, Organisation, Party, Product, SerialisedItem, SalesOrder, Sales
 import { And, Equals, ContainedIn, Extent } from '@allors/data/system';
 import { InternalOrganisationId, FetcherService, PrintService } from '@allors/angular/base';
 import { Meta } from '@allors/meta/generated';
+import { SalesInvoiceState } from '../../../../../../../../domain/generated/src/SalesInvoiceState.g';
+import { ShipmentState } from '../../../../../../../../domain/generated/src/ShipmentState.g';
 
 interface Row extends TableRow {
   object: SalesOrder;
@@ -82,6 +84,7 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
         { name: 'number', sort: true },
         { name: 'shipToCustomer' },
         { name: 'state' },
+        { name: 'invoice' },
         { name: 'customerReference', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
@@ -102,6 +105,8 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
       new Equals({ propertyType: m.SalesOrder.OrderNumber, parameter: 'number' }),
       new Equals({ propertyType: m.SalesOrder.CustomerReference, parameter: 'customerReference' }),
       new Equals({ propertyType: m.SalesOrder.SalesOrderState, parameter: 'state' }),
+      new Equals({ propertyType: m.SalesOrder.SalesOrderInvoiceState, parameter: 'invoiceState' }),
+      new Equals({ propertyType: m.SalesOrder.SalesOrderShipmentState, parameter: 'shipmentState' }),
       new Equals({ propertyType: m.SalesOrder.ShipToCustomer, parameter: 'shipTo' }),
       new Equals({ propertyType: m.SalesOrder.BillToCustomer, parameter: 'billTo' }),
       new Equals({ propertyType: m.SalesOrder.ShipToEndCustomer, parameter: 'shipToEndCustomer' }),
@@ -133,6 +138,16 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
       roleTypes: [m.SalesOrderState.Name],
     });
 
+    const invoiceStateSearch = new SearchFactory({
+      objectType: m.SalesOrderInvoiceState,
+      roleTypes: [m.SalesOrderInvoiceState.Name],
+    });
+
+    const shipmentStateSearch = new SearchFactory({
+      objectType: m.SalesOrderShipmentState,
+      roleTypes: [m.SalesOrderShipmentState.Name],
+    });
+
     const partySearch = new SearchFactory({
       objectType: m.Party,
       roleTypes: [m.Party.PartyName],
@@ -151,6 +166,8 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
     const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
       state: { search: stateSearch, display: (v: SalesOrderState) => v && v.Name },
+      invoiceState: { search: invoiceStateSearch, display: (v: SalesInvoiceState) => v && v.Name },
+      shipmentState: { search: shipmentStateSearch, display: (v: ShipmentState) => v && v.Name },
       shipTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
       billTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
       shipToEndCustomer: { search: partySearch, display: (v: Party) => v && v.PartyName },
@@ -203,6 +220,7 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
                 },
                 ShipToCustomer: x,
                 SalesOrderState: x,
+                SalesInvoicesWhereSalesOrder: x,
               },
               parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -231,6 +249,7 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
               number: `${v.OrderNumber}`,
               shipToCustomer: v.ShipToCustomer && v.ShipToCustomer.displayName,
               state: `${v.SalesOrderState && v.SalesOrderState.Name}`,
+              invoice: v.SalesInvoicesWhereSalesOrder.map((w) => w.InvoiceNumber).join(', '),
               customerReference: `${v.Description || ''}`,
               lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
             } as Row;
