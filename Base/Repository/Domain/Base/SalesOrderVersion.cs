@@ -111,7 +111,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public SalesOrderState SalesOrderState { get; set; }
 
@@ -341,7 +340,6 @@ namespace Allors.Repository
         [RoleId("BCEE3E78-C94B-4D95-8E2B-496CF8642605")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -352,7 +350,6 @@ namespace Allors.Repository
         [AssociationId("FF94D40F-0C30-4415-B676-65CD1310EE08")]
         [RoleId("5081007D-3AD8-4443-9F9D-9E59DE9C8223")]
         #endregion
-        [Required]
         public bool PartiallyShip { get; set; }
 
         #region Allors
@@ -372,7 +369,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         public Store Store { get; set; }
 
         #region Allors
@@ -432,7 +428,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Workspace]
         public Facility OriginFacility { get; set; }
 

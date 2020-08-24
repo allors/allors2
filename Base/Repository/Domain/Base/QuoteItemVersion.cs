@@ -34,7 +34,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        [Required]
         [Workspace]
         public QuoteItemState QuoteItemState { get; set; }
 
@@ -221,7 +220,6 @@ namespace Allors.Repository
         [AssociationId("67d8a124-ad6b-4f02-b5f5-2eccee525520")]
         [RoleId("4282d539-81fb-4736-af21-283a9a53164a")]
         #endregion
-        [Required]
         [Precision(19)]
         [Scale(5)]
         [Workspace]
@@ -232,7 +230,6 @@ namespace Allors.Repository
         [AssociationId("f567a1f3-1484-48bf-a81c-4a44159408f3")]
         [RoleId("40d6f220-3cc5-4cce-b1e7-eab855c46440")]
         #endregion
-        [Required]
         [Derived]
         [Precision(19)]
         [Scale(2)]
