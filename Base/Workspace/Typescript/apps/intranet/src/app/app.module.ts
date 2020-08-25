@@ -14,6 +14,7 @@ import { MAT_AUTOCOMPLETE_DEFAULT_OPTIONS } from '@angular/material/autocomplete
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
@@ -865,6 +866,7 @@ export function appInitFactory(workspaceService: WorkspaceService, internalOrgan
     MatAutocompleteModule,
     MatBadgeModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
@@ -929,7 +931,6 @@ export function appInitFactory(workspaceService: WorkspaceService, internalOrgan
     // Angular Base
     PrintService,
     { provide: PrintConfig, useValue: { url: environment.url } },
-
 
     // Angular Material
     {
