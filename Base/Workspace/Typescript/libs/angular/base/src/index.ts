@@ -10,5 +10,6 @@ export { PrintAction } from './export/actions/print/PrintAction';
 export { PrintService, PrintConfig } from './export/actions/print/print.service';
 
 export { FetcherService } from './export/fetcher/FetcherService';
-export { FiltersService } from './export/filters/filters.service';
 export { InternalOrganisationId } from './export/state/InternalOrganisationId';
+
+export { Filters } from './export/filters/filters';

@@ -103,8 +103,8 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
 
     const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: RequestState) => v && v.Name },
-      from: { search: originatorSearch, display: (v: Party) => v && v.PartyName },
+      state: { search: () => stateSearch, display: (v: RequestState) => v && v.Name },
+      from: { search: () => originatorSearch, display: (v: Party) => v && v.PartyName },
     });
     this.filter = new Filter(filterDefinition);
 

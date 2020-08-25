@@ -25,10 +25,10 @@ import {
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { FiltersService } from '@allors/angular/base';
+import { Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './requestitem-edit.component.html',
@@ -87,10 +87,11 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
   packedShipment: ShipmentState;
   onholdShipment: ShipmentState;
 
+  goodsFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<RequestItemEditComponent>,
     public metaService: MetaService,
     private saveService: SaveService,
@@ -105,7 +106,7 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
   public ngOnInit(): void {
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$)
+    this.subscription = combineLatest([this.refreshService.refresh$])
       .pipe(
         switchMap(() => {
           const isCreate = this.data.id === undefined;
@@ -140,6 +141,8 @@ export class RequestItemEditComponent extends TestScope implements OnInit, OnDes
               })
             );
           }
+
+          this.goodsFilter = Filters.goodsFilter(m);
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

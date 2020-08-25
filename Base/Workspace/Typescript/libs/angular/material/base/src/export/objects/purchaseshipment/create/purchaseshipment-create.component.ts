@@ -19,10 +19,10 @@ import {
   PurchaseShipment,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 
 @Component({
@@ -53,10 +53,11 @@ export class PurchaseShipmentCreateComponent extends TestScope implements OnInit
 
   private subscription: Subscription;
 
+  suppliersFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<PurchaseShipmentCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
@@ -72,7 +73,7 @@ export class PurchaseShipmentCreateComponent extends TestScope implements OnInit
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
         switchMap(() => {
 
@@ -84,6 +85,8 @@ export class PurchaseShipmentCreateComponent extends TestScope implements OnInit
               sort: new Sort(m.Organisation.PartyName),
             })
           ];
+
+          this.suppliersFilter = Filters.suppliersFilter(m, this.internalOrganisationId.value);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

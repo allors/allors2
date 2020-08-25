@@ -36,7 +36,7 @@
               <div class="col-md">
                 <div class="row">
                   <a-mat-autocomplete class="col-md" [object]="productQuote" [roleType]="m.Quote.Receiver"
-                    [filter]="filtersService.customersFilter.create(allors.context)" display="displayName"
+                    [filter]="customersFilter.create(allors.context)" display="displayName"
                     (changed)="receiverSelected($event)" label="To"></a-mat-autocomplete>
                   <button mat-mini-fab color="accent" [disabled]="!productQuote.CanWriteQuoteItems" type="button"
                     (click)="addReceiver = !addReceiver">

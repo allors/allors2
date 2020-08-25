@@ -16,7 +16,7 @@ import {
   SerialisedItemState,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
 import { TestScope, SearchFactory } from '@allors/angular/core';
@@ -45,11 +45,12 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
 
   private subscription: Subscription;
   serialisedItemAvailabilities: Enumeration[];
+  serialisedgoodsFilter: SearchFactory;
+  partiesFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SerialisedItemCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
@@ -66,7 +67,7 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
         switchMap(() => {
 
@@ -91,6 +92,9 @@ export class SerialisedItemCreateComponent extends TestScope implements OnInit, 
               sort: new Sort(m.SerialisedItemAvailability.Name),
             }),
           ];
+
+          this.partiesFilter = Filters.partiesFilter(m);
+          this.serialisedgoodsFilter = Filters.serialisedgoodsFilter(m);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

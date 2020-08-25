@@ -133,11 +133,11 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
     });
 
     const filterDefinition = new FilterDefinition(predicate, {
-      state: { search: stateSearch, display: (v: WorkEffortState) => v && v.Name },
-      customer: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      ExecutedBy: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      worker: { search: personSearch, display: (v: Person) => v && v.displayName },
-      equipment: { search: equipmentSearch, display: (v: FixedAsset) => v && v.displayName },
+      state: { search: () => stateSearch, display: (v: WorkEffortState) => v && v.Name },
+      customer: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      ExecutedBy: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      worker: { search: () => personSearch, display: (v: Person) => v && v.displayName },
+      equipment: { search: () => equipmentSearch, display: (v: FixedAsset) => v && v.displayName },
     });
     this.filter = new Filter(filterDefinition);
 

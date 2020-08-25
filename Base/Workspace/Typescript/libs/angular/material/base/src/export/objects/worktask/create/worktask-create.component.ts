@@ -18,10 +18,10 @@ import {
   WorkTask,
 } from '@allors/domain/generated';
 import { Sort } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './worktask-create.component.html',
@@ -48,11 +48,12 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
   organisations: Organisation[];
+  organisationsFilter: SearchFactory;
+  subContractorsFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<WorkTaskCreateComponent>,
     public metaService: MetaService,
     public navigationService: NavigationService,
@@ -85,6 +86,9 @@ export class WorkTaskCreateComponent extends TestScope implements OnInit, OnDest
               sort: new Sort(m.Organisation.PartyName)
             })
           ];
+
+          this.organisationsFilter = Filters.organisationsFilter(m);
+          this.subContractorsFilter = Filters.subContractorsFilter(m, this.internalOrganisationId.value);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

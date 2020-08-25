@@ -9,10 +9,10 @@ import { InventoryItem, Part, SerialisedInventoryItem, SerialisedItem, NonSerial
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { FiltersService } from '@allors/angular/base';
+import { Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './salesorderitem-edit.component.html',
@@ -82,11 +82,11 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
   private previousProduct;
   private subscription: Subscription;
   inRent: SerialisedItemAvailability;
-
+  goodsFilter: SearchFactory;
+  
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SalesOrderItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -185,6 +185,8 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
               })
             );
           }
+
+          this.goodsFilter = Filters.goodsFilter(m);
 
           return this.allors.context
             .load(new PullRequest({ pulls }))

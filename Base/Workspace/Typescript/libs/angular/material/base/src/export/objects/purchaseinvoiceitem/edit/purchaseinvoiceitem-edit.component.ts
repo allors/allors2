@@ -21,9 +21,9 @@ import {
   UnifiedGood,
 } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta } from '@allors/meta/generated';
+import { Meta, TreeFactory } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { FiltersService } from '@allors/angular/base';
+import { Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort, And, ContainedIn, Extent } from '@allors/data/system';
 import { TestScope, SearchFactory } from '@allors/angular/core';
@@ -59,11 +59,12 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
   private subscription: Subscription;
   partsFilter: SearchFactory;
   supplierOffering: SupplierOffering;
+  
+  unifiedGoodsFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<PurchaseInvoiceItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -139,6 +140,8 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               })
             );
           }
+
+          this.unifiedGoodsFilter = Filters.unifiedGoodsFilter(m, this.metaService.tree);
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

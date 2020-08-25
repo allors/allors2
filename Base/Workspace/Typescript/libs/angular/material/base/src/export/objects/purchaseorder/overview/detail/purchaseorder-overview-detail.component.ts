@@ -6,11 +6,11 @@ import { MetaService, RefreshService, PanelService, ContextService } from '@allo
 import { Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, OrganisationContactRelationship, ContactMechanism, VatRegime, VatRate, SupplierRelationship, PurchaseOrder } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
-import { FiltersService, FetcherService } from '@allors/angular/base';
+import { Filters, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
 import { ISessionObject } from '@allors/domain/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -53,14 +53,16 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
   private subscription: Subscription;
 
+  suppliersFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
-    public filtersService: FiltersService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    private fetcher: FetcherService
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId
   ) {
     super();
 
@@ -142,6 +144,8 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
               sort: new Sort(m.Currency.IsoCode)
             }),
           ];
+
+          this.suppliersFilter = Filters.suppliersFilter(m, this.internalOrganisationId.value);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

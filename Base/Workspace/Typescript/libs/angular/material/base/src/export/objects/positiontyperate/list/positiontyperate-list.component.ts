@@ -101,8 +101,8 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
 
     const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
-      positionType: { search: positionTypeSearch, display: (v: PositionType) => v && v.Title },
-      rateType: { search: rateTypeSearch, display: (v: RateType) => v && v.Name },
+      positionType: { search: () => positionTypeSearch, display: (v: PositionType) => v && v.Title },
+      rateType: { search: () => rateTypeSearch, display: (v: RateType) => v && v.Name },
     });
     this.filter = new Filter(filterDefinition);
 

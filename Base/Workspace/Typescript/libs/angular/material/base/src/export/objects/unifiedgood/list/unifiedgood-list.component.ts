@@ -75,53 +75,9 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
 
   public ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.UnifiedGood.filter = m.UnifiedGood.filter ?? new Filter(m.UnifiedGood.filterDefinition);
 
-    const predicate = new And([
-      new Like({ roleType: m.UnifiedGood.Name, parameter: 'name' }),
-      new Like({ roleType: m.UnifiedGood.Keywords, parameter: 'keyword' }),
-      new Contains({ propertyType: m.UnifiedGood.ProductCategoriesWhereProduct, parameter: 'category' }),
-      new Contains({ propertyType: m.UnifiedGood.ProductIdentifications, parameter: 'identification' }),
-      new Equals({ propertyType: m.UnifiedGood.Brand, parameter: 'brand' }),
-      new Equals({ propertyType: m.UnifiedGood.Model, parameter: 'model' }),
-      new Exists({ propertyType: m.UnifiedGood.SalesDiscontinuationDate, parameter: 'discontinued' }),
-      new Exists({ propertyType: m.UnifiedGood.Photos, parameter: 'photos' }),
-    ]);
-
-    const modelSearch = new SearchFactory({
-      objectType: m.Model,
-      roleTypes: [m.Model.Name],
-    });
-
-    const brandSearch = new SearchFactory({
-      objectType: m.Brand,
-      roleTypes: [m.Brand.Name],
-    });
-
-    const categorySearch = new SearchFactory({
-      objectType: m.ProductCategory,
-      roleTypes: [m.ProductCategory.DisplayName],
-    });
-
-    const idSearch = new SearchFactory({
-      objectType: m.ProductIdentification,
-      roleTypes: [m.ProductIdentification.Identification],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      category: { search: categorySearch, display: (v: ProductCategory) => v && v.DisplayName },
-      identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
-      brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
-      model: { search: modelSearch, display: (v: Model) => v && v.Name },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      name: [m.UnifiedGood.Name],
-      id: [m.UnifiedGood.ProductNumber],
-      lastModifiedDate: m.UnifiedGood.LastModifiedDate,
-    });
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
@@ -137,8 +93,8 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.UnifiedGood({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.Person.sorter.create(sort) : null,
               include: {
                 Photos: x,
                 PrimaryPhoto: x,
@@ -151,8 +107,8 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
               take: pageEvent.pageSize,
             }),
             pull.UnifiedGood({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.Person.sorter.create(sort) : null,
               fetch: {
                 ProductCategoriesWhereProduct: {
                   include: {

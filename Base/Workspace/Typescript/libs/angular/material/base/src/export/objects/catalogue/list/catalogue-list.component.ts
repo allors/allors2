@@ -93,7 +93,7 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
       roleTypes: [m.CatScope.Name],
     });
 
-    const filterDefinition = new FilterDefinition(predicate, { Scope: { search: scopeSearch, display: (v: CatScope) => v && v.Name } });
+    const filterDefinition = new FilterDefinition(predicate, { Scope: { search: () => scopeSearch, display: (v: CatScope) => v && v.Name } });
     this.filter = new Filter(filterDefinition);
     
     const sorter = new Sorter(

@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-md">
           <div class="row">
-            <a-mat-autocomplete class="col-md" [object]="purchaseReturn" [roleType]="m.PurchaseReturn.ShipToParty" [filter]="filtersService.suppliersFilter.create(allors.context)"
+            <a-mat-autocomplete class="col-md" [object]="purchaseReturn" [roleType]="m.PurchaseReturn.ShipToParty" [filter]="suppliersFilter.create(allors.context)"
               display="displayName" (changed)="supplierSelected($event)" label="Supplier"></a-mat-autocomplete>
           </div>
         </div>

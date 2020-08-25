@@ -34,7 +34,7 @@ import {
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { FiltersService } from '@allors/angular/base';
+import { Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort, And, ContainedIn, Extent } from '@allors/data/system';
 import { TestScope, SearchFactory } from '@allors/angular/core';
@@ -112,10 +112,11 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
   private previousPart;
   private subscription: Subscription;
 
+  goodsFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<ShipmentItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -219,6 +220,8 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
             pull.ShipmentState(),
             pull.Facility(),
           ];
+
+          this.goodsFilter = Filters.goodsFilter(m);
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

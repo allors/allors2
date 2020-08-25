@@ -31,7 +31,7 @@ import {
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { FiltersService } from '@allors/angular/base';
+import { Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
 import { TestScope, SearchFactory } from '@allors/angular/core';
@@ -105,7 +105,6 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<QuoteItemEditComponent>,
     public metaService: MetaService,
     private saveService: SaveService,
@@ -120,7 +119,7 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
   public ngOnInit(): void {
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$)
+    this.subscription = combineLatest([this.refreshService.refresh$])
       .pipe(
         switchMap(() => {
           const create = (this.data as IObject).id === undefined;
@@ -201,6 +200,8 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
               })
             );
           }
+
+          this.goodsFilter = Filters.goodsFilter(m);
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, create })));
         })

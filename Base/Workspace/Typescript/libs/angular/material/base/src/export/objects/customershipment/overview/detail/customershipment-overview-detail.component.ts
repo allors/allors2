@@ -6,11 +6,11 @@ import { MetaService, RefreshService, NavigationService, PanelService, ContextSe
 import { CustomerShipment, Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
-import { FiltersService, FetcherService } from '@allors/angular/base';
+import { FetcherService, Filters, InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
 import { ISessionObject } from '@allors/domain/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -45,6 +45,8 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
 
+  customersFilter: SearchFactory;
+
   get shipToCustomerIsPerson(): boolean {
     return !this.customerShipment.ShipToParty || this.customerShipment.ShipToParty.objectType.name === this.m.Person.name;
   }
@@ -53,11 +55,12 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     private metaService: MetaService,
-    public filtersService: FiltersService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
-    private fetcher: FetcherService
+    private fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId
+
   ) {
     super();
 
@@ -138,6 +141,8 @@ export class CustomerShipmentOverviewDetailComponent extends TestScope implement
               }
             }),
           ];
+
+          this.customersFilter = Filters.customersFilter(m, this.internalOrganisationId.value);
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })

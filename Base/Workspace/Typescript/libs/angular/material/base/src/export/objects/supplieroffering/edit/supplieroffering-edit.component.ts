@@ -18,11 +18,11 @@ import {
 } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 import { ObjectData, SaveService } from '@allors/angular/material/services/core';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
+import { Filters, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { Sort } from '@allors/data/system';
 import { PullRequest } from '@allors/protocol/system';
 import { IObject } from '@allors/domain/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './supplieroffering-edit.component.html',
@@ -44,13 +44,14 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
   private subscription: Subscription;
   title: string;
 
+  allSuppliersFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<SupplierOfferingEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
-    public filtersService: FiltersService,
     private saveService: SaveService,
     private fetcher: FetcherService,
     private internalOrganisationId: InternalOrganisationId
@@ -109,6 +110,8 @@ export class SupplierOfferingEditComponent extends TestScope implements OnInit, 
               }),
             ];
           }
+
+          this.allSuppliersFilter = Filters.allSuppliersFilter(m);
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

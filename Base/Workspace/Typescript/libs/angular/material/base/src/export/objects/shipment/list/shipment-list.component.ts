@@ -126,8 +126,8 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
 
     const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: ShipmentState) => v && v.Name },
-      supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
+      state: { search: () => stateSearch, display: (v: ShipmentState) => v && v.Name },
+      supplier: { search: () => supplierSearch, display: (v: Party) => v && v.PartyName },
     });
     this.filter = new Filter(filterDefinition);
 

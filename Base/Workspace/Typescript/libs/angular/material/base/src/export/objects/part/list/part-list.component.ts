@@ -3,24 +3,15 @@ import { Title } from '@angular/platform-browser';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { ContextService, MetaService, RefreshService, NavigationService, MediaService, UserId } from '@allors/angular/services/core';
+import { ContextService, MetaService, RefreshService, NavigationService, MediaService } from '@allors/angular/services/core';
 import { ObjectService } from '@allors/angular/material/services/core';
-import { SearchFactory, FilterDefinition, Filter, TestScope, Action } from '@allors/angular/core';
+import { Filter, TestScope, Action } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
-import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
+import { TableRow, Table, OverviewService, DeleteService } from '@allors/angular/material/core';
 import {
-  Organisation,
   Part,
   ProductIdentificationType,
-  Brand,
-  Model,
-  InventoryItemKind,
-  ProductType,
-  ProductIdentification,
-  Facility,
 } from '@allors/domain/generated';
-import { And, Like, ContainedIn, Extent, Equals, Contains } from '@allors/data/system';
-import { FiltersService } from '@allors/angular/base';
 
 interface Row extends TableRow {
   object: Part;
@@ -59,7 +50,6 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
-    private filtersService: FiltersService,
     titleService: Title
   ) {
     super();
@@ -90,89 +80,9 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.Part.filter = m.Part.filter ?? new Filter(m.Part.filterDefinition);
 
-    const predicate = new And([
-      new Like({ roleType: m.Part.Name, parameter: 'name' }),
-      new Like({ roleType: m.Part.Keywords, parameter: 'keyword' }),
-      new Like({ roleType: m.Part.HsCode, parameter: 'hsCode' }),
-      new Contains({ propertyType: m.Part.ProductIdentifications, parameter: 'identification' }),
-      new Contains({ propertyType: m.Part.SuppliedBy, parameter: 'supplier' }),
-      new Equals({ propertyType: m.Part.ManufacturedBy, parameter: 'manufacturer' }),
-      new Equals({ propertyType: m.Part.Brand, parameter: 'brand' }),
-      new Equals({ propertyType: m.Part.Model, parameter: 'model' }),
-      new Equals({ propertyType: m.Part.InventoryItemKind, parameter: 'kind' }),
-      new Equals({ propertyType: m.Part.ProductType, parameter: 'type' }),
-      new ContainedIn({
-        propertyType: m.Part.InventoryItemsWherePart,
-        extent: new Extent({
-          objectType: m.InventoryItem,
-          predicate: new Equals({
-            propertyType: m.InventoryItem.Facility,
-            parameter: 'facility',
-          }),
-        }),
-      }),
-    ]);
-
-    const typeSearch = new SearchFactory({
-      objectType: m.ProductType,
-      roleTypes: [m.ProductType.Name],
-    });
-
-    const kindSearch = new SearchFactory({
-      objectType: m.InventoryItemKind,
-      predicates: [new Equals({ propertyType: m.Enumeration.IsActive, value: true })],
-      roleTypes: [m.InventoryItemKind.Name],
-    });
-
-    const brandSearch = new SearchFactory({
-      objectType: m.Brand,
-      roleTypes: [m.Brand.Name],
-    });
-
-    const modelSearch = new SearchFactory({
-      objectType: m.Model,
-      roleTypes: [m.Model.Name],
-    });
-
-    const manufacturerSearch = new SearchFactory({
-      objectType: m.Organisation,
-      predicates: [new Equals({ propertyType: m.Organisation.IsManufacturer, value: true })],
-      roleTypes: [m.Organisation.PartyName],
-    });
-
-    const idSearch = new SearchFactory({
-      objectType: m.ProductIdentification,
-      roleTypes: [m.ProductIdentification.Identification],
-    });
-
-    const facilitySearch = new SearchFactory({
-      objectType: m.Facility,
-      roleTypes: [m.Facility.Name],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      supplier: { search: this.filtersService.suppliersFilter, display: (v: Organisation) => v && v.PartyName },
-      manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
-      brand: { search: brandSearch, display: (v: Brand) => v && v && v.Name },
-      model: { search: modelSearch, display: (v: Model) => v.Name },
-      kind: { search: kindSearch, display: (v: InventoryItemKind) => v && v.Name },
-      type: { search: typeSearch, display: (v: ProductType) => v && v.Name },
-      identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
-      facility: { search: facilitySearch, display: (v: Facility) => v && v.Name },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      name: m.NonUnifiedPart.Name,
-      // partNo: m.NonUnifiedPartNumber.Identification,
-      // type: m.ProductType.Name,
-      // brand: m.Brand.Name,
-      // model: m.Model.Name,
-      // kind: m.InventoryItemKind.Name
-    });
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
@@ -188,8 +98,8 @@ export class PartListComponent extends TestScope implements OnInit, OnDestroy {
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.Part({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.Person.sorter.create(sort) : null,
               include: {
                 Brand: x,
                 Model: x,

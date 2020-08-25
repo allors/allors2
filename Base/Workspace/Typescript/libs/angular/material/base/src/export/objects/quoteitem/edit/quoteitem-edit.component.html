@@ -27,7 +27,7 @@
       <div *ngIf="quoteItem.InvoiceItemType === productItemType">
         <div class="row">
           <a-mat-autocomplete [object]="quoteItem" [roleType]="m.QuoteItem.Product" display="Name"
-                              [filter]="filtersService.goodsFilter.create(allors.context)" (changed)="goodSelected($event)" class="col-md"></a-mat-autocomplete>
+                              [filter]="goodsFilter.create(allors.context)" (changed)="goodSelected($event)" class="col-md"></a-mat-autocomplete>
           <a-mat-select class="col-md" [object]="quoteItem" [roleType]="m.QuoteItem.SerialisedItem" [options]="serialisedItems"
                         (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
           <a-mat-static [object]="quoteItem.SerialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-static>

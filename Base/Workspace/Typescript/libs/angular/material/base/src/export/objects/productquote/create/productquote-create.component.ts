@@ -21,10 +21,10 @@ import {
   CustomerRelationship,
 } from '@allors/domain/generated';
 import { Sort } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './productquote-create.component.html',
@@ -52,12 +52,13 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
   private subscription: Subscription;
   private previousReceiver: Party;
 
+  customersFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
-    public filtersService: FiltersService,
     private saveService: SaveService,
     public refreshService: RefreshService,
     private fetcher: FetcherService,
@@ -72,9 +73,9 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
-        switchMap(() => {
+        switchMap(([, internalOrganisationId]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -82,6 +83,8 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
             pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
             pull.IrpfRegime({ sort: new Sort(m.IrpfRegime.Name) })
           ];
+
+          this.customersFilter = Filters.customersFilter(m, internalOrganisationId);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

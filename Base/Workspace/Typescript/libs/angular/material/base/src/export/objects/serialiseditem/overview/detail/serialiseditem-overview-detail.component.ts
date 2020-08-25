@@ -7,10 +7,10 @@ import { MetaService, RefreshService, NavigationService, PanelService, ContextSe
 import { Organisation, Facility, InternalOrganisation, Enumeration, Part, SerialisedItem, SerialisedInventoryItem } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
+import { Filters, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -34,11 +34,12 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
 
   private subscription: Subscription;
   serialisedItemAvailabilities: Enumeration[];
+  internalOrganisationsFilter: SearchFactory;
+  partiesFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
-    public filtersService: FiltersService,
     private metaService: MetaService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
@@ -175,6 +176,9 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
               sort: new Sort(m.Ownership.Name),
             }),
           ];
+
+          this.internalOrganisationsFilter = Filters.internalOrganisationsFilter(m);
+          this.partiesFilter = Filters.partiesFilter(m);
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })

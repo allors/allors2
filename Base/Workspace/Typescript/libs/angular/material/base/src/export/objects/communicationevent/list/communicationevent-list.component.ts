@@ -7,9 +7,8 @@ import { format, formatDistance } from 'date-fns';
 import { ContextService, MetaService, RefreshService, NavigationService, MediaService } from '@allors/angular/services/core';
 import { CommunicationEvent } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { TableRow, Table, EditService, DeleteService, Sorter } from '@allors/angular/material/core';
-import { And, Like } from '@allors/data/system';
-import { Action, TestScope, Filter, FilterDefinition } from '@allors/angular/core';
+import { TableRow, Table, EditService, DeleteService } from '@allors/angular/material/core';
+import { Action, TestScope, Filter } from '@allors/angular/core';
 
 interface Row extends TableRow {
   object: CommunicationEvent;
@@ -79,16 +78,7 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
-
-    const predicate = new And([new Like({ roleType: m.CommunicationEvent.Subject, parameter: 'subject' })]);
-
-    const filterDefinition = new FilterDefinition(predicate);
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      subject: m.CommunicationEvent.Subject,
-      lastModifiedDate: m.CommunicationEvent.LastModifiedDate,
-    });
+    this.filter = m.CommunicationEvent.filter = m.CommunicationEvent.filter ?? new Filter(m.CommunicationEvent.filterDefinition);
 
     this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
@@ -106,8 +96,8 @@ export class CommunicationEventListComponent extends TestScope implements OnInit
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.CommunicationEvent({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.Person.sorter.create(sort) : null,
               include: {
                 CommunicationEventState: x,
                 InvolvedParties: x,

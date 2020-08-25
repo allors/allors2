@@ -18,10 +18,10 @@ import {
   Facility,
 } from '@allors/domain/generated';
 import { Sort, Equals } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './purchasereturn-create.component.html',
@@ -47,10 +47,11 @@ export class PurchaseReturnCreateComponent extends TestScope implements OnInit, 
   private subscription: Subscription;
   facilities: Facility[];
 
+  suppliersFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<PurchaseReturnCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
@@ -78,6 +79,8 @@ export class PurchaseReturnCreateComponent extends TestScope implements OnInit, 
               sort: new Sort(m.Organisation.PartyName),
             })
           ];
+
+          this.suppliersFilter = Filters.suppliersFilter(m, this.internalOrganisationId.value);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

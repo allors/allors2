@@ -10,7 +10,7 @@
 
     <div class="row">
       <a-mat-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" display="Name"
-        [filter]="filtersService.goodsFilter.create(allors.context)" (changed)="goodSelected($event)" class="col-md"></a-mat-autocomplete>
+        [filter]="goodsFilter.create(allors.context)" (changed)="goodSelected($event)" class="col-md"></a-mat-autocomplete>
     </div>
 
     <div class="row">

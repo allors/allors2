@@ -21,7 +21,7 @@ import {
   Employment,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
 import { TestScope } from '@allors/angular/core';
@@ -67,7 +67,6 @@ export class PersonCreateComponent extends TestScope implements OnInit, OnDestro
     public dialogRef: MatDialogRef<PersonCreateComponent>,
     public metaService: MetaService,
     public navigationService: NavigationService,
-    public filtersService: FiltersService,
     public refreshService: RefreshService,
     private route: ActivatedRoute,
     private saveService: SaveService,

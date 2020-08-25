@@ -18,11 +18,10 @@ import {
   RequestForQuote,
 } from '@allors/domain/generated';
 import { Sort } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
-import { TestScope } from '@allors/angular/core';
-
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './requestforquote-create.component.html',
@@ -48,10 +47,11 @@ export class RequestForQuoteCreateComponent extends TestScope implements OnInit,
   private previousOriginator: Party;
   private subscription: Subscription;
 
+  customersFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<RequestForQuoteCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
@@ -68,14 +68,16 @@ export class RequestForQuoteCreateComponent extends TestScope implements OnInit,
 
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
-        switchMap(() => {
+        switchMap(([, internalOrganisationId]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.Currency({ sort: new Sort(m.Currency.Name) })
           ];
+
+          this.customersFilter = Filters.customersFilter(m, internalOrganisationId);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

@@ -22,9 +22,10 @@ import {
   PartyContactMechanism,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
-import { InternalOrganisationId, FiltersService, FetcherService } from '@allors/angular/base';
+import { InternalOrganisationId, FetcherService, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
+
 
 @Component({
   templateUrl: './customershipment-create.component.html',
@@ -56,6 +57,8 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
   shipmentMethods: ShipmentMethod[];
   carriers: Carrier[];
 
+  customersFilter: SearchFactory;
+  
   get shipToCustomerIsPerson(): boolean {
     return !this.customerShipment.ShipToParty || this.customerShipment.ShipToParty.objectType.name === this.m.Person.name;
   }
@@ -64,7 +67,6 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
     @Self() public panelManager: PanelManagerService,
     @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<CustomerShipmentCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
@@ -82,7 +84,7 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
 
     this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
-        switchMap(() => {
+        switchMap(([, internalOrganisationId]) => {
           const isCreate = this.data.id === undefined;
 
           const pulls = [
@@ -96,6 +98,8 @@ export class CustomerShipmentCreateComponent extends TestScope implements OnInit
               sort: new Sort(m.Organisation.PartyName),
             }),
           ];
+
+          this.customersFilter = Filters.customersFilter(m, internalOrganisationId);
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })

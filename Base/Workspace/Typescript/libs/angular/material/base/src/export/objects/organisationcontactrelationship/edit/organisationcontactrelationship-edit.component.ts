@@ -8,10 +8,10 @@ import { Person, Party, Organisation, OrganisationContactRelationship, Organisat
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
 import { Sort } from '@allors/data/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './organisationcontactrelationship-edit.component.html',
@@ -31,13 +31,14 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
   organisations: Organisation[];
   contactKinds: OrganisationContactKind[];
   generalContact: OrganisationContactKind;
+  
+  peopleFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<OrganisationContactRelationshipEditComponent>,
     public metaService: MetaService,
-    public filtersService: FiltersService,
     public refreshService: RefreshService,
     private saveService: SaveService,
     private internalOrganisationId: InternalOrganisationId
@@ -49,8 +50,9 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
 
   public ngOnInit(): void {
     const { pull, x, m } = this.metaService;
+    // this.filters = Filters;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
         switchMap(() => {
           const isCreate = this.data.id === undefined;
@@ -72,6 +74,8 @@ export class OrganisationContactRelationshipEditComponent extends TestScope impl
               sort: new Sort(this.m.OrganisationContactKind.Description),
             }),
           ];
+
+          this.peopleFilter = Filters.peopleFilter(m);
 
           return this.allors.context.load(new PullRequest({ pulls })).pipe(map((loaded) => ({ loaded, isCreate })));
         })
