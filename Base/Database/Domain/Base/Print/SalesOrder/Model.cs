@@ -33,9 +33,9 @@ namespace Allors.Domain.Print.SalesOrderModel
 
             if (TakenByCountry == "BE")
             {
-                this.VatClause = order.DerivedVatClause?.LocalisedClauses.First(v => v.Locale.Equals(new Locales(session).DutchBelgium)).Text;
+                this.VatClause = order.DerivedVatClause?.LocalisedClauses.FirstOrDefault(v => v.Locale.Equals(new Locales(session).DutchBelgium))?.Text;
 
-                if (Equals(order.DerivedVatClause, new VatClauses(session).BeArt14Par2))
+                if (this.VatClause != null && Equals(order.DerivedVatClause, new VatClauses(session).BeArt14Par2))
                 {
                     var shipToCountry = order.ShipToAddress?.Country?.Name;
                     this.VatClause = this.VatClause.Replace("{shipToCountry}", shipToCountry);
