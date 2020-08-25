@@ -83,9 +83,11 @@ export class AllorsMaterialFilterFieldDialogComponent implements OnInit {
 
   selected(filterFieldDefinition: FilterFieldDefinition) {
     this.fieldDefinition = filterFieldDefinition;
-
-    let initialValue = filterFieldDefinition.options?.initialValue;
-    if (initialValue != null) {
+    let initialValue = null;
+    
+    const initial = filterFieldDefinition.options?.initialValue;
+    if (initial != null) {
+      initialValue = initial instanceof Function ? initial() : initial;
       if (filterFieldDefinition.predicate.objectType.isBoolean) {
         initialValue = true;
       }

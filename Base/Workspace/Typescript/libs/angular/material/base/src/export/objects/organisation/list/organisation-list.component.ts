@@ -86,100 +86,9 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
 
   public ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.Organisation.filter = m.Organisation.filter ?? new Filter(m.Organisation.filterDefinition);
 
-    const predicate = new And([
-      new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
-      new ContainedIn({
-        propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
-        extent: new Extent({
-          objectType: m.SupplierRelationship,
-          predicate: new Equals({
-            propertyType: m.SupplierRelationship.InternalOrganisation,
-            parameter: 'supplierFor',
-          }),
-        }),
-      }),
-      new ContainedIn({
-        propertyType: m.Party.CustomerRelationshipsWhereCustomer,
-        extent: new Extent({
-          objectType: m.CustomerRelationship,
-          predicate: new Equals({
-            propertyType: m.CustomerRelationship.InternalOrganisation,
-            parameter: 'customerAt',
-          }),
-        }),
-      }),
-      new ContainedIn({
-        propertyType: m.Party.PartyContactMechanisms,
-        extent: new Extent({
-          objectType: m.PartyContactMechanism,
-          predicate: new ContainedIn({
-            propertyType: m.PartyContactMechanism.ContactMechanism,
-            extent: new Extent({
-              objectType: m.PostalAddress,
-              predicate: new ContainedIn({
-                propertyType: m.PostalAddress.Country,
-                parameter: 'country',
-              }),
-            }),
-          }),
-        }),
-      }),
-      new ContainedIn({
-        propertyType: m.Party.PartyContactMechanisms,
-        extent: new Extent({
-          objectType: m.PartyContactMechanism,
-          predicate: new ContainedIn({
-            propertyType: m.PartyContactMechanism.ContactMechanism,
-            extent: new Extent({
-              objectType: m.PostalAddress,
-              predicate: new Like({
-                roleType: m.PostalAddress.Locality,
-                parameter: 'city',
-              }),
-            }),
-          }),
-        }),
-      }),
-    ]);
-
-    const countrySearch = new SearchFactory({
-      objectType: m.Country,
-      roleTypes: [m.Country.Name],
-    });
-
-    const internalOrganisationSearch = new SearchFactory({
-      objectType: m.Organisation,
-      roleTypes: [m.Organisation.Name],
-      post: (predicate: And) => {
-        predicate.operands.push(new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }));
-      },
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      customerAt: {
-        search: internalOrganisationSearch,
-        initialValue: this.internalOrganisation,
-        display: (v: Organisation) => v && v.Name,
-      },
-      supplierFor: {
-        search: internalOrganisationSearch,
-        initialValue: this.internalOrganisation,
-        display: (v: Organisation) => v && v.Name,
-      },
-      country: {
-        search: countrySearch,
-        display: (v: Country) => v && v.Name,
-      },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      name: m.Organisation.Name,
-      lastModifiedDate: m.Organisation.LastModifiedDate,
-    });
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
@@ -196,8 +105,8 @@ export class OrganisationListComponent extends TestScope implements OnInit, OnDe
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.Organisation({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.Person.sorter.create(sort) : null,
               include: {
                 CustomerRelationshipsWhereCustomer: x,
                 SupplierRelationshipsWhereSupplier: x,

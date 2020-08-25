@@ -5,7 +5,8 @@ import { SearchFactory } from '../search/SearchFactory';
 export class FilterOptions {
   search: SearchFactory;
   display: (v: any) => string;
-  initialValue: any;
+  initialValue: any | ((x: any) => any);
+  
   exist: PropertyType;
 
   constructor(fields: Partial<FilterOptions>) {

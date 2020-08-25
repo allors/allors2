@@ -8,13 +8,10 @@ import { ContextService, MetaService, RefreshService, NavigationService, MediaSe
 import { SearchFactory, FilterDefinition, Filter, TestScope, Action } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
 import { TableRow, Table, OverviewService, DeleteService, Sorter, MethodService } from '@allors/angular/material/core';
-import { Person, Organisation, Party, Product, SerialisedItem, SalesOrder, SalesOrderState } from '@allors/domain/generated';
+import { Person, Organisation, Party, Product, SerialisedItem, SalesOrder, SalesOrderState, SalesInvoiceState, ShipmentState } from '@allors/domain/generated';
 import { And, Equals, ContainedIn, Extent } from '@allors/data/system';
 import { InternalOrganisationId, FetcherService, PrintService } from '@allors/angular/base';
 import { Meta } from '@allors/meta/generated';
-import { SalesInvoiceState } from '../../../../../../../../domain/generated/src/SalesInvoiceState.g';
-import { ShipmentState } from '../../../../../../../../domain/generated/src/ShipmentState.g';
-
 interface Row extends TableRow {
   object: SalesOrder;
   number: string;
