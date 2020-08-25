@@ -22,10 +22,10 @@ import {
   SalesInvoiceType,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './salesinvoice-create.component.html',
@@ -72,6 +72,8 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
   private subscription: Subscription;
   salesInvoiceTypes: SalesInvoiceType[];
 
+  customersFilter: SearchFactory;
+
   get billToCustomerIsPerson(): boolean {
     return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === this.m.Person.name;
   }
@@ -91,7 +93,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SalesInvoiceCreateComponent>,
     public metaService: MetaService,
     private saveService: SaveService,
@@ -107,9 +108,9 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
   public ngOnInit(): void {
     const { m, pull } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.internalOrganisationId.observable$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.internalOrganisationId.observable$])
       .pipe(
-        switchMap(() => {
+        switchMap(([, internalOrganisationId]) => {
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.Currency({
@@ -123,6 +124,8 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
               sort: new Sort(m.SalesInvoiceType.Name),
             }),
           ];
+
+          this.customersFilter = Filters.customersFilter(m, internalOrganisationId);
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })

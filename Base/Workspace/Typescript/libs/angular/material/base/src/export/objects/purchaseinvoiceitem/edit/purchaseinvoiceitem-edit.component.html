@@ -26,7 +26,7 @@
       <div class="row" *ngIf="invoiceItem.InvoiceItemType === productItemType">
         <a-mat-autocomplete class="col-md" *ngIf="invoiceItem.isNew" [object]="invoiceItem"
           [roleType]="m.PurchaseInvoiceItem.Part" display="Name" (changed)="goodSelected($event)"
-          [filter]="filtersService.unifiedGoodsFilter.create(allors.context)"></a-mat-autocomplete>
+          [filter]="unifiedGoodsFilter.create(allors.context)"></a-mat-autocomplete>
         <a-mat-static class="col-md" *ngIf="!invoiceItem.isNew" [object]="invoiceItem"
           [roleType]="m.PurchaseInvoiceItem.Part" display="Name"></a-mat-static>
         <a-mat-select class="col-md" *ngIf="invoiceItem.isNew" [object]="invoiceItem"

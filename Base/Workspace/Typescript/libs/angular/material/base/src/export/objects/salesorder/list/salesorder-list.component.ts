@@ -162,15 +162,15 @@ export class SalesOrderListComponent extends TestScope implements OnInit, OnDest
 
     const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: SalesOrderState) => v && v.Name },
-      invoiceState: { search: invoiceStateSearch, display: (v: SalesInvoiceState) => v && v.Name },
-      shipmentState: { search: shipmentStateSearch, display: (v: ShipmentState) => v && v.Name },
-      shipTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      billTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      shipToEndCustomer: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      billToEndCustomer: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      product: { search: productSearch, display: (v: Product) => v && v.Name },
-      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
+      state: { search: () => stateSearch, display: (v: SalesOrderState) => v && v.Name },
+      invoiceState: { search: () => invoiceStateSearch, display: (v: SalesInvoiceState) => v && v.Name },
+      shipmentState: { search: () => shipmentStateSearch, display: (v: ShipmentState) => v && v.Name },
+      shipTo: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      billTo: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      shipToEndCustomer: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      billToEndCustomer: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      product: { search: () => productSearch, display: (v: Product) => v && v.Name },
+      serialisedItem: { search: () => serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
     this.filter = new Filter(filterDefinition);
 

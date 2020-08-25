@@ -6,7 +6,7 @@
     <div *ngIf="isCustomerShipment">
       <div class="row">
         <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedSalesOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good"
-                            display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)"></a-mat-autocomplete>
+                            display="Name" (changed)="goodSelected($event)" [filter]="goodsFilter.create(allors.context)"></a-mat-autocomplete>
         <a-mat-static class="col-md" *ngIf="selectedSalesOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good" display="Name"></a-mat-static>
         <a-mat-select class="col-md" *ngIf="shipmentItem.isNew && !selectedSalesOrderItem && isSerialized" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
                       [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
@@ -31,7 +31,7 @@
 
       <div class="row">
         <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem && !partIsSelected"  [object]="shipmentItem" [roleType]="m.ShipmentItem.Part"
-                            display="Name" (changed)="goodSelected($event)" [filter]="filtersService.goodsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
+                            display="Name" (changed)="goodSelected($event)" [filter]="goodsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
         <a-mat-select class="col-md" *ngIf="isSerialized" [disabled]="!!selectedPurchaseOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
                       [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
       </div>

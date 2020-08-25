@@ -23,10 +23,10 @@ import {
   ContactMechanism,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './purchaseinvoice-create.component.html',
@@ -77,6 +77,10 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
 
   private subscription: Subscription;
 
+  customersFilter: SearchFactory;
+  employeeFilter: SearchFactory;
+  suppliersFilter: SearchFactory;
+
   get shipToCustomerIsPerson(): boolean {
     return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === this.m.Person.name;
   }
@@ -92,7 +96,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<PurchaseInvoiceCreateComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -126,6 +129,10 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
               sort: new Sort(m.PurchaseInvoiceType.Name),
             })
           ];
+
+          this.customersFilter = Filters.customersFilter(m, this.internalOrganisationId.value);
+          this.employeeFilter = Filters.employeeFilter(m, this.internalOrganisationId.value);
+          this.suppliersFilter = Filters.suppliersFilter(m, this.internalOrganisationId.value);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

@@ -24,7 +24,7 @@
         <div class="row">
           <div class="col-md">
             <div class="row">
-              <a-mat-autocomplete class="col-md" [object]="purchaseShipment" [roleType]="m.PurchaseShipment.ShipFromParty" [filter]="filtersService.suppliersFilter.create(allors.context)"
+              <a-mat-autocomplete class="col-md" [object]="purchaseShipment" [roleType]="m.PurchaseShipment.ShipFromParty" [filter]="suppliersFilter.create(allors.context)"
                                   display="displayName" (changed)="supplierSelected($event)" label="Supplier"></a-mat-autocomplete>
             </div>
           </div>

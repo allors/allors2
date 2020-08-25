@@ -107,8 +107,8 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
 
     const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
-      state: { search: stateSearch, display: (v: QuoteState) => v && v.Name },
-      to: { search: receiverSearch, display: (v: Party) => v && v.PartyName },
+      state: { search: () => stateSearch, display: (v: QuoteState) => v && v.Name },
+      to: { search: () => receiverSearch, display: (v: Party) => v && v.PartyName },
     });
     this.filter = new Filter(filterDefinition);
 

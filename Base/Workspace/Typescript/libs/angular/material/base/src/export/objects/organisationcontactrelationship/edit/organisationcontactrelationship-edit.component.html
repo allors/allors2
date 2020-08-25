@@ -31,7 +31,7 @@
         <div class="col-md">
           <div class="row">
             <a-mat-autocomplete *ngIf="!person" class="col" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Contact"
-            [filter]="filtersService.peopleFilter.create(allors)" display="displayName"></a-mat-autocomplete>
+            [filter]="peopleFilter.create(allors)" display="displayName"></a-mat-autocomplete>
             <a-mat-static *ngIf="person" class="col-md" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Contact"
               display="displayName"></a-mat-static>
             <button *ngIf="!person" mat-mini-fab color="accent" type="button" (click)="addContact = !addContact">

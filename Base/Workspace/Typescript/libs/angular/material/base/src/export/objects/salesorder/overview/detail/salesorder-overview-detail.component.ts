@@ -7,11 +7,11 @@ import { MetaService, RefreshService, PanelService, ContextService } from '@allo
 import { Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, OrganisationContactRelationship, InternalOrganisation, IrpfRegime, ContactMechanism, SalesOrder, ProductQuote, VatRegime, VatClause, Store, SalesOrderItem, Good, SalesInvoice, BillingProcess, SerialisedInventoryItemState, CustomerRelationship } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
+import { Filters, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
 import { ISessionObject } from '@allors/domain/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 
 @Component({
@@ -76,6 +76,8 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
   private subscription: Subscription;
   facilities: Facility[];
 
+  customersFilter: SearchFactory;
+
   get billToCustomerIsPerson(): boolean {
     return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
   }
@@ -95,7 +97,6 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
-    public filtersService: FiltersService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
@@ -281,6 +282,8 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
               }
             ),
           ];
+
+          this.customersFilter = Filters.customersFilter(m, this.internalOrganisationId.value);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

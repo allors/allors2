@@ -8,7 +8,7 @@ import { InventoryItem, Part, Facility, SerialisedInventoryItem, SerialisedItem,
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { FetcherService, FiltersService } from '@allors/angular/base';
+import { FetcherService, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort } from '@allors/data/system';
 import { TestScope, SearchFactory } from '@allors/angular/core';
@@ -47,10 +47,11 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
   supplierOffering: SupplierOffering;
   inRent: SerialisedItemAvailability;
 
+  goodsFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SalesInvoiceItemEditComponent>,
     public refreshService: RefreshService,
     public metaService: MetaService,
@@ -71,7 +72,7 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refreshService.refresh$)
+    this.subscription = combineLatest([this.refreshService.refresh$])
       .pipe(
         switchMap(() => {
 
@@ -140,6 +141,8 @@ export class SalesInvoiceItemEditComponent extends TestScope implements OnInit, 
               })
             );
           }
+
+          this.goodsFilter = Filters.goodsFilter(m);
 
           return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(

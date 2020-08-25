@@ -7,9 +7,9 @@ import { isBefore, isAfter } from 'date-fns';
 import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
 import { InventoryItem, Part, Facility, SerialisedInventoryItem, SerialisedItem, NonSerialisedInventoryItem, PurchaseOrder, PurchaseOrderItem, VatRegime, IrpfRegime, InvoiceItemType, SupplierOffering, UnifiedGood, Product } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { Meta } from '@allors/meta/generated';
+import { Meta, TreeFactory } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
-import { FiltersService } from '@allors/angular/base';
+import { Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Equals, Sort, And, ContainedIn, Extent, LessThan, Or, Not, Exists, GreaterThan } from '@allors/data/system';
 import { TestScope, SearchFactory } from '@allors/angular/core';
@@ -50,11 +50,12 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
 
   private subscription: Subscription;
   partsFilter: SearchFactory;
+  
+  unifiedGoodsFilter: SearchFactory;
 
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<PurchaseOrderItemEditComponent>,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -145,6 +146,8 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
               })
             );
           }
+
+          this.unifiedGoodsFilter = Filters.unifiedGoodsFilter(m, this.metaService.tree);
 
           return this.allors.context.load(new PullRequest({ pulls }))
             .pipe(

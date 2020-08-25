@@ -6,11 +6,11 @@ import { MetaService, RefreshService, NavigationService, PanelService, ContextSe
 import { Organisation, PartyContactMechanism, Party, Currency, PostalAddress, Person, Facility, ShipmentMethod, Carrier, OrganisationContactRelationship, PurchaseShipment } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
-import { FiltersService, FetcherService, InternalOrganisationId } from '@allors/angular/base';
+import { Filters, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
 import { ISessionObject } from '@allors/domain/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -43,6 +43,8 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
   private refresh$: BehaviorSubject<Date>;
   previousShipFromParty: Party;
 
+  suppliersFilter: SearchFactory;
+
   get shipFromCustomerIsPerson(): boolean {
     return !this.purchaseShipment.ShipFromParty || this.purchaseShipment.ShipFromParty.objectType.name === this.m.Person.name;
   }
@@ -51,7 +53,6 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     private metaService: MetaService,
-    public filtersService: FiltersService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
@@ -100,7 +101,7 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(this.refresh$, this.panel.manager.on$)
+    this.subscription = combineLatest([this.refresh$, this.panel.manager.on$])
       .pipe(
         filter(() => {
           return this.panel.isExpanded;
@@ -157,6 +158,8 @@ export class PurchaseShipmentOverviewDetailComponent extends TestScope implement
               }
             }),
           ];
+          
+          this.suppliersFilter = Filters.suppliersFilter(m, this.internalOrganisationId.value);
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })

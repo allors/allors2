@@ -6,11 +6,11 @@ import { switchMap, filter } from 'rxjs/operators';
 import { MetaService, RefreshService, PanelService, ContextService } from '@allors/angular/services/core';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
-import { FiltersService, FetcherService } from '@allors/angular/base';
+import { Filters, FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort, Equals } from '@allors/data/system';
 import { ISessionObject } from '@allors/domain/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 import {
   PurchaseInvoice,
   Currency,
@@ -77,6 +77,10 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   private subscription: Subscription;
   internalOrganisation: Organisation;
 
+  customersFilter: SearchFactory;
+  employeeFilter: SearchFactory;
+  suppliersFilter: SearchFactory;
+
   get shipToCustomerIsPerson(): boolean {
     return !this.invoice.ShipToCustomer || this.invoice.ShipToCustomer.objectType.name === this.m.Person.name;
   }
@@ -92,11 +96,11 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
-    public filtersService: FiltersService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     private saveService: SaveService,
-    public fetcher: FetcherService
+    public fetcher: FetcherService,
+    private internalOrganisationId: InternalOrganisationId
   ) {
     super();
 
@@ -200,6 +204,10 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
               sort: new Sort(m.PurchaseInvoiceType.Name),
             }),
           ];
+
+          this.customersFilter = Filters.customersFilter(m, this.internalOrganisationId.value);
+          this.employeeFilter = Filters.employeeFilter(m, this.internalOrganisationId.value);
+          this.suppliersFilter = Filters.suppliersFilter(m, this.internalOrganisationId.value);
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })

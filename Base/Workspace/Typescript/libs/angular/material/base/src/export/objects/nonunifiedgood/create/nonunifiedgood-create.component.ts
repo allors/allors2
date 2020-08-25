@@ -19,9 +19,9 @@ import {
   Settings,
 } from '@allors/domain/generated';
 import { Sort } from '@allors/data/system';
-import { FiltersService, FetcherService } from '@allors/angular/base';
+import { FetcherService, Filters } from '@allors/angular/base';
 import { IObject } from '@allors/domain/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './nonunifiedgood-create.component.html',
@@ -49,12 +49,13 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
 
   private subscription: Subscription;
 
+  nonUnifiedPartsFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
     public dialogRef: MatDialogRef<NonUnifiedGoodCreateComponent>,
     public metaService: MetaService,
-    public filtersService: FiltersService,
     private refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
@@ -82,6 +83,8 @@ export class NonUnifiedGoodCreateComponent extends TestScope implements OnInit, 
             pull.ProductIdentificationType(),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
           ];
+
+          this.nonUnifiedPartsFilter = Filters.nonUnifiedPartsFilter(m);
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })

@@ -97,8 +97,8 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
     });
 
     const filterDefinition = new FilterDefinition(predicate, {
-      scope: { search: scopeSearch, display: (v: CatScope) => v && v.Name },
-      product: { search: productSearch, display: (v: Good) => v && v.Name },
+      scope: { search: () => scopeSearch, display: (v: CatScope) => v && v.Name },
+      product: { search: () => productSearch, display: (v: Good) => v && v.Name },
     });
     this.filter = new Filter(filterDefinition);
 

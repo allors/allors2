@@ -254,11 +254,11 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
     });
 
     const filterDefinition = new FilterDefinition(predicate, {
-      type: { search: typeSearch, display: (v: PurchaseInvoiceType) => v && v.Name },
-      state: { search: stateSearch, display: (v: PurchaseInvoiceState) => v && v.Name },
-      supplier: { search: supplierSearch, display: (v: Party) => v && v.PartyName },
-      sparePart: { search: partSearch, display: (v: Part) => v && v.Name },
-      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
+      type: { search: () => typeSearch, display: (v: PurchaseInvoiceType) => v && v.Name },
+      state: { search: () => stateSearch, display: (v: PurchaseInvoiceState) => v && v.Name },
+      supplier: { search: () => supplierSearch, display: (v: Party) => v && v.PartyName },
+      sparePart: { search: () => partSearch, display: (v: Part) => v && v.Name },
+      serialisedItem: { search: () => serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
     this.filter = new Filter(filterDefinition);
 

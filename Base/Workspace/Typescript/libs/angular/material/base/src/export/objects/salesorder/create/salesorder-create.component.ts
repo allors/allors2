@@ -22,10 +22,10 @@ import {
   Store,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
-import { FetcherService, InternalOrganisationId, FiltersService } from '@allors/angular/base';
+import { FetcherService, InternalOrganisationId, Filters } from '@allors/angular/base';
 import { IObject, ISessionObject } from '@allors/domain/system';
 import { Meta } from '@allors/meta/generated';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   templateUrl: './salesorder-create.component.html',
@@ -77,6 +77,8 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
   private previousBillToEndCustomer: Party;
   private subscription: Subscription;
 
+  customersFilter: SearchFactory;
+
   get billToCustomerIsPerson(): boolean {
     return !this.order.BillToCustomer || this.order.BillToCustomer.objectType.name === this.m.Person.name;
   }
@@ -96,7 +98,6 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
   constructor(
     @Self() public allors: ContextService,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: ObjectData,
-    public filtersService: FiltersService,
     public dialogRef: MatDialogRef<SalesOrderCreateComponent>,
     public metaService: MetaService,
     private refreshService: RefreshService,
@@ -145,6 +146,8 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
               }
             ),
           ];
+
+          this.customersFilter = Filters.customersFilter(m, internalOrganisationId);
 
           return this.allors.context
             .load(new PullRequest({ pulls }));

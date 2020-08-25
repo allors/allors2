@@ -6,10 +6,10 @@ import { MetaService, RefreshService, NavigationService, PanelService, ContextSe
 import { Organisation, ProductType, ProductCategory, VatRate, Brand, Model, ProductIdentificationType, ProductNumber, NonUnifiedGood, Ownership, ProductFeatureApplicability, ProductDimension } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
-import { FiltersService, FetcherService } from '@allors/angular/base';
+import { FetcherService, Filters } from '@allors/angular/base';
 import { PullRequest } from '@allors/protocol/system';
 import { Sort } from '@allors/data/system';
-import { TestScope } from '@allors/angular/core';
+import { TestScope, SearchFactory } from '@allors/angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -46,11 +46,12 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
 
+  nonUnifiedPartsFilter: SearchFactory;
+
   constructor(
     @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     private metaService: MetaService,
-    public filtersService: FiltersService,
     public refreshService: RefreshService,
     public navigationService: NavigationService,
     private saveService: SaveService,
@@ -106,7 +107,7 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
   public ngOnInit(): void {
 
     // Maximized
-    this.subscription = combineLatest(this.refresh$, this.panel.manager.on$)
+    this.subscription = combineLatest([this.refresh$, this.panel.manager.on$])
       .pipe(
         filter(() => {
           return this.panel.isExpanded;
@@ -172,6 +173,8 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
               }
             }),
           ];
+
+          this.nonUnifiedPartsFilter = Filters.nonUnifiedPartsFilter(m);
 
           return this.allors.context.load(new PullRequest({ pulls }));
         })

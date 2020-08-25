@@ -21,10 +21,18 @@ import {
   NonSerialisedInventoryItem,
 } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
-import { ContextService, MetaService, RefreshService, NavigationService, MediaService, UserId, SingletonId } from '@allors/angular/services/core';
+import {
+  ContextService,
+  MetaService,
+  RefreshService,
+  NavigationService,
+  MediaService,
+  UserId,
+  SingletonId,
+} from '@allors/angular/services/core';
 import { ObjectService, SaveService } from '@allors/angular/material/services/core';
 import { SearchFactory, FilterDefinition, Filter, Action } from '@allors/angular/core';
-import { PrintService, FiltersService } from '@allors/angular/base';
+import { PrintService, Filters } from '@allors/angular/base';
 import { TableRow, Table, OverviewService, DeleteService, Sorter } from '@allors/angular/material/core';
 import { And, Like, Or, ContainedIn, Extent, Contains, Equals } from '@allors/data/system';
 import { FetcherService, InternalOrganisationId } from '@allors/angular/base';
@@ -75,7 +83,6 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     public printService: PrintService,
-    private filtersService: FiltersService,
     private saveService: SaveService,
     private singletonId: SingletonId,
     private fetcher: FetcherService,
@@ -214,16 +221,16 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
     });
 
     const filterDefinition = new FilterDefinition(predicate, {
-      supplier: { search: this.filtersService.allSuppliersFilter, display: (v: Organisation) => v && v.PartyName },
-      manufacturer: { search: manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
-      brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
-      model: { search: modelSearch, display: (v: Model) => v && v.Name },
-      kind: { search: kindSearch, display: (v: InventoryItemKind) => v && v.Name },
-      type: { search: typeSearch, display: (v: ProductType) => v && v.Name },
-      category: { search: categorySearch, display: (v: PartCategory) => v && v.Name },
-      identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
-      inStock: { search: facilitySearch, display: (v: Facility) => v && v.Name },
-      outOfStock: { search: facilitySearch, display: (v: Facility) => v && v.Name },
+      supplier: { search: () => Filters.allSuppliersFilter(m), display: (v: Organisation) => v && v.PartyName },
+      manufacturer: { search: () => manufacturerSearch, display: (v: Organisation) => v && v.PartyName },
+      brand: { search: () => brandSearch, display: (v: Brand) => v && v.Name },
+      model: { search: () => modelSearch, display: (v: Model) => v && v.Name },
+      kind: { search: () => kindSearch, display: (v: InventoryItemKind) => v && v.Name },
+      type: { search: () => typeSearch, display: (v: ProductType) => v && v.Name },
+      category: { search: () => categorySearch, display: (v: PartCategory) => v && v.Name },
+      identification: { search: () => idSearch, display: (v: ProductIdentification) => v && v.Identification },
+      inStock: { search: () => facilitySearch, display: (v: Facility) => v && v.Name },
+      outOfStock: { search: () => facilitySearch, display: (v: Facility) => v && v.Name },
     });
     this.filter = new Filter(filterDefinition);
 
@@ -351,7 +358,6 @@ export class NonUnifiedPartListComponent implements OnInit, OnDestroy {
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         const partCategories = loaded.collections.PartCategories as PartCategory[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
-
 
         this.table.total = loaded.values.NonUnifiedParts_total;
 

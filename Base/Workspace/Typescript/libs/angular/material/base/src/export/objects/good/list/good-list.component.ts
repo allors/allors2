@@ -65,69 +65,9 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.Good.filter = m.Good.filter ?? new Filter(m.Good.filterDefinition);
 
-    const predicate = new And([
-      new Like({ roleType: m.Good.Name, parameter: 'name' }),
-      new Like({ roleType: m.Good.Keywords, parameter: 'keyword' }),
-      new Contains({ propertyType: m.Good.ProductCategoriesWhereProduct, parameter: 'category' }),
-      new Contains({ propertyType: m.Good.ProductIdentifications, parameter: 'identification' }),
-      new Exists({ propertyType: m.Good.SalesDiscontinuationDate, parameter: 'discontinued' }),
-      // TODO: use Or filter
-      // new ContainedIn({
-      //   propertyType: m.NonUnifiedGood.Part,
-      //   extent: new Extent({
-      //     objectType: m.Part,
-      //     predicate: new Equals({
-      //       propertyType: m.Part.Brand,
-      //       parameter: 'brand'
-      //     })
-      //   })
-      // }),
-      // new ContainedIn({
-      //   propertyType: m.NonUnifiedGood.Part,
-      //   extent: new Extent({
-      //     objectType: m.Part,
-      //     predicate: new Equals({
-      //       propertyType: m.Part.Model,
-      //       parameter: 'model'
-      //     })
-      //   })
-      // })
-    ]);
-
-    const modelSearch = new SearchFactory({
-      objectType: m.Model,
-      roleTypes: [m.Model.Name],
-    });
-
-    const brandSearch = new SearchFactory({
-      objectType: m.Brand,
-      roleTypes: [m.Brand.Name],
-    });
-
-    const categorySearch = new SearchFactory({
-      objectType: m.ProductCategory,
-      roleTypes: [m.ProductCategory.Name],
-    });
-
-    const idSearch = new SearchFactory({
-      objectType: m.ProductIdentification,
-      roleTypes: [m.ProductIdentification.Identification],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      category: { search: categorySearch, display: (v: ProductCategory) => v && v.Name },
-      identification: { search: idSearch, display: (v: ProductIdentification) => v && v.Identification },
-      brand: { search: brandSearch, display: (v: Brand) => v && v.Name },
-      model: { search: modelSearch, display: (v: Model) => v && v.Name },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      name: [m.Good.Name],
-    });
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
@@ -143,8 +83,8 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.Good({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.Person.sorter.create(sort) : null,
               include: {
                 NonUnifiedGood_Part: x,
                 ProductIdentifications: {
@@ -156,8 +96,8 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             }),
             pull.Good({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.Person.sorter.create(sort) : null,
               fetch: {
                 ProductCategoriesWhereProduct: {
                   include: {
@@ -195,7 +135,7 @@ export class GoodListComponent extends TestScope implements OnInit, OnDestroy {
         });
       });
   }
-
+  
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();

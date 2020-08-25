@@ -264,14 +264,14 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
     const filterDefinition = new FilterDefinition(predicate, {
       repeating: { initialValue: true },
       active: { initialValue: true },
-      type: { search: typeSearch, display: (v: SalesInvoiceType) => v && v.Name },
-      state: { search: stateSearch, display: (v: SalesInvoiceState) => v && v.Name },
-      shipTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      billTo: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      shipToEndCustomer: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      billToEndCustomer: { search: partySearch, display: (v: Party) => v && v.PartyName },
-      product: { search: productSearch, display: (v: Product) => v && v.Name },
-      serialisedItem: { search: serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
+      type: { search: () => typeSearch, display: (v: SalesInvoiceType) => v && v.Name },
+      state: { search: () => stateSearch, display: (v: SalesInvoiceState) => v && v.Name },
+      shipTo: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      billTo: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      shipToEndCustomer: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      billToEndCustomer: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
+      product: { search: () => productSearch, display: (v: Product) => v && v.Name },
+      serialisedItem: { search: () => serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
     });
     this.filter = new Filter(filterDefinition);
 

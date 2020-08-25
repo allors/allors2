@@ -48,7 +48,7 @@ export class AllorsMaterialFilterFieldSearchComponent implements OnInit {
         if (!this.filterFieldDefinition?.options) {
           return of([]);
         } else {
-          return this.filterFieldDefinition.options.search.create(this.allors)(value);
+          return this.filterFieldDefinition.options.search().create(this.allors)(value);
         }
       }),
     );

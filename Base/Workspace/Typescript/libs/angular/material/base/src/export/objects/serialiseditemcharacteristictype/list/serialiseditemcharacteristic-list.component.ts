@@ -87,7 +87,7 @@ export class SerialisedItemCharacteristicListComponent extends TestScope impleme
 
     const filterDefinition = new FilterDefinition(predicate, {
       active: { initialValue: true },
-      uom: { search: uomSearch, display: (v: IUnitOfMeasure) => v && v.Name },
+      uom: { search: () => uomSearch, display: (v: IUnitOfMeasure) => v && v.Name },
     });
     this.filter = new Filter(filterDefinition);
 
