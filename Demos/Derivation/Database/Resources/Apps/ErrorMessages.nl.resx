@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountNumberUniqueWithinChartOfAccounts" xml:space="preserve">
+    <value>Rekeningnummer moet uniek zijn binnen het rekeningstelsel</value>
+  </data>
+  <data name="ActiveDeploymentRegistered" xml:space="preserve">
+    <value>actieve werknemer bij {0}</value>
+  </data>
+  <data name="BasePriceOrderQuantityBreakNotAllowed" xml:space="preserve">
+    <value>order korting in aantal niet toegestaan voor een basisprijs</value>
+  </data>
+  <data name="BasePriceOrderValueNotAllowed" xml:space="preserve">
+    <value>order korting in prijs niet toegestaan voor een basisprijs</value>
+  </data>
+  <data name="BasePriceRevenueQuantityBreakNotAllowed" xml:space="preserve">
+    <value>volume korting in aantal niet toegestaan voor een basisprijs</value>
+  </data>
+  <data name="BasePriceRevenueValueBreakNotAllowed" xml:space="preserve">
+    <value>volume korting in prijs niet toegestaan voor een basisprijs</value>
+  </data>
+  <data name="CostCenterNotAllowed" xml:space="preserve">
+    <value>Kostenplaats niet in lijst van toegestane kostenplaatsen</value>
+  </data>
+  <data name="CostUnitNotAllowed" xml:space="preserve">
+    <value>Kostendrager niet in lijst van toegestane kostendragers</value>
+  </data>
+  <data name="GeneralLedgerAccountNotBalanceAccount" xml:space="preserve">
+    <value>Grootboek rekening moet balans rekening zijn.</value>
+  </data>
+  <data name="GeneralLedgerAccountNotNeutral" xml:space="preserve">
+    <value>Grootboek rekening al toegewezen</value>
+  </data>
+  <data name="IbanCheckDigitsError" xml:space="preserve">
+    <value>IBAN controle nummers zijn fout</value>
+  </data>
+  <data name="IbanIllegalCharacters" xml:space="preserve">
+    <value>IBAN bevat ongeldige tekens</value>
+  </data>
+  <data name="IbanIncorrect" xml:space="preserve">
+    <value>Het IBAN nummer is niet correct</value>
+  </data>
+  <data name="IbanLengthFailure" xml:space="preserve">
+    <value>IBAN lengte is fout</value>
+  </data>
+  <data name="IbanStructuralFailure" xml:space="preserve">
+    <value>IBAN structuur past niet bij land</value>
+  </data>
+  <data name="IbanValidationUnavailable" xml:space="preserve">
+    <value>IBAN validatie regels voor dit land zijn onbekend</value>
+  </data>
+  <data name="NotACostCenterAccount" xml:space="preserve">
+    <value>Rekening is geen kostenplaats rekening</value>
+  </data>
+  <data name="NotACostUnitAccount" xml:space="preserve">
+    <value>Rekening is geen kostendrager rekening</value>
+  </data>
+  <data name="NotAValidBic" xml:space="preserve">
+    <value>geen geldige BIC code</value>
+  </data>
+  <data name="PackagingContentMaximum" xml:space="preserve">
+    <value>maximale inhoud pakket</value>
+  </data>
+  <data name="PartyIsNotACustomer" xml:space="preserve">
+    <value>Gekozen partij is geen klant voor deze interne organisatie</value>
+  </data>
+  <data name="PartyIsNotASupplier" xml:space="preserve">
+    <value>Gekozen partij is geen leverancier voor deze interne organisatie</value>
+  </data>
+  <data name="PaymentApplicationNotLargerThanInvoiceAmount" xml:space="preserve">
+    <value>bedrag kan niet groter zijn dan bedrag van factuur</value>
+  </data>
+  <data name="PaymentApplicationNotLargerThanInvoiceItemAmount" xml:space="preserve">
+    <value>bedrag kan niet groter zijn dan bedrag van factuurlijn</value>
+  </data>
+  <data name="PaymentApplicationNotLargerThanPaymentAmount" xml:space="preserve">
+    <value>bedrag kan niet groter zijn dan bedrag van betaling</value>
+  </data>
+  <data name="PaymentMethodNotAllowedForInternalOrganisation" xml:space="preserve">
+    <value>Betaalmethode niet beschikbaar voor eigenaar van deze store</value>
+  </data>
+  <data name="PickListItemQuantityMoreThanAllowed" xml:space="preserve">
+    <value>hoeveelheid overschreidt toegestane</value>
+  </data>
+  <data name="ProductCategoryPackageOnlyAtLowestLevel" xml:space="preserve">
+    <value>pakket alleen toegestaan op laagste niveau</value>
+  </data>
+  <data name="ReceiptAmountIsToSmall" xml:space="preserve">
+    <value>bedrag is te klein</value>
+  </data>
+  <data name="SalesOrderItemLessThanAlreadeyShipped" xml:space="preserve">
+    <value>hoeveelheid kleiner dan reeds verzonden</value>
+  </data>
+  <data name="SalesOrderItemProductChangeNotAllowed" xml:space="preserve">
+    <value>productwissel niet toegestaan, gebruik annuleer orderlijn in de plaats</value>
+  </data>
+  <data name="SalesOrderItemQuantityToShipNowNotAvailable" xml:space="preserve">
+    <value>Het aantal dat nu verzonden moet worden is niet beschikbaar</value>
+  </data>
+  <data name="SalesOrderItemQuantityToShipNowIsLargerThanQuantityOrdered" xml:space="preserve">
+    <value>Het aantal dat nu verzonden moet worden is meer dan het orderitem aantal</value>
+  </data>
+  <data name="SalesOrderItemQuantityToShipNowIsLargerThanQuantityRemaining" xml:space="preserve">
+    <value>Het aantal dat nu verzonden moet worden is meer dan het resterende aantal dat nog verzonden moet worden</value>
+  </data>
+</root>
