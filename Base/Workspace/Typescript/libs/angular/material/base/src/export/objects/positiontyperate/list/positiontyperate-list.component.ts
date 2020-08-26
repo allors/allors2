@@ -82,37 +82,9 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.PositionTypeRate.filter = m.PositionTypeRate.filter ?? new Filter(m.PositionTypeRate.filterDefinition);
 
-    const predicate = new And([
-      new Contains({ propertyType: m.PositionTypeRate.PositionTypesWherePositionTypeRate, parameter: 'positionType' }),
-      new Equals({ propertyType: m.PositionTypeRate.RateType, parameter: 'rateType' }),
-    ]);
-
-    const positionTypeSearch = new SearchFactory({
-      objectType: m.PositionType,
-      roleTypes: [m.PositionType.Title],
-    });
-
-    const rateTypeSearch = new SearchFactory({
-      objectType: m.RateType,
-      roleTypes: [m.RateType.Name],
-      predicates: [new Equals({ propertyType: m.RateType.IsActive, value: true })],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      active: { initialValue: true },
-      positionType: { search: () => positionTypeSearch, display: (v: PositionType) => v && v.Title },
-      rateType: { search: () => rateTypeSearch, display: (v: RateType) => v && v.Name },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      rate: m.PositionTypeRate.Rate,
-      from: m.PositionTypeRate.FromDate,
-      through: m.PositionTypeRate.ThroughDate,
-    });
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
@@ -128,8 +100,8 @@ export class PositionTypeRatesOverviewComponent extends TestScope implements OnI
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.PositionTypeRate({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.PositionTypeRate.sorter.create(sort) : null,
               include: {
                 Frequency: x,
                 RateType: x,

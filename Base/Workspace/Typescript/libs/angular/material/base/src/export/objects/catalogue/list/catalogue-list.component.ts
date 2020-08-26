@@ -80,29 +80,13 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
   ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
+    this.filter = m.Catalogue.filter = m.Catalogue.filter ?? new Filter(m.Catalogue.filterDefinition);
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.Catalogue.InternalOrganisation });
     const predicate = new And([
       internalOrganisationPredicate,
-      new Like({ roleType: m.Catalogue.Name, parameter: 'Name' }),
-      new Equals({ propertyType: m.Catalogue.CatScope, parameter: 'Scope' }),
+      this.filter.definition.predicate
     ]);
-
-    const scopeSearch = new SearchFactory({
-      objectType: m.CatScope,
-      roleTypes: [m.CatScope.Name],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, { Scope: { search: () => scopeSearch, display: (v: CatScope) => v && v.Name } });
-    this.filter = new Filter(filterDefinition);
-    
-    const sorter = new Sorter(
-      {
-        name: m.Catalogue.Name,
-        description: m.Catalogue.Description,
-        scope: m.CatScope.Name,
-      }
-    );
 
     this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$, this.internalOrganisationId.observable$])
       .pipe(
@@ -121,8 +105,8 @@ export class CataloguesListComponent extends TestScope implements OnInit, OnDest
 
           const pulls = [
             pull.Catalogue({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: predicate,
+              sort: sort ? m.Catalogue.sorter.create(sort) : null,
               include: {
                 CatalogueImage: x,
                 ProductCategories: x,

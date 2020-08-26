@@ -83,59 +83,18 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.Shipment.filter = m.Shipment.filter ?? new Filter(m.Shipment.filterDefinition);
 
     const fromInternalOrganisationPredicate = new Equals({ propertyType: m.Shipment.ShipFromParty });
     const toInternalOrganisationPredicate = new Equals({ propertyType: m.Shipment.ShipToParty });
-    const supplierPredicate = new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation });
 
     const predicate = new And([
       new Or([fromInternalOrganisationPredicate, toInternalOrganisationPredicate]),
-      new Equals({ propertyType: m.Shipment.ShipmentNumber, parameter: 'number' }),
-      new Equals({ propertyType: m.Shipment.ShipmentState, parameter: 'state' }),
-      new Equals({ propertyType: m.Shipment.ShipToParty, parameter: 'supplier' }),
-      new ContainedIn({
-        propertyType: m.Shipment.ShipmentItems,
-        extent: new Extent({
-          objectType: m.ShipmentItem,
-          predicate: new ContainedIn({
-            propertyType: m.ShipmentItem.Part,
-            parameter: 'part',
-          }),
-        }),
-      }),
+      this.filter.definition.predicate
     ]);
 
-    const stateSearch = new SearchFactory({
-      objectType: m.ShipmentState,
-      roleTypes: [m.ShipmentState.Name],
-    });
-
-    const supplierSearch = new SearchFactory({
-      objectType: m.Organisation,
-      predicates: [
-        new ContainedIn({
-          propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
-          extent: new Extent({
-            objectType: m.SupplierRelationship,
-            predicate: supplierPredicate,
-          }),
-        }),
-      ],
-      roleTypes: [m.Organisation.PartyName],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      active: { initialValue: true },
-      state: { search: () => stateSearch, display: (v: ShipmentState) => v && v.Name },
-      supplier: { search: () => supplierSearch, display: (v: Party) => v && v.PartyName },
-    });
-    this.filter = new Filter(filterDefinition);
 
     const sorter = new Sorter({
-      number: m.Shipment.SortableShipmentNumber,
-      from: m.Shipment.ShipFromParty,
-      to: m.Shipment.ShipToParty,
-      lastModifiedDate: m.Shipment.LastModifiedDate,
     });
 
     this.subscription = combineLatest(
@@ -161,12 +120,11 @@ export class ShipmentListComponent extends TestScope implements OnInit, OnDestro
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
           fromInternalOrganisationPredicate.object = internalOrganisationId;
           toInternalOrganisationPredicate.object = internalOrganisationId;
-          supplierPredicate.object = internalOrganisationId;
 
           const pulls = [
             pull.Shipment({
               predicate,
-              sort: sorter.create(sort),
+              sort: sort ? m.Shipment.sorter.create(sort) : null,
               include: {
                 ShipToParty: x,
                 ShipFromParty: x,

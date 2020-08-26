@@ -86,75 +86,21 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
 
   public ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.WorkEffort.filter = m.WorkEffort.filter ?? new Filter(m.WorkEffort.filterDefinition);
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.WorkEffort.TakenBy });
     const predicate = new And([
       internalOrganisationPredicate,
-      new Equals({ propertyType: m.WorkEffort.WorkEffortState, parameter: 'state' }),
-      new Equals({ propertyType: m.WorkEffort.Customer, parameter: 'customer' }),
-      new Equals({ propertyType: m.WorkEffort.ExecutedBy, parameter: 'ExecutedBy' }),
-      new Like({ roleType: m.WorkEffort.WorkEffortNumber, parameter: 'Number' }),
-      new Like({ roleType: m.WorkEffort.Name, parameter: 'Name' }),
-      new Like({ roleType: m.WorkEffort.Description, parameter: 'Description' }),
-      new ContainedIn({
-        propertyType: m.WorkEffort.WorkEffortPartyAssignmentsWhereAssignment,
-        extent: new Extent({
-          objectType: m.WorkEffortPartyAssignment,
-          predicate: new Equals({ propertyType: m.WorkEffortPartyAssignment.Party, parameter: 'worker' }),
-        }),
-      }),
-      new ContainedIn({
-        propertyType: m.WorkEffort.WorkEffortFixedAssetAssignmentsWhereAssignment,
-        extent: new Extent({
-          objectType: m.WorkEffortFixedAssetAssignment,
-          predicate: new Equals({ propertyType: m.WorkEffortFixedAssetAssignment.FixedAsset, parameter: 'equipment' }),
-        }),
-      }),
+      this.filter.definition.predicate
     ]);
 
-    const stateSearch = new SearchFactory({
-      objectType: m.WorkEffortState,
-      roleTypes: [m.WorkEffortState.Name],
-    });
-
-    const partySearch = new SearchFactory({
-      objectType: m.Party,
-      roleTypes: [m.Party.PartyName],
-    });
-
-    const personSearch = new SearchFactory({
-      objectType: m.Person,
-      roleTypes: [m.Person.PartyName, m.Person.UserName],
-    });
-
-    const equipmentSearch = new SearchFactory({
-      objectType: m.FixedAsset,
-      roleTypes: [m.FixedAsset.SearchString],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      state: { search: () => stateSearch, display: (v: WorkEffortState) => v && v.Name },
-      customer: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
-      ExecutedBy: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
-      worker: { search: () => personSearch, display: (v: Person) => v && v.displayName },
-      equipment: { search: () => equipmentSearch, display: (v: FixedAsset) => v && v.displayName },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      number: [m.WorkEffort.SortableWorkEffortNumber],
-      name: [m.WorkEffort.Name],
-      description: [m.WorkEffort.Description],
-      lastModifiedDate: m.Person.LastModifiedDate,
-    });
-
-    this.subscription = combineLatest(
+    this.subscription = combineLatest([
       this.refreshService.refresh$,
       this.filter.fields$,
       this.table.sort$,
       this.table.pager$,
       this.internalOrganisationId.observable$
-    )
+    ])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
@@ -174,7 +120,7 @@ export class WorkEffortListComponent extends TestScope implements OnInit, OnDest
           const pulls = [
             pull.WorkEffort({
               predicate,
-              sort: sorter.create(sort),
+              sort: sort ? m.WorkEffort.sorter.create(sort) : null,
               include: {
                 Customer: x,
                 ExecutedBy: x,

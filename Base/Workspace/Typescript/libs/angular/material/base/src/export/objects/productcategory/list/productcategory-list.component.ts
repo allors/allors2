@@ -4,11 +4,11 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, NavigationService, MediaService } from '@allors/angular/services/core';
-import { SearchFactory, FilterDefinition, Filter, TestScope, Action } from '@allors/angular/core';
+import { Filter, TestScope, Action } from '@allors/angular/core';
 import { PullRequest } from '@allors/protocol/system';
-import { TableRow, Table, OverviewService, DeleteService, Sorter, EditService } from '@allors/angular/material/core';
-import { ProductCategory, CatScope, Good } from '@allors/domain/generated';
-import { And, Like, Equals, Contains } from '@allors/data/system';
+import { TableRow, Table, OverviewService, DeleteService, EditService } from '@allors/angular/material/core';
+import { ProductCategory } from '@allors/domain/generated';
+import { And, Equals } from '@allors/data/system';
 import { InternalOrganisationId } from '@allors/angular/base';
 
 interface Row extends TableRow {
@@ -77,44 +77,21 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.ProductCategory.filter = m.ProductCategory.filter ?? new Filter(m.ProductCategory.filterDefinition);
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.ProductCategory.InternalOrganisation });
     const predicate = new And([
       internalOrganisationPredicate,
-      new Like({ roleType: m.ProductCategory.Name, parameter: 'name' }),
-      new Equals({ propertyType: m.ProductCategory.CatScope, parameter: 'scope' }),
-      new Contains({ propertyType: m.ProductCategory.Products, parameter: 'product' }),
+      this.filter.definition.predicate
     ]);
 
-    const scopeSearch = new SearchFactory({
-      objectType: m.CatScope,
-      roleTypes: [m.CatScope.Name],
-    });
-
-    const productSearch = new SearchFactory({
-      objectType: m.Good,
-      roleTypes: [m.Good.Name],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      scope: { search: () => scopeSearch, display: (v: CatScope) => v && v.Name },
-      product: { search: () => productSearch, display: (v: Good) => v && v.Name },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      name: m.Catalogue.Name,
-      description: m.Catalogue.Description,
-      scope: m.CatScope.Name,
-    });
-
-    this.subscription = combineLatest(
+    this.subscription = combineLatest([
       this.refreshService.refresh$,
       this.filter.fields$,
       this.table.sort$,
       this.table.pager$,
       this.internalOrganisationId.observable$
-    )
+    ])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
@@ -133,8 +110,8 @@ export class ProductCategoryListComponent extends TestScope implements OnInit, O
 
           const pulls = [
             pull.ProductCategory({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: predicate,
+              sort: sort ? m.ProductCategory.sorter.create(sort) : null,
               include: {
                 CategoryImage: x,
                 LocalisedNames: x,

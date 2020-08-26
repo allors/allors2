@@ -72,32 +72,9 @@ export class SerialisedItemCharacteristicListComponent extends TestScope impleme
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.SerialisedItemCharacteristic.filter = m.SerialisedItemCharacteristic.filter ?? new Filter(m.SerialisedItemCharacteristic.filterDefinition);
 
-    const predicate = new And([
-      new Like({ roleType: m.SerialisedItemCharacteristicType.Name, parameter: 'name' }),
-      new Equals({ propertyType: m.SerialisedItemCharacteristicType.IsActive, parameter: 'active' }),
-      new Equals({ propertyType: m.SerialisedItemCharacteristicType.UnitOfMeasure, parameter: 'uom' }),
-    ]);
-
-    const uomSearch = new SearchFactory({
-      objectType: m.IUnitOfMeasure,
-      roleTypes: [m.IUnitOfMeasure.Name],
-      predicates: [new Equals({ propertyType: m.IUnitOfMeasure.IsActive, value: true })],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      active: { initialValue: true },
-      uom: { search: () => uomSearch, display: (v: IUnitOfMeasure) => v && v.Name },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      name: m.SerialisedItemCharacteristicType.Name,
-      uom: m.UnitOfMeasure.Name,
-      active: m.SerialisedItemCharacteristicType.IsActive,
-    });
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
@@ -113,8 +90,8 @@ export class SerialisedItemCharacteristicListComponent extends TestScope impleme
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.SerialisedItemCharacteristicType({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.SerialisedItemCharacteristic.sorter.create(sort) : null,
               include: {
                 UnitOfMeasure: x,
               },

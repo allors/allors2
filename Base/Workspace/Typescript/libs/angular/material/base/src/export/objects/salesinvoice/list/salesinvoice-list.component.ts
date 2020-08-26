@@ -198,98 +198,23 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
       initialSortDirection: 'desc',
     });
   }
-
   public ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.SalesInvoice.filter = m.SalesInvoice.filter ?? new Filter(m.SalesInvoice.filterDefinition);
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.SalesInvoice.BilledFrom });
     const predicate = new And([
       internalOrganisationPredicate,
-      new Equals({ propertyType: m.SalesInvoice.SalesInvoiceType, parameter: 'type' }),
-      new Equals({ propertyType: m.SalesInvoice.InvoiceNumber, parameter: 'number' }),
-      new Equals({ propertyType: m.SalesInvoice.CustomerReference, parameter: 'customerReference' }),
-      new Equals({ propertyType: m.SalesInvoice.SalesInvoiceState, parameter: 'state' }),
-      new Equals({ propertyType: m.SalesInvoice.ShipToCustomer, parameter: 'shipTo' }),
-      new Equals({ propertyType: m.SalesInvoice.BillToCustomer, parameter: 'billTo' }),
-      new Equals({ propertyType: m.SalesInvoice.ShipToEndCustomer, parameter: 'shipToEndCustomer' }),
-      new Equals({ propertyType: m.SalesInvoice.BillToEndCustomer, parameter: 'billToEndCustomer' }),
-      new Equals({ propertyType: m.SalesInvoice.IsRepeating, parameter: 'repeating' }),
-      new ContainedIn({
-        propertyType: m.SalesInvoice.SalesInvoiceItems,
-        extent: new Extent({
-          objectType: m.SalesInvoiceItem,
-          predicate: new ContainedIn({
-            propertyType: m.SalesInvoiceItem.Product,
-            parameter: 'product',
-          }),
-        }),
-      }),
-      new ContainedIn({
-        propertyType: m.SalesInvoice.SalesInvoiceItems,
-        extent: new Extent({
-          objectType: m.SalesInvoiceItem,
-          predicate: new ContainedIn({
-            propertyType: m.SalesInvoiceItem.SerialisedItem,
-            parameter: 'serialisedItem',
-          }),
-        }),
-      }),
+      this.filter.definition.predicate
     ]);
 
-    const typeSearch = new SearchFactory({
-      objectType: m.SalesInvoiceType,
-      roleTypes: [m.SalesInvoiceType.Name],
-    });
-
-    const stateSearch = new SearchFactory({
-      objectType: m.SalesInvoiceState,
-      roleTypes: [m.SalesInvoiceState.Name],
-    });
-
-    const partySearch = new SearchFactory({
-      objectType: m.Party,
-      roleTypes: [m.Party.PartyName],
-    });
-
-    const productSearch = new SearchFactory({
-      objectType: m.Product,
-      roleTypes: [m.Product.Name],
-    });
-
-    const serialisedItemSearch = new SearchFactory({
-      objectType: m.SerialisedItem,
-      roleTypes: [m.SerialisedItem.ItemNumber],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      repeating: { initialValue: true },
-      active: { initialValue: true },
-      type: { search: () => typeSearch, display: (v: SalesInvoiceType) => v && v.Name },
-      state: { search: () => stateSearch, display: (v: SalesInvoiceState) => v && v.Name },
-      shipTo: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
-      billTo: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
-      shipToEndCustomer: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
-      billToEndCustomer: { search: () => partySearch, display: (v: Party) => v && v.PartyName },
-      product: { search: () => productSearch, display: (v: Product) => v && v.Name },
-      serialisedItem: { search: () => serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      number: m.SalesInvoice.SortableInvoiceNumber,
-      type: m.SalesInvoice.SalesInvoiceType,
-      invoiceDate: m.SalesInvoice.InvoiceDate,
-      description: m.SalesInvoice.Description,
-      lastModifiedDate: m.SalesInvoice.LastModifiedDate,
-    });
-
-    this.subscription = combineLatest(
+    this.subscription = combineLatest([
       this.refreshService.refresh$,
       this.filter.fields$,
       this.table.sort$,
       this.table.pager$,
       this.internalOrganisationId.observable$
-    )
+    ])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
@@ -313,7 +238,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
             }),
             pull.SalesInvoice({
               predicate,
-              sort: sorter.create(sort),
+              sort: sort ? m.SalesInvoice.sorter.create(sort) : null,
               include: {
                 PrintDocument: {
                   Media: x,

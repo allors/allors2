@@ -101,91 +101,22 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.PurchaseOrder.filter = m.PurchaseOrder.filter ?? new Filter(m.PurchaseOrder.filterDefinition);
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.PurchaseOrder.OrderedBy });
-    const supplierPredicate = new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation });
 
     const predicate = new And([
       internalOrganisationPredicate,
-      new Equals({ propertyType: m.PurchaseOrder.OrderNumber, parameter: 'number' }),
-      new Equals({ propertyType: m.PurchaseOrder.CustomerReference, parameter: 'customerReference' }),
-      new Equals({ propertyType: m.PurchaseOrder.PurchaseOrderState, parameter: 'state' }),
-      new Equals({ propertyType: m.PurchaseOrder.TakenViaSupplier, parameter: 'supplier' }),
-      new ContainedIn({
-        propertyType: m.PurchaseOrder.PurchaseOrderItems,
-        extent: new Extent({
-          objectType: m.PurchaseOrderItem,
-          predicate: new ContainedIn({
-            propertyType: m.PurchaseOrderItem.Part,
-            parameter: 'sparePart',
-          }),
-        }),
-      }),
-      new ContainedIn({
-        propertyType: m.PurchaseOrder.PurchaseOrderItems,
-        extent: new Extent({
-          objectType: m.PurchaseOrderItem,
-          predicate: new ContainedIn({
-            propertyType: m.PurchaseOrderItem.SerialisedItem,
-            parameter: 'serialisedItem',
-          }),
-        }),
-      }),
+      this.filter.definition.predicate
     ]);
 
-    const stateSearch = new SearchFactory({
-      objectType: m.PurchaseOrderState,
-      roleTypes: [m.PurchaseOrderState.Name],
-    });
-
-    const supplierSearch = new SearchFactory({
-      objectType: m.Organisation,
-      predicates: [
-        new ContainedIn({
-          propertyType: m.Organisation.SupplierRelationshipsWhereSupplier,
-          extent: new Extent({
-            objectType: m.SupplierRelationship,
-            predicate: supplierPredicate,
-          }),
-        }),
-      ],
-      roleTypes: [m.Organisation.PartyName],
-    });
-
-    const partSearch = new SearchFactory({
-      objectType: m.NonUnifiedPart,
-      roleTypes: [m.NonUnifiedPart.Name, m.NonUnifiedPart.SearchString],
-    });
-
-    const serialisedItemSearch = new SearchFactory({
-      objectType: m.SerialisedItem,
-      roleTypes: [m.SerialisedItem.ItemNumber],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      active: { initialValue: true },
-      state: { search: () => stateSearch, display: (v: PurchaseOrderState) => v && v.Name },
-      supplier: { search: () => supplierSearch, display: (v: Party) => v && v.PartyName },
-      sparePart: { search: () => partSearch, display: (v: Part) => v && v.Name },
-      serialisedItem: { search: () => serialisedItemSearch, display: (v: SerialisedItem) => v && v.ItemNumber },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      number: m.PurchaseOrder.SortableOrderNumber,
-      customerReference: m.PurchaseOrder.CustomerReference,
-      totalExVat: m.PurchaseOrder.TotalExVat,
-      totalIncVat: m.PurchaseOrder.TotalIncVat,
-      lastModifiedDate: m.PurchaseOrder.LastModifiedDate,
-    });
-
-    this.subscription = combineLatest(
+    this.subscription = combineLatest([
       this.refreshService.refresh$,
       this.filter.fields$,
       this.table.sort$,
       this.table.pager$,
       this.internalOrganisationId.observable$
-    )
+    ])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
@@ -209,7 +140,7 @@ export class PurchaseOrderListComponent extends TestScope implements OnInit, OnD
             }),
             pull.PurchaseOrder({
               predicate,
-              sort: sorter.create(sort),
+              sort: sort ? m.PurchaseOrder.sorter.create(sort) : null,
               include: {
                 PrintDocument: {
                   Media: x,

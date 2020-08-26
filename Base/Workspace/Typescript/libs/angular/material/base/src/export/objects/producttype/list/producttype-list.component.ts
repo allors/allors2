@@ -67,17 +67,9 @@ export class ProductTypesOverviewComponent extends TestScope implements OnInit, 
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.ProductType.filter = m.ProductType.filter ?? new Filter(m.ProductType.filterDefinition);
 
-    const predicate = new And([new Like({ roleType: m.ProductType.Name, parameter: 'name' })]);
-
-    const filterDefinition = new FilterDefinition(predicate);
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      name: m.ProductType.Name,
-    });
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
@@ -93,8 +85,8 @@ export class ProductTypesOverviewComponent extends TestScope implements OnInit, 
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.ProductType({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.ProductType.sorter.create(sort) : null,
               include: {
                 SerialisedItemCharacteristicTypes: x,
               },

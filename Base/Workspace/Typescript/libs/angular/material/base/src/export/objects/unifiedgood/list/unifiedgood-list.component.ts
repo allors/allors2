@@ -94,7 +94,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
           const pulls = [
             pull.UnifiedGood({
               predicate: this.filter.definition.predicate,
-              sort: sort ? m.Person.sorter.create(sort) : null,
+              sort: sort ? m.UnifiedGood.sorter.create(sort) : null,
               include: {
                 Photos: x,
                 PrimaryPhoto: x,
@@ -108,7 +108,7 @@ export class UnifiedGoodListComponent extends TestScope implements OnInit, OnDes
             }),
             pull.UnifiedGood({
               predicate: this.filter.definition.predicate,
-              sort: sort ? m.Person.sorter.create(sort) : null,
+              sort: sort ? m.UnifiedGood.sorter.create(sort) : null,
               fetch: {
                 ProductCategoriesWhereProduct: {
                   include: {

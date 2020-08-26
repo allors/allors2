@@ -83,44 +83,20 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.RequestForQuote.filter = m.RequestForQuote.filter ?? new Filter(m.RequestForQuote.filterDefinition);
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.Request.Recipient });
     const predicate = new And([
       internalOrganisationPredicate,
-      new Equals({ propertyType: m.Request.RequestState, parameter: 'state' }),
-      new Equals({ propertyType: m.Request.Originator, parameter: 'from' }),
+      this.filter.definition.predicate
     ]);
 
-    const stateSearch = new SearchFactory({
-      objectType: m.RequestState,
-      roleTypes: [m.RequestState.Name],
-    });
-
-    const originatorSearch = new SearchFactory({
-      objectType: m.Party,
-      roleTypes: [m.Party.PartyName],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      active: { initialValue: true },
-      state: { search: () => stateSearch, display: (v: RequestState) => v && v.Name },
-      from: { search: () => originatorSearch, display: (v: Party) => v && v.PartyName },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      number: m.Request.SortableRequestNumber,
-      description: m.Request.Description,
-      responseRequired: m.Request.RequiredResponseDate,
-      lastModifiedDate: m.Request.LastModifiedDate,
-    });
-
-    this.subscription = combineLatest(
+    this.subscription = combineLatest([
       this.refreshService.refresh$,
       this.filter.fields$,
       this.table.sort$,
       this.table.pager$,
-      this.internalOrganisationId.observable$
+      this.internalOrganisationId.observable$]
     )
       .pipe(
         scan(
@@ -145,7 +121,7 @@ export class RequestForQuoteListComponent extends TestScope implements OnInit, O
             }),
             pull.Request({
               predicate,
-              sort: sorter.create(sort),
+              sort: sort ? m.RequestForQuote.sorter.create(sort) : null,
               include: {
                 Originator: x,
                 RequestState: x,

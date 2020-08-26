@@ -87,45 +87,21 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.ProductQuote.filter = m.ProductQuote.filter ?? new Filter(m.ProductQuote.filterDefinition);
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.Quote.Issuer });
     const predicate = new And([
       internalOrganisationPredicate,
-      new Equals({ propertyType: m.ProductQuote.QuoteState, parameter: 'state' }),
-      new Equals({ propertyType: m.ProductQuote.Receiver, parameter: 'to' }),
+      this.filter.definition.predicate
     ]);
 
-    const stateSearch = new SearchFactory({
-      objectType: m.QuoteState,
-      roleTypes: [m.QuoteState.Name],
-    });
-
-    const receiverSearch = new SearchFactory({
-      objectType: m.Party,
-      roleTypes: [m.Party.PartyName],
-    });
-
-    const filterDefinition = new FilterDefinition(predicate, {
-      active: { initialValue: true },
-      state: { search: () => stateSearch, display: (v: QuoteState) => v && v.Name },
-      to: { search: () => receiverSearch, display: (v: Party) => v && v.PartyName },
-    });
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      number: m.Quote.SortableQuoteNumber,
-      description: m.Quote.Description,
-      responseRequired: m.Quote.RequiredResponseDate,
-      lastModifiedDate: m.Quote.LastModifiedDate,
-    });
-
-    this.subscription = combineLatest(
+    this.subscription = combineLatest([
       this.refreshService.refresh$,
       this.filter.fields$,
       this.table.sort$,
       this.table.pager$,
       this.internalOrganisationId.observable$
-    )
+    ])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent, internalOrganisationId]) => {
@@ -149,7 +125,7 @@ export class ProductQuoteListComponent extends TestScope implements OnInit, OnDe
             }),
             pull.Quote({
               predicate,
-              sort: sorter.create(sort),
+              sort: sort ? m.ProductQuote.sorter.create(sort) : null,
               include: {
                 PrintDocument: {
                   Media: x,

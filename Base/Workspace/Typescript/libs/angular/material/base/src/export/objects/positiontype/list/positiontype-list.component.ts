@@ -68,17 +68,9 @@ export class PositionTypesOverviewComponent extends TestScope implements OnInit,
 
   ngOnInit(): void {
     const { m, pull, x } = this.metaService;
+    this.filter = m.PositionType.filter = m.PositionType.filter ?? new Filter(m.PositionType.filterDefinition);
 
-    const predicate = new And([new Like({ roleType: m.PositionType.Title, parameter: 'title' })]);
-
-    const filterDefinition = new FilterDefinition(predicate);
-    this.filter = new Filter(filterDefinition);
-
-    const sorter = new Sorter({
-      title: m.PositionType.Title,
-    });
-
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$)
+    this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
         scan(
           ([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
@@ -94,8 +86,8 @@ export class PositionTypesOverviewComponent extends TestScope implements OnInit,
         switchMap(([, filterFields, sort, pageEvent]) => {
           const pulls = [
             pull.PositionType({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.PositionType.sorter.create(sort) : null,
               include: {
                 PositionTypeRate: x,
               },

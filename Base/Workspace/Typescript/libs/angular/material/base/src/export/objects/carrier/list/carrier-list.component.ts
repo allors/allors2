@@ -74,19 +74,7 @@ export class CarrierListComponent extends TestScope implements OnInit, OnDestroy
   ngOnInit(): void {
 
     const { m, pull } = this.metaService;
-
-    const predicate = new And([
-      new Like({ roleType: m.Carrier.Name, parameter: 'name' }),
-    ]);
-
-    const filterDefinition = new FilterDefinition(predicate);
-    this.filter = new Filter(filterDefinition);
-    
-    const sorter = new Sorter(
-      {
-        name: m.Carrier.Name,
-      }
-    );
+    this.filter = m.Carrier.filter = m.Carrier.filter ?? new Filter(m.Carrier.filterDefinition);
 
     this.subscription = combineLatest([this.refreshService.refresh$, this.filter.fields$, this.table.sort$, this.table.pager$])
       .pipe(
@@ -102,8 +90,8 @@ export class CarrierListComponent extends TestScope implements OnInit, OnDestroy
 
           const pulls = [
             pull.Carrier({
-              predicate,
-              sort: sorter.create(sort),
+              predicate: this.filter.definition.predicate,
+              sort: sort ? m.Carrier.sorter.create(sort) : null,
               parameters: this.filter.parameters(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
