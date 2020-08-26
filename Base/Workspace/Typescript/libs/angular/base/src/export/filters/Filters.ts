@@ -1,7 +1,6 @@
-import { Meta } from '@allors/meta/generated';
+import { Meta, TreeFactory } from '@allors/meta/generated';
 import { And, ContainedIn, Extent, Equals, Tree } from '@allors/data/system';
 import { SearchFactory } from '@allors/angular/core';
-import { TreeFactory } from '../../../../../meta/generated/src/tree.g';
 
 export class Filters {
    static goodsFilter(m: Meta) {
