@@ -71,7 +71,8 @@ namespace Allors.Domain
 
                 var images = new Dictionary<string, byte[]>
                                  {
-                                     { "Logo", logo },
+                                     { "Logo1", logo },
+                                     { "Logo2", logo },
                                  };
 
                 if (this.ExistQuoteNumber)

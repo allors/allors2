@@ -218,11 +218,8 @@ namespace Allors.Domain
 
             if (!string.IsNullOrWhiteSpace(logo))
             {
-                var logoFile = new FileInfo(logo);
-                if (logoFile.Exists)
-                {
-                    internalOrganisation.LogoImage = logoFile.CreateMedia(session);
-                }
+                var singleton = session.GetSingleton();
+                internalOrganisation.LogoImage = new MediaBuilder(session).WithInFileName(logo).WithInData(singleton.GetResourceBytes(logo)).Build();
             }
 
             Facility facility = null;
