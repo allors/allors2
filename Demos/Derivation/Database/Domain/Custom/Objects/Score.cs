@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Linq;
 
     public partial class Score
     {
@@ -45,7 +42,7 @@ namespace Allors.Domain
                     var declaring = declarers.Contains(this.Player);
 
 
-                    if (gameType.IsMiserie || gameType.IsMiserieOpTafel)
+                    if (gameType.IsMisery || gameType.IsOpenMisery)
                     {
                         // 
                         switch (declarers.Count)
@@ -113,9 +110,9 @@ namespace Allors.Domain
                                 }
                                 break;
                         }
-                        if (gameType.IsMiserieOpTafel)
+                        if (gameType.IsOpenMisery)
                         {
-                            this.Value = this.Value * 2;
+                            this.Value *= 2;
                         }
                     }
 
@@ -132,51 +129,51 @@ namespace Allors.Domain
 
                         if (gameType.IsSolo)
                         {
-                            this.Value = this.Value * 2;
+                            this.Value *= 2;
                         }
 
                         if (gameType.IsSoloSlim)
                         {
-                            this.Value = this.Value * 3;
+                            this.Value *= 3;
                         }
                     }
 
 
-                    if (gameType.IsAlleenGaan || gameType.IsVragenEnMeegaan || gameType.IsTroel)
+                    if (gameType.IsSmallSlam || gameType.IsProposalAndAcceptance || gameType.IsTrull)
                     {
-                        int aantalDefendersPerPersoon = 3;
-                        var overslagenOmDubbelTeZijn = 8;
+                        var numberOfDefendersPerPersoon = 3;
+                        var extraTricksToBeDouble = 8;
 
-                        if (gameType.IsVragenEnMeegaan || gameType.IsTroel)
+                        if (gameType.IsProposalAndAcceptance || gameType.IsTrull)
                         {
-                            aantalDefendersPerPersoon = 1;
-                            overslagenOmDubbelTeZijn = 5;
+                            numberOfDefendersPerPersoon = 1;
+                            extraTricksToBeDouble = 5;
                         }
 
-                        var overslagen = this.GameWhereScore.Overslagen ?? 0;
+                        var extratrick = this.GameWhereScore.ExtraTrick ?? 0;
 
                         if (declaring)
                         {
-                            int punten = aantalDefendersPerPersoon * 2 + (aantalDefendersPerPersoon * overslagen);
-                            int puntenWinst = punten;
-                            if (overslagen == overslagenOmDubbelTeZijn)
+                            var points = (numberOfDefendersPerPersoon * 2) + (numberOfDefendersPerPersoon * extratrick);
+                            var pointsWon = points;
+                            if (extratrick == extraTricksToBeDouble)
                             {
-                                puntenWinst = punten * 2;
+                                pointsWon = points * 2;
                             }
-                            this.Value = winning ? puntenWinst : -punten;
+                            this.Value = winning ? pointsWon : -points;
                         }
                         else
                         {
-                            int punten = 2 + (overslagen);
-                            if (overslagen == overslagenOmDubbelTeZijn)
+                            var points = 2 + extratrick;
+                            if (extratrick == extraTricksToBeDouble)
                             {
-                                punten = punten * 2;
+                                points *= 2;
                             }
-                            this.Value = winners.Count() == 0 ? punten : -punten;
+                            this.Value = winners.Count() == 0 ? points : -points;
                         }
-                        if (gameType.IsTroel)
+                        if (gameType.IsTrull)
                         {
-                            this.Value = this.Value * 2;
+                            this.Value *= 2;
                         }
                     }
 

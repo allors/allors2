@@ -1,27 +1,12 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Setup.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
-// 
-// Dual Licensed under
-//   a) the General Public Licence v3 (GPL)
-//   b) the Allors License
-// 
-// The GPL License is included in the file gpl.txt.
-// The Allors License is an addendum to your contract.
-// 
-// Allors Applications is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// For more information visit http://www.allors.com/legal
+// <copyright file="Domain.cs" company="Allors bvba">
+// Copyright (c) Allors bvba. All rights reserved.
+// Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-using Allors.Domain;
 
 namespace Allors
 {
+    using Allors.Domain;
+
     public partial class Setup
     {
         private void CustomOnPrePrepare()
@@ -38,34 +23,34 @@ namespace Allors
 
         private void CustomOnPostSetup()
         {
-            var speler1 = new PersonBuilder(this.session)
-                .WithUserName("speler1")
-                .WithFirstName("Speler")
-                .WithLastName("Een")
+            var player1 = new PersonBuilder(this.session)
+                .WithUserName("player1")
+                .WithFirstName("Player")
+                .WithLastName("One")
                 .Build();
 
-            var speler2 = new PersonBuilder(this.session)
-                .WithUserName("speler2")
-                .WithFirstName("Speler")
-                .WithLastName("Twee")
+            var player2 = new PersonBuilder(this.session)
+                .WithUserName("player2")
+                .WithFirstName("Player")
+                .WithLastName("Two")
                 .Build();
 
-            var speler3 = new PersonBuilder(this.session)
-                .WithUserName("speler3")
-                .WithFirstName("Speler")
-                .WithLastName("Drie")
+            var player3 = new PersonBuilder(this.session)
+                .WithUserName("player3")
+                .WithFirstName("Player")
+                .WithLastName("Three")
                 .Build();
 
-            var speler4 = new PersonBuilder(this.session)
-                .WithUserName("speler4")
-                .WithFirstName("Speler")
-                .WithLastName("Vier")
+            var player4 = new PersonBuilder(this.session)
+                .WithUserName("player4")
+                .WithFirstName("Player")
+                .WithLastName("Four")
                 .Build();
 
-            var speler5 = new PersonBuilder(this.session)
-                .WithUserName("speler5")
-                .WithFirstName("Speler")
-                .WithLastName("Vijf")
+            var player5 = new PersonBuilder(this.session)
+                .WithUserName("player5")
+                .WithFirstName("Player")
+                .WithLastName("Five")
                 .Build();
         }
     }
