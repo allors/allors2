@@ -100,7 +100,7 @@ namespace Allors.Repository
 
         #endregion Allors
         [Workspace]
-        public int Overslagen { get; set; }
+        public int ExtraTrick { get; set; }
 
         #region inherited methods
 

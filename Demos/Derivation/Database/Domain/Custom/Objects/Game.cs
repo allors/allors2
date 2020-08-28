@@ -1,11 +1,9 @@
-﻿using Allors.Domain.Derivations.Errors;
-using Allors.Protocol.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using Allors.Domain.Derivations.Errors;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public partial class Game
     {
         public void CustomOnPreDerive(ObjectOnPreDerive method)
@@ -39,25 +37,23 @@ namespace Allors.Domain
             {
                 var players = new List<Person>(this.ScoreboardWhereGame.Players);
 
-                // Fase1: Verwijderen van overbodige statistics en
-                //        bijhouden van participants zonder statistics
+                // Phase1: Removing unnecessary statistics and keeping track of participants without statistics
                 foreach (Score score in this.Scores)
                 {
                     var player = score.Player;
                     if (players.Contains(player))
                     {
-                        // verwijder participants die al een statistic hebben
+                        // Remove participants who already have a statistic
                         players.Remove(player);
                     }
                     else
                     {
-                        // delete statistic waarvan de participant niet meer voorkomt
+                        // Delete statistic of which the participant no longer occurs
                         score.Delete();
                     }
                 }
 
-                // Fase2: creeer statistics voor de participants die nog geen
-                //        statistic hadden
+                // Phase2: Create statistics for the participants who did not have a statistic yet
                 foreach (var player in players)
                 {
                     var score = new ScoreBuilder(this.strategy.Session)

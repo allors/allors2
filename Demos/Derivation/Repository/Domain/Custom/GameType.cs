@@ -1,8 +1,8 @@
-﻿using Allors.Repository.Attributes;
-using System;
-
 namespace Allors.Repository
 {
+    using Allors.Repository.Attributes;
+    using System;
+
     #region Allors
     [Id("23207fbd-0a09-45db-94e8-d57a9cf84e3a")]
     #endregion

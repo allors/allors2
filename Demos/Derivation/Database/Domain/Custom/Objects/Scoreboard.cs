@@ -1,31 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Linq;
+
     public partial class Scoreboard
     {
-        public void CustomOnDerive(ObjectOnDerive method)
-        {
-            this.Sync();
-        }
+        public void CustomOnDerive(ObjectOnDerive method) => this.Sync();
 
         private void Sync()
         {
-            // Fase1: Verwijderen van overbodige scores,
-            //        dit zijn scores van players die niet meer in het scoreboard zitten
+            // Phase1: Removing unnecessary scores, these are scores from players who are no longer in the scoreboard
             foreach (Score score in this.AccumulatedScores)
             {
                 var player = score.Player;
                 if (!this.Players.Contains(player))
                 {
-                    // verwijder participants die al een statistic hebben
+                    // Remove participants who already have a statistic
                     score.Delete();
                 }
             }
 
-            // Fase2: creeer score voor de players die nog geen score hebben
+            // Phase2: Create score for the players who don't have a score yet
             foreach (Person player in this.Players)
             {
                 var scores = this.AccumulatedScores.ToArray();
