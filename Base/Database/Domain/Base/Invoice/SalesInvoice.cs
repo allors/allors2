@@ -1173,9 +1173,9 @@ namespace Allors.Domain
             }
 
             salesInvoiceItemDerivedRoles.TotalExVat = salesInvoiceItem.UnitPrice * salesInvoiceItem.Quantity;
-            salesInvoiceItemDerivedRoles.TotalVat = salesInvoiceItem.UnitVat * salesInvoiceItem.Quantity;
+            salesInvoiceItemDerivedRoles.TotalVat = Math.Round(salesInvoiceItem.UnitVat * salesInvoiceItem.Quantity, 2);
             salesInvoiceItemDerivedRoles.TotalIncVat = salesInvoiceItem.TotalExVat + salesInvoiceItem.TotalVat;
-            salesInvoiceItemDerivedRoles.TotalIrpf = salesInvoiceItem.UnitIrpf * salesInvoiceItem.Quantity;
+            salesInvoiceItemDerivedRoles.TotalIrpf = Math.Round(salesInvoiceItem.UnitIrpf * salesInvoiceItem.Quantity, 2);
             salesInvoiceItemDerivedRoles.GrandTotal = salesInvoiceItem.TotalIncVat - salesInvoiceItem.TotalIrpf;
         }
 

@@ -32,7 +32,7 @@ interface Row extends TableRow {
   reference: string;
   dueDate: string;
   totalExVat: string;
-  totalIncVat: string;
+  totalInvoice: string;
   lastModifiedDate: string;
 }
 @Component({
@@ -169,7 +169,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
         { name: 'reference', sort: true },
         { name: 'dueDate', sort: true },
         { name: 'totalExVat', sort: true },
-        { name: 'totalIncVat', sort: true },
+        { name: 'totalInvoice', sort: true },
         { name: 'lastModifiedDate', sort: true },
       ],
       actions: [overviewService.overview(), this.delete, this.approve, this.cancel, this.reopen, this.reject, this.print, this.setPaid],
@@ -262,7 +262,7 @@ export class PurchaseInvoiceListComponent extends TestScope implements OnInit, O
               reference: `${v.CustomerReference}`,
               dueDate: v.DueDate && format(new Date(v.DueDate), 'dd-MM-yyyy'),
               totalExVat: v.TotalExVat,
-              totalIncVat: v.TotalIncVat,
+              totalInvoice: v.GrandTotal,
               lastModifiedDate: formatDistance(new Date(v.LastModifiedDate), new Date()),
             } as Row;
           });

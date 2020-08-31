@@ -33,7 +33,22 @@
 
     <div>
       <div style="color: grey">
+        Invoice Total VAT: {{invoice.TotalVat}}
+      </div>
+    </div>
+    
+    <div>
+      <div style="color: grey">
         Total Inc. VAT: {{invoice.TotalIncVat}}
+      </div>
+    </div>
+
+    <div *ngIf="invoice.TotalIrpf > 0">
+      <div style="color: grey">
+        Invoice IRPF: {{invoice.TotalIrpf}}
+      </div>
+      <div style="color: grey">
+        Invoice Total: {{invoice.GrandTotal}}
       </div>
     </div>
 

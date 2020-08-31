@@ -205,10 +205,10 @@ namespace Allors.Domain
 
                 this.UnitVat = this.ExistVatRate ? this.UnitPrice * this.VatRate.Rate / 100 : 0;
                 this.UnitIrpf = this.ExistIrpfRate ? this.UnitPrice * this.IrpfRate.Rate / 100 : 0;
-                this.TotalVat = this.UnitVat * this.QuantityOrdered;
                 this.TotalExVat = this.UnitPrice * this.QuantityOrdered;
-                this.TotalIrpf = this.UnitIrpf * this.QuantityOrdered;
+                this.TotalVat = Math.Round(this.UnitVat * this.QuantityOrdered, 2);
                 this.TotalIncVat = this.TotalExVat + this.TotalVat;
+                this.TotalIrpf = Math.Round(this.UnitIrpf * this.QuantityOrdered, 2);
                 this.GrandTotal = this.TotalIncVat - this.TotalIrpf;
             }
 
