@@ -25,6 +25,7 @@ import {
   UnitOfMeasure,
   PartCategory,
   NonUnifiedPart,
+  Locale,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
 import { FetcherService } from '@allors/angular/base';

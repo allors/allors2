@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { MetaService, RefreshService, NavigationService, PanelService, ContextService } from '@allors/angular/services/core';
-import { Organisation, Facility, InternalOrganisation, Enumeration, Part, SerialisedItem, SerialisedInventoryItem } from '@allors/domain/generated';
+import { Organisation, Facility, InternalOrganisation, Enumeration, Part, SerialisedItem, SerialisedInventoryItem, Locale } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { Filters, FetcherService, InternalOrganisationId } from '@allors/angular/base';

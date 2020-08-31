@@ -36,5 +36,9 @@
     "preserveSymlinks": true,
     "resolveJsonModule": true
   },
+  "angularCompilerOptions": {
+    "strictInjectionParameters": true,
+    "strictTemplates": true
+  },
   "exclude": ["node_modules", "tmp"]
 }

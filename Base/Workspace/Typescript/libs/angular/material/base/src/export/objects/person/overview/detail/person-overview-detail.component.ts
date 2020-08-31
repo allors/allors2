@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { MetaService, RefreshService, NavigationService, PanelService, ContextService, SingletonId } from '@allors/angular/services/core';
-import { Organisation, Currency, Person, InternalOrganisation, Enumeration, IrpfRegime } from '@allors/domain/generated';
+import { Organisation, Currency, Person, InternalOrganisation, Enumeration, IrpfRegime, Locale } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FetcherService } from '@allors/angular/base';
@@ -15,10 +15,9 @@ import { TestScope } from '@allors/angular/core';
   // tslint:disable-next-line:component-selector
   selector: 'person-overview-detail',
   templateUrl: './person-overview-detail.component.html',
-  providers: [PanelService, ContextService]
+  providers: [PanelService, ContextService],
 })
 export class PersonOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
 
   person: Person;
@@ -40,7 +39,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
     public navigationService: NavigationService,
     private saveService: SaveService,
     private singletonId: SingletonId,
-    private fetcher: FetcherService,
+    private fetcher: FetcherService
   ) {
     super();
 
@@ -55,7 +54,6 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
     const pullName = `${this.panel.name}_${this.m.Person.name}`;
 
     panel.onPull = (pulls) => {
-
       this.person = undefined;
 
       if (this.panel.isCollapsed) {
@@ -69,7 +67,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
             include: {
               GeneralEmail: x,
               PersonalEmailAddress: x,
-            }
+            },
           })
         );
       }
@@ -83,7 +81,6 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
   }
 
   public ngOnInit(): void {
-
     // Maximized
     this.subscription = this.panel.manager.on$
       .pipe(
@@ -91,7 +88,6 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
           return this.panel.isExpanded;
         }),
         switchMap(() => {
-
           this.person = undefined;
 
           const { m, pull, x } = this.metaService;
@@ -106,10 +102,10 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
                 Locales: {
                   include: {
                     Language: x,
-                    Country: x
-                  }
-                }
-              }
+                    Country: x,
+                  },
+                },
+              },
             }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
@@ -124,13 +120,13 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
               sort: new Sort(m.Salutation.Name),
             }),
             pull.IrpfRegime({
-              sort: new Sort(m.IrpfRegime.Name)
+              sort: new Sort(m.IrpfRegime.Name),
             }),
             pull.Person({
               object: id,
               fetch: {
-                OrganisationContactRelationshipsWhereContact: x
-              }
+                OrganisationContactRelationshipsWhereContact: x,
+              },
             }),
             pull.Person({
               object: id,
@@ -140,7 +136,7 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
                 Salutation: x,
                 Locale: x,
                 Picture: x,
-              }
+              },
             }),
           ];
 
@@ -153,12 +149,11 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
         this.person = loaded.objects.Person as Person;
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.currencies = loaded.collections.Currencies as Currency[];
-        this.locales = loaded.collections.Locales as Locale[] || [];
+        this.locales = (loaded.collections.Locales as Locale[]) || [];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
         this.irpfRegimes = loaded.collections.IrpfRegimes as IrpfRegime[];
       });
-
   }
 
   public ngOnDestroy(): void {
@@ -168,13 +163,9 @@ export class PersonOverviewDetailComponent extends TestScope implements OnInit, 
   }
 
   public save(): void {
-
-    this.allors.context.save()
-      .subscribe(() => {
-        this.refreshService.refresh();
-        this.panel.toggle();
-      },
-        this.saveService.errorHandler
-      );
+    this.allors.context.save().subscribe(() => {
+      this.refreshService.refresh();
+      this.panel.toggle();
+    }, this.saveService.errorHandler);
   }
 }

@@ -3,7 +3,21 @@ import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { MetaService, RefreshService, NavigationService, PanelService, ContextService } from '@allors/angular/services/core';
-import { Organisation, ProductType, ProductCategory, VatRate, Brand, Model, ProductIdentificationType, ProductNumber, NonUnifiedGood, Ownership, ProductFeatureApplicability, ProductDimension } from '@allors/domain/generated';
+import {
+  Organisation,
+  ProductType,
+  ProductCategory,
+  VatRate,
+  Brand,
+  Model,
+  ProductIdentificationType,
+  ProductNumber,
+  NonUnifiedGood,
+  Ownership,
+  ProductFeatureApplicability,
+  ProductDimension,
+  Locale,
+} from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FetcherService, Filters } from '@allors/angular/base';
@@ -15,10 +29,9 @@ import { TestScope, SearchFactory } from '@allors/angular/core';
   // tslint:disable-next-line:component-selector
   selector: 'nonunifiedgood-overview-detail',
   templateUrl: './nonunifiedgood-overview-detail.component.html',
-  providers: [PanelService, ContextService]
+  providers: [PanelService, ContextService],
 })
 export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
 
   good: NonUnifiedGood;
@@ -71,7 +84,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
     const pullName = `${this.panel.name}_${this.m.Good.name}`;
 
     panel.onPull = (pulls) => {
-
       this.good = undefined;
 
       if (this.panel.isCollapsed) {
@@ -84,15 +96,15 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
             object: id,
             include: {
               ProductIdentifications: {
-                ProductIdentificationType: x
+                ProductIdentificationType: x,
               },
               Part: {
                 Brand: x,
-                Model: x
-              }
-            }
+                Model: x,
+              },
+            },
           }),
-          pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
+          pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) })
         );
       }
     };
@@ -105,7 +117,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
   }
 
   public ngOnInit(): void {
-
     // Maximized
     this.subscription = combineLatest([this.refresh$, this.panel.manager.on$])
       .pipe(
@@ -113,7 +124,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
           return this.panel.isExpanded;
         }),
         switchMap(() => {
-
           this.good = undefined;
 
           const { m, pull, x } = this.metaService;
@@ -130,7 +140,7 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
               include: {
                 Part: {
                   Brand: x,
-                  Model: x
+                  Model: x,
                 },
                 PrimaryPhoto: x,
                 ProductIdentifications: x,
@@ -156,7 +166,7 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
             pull.NonUnifiedGood({
               name: 'OriginalCategories',
               object: id,
-              fetch: { ProductCategoriesWhereProduct: x }
+              fetch: { ProductCategoriesWhereProduct: x },
             }),
             pull.NonUnifiedGood({
               object: id,
@@ -165,12 +175,12 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
                   include: {
                     ProductFeature: {
                       ProductDimension_Dimension: {
-                        UnitOfMeasure: x
-                      }
-                    }
-                  }
-                }
-              }
+                        UnitOfMeasure: x,
+                      },
+                    },
+                  },
+                },
+              },
             }),
           ];
 
@@ -191,14 +201,14 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
         this.goodIdentificationTypes = loaded.collections.ProductIdentificationTypes as ProductIdentificationType[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.productFeatureApplicabilities = loaded.collections.ProductFeatureApplicabilities as ProductFeatureApplicability[];
-        this.productDimensions = this.productFeatureApplicabilities.map(v => v.ProductFeature).filter((v) => v.objectType.name === this.m.ProductDimension.name) as ProductDimension[];
+        this.productDimensions = this.productFeatureApplicabilities
+          .map((v) => v.ProductFeature)
+          .filter((v) => v.objectType.name === this.m.ProductDimension.name) as ProductDimension[];
 
         const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
-        this.productNumber = this.good.ProductIdentifications.find(v => v.ProductIdentificationType === goodNumberType);
-
+        this.productNumber = this.good.ProductIdentifications.find((v) => v.ProductIdentificationType === goodNumberType);
       });
-
   }
 
   public ngOnDestroy(): void {
@@ -208,7 +218,6 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
   }
 
   public save(): void {
-
     this.selectedCategories.forEach((category: ProductCategory) => {
       category.AddProduct(this.good);
 
@@ -222,13 +231,10 @@ export class NonUnifiedGoodOverviewDetailComponent extends TestScope implements 
       category.RemoveProduct(this.good);
     });
 
-    this.allors.context.save()
-      .subscribe(() => {
-        this.refreshService.refresh();
-        this.panel.toggle();
-      },
-        this.saveService.errorHandler
-      );
+    this.allors.context.save().subscribe(() => {
+      this.refreshService.refresh();
+      this.panel.toggle();
+    }, this.saveService.errorHandler);
   }
 
   public setDirty(): void {

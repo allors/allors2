@@ -1,13 +1,13 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router, UrlSegment, Data } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { DateAdapter } from '@angular/material/core';
 import { ContextService, MetaService, WorkspaceService, Loaded } from '@allors/angular/services/core';
-import { Organisation, Person } from '@allors/domain/generated';
+import { Organisation, Person, Data } from '@allors/domain/generated';
 import { RadioGroupOption } from '@allors/angular/material/core';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';

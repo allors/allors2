@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
-import { TimeFrequency, SerialisedItemCharacteristicType, UnitOfMeasure, Singleton, IUnitOfMeasure } from '@allors/domain/generated';
+import { TimeFrequency, SerialisedItemCharacteristicType, UnitOfMeasure, Singleton, IUnitOfMeasure, Locale } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';

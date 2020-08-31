@@ -5,7 +5,7 @@ import { switchMap, filter } from 'rxjs/operators';
 import { isBefore, isAfter } from 'date-fns';
 
 import { MetaService, RefreshService, NavigationService, PanelService, ContextService } from '@allors/angular/services/core';
-import { Organisation, Facility, UnifiedGood, InventoryItemKind, ProductType, ProductCategory, VatRate, SupplierOffering, Brand, Model, ProductIdentificationType, ProductNumber, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship } from '@allors/domain/generated';
+import { Organisation, Facility, UnifiedGood, InventoryItemKind, ProductType, ProductCategory, VatRate, SupplierOffering, Brand, Model, ProductIdentificationType, ProductNumber, UnitOfMeasure, PriceComponent, Settings, SupplierRelationship, Locale } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FetcherService } from '@allors/angular/base';

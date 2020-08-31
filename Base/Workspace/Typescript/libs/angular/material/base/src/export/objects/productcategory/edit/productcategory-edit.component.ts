@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, Saved } from '@allors/angular/services/core';
-import { Organisation, InternalOrganisation, ProductCategory, CatScope } from '@allors/domain/generated';
+import { Organisation, InternalOrganisation, ProductCategory, CatScope, Locale } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';

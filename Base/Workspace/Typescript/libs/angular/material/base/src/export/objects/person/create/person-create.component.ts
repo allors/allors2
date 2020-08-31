@@ -19,6 +19,7 @@ import {
   OrganisationContactKind,
   PersonRole,
   Employment,
+  Locale,
 } from '@allors/domain/generated';
 import { Equals, Sort } from '@allors/data/system';
 import { FetcherService, InternalOrganisationId } from '@allors/angular/base';

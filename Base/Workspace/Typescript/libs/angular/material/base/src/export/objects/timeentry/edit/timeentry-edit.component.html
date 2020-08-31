@@ -7,7 +7,7 @@
     <div class="row">
       <mat-form-field class="col-md">
         <mat-select [(ngModel)]="selectedWorker" name="workers" placeholder="Workers"
-          (ngModelChange)="findBillingRate($event)">
+          (ngModelChange)="findBillingRate()">
           <mat-option>None</mat-option>
           <mat-option *ngFor="let worker of workers" [value]="worker"> {{ worker.displayName }} </mat-option>
         </mat-select>
@@ -16,11 +16,11 @@
 
     <div class="row">
       <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.RateType"
-        [options]="rateTypes" display="Name" (selected)="findBillingRate($event)"></a-mat-select>
+        [options]="rateTypes" display="Name" (selected)="findBillingRate()"></a-mat-select>
     </div>
 
     <div class="row">
-      <a-mat-datetimepicker class="col-md-6" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate" (selected)="findBillingRate($event)"></a-mat-datetimepicker>
+      <a-mat-datetimepicker class="col-md-6" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate" (selected)="findBillingRate()"></a-mat-datetimepicker>
       <a-mat-datetimepicker class="col-md-6" [object]="timeEntry" [roleType]="m.TimeEntry.ThroughDate" ></a-mat-datetimepicker>
     </div>
 

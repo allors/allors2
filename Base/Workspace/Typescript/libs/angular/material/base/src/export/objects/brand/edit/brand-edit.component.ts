@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { TestScope } from '@allors/angular/core';
-import { Brand, Model } from '@allors/domain/generated';
+import { Brand, Model, Locale } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { FetcherService } from '@allors/angular/base';

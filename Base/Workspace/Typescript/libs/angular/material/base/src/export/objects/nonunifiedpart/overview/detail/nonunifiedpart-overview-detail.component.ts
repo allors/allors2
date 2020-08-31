@@ -4,7 +4,22 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { MetaService, RefreshService, NavigationService, PanelService, ContextService } from '@allors/angular/services/core';
-import { Organisation, Facility, InventoryItemKind, ProductType, Brand, Model, ProductIdentificationType, UnitOfMeasure, PriceComponent, Settings, Part, PartNumber, PartCategory } from '@allors/domain/generated';
+import {
+  Organisation,
+  Facility,
+  InventoryItemKind,
+  ProductType,
+  Brand,
+  Model,
+  ProductIdentificationType,
+  UnitOfMeasure,
+  PriceComponent,
+  Settings,
+  Part,
+  PartNumber,
+  PartCategory,
+  Locale,
+} from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FetcherService } from '@allors/angular/base';
@@ -16,10 +31,9 @@ import { TestScope } from '@allors/angular/core';
   // tslint:disable-next-line:component-selector
   selector: 'nonunifiedpart-overview-detail',
   templateUrl: './nonunifiedpart-overview-detail.component.html',
-  providers: [PanelService, ContextService]
+  providers: [PanelService, ContextService],
 })
 export class NonUnifiedPartOverviewDetailComponent extends TestScope implements OnInit, OnDestroy {
-
   readonly m: Meta;
 
   part: Part;
@@ -73,7 +87,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
     const pullName = `${this.panel.name}_${this.m.Part.name}`;
 
     panel.onPull = (pulls) => {
-
       this.part = undefined;
       if (this.panel.isCollapsed) {
         const { pull } = this.metaService;
@@ -83,7 +96,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
           pull.Part({
             name: pullName,
             object: id,
-          }),
+          })
         );
       }
     };
@@ -96,7 +109,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
   }
 
   public ngOnInit(): void {
-
     // Maximized
     this.subscription = combineLatest(this.refreshService.refresh$, this.panel.manager.on$)
       .pipe(
@@ -104,7 +116,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
           return this.panel.isExpanded;
         }),
         switchMap(() => {
-
           this.part = undefined;
 
           const { m, pull, x } = this.metaService;
@@ -132,11 +143,11 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
                   LocalisedValues: x,
                   SerialisedItemCharacteristicType: {
                     UnitOfMeasure: x,
-                    LocalisedNames: x
-                  }
+                    LocalisedNames: x,
+                  },
                 },
                 Brand: {
-                  Models: x
+                  Models: x,
                 },
                 ProductIdentifications: {
                   ProductIdentificationType: x,
@@ -150,16 +161,14 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
                 LocalisedKeywords: {
                   Locale: x,
                 },
-              }
+              },
             }),
-            pull.Part(
-              {
-                object: id,
-                fetch: {
-                  PriceComponentsWherePart: x
-                }
-              }
-            ),
+            pull.Part({
+              object: id,
+              fetch: {
+                PriceComponentsWherePart: x,
+              },
+            }),
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
             pull.ProductIdentificationType(),
@@ -168,9 +177,9 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
             pull.PartCategory({ sort: new Sort(m.PartCategory.Name) }),
             pull.Brand({
               include: {
-                Models: x
+                Models: x,
               },
-              sort: new Sort(m.Brand.Name)
+              sort: new Sort(m.Brand.Name),
             }),
             pull.Organisation({
               predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
@@ -178,7 +187,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
             pull.NonUnifiedPart({
               name: 'OriginalCategories',
               object: id,
-              fetch: { PartCategoriesWherePart: x }
+              fetch: { PartCategoriesWherePart: x },
             }),
           ];
 
@@ -186,16 +195,13 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         })
       )
       .subscribe((loaded) => {
-
         this.allors.context.reset();
-
-        
 
         this.part = loaded.objects.Part as Part;
         this.originalCategories = loaded.collections.OriginalCategories as PartCategory[];
         this.selectedCategories = this.originalCategories;
 
-        this.suppliers = this.part.SuppliedBy.map(w => w.PartyName).join(', ');
+        this.suppliers = this.part.SuppliedBy.map((w) => w.PartyName).join(', ');
         this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.brands = loaded.collections.Brands as Brand[];
@@ -211,7 +217,7 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 
-        this.partNumber = this.part.ProductIdentifications.find(v => v.ProductIdentificationType === partNumberType);
+        this.partNumber = this.part.ProductIdentifications.find((v) => v.ProductIdentificationType === partNumberType);
 
         this.selectedBrand = this.part.Brand;
         this.selectedModel = this.part.Model;
@@ -220,7 +226,6 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
           this.brandSelected(this.selectedBrand);
         }
       });
-
   }
 
   public ngOnDestroy(): void {
@@ -244,14 +249,13 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
 
   public modelAdded(model: Model): void {
     this.selectedBrand.AddModel(model);
-    this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+    this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name ? 1 : b.Name > a.Name ? -1 : 0));
     this.selectedModel = model;
     this.allors.context.session.hasChanges = true;
     this.setDirty();
   }
 
   public brandSelected(brand: Brand): void {
-    
     const { pull, x } = this.metaService;
 
     const pulls = [
@@ -259,30 +263,23 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
         object: brand,
         include: {
           Models: x,
-        }
-      }
-      )
+        },
+      }),
     ];
 
-    this.allors.context
-      .load(new PullRequest({ pulls }))
-      .subscribe(() => {
-        this.models = this.selectedBrand?.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-      });
+    this.allors.context.load(new PullRequest({ pulls })).subscribe(() => {
+      this.models = this.selectedBrand?.Models.sort((a, b) => (a.Name > b.Name ? 1 : b.Name > a.Name ? -1 : 0));
+    });
 
-      this.setDirty();
-    }
+    this.setDirty();
+  }
 
   public save(): void {
-
     this.onSave();
 
-    this.allors.context.save()
-      .subscribe(() => {
-        this.panel.toggle();
-      },
-        this.saveService.errorHandler
-      );
+    this.allors.context.save().subscribe(() => {
+      this.panel.toggle();
+    }, this.saveService.errorHandler);
   }
 
   public update(): void {
@@ -290,18 +287,13 @@ export class NonUnifiedPartOverviewDetailComponent extends TestScope implements 
 
     this.onSave();
 
-    context
-      .save()
-      .subscribe(() => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-        this.saveService.errorHandler
-      );
+    context.save().subscribe(() => {
+      this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 
   private onSave() {
-
     this.selectedCategories.forEach((category: PartCategory) => {
       category.AddPart(this.part);
 

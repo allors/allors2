@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { MetaService, RefreshService, PanelService, ContextService, SingletonId } from '@allors/angular/services/core';
-import { Organisation, Currency, InternalOrganisation, IrpfRegime, VatRegime, CustomOrganisationClassification, IndustryClassification, LegalForm } from '@allors/domain/generated';
+import { Organisation, Currency, InternalOrganisation, IrpfRegime, VatRegime, CustomOrganisationClassification, IndustryClassification, LegalForm, Locale } from '@allors/domain/generated';
 import { SaveService } from '@allors/angular/material/services/core';
 import { Meta } from '@allors/meta/generated';
 import { FetcherService } from '@allors/angular/base';

@@ -5,7 +5,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, RefreshService, Saved, MetaService } from '@allors/angular/services/core';
 import { Meta } from '@allors/meta/generated';
-import { PartCategory } from '@allors/domain/generated';
+import { PartCategory, Locale } from '@allors/domain/generated';
 import { ObjectData, SaveService } from '@allors/angular/material/services/core';
 import { FetcherService, InternalOrganisationId } from '@allors/angular/base';
 import { Sort } from '@allors/data/system';
