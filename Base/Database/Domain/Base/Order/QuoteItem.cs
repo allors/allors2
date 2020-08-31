@@ -123,7 +123,7 @@ namespace Allors.Domain
             }
 
             this.TotalExVat = this.UnitPrice * this.Quantity;
-            this.TotalVat = this.UnitVat * this.Quantity;
+            this.TotalVat = Math.Round(this.UnitVat * this.Quantity, 2);
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
 
             // CurrentVersion is Previous Version until PostDerive
