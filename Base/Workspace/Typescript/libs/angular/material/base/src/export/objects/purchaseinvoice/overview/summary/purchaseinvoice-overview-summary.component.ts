@@ -23,9 +23,9 @@ export class PurchasInvoiceOverviewSummaryComponent {
   orders: PurchaseOrder[];
   invoice: PurchaseInvoice;
   goods: Good[] = [];
-
   print: Action;
   orderTotalExVat: number;
+  public hasIrpf: boolean;
 
   constructor(
     @Self() public panel: PanelService,
@@ -102,6 +102,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
       this.orders = loaded.collections[purchaseOrderPullName] as PurchaseOrder[];
 
       this.orderTotalExVat = this.orders.reduce((partialOrderTotal, order) => partialOrderTotal + order.ValidOrderItems.reduce((partialItemTotal, item) => partialItemTotal + parseFloat(item.TotalExVat), 0), 0);
+      this.hasIrpf = Number(this.invoice.TotalIrpf) !== 0;
     };
   }
 

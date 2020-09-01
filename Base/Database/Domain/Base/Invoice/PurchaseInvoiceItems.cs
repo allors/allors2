@@ -15,7 +15,6 @@ namespace Allors.Domain
         {
             var created = new PurchaseInvoiceItemStates(this.Session).Created;
             var awaitingApproval = new PurchaseInvoiceItemStates(this.Session).AwaitingApproval;
-            var received = new PurchaseInvoiceItemStates(this.Session).Received;
             var paid = new PurchaseInvoiceItemStates(this.Session).Paid;
             var cancelledByinvoice = new PurchaseInvoiceItemStates(this.Session).CancelledByinvoice;
             var rejected = new PurchaseInvoiceItemStates(this.Session).Rejected;

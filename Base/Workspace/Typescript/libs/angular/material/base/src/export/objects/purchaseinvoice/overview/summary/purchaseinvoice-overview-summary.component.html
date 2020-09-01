@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <div *ngIf="invoice.TotalIrpf > 0">
+    <div *ngIf="hasIrpf">
       <div style="color: grey">
         Invoice IRPF: {{invoice.TotalIrpf}}
       </div>

@@ -16,7 +16,6 @@ namespace Allors.Domain
         {
             var created = new PurchaseInvoiceStates(this.Session).Created;
             var awaitingApproval = new PurchaseInvoiceStates(this.Session).AwaitingApproval;
-            var received = new PurchaseInvoiceStates(this.Session).Received;
             var notPaid = new PurchaseInvoiceStates(this.Session).NotPaid;
             var partiallyPaid = new PurchaseInvoiceStates(this.Session).PartiallyPaid;
             var paid = new PurchaseInvoiceStates(this.Session).Paid;
@@ -31,14 +30,15 @@ namespace Allors.Domain
             var createSalesInvoice = this.Meta.CreateSalesInvoice;
             var delete = this.Meta.Delete;
             var setPaid = this.Meta.SetPaid;
+            var revise = this.Meta.Revise;
 
-            config.Deny(this.ObjectType, created, approve, reject, reopen, createSalesInvoice, setPaid);
-            config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete);
-            config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete);
-            config.Deny(this.ObjectType, awaitingApproval, confirm, cancel, reopen, setPaid, delete);
+            config.Deny(this.ObjectType, created, approve, reject, reopen, createSalesInvoice, setPaid, revise);
+            config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise);
+            config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise);
+            config.Deny(this.ObjectType, awaitingApproval, confirm, cancel, reopen, setPaid, delete, revise);
             config.Deny(this.ObjectType, notPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete);
-            config.Deny(this.ObjectType, partiallyPaid, cancel, reject, approve, confirm, reopen, delete);
-            config.Deny(this.ObjectType, received, delete);
+            config.Deny(this.ObjectType, partiallyPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete);
+            config.Deny(this.ObjectType, paid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete);
 
             var except = new HashSet<IOperandType>
             {
@@ -48,9 +48,9 @@ namespace Allors.Domain
 
             config.DenyExcept(this.ObjectType, notPaid, except, Operations.Write);
             config.DenyExcept(this.ObjectType, partiallyPaid, except, Operations.Write);
-            config.DenyExcept(this.ObjectType, paid, except, Operations.Write, Operations.Execute);
+            config.DenyExcept(this.ObjectType, paid, except, Operations.Write);
             config.DenyExcept(this.ObjectType, cancelled, except, Operations.Write);
-            config.DenyExcept(this.ObjectType, rejected, except, Operations.Write, Operations.Execute);
+            config.DenyExcept(this.ObjectType, rejected, except, Operations.Write);
         }
     }
 }

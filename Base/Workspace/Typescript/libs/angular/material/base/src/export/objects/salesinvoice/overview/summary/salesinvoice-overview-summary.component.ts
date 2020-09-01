@@ -25,9 +25,9 @@ export class SalesInvoiceOverviewSummaryComponent {
   repeatingInvoices: RepeatingSalesInvoice[];
   repeatingInvoice: RepeatingSalesInvoice;
   goods: Good[] = [];
-
   print: Action;
   workEfforts: WorkEffort[];
+  public hasIrpf: boolean;
 
   constructor(
     @Self() public panel: PanelService,
@@ -128,6 +128,8 @@ export class SalesInvoiceOverviewSummaryComponent {
       this.workEfforts = loaded.collections[workEffortPullName] as WorkEffort[];
       this.invoice = loaded.objects.SalesInvoice as SalesInvoice;
       this.repeatingInvoices = loaded.collections.RepeatingSalesInvoices as RepeatingSalesInvoice[];
+      this.hasIrpf = Number(this.invoice.TotalIrpf) !== 0;
+
       if (this.repeatingInvoices.length > 0) {
         this.repeatingInvoice = this.repeatingInvoices[0];
       } else {

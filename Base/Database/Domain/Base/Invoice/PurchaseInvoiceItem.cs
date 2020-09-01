@@ -39,7 +39,7 @@ namespace Allors.Domain
         {
             if (!this.ExistPurchaseInvoiceItemState)
             {
-                this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Received;
+                this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Created;
             }
 
             if (this.ExistPart && !this.ExistInvoiceItemType)
@@ -124,6 +124,8 @@ namespace Allors.Domain
         }
 
         public void BaseReject(PurchaseInvoiceItemReject method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Rejected;
+
+        public void BaseRevise(PurchaseInvoiceItemRevise method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Created;
 
         public void Sync(Invoice invoice) => this.SyncedInvoice = invoice;
     }
