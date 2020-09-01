@@ -1,7 +1,7 @@
 import { Component, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { MetaService, NavigationService, PanelService, RefreshService,  Invoked } from '@allors/angular/services/core';
+import { MetaService, NavigationService, PanelService, RefreshService, Invoked } from '@allors/angular/services/core';
 import { Good, PurchaseOrder, PurchaseInvoice } from '@allors/domain/generated';
 import { Meta } from '@allors/meta/generated';
 import { SaveService } from '@allors/angular/material/services/core';
@@ -9,23 +9,25 @@ import { PrintService } from '@allors/angular/base';
 import { Sort } from '@allors/data/system';
 import { Action, ActionTarget } from '@allors/angular/core';
 
-
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'purchaseinvoice-overview-summary',
   templateUrl: './purchaseinvoice-overview-summary.component.html',
-  providers: [PanelService]
+  providers: [PanelService],
 })
 export class PurchasInvoiceOverviewSummaryComponent {
-
   m: Meta;
 
   orders: PurchaseOrder[];
   invoice: PurchaseInvoice;
   goods: Good[] = [];
+
   print: Action;
   orderTotalExVat: number;
-  public hasIrpf: boolean;
+  hasIrpf: boolean;
+  get totalIrpfIsPositive(): boolean {
+    return +this.invoice.TotalIrpf > 0;
+  }
 
   constructor(
     @Self() public panel: PanelService,
@@ -35,8 +37,8 @@ export class PurchasInvoiceOverviewSummaryComponent {
     private saveService: SaveService,
 
     public refreshService: RefreshService,
-    public snackBar: MatSnackBar) {
-
+    public snackBar: MatSnackBar
+  ) {
     this.m = this.metaService.m;
 
     this.print = printService.print();
@@ -58,7 +60,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
           object: id,
           include: {
             PurchaseInvoiceItems: {
-              InvoiceItemType: x
+              InvoiceItemType: x,
             },
             BilledFrom: x,
             BilledFromContactPerson: x,
@@ -71,14 +73,13 @@ export class PurchasInvoiceOverviewSummaryComponent {
             CreatedBy: x,
             LastModifiedBy: x,
             BillToEndCustomerContactMechanism: {
-              PostalAddress_Country: {
-              }
+              PostalAddress_Country: {},
             },
             ShipToEndCustomerAddress: {
-              Country: x
+              Country: x,
             },
             PrintDocument: {
-              Media: x
+              Media: x,
             },
           },
         }),
@@ -86,12 +87,12 @@ export class PurchasInvoiceOverviewSummaryComponent {
           name: purchaseOrderPullName,
           object: id,
           fetch: {
-            PurchaseOrders: x
-          }
+            PurchaseOrders: x,
+          },
         }),
         pull.Good({
           name: goodPullName,
-          sort: new Sort(m.Good.Name)
+          sort: new Sort(m.Good.Name),
         })
       );
     };
@@ -101,69 +102,55 @@ export class PurchasInvoiceOverviewSummaryComponent {
       this.goods = loaded.collections[goodPullName] as Good[];
       this.orders = loaded.collections[purchaseOrderPullName] as PurchaseOrder[];
 
-      this.orderTotalExVat = this.orders.reduce((partialOrderTotal, order) => partialOrderTotal + order.ValidOrderItems.reduce((partialItemTotal, item) => partialItemTotal + parseFloat(item.TotalExVat), 0), 0);
+      this.orderTotalExVat = this.orders.reduce(
+        (partialOrderTotal, order) =>
+          partialOrderTotal + order.ValidOrderItems.reduce((partialItemTotal, item) => partialItemTotal + parseFloat(item.TotalExVat), 0),
+        0
+      );
+
       this.hasIrpf = Number(this.invoice.TotalIrpf) !== 0;
     };
   }
 
   public confirm(): void {
-
-    this.panel.manager.context.invoke(this.invoice.Confirm)
-      .subscribe(() => {
-        this.refreshService.refresh();
-        this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
-      },
-      this.saveService.errorHandler);
+    this.panel.manager.context.invoke(this.invoice.Confirm).subscribe(() => {
+      this.refreshService.refresh();
+      this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
+    }, this.saveService.errorHandler);
   }
 
   public cancel(): void {
-
-    this.panel.manager.context.invoke(this.invoice.Cancel)
-      .subscribe(() => {
-        this.refreshService.refresh();
-        this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-      this.saveService.errorHandler);
+    this.panel.manager.context.invoke(this.invoice.Cancel).subscribe(() => {
+      this.refreshService.refresh();
+      this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+    }, this.saveService.errorHandler);
   }
 
   public reopen(): void {
-
-    this.panel.manager.context.invoke(this.invoice.Reopen)
-      .subscribe(() => {
-        this.refreshService.refresh();
-        this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-      },
-      this.saveService.errorHandler);
+    this.panel.manager.context.invoke(this.invoice.Reopen).subscribe(() => {
+      this.refreshService.refresh();
+      this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+    }, this.saveService.errorHandler);
   }
 
   public approve(): void {
-
-    this.panel.manager.context.invoke(this.invoice.Approve)
-      .subscribe(() => {
-        this.refreshService.refresh();
-        this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-      },
-      this.saveService.errorHandler);
+    this.panel.manager.context.invoke(this.invoice.Approve).subscribe(() => {
+      this.refreshService.refresh();
+      this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
+    }, this.saveService.errorHandler);
   }
 
   public reject(): void {
-
-    this.panel.manager.context.invoke(this.invoice.Reject)
-      .subscribe(() => {
-        this.refreshService.refresh();
-        this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-      },
-      this.saveService.errorHandler);
+    this.panel.manager.context.invoke(this.invoice.Reject).subscribe(() => {
+      this.refreshService.refresh();
+      this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
+    }, this.saveService.errorHandler);
   }
 
   public createSalesInvoice(invoice: PurchaseInvoice): void {
-
-    this.panel.manager.context.invoke(invoice.CreateSalesInvoice)
-      .subscribe(() => {
-        this.snackBar.open('Successfully created a sales invoice.', 'close', { duration: 5000 });
-        this.refreshService.refresh();
-      },
-      this.saveService.errorHandler);
+    this.panel.manager.context.invoke(invoice.CreateSalesInvoice).subscribe(() => {
+      this.snackBar.open('Successfully created a sales invoice.', 'close', { duration: 5000 });
+      this.refreshService.refresh();
+    }, this.saveService.errorHandler);
   }
 }
-
