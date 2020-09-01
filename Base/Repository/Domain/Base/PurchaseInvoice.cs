@@ -400,6 +400,12 @@ namespace Allors.Repository
         [Workspace]
         public void SetPaid() { }
 
+        #region Allors
+        [Id("3bd0368b-78dc-4872-8437-62645b16ee2b")]
+        #endregion
+        [Workspace]
+        public void DoneRevising() { }
+
         #region inherited methods
 
         public void OnBuild() { }

@@ -20,5 +20,7 @@ namespace Allors.Domain
         public bool IsRejected => this.UniqueId == PurchaseInvoiceItemStates.RejectedId;
 
         public bool IsCancelledByInvoice => this.UniqueId == PurchaseInvoiceItemStates.CancelledByInvoiceId;
+
+        public bool IsRevising => this.UniqueId == PurchaseInvoiceItemStates.RevisingId;
     }
 }

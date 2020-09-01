@@ -133,6 +133,20 @@ export class PurchasInvoiceOverviewSummaryComponent {
     }, this.saveService.errorHandler);
   }
 
+  public revise(): void {
+    this.panel.manager.context.invoke(this.invoice.Revise).subscribe(() => {
+      this.refreshService.refresh();
+      this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+    }, this.saveService.errorHandler);
+  }
+
+  public finishRevising(): void {
+    this.panel.manager.context.invoke(this.invoice.DoneRevising).subscribe(() => {
+      this.refreshService.refresh();
+      this.snackBar.open('Successfully finished revising.', 'close', { duration: 5000 });
+    }, this.saveService.errorHandler);
+  }
+
   public approve(): void {
     this.panel.manager.context.invoke(this.invoice.Approve).subscribe(() => {
       this.refreshService.refresh();

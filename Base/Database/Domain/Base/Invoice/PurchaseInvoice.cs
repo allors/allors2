@@ -140,7 +140,11 @@ namespace Allors.Domain
 
             foreach (var invoiceItem in validInvoiceItems)
             {
-                if (invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsCreated)
+                if (invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsRevising)
+                {
+                    invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Revising;
+                }
+                else if (invoiceItem.PurchaseInvoiceWherePurchaseInvoiceItem.PurchaseInvoiceState.IsCreated)
                 {
                     invoiceItem.PurchaseInvoiceItemState = purchaseInvoiceItemStates.Created;
                 }
@@ -164,7 +168,9 @@ namespace Allors.Domain
 
             if (validInvoiceItems.Any())
             {
-                if (!this.PurchaseInvoiceState.IsCreated && !this.PurchaseInvoiceState.IsAwaitingApproval)
+                if (!this.PurchaseInvoiceState.IsRevising
+                    && !this.PurchaseInvoiceState.IsCreated
+                    && !this.PurchaseInvoiceState.IsAwaitingApproval)
                 {
                     if (this.PurchaseInvoiceItems.All(v => v.PurchaseInvoiceItemState.IsPaid))
                     {
@@ -181,7 +187,9 @@ namespace Allors.Domain
                 }
             }
 
-            if (!this.PurchaseInvoiceState.IsCreated && !this.PurchaseInvoiceState.IsAwaitingApproval)
+            if (!this.PurchaseInvoiceState.IsRevising
+                && !this.PurchaseInvoiceState.IsCreated
+                && !this.PurchaseInvoiceState.IsAwaitingApproval)
             {
                 foreach (var invoiceItem in validInvoiceItems)
                 {
@@ -205,7 +213,8 @@ namespace Allors.Domain
             }
 
             // If disbursements are not matched at invoice level
-            if (this.AmountPaid > 0)
+            if (!this.PurchaseInvoiceState.IsRevising
+                && this.AmountPaid > 0)
             {
                 if (this.AmountPaid >= decimal.Round(this.TotalIncVat, 2))
                 {
@@ -545,10 +554,19 @@ namespace Allors.Domain
 
         public void BaseRevise(PurchaseInvoiceRevise method)
         {
+            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Revising;
+            foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
+            {
+                purchaseInvoiceItem.Revise();
+            }
+        }
+
+        public void BaseDoneRevising(PurchaseInvoiceDoneRevising method)
+        {
             this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Created;
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
             {
-                purchaseInvoiceItem.Reject();
+                purchaseInvoiceItem.DoneRevising();
             }
         }
 

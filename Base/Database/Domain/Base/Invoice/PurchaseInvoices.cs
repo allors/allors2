@@ -21,6 +21,7 @@ namespace Allors.Domain
             var paid = new PurchaseInvoiceStates(this.Session).Paid;
             var cancelled = new PurchaseInvoiceStates(this.Session).Cancelled;
             var rejected = new PurchaseInvoiceStates(this.Session).Rejected;
+            var revising = new PurchaseInvoiceStates(this.Session).Revising;
 
             var approve = this.Meta.Approve;
             var reject = this.Meta.Reject;
@@ -31,14 +32,20 @@ namespace Allors.Domain
             var delete = this.Meta.Delete;
             var setPaid = this.Meta.SetPaid;
             var revise = this.Meta.Revise;
+            var doneRevising = this.Meta.DoneRevising;
 
-            config.Deny(this.ObjectType, created, approve, reject, reopen, createSalesInvoice, setPaid, revise);
-            config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise);
-            config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise);
-            config.Deny(this.ObjectType, awaitingApproval, confirm, cancel, reopen, setPaid, delete, revise);
-            config.Deny(this.ObjectType, notPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete);
-            config.Deny(this.ObjectType, partiallyPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete);
-            config.Deny(this.ObjectType, paid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete);
+            config.Deny(this.ObjectType, created, approve, reject, reopen, createSalesInvoice, setPaid, revise, doneRevising);
+            config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise, doneRevising);
+            config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise, doneRevising);
+            config.Deny(this.ObjectType, awaitingApproval, confirm, cancel, reopen, setPaid, delete, revise, doneRevising);
+            config.Deny(this.ObjectType, notPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, doneRevising);
+            config.Deny(this.ObjectType, partiallyPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, doneRevising);
+            config.Deny(this.ObjectType, paid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, doneRevising);
+
+            if (revising != null)
+            {
+                config.Deny(this.ObjectType, revising, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, setPaid, revise);
+            }
 
             var except = new HashSet<IOperandType>
             {
