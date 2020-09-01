@@ -29,7 +29,7 @@ describe('Scaffold', () => {
     extendAngular(workspace);
     
     // Configure
-    configureMaterial(metaPopulation);
+    configureMaterial(metaPopulation, null);
 
     const meta: MetaInfo[] = metaPopulation.composites.map((v) => {
       return {
