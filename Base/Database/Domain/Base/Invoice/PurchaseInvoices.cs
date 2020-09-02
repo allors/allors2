@@ -32,15 +32,15 @@ namespace Allors.Domain
             var delete = this.Meta.Delete;
             var setPaid = this.Meta.SetPaid;
             var revise = this.Meta.Revise;
-            var doneRevising = this.Meta.DoneRevising;
+            var finishRevising = this.Meta.FinishRevising;
 
-            config.Deny(this.ObjectType, created, approve, reject, reopen, createSalesInvoice, setPaid, revise, doneRevising);
-            config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise, doneRevising);
-            config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise, doneRevising);
-            config.Deny(this.ObjectType, awaitingApproval, confirm, cancel, reopen, setPaid, delete, revise, doneRevising);
-            config.Deny(this.ObjectType, notPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, doneRevising);
-            config.Deny(this.ObjectType, partiallyPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, doneRevising);
-            config.Deny(this.ObjectType, paid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, doneRevising);
+            config.Deny(this.ObjectType, created, approve, reject, reopen, createSalesInvoice, setPaid, revise, finishRevising);
+            config.Deny(this.ObjectType, cancelled, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise, finishRevising);
+            config.Deny(this.ObjectType, rejected, approve, reject, confirm, cancel, setPaid, createSalesInvoice, delete, revise, finishRevising);
+            config.Deny(this.ObjectType, awaitingApproval, confirm, cancel, reopen, setPaid, delete, revise, finishRevising);
+            config.Deny(this.ObjectType, notPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, finishRevising);
+            config.Deny(this.ObjectType, partiallyPaid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, finishRevising);
+            config.Deny(this.ObjectType, paid, cancel, reject, approve, confirm, reopen, createSalesInvoice, delete, finishRevising);
 
             if (revising != null)
             {

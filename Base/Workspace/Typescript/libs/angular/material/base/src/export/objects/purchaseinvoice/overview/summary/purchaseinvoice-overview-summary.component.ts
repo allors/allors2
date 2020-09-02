@@ -141,7 +141,7 @@ export class PurchasInvoiceOverviewSummaryComponent {
   }
 
   public finishRevising(): void {
-    this.panel.manager.context.invoke(this.invoice.DoneRevising).subscribe(() => {
+    this.panel.manager.context.invoke(this.invoice.FinishRevising).subscribe(() => {
       this.refreshService.refresh();
       this.snackBar.open('Successfully finished revising.', 'close', { duration: 5000 });
     }, this.saveService.errorHandler);

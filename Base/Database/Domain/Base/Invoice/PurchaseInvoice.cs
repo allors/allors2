@@ -561,12 +561,12 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseDoneRevising(PurchaseInvoiceDoneRevising method)
+        public void BaseDoneRevising(PurchaseInvoiceFinishRevising method)
         {
             this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Created;
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
             {
-                purchaseInvoiceItem.DoneRevising();
+                purchaseInvoiceItem.FinishRevising();
             }
         }
 
