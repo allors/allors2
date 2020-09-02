@@ -122,6 +122,17 @@ namespace Allors.Repository
         public int Quantity { get; set; }
 
         #region Allors
+        [Id("ba4e5861-6e5b-4baf-96fd-350f6a70b663")]
+        [AssociationId("9109acd3-c414-42e4-9ee3-656f10c148fa")]
+        [RoleId("836f85a2-490a-4f57-a1cf-76f4fa147b63")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Required]
+        [Workspace]
+        public decimal AssignedUnitPrice { get; set; }
+
+        #region Allors
         [Id("B48D0207-26CD-4A63-922F-69EC62704200")]
         [AssociationId("0ED387D1-A458-428B-A422-4CAC0D140841")]
         [RoleId("A4B9AD09-CB3D-460D-B0F2-232C0E124170")]

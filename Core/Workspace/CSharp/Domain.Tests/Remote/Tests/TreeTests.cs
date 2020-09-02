@@ -22,7 +22,7 @@ namespace Tests.Remote
 
             var pull = new Pull
             {
-                Extent = new Filter(M.User.ObjectType),
+                Extent = new Extent(M.User.ObjectType),
                 Results = new[]
                 {
                     new Result

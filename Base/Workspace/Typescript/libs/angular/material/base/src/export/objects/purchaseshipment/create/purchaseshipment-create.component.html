@@ -1,0 +1,131 @@
+<form *ngIf="shipment" class="a-edit" #form="ngForm" (submit)="save()">
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-autocomplete class="col-md" [object]="shipment" [roleType]="m.PurchaseShipment.ShipFromParty" [filter]="suppliersFilter.create(allors.context)"
+              display="displayName" (changed)="supplierSelected($event)" label="Supplier"></a-mat-autocomplete>
+            <button mat-mini-fab color="accent" [disabled]="!shipment.CanWriteShipFromParty" type="button" (click)="addSupplier = !addSupplier">
+              <mat-icon *ngIf="!addSupplier">add</mat-icon>
+              <mat-icon *ngIf="addSupplier">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <mat-card *ngIf="addSupplier">
+            <mat-card-header>Add a new supplier</mat-card-header>
+            <mat-card-content>
+              <organisation-inline (saved)="supplierAdded($event); addSupplier = false" (cancelled)="addSupplier = false">
+              </organisation-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="shipment" [roleType]="m.PurchaseShipment.ShipFromContactPerson" [options]="shipFromContacts"
+              display="displayName" label="Supplier contact person"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!shipment.ShipFromParty || !shipment.CanWriteShipFromContactPerson"
+              type="button" (click)="addShipFromContactPerson = !addShipFromContactPerson">
+              <mat-icon *ngIf="!addShipFromContactPerson">add</mat-icon>
+              <mat-icon *ngIf="addShipFromContactPerson">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="addShipFromContactPerson">
+          <mat-card>
+            <mat-card-header>Add a new person</mat-card-header>
+            <mat-card-content>
+              <person-inline (cancelled)="addShipFromContactPerson = false" (saved)="shipFromContactPersonAdded($event); addShipFromContactPerson = false">
+              </person-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="shipment" [roleType]="m.PurchaseShipment.ShipToAddress" [options]="shipToAddresses"
+              display="displayName" class="col-md"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!shipment.CanWriteShipToAddress"
+              type="button" (click)="addShipToAddress = !addShipToAddress">
+              <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
+              <mat-icon *ngIf="addShipToAddress">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 pb-3" *ngIf="addShipToAddress">
+          <mat-card>
+            <mat-card-header>Add a new contact mechanism</mat-card-header>
+            <mat-card-content>
+              <party-contactmechanism-postaladdress (saved)="shipToAddressAdded($event); addShipToAddress = false" (cancelled)="addShipToAddress = false">
+              </party-contactmechanism-postaladdress>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="shipment" [roleType]="m.PurchaseShipment.ShipToContactPerson"
+              [options]="shipToContacts" display="displayName" label="Shipping Contact Person"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!shipment.CanWriteShipToContactPerson"
+              type="button" (click)="addShipToContactPerson = !addShipToContactPerson">
+              <mat-icon *ngIf="!addShipToContactPerson">add</mat-icon>
+              <mat-icon *ngIf="addShipToContactPerson">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="addShipToContactPerson">
+          <mat-card>
+            <mat-card-header>Add a new person</mat-card-header>
+            <mat-card-content>
+              <person-inline (cancelled)="addShipToContactPerson = false" (saved)="shipToContactPersonAdded($event); addShipToContactPerson = false">
+              </person-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <mat-form-field class="col">
+              <mat-select [(ngModel)]="selectedFacility" name="facilityName" placeholder="facility" multiple="false" label="Facility/Storage location">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let facility of facilities" [value]="facility">{{ facility.Name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-mini-fab color="accent" type="button" (click)="addFacility = !addFacility">
+              <mat-icon *ngIf="!addFacility">add</mat-icon>
+              <mat-icon *ngIf="addFacility">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 pb-3" *ngIf="addFacility">
+          <mat-card>
+            <mat-card-header>Add new Facility</mat-card-header>
+            <mat-card-content>
+              <facility-inline (cancelled)="addFacility = false" (saved)="facilityAdded($event); addFacility = false"></facility-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+  
+    </div>
+  
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

@@ -1,0 +1,25 @@
+<div class="row">
+  <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name"></a-mat-select>
+</div>
+
+<div class="row">
+  <a-mat-input class="col-md" [object]="postalAddress" [roleType]="m.PostalAddress.Address1" label="Address line 1"></a-mat-input>
+  <a-mat-input class="col-md" [object]="postalAddress" [roleType]="m.PostalAddress.Address2" label="Address line 2"></a-mat-input>
+  <a-mat-input class="col-md" [object]="postalAddress" [roleType]="m.PostalAddress.Address3" label="Address line 3"></a-mat-input>
+</div>
+
+<div class="row">
+  <a-mat-input class="col-md" [object]="postalAddress" [roleType]="m.PostalAddress.Locality" label="City"></a-mat-input>
+  <a-mat-input class="col-md" [object]="postalAddress" [roleType]="m.PostalAddress.PostalCode" label="Postal code"></a-mat-input>
+  <a-mat-select class="col-md" [object]="postalAddress" [roleType]="m.PostalAddress.Country" [options]="countries" display="Name"></a-mat-select>
+</div>
+
+<div class="row">
+  <a-mat-slidetoggle class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slidetoggle>
+  <a-mat-slidetoggle class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slidetoggle>
+</div>
+
+<div class="row">
+  <button mat-button color="primary" type="button" (click)="save()" [disabled]="!partyContactMechanism || partyContactMechanism.UseAsDefault && partyContactMechanism.ContactPurposes.length == 0">Save</button>
+  <button mat-button color="accent" type="button" (click)="cancel()">Cancel</button>
+</div>

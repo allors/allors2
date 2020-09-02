@@ -17,29 +17,10 @@ public partial class Paths
     public AbsolutePath CoreDatabaseResourcesCore => CoreDatabaseResources / "Core";
     public AbsolutePath CoreDatabaseResourcesCustom => CoreDatabaseResources / "Custom";
 
-    public AbsolutePath CoreWorkspaceTypescriptDomain => Core / "Workspace/Typescript/Domain";
-    public AbsolutePath CoreWorkspaceTypescriptPromise => Core / "Workspace/Typescript/Promise";
-    public AbsolutePath CoreWorkspaceTypescriptAngular => Core / "Workspace/Typescript/Angular";
-    public AbsolutePath CoreWorkspaceTypescriptAngularTrx => CoreWorkspaceTypescriptAngular / "dist/CoreWorkspaceTypescriptAngular.trx";
-    public AbsolutePath CoreWorkspaceTypescriptMaterial => Core / "Workspace/Typescript/Material";
-    public AbsolutePath CoreWorkspaceTypescriptMaterialTrx => CoreWorkspaceTypescriptMaterial / "dist/CoreWorkspaceTypescriptMaterial.trx";
-    public AbsolutePath CoreWorkspaceTypescriptMaterialTests => Core / "Workspace/Typescript/Material.Tests/Material.Tests.csproj";
-    public AbsolutePath CoreWorkspaceTypescriptAutotestAngular => Core / "Workspace/Typescript/Autotest/Angular";
-    public AbsolutePath CoreWorkspaceTypescriptAutotestGenerateGenerate => Core / "Workspace/Typescript/Autotest/Generate/Generate.csproj";
-    public AbsolutePath CoreWorkspaceTypescriptGatsby => Core / "Workspace/Typescript/Gatsby";
-    public AbsolutePath CoreWorkspaceTypescriptGatsbyPluginsAllors => this.CoreWorkspaceTypescriptGatsby / "plugins/gatsby-source-allors";
-
-    public AbsolutePath[] CoreWorkspaceTypescript => new[]
-    {
-        CoreWorkspaceTypescriptDomain,
-        CoreWorkspaceTypescriptPromise,
-        CoreWorkspaceTypescriptAngular,
-        CoreWorkspaceTypescriptMaterial,
-        CoreWorkspaceTypescriptAutotestAngular,
-        this.CoreWorkspaceTypescriptGatsby,
-        this.CoreWorkspaceTypescriptGatsbyPluginsAllors,
-    };
+    public AbsolutePath CoreWorkspaceTypescript=> Core / "Workspace/Typescript";
+    public AbsolutePath CoreWorkspaceScaffold => Core / "Workspace/Scaffold";
+    public AbsolutePath CoreWorkspaceScaffoldGenerate => CoreWorkspaceScaffold / "Generate/Generate.csproj";
+    public AbsolutePath CoreWorkspaceScaffoldAngularMaterialTests => CoreWorkspaceScaffold / "Angular.Material.Tests/Angular.Material.Tests.csproj";
 
     public AbsolutePath CoreWorkspaceCSharpDomainTests => Core / "Workspace/CSharp/Domain.Tests";
-
 }

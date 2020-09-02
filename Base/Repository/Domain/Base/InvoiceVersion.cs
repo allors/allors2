@@ -94,7 +94,6 @@ namespace Allors.Repository
         [RoleId("4F49FCB5-46A2-434A-9A91-AB5500365DCE")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -106,7 +105,6 @@ namespace Allors.Repository
         [RoleId("6ADC6E83-0FA4-4F66-AE3F-96DEF30979FE")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -128,7 +126,6 @@ namespace Allors.Repository
         [RoleId("9E266B19-DE3E-4FC6-9B7A-E999139A8A3E")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -140,7 +137,6 @@ namespace Allors.Repository
         [RoleId("043FDAFA-32BE-42B9-B9C5-38DA573AB680")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -152,7 +148,6 @@ namespace Allors.Repository
         [RoleId("82B5CD63-FC62-4C1C-9FB6-046C8731B333")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -164,7 +159,6 @@ namespace Allors.Repository
         [RoleId("87ad1baa-4dd1-494d-8eab-8bf6319fa18c")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -175,7 +169,6 @@ namespace Allors.Repository
         [AssociationId("684D2BBF-CACB-4256-AE82-CBA65A03D054")]
         [RoleId("EC9CDE94-354A-4850-A10B-2B0845CB567C")]
         #endregion
-        [Required]
         [Workspace]
         DateTime InvoiceDate { get; set; }
 
@@ -185,7 +178,6 @@ namespace Allors.Repository
         [RoleId("AC3E7EFC-6FB8-45B5-8D6B-67618E522591")]
         #endregion
         [Derived]
-        [Required]
         [Workspace]
         DateTime EntryDate { get; set; }
 
@@ -195,7 +187,6 @@ namespace Allors.Repository
         [RoleId("6FEAB01B-F73F-4336-A62E-5ECA563F9A50")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -207,7 +198,6 @@ namespace Allors.Repository
         [RoleId("76DE0F8E-339B-4A93-8254-15D641180F3D")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -238,7 +228,6 @@ namespace Allors.Repository
         [AssociationId("B74F0010-BFA5-4B5D-8C3D-589C899BE378")]
         [RoleId("E43CA923-899B-4CDF-BA96-5A69A795BDD1")]
         #endregion
-        [Required]
         [Size(256)]
         [Workspace]
         string InvoiceNumber { get; set; }
@@ -278,7 +267,6 @@ namespace Allors.Repository
         [RoleId("93A2735C-0C71-40D5-A1C2-392141C2367F")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -290,7 +278,6 @@ namespace Allors.Repository
         [RoleId("82BE11EF-4994-4F76-997E-4779C72690C8")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -302,11 +289,9 @@ namespace Allors.Repository
         [RoleId("1163b076-01a1-4758-a2f7-c4c4a37a1431")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
         decimal TotalExtraCharge { get; set; }
-
     }
 }

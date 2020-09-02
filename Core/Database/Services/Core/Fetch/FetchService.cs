@@ -30,7 +30,7 @@ namespace Allors.Services
             {
                 using (var session = this.databaseService.Database.CreateSession())
                 {
-                    var filter = new Filter(M.PreparedFetch.Class)
+                    var filter = new Extent(M.PreparedFetch.Class)
                     {
                         Predicate = new Equals(M.PreparedFetch.UniqueId.RoleType) { Value = id },
                     };

@@ -305,6 +305,16 @@ namespace Allors.Repository
         int SortableInvoiceNumber { get; set; }
 
         #region Allors
+        [Id("eaa66e01-f597-4c71-86e5-d78652fe926b")]
+        [AssociationId("43978013-8e98-46e5-941c-ba19ba4fa6a5")]
+        [RoleId("fddb51c0-e427-4575-b9d3-24f6fd3f4e06")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public Media[] ElectronicDocuments { get; set; }
+
+        #region Allors
 
         [Id("B9226E72-AD90-4195-9DC7-64A26D12E6A3")]
 

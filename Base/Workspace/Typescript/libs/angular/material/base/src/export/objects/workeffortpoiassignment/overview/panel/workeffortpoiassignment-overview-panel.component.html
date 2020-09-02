@@ -1,0 +1,33 @@
+<div *ngIf="panel.isCollapsed" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
+  <div class="container mb-3">
+    <div class="row rounded" style="background-color: white;">
+      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightskyblue">
+        <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
+      </div>
+      <div class="col-9 col-md-10 p-3">
+        <h4>{{panel.title}}</h4>
+        <div>{{objects?.length}} total purchase order items assignments</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="panel.isExpanded && !!table" class="mat-elevation-z2" style="background: white">
+
+  <div class="container-fluid" style="cursor: pointer;" (click)="panel.toggle(); false">
+    <div class="row pt-3">
+      <div class="col pl-3">
+        <h4>Purchase order items Assignments</h4>
+      </div>
+      <div class="pr-3">
+        <mat-icon>expand_less</mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div *ngIf="workEffort.CanWriteWorkDone"> -->
+    <a-mat-factory-fab [objectType]="metaService.m.WorkEffortPurchaseOrderItemAssignment" [createData]="createData" (created)="this.refreshService.refresh()"></a-mat-factory-fab>
+  <!-- </div> -->
+
+  <a-mat-table [table]="table"></a-mat-table>
+</div>

@@ -1,0 +1,62 @@
+<form *ngIf="serialisedItem" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-static *ngIf="part" class="col-md" [object]="part" [roleType]="m.Part.Name" display="Name"></a-mat-static>
+        <a-mat-autocomplete *ngIf="!part" class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.PartWhereItem" [filter]="serialisedgoodsFilter.create(allors.context)"
+        display="Name" label="Product" (changed)="partSelected($event)"></a-mat-autocomplete>
+        <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Name"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Description"></a-mat-textarea>
+      </div>
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialNumber"></a-mat-input>
+        <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialisedItemState"
+          [options]="serialisedItemStates" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.SerialisedItemAvailability"
+          [options]="serialisedItemAvailabilities" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.Ownership" [options]="ownerships"
+          display="Name"></a-mat-select>
+        <a-mat-autocomplete class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.OwnedBy" [filter]="partiesFilter.create(allors.context)"
+          display="displayName"></a-mat-autocomplete>
+      </div>
+
+      <div class="row">
+        <a-mat-autocomplete class="col-md-6" [object]="serialisedItem" [roleType]="m.SerialisedItem.RentedBy" [filter]="partiesFilter.create(allors.context)"
+          display="displayName"></a-mat-autocomplete>
+      </div>
+
+      <div class="row">
+        <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.LastServiceDate"></a-mat-datepicker>
+        <a-mat-datepicker class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.NextServiceDate"></a-mat-datepicker>
+      </div>
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.CustomerReferenceNumber"></a-mat-input>
+        <a-mat-slidetoggle class="col-md" [object]="serialisedItem" [roleType]="m.SerialisedItem.AvailableForSale"></a-mat-slidetoggle>
+      </div>
+
+      <a-mat-file class="col-md-12" [object]="serialisedItem" [roleType]="m.SerialisedItem.PrimaryPhoto" accept="image/*"></a-mat-file>
+
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges || !selectedPart">SAVE</button>
+  </div>
+
+</form>

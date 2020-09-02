@@ -593,7 +593,6 @@ namespace Allors.Domain
         public void BaseContinue(OrderContinue method) => this.SalesOrderState = this.PreviousSalesOrderState;
 
         public void BaseComplete(OrderComplete method) => this.SalesOrderState = new SalesOrderStates(this.Strategy.Session).Completed;
-
         public void BaseShip(SalesOrderShip method)
         {
             if (this.CanShip)

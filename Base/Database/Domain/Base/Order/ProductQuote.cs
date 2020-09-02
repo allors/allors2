@@ -71,7 +71,8 @@ namespace Allors.Domain
 
                 var images = new Dictionary<string, byte[]>
                                  {
-                                     { "Logo", logo },
+                                     { "Logo1", logo },
+                                     { "Logo2", logo },
                                  };
 
                 if (this.ExistQuoteNumber)
@@ -448,8 +449,8 @@ namespace Allors.Domain
                 quoteItemDeriveRoles.UnitSurcharge += featureItem.UnitSurcharge;
             }
 
-            quoteItemDeriveRoles.UnitVat = quoteItem.ExistVatRate ? Math.Round(quoteItem.UnitPrice * quoteItem.VatRate.Rate / 100, 2) : 0;
-            quoteItemDeriveRoles.UnitIrpf = quoteItem.ExistIrpfRate ? Math.Round(quoteItem.UnitPrice * quoteItem.IrpfRate.Rate / 100, 2) : 0;
+            quoteItemDeriveRoles.UnitVat = quoteItem.ExistVatRate ? quoteItem.UnitPrice * quoteItem.VatRate.Rate / 100 : 0;
+            quoteItemDeriveRoles.UnitIrpf = quoteItem.ExistIrpfRate ? quoteItem.UnitPrice * quoteItem.IrpfRate.Rate / 100 : 0;
 
             // Calculate Totals
             quoteItemDeriveRoles.TotalBasePrice = quoteItem.UnitBasePrice * quoteItem.Quantity;
@@ -469,9 +470,9 @@ namespace Allors.Domain
             }
 
             quoteItemDeriveRoles.TotalExVat = quoteItem.UnitPrice * quoteItem.Quantity;
-            quoteItemDeriveRoles.TotalVat = quoteItem.UnitVat * quoteItem.Quantity;
+            quoteItemDeriveRoles.TotalVat = Math.Round(quoteItem.UnitVat * quoteItem.Quantity, 2);
             quoteItemDeriveRoles.TotalIncVat = quoteItem.TotalExVat + quoteItem.TotalVat;
-            quoteItemDeriveRoles.TotalIrpf = quoteItem.UnitIrpf * quoteItem.Quantity;
+            quoteItemDeriveRoles.TotalIrpf = Math.Round(quoteItem.UnitIrpf * quoteItem.Quantity, 2);
             quoteItemDeriveRoles.GrandTotal = quoteItem.TotalIncVat - quoteItem.TotalIrpf;
         }
 

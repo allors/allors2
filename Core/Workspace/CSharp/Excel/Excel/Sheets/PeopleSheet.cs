@@ -40,7 +40,7 @@ namespace Application.Sheets
 
             var pull = new Pull
             {
-                Extent = new Filter(M.Person.ObjectType),
+                Extent = new Extent(M.Person.ObjectType),
 
                 Results = new[]
                 {

@@ -33,7 +33,7 @@ namespace Allors.Domain.Print.WorkTaskModel
                 }
                 else
                 {
-                    this.BillingAddress = customer.BillingAddress.ToString();
+                    this.BillingAddress = customer.BillingAddress?.ToString();
                 }
 
                 var shippingAddress = customer.ShippingAddress;

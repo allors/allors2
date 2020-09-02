@@ -1,0 +1,15 @@
+<div #toolBar></div>
+<mat-toolbar style="background-color: transparent; cursor:pointer;" (click)="add($event)">
+    <mat-toolbar-row>
+        <mat-chip-list *ngIf="hasFields" class="mr-3">
+            <mat-chip *ngFor="let field of filter.fields" [removable]="true" (removed)="remove(field)">{{field.definition.predicate.parameter}}: {{field.display}} <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+        </mat-chip-list>
+
+        <div class="col pl-0" style="border-bottom: 1px dotted lightgray"><span class="mat-small" *ngIf="!hasFields">Add a Filter</span><span class="mat-small" *ngIf="hasFields">Add another Filter</span></div>
+        
+        <button *ngIf="hasFields" mat-button mat-icon-button aria-label="Clear Filters" (click)="clear(); $event.stopPropagation();">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>

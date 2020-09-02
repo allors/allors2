@@ -418,6 +418,16 @@ namespace Allors.Repository
         int SortableQuoteNumber { get; set; }
 
         #region Allors
+        [Id("bd1de829-0619-4e3c-a104-89bcb5ab1f4d")]
+        [AssociationId("ed6127c6-09cc-4f0e-ab19-c446488e604c")]
+        [RoleId("5fdaef00-71e4-4e56-9b8f-17ea51621fdc")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public Media[] ElectronicDocuments { get; set; }
+
+        #region Allors
 
         [Id("8C858157-B9BC-4E2C-97BC-646066532854")]
 

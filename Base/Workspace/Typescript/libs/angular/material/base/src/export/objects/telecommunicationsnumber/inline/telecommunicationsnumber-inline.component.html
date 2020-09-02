@@ -1,0 +1,20 @@
+<div class="row">
+  <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name"></a-mat-select>
+  <a-mat-select class="col-md" [object]="telecommunicationsNumber" [roleType]="m.ContactMechanism.ContactMechanismType" [options]="contactMechanismTypes" display="Name"></a-mat-select>
+</div>
+
+<div class="row">
+  <a-mat-input class="col-md" [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-mat-input>
+  <a-mat-input class="col-md" [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-mat-input>
+  <a-mat-input class="col-md" [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
+</div>
+
+<div class="row">
+  <a-mat-slidetoggle class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slidetoggle>
+  <a-mat-slidetoggle class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slidetoggle>
+</div>
+
+<div class="row">
+  <button mat-button color="primary" type="button" (click)="save()" [disabled]="!partyContactMechanism || partyContactMechanism.UseAsDefault && partyContactMechanism.ContactPurposes.length == 0">Save</button>
+  <button mat-button color="accent" type="button" (click)="cancel()">Cancel</button>
+</div>

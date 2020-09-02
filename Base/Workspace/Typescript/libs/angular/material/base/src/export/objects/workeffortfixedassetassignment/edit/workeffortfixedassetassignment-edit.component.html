@@ -1,0 +1,50 @@
+<form *ngIf="workEffortFixedAssetAssignment" #form="ngForm" (submit)="save()" novalidate>
+  <h1></h1>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.AssetAssignmentStatus"
+          [options]="assetAssignmentStatuses" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-datetimepicker class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FromDate"></a-mat-datetimepicker>
+      </div>
+
+      <div class="row">
+        <a-mat-datetimepicker class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.ThroughDate"></a-mat-datetimepicker>
+      </div>
+
+      <div class="row">
+        <a-mat-static *ngIf="serialisedItem" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FixedAsset"
+          display="displayName" label="Asset"></a-mat-static>
+          <a-mat-autocomplete *ngIf="!serialisedItem && !externalCustomer" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FixedAsset" [filter]="serialisedItemsFilter.create(allors.context)"
+          display="displayName" label="Asset"></a-mat-autocomplete>
+          <a-mat-autocomplete *ngIf="!serialisedItem && externalCustomer" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.FixedAsset" [options]="serialisedItems"
+          display="displayName" label="Asset"></a-mat-autocomplete>
+      </div>
+
+      <div class="row">
+        <a-mat-static *ngIf="assignment" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.Assignment"
+          display="Name" label="Work Effort"></a-mat-static>
+        <a-mat-select *ngIf="!assignment" class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.Assignment"
+          [options]="workEfforts" label="Work Effort" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="workEffortFixedAssetAssignment" [roleType]="m.WorkEffortFixedAssetAssignment.Comment"></a-mat-textarea>
+      </div>
+
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

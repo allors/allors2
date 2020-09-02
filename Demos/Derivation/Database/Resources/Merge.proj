@@ -1,0 +1,15 @@
+<Project DefaultTargets="Merge" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <UsingTask TaskName="Merge" AssemblyFile="..\..\..\Base\Tools\Merge\dist\Merge.dll"/>
+
+  <Target Name="Merge">
+    <ItemGroup>
+      <InputDirectories Include="..\..\..\Base\Database\Resources\Base"/>
+      <InputDirectories Include="Apps"/>
+    </ItemGroup>
+
+    <Merge InputDirectories="@(InputDirectories)" OutputDirectory="."/>
+
+  </Target>
+
+</Project>

@@ -1,0 +1,60 @@
+<form *ngIf="timeEntry" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+
+    <div class="row">
+      <mat-form-field class="col-md">
+        <mat-select [(ngModel)]="selectedWorker" name="workers" placeholder="Workers"
+          (ngModelChange)="findBillingRate()">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let worker of workers" [value]="worker"> {{ worker.displayName }} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.RateType"
+        [options]="rateTypes" display="Name" (selected)="findBillingRate()"></a-mat-select>
+    </div>
+
+    <div class="row">
+      <a-mat-datetimepicker class="col-md-6" [object]="timeEntry" [roleType]="m.TimeEntry.FromDate" (selected)="findBillingRate()"></a-mat-datetimepicker>
+      <a-mat-datetimepicker class="col-md-6" [object]="timeEntry" [roleType]="m.TimeEntry.ThroughDate" ></a-mat-datetimepicker>
+    </div>
+
+    <div class="row">
+      <a-mat-slidetoggle class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.IsBillable"></a-mat-slidetoggle>
+    </div>
+
+    <div class="row">
+      <a-mat-static class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.AmountOfTime"></a-mat-static>
+      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.AssignedAmountOfTime" [disabled]="timeEntry.ThroughDate !== null"></a-mat-input>
+      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.BillableAmountOfTime"></a-mat-input>
+      <a-mat-select class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.TimeFrequency" [options]="frequencies" display="Name" label="Frequency" [disabled]="timeEntry.ThroughDate !== null"></a-mat-select>
+    </div>
+
+    <div class="row">
+      <div class="col-md" *ngIf="timeEntry.BillingRate">Rate used is {{timeEntry.BillingRate}}</div>
+      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.AssignedBillingRate"></a-mat-input>
+      <a-mat-static class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.BillingFrequency" display="Name" label="Frequency"></a-mat-static>
+    </div>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.Description"></a-mat-input>
+    </div>
+
+    <div class="row">
+      <a-mat-textarea class="col-md" [object]="timeEntry" [roleType]="m.TimeEntry.Comment"></a-mat-textarea>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE & CLOSE</button>
+    <button mat-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+  </div>
+
+</form>

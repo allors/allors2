@@ -94,52 +94,41 @@ partial class Build
             }
         });
 
-    Target CoreWorkspaceNpmInstall => _ => _
+    Target CoreInstall => _ => _
         .Executes(() =>
         {
-            foreach (var path in Paths.CoreWorkspaceTypescript)
-            {
-                NpmInstall(s => s
-                    .SetEnvironmentVariable("npm_config_loglevel", "error")
-                    .SetWorkingDirectory(path));
-            }
+            NpmInstall(s => s
+                .SetEnvironmentVariable("npm_config_loglevel", "error")
+                .SetWorkingDirectory(Paths.CoreWorkspaceTypescript));
         });
 
-    Target CoreWorkspaceSetup => _ => _
-        .DependsOn(CoreWorkspaceNpmInstall)
-        .DependsOn(CoreGenerate);
-
-    Target CoreWorkspaceAutotest => _ => _
-        .DependsOn(CoreWorkspaceSetup)
+    Target CoreScaffold => _ => _
+        .DependsOn(CoreGenerate)
         .Executes(() =>
         {
-            foreach (var path in new[] { Paths.CoreWorkspaceTypescriptMaterial, Paths.CoreWorkspaceTypescriptAutotestAngular })
-            {
-                NpmRun(s => s
-                    .SetEnvironmentVariable("npm_config_loglevel", "error")
-                    .SetWorkingDirectory(path)
-                    .SetCommand("autotest"));
-            }
-
+            NpmRun(s => s
+                .SetEnvironmentVariable("npm_config_loglevel", "error")
+                .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                .SetCommand("scaffold"));
+            
             DotNetRun(s => s
                 .SetWorkingDirectory(Paths.Core)
-                .SetProjectFile(Paths.CoreWorkspaceTypescriptAutotestGenerateGenerate));
+                .SetProjectFile(Paths.CoreWorkspaceScaffoldGenerate));
         });
 
     Target CoreWorkspaceTypescriptDomain => _ => _
-        .DependsOn(CoreWorkspaceSetup)
+        .DependsOn(CoreGenerate)
         .DependsOn(EnsureDirectories)
         .Executes(() =>
         {
             NpmRun(s => s
                 .SetEnvironmentVariable("npm_config_loglevel", "error")
-                .SetWorkingDirectory(Paths.CoreWorkspaceTypescriptDomain)
-                .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsCoreWorkspaceTypescriptDomain}")
-                .SetCommand("az:test"));
+                .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                .SetCommand("domain:test"));
         });
 
     Target CoreWorkspaceTypescriptPromise => _ => _
-        .DependsOn(CoreWorkspaceSetup)
+        .DependsOn(CoreGenerate)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(EnsureDirectories)
@@ -155,15 +144,14 @@ partial class Build
                     await server.Ready();
                     NpmRun(s => s
                         .SetEnvironmentVariable("npm_config_loglevel", "error")
-                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescriptPromise)
-                        .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsCoreWorkspaceTypescriptPromise}")
-                        .SetCommand("az:test"));
+                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                        .SetCommand("promise:test"));
                 }
             }
         });
 
     Target CoreWorkspaceTypescriptAngular => _ => _
-        .DependsOn(CoreWorkspaceSetup)
+        .DependsOn(CoreGenerate)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(EnsureDirectories)
@@ -179,42 +167,14 @@ partial class Build
                     await server.Ready();
                     NpmRun(s => s
                         .SetEnvironmentVariable("npm_config_loglevel", "error")
-                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescriptAngular)
-                        .SetArguments("--watch=false", "--reporters", "trx")
-                        .SetCommand("test"));
-                    CopyFileToDirectory(Paths.CoreWorkspaceTypescriptAngularTrx, Paths.ArtifactsTests,
-                        FileExistsPolicy.Overwrite);
-                }
-            }
-        });
-
-    Target CoreWorkspaceTypescriptMaterial => _ => _
-        .DependsOn(CoreWorkspaceSetup)
-        .DependsOn(CorePublishServer)
-        .DependsOn(CorePublishCommands)
-        .DependsOn(CoreResetDatabase)
-        .Executes(async () =>
-        {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsCoreCommands);
-                using (var server = new Server(Paths.ArtifactsCoreServer))
-                {
-                    await server.Ready();
-                    NpmRun(s => s
-                        .SetEnvironmentVariable("npm_config_loglevel", "error")
-                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescriptMaterial)
-                        .SetArguments("--watch=false", "--reporters", "trx")
-                        .SetCommand("test"));
-                    CopyFileToDirectory(Paths.CoreWorkspaceTypescriptMaterialTrx, Paths.ArtifactsTests,
-                        FileExistsPolicy.Overwrite);
+                        .SetWorkingDirectory(Paths.CoreWorkspaceTypescript)
+                        .SetCommand("angular:test"));
                 }
             }
         });
 
     Target CoreWorkspaceTypescriptMaterialTests => _ => _
-        .DependsOn(CoreWorkspaceAutotest)
+        .DependsOn(CoreScaffold)
         .DependsOn(CorePublishServer)
         .DependsOn(CorePublishCommands)
         .DependsOn(CoreResetDatabase)
@@ -226,12 +186,12 @@ partial class Build
                 sqlServer.Populate(Paths.ArtifactsCoreCommands);
                 using (var server = new Server(Paths.ArtifactsCoreServer))
                 {
-                    using (var angular = new Angular(Paths.CoreWorkspaceTypescriptMaterial))
+                    using (var angular = new Angular(Paths.CoreWorkspaceTypescript, "angular-material:serve"))
                     {
                         await server.Ready();
                         await angular.Init();
                         DotNetTest(s => s
-                            .SetProjectFile(Paths.CoreWorkspaceTypescriptMaterialTests)
+                            .SetProjectFile(Paths.CoreWorkspaceScaffoldAngularMaterialTests)
                             .SetLogger("trx;LogFileName=CoreWorkspaceTypescriptMaterialTests.trx")
                             .SetResultsDirectory(Paths.ArtifactsTests));
                     }
@@ -268,7 +228,6 @@ partial class Build
         .DependsOn(CoreWorkspaceTypescriptDomain)
         .DependsOn(CoreWorkspaceTypescriptPromise)
         .DependsOn(CoreWorkspaceTypescriptAngular)
-        .DependsOn(CoreWorkspaceTypescriptMaterial)
         .DependsOn(CoreWorkspaceTypescriptMaterialTests);
 
     Target CoreWorkspaceCSharpTest => _ => _

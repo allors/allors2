@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Generate": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\KoenVanExem\\source\\repos\\Allors\\allors2\\Base"
+    }
+  }
+}

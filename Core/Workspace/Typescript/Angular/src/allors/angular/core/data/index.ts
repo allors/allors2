@@ -1,1 +1,0 @@
-export { SearchFactory } from './SearchFactory';

@@ -1,0 +1,121 @@
+<form *ngIf="customerShipment" class="a-edit" #form="ngForm" (submit)="save()">
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-autocomplete class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.ShipToParty" [filter]="customersFilter.create(allors.context)"
+                                display="displayName" (changed)="customerSelected($event)" label="Customer"></a-mat-autocomplete>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="customerShipment" [roleType]="m.CustomerShipment.ShipToAddress" [options]="shipToAddresses" display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!customerShipment.ShipToParty || !customerShipment.CanWriteShipToAddress"
+                    type="button" (click)="addShipToAddress = !addShipToAddress">
+              <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
+              <mat-icon *ngIf="addShipToAddress">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 pb-3" *ngIf="customerShipment.ShipToParty && addShipToAddress">
+          <mat-card>
+            <mat-card-header>Add a shipping address</mat-card-header>
+            <mat-card-content>
+              <party-contactmechanism (cancelled)="addShipToAddress = false" (saved)="shipToAddressAdded($event); addShipToAddress = false">
+              </party-contactmechanism>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [disabled]="shipToCustomerIsPerson" [object]="customerShipment" [roleType]="m.CustomerShipment.ShipToContactPerson" [options]="shipToContacts"
+                          display="displayName" label="Customer contact person"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!customerShipment.ShipToParty || !customerShipment.CanWriteShipToContactPerson || shipToCustomerIsPerson"
+                    type="button" (click)="addShipToContactPerson = !addShipToContactPerson">
+              <mat-icon *ngIf="!addShipToContactPerson">add</mat-icon>
+              <mat-icon *ngIf="addShipToContactPerson">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="addShipToContactPerson">
+          <mat-card>
+            <mat-card-header>Add a new person</mat-card-header>
+            <mat-card-content>
+              <person-inline (cancelled)="addShipToContactPerson = false" (saved)="shipToContactPersonAdded($event); addShipToContactPerson = false">
+              </person-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select [object]="customerShipment" [roleType]="m.CustomerShipment.ShipFromAddress" [options]="shipFromAddresses" display="displayName"
+              class="col-md"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!customerShipment.CanWriteShipFromAddress"
+              type="button" (click)="addShipFromAddress = !addShipFromAddress">
+              <mat-icon *ngIf="!addShipFromAddress">add</mat-icon>
+              <mat-icon *ngIf="addShipFromAddress">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 pb-3" *ngIf="addShipFromAddress">
+          <mat-card>
+            <mat-card-header>Add a new ship from address</mat-card-header>
+            <mat-card-content>
+              <party-contactmechanism-postaladdress (cancelled)="addShipFromAddress = false" (saved)="shipFromAddressAdded($event); addShipFromAddress = false">
+              </party-contactmechanism-postaladdress>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.ShipmentMethod" [options]="shipmentMethods" display="Name"></a-mat-select>
+        <a-mat-select class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.ShipFromFacility" [options]="facilities" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.Carrier" [options]="carriers" display="Name"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-datepicker class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.EstimatedShipDate" ></a-mat-datepicker>
+        <a-mat-datepicker class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.EstimatedArrivalDate"></a-mat-datepicker>
+      </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.HandlingInstruction" ></a-mat-textarea>
+      </div>
+  
+      <div class="row">
+        <div class="container-fluid">
+          <div class="row pt-3">
+            <a-mat-files class="col-md-12" [object]="customerShipment" [roleType]="m.CustomerShipment.ElectronicDocuments" accept="image/*"></a-mat-files>
+          </div>
+        </div>
+    </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="customerShipment" [roleType]="m.CustomerShipment.Comment"></a-mat-textarea>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

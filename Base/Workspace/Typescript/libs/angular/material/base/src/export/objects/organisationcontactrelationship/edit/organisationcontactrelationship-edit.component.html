@@ -1,0 +1,62 @@
+<form *ngIf="partyRelationship" #form="ngForm" (submit)="save()" novalidate>
+  <h1></h1>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-datepicker class="col-md" [object]="partyRelationship" [roleType]="m.PartyRelationship.FromDate"></a-mat-datepicker>
+        <a-mat-datepicker class="col-md" [object]="partyRelationship" [roleType]="m.PartyRelationship.ThroughDate"></a-mat-datepicker>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds"
+          [options]="contactKinds" display="Description"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select *ngIf="!organisation" class="col" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Organisation"
+              [options]="organisations" display="displayName"></a-mat-select>
+            <a-mat-static *ngIf="organisation" class="col-md" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Organisation"
+              display="displayName"></a-mat-static>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-autocomplete *ngIf="!person" class="col" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Contact"
+            [filter]="peopleFilter.create(allors)" display="displayName"></a-mat-autocomplete>
+            <a-mat-static *ngIf="person" class="col-md" [object]="partyRelationship" [roleType]="m.OrganisationContactRelationship.Contact"
+              display="displayName"></a-mat-static>
+            <button *ngIf="!person" mat-mini-fab color="accent" type="button" (click)="addContact = !addContact">
+              <mat-icon *ngIf="!addContact">add</mat-icon>
+              <mat-icon *ngIf="addContact">close</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-12 pb-3" *ngIf="addContact">
+          <mat-card>
+            <mat-card-header>Add a new person</mat-card-header>
+            <mat-card-content>
+              <person-inline (cancelled)="addContact = false" (saved)="contactAdded($event); addContact = false">
+              </person-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

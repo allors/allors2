@@ -13,6 +13,7 @@ namespace Allors.Server
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
+    using Extent = Allors.Extent;
 
     public class PullInstantiate
     {

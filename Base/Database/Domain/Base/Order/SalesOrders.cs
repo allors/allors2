@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     using Allors.Meta;
 
     public partial class SalesOrders
@@ -23,6 +24,7 @@ namespace Allors.Domain
             var rejected = new SalesOrderStates(this.Session).Rejected;
             var completed = new SalesOrderStates(this.Session).Completed;
             var finished = new SalesOrderStates(this.Session).Finished;
+            var tranferred = new SalesOrderStates(this.Session).Transferred;
 
             var setReadyForPosting = this.Meta.SetReadyForPosting;
             var post = this.Meta.Post;
@@ -47,14 +49,21 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, onHold, setReadyForPosting, reject, approve, hold, ship, invoice, post, accept, revise, transfer);
             config.Deny(this.ObjectType, rejected, reject, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, cancel, transfer);
             config.Deny(this.ObjectType, cancelled, cancel, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, reject, transfer);
+            //config.Deny(this.ObjectType, tranferred, cancel, ship, invoice, post, accept, hold, @continue, revise, approve, setReadyForPosting, reject, transfer);
             config.Deny(this.ObjectType, completed, complete, reject, cancel, approve, hold, @continue, setReadyForPosting, invoice, post, accept, reopen, revise, transfer);
 
-            config.Deny(this.ObjectType, awaitingAcceptance, Operations.Write);
-            config.Deny(this.ObjectType, inProcess, Operations.Write);
-            config.Deny(this.ObjectType, cancelled, Operations.Write);
-            config.Deny(this.ObjectType, rejected, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operations.Write);
-            config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
+            var except = new HashSet<IOperandType>
+            {
+                this.Meta.ElectronicDocuments.RoleType,
+                this.Meta.Print,
+            };
+
+            config.DenyExcept(this.ObjectType, awaitingAcceptance, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, inProcess, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, cancelled, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, rejected, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, completed, except, Operations.Write);
+            config.DenyExcept(this.ObjectType, finished, except, Operations.Execute, Operations.Write);
         }
     }
 }

@@ -1,0 +1,71 @@
+<form *ngIf="purchaseReturn" class="a-edit" #form="ngForm" (submit)="save()">
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-autocomplete class="col-md" [object]="purchaseReturn" [roleType]="m.PurchaseReturn.ShipToParty" [filter]="suppliersFilter.create(allors.context)"
+              display="displayName" (changed)="supplierSelected($event)" label="Supplier"></a-mat-autocomplete>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="purchaseReturn" [roleType]="m.PurchaseReturn.ShipToAddress" [options]="shipToAddresses" display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!purchaseReturn.ShipToParty || !purchaseReturn.CanWriteShipToAddress"
+              type="button" (click)="addShipToAddress = !addShipToAddress">
+              <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
+              <mat-icon *ngIf="addShipToAddress">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 pb-3" *ngIf="purchaseReturn.ShipToParty && addShipToAddress">
+          <mat-card>
+            <mat-card-header>Add a shipping address</mat-card-header>
+            <mat-card-content>
+              <party-contactmechanism (cancelled)="addShipToAddress = false" (saved)="shipToAddressAdded($event); addShipToAddress = false">
+              </party-contactmechanism>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="purchaseReturn" [roleType]="m.PurchaseReturn.ShipToContactPerson" [options]="shipToContacts"
+              display="displayName" label="Supplier contact person"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!purchaseReturn.ShipToParty || !purchaseReturn.CanWriteShipToContactPerson"
+              type="button" (click)="addShipToContactPerson = !addShipToContactPerson">
+              <mat-icon *ngIf="!addShipToContactPerson">add</mat-icon>
+              <mat-icon *ngIf="addShipToContactPerson">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="addShipToContactPerson">
+          <mat-card>
+            <mat-card-header>Add a new person</mat-card-header>
+            <mat-card-content>
+              <person-inline (cancelled)="addShipToContactPerson = false" (saved)="shipToContactPersonAdded($event); addShipToContactPerson = false">
+              </person-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <a-mat-select class="col-md" [object]="purchaseReturn" [roleType]="m.PurchaseReturn.ShipToFacility" [options]="facilities" display="Name"></a-mat-select>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

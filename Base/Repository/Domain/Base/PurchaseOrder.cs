@@ -16,6 +16,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public Media[] ElectronicDocuments { get; set; }
+
         public ObjectState[] PreviousObjectStates { get; set; }
 
         public ObjectState[] LastObjectStates { get; set; }

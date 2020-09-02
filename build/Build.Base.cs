@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
@@ -77,306 +78,144 @@ partial class Build
              DotNetPublish(dotNetPublishSettings);
          });
 
-    private Target BaseWorkspaceAutotest => _ => _
-         .DependsOn(BaseWorkspaceSetup)
+    private Target BaseInstall => _ => _
+        .Executes(() =>
+        {
+            NpmInstall(s => s
+                .SetEnvironmentVariable("npm_config_loglevel", "error")
+                .SetWorkingDirectory(Paths.BaseWorkspaceTypescript));
+        });
+
+    private Target BaseScaffold => _ => _
+         .DependsOn(BaseGenerate)
          .Executes(() =>
          {
-             foreach (var path in new[] { Paths.BaseWorkspaceTypescriptIntranet, Paths.BaseWorkspaceTypescriptAutotestAngular })
-             {
-                 NpmRun(s => s
-                     .SetEnvironmentVariable("npm_config_loglevel", "error")
-                     .SetWorkingDirectory(path)
-                     .SetCommand("autotest"));
-             }
+             NpmRun(s => s
+                 .SetEnvironmentVariable("npm_config_loglevel", "error")
+                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescript)
+                 .SetCommand("scaffold"));
 
              DotNetRun(s => s
                  .SetWorkingDirectory(Paths.Base)
-                 .SetProjectFile(Paths.BaseWorkspaceTypescriptAutotestGenerateGenerate));
+                 .SetProjectFile(Paths.BaseWorkspaceScaffoldGenerate));
          });
-
-    private Target BaseWorkspaceNpmInstall => _ => _
-                         .Executes(() =>
-         {
-             foreach (var path in Paths.BaseWorkspaceTypescript)
-             {
-                 NpmInstall(s => s
-                     .SetEnvironmentVariable("npm_config_loglevel", "error")
-                     .SetWorkingDirectory(path));
-             }
-         });
-
-    private Target BaseWorkspaceSetup => _ => _
-         .DependsOn(BaseWorkspaceNpmInstall)
-         .DependsOn(BaseGenerate);
 
     private Target BaseWorkspaceTypescriptDomain => _ => _
-         .DependsOn(BaseWorkspaceSetup)
+         .DependsOn(BaseGenerate)
          .DependsOn(EnsureDirectories)
          .Executes(() =>
          {
              NpmRun(s => s
                  .SetEnvironmentVariable("npm_config_loglevel", "error")
-                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptDomain)
-                 .SetArguments("--reporter-options", $"output={Paths.ArtifactsTestsBaseWorkspaceTypescriptDomain}")
-                 .SetCommand("az:test"));
+                 .SetWorkingDirectory(Paths.BaseWorkspaceTypescript)
+                 .SetCommand("domain:test"));
          });
 
-    private Target BaseWorkspaceTypescriptIntranet => _ => _
-         .DependsOn(BaseWorkspaceSetup)
-         .DependsOn(BasePublishServer)
-         .DependsOn(BasePublishCommands)
-         .DependsOn(BaseResetDatabase)
+    private async Task BaseWorkspaceIntranetTest(string category)
+    {
+        using (var sqlServer = new SqlServer())
+        {
+            sqlServer.Restart();
+            sqlServer.Populate(Paths.ArtifactsBaseCommands);
+            using (var server = new Server(Paths.ArtifactsBaseServer))
+            {
+                using (var angular = new Angular(Paths.BaseWorkspaceTypescript, "intranet:serve"))
+                {
+                    await server.Ready();
+                    await angular.Init();
+                    DotNetTest(
+                        s => s
+                            .SetProjectFile(Paths.BaseWorkspaceIntranetTests)
+                            .SetLogger($"trx;LogFileName=BaseIntranet{category}Tests.trx")
+                            .SetFilter($"Category={category}")
+                            .SetResultsDirectory(Paths.ArtifactsTests));
+                }
+            }
+        }
+    }
+
+    private Target BaseWorkspaceIntranetGenericTests => _ => _
+         .DependsOn(this.BaseScaffold)
+         .DependsOn(this.BasePublishServer)
+         .DependsOn(this.BasePublishCommands)
+         .DependsOn(this.BaseResetDatabase)
          .Executes(async () =>
          {
-             using (var sqlServer = new SqlServer())
-             {
-                 sqlServer.Restart();
-                 sqlServer.Populate(Paths.ArtifactsBaseCommands);
-
-                 using (var server = new Server(Paths.ArtifactsBaseServer))
-                 {
-                     await server.Ready();
-                     NpmRun(
-                         s => s
-                             .SetEnvironmentVariable("npm_config_loglevel", "error")
-                             .SetWorkingDirectory(Paths.BaseWorkspaceTypescriptIntranet)
-                             .SetArguments("--watch=false", "--reporters", "trx")
-                             .SetCommand("test"));
-                     CopyFileToDirectory(
-                         Paths.BaseWorkspaceTypescriptIntranetTrx,
-                         Paths.ArtifactsTests,
-                         FileExistsPolicy.Overwrite);
-                 }
-             }
+             await this.BaseWorkspaceIntranetTest("Generic");
          });
-
-    private Target BaseWorkspaceTypescriptIntranetGenericTests => _ => _
-         .DependsOn(BaseWorkspaceAutotest)
-         .DependsOn(BasePublishServer)
-         .DependsOn(BasePublishCommands)
-         .DependsOn(BaseResetDatabase)
-         .Executes(async () =>
-         {
-             using (var sqlServer = new SqlServer())
-             {
-                 sqlServer.Restart();
-                 sqlServer.Populate(Paths.ArtifactsBaseCommands);
-                 using (var server = new Server(Paths.ArtifactsBaseServer))
-                 {
-                     using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
-                     {
-                         await server.Ready();
-                         await angular.Init();
-                         DotNetTest(
-                             s => s
-                                 .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
-                                 .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptIntranetTests.trx")
-                                 .SetFilter("Category=Generic")
-                                 .SetResultsDirectory(Paths.ArtifactsTests));
-                     }
-                 }
-             }
-         });
-
-    private Target BaseWorkspaceTypescriptIntranetSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+    
+    private Target BaseWorkspaceIntranetOtherTests => _ => _
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
         .Executes(async () =>
         {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsBaseCommands);
-                using (var server = new Server(Paths.ArtifactsBaseServer))
-                {
-                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
-                    {
-                        await server.Ready();
-                        await angular.Init();
-                        DotNetTest(
-                            s => s
-                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
-                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptIntranetTests.trx")
-                                .SetFilter("Category=Other")
-                                .SetResultsDirectory(Paths.ArtifactsTests));
-                    }
-                }
-            }
+            await this.BaseWorkspaceIntranetTest("Other");
         });
 
-    private Target BaseWorkspaceTypescriptRelationSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+    private Target BaseWorkspaceIntranetRelationTests => _ => _
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
         .Executes(async () =>
         {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsBaseCommands);
-                using (var server = new Server(Paths.ArtifactsBaseServer))
-                {
-                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
-                    {
-                        await server.Ready();
-                        await angular.Init();
-                        DotNetTest(
-                            s => s
-                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
-                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptRelationTests.trx")
-                                .SetFilter("Category=Relation")
-                                .SetResultsDirectory(Paths.ArtifactsTests));
-                    }
-                }
-            }
+            await this.BaseWorkspaceIntranetTest("Relation");
         });
 
-    private Target BaseWorkspaceTypescriptOrderSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+    private Target BaseWorkspaceIntranetInvoiceTests => _ => _
+    .DependsOn(this.BaseScaffold)
+    .DependsOn(BasePublishServer)
+    .DependsOn(BasePublishCommands)
+    .DependsOn(BaseResetDatabase)
+    .Executes(async () =>
+    {
+        await this.BaseWorkspaceIntranetTest("Invoice");
+    });
+
+    private Target BaseWorkspaceIntranetOrderTests => _ => _
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
         .Executes(async () =>
         {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsBaseCommands);
-                using (var server = new Server(Paths.ArtifactsBaseServer))
-                {
-                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
-                    {
-                        await server.Ready();
-                        await angular.Init();
-                        DotNetTest(
-                            s => s
-                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
-                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptOrderTests.trx")
-                                .SetFilter("Category=Order")
-                                .SetResultsDirectory(Paths.ArtifactsTests));
-                    }
-                }
-            }
+            await this.BaseWorkspaceIntranetTest("Order");
         });
 
-    private Target BaseWorkspaceTypescriptInvoiceSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+    private Target BaseWorkspaceIntranetProductTests => _ => _
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
         .Executes(async () =>
         {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsBaseCommands);
-                using (var server = new Server(Paths.ArtifactsBaseServer))
-                {
-                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
-                    {
-                        await server.Ready();
-                        await angular.Init();
-                        DotNetTest(
-                            s => s
-                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
-                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptInvoiceTests.trx")
-                                .SetFilter("Category=Invoice")
-                                .SetResultsDirectory(Paths.ArtifactsTests));
-                    }
-                }
-            }
+            await this.BaseWorkspaceIntranetTest("Product");
         });
 
-    private Target BaseWorkspaceTypescriptProductSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+    private Target BaseWorkspaceIntranetShipmentTests => _ => _
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
         .Executes(async () =>
         {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsBaseCommands);
-                using (var server = new Server(Paths.ArtifactsBaseServer))
-                {
-                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
-                    {
-                        await server.Ready();
-                        await angular.Init();
-                        DotNetTest(
-                            s => s
-                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
-                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptProductTests.trx")
-                                .SetFilter("Category=Product")
-                                .SetResultsDirectory(Paths.ArtifactsTests));
-                    }
-                }
-            }
+            await this.BaseWorkspaceIntranetTest("Shipment");
         });
 
-    private Target BaseWorkspaceTypescriptShipmentSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
+    private Target BaseWorkspaceIntranetWorkEffortTests => _ => _
+        .DependsOn(this.BaseScaffold)
         .DependsOn(BasePublishServer)
         .DependsOn(BasePublishCommands)
         .DependsOn(BaseResetDatabase)
         .Executes(async () =>
         {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsBaseCommands);
-                using (var server = new Server(Paths.ArtifactsBaseServer))
-                {
-                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
-                    {
-                        await server.Ready();
-                        await angular.Init();
-                        DotNetTest(
-                            s => s
-                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
-                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptShipmentTests.trx")
-                                .SetFilter("Category=Shipment")
-                                .SetResultsDirectory(Paths.ArtifactsTests));
-                    }
-                }
-            }
-        });
-
-    private Target BaseWorkspaceTypescriptWorkEffortSpecificTests => _ => _
-        .DependsOn(BaseWorkspaceAutotest)
-        .DependsOn(BasePublishServer)
-        .DependsOn(BasePublishCommands)
-        .DependsOn(BaseResetDatabase)
-        .Executes(async () =>
-        {
-            using (var sqlServer = new SqlServer())
-            {
-                sqlServer.Restart();
-                sqlServer.Populate(Paths.ArtifactsBaseCommands);
-                using (var server = new Server(Paths.ArtifactsBaseServer))
-                {
-                    using (var angular = new Angular(Paths.BaseWorkspaceTypescriptIntranet))
-                    {
-                        await server.Ready();
-                        await angular.Init();
-                        DotNetTest(
-                            s => s
-                                .SetProjectFile(Paths.BaseWorkspaceTypescriptIntranetTests)
-                                .SetLogger("trx;LogFileName=BaseWorkspaceTypescriptWorkEffortTests.trx")
-                                .SetFilter("Category=WorkEffort")
-                                .SetResultsDirectory(Paths.ArtifactsTests));
-                    }
-                }
-            }
+            await this.BaseWorkspaceIntranetTest("WorkEffort");
         });
 
     private Target BaseWorkspaceTypescriptTest => _ => _
-        .DependsOn(BaseWorkspaceTypescriptDomain)
-        .DependsOn(BaseWorkspaceTypescriptIntranet);
+        .DependsOn(BaseWorkspaceTypescriptDomain);
 
     private Target BaseTest => _ => _
         .DependsOn(BaseDatabaseTest)

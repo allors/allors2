@@ -1,0 +1,45 @@
+<div class="a-main">
+
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        {{title}}
+      </div>
+    </div>
+  </div>
+
+  <div class="a-list">
+
+    <div class="a-content mat-elevation-z8">
+
+      <div class="a-header">
+        <mat-toolbar style="background-color: transparent">
+          <mat-toolbar-row>
+            <div class="pl-3 mr-auto">{{title}}</div>
+            <div>
+              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Delete"
+                (click)="delete.execute(table.selected)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-toolbar-row>
+        </mat-toolbar>
+      </div>
+
+      <div *ngIf="canCreate">
+        <a-mat-factory-fab [objectType]="metaService.m.SalesOrder" (created)="navigation.overview($event)">
+        </a-mat-factory-fab>
+      </div>
+
+      <div class="a-search container-fluid">
+        <a-mat-filter [filter]="filter"></a-mat-filter>
+      </div>
+
+      <div class="a-items">
+        <a-mat-table [table]="table"></a-mat-table>
+      </div>
+
+    </div>
+
+  </div>
+</div>

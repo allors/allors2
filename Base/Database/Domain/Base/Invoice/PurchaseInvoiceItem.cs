@@ -39,7 +39,7 @@ namespace Allors.Domain
         {
             if (!this.ExistPurchaseInvoiceItemState)
             {
-                this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Received;
+                this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Created;
             }
 
             if (this.ExistPart && !this.ExistInvoiceItemType)
@@ -101,10 +101,10 @@ namespace Allors.Domain
 
                 this.UnitVat = this.ExistVatRate ? this.UnitPrice * this.VatRate.Rate / 100 : 0;
                 this.UnitIrpf = this.ExistIrpfRate ? this.UnitPrice * this.IrpfRate.Rate / 100 : 0;
-                this.TotalVat = this.UnitVat * this.Quantity;
                 this.TotalExVat = this.UnitPrice * this.Quantity;
-                this.TotalIrpf = this.UnitIrpf * this.Quantity;
+                this.TotalVat = Math.Round(this.UnitVat * this.Quantity, 2);
                 this.TotalIncVat = this.TotalExVat + this.TotalVat;
+                this.TotalIrpf = Math.Round(this.UnitIrpf * this.Quantity, 2);
                 this.GrandTotal = this.TotalIncVat - this.TotalIrpf;
             }
         }
@@ -124,6 +124,10 @@ namespace Allors.Domain
         }
 
         public void BaseReject(PurchaseInvoiceItemReject method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Rejected;
+
+        public void BaseRevise(PurchaseInvoiceItemRevise method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Revising;
+
+        public void BaseDoneRevising(PurchaseInvoiceItemDoneRevising method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Created;
 
         public void Sync(Invoice invoice) => this.SyncedInvoice = invoice;
     }

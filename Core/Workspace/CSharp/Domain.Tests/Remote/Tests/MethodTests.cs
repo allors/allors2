@@ -26,7 +26,7 @@ namespace Tests.Remote
                     {
                         new Pull
                         {
-                            Extent = new Filter(M.Organisation.ObjectType),
+                            Extent = new Extent(M.Organisation.ObjectType),
                         },
                     };
 

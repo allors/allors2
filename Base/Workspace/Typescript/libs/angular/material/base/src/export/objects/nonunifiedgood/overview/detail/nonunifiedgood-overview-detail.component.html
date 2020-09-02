@@ -1,0 +1,134 @@
+<div *ngIf="panel.isCollapsed && good" (click)="panel.toggle()" attr.data-allors-panel="{{panel.name}}">
+  <div class="container mb-3">
+    <div class="row rounded" style="background-color: white;">
+      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
+        <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
+      </div>
+      <div class="col-9 col-md-10 p-3">
+        <h4>{{panel.title}}</h4>
+        <div>{{good.Name}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form *ngIf="panel.isExpanded && good" #form="ngForm" (submit)="save()" novalidate>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{panel.title}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <mat-tab-group>
+
+        <mat-tab label="General">
+          <div class="row pt-3">
+            <a-mat-static class="col-md" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-static>
+            <a-mat-input class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Name"></a-mat-input>
+          </div>
+
+          <div class="row">
+            <a-mat-textarea class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Description"></a-mat-textarea>
+          </div>
+
+          <div class="row">
+            <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
+            <a-mat-autocomplete class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Part" [filter]="nonUnifiedPartsFilter.create(allors.context)" display="Name"></a-mat-autocomplete>
+          </div>
+
+          <div class="row">
+            <mat-form-field class="col-md">
+              <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true"
+                (ngModelChange)="setDirty()">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let category of categories" [value]="category"> {{ category.displayName }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <a-mat-static class="col-md" [object]="good.Part?.Brand" [roleType]="m.Brand.Name" label="Brand"></a-mat-static>
+            <a-mat-static class="col-md" [object]="good.Part?.Model" [roleType]="m.Model.Name" label="Model"></a-mat-static>
+          </div>
+
+          <div class="row pb-1">
+            <mat-expansion-panel class="col" *ngIf="locales">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Translations
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div *ngFor="let locale of locales; let i = index">
+                <mat-divider *ngIf="i > 0"></mat-divider>
+                <div class="row">
+                  <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+                  <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.LocalisedDescriptions"
+                    [locale]="locale"></a-mat-localised-text>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Comments">
+          <div class="container-fluid">
+            <div class="row pt-3">
+              <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.InternalComment"></a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.Keywords"></a-mat-textarea>
+              <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.Comment"></a-mat-textarea>
+            </div>
+
+            <div class="row pb-1">
+              <mat-expansion-panel class="col" *ngIf="locales">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Translations
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div *ngFor="let locale of locales; let i = index">
+                  <mat-divider *ngIf="i > 0"></mat-divider>
+                  <div class="row">
+                    <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.LocalisedComments"
+                      [locale]="locale"></a-mat-localised-text>
+                  </div>
+                  <div class="row">
+                    <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.LocalisedKeywords"
+                      [locale]="locale"></a-mat-localised-text>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Images">
+          <div class="container-fluid">
+            <div class="row pt-3">
+              <a-mat-file class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.PrimaryPhoto" accept="image/*"></a-mat-file>
+              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.Photos" accept="image/*"></a-mat-files>
+            </div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Documents">
+          <div class="container-fluid">
+            <div class="row pt-3">
+              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.PublicElectronicDocuments" accept="image/*"></a-mat-files>
+              <a-mat-files class="col-md-12" [object]="good" [roleType]="m.NonUnifiedGood.PrivateElectronicDocuments" accept="image/*"></a-mat-files>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+      <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
+    </mat-card-actions>
+  </mat-card>
+
+</form>

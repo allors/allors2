@@ -101,7 +101,6 @@ namespace Allors.Domain
 
             if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
             {
-
                 if (this.ExistBillToCustomer)
                 {
                     var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
@@ -1154,8 +1153,8 @@ namespace Allors.Domain
                 salesInvoiceItemDerivedRoles.UnitPrice = salesInvoiceItem.UnitBasePrice - salesInvoiceItem.UnitDiscount + salesInvoiceItem.UnitSurcharge;
             }
 
-            salesInvoiceItemDerivedRoles.UnitVat = salesInvoiceItem.ExistVatRate ? Math.Round(salesInvoiceItem.UnitPrice * salesInvoiceItem.VatRate.Rate / 100, 2) : 0;
-            salesInvoiceItemDerivedRoles.UnitIrpf = salesInvoiceItem.ExistIrpfRate ? Math.Round(salesInvoiceItem.UnitPrice * salesInvoiceItem.IrpfRate.Rate / 100, 2) : 0;
+            salesInvoiceItemDerivedRoles.UnitVat = salesInvoiceItem.ExistVatRate ? salesInvoiceItem.UnitPrice * salesInvoiceItem.VatRate.Rate / 100 : 0;
+            salesInvoiceItemDerivedRoles.UnitIrpf = salesInvoiceItem.ExistIrpfRate ? salesInvoiceItem.UnitPrice * salesInvoiceItem.IrpfRate.Rate / 100 : 0;
 
             // Calculate Totals
             salesInvoiceItemDerivedRoles.TotalBasePrice = salesInvoiceItem.UnitBasePrice * salesInvoiceItem.Quantity;
@@ -1174,9 +1173,9 @@ namespace Allors.Domain
             }
 
             salesInvoiceItemDerivedRoles.TotalExVat = salesInvoiceItem.UnitPrice * salesInvoiceItem.Quantity;
-            salesInvoiceItemDerivedRoles.TotalVat = salesInvoiceItem.UnitVat * salesInvoiceItem.Quantity;
+            salesInvoiceItemDerivedRoles.TotalVat = Math.Round(salesInvoiceItem.UnitVat * salesInvoiceItem.Quantity, 2);
             salesInvoiceItemDerivedRoles.TotalIncVat = salesInvoiceItem.TotalExVat + salesInvoiceItem.TotalVat;
-            salesInvoiceItemDerivedRoles.TotalIrpf = salesInvoiceItem.UnitIrpf * salesInvoiceItem.Quantity;
+            salesInvoiceItemDerivedRoles.TotalIrpf = Math.Round(salesInvoiceItem.UnitIrpf * salesInvoiceItem.Quantity, 2);
             salesInvoiceItemDerivedRoles.GrandTotal = salesInvoiceItem.TotalIncVat - salesInvoiceItem.TotalIrpf;
         }
 

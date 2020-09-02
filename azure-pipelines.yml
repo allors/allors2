@@ -1,5 +1,7 @@
 trigger:
 - master
+- feature/*
+- issue/*
 
 stages:
 - stage: Platform
@@ -32,23 +34,22 @@ stages:
           target: 'BaseDatabaseTest'
         base_workspace_typescript:
           target: 'BaseWorkspaceTypescriptTest'
-        base_workspace_typescript_intranet_generic:
-          target: 'BaseWorkspaceTypescriptIntranetGenericTests'
-        base_workspace_typescript_relation_specific:
-          target: 'BaseWorkspaceTypescriptRelationSpecificTests'
-        base_workspace_typescript_invoice_specific:
-          target: 'BaseWorkspaceTypescriptInvoiceSpecificTests'
-        base_workspace_typescript_order_specific:
-          target: 'BaseWorkspaceTypescriptOrderSpecificTests'
-        base_workspace_typescript_product_specific:
-          target: 'BaseWorkspaceTypescriptProductSpecificTests'
-        base_workspace_typescript_shipment_specific:
-          target: 'BaseWorkspaceTypescriptShipmentSpecificTests'
-        base_workspace_typescript_workeffort_specific:
-          target: 'BaseWorkspaceTypescriptWorkeffortSpecificTests'
-        base_workspace_typescript_intranet_specific:
-          target: 'BaseWorkspaceTypescriptIntranetSpecificTests'
-      maxParallel: 10
+        base_workspace_intranet_generic:
+          target: 'BaseWorkspaceIntranetGenericTests'
+        base_workspace_intranet_other:
+          target: 'BaseWorkspaceIntranetOtherTests'
+        base_workspace_intranet_relation_specific:
+          target: 'BaseWorkspaceIntranetRelationTests'
+        base_workspace_intranet_invoice_specific:
+          target: 'BaseWorkspaceIntranetInvoiceTests'
+        base_workspace_intranet_order_specific:
+          target: 'BaseWorkspaceIntranetOrderTests'
+        base_workspace_intranet_product_specific:
+          target: 'BaseWorkspaceIntranetProductTests'
+        base_workspace_intranet_shipment_specific:
+          target: 'BaseWorkspaceIntranetShipmentTests'
+        base_workspace_intranet_workeffort_specific:
+          target: 'BaseWorkspaceIntranetWorkEffortTests'
 
     steps:
     - powershell: Set-Culture -CultureInfo nl-BE
@@ -59,6 +60,13 @@ stages:
         packageType: sdk
         version: 3.1.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
+    - task: PowerShell@2
+      inputs:
+        targetType: 'filePath'
+        filePath: 'build.ps1'
+        arguments: -target install
+        failOnStderr: true
+      displayName: Install
     - task: PowerShell@2
       inputs:
         targetType: 'filePath'

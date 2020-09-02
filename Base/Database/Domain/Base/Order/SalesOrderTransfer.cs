@@ -5,13 +5,7 @@
 
 namespace Allors.Domain
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Allors.Meta;
-    using Allors.Services;
-    using Microsoft.Extensions.DependencyInjection;
-    using Resources;
 
     public partial class SalesOrderTransfer
     {
@@ -39,6 +33,33 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
             var session = this.Session();
+
+            if (this.ExistFrom && this.ExistInternalOrganisation && !this.ExistTo)
+            {
+                var acl = new AccessControlLists(session.GetUser())[this.From];
+                if (!acl.CanExecute(M.SalesOrder.DoTransfer))
+                {
+                    derivation.Validation.AddError(this, this.Meta.To, "No rights to transfer salesorder");
+                }
+                else
+                {
+                    this.To = this.From.Clone(this.From.Meta.SalesOrderItems);
+                    this.To.TakenBy = this.InternalOrganisation;
+
+                    // TODO: Make sure 'from' customer is also a customer in 'to' internal organisation
+                    if (!this.To.TakenBy.ActiveCustomers.Contains(this.To.BillToCustomer))
+                    {
+                        new CustomerRelationshipBuilder(this.Strategy.Session)
+                            .WithInternalOrganisation(this.To.TakenBy)
+                            .WithCustomer(this.To.BillToCustomer)
+                            .Build();
+                    }
+
+                    //TODO: ShipToCustomer
+
+                    this.From.SalesOrderState = new SalesOrderStates(this.strategy.Session).Transferred;
+                }
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Tests
         [Fact]
         public void Type()
         {
-            var query = new Filter(M.Person.ObjectType);
+            var query = new Extent(M.Person.ObjectType);
             var queryExtent = query.Build(this.Session);
 
             var extent = this.Session.Extent(M.Person.ObjectType);
@@ -29,7 +29,7 @@ namespace Tests
         [Fact]
         public void RoleEquals()
         {
-            var filter = new Filter(M.Person.ObjectType)
+            var filter = new Extent(M.Person.ObjectType)
             {
                 Predicate = new Equals
                 {
@@ -50,7 +50,7 @@ namespace Tests
         public void And()
         {
             // select from Person where FirstName='John' and LastName='Doe'
-            var filter = new Filter(M.Person.ObjectType)
+            var filter = new Extent(M.Person.ObjectType)
             {
                 Predicate = new And
                 {

@@ -11,8 +11,6 @@ namespace Allors.Domain
 
         public bool IsAwaitingApproval => this.UniqueId == PurchaseInvoiceStates.AwaitingApprovalId;
 
-        public bool IsReceived => this.UniqueId == PurchaseInvoiceStates.ReceivedId;
-
         public bool IsPartiallyPaid => this.UniqueId == PurchaseInvoiceStates.PartiallyPaidId;
 
         public bool IsNotPaid => this.UniqueId == PurchaseInvoiceStates.NotPaidId;
@@ -22,5 +20,7 @@ namespace Allors.Domain
         public bool IsCancelled => this.UniqueId == PurchaseInvoiceStates.CancelledId;
 
         public bool IsRejected => this.UniqueId == PurchaseInvoiceStates.RejectedId;
+
+        public bool IsRevising => this.UniqueId == PurchaseInvoiceStates.RevisingId;
     }
 }

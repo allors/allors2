@@ -47,7 +47,7 @@ namespace Allors.Server
             {
                 options.AddDefaultPolicy(
                     builder => builder
-                        .WithOrigins("http://localhost:4000", "http://localhost:4200", "http://localhost:9876")
+                        .WithOrigins("http://localhost", "http://localhost:4000", "http://localhost:4200", "http://localhost:9876")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials());

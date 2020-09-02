@@ -11,20 +11,18 @@ namespace Allors.Domain
     {
         public static readonly Guid CreatedId = new Guid("102F4080-1D12-4090-9196-F42C094C38CA");
         public static readonly Guid AwaitingApprovalId = new Guid("FE3A30A9-0174-4534-A11E-E772112E9760");
-        public static readonly Guid ReceivedId = new Guid("FC9EC85B-2419-4c97-92F6-45F5C6D3DF61");
         public static readonly Guid PartiallyPaidId = new Guid("9D917078-7ACD-4F04-AE6B-24E33755E9B1");
         public static readonly Guid NotPaidId = new Guid("3D811CFE-3EC0-4975-80B8-012A42B2B3E2");
         public static readonly Guid PaidId = new Guid("2982C8BE-657E-4594-BCAF-98997AFEA9F8");
         public static readonly Guid CancelledId = new Guid("60650051-F1F1-4dd6-90C8-5E744093D2EE");
         public static readonly Guid RejectedId = new Guid("26E27DDC-0782-4C29-B4BE-FF1E7AEE788A");
+        public static readonly Guid RevisingId = new Guid("639ba038-d8f3-4672-80b5-c8eb96e3275d");
 
         private UniquelyIdentifiableSticky<PurchaseInvoiceState> cache;
 
         public PurchaseInvoiceState Created => this.Cache[CreatedId];
 
         public PurchaseInvoiceState AwaitingApproval => this.Cache[AwaitingApprovalId];
-
-        public PurchaseInvoiceState Received => this.Cache[ReceivedId];
 
         public PurchaseInvoiceState PartiallyPaid => this.Cache[PartiallyPaidId];
 
@@ -36,6 +34,8 @@ namespace Allors.Domain
 
         public PurchaseInvoiceState Rejected => this.Cache[RejectedId];
 
+        public PurchaseInvoiceState Revising  => this.Cache[RevisingId];
+
         private UniquelyIdentifiableSticky<PurchaseInvoiceState> Cache => this.cache ??= new UniquelyIdentifiableSticky<PurchaseInvoiceState>(this.Session);
 
         protected override void BaseSetup(Setup setup)
@@ -44,12 +44,12 @@ namespace Allors.Domain
 
             merge(CreatedId, v => v.Name = "Created");
             merge(AwaitingApprovalId, v => v.Name = "Awaiting Approval");
-            merge(ReceivedId, v => v.Name = "Received");
             merge(PartiallyPaidId, v => v.Name = "Partially Paid");
             merge(NotPaidId, v => v.Name = "Not Paid");
             merge(PaidId, v => v.Name = "Paid");
             merge(CancelledId, v => v.Name = "Cancelled");
             merge(RejectedId, v => v.Name = "Rejected");
+            merge(RevisingId, v => v.Name = "Revising");
         }
     }
 }

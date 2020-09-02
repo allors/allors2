@@ -54,7 +54,7 @@ namespace Allors.Repository
         [Derived]
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(5)]
         [Workspace]
         decimal UnitSurcharge { get; set; }
 
@@ -66,7 +66,7 @@ namespace Allors.Repository
         [Derived]
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(5)]
         [Workspace]
         decimal UnitDiscount { get; set; }
 
@@ -78,7 +78,7 @@ namespace Allors.Repository
         [Derived]
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(5)]
         [Workspace]
         decimal UnitVat { get; set; }
 

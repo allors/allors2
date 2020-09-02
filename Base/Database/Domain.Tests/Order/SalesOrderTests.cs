@@ -2752,6 +2752,7 @@ namespace Allors.Domain
             Assert.True(acl.CanExecute(M.SalesOrder.Hold));
             Assert.False(acl.CanExecute(M.SalesOrder.Continue));
             Assert.False(acl.CanExecute(M.SalesOrder.Accept));
+            Assert.True(acl.CanExecute(M.SalesOrder.DoTransfer));
         }
 
         [Fact]

@@ -1,0 +1,88 @@
+<form *ngIf="workTask" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>Add a new Work Task</h3>
+
+  <mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-autocomplete class="col-md" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="organisationsFilter.create(allors)"
+          (changed)="customerSelected($event)" display="displayName"></a-mat-autocomplete>
+      </div>
+
+      <div class="row">
+        <a-mat-autocomplete class="col-md" [object]="workTask" [roleType]="m.WorkTask.ExecutedBy" [filter]="subContractorsFilter.create(allors)"
+          display="Name"></a-mat-autocomplete>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="workTask" [roleType]="m.WorkTask.FullfillContactMechanism" [options]="contactMechanisms"
+              display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!workTask.Customer || !workTask.CanWriteName" type="button"
+              (click)="addContactMechanism = !addContactMechanism">
+              <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
+              <mat-icon *ngIf="addContactMechanism">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md12">
+          <mat-card *ngIf="workTask.Customer && addContactMechanism">
+            <mat-card-header>Add a new contact mechanism</mat-card-header>
+            <mat-card-content>
+              <party-contactmechanism (saved)="contactMechanismAdded($event); addContactMechanism = false" (cancelled)="addContactMechanism = false">
+              </party-contactmechanism>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <div class="row">
+            <a-mat-select class="col" [object]="workTask" [roleType]="m.WorkTask.ContactPerson" [options]="contacts"
+              display="displayName" label="Contact Person"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!workTask.Customer || !workTask.CanWriteName" type="button"
+              (click)="addContactPerson = !addContactPerson">
+              <mat-icon *ngIf="!addContactPerson">add</mat-icon>
+              <mat-icon *ngIf="addContactPerson">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="workTask.Customer && addContactPerson">
+          <mat-card>
+            <mat-card-header>Add a new person</mat-card-header>
+            <mat-card-content>
+              <person-inline (cancelled)="addContactPerson = false" (saved)="contactPersonAdded($event); addContactPerson = false">
+              </person-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md-12" [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>
+      </div>
+
+      <div class="row">
+        <a-mat-datetimepicker class="col-md" [object]="workTask" [roleType]="m.WorkTask.ScheduledStart"></a-mat-datetimepicker>
+      </div>
+
+      <div class="row">
+        <a-mat-datetimepicker class="col-md" [object]="workTask" [roleType]="m.WorkTask.ScheduledCompletion"></a-mat-datetimepicker>
+      </div>
+
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !(allors.context.hasChanges) ">SAVE</button>
+  </div>
+
+</form>

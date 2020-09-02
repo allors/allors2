@@ -1,0 +1,41 @@
+<form *ngIf="good" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+    <div class="container-fluid">
+      <div class="row pt-3">
+        <a-mat-input class="col-md" *ngIf="!settings.UseGlobalProductNumber" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-input>
+        <a-mat-input class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Name"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <a-mat-textarea class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Description"></a-mat-textarea>
+      </div>
+
+      <div class="row">
+        <a-mat-autocomplete class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.Part" [filter]="nonUnifiedPartsFilter.create(allors.context)" display="Name"></a-mat-autocomplete>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-md">
+          <mat-select [(ngModel)]="selectedCategories" name="categories" placeholder="Categories" multiple="true">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let category of categories" [value]="category"> {{ category.displayName }} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.NonUnifiedGood.SalesDiscontinuationDate"></a-mat-datepicker>
+      </div>
+
+    </div>
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

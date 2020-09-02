@@ -15,13 +15,14 @@ namespace Tests
     using Allors.Meta;
     using Allors.Protocol.Data;
     using Xunit;
+    using Extent = Allors.Data.Extent;
 
     public class ParametrizedTests : DomainTest
     {
         [Fact]
         public void EqualsWithParameters()
         {
-            var filter = new Filter(M.Person.ObjectType)
+            var filter = new Extent(M.Person.ObjectType)
             {
                 Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" },
             };
@@ -38,7 +39,7 @@ namespace Tests
         [Fact]
         public void EqualsWithDependencies()
         {
-            var filter = new Filter(M.Person.ObjectType)
+            var filter = new Extent(M.Person.ObjectType)
             {
                 Predicate = new Equals { Dependencies = new[] { "useFirstname" }, PropertyType = M.Person.FirstName, Value = "John"},
             };
@@ -62,7 +63,7 @@ namespace Tests
         [Fact]
         public void EqualsWithoutParameters()
         {
-            var filter = new Filter(M.Person.ObjectType)
+            var filter = new Extent(M.Person.ObjectType)
             {
                 Predicate = new Equals { PropertyType = M.Person.FirstName, Parameter = "firstName" },
             };
@@ -78,7 +79,7 @@ namespace Tests
         public void AndWithParameters()
         {
             // select from Person where FirstName='John' and LastName='Doe'
-            var filter = new Filter(M.Person.ObjectType)
+            var filter = new Extent(M.Person.ObjectType)
             {
                 Predicate = new And
                 {
@@ -117,7 +118,7 @@ namespace Tests
         public void AndWithoutParameters()
         {
             // select from Person where FirstName='John' and LastName='Doe'
-            var filter = new Filter(M.Person.ObjectType)
+            var filter = new Extent(M.Person.ObjectType)
             {
                 Predicate = new And
                 {
@@ -161,12 +162,12 @@ namespace Tests
         [Fact]
         public void NestedWithParameters()
         {
-            var filter = new Filter(M.Organisation.ObjectType)
+            var filter = new Extent(M.Organisation.ObjectType)
             {
                 Predicate = new ContainedIn
                 {
                     PropertyType = M.Organisation.Employees,
-                    Extent = new Filter(M.Person.ObjectType)
+                    Extent = new Extent(M.Person.ObjectType)
                     {
                         Predicate = new Equals
                         {
@@ -193,12 +194,12 @@ namespace Tests
         [Fact]
         public void NestedWithoutParameters()
         {
-            var filter = new Filter(M.Organisation.ObjectType)
+            var filter = new Extent(M.Organisation.ObjectType)
             {
                 Predicate = new ContainedIn
                 {
                     PropertyType = M.Organisation.Employees,
-                    Extent = new Filter(M.Person.ObjectType)
+                    Extent = new Extent(M.Person.ObjectType)
                     {
                         Predicate = new Equals
                         {
@@ -220,7 +221,7 @@ namespace Tests
         [Fact]
         public void AndNestedContainedInWithoutParameters()
         {
-            var filter = new Filter(M.Organisation.ObjectType)
+            var filter = new Extent(M.Organisation.ObjectType)
             {
                 Predicate = new And
                 {
@@ -229,7 +230,7 @@ namespace Tests
                         new ContainedIn
                         {
                             PropertyType = M.Organisation.Employees,
-                            Extent = new Filter(M.Person.ObjectType)
+                            Extent = new Extent(M.Person.ObjectType)
                             {
                                 Predicate = new ContainedIn
                                 {
@@ -253,7 +254,7 @@ namespace Tests
         [Fact]
         public void AndNestedContainsWithoutParameters()
         {
-            var filter = new Filter(M.Organisation.ObjectType)
+            var filter = new Extent(M.Organisation.ObjectType)
             {
                 Predicate = new And
                 {
@@ -262,7 +263,7 @@ namespace Tests
                         new ContainedIn
                             {
                                 PropertyType = M.Organisation.Employees,
-                                Extent = new Filter(M.Person.ObjectType)
+                                Extent = new Extent(M.Person.ObjectType)
                                              {
                                                  Predicate = new Contains
                                                                  {

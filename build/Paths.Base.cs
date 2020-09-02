@@ -17,16 +17,7 @@ public partial class Paths
 
     public AbsolutePath BaseWorkspaceCSharp => Base / "Workspace/CSharp";
 
-    public AbsolutePath BaseWorkspaceTypescriptDomain => Base / "Workspace/Typescript/Domain";
-    public AbsolutePath BaseWorkspaceTypescriptIntranet => Base / "Workspace/Typescript/Intranet";
-    public AbsolutePath BaseWorkspaceTypescriptIntranetTrx => BaseWorkspaceTypescriptIntranet / "dist/BaseWorkspaceTypescriptIntranet.trx";
-    public AbsolutePath BaseWorkspaceTypescriptIntranetTests => Base / "Workspace/Typescript/Intranet.Tests/Intranet.Tests.csproj";
-    public AbsolutePath BaseWorkspaceTypescriptAutotestAngular => Base / "Workspace/Typescript/Autotest/Angular";
-    public AbsolutePath BaseWorkspaceTypescriptAutotestGenerateGenerate => Base / "Workspace/Typescript/Autotest/Generate/Generate.csproj";
-    public AbsolutePath[] BaseWorkspaceTypescript => new[]
-    {
-        BaseWorkspaceTypescriptDomain,
-        BaseWorkspaceTypescriptIntranet,
-        BaseWorkspaceTypescriptAutotestAngular
-    };
+    public AbsolutePath BaseWorkspaceTypescript => Base / "Workspace/Typescript";
+    public AbsolutePath BaseWorkspaceIntranetTests => Base / "Workspace/Scaffold/Intranet.Tests";
+    public AbsolutePath BaseWorkspaceScaffoldGenerate => Base / "Workspace/Scaffold/Generate/Generate.csproj";
 }

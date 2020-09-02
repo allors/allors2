@@ -1,0 +1,49 @@
+<form *ngIf="requestItem" #form="ngForm" (submit)="save()">
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+
+    <div *ngIf="!requestItem.isNew" class="row">
+      <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.RequestItemState" display="Name" label="State" class="col-md"></a-mat-static>
+    </div>
+
+    <div class="row">
+      <a-mat-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" display="Name"
+        [filter]="goodsFilter.create(allors.context)" (changed)="goodSelected($event)" class="col-md"></a-mat-autocomplete>
+    </div>
+
+    <div class="row">
+      <a-mat-select class="col-md" [object]="requestItem" [roleType]="m.RequestItem.SerialisedItem" [options]="serialisedItems"
+      (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
+      <a-mat-static [object]="requestItem.SerialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-static>
+    </div>
+
+    <div class="row">
+      <a-mat-datepicker [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate" class="col-md"></a-mat-datepicker>
+    </div>
+
+    <div class="row">
+      <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.Quantity" class="col-md"></a-mat-input>
+      <a-mat-select [object]="requestItem" [roleType]="m.RequestItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"
+        class="col-md"></a-mat-select>
+        <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.AssignedUnitPrice" class="col-md"></a-mat-input>
+    </div>
+
+    <div class="row">
+      <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice" class="col-md"></a-mat-input>
+    </div>
+
+    <div class="row">
+      <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.Comment" class="col-md-12"></a-mat-textarea>
+      <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.InternalComment" class="col-md-12"></a-mat-textarea>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>

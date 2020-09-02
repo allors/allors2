@@ -1,0 +1,129 @@
+<div *ngIf="panel.isCollapsed && request" (click)="panel.toggle()"  attr.data-allors-panel="{{panel.name}}">
+  <div class="container mb-3">
+    <div class="row rounded" style="background-color: white;">
+      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
+        <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
+      </div>
+      <div class="col-9 col-md-10 p-3">
+        <h4>{{panel.title}}</h4>
+        <div>{{request.RequestNumber}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form *ngIf="panel.isExpanded && request" #form="ngForm" (submit)="save()" novalidate>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{panel.title}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="container-fluid">
+
+        <div class="row">
+          <a-mat-static class="col" [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
+        </div>
+
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-autocomplete class="col-md" [object]="request" [roleType]="m.Request.Originator" [filter]="customersFilter.create(allors.context)"
+              display="displayName" (changed)="originatorSelected($event)" label="From"></a-mat-autocomplete>
+                <button mat-mini-fab color="accent" [disabled]="!request.CanWriteRequestItems"
+                type="button" (click)="addOriginator = !addOriginator">
+                <mat-icon *ngIf="!addOriginator">add</mat-icon>
+                <mat-icon *ngIf="addOriginator">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <mat-card *ngIf="addOriginator">
+              <mat-card-header>Add a new customer</mat-card-header>
+              <mat-card-content>
+                <party-party (saved)="originatorAdded($event); addOriginator = false" (cancelled)="addOriginator = false">
+                </party-party>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="request" [roleType]="m.Request.FullfillContactMechanism"
+                [options]="contactMechanisms" display="displayName" label="Reply to" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems"
+                type="button" (click)="addContactMechanism = !addContactMechanism">
+                <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
+                <mat-icon *ngIf="addContactMechanism">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <mat-card *ngIf="request.Originator && addContactMechanism">
+              <mat-card-header>Add a new contact mechanism</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism (saved)="partyContactMechanismAdded($event); addContactMechanism = false" (cancelled)="addContactMechanism = false">
+                </party-contactmechanism>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select [disabled]="originatorIsPerson" [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts"
+                display="displayName" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="originatorIsPerson || !request.CanWriteRequestItems"
+                type="button" (click)="addContactPerson = !addContactPerson">
+                <mat-icon *ngIf="!addContactPerson">add</mat-icon>
+                <mat-icon *ngIf="addContactPerson">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <mat-card *ngIf="request.Originator && addContactPerson">
+              <mat-card-header>Add a new contact person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="row">
+          <a-mat-static class="col-md" *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress"></a-mat-static>
+          <div class="col-md">
+            <div class="row">
+              <a-mat-static class="col-md" *ngIf="request.TelephoneCountryCode" [object]="request"
+                [roleType]="m.Request.TelephoneCountryCode" label="Country code"></a-mat-static>
+              <a-mat-static class="col-md" *ngIf="request.TelephoneNumber" [object]="request"
+                [roleType]="m.Request.TelephoneNumber"></a-mat-static>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <a-mat-datepicker class="col-md" [object]="request" [roleType]="m.Request.RequestDate"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-mat-datepicker>
+        </div>
+
+        <div class="row">
+          <a-mat-textarea class="col-md" [object]="request" [roleType]="m.Request.Description" class="col-md"></a-mat-textarea>
+          <a-mat-textarea class="col-md" [object]="request" [roleType]="m.Request.Comment" class="col-md-12"></a-mat-textarea>
+          <a-mat-textarea class="col-md" [object]="request" [roleType]="m.Request.InternalComment" class="col-md-12"></a-mat-textarea>
+        </div>
+
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges ">SAVE</button>
+      <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
+    </mat-card-actions>
+  </mat-card>
+
+</form>

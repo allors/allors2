@@ -14,6 +14,10 @@ partial class Build : NukeBuild
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     private readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
+    Target Install => _ => _
+        .DependsOn(CoreInstall)
+        .DependsOn(BaseInstall);
+
     Target ResetDatabase => _ => _
         .DependsOn(AdaptersResetDatabase)
         .DependsOn(CoreResetDatabase)
@@ -53,9 +57,22 @@ partial class Build : NukeBuild
 
             DeleteDirectory(Paths.Artifacts);
         });
-       
+
+    Target Generate => _ => _
+        .DependsOn(this.AdaptersGenerate)
+        .DependsOn(this.CoreGenerate)
+        .DependsOn(this.BaseGenerate);
+
+    Target Scaffold => _ => _
+        .DependsOn(this.CoreScaffold)
+        .DependsOn(this.BaseScaffold);
+
     Target Default => _ => _
-        .DependsOn(AdaptersGenerate)
-        .DependsOn(CoreWorkspaceAutotest)
-        .DependsOn(BaseWorkspaceAutotest);
+        .DependsOn(this.Generate)
+        .DependsOn(this.Scaffold);
+
+    Target All => _ => _
+        .DependsOn(this.Install)
+        .DependsOn(this.Generate)
+        .DependsOn(this.Scaffold);
 }

@@ -10,12 +10,12 @@ partial class Angular : IDisposable
 {
     private IProcess Process { get; set; }
 
-    public Angular(AbsolutePath path)
+    public Angular(AbsolutePath path, string command)
     {
         var npmRunSetting = new NpmRunSettings()
             .SetEnvironmentVariable("npm_config_loglevel", "error")
             .SetWorkingDirectory(path)
-            .SetCommand("start");
+            .SetCommand(command);
 
         Process = ProcessTasks.StartProcess((ToolSettings)npmRunSetting);
     }

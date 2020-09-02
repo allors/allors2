@@ -102,7 +102,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public SalesInvoiceItemState SalesInvoiceItemState { get; set; }
 
@@ -152,7 +151,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public InvoiceItemType InvoiceItemType { get; set; }
 

@@ -13,6 +13,7 @@ namespace Allors.Database.Adapters
     using Allors.Meta;
     using Allors.Protocol.Data;
     using Xunit;
+    using Extent = Data.Extent;
 
     public abstract class SandboxTest : IDisposable
     {
@@ -91,7 +92,7 @@ namespace Allors.Database.Adapters
                 init();
                 var population = new TestPopulation(this.Session);
 
-                var extent = new Filter(M.C1.ObjectType)
+                var extent = new Extent(M.C1.ObjectType)
                 {
                     Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
                 };
@@ -110,7 +111,7 @@ namespace Allors.Database.Adapters
                 init();
                 var population = new TestPopulation(this.Session);
 
-                var extent = new Filter(M.C1.ObjectType)
+                var extent = new Extent(M.C1.ObjectType)
                 {
                     Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
                 };
@@ -131,7 +132,7 @@ namespace Allors.Database.Adapters
 
                 var schemaExtent = new Protocol.Data.Extent
                 {
-                    Kind = Protocol.Data.ExtentKind.Filter,
+                    Kind = Protocol.Data.ExtentKind.Extent,
                     ObjectType = M.C1.ObjectType.Id,
                     Predicate = new Predicate
                     {
@@ -157,7 +158,7 @@ namespace Allors.Database.Adapters
                 init();
                 var population = new TestPopulation(this.Session);
 
-                var extent = new Filter(M.C1.ObjectType)
+                var extent = new Extent(M.C1.ObjectType)
                 {
                     Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" },
                 };
@@ -166,7 +167,7 @@ namespace Allors.Database.Adapters
 
                 Assert.NotNull(schemaExtent);
 
-                Assert.Equal(ExtentKind.Filter, schemaExtent.Kind);
+                Assert.Equal(ExtentKind.Extent, schemaExtent.Kind);
 
                 var predicate = schemaExtent.Predicate;
 

@@ -6,7 +6,7 @@
 namespace Allors
 {
     using System;
-
+    using System.Linq;
     using Allors.Domain;
     using Allors.Meta;
 
@@ -51,6 +51,48 @@ namespace Allors
                     }
                 }
             }
+        }
+
+
+        public static T Clone<T>(this T @this, params IRoleType[] deepClone) where T: IObject
+        {
+            var strategy = @this.Strategy;
+            var session = strategy.Session;
+            var @class = strategy.Class;
+
+            var clone = (T)ObjectBuilder.Build(session, @class);
+
+            foreach (var roleType in @class.RoleTypes.Where(v => !(v.RelationType.IsDerived || v.RelationType.IsSynced) && !deepClone.Contains(v) && (v.ObjectType.IsUnit || v.AssociationType.IsMany)))
+            {
+                var relationType = roleType.RelationType;
+                if (!clone.Strategy.ExistRole(relationType))
+                {
+                    var role = @this.Strategy.GetRole(relationType);
+                    clone.Strategy.SetRole(relationType, role);
+                }
+            }
+
+            foreach(var roleType in deepClone)
+            {
+                var relationType = roleType.RelationType;
+                if (roleType.IsOne)
+                {
+                    var role = strategy.GetCompositeRole(relationType);
+                    if (role != null)
+                    {
+                        clone.Strategy.SetCompositeRole(relationType, role.Clone());
+                    }
+                }
+                else
+                {
+                    foreach(IObject role in strategy.GetCompositeRoles(relationType))
+                    {
+                        clone.Strategy.AddCompositeRole(relationType, role.Clone());
+                    }
+                }
+            }
+
+            return clone;
         }
     }
 }

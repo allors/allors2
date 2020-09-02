@@ -302,6 +302,16 @@ namespace Allors.Repository
         int SortableOrderNumber { get; set; }
 
         #region Allors
+        [Id("7623fb2c-af18-437b-b746-ec5d05c696b2")]
+        [AssociationId("b924e2e2-7b08-4231-93cb-97eff284ce37")]
+        [RoleId("4d35f810-1f12-40da-9840-c3283eca4c5c")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public Media[] ElectronicDocuments { get; set; }
+
+        #region Allors
 
         [Id("14B59435-4304-4070-AA25-EFDAB6431E73")]
 

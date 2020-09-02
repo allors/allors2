@@ -21,8 +21,8 @@ namespace Allors.Data
 
         public Sort[] Sorting { get; set; }
 
-        public Extent Save() =>
-            new Extent
+        public Protocol.Data.Extent Save() =>
+            new Protocol.Data.Extent
             {
                 Kind = ExtentKind.Intersect,
                 Operands = this.Operands.Select(v => v.Save()).ToArray(),

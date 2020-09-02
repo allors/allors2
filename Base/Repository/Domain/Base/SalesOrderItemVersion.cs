@@ -111,7 +111,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public SalesOrderItemState SalesOrderItemState { get; set; }
 
@@ -152,7 +151,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         public decimal QuantityShortFalled { get; set; }
@@ -223,7 +221,6 @@ namespace Allors.Repository
         [RoleId("821314C5-EFE3-4183-BE65-D1733AACA58C")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -286,7 +283,6 @@ namespace Allors.Repository
         [AssociationId("5D6D995F-43B4-4C17-B3F6-9FAB61943300")]
         [RoleId("F0035777-2F1E-4CB9-BC86-04A275C5E94D")]
         #endregion
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -298,7 +294,6 @@ namespace Allors.Repository
         [RoleId("D4D7703C-106D-4F46-AFFF-DDA39C7404D7")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -320,7 +315,6 @@ namespace Allors.Repository
         [RoleId("E45DF0A4-4038-4696-9A42-07B29E10825A")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -352,7 +346,6 @@ namespace Allors.Repository
         [RoleId("947395C2-CC69-4650-837B-3B12E771A6A2")]
         #endregion
         [Derived]
-        [Required]
         [Precision(19)]
         [Scale(2)]
         [Workspace]

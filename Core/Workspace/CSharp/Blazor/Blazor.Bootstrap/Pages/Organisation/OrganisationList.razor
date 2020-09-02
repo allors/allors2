@@ -35,7 +35,7 @@
 
         var pull = new Pull
         {
-            Extent = new Filter(M.Organisation.ObjectType),
+            Extent = new Extent(M.Organisation.ObjectType),
         };
 
         var result = await context.Load(pull);

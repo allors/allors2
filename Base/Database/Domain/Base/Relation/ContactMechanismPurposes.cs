@@ -146,8 +146,8 @@ namespace Allors.Domain
 
             merge(BillingAddressId, v =>
             {
-                v.Name = "Factuuradres";
-                localisedName.Set(v, dutchLocale, "Billing Address");
+                v.Name = "Billing Address";
+                localisedName.Set(v, dutchLocale, "Factuuradres");
                 v.IsActive = true;
             });
 

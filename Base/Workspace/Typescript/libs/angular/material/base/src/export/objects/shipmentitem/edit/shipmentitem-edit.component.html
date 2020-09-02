@@ -1,0 +1,96 @@
+<form *ngIf="shipmentItem" #form="ngForm" (submit)="save()">
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <mat-dialog-content>
+    <div *ngIf="isCustomerShipment">
+      <div class="row">
+        <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedSalesOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good"
+                            display="Name" (changed)="goodSelected($event)" [filter]="goodsFilter.create(allors.context)"></a-mat-autocomplete>
+        <a-mat-static class="col-md" *ngIf="selectedSalesOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.Good" display="Name"></a-mat-static>
+        <a-mat-select class="col-md" *ngIf="shipmentItem.isNew && !selectedSalesOrderItem && isSerialized" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
+                      [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
+        <a-mat-static class="col-md" *ngIf="selectedSalesOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem" display="displayName"></a-mat-static>
+      </div>
+  
+      <div class="row">
+        <mat-form-field class="col-md" >
+          <mat-select name="salesOrderItems" [(ngModel)]="selectedSalesOrderItem" placeholder="salesOrderItems" multiple="false" (ngModelChange)="salesOrderItemSelected($event)">
+            <mat-option *ngFor="let salesOrderItem of salesOrderItems" [value]="salesOrderItem">{{ salesOrderItem.Description }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div *ngIf="isPurchaseShipment">
+      <div class="row">
+        <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem && !goodIsSelected" [object]="shipmentItem" [roleType]="m.ShipmentItem.Part"
+                      [filter]="supplierPartsFilter.create(allors.context)" display="Name" (changed)="partSelected($event)"></a-mat-autocomplete>
+        <a-mat-static class="col-md" *ngIf="selectedPurchaseOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.Part" display="Name"></a-mat-static>
+      </div>
+
+      <div class="row">
+        <a-mat-autocomplete class="col-md" *ngIf="shipmentItem.isNew && !selectedPurchaseOrderItem && !partIsSelected"  [object]="shipmentItem" [roleType]="m.ShipmentItem.Part"
+                            display="Name" (changed)="goodSelected($event)" [filter]="goodsFilter.create(allors.context)" label="Product"></a-mat-autocomplete>
+        <a-mat-select class="col-md" *ngIf="isSerialized" [disabled]="!!selectedPurchaseOrderItem || !shipmentItem.isNew" [object]="shipmentItem" [roleType]="m.ShipmentItem.SerialisedItem"
+                      [options]="serialisedItems" (selected)="serialisedItemSelected($event)" display="displayName"></a-mat-select>
+      </div>
+  
+      <div class="row">
+        <mat-form-field class="col-md" >
+          <mat-select name="purchaseOrderItems" [(ngModel)]="selectedPurchaseOrderItem" placeholder="purchaseOrderItems" multiple="false" (ngModelChange)="purchaseOrderItemSelected($event)">
+            <mat-option *ngFor="let purchaseOrderItem of purchaseOrderItems" [value]="purchaseOrderItem">{{ purchaseOrderItem.displayName }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <mat-form-field class="col">
+              <mat-select [(ngModel)]="selectedFacility" name="facilityName" placeholder="facility" multiple="false">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let facility of facilities" [value]="facility">{{ facility.Name }} </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-mini-fab color="accent" type="button" (click)="addFacility = !addFacility">
+              <mat-icon *ngIf="!addFacility">add</mat-icon>
+              <mat-icon *ngIf="addFacility">close</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 pb-3" *ngIf="addFacility">
+          <mat-card>
+            <mat-card-header>Add new Facility</mat-card-header>
+            <mat-card-content>
+              <facility-inline (cancelled)="addFacility = false" (saved)="facilityAdded($event); addFacility = false"></facility-inline>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div> 
+
+      <a-mat-input class="col-md" [disabled]="isSerialized || !!selectedPurchaseOrderItem" [object]="shipmentItem" [roleType]="m.ShipmentItem.UnitPurchasePrice"></a-mat-input>
+    </div>
+
+    <div class="row">
+      <a-mat-input class="col-md" [object]="shipmentItem" [roleType]="m.ShipmentItem.Quantity"></a-mat-input>
+      <a-mat-static class="col-md" [object]="shipmentItem" [roleType]="m.ShipmentItem.QuantityPicked"></a-mat-static>
+      <a-mat-static class="col-md" [object]="shipmentItem" [roleType]="m.ShipmentItem.QuantityShipped"></a-mat-static>
+    </div>
+
+    <div class="row">
+      <a-mat-select class="col-md" *ngIf="isSerialized" [object]="shipmentItem" [roleType]="m.ShipmentItem.NextSerialisedItemAvailability" [options]="serialisedItemAvailabilities" display="Name" label="Next Item State"></a-mat-select>
+    </div>
+
+    <div class="row">
+      <a-mat-textarea class="col-md-12" [object]="shipmentItem" [roleType]="m.ShipmentItem.ContentsDescription"></a-mat-textarea>
+    </div>
+
+  </mat-dialog-content>
+
+  <div mat-dialog-actions>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+  </div>
+
+</form>

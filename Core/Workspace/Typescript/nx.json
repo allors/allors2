@@ -1,0 +1,92 @@
+{
+  "npmScope": "allors",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "angular-core": {
+      "tags": []
+    },
+    "angular-app": {
+      "tags": []
+    },
+    "data-system": {
+      "tags": []
+    },
+    "meta-generated": {
+      "tags": []
+    },
+    "domain-generated": {
+      "tags": []
+    },
+    "domain-system": {
+      "tags": []
+    },
+    "meta-system": {
+      "tags": []
+    },
+    "protocol-system": {
+      "tags": []
+    },
+    "domain-custom": {
+      "tags": []
+    },
+    "meta-core": {
+      "tags": []
+    },
+    "meta-custom": {
+      "tags": []
+    },
+    "angular-material-core": {
+      "tags": []
+    },
+    "angular-material-app": {
+      "tags": []
+    },
+    "angular-material-custom": {
+      "tags": []
+    },
+    "promise-core": {
+      "tags": []
+    },
+    "promise-custom": {
+      "tags": []
+    },
+    "gatsby": {
+      "tags": []
+    },
+    "gatsby-source-core": {
+      "tags": []
+    },
+    "gatsby-source-custom": {
+      "tags": []
+    },
+    "angular-custom": {
+      "tags": []
+    },
+    "angular-services-core": {
+      "tags": []
+    },
+    "angular-material-services-core": {
+      "tags": []
+    }
+  }
+}

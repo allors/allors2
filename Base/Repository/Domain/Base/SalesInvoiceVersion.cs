@@ -119,7 +119,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public Party BillToCustomer { get; set; }
 
@@ -140,7 +139,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Workspace]
         public ContactMechanism BillToContactMechanism { get; set; }
 
@@ -260,7 +258,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public SalesInvoiceState SalesInvoiceState { get; set; }
 
@@ -281,7 +278,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public SalesInvoiceType SalesInvoiceType { get; set; }
 
@@ -333,7 +329,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public Store Store { get; set; }
 

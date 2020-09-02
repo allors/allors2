@@ -15,7 +15,7 @@ namespace Allors.Data
 
         Sort[] Sorting { get; set; }
 
-        Extent Build(ISession session, IDictionary<string, string> parameters = null);
+        Allors.Extent Build(ISession session, IDictionary<string, string> parameters = null);
 
         Protocol.Data.Extent Save();
 
