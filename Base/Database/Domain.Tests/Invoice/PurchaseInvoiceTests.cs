@@ -141,4 +141,42 @@ namespace Allors.Domain
             Assert.Equal(int.Parse(string.Concat(this.Session.Now().Date.Year.ToString(), invoice.InvoiceNumber.Split('-').Last())), invoice.SortableInvoiceNumber);
         }
     }
+
+
+    [Trait("Category", "Security")]
+    public class PurchaseInvoiceSecurityTests : DomainTest
+    {
+        public override Config Config => new Config { SetupSecurity = true };
+
+        [Fact]
+        public void GivenPurchaseInvoice_WhenObjectStateIsCreated_ThenCheckTransitions()
+        {
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            User user = this.Administrator;
+            this.Session.SetUser(user);
+
+            var invoice = new PurchaseInvoiceBuilder(this.Session)
+                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
+                .WithBilledFrom(supplier)
+                .Build();
+
+            this.Session.Derive();
+
+            var acl = new AccessControlLists(this.Session.GetUser())[invoice];
+
+            Assert.Equal(new PurchaseInvoiceStates(this.Session).Created, invoice.PurchaseInvoiceState);
+            Assert.False(acl.CanExecute(M.PurchaseInvoice.Approve));
+            Assert.False(acl.CanExecute(M.PurchaseInvoice.Reject));
+            Assert.False(acl.CanExecute(M.PurchaseInvoice.Reopen));
+            Assert.False(acl.CanExecute(M.PurchaseInvoice.SetPaid));
+            Assert.False(acl.CanExecute(M.PurchaseInvoice.Revise));
+            Assert.False(acl.CanExecute(M.PurchaseInvoice.FinishRevising));
+            Assert.False(acl.CanExecute(M.PurchaseInvoice.CreateSalesInvoice));
+        }
+    }
 }
