@@ -100,7 +100,7 @@
     <button *ngIf="invoice.CanExecuteConfirm" mat-button (click)="confirm()">Confirm</button>
     <button *ngIf="invoice.CanExecuteReopen" mat-button (click)="reopen()">Reopen</button>
     <button *ngIf="invoice.CanExecuteRevise" mat-button (click)="revise()">Revise</button>
-    <button *ngIf="invoice.CanExecuteDoneRevising" mat-button (click)="finishRevising()">Finish Revising</button>
+    <button *ngIf="invoice.CanExecuteFinishRevising" mat-button (click)="finishRevising()">Finish Revising</button>
     <button *ngIf="invoice.CanExecuteCreateSalesInvoice" mat-button type="button" (click)="createSalesInvoice(invoice)">Create Sales invoice</button>
     <button *ngIf="invoice.CanExecutePrint" mat-button type="button" (click)="print.execute(invoice)">Print</button>
   </mat-card-actions>
