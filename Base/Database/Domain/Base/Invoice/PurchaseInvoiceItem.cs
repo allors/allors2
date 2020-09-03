@@ -127,7 +127,7 @@ namespace Allors.Domain
 
         public void BaseRevise(PurchaseInvoiceItemRevise method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Revising;
 
-        public void BaseDoneRevising(PurchaseInvoiceItemFinishRevising method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Created;
+        public void BaseFinishRevising(PurchaseInvoiceItemFinishRevising method) => this.PurchaseInvoiceItemState = new PurchaseInvoiceItemStates(this.Strategy.Session).Created;
 
         public void Sync(Invoice invoice) => this.SyncedInvoice = invoice;
     }

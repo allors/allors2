@@ -561,7 +561,7 @@ namespace Allors.Domain
             }
         }
 
-        public void BaseDoneRevising(PurchaseInvoiceFinishRevising method)
+        public void BaseFinishRevising(PurchaseInvoiceFinishRevising method)
         {
             this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Created;
             foreach (PurchaseInvoiceItem purchaseInvoiceItem in this.ValidInvoiceItems)
