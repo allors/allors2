@@ -80,5 +80,26 @@ namespace Allors.Domain.TestPopulation
 
             return @this;
         }
+
+        public static SalesOrderItemBuilder WithNonSerialisedProductItemDefaults(this SalesOrderItemBuilder @this)
+        {
+            var faker = @this.Session.Faker();
+            var invoiceItemType = @this.Session.Extent<InvoiceItemType>().FirstOrDefault(v => v.UniqueId.Equals(InvoiceItemTypes.ProductItemId));
+
+            var unifiedGoodExtent = @this.Session.Extent<UnifiedGood>();
+            unifiedGoodExtent.Filter.AddEquals(M.UnifiedGood.InventoryItemKind.RoleType, new InventoryItemKinds(@this.Session).NonSerialised);
+            var nonSerializedProduct = unifiedGoodExtent.First();
+
+            @this.WithDescription(faker.Lorem.Sentences(2));
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithInternalComment(faker.Lorem.Sentence());
+            @this.WithInvoiceItemType(invoiceItemType);
+            @this.WithProduct(nonSerializedProduct);
+            @this.WithQuantityOrdered(1);
+            @this.WithAssignedUnitPrice(faker.Random.UInt());
+
+            return @this;
+        }
     }
 }
+
