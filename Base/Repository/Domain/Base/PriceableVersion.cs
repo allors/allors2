@@ -110,7 +110,7 @@ namespace Allors.Repository
         [RoleId("4026E08B-9CCD-4A6E-A8E5-C6681087BFDB")]
         #endregion
         [Precision(19)]
-        [Scale(2)]
+        [Scale(4)]
         decimal AssignedUnitPrice { get; set; }
 
         #region Allors
@@ -121,7 +121,7 @@ namespace Allors.Repository
         [Derived]
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(4)]
         decimal UnitBasePrice { get; set; }
 
         #region Allors
@@ -132,7 +132,7 @@ namespace Allors.Repository
         [Derived]
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(4)]
         decimal UnitPrice { get; set; }
 
         #region Allors

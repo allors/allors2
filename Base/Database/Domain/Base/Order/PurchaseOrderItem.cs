@@ -119,6 +119,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (!this.ExistDerivationTrigger)
+            {
+                this.DerivationTrigger = Guid.NewGuid();
+            }
+
             if (!this.ExistStoredInFacility && this.PurchaseOrderWherePurchaseOrderItem.ExistStoredInFacility)
             {
                 this.StoredInFacility = this.PurchaseOrderWherePurchaseOrderItem.StoredInFacility;

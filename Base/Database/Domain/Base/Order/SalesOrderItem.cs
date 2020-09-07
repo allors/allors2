@@ -148,6 +148,11 @@ namespace Allors.Domain
             var salesOrder = this.SalesOrderWhereSalesOrderItem;
             var shipped = new ShipmentStates(this.Session()).Shipped;
 
+            if (!this.ExistDerivationTrigger)
+            {
+                this.DerivationTrigger = Guid.NewGuid();
+            }
+
             if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
             {
                 derivation.Validation.AssertExists(this, this.Meta.NextSerialisedItemAvailability);

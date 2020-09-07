@@ -136,6 +136,11 @@ namespace Allors.Domain
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.SerialisedItem, M.SalesInvoiceItem.ProductFeatures, M.SalesInvoiceItem.Part);
 
+            if (!this.ExistDerivationTrigger)
+            {
+                this.DerivationTrigger = Guid.NewGuid();
+            }
+
             if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability && salesInvoice.SalesInvoiceType.Equals(new SalesInvoiceTypes(this.Session()).SalesInvoice))
             {
                 derivation.Validation.AssertExists(this, this.Meta.NextSerialisedItemAvailability);

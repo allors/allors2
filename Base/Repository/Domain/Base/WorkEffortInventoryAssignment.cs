@@ -106,7 +106,7 @@ namespace Allors.Repository
         [RoleId("BD121953-AC5D-4883-B8C1-BF3275B73BA8")]
         #endregion
         [Precision(19)]
-        [Scale(2)]
+        [Scale(4)]
         [Workspace]
         public decimal AssignedUnitSellingPrice { get; set; }
 

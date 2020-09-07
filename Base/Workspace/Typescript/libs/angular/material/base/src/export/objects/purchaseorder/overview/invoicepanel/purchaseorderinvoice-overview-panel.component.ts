@@ -278,6 +278,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
     context
       .save()
       .subscribe(() => {
+        context.reset();
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
@@ -295,6 +296,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
       if (orderItemBilling) {
         context.invoke(orderItemBilling.InvoiceItem.Delete)
           .subscribe(() => {
+            context.reset();
             this.refreshService.refresh();
             this.snackBar.open('Successfully removed from invoice.', 'close', { duration: 5000 });
           },
