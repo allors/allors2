@@ -217,6 +217,15 @@ namespace Allors.Repository
         string Message { get; set; }
 
         #region Allors
+        [Id("4d816419-3acf-4b1a-9bb7-b14de1ca2e3c")]
+        [AssociationId("5a5f36f1-3d0a-4452-abf4-84834730d185")]
+        [RoleId("8747c120-bb84-43f2-8baf-22b829293e2e")]
+        #endregion
+        [Required]
+        [Workspace]
+        public Guid DerivationTrigger { get; set; }
+
+        #region Allors
         [Id("5368A2C3-9ADF-46A3-9AC0-9C4A03DEAF9A")]
         #endregion
         [Workspace]

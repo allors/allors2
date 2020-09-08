@@ -18,7 +18,7 @@ namespace Allors.Repository
         [RoleId("827f06dd-fc4a-4323-9120-49f9a1ae9abf")]
         #endregion
         [Precision(19)]
-        [Scale(2)]
+        [Scale(4)]
         [Workspace]
         decimal AssignedUnitPrice { get; set; }
 
@@ -30,7 +30,7 @@ namespace Allors.Repository
         [Derived]
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(4)]
         [Workspace]
         decimal UnitBasePrice { get; set; }
 
@@ -42,7 +42,7 @@ namespace Allors.Repository
         [Derived]
         [Required]
         [Precision(19)]
-        [Scale(2)]
+        [Scale(4)]
         [Workspace]
         decimal UnitPrice { get; set; }
 

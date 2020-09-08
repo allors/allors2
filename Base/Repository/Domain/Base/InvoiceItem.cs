@@ -5,6 +5,7 @@
 
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -170,5 +171,14 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal TotalIrpf { get; set; }
+
+        #region Allors
+        [Id("54d0ec1c-b826-41e3-946b-06adc27c4b8e")]
+        [AssociationId("4af7b7c1-cfc7-4705-9f29-ed007108fa5d")]
+        [RoleId("e3a98215-9132-4cf9-abe4-95ce064868b9")]
+        #endregion
+        [Required]
+        [Workspace]
+        public Guid DerivationTrigger { get; set; }
     }
 }

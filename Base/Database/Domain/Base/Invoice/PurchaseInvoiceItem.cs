@@ -66,6 +66,16 @@ namespace Allors.Domain
             }
         }
 
+        public void BaseOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (!this.ExistDerivationTrigger)
+            {
+                this.DerivationTrigger = Guid.NewGuid();
+            }
+        }
+
         public void BaseOnDerivePrices()
         {
             this.UnitBasePrice = 0;
@@ -118,6 +128,7 @@ namespace Allors.Domain
                 this.PurchaseInvoiceWherePurchaseInvoiceItem.RemovePurchaseInvoiceItem(this);
                 foreach (OrderItemBilling orderItemBilling in this.OrderItemBillingsWhereInvoiceItem)
                 {
+                    orderItemBilling.OrderItem.DerivationTrigger = Guid.NewGuid();
                     orderItemBilling.Delete();
                 }
             }
