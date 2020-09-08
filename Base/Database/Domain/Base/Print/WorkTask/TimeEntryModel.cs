@@ -6,6 +6,7 @@
 namespace Allors.Domain.Print.WorkTaskModel
 {
     using System;
+    using System.Globalization;
 
     public class TimeEntryModel
     {
@@ -14,9 +15,9 @@ namespace Allors.Domain.Print.WorkTaskModel
             var frequency = timeEntry.TimeFrequency?.Abbreviation ?? timeEntry.TimeFrequency?.Name;
 
             this.AmountOfTime = Math.Round(timeEntry.BillableAmountOfTime ?? timeEntry.AmountOfTime ?? 0.0m, 2);
-            this.BillingRate = Math.Round(timeEntry.BillingRate ?? 0.0m, 2);
-            this.BillingAmount = Math.Round(timeEntry.BillingAmount, 2);
-            this.Cost = Math.Round(timeEntry.Cost, 2);
+            this.BillingRate = Math.Round(timeEntry.BillingRate ?? 0.0m, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.BillingAmount = Math.Round(timeEntry.BillingAmount, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.Cost = Math.Round(timeEntry.Cost, 2).ToString("N2", new CultureInfo("nl-BE"));
             this.TimeFrequency = frequency?.ToUpperInvariant();
             this.WorkerName = timeEntry.TimeSheetWhereTimeEntry?.Worker?.PartyName;
             this.WorkerId = timeEntry.TimeSheetWhereTimeEntry?.Worker?.FirstName;
@@ -30,11 +31,11 @@ namespace Allors.Domain.Print.WorkTaskModel
 
         public decimal AmountOfTime { get; }
 
-        public decimal BillingRate { get; }
+        public string BillingRate { get; }
 
-        public decimal BillingAmount { get; }
+        public string BillingAmount { get; }
 
-        public decimal Cost { get; }
+        public string Cost { get; }
 
         public string TimeFrequency { get; }
 
