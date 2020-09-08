@@ -6,6 +6,7 @@
 namespace Allors.Domain.Print.WorkTaskModel
 {
     using System;
+    using System.Globalization;
 
     public class InventoryAssignmentModel
     {
@@ -17,8 +18,8 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.UnitOfMeasure = assignment.InventoryItem.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
                                  assignment.InventoryItem.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
                                  "EA";
-            this.UnitSellingPrice = assignment.UnitSellingPrice;
-            this.SellingPrice = Math.Round(this.Quantity * assignment.UnitSellingPrice, 2);
+            this.UnitSellingPrice = assignment.UnitSellingPrice.ToString("N2", new CultureInfo("nl-BE"));
+            this.SellingPrice = Math.Round(this.Quantity * assignment.UnitSellingPrice, 2).ToString("N2", new CultureInfo("nl-BE"));
         }
 
         public string PartId { get; }
@@ -29,8 +30,8 @@ namespace Allors.Domain.Print.WorkTaskModel
 
         public string UnitOfMeasure { get; }
 
-        public decimal UnitSellingPrice { get; }
+        public string UnitSellingPrice { get; }
 
-        public decimal SellingPrice { get; }
+        public string SellingPrice { get; }
     }
 }

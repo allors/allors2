@@ -6,6 +6,7 @@
 namespace Allors.Domain.Print.WorkTaskModel
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     public class TimeEntryByBillingRateModel
@@ -14,24 +15,24 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             var timeEntries = @group.ToArray();
 
-            this.BillingRate = @group.Key ?? 0.0m;
-            this.AmountOfTime = timeEntries.Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m);
-            this.BillingAmount = timeEntries.Sum(v => v.BillingAmount);
-            this.Cost = timeEntries.Sum(v => v.Cost);
+            var billingRate = @group.Key ?? 0.0m;
+            var amountOfTime = timeEntries.Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m);
+            var billingAmount = timeEntries.Sum(v => v.BillingAmount);
+            var cost = timeEntries.Sum(v => v.Cost);
 
             // Round
-            this.BillingRate = Math.Round(this.BillingRate, 2);
-            this.AmountOfTime = Math.Round(this.AmountOfTime, 2);
-            this.BillingAmount = Math.Round(this.BillingAmount, 2);
-            this.Cost = Math.Round(this.Cost, 2);
+            this.BillingRate = Math.Round(billingRate, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.AmountOfTime = Math.Round(amountOfTime, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.BillingAmount = Math.Round(billingAmount, 2).ToString("N2", new CultureInfo("nl-BE"));
+            this.Cost = Math.Round(cost, 2).ToString("N2", new CultureInfo("nl-BE"));
         }
 
-        public decimal AmountOfTime { get; }
+        public string AmountOfTime { get; }
 
-        public decimal BillingRate { get; }
+        public string BillingRate { get; }
 
-        public decimal BillingAmount { get; }
+        public string BillingAmount { get; }
 
-        public decimal Cost { get; }
+        public string Cost { get; }
     }
 }

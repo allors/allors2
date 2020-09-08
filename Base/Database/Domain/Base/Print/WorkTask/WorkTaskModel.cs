@@ -6,6 +6,7 @@
 namespace Allors.Domain.Print.WorkTaskModel
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     public class WorkTaskModel
@@ -23,18 +24,26 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.ContactName = workTask.ContactPerson?.PartyName;
             this.ContactTelephone = workTask.ContactPerson?.CellPhoneNumber?.Description ?? workTask.ContactPerson?.GeneralPhoneNumber?.Description;
 
-            this.TotalLabour = Math.Round(workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
+            var totalLabour = Math.Round(workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
                 .Where(v => (v.IsBillable &&
                             !v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
                 .Sum(v => v.BillingAmount), 2);
 
-            this.TotalParts = Math.Round(workTask.WorkEffortInventoryAssignmentsWhereAssignment
+            var totalParts = Math.Round(workTask.WorkEffortInventoryAssignmentsWhereAssignment
                 .Sum(v => v.Quantity * v.UnitSellingPrice), 2);
 
-            this.TotalOther = Math.Round(workTask.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment
+            var totalOther = Math.Round(workTask.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment
                 .Sum(v => v.Quantity * v.UnitSellingPrice), 2);
 
-            this.Total = this.TotalLabour + this.TotalParts + this.TotalOther;
+            var total = this.TotalLabour + this.TotalParts + this.TotalOther;
+
+            this.TotalLabour = totalLabour.ToString("N2", new CultureInfo("nl-BE"));
+
+            this.TotalParts = totalParts.ToString("N2", new CultureInfo("nl-BE"));
+
+            this.TotalOther = totalOther.ToString("N2", new CultureInfo("nl-BE"));
+
+            this.Total = (totalLabour + totalParts + totalOther).ToString("N2", new CultureInfo("nl-BE"));
 
             if (workTask.ExistOrderItemFulfillment)
             {
@@ -81,12 +90,12 @@ namespace Allors.Domain.Print.WorkTaskModel
 
         public string Facility { get; }
 
-        public decimal TotalLabour { get; }
+        public string TotalLabour { get; }
 
-        public decimal TotalParts { get; }
+        public string TotalParts { get; }
 
-        public decimal TotalOther { get; }
+        public string TotalOther { get; }
 
-        public decimal Total { get; }
+        public string Total { get; }
     }
 }
