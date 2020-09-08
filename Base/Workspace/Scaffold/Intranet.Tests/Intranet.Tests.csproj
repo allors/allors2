@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <Folder Include="Tests\Invoice\" />
+    <Folder Include="Tests\Order\PurchaseOrder\" />
     <Folder Include="Tests\Workeffort\" />
   </ItemGroup>
 
