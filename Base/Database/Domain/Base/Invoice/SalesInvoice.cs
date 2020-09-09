@@ -103,29 +103,10 @@ namespace Allors.Domain
             {
                 if (this.ExistBillToCustomer)
                 {
-                    var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
-
-                    foreach (CustomerRelationship customerRelationship in customerRelationships)
+                    foreach (PartyFinancialRelationship partyFinancialRelationship in this.BillToCustomer.PartyFinancialRelationshipsWhereParty)
                     {
-                        if (customerRelationship.FromDate <= this.Session().Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.Session().Now()))
-                        {
-                            iteration.AddDependency(this, customerRelationship);
-                            iteration.Mark(customerRelationship);
-                        }
-                    }
-                }
-
-                if (this.ExistShipToCustomer)
-                {
-                    var customerRelationships = this.ShipToCustomer.CustomerRelationshipsWhereCustomer;
-
-                    foreach (CustomerRelationship customerRelationship in customerRelationships)
-                    {
-                        if (customerRelationship.FromDate <= this.Session().Now() && (!customerRelationship.ExistThroughDate || customerRelationship.ThroughDate >= this.Session().Now()))
-                        {
-                            iteration.AddDependency(this, customerRelationship);
-                            iteration.Mark(customerRelationship);
-                        }
+                        iteration.AddDependency(partyFinancialRelationship, this);
+                        iteration.Mark(partyFinancialRelationship);
                     }
                 }
 
