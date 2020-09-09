@@ -13,7 +13,7 @@ namespace Allors.Services
 
     public class BarcodeService : IBarcodeService
     {
-        public byte[] Generate(string content, BarcodeType type, int? width, int? height, int? margin)
+        public byte[] Generate(string content, BarcodeType type, int? width, int? height, int? margin, bool? pure)
         {
             ZXing.BarcodeFormat barcodeFormat;
             switch (type)
@@ -103,6 +103,11 @@ namespace Allors.Services
                 if (margin.HasValue)
                 {
                     barcodeWriter.Options.Margin = margin.Value;
+                }
+
+                if (pure.HasValue)
+                {
+                    barcodeWriter.Options.PureBarcode = pure.Value;
                 }
             }
 

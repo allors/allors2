@@ -300,7 +300,7 @@ namespace Allors.Domain
                 {
                     var session = this.Strategy.Session;
                     var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                    var barcode = barcodeService.Generate(this.InvoiceNumber, BarcodeType.CODE_128, 320, 80);
+                    var barcode = barcodeService.Generate(this.InvoiceNumber, BarcodeType.CODE_128, 320, 80, pure: true);
                     images.Add("Barcode", barcode);
                 }
 

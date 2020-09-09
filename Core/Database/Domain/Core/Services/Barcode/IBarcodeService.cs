@@ -7,6 +7,6 @@ namespace Allors.Services
 {
     public interface IBarcodeService
     {
-        byte[] Generate(string content, BarcodeType type, int? height = null, int? width = null, int? margin = null);
+        byte[] Generate(string content, BarcodeType type, int? height = null, int? width = null, int? margin = null, bool? pure = false);
     }
 }
