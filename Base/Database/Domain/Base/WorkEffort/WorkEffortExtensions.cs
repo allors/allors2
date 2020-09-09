@@ -46,6 +46,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (!@this.ExistDerivationTrigger)
+            {
+                @this.DerivationTrigger = Guid.NewGuid();
+            }
+
             var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!@this.ExistTakenBy && internalOrganisations.Count() == 1)
@@ -66,12 +71,18 @@ namespace Allors.Domain
 
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
-            @this.DeriveCanInvoice();
+
+            if (!@this.ExistWorkEffortBillingsWhereWorkEffort && @this.WorkEffortState.IsFinished)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
+            }
 
             if (@this.ExistActualStart && @this.WorkEffortState.IsCreated)
             {
                 @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
             }
+
+            @this.DeriveCanInvoice();
         }
 
         public static void BaseOnPostDerive(this WorkEffort @this, ObjectOnPostDerive method)
@@ -296,7 +307,8 @@ namespace Allors.Domain
 
         private static void DeriveCanInvoice(this WorkEffort @this)
         {
-            if (@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
+            if (!@this.ExistWorkEffortBillingsWhereWorkEffort
+                && @this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
             {
                 @this.DerivedRoles.CanInvoice = true;
 

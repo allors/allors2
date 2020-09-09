@@ -48,11 +48,7 @@ namespace Allors.Domain
         }
 
         internal bool IsDeletable =>
-            this.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).ReadyForPosting)
-            && !this.ExistOrderItemBillingsWhereInvoiceItem
-            && !this.ExistShipmentItemBillingsWhereInvoiceItem
-            && !this.ExistWorkEffortBillingsWhereInvoiceItem
-            && !this.ExistServiceEntryBillingsWhereInvoiceItem;
+            this.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(this.Strategy.Session).ReadyForPosting);
 
         public void BaseDelegateAccess(DelegatedAccessControlledObjectDelegateAccess method)
         {
@@ -334,6 +330,30 @@ namespace Allors.Domain
             foreach (InvoiceVatRateItem invoiceVatRateItem in this.InvoiceVatRateItems)
             {
                 invoiceVatRateItem.Delete();
+            }
+
+            foreach (WorkEffortBilling billing in this.WorkEffortBillingsWhereInvoiceItem)
+            {
+                billing.WorkEffort.DerivationTrigger = Guid.NewGuid();
+                billing.Delete();
+            }
+
+            foreach (OrderItemBilling billing in this.OrderItemBillingsWhereInvoiceItem)
+            {
+                billing.OrderItem.DerivationTrigger = Guid.NewGuid();
+                billing.Delete();
+            }
+
+            foreach (ShipmentItemBilling billing in this.ShipmentItemBillingsWhereInvoiceItem)
+            {
+                billing.ShipmentItem.DerivationTrigger = Guid.NewGuid();
+                billing.Delete();
+            }
+
+            foreach (ServiceEntryBilling billing in this.ServiceEntryBillingsWhereInvoiceItem)
+            {
+                billing.ServiceEntry.DerivationTrigger = Guid.NewGuid();
+                billing.Delete();
             }
         }
 

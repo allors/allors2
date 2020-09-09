@@ -5,6 +5,7 @@
 
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -215,6 +216,15 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal UnitPurchasePrice { get; set; }
+
+        #region Allors
+        [Id("f02f4cb4-1050-4304-9f9b-182a123d3dd2")]
+        [AssociationId("c25bb4ea-260d-45ef-bcc3-2aedbb8388b1")]
+        [RoleId("c4f02673-96ed-4a04-9a12-603a7a37a28d")]
+        #endregion
+        [Required]
+        [Workspace]
+        public Guid DerivationTrigger { get; set; }
 
         #region inherited methods
 
