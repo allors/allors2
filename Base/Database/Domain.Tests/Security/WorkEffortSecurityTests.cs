@@ -80,7 +80,22 @@ namespace Allors.Domain
             var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
             new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
+            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(internalOrganisation).Build();
+
+            this.Session.Derive();
+
             var workTask = new WorkTaskBuilder(this.Session).WithName("Activity").WithCustomer(customer).WithTakenBy(internalOrganisation).Build();
+
+            var timeEntry = new TimeEntryBuilder(this.Session)
+                .WithRateType(new RateTypes(this.Session).StandardRate)
+                .WithFromDate(DateTimeFactory.CreateDateTime(this.Session.Now()))
+                .WithThroughDate(DateTimeFactory.CreateDateTime(this.Session.Now().AddHours(1)))
+                .WithTimeFrequency(new TimeFrequencies(this.Session).Hour)
+                .WithWorkEffort(workTask)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntry);
 
             this.Session.Derive();
 

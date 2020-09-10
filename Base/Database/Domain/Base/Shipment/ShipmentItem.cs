@@ -3,6 +3,7 @@
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
 // </copyright>
 
+using System;
 using Allors.Meta;
 using Resources;
 
@@ -68,7 +69,14 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
+            if (!this.ExistDerivationTrigger)
+            {
+                this.DerivationTrigger = Guid.NewGuid();
+            }
+
+            if ((this.ShipmentWhereShipmentItem.GetType().Name.Equals(typeof(CustomerShipment).Name) || this.ShipmentWhereShipmentItem.GetType().Name.Equals(typeof(PurchaseReturn).Name))
+                && this.ExistSerialisedItem
+                && !this.ExistNextSerialisedItemAvailability)
             {
                 derivation.Validation.AssertExists(this, this.Meta.NextSerialisedItemAvailability);
             }

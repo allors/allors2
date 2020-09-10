@@ -405,6 +405,15 @@ namespace Allors.Repository
         int SortableWorkEffortNumber { get; set; }
 
         #region Allors
+        [Id("163a5552-9436-4ecf-9b44-9f3cc6ab488f")]
+        [AssociationId("60c3a0d0-2904-47d9-a3f3-8c02edde0e0f")]
+        [RoleId("f25b9758-0988-4349-8671-24c04e814267")]
+        #endregion
+        [Required]
+        [Workspace]
+        Guid DerivationTrigger { get; set; }
+
+        #region Allors
         [Id("D9234724-215F-4F6C-B3E8-9743CB22A245")]
         #endregion
         [Workspace]

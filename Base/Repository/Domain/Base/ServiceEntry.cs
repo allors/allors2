@@ -5,6 +5,7 @@
 
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
@@ -50,5 +51,14 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         WorkEffort WorkEffort { get; set; }
+
+        #region Allors
+        [Id("6c8b3267-4896-467b-80ad-07153adbf704")]
+        [AssociationId("661702ce-f884-4681-b41e-afd7dd7a47b8")]
+        [RoleId("0d284bd9-1520-4482-b50a-0ed7d0626eb8")]
+        #endregion
+        [Required]
+        [Workspace]
+        Guid DerivationTrigger { get; set; }
     }
 }

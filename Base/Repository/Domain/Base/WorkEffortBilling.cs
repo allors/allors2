@@ -10,7 +10,7 @@ namespace Allors.Repository
     #region Allors
     [Id("15c8c72b-f551-41b0-86c8-80f02424ec4c")]
     #endregion
-    public partial class WorkEffortBilling : Object
+    public partial class WorkEffortBilling : Object, Deletable
     {
         #region inherited properties
         #endregion
@@ -65,6 +65,8 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
+        public void Delete() { }
 
         #endregion
     }

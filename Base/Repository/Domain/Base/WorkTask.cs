@@ -1,3 +1,4 @@
+
 // <copyright file="WorkTask.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -118,6 +119,8 @@ namespace Allors.Repository
         public Media[] ElectronicDocuments { get; set; }
 
         public int SortableWorkEffortNumber { get; set; }
+
+        public Guid DerivationTrigger { get; set; }
 
         #endregion
 
