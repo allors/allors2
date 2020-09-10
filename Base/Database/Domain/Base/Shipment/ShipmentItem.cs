@@ -74,7 +74,9 @@ namespace Allors.Domain
                 this.DerivationTrigger = Guid.NewGuid();
             }
 
-            if (this.ExistSerialisedItem && !this.ExistNextSerialisedItemAvailability)
+            if ((this.ShipmentWhereShipmentItem.GetType().Name.Equals(typeof(CustomerShipment).Name) || this.ShipmentWhereShipmentItem.GetType().Name.Equals(typeof(PurchaseReturn).Name))
+                && this.ExistSerialisedItem
+                && !this.ExistNextSerialisedItemAvailability)
             {
                 derivation.Validation.AssertExists(this, this.Meta.NextSerialisedItemAvailability);
             }
