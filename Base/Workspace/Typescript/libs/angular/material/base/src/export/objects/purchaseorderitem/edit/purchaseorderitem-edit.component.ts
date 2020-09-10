@@ -197,7 +197,7 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
         });
 
         if (isCreate) {
-          this.title = 'Add purchase order Item';
+          this.title = 'Add Purchase Order Item';
           this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
           this.orderItem = this.allors.context.create('PurchaseOrderItem') as PurchaseOrderItem;
           this.selectedFacility = this.order.StoredInFacility;
@@ -213,9 +213,9 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
           }
 
           if (this.orderItem.CanWriteQuantityOrdered) {
-            this.title = 'Edit purchase order Item';
+            this.title = 'Edit Purchase Order Item';
           } else {
-            this.title = 'View purchase order Item';
+            this.title = 'View Purchase Order Item';
           }
         }
       });

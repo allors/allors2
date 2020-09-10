@@ -14,18 +14,19 @@ namespace Allors.Domain.TestPopulation
 
             var serializedPart = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
             var serializedItem = new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
+            serializedPart.AddSerialisedItem(serializedItem);
 
-            var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
+            @this.Session.Derive();
+            @this.Session.Commit();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
-            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).PartItem);
+            @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem);
             @this.WithPart(serializedPart);
             @this.WithAssignedUnitPrice(faker.Random.UInt(5, 10));
             @this.WithSerialisedItem(serializedItem);
             @this.WithQuantityOrdered(1);
-            @this.WithQuoteItem(quoteItem);
             @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5));
             @this.WithShippingInstruction(faker.Lorem.Sentences(3));
             @this.WithMessage(faker.Lorem.Sentence());
@@ -33,7 +34,7 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static PurchaseOrderItemBuilder WithNonSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Organisation internalOrganisation, PurchaseOrder purchaseOrder)
+        public static PurchaseOrderItemBuilder WithNonSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Organisation internalOrganisation, Party supplier)
         {
             var faker = @this.Session.Faker();
 
@@ -41,10 +42,10 @@ namespace Allors.Domain.TestPopulation
 
             new SupplierOfferingBuilder(@this.Session)
                 .WithPart(nonSerializedPart)
-                .WithSupplier(purchaseOrder.TakenViaSupplier)
+                .WithSupplier(supplier)
                 .WithFromDate(@this.Session.Now().AddMinutes(-1))
                 .WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece)
-                .WithPrice(7)
+                .WithPrice(faker.Random.UInt(5, 10))
                 .Build();
 
             @this.Session.Derive();

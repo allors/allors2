@@ -17,6 +17,10 @@ namespace Allors.Domain.TestPopulation
             var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
             var customer = faker.Random.ListItem(internalOrganisation.ActiveCustomers);
             var postalAddress = new PostalAddressBuilder(@this.Session).WithDefaults().Build();
+            var supplier = faker.Random.ListItem(internalOrganisation.ActiveSuppliers);
+
+            var nonSerializedPart = new PurchaseOrderItemBuilder(@this.Session).WithNonSerializedPartDefaults(internalOrganisation, supplier).Build();
+            var serializedPart = new PurchaseOrderItemBuilder(@this.Session).WithSerializedPartDefaults(internalOrganisation).Build();
 
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence()).Build();
@@ -27,8 +31,10 @@ namespace Allors.Domain.TestPopulation
             @this.WithBillToContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithTakenViaContactPerson(customer.CurrentContacts.FirstOrDefault());
             @this.WithTakenViaContactMechanism(customer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
-            @this.WithTakenViaSupplier(faker.Random.ListItem(internalOrganisation.ActiveSuppliers));
+            @this.WithTakenViaSupplier(supplier);
             @this.WithStoredInFacility(faker.Random.ListItem(internalOrganisation.FacilitiesWhereOwner));
+            @this.WithPurchaseOrderItem(nonSerializedPart);
+            @this.WithPurchaseOrderItem(serializedPart);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());

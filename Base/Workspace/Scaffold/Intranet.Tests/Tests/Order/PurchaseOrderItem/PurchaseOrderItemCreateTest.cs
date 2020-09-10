@@ -42,7 +42,7 @@ namespace Tests.PurchaseOrderItemTests
 
             var before = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var expected = new PurchaseOrderItemBuilder(this.Session).WithNonSerializedPartDefaults(this.internalOrganisation, purchaseOrder).Build();
+            var expected = new PurchaseOrderItemBuilder(this.Session).WithNonSerializedPartDefaults(this.internalOrganisation, purchaseOrder.TakenViaSupplier).Build();
             purchaseOrder.AddPurchaseOrderItem(expected);
 
             this.Session.Derive();
@@ -54,8 +54,6 @@ namespace Tests.PurchaseOrderItemTests
             Assert.True(expected.ExistPart);
             Assert.True(expected.ExistQuantityOrdered);
             Assert.True(expected.ExistAssignedUnitPrice);
-            Assert.True(expected.ExistAssignedDeliveryDate);
-            Assert.True(expected.ExistShippingInstruction);
             Assert.True(expected.ExistMessage);
 
             var expectedDescription = expected.Description;
@@ -64,10 +62,7 @@ namespace Tests.PurchaseOrderItemTests
             var expectedInvoiceItemType = expected.InvoiceItemType;
             var expectedPart = expected.Part;
             var expectedQuantityOrdered = expected.QuantityOrdered;
-            var expectedQuoteItem = expected.QuoteItem;
             var expectedAssignedUnitPrice = expected.AssignedUnitPrice;
-            var expectedAssignedDeliveryDate = expected.AssignedDeliveryDate;
-            var expectedShippingInstruction = expected.ShippingInstruction;
             var expectedMessage = expected.Message;
 
             this.purchaseOrderListPage.Table.DefaultAction(purchaseOrder);
@@ -102,7 +97,10 @@ namespace Tests.PurchaseOrderItemTests
             Assert.Equal(expectedComment, actual.Comment);
             Assert.Equal(expectedInternalComment, actual.InternalComment);
             Assert.Equal(expectedInvoiceItemType, actual.InvoiceItemType);
+            Assert.Equal(expectedPart, actual.Part);
+            Assert.Equal(expectedQuantityOrdered, actual.QuantityOrdered);
             Assert.Equal(expectedAssignedUnitPrice, actual.AssignedUnitPrice);
+            Assert.Equal(expectedMessage, actual.Message);
         }
 
         /**
@@ -120,32 +118,33 @@ namespace Tests.PurchaseOrderItemTests
 
             this.Session.Derive();
 
-            Assert.True(expected.ExistDescription);
             Assert.True(expected.ExistComment);
             Assert.True(expected.ExistInternalComment);
             Assert.True(expected.ExistInvoiceItemType);
             Assert.True(expected.ExistPart);
             Assert.True(expected.ExistSerialisedItem);
-            Assert.True(expected.ExistQuantityOrdered);
             Assert.True(expected.ExistAssignedUnitPrice);
+            Assert.True(expected.ExistMessage);
 
-            var expectedDescription = expected.Description;
             var expectedComment = expected.Comment;
             var expectedInternalComment = expected.InternalComment;
             var expectedInvoiceItemType = expected.InvoiceItemType;
             var expectedPart = expected.Part;
             var expectedSerialisedItem = expected.SerialisedItem;
-            var expectedQuantityOrdered = expected.QuantityOrdered;
             var expectedAssignedUnitPrice = expected.AssignedUnitPrice;
+            var expectedMessage = expected.Message;
 
             this.purchaseOrderListPage.Table.DefaultAction(purchaseOrder);
             var purchaseOrderOverview = new PurchaseOrderOverviewComponent(this.purchaseOrderListPage.Driver);
             var purchaseOrderItemOverviewPanel = purchaseOrderOverview.PurchaseorderitemOverviewPanel.Click();
 
             var purchaseOrderItemCreate = purchaseOrderItemOverviewPanel.CreatePurchaseOrderItem();
-            purchaseOrderItemCreate.OrderItemDescription_1.Set(expected.Description);
+            purchaseOrderItemCreate.InvoiceItemType.Select(expected.InvoiceItemType);
             purchaseOrderItemCreate.Comment.Set(expected.Comment);
             purchaseOrderItemCreate.InternalComment.Set(expected.InternalComment);
+            purchaseOrderItemCreate.PurchaseOrderItemPart_1.Select(expected.Part.Name);
+            purchaseOrderItemCreate.PurchaseOrderItemSerialisedItem_1.Select(expected.SerialisedItem);
+            purchaseOrderItemCreate.AssignedUnitPrice.Set(expected.AssignedUnitPrice.ToString());
             purchaseOrderItemCreate.Message.Set(expected.Message);
 
             this.Session.Rollback();
@@ -160,14 +159,13 @@ namespace Tests.PurchaseOrderItemTests
 
             var actual = after.Except(before).First();
 
-            Assert.Equal(expectedDescription, actual.Description);
             Assert.Equal(expectedComment, actual.Comment);
             Assert.Equal(expectedInternalComment, actual.InternalComment);
             Assert.Equal(expectedInvoiceItemType, actual.InvoiceItemType);
             Assert.Equal(expectedPart, actual.Part);
             Assert.Equal(expectedSerialisedItem, actual.SerialisedItem);
-            Assert.Equal(expectedQuantityOrdered, actual.QuantityOrdered);
             Assert.Equal(expectedAssignedUnitPrice, actual.AssignedUnitPrice);
+            Assert.Equal(expectedMessage, actual.Message);
         }
     }
 }
