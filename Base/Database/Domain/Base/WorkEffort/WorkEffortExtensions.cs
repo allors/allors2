@@ -72,7 +72,9 @@ namespace Allors.Domain
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
 
-            if (!@this.ExistWorkEffortBillingsWhereWorkEffort && @this.WorkEffortState.IsFinished)
+            if (!@this.ExistWorkEffortBillingsWhereWorkEffort
+                && !@this.ExistServiceEntriesWhereWorkEffort
+                && @this.WorkEffortState.IsFinished)
             {
                 @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
             }
@@ -150,6 +152,8 @@ namespace Allors.Domain
         {
             if (!method.Result.HasValue)
             {
+                @this.DeriveCanInvoice();
+
                 if (@this.CanInvoice)
                 {
                     @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Finished;
@@ -307,7 +311,7 @@ namespace Allors.Domain
 
         private static void DeriveCanInvoice(this WorkEffort @this)
         {
-            if (!@this.ExistWorkEffortBillingsWhereWorkEffort
+            if (!(@this.ExistWorkEffortBillingsWhereWorkEffort && @this.ExistServiceEntriesWhereWorkEffort)
                 && @this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
             {
                 @this.DerivedRoles.CanInvoice = true;
