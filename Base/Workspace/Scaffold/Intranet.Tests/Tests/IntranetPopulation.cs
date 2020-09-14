@@ -400,19 +400,7 @@ line2")
                 .WithVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
 
-            var purchaseOrderItem_1 = new PurchaseOrderItemBuilder(this.Session)
-                .WithDescription("first purchase order item")
-                .WithPart(good_1)
-                .WithQuantityOrdered(1)
-                .Build();
-
-            var purchaseOrder = new PurchaseOrderBuilder(this.Session)
-                .WithOrderedBy(allors)
-                .WithTakenViaSupplier(allors.ActiveSuppliers.First)
-                .WithPurchaseOrderItem(purchaseOrderItem_1)
-                .WithCustomerReference("reference 123")
-                .WithStoredInFacility(facility)
-                .Build();
+            allors.CreatePurchaseOrderWithBothItems();
 
             var workTask = new WorkTaskBuilder(this.Session)
                 .WithTakenBy(allors)
@@ -482,6 +470,7 @@ line2")
             new PurchaseShipmentBuilder(this.Session).WithDefaults(allors).Build();
 
             this.Session.Derive();
+            this.Session.Commit();
         }
 
         private byte[] GetResourceBytes(string name)

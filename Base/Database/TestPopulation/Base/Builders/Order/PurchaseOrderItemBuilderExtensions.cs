@@ -16,9 +16,6 @@ namespace Allors.Domain.TestPopulation
             var serializedItem = new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
             serializedPart.AddSerialisedItem(serializedItem);
 
-            @this.Session.Derive();
-            @this.Session.Commit();
-
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
@@ -34,7 +31,7 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static PurchaseOrderItemBuilder WithNonSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Organisation internalOrganisation, Party supplier)
+        public static PurchaseOrderItemBuilder WithNonSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Organisation internalOrganisation, PurchaseOrder purchaseOrder)
         {
             var faker = @this.Session.Faker();
 
@@ -42,14 +39,11 @@ namespace Allors.Domain.TestPopulation
 
             new SupplierOfferingBuilder(@this.Session)
                 .WithPart(nonSerializedPart)
-                .WithSupplier(supplier)
+                .WithSupplier(purchaseOrder.TakenViaSupplier)
                 .WithFromDate(@this.Session.Now().AddMinutes(-1))
                 .WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece)
                 .WithPrice(faker.Random.UInt(5, 10))
                 .Build();
-
-            @this.Session.Derive();
-            @this.Session.Commit();
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).PartItem);

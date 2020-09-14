@@ -170,5 +170,59 @@ namespace Allors.Domain.TestPopulation
 
             return unifiedGood;
         }
+
+        /*
+         * Create a PurchaseOrder without any PurchaseOrder Items
+         */
+        public static PurchaseOrder CreatePurchaseOrderWithoutItems(this Organisation @this)
+        {
+            var purchaseOrder = new PurchaseOrderBuilder(@this.Session()).WithDefaults(@this).Build();
+
+            return purchaseOrder;
+        }
+
+        /*
+         * Create PurchaseOrder with both Serialized & NonSerialized PurchaseOrder Items
+         */
+        public static PurchaseOrder CreatePurchaseOrderWithBothItems(this Organisation @this)
+        {
+            var purchaseOrder = new PurchaseOrderBuilder(@this.Session()).WithDefaults(@this).Build();
+
+            var nonSerializedPart = new PurchaseOrderItemBuilder(@this.Session()).WithNonSerializedPartDefaults(@this, purchaseOrder).Build();
+            var serializedPart = new PurchaseOrderItemBuilder(@this.Session()).WithSerializedPartDefaults(@this).Build();
+
+            purchaseOrder.AddPurchaseOrderItem(nonSerializedPart);
+            purchaseOrder.AddPurchaseOrderItem(serializedPart);
+
+            return purchaseOrder;
+        }
+
+        /*
+         * Create PurchaseOrder with Serialized PurchaseOrderItem
+         */
+        public static PurchaseOrder CreatePurchaseOrderWithSerializedItem(this Organisation @this)
+        {
+            var purchaseOrder = new PurchaseOrderBuilder(@this.Session()).WithDefaults(@this).Build();
+
+            var serializedPart = new PurchaseOrderItemBuilder(@this.Session()).WithSerializedPartDefaults(@this).Build();
+
+            purchaseOrder.AddPurchaseOrderItem(serializedPart);
+
+            return purchaseOrder;
+        }
+
+        /*
+         * Create PurchaseOrder with NonSerialized PurchaseOrderItem
+         */
+        public static PurchaseOrder CreatePurchaseOrderWithNonSerializedItem(this Organisation @this)
+        {
+            var purchaseOrder = new PurchaseOrderBuilder(@this.Session()).WithDefaults(@this).Build();
+
+            var nonSerializedPart = new PurchaseOrderItemBuilder(@this.Session()).WithNonSerializedPartDefaults(@this, purchaseOrder).Build();
+
+            purchaseOrder.AddPurchaseOrderItem(nonSerializedPart);
+
+            return purchaseOrder;
+        }
     }
 }

@@ -13,7 +13,6 @@ namespace Tests.PurchaseOrderItemTests
     using Components;
     using libs.angular.material.@base.src.export.objects.purchaseorder.list;
     using libs.angular.material.@base.src.export.objects.purchaseorder.overview;
-    using libs.angular.material.@base.src.export.objects.purchaseorderitem.edit;
     using Xunit;
 
     [Collection("Test collection")]
@@ -42,7 +41,7 @@ namespace Tests.PurchaseOrderItemTests
 
             var before = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var expected = new PurchaseOrderItemBuilder(this.Session).WithNonSerializedPartDefaults(this.internalOrganisation, purchaseOrder.TakenViaSupplier).Build();
+            var expected = new PurchaseOrderItemBuilder(this.Session).WithNonSerializedPartDefaults(this.internalOrganisation, purchaseOrder).Build();
             purchaseOrder.AddPurchaseOrderItem(expected);
 
             this.Session.Derive();
@@ -72,10 +71,10 @@ namespace Tests.PurchaseOrderItemTests
             var purchaseOrderItemCreate = purchaseOrderItemOverviewPanel.CreatePurchaseOrderItem();
 
             purchaseOrderItemCreate.InvoiceItemType.Select(expected.InvoiceItemType);
+            purchaseOrderItemCreate.PurchaseOrderItemPart_2.Select(expected.Part.Name);
             purchaseOrderItemCreate.OrderItemDescription_1.Set(expected.Description);
             purchaseOrderItemCreate.Comment.Set(expected.Comment);
             purchaseOrderItemCreate.InternalComment.Set(expected.InternalComment);
-            purchaseOrderItemCreate.PurchaseOrderItemPart_2.Select(expected.Part.Name);
             purchaseOrderItemCreate.QuantityOrdered.Set(expected.QuantityOrdered.ToString());
             purchaseOrderItemCreate.AssignedUnitPrice.Set(expected.AssignedUnitPrice.ToString());
             purchaseOrderItemCreate.Message.Set(expected.Message);

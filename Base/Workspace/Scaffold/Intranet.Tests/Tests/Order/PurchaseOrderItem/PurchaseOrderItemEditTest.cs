@@ -42,10 +42,10 @@ namespace Tests.PurchaseOrderItemTests
 
             var before = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var disposablePurchaseOrder = new PurchaseOrderBuilder(this.Session).WithDefaults(this.internalOrganisation).Build();
-            var expected = disposablePurchaseOrder.PurchaseOrderItems.First(v => !(v.InvoiceItemType.IsProductItem || v.InvoiceItemType.IsPartItem));
+            var disposablePurchaseOrder = this.internalOrganisation.CreatePurchaseOrderWithNonSerializedItem();
+            var expected = disposablePurchaseOrder.PurchaseOrderItems.First(v => v.InvoiceItemType.IsPartItem);
 
-            var purchaseOrderItem = purchaseOrder.PurchaseOrderItems.First(v => !(v.InvoiceItemType.IsProductItem || v.InvoiceItemType.IsPartItem));
+            var purchaseOrderItem = purchaseOrder.PurchaseOrderItems.First(v => v.InvoiceItemType.IsPartItem);
             var id = purchaseOrderItem.Id;
 
             this.Session.Derive();
@@ -67,11 +67,9 @@ namespace Tests.PurchaseOrderItemTests
 
             var purchaseOrderItemEdit = new PurchaseOrderItemEditComponent(this.Driver);
 
-            purchaseOrderItemEdit.InvoiceItemType.Select(expected.InvoiceItemType);
             purchaseOrderItemEdit.OrderItemDescription_1.Set(expected.Description);
             purchaseOrderItemEdit.Comment.Set(expected.Comment);
             purchaseOrderItemEdit.InternalComment.Set(expected.InternalComment);
-            purchaseOrderItemEdit.PurchaseOrderItemPart_2.Select(expected.Part.Name);
             purchaseOrderItemEdit.QuantityOrdered.Set(expected.QuantityOrdered.ToString());
             purchaseOrderItemEdit.AssignedUnitPrice.Set(expected.AssignedUnitPrice.ToString());
             purchaseOrderItemEdit.Message.Set(expected.Message);
