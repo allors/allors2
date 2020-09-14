@@ -379,15 +379,6 @@ namespace Allors.Repository
         VatRegime VatRegime { get; set; }
 
         #region Allors
-        [Id("F4AC4345-2562-489B-AD2B-692235A6F638")]
-        [AssociationId("50E45399-5CF8-4BFA-BAA5-1DF03711B243")]
-        [RoleId("E5A894DC-7B4E-4BE5-8191-8BC44085D384")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        Agreement[] Agreements { get; set; }
-
-        #region Allors
         [Id("E25BB549-9B1B-4FAF-A62C-72EB95897D0F")]
         [AssociationId("7E0B4EC2-FC0D-48D9-980B-C05280897499")]
         [RoleId("B4146BF3-EC12-44C4-8202-B08CFE491104")]

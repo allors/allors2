@@ -44,28 +44,6 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.TotalOther = totalOther.ToString("N2", new CultureInfo("nl-BE"));
 
             this.Total = (totalLabour + totalParts + totalOther).ToString("N2", new CultureInfo("nl-BE"));
-
-            if (workTask.ExistOrderItemFulfillment)
-            {
-                if (workTask.OrderItemFulfillment is SalesOrderItem salesOrderItem)
-                {
-                    var salesOrder = salesOrderItem.SalesOrderWhereSalesOrderItem;
-                    this.PurchaseOrder = salesOrder?.OrderNumber;
-
-                    if (salesOrderItem.ExistSalesTerms)
-                    {
-                        this.PaymentTerms = string.Join(", ", salesOrderItem.SalesTerms.Select(v => v.Description));
-                    }
-                    else if (salesOrder?.ExistSalesTerms == true)
-                    {
-                        this.PaymentTerms = string.Join(", ", salesOrder.SalesTerms.Select(v => v.Description));
-                    }
-                    else if (workTask.Customer?.PaymentNetDays() != null)
-                    {
-                        this.PaymentTerms = workTask.Customer.PaymentNetDays().ToString();
-                    }
-                }
-            }
         }
 
         public string Number { get; }
@@ -85,8 +63,6 @@ namespace Allors.Domain.Print.WorkTaskModel
         public string ContactName { get; }
 
         public string ContactTelephone { get; }
-
-        public string PaymentTerms { get; }
 
         public string Facility { get; }
 

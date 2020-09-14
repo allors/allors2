@@ -104,7 +104,12 @@ export class OrganisationOverviewDetailComponent extends TestScope implements On
                 }
               }
             }),
-            pull.Organisation({ object: id }),
+            pull.Organisation({ 
+              object: id,
+              include: {
+                LogoImage: x
+              }
+            }),
             pull.Currency({
               predicate: new Equals({ propertyType: m.Currency.IsActive, value: true }),
               sort: new Sort(m.Currency.Name),

@@ -50,8 +50,14 @@ namespace Allors.Domain.TestPopulation
                 .WithCustomer(customer)
                 .WithInternalOrganisation(@this)
                 .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
+                .WithAgreement(new SalesAgreementBuilder(@this.Session())
+                                .WithDescription("PaymentNetDays")
+                                .WithAgreementTerm(new InvoiceTermBuilder(@this.Session())
+                                .WithTermType(new InvoiceTermTypes(@this.Session()).PaymentNetDays).WithTermValue("30").Build())
+                                .Build())
                 .Build();
 
+            
             new OrganisationContactRelationshipBuilder(@this.Session())
                 .WithContact(new PersonBuilder(@this.Session()).WithDefaults().Build())
                 .WithOrganisation(customer)
@@ -69,6 +75,11 @@ namespace Allors.Domain.TestPopulation
                 .WithCustomer(customer)
                 .WithInternalOrganisation(@this)
                 .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
+                .WithAgreement(new SalesAgreementBuilder(@this.Session())
+                                .WithDescription("PaymentNetDays")
+                                .WithAgreementTerm(new InvoiceTermBuilder(@this.Session())
+                                .WithTermType(new InvoiceTermTypes(@this.Session()).PaymentNetDays).WithTermValue("30").Build())
+                                .Build())
                 .Build();
 
             return customer;

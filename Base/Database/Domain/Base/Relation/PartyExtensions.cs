@@ -196,28 +196,6 @@ namespace Allors.Domain
             @this.BaseOnDerivePartyFinancialRelationships(derivation);
         }
 
-        public static int? PaymentNetDays(this Party @this)
-        {
-            int? customerPaymentNetDays = null;
-            foreach (Agreement agreement in @this.Agreements)
-            {
-                foreach (AgreementTerm term in agreement.AgreementTerms)
-                {
-                    if (term.TermType.Equals(new InvoiceTermTypes(@this.Strategy.Session).PaymentNetDays))
-                    {
-                        if (int.TryParse(term.TermValue, out var netDays))
-                        {
-                            customerPaymentNetDays = netDays;
-                        }
-
-                        return customerPaymentNetDays;
-                    }
-                }
-            }
-
-            return null;
-        }
-
         public static bool BaseIsActiveCustomer(this Party @this, InternalOrganisation internalOrganisation, DateTime? date)
         {
             if (date == DateTime.MinValue || internalOrganisation == null)

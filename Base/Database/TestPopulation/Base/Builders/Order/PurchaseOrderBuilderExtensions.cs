@@ -14,7 +14,6 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            var quoteItem = new QuoteItemBuilder(@this.Session).WithSerializedDefaults(internalOrganisation).Build();
             var postalAddress = new PostalAddressBuilder(@this.Session).WithDefaults().Build();
             var supplier = faker.Random.ListItem(internalOrganisation.ActiveSuppliers);
 

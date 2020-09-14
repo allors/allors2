@@ -24,12 +24,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithTaxNumber($"{euCountry.IsoCode}{faker.Random.Number(99999999)}");
             @this.WithComment(faker.Lorem.Paragraph());
 
-            @this.WithAgreement(new SalesAgreementBuilder(@this.Session)
-                .WithDescription("PaymentNetDays")
-                .WithAgreementTerm(new InvoiceTermBuilder(@this.Session)
-                .WithTermType(new InvoiceTermTypes(@this.Session).PaymentNetDays).WithTermValue("30").Build())
-                .Build());
-
             @this.WithPartyContactMechanism(new PartyContactMechanismBuilder(@this.Session)
                 .WithUseAsDefault(true)
                 .WithContactMechanism(new PostalAddressBuilder(@this.Session).WithDefaults().Build())

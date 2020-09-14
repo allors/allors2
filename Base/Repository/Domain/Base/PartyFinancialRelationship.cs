@@ -22,6 +22,8 @@ namespace Allors.Repository
 
         public Party[] Parties { get; set; }
 
+        public Agreement[] Agreements { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }

@@ -95,8 +95,6 @@ namespace Allors.Repository
 
         public VatRegime VatRegime { get; set; }
 
-        public Agreement[] Agreements { get; set; }
-
         public PartyRate[] PartyRates { get; set; }
         #endregion
 

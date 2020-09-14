@@ -428,15 +428,6 @@ namespace Allors.Repository
         public IrpfRegime IrpfRegime { get; set; }
 
         #region Allors
-        [Id("DEC610BF-5051-44EA-B4F9-1D912DCD19D5")]
-        [AssociationId("4F0A52D4-886A-4348-B0BC-50461BBABDD9")]
-        [RoleId("F74DD0DF-CC88-4FA5-90CC-968CC82CA65B")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        Agreement[] Agreements { get; set; }
-
-        #region Allors
         [Id("29AAF778-37F7-4E29-9EED-16748C376D98")]
         [AssociationId("A7EED273-AD6A-4900-9DFD-D7524F640B54")]
         [RoleId("64713797-16F4-4040-81DC-018DBCAD5DAE")]

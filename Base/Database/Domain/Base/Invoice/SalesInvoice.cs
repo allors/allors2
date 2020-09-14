@@ -51,9 +51,15 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.BillToCustomer?.PaymentNetDays().HasValue == true)
+                var now = this.Session().Now();
+                var customerRelationship = this.BillToCustomer.CustomerRelationshipsWhereCustomer
+                    .FirstOrDefault(v => v.InternalOrganisation == this.BilledFrom
+                      && v.FromDate <= now
+                      && (!v.ExistThroughDate || v.ThroughDate >= now));
+
+                if (customerRelationship?.PaymentNetDays().HasValue == true)
                 {
-                    return this.BillToCustomer.PaymentNetDays().Value;
+                    return customerRelationship.PaymentNetDays().Value;
                 }
 
                 if (this.ExistStore && this.Store.ExistPaymentNetDays)
@@ -232,27 +238,7 @@ namespace Allors.Domain
                 this.Locale = session.GetSingleton().DefaultLocale;
             }
 
-            if (this.ExistSalesTerms)
-            {
-                foreach (AgreementTerm term in this.SalesTerms)
-                {
-                    if (term.TermType.Equals(new InvoiceTermTypes(session).PaymentNetDays))
-                    {
-                        if (int.TryParse(term.TermValue, out var netDays))
-                        {
-                            this.PaymentDays = netDays;
-                        }
-                    }
-                }
-            }
-            else if (this.BillToCustomer?.PaymentNetDays().HasValue == true)
-            {
-                this.PaymentDays = this.BillToCustomer.PaymentNetDays().Value;
-            }
-            else if (this.ExistStore && this.Store.ExistPaymentNetDays)
-            {
-                this.PaymentDays = this.Store.PaymentNetDays;
-            }
+            this.PaymentDays = this.PaymentNetDays;
 
             if (!this.ExistPaymentDays)
             {

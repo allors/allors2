@@ -188,8 +188,6 @@ namespace Allors.Repository
 
         public IrpfRegime IrpfRegime { get; set; }
 
-        public Agreement[] Agreements { get; set; }
-        
         public PaymentMethod DefaultPaymentMethod { get; set; }
 
         public Locale Locale { get; set; }

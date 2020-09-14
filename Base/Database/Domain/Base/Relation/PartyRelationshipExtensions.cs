@@ -14,5 +14,28 @@ namespace Allors.Domain
                 @this.FromDate = @this.Strategy.Session.Now();
             }
         }
+
+        public static int? PaymentNetDays(this PartyRelationship @this)
+        {
+            int? customerPaymentNetDays = null;
+
+            foreach (Agreement agreement in @this.Agreements)
+            {
+                foreach (AgreementTerm term in agreement.AgreementTerms)
+                {
+                    if (term.TermType.Equals(new InvoiceTermTypes(@this.Strategy.Session).PaymentNetDays))
+                    {
+                        if (int.TryParse(term.TermValue, out var netDays))
+                        {
+                            customerPaymentNetDays = netDays;
+                        }
+
+                        return customerPaymentNetDays;
+                    }
+                }
+            }
+
+            return null;
+        }
     }
 }
