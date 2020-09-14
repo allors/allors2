@@ -20,12 +20,22 @@ namespace Tests.PurchaseOrderItemTests
     public class PurchaseOrderItemCreateTest : Test
     {
         private readonly PurchaseOrderListComponent purchaseOrderListPage;
+        private readonly PurchaseOrder purchaseOrder;
+        private readonly PurchaseOrderItem nonSerializedPartItem;
+        private readonly PurchaseOrderItem serializedPartItem;
         private readonly Organisation internalOrganisation;
 
         public PurchaseOrderItemCreateTest(TestFixture fixture)
             : base(fixture)
         {
             this.internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
+
+            this.purchaseOrder = this.internalOrganisation.CreatePurchaseOrderWithBothItems(this.Session.Faker());
+            this.nonSerializedPartItem = this.purchaseOrder.PurchaseOrderItems.First(v => !v.ExistSerialisedItem);
+            this.serializedPartItem = this.purchaseOrder.PurchaseOrderItems.First(v => v.ExistSerialisedItem);
+
+            this.Session.Derive();
+            this.Session.Commit();
 
             this.Login();
             this.purchaseOrderListPage = this.Sidenav.NavigateToPurchaseOrders();
@@ -37,12 +47,10 @@ namespace Tests.PurchaseOrderItemTests
         [Fact]
         public void CreateWithNonSerializedPartDefaults()
         {
-            var purchaseOrder = new PurchaseOrders(this.Session).Extent().FirstOrDefault();
-
             var before = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var expected = new PurchaseOrderItemBuilder(this.Session).WithNonSerializedPartDefaults(this.internalOrganisation, purchaseOrder).Build();
-            purchaseOrder.AddPurchaseOrderItem(expected);
+            var expected = new PurchaseOrderItemBuilder(this.Session).WithNonSerializedPartDefaults(this.nonSerializedPartItem.Part).Build();
+            this.purchaseOrder.AddPurchaseOrderItem(expected);
 
             this.Session.Derive();
 
@@ -64,7 +72,7 @@ namespace Tests.PurchaseOrderItemTests
             var expectedAssignedUnitPrice = expected.AssignedUnitPrice;
             var expectedMessage = expected.Message;
 
-            this.purchaseOrderListPage.Table.DefaultAction(purchaseOrder);
+            this.purchaseOrderListPage.Table.DefaultAction(this.purchaseOrder);
             var purchaseOrderOverview = new PurchaseOrderOverviewComponent(this.purchaseOrderListPage.Driver);
             var purchaseOrderItemOverviewPanel = purchaseOrderOverview.PurchaseorderitemOverviewPanel.Click();
 
@@ -78,7 +86,6 @@ namespace Tests.PurchaseOrderItemTests
             purchaseOrderItemCreate.QuantityOrdered.Set(expected.QuantityOrdered.ToString());
             purchaseOrderItemCreate.AssignedUnitPrice.Set(expected.AssignedUnitPrice.ToString());
             purchaseOrderItemCreate.Message.Set(expected.Message);
-
 
             this.Session.Rollback();
             purchaseOrderItemCreate.SAVE.Click();
@@ -108,12 +115,10 @@ namespace Tests.PurchaseOrderItemTests
         [Fact]
         public void CreateWithSerializedPartDefaults()
         {
-            var purchaseOrder = new PurchaseOrders(this.Session).Extent().FirstOrDefault();
-
             var before = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var expected = new PurchaseOrderItemBuilder(this.Session).WithSerializedPartDefaults(this.internalOrganisation).Build();
-            purchaseOrder.AddPurchaseOrderItem(expected);
+            var expected = new PurchaseOrderItemBuilder(this.Session).WithSerializedPartDefaults(this.serializedPartItem.Part, this.serializedPartItem.SerialisedItem).Build();
+            this.purchaseOrder.AddPurchaseOrderItem(expected);
 
             this.Session.Derive();
 
@@ -133,7 +138,7 @@ namespace Tests.PurchaseOrderItemTests
             var expectedAssignedUnitPrice = expected.AssignedUnitPrice;
             var expectedMessage = expected.Message;
 
-            this.purchaseOrderListPage.Table.DefaultAction(purchaseOrder);
+            this.purchaseOrderListPage.Table.DefaultAction(this.purchaseOrder);
             var purchaseOrderOverview = new PurchaseOrderOverviewComponent(this.purchaseOrderListPage.Driver);
             var purchaseOrderItemOverviewPanel = purchaseOrderOverview.PurchaseorderitemOverviewPanel.Click();
 

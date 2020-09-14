@@ -42,7 +42,7 @@ namespace Tests.PurchaseOrderItemTests
 
             var before = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var disposablePurchaseOrder = this.internalOrganisation.CreatePurchaseOrderWithNonSerializedItem();
+            var disposablePurchaseOrder = this.internalOrganisation.CreatePurchaseOrderWithNonSerializedItem(this.Session.Faker());
             var expected = disposablePurchaseOrder.PurchaseOrderItems.First(v => v.InvoiceItemType.IsPartItem);
 
             var purchaseOrderItem = purchaseOrder.PurchaseOrderItems.First(v => v.InvoiceItemType.IsPartItem);
@@ -90,7 +90,6 @@ namespace Tests.PurchaseOrderItemTests
             Assert.Equal(expectedComment, actual.Comment);
             Assert.Equal(expectedInternalComment, actual.InternalComment);
             Assert.Equal(expectedInvoiceItemType, actual.InvoiceItemType);
-            Assert.Equal(expectedPart, actual.Part);
             Assert.Equal(expectedQuantityOrdered, actual.QuantityOrdered);
             Assert.Equal(expectedAssignedUnitPrice, actual.AssignedUnitPrice);
             Assert.Equal(expectedMessage, actual.Message);

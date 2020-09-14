@@ -400,7 +400,7 @@ line2")
                 .WithVatRegime(new VatRegimes(this.Session).Assessable21)
                 .Build();
 
-            allors.CreatePurchaseOrderWithBothItems();
+            allors.CreatePurchaseOrderWithBothItems(faker);
 
             var workTask = new WorkTaskBuilder(this.Session)
                 .WithTakenBy(allors)

@@ -8,21 +8,17 @@ namespace Allors.Domain.TestPopulation
 {
     public static partial class PurchaseOrderItemBuilderExtensions
     {
-        public static PurchaseOrderItemBuilder WithSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Organisation internalOrganisation)
+        public static PurchaseOrderItemBuilder WithSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Part unifiedGood, SerialisedItem serialisedItem)
         {
             var faker = @this.Session.Faker();
-
-            var serializedPart = new UnifiedGoodBuilder(@this.Session).WithSerialisedDefaults(internalOrganisation).Build();
-            var serializedItem = new SerialisedItemBuilder(@this.Session).WithDefaults(internalOrganisation).Build();
-            serializedPart.AddSerialisedItem(serializedItem);
 
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).ProductItem);
-            @this.WithPart(serializedPart);
+            @this.WithPart(unifiedGood);
             @this.WithAssignedUnitPrice(faker.Random.UInt(5, 10));
-            @this.WithSerialisedItem(serializedItem);
+            @this.WithSerialisedItem(serialisedItem);
             @this.WithQuantityOrdered(1);
             @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5));
             @this.WithShippingInstruction(faker.Lorem.Sentences(3));
@@ -31,23 +27,13 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static PurchaseOrderItemBuilder WithNonSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Organisation internalOrganisation, PurchaseOrder purchaseOrder)
+        public static PurchaseOrderItemBuilder WithNonSerializedPartDefaults(this PurchaseOrderItemBuilder @this, Part nonUnifiedPart)
         {
             var faker = @this.Session.Faker();
 
-            var nonSerializedPart = new NonUnifiedPartBuilder(@this.Session).WithNonSerialisedDefaults(internalOrganisation).Build();
-
-            new SupplierOfferingBuilder(@this.Session)
-                .WithPart(nonSerializedPart)
-                .WithSupplier(purchaseOrder.TakenViaSupplier)
-                .WithFromDate(@this.Session.Now().AddMinutes(-1))
-                .WithUnitOfMeasure(new UnitsOfMeasure(@this.Session).Piece)
-                .WithPrice(faker.Random.UInt(5, 10))
-                .Build();
-
             @this.WithDescription(faker.Lorem.Sentences(2));
             @this.WithInvoiceItemType(new InvoiceItemTypes(@this.Session).PartItem);
-            @this.WithPart(nonSerializedPart);
+            @this.WithPart(nonUnifiedPart);
             @this.WithAssignedUnitPrice(faker.Random.UInt(5, 10));
             @this.WithQuantityOrdered(faker.Random.UInt(5, 15));
             @this.WithAssignedDeliveryDate(@this.Session.Now().AddDays(5));
