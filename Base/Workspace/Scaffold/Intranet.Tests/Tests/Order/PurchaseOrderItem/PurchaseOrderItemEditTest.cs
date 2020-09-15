@@ -101,57 +101,57 @@ namespace Tests.PurchaseOrderItemTests
         [Fact]
         public void EditWithSerialisedPartDefaults()
         {
-            /*var salesOrder = new SalesOrders(this.Session).Extent().FirstOrDefault();
+            var purchaseOrder = new PurchaseOrders(this.Session).Extent().FirstOrDefault();
 
             var before = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var disposableSalesOrder = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
-            var expected = disposableSalesOrder.SalesOrderItems.First(v => v.InvoiceItemType.IsProductItem);
+            var disposablePurchaseOrder = this.internalOrganisation.CreatePurchaseOrderWithSerializedItem();
+            var expected = disposablePurchaseOrder.PurchaseOrderItems.First(v => v.InvoiceItemType.IsProductItem);
 
-            var salesOrderItem = salesOrder.SalesOrderItems.First(v => v.InvoiceItemType.IsProductItem);
-            var id = salesOrderItem.Id;
+            var purchaseOrderItem = purchaseOrder.PurchaseOrderItems.First(v => v.InvoiceItemType.IsProductItem);
+            var id = purchaseOrderItem.Id;
 
             this.Session.Derive();
 
-            var expectedDescription = expected.Description;
             var expectedComment = expected.Comment;
             var expectedInternalComment = expected.InternalComment;
             var expectedInvoiceItemType = expected.InvoiceItemType;
-            var expectedProduct = expected.Product;
-            var expectedSerialisedItem = expected.SerialisedItem;
+            var expectedPart = expected.Part;
             var expectedQuantityOrdered = expected.QuantityOrdered;
             var expectedAssignedUnitPrice = expected.AssignedUnitPrice;
+            var expectedMessage = expected.Message;
 
-            this.salesOrderListPage.Table.DefaultAction(salesOrder);
-            var salesOrderOverview = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver);
-            var salesOrderItemOverviewPanel = salesOrderOverview.SalesorderitemOverviewPanel.Click();
+            this.purchaseOrderListPage.Table.DefaultAction(purchaseOrder);
+            var purchaseOrderOverview = new PurchaseOrderOverviewComponent(this.purchaseOrderListPage.Driver);
+            var purchaseOrderItemOverviewPanel = purchaseOrderOverview.PurchaseorderitemOverviewPanel.Click();
 
-            salesOrderItemOverviewPanel.Table.DefaultAction(salesOrderItem);
+            purchaseOrderItemOverviewPanel.Table.DefaultAction(purchaseOrderItem);
 
-            var salesOrderItemEdit = new SalesOrderItemEditComponent(this.Driver);
+            var purchaseOrderItemEdit = new PurchaseOrderItemEditComponent(this.Driver);
 
-            salesOrderItemEdit.Description.Set(expected.Description);
-            salesOrderItemEdit.Comment.Set(expected.Comment);
-            salesOrderItemEdit.InternalComment.Set(expected.InternalComment);
-            salesOrderItemEdit.PriceableAssignedUnitPrice_2.Set(expected.AssignedUnitPrice.ToString());
+            purchaseOrderItemEdit.Comment.Set(expected.Comment);
+            purchaseOrderItemEdit.InternalComment.Set(expected.InternalComment);
+            purchaseOrderItemEdit.AssignedUnitPrice.Set(expected.AssignedUnitPrice.ToString());
+            purchaseOrderItemEdit.Message.Set(expected.Message);
 
             this.Session.Rollback();
-            salesOrderItemEdit.SAVE.Click();
+            purchaseOrderItemEdit.SAVE.Click();
 
             this.Driver.WaitForAngular();
             this.Session.Rollback();
 
             var after = new PurchaseOrderItems(this.Session).Extent().ToArray();
 
-            var actual = (SalesOrderItem)this.Session.Instantiate(id);
+            var actual = (PurchaseOrderItem)this.Session.Instantiate(id);
 
             Assert.Equal(after.Length, before.Length);
 
-            Assert.Equal(expectedDescription, actual.Description);
             Assert.Equal(expectedComment, actual.Comment);
             Assert.Equal(expectedInternalComment, actual.InternalComment);
             Assert.Equal(expectedInvoiceItemType, actual.InvoiceItemType);
-            Assert.Equal(expectedAssignedUnitPrice, actual.AssignedUnitPrice);*/
+            Assert.Equal(expectedQuantityOrdered, actual.QuantityOrdered);
+            Assert.Equal(expectedAssignedUnitPrice, actual.AssignedUnitPrice);
+            Assert.Equal(expectedMessage, actual.Message);
         }
     }
 }
