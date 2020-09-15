@@ -52,7 +52,7 @@ namespace Allors.Domain
                 }
 
                 var now = this.Session().Now();
-                var customerRelationship = this.BillToCustomer.CustomerRelationshipsWhereCustomer
+                var customerRelationship = this.BillToCustomer?.CustomerRelationshipsWhereCustomer
                     .FirstOrDefault(v => v.InternalOrganisation == this.BilledFrom
                       && v.FromDate <= now
                       && (!v.ExistThroughDate || v.ThroughDate >= now));
