@@ -3,6 +3,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Allors.Domain</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Base\Builders\Facility\**" />
+    <EmbeddedResource Remove="Base\Builders\Facility\**" />
+    <None Remove="Base\Builders\Facility\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Bogus" Version="30.0.2" />
@@ -10,9 +15,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Base\Builders\Facility\" />
   </ItemGroup>
 </Project>
