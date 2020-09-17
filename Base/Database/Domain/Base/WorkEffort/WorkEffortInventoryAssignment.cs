@@ -49,6 +49,11 @@ namespace Allors.Domain
                 }
             }
 
+            if (this.ExistAssignedBillableQuantity)
+            {
+                this.DerivedBillableQuantity = this.AssignedBillableQuantity;
+            }
+
             this.CalculatePurchasePrice();
             this.CalculateSellingPrice();
 

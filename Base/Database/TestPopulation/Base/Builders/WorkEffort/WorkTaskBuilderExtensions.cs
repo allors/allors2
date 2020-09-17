@@ -6,6 +6,7 @@
 
 namespace Allors.Domain.TestPopulation
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     public static partial class WorkTaskBuilderExtensions
@@ -35,7 +36,30 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        // WithScheduledWorkForInternalWork
+        public static WorkTaskBuilder WithScheduledInternalWork(this WorkTaskBuilder @this, Organisation internalOrganisation)
+        {
+            var faker = @this.Session.Faker();
+
+            var otherInternalOrganization = @this.Session.Extent<Organisation>().Except(new List<Organisation> { internalOrganisation }).FirstOrDefault();
+
+            @this.WithTakenBy(internalOrganisation);
+            @this.WithExecutedBy(internalOrganisation);
+            @this.WithCustomer(otherInternalOrganization);
+            @this.WithFacility(faker.Random.ListItem(internalOrganisation.FacilitiesWhereOwner));
+            @this.WithName(faker.Lorem.Words().ToString());
+            @this.WithDescription(faker.Lorem.Sentence());
+            @this.WithComment(faker.Lorem.Sentence());
+            @this.WithWorkDone(faker.Lorem.Sentence());
+            @this.WithPriority(faker.Random.ListItem(@this.Session.Extent<Priority>()));
+            @this.WithWorkEffortPurpose(faker.Random.ListItem(@this.Session.Extent<WorkEffortPurpose>()));
+            @this.WithScheduledStart(@this.Session.Now().AddDays(7));
+            @this.WithScheduledCompletion(@this.Session.Now().AddDays(10));
+            @this.WithEstimatedHours(faker.Random.Int(7, 30));
+            @this.WithElectronicDocument(new MediaBuilder(@this.Session).WithInFileName("doc1.en.pdf").WithInData(faker.Random.Bytes(1000)).Build());
+
+            return @this;
+        }
+
         // WithScheduledWorkForSubcontractedWork
         // WithWorkStartedForExternalCustomer
         // WithWorkStartedForInternalWork

@@ -98,7 +98,7 @@ namespace Allors.Domain
                                         .WithInvoiceItemType(new InvoiceItemTypes(session).PartItem)
                                         .WithPart(part)
                                         .WithAssignedUnitPrice(inventoryAssignment.UnitSellingPrice)
-                                        .WithQuantity(inventoryAssignment.BillableQuantity ?? inventoryAssignment.Quantity)
+                                        .WithQuantity(inventoryAssignment.DerivedBillableQuantity ?? inventoryAssignment.Quantity)
                                         .Build();
 
                                     salesInvoice.AddSalesInvoiceItem(invoiceItem);

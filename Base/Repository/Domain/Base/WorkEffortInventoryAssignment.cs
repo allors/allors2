@@ -84,7 +84,16 @@ namespace Allors.Repository
         [RoleId("729A391C-60D6-47A2-A66D-9E21B90285A8")]
         #endregion
         [Workspace]
-        public decimal BillableQuantity { get; set; }
+        public decimal AssignedBillableQuantity { get; set; }
+
+        #region Allors
+        [Id("be2b92ca-53d0-46c7-954d-6432590e1994")]
+        [AssociationId("784e4f16-41d7-4766-a406-0656cdd09f79")]
+        [RoleId("52545e25-81bb-4fe7-aee0-4e0756e6320b")]
+        #endregion
+        [Derived]
+        [Workspace]
+        public decimal DerivedBillableQuantity { get; set; }
 
         /// <summary>
         /// Gets or sets the InventoryItemTransactions create by this WorkEffortInventoryAssignment (derived).

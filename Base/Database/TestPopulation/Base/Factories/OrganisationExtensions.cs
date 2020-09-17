@@ -123,7 +123,7 @@ namespace Allors.Domain.TestPopulation
             return subContractor;
         }
 
-        public static Part CreateNonSerialisedNonUnifiedPart(this Organisation @this, Faker faker)
+        public static NonUnifiedPart CreateNonSerialisedNonUnifiedPart(this Organisation @this, Faker faker)
         {
             var part = new NonUnifiedPartBuilder(@this.Session()).WithNonSerialisedDefaults(@this).Build();
 
@@ -133,6 +133,7 @@ namespace Allors.Domain.TestPopulation
                     .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
                     .WithSupplier(supplier)
                     .WithPart(part)
+                    .WithPrice(faker.Random.Decimal(0, 10))
                     .WithUnitOfMeasure(part.UnitOfMeasure)
                     .Build();
             }
@@ -147,7 +148,7 @@ namespace Allors.Domain.TestPopulation
             return part;
         }
 
-        public static Part CreateSerialisedNonUnifiedPart(this Organisation @this, Faker faker)
+        public static NonUnifiedPart CreateSerialisedNonUnifiedPart(this Organisation @this, Faker faker)
         {
             var part = new NonUnifiedPartBuilder(@this.Session()).WithSerialisedDefaults(@this, faker).Build();
 
@@ -157,6 +158,7 @@ namespace Allors.Domain.TestPopulation
                     .WithFromDate(faker.Date.Past(refDate: @this.Session().Now()))
                     .WithSupplier(supplier)
                     .WithPart(part)
+                    .WithPrice(faker.Random.Decimal(0, 10))
                     .WithUnitOfMeasure(part.UnitOfMeasure)
                     .Build();
             }
@@ -210,7 +212,7 @@ namespace Allors.Domain.TestPopulation
                 .WithSupplier(purchaseOrder.TakenViaSupplier)
                 .WithFromDate(@this.Session().Now().AddMinutes(-1))
                 .WithUnitOfMeasure(new UnitsOfMeasure(@this.Session()).Piece)
-                .WithPrice(faker.Random.UInt(5, 10))
+                .WithPrice(faker.Random.Decimal(0, 10))
                 .Build();
 
             var nonSerializedPartItem = new PurchaseOrderItemBuilder(@this.Session()).WithNonSerializedPartDefaults(nonSerializedPart).Build();
@@ -254,7 +256,7 @@ namespace Allors.Domain.TestPopulation
                 .WithSupplier(purchaseOrder.TakenViaSupplier)
                 .WithFromDate(@this.Session().Now().AddMinutes(-1))
                 .WithUnitOfMeasure(new UnitsOfMeasure(@this.Session()).Piece)
-                .WithPrice(faker.Random.UInt(5, 10))
+                .WithPrice(faker.Random.Decimal(0, 10))
                 .Build();
 
             var item = new PurchaseOrderItemBuilder(@this.Session()).WithNonSerializedPartDefaults(nonSerializedPart).Build();

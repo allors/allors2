@@ -36,7 +36,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public WorkEffort Assignment { get; set; }
 
@@ -50,7 +49,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public InventoryItem InventoryItem { get; set; }
 
@@ -72,7 +70,15 @@ namespace Allors.Repository
         [RoleId("7CE35E26-3393-45E7-B44C-F84EA8E80DA7")]
         #endregion
         [Workspace]
-        public decimal BillableQuantity { get; set; }
+        public decimal AssignedBillableQuantity { get; set; }
+
+        #region Allors
+        [Id("5e6511de-2845-4306-8c68-57e1cabbe092")]
+        [AssociationId("e9e4df72-7c9a-488e-973f-5d4223519070")]
+        [RoleId("bc3483da-a41c-4e67-bf05-ff355bd4bf8a")]
+        #endregion
+        [Workspace]
+        public decimal DerivedBillableQuantity { get; set; }
 
         /// <summary>
         /// Gets or sets the InventoryItemTransactions create by this WorkEffortInventoryAssignment (derived).
@@ -84,7 +90,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-        [Derived]
         [Workspace]
         public InventoryItemTransaction[] InventoryItemTransactions { get; set; }
 

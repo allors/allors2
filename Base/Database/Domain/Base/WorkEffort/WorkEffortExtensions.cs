@@ -296,7 +296,7 @@ namespace Allors.Domain
                     .WithInvoiceItemType(new InvoiceItemTypes(session).PartItem)
                     .WithPart(part)
                     .WithAssignedUnitPrice(workEffortInventoryAssignment.UnitSellingPrice)
-                    .WithQuantity(workEffortInventoryAssignment.BillableQuantity ?? workEffortInventoryAssignment.Quantity)
+                    .WithQuantity(workEffortInventoryAssignment.DerivedBillableQuantity ?? workEffortInventoryAssignment.Quantity)
                     .WithCostOfGoodsSold(workEffortInventoryAssignment.CostOfGoodsSold)
                     .Build();
 

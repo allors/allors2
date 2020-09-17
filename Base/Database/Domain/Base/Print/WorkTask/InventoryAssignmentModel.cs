@@ -14,7 +14,7 @@ namespace Allors.Domain.Print.WorkTaskModel
         {
             this.PartId = assignment.InventoryItem.Part?.PartIdentification();
             this.PartName = assignment.InventoryItem.Part?.Name;
-            this.Quantity = assignment.BillableQuantity ?? assignment.Quantity;
+            this.Quantity = assignment.DerivedBillableQuantity ?? assignment.Quantity;
             this.UnitOfMeasure = assignment.InventoryItem.Part?.UnitOfMeasure?.Abbreviation?.ToUpperInvariant() ??
                                  assignment.InventoryItem.Part?.UnitOfMeasure?.Name?.ToUpperInvariant() ??
                                  "EA";
