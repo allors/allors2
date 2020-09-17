@@ -28,8 +28,6 @@ namespace Allors.Repository
         [AssociationId("202E3160-F290-4DEA-97BB-B3FB01A93B49")]
         [RoleId("0AF7FAC8-043E-4A41-B7CF-2137970243FF")]
         #endregion
-        [Size(256)]
-        [Required]
         [Workspace]
         string Name { get; set; }
 
@@ -38,7 +36,6 @@ namespace Allors.Repository
         [AssociationId("46B9BF6C-A4E8-483F-A66E-E03EA6D5D2AF")]
         [RoleId("FB14FF04-78F5-4D8E-8260-20F3F9D7ADDE")]
         #endregion
-        [Size(4096)]
         [Workspace]
         string Description { get; set; }
 
@@ -46,7 +43,6 @@ namespace Allors.Repository
         [Id("4C4240A5-528B-497F-8846-AA7C99942C82")]
         [AssociationId("442BF907-56EA-4730-AA5B-912812132216")]
         [RoleId("08030219-963D-4F71-B6CB-3BE46B9EAFEE")]
-        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
@@ -56,7 +52,6 @@ namespace Allors.Repository
         [Id("35A7A9A0-00C2-4548-BA8F-DCBDFDFD577E")]
         [AssociationId("BDCA5223-0476-460C-8311-78925579ECDB")]
         [RoleId("6EFAE079-6A84-48BC-AC7B-35AF31103C5F")]
-        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
@@ -67,7 +62,6 @@ namespace Allors.Repository
         [AssociationId("DA8F50BD-26A6-49F2-9DDC-8677C7356931")]
         [RoleId("A9ABB966-64A3-42EB-85EC-623592DF00AE")]
         #endregion
-        [Indexed]
         [Workspace]
         DateTime ActualCompletion { get; set; }
 
@@ -76,7 +70,6 @@ namespace Allors.Repository
         [AssociationId("0FFAF77A-274B-453D-90CB-00AEFC8B0C2E")]
         [RoleId("C0555048-8DBE-4B72-B03B-44E15A400D8A")]
         #endregion
-        [Indexed]
         [Workspace]
         DateTime ScheduledStart { get; set; }
 
@@ -85,7 +78,6 @@ namespace Allors.Repository
         [AssociationId("0FFE8AAD-A198-428E-ABE5-49BDAD15AA07")]
         [RoleId("F928FFD5-4699-4D1C-B9BA-9C888AE21F97")]
         #endregion
-        [Indexed]
         [Workspace]
         DateTime ScheduledCompletion { get; set; }
 
@@ -115,7 +107,6 @@ namespace Allors.Repository
         [RoleId("7D4D8BA1-4D76-4387-9D8F-FD18FC01FF25")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
         [Workspace]
         WorkEffort[] Precendencies { get; set; }
 
@@ -125,7 +116,6 @@ namespace Allors.Repository
         [RoleId("A3D27645-82F4-4182-A671-B62B547A5EC1")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         [Workspace]
         Facility Facility { get; set; }
 
@@ -135,7 +125,6 @@ namespace Allors.Repository
         [RoleId("39073D58-0B07-4520-BFE1-0975D9410725")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
         [Workspace]
         Deliverable[] DeliverablesProduced { get; set; }
 
@@ -144,7 +133,6 @@ namespace Allors.Repository
         [AssociationId("0E1736BC-C00D-4071-922F-054A6A05CBD2")]
         [RoleId("1C44402C-5BA5-43AA-BC12-4CD6027CC128")]
         #endregion
-        [Indexed]
         [Workspace]
         DateTime ActualStart { get; set; }
 
@@ -154,7 +142,6 @@ namespace Allors.Repository
         [RoleId("A2CAE0EB-B6DF-4550-B8D2-432224B036CD")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
         [Workspace]
         WorkEffort[] Children { get; set; }
 
@@ -164,7 +151,6 @@ namespace Allors.Repository
         [RoleId("9C29483F-4A70-4854-AFEB-9AAA198D7FFF")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         OrderItem OrderItemFulfillment { get; set; }
 
         #region Allors
@@ -173,7 +159,6 @@ namespace Allors.Repository
         [RoleId("484E1F42-D7D2-41C5-B2A2-D90D1EDA42B7")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
         [Workspace]
         WorkEffortType WorkEffortType { get; set; }
 
@@ -183,7 +168,6 @@ namespace Allors.Repository
         [RoleId("295C5DA6-F592-47A3-B39D-284CE86ED0BA")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
         [Workspace]
         Requirement[] RequirementFulfillments { get; set; }
 
@@ -192,7 +176,6 @@ namespace Allors.Repository
         [AssociationId("6A13A53E-319F-4EAF-9CAB-F1582BC8DEEE")]
         [RoleId("7E6D9D60-5E75-4F81-802F-758FC80AA94E")]
         #endregion
-        [Size(-1)]
         [Workspace]
         string SpecialTerms { get; set; }
 
@@ -202,7 +185,6 @@ namespace Allors.Repository
         [RoleId("D097C09B-EA1D-410C-95B4-B521C625F7B6")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
         [Workspace]
         WorkEffort[] Concurrencies { get; set; }
     }

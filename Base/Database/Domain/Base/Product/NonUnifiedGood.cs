@@ -20,7 +20,7 @@ namespace Allors.Domain
                                     !this.ExistGeneralLedgerAccountsWhereDefaultCostUnit &&
                                     !this.ExistQuoteItemsWhereProduct &&
                                     !this.ExistShipmentItemsWhereGood &&
-                                    !this.ExistWorkEffortGoodStandardsWhereGood &&
+                                    !this.ExistWorkEffortGoodStandardsWhereUnifiedProduct &&
                                     !this.ExistMarketingPackageWhereProductsUsedIn &&
                                     !this.ExistMarketingPackagesWhereProduct &&
                                     !this.ExistOrganisationGlAccountsWhereProduct &&

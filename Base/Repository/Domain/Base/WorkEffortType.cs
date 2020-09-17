@@ -80,17 +80,6 @@ namespace Allors.Repository
         public WorkEffortType[] Dependencies { get; set; }
 
         #region Allors
-        [Id("ccf22455-c42a-4f9c-8975-813431bcdd8b")]
-        [AssociationId("f70821d5-2a7f-4fdd-ae45-b8c7966710fc")]
-        [RoleId("abe54968-9a36-43c5-a57c-b8d1cde032ea")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-
-        public WorkEffortTypeKind WorkEffortTypeKind { get; set; }
-
-        #region Allors
         [Id("d51d620e-250e-4492-8926-c8535fad19ec")]
         [AssociationId("e26db451-eb86-44b1-b3cb-eb29d4311157")]
         [RoleId("2a4de99b-9544-4c67-b936-431622654f09")]
@@ -156,6 +145,5 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         #endregion
-
     }
 }

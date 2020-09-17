@@ -442,5 +442,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Revise();
+
+        #region Allors
+        [Id("6040f364-eec8-4672-add6-4d2590028d50")]
+        #endregion
+        [Workspace]
+        void CalculateTotalRevenue();
     }
 }

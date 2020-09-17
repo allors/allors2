@@ -14,6 +14,12 @@ namespace Allors.Domain
         public static DateTime? FromDate(this WorkEffort @this) => @this.ActualStart ?? @this.ScheduledStart;
 
         public static DateTime? ThroughDate(this WorkEffort @this) => @this.ActualCompletion ?? @this.ScheduledCompletion;
+        public static TimeEntry[] BillableTimeEntries(this WorkEffort @this) =>
+        @this.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
+        .Where(v => v.IsBillable &&
+                    (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
+        .Select(v => v)
+        .ToArray();
 
         public static void BaseOnBuild(this WorkEffort @this, ObjectOnBuild method)
         {
@@ -325,7 +331,7 @@ namespace Allors.Domain
                 {
                     foreach (WorkEffort child in @this.Children)
                     {
-                        if (!@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
+                        if (child.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
                         {
                             @this.DerivedRoles.CanInvoice = false;
                             break;
@@ -353,6 +359,21 @@ namespace Allors.Domain
             else
             {
                 @this.DerivedRoles.CanInvoice = false;
+            }
+        }
+
+        private static void BaseCalculateTotalRevenue(this WorkEffort @this, WorkEffortCalculateTotalRevenue method)
+        {
+            if (!method.Result.HasValue)
+            {
+                var totalLabourRevenue = Math.Round(@this.BillableTimeEntries().Sum(v => v.BillingAmount), 2);
+                var totalMaterialRevenue = Math.Round(@this.WorkEffortInventoryAssignmentsWhereAssignment.Sum(v => v.Quantity * v.UnitSellingPrice), 2);
+                var totalSubContractedrevenue = Math.Round(@this.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment.Sum(v => v.Quantity * v.UnitSellingPrice), 2);
+                var totalRevenue = Math.Round(totalLabourRevenue + totalMaterialRevenue + totalSubContractedrevenue, 2);
+
+                method.Result = true;
+
+                ((WorkEffortDerivedRoles)@this).TotalRevenue = @this.Customer.Equals(@this.ExecutedBy) ? 0M : totalRevenue;
             }
         }
     }

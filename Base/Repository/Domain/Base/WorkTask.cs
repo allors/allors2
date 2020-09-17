@@ -206,6 +206,8 @@ namespace Allors.Repository
 
         public void Revise() { }
 
+        public void CalculateTotalRevenue() { }
+
         #endregion
     }
 }

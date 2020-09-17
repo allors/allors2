@@ -14,7 +14,6 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             derivation.Validation.AssertExists(this, M.WorkEffortType.Description);
-            derivation.Validation.AssertExists(this, M.WorkEffortType.WorkEffortTypeKind);
         }
     }
 }

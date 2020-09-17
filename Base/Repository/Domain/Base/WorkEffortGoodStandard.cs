@@ -28,7 +28,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        public Good Good { get; set; }
+        public UnifiedProduct UnifiedProduct { get; set; }
 
         #region Allors
         [Id("28b3b976-3354-4095-b928-7c1474e8c492")]

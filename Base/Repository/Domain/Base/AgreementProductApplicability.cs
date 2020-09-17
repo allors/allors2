@@ -53,18 +53,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public NonUnifiedPart Part{ get; set; }
-
-        #region Allors
-        [Id("4c26d398-784a-4b80-9c5f-0d5af09a810f")]
-        [AssociationId("5d0cdfe0-936b-4983-a195-bb07093ef127")]
-        [RoleId("768aacc7-eb6f-4277-a517-7c1cdc9a2055")]
-        #endregion
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal Quantity { get; set; }
+        public Product Product{ get; set; }
 
         #region inherited methods
 
