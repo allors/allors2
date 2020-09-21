@@ -184,12 +184,11 @@ namespace Allors.Domain
             var frequencies = new TimeFrequencies(this.Strategy.Session);
             this.AmountOfTime = null;
 
-            var minutes = 0M;
             if (this.ThroughDate != null)
             {
                 var timeSpan = this.ThroughDate - this.FromDate;
-                minutes = (decimal)timeSpan.Value.TotalMinutes;
-                var amount = frequencies.Minute.ConvertToFrequency(minutes, this.TimeFrequency);
+                this.AmountOfTimeInMinutes = (decimal)timeSpan.Value.TotalMinutes;
+                var amount = frequencies.Minute.ConvertToFrequency(this.AmountOfTimeInMinutes, this.TimeFrequency);
 
                 if (amount == null)
                 {
@@ -202,9 +201,9 @@ namespace Allors.Domain
             }
             else if (this.ExistAssignedAmountOfTime)
             {
-                minutes = (decimal)this.TimeFrequency.ConvertToFrequency((decimal)this.AssignedAmountOfTime, frequencies.Minute);
+                this.AmountOfTimeInMinutes = (decimal)this.TimeFrequency.ConvertToFrequency((decimal)this.AssignedAmountOfTime, frequencies.Minute);
 
-                var timeSpan = TimeSpan.FromMinutes((double)minutes);
+                var timeSpan = TimeSpan.FromMinutes((double)this.AmountOfTimeInMinutes);
                 this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
 
                 this.AmountOfTime = this.AssignedAmountOfTime;
@@ -212,8 +211,8 @@ namespace Allors.Domain
             else
             {
                 var timeSpan = this.Session().Now() - this.FromDate;
-                minutes = (decimal)timeSpan.TotalMinutes;
-                var amount = frequencies.Minute.ConvertToFrequency(minutes, this.TimeFrequency);
+                this.AmountOfTimeInMinutes = (decimal)timeSpan.TotalMinutes;
+                var amount = frequencies.Minute.ConvertToFrequency(this.AmountOfTimeInMinutes, this.TimeFrequency);
 
                 if (amount == null)
                 {
@@ -227,21 +226,20 @@ namespace Allors.Domain
 
             if (this.ExistBillingRate && this.ExistBillingFrequency)
             {
-                var billableMinutes = 0M;
                 if (this.BillableAmountOfTime.HasValue)
                 {
-                    billableMinutes = (decimal)this.TimeFrequency.ConvertToFrequency((decimal)this.BillableAmountOfTime, frequencies.Minute);
+                    this.BillableAmountOfTimeInMinutes = (decimal)this.TimeFrequency.ConvertToFrequency((decimal)this.BillableAmountOfTime, frequencies.Minute);
                 }
                 else
                 {
-                    billableMinutes = minutes;
+                    this.BillableAmountOfTimeInMinutes = this.AmountOfTimeInMinutes;
                 }
 
-                var billableTimeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(billableMinutes, this.BillingFrequency), 2);
+                var billableTimeInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(this.BillableAmountOfTimeInMinutes, this.BillingFrequency), 2);
 
                 this.BillingAmount = Math.Round((decimal)(this.BillingRate * billableTimeInTimeEntryRateFrequency), 2);
 
-                var timeSpendInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(minutes, this.BillingFrequency), 2);
+                var timeSpendInTimeEntryRateFrequency = Math.Round((decimal)frequencies.Minute.ConvertToFrequency(this.AmountOfTimeInMinutes, this.BillingFrequency), 2);
                 this.Cost = Math.Round((decimal)(costRate * timeSpendInTimeEntryRateFrequency), 2);
             }
         }

@@ -163,6 +163,26 @@ namespace Allors.Repository
         public TimeFrequency TimeFrequency { get; set; }
 
         #region Allors
+        [Id("aceb7dfb-6838-4754-a3ac-bff9c8f942e8")]
+        [AssociationId("ebeb6c29-c406-4e1d-b594-15ee764a4760")]
+        [RoleId("7d778939-a92d-45b0-aeb9-d98f6ade3172")]
+        #endregion
+        [Derived]
+        [Required]
+        [Workspace]
+        public decimal AmountOfTimeInMinutes { get; set; }
+
+        #region Allors
+        [Id("2c80b0e5-ae04-423a-841b-a6a5d1481bf1")]
+        [AssociationId("93f2ce43-4341-4599-96f5-4f25647a6233")]
+        [RoleId("fd5e5ea8-71ee-40bc-a9fb-30255e974c78")]
+        #endregion
+        [Derived]
+        [Required]
+        [Workspace]
+        public decimal BillableAmountOfTimeInMinutes { get; set; }
+
+        #region Allors
         [Id("E1121F4A-5CE3-4966-9DF0-CCA9A7DCCEB6")]
         [AssociationId("CDFE81B9-948A-4FE9-B97C-BFC356AD06E5")]
         [RoleId("BB5A8989-EACB-4756-85A1-01B9313EA086")]
