@@ -49,15 +49,6 @@ namespace Allors.Repository
         public WorkEffortFixedAssetStandard[] WorkEffortFixedAssetStandards { get; set; }
 
         #region Allors
-        [Id("776839ee-f6cb-4334-a017-4ffdfddd152a")]
-        [AssociationId("db3c9fba-5ca8-4296-b1a2-d306ad42dbcc")]
-        [RoleId("764e51c4-8a6f-403d-849a-1bf3a1a64911")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        public WorkEffortGoodStandard[] WorkEffortGoodStandards { get; set; }
-
-        #region Allors
         [Id("d51d620e-250e-4492-8926-c8535fad19ec")]
         [AssociationId("e26db451-eb86-44b1-b3cb-eb29d4311157")]
         [RoleId("2a4de99b-9544-4c67-b936-431622654f09")]
