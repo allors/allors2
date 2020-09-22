@@ -35,6 +35,8 @@ interface Row extends TableRow {
   billedTo: string;
   state: string;
   invoiceDate: string;
+
+  dueDate: string;
   description: string;
   totalExVat: string;
   totalIncVat: string;
@@ -175,6 +177,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
         { name: 'type', sort: true },
         { name: 'billedTo' },
         { name: 'invoiceDate', sort: true },
+        { name: 'dueDate', sort: true },
         { name: 'state' },
         { name: 'description', sort: true },
         { name: 'totalExVat', sort: true },
@@ -276,6 +279,7 @@ export class SalesInvoiceListComponent extends TestScope implements OnInit, OnDe
               billedTo: v.BillToCustomer && v.BillToCustomer.displayName,
               state: `${v.SalesInvoiceState && v.SalesInvoiceState.Name}`,
               invoiceDate: format(new Date(v.InvoiceDate), 'dd-MM-yyyy'),
+              dueDate: `${v.DueDate && format(new Date(v.DueDate), 'dd-MM-yyyy')}`,
               description: v.Description,
               totalExVat: v.TotalExVat,
               totalIncVat: v.TotalIncVat,
