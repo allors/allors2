@@ -260,7 +260,7 @@ export class PurchaseOrderInvoiceOverviewPanelComponent extends TestScope {
         }
 
         if (invoiceItem.Part) {
-          invoiceItem.InvoiceItemType = this.partItem;
+          invoiceItem.InvoiceItemType = purchaseOrderItem.InvoiceItemType;
         } else {
           invoiceItem.InvoiceItemType = this.workItem;
         }

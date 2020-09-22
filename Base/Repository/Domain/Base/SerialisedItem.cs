@@ -310,6 +310,17 @@ namespace Allors.Repository
         public PurchaseOrder PurchaseOrder { get; set; }
 
         #region Allors
+        [Id("b2188137-dfd4-4f0a-a76d-a2266f87e352")]
+        [AssociationId("e7562ac0-66fd-445b-84bb-8c6a93f4e5d5")]
+        [RoleId("38b120a4-9d93-4f5c-8b0d-ef0949ed70e5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Workspace]
+        public PurchaseInvoice PurchaseInvoice { get; set; }
+
+        #region Allors
         [Id("56FBFE00-2480-476C-86C0-140D419C33DE")]
         [AssociationId("6D33AAA1-8F48-4454-9583-E250B9B5B6BD")]
         [RoleId("6ED98788-BD73-495F-B2DE-871299372165")]
@@ -490,5 +501,23 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void DeriveDisplayProductCategories() { }
+
+        #region Allors
+        [Id("c67862f1-32dc-4c73-993c-8d6d8afacfc8")]
+        #endregion
+        [Workspace]
+        public void DerivePurchaseInvoice() { }
+
+        #region Allors
+        [Id("ce43d614-bdf6-4c27-864b-92fed0cfeb53")]
+        #endregion
+        [Workspace]
+        public void DerivePurchaseOrder() { }
+
+        #region Allors
+        [Id("df08a96b-bada-4e8a-bb22-0385c406bdde")]
+        #endregion
+        [Workspace]
+        public void DerivePurchasePrice() { }
     }
 }

@@ -64,8 +64,13 @@ namespace Allors.Domain
                 this.Name = this.PartWhereSerialisedItem.Name;
             }
 
-            this.PurchasePrice = this.AssignedPurchasePrice ?? this.PurchaseOrderItemsWhereSerialisedItem.LastOrDefault()?.UnitPrice ?? 0M;
-            this.SuppliedBy = this.AssignedSuppliedBy ?? this.PartWhereSerialisedItem?.SupplierOfferingsWherePart?.FirstOrDefault()?.Supplier;
+            this.DerivePurchaseOrder();
+            this.DerivePurchaseInvoice();
+            this.DerivePurchasePrice();
+
+            this.SuppliedBy = this.AssignedSuppliedBy ??
+                this.PurchaseOrder?.TakenViaSupplier ??
+                this.PartWhereSerialisedItem?.SupplierOfferingsWherePart?.FirstOrDefault()?.Supplier;
 
             this.SuppliedByPartyName = this.ExistSuppliedBy ? this.SuppliedBy.PartyName : string.Empty;
             this.OwnedByPartyName = this.ExistOwnedBy ? this.OwnedBy.PartyName : string.Empty;
@@ -106,6 +111,54 @@ namespace Allors.Domain
                     var unifiedGood = this.PartWhereSerialisedItem as UnifiedGood;
                     this.DisplayProductCategories = string.Join(", ", unifiedGood.ProductCategoriesWhereProduct.Select(v => v.DisplayName));
                 }
+
+                method.Result = true;
+            }
+        }
+
+        public void BaseDerivePurchaseOrder(SerialisedItemDerivePurchaseOrder method)
+        {
+            if (!method.Result.HasValue)
+            {
+                this.PurchaseOrder = this.PurchaseOrderItemsWhereSerialisedItem
+                    .LastOrDefault(v => (((PurchaseOrder)v.OrderWhereValidOrderItem).PurchaseOrderState.Equals(new PurchaseOrderStates(this.Session()).Sent)
+                                            || ((PurchaseOrder)v.OrderWhereValidOrderItem).PurchaseOrderState.Equals(new PurchaseOrderStates(this.Session()).Completed)
+                                            || ((PurchaseOrder)v.OrderWhereValidOrderItem).PurchaseOrderState.Equals(new PurchaseOrderStates(this.Session()).Finished))
+                                        && v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem))?
+                    .PurchaseOrderWherePurchaseOrderItem;
+
+                this.RemoveAssignedPurchasePrice();
+
+                method.Result = true;
+            }
+        }
+
+        public void BaseDerivePurchaseInvoice(SerialisedItemDerivePurchaseInvoice method)
+        {
+            if (!method.Result.HasValue)
+            {
+                this.PurchaseInvoice = this.PurchaseInvoiceItemsWhereSerialisedItem
+                    .LastOrDefault(v => (((PurchaseInvoice)v.InvoiceWhereValidInvoiceItem).PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Session()).NotPaid)
+                                            || ((PurchaseInvoice)v.InvoiceWhereValidInvoiceItem).PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Session()).PartiallyPaid)
+                                            || ((PurchaseInvoice)v.InvoiceWhereValidInvoiceItem).PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Session()).Paid))
+                                        && v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem))?
+                    .PurchaseInvoiceWherePurchaseInvoiceItem;
+
+                this.RemoveAssignedPurchasePrice();
+
+                method.Result = true;
+            }
+        }
+
+        public void BaseDerivePurchasePrice(SerialisedItemDerivePurchasePrice method)
+        {
+            if (!method.Result.HasValue && this.ExistPurchaseInvoice)
+            {
+                this.PurchasePrice = this.PurchaseInvoiceItemsWhereSerialisedItem
+                    .LastOrDefault(v => v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem))?
+                    .UnitPrice ?? 0M;
+
+                this.RemoveAssignedPurchasePrice();
 
                 method.Result = true;
             }

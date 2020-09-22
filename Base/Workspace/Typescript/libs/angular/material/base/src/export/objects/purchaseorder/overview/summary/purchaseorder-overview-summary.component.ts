@@ -198,7 +198,7 @@ export class PurchaseOrderOverviewSummaryComponent {
     this.panel.manager.context.invoke(this.order.QuickReceive)
       .subscribe(() => {
         this.panel.toggle();
-        this.snackBar.open('inventory created for all items', 'close', { duration: 5000 });
+        this.snackBar.open('inventory created for appropriate items', 'close', { duration: 5000 });
         this.refreshService.refresh();
       },
         this.saveService.errorHandler);

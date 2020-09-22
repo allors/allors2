@@ -317,6 +317,15 @@ namespace Allors.Repository
         [Workspace]
         public bool CanInvoice { get; set; }
 
+        #region Allors
+        [Id("ca16e968-9fa1-4e95-9405-f44271a2f724")]
+        [AssociationId("3492160c-41d2-4d52-ba17-16b3d3abc222")]
+        [RoleId("fc349e1e-1713-43b8-90b7-edc92248c873")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool IsReceivable { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }
@@ -352,5 +361,11 @@ namespace Allors.Repository
         [Workspace]
         #endregion
         public void QuickReceive() { }
+
+        #region Allors
+        [Id("da6df644-8ab8-409f-bd45-95993f025926")]
+        [Workspace]
+        #endregion
+        public void DeriveIsReceivable() { }
     }
 }

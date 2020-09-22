@@ -45,8 +45,9 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, awaitingApprovalLevel1, hold, @continue, setReadyForProcessing, cancel, reopen, send, quickReceive, @continue, revise);
             config.Deny(this.ObjectType, awaitingApprovalLevel2, hold, @continue, setReadyForProcessing, cancel, reopen, send, quickReceive, @continue, revise);
             config.Deny(this.ObjectType, inProcess, approve, reject, @continue, setReadyForProcessing, quickReceive);
+            config.Deny(this.ObjectType, inProcess, approve, reject, hold, @continue, setReadyForProcessing, reopen);
             config.Deny(this.ObjectType, sent, approve, reject, hold, @continue, setReadyForProcessing, reopen, send);
-            config.Deny(this.ObjectType, completed, approve, reject, hold, @continue, setReadyForProcessing, cancel, reopen, send, quickReceive, revise);
+            config.Deny(this.ObjectType, completed, approve, reject, hold, @continue, setReadyForProcessing, cancel, reopen, send, quickReceive);
 
             var except = new HashSet<IOperandType>
             {

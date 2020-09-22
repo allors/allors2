@@ -85,11 +85,6 @@ namespace Allors.Domain
                 this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Created;
             }
 
-            if (!this.ExistPurchaseOrderItemShipmentState)
-            {
-                this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).NotReceived;
-            }
-
             if (!this.ExistPurchaseOrderItemPaymentState)
             {
                 this.PurchaseOrderItemPaymentState = new PurchaseOrderItemPaymentStates(this.Strategy.Session).NotPaid;
@@ -127,6 +122,20 @@ namespace Allors.Domain
             if (!this.ExistStoredInFacility && this.PurchaseOrderWherePurchaseOrderItem.ExistStoredInFacility)
             {
                 this.StoredInFacility = this.PurchaseOrderWherePurchaseOrderItem.StoredInFacility;
+            }
+
+            this.DeriveIsReceivable();
+
+            if (!this.ExistPurchaseOrderItemShipmentState)
+            {
+                if (this.IsReceivable)
+                {
+                    this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).Na;
+                }
+                else
+                {
+                    this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).NotReceived;
+                }
             }
 
             // States
@@ -245,7 +254,7 @@ namespace Allors.Domain
             if (this.IsValid)
             {
                 // ShipmentState
-                if (this.ExistPart)
+                if (this.IsReceivable)
                 {
                     var quantityReceived = 0M;
                     foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereOrderItem)
@@ -256,15 +265,22 @@ namespace Allors.Domain
                     this.QuantityReceived = quantityReceived;
                 }
 
-                if (this.QuantityReceived == 0)
+                if (!this.IsReceivable)
                 {
-                    this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).NotReceived;
+                    this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).Na;
                 }
                 else
                 {
-                    this.PurchaseOrderItemShipmentState = this.QuantityReceived < this.QuantityOrdered ?
-                        purchaseOrderItemShipmentStates.PartiallyReceived :
-                        purchaseOrderItemShipmentStates.Received;
+                    if (this.QuantityReceived == 0 && this.IsReceivable)
+                    {
+                        this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).NotReceived;
+                    }
+                    else
+                    {
+                        this.PurchaseOrderItemShipmentState = this.QuantityReceived < this.QuantityOrdered ?
+                            purchaseOrderItemShipmentStates.PartiallyReceived :
+                            purchaseOrderItemShipmentStates.Received;
+                    }
                 }
 
                 // PaymentState
@@ -287,7 +303,8 @@ namespace Allors.Domain
                 }
 
                 // PurchaseOrderItem States
-                if (this.PurchaseOrderItemShipmentState.IsReceived)
+                if (this.PurchaseOrderItemState.IsInProcess
+                    && (this.PurchaseOrderItemShipmentState.IsReceived || this.PurchaseOrderItemShipmentState.IsNa))
                 {
                     this.PurchaseOrderItemState = purchaseOrderItemStates.Completed;
                 }
@@ -350,7 +367,7 @@ namespace Allors.Domain
                 this.AddDeniedPermission(deletePermission);
             }
 
-            if (!this.PurchaseOrderItemShipmentState.IsNotReceived)
+            if (!this.PurchaseOrderItemShipmentState.IsNotReceived && !this.PurchaseOrderItemShipmentState.IsNa)
             {
                 var deniablePermissionByOperandTypeId = new Dictionary<Guid, Permission>();
 
@@ -423,13 +440,6 @@ namespace Allors.Domain
                     }
 
                     shipmentItem.SerialisedItem = serialisedItem;
-
-                    // HACK: DerivedRoles (WIP)
-                    var serialisedItemDeriveRoles = (SerialisedItemDerivedRoles)serialisedItem;
-                    serialisedItemDeriveRoles.PurchaseOrder = order;
-                    serialisedItemDeriveRoles.SuppliedBy = order.TakenViaSupplier;
-                    serialisedItem.RemoveAssignedPurchasePrice();
-                    serialisedItemDeriveRoles.PurchasePrice = this.TotalExVat;
                 }
 
                 if (shipment.ShipToParty is InternalOrganisation internalOrganisation)
@@ -451,6 +461,16 @@ namespace Allors.Domain
         public void BaseReject(OrderItemReject method) => this.PurchaseOrderItemState = new PurchaseOrderItemStates(this.Strategy.Session).Rejected;
 
         public void BaseReopen(OrderItemReopen method) => this.PurchaseOrderItemState = this.PreviousPurchaseOrderItemState;
+
+        public void BaseDeriveIsReceivable(PurchaseOrderItemDeriveIsReceivable method)
+        {
+            if (!method.Result.HasValue)
+            {
+                this.IsReceivable = this.ExistPart && this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem);
+
+                method.Result = true;
+            }
+        }
 
         public void Sync(Order order) => this.SyncedOrder = order;
     }

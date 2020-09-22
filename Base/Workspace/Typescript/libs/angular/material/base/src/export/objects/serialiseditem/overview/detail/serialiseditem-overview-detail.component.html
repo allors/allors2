@@ -198,9 +198,9 @@
             <div class="row pt-3">
               <a-mat-input class="col" [object]="serialisedItem" [roleType]="m.SerialisedItem.ExpectedSalesPrice">
               </a-mat-input>
-              <a-mat-static class="col" *ngIf="serialisedItem.PurchaseOrder" [object]="serialisedItem"
+              <a-mat-static class="col" *ngIf="serialisedItem.PurchaseInvoice" [object]="serialisedItem"
                 [roleType]="m.SerialisedItem.PurchasePrice"></a-mat-static>
-              <a-mat-input class="col" *ngIf="!serialisedItem.PurchaseOrder" [object]="serialisedItem"
+              <a-mat-input class="col" *ngIf="!serialisedItem.PurchaseInvoice" [object]="serialisedItem"
                 [roleType]="m.SerialisedItem.AssignedPurchasePrice" label="Purchase Price"></a-mat-input>
             </div>
 

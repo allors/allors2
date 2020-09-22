@@ -134,6 +134,7 @@ export class SerialisedItemOverviewDetailComponent extends TestScope implements 
                 PrivateElectronicDocuments: x,
                 PublicLocalisedElectronicDocuments: x,
                 PrivateLocalisedElectronicDocuments: x,
+                PurchaseInvoice: x,
                 PurchaseOrder: x,
                 SuppliedBy: x,
                 AssignedSuppliedBy: x,

@@ -214,7 +214,7 @@ namespace Allors.Domain
 
             // If disbursements are not matched at invoice level
             if (!this.PurchaseInvoiceState.IsRevising
-                && this.AmountPaid > 0)
+                && this.AmountPaid != 0)
             {
                 if (this.AmountPaid >= decimal.Round(this.TotalIncVat, 2))
                 {
@@ -654,6 +654,7 @@ namespace Allors.Domain
                     .WithAssignedUnitPrice(purchaseInvoiceItem.AssignedUnitPrice)
                     .WithProduct(purchaseInvoiceItem.Part as UnifiedGood)
                     .WithSerialisedItem(purchaseInvoiceItem.SerialisedItem)
+                    .WithNextSerialisedItemAvailability(new SerialisedItemAvailabilities(this.Session()).Sold)
                     .WithQuantity(purchaseInvoiceItem.Quantity)
                     .WithComment(purchaseInvoiceItem.Comment)
                     .WithInternalComment(purchaseInvoiceItem.InternalComment)
