@@ -32,6 +32,7 @@ namespace Allors.Domain
 
             merge(NotReceivedId, v => v.Name = "Not Received");
             merge(PartiallyReceivedId, v => v.Name = "Partially Received");
+            merge(ReceivedId, v => v.Name = "Received");
             merge(NaId, v => v.Name = "Shipping Not Applicable");
         }
     }
