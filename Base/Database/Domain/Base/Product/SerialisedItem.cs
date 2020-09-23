@@ -144,11 +144,6 @@ namespace Allors.Domain
                                             || ((PurchaseInvoice)v.InvoiceWhereValidInvoiceItem).PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Session()).Paid)))?
                     .PurchaseInvoiceWherePurchaseInvoiceItem;
 
-                if (this.PurchaseInvoice != null)
-                {
-                    this.RemoveAssignedPurchasePrice();
-                }
-
                 method.Result = true;
             }
         }
@@ -158,7 +153,8 @@ namespace Allors.Domain
             if (!method.Result.HasValue && this.ExistPurchaseInvoice)
             {
                 this.PurchasePrice = this.PurchaseInvoiceItemsWhereSerialisedItem
-                    .LastOrDefault(v => v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem))?
+                    .LastOrDefault(v => v.ExistInvoiceWhereValidInvoiceItem
+                                        && v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem))?
                     .UnitPrice ?? 0M;
 
                 this.RemoveAssignedPurchasePrice();
