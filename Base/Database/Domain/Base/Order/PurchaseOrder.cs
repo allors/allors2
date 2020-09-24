@@ -245,22 +245,24 @@ namespace Allors.Domain
             // PurchaseOrder Shipment State
             if (validOrderItems.Any())
             {
-                if ((validOrderItems.Any(v => v.ExistPart) && validOrderItems.Where(v => v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived)) ||
-                    (validOrderItems.Any(v => !v.ExistPart) && validOrderItems.Where(v => !v.ExistPart).All(v => v.PurchaseOrderItemShipmentState.IsReceived)))
+                if (validOrderItems.Any(v => v.IsReceivable))
                 {
-                    this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.Received;
-                }
-                else if (validOrderItems.All(v => v.PurchaseOrderItemShipmentState.IsNotReceived))
-                {
-                    this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.NotReceived;
-                }
-                else if (validOrderItems.All(v => v.PurchaseOrderItemShipmentState.IsNa))
-                {
-                    this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.Na;
+                    if (validOrderItems.Where(v => v.IsReceivable).All(v => v.PurchaseOrderItemShipmentState.IsReceived))
+                    {
+                        this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.Received;
+                    }
+                    else if (validOrderItems.Where(v => v.IsReceivable).All(v => v.PurchaseOrderItemShipmentState.IsNotReceived))
+                    {
+                        this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.NotReceived;
+                    }
+                    else
+                    {
+                        this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.PartiallyReceived;
+                    }
                 }
                 else
                 {
-                    this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.PartiallyReceived;
+                    this.PurchaseOrderShipmentState = purchaseOrderShipmentStates.Na;
                 }
 
                 // PurchaseOrder Payment State
@@ -514,8 +516,7 @@ namespace Allors.Domain
         {
             var session = this.Session();
 
-            if (this.ValidOrderItems.Any(v => ((PurchaseOrderItem)v).ExistPart
-                && ((PurchaseOrderItem)v).IsReceivable))
+            if (this.ValidOrderItems.Any(v => ((PurchaseOrderItem)v).IsReceivable))
             {
                 var shipment = new PurchaseShipmentBuilder(session)
                     .WithShipmentMethod(new ShipmentMethods(session).Ground)
