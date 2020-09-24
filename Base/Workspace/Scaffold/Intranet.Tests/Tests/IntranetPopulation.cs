@@ -363,42 +363,13 @@ namespace Tests
                 .WithCurrency(euro)
                 .Build();
 
-            var purchaseInvoiceItem_1 = new PurchaseInvoiceItemBuilder(this.Session)
-                .WithDescription("first item")
-                .WithPart(good_1)
-                .WithAssignedUnitPrice(3000)
-                .WithQuantity(1)
-                .WithMessage(@"line1
-line2")
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
+            var purchaseInvoicePartItem = new PurchaseInvoiceItemBuilder(this.Session).WithPartItemDefaults().Build();
 
-            var purchaseInvoiceItem_2 = new PurchaseInvoiceItemBuilder(this.Session)
-                .WithDescription("second item")
-                .WithAssignedUnitPrice(2000)
-                .WithQuantity(2)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
+            var purchaseInvoiceProductItem = new PurchaseInvoiceItemBuilder(this.Session).WithProductItemDefaults().Build();
 
-            var purchaseInvoiceItem_3 = new PurchaseInvoiceItemBuilder(this.Session)
-                .WithDescription("Service")
-                .WithAssignedUnitPrice(100)
-                .WithQuantity(1)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Service)
-                .Build();
+            var purchaseInvoiceNotPartOrProductItem = new PurchaseInvoiceItemBuilder(this.Session).WithDefaults().Build();
 
-            var purchaseInvoice = new PurchaseInvoiceBuilder(this.Session)
-                .WithBilledTo(allors)
-                .WithInvoiceNumber("1")
-                .WithBilledFrom(allors.ActiveSuppliers.First)
-                .WithPurchaseInvoiceItem(purchaseInvoiceItem_1)
-                .WithPurchaseInvoiceItem(purchaseInvoiceItem_2)
-                .WithPurchaseInvoiceItem(purchaseInvoiceItem_3)
-                .WithCustomerReference("a reference number")
-                .WithDescription("Purchase of 1 used Aircraft Towbar")
-                .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
-                .WithVatRegime(new VatRegimes(this.Session).Assessable21)
-                .Build();
+            var purchaseInvoice = new PurchaseInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors).Build();
 
             allors.CreatePurchaseOrderWithBothItems(faker);
 
@@ -427,22 +398,9 @@ line2")
             // NonSerialized RFQ with NonSerialized Unified-Good
             var nonSerializedRFQ = new RequestForQuoteBuilder(this.Session).WithNonSerializedDefaults(allors).Build();
 
-            var quote = new ProductQuoteBuilder(this.Session)
-                .WithIssuer(allors)
-                .WithDescription("quote")
-                .WithReceiver(allors.ActiveCustomers.First)
-                .WithFullfillContactMechanism(allors.ActiveCustomers.First.GeneralCorrespondence)
-                .Build();
+            var quote = new ProductQuoteBuilder(this.Session).WithSerializedDefaults(allors).Build();
 
             this.Session.Derive();
-
-            var quoteItem = new QuoteItemBuilder(this.Session)
-                .WithProduct(new Goods(this.Session).Extent().First)
-                .WithQuantity(1)
-                .WithAssignedUnitPrice(10)
-                .Build();
-
-            quote.AddQuoteItem(quoteItem);
 
             this.Session.Derive();
 
