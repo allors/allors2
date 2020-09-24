@@ -5,14 +5,19 @@
 
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
     [Id("a12e5d28-e431-48d3-bbb1-8a2f5e3c4991")]
     #endregion
-    public partial class WorkEffortPartStandard : Object
+    public partial class WorkEffortPartStandard : Period,  Deletable
     {
         #region inherited properties
+        public DateTime FromDate { get; set; }
+
+        public DateTime ThroughDate { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -27,7 +32,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Part Part { get; set; }
 
         #region Allors
@@ -37,6 +42,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal EstimatedCost { get; set; }
 
         #region Allors
@@ -44,8 +50,18 @@ namespace Allors.Repository
         [AssociationId("5e99179e-4abd-409b-b091-263037554a6a")]
         [RoleId("c63106ff-fe33-40fb-acb6-e7fb9907eb18")]
         #endregion
+        [Workspace]
+        public int Quantity { get; set; }
 
-        public int EstimatedQuantity { get; set; }
+        #region Allors
+        [Id("8fc60462-287d-47df-a6d2-6ac857f2afbb")]
+        [AssociationId("75ec4e48-d691-4673-814f-37b3cb74dd3d")]
+        [RoleId("522b903b-9e48-4aa2-beef-da868b717448")]
+        #endregion
+        [Derived]
+        [Size(-1)]
+        [Workspace]
+        public string PartDisplayName { get; set; }
 
         #region inherited methods
 
@@ -63,7 +79,8 @@ namespace Allors.Repository
 
         public void OnPostDerive() { }
 
-        #endregion
+        public void Delete() { }
 
+        #endregion
     }
 }
