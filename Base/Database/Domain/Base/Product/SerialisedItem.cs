@@ -121,8 +121,9 @@ namespace Allors.Domain
             if (!method.Result.HasValue)
             {
                 this.PurchaseOrder = this.PurchaseOrderItemsWhereSerialisedItem
-                    .LastOrDefault(v => v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem)
-                                        && v.ExistOrderWhereValidOrderItem
+                    .LastOrDefault(v => v.ExistOrderWhereValidOrderItem
+                                        && (v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem)
+                                            || v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).ProductItem))
                                         && (((PurchaseOrder)v.OrderWhereValidOrderItem).PurchaseOrderState.Equals(new PurchaseOrderStates(this.Session()).Sent)
                                             || ((PurchaseOrder)v.OrderWhereValidOrderItem).PurchaseOrderState.Equals(new PurchaseOrderStates(this.Session()).Completed)
                                             || ((PurchaseOrder)v.OrderWhereValidOrderItem).PurchaseOrderState.Equals(new PurchaseOrderStates(this.Session()).Finished)))?
@@ -137,8 +138,9 @@ namespace Allors.Domain
             if (!method.Result.HasValue)
             {
                 this.PurchaseInvoice = this.PurchaseInvoiceItemsWhereSerialisedItem
-                    .LastOrDefault(v => v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem)
-                                        && v.ExistInvoiceWhereValidInvoiceItem
+                    .LastOrDefault(v => v.ExistInvoiceWhereValidInvoiceItem
+                                            && (v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem)
+                                            || v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).ProductItem))
                                         && (((PurchaseInvoice)v.InvoiceWhereValidInvoiceItem).PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Session()).NotPaid)
                                             || ((PurchaseInvoice)v.InvoiceWhereValidInvoiceItem).PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Session()).PartiallyPaid)
                                             || ((PurchaseInvoice)v.InvoiceWhereValidInvoiceItem).PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Session()).Paid)))?
@@ -154,7 +156,8 @@ namespace Allors.Domain
             {
                 this.PurchasePrice = this.PurchaseInvoiceItemsWhereSerialisedItem
                     .LastOrDefault(v => v.ExistInvoiceWhereValidInvoiceItem
-                                        && v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem))?
+                                        && (v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem)
+                                            || v.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).ProductItem)))?
                     .UnitPrice ?? 0M;
 
                 this.RemoveAssignedPurchasePrice();

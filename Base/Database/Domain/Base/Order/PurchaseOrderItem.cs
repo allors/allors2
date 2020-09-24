@@ -130,11 +130,11 @@ namespace Allors.Domain
             {
                 if (this.IsReceivable)
                 {
-                    this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).Na;
+                    this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).NotReceived;
                 }
                 else
                 {
-                    this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).NotReceived;
+                    this.PurchaseOrderItemShipmentState = new PurchaseOrderItemShipmentStates(this.Strategy.Session).Na;
                 }
             }
 
@@ -466,7 +466,9 @@ namespace Allors.Domain
         {
             if (!method.Result.HasValue)
             {
-                this.IsReceivable = this.ExistPart && this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem);
+                this.IsReceivable = this.ExistPart
+                    && (this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).PartItem)
+                        || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Session()).ProductItem));
 
                 method.Result = true;
             }
