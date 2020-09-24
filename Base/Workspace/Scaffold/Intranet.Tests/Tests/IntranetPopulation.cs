@@ -453,11 +453,7 @@ line2")
 
             this.Session.Derive();
 
-            var salesOrderItem = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good_1)
-                .WithQuantityOrdered(1)
-                .WithAssignedUnitPrice(10)
-                .Build();
+            var salesOrderItem = new SalesOrderItemBuilder(this.Session).WithNonSerialisedProductItemDefaults().Build();
 
             salesOrder.AddSalesOrderItem(salesOrderItem);
 
