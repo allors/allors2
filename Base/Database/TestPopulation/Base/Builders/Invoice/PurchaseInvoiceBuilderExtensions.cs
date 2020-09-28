@@ -66,6 +66,7 @@ namespace Allors.Domain.TestPopulation
             var purchaseInvoiceItem_Defaullt = new PurchaseInvoiceItemBuilder(@this.Session).WithDefaults().Build();
             var purchaseInvoiceItem_Product = new PurchaseInvoiceItemBuilder(@this.Session).WithProductItemDefaults().Build();
             var purchaseInvoiceItem_Part = new PurchaseInvoiceItemBuilder(@this.Session).WithPartItemDefaults().Build();
+            var purchaseInvoiceType = faker.Random.ListItem(@this.Session.Extent<PurchaseInvoiceType>());
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
@@ -81,6 +82,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipToCustomer(customer);
             @this.WithShipToCustomerAddress(customer.ShippingAddress);
             @this.WithShipToCustomerContactPerson(customer.CurrentContacts.FirstOrDefault());
+            @this.WithPurchaseInvoiceType(purchaseInvoiceType);
             @this.WithBillToCustomerPaymentMethod(paymentMethod);
             @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Defaullt);
             @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Product);

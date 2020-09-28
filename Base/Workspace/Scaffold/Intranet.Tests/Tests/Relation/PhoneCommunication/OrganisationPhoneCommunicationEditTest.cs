@@ -8,7 +8,6 @@ namespace Tests.PhoneCommunicationTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
-    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using libs.angular.material.@base.src.export.objects.organisation.list;

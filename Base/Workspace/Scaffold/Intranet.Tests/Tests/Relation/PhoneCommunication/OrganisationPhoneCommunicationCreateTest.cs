@@ -8,7 +8,6 @@ namespace Tests.PhoneCommunicationTests
     using System.Linq;
     using Allors;
     using Allors.Domain;
-    using Allors.Domain.TestPopulation;
     using Allors.Meta;
     using Components;
     using libs.angular.material.@base.src.export.objects.organisation.list;
@@ -60,12 +59,12 @@ namespace Tests.PhoneCommunicationTests
         public void Create()
         {
             var allors = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var employee = allors.ActiveEmployees.First;
+            var employee = allors.ActiveEmployees.FirstOrDefault();
 
             var before = new PhoneCommunications(this.Session).Extent().ToArray();
 
             var organisation = allors.ActiveCustomers.First(v => v.GetType().Name == typeof(Organisation).Name);
-            var contact = organisation.CurrentContacts.First;
+            var contact = organisation.CurrentContacts.FirstOrDefault();
 
             this.organisations.Table.DefaultAction(organisation);
             var phoneCommunication = new OrganisationOverviewComponent(this.organisations.Driver).CommunicationeventOverviewPanel.Click().CreatePhoneCommunication();
