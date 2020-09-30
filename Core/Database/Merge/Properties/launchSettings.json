@@ -2,8 +2,8 @@
   "profiles": {
     "Merge": {
       "commandName": "Project",
-      "commandLineArgs": "Resources\\Core Resources\\Custom Resources",
-      "workingDirectory": "C:\\Users\\KoenVanExem\\Documents\\GitHub\\allors2\\Core\\Database"
+      "commandLineArgs": "allors\\core\\database\\Resources\\Core allors\\base\\database\\Resources\\Base custom\\database\\resources\\custom custom\\database\\resources",
+      "workingDirectory": "C:\\Users\\MartienvKnippenberg\\source\\Repos\\Aviaco"
     }
   }
 }

@@ -16,9 +16,10 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.FixedAssetAssignments = workTask.WorkEffortFixedAssetAssignmentsWhereAssignment.Select(v => new FixedAssetAssignmentModel(v)).ToArray();
 
             this.PurchaseOrderItems = workTask.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment.Select(v => new PurchaseOrderItemAssignmentModel(v)).ToArray();
-            this.InventoryAssignments = workTask.WorkEffortInventoryAssignmentsWhereAssignment.Select(v => new InventoryAssignmentModel(v)).ToArray();
-            this.TimeEntries = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Select(v => new TimeEntryModel(v)).ToArray();
+            this.InventoryAssignments = workTask.WorkEffortInventoryAssignmentsWhereAssignment.Where(v => v.DerivedBillableQuantity > 0).Select(v => new InventoryAssignmentModel(v)).ToArray();
+            this.TimeEntries = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>().Where(v => v.IsBillable).Select(v => new TimeEntryModel(v)).ToArray();
             this.TimeEntriesByBillingRate = workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
+                .Where(v => v.IsBillable)
                 .GroupBy(v => v.BillingRate)
                 .Select(v => new TimeEntryByBillingRateModel(v))
                 .ToArray();

@@ -350,6 +350,12 @@ namespace Allors.Domain
                 billing.Delete();
             }
 
+            foreach (TimeEntryBilling billing in this.TimeEntryBillingsWhereInvoiceItem)
+            {
+                billing.TimeEntry.WorkEffort.DerivationTrigger = Guid.NewGuid();
+                billing.Delete();
+            }
+
             foreach (ServiceEntryBilling billing in this.ServiceEntryBillingsWhereInvoiceItem)
             {
                 billing.ServiceEntry.DerivationTrigger = Guid.NewGuid();

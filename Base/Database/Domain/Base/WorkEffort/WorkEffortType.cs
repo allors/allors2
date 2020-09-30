@@ -5,6 +5,7 @@
 
 namespace Allors.Domain
 {
+    using System.Linq;
     using Allors.Meta;
 
     public partial class WorkEffortType
@@ -14,6 +15,14 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             derivation.Validation.AssertExists(this, M.WorkEffortType.Description);
+
+            this.CurrentWorkEffortPartStandards = this.WorkEffortPartStandards
+                .Where(v => v.FromDate <= this.Session().Now() && (!v.ExistThroughDate || v.ThroughDate >= this.Session().Now()))
+                .ToArray();
+
+            this.InactiveWorkEffortPartStandards = this.WorkEffortPartStandards
+                .Except(this.CurrentWorkEffortPartStandards)
+                .ToArray();
         }
     }
 }

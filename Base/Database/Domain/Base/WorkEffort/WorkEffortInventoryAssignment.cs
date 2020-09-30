@@ -12,6 +12,20 @@ namespace Allors.Domain
 
     public partial class WorkEffortInventoryAssignment
     {
+        public void BaseOnPreDerive(ObjectOnPreDerive method)
+        {
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (iteration.IsMarked(this) || changeSet.IsCreated(this) || changeSet.HasChangedRoles(this))
+            {
+                if (this.ExistAssignment)
+                {
+                    iteration.AddDependency(this.Assignment, this);
+                    iteration.Mark(this.Assignment);
+                }
+            }
+        }
+
         public void BaseOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -62,6 +76,7 @@ namespace Allors.Domain
                 this.Assignment.ResetPrintDocument();
             }
         }
+
         public void BaseDelete(DeletableDelete method)
         {
             var session = this.strategy.Session;

@@ -87,26 +87,24 @@ export class TimeEntryOverviewPanelComponent extends TestScope implements OnInit
 
     this.panel.onPull = (pulls) => {
 
-      if (this.panel.isCollapsed) {
-        const { pull, x } = this.metaService;
-        const id = this.panel.manager.id;
+      const { pull, x } = this.metaService;
+      const id = this.panel.manager.id;
 
-        pulls.push(
-          pull.WorkEffort({
-            object: id,
-            fetch: {
-              ServiceEntriesWhereWorkEffort: {
-                include: {
-                  TimeEntry_Worker: x
-                }
+      pulls.push(
+        pull.WorkEffort({
+          object: id,
+          fetch: {
+            ServiceEntriesWhereWorkEffort: {
+              include: {
+                TimeEntry_Worker: x
               }
             }
-          }),
-          pull.WorkEffort({
-            object: id,
-          }),
-        );
-      }
+          }
+        }),
+        pull.WorkEffort({
+          object: id,
+        }),
+      );
     };
 
     this.panel.onPulled = (loaded) => {

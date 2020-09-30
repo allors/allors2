@@ -24,26 +24,13 @@ namespace Allors.Domain.Print.WorkTaskModel
             this.ContactName = workTask.ContactPerson?.PartyName;
             this.ContactTelephone = workTask.ContactPerson?.CellPhoneNumber?.Description ?? workTask.ContactPerson?.GeneralPhoneNumber?.Description;
 
-            var totalLabour = Math.Round(workTask.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
-                .Where(v => (v.IsBillable &&
-                            !v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
-                .Sum(v => v.BillingAmount), 2);
+            this.TotalLabour = workTask.TotalLabourRevenue.ToString("N2", new CultureInfo("nl-BE"));
 
-            var totalParts = Math.Round(workTask.WorkEffortInventoryAssignmentsWhereAssignment
-                .Sum(v => v.Quantity * v.UnitSellingPrice), 2);
+            this.TotalParts = workTask.TotalMaterialRevenue.ToString("N2", new CultureInfo("nl-BE"));
 
-            var totalOther = Math.Round(workTask.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment
-                .Sum(v => v.Quantity * v.UnitSellingPrice), 2);
+            this.TotalOther = workTask.TotalSubContractedRevenue.ToString("N2", new CultureInfo("nl-BE"));
 
-            var total = this.TotalLabour + this.TotalParts + this.TotalOther;
-
-            this.TotalLabour = totalLabour.ToString("N2", new CultureInfo("nl-BE"));
-
-            this.TotalParts = totalParts.ToString("N2", new CultureInfo("nl-BE"));
-
-            this.TotalOther = totalOther.ToString("N2", new CultureInfo("nl-BE"));
-
-            this.Total = (totalLabour + totalParts + totalOther).ToString("N2", new CultureInfo("nl-BE"));
+            this.Total = workTask.GrandTotal.ToString("N2", new CultureInfo("nl-BE"));
         }
 
         public string Number { get; }

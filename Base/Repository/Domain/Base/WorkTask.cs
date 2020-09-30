@@ -60,7 +60,15 @@ namespace Allors.Repository
 
         public decimal TotalCost { get; set; }
 
+        public decimal TotalLabourRevenue { get; set; }
+
+        public decimal TotalMaterialRevenue { get; set; }
+
+        public decimal TotalSubContractedRevenue { get; set; }
+
         public decimal TotalRevenue { get; set; }
+
+        public decimal GrandTotal { get; set; }
 
         public WorkEffort[] Precendencies { get; set; }
 

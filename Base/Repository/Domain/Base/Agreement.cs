@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("4deca253-7135-4ceb-b984-6adaf1515630")]
     #endregion
-    public partial interface Agreement : UniquelyIdentifiable, Period, Object
+    public partial interface Agreement : UniquelyIdentifiable, Period, Deletable
     {
         #region Allors
         [Id("2ddce7b3-c763-45ea-8e1b-5ef8a0ea8e4a")]

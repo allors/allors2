@@ -18,7 +18,15 @@ namespace Allors.R1.Development.Resources
         internal ResourceFile(FileInfo fileInfo)
         {
             this.FileName = fileInfo.Name;
-            this.Document = XDocument.Load(fileInfo.FullName);
+            try
+            {
+                this.Document = XDocument.Load(fileInfo.FullName);
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine(e);
+                throw;
+            }
         }
 
         public string FileName { get; }

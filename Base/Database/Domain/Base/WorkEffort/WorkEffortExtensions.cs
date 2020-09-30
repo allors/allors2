@@ -34,20 +34,6 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
-        {
-            var (iteration, changeSet, derivedObjects) = method;
-
-            if (iteration.ChangeSet.Associations.Contains(@this.Id))
-            {
-                foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
-                {
-                    iteration.AddDependency(inventoryAssignment, @this);
-                    iteration.Mark(inventoryAssignment);
-                }
-            }
-        }
-
         public static void BaseOnDerive(this WorkEffort @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -366,13 +352,14 @@ namespace Allors.Domain
         {
             if (!method.Result.HasValue)
             {
-                var totalLabourRevenue = Math.Round(@this.BillableTimeEntries().Sum(v => v.BillingAmount), 2);
-                var totalMaterialRevenue = Math.Round(@this.WorkEffortInventoryAssignmentsWhereAssignment.Sum(v => v.Quantity * v.UnitSellingPrice), 2);
-                var totalSubContractedrevenue = Math.Round(@this.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment.Sum(v => v.Quantity * v.UnitSellingPrice), 2);
-                var totalRevenue = Math.Round(totalLabourRevenue + totalMaterialRevenue + totalSubContractedrevenue, 2);
+                ((WorkEffortDerivedRoles)@this).TotalLabourRevenue = Math.Round(@this.BillableTimeEntries().Sum(v => v.BillingAmount), 2);
+                ((WorkEffortDerivedRoles)@this).TotalMaterialRevenue = Math.Round(@this.WorkEffortInventoryAssignmentsWhereAssignment.Where(v => v.DerivedBillableQuantity > 0).Sum(v => v.DerivedBillableQuantity.Value * v.UnitSellingPrice), 2);
+                ((WorkEffortDerivedRoles)@this).TotalSubContractedRevenue = Math.Round(@this.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment.Sum(v => v.Quantity * v.UnitSellingPrice), 2);
+                var totalRevenue = Math.Round(@this.TotalLabourRevenue + @this.TotalMaterialRevenue + @this.TotalSubContractedRevenue, 2);
 
                 method.Result = true;
 
+                ((WorkEffortDerivedRoles)@this).GrandTotal = totalRevenue;
                 ((WorkEffortDerivedRoles)@this).TotalRevenue = @this.Customer.Equals(@this.ExecutedBy) ? 0M : totalRevenue;
             }
         }

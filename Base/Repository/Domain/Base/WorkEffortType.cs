@@ -5,14 +5,20 @@
 
 namespace Allors.Repository
 {
+    using System;
     using Allors.Repository.Attributes;
 
     #region Allors
     [Id("7d2d9452-f250-47c3-81e0-4e1c0655cc86")]
     #endregion
-    public partial class WorkEffortType : Object, Deletable
+    public partial class WorkEffortType : Period, Deletable
     {
         #region inherited properties
+
+        public DateTime FromDate { get; set; }
+
+        public DateTime ThroughDate { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -57,6 +63,26 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public WorkEffortPartStandard[] WorkEffortPartStandards { get; set; }
+
+        #region Allors
+        [Id("39166d93-77b6-4797-b850-f2ed560c60b3")]
+        [AssociationId("b2f28fad-2525-4a19-a3d3-db86c0f1bedf")]
+        [RoleId("d73d9e79-cd03-4f60-a9fd-bbaaaa206f22")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public WorkEffortPartStandard[] CurrentWorkEffortPartStandards { get; set; }
+
+        #region Allors
+        [Id("5e6abad3-2320-490b-a20a-e502cd90af85")]
+        [AssociationId("6b3e1bd4-53b5-4d34-8c44-dc814fd1fa07")]
+        [RoleId("e2abde18-62a3-4ea7-988e-c98e4caa5c9e")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public WorkEffortPartStandard[] InactiveWorkEffortPartStandards { get; set; }
 
         #region Allors
         [Id("df104ec4-6247-4199-bce1-635978fa8ad4")]
@@ -105,6 +131,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Required]
         [Workspace]
         public decimal StandardWorkHours { get; set; }
 
@@ -127,6 +154,26 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Deliverable DeliverableToProduce { get; set; }
+
+        #region Allors
+        [Id("fa6fb36d-bc30-4c0c-9751-50f6e2f925a4")]
+        [AssociationId("f88a9ba1-2a48-4129-b3f3-d107896e415c")]
+        [RoleId("f3d008d5-7438-45f9-877d-31dd8b5245f3")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public int MonthlyTimeInterval { get; set; }
+
+        #region Allors
+        [Id("6dac380c-cdf8-47a0-8b02-a0909aa39a69")]
+        [AssociationId("edc3cd2b-09c3-4199-a57d-7411c0ea10c5")]
+        [RoleId("6586c629-4a86-4ad7-a463-b48420c5b258")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public int OperatingHoursInterval { get; set; }
 
         #region inherited methods
 

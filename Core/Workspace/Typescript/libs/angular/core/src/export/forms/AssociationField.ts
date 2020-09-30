@@ -25,7 +25,11 @@ export abstract class AssociationField extends Field implements AfterViewInit, O
 
   @Input()
   hint: string;
-
+  
+  // tslint:disable-next-line:no-input-rename
+  @Input('label')
+  public assignedLabel: string;
+  
   @ViewChildren(NgModel) private controls: QueryList<NgModel>;
 
   get roleType(): RoleType {
@@ -79,7 +83,7 @@ export abstract class AssociationField extends Field implements AfterViewInit, O
   }
 
   get label(): string | undefined {
-    return humanize(this.associationType.name);
+    return this.assignedLabel ? this.assignedLabel : humanize(this.associationType.name);
   }
 
   public ngAfterViewInit(): void {

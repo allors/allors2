@@ -10,6 +10,7 @@ namespace Allors.R1.Development.Resources
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Runtime.InteropServices.ComTypes;
 
     public class Merger
@@ -25,7 +26,8 @@ namespace Allors.R1.Development.Resources
                 inputDirectory.Refresh();
                 if (inputDirectory.Exists)
                 {
-                    foreach (var inputFile in inputDirectory.GetFiles())
+                    var files = inputDirectory.GetFiles();
+                    foreach (var inputFile in files.Where(v => v.Extension?.ToLower() == ".resx"))
                     {
                         if (!this.resourceFileByFilename.TryGetValue(inputFile.Name, out var resourceFile))
                         {

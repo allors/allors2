@@ -16,8 +16,8 @@ namespace Allors.Domain.Print.WorkTaskModel
             var timeEntries = @group.ToArray();
 
             var billingRate = @group.Key ?? 0.0m;
-            var amountOfTime = timeEntries.Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m);
-            var billingAmount = timeEntries.Sum(v => v.BillingAmount);
+            var amountOfTime = timeEntries.Where(v => v.IsBillable).Sum(v => v.BillableAmountOfTime ?? v.AmountOfTime ?? 0.0m);
+            var billingAmount = timeEntries.Where(v => v.IsBillable).Sum(v => v.BillingAmount);
             var cost = timeEntries.Sum(v => v.Cost);
 
             // Round
