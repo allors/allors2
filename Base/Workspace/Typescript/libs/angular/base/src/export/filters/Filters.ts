@@ -192,19 +192,4 @@ export class Filters {
       roleTypes: [m.WorkEffort.Name],
     });
   }
-
-  static customerRelationshipsFilter(m: Meta, internalOrganisationId: string) {
-    return new SearchFactory({
-      objectType: m.CustomerRelationship,
-      roleTypes: [m.CustomerRelationship.CustomerName],
-      post: (predicate: And) => {
-        predicate.operands.push(
-          new Equals({
-            propertyType: m.CustomerRelationship.InternalOrganisation,
-            object: internalOrganisationId,
-          })
-        );
-      },
-    });
-  }
 }
