@@ -47,9 +47,9 @@ namespace Allors.Domain.TestPopulation
             @this.WithShipToCustomerContactPerson(otherInternalOrganization.CurrentContacts.FirstOrDefault());
             @this.WithPurchaseInvoiceType(purchaseInvoiceType);
             @this.WithBillToCustomerPaymentMethod(paymentMethod);
-            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Defaullt).Build();
-            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Product).Build();
-            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Part).Build();
+            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Defaullt);
+            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Product);
+            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Part);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -61,33 +61,33 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            var customer = internalOrganisation.ActiveCustomers.Where(v => v.GetType().Name == typeof(Organisation).Name).FirstOrDefault();
+            var supplier = internalOrganisation.ActiveSuppliers.Where(v => v.GetType().Name == typeof(Organisation).Name).FirstOrDefault();
 
             var purchaseInvoiceItem_Defaullt = new PurchaseInvoiceItemBuilder(@this.Session).WithDefaults().Build();
             var purchaseInvoiceItem_Product = new PurchaseInvoiceItemBuilder(@this.Session).WithProductItemDefaults().Build();
             var purchaseInvoiceItem_Part = new PurchaseInvoiceItemBuilder(@this.Session).WithPartItemDefaults().Build();
+            var purchaseInvoiceType = faker.Random.ListItem(@this.Session.Extent<PurchaseInvoiceType>());
 
             var paymentMethod = faker.Random.ListItem(@this.Session.Extent<PaymentMethod>());
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
-            @this.WithBilledFrom(customer);
-            @this.WithBilledFromContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
-            @this.WithBilledFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
+            @this.WithBilledFrom(supplier);
+            @this.WithBilledFromContactMechanism(supplier.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
+            @this.WithBilledFromContactPerson(supplier.CurrentContacts.FirstOrDefault());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithBilledTo(internalOrganisation);
-            @this.WithBilledToContactPerson(customer.CurrentContacts.FirstOrDefault());
-            @this.WithShipToCustomer(customer);
-            @this.WithShipToCustomerAddress(customer.ShippingAddress);
-            @this.WithShipToCustomerContactPerson(customer.CurrentContacts.FirstOrDefault());
+            @this.WithBilledToContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
+            @this.WithPurchaseInvoiceType(purchaseInvoiceType);
             @this.WithBillToCustomerPaymentMethod(paymentMethod);
-            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Defaullt).Build();
-            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Product).Build();
-            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Part).Build();
+            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Defaullt);
+            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Product);
+            @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Part);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
+            @this.WithVatRegime(faker.Random.ListItem(@this.Session.Extent<VatRegime>()));
 
             return @this;
         }
