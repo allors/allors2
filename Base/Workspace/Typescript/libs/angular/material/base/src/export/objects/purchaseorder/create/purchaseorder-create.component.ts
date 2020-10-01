@@ -144,8 +144,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
   public save(): void {
 
-    this.order.StoredInFacility = this.selectedFacility;
-
     this.allors.context
       .save()
       .subscribe(() => {
