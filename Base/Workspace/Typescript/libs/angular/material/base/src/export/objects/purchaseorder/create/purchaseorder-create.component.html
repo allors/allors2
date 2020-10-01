@@ -162,8 +162,8 @@
       <div class="row">
         <div class="col-md">          
           <div class="row">
-              <a-mat-select class="col" [(ngModel)]="selectedFacility" [object]="order" [roleType]="m.PurchaseOrder.StoredInFacility" [options]="facilities" name="facilityName" placeholder="facility" multiple="false" label="Facility/Storage location" display="Name">
-              </a-mat-select>
+            <a-mat-select class="col" [(ngModel)]="selectedFacility" [object]="order" [roleType]="m.PurchaseOrder.StoredInFacility" [options]="facilities" name="facilityName" placeholder="facility" multiple="false" label="Facility/Storage location" display="Name">
+            </a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addFacility = !addFacility">
               <mat-icon *ngIf="!addFacility">add</mat-icon>
               <mat-icon *ngIf="addFacility">close</mat-icon>
