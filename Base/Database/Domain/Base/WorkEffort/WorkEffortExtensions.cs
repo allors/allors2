@@ -34,6 +34,20 @@ namespace Allors.Domain
             }
         }
 
+        public static void BaseOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
+        {
+            var (iteration, changeSet, derivedObjects) = method;
+
+            if (iteration.ChangeSet.Associations.Contains(@this.Id))
+            {
+                foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
+                {
+                    iteration.AddDependency(inventoryAssignment, @this);
+                    iteration.Mark(inventoryAssignment);
+                }
+            }
+        }
+
         public static void BaseOnDerive(this WorkEffort @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
