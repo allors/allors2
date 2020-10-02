@@ -299,49 +299,10 @@ namespace Tests
 
             this.Session.Derive();
 
-            var administrator = (Person)new UserGroups(this.Session).Administrators.Members.First;
-
-            new FaceToFaceCommunicationBuilder(this.Session)
-                .WithDescription($"Meeting")
-                .WithSubject($"meeting")
-                .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
-                .WithFromParty(allors.ActiveEmployees.First)
-                .WithToParty(allors.ActiveCustomers.First)
-                .WithOwner(administrator)
-                .WithActualStart(DateTime.UtcNow)
-                .Build();
-
-            new EmailCommunicationBuilder(this.Session)
-                .WithDescription($"Email")
-                .WithSubject($"email")
-                .WithFromParty(allors.ActiveEmployees.First)
-                .WithToParty(allors.ActiveCustomers.First)
-                .WithFromEmail(allors.ActiveEmployees.First.GeneralEmail)
-                .WithToEmail(allors.ActiveCustomers.First.GeneralEmail)
-                .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
-                .WithOwner(administrator)
-                .WithActualStart(DateTime.UtcNow)
-                .Build();
-
-            new LetterCorrespondenceBuilder(this.Session)
-                .WithDescription($"Letter")
-                .WithSubject($"letter")
-                .WithFromParty(administrator)
-                .WithToParty(allors.ActiveCustomers.First)
-                .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
-                .WithOwner(administrator)
-                .WithActualStart(DateTime.UtcNow)
-                .Build();
-
-            new PhoneCommunicationBuilder(this.Session)
-                .WithDescription($"Phone")
-                .WithSubject($"phone")
-                .WithFromParty(administrator)
-                .WithToParty(allors.ActiveCustomers.First)
-                .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
-                .WithOwner(administrator)
-                .WithActualStart(DateTime.UtcNow)
-                .Build();
+            new FaceToFaceCommunicationBuilder(this.Session).WithDefaults(allors).Build();
+            new EmailCommunicationBuilder(this.Session).WithDefaults(allors).Build();
+            new LetterCorrespondenceBuilder(this.Session).WithDefaults(allors).Build();
+            new PhoneCommunicationBuilder(this.Session).WithDefaults(allors).Build();
 
             new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(allors).Build();
             new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
