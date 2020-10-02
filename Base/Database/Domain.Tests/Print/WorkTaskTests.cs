@@ -44,6 +44,8 @@ namespace Allors.Domain.Print
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
             var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
 
+            this.Session.Derive(true);
+
             var salesOrderItem = salesOrder.SalesOrderItems.First;
             ((SalesOrderDerivedRoles)salesOrder).AddValidOrderItem(salesOrderItem);
 
@@ -57,6 +59,8 @@ namespace Allors.Domain.Print
             var inventoryAssignment1 = this.CreateInventoryAssignment(workOrder, part1, 11);
             var inventoryAssignment2 = this.CreateInventoryAssignment(workOrder, part2, 12);
             var inventoryAssignment3 = this.CreateInventoryAssignment(workOrder, part3, 13);
+
+            this.Session.Derive(true);
 
             //// Work Effort Time Entries
             var yesterday = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(-1));
@@ -103,6 +107,8 @@ namespace Allors.Domain.Print
                 .WithReason(new InventoryTransactionReasons(this.Session).IncomingShipment)
                 .WithQuantity(quantity)
                 .Build();
+
+            this.Session.Derive();
 
             return new WorkEffortInventoryAssignmentBuilder(this.Session)
                 .WithAssignment(workOrder)

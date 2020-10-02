@@ -17,7 +17,7 @@ namespace Allors.Domain
 
         public static TimeEntry[] BillableTimeEntries(this WorkEffort @this) => @this.ServiceEntriesWhereWorkEffort.OfType<TimeEntry>()
             .Where(v => v.IsBillable
-                        && (!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue)
+                        && ((!v.BillableAmountOfTime.HasValue && v.AmountOfTime.HasValue) || v.BillableAmountOfTime.HasValue))
             .Select(v => v)
             .ToArray();
 
@@ -34,19 +34,19 @@ namespace Allors.Domain
             }
         }
 
-        public static void BaseOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
-        {
-            var (iteration, changeSet, derivedObjects) = method;
+        //public static void BaseOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
+        //{
+        //    var (iteration, changeSet, derivedObjects) = method;
 
-            if (iteration.ChangeSet.Associations.Contains(@this.Id))
-            {
-                foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
-                {
-                    iteration.AddDependency(inventoryAssignment, @this);
-                    iteration.Mark(inventoryAssignment);
-                }
-            }
-        }
+        //    if (iteration.ChangeSet.Associations.Contains(@this.Id))
+        //    {
+        //        foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
+        //        {
+        //            iteration.AddDependency(inventoryAssignment, @this);
+        //            iteration.Mark(inventoryAssignment);
+        //        }
+        //    }
+        //}
 
         public static void BaseOnDerive(this WorkEffort @this, ObjectOnDerive method)
         {
@@ -91,6 +91,19 @@ namespace Allors.Domain
             }
 
             @this.DeriveCanInvoice();
+
+            foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
+            {
+                foreach (InventoryTransactionReason createReason in @this.WorkEffortState.InventoryTransactionReasonsToCreate)
+                {
+                    inventoryAssignment.SyncInventoryTransactions(derivation, inventoryAssignment.InventoryItem, inventoryAssignment.Quantity, createReason, false);
+                }
+
+                foreach (InventoryTransactionReason cancelReason in @this.WorkEffortState.InventoryTransactionReasonsToCancel)
+                {
+                    inventoryAssignment.SyncInventoryTransactions(derivation, inventoryAssignment.InventoryItem, inventoryAssignment.Quantity, cancelReason, true);
+                }
+            }
         }
 
         public static void BaseOnPostDerive(this WorkEffort @this, ObjectOnPostDerive method)
