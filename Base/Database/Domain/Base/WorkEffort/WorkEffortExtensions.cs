@@ -34,20 +34,6 @@ namespace Allors.Domain
             }
         }
 
-        //public static void BaseOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
-        //{
-        //    var (iteration, changeSet, derivedObjects) = method;
-
-        //    if (iteration.ChangeSet.Associations.Contains(@this.Id))
-        //    {
-        //        foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
-        //        {
-        //            iteration.AddDependency(inventoryAssignment, @this);
-        //            iteration.Mark(inventoryAssignment);
-        //        }
-        //    }
-        //}
-
         public static void BaseOnDerive(this WorkEffort @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -315,7 +301,7 @@ namespace Allors.Domain
                     .WithInvoiceItemType(new InvoiceItemTypes(session).PartItem)
                     .WithPart(part)
                     .WithAssignedUnitPrice(workEffortInventoryAssignment.UnitSellingPrice)
-                    .WithQuantity(workEffortInventoryAssignment.DerivedBillableQuantity ?? workEffortInventoryAssignment.Quantity)
+                    .WithQuantity(workEffortInventoryAssignment.DerivedBillableQuantity)
                     .WithCostOfGoodsSold(workEffortInventoryAssignment.CostOfGoodsSold)
                     .Build();
 
@@ -380,7 +366,7 @@ namespace Allors.Domain
             if (!method.Result.HasValue)
             {
                 ((WorkEffortDerivedRoles)@this).TotalLabourRevenue = Math.Round(@this.BillableTimeEntries().Sum(v => v.BillingAmount), 2);
-                ((WorkEffortDerivedRoles)@this).TotalMaterialRevenue = Math.Round(@this.WorkEffortInventoryAssignmentsWhereAssignment.Where(v => v.DerivedBillableQuantity > 0).Sum(v => v.DerivedBillableQuantity.Value * v.UnitSellingPrice), 2);
+                ((WorkEffortDerivedRoles)@this).TotalMaterialRevenue = Math.Round(@this.WorkEffortInventoryAssignmentsWhereAssignment.Where(v => v.DerivedBillableQuantity > 0).Sum(v => v.DerivedBillableQuantity * v.UnitSellingPrice), 2);
                 ((WorkEffortDerivedRoles)@this).TotalSubContractedRevenue = Math.Round(@this.WorkEffortPurchaseOrderItemAssignmentsWhereAssignment.Sum(v => v.Quantity * v.UnitSellingPrice), 2);
                 var totalRevenue = Math.Round(@this.TotalLabourRevenue + @this.TotalMaterialRevenue + @this.TotalSubContractedRevenue, 2);
 

@@ -50,8 +50,11 @@ namespace Allors.Repository
         [AssociationId("5e99179e-4abd-409b-b091-263037554a6a")]
         [RoleId("c63106ff-fe33-40fb-acb6-e7fb9907eb18")]
         #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Required]
         [Workspace]
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         #region Allors
         [Id("8fc60462-287d-47df-a6d2-6ac857f2afbb")]

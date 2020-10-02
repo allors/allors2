@@ -91,6 +91,7 @@ namespace Allors.Repository
         [AssociationId("784e4f16-41d7-4766-a406-0656cdd09f79")]
         [RoleId("52545e25-81bb-4fe7-aee0-4e0756e6320b")]
         #endregion
+        [Required]
         [Derived]
         [Workspace]
         public decimal DerivedBillableQuantity { get; set; }
@@ -188,6 +189,14 @@ namespace Allors.Repository
         [Id("8f817fcb-1655-4d54-9a68-844d8a7f5017")]
         #endregion
         public void CalculateSellingPrice()
+        {
+        }
+
+        #region Allors
+        [Id("cdcec858-2046-44dd-afcf-9308d8b87213")]
+        #endregion
+        [Workspace]
+        public void CalculateBillableQuantity()
         {
         }
     }
