@@ -37,9 +37,7 @@ namespace Tests
             var be = new Countries(this.Session).FindBy(M.Country.IsoCode, "BE");
             var us = new Countries(this.Session).FindBy(M.Country.IsoCode, "US");
 
-            var email2 = new EmailAddressBuilder(this.Session)
-                .WithElectronicAddressString("recipient@acme.com")
-                .Build();
+            var email2 = new EmailAddressBuilder(this.Session).WithDefaults().Build();
 
             var allorsLogo = this.DataPath + @"\www\admin\images\logo.png";
 
@@ -304,10 +302,10 @@ namespace Tests
             new LetterCorrespondenceBuilder(this.Session).WithDefaults(allors).Build();
             new PhoneCommunicationBuilder(this.Session).WithDefaults(allors).Build();
 
-            new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(allors).Build();
-            new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
-            new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(allors).Build();
-            new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(allors).Build();
+            var salesOrder_1 = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(allors).Build();
+            var salesOrder_2 = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
+            var salesOrder_3 = new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(allors).Build();
+            var salesOrder_4 = new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(allors).Build();
 
             new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors).Build();
 
@@ -359,18 +357,9 @@ namespace Tests
 
             this.Session.Derive();
 
-            this.Session.Derive();
+            var salesOrderItem_1 = new SalesOrderItemBuilder(this.Session).WithNonSerialisedProductItemDefaults().Build();
 
-            var salesOrder = new SalesOrderBuilder(this.Session)
-                .WithTakenBy(allors)
-                .WithShipToCustomer(allors.ActiveCustomers.First)
-                .Build();
-
-            this.Session.Derive();
-
-            var salesOrderItem = new SalesOrderItemBuilder(this.Session).WithNonSerialisedProductItemDefaults().Build();
-
-            salesOrder.AddSalesOrderItem(salesOrderItem);
+            salesOrder_2.AddSalesOrderItem(salesOrderItem_1);
 
             this.Session.Derive();
 

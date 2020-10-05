@@ -14,7 +14,7 @@ namespace Allors.Domain.TestPopulation
             var faker = @this.Session.Faker();
 
             @this.WithElectronicAddressString(faker.Internet.Email());
-            @this.WithDescription(faker.Lorem.Sentence());
+            @this.WithDescription(faker.Lorem.Sentence(5));
 
             return @this;
         }
