@@ -65,7 +65,6 @@ namespace Allors.Domain
             @this.DeriveActualHoursAndDates();
 
             if (!@this.ExistWorkEffortBillingsWhereWorkEffort
-                && !@this.ExistServiceEntriesWhereWorkEffort
                 && @this.WorkEffortState.IsFinished)
             {
                 @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
@@ -316,8 +315,10 @@ namespace Allors.Domain
 
         private static void DeriveCanInvoice(this WorkEffort @this)
         {
+            // when proforma invoice is deleted then WorkEffortBillingsWhereWorkEffort do not exist and WorkEffortState is Finished
             if (!(@this.ExistWorkEffortBillingsWhereWorkEffort && @this.ExistServiceEntriesWhereWorkEffort)
-                && @this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
+                && (@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed)
+                    || @this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Finished)))
             {
                 @this.DerivedRoles.CanInvoice = true;
 
