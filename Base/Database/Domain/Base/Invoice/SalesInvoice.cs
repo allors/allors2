@@ -592,6 +592,12 @@ namespace Allors.Domain
             {
                 this.AddDeniedPermission(deletePermission);
             }
+
+            var creditPermission = new Permissions(this.Strategy.Session).Get(this.Meta.ObjectType, this.Meta.Credit, Operations.Execute);
+            if (this.SalesInvoiceType.Equals(new SalesInvoiceTypes(this.strategy.Session).CreditNote))
+            {
+                this.AddDeniedPermission(creditPermission);
+            }
         }
 
         public void BaseSend(SalesInvoiceSend method)
