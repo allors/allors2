@@ -21,6 +21,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class SerialisedInventoryItemComponent extends TestScope implements OnInit {
+  serialisedItem: SerialisedItem;
 
   @HostBinding('class.expanded-panel') get expandedPanelClass() {
     return this.panel.isExpanded;
@@ -139,11 +140,11 @@ export class SerialisedInventoryItemComponent extends TestScope implements OnIni
 
       this.panel.onPulled = (loaded) => {
 
-        const serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
+        this.serialisedItem = loaded.objects.SerialisedItem as SerialisedItem;
         const inventoryObjects = loaded.collections[inventoryPullName] as SerialisedInventoryItem[] ?? [];
 
         const serialisedItemobjects = loaded.collections[serialiseditemPullName] as SerialisedInventoryItem[] ?? [];
-        const serialisedItemobjectsforPart = serialisedItemobjects.filter(v => v.Part === serialisedItem?.PartWhereSerialisedItem)
+        const serialisedItemobjectsforPart = serialisedItemobjects.filter(v => v.Part === this.serialisedItem?.PartWhereSerialisedItem)
 
         this.objects = inventoryObjects.concat(serialisedItemobjectsforPart);
 

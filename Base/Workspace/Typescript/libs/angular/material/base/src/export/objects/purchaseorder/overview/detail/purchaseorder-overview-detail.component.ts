@@ -34,7 +34,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
   vatRegimes: VatRegime[];
   internalOrganisation: Organisation;
   facilities: Facility[];
-  selectedFacility: Facility;
   addFacility = false;
 
   addSupplier = false;
@@ -155,7 +154,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
         this.allors.context.reset();
 
         this.order = loaded.objects.PurchaseOrder as PurchaseOrder;
-        this.selectedFacility = this.order.StoredInFacility;
 
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
@@ -184,10 +182,6 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
   public save(): void {
 
-    if(this.order.StoredInFacility !== this.selectedFacility) {
-      this.order.StoredInFacility = this.selectedFacility;
-    }
-
     this.allors.context
       .save()
       .subscribe(() => {
@@ -200,7 +194,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
   public facilityAdded(facility: Facility): void {
     this.facilities.push(facility);
-    this.selectedFacility = facility;
+    this.order.StoredInFacility = facility;
 
     this.allors.context.session.hasChanges = true;
   }
