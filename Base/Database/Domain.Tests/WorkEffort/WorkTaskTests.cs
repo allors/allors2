@@ -409,8 +409,19 @@ namespace Allors.Domain
             var frequencies = new TimeFrequencies(this.Session);
 
             var organisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
-            var customer = new PersonBuilder(this.Session).WithLastName("Customer").Build();
+
+            var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
+            var mechelenAddress = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
+
+            var billToMechelen = new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(mechelenAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
+                .WithUseAsDefault(true)
+                .Build();
+
+            var customer = new OrganisationBuilder(this.Session).WithName("Org1").WithPartyContactMechanism(billToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(organisation).Build();
+
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
             new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
 
@@ -460,11 +471,17 @@ namespace Allors.Domain
 
             employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow);
 
+            childWorkOrder.Complete();
+
+            this.Session.Derive(true);
+
             parentWorkOrder.Complete();
 
             this.Session.Derive(true);
 
             parentWorkOrder.Invoice();
+
+            this.Session.Derive(true);
 
             var salesInvoice = customer.SalesInvoicesWhereBillToCustomer.First;
 

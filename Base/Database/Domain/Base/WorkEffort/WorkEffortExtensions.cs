@@ -64,18 +64,17 @@ namespace Allors.Domain
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();
 
-            if (!@this.ExistWorkEffortBillingsWhereWorkEffort
-                && @this.WorkEffortState.IsFinished)
-            {
-                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
-            }
-
             if (@this.ExistActualStart && @this.WorkEffortState.IsCreated)
             {
                 @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).InProgress;
             }
 
             @this.DeriveCanInvoice();
+
+            if (@this.WorkEffortState.IsFinished && @this.CanInvoice)
+            {
+                @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
+            }
 
             foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
             {
@@ -316,27 +315,14 @@ namespace Allors.Domain
         private static void DeriveCanInvoice(this WorkEffort @this)
         {
             // when proforma invoice is deleted then WorkEffortBillingsWhereWorkEffort do not exist and WorkEffortState is Finished
-            if (!(@this.ExistWorkEffortBillingsWhereWorkEffort && @this.ExistServiceEntriesWhereWorkEffort)
-                && (@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed)
-                    || @this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Finished)))
+            if (@this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed)
+                || @this.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Finished))
             {
                 @this.DerivedRoles.CanInvoice = true;
 
-                if (@this.ExistWorkEffortWhereChild)
+                if (@this.ExistWorkEffortBillingsWhereWorkEffort)
                 {
                     @this.DerivedRoles.CanInvoice = false;
-                }
-
-                if (@this.CanInvoice)
-                {
-                    foreach (WorkEffort child in @this.Children)
-                    {
-                        if (child.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed))
-                        {
-                            @this.DerivedRoles.CanInvoice = false;
-                            break;
-                        }
-                    }
                 }
 
                 if (@this.CanInvoice)
@@ -348,12 +334,30 @@ namespace Allors.Domain
                             @this.DerivedRoles.CanInvoice = false;
                             break;
                         }
+
+                        if (timeEntry.ExistTimeEntryBillingsWhereTimeEntry)
+                        {
+                            @this.DerivedRoles.CanInvoice = false;
+                        }
                     }
                 }
 
-                if (@this.ExistWorkEffortAssignmentRatesWhereWorkEffort && !@this.ExistWorkEffortAssignmentRatesWhereWorkEffort)
+                if (@this.ExistWorkEffortWhereChild)
                 {
                     @this.DerivedRoles.CanInvoice = false;
+                }
+
+                if (@this.CanInvoice)
+                {
+                    foreach (WorkEffort child in @this.Children)
+                    {
+                        if (!(child.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Completed)
+                            || child.WorkEffortState.Equals(new WorkEffortStates(@this.Strategy.Session).Finished)))
+                        {
+                            @this.DerivedRoles.CanInvoice = false;
+                            break;
+                        }
+                    }
                 }
             }
             else
