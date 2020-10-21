@@ -695,7 +695,7 @@ export function configure(metaPopulation: MetaPopulation, internalOrganisationId
       new Equals({ propertyType: m.SalesInvoice.BillToCustomer, parameter: 'billTo' }),
       new Equals({ propertyType: m.SalesInvoice.ShipToEndCustomer, parameter: 'shipToEndCustomer' }),
       new Equals({ propertyType: m.SalesInvoice.BillToEndCustomer, parameter: 'billToEndCustomer' }),
-      new Equals({ propertyType: m.SalesInvoice.IsRepeating, parameter: 'repeating' }),
+      new Equals({ propertyType: m.SalesInvoice.IsRepeatingInvoice, parameter: 'repeating' }),
       new ContainedIn({
         propertyType: m.SalesInvoice.SalesInvoiceItems,
         extent: new Extent({
