@@ -196,7 +196,7 @@ namespace Allors.Domain
 
             this.VatRegime ??= this.BillToCustomer?.VatRegime;
             this.IrpfRegime ??= this.BillToCustomer?.IrpfRegime;
-            this.IsRepeating = this.ExistRepeatingSalesInvoiceWhereSource;
+            this.IsRepeatingInvoice = this.ExistRepeatingSalesInvoiceWhereSource && (!this.RepeatingSalesInvoiceWhereSource.ExistFinalExecutionDate || this.RepeatingSalesInvoiceWhereSource.FinalExecutionDate.Value.Date >= this.Strategy.Session.Now().Date);
 
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
@@ -224,8 +224,6 @@ namespace Allors.Domain
                     }
                 }
             }
-
-            this.IsRepeatingInvoice = this.ExistRepeatingSalesInvoiceWhereSource && (!this.RepeatingSalesInvoiceWhereSource.ExistFinalExecutionDate || this.RepeatingSalesInvoiceWhereSource.FinalExecutionDate.Value.Date >= this.Strategy.Session.Now().Date);
 
             this.SalesInvoiceItems = this.SalesInvoiceItems.ToArray();
 

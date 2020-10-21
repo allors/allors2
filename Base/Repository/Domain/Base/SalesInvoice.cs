@@ -440,6 +440,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Required]
+        [Derived]
         [Workspace]
         public bool IsRepeatingInvoice { get; set; }
 
@@ -490,15 +491,6 @@ namespace Allors.Repository
         [Derived]
         [Workspace]
         public VatClause DerivedVatClause { get; set; }
-
-        #region Allors
-        [Id("c9bcb2a1-25e2-450c-b7e8-adbd530aa68c")]
-        [AssociationId("de3d0ed9-5e67-4b96-8879-e6a8d3fa3f15")]
-        [RoleId("d524f396-562b-4914-9a3d-02bd4a25d1b5")]
-        #endregion
-        [Derived]
-        [Workspace]
-        public bool IsRepeating{ get; set; }
 
         #region Allors
         [Id("55A60B80-2052-47E6-BD41-2AF414ABB885")]

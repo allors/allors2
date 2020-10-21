@@ -55,7 +55,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceItem(salesInvoiceItem_Part);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
-            @this.WithIsRepeatingInvoice(faker.Random.Bool());
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -97,7 +96,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceItem(salesInvoiceItem_Part);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
-            @this.WithIsRepeatingInvoice(faker.Random.Bool());
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -137,7 +135,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceItem(salesInvoiceItem_Part);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
-            @this.WithIsRepeatingInvoice(faker.Random.Bool());
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
@@ -185,7 +182,6 @@ namespace Allors.Domain.TestPopulation
             @this.WithSalesInvoiceItem(salesInvoiceItem_Part);
             @this.WithAdvancePayment(faker.Random.Decimal());
             @this.WithPaymentDays(faker.Random.Int(7, 30));
-            @this.WithIsRepeatingInvoice(faker.Random.Bool());
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
