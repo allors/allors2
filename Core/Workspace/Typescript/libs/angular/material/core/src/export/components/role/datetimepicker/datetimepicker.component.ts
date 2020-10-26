@@ -18,25 +18,25 @@ export class AllorsMaterialDatetimepickerComponent extends RoleField {
   }
 
   get hours(): number | null {
-    return this.model ? new Date(this.model).getUTCHours() : null;
+    return this.model ? new Date(this.model).getHours() : null;
   }
 
   set hours(value: number | null) {
     if (this.model) {
       var date = new Date(this.model);
-      date.setUTCHours(value);
+      date.setHours(value);
       this.model = date.toISOString();
     }
   }
 
   get minutes(): number | null {
-    return this.model ? new Date(this.model).getUTCMinutes() : null;
+    return this.model ? new Date(this.model).getMinutes() : null;
   }
 
   set minutes(value: number | null) {
     if (this.model) {
       var date = new Date(this.model);
-      date.setUTCMinutes(value);
+      date.setMinutes(value);
       this.model = date.toISOString();
     }
   }
