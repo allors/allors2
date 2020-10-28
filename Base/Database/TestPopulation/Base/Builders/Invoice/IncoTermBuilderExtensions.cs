@@ -6,7 +6,7 @@
 
 namespace Allors.Domain.TestPopulation
 {
-    public static partial class SalesOrderItemBuilderExtensions
+    public static partial class IncoTermBuilderExtensions
     {
         public static IncoTermBuilder WithDefaults(this IncoTermBuilder @this)
         {

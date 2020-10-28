@@ -1,3 +1,4 @@
+
 // <copyright file="NonUnifiedGoodBuilderExtensions.cs" company="Allors bvba">
 // Copyright (c) Allors bvba. All rights reserved.
 // Licensed under the LGPL license. See LICENSE file in the project root for full license information.
@@ -10,7 +11,7 @@ namespace Allors.Domain.TestPopulation
 
     public static partial class NonUnifiedGoodBuilderExtensions
     {
-        public static NonUnifiedGoodBuilder WithNonSerialisedPartDefaults(this NonUnifiedGoodBuilder @this, Organisation internalOrganisation)
+        public static NonUnifiedGoodBuilder WithNonSerialisedDefaults(this NonUnifiedGoodBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 
@@ -70,7 +71,7 @@ namespace Allors.Domain.TestPopulation
             return @this;
         }
 
-        public static NonUnifiedGoodBuilder WithSerialisedPartDefaults(this NonUnifiedGoodBuilder @this, Organisation internalOrganisation)
+        public static NonUnifiedGoodBuilder WithSerialisedDefaults(this NonUnifiedGoodBuilder @this, Organisation internalOrganisation)
         {
             var faker = @this.Session.Faker();
 

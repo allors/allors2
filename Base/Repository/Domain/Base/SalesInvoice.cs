@@ -460,6 +460,7 @@ namespace Allors.Repository
         [RoleId("240DD9BB-89A9-4B37-B577-4E3B4D02E466")]
         [Indexed]
         #endregion
+        [Derived]
         [Required]
         [Workspace]
         public int PaymentDays { get; set; }

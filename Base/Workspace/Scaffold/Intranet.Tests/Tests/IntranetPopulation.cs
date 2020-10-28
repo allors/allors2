@@ -246,7 +246,7 @@ namespace Tests
                 .WithReason(new InventoryTransactionReasons(this.Session).Unknown)
                 .Build();
 
-            var good_2 = new NonUnifiedGoodBuilder(this.Session).WithSerialisedPartDefaults(allors).Build();
+            var good_2 = new NonUnifiedGoodBuilder(this.Session).WithSerialisedDefaults(allors).Build();
 
             var serialisedItem1 = new SerialisedItemBuilder(this.Session).WithDefaults(allors).Build();
 
@@ -260,7 +260,7 @@ namespace Tests
                 .WithFacility(allors.StoresWhereInternalOrganisation.First.DefaultFacility)
                 .Build();
 
-            var good_3 = new NonUnifiedGoodBuilder(this.Session).WithNonSerialisedPartDefaults(allors).Build();
+            var good_3 = new NonUnifiedGoodBuilder(this.Session).WithNonSerialisedDefaults(allors).Build();
 
             var good_4 = new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(allors).Build();
 

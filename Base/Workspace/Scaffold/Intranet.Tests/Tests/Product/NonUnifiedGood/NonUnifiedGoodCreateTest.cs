@@ -33,7 +33,7 @@ namespace Tests.NonUnifiedGood
             var before = new NonUnifiedGoods(this.Session).Extent().ToArray();
 
             var internalOrganisation = new Organisations(this.Session).FindBy(M.Organisation.Name, "Allors BVBA");
-            var expected = new NonUnifiedGoodBuilder(this.Session).WithSerialisedPartDefaults(internalOrganisation).Build();
+            var expected = new NonUnifiedGoodBuilder(this.Session).WithSerialisedDefaults(internalOrganisation).Build();
 
             var expectedPart = new NonUnifiedParts(this.Session).Extent().First;
 

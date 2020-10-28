@@ -225,8 +225,6 @@ namespace Allors.Domain
                 }
             }
 
-            this.SalesInvoiceItems = this.SalesInvoiceItems.ToArray();
-
             if (this.ExistBillToCustomer && this.BillToCustomer.ExistLocale)
             {
                 this.Locale = this.BillToCustomer.Locale;
@@ -237,11 +235,6 @@ namespace Allors.Domain
             }
 
             this.PaymentDays = this.PaymentNetDays;
-
-            if (!this.ExistPaymentDays)
-            {
-                this.PaymentDays = 0;
-            }
 
             if (this.ExistInvoiceDate)
             {
@@ -479,11 +472,11 @@ namespace Allors.Domain
 
             if (validInvoiceItems.Any() && !this.SalesInvoiceState.Equals(salesInvoiceStates.ReadyForPosting))
             {
-                if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.IsPaid))
+                if (validInvoiceItems.All(v => v.SalesInvoiceItemState.IsPaid))
                 {
                     this.SalesInvoiceState = salesInvoiceStates.Paid;
                 }
-                else if (this.SalesInvoiceItems.All(v => v.SalesInvoiceItemState.IsNotPaid))
+                else if (validInvoiceItems.All(v => v.SalesInvoiceItemState.IsNotPaid))
                 {
                     this.SalesInvoiceState = salesInvoiceStates.NotPaid;
                 }
@@ -521,17 +514,13 @@ namespace Allors.Domain
 
                 foreach (var invoiceItem in validInvoiceItems)
                 {
-                    if (!invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.CancelledByInvoice) &&
-                        !invoiceItem.SalesInvoiceItemState.Equals(salesInvoiceItemStates.WrittenOff))
+                    if (this.AmountPaid >= this.TotalIncVat)
                     {
-                        if (this.AmountPaid >= this.TotalIncVat)
-                        {
-                            invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.Paid;
-                        }
-                        else
-                        {
-                            invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.PartiallyPaid;
-                        }
+                        invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.Paid;
+                    }
+                    else
+                    {
+                        invoiceItem.SalesInvoiceItemState = salesInvoiceItemStates.PartiallyPaid;
                     }
                 }
             }
@@ -539,17 +528,6 @@ namespace Allors.Domain
             if (this.ExistVatRegime && this.VatRegime.ExistVatClause)
             {
                 this.DerivedVatClause = this.VatRegime.VatClause;
-            }
-            else
-            {
-                if (Equals(this.VatRegime, new VatRegimes(session).ServiceB2B))
-                {
-                    this.DerivedVatClause = new VatClauses(session).ServiceB2B;
-                }
-                else if (Equals(this.VatRegime, new VatRegimes(session).IntraCommunautair))
-                {
-                    this.DerivedVatClause = new VatClauses(session).Intracommunautair;
-                }
             }
 
             this.DerivedVatClause = this.ExistAssignedVatClause ? this.AssignedVatClause : this.DerivedVatClause;

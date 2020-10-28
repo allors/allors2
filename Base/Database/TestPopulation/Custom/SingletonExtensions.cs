@@ -182,9 +182,9 @@ namespace Allors
             var serialisedPart1 = allors.CreateSerialisedNonUnifiedPart(faker);
             var serialisedPart2 = allors.CreateSerialisedNonUnifiedPart(faker);
 
-            var good1 = new NonUnifiedGoodBuilder(@this.Session()).WithNonSerialisedPartDefaults(allors).Build();
+            var good1 = new NonUnifiedGoodBuilder(@this.Session()).WithNonSerialisedDefaults(allors).Build();
 
-            var good2 = new NonUnifiedGoodBuilder(@this.Session()).WithSerialisedPartDefaults(allors).Build();
+            var good2 = new NonUnifiedGoodBuilder(@this.Session()).WithSerialisedDefaults(allors).Build();
 
             var serialisedItem = new SerialisedItemBuilder(@this.Session()).WithDefaults(allors).Build();
             serialisedPart1.AddSerialisedItem(serialisedItem);
@@ -197,9 +197,9 @@ namespace Allors
                 .WithSerialisedInventoryItemState(new SerialisedInventoryItemStates(@this.Session()).Good)
                 .Build();
 
-            var good3 = new NonUnifiedGoodBuilder(@this.Session()).WithNonSerialisedPartDefaults(allors).Build();
+            var good3 = new NonUnifiedGoodBuilder(@this.Session()).WithNonSerialisedDefaults(allors).Build();
 
-            var good4 = new NonUnifiedGoodBuilder(@this.Session()).WithSerialisedPartDefaults(allors).Build();
+            var good4 = new NonUnifiedGoodBuilder(@this.Session()).WithSerialisedDefaults(allors).Build();
 
             var productCategory1 = new ProductCategoryBuilder(@this.Session())
                 .WithInternalOrganisation(allors)
