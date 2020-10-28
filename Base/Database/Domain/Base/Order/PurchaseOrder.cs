@@ -355,6 +355,8 @@ namespace Allors.Domain
                 }
             }
 
+            this.Sync(derivation, validOrderItems);
+
             this.ResetPrintDocument();
         }
 
@@ -668,7 +670,7 @@ namespace Allors.Domain
             }
         }
 
-        private void Sync(IDerivation derivation, SalesOrderItem[] validOrderItems)
+        private void Sync(IDerivation derivation, PurchaseOrderItem[] validOrderItems)
         {
             foreach (var orderItem in validOrderItems)
             {
