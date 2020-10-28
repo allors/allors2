@@ -1,0 +1,10 @@
+{
+  "/allors": {
+    "target": "http://localhost:5000",
+    "secure": false
+  },
+  "/jsnlog.logger": {
+    "target": "http://localhost:5000",
+    "secure": false
+  }
+}

@@ -426,7 +426,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "intranet:build"
+            "browserTarget": "intranet:build",
+            "proxyConfig": "apps/intranet/proxy.conf.json"
           },
           "configurations": {
             "production": {

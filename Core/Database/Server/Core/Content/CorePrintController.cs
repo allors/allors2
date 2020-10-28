@@ -17,18 +17,18 @@ namespace Allors.Server
     using Microsoft.Extensions.Primitives;
     using Microsoft.Net.Http.Headers;
 
-    public abstract partial class CoreMediaController : Controller
+    public abstract partial class CorePrintController : Controller
     {
         protected const int OneYearInSeconds = 60 * 60 * 24 * 356;
 
-        protected CoreMediaController(ISessionService sessionService) => this.Session = sessionService.Session;
+        protected CorePrintController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         protected ISession Session { get; }
 
         [Authorize]
         [AllowAnonymous]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [HttpGet("/print/{idString}/{*name}")]
+        [HttpGet("/allors/print/{idString}/{*name}")]
         public virtual ActionResult Print(string idString, string name)
         {
             if (this.Session.Instantiate(idString) is Printable printable)
@@ -57,7 +57,7 @@ namespace Allors.Server
         [Authorize]
         [AllowAnonymous]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [HttpGet("/media/{idString}/{*name}")]
+        [HttpGet("/allors/media/{idString}/{*name}")]
         public virtual IActionResult RedirectOrNotFound(string idString, string name)
         {
             if (Guid.TryParse(idString, out var id))
@@ -75,7 +75,7 @@ namespace Allors.Server
         [Authorize]
         [AllowAnonymous]
         [ResponseCache(Location = ResponseCacheLocation.Any, Duration = OneYearInSeconds)]
-        [HttpGet("/media/{idString}/{revisionString}/{*name}")]
+        [HttpGet("/allors/media/{idString}/{revisionString}/{*name}")]
         public virtual IActionResult Get(string idString, string revisionString, string name)
         {
             if (Guid.TryParse(idString, out var id))
