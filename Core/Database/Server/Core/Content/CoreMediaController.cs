@@ -17,11 +17,11 @@ namespace Allors.Server
     using Microsoft.Extensions.Primitives;
     using Microsoft.Net.Http.Headers;
 
-    public abstract partial class CorePrintController : Controller
+    public abstract partial class CoreMediaController : Controller
     {
         protected const int OneYearInSeconds = 60 * 60 * 24 * 356;
 
-        protected CorePrintController(ISessionService sessionService) => this.Session = sessionService.Session;
+        protected CoreMediaController(ISessionService sessionService) => this.Session = sessionService.Session;
 
         protected ISession Session { get; }
 

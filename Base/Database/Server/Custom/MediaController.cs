@@ -7,9 +7,9 @@ namespace Allors.Server
 {
     using Allors.Services;
 
-    public class PrintController : CorePrintController
+    public class MediaController : CoreMediaController
     {
-        public PrintController(ISessionService sessionService)
+        public MediaController(ISessionService sessionService)
             : base(sessionService)
         {
         }
