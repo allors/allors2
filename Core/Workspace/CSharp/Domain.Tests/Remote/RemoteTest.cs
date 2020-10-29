@@ -18,11 +18,11 @@ namespace Tests.Remote
     [Collection("Remote")]
     public class RemoteTest : IDisposable
     {
-        public const string Url = "http://localhost:5000";
+        public const string Url = "http://localhost:5000/allors/";
 
-        public const string InitUrl = "/Test/Init";
-        public const string SetupUrl = "/Test/Setup?population=full";
-        public const string LoginUrl = "/Test/Login";
+        public const string InitUrl = "Test/Init";
+        public const string SetupUrl = "Test/Setup?population=full";
+        public const string LoginUrl = "Test/Login";
 
         public Workspace Workspace { get; set; }
 
@@ -49,7 +49,7 @@ namespace Tests.Remote
 
         public void Login(string user)
         {
-            var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
+            var uri = new Uri("TestAuthentication/Token", UriKind.Relative);
             var result = this.Database.Login(uri, user, null).Result;
         }
 
