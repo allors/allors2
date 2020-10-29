@@ -30,7 +30,7 @@ partial class Server : IDisposable
 
     public async Task Ready()
     {
-        if (!await Get("/Test/Ready", TimeSpan.FromMinutes(5)))
+        if (!await Get("/allors/Test/Ready", TimeSpan.FromMinutes(5)))
         {
             throw new Exception("Server is not ready");
         }

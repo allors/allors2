@@ -608,6 +608,41 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenOrderItem_WhenObjectStateIsSent_ThenItemCanBeReceived()
+        {
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
+            var administrators = new UserGroups(this.Session).Administrators;
+            administrators.AddMember(administrator);
+
+            this.Session.Derive();
+            this.Session.Commit();
+
+            this.InstantiateObjects(this.Session);
+
+            User user = this.Administrator;
+            this.Session.SetUser(user);
+
+            var item = new PurchaseOrderItemBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithQuantityOrdered(20)
+                .WithAssignedUnitPrice(5)
+                .Build();
+
+            this.order.AddPurchaseOrderItem(item);
+
+            this.order.SetReadyForProcessing();
+            this.Session.Derive();
+
+            this.order.Send();
+            this.Session.Derive();
+
+            var acl = new AccessControlLists(this.Session.GetUser())[item];
+
+            Assert.Equal(new PurchaseOrderItemStates(this.Session).Sent, item.PurchaseOrderItemState);
+            Assert.True(acl.CanExecute(M.PurchaseOrderItem.QuickReceive));
+        }
+
+        [Fact]
         public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejected()
         {
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
