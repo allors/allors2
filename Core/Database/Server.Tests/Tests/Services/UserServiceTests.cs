@@ -19,7 +19,7 @@ namespace Allors.Server.Tests
         {
             await this.SignIn(this.Administrator);
 
-            var uri = new Uri("TestSession/UserName", UriKind.Relative);
+            var uri = new Uri("allors/TestSession/UserName", UriKind.Relative);
             var response = await this.HttpClient.PostAsync(uri, null);
             var content = await response.Content.ReadAsStringAsync();
             Assert.Equal("administrator", content);
@@ -32,7 +32,7 @@ namespace Allors.Server.Tests
 
             this.SignOut();
 
-            var uri = new Uri("TestSession/UserName", UriKind.Relative);
+            var uri = new Uri("allors/TestSession/UserName", UriKind.Relative);
             var response = await this.HttpClient.PostAsync(uri, null);
             var content = await response.Content.ReadAsStringAsync();
 

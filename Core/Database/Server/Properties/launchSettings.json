@@ -10,7 +10,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchUrl": "Test/Ready",
+      "launchUrl": "allors/Test/Ready",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
