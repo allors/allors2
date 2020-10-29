@@ -38,7 +38,7 @@ namespace Allors.Server
         // TODO: everything except the name should be base64 encoded,
         //       e.g. "/image/{base64}/{*name}"
         [AllowAnonymous]
-        [HttpGet("/image/{idString}/{revisionString}/{*name}")]
+        [HttpGet("/allors/image/{idString}/{revisionString}/{*name}")]
         [ResponseCache(Location = ResponseCacheLocation.Any, Duration = OneYearInSeconds)]
         public virtual IActionResult Get(string idString, string revisionString, string name, int? w, int? q, string t, string b, string o)
         {

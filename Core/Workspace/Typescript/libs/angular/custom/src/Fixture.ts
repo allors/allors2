@@ -33,6 +33,8 @@ import { data } from '@allors/meta/generated';
 
 import { configure } from '../../../../apps/angular/app/src/app/configure';
 
+environment.url = "http://localhost:5000/allors/"
+
 function appInitFactory(workspaceService: WorkspaceService) {
   return () => {
     const metaPopulation = new MetaPopulation(data);

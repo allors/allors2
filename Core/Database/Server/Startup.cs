@@ -6,7 +6,6 @@
 namespace Allors.Server
 {
     using System.Text;
-    using Allors.Database.Adapters.SqlClient;
     using Allors.Domain;
     using Allors.Meta;
     using Allors.Services;
@@ -93,7 +92,6 @@ namespace Allors.Server
 
             var jsnlogConfiguration = new JsnlogConfiguration
             {
-                corsAllowedOriginsRegex = ".*",
                 serverSideMessageFormat = env.IsDevelopment() ?
                                             "%requestId | %url | %message" :
                                             "%requestId | %url | %userHostAddress | %userAgent | %message",
@@ -113,11 +111,9 @@ namespace Allors.Server
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "allors/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllers();
             });
         }
-
-
     }
 }

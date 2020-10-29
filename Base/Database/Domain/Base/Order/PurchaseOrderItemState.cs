@@ -22,5 +22,7 @@ namespace Allors.Domain
         public bool IsOnHold => Equals(this.UniqueId, PurchaseOrderItemStates.OnHoldId);
 
         public bool IsInProcess => Equals(this.UniqueId, PurchaseOrderItemStates.InProcessId);
+
+        public bool IsSent => Equals(this.UniqueId, PurchaseOrderItemStates.SentId);
     }
 }

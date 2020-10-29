@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   authenticationUrl: 'TestAuthentication/Token',
-  url: 'http://localhost:5000/',
+  url: 'allors/',
 };
 
 /*
