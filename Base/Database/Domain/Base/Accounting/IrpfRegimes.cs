@@ -36,7 +36,7 @@ namespace Allors.Domain
             var merge = this.Cache.Merger().Action();
             var localisedName = new LocalisedTextAccessor(this.Meta.LocalisedNames);
 
-            merge(Assessable19Id, v =>
+            merge(Assessable15Id, v =>
             {
                 v.Name = "IRPF Assessable 15%";
                 localisedName.Set(v, dutchLocale, "IRPF-plichtig 15%");
