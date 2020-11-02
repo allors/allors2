@@ -42,7 +42,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<PullResponse> Pull(PullRequest pullRequest)
         {
-            var uri = new Uri("allors/pull", UriKind.Relative);
+            var uri = new Uri("pull", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, pullRequest);
             response.EnsureSuccessStatusCode();
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
@@ -60,7 +60,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<SyncResponse> Sync(SyncRequest syncRequest)
         {
-            var uri = new Uri("allors/sync", UriKind.Relative);
+            var uri = new Uri("sync", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, syncRequest);
             response.EnsureSuccessStatusCode();
 
@@ -70,7 +70,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<PushResponse> Push(PushRequest pushRequest)
         {
-            var uri = new Uri("allors/push", UriKind.Relative);
+            var uri = new Uri("push", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, pushRequest);
             response.EnsureSuccessStatusCode();
 
@@ -80,7 +80,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<InvokeResponse> Invoke(InvokeRequest invokeRequest, InvokeOptions options = null)
         {
-            var uri = new Uri("allors/invoke", UriKind.Relative);
+            var uri = new Uri("invoke", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, invokeRequest);
             response.EnsureSuccessStatusCode();
 
@@ -90,7 +90,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<InvokeResponse> Invoke(string service, object args)
         {
-            var uri = new Uri(service + "/Pull", UriKind.Relative);
+            var uri = new Uri(service + "pull", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
             response.EnsureSuccessStatusCode();
 
@@ -100,7 +100,7 @@ namespace Allors.Workspace.Remote
 
         public async Task<SecurityResponse> Security(SecurityRequest securityRequest)
         {
-            var uri = new Uri("allors/security", UriKind.Relative);
+            var uri = new Uri("security", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, securityRequest);
             response.EnsureSuccessStatusCode();
 

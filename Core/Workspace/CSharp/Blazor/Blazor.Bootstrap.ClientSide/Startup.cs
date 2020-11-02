@@ -37,7 +37,7 @@ namespace Blazor.Bootstrap.ClientSide
 
             var implementationInstance = new AllorsAuthenticationStateProviderConfig
             {
-                AuthenticationUrl = "/TestAuthentication/Token",
+                AuthenticationUrl = "TestAuthentication/Token",
             };
             services.AddSingleton(implementationInstance);
             services.AddScoped<AllorsAuthenticationStateProvider>();

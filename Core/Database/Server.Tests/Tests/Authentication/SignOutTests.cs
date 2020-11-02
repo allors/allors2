@@ -30,10 +30,10 @@ namespace Allors.Server.Tests
                 Password = "p@ssw0rd",
             };
 
-            var signInUri = new Uri("allors/Authentication/Token", UriKind.Relative);
+            var signInUri = new Uri("Authentication/Token", UriKind.Relative);
             await this.PostAsJsonAsync(signInUri, args);
 
-            var signOutUri = new Uri("allors/Authentication/SignOut", UriKind.Relative);
+            var signOutUri = new Uri("Authentication/SignOut", UriKind.Relative);
             await this.PostAsJsonAsync(signOutUri, null);
         }
     }

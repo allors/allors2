@@ -43,7 +43,7 @@ namespace Allors.Server.Tests
 
             this.Session.Commit();
 
-            var uri = new Uri(@"allors/pull", UriKind.Relative);
+            var uri = new Uri("pull", UriKind.Relative);
 
             var extent = new Allors.Data.Extent(M.Data.ObjectType);
 
@@ -93,7 +93,7 @@ namespace Allors.Server.Tests
 
             this.Session.Commit();
 
-            var uri = new Uri(@"allors/pull", UriKind.Relative);
+            var uri = new Uri("pull", UriKind.Relative);
 
             var pullRequest = new PullRequest
             {
@@ -125,7 +125,7 @@ namespace Allors.Server.Tests
 
             this.Session.Commit();
 
-            var uri = new Uri(@"allors/pull", UriKind.Relative);
+            var uri = new Uri("pull", UriKind.Relative);
 
             var pullRequest = new PullRequest
             {
@@ -159,7 +159,7 @@ namespace Allors.Server.Tests
 
             this.Session.Commit();
 
-            var uri = new Uri(@"allors/pull", UriKind.Relative);
+            var uri = new Uri("pull", UriKind.Relative);
 
             var extent = new Allors.Data.Extent(M.Data.ObjectType);
 
@@ -210,7 +210,7 @@ namespace Allors.Server.Tests
 
             this.Session.Commit();
 
-            var uri = new Uri(@"allors/pull", UriKind.Relative);
+            var uri = new Uri("pull", UriKind.Relative);
 
             var extent = new Allors.Data.Extent(M.Data.ObjectType);
 

@@ -24,7 +24,7 @@ namespace Allors.Server.Tests
             var organisation = new OrganisationBuilder(this.Session).Build();
             this.Session.Commit();
 
-            var uri = new Uri(@"allors/sync", UriKind.Relative);
+            var uri = new Uri(@"sync", UriKind.Relative);
 
             var syncRequest = new SyncRequest
             {
@@ -50,7 +50,7 @@ namespace Allors.Server.Tests
             var people = new People(this.Session).Extent();
             var person = people[0];
 
-            var uri = new Uri(@"allors/sync", UriKind.Relative);
+            var uri = new Uri(@"sync", UriKind.Relative);
 
             var syncRequest = new SyncRequest
             {
@@ -80,7 +80,7 @@ namespace Allors.Server.Tests
             var people = new People(this.Session).Extent();
             var person = people[0];
 
-            var uri = new Uri(@"allors/sync", UriKind.Relative);
+            var uri = new Uri(@"sync", UriKind.Relative);
 
             var syncRequest = new SyncRequest
             {

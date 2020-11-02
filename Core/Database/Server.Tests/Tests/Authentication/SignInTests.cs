@@ -35,7 +35,7 @@ namespace Allors.Server.Tests
                 Password = "p@ssw0rd",
             };
 
-            var uri = new Uri("allors/Authentication/Token", UriKind.Relative);
+            var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
             var siginInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
 
@@ -51,7 +51,7 @@ namespace Allors.Server.Tests
                 Password = "p@ssw0rd",
             };
 
-            var uri = new Uri("allors/Authentication/Token", UriKind.Relative);
+            var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
             var siginInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
 
@@ -67,7 +67,7 @@ namespace Allors.Server.Tests
                 Password = "",
             };
 
-            var uri = new Uri("allors/Authentication/Token", UriKind.Relative);
+            var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
             var siginInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
 
@@ -82,7 +82,7 @@ namespace Allors.Server.Tests
                 UserName = "John",
             };
 
-            var uri = new Uri("allors/Authentication/Token", UriKind.Relative);
+            var uri = new Uri("Authentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
             var siginInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
 

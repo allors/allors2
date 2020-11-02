@@ -27,7 +27,7 @@ namespace Allors.Server.Tests
 
     public abstract class ApiTest : IDisposable
     {
-        public const string Url = "http://localhost:5000";
+        public const string Url = "http://localhost:5000/allors/";
         public const int RetryCount = 3;
 
         protected ApiTest()
@@ -62,7 +62,7 @@ namespace Allors.Server.Tests
 
             this.HttpClient.DefaultRequestHeaders.Accept.Clear();
             this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var result = this.HttpClient.GetAsync("allors/Test/Setup?population=full").Result;
+            var result = this.HttpClient.GetAsync("Test/Setup?population=full").Result;
             Assert.True(result.IsSuccessStatusCode);
 
             this.Session = database.CreateSession();
@@ -96,7 +96,7 @@ namespace Allors.Server.Tests
                 UserName = user.UserName,
             };
 
-            var uri = new Uri("allors/TestAuthentication/Token", UriKind.Relative);
+            var uri = new Uri("TestAuthentication/Token", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
             var signInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
             this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", signInResponse.Token);

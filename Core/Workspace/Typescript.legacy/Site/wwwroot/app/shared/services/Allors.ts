@@ -6,7 +6,7 @@ namespace App.Services {
 
     export class AllorsService {
 
-        baseUrl = "";
+        baseUrl = "allors/";
 
         database: Allors.Database;
         workspace: Allors.Workspace;

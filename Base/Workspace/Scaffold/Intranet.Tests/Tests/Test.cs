@@ -29,7 +29,7 @@ namespace Tests
     public abstract class Test : IDisposable
     {
         public const string ClientUrl = "http://localhost:4200";
-        public const string ServerUrl = "http://localhost:5000";
+        public const string ServerUrl = "http://localhost:5000/allors";
 
         public static readonly string DatabaseInitUrl = $"{ServerUrl}/Test/Init";
         public static readonly string DatabaseTimeShiftUrl = $"{ServerUrl}/Test/TimeShift";

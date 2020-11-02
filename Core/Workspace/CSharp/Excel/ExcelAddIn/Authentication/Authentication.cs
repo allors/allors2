@@ -68,7 +68,7 @@ namespace ExcelAddIn
                     if (!string.IsNullOrWhiteSpace(autologin))
                     {
                         var user = this.Configuration.AutoLogin;
-                        var uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
+                        var uri = new Uri("TestAuthentication/Token", UriKind.Relative);
                         this.Client.IsLoggedIn = await database.Login(uri, user, null);
                         if (this.Client.IsLoggedIn)
                         {
@@ -103,7 +103,7 @@ namespace ExcelAddIn
                             using (var loginForm = new LoginForm())
                             {
                                 loginForm.Database = database;
-                                loginForm.Uri = new Uri("/TestAuthentication/Token", UriKind.Relative);
+                                loginForm.Uri = new Uri("TestAuthentication/Token", UriKind.Relative);
                                 var result = loginForm.ShowDialog();
                                 if (result == DialogResult.OK)
                                 {
