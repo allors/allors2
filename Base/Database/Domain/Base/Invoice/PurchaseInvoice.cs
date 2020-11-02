@@ -24,7 +24,7 @@ namespace Allors.Domain
             (this.PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Strategy.Session).Created)
                 || this.PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Strategy.Session).Cancelled)
                 || this.PurchaseInvoiceState.Equals(new PurchaseInvoiceStates(this.Strategy.Session).Rejected))
-            && this.ExistSalesInvoiceWherePurchaseInvoice;
+            && !this.ExistSalesInvoiceWherePurchaseInvoice;
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
