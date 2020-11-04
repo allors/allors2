@@ -615,6 +615,7 @@ namespace Allors.Domain
 
                 if (this.SalesInvoiceType.Equals(new SalesInvoiceTypes(this.Session()).CreditNote)
                     && salesInvoiceItem.ExistSerialisedItem
+                    && salesInvoiceItem.ExistSerialisedItemVersionBeforeSale
                     && (this.BillToCustomer as InternalOrganisation)?.IsInternalOrganisation == false
                     && this.BilledFrom.SerialisedItemSoldOns.Contains(new SerialisedItemSoldOns(this.Session()).SalesInvoiceSend))
                 {
