@@ -265,5 +265,65 @@ namespace Allors.Domain.TestPopulation
 
             return purchaseOrder;
         }
+
+        public static SalesOrder CreateInternalSalesOrder(this Organisation @this, Faker faker)
+        {
+            var salesOrder = new SalesOrderBuilder(@this.Session()).WithOrganisationInternalDefaults(@this).Build();
+            @this.Session().Derive();
+
+            var productItem = new SalesOrderItemBuilder(@this.Session()).WithSerialisedProductDefaults().Build();
+            salesOrder.AddSalesOrderItem(productItem);
+            @this.Session().Derive();
+
+            var partItem = new SalesOrderItemBuilder(@this.Session()).WithPartItemDefaults().Build();
+            salesOrder.AddSalesOrderItem(partItem);
+            @this.Session().Derive();
+
+            var otherItem = new SalesOrderItemBuilder(@this.Session()).WithDefaults().Build();
+            salesOrder.AddSalesOrderItem(otherItem);
+            @this.Session().Derive();
+
+            return salesOrder;
+        }
+
+        public static SalesOrder CreateB2BSalesOrder(this Organisation @this, Faker faker)
+        {
+            var salesOrder = new SalesOrderBuilder(@this.Session()).WithOrganisationExternalDefaults(@this).Build();
+            @this.Session().Derive();
+
+            var productItem = new SalesOrderItemBuilder(@this.Session()).WithSerialisedProductDefaults().Build();
+            salesOrder.AddSalesOrderItem(productItem);
+            @this.Session().Derive();
+
+            var partItem = new SalesOrderItemBuilder(@this.Session()).WithPartItemDefaults().Build();
+            salesOrder.AddSalesOrderItem(partItem);
+            @this.Session().Derive();
+
+            var otherItem = new SalesOrderItemBuilder(@this.Session()).WithDefaults().Build();
+            salesOrder.AddSalesOrderItem(otherItem);
+            @this.Session().Derive();
+
+            return salesOrder;
+        }
+
+        public static SalesOrder CreateB2CSalesOrder(this Organisation @this, Faker faker)
+        {
+            var salesOrder = new SalesOrderBuilder(@this.Session()).WithPersonExternalDefaults(@this).Build();
+            @this.Session().Derive();
+
+            var productItem = new SalesOrderItemBuilder(@this.Session()).WithSerialisedProductDefaults().Build();
+            salesOrder.AddSalesOrderItem(productItem);
+            @this.Session().Derive();
+
+            var partItem = new SalesOrderItemBuilder(@this.Session()).WithPartItemDefaults().Build();
+            salesOrder.AddSalesOrderItem(partItem);
+            @this.Session().Derive();
+
+            var otherItem = new SalesOrderItemBuilder(@this.Session()).WithDefaults().Build();
+            salesOrder.AddSalesOrderItem(otherItem);
+            @this.Session().Derive();
+
+            return salesOrder;
+        }
     }
 }

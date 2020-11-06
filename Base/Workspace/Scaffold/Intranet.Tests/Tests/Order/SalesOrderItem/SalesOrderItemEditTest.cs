@@ -42,7 +42,7 @@ namespace Tests.SalesOrderItemTests
 
             var before = new SalesOrderItems(this.Session).Extent().ToArray();
 
-            var disposableSalesOrder = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
+            var disposableSalesOrder = this.internalOrganisation.CreateB2BSalesOrder(this.Session.Faker());
             var expected = disposableSalesOrder.SalesOrderItems.First(v => !(v.InvoiceItemType.IsProductItem || v.InvoiceItemType.IsPartItem));
 
             var salesOrderItem = salesOrder.SalesOrderItems.First(v => !(v.InvoiceItemType.IsProductItem || v.InvoiceItemType.IsPartItem));
@@ -100,7 +100,7 @@ namespace Tests.SalesOrderItemTests
 
             var before = new SalesOrderItems(this.Session).Extent().ToArray();
 
-            var disposableSalesOrder = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
+            var disposableSalesOrder = this.internalOrganisation.CreateB2BSalesOrder(this.Session.Faker());
             var expected = disposableSalesOrder.SalesOrderItems.First(v => v.InvoiceItemType.IsProductItem);
 
             var salesOrderItem = salesOrder.SalesOrderItems.First(v => v.InvoiceItemType.IsProductItem);

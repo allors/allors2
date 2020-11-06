@@ -39,7 +39,7 @@ namespace Tests.SalesOrderTests
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
+            var expected = this.internalOrganisation.CreateInternalSalesOrder(this.Session.Faker());
 
             Assert.True(expected.ExistShipToAddress);
             Assert.True(expected.ExistComment);
@@ -101,7 +101,7 @@ namespace Tests.SalesOrderTests
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.internalOrganisation).Build();
+            var expected = this.internalOrganisation.CreateB2BSalesOrder(this.Session.Faker());
 
             Assert.True(expected.ExistBillToCustomer);
             Assert.True(expected.ExistBillToContactMechanism);
@@ -153,66 +153,6 @@ namespace Tests.SalesOrderTests
         }
 
         /**
-         * MinimalWithInternalPerson
-         **/
-        [Fact]
-        public void CreateWithInternalPerson()
-        {
-            var before = new SalesOrders(this.Session).Extent().ToArray();
-
-            var expected = new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(this.internalOrganisation).Build();
-
-            Assert.True(expected.ExistBillToCustomer);
-            Assert.True(expected.ExistBillToContactMechanism);
-            Assert.True(expected.ExistBillToContactPerson);
-            Assert.True(expected.ExistShipToCustomer);
-            Assert.True(expected.ExistShipToAddress);
-            Assert.True(expected.ExistShipToContactPerson);
-            Assert.True(expected.ExistShipFromAddress);
-            Assert.True(expected.ExistCustomerReference);
-
-            this.Session.Derive();
-
-            var expectedBillToCustomer = expected.BillToCustomer.DisplayName();
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
-            var expectedBillToContactPerson = expected.BillToContactPerson;
-            var expectedShipToCustomer = expected.ShipToCustomer.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
-            var expectedShipToContactPerson = expected.ShipToContactPerson;
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress.DisplayName();
-            var expectedCustomerReference = expected.CustomerReference;
-
-            var salesOrderCreate = this.salesOrderListPage
-                .CreateSalesOrder()
-                .BuildForPersonInternalDefaults(expected);
-
-
-            this.Session.Rollback();
-            salesOrderCreate.SAVE.Click();
-
-            this.Driver.WaitForAngular();
-            this.Session.Rollback();
-
-            var after = new SalesOrders(this.Session).Extent().ToArray();
-
-            Assert.Equal(after.Length, before.Length + 1);
-
-            var actual = after.Except(before).First();
-
-            Assert.Equal(expectedBillToCustomer, actual.BillToCustomer?.DisplayName());
-
-            this.Driver.WaitForAngular();
-
-            Assert.Equal(expectedBillToContactMechanism, actual.BillToContactMechanism);
-            Assert.Equal(expectedBillToContactPerson, actual.BillToContactPerson);
-            Assert.Equal(expectedShipToCustomer, actual.ShipToCustomer?.DisplayName());
-            Assert.Equal(expectedShipToAddressDisplayName, actual.ShipToAddress?.DisplayName());
-            Assert.Equal(expectedShipToContactPerson, actual.ShipToContactPerson);
-            Assert.Equal(expectedShipFromAddressDisplayName, actual.ShipFromAddress?.DisplayName());
-            Assert.Equal(expectedCustomerReference, actual.CustomerReference);
-        }
-
-        /**
         * MinimalWithInternalPerson
         **/
         [Fact]
@@ -220,7 +160,7 @@ namespace Tests.SalesOrderTests
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(this.internalOrganisation).Build();
+            var expected = this.internalOrganisation.CreateB2CSalesOrder(this.Session.Faker());
 
             Assert.True(expected.ExistBillToCustomer);
             Assert.True(expected.ExistBillToContactMechanism);

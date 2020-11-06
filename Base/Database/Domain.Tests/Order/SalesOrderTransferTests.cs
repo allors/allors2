@@ -1358,7 +1358,7 @@ namespace Allors.Domain
             new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
             this.Session.Derive();
 
-            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.InternalOrganisation).Build();
+            var order = this.InternalOrganisation.CreateB2BSalesOrder(this.Session.Faker());
 
             this.Session.Derive();
 
@@ -1372,7 +1372,7 @@ namespace Allors.Domain
             new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
             this.Session.Derive();
 
-            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.InternalOrganisation).Build();
+            var order = this.InternalOrganisation.CreateB2BSalesOrder(this.Session.Faker());
 
             this.Session.Derive();
 
@@ -1386,7 +1386,7 @@ namespace Allors.Domain
             new UnifiedGoodBuilder(this.Session).WithSerialisedDefaults(this.InternalOrganisation).Build();
             this.Session.Derive();
 
-            var order = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.InternalOrganisation).Build();
+            var order = this.InternalOrganisation.CreateB2BSalesOrder(this.Session.Faker());
 
             this.Session.Derive();
 

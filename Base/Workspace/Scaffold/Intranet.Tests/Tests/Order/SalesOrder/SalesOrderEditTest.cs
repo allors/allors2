@@ -39,7 +39,7 @@ namespace Tests.SalesOrderTests
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(this.internalOrganisation).Build();
+            var expected = this.internalOrganisation.CreateInternalSalesOrder(this.Session.Faker());
 
             this.Session.Derive();
 
@@ -109,77 +109,7 @@ namespace Tests.SalesOrderTests
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(this.internalOrganisation).Build();
-
-            this.Session.Derive();
-
-            var expectedBillToCustomer = expected.BillToCustomer?.DisplayName();
-            var expectedBillToContactMechanism = expected.BillToContactMechanism;
-            var expectedBillToContactPerson = expected.BillToContactPerson;
-            var expectedShipToCustomer = expected.ShipToCustomer?.DisplayName();
-            var expectedShipToAddressDisplayName = expected.ShipToAddress.DisplayName();
-            var expectedShipToContactPerson = expected.ShipToContactPerson;
-            var expectedShipFromAddressDisplayName = expected.ShipFromAddress?.DisplayName();
-            var expectedCustomerReference = expected.CustomerReference;
-            var expectedDescription = expected.Description;
-            var expectedInternalComment = expected.InternalComment;
-
-            var salesOrder = before.First();
-            var id = salesOrder.Id;
-
-            this.salesOrderListPage.Table.DefaultAction(salesOrder);
-            var salesOrderOverview = new SalesOrderOverviewComponent(this.salesOrderListPage.Driver);
-            var salesOrderOverviewDetail = salesOrderOverview.SalesorderOverviewDetail.Click();
-
-            salesOrderOverviewDetail.BillToCustomer.Select(expected.BillToCustomer?.DisplayName());
-
-            this.Driver.WaitForAngular();
-
-            salesOrderOverviewDetail.BillToContactMechanism.Select(expected.BillToContactMechanism);
-            salesOrderOverviewDetail.BillToContactPerson.Select(expected.BillToContactPerson);
-            salesOrderOverviewDetail.ShipFromAddress.Select(expected.ShipFromAddress);
-            salesOrderOverviewDetail.ShipToCustomer.Select(expected.ShipToCustomer?.DisplayName());
-
-            this.Driver.WaitForAngular();
-
-            salesOrderOverviewDetail.ShipToAddress.Select(expected.ShipToAddress);
-            salesOrderOverviewDetail.ShipToContactPerson.Select(expected.ShipToContactPerson);
-            salesOrderOverviewDetail.CustomerReference.Set(expected.CustomerReference);
-            salesOrderOverviewDetail.Description.Set(expected.Description);
-            salesOrderOverviewDetail.InternalComment.Set(expected.InternalComment);
-
-            this.Session.Rollback();
-            salesOrderOverviewDetail.SAVE.Click();
-
-            this.Driver.WaitForAngular();
-            this.Session.Rollback();
-
-            var after = new SalesOrders(this.Session).Extent().ToArray();
-            salesOrder = (SalesOrder)this.Session.Instantiate(id);
-
-            Assert.Equal(after.Length, before.Length);
-
-            Assert.Equal(expectedBillToCustomer, salesOrder.BillToCustomer?.DisplayName());
-            Assert.Equal(expectedBillToContactMechanism, salesOrder.BillToContactMechanism);
-            Assert.Equal(expectedBillToContactPerson, salesOrder.BillToContactPerson);
-            Assert.Equal(expectedShipToAddressDisplayName, salesOrder.ShipToAddress.DisplayName());
-            Assert.Equal(expectedShipFromAddressDisplayName, salesOrder.ShipFromAddress?.DisplayName());
-            Assert.Equal(expectedShipToCustomer, salesOrder.ShipToCustomer?.DisplayName());
-            Assert.Equal(expectedShipToContactPerson, salesOrder.ShipToContactPerson);
-            Assert.Equal(expectedCustomerReference, salesOrder.CustomerReference);
-            Assert.Equal(expectedDescription, salesOrder.Description);
-            Assert.Equal(expectedInternalComment, salesOrder.InternalComment);
-        }
-
-        /**
-         * MinimalWithInternalPerson
-         **/
-        [Fact]
-        public void EditWithInternalPerson()
-        {
-            var before = new SalesOrders(this.Session).Extent().ToArray();
-
-            var expected = new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(this.internalOrganisation).Build();
+            var expected = this.internalOrganisation.CreateB2BSalesOrder(this.Session.Faker());
 
             this.Session.Derive();
 
@@ -249,7 +179,7 @@ namespace Tests.SalesOrderTests
         {
             var before = new SalesOrders(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(this.internalOrganisation).Build();
+            var expected = this.internalOrganisation.CreateB2CSalesOrder(this.Session.Faker());
 
             this.Session.Derive();
 

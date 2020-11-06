@@ -96,7 +96,7 @@ namespace Tests.SalesOrderItemTests
 
             var before = new SalesOrderItems(this.Session).Extent().ToArray();
 
-            var expected = new SalesOrderItemBuilder(this.Session).WithProductItemDefaults().Build();
+            var expected = new SalesOrderItemBuilder(this.Session).WithSerialisedProductDefaults().Build();
             salesOrder.AddSalesOrderItem(expected);
 
             this.Session.Derive();

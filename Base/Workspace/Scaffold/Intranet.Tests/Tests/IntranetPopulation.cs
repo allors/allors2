@@ -302,10 +302,9 @@ namespace Tests
             new LetterCorrespondenceBuilder(this.Session).WithDefaults(allors).Build();
             new PhoneCommunicationBuilder(this.Session).WithDefaults(allors).Build();
 
-            var salesOrder_1 = new SalesOrderBuilder(this.Session).WithOrganisationInternalDefaults(allors).Build();
-            var salesOrder_2 = new SalesOrderBuilder(this.Session).WithOrganisationExternalDefaults(allors).Build();
-            var salesOrder_3 = new SalesOrderBuilder(this.Session).WithPersonInternalDefaults(allors).Build();
-            var salesOrder_4 = new SalesOrderBuilder(this.Session).WithPersonExternalDefaults(allors).Build();
+            var salesOrder_1 = allors.CreateB2BSalesOrder(faker);
+            var salesOrder_2 = allors.CreateB2CSalesOrder(faker);
+            var salesOrder_3 = allors.CreateInternalSalesOrder(faker);
 
             new SalesInvoiceBuilder(this.Session).WithSalesExternalB2BInvoiceDefaults(allors).Build();
 
