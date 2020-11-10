@@ -86,5 +86,11 @@ namespace Allors.Repository
         [Derived]
         [Workspace]
         User Performer { get; set; }
+
+        #region Allors
+        [Id("deb6655a-b6f7-48d9-9027-82b9490f4542")]
+        #endregion
+        [Workspace]
+        void DeriveParticipants();
     }
 }

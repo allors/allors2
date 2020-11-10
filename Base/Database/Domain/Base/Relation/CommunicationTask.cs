@@ -21,9 +21,18 @@ namespace Allors.Domain
                 this.DateClosed = this.Session().Now();
             }
 
-            // Assignments
-            var participants = this.ExistDateClosed ? Array.Empty<User>() : new[] { this.CommunicationEvent.FromParty as User };
-            this.AssignParticipants(participants);
+            this.DeriveParticipants();
+        }
+
+        public void BaseDeriveParticipants(TaskDeriveParticipants method)
+        {
+            if (!method.Result.HasValue)
+            {
+                var participants = this.ExistDateClosed ? Array.Empty<User>() : new[] { this.CommunicationEvent.FromParty as User };
+                this.AssignParticipants(participants);
+
+                method.Result = true;
+            }
         }
 
         public void ManageNotification(TaskAssignment taskAssignment)
