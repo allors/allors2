@@ -22,7 +22,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithCustomer(customer);
             @this.WithFacility(faker.Random.ListItem(internalOrganisation.FacilitiesWhereOwner));
             @this.WithContactPerson(customer.CurrentContacts.FirstOrDefault());
-            @this.WithName(faker.Lorem.Words().ToString());
+            @this.WithName(string.Join(" ", faker.Lorem.Words(3)));
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithWorkDone(faker.Lorem.Sentence());
@@ -46,7 +46,7 @@ namespace Allors.Domain.TestPopulation
             @this.WithExecutedBy(internalOrganisation);
             @this.WithCustomer(otherInternalOrganization);
             @this.WithFacility(faker.Random.ListItem(internalOrganisation.FacilitiesWhereOwner));
-            @this.WithName(faker.Lorem.Words().ToString());
+            @this.WithName(string.Join(" ", faker.Lorem.Words(3)));
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithWorkDone(faker.Lorem.Sentence());

@@ -13,7 +13,7 @@ namespace Allors.Domain.TestPopulation
         {
             var faker = @this.Session.Faker();
 
-            @this.WithName(faker.Lorem.Word());
+            @this.WithName(string.Join(" ", faker.Lorem.Words(3)));
             @this.WithLogoImage(new MediaBuilder(@this.Session).WithInDataUri(faker.Image.DataUri(width: 200, height: 56)).Build());
             @this.WithModel(new ModelBuilder(@this.Session).WithName(faker.Lorem.Word()).Build());
             @this.WithModel(new ModelBuilder(@this.Session).WithName(faker.Lorem.Word()).Build());
