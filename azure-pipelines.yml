@@ -7,7 +7,7 @@ stages:
 - stage: Platform
   jobs:
   - job: Test
-    timeoutInMinutes: 240
+    timeoutInMinutes: 360
 
     pool:
       vmImage: 'windows-2019'
