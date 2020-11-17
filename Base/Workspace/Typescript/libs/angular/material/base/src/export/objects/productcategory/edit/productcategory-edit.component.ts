@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, Saved } from '@allors/angular/services/core';
-import { Organisation, InternalOrganisation, ProductCategory, CatScope, Locale } from '@allors/domain/generated';
+import { Organisation, InternalOrganisation, ProductCategory, Scope, Locale } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { SaveService, ObjectData } from '@allors/angular/material/services/core';
@@ -25,7 +25,7 @@ export class ProductCategoryEditComponent extends TestScope implements OnInit, O
   public category: ProductCategory;
   public locales: Locale[];
   public categories: ProductCategory[];
-  public catScopes: CatScope[];
+  public scopes: Scope[];
   public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
@@ -72,7 +72,7 @@ export class ProductCategoryEditComponent extends TestScope implements OnInit, O
                 }
               }
             ),
-            pull.CatScope(),
+            pull.Scope(),
             pull.ProductCategory({
               sort: new Sort(m.ProductCategory.Name),
             }),
@@ -91,7 +91,7 @@ export class ProductCategoryEditComponent extends TestScope implements OnInit, O
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
         this.category = loaded.objects.ProductCategory as ProductCategory;
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
-        this.catScopes = loaded.collections.CatScopes as CatScope[];
+        this.scopes = loaded.collections.Scopes as Scope[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
         if (isCreate) {

@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService, NavigationService, MediaService } from '@allors/angular/services/core';
-import { Catalogue, CatScope } from '@allors/domain/generated';
+import { Catalogue, Scope } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { TableRow, Table, OverviewService, EditService, DeleteService, Sorter } from '@allors/angular/material/core';
 import { And, Like, Equals } from '@allors/data/system';

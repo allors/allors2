@@ -15,7 +15,7 @@ import {
   InventoryItemKind,
   ProductType,
   Facility,
-  CatScope,
+  Scope,
   Good,
   IUnitOfMeasure,
   SerialisedItemState,
@@ -82,9 +82,9 @@ export function configure(metaPopulation: MetaPopulation, internalOrganisationId
     roleTypes: [m.ProductCategory.DisplayName],
   });
 
-  const catScopeSearch = new SearchFactory({
-    objectType: m.CatScope,
-    roleTypes: [m.CatScope.Name],
+  const scopeSearch = new SearchFactory({
+    objectType: m.Scope,
+    roleTypes: [m.Scope.Name],
   });
 
   const productSearch = new SearchFactory({
@@ -536,13 +536,13 @@ export function configure(metaPopulation: MetaPopulation, internalOrganisationId
       new Like({ roleType: m.Catalogue.Name, parameter: 'Name' }),
       new Equals({ propertyType: m.Catalogue.CatScope, parameter: 'Scope' }),
     ]), { Scope: { 
-      search: () => catScopeSearch, display: (v: CatScope) => v && v.Name }
+      search: () => scopeSearch, display: (v: Scope) => v && v.Name }
      }
   );
   m.Catalogue.sorter = new Sorter({
     name: m.Catalogue.Name,
     description: m.Catalogue.Description,
-    scope: m.CatScope.Name,
+    scope: m.Scope.Name,
   });
 
   m.ProductCategory.list = '/products/productcategories';
@@ -552,14 +552,14 @@ export function configure(metaPopulation: MetaPopulation, internalOrganisationId
       new Equals({ propertyType: m.ProductCategory.CatScope, parameter: 'scope' }),
       new Contains({ propertyType: m.ProductCategory.Products, parameter: 'product' }),
     ]), {
-      scope: { search: () => catScopeSearch, display: (v: CatScope) => v && v.Name },
+      scope: { search: () => scopeSearch, display: (v: Scope) => v && v.Name },
       product: { search: () => productSearch, display: (v: Good) => v && v.Name },
     }
   );
   m.ProductCategory.sorter = new Sorter({
     name: m.Catalogue.Name,
     description: m.Catalogue.Description,
-    scope: m.CatScope.Name,
+    scope: m.Scope.Name,
   });
 
   m.SerialisedItemCharacteristic.list = '/products/serialiseditemcharacteristics';

@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ContextService, MetaService, RefreshService } from '@allors/angular/services/core';
-import { Organisation, InternalOrganisation, Catalogue, Singleton, ProductCategory, CatScope, Locale } from '@allors/domain/generated';
+import { Organisation, InternalOrganisation, Catalogue, Singleton, ProductCategory, Scope, Locale } from '@allors/domain/generated';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
 import { ObjectData, SaveService } from '@allors/angular/material/services/core';
@@ -28,7 +28,7 @@ export class CatalogueEditComponent extends TestScope implements OnInit, OnDestr
   public singleton: Singleton;
   public locales: Locale[];
   public categories: ProductCategory[];
-  public catScopes: CatScope[];
+  public scopes: Scope[];
   public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
@@ -74,7 +74,7 @@ export class CatalogueEditComponent extends TestScope implements OnInit, OnDestr
                 }
               }
             }),
-            pull.CatScope()
+            pull.Scope()
           ];
 
           return this.allors.context.load(new PullRequest({ pulls }))
@@ -90,7 +90,7 @@ export class CatalogueEditComponent extends TestScope implements OnInit, OnDestr
         this.catalogue = loaded.objects.Catalogue as Catalogue;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
-        this.catScopes = loaded.collections.CatScopes as CatScope[];
+        this.scopes = loaded.collections.Scopes as Scope[];
         this.internalOrganisation = loaded.objects.InternalOrganisation as Organisation;
 
         if (create) {
