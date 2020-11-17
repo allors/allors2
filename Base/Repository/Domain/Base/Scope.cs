@@ -12,7 +12,7 @@ namespace Allors.Repository
     #region Allors
     [Id("36ED4300-C413-43C9-BCEC-303678B2AA2C")]
     #endregion
-    public partial class CatScope : Enumeration
+    public partial class Scope : Enumeration
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }

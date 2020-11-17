@@ -172,7 +172,7 @@ namespace Allors.Repository
         [Workspace]
         [Required]
         [Multiplicity(Multiplicity.ManyToOne)]
-        public CatScope CatScope { get; set; }
+        public Scope CatScope { get; set; }
 
         #region Allors
         [Id("2C9927CA-BA9C-4F4A-8BE5-19523D9FDFA2")]

@@ -102,7 +102,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         [Required]
-        public CatScope CatScope { get; set; }
+        public Scope CatScope { get; set; }
         #region inherited methods
 
         public void OnBuild() { }

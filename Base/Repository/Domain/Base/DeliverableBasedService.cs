@@ -90,7 +90,10 @@ namespace Allors.Repository
 
         public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
 
+        public Scope Scope { get; set; }
+
         #endregion
+
         public string Comment { get; set; }
 
         #region inherited methods

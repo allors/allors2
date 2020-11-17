@@ -107,6 +107,8 @@ namespace Allors.Repository
 
         public PartWeightedAverage PartWeightedAverage { get; set; }
 
+        public Scope Scope { get; set; }
+
         #endregion inheritedProperties
 
         #region inheritedMethods

@@ -16,7 +16,7 @@ namespace Allors.Domain
         {
             if (!this.ExistCatScope)
             {
-                this.CatScope = new CatScopes(this.Strategy.Session).Public;
+                this.CatScope = new Scopes(this.Strategy.Session).Public;
             }
         }
 

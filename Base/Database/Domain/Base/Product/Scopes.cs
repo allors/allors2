@@ -7,18 +7,18 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class CatScopes
+    public partial class Scopes
     {
         private static readonly Guid PrivateId = new Guid("E312891F-7744-43ba-A69F-13878B1FC66B");
         private static readonly Guid PublicId = new Guid("6593FE82-A00F-4de6-9516-D652FE28A3EA");
 
-        private UniquelyIdentifiableSticky<CatScope> cache;
+        private UniquelyIdentifiableSticky<Scope> cache;
 
-        public CatScope Private => this.Cache[PrivateId];
+        public Scope Private => this.Cache[PrivateId];
 
-        public CatScope Public => this.Cache[PublicId];
+        public Scope Public => this.Cache[PublicId];
 
-        private UniquelyIdentifiableSticky<CatScope> Cache => this.cache ??= new UniquelyIdentifiableSticky<CatScope>(this.Session);
+        private UniquelyIdentifiableSticky<Scope> Cache => this.cache ??= new UniquelyIdentifiableSticky<Scope>(this.Session);
 
         protected override void BaseSetup(Setup setup)
         {

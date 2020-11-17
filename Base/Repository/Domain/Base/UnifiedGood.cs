@@ -137,6 +137,8 @@ namespace Allors.Repository
         public LocalisedMedia[] PrivateLocalisedElectronicDocuments { get; set; }
 
         public PartWeightedAverage PartWeightedAverage { get; set; }
+
+        public Scope Scope { get; set; }
         #endregion
 
         #region Allors
