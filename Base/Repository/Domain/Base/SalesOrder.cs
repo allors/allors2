@@ -656,6 +656,13 @@ namespace Allors.Repository
         [Workspace]
         public void DoTransfer() { }
 
+        #region Allors
+
+        [Id("f45adda2-5402-48cb-bff7-beb435d0bdf2")]
+
+        #endregion
+        public void DeriveVatClause() { }
+
         #region inherited methods
         public void OnBuild() { }
 
