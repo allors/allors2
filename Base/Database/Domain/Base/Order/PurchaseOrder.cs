@@ -145,10 +145,7 @@ namespace Allors.Domain
                 }
             }
 
-            if (!this.ExistCurrency)
-            {
-                this.Currency = this.OrderedBy?.PreferredCurrency;
-            }
+            this.DerivedCurrency = this.OrderedBy?.PreferredCurrency;
 
             if (!this.ExistStoredInFacility && this.OrderedBy?.StoresWhereInternalOrganisation.Count == 1)
             {
@@ -212,28 +209,19 @@ namespace Allors.Domain
                 }
             }
 
+            if (this.PurchaseOrderState.IsCreated)
+            {
+                this.DerivedLocale = this.Locale ?? this.OrderedBy?.Locale;
+                this.DerivedCurrency = this.AssignedCurrency ?? this.OrderedBy?.PreferredCurrency;
+                this.DerivedVatRegime = this.AssignedVatRegime ?? this.TakenViaSupplier?.VatRegime;
+                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.TakenViaSupplier?.IrpfRegime;
+                this.DerivedShipToAddress = this.AssignedShipToAddress ?? this.OrderedBy?.ShippingAddress;
+                this.DerivedBillToContactMechanism = this.AssignedBillToContactMechanism ?? this.OrderedBy?.BillingAddress ?? this.OrderedBy?.GeneralCorrespondence;
+                this.DerivedTakenViaContactMechanism = this.AssignedTakenViaContactMechanism ?? this.TakenViaSupplier?.OrderAddress;
+            }
+
             derivation.Validation.AssertExistsAtMostOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.TakenViaSupplier, this.Meta.TakenViaSubcontractor);
-
-            if (!this.ExistShipToAddress)
-            {
-                this.ShipToAddress = this.OrderedBy.ShippingAddress;
-            }
-
-            if (!this.ExistBillToContactMechanism)
-            {
-                this.BillToContactMechanism = this.OrderedBy.ExistBillingAddress ? this.OrderedBy.BillingAddress : this.OrderedBy.GeneralCorrespondence;
-            }
-
-            if (!this.ExistTakenViaContactMechanism && this.ExistTakenViaSupplier)
-            {
-                this.TakenViaContactMechanism = this.TakenViaSupplier.OrderAddress;
-            }
-
-            this.VatRegime ??= this.TakenViaSupplier?.VatRegime;
-            this.IrpfRegime ??= this.TakenViaSupplier?.IrpfRegime;
-
-            this.Locale = this.Strategy.Session.GetSingleton().DefaultLocale;
 
             var validOrderItems = this.PurchaseOrderItems.Where(v => v.IsValid).ToArray();
             this.ValidOrderItems = validOrderItems;
@@ -523,7 +511,7 @@ namespace Allors.Domain
                 var shipment = new PurchaseShipmentBuilder(session)
                     .WithShipmentMethod(new ShipmentMethods(session).Ground)
                     .WithShipToParty(this.OrderedBy)
-                    .WithShipToAddress(this.ShipToAddress)
+                    .WithShipToAddress(this.DerivedShipToAddress)
                     .WithShipFromParty(this.TakenViaSupplier)
                     .WithShipToFacility(this.StoredInFacility)
                     .Build();
@@ -596,14 +584,14 @@ namespace Allors.Domain
             {
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
                     .WithBilledFrom(this.TakenViaSupplier)
-                    .WithBilledFromContactMechanism(this.TakenViaContactMechanism)
+                    .WithAssignedBilledFromContactMechanism(this.DerivedTakenViaContactMechanism)
                     .WithBilledFromContactPerson(this.TakenViaContactPerson)
                     .WithBilledTo(this.OrderedBy)
                     .WithBilledToContactPerson(this.BillToContactPerson)
                     .WithDescription(this.Description)
                     .WithInvoiceDate(this.Session().Now())
-                    .WithVatRegime(this.VatRegime)
-                    .WithIrpfRegime(this.IrpfRegime)
+                    .WithAssignedVatRegime(this.DerivedVatRegime)
+                    .WithAssignedIrpfRegime(this.DerivedIrpfRegime)
                     .WithCustomerReference(this.CustomerReference)
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session()).PurchaseInvoice)
                     .Build();

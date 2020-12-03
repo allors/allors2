@@ -184,11 +184,11 @@ namespace Allors.Domain
             {
                 if (this.AssignedDeliveryDate.HasValue)
                 {
-                    this.DeliveryDate = this.AssignedDeliveryDate.Value;
+                    this.DerivedDeliveryDate = this.AssignedDeliveryDate.Value;
                 }
                 else if (this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate.HasValue)
                 {
-                    this.DeliveryDate = this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate.Value;
+                    this.DerivedDeliveryDate = this.PurchaseOrderWherePurchaseOrderItem.DeliveryDate.Value;
                 }
 
                 this.UnitBasePrice = 0;
@@ -206,11 +206,11 @@ namespace Allors.Domain
                     this.UnitBasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Part);
                 }
 
-                this.VatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.VatRegime;
-                this.VatRate = this.VatRegime?.VatRate;
+                this.DerivedVatRegime = this.AssignedVatRegime ?? this.PurchaseOrderWherePurchaseOrderItem.DerivedVatRegime;
+                this.VatRate = this.DerivedVatRegime?.VatRate;
 
-                this.IrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseOrderWherePurchaseOrderItem.IrpfRegime;
-                this.IrpfRate = this.IrpfRegime?.IrpfRate;
+                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseOrderWherePurchaseOrderItem.DerivedIrpfRegime;
+                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
 
                 this.TotalBasePrice = this.UnitBasePrice * this.QuantityOrdered;
                 this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;

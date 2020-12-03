@@ -43,7 +43,7 @@ namespace Allors.Repository
 
         public DateTime AssignedDeliveryDate { get; set; }
 
-        public DateTime DeliveryDate { get; set; }
+        public DateTime DerivedDeliveryDate { get; set; }
 
         public SalesTerm[] SalesTerms { get; set; }
 
@@ -51,7 +51,7 @@ namespace Allors.Repository
 
         public OrderItem[] Associations { get; set; }
 
-        public IrpfRegime IrpfRegime { get; set; }
+        public IrpfRegime DerivedIrpfRegime { get; set; }
 
         public IrpfRegime AssignedIrpfRegime { get; set; }
 
@@ -75,7 +75,7 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-        public VatRegime VatRegime { get; set; }
+        public VatRegime DerivedVatRegime { get; set; }
 
         public decimal TotalVat { get; set; }
 
@@ -347,7 +347,28 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public PostalAddress ShipFromAddress { get; set; }
+        public PostalAddress AssignedShipFromAddress { get; set; }
+
+        #region Allors
+        [Id("c7eab44d-eef8-4f8f-9a93-50be1f5a3e3b")]
+        [AssociationId("7d92a696-d940-4913-b020-a216b4e7689c")]
+        [RoleId("766962f0-c4a5-455c-8f5e-c74b73c0794f")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Derived]
+        [Workspace]
+        public PostalAddress DerivedShipFromAddress { get; set; }
+
+        #region Allors
+        [Id("7ae1b939-b387-4e6e-9da2-bc0364e04f7b")]
+        [AssociationId("808f88ba-3866-4785-812c-c062c5f268a4")]
+        [RoleId("64639736-a7d0-47cb-8afb-fa751a19670d")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress AssignedShipToAddress { get; set; }
 
         #region Allors
         [Id("5cc50f26-361b-46d7-a8e6-a9f53f7d2722")]
@@ -358,7 +379,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        public PostalAddress ShipToAddress { get; set; }
+        public PostalAddress DerivedShipToAddress { get; set; }
 
         #region Allors
         [Id("6826e05e-eb9a-4dc4-a653-0230dec934a9")]
@@ -371,6 +392,16 @@ namespace Allors.Repository
         public Product PreviousProduct { get; set; }
 
         #region Allors
+        [Id("b2d2645e-0d3f-473e-b277-6f890b9b911e")]
+        [AssociationId("68281397-74f8-4356-b9fc-014f792ab914")]
+        [RoleId("1292e876-1c61-42cb-8f01-8b3eb6cf0fa0")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Party AssignedShipToParty { get; set; }
+
+        #region Allors
         [Id("7a8255f5-4283-4803-9f96-60a9adc2743b")]
         [AssociationId("2c9b2182-7b93-46c9-86ac-d13add6d52b5")]
         [RoleId("7596f471-e54c-4491-8af6-02f0e8d7d015")]
@@ -379,17 +410,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        public Party ShipToParty { get; set; }
-
-        #region Allors
-        [Id("7ae1b939-b387-4e6e-9da2-bc0364e04f7b")]
-        [AssociationId("808f88ba-3866-4785-812c-c062c5f268a4")]
-        [RoleId("64639736-a7d0-47cb-8afb-fa751a19670d")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public PostalAddress AssignedShipToAddress { get; set; }
+        public Party DerivedShipToParty { get; set; }
 
         #region Allors
         [Id("28104b69-ef65-47f7-96fe-e800c8803384")]
@@ -473,16 +494,6 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal QuantityCommittedOut { get; set; }
-
-        #region Allors
-        [Id("b2d2645e-0d3f-473e-b277-6f890b9b911e")]
-        [AssociationId("68281397-74f8-4356-b9fc-014f792ab914")]
-        [RoleId("1292e876-1c61-42cb-8f01-8b3eb6cf0fa0")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public Party AssignedShipToParty { get; set; }
 
         #region Allors
         [Id("e8980105-2c4d-41de-bd67-802a8c0720f1")]

@@ -125,7 +125,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        IrpfRegime IrpfRegime { get; set; }
+        IrpfRegime DerivedIrpfRegime { get; set; }
 
         #region Allors
         [Id("92e1308f-53d2-449d-aa26-6d1fd0daa7d3")]

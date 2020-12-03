@@ -31,7 +31,18 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         [Indexed]
-        Currency Currency { get; set; }
+        Currency AssignedCurrency { get; set; }
+
+        #region Allors
+        [Id("e4102661-d3dd-4b88-adb4-8d0358fc19c4")]
+        [AssociationId("d151c7e2-e583-4218-aca9-3056abadf719")]
+        [RoleId("f97944ca-2e05-44f6-b5f3-46d873fee370")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Workspace]
+        [Indexed]
+        Currency DerivedCurrency { get; set; }
 
         #region Allors
         [Id("2d82521d-30bd-4185-84c7-4dfe08b5ddef")]
@@ -223,7 +234,18 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        VatRegime VatRegime { get; set; }
+        VatRegime AssignedVatRegime { get; set; }
+
+        #region Allors
+        [Id("5e46c4ad-90da-4360-8775-05b0d9dd93b3")]
+        [AssociationId("85e84089-a09b-48d5-b95d-4a75a286b2f6")]
+        [RoleId("3c7e5797-d3f6-4406-8889-8750d5dcfaa1")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Derived]
+        [Workspace]
+        VatRegime DerivedVatRegime { get; set; }
 
         #region Allors
         [Id("9a12fc10-722b-42c4-aa68-cec89aeb5c12")]
@@ -233,7 +255,18 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        IrpfRegime IrpfRegime { get; set; }
+        IrpfRegime AssignedIrpfRegime { get; set; }
+
+        #region Allors
+        [Id("84384c93-d213-4abf-bdd3-7d214cea729e")]
+        [AssociationId("5ad1cd5d-558e-4117-814d-dc8c11c72f18")]
+        [RoleId("a9b81ef4-513a-4316-8106-1f41730e1fea")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Derived]
+        [Workspace]
+        IrpfRegime DerivedIrpfRegime { get; set; }
 
         #region Allors
         [Id("c7350047-9282-41c8-8d82-4e1f86369e9c")]

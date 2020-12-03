@@ -110,7 +110,7 @@ namespace Allors.Repository
         #endregion
         [Derived]
         [Workspace]
-        DateTime DeliveryDate { get; set; }
+        DateTime DerivedDeliveryDate { get; set; }
 
         #region Allors
         [Id("b82c7b21-5ade-40b6-ba5d-62b6384eaaec")]
@@ -142,17 +142,6 @@ namespace Allors.Repository
         OrderItem[] Associations { get; set; }
 
         #region Allors
-        [Id("e31314f8-c9f4-45d0-a1c7-81184091e41b")]
-        [AssociationId("5ea14d74-09d1-4482-8ae4-2d227f46a6fd")]
-        [RoleId("36b80cb9-5e23-4233-889a-21f5dc6e1527")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        IrpfRegime IrpfRegime { get; set; }
-
-        #region Allors
         [Id("9a273bd4-5718-4b8f-a97e-7810f4104a45")]
         [AssociationId("5ce1d9fa-7e0b-49cc-89c4-abc4ee26003b")]
         [RoleId("25559b6a-41dc-48b0-a28f-839f8e4c5e36")]
@@ -161,6 +150,17 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         IrpfRegime AssignedIrpfRegime { get; set; }
+
+        #region Allors
+        [Id("e31314f8-c9f4-45d0-a1c7-81184091e41b")]
+        [AssociationId("5ea14d74-09d1-4482-8ae4-2d227f46a6fd")]
+        [RoleId("36b80cb9-5e23-4233-889a-21f5dc6e1527")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        IrpfRegime DerivedIrpfRegime { get; set; }
 
         #region Allors
         [Id("b09dcce5-f5df-49dd-b62e-9c17860feda2")]

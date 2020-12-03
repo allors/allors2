@@ -18,13 +18,13 @@ namespace Allors.Domain.Print.PurchaseOrderModel
 
             this.SubTotal = order.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalExVat = order.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.VatRate = order.VatRegime?.VatRate?.Rate.ToString("n2");
+            this.VatRate = order.DerivedVatRegime?.VatRate?.Rate.ToString("n2");
             this.TotalVat = order.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.IrpfRate = order.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
+            this.IrpfRate = order.DerivedIrpfRegime?.IrpfRate?.Rate.ToString("n2");
             this.TotalIrpf = order.TotalIrpf.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalIncVat = order.TotalIncVat.ToString("N2", new CultureInfo("nl-BE"));
 
-            var currencyIsoCode = order.Currency.IsoCode;
+            var currencyIsoCode = order.DerivedCurrency.IsoCode;
             this.GrandTotal = currencyIsoCode + " " + order.GrandTotal.ToString("N2", new CultureInfo("nl-BE"));
         }
 

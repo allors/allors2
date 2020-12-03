@@ -39,17 +39,17 @@ namespace Allors.Domain
                 ((QuoteDerivedRoles)@this).SortableQuoteNumber = @this.Session().GetSingleton().SortableNumber(@this.Issuer.QuoteNumberPrefix, @this.QuoteNumber, @this.IssueDate.Year.ToString());
             }
 
-            @this.Currency ??= @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
+            @this.DerivedCurrency ??= @this.Receiver?.PreferredCurrency ?? @this.Issuer?.PreferredCurrency;
 
             foreach (QuoteItem quoteItem in @this.QuoteItems)
             {
                 var quoteItemDerivedRoles = (QuoteItemDerivedRoles)quoteItem;
 
-                quoteItemDerivedRoles.VatRegime = quoteItem.AssignedVatRegime ?? @this.VatRegime;
-                quoteItemDerivedRoles.VatRate = quoteItem.VatRegime?.VatRate;
+                quoteItemDerivedRoles.DerivedVatRegime = quoteItem.AssignedVatRegime ?? @this.DerivedVatRegime;
+                quoteItemDerivedRoles.VatRate = quoteItem.DerivedVatRegime?.VatRate;
 
-                quoteItemDerivedRoles.IrpfRegime = quoteItem.AssignedIrpfRegime ?? @this.IrpfRegime;
-                quoteItemDerivedRoles.IrpfRate = quoteItem.IrpfRegime?.IrpfRate;
+                quoteItemDerivedRoles.DerivedIrpfRegime = quoteItem.AssignedIrpfRegime ?? @this.DerivedIrpfRegime;
+                quoteItemDerivedRoles.IrpfRate = quoteItem.DerivedIrpfRegime?.IrpfRate;
             }
 
             @this.AddSecurityToken(new SecurityTokens(session).DefaultSecurityToken);

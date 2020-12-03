@@ -245,7 +245,6 @@ namespace Allors.Domain
             var salesInvoice = new SalesInvoiceBuilder(@this.Strategy.Session)
                 .WithBilledFrom(@this.TakenBy)
                 .WithBillToCustomer(@this.Customer)
-                .WithBillToContactMechanism(@this.Customer.ExistBillingAddress ? @this.Customer.BillingAddress : @this.Customer.GeneralCorrespondence)
                 .WithBillToContactPerson(@this.ContactPerson)
                 .WithInvoiceDate(@this.Strategy.Session.Now())
                 .WithSalesInvoiceType(new SalesInvoiceTypes(@this.Strategy.Session).SalesInvoice)

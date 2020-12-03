@@ -46,14 +46,14 @@ namespace Allors.Domain
                 withGeographicBoundary = true;
 
                 PostalAddress postalAddress = null;
-                if (salesOrder != null && salesOrder.ExistShipToAddress)
+                if (salesOrder != null && salesOrder.ExistDerivedShipToAddress)
                 {
-                    postalAddress = salesOrder.ShipToAddress;
+                    postalAddress = salesOrder.DerivedShipToAddress;
                 }
 
-                if (salesInvoice != null && salesInvoice.ExistShipToAddress)
+                if (salesInvoice != null && salesInvoice.ExistDerivedShipToAddress)
                 {
-                    postalAddress = salesInvoice.ShipToAddress;
+                    postalAddress = salesInvoice.DerivedShipToAddress;
                 }
 
                 if (postalAddress == null && customer != null)

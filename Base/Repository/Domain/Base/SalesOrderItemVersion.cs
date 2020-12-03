@@ -36,7 +36,7 @@ namespace Allors.Repository
 
         public DateTime AssignedDeliveryDate { get; set; }
 
-        public DateTime DeliveryDate { get; set; }
+        public DateTime DerivedDeliveryDate { get; set; }
 
         public SalesTerm[] SalesTerms { get; set; }
 
@@ -60,7 +60,7 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-        public VatRegime VatRegime { get; set; }
+        public VatRegime DerivedVatRegime { get; set; }
 
         public decimal TotalVat { get; set; }
 
@@ -92,7 +92,7 @@ namespace Allors.Repository
 
         public decimal TotalExVat { get; set; }
 
-        public IrpfRegime IrpfRegime { get; set; }
+        public IrpfRegime DerivedIrpfRegime { get; set; }
 
         public IrpfRegime AssignedIrpfRegime { get; set; }
 
@@ -150,7 +150,6 @@ namespace Allors.Repository
         [RoleId("6BBD6102-58FF-403C-8E6E-9C93D65543BA")]
         #endregion
         [Workspace]
-        [Derived]
         [Precision(19)]
         [Scale(2)]
         public decimal QuantityShortFalled { get; set; }
@@ -201,7 +200,6 @@ namespace Allors.Repository
         [RoleId("A793FAAD-60E1-4069-99BD-2B24561539F1")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
         [Indexed]
         public NonSerialisedInventoryItem PreviousReservedFromNonSerialisedInventoryItem { get; set; }
 
@@ -220,7 +218,6 @@ namespace Allors.Repository
         [AssociationId("2FAA1278-84B1-4391-A90D-12CA1E335F77")]
         [RoleId("821314C5-EFE3-4183-BE65-D1733AACA58C")]
         #endregion
-        [Derived]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -234,39 +231,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public PostalAddress ShipFromAddress { get; set; }
+        public PostalAddress AssignedShipFromAddress { get; set; }
 
         #region Allors
-        [Id("38F38BF8-B735-4578-A2B1-2FD997A1FE3C")]
-        [AssociationId("F615FF3B-23BD-4743-9557-0C355DDA3A18")]
-        [RoleId("10709F20-3D42-4A28-9EA6-B1F8F7D9C0B8")]
+        [Id("378fd06a-4651-4a62-84a5-1ff0bbf1dfbc")]
+        [AssociationId("703278bf-a1a2-4cf5-9b38-67930608b15d")]
+        [RoleId("ec55b992-e44d-4cf8-b0ae-8a3c4c92a83d")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
         [Indexed]
         [Workspace]
-        public PostalAddress ShipToAddress { get; set; }
-
-        #region Allors
-        [Id("2BE18BDC-27ED-4E1B-8F7C-58CBF8E58ED3")]
-        [AssociationId("51EBB5B8-A0DD-4C6A-B3BD-68FAA2330EDF")]
-        [RoleId("532D622D-6C55-410C-A4FC-A38160BD7486")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        public Product PreviousProduct { get; set; }
-
-        #region Allors
-        [Id("5589BC3C-DD00-429A-92F5-7981228964DE")]
-        [AssociationId("AD18BDBB-01FB-43F3-9914-8D6EF2E01C27")]
-        [RoleId("6BD40C20-5E05-43FC-9FA7-00CA92EB7D87")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public Party ShipToParty { get; set; }
+        public PostalAddress DerivedShipFromAddress { get; set; }
 
         #region Allors
         [Id("0FF4C90C-EBD7-491D-B265-EF5083E4BB95")]
@@ -277,6 +252,45 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public PostalAddress AssignedShipToAddress { get; set; }
+
+        #region Allors
+        [Id("38F38BF8-B735-4578-A2B1-2FD997A1FE3C")]
+        [AssociationId("F615FF3B-23BD-4743-9557-0C355DDA3A18")]
+        [RoleId("10709F20-3D42-4A28-9EA6-B1F8F7D9C0B8")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress DerivedShipToAddress { get; set; }
+
+        #region Allors
+        [Id("2BE18BDC-27ED-4E1B-8F7C-58CBF8E58ED3")]
+        [AssociationId("51EBB5B8-A0DD-4C6A-B3BD-68FAA2330EDF")]
+        [RoleId("532D622D-6C55-410C-A4FC-A38160BD7486")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Product PreviousProduct { get; set; }
+
+        #region Allors
+        [Id("1837DB18-F0D5-4A84-88B9-09EF35D98A24")]
+        [AssociationId("40EDCBE4-D311-4AFA-8907-44758B146FD0")]
+        [RoleId("037CD53E-5814-47DE-85B4-62973723ADB2")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Party AssignedShipToParty { get; set; }
+
+        #region Allors
+        [Id("5589BC3C-DD00-429A-92F5-7981228964DE")]
+        [AssociationId("AD18BDBB-01FB-43F3-9914-8D6EF2E01C27")]
+        [RoleId("6BD40C20-5E05-43FC-9FA7-00CA92EB7D87")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Party DerivedShipToParty { get; set; }
 
         #region Allors
         [Id("7A3ED514-0136-45BB-835B-05AA446052B7")]
@@ -293,28 +307,16 @@ namespace Allors.Repository
         [AssociationId("EB4F77C6-FC65-4EB3-84C6-A23CE62AB149")]
         [RoleId("D4D7703C-106D-4F46-AFFF-DDA39C7404D7")]
         #endregion
-        [Derived]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
         public decimal QuantityReserved { get; set; }
 
         #region Allors
-        [Id("1837DB18-F0D5-4A84-88B9-09EF35D98A24")]
-        [AssociationId("40EDCBE4-D311-4AFA-8907-44758B146FD0")]
-        [RoleId("037CD53E-5814-47DE-85B4-62973723ADB2")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public Party AssignedShipToParty { get; set; }
-
-        #region Allors
         [Id("72C8B608-F504-4A0B-BBFF-144DED827625")]
         [AssociationId("07AD0AC2-616A-409F-A911-953831036EFD")]
         [RoleId("E45DF0A4-4038-4696-9A42-07B29E10825A")]
         #endregion
-        [Derived]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -345,7 +347,6 @@ namespace Allors.Repository
         [AssociationId("FF18CFE8-63CF-4060-880B-88EA4B3952D2")]
         [RoleId("947395C2-CC69-4650-837B-3B12E771A6A2")]
         #endregion
-        [Derived]
         [Precision(19)]
         [Scale(2)]
         [Workspace]

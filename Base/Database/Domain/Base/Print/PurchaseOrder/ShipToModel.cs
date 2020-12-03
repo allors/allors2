@@ -20,10 +20,10 @@ namespace Allors.Domain.Print.PurchaseOrderModel
 
             this.Contact = order.ShipToContactPerson?.PartyName;
 
-            var shipToAddress = order.ShipToAddress ??
+            var shipToAddress = order.DerivedShipToAddress ??
                                 order.OrderedBy?.ShippingAddress ??
                                 order.OrderedBy?.GeneralCorrespondence ??
-                                order.BillToContactMechanism as PostalAddress;
+                                order.DerivedBillToContactMechanism as PostalAddress;
 
             if (shipToAddress is PostalAddress postalAddress)
             {

@@ -13,11 +13,11 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         public InvoiceModel(SalesInvoice invoice)
         {
             var session = invoice.Strategy.Session;
-            var currencyIsoCode = invoice.Currency.IsoCode;
+            var currencyIsoCode = invoice.DerivedCurrency.IsoCode;
 
             this.Title = invoice.SalesInvoiceType.Equals(new SalesInvoiceTypes(session).CreditNote) ? "CREDIT NOTE" : "INVOICE";
             this.Description = invoice.Description;
-            this.Currency = invoice.Currency.IsoCode;
+            this.Currency = invoice.DerivedCurrency.IsoCode;
             this.Number = invoice.InvoiceNumber;
             this.Date = invoice.InvoiceDate.ToString("yyyy-MM-dd");
             this.DueDate = invoice.DueDate?.ToString("yyyy-MM-dd");
@@ -27,12 +27,12 @@ namespace Allors.Domain.Print.SalesInvoiceModel
             this.SubTotal = invoice.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE"));
             this.Deposit = invoice.AdvancePayment.ToString("N2", new CultureInfo("nl-BE"));
             this.TotalExVat = invoice.TotalExVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.VatRate = (invoice.VatRegime?.VatRate?.Rate.ToString("n2"))
+            this.VatRate = (invoice.DerivedVatRegime?.VatRate?.Rate.ToString("n2"))
                 ?? (invoice.ValidInvoiceItems.FirstOrDefault(v => v.ExistVatRate)?.VatRate.Rate.ToString("n2"))
                 ?? "0";
 
             this.TotalVat = invoice.TotalVat.ToString("N2", new CultureInfo("nl-BE"));
-            this.IrpfRate = invoice.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
+            this.IrpfRate = invoice.DerivedIrpfRegime?.IrpfRate?.Rate.ToString("n2");
 
             // IRPF is subtracted for total amount to pay
             var totalIrpf = invoice.TotalIrpf * -1;
@@ -58,7 +58,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
 
                 if (this.VatClause != null && Equals(invoice.DerivedVatClause, new VatClauses(session).BeArt14Par2))
                 {
-                    var shipToCountry = invoice.ShipToAddress?.Country?.Name;
+                    var shipToCountry = invoice.DerivedShipToAddress?.Country?.Name;
                     this.VatClause = this.VatClause.Replace("{shipToCountry}", shipToCountry);
                 }
             }

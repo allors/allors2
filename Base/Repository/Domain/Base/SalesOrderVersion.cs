@@ -31,7 +31,7 @@ namespace Allors.Repository
 
         public string InternalComment { get; set; }
 
-        public Currency Currency { get; set; }
+        public Currency AssignedCurrency { get; set; }
 
         public string CustomerReference { get; set; }
 
@@ -61,7 +61,9 @@ namespace Allors.Repository
 
         public decimal GrandTotal { get; set; }
 
-        public VatRegime VatRegime { get; set; }
+        public VatRegime AssignedVatRegime { get; set; }
+
+        public VatRegime DerivedVatRegime { get; set; }
 
         public decimal TotalShippingAndHandling { get; set; }
 
@@ -79,7 +81,9 @@ namespace Allors.Repository
 
         public DateTime DerivationTimeStamp { get; set; }
 
-        public IrpfRegime IrpfRegime { get; set; }
+        public IrpfRegime AssignedIrpfRegime { get; set; }
+
+        public IrpfRegime DerivedIrpfRegime { get; set; }
 
         public decimal TotalIrpf { get; set; }
         #endregion
@@ -92,7 +96,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         [Indexed]
-        public ContactMechanism TakenByContactMechanism { get; set; }
+        public ContactMechanism AssignedTakenByContactMechanism { get; set; }
+
+        #region Allors
+        [Id("0a5b1349-898a-42a5-ab8a-66e15cd75424")]
+        [AssociationId("a4977ae2-2bb7-449a-98c3-204b1f55b361")]
+        [RoleId("10c93413-58be-4f2f-9388-57bb78c1a020")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        [Indexed]
+        public ContactMechanism DerivedTakenByContactMechanism { get; set; }
 
         #region Allors
         [Id("7CA78BDF-9FE3-4494-948B-758CCFBCDE32")]
@@ -152,7 +166,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public PostalAddress ShipFromAddress { get; set; }
+        public PostalAddress AssignedShipFromAddress { get; set; }
+
+        #region Allors
+        [Id("65e2e3a5-3138-4996-9149-566d72ced8ec")]
+        [AssociationId("946fcc76-1c87-47b4-ae6b-7ae1cf81d93e")]
+        [RoleId("9ce0bbd9-c469-4377-a84a-2fd10e5bb9da")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress DerivedShipFromAddress { get; set; }
 
         #region Allors
         [Id("13CBB0CC-126E-4A1F-B873-CF48B6BAA869")]
@@ -170,7 +194,6 @@ namespace Allors.Repository
         [RoleId("B1C9B8CB-0D9B-4131-BA82-A39382DBFEB8")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
         [Indexed]
         public Party PreviousShipToCustomer { get; set; }
 
@@ -182,7 +205,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public PostalAddress ShipToAddress { get; set; }
+        public PostalAddress AssignedShipToAddress { get; set; }
+
+        #region Allors
+        [Id("d13d2f66-8d64-4d88-9bef-aad023c178a6")]
+        [AssociationId("5ba8e3cd-a0c6-4ca4-a267-68d6cff4935d")]
+        [RoleId("a93d7da3-f9e8-4312-821d-b01eb2edbedb")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress DerivedShipToAddress { get; set; }
 
         #region Allors
         [Id("CDA57AE8-DB34-4FBB-94C3-3BEDD1771077")]
@@ -210,7 +243,6 @@ namespace Allors.Repository
         [RoleId("5B9CC284-64D9-4F57-8D17-494D70885DD7")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
         [Indexed]
         public Party PreviousBillToCustomer { get; set; }
 
@@ -222,7 +254,17 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public ContactMechanism BillToContactMechanism { get; set; }
+        public ContactMechanism AssignedBillToContactMechanism { get; set; }
+
+        #region Allors
+        [Id("7c7187bb-78fb-4275-a758-88b9eb7f797f")]
+        [AssociationId("443e12e1-413c-4255-bd08-b91c042f9e45")]
+        [RoleId("aaa85aec-808a-4df1-bf85-6e844faa0874")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public ContactMechanism DerivedBillToContactMechanism { get; set; }
 
         #region Allors
         [Id("218C89A0-0250-42B0-BFA4-97F0909053C6")]
@@ -252,7 +294,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public ContactMechanism BillToEndCustomerContactMechanism { get; set; }
+        public ContactMechanism AssignedBillToEndCustomerContactMechanism { get; set; }
+
+        #region Allors
+        [Id("0c9f2477-c158-4484-9c70-ab96b27552ab")]
+        [AssociationId("3ee74504-9003-4ea3-8524-a95ae6fa431c")]
+        [RoleId("d807490c-ddcf-471c-9147-e7716d70039f")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public ContactMechanism DerivedBillToEndCustomerContactMechanism { get; set; }
 
         #region Allors
         [Id("1DB7F93E-215F-4786-9E12-F3F36F2FA01A")]
@@ -282,7 +334,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public PostalAddress ShipToEndCustomerAddress { get; set; }
+        public PostalAddress AssignedShipToEndCustomerAddress { get; set; }
+
+        #region Allors
+        [Id("20351a45-6ebb-43cb-ab11-e4697e1e4683")]
+        [AssociationId("5449bd2c-9712-4bc2-8e10-3fa193aae3a2")]
+        [RoleId("8ad85c7c-43e9-49bb-b348-e0ed2929d135")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress DerivedShipToEndCustomerAddress { get; set; }
 
         #region Allors
         [Id("9BC22E95-660A-46E6-AEB8-5B552A531E98")]
@@ -312,7 +374,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public ContactMechanism PlacingCustomerContactMechanism { get; set; }
+        public ContactMechanism AssignedPlacingCustomerContactMechanism { get; set; }
+
+        #region Allors
+        [Id("5c8c869d-8367-400a-a9de-30cfcb0d47da")]
+        [AssociationId("6633e942-532f-499d-b1c8-1b6d5b5ae579")]
+        [RoleId("7189c6b0-f9b8-4dd9-8650-5387bdf71cb9")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public ContactMechanism DerivedPlacingCustomerContactMechanism { get; set; }
 
         #region Allors
         [Id("E325F42E-3532-4578-A86C-DC36B6634289")]
@@ -332,14 +404,23 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public ShipmentMethod ShipmentMethod { get; set; }
+        public ShipmentMethod AssignedShipmentMethod { get; set; }
+
+        #region Allors
+        [Id("f1f51759-7673-48a8-bc95-a504d6b15cb6")]
+        [AssociationId("d2a44007-dce9-4198-a298-99b84c2db03b")]
+        [RoleId("8b326774-bbf2-4602-9746-600d8e7e6d27")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public ShipmentMethod DerivedShipmentMethod { get; set; }
 
         #region Allors
         [Id("896D1356-CEBA-4DB2-8960-92F4DD6DEE62")]
         [AssociationId("B4B96708-D125-4F5C-AE52-D4F9DA31B2D3")]
         [RoleId("BCEE3E78-C94B-4D95-8E2B-496CF8642605")]
         #endregion
-        [Derived]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -358,7 +439,6 @@ namespace Allors.Repository
         [RoleId("83D8D69D-547F-4A66-B2FF-FCD0B2B7E265")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
         [Indexed]
         public Party[] Customers { get; set; }
 
@@ -379,7 +459,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentMethod AssignedPaymentMethod { get; set; }
+
+        #region Allors
+        [Id("9f2b8264-2411-448b-9d50-6525b52f3932")]
+        [AssociationId("1bb39b2a-4c2f-4d61-97cd-0385bc6866b0")]
+        [RoleId("902e3b35-de68-42c2-9182-44478c7fdd9e")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PaymentMethod DerivedPaymentMethod { get; set; }
 
         #region Allors
         [Id("CCFFB39F-7F02-4C6E-B75C-F348DEB37DC7")]
@@ -397,7 +487,6 @@ namespace Allors.Repository
         [RoleId("FE8332FD-F397-4977-ACD0-F4E174849327")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
         [Indexed]
         public SalesInvoice ProformaInvoice { get; set; }
 

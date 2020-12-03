@@ -37,7 +37,7 @@ namespace Allors.Domain.Print.SalesOrderModel
 
                 if (this.VatClause != null && Equals(order.DerivedVatClause, new VatClauses(session).BeArt14Par2))
                 {
-                    var shipToCountry = order.ShipToAddress?.Country?.Name;
+                    var shipToCountry = order.DerivedShipToAddress?.Country?.Name;
                     this.VatClause = this.VatClause.Replace("{shipToCountry}", shipToCountry);
                 }
             }

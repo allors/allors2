@@ -11,7 +11,7 @@ namespace Allors.Domain.Print.SalesOrderModel
         {
             var customer = order.BillToEndCustomer ?? order.BillToCustomer;
             var contactPerson = order.BillToEndCustomerContactPerson ?? order.BillToContactPerson;
-            var contactMechanisam = order.BillToEndCustomerContactMechanism ?? order.BillToContactMechanism;
+            var contactMechanisam = order.DerivedBillToEndCustomerContactMechanism ?? order.DerivedBillToContactMechanism;
 
             var billTo = customer;
             var billToOrganisation = billTo as Organisation;

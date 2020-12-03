@@ -11,7 +11,7 @@ namespace Allors.Domain.Print.PurchaseInvoiceModel
         {
             var supplier = invoice.BilledFrom;
             var contactPerson = invoice.BilledFromContactPerson;
-            var contactMechanisam = invoice.BilledFromContactMechanism;
+            var contactMechanisam = invoice.DerivedBilledFromContactMechanism;
 
             var billTo = supplier;
             var billToOrganisation = billTo as Organisation;

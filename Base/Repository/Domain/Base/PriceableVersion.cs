@@ -59,7 +59,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        VatRegime VatRegime { get; set; }
+        VatRegime DerivedVatRegime { get; set; }
 
         #region Allors
         [Id("D05C5D37-1915-445C-AC89-0CF1E0D1636E")]

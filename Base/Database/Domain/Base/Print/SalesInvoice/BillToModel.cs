@@ -11,7 +11,7 @@ namespace Allors.Domain.Print.SalesInvoiceModel
         {
             var customer = invoice.BillToCustomer ?? invoice.BillToCustomer;
             var contactPerson = invoice.BillToContactPerson ?? invoice.BillToContactPerson;
-            var contactMechanisam = invoice.BillToContactMechanism ?? invoice.BillToContactMechanism;
+            var contactMechanisam = invoice.DerivedBillToContactMechanism ?? invoice.DerivedBillToContactMechanism;
 
             var billTo = customer;
             var billToOrganisation = billTo as Organisation;

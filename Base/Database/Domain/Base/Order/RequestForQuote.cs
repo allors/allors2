@@ -62,7 +62,7 @@ namespace Allors.Domain
                 .WithDescription(this.Description)
                 .WithReceiver(this.Originator)
                 .WithRequiredResponseDate(this.RequiredResponseDate)
-                .WithCurrency(this.Currency)
+                .WithAssignedCurrency(this.Currency)
                 .WithFullfillContactMechanism(this.FullfillContactMechanism)
                 .Build();
 

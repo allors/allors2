@@ -157,11 +157,11 @@ namespace Allors.Domain
                 derivation.Validation.AddError(this, M.SalesInvoiceItem.Quantity, ErrorMessages.InvalidQuantity);
             }
 
-            this.VatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesInvoiceWhereSalesInvoiceItem?.VatRegime;
-            this.VatRate = this.VatRegime?.VatRate;
+            this.DerivedVatRegime = this.ExistAssignedVatRegime ? this.AssignedVatRegime : this.SalesInvoiceWhereSalesInvoiceItem?.DerivedVatRegime;
+            this.VatRate = this.DerivedVatRegime?.VatRate;
 
-            this.IrpfRegime = this.ExistAssignedIrpfRegime ? this.AssignedIrpfRegime : this.SalesInvoiceWhereSalesInvoiceItem?.IrpfRegime;
-            this.IrpfRate = this.IrpfRegime?.IrpfRate;
+            this.DerivedIrpfRegime = this.ExistAssignedIrpfRegime ? this.AssignedIrpfRegime : this.SalesInvoiceWhereSalesInvoiceItem?.DerivedIrpfRegime;
+            this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
 
             if (this.ExistInvoiceItemType && this.IsSubTotalItem().Result == true && this.Quantity <= 0)
             {

@@ -73,9 +73,13 @@ namespace Allors.Domain
 
         public void BaseOnInit(ObjectOnInit method)
         {
-            if (!this.ExistCurrency)
+            this.DerivedCurrency = this.BilledTo?.PreferredCurrency;
+
+            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistBilledTo && internalOrganisations.Count() == 1)
             {
-                this.Currency = this.BilledTo?.PreferredCurrency;
+                this.BilledTo = internalOrganisations.First();
             }
         }
 
@@ -119,8 +123,8 @@ namespace Allors.Domain
                 }
             }
 
-            this.VatRegime ??= this.BilledFrom?.VatRegime;
-            this.IrpfRegime ??= (this.BilledFrom as Organisation)?.IrpfRegime;
+            this.DerivedVatRegime = this.AssignedVatRegime ?? this.BilledFrom?.VatRegime;
+            this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? (this.BilledFrom as Organisation)?.IrpfRegime;
 
             this.PurchaseOrders = this.InvoiceItems.SelectMany(v => v.OrderItemBillingsWhereInvoiceItem).Select(v => v.OrderItem.OrderWhereValidOrderItem).ToArray();
 
@@ -360,14 +364,14 @@ namespace Allors.Domain
 
                     this.TotalDiscount += discount;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        discountVat = Math.Round(discount * this.VatRegime.VatRate.Rate / 100, 2);
+                        discountVat = Math.Round(discount * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        discountIrpf = Math.Round(discount * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        discountIrpf = Math.Round(discount * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -379,14 +383,14 @@ namespace Allors.Domain
 
                     this.TotalSurcharge += surcharge;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        surchargeVat = Math.Round(surcharge * this.VatRegime.VatRate.Rate / 100, 2);
+                        surchargeVat = Math.Round(surcharge * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        surchargeIrpf = Math.Round(surcharge * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        surchargeIrpf = Math.Round(surcharge * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -398,14 +402,14 @@ namespace Allors.Domain
 
                     this.TotalFee += fee;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        feeVat = Math.Round(fee * this.VatRegime.VatRate.Rate / 100, 2);
+                        feeVat = Math.Round(fee * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        feeIrpf = Math.Round(fee * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        feeIrpf = Math.Round(fee * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -417,14 +421,14 @@ namespace Allors.Domain
 
                     this.TotalShippingAndHandling += shipping;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        shippingVat = Math.Round(shipping * this.VatRegime.VatRate.Rate / 100, 2);
+                        shippingVat = Math.Round(shipping * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        shippingIrpf = Math.Round(shipping * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        shippingIrpf = Math.Round(shipping * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -436,14 +440,14 @@ namespace Allors.Domain
 
                     this.TotalExtraCharge += miscellaneous;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        miscellaneousVat = Math.Round(miscellaneous * this.VatRegime.VatRate.Rate / 100, 2);
+                        miscellaneousVat = Math.Round(miscellaneous * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        miscellaneousIrpf = Math.Round(miscellaneous * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        miscellaneousIrpf = Math.Round(miscellaneous * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
             }
@@ -598,18 +602,16 @@ namespace Allors.Domain
                 .WithBilledFrom(this.BilledTo)
                 .WithBilledFromContactPerson(this.BilledToContactPerson)
                 .WithBillToCustomer(this.BillToEndCustomer)
-                .WithBillToContactMechanism(this.BillToEndCustomerContactMechanism)
+                .WithAssignedBillToContactMechanism(this.DerivedBillToEndCustomerContactMechanism)
                 .WithBillToContactPerson(this.BillToEndCustomerContactPerson)
                 .WithShipToCustomer(this.ShipToEndCustomer)
-                .WithShipToAddress(this.ShipToEndCustomerAddress)
+                .WithAssignedShipToAddress(this.DerivedShipToEndCustomerAddress)
                 .WithShipToContactPerson(this.ShipToEndCustomerContactPerson)
                 .WithDescription(this.Description)
                 .WithInvoiceDate(this.Session().Now())
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
-                .WithVatRegime(this.BilledTo.VatRegime)
-                .WithIrpfRegime(this.BilledTo.IrpfRegime)
                 .WithCustomerReference(this.CustomerReference)
-                .WithPaymentMethod(this.BillToCustomerPaymentMethod)
+                .WithAssignedPaymentMethod(this.DerivedBillToCustomerPaymentMethod)
                 .WithComment(this.Comment)
                 .WithInternalComment(this.InternalComment)
                 .Build();

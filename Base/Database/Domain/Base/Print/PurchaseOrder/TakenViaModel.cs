@@ -11,7 +11,7 @@ namespace Allors.Domain.Print.PurchaseOrderModel
         {
             var takenVia = order.TakenViaSupplier ?? order.TakenViaSubcontractor;
             var contactPerson = order.TakenViaContactPerson;
-            var contactMechanisam = order.TakenViaContactMechanism;
+            var contactMechanisam = order.DerivedTakenViaContactMechanism;
 
             var billTo = takenVia;
             var billToOrganisation = billTo as Organisation;

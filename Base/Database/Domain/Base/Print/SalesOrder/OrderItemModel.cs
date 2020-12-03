@@ -12,7 +12,7 @@ namespace Allors.Domain.Print.SalesOrderModel
     {
         public OrderItemModel(SalesOrderItem item)
         {
-            var currencyIsoCode = item.SalesOrderWhereSalesOrderItem.Currency.IsoCode;
+            var currencyIsoCode = item.SalesOrderWhereSalesOrderItem.DerivedCurrency.IsoCode;
 
             this.Reference = item.InvoiceItemType?.Name;
             this.Product = item.Product?.Name;

@@ -101,7 +101,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        VatRegime VatRegime { get; set; }
+        VatRegime DerivedVatRegime { get; set; }
 
         #region Allors
         [Id("5367e41e-b1c3-4311-87b4-6ba2732de1e6")]

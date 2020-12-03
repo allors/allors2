@@ -162,21 +162,24 @@ namespace Allors.Domain
             var session = this.Session();
 
             // SalesOrder Derivations and Validations
-            this.BillToCustomer ??= this.ShipToCustomer;
-            this.ShipToCustomer ??= this.BillToCustomer;
-            this.Customers = new[] { this.BillToCustomer, this.ShipToCustomer, this.PlacingCustomer };
-            this.Locale ??= this.BillToCustomer?.Locale ?? this.Strategy.Session.GetSingleton().DefaultLocale;
-            this.VatRegime ??= this.BillToCustomer?.VatRegime;
-            this.IrpfRegime ??= this.BillToCustomer?.IrpfRegime;
-            this.Currency ??= this.BillToCustomer?.PreferredCurrency ?? this.BillToCustomer?.Locale?.Country?.Currency ?? this.TakenBy?.PreferredCurrency;
-            this.TakenByContactMechanism ??= this.TakenBy?.OrderAddress ?? this.TakenBy?.BillingAddress ?? this.TakenBy?.GeneralCorrespondence;
-            this.BillToContactMechanism ??= this.BillToCustomer?.BillingAddress ?? this.BillToCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
-            this.BillToEndCustomerContactMechanism ??= this.BillToEndCustomer?.BillingAddress ?? this.BillToEndCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
-            this.ShipToEndCustomerAddress ??= this.ShipToEndCustomer?.ShippingAddress ?? this.ShipToCustomer?.GeneralCorrespondence as PostalAddress;
-            this.ShipFromAddress ??= this.TakenBy?.ShippingAddress;
-            this.ShipToAddress ??= this.ShipToCustomer?.ShippingAddress;
-            this.ShipmentMethod ??= this.ShipToCustomer?.DefaultShipmentMethod ?? this.Store.DefaultShipmentMethod;
-            this.PaymentMethod ??= this.ShipToCustomer?.PartyFinancialRelationshipsWhereParty?.FirstOrDefault(v => object.Equals(v.InternalOrganisation, this.TakenBy))?.DefaultPaymentMethod ?? this.Store.DefaultCollectionMethod;
+            if (this.SalesOrderState.IsProvisional)
+            {
+                this.BillToCustomer ??= this.ShipToCustomer;
+                this.ShipToCustomer ??= this.BillToCustomer;
+                this.Customers = new[] { this.BillToCustomer, this.ShipToCustomer, this.PlacingCustomer };
+                this.DerivedLocale = this.Locale ?? this.BillToCustomer?.Locale ?? this.TakenBy?.Locale;
+                this.DerivedVatRegime = this.AssignedVatRegime ?? this.BillToCustomer?.VatRegime;
+                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.BillToCustomer?.IrpfRegime;
+                this.DerivedCurrency = this.AssignedCurrency ?? this.BillToCustomer?.PreferredCurrency ?? this.BillToCustomer?.Locale?.Country?.Currency ?? this.TakenBy?.PreferredCurrency;
+                this.DerivedTakenByContactMechanism = this.AssignedTakenByContactMechanism ?? this.TakenBy?.OrderAddress ?? this.TakenBy?.BillingAddress ?? this.TakenBy?.GeneralCorrespondence;
+                this.DerivedBillToContactMechanism = this.AssignedBillToContactMechanism ?? this.BillToCustomer?.BillingAddress ?? this.BillToCustomer?.ShippingAddress ?? this.BillToCustomer?.GeneralCorrespondence;
+                this.DerivedBillToEndCustomerContactMechanism = this.AssignedBillToEndCustomerContactMechanism ?? this.BillToEndCustomer?.BillingAddress ?? this.BillToEndCustomer?.ShippingAddress ?? this.BillToEndCustomer?.GeneralCorrespondence;
+                this.DerivedShipToEndCustomerAddress = this.AssignedShipToEndCustomerAddress ?? this.ShipToEndCustomer?.ShippingAddress ?? this.ShipToEndCustomer?.GeneralCorrespondence as PostalAddress;
+                this.DerivedShipFromAddress = this.AssignedShipFromAddress ?? this.TakenBy?.ShippingAddress;
+                this.DerivedShipToAddress = this.AssignedShipToAddress ?? this.ShipToCustomer?.ShippingAddress;
+                this.DerivedShipmentMethod = this.AssignedShipmentMethod ?? this.ShipToCustomer?.DefaultShipmentMethod ?? this.Store?.DefaultShipmentMethod;
+                this.DerivedPaymentMethod = this.AssignedPaymentMethod ?? this.TakenBy?.DefaultPaymentMethod ?? this.Store?.DefaultCollectionMethod;
+            }
 
             if (!this.ExistOrderNumber && this.ExistStore)
             {
@@ -196,8 +199,8 @@ namespace Allors.Domain
 
             if (this.SalesOrderState.IsInProcess)
             {
-                derivation.Validation.AssertExists(this, this.Meta.ShipToAddress);
-                derivation.Validation.AssertExists(this, this.Meta.BillToContactMechanism);
+                derivation.Validation.AssertExists(this, this.Meta.DerivedShipToAddress);
+                derivation.Validation.AssertExists(this, this.Meta.DerivedBillToContactMechanism);
             }
 
             // SalesOrderItem Derivations and Validations
@@ -205,14 +208,17 @@ namespace Allors.Domain
             {
                 var salesOrderItemDerivedRoles = (SalesOrderItemDerivedRoles)salesOrderItem;
 
-                salesOrderItem.ShipFromAddress ??= this.ShipFromAddress;
-                salesOrderItemDerivedRoles.ShipToAddress = salesOrderItem.AssignedShipToAddress ?? salesOrderItem.AssignedShipToParty?.ShippingAddress ?? this.ShipToAddress;
-                salesOrderItemDerivedRoles.ShipToParty = salesOrderItem.AssignedShipToParty ?? this.ShipToCustomer;
-                salesOrderItemDerivedRoles.DeliveryDate = salesOrderItem.AssignedDeliveryDate ?? this.DeliveryDate;
-                salesOrderItemDerivedRoles.VatRegime = salesOrderItem.AssignedVatRegime ?? this.VatRegime;
-                salesOrderItemDerivedRoles.VatRate = salesOrderItem.VatRegime?.VatRate ;
-                salesOrderItemDerivedRoles.IrpfRegime = salesOrderItem.AssignedIrpfRegime ?? this.IrpfRegime;
-                salesOrderItemDerivedRoles.IrpfRate = salesOrderItem.IrpfRegime?.IrpfRate;
+                if (salesOrderItem.SalesOrderItemState.IsProvisional)
+                {
+                    salesOrderItemDerivedRoles.DerivedShipFromAddress = salesOrderItem.AssignedShipFromAddress ?? this.DerivedShipFromAddress;
+                    salesOrderItemDerivedRoles.DerivedShipToAddress = salesOrderItem.AssignedShipToAddress ?? salesOrderItem.AssignedShipToParty?.ShippingAddress ?? this.DerivedShipToAddress;
+                    salesOrderItemDerivedRoles.DerivedShipToParty = salesOrderItem.AssignedShipToParty ?? this.ShipToCustomer;
+                    salesOrderItemDerivedRoles.DerivedDeliveryDate = salesOrderItem.AssignedDeliveryDate ?? this.DeliveryDate;
+                    salesOrderItemDerivedRoles.DerivedVatRegime = salesOrderItem.AssignedVatRegime ?? this.DerivedVatRegime;
+                    salesOrderItemDerivedRoles.VatRate = salesOrderItem.DerivedVatRegime?.VatRate;
+                    salesOrderItemDerivedRoles.DerivedIrpfRegime = salesOrderItem.AssignedIrpfRegime ?? this.DerivedIrpfRegime;
+                    salesOrderItemDerivedRoles.IrpfRate = salesOrderItem.DerivedIrpfRegime?.IrpfRate;
+                }
 
                 // TODO: Use versioning
                 if (salesOrderItem.ExistPreviousProduct && !salesOrderItem.PreviousProduct.Equals(salesOrderItem.Product))
@@ -565,18 +571,18 @@ namespace Allors.Domain
                 {
                     foreach (var address in addresses)
                     {
-                        var pendingShipment = address.Value.BaseGetPendingCustomerShipmentForStore(address.Key, this.Store, this.ShipmentMethod);
+                        var pendingShipment = address.Value.BaseGetPendingCustomerShipmentForStore(address.Key, this.Store, this.DerivedShipmentMethod);
 
                         if (pendingShipment == null)
                         {
                             pendingShipment = new CustomerShipmentBuilder(this.Strategy.Session)
                                 .WithShipFromParty(this.TakenBy)
-                                .WithShipFromAddress(this.ShipFromAddress)
+                                .WithShipFromAddress(this.DerivedShipFromAddress)
                                 .WithShipToAddress(address.Key)
                                 .WithShipToParty(address.Value)
                                 .WithStore(this.Store)
-                                .WithShipmentMethod(this.ShipmentMethod)
-                                .WithPaymentMethod(this.PaymentMethod)
+                                .WithShipmentMethod(this.DerivedShipmentMethod)
+                                .WithPaymentMethod(this.DerivedPaymentMethod)
                                 .Build();
 
                             if (this.Store.AutoGenerateShipmentPackage)
@@ -589,7 +595,7 @@ namespace Allors.Domain
                         {
                             var orderItemDerivedRoles = (SalesOrderItemDerivedRoles)orderItem;
 
-                            if (orderItem.ExistProduct && orderItem.ShipToAddress.Equals(address.Key) && orderItem.QuantityRequestsShipping > 0)
+                            if (orderItem.ExistProduct && orderItem.DerivedShipToAddress.Equals(address.Key) && orderItem.QuantityRequestsShipping > 0)
                             {
                                 var good = orderItem.Product as Good;
                                 var nonUnifiedGood = orderItem.Product as NonUnifiedGood;
@@ -676,31 +682,32 @@ namespace Allors.Domain
             {
                 var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
                     .WithBilledFrom(this.TakenBy)
-                    .WithBilledFromContactMechanism(this.TakenByContactMechanism)
+                    .WithAssignedBilledFromContactMechanism(this.DerivedTakenByContactMechanism)
                     .WithBilledFromContactPerson(this.TakenByContactPerson)
                     .WithBillToCustomer(this.BillToCustomer)
-                    .WithBillToContactMechanism(this.BillToContactMechanism)
+                    .WithAssignedBillToContactMechanism(this.DerivedBillToContactMechanism)
                     .WithBillToContactPerson(this.BillToContactPerson)
                     .WithBillToEndCustomer(this.BillToEndCustomer)
-                    .WithBillToEndCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
+                    .WithAssignedBillToEndCustomerContactMechanism(this.DerivedBillToEndCustomerContactMechanism)
                     .WithBillToEndCustomerContactPerson(this.BillToEndCustomerContactPerson)
                     .WithShipToCustomer(this.ShipToCustomer)
-                    .WithShipToAddress(this.ShipToAddress)
+                    .WithAssignedShipToAddress(this.DerivedShipToAddress)
                     .WithShipToContactPerson(this.ShipToContactPerson)
                     .WithShipToEndCustomer(this.ShipToEndCustomer)
-                    .WithShipToEndCustomerAddress(this.ShipToEndCustomerAddress)
+                    .WithAssignedShipToEndCustomerAddress(this.DerivedShipToEndCustomerAddress)
                     .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                     .WithDescription(this.Description)
                     .WithStore(this.Store)
                     .WithInvoiceDate(this.Session().Now())
                     .WithSalesChannel(this.SalesChannel)
                     .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
-                    .WithVatRegime(this.VatRegime)
-                    .WithIrpfRegime(this.IrpfRegime)
+                    .WithAssignedVatRegime(this.DerivedVatRegime)
+                    .WithAssignedIrpfRegime(this.DerivedIrpfRegime)
                     .WithAssignedVatClause(this.DerivedVatClause)
                     .WithCustomerReference(this.CustomerReference)
-                    .WithPaymentMethod(this.PaymentMethod)
-                    .WithCurrency(this.Currency)
+                    .WithAssignedPaymentMethod(this.DerivedPaymentMethod)
+                    .WithAssignedCurrency(this.DerivedCurrency)
+                    .WithLocale(this.DerivedLocale)
                     .Build();
 
                 foreach(OrderAdjustment orderAdjustment in this.OrderAdjustments)
@@ -850,9 +857,9 @@ namespace Allors.Domain
             {
                 if (item.QuantityRequestsShipping > 0)
                 {
-                    if (!addresses.ContainsKey(item.ShipToAddress))
+                    if (!addresses.ContainsKey(item.DerivedShipToAddress))
                     {
-                        addresses.Add(item.ShipToAddress, item.ShipToParty);
+                        addresses.Add(item.DerivedShipToAddress, item.DerivedShipToParty);
                     }
                 }
             }
@@ -930,14 +937,14 @@ namespace Allors.Domain
 
                     this.TotalDiscount += discount;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        discountVat = Math.Round(discount * this.VatRegime.VatRate.Rate / 100, 2);
+                        discountVat = Math.Round(discount * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        discountIrpf = Math.Round(discount * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        discountIrpf = Math.Round(discount * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -949,14 +956,14 @@ namespace Allors.Domain
 
                     this.TotalSurcharge += surcharge;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        surchargeVat = Math.Round(surcharge * this.VatRegime.VatRate.Rate / 100, 2);
+                        surchargeVat = Math.Round(surcharge * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        surchargeIrpf = Math.Round(surcharge * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        surchargeIrpf = Math.Round(surcharge * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -968,14 +975,14 @@ namespace Allors.Domain
 
                     this.TotalFee += fee;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        feeVat = Math.Round(fee * this.VatRegime.VatRate.Rate / 100, 2);
+                        feeVat = Math.Round(fee * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        feeIrpf = Math.Round(fee * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        feeIrpf = Math.Round(fee * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -987,14 +994,14 @@ namespace Allors.Domain
 
                     this.TotalShippingAndHandling += shipping;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        shippingVat = Math.Round(shipping * this.VatRegime.VatRate.Rate / 100, 2);
+                        shippingVat = Math.Round(shipping * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        shippingIrpf = Math.Round(shipping * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        shippingIrpf = Math.Round(shipping * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
 
@@ -1006,14 +1013,14 @@ namespace Allors.Domain
 
                     this.TotalExtraCharge += miscellaneous;
 
-                    if (this.ExistVatRegime)
+                    if (this.ExistDerivedVatRegime)
                     {
-                        miscellaneousVat = Math.Round(miscellaneous * this.VatRegime.VatRate.Rate / 100, 2);
+                        miscellaneousVat = Math.Round(miscellaneous * this.DerivedVatRegime.VatRate.Rate / 100, 2);
                     }
 
-                    if (this.ExistIrpfRegime)
+                    if (this.ExistDerivedIrpfRegime)
                     {
-                        miscellaneousIrpf = Math.Round(miscellaneous * this.IrpfRegime.IrpfRate.Rate / 100, 2);
+                        miscellaneousIrpf = Math.Round(miscellaneous * this.DerivedIrpfRegime.IrpfRate.Rate / 100, 2);
                     }
                 }
             }

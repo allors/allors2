@@ -104,11 +104,11 @@ namespace Allors.Domain
 
             if (this.ExistUnitBasePrice)
             {
-                this.VatRegime = this.AssignedVatRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.VatRegime;
-                this.VatRate = this.VatRegime?.VatRate;
+                this.DerivedVatRegime = this.AssignedVatRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.DerivedVatRegime;
+                this.VatRate = this.DerivedVatRegime?.VatRate;
 
-                this.IrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.IrpfRegime;
-                this.IrpfRate = this.IrpfRegime?.IrpfRate;
+                this.DerivedIrpfRegime = this.AssignedIrpfRegime ?? this.PurchaseInvoiceWherePurchaseInvoiceItem.DerivedIrpfRegime;
+                this.IrpfRate = this.DerivedIrpfRegime?.IrpfRate;
 
                 this.TotalBasePrice = this.UnitBasePrice * this.Quantity;
                 this.TotalDiscount = this.UnitDiscount * this.Quantity;

@@ -58,7 +58,7 @@ namespace Allors.Repository
 
         public decimal UnitVat { get; set; }
 
-        public VatRegime VatRegime { get; set; }
+        public VatRegime DerivedVatRegime { get; set; }
 
         public decimal TotalVat { get; set; }
 
@@ -92,7 +92,7 @@ namespace Allors.Repository
 
         public User CreatedBy { get; set; }
 
-        public IrpfRegime IrpfRegime { get; set; }
+        public IrpfRegime DerivedIrpfRegime { get; set; }
 
         public IrpfRegime AssignedIrpfRegime { get; set; }
 
