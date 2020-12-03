@@ -95,7 +95,7 @@ namespace Allors.Domain
             var internalOrganisation = new Organisations(this.Session).Extent().First(o => o.IsInternalOrganisation);
             new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
-            var salesInvoice = new SalesInvoiceBuilder(this.Session).WithBillToCustomer(customer).WithBillToContactMechanism(contactMechanism).Build();
+            var salesInvoice = new SalesInvoiceBuilder(this.Session).WithBillToCustomer(customer).WithAssignedBillToContactMechanism(contactMechanism).Build();
 
             this.Session.Derive();
 
@@ -135,7 +135,7 @@ namespace Allors.Domain
                 .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
+                .WithAssignedShipToAddress(new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
 
             this.Session.Derive();

@@ -279,7 +279,6 @@ namespace Allors.Repository
         [RoleId("7cf7c405-f20c-4416-84f5-a4ff05412162")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Workspace]
         [Indexed]
         public ContactMechanism AssignedTakenByContactMechanism { get; set; }
@@ -633,7 +632,6 @@ namespace Allors.Repository
         [RoleId("44f187d7-afed-47c8-b318-454a3982c8af")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Indexed]
         [Workspace]
         public PaymentMethod AssignedPaymentMethod { get; set; }

@@ -306,7 +306,7 @@ namespace Allors.Domain
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session)
@@ -317,7 +317,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(orderItem.VatRegime, orderItem.VatRegime);
+            Assert.Equal(orderItem.DerivedVatRegime, orderItem.DerivedVatRegime);
         }
 
         [Fact]
@@ -328,8 +328,8 @@ namespace Allors.Domain
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithShipToAddress(this.shipToContactMechanismMechelen)
-                .WithVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(1).Build();
@@ -337,7 +337,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(salesOrder.VatRegime, orderItem.VatRegime);
+            Assert.Equal(salesOrder.DerivedVatRegime, orderItem.DerivedVatRegime);
         }
 
         [Fact]
@@ -349,8 +349,8 @@ namespace Allors.Domain
 
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithShipToAddress(this.shipToContactMechanismMechelen)
-                .WithVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(1).Build();
@@ -358,7 +358,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(salesOrder.VatRegime, orderItem.VatRegime);
+            Assert.Equal(salesOrder.DerivedVatRegime, orderItem.DerivedVatRegime);
             Assert.Equal(expected, orderItem.VatRate);
         }
 
@@ -370,8 +370,8 @@ namespace Allors.Domain
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.billToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithShipToAddress(this.shipToContactMechanismMechelen)
-                .WithVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
             var orderItem = new SalesOrderItemBuilder(this.Session)
@@ -384,7 +384,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(orderItem.DeliveryDate, orderItem.AssignedDeliveryDate);
+            Assert.Equal(orderItem.DerivedDeliveryDate, orderItem.AssignedDeliveryDate);
         }
 
         [Fact]
@@ -395,8 +395,8 @@ namespace Allors.Domain
             var salesOrder = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.billToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithShipToAddress(this.shipToContactMechanismMechelen)
-                .WithVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .WithDeliveryDate(this.Session.Now().AddMonths(1))
                 .Build();
 
@@ -409,7 +409,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(orderItem.DeliveryDate, salesOrder.DeliveryDate);
+            Assert.Equal(orderItem.DerivedDeliveryDate, salesOrder.DeliveryDate);
         }
 
         [Fact]
@@ -464,7 +464,7 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var salesOrder = new SalesOrderBuilder(this.Session)
-                .WithShipToAddress(this.shipToContactMechanismMechelen)
+                .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
 
@@ -505,7 +505,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Null(orderItem.ShipToAddress);
+            Assert.Null(orderItem.DerivedShipToAddress);
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
@@ -515,7 +515,7 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var salesOrder = new SalesOrderBuilder(this.Session)
-                .WithShipFromAddress(this.shipToContactMechanismMechelen)
+                .WithAssignedShipFromAddress(this.shipToContactMechanismMechelen)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
 
@@ -524,7 +524,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(this.shipToContactMechanismMechelen, orderItem.ShipFromAddress);
+            Assert.Equal(this.shipToContactMechanismMechelen, orderItem.DerivedShipFromAddress);
         }
 
         [Fact]
@@ -533,7 +533,7 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var salesOrder = new SalesOrderBuilder(this.Session)
-                .WithShipToAddress(this.shipToContactMechanismMechelen)
+                .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
                 .WithBillToCustomer(this.billToCustomer)
                 .Build();
 
@@ -542,7 +542,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(this.shipToContactMechanismMechelen, orderItem.ShipToAddress);
+            Assert.Equal(this.shipToContactMechanismMechelen, orderItem.DerivedShipToAddress);
         }
 
         [Fact]
@@ -560,7 +560,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(this.shipToCustomer, orderItem.ShipToParty);
+            Assert.Equal(this.shipToCustomer, orderItem.DerivedShipToParty);
         }
 
         [Fact]
@@ -1015,9 +1015,9 @@ namespace Allors.Domain
             var shipment = new CustomerShipmentBuilder(this.Session)
                 .WithShipFromAddress(this.order.TakenBy.ShippingAddress)
                 .WithShipToParty(this.order.ShipToCustomer)
-                .WithShipToAddress(this.order.ShipToAddress)
+                .WithShipToAddress(this.order.DerivedShipToAddress)
                 .WithShipmentPackage(new ShipmentPackageBuilder(this.Session).Build())
-                .WithShipmentMethod(this.order.ShipmentMethod)
+                .WithShipmentMethod(this.order.DerivedShipmentMethod)
                 .Build();
 
             this.Session.Derive();
@@ -1140,7 +1140,7 @@ namespace Allors.Domain
             var order1 = new SalesOrderBuilder(this.Session)
                 .WithShipToCustomer(this.shipToCustomer)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithShipToAddress(this.shipToContactMechanismMechelen)
+                .WithAssignedShipToAddress(this.shipToContactMechanismMechelen)
                 .WithOrderKind(manual)
                 .Build();
 
@@ -1165,9 +1165,9 @@ namespace Allors.Domain
             var shipment = new CustomerShipmentBuilder(this.Session)
                 .WithShipFromAddress(this.order.TakenBy.ShippingAddress)
                 .WithShipToParty(this.order.ShipToCustomer)
-                .WithShipToAddress(this.order.ShipToAddress)
+                .WithShipToAddress(this.order.DerivedShipToAddress)
                 .WithShipmentPackage(new ShipmentPackageBuilder(this.Session).Build())
-                .WithShipmentMethod(this.order.ShipmentMethod)
+                .WithShipmentMethod(this.order.DerivedShipmentMethod)
                 .Build();
 
             this.Session.Derive();
@@ -1644,7 +1644,7 @@ namespace Allors.Domain
             this.order.Accept();
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
+            var shipment = (CustomerShipment)this.order.DerivedShipToAddress.ShipmentsWhereShipToAddress[0];
 
             shipment.Pick();
             this.Session.Derive();
@@ -1855,7 +1855,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
+            var shipment = (CustomerShipment)this.order.DerivedShipToAddress.ShipmentsWhereShipToAddress[0];
 
             shipment.Pick();
             this.Session.Derive();
@@ -1967,7 +1967,7 @@ namespace Allors.Domain
             this.order.Accept();
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
+            var shipment = (CustomerShipment)this.order.DerivedShipToAddress.ShipmentsWhereShipToAddress[0];
 
             shipment.Pick();
             this.Session.Derive();

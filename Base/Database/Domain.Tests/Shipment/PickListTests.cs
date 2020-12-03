@@ -86,7 +86,7 @@ namespace Allors.Domain
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
@@ -540,7 +540,7 @@ namespace Allors.Domain
             var order1 = new SalesOrderBuilder(this.Session)
                 .WithStore(store1)
                 .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(mechelenAddress)
+                .WithAssignedBillToContactMechanism(mechelenAddress)
                 .WithShipToCustomer(customer)
                 .Build();
 

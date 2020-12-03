@@ -71,10 +71,10 @@ namespace Allors.Domain
 
             this.order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(this.supplier)
-                .WithBillToContactMechanism(takenViaContactMechanism)
+                .WithAssignedBillToContactMechanism(takenViaContactMechanism)
                 .WithDeliveryDate(this.Session.Now())
-                .WithVatRegime(new VatRegimes(this.Session).Exempt)
-                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Exempt)
+                .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
             this.Session.Derive();
@@ -389,7 +389,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(item.DeliveryDate, item.AssignedDeliveryDate);
+            Assert.Equal(item.DerivedDeliveryDate, item.AssignedDeliveryDate);
         }
 
         [Fact]
@@ -406,7 +406,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(item.DeliveryDate, this.order.DeliveryDate);
+            Assert.Equal(item.DerivedDeliveryDate, this.order.DeliveryDate);
         }
 
         private void InstantiateObjects(ISession session)
@@ -478,9 +478,9 @@ namespace Allors.Domain
 
             this.order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(this.supplier)
-                .WithBillToContactMechanism(takenViaContactMechanism)
+                .WithAssignedBillToContactMechanism(takenViaContactMechanism)
                 .WithDeliveryDate(this.Session.Now())
-                .WithVatRegime(new VatRegimes(this.Session).Exempt)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Exempt)
                 .Build();
 
             this.Session.Derive();

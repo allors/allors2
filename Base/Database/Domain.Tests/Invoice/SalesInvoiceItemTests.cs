@@ -184,9 +184,9 @@ namespace Allors.Domain
 
             this.invoice = new SalesInvoiceBuilder(this.Session)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithShipToAddress(this.shipToContactMechanismKiev)
+                .WithAssignedShipToAddress(this.shipToContactMechanismKiev)
                 .WithShipToCustomer(this.shipToCustomer)
                 .Build();
 
@@ -242,8 +242,8 @@ namespace Allors.Domain
 
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
-                .WithVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithInvoiceItemType(productItem).Build();
@@ -251,7 +251,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(salesInvoice.VatRegime, invoiceItem.VatRegime);
+            Assert.Equal(salesInvoice.DerivedVatRegime, invoiceItem.DerivedVatRegime);
         }
 
         [Fact]
@@ -263,8 +263,8 @@ namespace Allors.Domain
 
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
-                .WithVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(1).Build();
@@ -272,7 +272,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(salesInvoice.VatRegime, invoiceItem.VatRegime);
+            Assert.Equal(salesInvoice.DerivedVatRegime, invoiceItem.DerivedVatRegime);
             Assert.Equal(vatRate0, invoiceItem.VatRate);
         }
 
@@ -285,8 +285,8 @@ namespace Allors.Domain
 
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
-                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
+                .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithInvoiceItemType(productItem).Build();
@@ -294,7 +294,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(salesInvoice.IrpfRegime, invoiceItem.IrpfRegime);
+            Assert.Equal(salesInvoice.DerivedIrpfRegime, invoiceItem.DerivedIrpfRegime);
         }
 
         [Fact]
@@ -306,8 +306,8 @@ namespace Allors.Domain
 
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
-                .WithIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
+                .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(1).Build();
@@ -315,7 +315,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(salesInvoice.IrpfRegime, invoiceItem.IrpfRegime);
+            Assert.Equal(salesInvoice.DerivedIrpfRegime, invoiceItem.DerivedIrpfRegime);
             Assert.Equal(irpfRate19, invoiceItem.IrpfRate);
         }
 
@@ -492,7 +492,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            this.invoice.ShipToAddress = this.billToContactMechanismMechelen;
+            this.invoice.AssignedShipToAddress = this.billToContactMechanismMechelen;
 
             var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(3).Build();
             this.invoice.AddSalesInvoiceItem(item1);
@@ -503,7 +503,7 @@ namespace Allors.Domain
 
             var invoice2 = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
                 .Build();
 
             item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(3).Build();
@@ -1859,13 +1859,13 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            Assert.Equal(euro, this.invoice.Currency);
+            Assert.Equal(euro, this.invoice.DerivedCurrency);
 
             this.billToCustomer.PreferredCurrency = poundSterling;
 
             var newInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
                 .Build();
 
             const decimal quantity = 3;
@@ -1874,7 +1874,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(poundSterling, newInvoice.Currency);
+            Assert.Equal(poundSterling, newInvoice.DerivedCurrency);
 
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);

@@ -61,7 +61,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithTakenViaContactMechanism(takenViaContactMechanism);
+            builder.WithAssignedTakenViaContactMechanism(takenViaContactMechanism);
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -232,7 +232,7 @@ namespace Allors.Domain
 
             var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
-                .WithVatRegime(new VatRegimes(this.Session).Exempt)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Exempt)
                 .Build();
 
             var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();
@@ -276,7 +276,7 @@ namespace Allors.Domain
 
             var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
-                .WithVatRegime(new VatRegimes(this.Session).Exempt)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Exempt)
                 .Build();
 
             var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();

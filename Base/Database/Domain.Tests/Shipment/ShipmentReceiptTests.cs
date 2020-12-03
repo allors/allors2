@@ -74,7 +74,7 @@ namespace Allors.Domain
 
             var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
-                .WithVatRegime(new VatRegimes(this.Session).Export)
+                .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
             var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(part).WithQuantityOrdered(1).Build();

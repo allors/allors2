@@ -22,11 +22,8 @@ namespace Allors.Domain.TestPopulation
             @this.WithComment(faker.Lorem.Sentence());
             @this.WithInternalComment(faker.Lorem.Sentence());
             @this.WithShipToContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
-            @this.WithShipToAddress(internalOrganisation.ShippingAddress);
             @this.WithBillToContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
-            @this.WithBillToContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithTakenViaContactPerson(supplier.CurrentContacts.FirstOrDefault());
-            @this.WithTakenViaContactMechanism(supplier.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithTakenViaSupplier(supplier);
             @this.WithStoredInFacility(faker.Random.ListItem(internalOrganisation.FacilitiesWhereOwner));
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());

@@ -24,16 +24,16 @@ namespace Allors.Domain.Print.ProductQuoteModel
             var currency = "€";
             this.SubTotal = quote.TotalBasePrice.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.TotalExVat = quote.TotalExVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
-            this.VatRate = quote.VatRegime?.VatRate?.Rate.ToString("n2");
+            this.VatRate = quote.DerivedVatRegime?.VatRate?.Rate.ToString("n2");
             this.TotalVat = quote.TotalVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
 
             // IRPF is subtracted for total amount to pay
             var totalIrpf = quote.TotalIrpf * -1;
-            this.IrpfRate = quote.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
+            this.IrpfRate = quote.DerivedIrpfRegime?.IrpfRate?.Rate.ToString("n2");
             this.TotalIrpf = totalIrpf.ToString("N2", new CultureInfo("nl-BE"));
             this.PrintIrpf = quote.TotalIrpf != 0;
 
-            this.IrpfRate = quote.IrpfRegime?.IrpfRate?.Rate.ToString("n2");
+            this.IrpfRate = quote.DerivedIrpfRegime?.IrpfRate?.Rate.ToString("n2");
             this.TotalIrpf = quote.TotalIrpf.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.TotalIncVat = quote.TotalIncVat.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;
             this.GrandTotal = quote.GrandTotal.ToString("N2", new CultureInfo("nl-BE")) + " " + currency;

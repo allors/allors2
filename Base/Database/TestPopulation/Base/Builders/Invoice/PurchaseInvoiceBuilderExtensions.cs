@@ -29,7 +29,6 @@ namespace Allors.Domain.TestPopulation
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
             @this.WithBilledFrom(internalOrganisation);
-            @this.WithBilledFromContactMechanism(internalOrganisation.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
@@ -37,16 +36,13 @@ namespace Allors.Domain.TestPopulation
             @this.WithBilledTo(otherInternalOrganization);
             @this.WithBilledToContactPerson(otherInternalOrganization.CurrentContacts.FirstOrDefault());
             @this.WithBillToEndCustomer(endCustomer);
-            @this.WithBillToEndCustomerContactMechanism(endCustomer.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBillToEndCustomerContactPerson(endCustomer.CurrentContacts.FirstOrDefault());
             @this.WithShipToEndCustomer(endCustomer);
-            @this.WithShipToEndCustomerAddress(endCustomer.ShippingAddress);
             @this.WithShipToEndCustomerContactPerson(endCustomer.CurrentContacts.FirstOrDefault());
             @this.WithShipToCustomer(otherInternalOrganization);
-            @this.WithShipToCustomerAddress(otherInternalOrganization.ShippingAddress);
             @this.WithShipToCustomerContactPerson(otherInternalOrganization.CurrentContacts.FirstOrDefault());
             @this.WithPurchaseInvoiceType(purchaseInvoiceType);
-            @this.WithBillToCustomerPaymentMethod(paymentMethod);
+            @this.WithAssignedBillToCustomerPaymentMethod(paymentMethod);
             @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Defaullt);
             @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Product);
             @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Part);
@@ -72,7 +68,6 @@ namespace Allors.Domain.TestPopulation
 
             @this.WithCustomerReference(faker.Random.String(16).ToUpper(CultureInfo.CurrentCulture));
             @this.WithBilledFrom(supplier);
-            @this.WithBilledFromContactMechanism(supplier.CurrentPartyContactMechanisms.Select(v => v.ContactMechanism).FirstOrDefault());
             @this.WithBilledFromContactPerson(supplier.CurrentContacts.FirstOrDefault());
             @this.WithDescription(faker.Lorem.Sentence());
             @this.WithComment(faker.Lorem.Sentence());
@@ -80,14 +75,14 @@ namespace Allors.Domain.TestPopulation
             @this.WithBilledTo(internalOrganisation);
             @this.WithBilledToContactPerson(internalOrganisation.CurrentContacts.FirstOrDefault());
             @this.WithPurchaseInvoiceType(purchaseInvoiceType);
-            @this.WithBillToCustomerPaymentMethod(paymentMethod);
+            @this.WithAssignedBillToCustomerPaymentMethod(paymentMethod);
             @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Defaullt);
             @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Product);
             @this.WithPurchaseInvoiceItem(purchaseInvoiceItem_Part);
             @this.WithSalesTerm(new IncoTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new InvoiceTermBuilder(@this.Session).WithDefaults().Build());
             @this.WithSalesTerm(new OrderTermBuilder(@this.Session).WithDefaults().Build());
-            @this.WithVatRegime(faker.Random.ListItem(@this.Session.Extent<VatRegime>()));
+            @this.WithAssignedVatRegime(faker.Random.ListItem(@this.Session.Extent<VatRegime>()));
 
             return @this;
         }
