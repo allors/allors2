@@ -102,10 +102,8 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
 
         this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
         this.quote.Issuer = this.internalOrganisation;
-        this.quote.Currency = this.internalOrganisation.PreferredCurrency;
         this.quote.IssueDate = new Date().toISOString();
         this.quote.ValidFromDate = new Date().toISOString();
-
       });
   }
 
@@ -208,8 +206,6 @@ export class ProductQuoteCreateComponent extends TestScope implements OnInit, On
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.CurrentContacts as Person[];
-
-        this.quote.Currency = this.quote.Receiver.PreferredCurrency;
       });
   }
 }

@@ -138,12 +138,16 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
             pull.ProductQuote({
               object: id,
               include: {
-                Currency: x,
+                AssignedCurrency: x,
+                DerivedCurrency: x,
                 Receiver: x,
                 FullfillContactMechanism: x,
                 QuoteState: x,
                 Request: x,
-                VatRegime: {
+                AssignedVatRegime: {
+                  VatRate: x,
+                },
+                DerivedVatRegime: {
                   VatRate: x,
                 }
               }
@@ -258,7 +262,6 @@ export class ProductQuoteOverviewDetailComponent extends TestScope implements On
         if (this.productQuote.Receiver !== this.previousReceiver) {
           this.productQuote.ContactPerson = null;
           this.productQuote.FullfillContactMechanism = null;
-          this.productQuote.Currency = this.productQuote.Receiver.PreferredCurrency;
 
           this.previousReceiver = this.productQuote.Receiver;
         }

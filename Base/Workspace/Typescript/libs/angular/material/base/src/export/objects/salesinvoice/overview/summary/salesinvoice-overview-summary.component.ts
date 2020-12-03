@@ -81,16 +81,16 @@ export class SalesInvoiceOverviewSummaryComponent {
             SalesInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,
-            BillToContactMechanism: {
+            DerivedBillToContactMechanism: {
               PostalAddress_Country: x,
             },
-            ShipToAddress: {
+            DerivedShipToAddress: {
               Country: x,
             },
-            BillToEndCustomerContactMechanism: {
+            DerivedBillToEndCustomerContactMechanism: {
               PostalAddress_Country: x,
             },
-            ShipToEndCustomerAddress: {
+            DerivedShipToEndCustomerAddress: {
               Country: x,
             },
           },

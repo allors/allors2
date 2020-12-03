@@ -163,7 +163,6 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
 
         this.order = this.allors.context.create('SalesOrder') as SalesOrder;
         this.order.TakenBy = this.internalOrganisation;
-        this.order.Currency = this.internalOrganisation.PreferredCurrency;
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipFromAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
@@ -298,35 +297,35 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.order.BillToContactMechanism = partyContactMechanism.ContactMechanism;
+    this.order.AssignedBillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.order.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
+    this.order.AssignedBillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.order.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.order.AssignedShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.order.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.order.AssignedShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public shipFromAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipFromAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.TakenBy.AddPartyContactMechanism(partyContactMechanism);
-    this.order.ShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.order.AssignedShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public shipToCustomerSelected(party: ISessionObject) {
@@ -386,7 +385,7 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
       .subscribe((loaded) => {
 
         if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
-          this.order.ShipToAddress = null;
+          this.order.AssignedShipToAddress = null;
           this.order.ShipToContactPerson = null;
           this.previousShipToCustomer = this.order.ShipToCustomer;
         }
@@ -399,9 +398,6 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToContacts = loaded.collections.CurrentContacts as Person[];
-
-        this.order.Currency = this.order.ShipToCustomer.PreferredCurrency;
-        this.order.VatRegime = this.order.ShipToCustomer.VatRegime;
       });
   }
 
@@ -446,7 +442,7 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
       .subscribe((loaded) => {
 
         if (this.order.BillToCustomer !== this.previousBillToCustomer) {
-          this.order.BillToContactMechanism = null;
+          this.order.AssignedBillToContactMechanism = null;
           this.order.BillToContactPerson = null;
           this.previousBillToCustomer = this.order.BillToCustomer;
         }
@@ -496,7 +492,7 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
       .subscribe((loaded) => {
 
         if (this.order.BillToEndCustomer !== this.previousBillToEndCustomer) {
-          this.order.BillToEndCustomerContactMechanism = null;
+          this.order.AssignedBillToEndCustomerContactMechanism = null;
           this.order.BillToEndCustomerContactPerson = null;
           this.previousBillToEndCustomer = this.order.BillToEndCustomer;
         }
@@ -544,7 +540,7 @@ export class SalesOrderCreateComponent extends TestScope implements OnInit, OnDe
       .subscribe((loaded) => {
 
         if (this.order.ShipToEndCustomer !== this.previousShipToEndCustomer) {
-          this.order.ShipToEndCustomerAddress = null;
+          this.order.AssignedShipToEndCustomerAddress = null;
           this.order.ShipToEndCustomerContactPerson = null;
           this.previousShipToEndCustomer = this.order.ShipToEndCustomer;
         }

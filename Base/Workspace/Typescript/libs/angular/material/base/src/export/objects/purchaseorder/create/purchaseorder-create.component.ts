@@ -123,7 +123,6 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
         this.order = this.allors.context.create('PurchaseOrder') as PurchaseOrder;
         this.order.OrderedBy = this.internalOrganisation;
-        this.order.Currency = this.internalOrganisation.PreferredCurrency;
 
         if (this.order.TakenViaSupplier) {
           this.takenVia = this.order.TakenViaSupplier;
@@ -183,7 +182,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
     this.takenViaContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.takenVia.AddPartyContactMechanism(partyContactMechanism);
-    this.order.TakenViaContactMechanism = partyContactMechanism.ContactMechanism;
+    this.order.AssignedTakenViaContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public billToContactPersonAdded(person: Person): void {
@@ -200,7 +199,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.OrderedBy.AddPartyContactMechanism(partyContactMechanism);
-    this.order.BillToContactMechanism = partyContactMechanism.ContactMechanism;
+    this.order.AssignedBillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToContactPersonAdded(person: Person): void {
@@ -217,7 +216,7 @@ export class PurchaseOrderCreateComponent extends TestScope implements OnInit, O
 
     this.shipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.OrderedBy.AddPartyContactMechanism(partyContactMechanism);
-    this.order.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.order.AssignedShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public supplierSelected(supplier: ISessionObject) {

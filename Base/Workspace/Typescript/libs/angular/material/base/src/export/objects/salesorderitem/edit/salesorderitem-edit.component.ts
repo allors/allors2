@@ -122,26 +122,38 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
                 Product: x,
                 SerialisedItem: x,
                 QuoteItem: x,
-                VatRegime: {
+                AssignedVatRegime: {
                   VatRate: x,
                 },
-                IrpfRegime: {
+                AssignedIrpfRegime: {
                   IrpfRate: x,
                 },
-              }
+                DerivedVatRegime: {
+                  VatRate: x,
+                },
+                DerivedIrpfRegime: {
+                  IrpfRate: x,
+                }
+            }
             }),
             pull.SalesOrderItem({
               object: this.data.id,
               fetch: {
                 SalesOrderWhereSalesOrderItem: {
                   include: {
-                    VatRegime: {
+                    AssignedVatRegime: {
                       VatRate: x,
                     },
-                    IrpfRegime: {
+                    AssignedIrpfRegime: {
                       IrpfRate: x,
                     },
-                  }
+                    DerivedVatRegime: {
+                      VatRate: x,
+                    },
+                    DerivedIrpfRegime: {
+                      IrpfRate: x,
+                    }
+                    }
                 }
               }
             }),
@@ -175,10 +187,16 @@ export class SalesOrderItemEditComponent extends TestScope implements OnInit, On
               pull.SalesOrder({
                 object: this.data.associationId,
                 include: {
-                  VatRegime: {
+                  AssignedVatRegime: {
                     VatRate: x,
                   },
-                  IrpfRegime: {
+                  AssignedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+                  DerivedVatRegime: {
+                    VatRate: x,
+                  },
+                  DerivedIrpfRegime: {
                     IrpfRate: x,
                   }
                 }

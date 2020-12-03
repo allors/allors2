@@ -90,23 +90,35 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               include: {
                 PurchaseInvoiceItemState: x,
                 SerialisedItem: x,
-                VatRegime: {
+                AssignedVatRegime: {
                   VatRate: x,
                 },
-                IrpfRegime: {
+                DerivedVatRegime: {
+                  VatRate: x,
+                },
+                AssignedIrpfRegime: {
                   IrpfRate: x,
                 },
-              },
+                DerivedIrpfRegime: {
+                  IrpfRate: x,
+                },
+          },
             }),
             pull.PurchaseInvoiceItem({
               object: id,
               fetch: {
                 PurchaseInvoiceWherePurchaseInvoiceItem: {
                   include: {
-                    VatRegime: {
+                    AssignedVatRegime: {
                       VatRate: x,
                     },
-                    IrpfRegime: {
+                    DerivedVatRegime: {
+                      VatRate: x,
+                    },
+                    AssignedIrpfRegime: {
+                      IrpfRate: x,
+                    },
+                    DerivedIrpfRegime: {
                       IrpfRate: x,
                     },
                   },
@@ -130,10 +142,16 @@ export class PurchaseInvoiceItemEditComponent extends TestScope implements OnIni
               pull.PurchaseInvoice({
                 object: this.data.associationId,
                 include: {
-                  VatRegime: {
+                  AssignedVatRegime: {
                     VatRate: x,
                   },
-                  IrpfRegime: {
+                  DerivedVatRegime: {
+                    VatRate: x,
+                  },
+                  AssignedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+                  DerivedIrpfRegime: {
                     IrpfRate: x,
                   },
                 },

@@ -132,10 +132,16 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
                 RequestItem: x,
                 Product: x,
                 SerialisedItem: x,
-                VatRegime: {
+                AssignedVatRegime: {
                   VatRate: x,
                 },
-                IrpfRegime: {
+                DerivedVatRegime: {
+                  VatRate: x,
+                },
+                AssignedIrpfRegime: {
+                  IrpfRate: x,
+                },
+                DerivedIrpfRegime: {
                   IrpfRate: x,
                 },
               },
@@ -151,10 +157,16 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
               fetch: {
                 QuoteWhereQuoteItem: {
                   include: {
-                    VatRegime: {
+                    AssignedVatRegime: {
                       VatRate: x,
                     },
-                    IrpfRegime: {
+                    DerivedVatRegime: {
+                      VatRate: x,
+                    },
+                    AssignedIrpfRegime: {
+                      IrpfRate: x,
+                    },
+                    DerivedIrpfRegime: {
                       IrpfRate: x,
                     },
                   },
@@ -190,10 +202,16 @@ export class QuoteItemEditComponent extends TestScope implements OnInit, OnDestr
               pull.ProductQuote({
                 object: this.data.associationId,
                 include: {
-                  VatRegime: {
+                  AssignedVatRegime: {
                     VatRate: x,
                   },
-                  IrpfRegime: {
+                  DerivedVatRegime: {
+                    VatRate: x,
+                  },
+                  AssignedIrpfRegime: {
+                    IrpfRate: x,
+                  },
+                  DerivedIrpfRegime: {
                     IrpfRate: x,
                   },
                 },

@@ -142,7 +142,8 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
               SalesTerms: {
                 TermType: x,
               },
-              Currency: x,
+              AssignedCurrency: x,
+              DerivedCurrency: x,
               BillToCustomer: x,
               BillToContactPerson: x,
               ShipToCustomer: x,
@@ -158,22 +159,36 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
               CreatedBy: x,
               LastModifiedBy: x,
               Quote: x,
-              ShipFromAddress: {
+              AssignedShipFromAddress: {
                 Country: x,
               },
-              ShipToAddress: {
+              DerivedShipFromAddress: {
                 Country: x,
               },
-              BillToEndCustomerContactMechanism: {
-                                  PostalAddress_Country: x
+              AssignedShipToAddress: {
+                Country: x,
+              },
+              DerivedShipToAddress: {
+                Country: x,
+              },
+              AssignedBillToEndCustomerContactMechanism: {
+                PostalAddress_Country: x
 
               },
-              ShipToEndCustomerAddress: {
+              DerivedBillToEndCustomerContactMechanism: {
+                PostalAddress_Country: x
+              },
+              AssignedShipToEndCustomerAddress: {
                 Country: x,
               },
-              BillToContactMechanism: {
-                                  PostalAddress_Country: x
-
+              DerivedShipToEndCustomerAddress: {
+                Country: x,
+              },
+              AssignedBillToContactMechanism: {
+                PostalAddress_Country: x
+              },
+              DerivedBillToContactMechanism: {
+                PostalAddress_Country: x
               }
             }
           }),
@@ -238,24 +253,31 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
             pull.SalesOrder({
               object: id,
               include: {
-                Currency: x,
+                AssignedCurrency: x,
+                DerivedCurrency: x,
                 Store: x,
                 OriginFacility: x,
                 ShipToCustomer: x,
-                ShipToAddress: x,
+                AssignedShipToAddress: x,
+                DerivedShipToAddress: x,
                 ShipToContactPerson: x,
                 SalesOrderState: x,
-                BillToContactMechanism: x,
+                AssignedBillToContactMechanism: x,
+                DerivedBillToContactMechanism: x,
                 BillToContactPerson: x,
-                BillToEndCustomerContactMechanism: x,
+                AssignedBillToEndCustomerContactMechanism: x,
+                DerivedBillToEndCustomerContactMechanism: x,
                 BillToEndCustomerContactPerson: x,
                 ShipToEndCustomer: x,
-                ShipToEndCustomerAddress: x,
+                AssignedShipToEndCustomerAddress: x,
+                DerivedShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
                 AssignedVatClause: x,
                 DerivedVatClause: x,
-                VatRegime: x,
-                IrpfRegime: x,
+                AssignedVatRegime: x,
+                DerivedVatRegime: x,
+                AssignedIrpfRegime: x,
+                DerivedIrpfRegime: x,
               }
             }),
             pull.VatClause({ sort: new Sort(m.VatClause.Name) }),
@@ -437,35 +459,35 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.order.BillToContactMechanism = partyContactMechanism.ContactMechanism;
+    this.order.AssignedBillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.order.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
+    this.order.AssignedBillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.order.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.order.AssignedShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.order.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.order.AssignedShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public shipFromAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipFromAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.TakenBy.AddPartyContactMechanism(partyContactMechanism);
-    this.order.ShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.order.AssignedShipFromAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   private updateShipToCustomer(party: Party): void {
@@ -507,7 +529,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
       .subscribe((loaded) => {
 
         if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
-          this.order.ShipToAddress = null;
+          this.order.AssignedShipToAddress = null;
           this.order.ShipToContactPerson = null;
           this.previousShipToCustomer = this.order.ShipToCustomer;
         }
@@ -564,7 +586,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
       .subscribe((loaded) => {
 
         if (this.order.BillToCustomer !== this.previousBillToCustomer) {
-          this.order.BillToContactMechanism = null;
+          this.order.AssignedBillToContactMechanism = null;
           this.order.BillToContactPerson = null;
           this.previousBillToCustomer = this.order.BillToCustomer;
         }
@@ -614,7 +636,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
       .subscribe((loaded) => {
 
         if (this.order.BillToEndCustomer !== this.previousBillToEndCustomer) {
-          this.order.BillToEndCustomerContactMechanism = null;
+          this.order.AssignedBillToEndCustomerContactMechanism = null;
           this.order.BillToEndCustomerContactPerson = null;
           this.previousBillToEndCustomer = this.order.BillToEndCustomer;
         }
@@ -662,7 +684,7 @@ export class SalesOrderOverviewDetailComponent extends TestScope implements OnIn
       .subscribe((loaded) => {
 
         if (this.order.ShipToEndCustomer !== this.previousShipToEndCustomer) {
-          this.order.ShipToEndCustomerAddress = null;
+          this.order.AssignedShipToEndCustomerAddress = null;
           this.order.ShipToEndCustomerContactPerson = null;
           this.previousShipToEndCustomer = this.order.ShipToEndCustomer;
         }

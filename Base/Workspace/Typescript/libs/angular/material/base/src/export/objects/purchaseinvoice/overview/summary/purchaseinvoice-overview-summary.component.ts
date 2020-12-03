@@ -72,10 +72,10 @@ export class PurchasInvoiceOverviewSummaryComponent {
             PurchaseInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,
-            BillToEndCustomerContactMechanism: {
+            DerivedBillToEndCustomerContactMechanism: {
               PostalAddress_Country: {},
             },
-            ShipToEndCustomerAddress: {
+            DerivedShipToEndCustomerAddress: {
               Country: x,
             },
             PrintDocument: {

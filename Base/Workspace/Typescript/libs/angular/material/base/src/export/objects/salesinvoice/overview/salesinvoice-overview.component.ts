@@ -78,16 +78,16 @@ export class SalesInvoiceOverviewComponent extends TestScope implements AfterVie
                 SalesInvoiceState: x,
                 CreatedBy: x,
                 LastModifiedBy: x,
-                BillToContactMechanism: {
+                DerivedBillToContactMechanism: {
                   PostalAddress_Country: x
                 },
-                ShipToAddress: {
+                DerivedShipToAddress: {
                   Country: x
                 },
-                BillToEndCustomerContactMechanism: {
+                DerivedBillToEndCustomerContactMechanism: {
                   PostalAddress_Country: x
                 },
-                ShipToEndCustomerAddress: {
+                DerivedShipToEndCustomerAddress: {
                   Country: x
                 }
               }

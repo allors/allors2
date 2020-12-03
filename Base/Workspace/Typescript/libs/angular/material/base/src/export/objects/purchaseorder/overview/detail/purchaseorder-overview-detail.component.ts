@@ -120,17 +120,24 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
                 OrderedBy: x,
                 StoredInFacility: x,
                 TakenViaSupplier: x,
-                TakenViaContactMechanism: x,
+                AssignedTakenViaContactMechanism: x,
+                DerivedTakenViaContactMechanism: x,
                 TakenViaContactPerson: x,
                 BillToContactPerson: x,
                 PurchaseOrderState: x,
                 PurchaseOrderShipmentState: x,
                 CreatedBy: x,
                 LastModifiedBy: x,
-                ShipToAddress: {
+                AssignedShipToAddress: {
                   Country: x,
                 },
-                BillToContactMechanism: {
+                DerivedShipToAddress: {
+                  Country: x,
+                },
+                AssignedBillToContactMechanism: {
+                  PostalAddress_Country: x
+                },
+                DerivedBillToContactMechanism: {
                   PostalAddress_Country: x
                 },
               }
@@ -223,7 +230,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
     this.takenViaContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.takenVia.AddPartyContactMechanism(partyContactMechanism);
-    this.order.TakenViaContactMechanism = partyContactMechanism.ContactMechanism;
+    this.order.AssignedTakenViaContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public billToContactPersonAdded(person: Person): void {
@@ -240,7 +247,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.OrderedBy.AddPartyContactMechanism(partyContactMechanism);
-    this.order.BillToContactMechanism = partyContactMechanism.ContactMechanism;
+    this.order.AssignedBillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToContactPersonAdded(person: Person): void {
@@ -257,7 +264,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
 
     this.shipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.OrderedBy.AddPartyContactMechanism(partyContactMechanism);
-    this.order.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.order.AssignedShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public supplierSelected(supplier: ISessionObject) {
@@ -296,7 +303,7 @@ export class PurchaseOrderOverviewDetailComponent extends TestScope implements O
       .subscribe((loaded) => {
 
         if (this.order.TakenViaSupplier !== this.previousSupplier) {
-          this.order.TakenViaContactMechanism = null;
+          this.order.AssignedTakenViaContactMechanism = null;
           this.order.TakenViaContactPerson = null;
           this.previousSupplier = this.order.TakenViaSupplier;
         }

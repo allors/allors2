@@ -172,7 +172,7 @@ export class ShipmentItemEditComponent extends TestScope implements OnInit, OnDe
               object: this.data.associationId,
               fetch: {
                 ShipToAddress: {
-                  SalesOrderItemsWhereShipToAddress: {
+                  SalesOrderItemsWhereDerivedShipToAddress: {
                     include: {
                       Product: x,
                       SerialisedItem: x,

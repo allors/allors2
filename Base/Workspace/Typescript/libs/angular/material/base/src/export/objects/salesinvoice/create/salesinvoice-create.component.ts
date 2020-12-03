@@ -139,7 +139,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
         this.invoice = this.allors.context.create('SalesInvoice') as SalesInvoice;
         this.invoice.BilledFrom = this.internalOrganisation;
-        this.invoice.Currency = this.internalOrganisation.PreferredCurrency;
         this.invoice.AdvancePayment = '0';
 
         if (this.invoice.BillToCustomer) {
@@ -262,25 +261,25 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
   public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToContactMechanism = partyContactMechanism.ContactMechanism;
+    this.invoice.AssignedBillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
+    this.invoice.AssignedBillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToAddressAdded(partyContactMechanism: PartyContactMechanism): void {
     this.shipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.invoice.AssignedShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.invoice.AssignedShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public billToCustomerSelected(party: ISessionObject) {
@@ -340,7 +339,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
       if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
-        this.invoice.ShipToAddress = null;
+        this.invoice.AssignedShipToAddress = null;
         this.invoice.ShipToContactPerson = null;
         this.previousShipToCustomer = this.invoice.ShipToCustomer;
       }
@@ -391,7 +390,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
       if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
-        this.invoice.BillToContactMechanism = null;
+        this.invoice.AssignedBillToContactMechanism = null;
         this.invoice.BillToContactPerson = null;
         this.previousBillToCustomer = this.invoice.BillToCustomer;
       }
@@ -404,9 +403,6 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
       const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.CurrentPartyContactMechanisms as PartyContactMechanism[];
       this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
       this.billToContacts = loaded.collections.CurrentContacts as Person[];
-
-      this.invoice.Currency = this.invoice.BillToCustomer.PreferredCurrency;
-      this.invoice.VatRegime = this.invoice.BillToCustomer.VatRegime;
     });
   }
 
@@ -436,7 +432,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
       if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
-        this.invoice.BillToEndCustomerContactMechanism = null;
+        this.invoice.AssignedBillToEndCustomerContactMechanism = null;
         this.invoice.BillToEndCustomerContactPerson = null;
         this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
       }
@@ -478,7 +474,7 @@ export class SalesInvoiceCreateComponent extends TestScope implements OnInit, On
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
       if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
-        this.invoice.ShipToEndCustomerAddress = null;
+        this.invoice.AssignedShipToEndCustomerAddress = null;
         this.invoice.ShipToEndCustomerContactPerson = null;
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
       }

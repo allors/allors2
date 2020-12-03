@@ -89,12 +89,18 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
                 Part: x,
                 SerialisedItem: x,
                 StoredInFacility: x,
-                VatRegime: {
+                AssignedVatRegime: {
                   VatRate: x,
                 },
-                IrpfRegime: {
+                DerivedVatRegime: {
+                  VatRate: x,
+                },
+                AssignedIrpfRegime: {
                   IrpfRate: x,
                 },
+                DerivedIrpfRegime: {
+                  IrpfRate: x,
+                }
               }
             }),
             pull.PurchaseOrderItem({
@@ -102,12 +108,18 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
               fetch: {
                 PurchaseOrderWherePurchaseOrderItem: {
                   include: {
-                    VatRegime: {
+                    AssignedVatRegime: {
                       VatRate: x,
                     },
-                    IrpfRegime: {
+                    DerivedVatRegime: {
+                      VatRate: x,
+                    },
+                    AssignedIrpfRegime: {
                       IrpfRate: x,
                     },
+                    DerivedIrpfRegime: {
+                      IrpfRate: x,
+                    }
                   }
                 }
               }
@@ -139,8 +151,10 @@ export class PurchaseOrderItemEditComponent extends TestScope implements OnInit,
               pull.PurchaseOrder({
                 object: this.data.associationId,
                 include: {
-                  VatRegime: x,
-                  IrpfRegime: x,
+                  AssignedVatRegime: x,
+                  DerivedVatRegime: x,
+                  AssignedIrpfRegime: x,
+                  DerivedIrpfRegime: x,
                   TakenViaSupplier: x
                 }
               })

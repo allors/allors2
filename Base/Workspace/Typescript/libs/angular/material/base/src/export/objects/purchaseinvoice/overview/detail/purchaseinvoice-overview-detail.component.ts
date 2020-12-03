@@ -128,7 +128,10 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
               InvoiceItemType: x,
             },
             BilledFrom: x,
-            BilledFromContactMechanism: {
+            AssignedBilledFromContactMechanism: {
+              PostalAddress_Country: {},
+            },
+            DerivedBilledFromContactMechanism: {
               PostalAddress_Country: {},
             },
             BilledFromContactPerson: x,
@@ -140,13 +143,22 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
             PurchaseInvoiceState: x,
             CreatedBy: x,
             LastModifiedBy: x,
-            VatRegime: {
+            AssignedVatRegime: {
               VatRate: x,
             },
-            BillToEndCustomerContactMechanism: {
+            DerivedVatRegime: {
+              VatRate: x,
+            },
+            AssignedBillToEndCustomerContactMechanism: {
               PostalAddress_Country: {},
             },
-            ShipToEndCustomerAddress: {
+            DerivedBillToEndCustomerContactMechanism: {
+              PostalAddress_Country: {},
+            },
+            AssignedShipToEndCustomerAddress: {
+              Country: x,
+            },
+            DerivedShipToEndCustomerAddress: {
               Country: x,
             },
           },
@@ -181,16 +193,20 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
               include: {
                 BilledFrom: x,
                 BilledFromContactPerson: x,
-                BilledFromContactMechanism: x,
+                AssignedBilledFromContactMechanism: x,
+                DerivedBilledFromContactMechanism: x,
                 ShipToCustomer: x,
                 BillToEndCustomer: x,
-                BillToEndCustomerContactMechanism: x,
+                AssignedBillToEndCustomerContactMechanism: x,
+                DerivedBillToEndCustomerContactMechanism: x,
                 BillToEndCustomerContactPerson: x,
                 ShipToEndCustomer: x,
-                ShipToEndCustomerAddress: x,
+                AssignedShipToEndCustomerAddress: x,
+                DerivedShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
                 PurchaseInvoiceState: x,
-                VatRegime: x,
+                AssignedVatRegime: x,
+                DerivedVatRegime: x,
               },
             }),
             pull.VatRegime({ sort: new Sort(m.VatRegime.Name) }),
@@ -338,25 +354,25 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
   public billedFromContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
     this.billedFromContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BilledFrom.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BilledFromContactMechanism = partyContactMechanism.ContactMechanism;
+    this.invoice.AssignedBilledFromContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
     this.shipToCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.ShipToCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.invoice.AssignedShipToCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
+    this.invoice.AssignedBillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.invoice.AssignedShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public billedFromSelected(organisation: ISessionObject) {
@@ -413,7 +429,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
       if (this.invoice.BilledFrom !== this.previousBilledFrom) {
-        this.invoice.BilledFromContactMechanism = null;
+        this.invoice.AssignedBilledFromContactMechanism = null;
         this.invoice.BilledFromContactPerson = null;
         this.previousBilledFrom = this.invoice.BilledFrom;
       }
@@ -459,7 +475,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
       if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
-        this.invoice.ShipToEndCustomerAddress = null;
+        this.invoice.AssignedShipToEndCustomerAddress = null;
         this.invoice.ShipToCustomerContactPerson = null;
         this.previousShipToCustomer = this.invoice.ShipToCustomer;
       }
@@ -496,7 +512,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
       if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
-        this.invoice.BillToEndCustomerContactMechanism = null;
+        this.invoice.AssignedBillToEndCustomerContactMechanism = null;
         this.invoice.BillToEndCustomerContactPerson = null;
         this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
       }
@@ -540,7 +556,7 @@ export class PurchaseInvoiceOverviewDetailComponent extends TestScope implements
 
     this.allors.context.load(new PullRequest({ pulls })).subscribe((loaded) => {
       if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
-        this.invoice.ShipToEndCustomerAddress = null;
+        this.invoice.AssignedShipToEndCustomerAddress = null;
         this.invoice.ShipToEndCustomerContactPerson = null;
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
       }

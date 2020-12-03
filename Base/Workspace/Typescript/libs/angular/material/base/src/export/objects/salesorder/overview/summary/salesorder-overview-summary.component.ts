@@ -93,16 +93,16 @@ export class SalesOrderOverviewSummaryComponent {
             PrintDocument: {
               Media: x
             },
-            ShipToAddress: {
+            DerivedShipToAddress: {
               Country: x,
             },
-            BillToEndCustomerContactMechanism: {
+            DerivedBillToEndCustomerContactMechanism: {
               PostalAddress_Country: x
             },
-            ShipToEndCustomerAddress: {
+            DerivedShipToEndCustomerAddress: {
               Country: x
             },
-            BillToContactMechanism: {
+            DerivedBillToContactMechanism: {
               PostalAddress_Country: x
             }
           }

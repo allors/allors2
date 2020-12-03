@@ -74,11 +74,11 @@ export class PurchaseInvoiceOverviewComponent extends TestScope implements After
                 CreatedBy: x,
                 LastModifiedBy: x,
                 PurchaseOrders: x,
-                BillToEndCustomerContactMechanism: {
+                DerivedBillToEndCustomerContactMechanism: {
                   PostalAddress_Country: {
                   }
                 },
-                ShipToEndCustomerAddress: {
+                DerivedShipToEndCustomerAddress: {
                   Country: x
                 }
               },

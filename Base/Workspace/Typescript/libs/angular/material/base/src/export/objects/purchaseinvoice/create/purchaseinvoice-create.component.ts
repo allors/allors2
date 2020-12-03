@@ -150,7 +150,6 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
 
         this.invoice = this.allors.context.create('PurchaseInvoice') as PurchaseInvoice;
         this.invoice.BilledTo = this.internalOrganisation;
-        this.invoice.Currency = this.internalOrganisation.PreferredCurrency;
 
         if (this.invoice.BilledFrom) {
           this.updateBilledFrom(this.invoice.BilledFrom);
@@ -278,28 +277,28 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
 
     this.billedFromContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BilledFrom.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BilledFromContactMechanism = partyContactMechanism.ContactMechanism;
+    this.invoice.AssignedBilledFromContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipToCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.ShipToCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.invoice.AssignedShipToCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
+    this.invoice.AssignedBillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.invoice.AssignedShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public billedFromSelected(organisation: ISessionObject) {
@@ -358,7 +357,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
       .subscribe((loaded) => {
 
         if (this.invoice.BilledFrom !== this.previousBilledFrom) {
-          this.invoice.BilledFromContactMechanism = null;
+          this.invoice.AssignedBilledFromContactMechanism = null;
           this.invoice.BilledFromContactPerson = null;
           this.previousBilledFrom = this.invoice.BilledFrom;
         }
@@ -408,7 +407,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
-          this.invoice.ShipToEndCustomerAddress = null;
+          this.invoice.AssignedShipToEndCustomerAddress = null;
           this.invoice.ShipToCustomerContactPerson = null;
           this.previousShipToCustomer = this.invoice.ShipToCustomer;
         }
@@ -450,7 +449,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
       .subscribe((loaded) => {
 
         if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
-          this.invoice.BillToEndCustomerContactMechanism = null;
+          this.invoice.AssignedBillToEndCustomerContactMechanism = null;
           this.invoice.BillToEndCustomerContactPerson = null;
           this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
         }
@@ -497,7 +496,7 @@ export class PurchaseInvoiceCreateComponent extends TestScope implements OnInit,
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
-          this.invoice.ShipToEndCustomerAddress = null;
+          this.invoice.AssignedShipToEndCustomerAddress = null;
           this.invoice.ShipToEndCustomerContactPerson = null;
           this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
         }

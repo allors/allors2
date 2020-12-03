@@ -122,7 +122,8 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
               },
               AssignedVatClause: x,
               DerivedVatClause: x,
-              Currency: x,
+              AssignedCurrency: x,
+              DerivedCurrency: x,
               BillToCustomer: x,
               BillToContactPerson: x,
               ShipToCustomer: x,
@@ -132,16 +133,28 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
               SalesInvoiceState: x,
               CreatedBy: x,
               LastModifiedBy: x,
-              BillToContactMechanism: {
+              AssignedBillToContactMechanism: {
                 PostalAddress_Country: x
               },
-              ShipToAddress: {
+              DerivedBillToContactMechanism: {
+                PostalAddress_Country: x
+              },
+              AssignedShipToAddress: {
                 Country: x
               },
-              BillToEndCustomerContactMechanism: {
+              DerivedShipToAddress: {
+                Country: x
+              },
+              AssignedBillToEndCustomerContactMechanism: {
                 PostalAddress_Country: x
               },
-              ShipToEndCustomerAddress: {
+              DerivedBillToEndCustomerContactMechanism: {
+                PostalAddress_Country: x
+              },
+              AssignedShipToEndCustomerAddress: {
+                Country: x
+              },
+              DerivedShipToEndCustomerAddress: {
                 Country: x
               }
             }
@@ -184,19 +197,24 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
               object: id,
               include: {
                 BillToCustomer: x,
-                BillToContactMechanism: x,
+                AssignedBillToContactMechanism: x,
+                DerivedBillToContactMechanism: x,
                 BillToContactPerson: x,
                 ShipToCustomer: x,
-                ShipToAddress: x,
+                AssignedShipToAddress: x,
+                DerivedShipToAddress: x,
                 ShipToContactPerson: x,
                 BillToEndCustomer: x,
-                BillToEndCustomerContactMechanism: x,
+                AssignedBillToEndCustomerContactMechanism: x,
+                DerivedBillToEndCustomerContactMechanism: x,
                 BillToEndCustomerContactPerson: x,
                 ShipToEndCustomer: x,
-                ShipToEndCustomerAddress: x,
+                AssignedShipToEndCustomerAddress: x,
+                DerivedShipToEndCustomerAddress: x,
                 ShipToEndCustomerContactPerson: x,
                 SalesInvoiceState: x,
-                Currency: x,
+                AssignedCurrency: x,
+                DerivedCurrency: x,
                 AssignedVatClause: x,
                 DerivedVatClause: x
               },
@@ -352,28 +370,28 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToContactMechanism = partyContactMechanism.ContactMechanism;
+    this.invoice.AssignedBillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
+    this.invoice.AssignedBillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.invoice.AssignedShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
 
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.invoice.AssignedShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public billToCustomerSelected(party: ISessionObject) {
@@ -439,7 +457,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
       .subscribe((loaded) => {
 
         if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
-          this.invoice.BillToContactMechanism = null;
+          this.invoice.AssignedBillToContactMechanism = null;
           this.invoice.BillToContactPerson = null;
           this.previousBillToCustomer = this.invoice.BillToCustomer;
         }
@@ -493,7 +511,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
-          this.invoice.ShipToAddress = null;
+          this.invoice.AssignedShipToAddress = null;
           this.invoice.ShipToContactPerson = null;
           this.previousShipToCustomer = this.invoice.ShipToCustomer;
         }
@@ -541,7 +559,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
       .subscribe((loaded) => {
 
         if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
-          this.invoice.BillToEndCustomerContactMechanism = null;
+          this.invoice.AssignedBillToEndCustomerContactMechanism = null;
           this.invoice.BillToEndCustomerContactPerson = null;
           this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
         }
@@ -589,7 +607,7 @@ export class SalesInvoiceOverviewDetailComponent extends TestScope implements On
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
-          this.invoice.ShipToEndCustomerAddress = null;
+          this.invoice.AssignedShipToEndCustomerAddress = null;
           this.invoice.ShipToEndCustomerContactPerson = null;
           this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
         }

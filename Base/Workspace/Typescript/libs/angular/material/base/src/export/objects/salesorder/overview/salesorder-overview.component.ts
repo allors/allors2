@@ -90,16 +90,16 @@ export class SalesOrderOverviewComponent extends TestScope implements AfterViewI
                 CreatedBy: x,
                 LastModifiedBy: x,
                 Quote: x,
-                ShipToAddress: {
+                DerivedShipToAddress: {
                   Country: x,
                 },
-                BillToEndCustomerContactMechanism: {
+                DerivedBillToEndCustomerContactMechanism: {
                   PostalAddress_Country: x
                 },
-                ShipToEndCustomerAddress: {
+                DerivedShipToEndCustomerAddress: {
                   Country: x,
                 },
-                BillToContactMechanism: {
+                DerivedBillToContactMechanism: {
                   PostalAddress_Country: x
                 }
               }

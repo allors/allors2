@@ -57,13 +57,13 @@
             </div>
 
             <div class="row">
-              <div class="col-md">
+              <!-- <div class="col-md">
                 <div class="row">
                   <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.TakenViaContactMechanism"
                     [options]="takenViaContactMechanisms" display="displayName" label="Supplier contact mechanism">
                   </a-mat-select>
                   <button mat-mini-fab color="accent"
-                    [disabled]="!order.TakenViaSupplier || !order.CanWriteTakenViaContactMechanism" type="button"
+                    [disabled]="!order.TakenViaSupplier || !order.CanWriteAssignedTakenViaContactMechanism" type="button"
                     (click)="addTakenViaContactMechanism = !addTakenViaContactMechanism">
                     <mat-icon *ngIf="!addTakenViaContactMechanism">add</mat-icon>
                     <mat-icon *ngIf="addTakenViaContactMechanism">close</mat-icon>
@@ -79,7 +79,7 @@
                     </party-contactmechanism>
                   </mat-card-content>
                 </mat-card>
-              </div>
+              </div> -->
 
               <div class="col-md">
                 <div class="row">
@@ -106,7 +106,7 @@
             </div>
 
             <div class="row">
-              <div class="col-md">
+              <!-- <div class="col-md">
                 <div class="row">
                   <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.BillToContactMechanism"
                     [options]="billToContactMechanisms" display="displayName" class="col-md"></a-mat-select>
@@ -127,7 +127,7 @@
                     </party-contactmechanism>
                   </mat-card-content>
                 </mat-card>
-              </div>
+              </div> -->
 
               <div class="col-md">
                 <div class="row">
@@ -154,7 +154,7 @@
             </div>
 
             <div class="row">
-              <div class="col-md">
+              <!-- <div class="col-md">
                 <div class="row">
                   <a-mat-select class="col" [object]="order" [roleType]="m.PurchaseOrder.ShipToAddress"
                     [options]="shipToAddresses" display="displayName" class="col-md"></a-mat-select>
@@ -174,7 +174,7 @@
                     </party-contactmechanism-postaladdress>
                   </mat-card-content>
                 </mat-card>
-              </div>
+              </div> -->
 
               <div class="col-md">
                 <div class="row">
@@ -228,11 +228,11 @@
               </div>
               <a-mat-input class="col-md" [object]="order" [roleType]="m.PurchaseOrder.CustomerReference"></a-mat-input>
             </div>
-
+<!-- 
             <div class="row">
               <a-mat-select class="col-md-6" [object]="order" [roleType]="m.PurchaseOrder.Currency"
                 [options]="currencies" display="IsoCode" class="col-md"></a-mat-select>
-            </div>
+            </div> -->
 
             <div class="row">
               <a-mat-textarea class="col-md" [object]="order" [roleType]="m.PurchaseOrder.Description"></a-mat-textarea>
