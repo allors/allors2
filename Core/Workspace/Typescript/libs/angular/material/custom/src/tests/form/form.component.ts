@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { DateAdapter } from '@angular/material/core';
 import { ContextService, MetaService, WorkspaceService, Loaded } from '@allors/angular/services/core';
-import { Organisation, Person, Data } from '@allors/domain/generated';
+import { Organisation, Person, Data, Locale } from '@allors/domain/generated';
 import { RadioGroupOption } from '@allors/angular/material/core';
 import { PullRequest } from '@allors/protocol/system';
 import { Meta } from '@allors/meta/generated';
@@ -24,6 +24,7 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
 
   organisations: Organisation[];
   people: Person[];
+  locale: Locale;
 
   jane: Person | undefined;
 
@@ -56,7 +57,7 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
     private titleService: Title,
     private route: ActivatedRoute,
     private saveService: SaveService,
-    private dateAdapter: DateAdapter<string>,
+    private dateAdapter: DateAdapter<string>
   ) {
     super();
 
@@ -105,10 +106,16 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
               },
             }),
             pull.Person(),
+            pull.Locale({
+              include: {
+                Language: x,
+                Country: x,
+              },
+            }),
           ];
 
           return this.allors.context.load(new PullRequest({ pulls }));
-        }),
+        })
       )
       .subscribe((loaded: Loaded) => {
         this.allors.context.reset();
@@ -117,6 +124,7 @@ export class FormComponent extends TestScope implements OnInit, AfterViewInit, O
         this.people = loaded.collections.People as Person[];
         const datas = loaded.collections.Datas as Data[];
 
+        this.locale = (loaded.collections.Locales as Locale[]).find(v=>v.Name === 'nl-BE');
         this.jane = this.people.find((v) => v.FirstName === 'Jane');
 
         if (datas && datas.length > 0) {

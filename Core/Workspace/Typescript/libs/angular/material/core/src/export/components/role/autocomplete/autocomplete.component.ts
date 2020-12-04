@@ -103,7 +103,14 @@ export class AllorsMaterialAutocompleteComponent extends RoleField implements On
     this.changed.emit(this.model);
   }
 
-  clear(event: Event) {
+  onRestore(event: Event) {
+    event.stopPropagation();
+    this.restore()
+    this.trigger.closePanel();
+    this.changed.emit(this.model);
+  }
+
+  onClear(event: Event) {
     event.stopPropagation();
     this.model = undefined;
     this.trigger.closePanel();

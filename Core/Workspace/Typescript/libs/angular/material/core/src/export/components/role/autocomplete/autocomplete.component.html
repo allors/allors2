@@ -1,18 +1,35 @@
 <mat-form-field *ngIf="!disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
-  <input aFocus (blur)="inputBlur()" (focus)="inputFocus()" [aFocusTrigger]="roleType" [matAutocomplete]="autocomplete" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [readonly]="readonly">
-  <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+  <input
+    aFocus
+    (blur)="inputBlur()"
+    (focus)="inputFocus()"
+    [aFocusTrigger]="roleType"
+    [matAutocomplete]="autocomplete"
+    [formControl]="searchControl"
+    type="text"
+    autocomplete="off"
+    matInput
+    [placeholder]="label"
+    [required]="required"
+    [readonly]="readonly"
+  />
+  <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
 
-  <button type="button" mat-button *ngIf="model" matSuffix mat-icon-button aria-label="Clear" (click)="clear($event)">
-      <mat-icon>close</mat-icon>
+  <button type="button" mat-button *ngIf="!canRestore && model" matSuffix mat-icon-button aria-label="Clear" (click)="onClear($event)">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <button type="button" mat-button *ngIf="canRestore" matSuffix mat-icon-button aria-label="Reset" (click)="onRestore($event)">
+    <mat-icon>undo</mat-icon>
   </button>
 
   <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="displayFn()" (optionSelected)="optionSelected($event)">
     <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [attr.data-allors-option-display]="option[display]">
-      {{option[this.display]}}
+      {{ option[this.display] }}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
 
 <mat-form-field *ngIf="disabled" class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
-  <input aFocus [aFocusTrigger]="roleType" [(ngModel)]="model && model[display]" type="text" matInput [placeholder]="label" [required]="required" [disabled]="disabled" readonly>
+  <input aFocus [aFocusTrigger]="roleType" [(ngModel)]="model && model[display]" type="text" matInput [placeholder]="label" [required]="required" [disabled]="disabled" readonly />
 </mat-form-field>

@@ -2,7 +2,9 @@
   <mat-toolbar class="a-header">
     <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{ title }}</h1>
+      <h1>
+        {{ title }}
+      </h1>
       <span class="col"></span>
     </mat-toolbar-row>
   </mat-toolbar>
@@ -11,187 +13,106 @@
     <mat-card *ngIf="data">
       <mat-card-content class="container-fluid">
         <div class="row">
-          <a-mat-input
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.String"
-          ></a-mat-input>
+          <a-mat-input class="col-md" [object]="data" [roleType]="m.Data.String"></a-mat-input>
         </div>
 
         <div class="row">
-          <a-mat-input
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.Decimal"
-          ></a-mat-input>
+          <a-mat-input class="col-md" [object]="data" [roleType]="m.Data.Decimal"></a-mat-input>
         </div>
 
         <div class="row">
-          <a-mat-datepicker
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.Date"
-          ></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="data" [roleType]="m.Data.Date"></a-mat-datepicker>
           <button type="button" mat-raised-button (click)="newDate()">
             New Date
           </button>
         </div>
 
         <div class="row">
-          <a-mat-datetimepicker
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.DateTime"
-          ></a-mat-datetimepicker>
+          <a-mat-datetimepicker class="col-md" [object]="data" [roleType]="m.Data.DateTime"></a-mat-datetimepicker>
           <button type="button" mat-raised-button (click)="newDateTime()">
             New DateTime
           </button>
         </div>
 
         <div class="row">
-          <a-mat-datetimepicker
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.DateTime2"
-          ></a-mat-datetimepicker>
+          <a-mat-datetimepicker class="col-md" [object]="data" [roleType]="m.Data.DateTime2"></a-mat-datetimepicker>
           <button type="button" mat-raised-button (click)="newDateTime2()">
             New DateTime2
           </button>
         </div>
 
         <div class="row">
-          <a-mat-autocomplete
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.AutocompleteFilter"
-            [filter]="peopleFilter.create(allors)"
-            display="UserName"
-            hint="With filter"
-          ></a-mat-autocomplete>
-          <a-mat-autocomplete
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.AutocompleteOptions"
-            [options]="people"
-            display="UserName"
-            hint="With options"
-          ></a-mat-autocomplete>
+          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteFilter" [filter]="peopleFilter.create(allors)" display="UserName" hint="With filter"></a-mat-autocomplete>
+          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteOptions" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
         </div>
 
         <div class="row">
-          <a-mat-checkbox
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.Checkbox"
-            hint="checkbox hint"
-          ></a-mat-checkbox>
-          <a-mat-chips
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.Chips"
-            [options]="people"
-            display="UserName"
-          ></a-mat-chips>
+          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteDerivedFilter" [assignedRoleType]="m.Data.AutocompleteAssignedFilter" [filter]="peopleFilter.create(allors)" display="UserName" hint="With filter"></a-mat-autocomplete>
+          <a-mat-autocomplete class="col-md" [object]="data" [roleType]="m.Data.AutocompleteAssignedOptions" [assignedRoleType]="m.Data.AutocompleteAssignedOptions" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
         </div>
 
         <div class="row">
-          <a-mat-file
-            class="col-md-12"
-            [object]="data"
-            [roleType]="m.Data.File"
-            accept="image/*"
-          ></a-mat-file>
-          <a-mat-files
-            class="col-md-12"
-            [object]="data"
-            [roleType]="m.Data.MultipleFiles"
-            accept="image/*"
-          ></a-mat-files>
+          <a-mat-checkbox class="col-md" [object]="data" [roleType]="m.Data.Checkbox" hint="checkbox hint"></a-mat-checkbox>
+          <a-mat-chips class="col-md" [object]="data" [roleType]="m.Data.Chips" [options]="people" display="UserName"></a-mat-chips>
         </div>
 
         <div class="row">
-          <a-mat-radiogroup
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.RadioGroup"
-            [options]="radioGroupOptions"
-          ></a-mat-radiogroup>
-          <a-mat-slider
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.Slider"
-            [min]="1"
-            [max]="20"
-            [step]="1"
-          ></a-mat-slider>
+          <a-mat-file class="col-md-12" [object]="data" [roleType]="m.Data.File" accept="image/*"></a-mat-file>
+          <a-mat-files class="col-md-12" [object]="data" [roleType]="m.Data.MultipleFiles" accept="image/*"></a-mat-files>
         </div>
 
         <div class="row">
-          <a-mat-slidetoggle
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.SlideToggle"
-          ></a-mat-slidetoggle>
-          <a-mat-textarea
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.PlainText"
-          ></a-mat-textarea>
+          <a-mat-radiogroup class="col-md" [object]="data" [roleType]="m.Data.RadioGroup" [options]="radioGroupOptions"></a-mat-radiogroup>
+          <a-mat-slider class="col-md" [object]="data" [roleType]="m.Data.Slider" [min]="1" [max]="20" [step]="1"></a-mat-slider>
         </div>
 
         <div class="row">
-          <a-mat-markdown
-            class="col-md"
-            [object]="data"
-            [roleType]="m.Data.Markdown"
-          ></a-mat-markdown>
+          <a-mat-slidetoggle class="col-md" [object]="data" [roleType]="m.Data.SlideToggle"></a-mat-slidetoggle>
+          <a-mat-textarea class="col-md" [object]="data" [roleType]="m.Data.PlainText"></a-mat-textarea>
+        </div>
+
+        <div class="row">
+          <a-mat-markdown class="col-md" [object]="data" [roleType]="m.Data.Markdown"></a-mat-markdown>
           <textarea class="col-md">{{ data.Markdown }}</textarea>
         </div>
 
         <div class="row">
+          <a-mat-localised-text class="col-md" [object]="data" [roleType]="m.Data.LocalisedTexts" [locale]="locale"></a-mat-localised-text>
+          <a-mat-localised-markdown class="col-md" [object]="data" [roleType]="m.Data.LocalisedMarkdowns" [locale]="locale"></a-mat-localised-markdown>
+        </div>
+
+        <div class="row">
           <div class="col-md">
-            <h4>Organisation Where Jane is Manager</h4>
-            <a-mat-association-autocomplete
-              [object]="jane"
-              [associationType]="m.Person.OrganisationWhereManager"
-              [filter]="organisationFilter.create(allors)"
-              display="Name"
-            ></a-mat-association-autocomplete>
-            <a-mat-association-autocomplete
-              [object]="jane"
-              [associationType]="m.Person.OrganisationWhereManager"
-              [filter]="organisationFilter.create(allors)"
-              display="Name"
-            ></a-mat-association-autocomplete>
+            <h4>
+              Organisation Where Jane is Manager
+            </h4>
+            <a-mat-association-autocomplete [object]="jane" [associationType]="m.Person.OrganisationWhereManager" [filter]="organisationFilter.create(allors)" display="Name"></a-mat-association-autocomplete>
+            <a-mat-association-autocomplete [object]="jane" [associationType]="m.Person.OrganisationWhereManager" [filter]="organisationFilter.create(allors)" display="Name"></a-mat-association-autocomplete>
           </div>
           <div class="col-md">
             <h4>Organisations with Managers ({{ organisationsWithManagers?.length }})</h4>
             <div *ngFor="let organisation of organisationsWithManagers">
-              {{ organisation.Name }} -> {{ organisation.Manager.FirstName }}
+              {{ organisation.Name }}
+              ->
+              {{ organisation.Manager.FirstName }}
             </div>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md">
-            <h4>Organisation Where Jane is Employee</h4>
-            <a-mat-association-autocomplete
-              [object]="jane"
-              [associationType]="m.Person.OrganisationWhereEmployee"
-              [filter]="organisationFilter.create(allors)"
-              display="Name"
-            ></a-mat-association-autocomplete>
-            <a-mat-association-autocomplete
-              [object]="jane"
-              [associationType]="m.Person.OrganisationWhereEmployee"
-              [filter]="organisationFilter.create(allors)"
-              display="Name"
-            ></a-mat-association-autocomplete>
+            <h4>
+              Organisation Where Jane is Employee
+            </h4>
+            <a-mat-association-autocomplete [object]="jane" [associationType]="m.Person.OrganisationWhereEmployee" [filter]="organisationFilter.create(allors)" display="Name"></a-mat-association-autocomplete>
+            <a-mat-association-autocomplete [object]="jane" [associationType]="m.Person.OrganisationWhereEmployee" [filter]="organisationFilter.create(allors)" display="Name"></a-mat-association-autocomplete>
           </div>
           <div class="col-md">
             <h4>Organisations with Empoyees ({{ organisationsWithEmployees?.length }})</h4>
             <div *ngFor="let organisation of organisationsWithEmployees">
-              {{ organisation.Name }} -> <span *ngFor="let employee of organisation.Employees">{{ employee.FirstName }}, </span>
+              {{ organisation.Name }}
+              ->
+              <span *ngFor="let employee of organisation.Employees">{{ employee.FirstName }}, </span>
             </div>
           </div>
         </div>
@@ -202,13 +123,10 @@
   <mat-toolbar class="a-footer">
     <mat-toolbar-row class="row">
       <span class="col"></span>
-      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!form.form.valid"
-      >
+      <button mat-raised-button (click)="goBack()" type="button">
+        CANCEL
+      </button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">
         SAVE
       </button>
       <button mat-raised-button color="warn" type="button" (click)="reset()">

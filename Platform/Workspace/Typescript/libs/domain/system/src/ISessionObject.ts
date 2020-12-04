@@ -21,6 +21,8 @@ export interface ISessionObject extends IObject {
   workspaceObject?: IWorkspaceObject;
 
   hasChanges: boolean;
+  hasChangedRole(roleType: RoleType);
+  restoreRole(roleType: RoleType);
 
   canRead(roleType: RoleType): boolean | undefined;
   canWrite(roleTyp: RoleType): boolean | undefined;
