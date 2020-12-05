@@ -1524,7 +1524,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSalesOrder_WhenDeriving_ThenLocaleMustExist()
+        public void GivenSalesOrder_WhenDeriving_ThenDerivedLocaleMustExist()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithPostalAddressBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -1542,7 +1542,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(this.Session.GetSingleton().DefaultLocale, order.Locale);
+            Assert.Equal(this.Session.GetSingleton().DefaultLocale, order.DerivedLocale);
         }
 
         [Fact]
@@ -2365,6 +2365,8 @@ namespace Allors.Domain
                 .WithAssignedVatRegime(new VatRegimes(this.Session).ServiceB2B)
                 .Build();
 
+            this.Session.Derive();
+
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
             var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
@@ -2452,6 +2454,8 @@ namespace Allors.Domain
                 .WithShipToCustomer(customer)
                 .WithAssignedShipToAddress(shipToAddress)
                 .Build();
+
+            this.Session.Derive();
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
             var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
@@ -2542,6 +2546,8 @@ namespace Allors.Domain
                 .WithSalesTerm(new IncoTermBuilder(this.Session).WithTermType(new IncoTermTypes(this.Session).Cif).Build())
                 .Build();
 
+            this.Session.Derive();
+
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
             var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
@@ -2630,6 +2636,8 @@ namespace Allors.Domain
                 .WithAssignedShipToAddress(shipToAddress)
                 .WithSalesTerm(new IncoTermBuilder(this.Session).WithTermType(new IncoTermTypes(this.Session).Exw).Build())
                 .Build();
+
+            this.Session.Derive();
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithAssignedUnitPrice(15).Build();
             var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithAssignedUnitPrice(15).Build();

@@ -246,6 +246,8 @@ namespace Allors.Domain
                 .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
+            this.Session.Derive();
+
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithInvoiceItemType(productItem).Build();
             salesInvoice.AddSalesInvoiceItem(invoiceItem);
 
@@ -266,6 +268,8 @@ namespace Allors.Domain
                 .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
                 .WithAssignedVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
+
+            this.Session.Derive();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(1).Build();
             salesInvoice.AddSalesInvoiceItem(invoiceItem);
@@ -289,6 +293,8 @@ namespace Allors.Domain
                 .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
 
+            this.Session.Derive();
+
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithInvoiceItemType(productItem).Build();
             salesInvoice.AddSalesInvoiceItem(invoiceItem);
 
@@ -309,6 +315,8 @@ namespace Allors.Domain
                 .WithAssignedBillToContactMechanism(this.billToContactMechanismMechelen)
                 .WithAssignedIrpfRegime(new IrpfRegimes(this.Session).Assessable19)
                 .Build();
+
+            this.Session.Derive();
 
             var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(1).Build();
             salesInvoice.AddSalesInvoiceItem(invoiceItem);
